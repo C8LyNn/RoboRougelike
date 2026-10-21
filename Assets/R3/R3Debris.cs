@@ -8,14 +8,19 @@ namespace RoboRougelike.R3
         private static readonly Queue<R3Debris> pieces=new Queue<R3Debris>();
         // Detached wreckage is briefly non-solid so it cannot shield live modules.
         private readonly List<Collider> temporaryColliders=new List<Collider>();
+        private Rigidbody debrisBody;
+        private bool originalGravity;
         private System.Collections.IEnumerator ReenableColliders()
         {
             yield return new WaitForSeconds(.45f);
             foreach(var collider in temporaryColliders)if(collider!=null)collider.enabled=true;
             temporaryColliders.Clear();
+            if(debrisBody!=null)debrisBody.useGravity=originalGravity;
         }
         private void Start()
         {
+            debrisBody=GetComponent<Rigidbody>();
+            if(debrisBody!=null){originalGravity=debrisBody.useGravity;debrisBody.useGravity=false;}
             foreach(var collider in GetComponentsInChildren<Collider>(true))
             {
                 if(collider==null||!collider.enabled)continue;
@@ -25,6 +30,7 @@ namespace RoboRougelike.R3
         }
         private void OnDisable()
         {
+            if(debrisBody!=null)debrisBody.useGravity=originalGravity;
             foreach(var collider in temporaryColliders)if(collider!=null)collider.enabled=true;
             temporaryColliders.Clear();
         }
