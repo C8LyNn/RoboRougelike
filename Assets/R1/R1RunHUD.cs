@@ -113,7 +113,7 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Jazda: {design.Speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
                 }
-                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: łupy → ulepszenie → garaż.",body);
+                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: wybierz do 3 bonusów lub modułów → garaż.",body);
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
