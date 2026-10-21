@@ -158,6 +158,27 @@ namespace RoboRougelike.R1
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
             Progress.CompleteSalvage();Debug.Log("[R4] Odzysk rozliczony: magazyn="+VehicleModel.Inventory.Count+", Złom +"+Salvage.DismantledScrap);return true;
         }
+        public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
+            System.Collections.Generic.IEnumerable<int> selectedBonuses)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
+            var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
+            if(ids==null||bonuses==null||ids.Length+bonuses.Length>3||
+                ids.Distinct().Count()!=ids.Length||!Progress.CanCompleteUnifiedRewards(bonuses))return false;
+            if(ids.Any(id=>!Salvage.Items.Any(item=>item.Id==id&&item.Selectable)))return false;
+            if(!Salvage.Claim(VehicleModel,ids))return false;
+            RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
+            if(!Progress.CompleteUnifiedRewards(bonuses))
+            {Debug.LogError("[R4] Niespójny stan nagród po zatwierdzeniu odzysku.");return false;}
+            if(Progress.State==R1RunState.Garage)
+            {
+                Player.Apply(Progress.Stats);
+                Garage.Open();
+            }
+            Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+
+                "; złom z demontażu="+Salvage.DismantledScrap);
+            return true;
+        }
         public bool GarageRepair(Vector3Int cell) => EditGarage(()=>VehicleModel.Repair(cell));
         public bool GarageRemove(Vector3Int cell) => EditGarage(()=>VehicleModel.Remove(cell));
         public bool GarageRepairAffordable() => EditGarage(()=>VehicleModel.RepairAffordable()>0);
@@ -192,7 +213,7 @@ namespace RoboRougelike.R1
             yield return null;
             yield return null;
             Player.Apply(Progress.Stats);
-            Salvage=new R4SalvageLedger(Definition.SalvageLimit);
+            Salvage=new R4SalvageLedger(3);
             Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
             yield return null;
             Transitioning = false; SetSimulation(true);
