@@ -10,6 +10,7 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         private readonly HashSet<string> lootSelection=new HashSet<string>();
+        private readonly HashSet<int> bonusSelection=new HashSet<int>();
         private R4SalvageLedger displayedLedger;
         private int lootPage,inventoryPage;
         private bool inventoryOpen;
@@ -17,26 +18,64 @@ namespace RoboRougelike.R1
         private void DrawSalvage(R1RunController run)
         {
             var ledger=run.Salvage;
-            if(displayedLedger!=ledger){displayedLedger=ledger;lootSelection.Clear();lootPage=0;}
-            GUI.Label(new Rect(70,40,1140,60),"ZWYCIĘSTWO • ODZYSK",title);
-            GUI.Label(new Rect(70,108,1140,55),$"Zachowaj do {ledger.Limit} modułów. Stan pochodzi z pokonanych pojazdów. +{run.LastScrapReward} Z za walkę.",body);
-            var items=ledger.Items;int pages=Mathf.Max(1,Mathf.CeilToInt(items.Count/6f));lootPage=Mathf.Clamp(lootPage,0,pages-1);
-            foreach(var item in items.Skip(lootPage*6).Take(6).ToArray())
+            if(displayedLedger!=ledger)
+            {displayedLedger=ledger;lootSelection.Clear();bonusSelection.Clear();lootPage=0;}
+            const int limit=3;
+            int selected=lootSelection.Count+bonusSelection.Count;
+            GUI.Label(new Rect(45,30,1190,60),"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
+            GUI.Label(new Rect(45,97,1190,50),
+                $"Zatrzymaj maksymalnie {limit} rzeczy: dowolne bonusy lub części (bez pancerza i rdzeni). +{run.LastScrapReward} Z za walkę.",body);
+            GUI.Label(new Rect(45,155,355,32),"BONUSY",heading);
+            GUI.Label(new Rect(455,155,765,32),"CZĘŚCI PRZECIWNIKÓW",heading);
+
+            var offers=run.Progress.Offers.ToArray();
+            for(int i=0;i<offers.Length;i++)
             {
-                int index=items.ToList().IndexOf(item)-lootPage*6;float x=70+(index%2)*580,y=185+(index/2)*120;
-                Panel(new Rect(x,y,560,108));var part=item.ToPart();
-                GUI.Label(new Rect(x+15,y+8,360,28),R4WeaponDefinition.PartName(part),heading);
-                GUI.Label(new Rect(x+15,y+40,360,56),$"{item.Source}\nHP: {item.Health*100:0}% • {(item.Recoverable?"ocalała część":"zniszczona — tylko 1 Z")}",small);
-                bool chosen=lootSelection.Contains(item.Id);GUI.enabled=item.Recoverable&&(chosen||lootSelection.Count<ledger.Limit);
-                if(GUI.Button(new Rect(x+390,y+22,155,62),chosen?"ZACHOWAJ ✓":item.Recoverable?"Zachowaj":"Zniszczona",compactButton))
-                {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);}
-                GUI.enabled=true;
+                var upgrade=offers[i];float y=197+i*116;
+                Panel(new Rect(45,y,370,104));
+                GUI.Label(new Rect(55,y+8,243,29),upgrade.Title,body);
+                GUI.Label(new Rect(55,y+40,243,57),upgrade.Description,small);
+                bool chosen=bonusSelection.Contains(i);
+                GUI.enabled=chosen||selected<limit;
+                GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
+                if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":"Wybierz",compactButton))
+                {if(chosen)bonusSelection.Remove(i);else bonusSelection.Add(i);selected=lootSelection.Count+bonusSelection.Count;}
+                GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
-            if(GUI.Button(new Rect(70,557,110,36),"←",compactButton))lootPage=Mathf.Max(0,lootPage-1);
-            GUI.Label(new Rect(200,561,200,30),$"Strona {lootPage+1}/{pages}",body);
-            if(GUI.Button(new Rect(420,557,110,36),"→",compactButton))lootPage=Mathf.Min(pages-1,lootPage+1);
-            GUI.Label(new Rect(70,608,650,70),$"Wybrano: {lootSelection.Count}/{ledger.Limit}. Pozostałe → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\nDemontaż: 25% ceny × HP (w dół). Wrak modułu: 1 Z. Odbiór jednorazowy.",small);
-            if(GUI.Button(new Rect(770,608,440,65),"Odbierz i kontynuuj",button))run.ConfirmSalvage(lootSelection);
+            if(offers.Length==0)
+                GUI.Label(new Rect(55,205,345,80),"Ostatnie starcie: tylko odzysk części.",small);
+
+            var items=ledger.Items.Where(item=>item.Selectable).ToArray();
+            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/6f));
+            lootPage=Mathf.Clamp(lootPage,0,pages-1);
+            var visible=items.Skip(lootPage*6).Take(6).ToArray();
+            for(int i=0;i<visible.Length;i++)
+            {
+                var item=visible[i];
+                float x=455+(i%2)*390,y=197+(i/2)*116;
+                Panel(new Rect(x,y,375,104));
+                var part=item.ToPart();
+                GUI.Label(new Rect(x+10,y+7,252,31),R4WeaponDefinition.PartName(part),body);
+                string condition=item.Health<=0?"ZNISZCZONA":item.Health<.99999f?"USZKODZONA":"NIENARUSZONA";
+                GUI.Label(new Rect(x+10,y+40,255,57),
+                    $"{condition} • HP: {item.Health*100:0}%\nNaprawa w garażu: {run.VehicleModel.RepairCost(part)} Z",small);
+                bool chosen=lootSelection.Contains(item.Id);
+                GUI.enabled=chosen||selected<limit;
+                GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
+                if(GUI.Button(new Rect(x+268,y+26,97,48),chosen?"Wybrano ✓":"Zatrzymaj",compactButton))
+                {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);selected=lootSelection.Count+bonusSelection.Count;}
+                GUI.enabled=true;GUI.backgroundColor=Color.white;
+            }
+            if(GUI.Button(new Rect(465,556,90,35),"←",compactButton))lootPage=Mathf.Max(0,lootPage-1);
+            GUI.Label(new Rect(562,559,185,32),$"Strona {lootPage+1}/{pages}",small);
+            if(GUI.Button(new Rect(730,556,90,35),"→",compactButton))lootPage=Mathf.Min(pages-1,lootPage+1);
+
+            GUI.Label(new Rect(45,603,685,87),
+                $"Wybrano {selected}/{limit}  •  Bonusy: {bonusSelection.Count}  •  Części: {lootSelection.Count}\n" +
+                $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\n" +
+                "Zniszczone części wymagają odbudowy; uszkodzone tańszej naprawy.",small);
+            if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź nagrody i kontynuuj",button))
+                run.ConfirmRewards(lootSelection,bonusSelection);
         }
         private void DrawInventory(R1RunController run)
         {
@@ -55,12 +94,12 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(1180,345,70,32),"→",compactButton))inventoryPage=Mathf.Min(pages-1,inventoryPage+1);
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
-            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu, najedź na powierzchnię pojazdu i kliknij zielony ghost. Montaż jest bezpłatny.\n\nŻywe części zdjęte z pojazdu wracają tutaj.",body);return;}
+            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Zniszczone moduły napraw przed montażem. Montaż sprawnych i uszkodzonych części jest bezpłatny.\n\nZdjęte moduły wracają do magazynu.",body);return;}
             var profile=R4WeaponDefinition.Get(selected.Weapon);
             GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.Gun?
                 $"{profile.Damage*run.Progress.Stats.Damage:0} obrażeń • co {profile.Interval*run.Progress.Stats.FireInterval:0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
             string error=model.PlacementError(garage.Cell,selected.Kind,true,selected.Weapon);
-            GUI.enabled=garage.HasTarget&&error==null;
+            GUI.enabled=garage.HasTarget&&error==null&&selected.Health>0;
             if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))
             {garage.Message=run.GarageMount(selected.Id,garage.Cell)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}
             GUI.enabled=model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
