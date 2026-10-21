@@ -101,8 +101,10 @@ namespace RoboRougelike.R3
         public int RepairCost(R3PartState part)
         {
             if (part == null || part.Health >= 0.99999f) return 0;
+            // Lost modules require rebuilding at full purchase cost; damaged ones cost
+            // a fraction of their value proportional to missing durability.
             return part.Health <= 0 ? Price(part.Kind,part.Weapon) : Math.Max(1,
-                Mathf.CeilToInt((1 - part.Health) * Economy.MaxRepairCost));
+                Mathf.CeilToInt((1 - part.Health) * Price(part.Kind,part.Weapon) * 0.35f));
         }
         public bool Repair(Vector3Int cell)
         {
@@ -136,7 +138,7 @@ namespace RoboRougelike.R3
         public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
         {
             var batch=recovered.ToArray();
-            if(batch.Any(p=>p==null||p.Health<=0||p.Kind==R3PartKind.Core||string.IsNullOrEmpty(p.Id)||Owns(p.Id))||
+            if(batch.Any(p=>p==null||p.Health<0||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||string.IsNullOrEmpty(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
             inventory.AddRange(batch.Select(p=>p.Copy()));return true;
         }
@@ -149,7 +151,7 @@ namespace RoboRougelike.R3
         public bool RepairInventory(string id)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);int cost=RepairCost(part);
-            if(part==null||part.Health<=0||cost<=0||Scrap<cost)return false;
+            if(part==null||cost<=0||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
         public int DismantleValue(R3PartState part) => part==null?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
