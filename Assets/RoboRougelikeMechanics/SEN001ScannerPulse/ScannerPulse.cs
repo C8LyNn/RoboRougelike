@@ -14,6 +14,7 @@ namespace RoboRougelike.Mechanics.SEN001
         [SerializeField, Min(0f)] private float cooldownSeconds = 5f;
         [SerializeField, Min(0f)] private float revealSeconds = 3f;
         [SerializeField] private LayerMask detectableLayers = ~0;
+        [SerializeField] private ScannerSignalMask detectableSignals = ScannerSignalMask.All;
         [SerializeField] private QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.Collide;
         [SerializeField] private bool ignoreOwnHierarchy = true;
         [SerializeField] private UnityEvent onPulse = new UnityEvent();
@@ -26,6 +27,7 @@ namespace RoboRougelike.Mechanics.SEN001
         private float nextAllowedTime;
 
         public float RadiusMeters => Mathf.Max(0.1f, radiusMeters);
+        public ScannerSignalMask DetectableSignals => detectableSignals;
         public float RemainingCooldown => Mathf.Max(0f, nextAllowedTime - Time.time);
         public bool Ready => isActiveAndEnabled && RemainingCooldown <= 0f;
         public bool LastPulseTruncated { get; private set; }
@@ -40,6 +42,12 @@ namespace RoboRougelike.Mechanics.SEN001
             cooldownSeconds = Mathf.Max(0f, cooldown);
             revealSeconds = Mathf.Max(0f, reveal);
             detectableLayers = layers;
+        }
+
+        /// <summary>Restrict signal kinds without changing physics layers or target components.</summary>
+        public void ConfigureSignals(ScannerSignalMask signals)
+        {
+            detectableSignals = signals & ScannerSignalMask.All;
         }
 
         /// <returns>Unique marked targets detected, or -1 while disabled/on cooldown.</returns>
@@ -59,7 +67,11 @@ namespace RoboRougelike.Mechanics.SEN001
                 if (hit == null || !hit.enabled || !hit.gameObject.activeInHierarchy) continue;
                 if (ignoreOwnHierarchy && hit.transform.IsChildOf(transform)) continue;
                 ScannerDetectable target = hit.GetComponentInParent<ScannerDetectable>();
-                if (target == null || !target.isActiveAndEnabled || !seenThisPulse.Add(target)) continue;
+                if (target == null || !target.isActiveAndEnabled) continue;
+                int signalIndex = (int)target.SignalKind;
+                if (signalIndex < 0 || signalIndex > (int)ScannerSignalKind.Hazard) continue;
+                if ((detectableSignals & (ScannerSignalMask)(1 << signalIndex)) == 0) continue;
+                if (!seenThisPulse.Add(target)) continue;
 
                 lastHits.Add(hit);
                 if (revealSeconds > 0f)
@@ -75,7 +87,8 @@ namespace RoboRougelike.Mechanics.SEN001
 
         public bool IsRevealed(ScannerDetectable target)
         {
-            return target != null && expiry.TryGetValue(target, out float until) && Time.time < until;
+            return target != null && target.isActiveAndEnabled && target.gameObject.activeInHierarchy &&
+                expiry.TryGetValue(target, out float until) && Time.time < until;
         }
 
         public void ResetScanner()
@@ -96,7 +109,8 @@ namespace RoboRougelike.Mechanics.SEN001
             for (int i = revealed.Count - 1; i >= 0; i--)
             {
                 ScannerDetectable target = revealed[i];
-                if (target == null || !expiry.TryGetValue(target, out float until) || now >= until)
+                if (target == null || !target.isActiveAndEnabled || !target.gameObject.activeInHierarchy ||
+                    !expiry.TryGetValue(target, out float until) || now >= until)
                 {
                     expiry.Remove(target);
                     revealed.RemoveAt(i);

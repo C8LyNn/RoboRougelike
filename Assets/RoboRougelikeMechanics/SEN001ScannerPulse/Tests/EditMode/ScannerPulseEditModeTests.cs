@@ -82,6 +82,37 @@ namespace RoboRougelike.Mechanics.SEN001.Tests
         }
 
         [Test]
+        public void SignalMaskFiltersKindsWithoutChangingTargets()
+        {
+            target.SetSignalKind(ScannerSignalKind.Enemy);
+            scanner.ConfigureSignals(ScannerSignalMask.Salvage | ScannerSignalMask.Hazard);
+            Assert.AreEqual(0, scanner.TryPulse(Vector3.zero));
+            Assert.AreEqual(ScannerSignalKind.Enemy, target.SignalKind);
+            scanner.ConfigureSignals(ScannerSignalMask.Enemy);
+            Assert.AreEqual(1, scanner.TryPulse(Vector3.zero));
+            Assert.AreEqual(ScannerSignalKind.Enemy, target.SignalKind);
+        }
+
+        [Test]
+        public void EmptySignalMaskFindsNothingAndUnknownCanBeReenabled()
+        {
+            scanner.ConfigureSignals(ScannerSignalMask.None);
+            Assert.AreEqual(0, scanner.TryPulse(Vector3.zero));
+            scanner.ConfigureSignals(ScannerSignalMask.Unknown);
+            Assert.AreEqual(1, scanner.TryPulse(Vector3.zero));
+        }
+
+        [Test]
+        public void DisabledRevealedMarkerIsHiddenAndPrunedOnNextPulse()
+        {
+            Assert.AreEqual(1, scanner.TryPulse(Vector3.zero));
+            target.enabled = false;
+            Assert.IsFalse(scanner.IsRevealed(target));
+            Assert.AreEqual(0, scanner.TryPulse(Vector3.zero));
+            Assert.IsEmpty(scanner.Revealed);
+        }
+
+        [Test]
         public void DisabledMarkerIsNotDetected()
         {
             target.enabled = false;
