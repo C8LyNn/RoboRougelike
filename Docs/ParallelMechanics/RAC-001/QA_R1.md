@@ -25,3 +25,13 @@
 3. Only after QA, consider a separately reviewed opt-in real-vehicle adapter without editing Codex-owned files.
 4. Keep DRAFT PR open; no merge to develop/main without release QA.
 
+
+## GitHub Actions for R1 commit `49878cf29c62a5fb9b4714594f1ef98424ad2a49`
+
+- **CI-01 Repository Validation: PASS** — workflow run 39685544651, validator regression and Git index integrity both success.
+- **CI-02 Unity EditMode: NOT RUN** — workflow run 39685544695 failed at "Require valid Unity activation credentials"; Unity EditMode step skipped.
+- **CI-03 Unity PlayMode: NOT RUN** — workflow run 39685544643 failed at "Require valid Unity activation credentials"; Unity PlayMode step skipped.
+- **Windows build: NOT RUN** in this task.
+- **Issue #8 / PR #13 update attempt: BLOCKED** by GitHub connector safety checks; this file is the durable handoff until comment/edit permissions permit updates.
+
+Links: https://github.com/C8LyNn/RoboRougelike/actions/runs/39685544651 · https://github.com/C8LyNn/RoboRougelike/actions/runs/39685544695 · https://github.com/C8LyNn/RoboRougelike/actions/runs/39685544643
