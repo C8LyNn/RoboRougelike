@@ -20,7 +20,7 @@ For real gameplay integration, a future adapter should subscribe to a validated 
 
 ## Tests
 
-- EditMode: 5 NUnit cases (initial state, invalid values, stage transitions, break/reset idempotence, overkill event).
+- EditMode: 6 NUnit cases (initial state, invalid values, stage transitions, break/reset idempotence, initially disabled collider restoration, overkill event).
 - PlayMode: 2 UnityTest cases (collider lifecycle, repeated hits).
 - Run on a separate Unity 6000.3.14f1 checkout with a valid license: `Tools/CI/Run-Unity.ps1 -Task EditMode` and `-Task PlayMode`.
 - **Status: NOT RUN** for both suites in this implementation pass; GitHub/structural validation cannot substitute for Unity tests. No Windows build was run.
