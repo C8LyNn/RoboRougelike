@@ -50,6 +50,9 @@ namespace RoboRougelike.Mechanics.RAC001
                 return RaceStepResult.Invalidated;
             }
 
+            // Zero-time ticks cannot advance movement or score checkpoints.
+            if (deltaSeconds == 0f) return RaceStepResult.None;
+
             ElapsedSeconds += deltaSeconds;
             if (ElapsedSeconds >= timeLimit)
             {
@@ -59,7 +62,9 @@ namespace RoboRougelike.Mechanics.RAC001
             }
 
             // Reject implausible jumps. Landing directly inside a checkpoint never arms it.
-            float allowedTravel = maxSpeed * deltaSeconds + 0.25f;
+            // A fixed per-tick allowance can be exploited by tiny time steps.
+            // Tolerance must scale with the simulated time, not the call count.
+            float allowedTravel = maxSpeed * deltaSeconds * 1.05f;
             if ((position - previousPosition).sqrMagnitude > allowedTravel * allowedTravel)
             {
                 previousPosition = position;

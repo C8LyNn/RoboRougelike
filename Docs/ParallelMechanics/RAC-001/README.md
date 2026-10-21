@@ -1,4 +1,4 @@
-# RAC-001 — timed checkpoint race / R1 standalone
+# RAC-001 — timed checkpoint race / R2 standalone
 
 **Unity:** 6000.3.14f1. **Issue:** #8. **PR:** #13 (DRAFT → develop). **Status:** source staged, Unity tests NOT RUN, gameplay NOT INTEGRATED.
 
@@ -7,7 +7,7 @@
 - One checkpoint per step; reaching another checkpoint out of order does not score.
 - Starting inside the first checkpoint, or finishing inside an overlapping next checkpoint, requires exit then fresh re-entry.
 - Swept line-segment / sphere test catches fast movement across a checkpoint between frames.
-- Excessive displacement is rejected using configurable maximum speed + 0.25m tolerance per step; rejected jumps disarm the checkpoint. This is a gameplay guard, **not authoritative anti-cheat** against a malicious client.
+- Excessive displacement is rejected using configurable maximum speed + 5% proportional tolerance; zero-time ticks cannot move or score; rejected jumps disarm the checkpoint. This is a gameplay guard, **not authoritative anti-cheat** against a malicious client.
 - Timer advances using deltaTime and expires at the exact time limit before checkpoint scoring.
 - Pure deterministic CheckpointRaceState, MonoBehaviour CheckpointRaceChallenge with opt-in Transform binding and UnityEvents; reset/restart.
 - No input, steering, combat, AI, garage, reward, scene or prefab modifications.
@@ -19,7 +19,7 @@ Unity Editor: **Tools → RoboRougelike → RAC-001 → Open Unsaved Demo (Addit
 In a separate test scene, attach CheckpointRaceChallenge to a new GameObject, assign the vehicle root Transform to runner and checkpoint Transforms in order; configure radius, limit, maximum speed. Invoke Begin() when starting the challenge; listen to OnCheckpoint/OnWon/OnTimedOut. It reads Transform.position only. Do **not** attach automatically to the existing Gauntlet scene or change existing R1/R3/R4/R6/MOV scripts. An actual runtime bridge requires separate authorization and QA.
 
 ## Test plan
-- 9 EditMode NUnit cases for initial overlap, ordering, swept crossings, implausible jumps, deadline, invalid configuration, overlapping checkpoints, reset and invalid input.
+- 11 EditMode NUnit cases for initial overlap, ordering, swept crossings, implausible jumps, deadline, invalid configuration, overlapping checkpoints, reset and invalid input.
 - 3 PlayMode UnityTest cases for single-fire events, timeout/reset and missing runner.
 - Run from an isolated Unity 6000.3.14f1 checkout: `Tools/CI/Run-Unity.ps1 -Task EditMode`, `-Task PlayMode`, `-Task Build`.
 - Unity EditMode / PlayMode / Windows build: **NOT RUN** in this environment (no Unity executable/license). Tests are authored, not certified. See QA_R1.md.
@@ -27,3 +27,5 @@ In a separate test scene, attach CheckpointRaceChallenge to a new GameObject, as
 ## Scope
 Only `Assets/RoboRougelikeMechanics/RAC001CheckpointRace/**` and `Docs/ParallelMechanics/RAC-001/**` are modified by R1. The original folder .meta GUID and CheckpointRaceChallenge.cs.meta GUID are preserved. No merge, force push, release, main/develop edits.
 
+## R2 movement guard
+The former fixed 0.25 m allowance per Advance call permitted many tiny or zero-duration steps to cross checkpoints with negligible elapsed time. R2 ignores zero-time steps and makes speed tolerance proportional to elapsed time. Two new EditMode regression cases cover both bypasses. Unity QA remains NOT RUN; see QA_R2.md.
