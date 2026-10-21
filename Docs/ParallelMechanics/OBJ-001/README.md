@@ -1,20 +1,14 @@
-# OBJ-001 — pakiet niezależnej mechaniki (bootstrap R0)
+# OBJ-001 — obrona reaktora / R1
 
-Powiązane zadanie: https://github.com/C8LyNn/RoboRougelike/issues/9
+Issue: https://github.com/C8LyNn/RoboRougelike/issues/9  
+PR: https://github.com/C8LyNn/RoboRougelike/pull/14  
+Unity: **6000.3.14f1**.
 
-## Stan
+## Zakres
+Izolowany komponent `ReactorDefenseObjective`: HP, limit czasu, stany Idle/Defending/Won/Lost, zdarzenia ataku i naprawy, reset, walidacja NaN/Infinity i dodatnich wartości, limit napraw, bezpieczny stan terminalny i deterministyczny zegar. Osobna niezapisana scena demonstracyjna dostępna przez menu Tools/RoboRougelike/OBJ-001/Open Isolated Reactor Demo.
 
-Obrona reaktora przez zadany czas, integralność, obrażenia/naprawy i zakończenie; źródła obrażeń dołączane osobno.
+## Granice
+Wyłącznie `Assets/RoboRougelikeMechanics/OBJ001DefendReactor/**` i `Docs/ParallelMechanics/OBJ-001/**`. Bez edycji sceny głównej, R1/R3/R4/R6, AI, nagród, ruchu, spawnera, istniejących prefabów ani plików Codexa. Pakiet NIE jest automatycznie zintegrowany z Gauntlet.
 
-- Unity: **6000.3.14f1**. Pakiet działa dopiero po świadomym umieszczeniu komponentu na obiekcie w osobnej scenie testowej lub zewnętrznym bezkolizyjnym adapterze.
-- **Nie jest automatycznie podłączony do istniejącej sceny Gauntlet**; import kodu nie oznacza integracji gameplay.
-- Repo nie zawiera dowodów wykonanych testów Unity tego pakietu: **NOT RUN**. Niezbędne kolejne kroki: EditMode/PlayMode, demo opt-in, bezpieczny adapter, CI, Play test w głównej scenie.
-- Zero zmian w scenie 1, plikach R1/R3/R4/R6, istniejących assetach, MOV, ProjectSettings, Codex PR #1, MAP/COM/VFX.
-
-## Weryfikacja i dalsze etapy
-
-Zobacz `Docs/DEVELOPMENT_WORKFLOW.md`. Po dołożeniu testów w ramach własnego katalogu używaj `Tools/CI/Run-Unity.ps1` na osobnym worktree z właściwą licencją Unity. Raportuj liczbę wykonanych przypadków, logi, SHA i blokery w issue. Brak uruchomienia oznaczaj **NOT RUN**, nigdy PASS.
-
-## Bezpieczny zakres
-
-Wyłącznie `Assets/RoboRougelikeMechanics/OBJ001DefendReactor/**` i `Docs/ParallelMechanics/OBJ-001/**` oraz metadane katalogu `Assets/RoboRougelikeMechanics/OBJ001DefendReactor.meta`. DRAFT PR do `develop`, bez auto-merge. Zachowaj GUID przy dalszych zmianach.
+## QA
+Dodano **11 EditMode + 3 PlayMode**. Testy nie zostały wykonane w Unity; **NOT RUN**. CI-01 to kontrola struktury, nie dowód działania gameplay. Raport: `QA_R1.md`. Przed integracją wymagane uruchomienie testów Unity 6000.3.14f1 i ocena kolizji z PR #1.
