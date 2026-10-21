@@ -764,13 +764,9 @@ namespace RogueMachine.P12PipelineSafe
 
             outward.Normalize();
 
-            body.AddForce(
-                Vector3.up *
-                detachUpImpulse +
-                outward *
-                detachOutImpulse,
-                ForceMode.Impulse
-            );
+            // Heavy detached chunks receive mass-independent separation velocity.
+            RoboRougelike.R6.R6DebrisRelease.Eject(body,ownerBody,outward,
+                Mathf.Max(5f,detachOutImpulse*7f),Mathf.Max(2.5f,detachUpImpulse*2.5f));
 
             Vector3 localCentroid =
                 transform.InverseTransformPoint(
