@@ -370,6 +370,7 @@ namespace RogueMachine.P12PipelineSafe
             detached.SetParent(null,true);
             var body=detached.GetComponent<Rigidbody>();if(body==null)body=detached.gameObject.AddComponent<Rigidbody>();
             RoboRougelike.R6.R6DebrisRelease.Release(body,owner,velocity,spin,Mathf.Max(8,mass));
+            RoboRougelike.R6.R6DebrisRelease.Eject(body,owner,detached.forward);
             body.collisionDetectionMode=CollisionDetectionMode.Continuous;
             if(detached.GetComponent<R3Debris>()==null)detached.gameObject.AddComponent<R3Debris>();
             yawPivot=null;muzzle=null;
