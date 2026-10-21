@@ -1,0 +1,74 @@
+# MAP-SYSTEM R5 offline QA run
+# Does not run Unity, PhysX, C# compiler or Windows build.
+
+$ python Tools/check_r3_r5_topology.py
+PASS — R3/R5 nodes, anchors counts, edge endpoints, widths, heights, states. Slopes/curves intentionally recalibrated.
+EXIT CODE: 0
+
+$ python Tools/check_r5_geometry.py
+  start_junction: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  junction_upper: maxSlope=4.11 deg declared=4.2; minRadius=12.9 m
+  upper_bridge: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  bridge_exit: maxSlope=2.87 deg declared=2.9; minRadius=23.6 m
+  junction_lower: maxSlope=0.00 deg declared=0.0; minRadius=27.9 m
+  lower_exit: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  junction_arena: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  arena_exit: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+R5 offline geometry: 8 roads, 0 errors
+RESULT: PASS — data/path calculations only; Unity/PhysX NOT TESTED
+EXIT CODE: 0
+
+$ python Tools/check_r5_mesh_topology.py
+R5 mesh topology: 8 meshes / 2080 triangles / 0 errors
+EXIT CODE: 0
+
+$ python Tools/check_unity_source_layout.py
+PASS static Unity source layout: 26 source/assets, 33 unique .meta GUIDs, 4 assembly definitions
+EXIT CODE: 0
+
+$ python Tools/test_r5_offline.py
+test_all_routes_closed (__main__.MapR5OfflineTests.test_all_routes_closed) ... ok
+test_anchor_references (__main__.MapR5OfflineTests.test_anchor_references) ... ok
+test_bridge_collapsed_but_not_lower (__main__.MapR5OfflineTests.test_bridge_collapsed_but_not_lower) ... ok
+test_curve_controls (__main__.MapR5OfflineTests.test_curve_controls) ... ok
+test_curve_present (__main__.MapR5OfflineTests.test_curve_present) ... ok
+test_edges_reference_nodes (__main__.MapR5OfflineTests.test_edges_reference_nodes) ... ok
+test_no_r4_original_metadata_claim (__main__.MapR5OfflineTests.test_no_r4_original_metadata_claim) ... ok
+test_reference_topology (__main__.MapR5OfflineTests.test_reference_topology) ... ok
+test_road_resolution (__main__.MapR5OfflineTests.test_road_resolution) ... ok
+test_slope_metadata_recalibrated (__main__.MapR5OfflineTests.test_slope_metadata_recalibrated) ... ok
+test_unique_ids (__main__.MapR5OfflineTests.test_unique_ids) ... ok
+test_valid_map_id (__main__.MapR5OfflineTests.test_valid_map_id) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK
+EXIT CODE: 0
+
+$ python -m unittest discover -s R3_Reference/Tests -v
+test_dangling_edge_rejected (test_validation.ScenarioGraphValidationTests.test_dangling_edge_rejected) ... ok
+test_escape_route_after_bridge_failure (test_validation.ScenarioGraphValidationTests.test_escape_route_after_bridge_failure) ... ok
+test_four_modes_are_supported_on_one_map (test_validation.ScenarioGraphValidationTests.test_four_modes_are_supported_on_one_map) ... ok
+test_missing_anchor_type_rejected (test_validation.ScenarioGraphValidationTests.test_missing_anchor_type_rejected) ... ok
+test_oversized_vehicle_rejected (test_validation.ScenarioGraphValidationTests.test_oversized_vehicle_rejected) ... ok
+test_route_unavailable_when_three_branches_fail (test_validation.ScenarioGraphValidationTests.test_route_unavailable_when_three_branches_fail) ... ok
+test_structure_is_clean (test_validation.ScenarioGraphValidationTests.test_structure_is_clean) ... ok
+test_unknown_state_rejected (test_validation.ScenarioGraphValidationTests.test_unknown_state_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK
+EXIT CODE: 0
+
+$ python R3_Reference/Tools/validate_examples.py
+PASS race_intact: valid
+PASS survival_intact: valid
+PASS escape_collapsed: valid
+PASS boss_intact: valid
+PASS escape_softlock: rejected [Unreachable path spawn_west -> exit_east in all_eastern_routes_closed for standard_ref]
+PASS escape_oversized_vehicle: rejected [Unreachable path spawn_west -> exit_east in intact for oversized_ref]
+PASS race_unknown_state: rejected [Unknown state not_a_state]
+PASS unknown_challenge: rejected [Unknown challenge]
+EXIT CODE: 0
