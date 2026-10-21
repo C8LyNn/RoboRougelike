@@ -1,0 +1,12 @@
+{
+  "source_archive": "RoboRougelike_VFX001_CombatFeedback_v5.zip",
+  "source_zip_sha256": "86133261e6693cf90017e7434fdc26f02e72bb4443b3f493a8de835ca6a7d597",
+  "source_manifest_checked_entries": 153,
+  "additional_live_adapter": "Assets/R6/Vfx001R6LiveBridge.cs",
+  "integration_kind": "live R6 legacy visual marker + R3 debris read-only events",
+  "unity_compilation": "NOT_RUN",
+  "windows_build": "NOT_RUN",
+  "editmode": "NOT_RUN",
+  "playmode": "NOT_RUN",
+  "source_base": "develop@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1"
+}

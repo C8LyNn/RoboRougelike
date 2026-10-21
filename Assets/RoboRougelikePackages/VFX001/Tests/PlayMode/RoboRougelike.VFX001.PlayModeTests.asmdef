@@ -1,0 +1,21 @@
+{
+  "name": "RoboRougelike.VFX001.PlayModeTests",
+  "rootNamespace": "RoboRougelike.VFX001.Tests",
+  "references": [
+    "RoboRougelike.VFX001.Runtime",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

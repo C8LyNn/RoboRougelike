@@ -1,0 +1,16 @@
+{
+  "package": "RoboRougelike VFX-001 Combat Feedback v4",
+  "file_count_excluding_manifest": 131,
+  "cs_files": 46,
+  "test_methods_or_testcase_attributes": 57,
+  "shader_files": 5,
+  "asmdef_files": 3,
+  "meta_guid_count": 67,
+  "guid_unique": true,
+  "all_assets_have_meta": true,
+  "brace_count_check": "PASS (heuristic, not C# compilation)",
+  "unity_compilation": "NOT_RUN",
+  "unity_test_runner": "NOT_RUN",
+  "manual_visual_qa": "NOT_RUN",
+  "windows_build": "NOT_RUN"
+}

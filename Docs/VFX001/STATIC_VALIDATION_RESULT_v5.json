@@ -1,0 +1,22 @@
+{
+  "package": "RoboRougelike_VFX001_CombatFeedback_v5",
+  "source_from": "v4 ZIP (all paths preserved)",
+  "unity_editor_executed": false,
+  "unity_tests_executed": false,
+  "unity_shader_compiled": false,
+  "windows_build_executed": false,
+  "checks": {
+    "v4_file_preservation": true,
+    "meta_guids_unique": true,
+    "assembly_json_parse": true,
+    "basic_csharp_lexical_braces": true,
+    "cosmetic_api_guard": true
+  },
+  "source_files_cs": 55,
+  "shader_files": 6,
+  "editmode_test_sources": 10,
+  "playmode_test_sources": 7,
+  "error_count": 0,
+  "errors": [],
+  "warnings": []
+}
