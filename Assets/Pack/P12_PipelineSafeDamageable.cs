@@ -163,12 +163,8 @@ namespace RogueMachine.P12PipelineSafe
             body.collisionDetectionMode =
                 CollisionDetectionMode.Continuous;
 
-            body.AddForceAtPosition(
-                hitDirection.normalized * 1.5f +
-                Vector3.up * 0.6f,
-                hitPoint,
-                ForceMode.Impulse
-            );
+            // Push destroyed blocks clear of the chassis and firing lane.
+            RoboRougelike.R6.R6DebrisRelease.Eject(body,owner,hitDirection);
 
             Destroy(gameObject, debrisLifetime);
         }
