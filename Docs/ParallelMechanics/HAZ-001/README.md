@@ -1,20 +1,26 @@
-# HAZ-001 — pakiet niezależnej mechaniki (bootstrap R0)
+# HAZ-001 — telegrafowane zagrożenia areny (R1, isolated)
 
-Powiązane zadanie: https://github.com/C8LyNn/RoboRougelike/issues/7
+**Repo:** C8LyNn/RoboRougelike · **Issue:** #7 · **PR:** #12 (DRAFT → develop)  
+**Unity:** 6000.3.14f1. **Status:** source implemented; Unity EditMode / PlayMode / Windows build **NOT RUN**; game integration **NOT INTEGRATED**.
 
-## Stan
+## Zakres
+- Ręczne `Begin()` uruchamia cykl **Idle → Telegraph → Active → Cooldown → Idle**. `ResetCycle()` cicho anuluje cykl, także po wyłączeniu obiektu.
+- Parametry: czas ostrzeżenia/aktywności/chłodzenia, promień, interwał trafień, żądana wartość obrażeń, maska warstw i polityka triggerów.
+- `DamageRequested(GameObject target, float amount)` to **zdarzenie**, nie rzeczywiste obrażenia. Brak subskrybenta = brak obrażeń. Brak zmian HP, AI, pojazdu, scen i systemu walki.
+- Detekcja `Physics.OverlapSphereNonAlloc` z buforem 64 colliderów; deduplikacja po Rigidbody lub obiekcie Collider, limit częstotliwości na cel; `LastScanTruncated` sygnalizuje osiągnięcie limitu (możliwa utrata części celów).
+- `HazardRingIndicator` to opcjonalny runtime'owy okrąg: żółty = Telegraph, czerwony = Active; tylko lokalny obiekt potomny, bez trwałego zapisu w scenie.
+- `HazardDemoHarness` uruchamia cykle i wypisuje **REQUEST** w konsoli. Nigdy nie uszkadza celu.
 
-Wydzielony, ręcznie uruchamiany cykl ostrzeganie → aktywne zagrożenie → chłodzenie. Celowo bez podłączenia obrażeń do istniejącego systemu.
+## Demonstracja opt-in
+W Unity Editor (po imporcie i kompilacji): **Tools → RoboRougelike → HAZ-001 → Create Additive Demo**. Tworzy nową **niezapisaną scenę addytywną**, bez modyfikacji `Assets/scene 1.unity`. Po wejściu w Play pojawia się widoczny okrąg i w konsoli prośby o obrażenia dla demonstracyjnej kuli na warstwie 8. Demo jest oddzielne i nie stanowi integracji gry. Można też dodać `TelegraphedHazardZone` i opcjonalny `HazardRingIndicator` do własnego obiektu w scenie testowej, a następnie wywołać `Begin()`.
 
-- Unity: **6000.3.14f1**. Pakiet działa dopiero po świadomym umieszczeniu komponentu na obiekcie w osobnej scenie testowej lub zewnętrznym bezkolizyjnym adapterze.
-- **Nie jest automatycznie podłączony do istniejącej sceny Gauntlet**; import kodu nie oznacza integracji gameplay.
-- Repo nie zawiera dowodów wykonanych testów Unity tego pakietu: **NOT RUN**. Niezbędne kolejne kroki: EditMode/PlayMode, demo opt-in, bezpieczny adapter, CI, Play test w głównej scenie.
-- Zero zmian w scenie 1, plikach R1/R3/R4/R6, istniejących assetach, MOV, ProjectSettings, Codex PR #1, MAP/COM/VFX.
+## Testy (źródła, bez deklaracji PASS)
+- `Tests/EditMode/HazardZoneEditModeTests.cs`: 8 przypadków (timeline, overshoot, reset, niepoprawny czas, disable, sanity).
+- `Tests/PlayMode/HazardZonePlayModeTests.cs`: 4 przypadki (rate limit, warstwy, wiele colliderów, disable).
+- Oddzielne asmdef dla runtime, Editor, EditMode i PlayMode. Każdy nowy asset ma własne `.meta`; zachowano oryginalny GUID pliku `TelegraphedHazardZone.cs`.
+- Na oddzielnym checkout z aktywowanym Unity: `Tools/CI/Run-Unity.ps1 -Task EditMode`, `-Task PlayMode`, `-Task Build`, oraz `python Tools/CI/validate_repository.py`. W CI bez aktywacji Unity: **NOT RUN**, nie PASS.
 
-## Weryfikacja i dalsze etapy
+## Granice i integracja
+Wszystkie zmiany są w `Assets/RoboRougelikeMechanics/HAZ001TelegraphedHazards/**` i `Docs/ParallelMechanics/HAZ-001/**`. Nie edytowano `Assets/scene 1.unity`, R1/R3/R4/R6, MOV, ProjectSettings, Packages ani plików PR #1–#6. Brak automatycznej aktywacji, brak auto-merge. Integrator może podłączyć `DamageRequested` do autorytatywnego systemu obrażeń w **osobnym, uzgodnionym PR**, dopiero po testach Unity. W przypadku 64+ colliderów na skan należy rozszerzyć politykę buforowania i przetestować wydajność.
 
-Zobacz `Docs/DEVELOPMENT_WORKFLOW.md`. Po dołożeniu testów w ramach własnego katalogu używaj `Tools/CI/Run-Unity.ps1` na osobnym worktree z właściwą licencją Unity. Raportuj liczbę wykonanych przypadków, logi, SHA i blokery w issue. Brak uruchomienia oznaczaj **NOT RUN**, nigdy PASS.
-
-## Bezpieczny zakres
-
-Wyłącznie `Assets/RoboRougelikeMechanics/HAZ001TelegraphedHazards/**` i `Docs/ParallelMechanics/HAZ-001/**` oraz metadane katalogu `Assets/RoboRougelikeMechanics/HAZ001TelegraphedHazards.meta`. DRAFT PR do `develop`, bez auto-merge. Zachowaj GUID przy dalszych zmianach.
+**Kolejny etap:** rzeczywisty compile/test Unity 6000.3.14f1, oględziny ostrzegania i kolizji w PlayMode, przegląd wydajności i dopiero później bezkolizyjny adapter gameplay.
