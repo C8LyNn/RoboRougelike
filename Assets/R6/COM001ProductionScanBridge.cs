@@ -57,6 +57,12 @@ namespace RoboRougelike.R6
                 if (registry == null) registry = GetComponent<StructuralScanRegistry>();
                 if (scanner == null) scanner = GetComponent<StructuralScanController>();
             }
+            // Do not erase the active snapshot when a player retries during cooldown.
+            if (!scanner.IsReady)
+            {
+                Debug.Log("[COM001] Scanner cooldown: " + scanner.CooldownLeft.ToString("0.0") + " s", this);
+                return false;
+            }
             var sensor = currentPlayer.CameraPivot != null ? currentPlayer.CameraPivot : transform;
             scanner.Bind(sensor, transform, gameObject.GetInstanceID(), 1, registry);
             scanner.Configure(new StructuralScanSettings
