@@ -16,7 +16,10 @@ namespace RoboRougelike.R1
             R1EncounterDefinition definition,RoboRougelike.R4.R4SalvageLedger salvage=null,string encounterId="")
         {
             Clear();
-            int count = Mathf.Clamp(definition.EnemyCount, 1, 3);
+            // Add one regular escort per encounter without changing the boss finale.
+            // The extra enemy uses an ordinary archetype, not an elite/boss variant.
+            bool boss=definition.Variants!=null&&definition.Variants.Contains(RoboRougelike.R5.R5EnemyVariant.SiegeBoss);
+            int count = Mathf.Clamp(definition.EnemyCount+(boss?0:1),1,4);
             for (int i = 0; i < count; i++)
             {
                 // Staggered positions leave an open central firing lane around the existing walls.
