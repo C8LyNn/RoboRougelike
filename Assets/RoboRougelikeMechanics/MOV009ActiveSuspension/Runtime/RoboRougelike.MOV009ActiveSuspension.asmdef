@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.MOV009ActiveSuspension",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV009",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

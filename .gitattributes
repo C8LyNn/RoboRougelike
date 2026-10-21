@@ -1,0 +1,15 @@
+# Exact bytes preserve existing Unity YAML/meta/source hashes across platforms.
+# UTF-8 text remains diffable; new files should use LF. No LFS needed at migration.
+* -text
+*.cs diff=csharp
+*.unity diff
+*.prefab diff
+*.asset diff
+*.mat diff
+*.meta diff
+*.png binary
+*.jpg binary
+*.wav binary
+*.mp3 binary
+*.fbx binary
+*.dll binary

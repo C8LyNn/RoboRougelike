@@ -1,0 +1,20 @@
+{
+  "name": "RoboRougelike.MOV008CrawlerTracks.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV008.Tests",
+  "references": [
+    "RoboRougelike.MOV008CrawlerTracks"
+  ],
+  "includePlatforms": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "noEngineReferences": false
+}

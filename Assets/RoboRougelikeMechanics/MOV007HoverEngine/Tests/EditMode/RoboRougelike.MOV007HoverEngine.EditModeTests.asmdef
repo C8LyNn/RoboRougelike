@@ -1,0 +1,12 @@
+{
+  "name": "RoboRougelike.MOV007HoverEngine.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV007.Tests",
+  "references": ["RoboRougelike.MOV007HoverEngine"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "noEngineReferences": false
+}

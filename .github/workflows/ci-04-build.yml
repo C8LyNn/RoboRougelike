@@ -1,0 +1,60 @@
+name: CI-04 Windows Build Validation
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows-mono:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate project before launching Unity
+        run: python3 Tools/CI/validate_repository.py
+      - name: Require valid Unity activation credentials
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        run: |
+          mkdir -p Artifacts/CI
+          if [ -z "$UNITY_EMAIL" ] || [ -z "$UNITY_PASSWORD" ] || { [ -z "$UNITY_LICENSE" ] && [ -z "$UNITY_SERIAL" ]; }; then
+            echo 'BLOCKED: Unity NOT RUN. Configure UNITY_EMAIL, UNITY_PASSWORD and UNITY_LICENSE (Personal, if supported) or UNITY_SERIAL (Pro). See Docs/CI_SETUP.md.' | tee Artifacts/CI/activation-status.txt
+            echo '::error::Unity activation is missing. No tests or build executed.'
+            exit 1
+          fi
+          echo 'Credentials present; activation still must succeed in GameCI.' > Artifacts/CI/activation-status.txt
+      - name: Cross-compile Windows x64 Mono player
+        uses: game-ci/unity-builder@4423ee75828dff56037d1d1cfdac6b68e3a6ba00 # v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: .
+          unityVersion: 6000.3.14f1
+          targetPlatform: StandaloneWindows64
+          buildName: RoboRougelike
+          buildsPath: build
+          versioning: None
+      - name: Require Windows player output
+        run: test -s build/StandaloneWindows64/RoboRougelike.exe
+      - name: Preserve validation logs or activation blocker
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: CI-04-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            Artifacts/CI/
+            build/**/*.log
+          if-no-files-found: warn
+          retention-days: 7

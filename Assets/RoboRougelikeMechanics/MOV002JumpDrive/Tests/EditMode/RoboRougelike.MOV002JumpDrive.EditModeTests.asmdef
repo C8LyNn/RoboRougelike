@@ -1,0 +1,15 @@
+{
+  "name": "RoboRougelike.MOV002JumpDrive.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV002JumpDrive.Tests",
+  "references": ["RoboRougelike.MOV002JumpDrive"],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "noEngineReferences": false
+}

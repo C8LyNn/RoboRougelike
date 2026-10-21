@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.MOV005OmniDrive",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV005OmniDrive",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

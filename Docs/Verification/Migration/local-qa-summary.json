@@ -1,0 +1,83 @@
+{
+  "unity": "6000.3.14f1",
+  "revision": "d68c3f99a318",
+  "localRun": "20261021T155530Z-c5a84f984ec043d4a864c94d574f1e88",
+  "evidenceDirectory": "Artifacts/Local/20261021T155530Z-c5a84f984ec043d4a864c94d574f1e88",
+  "tests": {
+    "EditMode": {
+      "total": 346,
+      "passed": 346,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "xmlSha256": "0e963c931c09f60b4d88fb81ca6f1118cdfb1e5755f3ff5119f49af5fa9a8839",
+      "logSha256": "8a0f9ebc9ff9ce305df93847a847ef6450f8e52976eed66ae0ba1b3c20b2320b",
+      "process": {
+        "finishedUtc": "2026-10-21T16:18:01.0068135Z",
+        "exitCode": 0,
+        "task": "EditMode",
+        "startedUtc": "2026-10-21T15:55:30.9404614Z"
+      },
+      "firstCaseStart": "2026-10-21 15:57:25Z",
+      "lastCaseEnd": "2026-10-21 16:17:58Z",
+      "testNamesEqualVerifiedMOVSeriesBaseline": true
+    },
+    "PlayMode": {
+      "total": 176,
+      "passed": 176,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "xmlSha256": "ecd26af938cfd13fcb0abf76f8568e064ca1b20fc219dc963ad717823df0875e",
+      "logSha256": "1bb75459e179e81b2b799dff3ba2060027029272e1e4f9970901cf3c624b000d",
+      "process": {
+        "finishedUtc": "2026-10-21T16:18:46.8768180Z",
+        "exitCode": 0,
+        "task": "PlayMode",
+        "startedUtc": "2026-10-21T16:18:01.2182790Z"
+      },
+      "firstCaseStart": "2026-10-21 16:18:13Z",
+      "lastCaseEnd": "2026-10-21 16:18:45Z",
+      "testNamesEqualVerifiedMOVSeriesBaseline": true
+    }
+  },
+  "builds": {
+    "retail": {
+      "result": "Succeeded",
+      "reportedBytes": 102817044,
+      "errors": 0,
+      "warnings": 4,
+      "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+      "architecture": "Windows AMD64"
+    },
+    "qa": {
+      "result": "Succeeded",
+      "reportedBytes": 102826935,
+      "errors": 0,
+      "warnings": 4,
+      "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+      "architecture": "Windows AMD64"
+    }
+  },
+  "regression": {
+    "R6": {
+      "baselineCount": 96,
+      "missing": []
+    },
+    "MOV009_Edit": {
+      "baselineCount": 146,
+      "missing": []
+    },
+    "MOV009_Play": {
+      "baselineCount": 14,
+      "missing": []
+    }
+  },
+  "buildProcess": {
+    "finishedUtc": "2026-10-21T16:20:53.0230011Z",
+    "exitCode": 0,
+    "task": "Build",
+    "startedUtc": "2026-10-21T16:18:47.0515361Z"
+  },
+  "buildLogSha256": "8de7374199caf49689c98d941a69eb2ae2c92d6fdd42da6e94e6cd44a3b1d895"
+}

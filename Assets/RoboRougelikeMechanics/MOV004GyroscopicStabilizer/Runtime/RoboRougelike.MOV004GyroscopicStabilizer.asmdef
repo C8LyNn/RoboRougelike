@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.MOV004GyroscopicStabilizer",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV004GyroscopicStabilizer",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
