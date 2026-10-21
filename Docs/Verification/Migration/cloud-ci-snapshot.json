@@ -1,0 +1,86 @@
+{
+  "snapshot": "initial publication",
+  "firstCommit": "2e3f213f82480b65494a143f27c0b3b51b127871",
+  "runs": [
+    {
+      "id": 39653931919,
+      "name": "CI-02 Unity EditMode",
+      "branch": "develop",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653931919",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653931694,
+      "name": "CI-03 Unity PlayMode",
+      "branch": "develop",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653931694",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653931616,
+      "name": "CI-01 Repository Validation",
+      "branch": "develop",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653931616",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653931565,
+      "name": "CI-04 Windows Build Validation",
+      "branch": "develop",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653931565",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653930188,
+      "name": "CI-03 Unity PlayMode",
+      "branch": "main",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653930188",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653930187,
+      "name": "CI-02 Unity EditMode",
+      "branch": "main",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653930187",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653930146,
+      "name": "CI-01 Repository Validation",
+      "branch": "main",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653930146",
+      "unityExecuted": false
+    },
+    {
+      "id": 39653929969,
+      "name": "CI-04 Windows Build Validation",
+      "branch": "main",
+      "sha": "2e3f213f82480b65494a143f27c0b3b51b127871",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39653929969",
+      "unityExecuted": false
+    }
+  ]
+}
