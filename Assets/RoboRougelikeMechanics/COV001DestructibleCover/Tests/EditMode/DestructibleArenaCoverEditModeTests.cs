@@ -90,6 +90,35 @@ namespace RoboRougelike.Mechanics.COV001.Tests
         }
 
         [Test]
+        public void BreakingOuterCoverDoesNotDisableInactiveNestedCoverCollider()
+        {
+            // Reinitialize the outer cover only after the nested hierarchy exists.
+            Object.DestroyImmediate(cover);
+            var nested = new GameObject("inactive nested cover");
+            nested.transform.SetParent(root.transform, false);
+            var grandchild = new GameObject("nested blocking geometry");
+            grandchild.transform.SetParent(nested.transform, false);
+            var nestedBlocker = grandchild.AddComponent<BoxCollider>();
+            nested.AddComponent<DestructibleArenaCover>();
+            nested.SetActive(false);
+
+            cover = root.AddComponent<DestructibleArenaCover>();
+            cover.ResetCover();
+            Assert.IsTrue(nestedBlocker.enabled);
+
+            Assert.IsTrue(cover.ApplyDamage(50f));
+            Assert.IsFalse(blocker.enabled);
+            Assert.IsTrue(nestedBlocker.enabled,
+                "Outer cover must not disable colliders owned by inactive nested covers.");
+
+            nested.SetActive(true);
+            Assert.IsTrue(nestedBlocker.enabled);
+            cover.ResetCover();
+            Assert.IsTrue(blocker.enabled);
+            Assert.IsTrue(nestedBlocker.enabled);
+        }
+
+        [Test]
         public void AcceptedDamageEventReportsClampedAmount()
         {
             float total = 0f;

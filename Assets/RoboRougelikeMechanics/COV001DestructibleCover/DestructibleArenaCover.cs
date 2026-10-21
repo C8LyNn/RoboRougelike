@@ -52,7 +52,7 @@ namespace RoboRougelike.Mechanics.COV001
             {
                 if (candidate == null || candidate.isTrigger || selected.Contains(candidate)) continue;
                 // Never disable a collider belonging to a separate nested cover.
-                var owner = candidate.GetComponentInParent<DestructibleArenaCover>();
+                var owner = candidate.GetComponentInParent<DestructibleArenaCover>(true);
                 if (owner != this) continue;
                 selected.Add(candidate);
             }
