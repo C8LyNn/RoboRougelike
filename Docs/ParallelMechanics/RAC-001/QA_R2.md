@@ -25,3 +25,13 @@ R1 used `maxSpeed * deltaSeconds + 0.25f` allowed movement per Advance call. Rep
 
 ## Next
 Run EditMode and PlayMode with licensed Unity 6000.3.14f1 in isolated checkout, capture XML/logs/exit codes, verify the unsaved demo, then consider an opt-in real vehicle adapter. Keep PR #13 DRAFT, no merge.
+
+## GitHub Actions for R2 source commit `3c8a44e577df768df69b019ff54a125ada432c0c`
+
+- **CI-01 Repository Validation: PASS** — workflow run 39692365323. Validator regression and Git index integrity both succeeded.
+- **CI-02 Unity EditMode: NOT RUN** — workflow run 39692365307. Activation credentials preflight failed; Unity EditMode step skipped.
+- **CI-03 Unity PlayMode: NOT RUN** — workflow run 39692365281. Activation credentials preflight failed; Unity PlayMode step skipped.
+- Windows build: **NOT RUN**.
+- Issue #8 and PR #13 metadata updates: **BLOCKED** by connector safety checks. This file is the durable handoff.
+
+Links: https://github.com/C8LyNn/RoboRougelike/actions/runs/39692365323 · https://github.com/C8LyNn/RoboRougelike/actions/runs/39692365307 · https://github.com/C8LyNn/RoboRougelike/actions/runs/39692365281
