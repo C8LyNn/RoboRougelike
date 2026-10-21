@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace RoboRougelike.Mechanics.RAC001
 {
-    /// <summary>Optional timed course; reads a vehicle Transform without controlling it.</summary>
+    /// <summary>Opt-in race; observes a Transform and never controls the vehicle.</summary>
     [DisallowMultipleComponent]
     public sealed class CheckpointRaceChallenge : MonoBehaviour
     {
@@ -11,55 +11,71 @@ namespace RoboRougelike.Mechanics.RAC001
         [SerializeField] private Transform[] checkpoints = new Transform[0];
         [SerializeField, Min(0.1f)] private float radiusMeters = 3f;
         [SerializeField, Min(1f)] private float timeLimitSeconds = 120f;
+        [SerializeField, Min(1f)] private float maximumTravelMetersPerSecond = 250f;
         [SerializeField] private UnityEvent onCheckpoint = new UnityEvent();
         [SerializeField] private UnityEvent onWon = new UnityEvent();
         [SerializeField] private UnityEvent onTimedOut = new UnityEvent();
+        [SerializeField] private UnityEvent onInvalidated = new UnityEvent();
 
-        public bool Running { get; private set; }
-        public int NextCheckpoint { get; private set; }
-        public float ElapsedSeconds { get; private set; }
-        public bool Won { get; private set; }
+        private readonly CheckpointRaceState state = new CheckpointRaceState();
+        public RacePhase Phase => state.Phase;
+        public bool Running => Phase == RacePhase.Running;
+        public bool Won => Phase == RacePhase.Won;
+        public int NextCheckpoint => state.NextCheckpoint;
+        public int CheckpointCount => state.CheckpointCount;
+        public float ElapsedSeconds => state.ElapsedSeconds;
+        public UnityEvent OnCheckpoint => onCheckpoint;
+        public UnityEvent OnWon => onWon;
+        public UnityEvent OnTimedOut => onTimedOut;
 
         public void BindRunner(Transform value) => runner = value;
+
+        /// <summary>Opt-in configuration for isolated demos and tests; never edits assets.</summary>
+        public void Configure(Transform value, Transform[] course, float radius, float seconds, float speed = 250f)
+        {
+            ResetRace();
+            runner = value;
+            checkpoints = course;
+            radiusMeters = radius;
+            timeLimitSeconds = seconds;
+            maximumTravelMetersPerSecond = speed;
+        }
 
         public bool Begin()
         {
             if (!isActiveAndEnabled || runner == null || checkpoints == null || checkpoints.Length == 0)
                 return false;
-            foreach (var checkpoint in checkpoints)
-                if (checkpoint == null) return false;
-            ResetRace();
-            Running = true;
-            return true;
-        }
-
-        public void ResetRace()
-        {
-            Running = false;
-            Won = false;
-            NextCheckpoint = 0;
-            ElapsedSeconds = 0f;
-        }
-
-        private void Update()
-        {
-            if (!Running) return;
-            ElapsedSeconds += Time.deltaTime;
-            if (ElapsedSeconds >= timeLimitSeconds)
+            Vector3[] points = new Vector3[checkpoints.Length];
+            for (int i = 0; i < points.Length; i++)
             {
-                Running = false;
-                onTimedOut.Invoke();
-                return;
+                if (checkpoints[i] == null) return false;
+                points[i] = checkpoints[i].position;
             }
-            if (runner == null || checkpoints[NextCheckpoint] == null) { Running = false; return; }
-            float radiusSq = radiusMeters * radiusMeters;
-            if ((runner.position - checkpoints[NextCheckpoint].position).sqrMagnitude > radiusSq) return;
-            NextCheckpoint++;
-            onCheckpoint.Invoke();
-            if (NextCheckpoint < checkpoints.Length) return;
-            Won = true;
-            Running = false;
-            onWon.Invoke();
+            return state.Begin(runner.position, points, radiusMeters, timeLimitSeconds, maximumTravelMetersPerSecond);
+        }
+
+        public void ResetRace() => state.Reset();
+
+        private void Update() => Advance(Time.deltaTime);
+
+        /// <summary>Manual deterministic step for a separate adapter/test; never mutates runner.</summary>
+        public RaceStepResult Advance(float deltaSeconds)
+        {
+            if (!Running) return RaceStepResult.None;
+            if (runner == null)
+            {
+                state.Invalidate();
+                onInvalidated.Invoke();
+                return RaceStepResult.Invalidated;
+            }
+            RaceStepResult result = state.Advance(runner.position, deltaSeconds);
+            if (result == RaceStepResult.Checkpoint || result == RaceStepResult.Won)
+                onCheckpoint.Invoke();
+            if (result == RaceStepResult.Won) onWon.Invoke();
+            else if (result == RaceStepResult.TimedOut) onTimedOut.Invoke();
+            else if (result == RaceStepResult.Invalidated) onInvalidated.Invoke();
+            return result;
         }
     }
 }
+
