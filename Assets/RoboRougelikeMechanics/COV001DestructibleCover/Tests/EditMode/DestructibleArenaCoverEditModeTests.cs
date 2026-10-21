@@ -16,6 +16,7 @@ namespace RoboRougelike.Mechanics.COV001.Tests
             root = new GameObject("COV001 test obstacle");
             blocker = root.AddComponent<BoxCollider>();
             cover = root.AddComponent<DestructibleArenaCover>();
+            cover.ResetCover();
         }
 
         [TearDown]
@@ -67,6 +68,25 @@ namespace RoboRougelike.Mechanics.COV001.Tests
             Assert.IsTrue(blocker.enabled);
             Assert.IsTrue(cover.ApplyDamage(50f));
             Assert.AreEqual(2, brokenCount);
+        }
+
+        [Test]
+        public void ResetPreservesInitiallyDisabledChildBlocker()
+        {
+            Object.DestroyImmediate(cover);
+            var child = new GameObject("disabled blocker");
+            child.transform.SetParent(root.transform, false);
+            var disabled = child.AddComponent<BoxCollider>();
+            disabled.enabled = false;
+            cover = root.AddComponent<DestructibleArenaCover>();
+            cover.ResetCover();
+
+            Assert.IsTrue(cover.ApplyDamage(50f));
+            Assert.IsFalse(blocker.enabled);
+            Assert.IsFalse(disabled.enabled);
+            cover.ResetCover();
+            Assert.IsTrue(blocker.enabled);
+            Assert.IsFalse(disabled.enabled);
         }
 
         [Test]
