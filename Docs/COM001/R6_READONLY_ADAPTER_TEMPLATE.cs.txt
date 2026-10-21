@@ -1,0 +1,29 @@
+// ADAPTER TEMPLATE — illustrative pseudocode; DO NOT compile unchanged.
+// Replace R6Vehicle, R6Block and R6VehicleGraph placeholders with *real* types discovered by Codex.
+// Never duplicate HP, damage, salvage or connected-component logic.
+
+/*
+using UnityEngine;
+using RoboRougelike.Mechanics.StructuralScan;
+
+public sealed class R6StructuralScanPartAdapter : MonoBehaviour, IStructuralScanPart
+{
+    [SerializeField] private StructuralScanRegistry registry;
+    private R6Vehicle owner;
+    private R6Block block;
+    public int OwnerKey => owner.StableVehicleId;
+    public int TeamKey => owner.TeamId;
+    public int PartKey => block.StablePartId;
+    public bool IsAttached => block.IsConnectedAndAlive;
+    public bool IsFunctional => block.IsOperational;
+    public float HealthFraction => Mathf.Clamp01(block.CurrentHP / Mathf.Max(0.001f, block.MaxHP));
+    public float StructuralImportance => 0f; // Unless true R6 graph analytics exists!
+    public StructuralPartType PartType => MapExistingR6Category(block.Type);
+    public Transform ScanPoint => block.PhysicalColliderTransform;
+    public bool OwnsCollider(Collider c) => block.ContainsAnyCollider(c);
+
+    public void Initialize(R6Vehicle v, R6Block b) { owner = v; block = b; registry.Register(this); }
+    private void OnDisable() { if (registry != null) registry.Unregister(this); }
+    // On detach/team change: unregister, modify owner, re-register only if attached.
+}
+*/
