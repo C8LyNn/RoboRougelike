@@ -139,6 +139,7 @@ namespace RoboRougelike.R3
             Physics.SyncTransforms();
             int count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
             float nearest=float.PositiveInfinity;R3MountedPart target=null;R41MissingPlan missing=null;Vector3 normal=default;
+            RaycastHit nearestHit=default;
             for(int i=0;i<count;i++)
             {
                 var hit=hits[i];if(hit.distance>=nearest)continue;
@@ -146,7 +147,7 @@ namespace RoboRougelike.R3
                 if(plan!=null&&plan.transform.IsChildOf(previewRoot.transform)){missing=plan;target=null;}
                 else if(part!=null&&part.Operational&&part.transform.IsChildOf(run.Player.transform)){target=part;missing=null;}
                 else continue;
-                nearest=hit.distance;normal=hit.normal;
+                nearest=hit.distance;normal=hit.normal;nearestHit=hit;
             }
             HasTarget=target!=null||missing!=null;
             if(HasTarget)
@@ -155,8 +156,7 @@ namespace RoboRougelike.R3
                 if(target!=null&&target.Kind==R3PartKind.BonusModule)
                 {
                     // Select the actual face cell, not always the anchor of a 2x2 module.
-                    Vector3 local=run.Player.transform.InverseTransformPoint(
-                        hits.First(h=>h.collider!=null&&h.collider.GetComponentInParent<R3MountedPart>()==target).point);
+                    Vector3 local=run.Player.transform.InverseTransformPoint(nearestHit.point-nearestHit.normal*0.02f);
                     nearestCell=new Vector3Int(
                         Mathf.Clamp(Mathf.RoundToInt(local.x/R41PartGeometry.Grid),target.Cell.x,target.Cell.x+1),
                         target.Cell.y,
