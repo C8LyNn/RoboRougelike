@@ -113,7 +113,7 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Jazda: {design.Speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
                 }
-                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: wybierz do 3 bonusów lub modułów → garaż.",body);
+                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: jeden moduł z trzech + do 3 części z wraków → garaż.",body);
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
@@ -124,7 +124,7 @@ namespace RoboRougelike.R1
             else if (progress.State == R1RunState.UpgradeChoice)
             {
                 GUI.Label(new Rect(90, 90, 1120, 65), $"Zwycięstwo!  +{run.LastScrapReward} Złomu", title);
-                GUI.Label(new Rect(90, 170, 1120, 55), "Wybierz ulepszenie, a następnie przygotuj pojazd w garażu", heading);
+                GUI.Label(new Rect(90, 170, 1120, 55), "Wybierz moduł 1×2×2 i zamontuj go w garażu, aby aktywować bonus", heading);
                 // Keep rendering a stable snapshot: a click clears Offers immediately.
                 var offers = new R1UpgradeDefinition[progress.Offers.Count];
                 for (int i = 0; i < offers.Length; i++) offers[i] = progress.Offers[i];
@@ -144,7 +144,7 @@ namespace RoboRougelike.R1
                 bool won = progress.State == R1RunState.Won;
                 GUI.Label(new Rect(160, 130, 1050, 80), won ? "Gauntlet ukończony" : "Porażka", title);
                 GUI.Label(new Rect(160, 235, 960, 70), won ? "Oblężnik pokonany. Wyprawa ukończona." : progress.DefeatReason, heading);
-                GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nUlepszenia: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci bazowy pojazd, 0 Złomu i brak bonusów.", body);
+                GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci bazowy pojazd, 0 Złomu i brak bonusów.", body);
                 if (GUI.Button(new Rect(160, 535, 500, 70), won ? "Zagraj ponownie  [Enter]" : "Spróbuj ponownie  [Enter]", button)) run.RestartRun();
             }
         }
@@ -174,11 +174,19 @@ namespace RoboRougelike.R1
             }
             GUI.backgroundColor=Color.white;
             DrawMovementGarage(run);
-            GUI.Label(new Rect(30,455,280,125),garage.Tool==R41GarageTool.Mount?garage.PlacementIssue??"Miejsce poprawne. Kliknij model, aby zamontować.":"Niebieskie podświetlenie wskazuje wybrany moduł. HP i koszt sprawdzisz w warsztacie.",small);
+            GUI.Label(new Rect(30,453,280,60),garage.Tool==R41GarageTool.Mount?
+                garage.PlacementIssue??"Punkty mocowania zgodne. Kliknij, aby zamontować.":
+                "Wybierz część konstrukcji: jej stan zobaczysz w warsztacie.",small);
+            GUI.enabled=garage.Tool==R41GarageTool.Mount;
+            if(GUI.Button(new Rect(28,514,91,27),"Q / E  Y",compactButton))garage.RotateSelected(1,1);
+            if(GUI.Button(new Rect(123,514,91,27),"R / F  X",compactButton))garage.RotateSelected(0,1);
+            if(GUI.Button(new Rect(218,514,91,27),"Z / X  Z",compactButton))garage.RotateSelected(2,1);
+            GUI.enabled=true;
+            GUI.Label(new Rect(30,545,285,27),$"Obrót X {garage.SelectedRotation.x*90}° · Y {garage.SelectedRotation.y*90}° · Z {garage.SelectedRotation.z*90}°",small);
             if(GUI.Button(new Rect(30,580,130,40),"Zoom +",compactButton))garage.Zoom(-1);
             if(GUI.Button(new Rect(175,580,130,40),"Zoom −",compactButton))garage.Zoom(1);
             if(GUI.Button(new Rect(30,630,275,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
-            GUI.Label(new Rect(30,676,280,25),"PPM — obrót • Kółko — zoom",small);
+            GUI.Label(new Rect(30,676,280,25),"PPM — kamera • Q/E R/F Z/X — część",small);
             if(GUI.Button(new Rect(970,25,280,38),inventoryOpen?"← Warsztat":$"Magazyn ({model.Inventory.Count}) →",compactButton))
             {inventoryOpen=!inventoryOpen;garage.UseInventory=inventoryOpen;if(!inventoryOpen)garage.SelectedInventoryId=null;garage.RefreshMarker();}
             if(inventoryOpen)DrawInventory(run);

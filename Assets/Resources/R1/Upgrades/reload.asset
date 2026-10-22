@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: reload
   Title: "Szybszy mechanizm"
-  Description: "Czas między strzałami krótszy o 15%. Bonus kumuluje się w tej wyprawie."
+  Description: "Czas między strzałami krótszy o 15%, dopóki moduł 1×2×2 działa na pojeździe."
   Effect: 2
   Amount: 0.15

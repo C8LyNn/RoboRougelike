@@ -27,7 +27,7 @@ public class RRLW2ModelTests
     static R1RunProgress Rewards(bool final=false)
     {
         var p=new R1RunProgress();p.Start();
-        if(final)for(int i=0;i<2;i++){p.WinEncounter(Upgrades(),new System.Random(1));p.OpenSalvage();p.CompleteUnifiedRewards(Array.Empty<int>());p.LeaveGarage();}
+        if(final)for(int i=0;i<2;i++){p.WinEncounter(Upgrades(),new System.Random(1));p.OpenSalvage();p.CompleteUnifiedRewards(new[]{0});p.LeaveGarage();}
         p.WinEncounter(Upgrades(),new System.Random(1));p.OpenSalvage();return p;
     }
     static R4SalvageLedger Ledger()
@@ -46,19 +46,26 @@ public class RRLW2ModelTests
         return (bool)type.GetMethod("TryClaim").Invoke(null,new object[]{p,l,m,parts,bonuses});
     }
     [TestCase(0,0)][TestCase(0,1)][TestCase(0,2)][TestCase(0,3)]
-    [TestCase(1,0)][TestCase(1,1)][TestCase(1,2)][TestCase(2,0)][TestCase(2,1)][TestCase(3,0)]
+    [TestCase(1,0)][TestCase(1,1)][TestCase(1,2)][TestCase(2,0)][TestCase(2,1)][TestCase(3,0)][TestCase(1,3)]
     public void EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(int bonuses,int parts)
     {
         var p=Rewards();var l=Ledger();var m=Model();
         var ids=new[]{"intact","damaged","destroyed"}.Take(parts).ToArray();
         int expectedScrap=parts==0?8:parts==1?5:parts==2?2:1; // wheel3 + half gun3 + wreck1 + armor1
-        var picked=p.Offers.Take(bonuses).Select(u=>u.Id).ToArray();
+        // W3/W4 supersedes the shared three-item cap: exactly one inactive
+        // physical bonus is mandatory, independently of zero to three parts.
+        if(bonuses!=1)
+        {
+            Assert.That(Claim(p,l,m,ids,Enumerable.Range(0,bonuses).ToArray()),Is.False);
+            Assert.That(p.State,Is.EqualTo(R1RunState.Salvage));Assert.That(p.Acquired,Is.Empty);
+            Assert.That(m.Inventory,Is.Empty);Assert.That(m.Scrap,Is.Zero);Assert.That(l.Closed,Is.False);
+            return;
+        }
         Assert.That(Claim(p,l,m,ids,Enumerable.Range(0,bonuses).ToArray()),Is.True);
         Assert.That(p.State,Is.EqualTo(R1RunState.Garage));Assert.That(p.Acquired.Count,Is.EqualTo(bonuses));
-        Assert.That(p.Stats.Damage,Is.EqualTo(picked.Contains("damage")?1.2f:1));
-        Assert.That(p.Stats.Hull,Is.EqualTo(picked.Contains("hull")?1.2f:1));
-        Assert.That(p.Stats.Core,Is.EqualTo(picked.Contains("core")?1.2f:1));
-        Assert.That(m.Inventory.Select(x=>x.Id),Is.EquivalentTo(ids));Assert.That(m.Scrap,Is.EqualTo(expectedScrap));
+        Assert.That(p.Stats.Damage,Is.EqualTo(1));Assert.That(p.Stats.Hull,Is.EqualTo(1));Assert.That(p.Stats.Core,Is.EqualTo(1));
+        Assert.That(m.Inventory.Where(x=>x.Kind!=R3PartKind.BonusModule).Select(x=>x.Id),Is.EquivalentTo(ids));
+        Assert.That(m.Inventory.Count(x=>x.Kind==R3PartKind.BonusModule),Is.EqualTo(1));Assert.That(m.Scrap,Is.EqualTo(expectedScrap));
         if(parts==3)Assert.That(m.Inventory.Single(x=>x.Id=="destroyed").Health,Is.Zero);
         var stats=p.Stats.Copy();
         Assert.That(Claim(p,l,m,ids,Enumerable.Range(0,bonuses).ToArray()),Is.False);
@@ -70,16 +77,17 @@ public class RRLW2ModelTests
     {
         var p=Rewards();var l=Ledger();var m=Model();
         var ids=mistake=="four"?new[]{"intact","damaged"}:mistake=="duplicate-part"?new[]{"intact","intact"}:mistake=="armor"?new[]{"armor"}:mistake=="invalid"?new[]{"missing"}:Array.Empty<string>();
-        var bonuses=mistake=="four"?new[]{0,1}:mistake=="duplicate-bonus"?new[]{0,0}:Array.Empty<int>();
+        var bonuses=mistake=="four"?new[]{0,1}:mistake=="duplicate-bonus"?new[]{0,0}:new[]{0};
         Assert.That(Claim(p,l,m,ids,bonuses),Is.False);
         Assert.That(p.State,Is.EqualTo(R1RunState.Salvage));Assert.That(p.Acquired,Is.Empty);
         Assert.That(m.Scrap,Is.Zero);Assert.That(m.Inventory,Is.Empty);Assert.That(l.Closed,Is.False);
     }
-    [Test] public void FinalRewardsResolveToWonWithNoBonusOrGarage()
+    [Test] public void FinalRewardsResolveToWonWithOnePhysicalBonusAndNoGarage()
     {
         var p=Rewards(true);var l=Ledger();var m=Model();
-        Assert.That(p.Offers,Is.Empty);Assert.That(Claim(p,l,m,Array.Empty<string>(),new[]{0}),Is.False);
-        Assert.That(Claim(p,l,m,new[]{"destroyed"},Array.Empty<int>()),Is.True);
+        Assert.That(p.Offers.Count,Is.EqualTo(3));Assert.That(Claim(p,l,m,Array.Empty<string>(),Array.Empty<int>()),Is.False);
+        Assert.That(Claim(p,l,m,new[]{"destroyed"},new[]{0}),Is.True);
+        Assert.That(m.Inventory.Count,Is.EqualTo(2));Assert.That(p.Stats.Damage,Is.EqualTo(1));
         Assert.That(p.State,Is.EqualTo(R1RunState.Won));Assert.That(p.LeaveGarage(),Is.False);
     }
     [TestCase(0f,30)][TestCase(.01f,11)][TestCase(.25f,8)][TestCase(.5f,6)][TestCase(.99f,1)][TestCase(1f,0)]

@@ -13,7 +13,7 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         private readonly HashSet<string> lootSelection=new HashSet<string>();
-        private readonly HashSet<int> bonusSelection=new HashSet<int>();
+        private int selectedBonus=-1;
         private R4SalvageLedger displayedLedger;
         private int lootPage,inventoryPage;
         private bool inventoryOpen;
@@ -21,7 +21,7 @@ namespace RoboRougelike.R1
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
             if(displayedLedger==ledger)return;
-            displayedLedger=ledger;lootSelection.Clear();bonusSelection.Clear();lootPage=0;
+            displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;
         }
 #if ENABLE_INPUT_SYSTEM
         public void ReadRewardInput(Keyboard keyboard)
@@ -32,23 +32,21 @@ namespace RoboRougelike.R1
             int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
             if(index>=0&&index<run.Progress.Offers.Count)
             {
-                if(bonusSelection.Contains(index))bonusSelection.Remove(index);
-                else if(bonusSelection.Count+lootSelection.Count<3)bonusSelection.Add(index);
+                selectedBonus=index;
             }
-            if(keyboard.enterKey.wasPressedThisFrame)run.ConfirmRewards(lootSelection,bonusSelection);
+            if(keyboard.enterKey.wasPressedThisFrame)run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
         }
 #endif
         private void DrawSalvage(R1RunController run)
         {
             var ledger=run.Salvage;
             TrackRewardLedger(ledger);
-            const int limit=3;
-            int selected=lootSelection.Count+bonusSelection.Count;
+            const int partsLimit=3;
             GUI.Label(new Rect(45,30,1190,60),"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
-                $"Zatrzymaj maksymalnie {limit} rzeczy: dowolne bonusy lub części (bez pancerza i rdzeni). +{run.LastScrapReward} Z za walkę.",body);
-            GUI.Label(new Rect(45,155,355,32),"BONUSY",heading);
-            GUI.Label(new Rect(455,155,765,32),"CZĘŚCI PRZECIWNIKÓW",heading);
+                $"DWA NIEZALEŻNE WYBORY: 1 z 3 modułów bonusowych + do 3 części z wraków. +{run.LastScrapReward} Z za walkę.",body);
+            GUI.Label(new Rect(45,155,355,32),"MODUŁ BONUSOWY • 1 Z 3",heading);
+            GUI.Label(new Rect(455,155,765,32),"CZĘŚCI PRZECIWNIKÓW • DO 3",heading);
 
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
@@ -57,15 +55,14 @@ namespace RoboRougelike.R1
                 Panel(new Rect(45,y,370,104));
                 GUI.Label(new Rect(55,y+8,243,29),upgrade.Title,body);
                 GUI.Label(new Rect(55,y+40,243,57),upgrade.Description,small);
-                bool chosen=bonusSelection.Contains(i);
-                GUI.enabled=chosen||selected<limit;
+                bool chosen=selectedBonus==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":"Wybierz",compactButton))
-                {if(chosen)bonusSelection.Remove(i);else bonusSelection.Add(i);selected=lootSelection.Count+bonusSelection.Count;}
+                    selectedBonus=i;
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)
-                GUI.Label(new Rect(55,205,345,80),"Ostatnie starcie: tylko odzysk części.",small);
+                GUI.Label(new Rect(55,205,345,80),"Brak propozycji modułów bonusowych.",small);
 
             var items=ledger.Items.Where(item=>item.Selectable).ToArray();
             int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/6f));
@@ -86,10 +83,10 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(x+10,y+64,255,37),
                     $"{condition} • HP: {item.Health*100:0}%\n{(item.Health<=0?"Odbudowa":"Naprawa")}: {run.VehicleModel.RepairCost(part)} Z",lootDetail);
                 bool chosen=lootSelection.Contains(item.Id);
-                GUI.enabled=chosen||selected<limit;
+                GUI.enabled=chosen||lootSelection.Count<partsLimit;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 if(GUI.Button(new Rect(x+268,y+26,97,48),chosen?"Wybrano ✓":"Zatrzymaj",compactButton))
-                {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);selected=lootSelection.Count+bonusSelection.Count;}
+                {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);}
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
             GUI.enabled=lootPage>0;
@@ -100,11 +97,24 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
 
             GUI.Label(new Rect(45,603,685,87),
-                $"Wybrano {selected}/{limit}  •  Bonusy: {bonusSelection.Count}  •  Części: {lootSelection.Count}\n" +
+                $"Moduł bonusowy: {(selectedBonus>=0?"1/1":"0/1 (WYMAGANY)")}  •  Części z wraków: {lootSelection.Count}/{partsLimit}\n" +
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\n" +
-                "Zniszczone części wymagają odbudowy; uszkodzone tańszej naprawy.",small);
-            if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź nagrody [Enter]",button))
-                run.ConfirmRewards(lootSelection,bonusSelection);
+                "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
+            GUI.enabled=selectedBonus>=0;
+            if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź oba wybory i kontynuuj",button))
+                run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+            GUI.enabled=true;
+        }
+        private static string BonusText(R3PartState item)
+        {
+            if(item.UpgradeEffect==R1UpgradeEffect.Repair)return "Regeneracja 2,5% HP/s";
+            string name=item.UpgradeEffect switch {
+                R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>"Obrażenia",
+                R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
+                R1UpgradeEffect.Core=>"Rdzeń",_=>"Bonus"
+            };
+            return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
+                (item.UpgradeAmount*100).ToString("0")+"%";
         }
         private void DrawInventory(R1RunController run)
         {
@@ -114,7 +124,7 @@ namespace RoboRougelike.R1
             foreach(var item in items.Skip(inventoryPage*4).Take(4).ToArray())
             {
                 GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(0.3f,0.9f,0.9f):Color.white;
-                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • HP {item.Health*100:0}%",compactButton))
+                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • {(item.Kind==R3PartKind.BonusModule?"1×2×2 • ":"")}HP {item.Health*100:0}%",compactButton))
                 {garage.ChooseInventory(item.Id);dismantleConfirmation=null;}row++;
             }
             GUI.backgroundColor=Color.white;
@@ -123,14 +133,17 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(1180,345,70,32),"→",compactButton))inventoryPage=Mathf.Min(pages-1,inventoryPage+1);
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
-            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Zniszczone moduły napraw przed montażem. Montaż sprawnych i uszkodzonych części jest bezpłatny.\n\nZdjęte moduły wracają do magazynu.",body);return;}
+            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Bonusy 1×2×2 działają wyłącznie po montażu i zajmują cztery sąsiednie pola. Zniszczone moduły napraw przed montażem.\n\nZdjęte moduły wracają do magazynu.",body);return;}
             var profile=R4WeaponDefinition.Get(selected.Weapon);
-            GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.Gun?
-                $"{profile.Damage*run.Progress.Stats.Damage:0} obrażeń • co {profile.Interval*run.Progress.Stats.FireInterval:0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
-            string error=model.PlacementError(garage.Cell,selected.Kind,true,selected.Weapon);
+            GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.BonusModule?
+                $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
+                selected.Kind==R3PartKind.Gun?
+                $"{profile.Damage*(run.ActiveStats?.Damage??1f):0} obrażeń • co {profile.Interval*(run.ActiveStats?.FireInterval??1f):0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
+            string error=model.PlacementError(garage.Cell,selected.Kind,true,selected.Weapon,
+                garage.SelectedRotation,selected.ContactMask);
             GUI.enabled=garage.HasTarget&&error==null&&selected.Health>0;
             if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))
-            {garage.Message=run.GarageMount(selected.Id,garage.Cell)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}
+            {garage.Message=run.GarageMount(selected.Id,garage.Cell,garage.SelectedRotation)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}
             GUI.enabled=model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
             if(GUI.Button(new Rect(970,515,280,42),$"{(selected.Health<=0?"Odbuduj":"Napraw")} — {model.RepairCost(selected)} Z",compactButton))run.GarageRepairInventory(selected.Id);
             GUI.enabled=true;

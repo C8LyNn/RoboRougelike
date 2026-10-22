@@ -14,10 +14,13 @@ namespace RoboRougelike.R4
         {
             if(progress==null||ledger==null||model==null||selectedParts==null||selectedBonuses==null)return false;
             var parts=selectedParts.ToArray();var bonuses=selectedBonuses.ToArray();
-            if(parts.Length+bonuses.Length>3||parts.Distinct().Count()!=parts.Length||
+            if(parts.Length>3||bonuses.Length!=1||parts.Distinct().Count()!=parts.Length||
                 !progress.CanCompleteUnifiedRewards(bonuses))return false;
-            // Claim validates every ID/ownership/condition before changing inventory or scrap.
-            if(!ledger.Claim(model,parts))return false;
+            var bonus=R3VehicleModel.CreateBonusReward(progress.Offers[bonuses[0]]);
+            if(bonus==null)return false;
+            // One inventory batch contains the independent bonus and all selected enemy parts.
+            // No progress/scrap/ledger mutation happens if any incoming item is rejected.
+            if(!ledger.Claim(model,parts,bonus))return false;
             return progress.CompleteUnifiedRewards(bonuses);
         }
     }
