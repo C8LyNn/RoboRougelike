@@ -62,18 +62,17 @@ namespace RoboRougelike.R1
             if (State != R1RunState.Combat) return false;
             var pool = (catalog ?? Array.Empty<R1UpgradeDefinition>()).Where(item => item != null &&
                 !string.IsNullOrWhiteSpace(item.Id)).GroupBy(item => item.Id).Select(group => group.First()).ToList();
-            if (CompletedEncounters + 1 < TotalEncounters && pool.Count < 3)
+            if (pool.Count < 3)
                 throw new InvalidOperationException("Wymagane są co najmniej trzy różne ulepszenia.");
             CompletedEncounters++;
             offers.Clear();
-            if (CompletedEncounters >= TotalEncounters) { State = R1RunState.Won; return true; }
             random = random ?? new System.Random();
             for (int i = 0; i < 3; i++)
             {
                 int choice = random.Next(pool.Count);
                 offers.Add(pool[choice]); pool.RemoveAt(choice);
             }
-            State = R1RunState.UpgradeChoice;
+            State = CompletedEncounters >= TotalEncounters ? R1RunState.Won : R1RunState.UpgradeChoice;
             return true;
         }
         public R1UpgradeDefinition ChooseUpgrade(int index)
@@ -90,15 +89,15 @@ namespace RoboRougelike.R1
             if(State!=R1RunState.UpgradeChoice&&State!=R1RunState.Won)return false;
             afterSalvage=State;State=R1RunState.Salvage;return true;
         }
-        // The live game resolves bonuses and recovered modules in one reward phase.
+        // One module from three is mandatory and INDEPENDENT of up to three salvaged parts.
         // Legacy CompleteSalvage/ChooseUpgrade remain for older QA fixtures.
         public bool CanCompleteUnifiedRewards(IEnumerable<int> selectedBonuses)
         {
             if(State!=R1RunState.Salvage||selectedBonuses==null)return false;
             var indices=selectedBonuses.ToArray();
-            return indices.Distinct().Count()==indices.Length &&
-                indices.All(index=>index>=0&&index<offers.Count) &&
-                (afterSalvage==R1RunState.UpgradeChoice||indices.Length==0);
+            return indices.Length==(offers.Count>0?1:0) &&
+                indices.Distinct().Count()==indices.Length &&
+                indices.All(index=>index>=0&&index<offers.Count);
         }
         public bool CompleteUnifiedRewards(IEnumerable<int> selectedBonuses)
         {

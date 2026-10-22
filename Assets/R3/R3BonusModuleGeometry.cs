@@ -42,20 +42,20 @@ namespace RoboRougelike.R3
                 box.enabled=solid;
             }
         }
-        public static void AddStructuralSockets(Transform anchor)
+        public static void AddStructuralSockets(Transform anchor,R3PartState state)
         {
             var offsets=new[]{Vector3Int.right,Vector3Int.forward,
                 Vector3Int.right+Vector3Int.forward};
+            int worldMask=R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask);
             foreach(var offset in offsets)
             {
-                var socket=new GameObject("Bonus footprint socket "+offset);
+                var socket=new GameObject("Bonus contact cell "+offset);
                 socket.transform.SetParent(anchor,false);
                 socket.transform.localPosition=(Vector3)offset*Grid;
-                // Every socket is part of ONE physical bonus. It has no renderer
-                // or collider, so projectiles cannot hit it separately.
-                var guard=socket.AddComponent<P12PipelineSafeDamageable>();
-                guard.Configure(100000f,false);
+                // One HP value and one collider belong to the parent module.
+                // The sockets only represent neighbouring GRID CONTACT CELLS.
                 socket.AddComponent<P12_PipelineSafePlayerBlock>();
+                socket.AddComponent<R3BlockMountPoints>().Configure(state.Id,worldMask);
             }
         }
     }

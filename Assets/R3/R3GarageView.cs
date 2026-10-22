@@ -23,6 +23,9 @@ namespace RoboRougelike.R3
         private R3PartKind shownKind;
         private R4WeaponKind shownWeapon;
         private R41GarageTool shownTool;
+        private Vector3Int shownRotation;
+        public Vector3Int SelectedRotation {get;private set;}
+        public int SelectedContactMask=>Owned?.ContactMask??R3MountingGrid.AllFaces;
         public Vector3Int Cell = new Vector3Int(0,2,1);
         public R3PartKind SelectedPart = R3PartKind.Armor;
         public R4WeaponKind SelectedWeapon;
@@ -40,13 +43,14 @@ namespace RoboRougelike.R3
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
             "Wybierz kolejną część w magazynie. Zakup wymaga świadomego wyboru typu części.":!HasTarget?"Najedź na ścianę bloku pojazdu.":
             Owned?.Health<=0?"Zniszczony moduł wymaga odbudowy przed montażem.":
-            run.VehicleModel.PlacementError(Cell,MountKind,Owned!=null,MountWeapon);
+            run.VehicleModel.PlacementError(Cell,MountKind,Owned!=null,MountWeapon,
+                SelectedRotation,SelectedContactMask);
         public void Initialize(R1RunController owner,Camera camera,P12PipelineSafeCamera cameraFollow,R3VisualPalette colors)
         {run=owner;view=camera;follow=cameraFollow;palette=colors;}
         public void Open()
         {
             follow.enabled=false;previousNear=view.nearClipPlane;view.nearClipPlane=0.05f;view.rect=Viewport;
-            Cursor.lockState=CursorLockMode.None;Cursor.visible=true;HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;
+            Cursor.lockState=CursorLockMode.None;Cursor.visible=true;HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;SelectedRotation=default;
             RefreshPreview();FrameVehicle();
         }
         public void Close()
@@ -58,11 +62,22 @@ namespace RoboRougelike.R3
         public void Orbit(float degrees){yaw+=degrees;}
         public void Tilt(float degrees){pitch=Mathf.Clamp(pitch+degrees,5,75);}
         public void Zoom(float amount){distance=Mathf.Clamp(distance+amount,3,22);}
+        public void RotateSelected(int axis,int quarterTurns)
+        {
+            if(axis<0||axis>2||quarterTurns==0)return;
+            var step=axis==0?new Vector3Int(quarterTurns,0,0):
+                axis==1?new Vector3Int(0,quarterTurns,0):new Vector3Int(0,0,quarterTurns);
+            SelectedRotation=R3MountingGrid.Normalize(SelectedRotation+step);
+            Message="Obrót: X "+SelectedRotation.x*90+"° / Y "+SelectedRotation.y*90+
+                "° / Z "+SelectedRotation.z*90+"°. Dopasuj punkty styku.";
+            RefreshMarker();
+        }
         public void SetTool(R41GarageTool tool){Tool=tool;HasTarget=false;RefreshMarker();}
         public void ChooseInventory(string id)
         {
             UseInventory=true;SelectedInventoryId=id;var part=Owned;
-            if(part!=null){SelectedPart=part.Kind;SelectedWeapon=part.Weapon;}
+            if(part!=null){SelectedPart=part.Kind;SelectedWeapon=part.Weapon;
+                SelectedRotation=part.RotationQuarterTurns;}
             SetTool(R41GarageTool.Mount);
         }
         public void Select(Vector3Int cell){Cell=cell;HasTarget=true;RefreshMarker();}
@@ -93,7 +108,8 @@ namespace RoboRougelike.R3
             previewRoot=new GameObject("Podgląd garażu");previewRoot.transform.SetParent(run.Player.transform,false);marker=null;
             foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))
             {
-                var plan=CreateGhost(part.Cell,part.Kind,part.Weapon,palette.Missing,true);
+                var plan=CreateGhost(part.Cell,part.Kind,part.Weapon,palette.Missing,true,
+                    part.RotationQuarterTurns,part.ContactMask);
                 plan.name="Utracony plan "+part.Cell;plan.AddComponent<R41MissingPlan>().Part=part;
                 var collider=plan.AddComponent<BoxCollider>();collider.isTrigger=true;
                 if(part.Kind==R3PartKind.BonusModule){collider.center=new Vector3(R3BonusModuleGeometry.Grid*.5f,0,R3BonusModuleGeometry.Grid*.5f);
@@ -101,26 +117,52 @@ namespace RoboRougelike.R3
             }
             UpdatePivot();RefreshMarker();
         }
-        private GameObject CreateGhost(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon,Material material,bool plan=false)
+        private GameObject CreateGhost(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon,
+            Material material,bool plan=false,Vector3Int rotation=default,
+            int contacts=R3MountingGrid.AllFaces)
         {
             var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name=plan?"Plan":"Ghost części";
-            item.transform.SetParent(previewRoot.transform,false);item.transform.localPosition=(Vector3)cell*R41PartGeometry.Grid;
-            item.transform.localRotation=Quaternion.identity;item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+            item.transform.SetParent(previewRoot.transform,false);
+            item.transform.localPosition=(Vector3)cell*R41PartGeometry.Grid;
+            item.transform.localRotation=R3MountingGrid.Rotation(rotation);
+            item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             item.GetComponent<Renderer>().sharedMaterial=material;
             if(kind==R3PartKind.BonusModule)R3BonusModuleGeometry.ConfigureCube(item,false);
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
             if(kind!=R3PartKind.BonusModule&&(Tool==R41GarageTool.Mount||plan))
                 R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
+            if(!plan&&Tool==R41GarageTool.Mount)AddPortMarkers(item.transform,kind,contacts,material);
             return item;
+        }
+        private static void AddPortMarkers(Transform parent,R3PartKind kind,int contacts,Material mat)
+        {
+            var offsets=R3VehicleModel.OccupiedCells(Vector3Int.zero,kind).ToArray();
+            var occupied=new System.Collections.Generic.HashSet<Vector3Int>(offsets);
+            float scale=parent.localScale.x;
+            foreach(var offset in offsets)
+                foreach(var direction in R3MountingGrid.FaceDirections)
+                {
+                    if(occupied.Contains(offset+direction)||(contacts&R3MountingGrid.FaceBit(direction))==0)
+                        continue;
+                    var dot=GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    dot.name="Punkt mocowania "+direction;
+                    dot.transform.SetParent(parent,false);
+                    dot.transform.localPosition=((Vector3)offset+(Vector3)direction*.5f)*R41PartGeometry.Grid/scale;
+                    dot.transform.localScale=Vector3.one*(0.13f/scale);
+                    dot.GetComponent<Renderer>().sharedMaterial=mat;
+                    var c=dot.GetComponent<Collider>();c.enabled=false;Destroy(c);
+                }
         }
         public void RefreshMarker()
         {
             if(previewRoot==null||run.VehicleModel==null)return;
-            if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||shownTool!=Tool)
+            if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||
+               shownTool!=Tool||shownRotation!=SelectedRotation)
             {
                 if(marker!=null){marker.SetActive(false);Destroy(marker);}
-                marker=CreateGhost(Cell,MountKind,MountWeapon,palette.Valid);
-                shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;
+                marker=CreateGhost(Cell,MountKind,MountWeapon,palette.Valid,false,
+                    SelectedRotation,SelectedContactMask);
+                shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
@@ -153,17 +195,31 @@ namespace RoboRougelike.R3
             if(HasTarget)
             {
                 var nearestCell=target!=null?target.Cell:missing.Part.Cell;
-                if(target!=null&&target.Kind==R3PartKind.BonusModule)
+                var hitPart=target!=null?run.VehicleModel.Parts.FirstOrDefault(p=>p.Id==target.Id):
+                    missing?.Part;
+                if(hitPart!=null&&hitPart.Kind==R3PartKind.BonusModule)
                 {
-                    // Select the actual face cell, not always the anchor of a 2x2 module.
-                    Vector3 local=run.Player.transform.InverseTransformPoint(nearestHit.point-nearestHit.normal*0.02f);
-                    nearestCell=new Vector3Int(
-                        Mathf.Clamp(Mathf.RoundToInt(local.x/R41PartGeometry.Grid),target.Cell.x,target.Cell.x+1),
-                        target.Cell.y,
-                        Mathf.Clamp(Mathf.RoundToInt(local.z/R41PartGeometry.Grid),target.Cell.z,target.Cell.z+1));
+                    Vector3 local=run.Player.transform.InverseTransformPoint(
+                        nearestHit.point-nearestHit.normal*.02f);
+                    nearestCell=R3VehicleModel.OccupiedCells(hitPart)
+                        .OrderBy(c=>((Vector3)c*R41PartGeometry.Grid-local).sqrMagnitude).First();
                 }
-                Cell=missing!=null?missing.Part.Cell:nearestCell+
-                    (Tool==R41GarageTool.Mount?LocalFace(run.Player.transform,normal):Vector3Int.zero);
+                var face=LocalFace(run.Player.transform,normal);
+                var outside=nearestCell+face;
+                if(Tool==R41GarageTool.Mount&&MountKind==R3PartKind.BonusModule)
+                {
+                    var candidates=R3VehicleModel.OccupiedCells(Vector3Int.zero,MountKind,
+                            SelectedRotation).Select(offset=>outside-offset).ToArray();
+                    Cell=candidates.FirstOrDefault(candidate=>run.VehicleModel.PlacementError(
+                        candidate,MountKind,Owned!=null,MountWeapon,SelectedRotation,
+                        SelectedContactMask)==null);
+                    // If no candidate is valid, show an invalid ghost rather than moving
+                    // it silently elsewhere.
+                    if(!candidates.Any(c=>c==Cell&&run.VehicleModel.PlacementError(
+                        c,MountKind,Owned!=null,MountWeapon,SelectedRotation,SelectedContactMask)==null))
+                        Cell=candidates[0];
+                }
+                else Cell=Tool==R41GarageTool.Mount?outside:nearestCell;
             }
             RefreshMarker();return HasTarget;
         }
@@ -174,8 +230,9 @@ namespace RoboRougelike.R3
             if(Tool==R41GarageTool.Mount)
             {
                 string error=PlacementIssue;if(error!=null){Message=error;return false;}
-                result=Owned!=null?run.GarageMount(SelectedInventoryId,Cell):MountKind==R3PartKind.Gun?
-                    run.GarageBuyWeapon(Cell,MountWeapon):run.GarageBuy(Cell,MountKind);
+                result=Owned!=null?run.GarageMount(SelectedInventoryId,Cell,SelectedRotation):
+                    MountKind==R3PartKind.Gun?run.GarageBuyWeapon(Cell,MountWeapon,SelectedRotation):
+                    run.GarageBuy(Cell,MountKind,SelectedRotation);
                 Message=result?"Zamontowano dokładnie w miejscu podglądu.":"Montaż nieudany.";
             }
             else if(Tool==R41GarageTool.Repair)
@@ -197,6 +254,20 @@ namespace RoboRougelike.R3
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning)return;
             var screen=new Vector2(rawTopLeft.x,Screen.height-rawTopLeft.y);bool inside=InBuildArea(screen,Screen.width,Screen.height);
+            if(current.type==EventType.KeyDown&&Tool==R41GarageTool.Mount)
+            {
+                int axis=-1,step=1;
+                switch(current.keyCode)
+                {
+                    case KeyCode.Q:axis=1;step=-1;break;
+                    case KeyCode.E:axis=1;break;
+                    case KeyCode.R:axis=0;break;
+                    case KeyCode.F:axis=0;step=-1;break;
+                    case KeyCode.Z:axis=2;step=-1;break;
+                    case KeyCode.X:axis=2;break;
+                }
+                if(axis>=0){RotateSelected(axis,step);current.Use();return;}
+            }
             if(current.type==EventType.MouseUp&&current.button==1)orbitDragging=false;
             if(inside&&current.type==EventType.MouseDown&&current.button==1){orbitDragging=true;current.Use();return;}
             // A drag inside the viewport can start orbit even if another GUI pass consumed its initial press.

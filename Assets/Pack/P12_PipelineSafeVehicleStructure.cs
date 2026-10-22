@@ -528,12 +528,9 @@ namespace RogueMachine.P12PipelineSafe
                         continue;
                     }
 
-                    if (!grid.ContainsKey(
-                        next
-                    ))
-                    {
+                    if(!grid.TryGetValue(next,out var nextBlock)||
+                       !RoboRougelike.R3.R3MountingGrid.Compatible(grid[current],nextBlock,offset))
                         continue;
-                    }
 
                     connected.Add(
                         next
@@ -630,15 +627,9 @@ namespace RogueMachine.P12PipelineSafe
                             current +
                             offset;
 
-                        if (handled.Contains(
-                            next
-                        ) ||
-                            !disconnectedGrid.ContainsKey(
-                                next
-                            ))
-                        {
+                        if(handled.Contains(next)||!disconnectedGrid.TryGetValue(next,out var nextBlock)||
+                           !RoboRougelike.R3.R3MountingGrid.Compatible(disconnectedGrid[current],nextBlock,offset))
                             continue;
-                        }
 
                         handled.Add(
                             next
@@ -698,7 +689,10 @@ namespace RogueMachine.P12PipelineSafe
             var ownerBody=GetComponent<Rigidbody>();
             var inheritedVelocity=ownerBody!=null?ownerBody.GetPointVelocity(centroid):Vector3.zero;
             var inheritedSpin=ownerBody!=null?ownerBody.angularVelocity:Vector3.zero;
-            float releasedMass=blocks.Where(b=>b!=null).Sum(b=>RoboRougelike.R6.R6VehicleDrive.PartMass(b.GetComponent<P12PipelineSafeDamageable>()));
+            float releasedMass=blocks.Where(b=>b!=null).Sum(b=>{
+                var hp=b.GetComponent<P12PipelineSafeDamageable>();
+                return hp!=null?RoboRougelike.R6.R6VehicleDrive.PartMass(hp):0f;
+            });
             GameObject chunk =
                 new GameObject(
                     coreFailure

@@ -142,9 +142,12 @@ namespace RoboRougelike.R1
             if(Transitioning||VehicleModel==null||!VehicleModel.CanDeploy||!Progress.LeaveGarage())return false;
             Garage.Close();SetSimulation(false);return true;
         }
-        public bool GarageBuy(Vector3Int cell,R3PartKind kind) => EditGarage(()=>VehicleModel.Buy(cell,kind));
-        public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind) => EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind));
-        public bool GarageMount(string id,Vector3Int cell) => EditGarage(()=>VehicleModel.Mount(id,cell));
+        public bool GarageBuy(Vector3Int cell,R3PartKind kind,Vector3Int rotation=default) =>
+            EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
+        public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
+            EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind,rotation));
+        public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation=default) =>
+            EditGarage(()=>VehicleModel.Mount(id,cell,rotation));
         public bool GarageRepairInventory(string id) => EditGarage(()=>VehicleModel.RepairInventory(id));
         public bool GarageDismantle(string id)
         {
@@ -165,8 +168,9 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
-            if(ids==null||bonuses==null||ids.Length+bonuses.Length>3||
+            if(ids==null||bonuses==null||ids.Length>3||
                 ids.Distinct().Count()!=ids.Length||!Progress.CanCompleteUnifiedRewards(bonuses))return false;
+            // Two separate reward pools: one bonus and up to three salvaged parts.
             // Reject before settling salvage so that inventory never receives partial rewards.
             if(VehicleModel.Inventory.Count+ids.Length+bonuses.Length>200)return false;
             var selectedUpgrades=bonuses.Select(index=>Progress.Offers[index]).ToArray();
