@@ -18,8 +18,8 @@ public class MOVSeriesDriveModelTests
         Assert.That(m.Inventory.Count,Is.EqualTo(4));int scrap=m.Scrap;
         foreach(var p in m.Parts.Where(p=>p.Kind==kind))p.Health=0;
         Assert.That(m.CanDeploy,Is.False);Assert.That(m.EmergencyRepair(),Is.True);Assert.That(m.CanDeploy,Is.True);
-        Assert.That(m.Scrap,Is.EqualTo(scrap));Assert.That(m.Parts.Count(p=>p.Kind==kind&&p.Health>0),Is.EqualTo(required));
-        Assert.That(m.Parts.Where(p=>p.Kind==kind&&p.Health>0).All(p=>p.Health==.25f),Is.True);
+        Assert.That(m.Scrap,Is.EqualTo(scrap-(drive==R3DriveKind.Tracks?90:drive==R3DriveKind.Omni?40:35)));Assert.That(m.Parts.Count(p=>p.Kind==kind&&p.Health>0),Is.EqualTo(required));
+        Assert.That(m.Parts.Where(p=>p.Kind==kind&&p.Health>0).All(p=>p.Health==1f),Is.True);
         var last=m.Parts.First(p=>p.Kind==kind&&p.Health>0);Assert.That(m.Remove(last.Cell),Is.False);
     }
     [Test] public void InvalidOrUnavailableSelectedModeDoesNotThrowEmergencyRepair()

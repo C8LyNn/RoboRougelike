@@ -1,0 +1,34 @@
+{
+  "implementationSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+  "runs": [
+    {
+      "name": "CI-01 Repository Validation",
+      "id": 39747539340,
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39747539340"
+    },
+    {
+      "name": "CI-02 Unity EditMode",
+      "id": 39747539354,
+      "status": "completed",
+      "conclusion": "failure",
+      "unityExecution": "NOT RUN; blocked before Unity by missing activation",
+      "headSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39747539354"
+    },
+    {
+      "name": "CI-03 Unity PlayMode",
+      "id": 39747539416,
+      "status": "completed",
+      "conclusion": "failure",
+      "unityExecution": "NOT RUN; blocked before Unity by missing activation",
+      "headSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39747539416"
+    }
+  ],
+  "cloudWindowsBuild": "NOT RUN: CI-04 triggers main/develop pushes or manual dispatch, not feature PR; requires supported Unity activation",
+  "localVerification": "385/385 EditMode;176/176 PlayMode;retail+QA build PASS",
+  "blockerFromActualJobLog": "Unity activation is missing. No tests or build executed."
+}

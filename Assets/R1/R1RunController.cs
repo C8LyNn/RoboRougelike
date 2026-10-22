@@ -151,12 +151,22 @@ namespace RoboRougelike.R1
             if(changed)EarnedScrap+=VehicleModel.Scrap-before;return changed;
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
+            => ConfirmRewards(selected,System.Array.Empty<int>());
+        public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
+            System.Collections.Generic.IEnumerable<int> selectedBonuses)
         {
-            if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null)return false;
-            var ids=selected?.ToArray();
-            if(!Salvage.Claim(VehicleModel,ids))return false;
+            if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
+            var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
+            if(!R4RewardSettlement.TryClaim(Progress,Salvage,VehicleModel,ids,bonuses))return false;
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
-            Progress.CompleteSalvage();Debug.Log("[R4] Odzysk rozliczony: magazyn="+VehicleModel.Inventory.Count+", Złom +"+Salvage.DismantledScrap);return true;
+            if(Progress.State==R1RunState.Garage)
+            {
+                Player.Apply(Progress.Stats);
+                Garage.Open();
+            }
+            Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+
+                "; złom z demontażu="+Salvage.DismantledScrap);
+            return true;
         }
         public bool GarageRepair(Vector3Int cell) => EditGarage(()=>VehicleModel.Repair(cell));
         public bool GarageRemove(Vector3Int cell) => EditGarage(()=>VehicleModel.Remove(cell));
@@ -192,7 +202,7 @@ namespace RoboRougelike.R1
             yield return null;
             yield return null;
             Player.Apply(Progress.Stats);
-            Salvage=new R4SalvageLedger(Definition.SalvageLimit);
+            Salvage=new R4SalvageLedger(3);
             Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
             yield return null;
             Transitioning = false; SetSimulation(true);
@@ -235,6 +245,7 @@ namespace RoboRougelike.R1
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) StartRun();
+            else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)
             {
                 if (keyboard.digit1Key.wasPressedThisFrame) ChooseUpgrade(0);

@@ -1,0 +1,43 @@
+{
+  "implementationSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+  "runtimeSourceSha256": "316ee6f27e2780b7479dadf0e7bf4d5e61dfc2648c417286c3c1800edb641ae9",
+  "evidenceRun": "20261022T075210Z-095bd98f839a474f95f2752ee84706f4",
+  "products": [
+    {
+      "mode": "retail",
+      "outputDirectory": "Builds/MOV001-009-Windows",
+      "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+      "assemblySha256": "11fc980013da89824eadeb2a4530087bcfa1a7eed33602fd14852d7d9a7a728e",
+      "MOVAssemblies": [
+        "RoboRougelike.MOV001Booster.dll",
+        "RoboRougelike.MOV002JumpDrive.dll",
+        "RoboRougelike.MOV003Blink.dll",
+        "RoboRougelike.MOV004GyroscopicStabilizer.dll",
+        "RoboRougelike.MOV005OmniDrive.dll",
+        "RoboRougelike.MOV006MagneticGrapple.dll",
+        "RoboRougelike.MOV007HoverEngine.dll",
+        "RoboRougelike.MOV008CrawlerTracks.dll",
+        "RoboRougelike.MOV009ActiveSuspension.dll"
+      ],
+      "containsW2Observer": false
+    },
+    {
+      "mode": "qa",
+      "outputDirectory": "Builds/MOVSeries-QA-Windows",
+      "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+      "assemblySha256": "07cb6be7ef5774f597c28787da6071fa697f6802372aa286e324555bb155a87f",
+      "MOVAssemblies": [
+        "RoboRougelike.MOV001Booster.dll",
+        "RoboRougelike.MOV002JumpDrive.dll",
+        "RoboRougelike.MOV003Blink.dll",
+        "RoboRougelike.MOV004GyroscopicStabilizer.dll",
+        "RoboRougelike.MOV005OmniDrive.dll",
+        "RoboRougelike.MOV006MagneticGrapple.dll",
+        "RoboRougelike.MOV007HoverEngine.dll",
+        "RoboRougelike.MOV008CrawlerTracks.dll",
+        "RoboRougelike.MOV009ActiveSuspension.dll"
+      ],
+      "containsW2Observer": true
+    }
+  ]
+}

@@ -85,6 +85,34 @@ namespace RoboRougelike.R1
             if(State!=R1RunState.UpgradeChoice&&State!=R1RunState.Won)return false;
             afterSalvage=State;State=R1RunState.Salvage;return true;
         }
+        // The live game resolves bonuses and recovered modules in one reward phase.
+        // Legacy CompleteSalvage/ChooseUpgrade remain for older QA fixtures.
+        public bool CanCompleteUnifiedRewards(IEnumerable<int> selectedBonuses)
+        {
+            if(State!=R1RunState.Salvage||selectedBonuses==null)return false;
+            var indices=selectedBonuses.ToArray();
+            return indices.Distinct().Count()==indices.Length &&
+                indices.All(index=>index>=0&&index<offers.Count) &&
+                (afterSalvage==R1RunState.UpgradeChoice||indices.Length==0);
+        }
+        public bool CompleteUnifiedRewards(IEnumerable<int> selectedBonuses)
+        {
+            if(!CanCompleteUnifiedRewards(selectedBonuses))return false;
+            var indices=selectedBonuses.ToArray();
+            foreach(var index in indices)
+            {
+                Stats.Apply(offers[index]);
+                acquired.Add(offers[index].Title);
+            }
+            offers.Clear();
+            if(afterSalvage==R1RunState.UpgradeChoice)
+            {
+                EncounterIndex++;
+                State=R1RunState.Garage;
+            }
+            else State=afterSalvage;
+            return true;
+        }
         public bool CompleteSalvage()
         {
             if(State!=R1RunState.Salvage)return false;State=afterSalvage;return true;

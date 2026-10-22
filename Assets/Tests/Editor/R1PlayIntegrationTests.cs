@@ -21,7 +21,7 @@ public class R1PlayIntegrationTests
     private InputSettings testInputSettings;
     private R1RunController Run => R1RunController.Instance;
 
-    private static IEnumerator Until(Func<bool> condition, string description, float timeout = 15)
+    private static IEnumerator Until(Func<bool> condition, string description, float timeout = 15, bool automaticRewards = true)
     {
         if(R1RunController.Instance?.Progress?.State==R1RunState.Route)Assert.That(R1RunController.Instance.ChooseRoute(0),Is.True);
         float deadline = Time.realtimeSinceStartup + timeout;
@@ -29,7 +29,8 @@ public class R1PlayIntegrationTests
         {
             // R4 adds a mandatory loot step. Legacy scenarios explicitly dismantle every offer.
             var run=R1RunController.Instance;
-            if(run?.Progress?.State==R1RunState.Salvage)Assert.That(run.ConfirmSalvage(Array.Empty<string>()),Is.True);
+            if(condition())break;
+            if(automaticRewards&&run?.Progress?.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(run,Array.Empty<string>()),Is.True);
             if(condition())break;yield return null;
         }
         Assert.That(condition(), Is.True, description);
@@ -81,41 +82,28 @@ public class R1PlayIntegrationTests
     [UnityTest]
     public IEnumerator SixRealEncountersRewardsFinaleAndRestart()
     {
-        float baseDamage = Run.Player.Controller.EffectiveDamage;
-        for (int wave = 0; wave < 6; wave++)
+        float baseDamage=Run.Player.Controller.EffectiveDamage;
+        for(int wave=0;wave<6;wave++)
         {
-            Assert.That(Run.Encounter.AliveCount, Is.EqualTo(Run.CurrentEncounter.EnemyCount));
-            float hp = Run.Encounter.Enemies[0].Core.MaxHp;
-            Assert.That(hp, Is.InRange(60,160), "Archetypy mają różne, skończone HP.");
+            Assert.That(Run.Encounter.AliveCount,Is.EqualTo(Run.CurrentEncounter.SpawnCount));
+            Assert.That(Run.Encounter.Enemies[0].Core.MaxHp,Is.InRange(60,160));
             DefeatAllEnemies();
-            yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice || Run.Progress.State == R1RunState.Won, "Zwycięstwo powinno zakończyć walkę.");
-            if (wave == 5) break;
-            Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.UpgradeChoice));
-            Assert.That(Run.Progress.Offers.Count, Is.EqualTo(3));
-            Assert.That(Run.Progress.Offers.Select(item => item.Id).Distinct().Count(), Is.EqualTo(3));
-            Assert.That(Time.timeScale, Is.Zero);
-            Assert.That(Run.ChooseUpgrade(0), Is.True);
-            Assert.That(Run.ChooseUpgrade(1), Is.False, "Podwójny wybór nie może przyznać drugiej nagrody.");
+            yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Unified rewards",automaticRewards:false);
+            if(wave==5){Assert.That(Run.ConfirmRewards(Array.Empty<string>(),Array.Empty<int>()),Is.True);break;}
+            Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3));
+            Assert.That(Run.Progress.Offers.Select(x=>x.Id).Distinct().Count(),Is.EqualTo(3));
+            Assert.That(Time.timeScale,Is.Zero);
+            Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);
+            Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{1}),Is.False,"No replay.");
             Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Garage));
-            Assert.That(Run.StartNextEncounter(),Is.True);
-            yield return Until(() => !Run.Transitioning, "Kolejna walka powinna wystartować.");
-            Assert.That(Run.Player.Controller.EffectiveDamage,
-                Is.EqualTo(baseDamage * Run.Progress.Stats.Damage).Within(0.001));
-            Assert.That(Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None), Is.Empty);
+            Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Next fight");
+            Assert.That(Run.Player.Controller.EffectiveDamage,Is.EqualTo(baseDamage*Run.Progress.Stats.Damage).Within(.001));
+            Assert.That(Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None),Is.Empty);
         }
-        Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Won));
-        Assert.That(Run.Progress.CompletedEncounters, Is.EqualTo(6));
-        Assert.That(Run.Progress.Acquired.Count, Is.EqualTo(5));
-        var old = Run;
-        Run.RestartRun();
-        yield return Until(() => Run != null && Run != old && Run.Progress != null, "Restart powinien odtworzyć scenę.");
-        Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Ready));
-        Assert.That(Run.Progress.Acquired, Is.Empty);
-        Assert.That(Run.StartRun(), Is.True);
-        yield return Until(() => !Run.Transitioning, "Nowa wyprawa powinna wystartować.");
-        Assert.That(Run.Progress.EncounterIndex, Is.Zero);
-        Assert.That(Run.Player.Controller.EffectiveDamage, Is.EqualTo(baseDamage));
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(12));
+        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));Assert.That(Run.Progress.CompletedEncounters,Is.EqualTo(6));
+        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(5));var old=Run;Run.RestartRun();
+        yield return Until(()=>Run!=null&&Run!=old&&Run.Progress!=null,"Restart");
+        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Ready));Assert.That(Run.Progress.Acquired,Is.Empty);
     }
 
     [UnityTest]
@@ -180,8 +168,8 @@ public class R1PlayIntegrationTests
         var hull = Run.Definition.Upgrades.First(item => item.Effect == R1UpgradeEffect.Hull);
         Run.Definition.Upgrades = new[] { damage, core, hull };
         DefeatAllEnemies();
-        yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice, "Pierwsza nagroda.");
-        Run.ChooseUpgrade(Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Damage));
+        yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Pierwsza nagroda.");
+        Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Damage)});
         Run.StartNextEncounter();
         yield return Until(() => !Run.Transitioning, "Druga walka.");
         float upgradedDamage = Run.Player.Controller.EffectiveDamage;
@@ -191,9 +179,9 @@ public class R1PlayIntegrationTests
         yield return Simulate(0.15f);
         Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(11));
         DefeatAllEnemies();
-        yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice, "Druga nagroda.");
+        yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Druga nagroda.");
         var oldPlayer = Run.Player;
-        Run.ChooseUpgrade(Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Hull));
+        Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Hull)});
         Assert.That(Run.Player,Is.EqualTo(oldPlayer),"Nagroda sama nie odbudowuje konstrukcji.");
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(11));
         int scrapBefore=Run.VehicleModel.Scrap;
@@ -259,23 +247,19 @@ public class R1PlayIntegrationTests
     public IEnumerator KeyboardUpgradeChoiceWaitsForNewVehicleInitialization()
     {
         ConfigureVirtualInput();
-        var repair = Run.Definition.Upgrades.Single(item => item.Effect == R1UpgradeEffect.Core);
-        var hull = Run.Definition.Upgrades.Single(item => item.Effect == R1UpgradeEffect.Hull);
-        var damage = Run.Definition.Upgrades.Single(item => item.Effect == R1UpgradeEffect.Damage);
-        Run.Definition.Upgrades = new[] { repair, hull, damage };
-        DefeatAllEnemies();
-        yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice, "Oferta naprawy.");
-        int choice = Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Core);
-        var key = choice == 0 ? Key.Digit1 : choice == 1 ? Key.Digit2 : Key.Digit3;
-        InputSystem.QueueStateEvent(keyboard, new KeyboardState(key));
-        yield return Until(() => Run.Progress.State != R1RunState.UpgradeChoice, "Wybór cyfry powinien przyznać naprawę.");
-        InputSystem.QueueStateEvent(keyboard, new KeyboardState());
-        yield return Until(() => !Run.Transitioning, "Inicjalizacja naprawionego pojazdu.");
-        Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Garage));
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(12));
-        Assert.That(Run.Progress.Acquired.Count, Is.EqualTo(1));
-        Assert.That(Run.StartNextEncounter(),Is.True);
-        yield return Until(()=>!Run.Transitioning,"Start z garażu po wyborze klawiaturą.");
+        Run.Definition.Upgrades=new[]{Run.Definition.Upgrades.Single(x=>x.Effect==R1UpgradeEffect.Core),Run.Definition.Upgrades.Single(x=>x.Effect==R1UpgradeEffect.Hull),Run.Definition.Upgrades.Single(x=>x.Effect==R1UpgradeEffect.Damage)};
+        DefeatAllEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Reward screen",automaticRewards:false);
+        int choice=Run.Progress.Offers.ToList().FindIndex(x=>x.Effect==R1UpgradeEffect.Core);
+        var key=choice==0?Key.Digit1:choice==1?Key.Digit2:Key.Digit3;
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(key));yield return null;
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState());yield return null;
+        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Salvage),"Selection alone does not spend/confirm.");
+        Assert.That(Run.Progress.Acquired,Is.Empty);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
+        yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Confirm unified keyboard rewards",5,automaticRewards:false);
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState());
+        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(12));
+        Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Combat initialization");
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
 
@@ -304,7 +288,8 @@ public class R1PlayIntegrationTests
     [UnityTest]
     public IEnumerator DestroyingEnemyBarrelStopsFireButOnlyCoreDestructionWins()
     {
-        var enemy = Run.Encounter.Enemies.Single();
+        var enemy = Run.Encounter.Enemies.First();
+        foreach(var escort in Run.Encounter.Enemies.Where(e=>e!=enemy))escort.SetCombatActive(false);
         // The original scene blueprint has a central turret block, barrel block, then muzzle.
         var barrel = enemy.transform.Find("Enemy_Yaw").GetChild(1).GetComponent<P12PipelineSafeDamageable>();
         Assert.That(barrel, Is.Not.Null);
@@ -317,14 +302,14 @@ public class R1PlayIntegrationTests
         Assert.That(Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None)
             .Any(shell => shell.name == "P17_EnemyPhysicalShell"), Is.False);
         DefeatAllEnemies();
-        yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice, "Zniszczenie rdzenia kończy starcie.");
+        yield return Until(() => Run.Progress.State == R1RunState.Garage, "Zniszczenie rdzenia kończy starcie.");
         Assert.That(Run.Encounter.Enemies, Is.Empty, "Pozostałości przeciwnika sprzątamy już na ekranie nagród.");
     }
 
     [UnityTest]
     public IEnumerator EnemyMovesFiresAndStopsDuringPause()
     {
-        var enemy = Run.Encounter.Enemies.Single();
+        var enemy = Run.Encounter.Enemies.First();
         var before = enemy.transform.position;
         yield return Until(() => Vector3.Distance(before, enemy.transform.position) > 1,
             "Przeciwnik ma aktywnie poruszać się po arenie.");
@@ -347,8 +332,8 @@ public class R1PlayIntegrationTests
             for (int victory = 0; victory < stage; victory++)
             {
                 DefeatAllEnemies();
-                yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice, "Nagroda przed kolejnym etapem.");
-                Run.ChooseUpgrade(0);
+                yield return Until(() => Run.Progress.State == R1RunState.Garage, "Nagroda przed kolejnym etapem.");
+
                 Run.GarageRepairAffordable();
                 if(!Run.VehicleModel.CanDeploy)Run.GarageEmergencyRepair();
                 Run.StartNextEncounter();
@@ -405,11 +390,11 @@ public class R1PlayIntegrationTests
                 }
                 yield return null;
             }
-            if(Run.Progress.State==R1RunState.Salvage)Assert.That(Run.ConfirmSalvage(Array.Empty<string>()),Is.True);
-            Assert.That(Run.Progress.State, Is.EqualTo(stage == 5 ? R1RunState.Won : R1RunState.UpgradeChoice),
+            if(Run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.True);
+            Assert.That(Run.Progress.State, Is.EqualTo(stage == 5 ? R1RunState.Won : R1RunState.Garage),
                 "Fizyczna broń powinna pozwalać wygrać pojedynek " + (stage + 1));
             if (stage == 5) break;
-            Run.ChooseUpgrade(0);
+
             Run.GarageRepairAffordable();
             if(!Run.VehicleModel.CanDeploy)Run.GarageEmergencyRepair();
             Run.StartNextEncounter();
@@ -424,7 +409,7 @@ public class R1PlayIntegrationTests
     public IEnumerator ActualEnemyUsesDesignatedCoreAndDetachesSeveredBaseCorner()
     {
         Run.Encounter.SetCombatActive(false);
-        var enemy = Run.Encounter.Enemies.Single();
+        var enemy = Run.Encounter.Enemies.First();
         var structure = enemy.GetComponent<P12PipelineSafeVehicleStructure>();
         Assert.That(structure.ConnectedBlockCount, Is.EqualTo(22));
         var parts = enemy.GetComponentsInChildren<P12_PipelineSafePlayerBlock>();

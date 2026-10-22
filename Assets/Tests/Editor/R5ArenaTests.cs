@@ -16,7 +16,7 @@ public class R5ArenaTests
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
         var run=R1RunController.Instance;Assert.That(run,Is.Not.Null);run.StartRun();run.ChooseRoute(0);
         while(run.Transitioning)yield return null;
-        var enemy=run.Encounter.Enemies.Single();enemy.SetCombatActive(false);
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();
         foreach(R5ArenaKind kind in System.Enum.GetValues(typeof(R5ArenaKind)))
         {
             run.Arena.Build(kind);yield return null;

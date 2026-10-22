@@ -12,6 +12,8 @@ namespace RoboRougelike.R4
         public readonly R4WeaponKind Weapon;
         public readonly float Health;
         public bool Recoverable => Health>0;
+        // Wrecks are selectable too; armor and cores are not reward choices.
+        public bool Selectable => Kind!=R3PartKind.Armor&&Kind!=R3PartKind.Core;
         public R4SalvageItem(string id,string source,R3PartKind kind,R4WeaponKind weapon,float health)
         { Id=id;Source=source;Kind=kind;Weapon=weapon;Health=float.IsNaN(health)||float.IsInfinity(health)?0:Math.Max(0,Math.Min(1,health)); }
         public R3PartState ToPart() => new R3PartState(default,Kind,Health){Id=Id,Source=Source,Weapon=Weapon};
@@ -44,7 +46,7 @@ namespace RoboRougelike.R4
         {
             if(Closed||model==null||selected==null)return false;
             var chosen=selected.ToArray();var keep=new HashSet<string>(chosen);
-            if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>!items.Any(p=>p.Id==id&&p.Recoverable)||model.Owns(id)))return false;
+            if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
             var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>p.ToPart()).ToArray();
             int scrap=PreviewScrap(model,keep);
             if(!model.ReceiveSalvage(recovered))return false;

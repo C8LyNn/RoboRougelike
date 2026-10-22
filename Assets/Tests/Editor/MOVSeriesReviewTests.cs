@@ -170,6 +170,9 @@ public class MOVSeriesReviewTests
         var bridge=assembly.Parts.Single(p=>p.Cell==new Vector3Int(0,2,0));bridge.Damageable.ApplyDamage(10000,bridge.transform.position,Vector3.zero);target.Structure.EvaluateStructure();
         Assert.That(detached.Block.DetachedFromVehicle,Is.True);var chunk=detached.GetComponentInParent<Rigidbody>();
         Assert.That(chunk,Is.Not.SameAs(target.GetComponent<Rigidbody>()));Assert.That(chunk.GetComponent<R3Debris>(),Is.Not.Null);chunk.isKinematic=true;
+        Assert.That(chunk.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True,"W2 initial ejection is deliberately nonblocking.");
+        yield return MOVSeriesDeviceTests.Seconds(.55f);
+        Assert.That(chunk.GetComponentsInChildren<Collider>().Any(c=>c.enabled),Is.True,"Blink must respect the physical wreck after separation.");
         var body=source.GetComponent<Rigidbody>();var a=source.GetComponent<MOVSeriesVehicleAdapter>();Vector3 pose=body.position;
         body.linearVelocity=new Vector3(.1f,0,.2f);body.angularVelocity=Vector3.up*.1f;
         foreach(var obstruction in new[]{new Vector3(2,1.5f,1004),new Vector3(0,1,1008)})

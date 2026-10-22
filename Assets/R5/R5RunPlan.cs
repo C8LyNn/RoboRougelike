@@ -84,17 +84,17 @@ namespace RoboRougelike.R5
         public static float Threat(R1EncounterDefinition item)
         {
             float score=0;
-            for(int i=0;i<item.Roster.Length;i++)
+            for(int i=0;i<item.SpawnCount;i++)
             {
-                var kind=item.Roster[i];
+                var kind=item.SpawnArchetype(i);
                 float hull=kind==R3EnemyArchetype.Bruiser?1.6f:kind==R3EnemyArchetype.Scout?0.8f:1.1f;
                 float weapon=kind==R3EnemyArchetype.Bruiser||kind==R3EnemyArchetype.Gunner?1.6f:1;
                 float mobility=kind==R3EnemyArchetype.Flanker?1.4f:1;
                 float range=kind==R3EnemyArchetype.Gunner?1.3f:1;
-                float variant=item.Variants[i]==R5EnemyVariant.SiegeBoss?3.8f:item.Variants[i]==R5EnemyVariant.Normal?1:1.65f;
+                float variant=item.SpawnVariant(i)==R5EnemyVariant.SiegeBoss?3.8f:item.SpawnVariant(i)==R5EnemyVariant.Normal?1:1.65f;
                 score+=(hull*item.HealthMultiplier+weapon*item.DamageMultiplier/Mathf.Max(.3f,item.FireIntervalMultiplier)+mobility*item.MoveSpeed*.22f+range)*variant;
             }
-            float combination=item.Roster.Distinct().Count()>1?1.12f:1;
+            float combination=Enumerable.Range(0,item.SpawnCount).Select(item.SpawnArchetype).Distinct().Count()>1?1.12f:1;
             float arena=item.Arena==R5ArenaKind.Industrial?1.15f:item.Arena==R5ArenaKind.Wasteland?1.05f:1;
             return score*combination*arena;
         }

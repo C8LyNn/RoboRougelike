@@ -24,6 +24,22 @@ namespace RoboRougelike.R6
                     Physics.IgnoreCollision(a,b,true);grace.ignored.Add((a,b));
                 }
         }
+        // VelocityChange is independent of the module mass. A tiny force impulse
+        // on a heavy part used to leave wreckage sitting over the live vehicle.
+        public static void Eject(Rigidbody body,Rigidbody owner,Vector3 hitDirection,
+            float outwardSpeed=6f,float upwardSpeed=2.5f)
+        {
+            if(body==null||body.isKinematic)return;
+            var outward=owner!=null?
+                Vector3.ProjectOnPlane(body.worldCenterOfMass-owner.worldCenterOfMass,Vector3.up):Vector3.zero;
+            if(outward.sqrMagnitude<.05f)outward=Vector3.ProjectOnPlane(hitDirection,Vector3.up);
+            if(outward.sqrMagnitude<.001f)outward=owner!=null?owner.transform.right:Vector3.forward;
+            outward.Normalize();
+            body.AddForce(outward*Mathf.Max(0,outwardSpeed)+Vector3.up*Mathf.Max(0,upwardSpeed),
+                ForceMode.VelocityChange);
+            if(body.GetComponent<RoboRougelike.R3.R3Debris>()==null)
+                body.gameObject.AddComponent<RoboRougelike.R3.R3Debris>();
+        }
         static bool Overlaps(Collider a,Collider b)=>Physics.ComputePenetration(a,a.transform.position,a.transform.rotation,b,b.transform.position,b.transform.rotation,out _,out _);
         void FixedUpdate()
         {
