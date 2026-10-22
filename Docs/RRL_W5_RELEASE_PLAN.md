@@ -45,6 +45,6 @@
 ## Task 4: Review, report and publication
 **Files:** `Docs/RRL_W5_RELEASE_QA.md`, curated evidence and plan status.
 **Interfaces:** Verified local deliverables → one Draft PR from release branch into develop; accessible ZIP path/link.
-- [ ] One fresh review of W5 delta, merge provenance, test/ZIP evidence and unresolved limits; fix Important/Critical issues in one regression-backed pass.
-- [ ] Report exact source/final SHAs, counts, six-stage/native versus API results, performance, crash classification, archive bytes/location and READY/BLOCKED honestly.
-- [ ] Commit/push release branch, create and attach Draft PR targeting develop, inspect exact remote SHA/checks; do not merge or alter source PRs. Provide local ZIP path if binary publication is unavailable.
+- [x] One fresh review of W5 delta, merge provenance, test/ZIP evidence and unresolved limits; fix Important/Critical issues in one regression-backed pass.
+- [x] Report exact source/final SHAs, counts, six-stage/native versus API results, performance, crash classification, archive bytes/location and READY/BLOCKED honestly.
+- [x] Commit/push release branch, create and attach Draft PR targeting develop, inspect exact remote SHA/checks; do not merge or alter source PRs. Provide local ZIP path if binary publication is unavailable.
