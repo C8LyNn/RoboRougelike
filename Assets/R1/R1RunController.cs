@@ -219,7 +219,8 @@ namespace RoboRougelike.R1
             // Start() builds the structure and initializes cloned module references while time is paused.
             yield return null;
             yield return null;
-            Player.Apply(Progress.Stats);
+            // Preserve only modifiers from currently mounted, operational bonus modules.
+            Player.Apply(ActiveStats??Progress.Stats);
             Salvage=new R4SalvageLedger(3);
             Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
             yield return null;
