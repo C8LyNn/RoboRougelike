@@ -41,7 +41,9 @@ The transaction prepares one validated bonus and selected salvage, then stores t
 
 The original W3 geometry, physical HP and inventory identity remain. Its three HP-less structural helper objects were replaced by four cell entries referencing one physical owner in the existing P12 graph. Counts, disconnected components and release mass deduplicate that owner. Destruction and bridge loss remove the entire footprint; legacy six-port blocks keep their behavior.
 
-The booster now binds thrust direction to its physical mount. Controller remount without an explicit new rotation preserves the item's stored orientation.
+The booster now binds thrust direction to its physical mount. Controller remount without an explicit new rotation preserves the item's stored orientation. Track traction follows each module's forward axis; sideways/inverted track probes and hover nozzles use their physical mounting axes. Ordinary upright mounts retain the original gravity-stabilized support behavior.
+
+The reward screen exposes owned inventory management, including explicit two-click dismantling and a return to the retained reward selections. It disables settlement when the selected batch will not fit. The controller permits this recovery only during an open salvage transaction; inventory disposal never settles the reward ledger. This prevents a full inventory from blocking the mandatory bonus, including the final victory. The garage counter now reports occupied cells against the 180-cell limit.
 
 The garage preview cache includes the selected contact mask, so selecting an equal-shaped part rebuilds its own port markers. Inventory feedback uses the same eligibility message as the ghost, including zero HP and missing targets.
 
@@ -84,4 +86,12 @@ All prior regression cases remain, with changes only for superseded reward requi
 
 ## Gameplay evidence, review and decision
 
-Pending native screenshots/results, final fresh review and publication. No READY claim is made before these gates complete. Raw XML/logs, Library, binaries, local state and license data remain excluded from Git.
+One fresh independent whole-branch review examined W2 `a0f0a65` through `e483aa0`. It found no Critical issues and three Important issues: no recovery from a full inventory at mandatory rewards, track/hover mounting direction, and duplicate physical owners in a core-failure chunk. Each received a behavior-first regression test and a fix in one follow-up pass. The minor occupied-cell counter was corrected as well. Legacy unexposed upgrade compatibility and intentionally chassis/gravity-oriented devices were retained. No second review cycle was requested.
+
+Before those review fixes, native graphical fixtures at both 1280x720 and 1920x1080 passed 28 assertions each on source `e483aa0`. The operator selected one damage bonus and three real parts, inspected the inactive inventory module and a destroyed gun, used XYZ rotation controls and mounted a green preview. The fixture then exercised next map, physical module loss, exact paid repair, removal/remount, range/reset/return and stable identity. Victory and module destruction were explicitly seeded through damage APIs, so these are graphical lifecycle fixtures, not claims of manual combat wins. Fresh native runs on the final fixed binary are still required.
+
+An additional native input pilot on `e483aa0` defeated the first three active-AI encounters with physical projectiles and ordinary steering/aim/fire input, without damage/reward/currency APIs. The operator claimed one hull module plus three real parts, mounted the hull module (100→120 maximum core HP), paid 9 scrap for repair, later mounted a reload module and claimed a third bonus. The run reached encounter four and closed before final victory. It is not counted as a completed six-stage gauntlet. Evidence: `W34-Native-Pilot-1280x720-3a90c4eebc324e5e86c43b3adce942a2`.
+
+Known native limitations: automation-driven Alt+F4 ended with `C0000005` after both successful fixtures and the pilot, consistent with the pre-existing Unity accessibility shutdown pattern. A normal human W3/W4 close has not been verified. One 1080p injected numeric reward shortcut did not select; mouse buttons and the six rotation shortcuts worked. This is recorded as unverified rather than treated as evidence of a product input defect. The exact required Unity version is unchanged.
+
+Final full suites, patched native evidence and publication remain pending. Raw XML/logs, Library, binaries, local state and license data remain excluded from Git.

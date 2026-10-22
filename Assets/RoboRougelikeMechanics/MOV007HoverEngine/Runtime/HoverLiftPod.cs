@@ -34,6 +34,11 @@ namespace RoboRougelike.Mechanics.MOV007
         private RaycastHit[] _hits = new RaycastHit[32];
         private System.Func<bool> availabilityFilter;
         private System.Predicate<Collider> groundFilter;
+        private bool useMountAxes;
+        // Default mounts retain the original gravity-stabilized hover behavior.
+        // A sideways/inverted nozzle probes and pushes along its physical axis.
+        public Vector3 LiftDirection=>useMountAxes?transform.up:Vector3.up;
+        public void SetUseMountAxes(bool value)=>useMountAxes=value;
         public void SetAvailabilityFilter(System.Func<bool> filter)=>availabilityFilter=filter;
         public void SetGroundFilter(System.Predicate<Collider> filter)=>groundFilter=filter;
 
@@ -62,15 +67,15 @@ namespace RoboRougelike.Mechanics.MOV007
         {
             distance = -1f;
             if (body == null) return false;
-            Vector3 origin = transform.position + Vector3.up * probeStartAbovePod;
+            Vector3 origin = transform.position + LiftDirection * probeStartAbovePod;
             float rayLength = targetHeightMeters + probeExtraRangeMeters + probeStartAbovePod;
-            int count = Physics.RaycastNonAlloc(origin, Vector3.down, _hits, rayLength,
+            int count = Physics.RaycastNonAlloc(origin, -LiftDirection, _hits, rayLength,
                                                terrainLayers, QueryTriggerInteraction.Ignore);
             // Avoid silent false negatives on heavily modular (100+ collider) vehicles.
             while (count == _hits.Length && _hits.Length < 2048)
             {
                 _hits = new RaycastHit[_hits.Length * 2];
-                count = Physics.RaycastNonAlloc(origin, Vector3.down, _hits, rayLength,
+                count = Physics.RaycastNonAlloc(origin, -LiftDirection, _hits, rayLength,
                                                terrainLayers, QueryTriggerInteraction.Ignore);
             }
             if (count == _hits.Length) return false; // fail closed on buffer saturation

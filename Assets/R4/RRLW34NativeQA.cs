@@ -29,7 +29,7 @@ namespace RoboRougelike.R4
             public List<Sample> samples=new List<Sample>();public List<string> screenshots=new List<string>();
         }
         readonly Result result=new Result();string output,moduleId;int stage;float next;
-        bool capturePending;string captureName;Vector3Int lastRotation;int initialInventory;
+        bool capturePending,fullInventory;string captureName;Vector3Int lastRotation;int initialInventory;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Install()
         {
@@ -41,6 +41,8 @@ namespace RoboRougelike.R4
         void Initialize(string directory)
         {
             output=directory;Directory.CreateDirectory(output);result.runId=Path.GetFileName(output);
+            fullInventory=Environment.GetCommandLineArgs().Contains("-rrl-w34-full-inventory");
+            if(fullInventory)result.method="Native graphical capacity fixture: 200 owned wheels and seeded victory; operator chooses one bonus + three parts, explicitly confirms dismantling four owned items, returns and claims through UI";
             result.startedUtc=DateTime.UtcNow.ToString("o");result.graphics=SystemInfo.graphicsDeviceType+" / "+SystemInfo.graphicsDeviceName;
             Application.runInBackground=true;Application.targetFrameRate=60;next=Time.unscaledTime+1;
         }
@@ -91,7 +93,10 @@ namespace RoboRougelike.R4
                         run.Definition.Upgrades=new[]{R1UpgradeEffect.Damage,R1UpgradeEffect.Hull,R1UpgradeEffect.Mobility}
                             .Select(effect=>run.Definition.Upgrades.First(u=>u.Effect==effect)).ToArray();
                         Check(run.SelectVehicle(R3VehicleKind.Standard)&&run.StartRun()&&run.ChooseRoute(0),"Start vehicle/fight");stage++;break;
-                    case 2:run.Encounter.SetCombatActive(false);Capture(run,"02-real-combat-scene-fixture");stage++;break;
+                    case 2:
+                        run.Encounter.SetCombatActive(false);
+                        if(fullInventory)Check(run.VehicleModel.ReceiveSalvage(Enumerable.Range(0,R3VehicleModel.InventoryCapacity).Select(i=>new R3PartState(default,R3PartKind.Wheel){Source="Capacity QA fixture"})),"Seed full owned inventory");
+                        Capture(run,"02-real-combat-scene-fixture");stage++;break;
                     case 3:
                         var foe=run.Encounter.Enemies.First();
                         foe.WeaponBlock.ApplyDamage(100000,foe.WeaponBlock.transform.position,Vector3.up);
@@ -102,12 +107,13 @@ namespace RoboRougelike.R4
                         Capture(run,"03-rewards-await-operator");stage++;break;
                     case 5:
                         if(run.Progress.State!=R1RunState.Garage)return;
-                        Check(run.VehicleModel.Inventory.Count==4,"Operator chose required bonus and three parts");
+                        Check(run.VehicleModel.Inventory.Count==(fullInventory?R3VehicleModel.InventoryCapacity:4),"Operator chose required bonus and three parts");
+                        Check(run.RecoveredModules==3,"Exactly three real salvage parts claimed");
                         Check(run.VehicleModel.Inventory.Count(p=>p.Kind==R3PartKind.BonusModule)==1,"Exactly one physical bonus");
                         var reward=run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule);
                         Check(reward.UpgradeEffect==R1UpgradeEffect.Damage,"Operator selected damage proposal");moduleId=reward.Id;
                         Check(Mathf.Approximately(run.ActiveStats.Damage,1),"Inventory bonus remains inactive");initialInventory=run.VehicleModel.Inventory.Count;
-                        Capture(run,"04-garage-inactive-inventory");stage++;break;
+                        Capture(run,"04-garage-inactive-inventory");stage=fullInventory?19:6;break;
                     case 6:
                         if(run.VehicleModel.Inventory.Any(p=>p.Id==moduleId))
                         {

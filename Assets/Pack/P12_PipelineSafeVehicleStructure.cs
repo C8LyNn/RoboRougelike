@@ -631,6 +631,11 @@ namespace RogueMachine.P12PipelineSafe
                 blocks.Count == 0)
                 return;
 
+            // Every call path (including core failure) processes physical owners,
+            // even when several occupied grid cells refer to the same module.
+            blocks=blocks.Where(block=>block!=null).Distinct().ToList();
+            if(blocks.Count==0)return;
+
             Vector3 centroid =
                 Vector3.zero;
 

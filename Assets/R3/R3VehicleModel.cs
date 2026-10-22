@@ -53,6 +53,7 @@ namespace RoboRougelike.R3
     }
     public sealed class R3VehicleModel
     {
+        public const int InventoryCapacity=200;
         public R3VehicleDesign Design { get; }
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
@@ -196,7 +197,7 @@ namespace RoboRougelike.R3
         {
             if(recovered==null)return false;
             var batch=recovered.ToArray();
-            if(inventory.Count+batch.Length>200)return false;
+            if(inventory.Count+batch.Length>InventoryCapacity)return false;
             if(batch.Any(p=>p==null||float.IsNaN(p.Health)||float.IsInfinity(p.Health)||p.Health<0||p.Health>1||
                 !Enum.IsDefined(typeof(R3PartKind),p.Kind)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||

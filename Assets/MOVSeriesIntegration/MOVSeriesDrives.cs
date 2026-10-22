@@ -32,6 +32,7 @@ namespace RoboRougelike.MOVSeries
             {
                 if(part.Kind!=R3PartKind.OmniDrive&&part.Kind!=R3PartKind.HoverEngine&&part.Kind!=R3PartKind.CrawlerTrack)continue;
                 part.gameObject.AddComponent<MOVSeriesPartBinding>().Configure(this,part);
+                bool tiltedMount=Vector3.Dot(part.transform.localRotation*Vector3.up,Vector3.up)<.999f;
                 if(part.Kind==R3PartKind.OmniDrive)
                 {
                     var m=part.gameObject.AddComponent<OmniDriveModule>();m.Configure(Model.Design.Speed,4,Model.Design.TurnSpeed,2);
@@ -40,12 +41,14 @@ namespace RoboRougelike.MOVSeries
                 else if(part.Kind==R3PartKind.HoverEngine)
                 {
                     var m=part.gameObject.AddComponent<HoverLiftPod>();m.targetHeightMeters=Model.HoverHeightMeters;
+                    m.SetUseMountAxes(tiltedMount);
                     m.nominalLoadKg=250;m.maximumLiftToNominalWeight=1.8f;m.springFrequencyHz=1.1f;m.dampingRatio=1;
                     m.SetAvailabilityFilter(()=>Available(part));m.SetGroundFilter(IsTerrain);
                 }
                 else
                 {
                     var m=part.gameObject.AddComponent<CrawlerTrackModule>();m.SetSide(part.Cell.x<0?CrawlerTrackSide.Left:CrawlerTrackSide.Right);
+                    m.SetUseMountAxes(tiltedMount);
                     m.ConfigureTraction(500,1200,1800);m.SetAvailabilityFilter(()=>Available(part));m.SetGroundFilter(IsTerrain);
                 }
             }

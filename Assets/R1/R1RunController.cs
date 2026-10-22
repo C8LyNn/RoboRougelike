@@ -159,6 +159,14 @@ namespace RoboRougelike.R1
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
             => ConfirmRewards(selected,System.Array.Empty<int>());
+        public bool DismantleRewardInventoryItem(string id)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||Salvage.Closed||VehicleModel==null)return false;
+            int before=VehicleModel.Scrap;
+            if(!VehicleModel.Dismantle(id))return false;
+            EarnedScrap+=VehicleModel.Scrap-before;
+            return true;
+        }
         public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
             System.Collections.Generic.IEnumerable<int> selectedBonuses)
         {

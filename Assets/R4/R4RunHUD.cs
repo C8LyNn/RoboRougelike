@@ -18,10 +18,14 @@ namespace RoboRougelike.R1
         private int lootPage,inventoryPage;
         private bool inventoryOpen;
         private string dismantleConfirmation;
+        private bool rewardInventoryOpen;
+        private int rewardInventoryPage;
+        private string rewardDismantleConfirmation;
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
             if(displayedLedger==ledger)return;
             displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;
+            rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;
         }
 #if ENABLE_INPUT_SYSTEM
         public void ReadRewardInput(Keyboard keyboard)
@@ -29,6 +33,7 @@ namespace RoboRougelike.R1
             var run=R1RunController.Instance;
             if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Salvage==null)return;
             TrackRewardLedger(run.Salvage);
+            if(rewardInventoryOpen)return;
             int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
             if(index>=0&&index<run.Progress.Offers.Count)
             {
@@ -41,6 +46,7 @@ namespace RoboRougelike.R1
         {
             var ledger=run.Salvage;
             TrackRewardLedger(ledger);
+            if(rewardInventoryOpen){DrawRewardInventory(run);return;}
             const int partsLimit=3;
             GUI.Label(new Rect(45,30,1190,60),"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
@@ -96,14 +102,47 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(730,556,90,35),"→",compactButton))lootPage=Mathf.Min(pages-1,lootPage+1);
             GUI.enabled=true;
 
+            if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
+                rewardInventoryOpen=true;
+            bool room=run.VehicleModel.Inventory.Count+lootSelection.Count+1<=R3VehicleModel.InventoryCapacity;
             GUI.Label(new Rect(45,603,685,87),
                 $"Moduł bonusowy: {(selectedBonus>=0?"1/1":"0/1 (WYMAGANY)")}  •  Części z wraków: {lootSelection.Count}/{partsLimit}\n" +
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
-            GUI.enabled=selectedBonus>=0;
+            GUI.enabled=selectedBonus>=0&&room;
             if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź oba wybory i kontynuuj",button))
                 run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
             GUI.enabled=true;
+            if(!room)GUI.Label(new Rect(45,685,1180,30),"Brak miejsca na wybrane nagrody. Otwórz magazyn i rozmontuj posiadane części, aby zwolnić miejsce.",small);
+        }
+        private void DrawRewardInventory(R1RunController run)
+        {
+            var model=run.VehicleModel;
+            GUI.Label(new Rect(45,30,1190,60),"MAGAZYN • MIEJSCE NA NAGRODY",title);
+            GUI.Label(new Rect(45,99,1180,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity}. Nagrody wymagają {lootSelection.Count+1} wolnych miejsc.\nRozmontowanie usuwa wybraną posiadaną część i wypłaca złom. Wymaga drugiego kliknięcia.",body);
+            var items=model.Inventory.ToArray();
+            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));
+            rewardInventoryPage=Mathf.Clamp(rewardInventoryPage,0,pages-1);
+            var visible=items.Skip(rewardInventoryPage*5).Take(5).ToArray();
+            for(int i=0;i<visible.Length;i++)
+            {
+                var item=visible[i];float y=180+i*76;
+                Panel(new Rect(45,y,1180,68));
+                GUI.Label(new Rect(60,y+7,760,57),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}",small);
+                if(GUI.Button(new Rect(860,y+10,350,48),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(item)} Z",compactButton))
+                {
+                    if(rewardDismantleConfirmation==item.Id){run.DismantleRewardInventoryItem(item.Id);rewardDismantleConfirmation=null;return;}
+                    rewardDismantleConfirmation=item.Id;
+                }
+            }
+            GUI.enabled=rewardInventoryPage>0;
+            if(GUI.Button(new Rect(45,580,90,40),"←",compactButton)){rewardInventoryPage--;rewardDismantleConfirmation=null;}
+            GUI.Label(new Rect(155,585,250,35),$"Strona {rewardInventoryPage+1}/{pages}",small);
+            GUI.enabled=rewardInventoryPage<pages-1;
+            if(GUI.Button(new Rect(420,580,90,40),"→",compactButton)){rewardInventoryPage++;rewardDismantleConfirmation=null;}
+            GUI.enabled=true;
+            if(GUI.Button(new Rect(805,630,420,60),"Wróć do wybranych nagród",button))
+            {rewardInventoryOpen=false;rewardDismantleConfirmation=null;}
         }
         private static string BonusText(R3PartState item)
         {
