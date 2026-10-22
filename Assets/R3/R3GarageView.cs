@@ -39,6 +39,7 @@ namespace RoboRougelike.R3
         public R4WeaponKind MountWeapon => Owned?.Weapon??SelectedWeapon;
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
             "Wybierz kolejną część w magazynie. Zakup wymaga świadomego wyboru typu części.":!HasTarget?"Najedź na ścianę bloku pojazdu.":
+            Owned?.Health<=0?"Zniszczony moduł wymaga odbudowy przed montażem.":
             run.VehicleModel.PlacementError(Cell,MountKind,Owned!=null,MountWeapon);
         public void Initialize(R1RunController owner,Camera camera,P12PipelineSafeCamera cameraFollow,R3VisualPalette colors)
         {run=owner;view=camera;follow=cameraFollow;palette=colors;}
@@ -71,14 +72,17 @@ namespace RoboRougelike.R3
             var bounds=new Bounds(run.Player.transform.position,Vector3.zero);bool first=true;
             foreach(var part in parts)foreach(var renderer in part.GetComponentsInChildren<Renderer>())
             {if(first){bounds=renderer.bounds;first=false;}else bounds.Encapsulate(renderer.bounds);}
-            foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))bounds.Encapsulate(run.Player.transform.TransformPoint((Vector3)part.Cell*R41PartGeometry.Grid));
+            foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))
+                foreach(var cell in R3VehicleModel.OccupiedCells(part))
+                    bounds.Encapsulate(run.Player.transform.TransformPoint((Vector3)cell*R41PartGeometry.Grid));
             pivotLocal=run.Player.transform.InverseTransformPoint(bounds.center);
         }
         public void FrameVehicle()
         {
             UpdatePivot();var size=Vector3.zero;
             foreach(var part in run.VehicleModel.Parts)
-            {var delta=(Vector3)part.Cell*R41PartGeometry.Grid-pivotLocal;size=Vector3.Max(size,new Vector3(Mathf.Abs(delta.x),Mathf.Abs(delta.y),Mathf.Abs(delta.z)));}
+            foreach(var cell in R3VehicleModel.OccupiedCells(part))
+            {var delta=(Vector3)cell*R41PartGeometry.Grid-pivotLocal;size=Vector3.Max(size,new Vector3(Mathf.Abs(delta.x),Mathf.Abs(delta.y),Mathf.Abs(delta.z)));}
             float viewportAspect=view.pixelWidth/(float)Mathf.Max(1,view.pixelHeight);
             float narrowViewport=Mathf.Clamp(0.94f/Mathf.Max(0.3f,viewportAspect),1,1.8f);
             distance=Mathf.Clamp(size.magnitude*2.6f*narrowViewport,4.5f,22);
@@ -92,6 +96,8 @@ namespace RoboRougelike.R3
                 var plan=CreateGhost(part.Cell,part.Kind,part.Weapon,palette.Missing,true);
                 plan.name="Utracony plan "+part.Cell;plan.AddComponent<R41MissingPlan>().Part=part;
                 var collider=plan.AddComponent<BoxCollider>();collider.isTrigger=true;
+                if(part.Kind==R3PartKind.BonusModule){collider.center=new Vector3(R3BonusModuleGeometry.Grid*.5f,0,R3BonusModuleGeometry.Grid*.5f);
+                    collider.size=new Vector3(R3BonusModuleGeometry.Width,R3BonusModuleGeometry.Height,R3BonusModuleGeometry.Width);}
             }
             UpdatePivot();RefreshMarker();
         }
@@ -101,8 +107,10 @@ namespace RoboRougelike.R3
             item.transform.SetParent(previewRoot.transform,false);item.transform.localPosition=(Vector3)cell*R41PartGeometry.Grid;
             item.transform.localRotation=Quaternion.identity;item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             item.GetComponent<Renderer>().sharedMaterial=material;
+            if(kind==R3PartKind.BonusModule)R3BonusModuleGeometry.ConfigureCube(item,false);
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
-            if(Tool==R41GarageTool.Mount||plan)R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
+            if(kind!=R3PartKind.BonusModule&&(Tool==R41GarageTool.Mount||plan))
+                R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
             return item;
         }
         public void RefreshMarker()
@@ -141,7 +149,22 @@ namespace RoboRougelike.R3
                 nearest=hit.distance;normal=hit.normal;
             }
             HasTarget=target!=null||missing!=null;
-            if(HasTarget)Cell=missing!=null?missing.Part.Cell:target.Cell+(Tool==R41GarageTool.Mount?LocalFace(run.Player.transform,normal):Vector3Int.zero);
+            if(HasTarget)
+            {
+                var nearestCell=target!=null?target.Cell:missing.Part.Cell;
+                if(target!=null&&target.Kind==R3PartKind.BonusModule)
+                {
+                    // Select the actual face cell, not always the anchor of a 2x2 module.
+                    Vector3 local=run.Player.transform.InverseTransformPoint(
+                        hits.First(h=>h.collider!=null&&h.collider.GetComponentInParent<R3MountedPart>()==target).point);
+                    nearestCell=new Vector3Int(
+                        Mathf.Clamp(Mathf.RoundToInt(local.x/R41PartGeometry.Grid),target.Cell.x,target.Cell.x+1),
+                        target.Cell.y,
+                        Mathf.Clamp(Mathf.RoundToInt(local.z/R41PartGeometry.Grid),target.Cell.z,target.Cell.z+1));
+                }
+                Cell=missing!=null?missing.Part.Cell:nearestCell+
+                    (Tool==R41GarageTool.Mount?LocalFace(run.Player.transform,normal):Vector3Int.zero);
+            }
             RefreshMarker();return HasTarget;
         }
         public bool ClickTarget()
