@@ -19,7 +19,8 @@ namespace RoboRougelike.R3
         private readonly RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
-        private bool orbitDragging;
+        private bool orbitDragging,isOpen,arenaWasActive;
+        private GameObject hiddenArena;
         private R3PartKind shownKind;
         private R4WeaponKind shownWeapon;
         private R41GarageTool shownTool;
@@ -44,7 +45,8 @@ namespace RoboRougelike.R3
         {run=owner;view=camera;follow=cameraFollow;palette=colors;}
         public void Open()
         {
-            follow.enabled=false;previousNear=view.nearClipPlane;view.nearClipPlane=0.05f;view.rect=Viewport;
+            if(!isOpen)previousNear=view.nearClipPlane;isOpen=true;
+            HideArena();follow.enabled=false;view.nearClipPlane=0.05f;view.rect=Viewport;
             Cursor.lockState=CursorLockMode.None;Cursor.visible=true;HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;
             RefreshPreview();FrameVehicle();
         }
@@ -52,7 +54,23 @@ namespace RoboRougelike.R3
         {
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
             previewRoot=null;marker=null;HasTarget=false;orbitDragging=false;
-            view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;
+            RestoreArena();
+            if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
+            isOpen=false;
+        }
+        private void HideArena()
+        {
+            var arena=run.Arena?.Layout?.gameObject;
+            if(hiddenArena!=arena)
+            {
+                RestoreArena();hiddenArena=arena;arenaWasActive=arena!=null&&arena.activeSelf;
+            }
+            if(hiddenArena!=null)hiddenArena.SetActive(false);
+        }
+        private void RestoreArena()
+        {
+            if(hiddenArena!=null)hiddenArena.SetActive(arenaWasActive);
+            hiddenArena=null;
         }
         public void Orbit(float degrees){yaw+=degrees;}
         public void Tilt(float degrees){pitch=Mathf.Clamp(pitch+degrees,5,75);}
@@ -190,6 +208,6 @@ namespace RoboRougelike.R3
             var pivot=run.Player.transform.TransformPoint(pivotLocal);var rotation=Quaternion.Euler(pitch,yaw,0);
             view.transform.SetPositionAndRotation(pivot+rotation*Vector3.back*distance,rotation);
         }
-        private void OnDestroy(){if(previewRoot!=null)Destroy(previewRoot);}
+        private void OnDestroy(){RestoreArena();if(previewRoot!=null)Destroy(previewRoot);}
     }
 }

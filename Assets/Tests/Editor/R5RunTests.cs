@@ -64,10 +64,10 @@ public class R5RunTests
             while(run.Progress.State==R1RunState.Combat)yield return null;
             Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
             var keep=run.Salvage.Items.Where(p=>p.Recoverable).Take(1).Select(p=>p.Id).ToArray();
-            Assert.That(run.ConfirmSalvage(keep),Is.True);int scrap=model.Scrap;
-            Assert.That(run.ConfirmSalvage(keep),Is.False);Assert.That(model.Scrap,Is.EqualTo(scrap));
+            Assert.That(RRLW2TestFlow.Claim(run,keep),Is.True);int scrap=model.Scrap;
+            Assert.That(RRLW2TestFlow.Claim(run,keep),Is.False);Assert.That(model.Scrap,Is.EqualTo(scrap));
             if(stage==5){Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Won));Assert.That(run.StartNextEncounter(),Is.False);break;}
-            Assert.That(run.ChooseUpgrade(0),Is.True);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+            Assert.That(run.Progress.Acquired.Count,Is.EqualTo(stage+1));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
             Assert.That(run.StartNextEncounter(),Is.True);
         }
         Assert.That(arenas.Count,Is.EqualTo(3));Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(6));Assert.That(run.DefeatedEnemies,Is.EqualTo(foes));

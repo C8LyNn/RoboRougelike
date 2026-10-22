@@ -113,7 +113,7 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Jazda: {design.Speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
                 }
-                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: łupy → ulepszenie → garaż.",body);
+                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: wybierz do 3 bonusów lub modułów → garaż.",body);
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
@@ -196,11 +196,14 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(970,334,280,48),"Zdejmij / usuń utracony plan",compactButton))
                 garage.Message=run.GarageRemove(garage.Cell)?"Żywa część wraca do magazynu; utracony plan usunięty.":"Nie można usunąć rdzenia, mostu lub ostatniego niezbędnego modułu.";
             GUI.enabled=true;
-            if(GUI.Button(new Rect(970,405,280,48),"Napraw za dostępny Złom",button))
+            int bulkCost=model.AffordableRepairCost;
+            GUI.enabled=bulkCost>0;
+            if(GUI.Button(new Rect(970,405,280,48),$"Napraw możliwe — {bulkCost} Z",button))
                 garage.Message=run.GarageRepairAffordable()?"Naprawiono dostępne części; sprawdź pozostały Złom.":"Brak środków, połączenia lub uszkodzeń.";
-            GUI.enabled=!model.CanDeploy;
-            if(GUI.Button(new Rect(970,465,280,56),"Naprawa awaryjna\nniezbędne moduły: 25% HP",compactButton))
-                garage.Message=run.GarageEmergencyRepair()?"Przywrócono niezbędną broń i wybrany napęd przy 25% HP.":"Pomoc nie jest potrzebna lub brak planu napędu / rdzenia.";
+            int emergencyCost=model.EmergencyRepairCost;
+            GUI.enabled=emergencyCost>0&&model.Scrap>=emergencyCost;
+            if(GUI.Button(new Rect(970,465,280,56),$"Odbudowa awaryjna — {emergencyCost} Z\nniezbędne moduły: 100% HP",compactButton))
+                garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędną broń, napęd i połączenia; koszt pobrano raz.":"Brak środków lub poprawnego planu napędu / rdzenia.";
             GUI.enabled=true;
             for(int w=0;w<3;w++)
                 if(GUI.Button(new Rect(970+w*94,535,90,40),w==0?"Działo":w==1?"Automat":"Ciężka",compactButton))

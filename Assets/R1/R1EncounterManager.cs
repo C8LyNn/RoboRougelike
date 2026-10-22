@@ -16,16 +16,18 @@ namespace RoboRougelike.R1
             R1EncounterDefinition definition,RoboRougelike.R4.R4SalvageLedger salvage=null,string encounterId="")
         {
             Clear();
-            int count = Mathf.Clamp(definition.EnemyCount, 1, 3);
+            // Add one regular escort per encounter without changing the boss finale.
+            // The extra enemy uses an ordinary archetype, not an elite/boss variant.
+            int count=definition.SpawnCount;
             for (int i = 0; i < count; i++)
             {
                 // Staggered positions leave an open central firing lane around the existing walls.
                 float x = count == 1 ? 0 : (i - (count - 1) * 0.5f) * 9f;
                 var enemy = Instantiate(template, new Vector3(x, 0, 17 + (i % 2) * 5), Quaternion.identity);
-                var kind=definition.Roster!=null&&definition.Roster.Length>i?definition.Roster[i]:RoboRougelike.R3.R3EnemyProfiles.InEncounter(count,i);
+                var kind=definition.SpawnArchetype(i);
                 enemy.ConfigureArchetype(kind);
                 enemy.name = RoboRougelike.R3.R3EnemyProfiles.Name(kind)+" "+(i+1);
-                if(definition.Variants!=null&&definition.Variants.Length>i)enemy.ConfigureVariant(definition.Variants[i]);
+                enemy.ConfigureVariant(definition.SpawnVariant(i));
                 enemy.ConfigureSalvage(salvage,encounterId+"/enemy/"+i);
                 enemy.gameObject.SetActive(true);
                 enemy.ConfigureEncounter(player, definition.HealthMultiplier, definition.DamageMultiplier,

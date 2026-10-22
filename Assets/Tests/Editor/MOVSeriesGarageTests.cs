@@ -154,9 +154,9 @@ public class MOVSeriesGarageTests
         Assert.That(run.ChooseRoute(0),Is.True);yield return Until(()=>!run.Transitioning&&run.Progress.State==R1RunState.Combat);
         run.Encounter.SetCombatActive(false);foreach(var e in run.Encounter.Enemies)e.Core.ApplyDamage(10000,e.Core.transform.position,Vector3.zero);
         float deadline=Time.realtimeSinceStartup+15;
-        while(run.Progress.State!=R1RunState.UpgradeChoice&&Time.realtimeSinceStartup<deadline)
-        {if(run.Progress.State==R1RunState.Salvage)Assert.That(run.ConfirmSalvage(Array.Empty<string>()),Is.True);yield return null;}
-        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.UpgradeChoice));run.ChooseUpgrade(0);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+        while(run.Progress.State!=R1RunState.Garage&&Time.realtimeSinceStartup<deadline)
+        {if(run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(run,Array.Empty<string>()),Is.True);yield return null;}
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
         int earned=run.VehicleModel.Scrap;Assert.That(earned,Is.GreaterThanOrEqualTo(65));
         Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(1,1,0),R3PartKind.Gyroscope);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(earned-65));string id=run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Booster).Id;

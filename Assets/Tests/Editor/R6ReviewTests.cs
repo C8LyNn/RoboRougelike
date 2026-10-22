@@ -48,7 +48,7 @@ public class R6ReviewTests
     }
     [UnityTest] public IEnumerator DisabledNormalTurretInheritsOwnerVelocityAndSpin()
     {
-        yield return Combat();var enemy=run.Encounter.Enemies.Single();var owner=enemy.GetComponent<Rigidbody>();var yaw=enemy.transform.Find("Enemy_Yaw");
+        yield return Combat();var enemy=run.Encounter.Enemies.First();var owner=enemy.GetComponent<Rigidbody>();var yaw=enemy.transform.Find("Enemy_Yaw");
         owner.linearVelocity=Vector3.forward*4;owner.angularVelocity=Vector3.up*.3f;
         enemy.WeaponBlock.ApplyDamage(10000,enemy.WeaponBlock.transform.position,Vector3.up);enemy.SetCombatActive(true);enemy.SendMessage("Update");
         Assert.That(yaw.IsChildOf(enemy.transform),Is.False);var debris=yaw.GetComponent<Rigidbody>();
@@ -57,14 +57,14 @@ public class R6ReviewTests
     }
     [UnityTest] public IEnumerator CoreDeathReleasesTurretBeforeOwnerMomentumIsCleared()
     {
-        yield return Combat();var enemy=run.Encounter.Enemies.Single();var owner=enemy.GetComponent<Rigidbody>();var yaw=enemy.transform.Find("Enemy_Yaw");
+        yield return Combat();var enemy=run.Encounter.Enemies.First();var owner=enemy.GetComponent<Rigidbody>();var yaw=enemy.transform.Find("Enemy_Yaw");
         owner.linearVelocity=Vector3.forward*4;enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);
         enemy.GetComponent<P12PipelineSafeVehicleStructure>().EvaluateStructure();enemy.SendMessage("Update");
         Assert.That(yaw.GetComponent<Rigidbody>(),Is.Not.Null);Assert.That(yaw.GetComponent<Rigidbody>().linearVelocity.z,Is.GreaterThan(3));
     }
     [UnityTest] public IEnumerator WheelLessEnemyGraduallyStopsRatherThanSlidingForever()
     {
-        yield return Combat();var enemy=run.Encounter.Enemies.Single();
+        yield return Combat();var enemy=run.Encounter.Enemies.First();
         foreach(var wheel in enemy.GetComponentsInChildren<P12PipelineSafeDamageable>().Where(p=>p.name.StartsWith("Koło")).ToArray())wheel.ApplyDamage(10000,wheel.transform.position,Vector3.up);
         var body=enemy.GetComponent<Rigidbody>();body.linearVelocity=Vector3.back*2;
         yield return Seconds(1.5f);Assert.That(body.linearVelocity.magnitude,Is.LessThan(.5f));Assert.That(enemy.ActiveWheelCount,Is.Zero);

@@ -14,7 +14,7 @@ public class R4SalvageModelTests
         Assert.That(ledger.Record("enemy",new[]{Item("a",0.4f),Item("b"),Item("c"),Item("dead",0)}),Is.True);
         Assert.That(ledger.Record("enemy",new[]{Item("d")}),Is.False);
         Assert.That(ledger.Claim(model,new[]{"a","b","c"}),Is.False);
-        Assert.That(ledger.Claim(model,new[]{"dead"}),Is.False);
+        Assert.That(ledger.Items.Single(p=>p.Id=="dead").Selectable,Is.True,"Destroyed modules are eligible rebuild plans.");
         Assert.That(ledger.Claim(model,new[]{"a","a"}),Is.False);
         Assert.That(model.Scrap,Is.Zero);Assert.That(model.Inventory,Is.Empty);
         Assert.That(ledger.Claim(model,new[]{"a","b"}),Is.True);
@@ -33,7 +33,7 @@ public class R4SalvageModelTests
         Assert.That(model.At(cell).Health,Is.EqualTo(0.4f));Assert.That(model.Inventory,Is.Empty);
         Assert.That(model.Remove(cell),Is.True);Assert.That(model.Inventory.Single().Id,Is.EqualTo("gun"));
         Assert.That(model.RepairInventory("gun"),Is.False);Assert.That(model.Inventory.Single().Health,Is.EqualTo(0.4f));
-        model.Award(2);Assert.That(model.RepairInventory("gun"),Is.True);Assert.That(model.Scrap,Is.Zero);
+        model.Award(8);Assert.That(model.RepairInventory("gun"),Is.True);Assert.That(model.Scrap,Is.Zero);
         Assert.That(model.Inventory.Single().Health,Is.EqualTo(1));
         Assert.That(model.Dismantle("gun"),Is.True);Assert.That(model.Scrap,Is.EqualTo(9));
         Assert.That(model.Dismantle("gun"),Is.False);Assert.That(model.Mount("gun",cell),Is.False);

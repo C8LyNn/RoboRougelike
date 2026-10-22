@@ -34,9 +34,9 @@ public class R5BossPilotTests
         {
             Run.ChooseRoute(0);yield return Until(()=>!Run.Transitioning,"Stage");if(stage==5)break;
             Run.Encounter.SetCombatActive(false);foreach(var foe in Run.Encounter.Enemies)foe.Core.ApplyDamage(100000,foe.Core.transform.position,Vector3.up);
-            yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Fixture loot");Run.ConfirmSalvage(Array.Empty<string>());Run.ChooseUpgrade(0);Run.StartNextEncounter();
+            yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Fixture loot");RRLW2TestFlow.Claim(Run,Array.Empty<string>());Run.StartNextEncounter();
         }
-        var boss=Run.Encounter.Enemies.Single();var body=boss.GetComponent<Rigidbody>();var camera=Camera.main;
+        var boss=Run.Encounter.Enemies.First();var body=boss.GetComponent<Rigidbody>();var camera=Camera.main;
         UnityEngine.Object.FindFirstObjectByType<P12PipelineSafeCamera>().enabled=false;
         InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));
         Vector3 previous=body.position,velocity=Vector3.zero;float start=Time.realtimeSinceStartup,deadline=start+150;
@@ -60,7 +60,7 @@ public class R5BossPilotTests
         InputSystem.QueueStateEvent(mouse,new MouseState());InputSystem.QueueStateEvent(keyboard,new KeyboardState());
         Debug.Log($"[R5 BOSS PILOT] {kind} result={Run.Progress.State} seconds={Time.realtimeSinceStartup-start:0.00} peakShells={peakShells} editorAllocatedBytes={peakMemory} core={(boss!=null&&boss.Core!=null?boss.Core.CurrentHp:0)}");
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Salvage),"Boss combat uses only normal player input/physical rounds, active AI; API prefix excluded.");
-        Run.ConfirmSalvage(Array.Empty<string>());Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
+        RRLW2TestFlow.Claim(Run,Array.Empty<string>());Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
     }
     [UnityTearDown] public IEnumerator Cleanup()
     {

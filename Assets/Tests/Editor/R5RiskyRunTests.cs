@@ -38,9 +38,9 @@ public class R5RiskyRunTests
             else Assert.That(model.Parts.Single(p=>p.Id==retained).Health,Is.EqualTo(.6f).Within(.001));
             foreach(var enemy in run.Encounter.Enemies)enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
             yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Risk loot");
-            var selected=run.Salvage.Items.Where(p=>p.Recoverable).Take(2).Select(p=>p.Id).ToArray();run.ConfirmSalvage(selected);
+            var selected=run.Salvage.Items.Where(p=>p.Recoverable).Take(2).Select(p=>p.Id).ToArray();RRLW2TestFlow.Claim(run,selected);
             if(stage==5)break;
-            run.ChooseUpgrade(0);if(stage==0)Assert.That(run.GarageBuy(new Vector3Int(1,1,0),RoboRougelike.R3.R3PartKind.Armor),Is.True);
+            if(stage==0)Assert.That(run.GarageBuy(new Vector3Int(1,1,0),RoboRougelike.R3.R3PartKind.Armor),Is.True);
             run.StartNextEncounter();
         }
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Won));Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(6));

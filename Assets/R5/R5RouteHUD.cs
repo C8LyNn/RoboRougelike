@@ -23,7 +23,7 @@ namespace RoboRougelike.R1
                 var item=offers[i];float x=80+i*580;
                 Panel(new Rect(x,245,550,350));
                 GUI.Label(new Rect(x+20,265,510,48),item.Title,heading);
-                GUI.Label(new Rect(x+20,320,510,180),$"{R5RunPlan.ArenaName(item.Arena)}\nRyzyko: {item.Risk} • Zagrożenie {R5RunPlan.Threat(item):0.0}\nWrogowie: {item.EnemyCount} • Złom: {item.ScrapReward}\nŁupy: {item.Loot}\n{item.Rule}",body);
+                GUI.Label(new Rect(x+20,320,510,180),$"{R5RunPlan.ArenaName(item.Arena)}\nRyzyko: {item.Risk} • Zagrożenie {R5RunPlan.Threat(item):0.0}\nWrogowie: {item.SpawnCount} • Złom: {item.ScrapReward}\nŁupy: {item.Loot}\n{item.Rule}",body);
                 if(GUI.Button(new Rect(x+20,520,510,55),"Wyrusz — "+item.Title,button)){run.ChooseRoute(i);break;}
             }
             GUI.Label(new Rect(80,630,1100,55),"Łupy zależą od stanu modułów. Strzelaj w rdzeń albo odcinaj uzbrojenie. Wybór jest ostateczny dla tego etapu.",small);

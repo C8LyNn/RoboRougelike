@@ -1412,6 +1412,19 @@ public float CurrentForwardSpeed =>
                 return;
             }
 
+            // Dead/detached wrecks retain world physics but must not consume follow-up fire.
+            // Also handles a second collision callback already queued in the death step.
+            var deadPart=collision.collider.GetComponentInParent<P12PipelineSafeDamageable>();
+            if(collision.collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()!=null||
+                (deadPart!=null&&deadPart.IsDead))
+            {
+                var own=GetComponent<Collider>();
+                if(own!=null)Physics.IgnoreCollision(own,collision.collider,true);
+                var shellBody=GetComponent<Rigidbody>();
+                if(shellBody!=null)shellBody.linearVelocity=launchDirection*Mathf.Max(
+                    shellBody.linearVelocity.magnitude,collision.relativeVelocity.magnitude);
+                return;
+            }
             spent = true;
 
             ContactPoint contact =
