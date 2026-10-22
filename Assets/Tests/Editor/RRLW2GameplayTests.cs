@@ -24,14 +24,18 @@ public class RRLW2GameplayTests
     }
     IEnumerator Combat()
     {Assert.That(run.ChooseRoute(0),Is.True);yield return Until(()=>!run.Transitioning,"Spawn");run.Encounter.SetCombatActive(false);}
-    [UnityTest] public IEnumerator UnifiedThreeBonusesChangeLiveStatsOnceAndOpenGarageDirectly()
+    [UnityTest] public IEnumerator OnePhysicalBonusChangesLiveStatsOnlyAfterMountAndOpensGarageDirectly()
     {
         run.Definition.Upgrades=new[]{run.Definition.Upgrades.First(u=>u.Effect==R1UpgradeEffect.Damage),run.Definition.Upgrades.First(u=>u.Effect==R1UpgradeEffect.Hull),run.Definition.Upgrades.First(u=>u.Effect==R1UpgradeEffect.Core)};
         yield return Combat();float damage=run.Player.Controller.EffectiveDamage;
         float bonus=run.Definition.Upgrades.First(u=>u.Effect==R1UpgradeEffect.Damage).Amount;
         RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"One reward screen");
-        Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0,1,2}),Is.True);
-        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Progress.Acquired.Count,Is.EqualTo(3));
+        Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0,1,2}),Is.False);
+        int index=run.Progress.Offers.ToList().FindIndex(u=>u.Effect==R1UpgradeEffect.Damage);
+        Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{index}),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Progress.Acquired.Count,Is.EqualTo(1));
+        Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(damage));
+        Assert.That(run.GarageMount(run.VehicleModel.Inventory.Single().Id,new Vector3Int(1,2,0)),Is.True);
         Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(damage*(1+bonus)).Within(.001));
         int scrap=run.VehicleModel.Scrap;
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0,1,2}),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
@@ -45,7 +49,7 @@ public class RRLW2GameplayTests
         var wreck=run.Salvage.Items.Single(p=>p.Kind==R3PartKind.Gun&&p.Health==0);
         var wheel=run.Salvage.Items.First(p=>p.Kind==R3PartKind.Wheel&&p.Health>0);
         Assert.That(run.ConfirmRewards(new[]{wreck.Id,wheel.Id},new[]{0}),Is.True);
-        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(2));Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==wreck.Id).Health,Is.Zero);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(3));Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==wreck.Id).Health,Is.Zero);
         var cell=new Vector3Int(1,2,0);int before=run.VehicleModel.Scrap;
         Assert.That(run.GarageMount(wreck.Id,cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));
         Assert.That(run.GarageRepairInventory(wreck.Id),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-36));
@@ -73,7 +77,7 @@ public class RRLW2GameplayTests
             int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count));
             RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Full encounter victory");
             Assert.That(run.Salvage.Items.Count,Is.EqualTo(expected));Assert.That(run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(expected));
-            Assert.That(run.ConfirmRewards(Array.Empty<string>(),Array.Empty<int>()),Is.True);
+            Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);
             if(stage<5){Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.StartNextEncounter(),Is.True);}
             else Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Won));
         }

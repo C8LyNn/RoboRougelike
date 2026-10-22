@@ -139,8 +139,7 @@ namespace RoboRougelike.R1
                 $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
                 selected.Kind==R3PartKind.Gun?
                 $"{profile.Damage*(run.ActiveStats?.Damage??1f):0} obrażeń • co {profile.Interval*(run.ActiveStats?.FireInterval??1f):0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
-            string error=model.PlacementError(garage.Cell,selected.Kind,true,selected.Weapon,
-                garage.SelectedRotation,selected.ContactMask);
+            string error=garage.PlacementIssue;
             GUI.enabled=garage.HasTarget&&error==null&&selected.Health>0;
             if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))
             {garage.Message=run.GarageMount(selected.Id,garage.Cell,garage.SelectedRotation)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}

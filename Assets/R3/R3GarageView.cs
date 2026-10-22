@@ -25,6 +25,7 @@ namespace RoboRougelike.R3
         private R4WeaponKind shownWeapon;
         private R41GarageTool shownTool;
         private Vector3Int shownRotation;
+        private int shownContacts=-1;
         public Vector3Int SelectedRotation {get;private set;}
         public int SelectedContactMask=>Owned?.ContactMask??R3MountingGrid.AllFaces;
         public Vector3Int Cell = new Vector3Int(0,2,1);
@@ -175,12 +176,13 @@ namespace RoboRougelike.R3
         {
             if(previewRoot==null||run.VehicleModel==null)return;
             if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||
-               shownTool!=Tool||shownRotation!=SelectedRotation)
+               shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask)
             {
                 if(marker!=null){marker.SetActive(false);Destroy(marker);}
                 marker=CreateGhost(Cell,MountKind,MountWeapon,palette.Valid,false,
                     SelectedRotation,SelectedContactMask);
                 shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
+                shownContacts=SelectedContactMask;
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;

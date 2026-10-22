@@ -146,7 +146,9 @@ namespace RoboRougelike.R1
             EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
         public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
             EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind,rotation));
-        public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation=default) =>
+        public bool GarageMount(string id,Vector3Int cell) =>
+            EditGarage(()=>VehicleModel.Mount(id,cell));
+        public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation) =>
             EditGarage(()=>VehicleModel.Mount(id,cell,rotation));
         public bool GarageRepairInventory(string id) => EditGarage(()=>VehicleModel.RepairInventory(id));
         public bool GarageDismantle(string id)

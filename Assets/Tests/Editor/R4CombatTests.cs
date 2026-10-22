@@ -63,7 +63,7 @@ public class R4CombatTests
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");
         var gun=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);Assert.That(gun.Recoverable,Is.False);
         int before=Run.VehicleModel.Scrap;Assert.That(RRLW2TestFlow.Claim(Run,new[]{gun.Id}),Is.True);
-        Assert.That(Run.VehicleModel.Inventory.Single().Health,Is.Zero);
+        Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==gun.Id).Health,Is.Zero);
         int after=Run.VehicleModel.Scrap;Assert.That(after,Is.GreaterThan(before));Assert.That(Run.GarageMount(gun.Id,new Vector3Int(1,2,0)),Is.False);
         Assert.That(Run.GarageRepairInventory(gun.Id),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after-36));
         after=Run.VehicleModel.Scrap;
@@ -148,8 +148,14 @@ public class R4CombatTests
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
         Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
         Assert.That(Run.GarageBuyWeapon(new Vector3Int(-1,2,0),R4WeaponKind.Heavy),Is.True);
-        var damage=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Damage);Run.Progress.Stats.Apply(damage);
-        var reload=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Reload);Run.Progress.Stats.Apply(reload);Run.Player.Apply(Run.Progress.Stats);
+        var damage=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Damage);
+        var reload=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Reload);
+        Assert.That(Run.VehicleModel.ReceiveBonuses(new[]{damage,reload}),Is.True);
+        string damageId=Run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==damage.Id).Id;
+        string reloadId=Run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==reload.Id).Id;
+        Assert.That(Run.GarageMount(damageId,new Vector3Int(1,2,1)),Is.True);
+        Assert.That(Run.GarageMount(reloadId,new Vector3Int(-2,2,1)),Is.True);
+        Assert.That(Run.Progress.Stats.Damage,Is.EqualTo(1));Assert.That(Run.ActiveStats.Damage,Is.GreaterThan(1));
         Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Strzelanie");Run.Encounter.SetCombatActive(false);
         var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))part.GunPivot.rotation=Quaternion.Euler(-30,180,0);
@@ -166,7 +172,7 @@ public class R4CombatTests
             part.GunPivot.rotation=Quaternion.LookRotation(fixture.transform.position-part.GunPivot.position);Physics.SyncTransforms();
             Run.Player.Controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
             yield return Until(()=>hp.CurrentHp<1000,"Każda broń musi zadawać obrażenia fizycznym pociskiem");
-            Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(part.Weapon).Damage*Run.Progress.Stats.Damage).Within(0.1));
+            Assert.That(hp.CurrentHp,Is.EqualTo(1000-R4WeaponDefinition.Get(part.Weapon).Damage*Run.ActiveStats.Damage).Within(0.1));
             UnityEngine.Object.Destroy(fixture);
         }
     }
@@ -185,6 +191,6 @@ public class R4CombatTests
         RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(17));
         Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(17));
-        Assert.That(RRLW2TestFlow.Claim(Run,new[]{saved.Id}),Is.True);Assert.That(Run.VehicleModel.Inventory.Single().Weapon,Is.EqualTo(R4WeaponKind.Heavy));
+        Assert.That(RRLW2TestFlow.Claim(Run,new[]{saved.Id}),Is.True);Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==saved.Id).Weapon,Is.EqualTo(R4WeaponKind.Heavy));
     }
 }

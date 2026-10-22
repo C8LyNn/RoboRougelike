@@ -55,7 +55,7 @@ public class R5EncounterTests
         yield return Reach(0);var enemy=Run.Encounter.Enemies.First();RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");
         var item=Run.Salvage.Items.First(p=>p.Recoverable);RRLW2TestFlow.Claim(Run,new[]{item.Id});
-        int earned=Run.EarnedScrap;int value=Run.VehicleModel.DismantleValue(Run.VehicleModel.Inventory.Single());
+        int earned=Run.EarnedScrap;int value=Run.VehicleModel.DismantleValue(Run.VehicleModel.Inventory.Single(p=>p.Id==item.Id));
         Assert.That(Run.GarageDismantle(item.Id),Is.True);Assert.That(Run.EarnedScrap,Is.EqualTo(earned+value));
     }
     [UnityTest] public IEnumerator BossFiresTwoPhysicalBatteriesAndDestroyedBatteryStops()

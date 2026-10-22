@@ -44,7 +44,7 @@ public class R5RiskyRunTests
             run.StartNextEncounter();
         }
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Won));Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(6));
-        Assert.That(model.Inventory.Count,Is.EqualTo(12));Assert.That(model.Parts.Count,Is.EqualTo(21));yield return new ExitPlayMode();
+        Assert.That(model.Inventory.Count,Is.EqualTo(18));Assert.That(model.Parts.Count,Is.EqualTo(21));yield return new ExitPlayMode();
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

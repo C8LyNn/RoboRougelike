@@ -89,7 +89,7 @@ public class R1PlayIntegrationTests
             Assert.That(Run.Encounter.Enemies[0].Core.MaxHp,Is.InRange(60,160));
             DefeatAllEnemies();
             yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Unified rewards",automaticRewards:false);
-            if(wave==5){Assert.That(Run.ConfirmRewards(Array.Empty<string>(),Array.Empty<int>()),Is.True);break;}
+            if(wave==5){Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3));Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);break;}
             Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3));
             Assert.That(Run.Progress.Offers.Select(x=>x.Id).Distinct().Count(),Is.EqualTo(3));
             Assert.That(Time.timeScale,Is.Zero);
@@ -101,7 +101,7 @@ public class R1PlayIntegrationTests
             Assert.That(Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None),Is.Empty);
         }
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));Assert.That(Run.Progress.CompletedEncounters,Is.EqualTo(6));
-        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(5));var old=Run;Run.RestartRun();
+        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(6));var old=Run;Run.RestartRun();
         yield return Until(()=>Run!=null&&Run!=old&&Run.Progress!=null,"Restart");
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Ready));Assert.That(Run.Progress.Acquired,Is.Empty);
     }
@@ -170,6 +170,7 @@ public class R1PlayIntegrationTests
         DefeatAllEnemies();
         yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Pierwsza nagroda.");
         Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Damage)});
+        Assert.That(Run.GarageMount(Run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule).Id,new Vector3Int(1,2,0)),Is.True);
         Run.StartNextEncounter();
         yield return Until(() => !Run.Transitioning, "Druga walka.");
         float upgradedDamage = Run.Player.Controller.EffectiveDamage;
