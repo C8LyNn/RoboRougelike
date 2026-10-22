@@ -212,7 +212,12 @@ namespace RoboRougelike.R3
                     UpgradeEffect=bonus.Effect,UpgradeAmount=Mathf.Clamp01(bonus.Amount)});
             return true;
         }
-        public bool Mount(string id,Vector3Int cell,Vector3Int rotation=default)
+        public bool Mount(string id,Vector3Int cell)
+        {
+            var stored=inventory.FirstOrDefault(p=>p.Id==id);
+            return stored!=null&&Mount(id,cell,stored.RotationQuarterTurns);
+        }
+        public bool Mount(string id,Vector3Int cell,Vector3Int rotation)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);
             rotation=R3MountingGrid.Normalize(rotation);
