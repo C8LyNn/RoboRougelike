@@ -24,6 +24,7 @@ namespace RoboRougelike.R1
         public bool Paused { get; private set; }
         public string Error { get; private set; }
         public R3VehicleModel VehicleModel { get; private set; }
+        public R1RunStats ActiveStats => Player?.GetComponent<R3MountedBonusEffects>()?.EffectiveStats??Progress?.Stats;
         public R3VehicleKind SelectedVehicle { get; private set; }
         public R3GarageView Garage { get; private set; }
         public int LastScrapReward { get; private set; }
@@ -123,8 +124,9 @@ namespace RoboRougelike.R1
             Player.GetComponent<R3VehicleAssembly>().Capture();
             var upgrade = Progress.ChooseUpgrade(index);
             if (upgrade == null) return false;
-            Debug.Log("[R1] Wybrano ulepszenie: " + upgrade.Title);
-            Player.Apply(Progress.Stats);
+            if(!VehicleModel.ReceiveBonuses(new[]{upgrade}))
+            {Debug.LogError("[R1] Nie udało się umieścić modułu bonusu w magazynie.");return false;}
+            Debug.Log("[R1] Zdobyto fizyczny moduł bonusu (nieaktywny): " + upgrade.Title);
             Garage.Open();
             return true;
         }
@@ -165,14 +167,19 @@ namespace RoboRougelike.R1
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
             if(ids==null||bonuses==null||ids.Length+bonuses.Length>3||
                 ids.Distinct().Count()!=ids.Length||!Progress.CanCompleteUnifiedRewards(bonuses))return false;
+            // Reject before settling salvage so that inventory never receives partial rewards.
+            if(VehicleModel.Inventory.Count+ids.Length+bonuses.Length>200)return false;
+            var selectedUpgrades=bonuses.Select(index=>Progress.Offers[index]).ToArray();
             if(ids.Any(id=>!Salvage.Items.Any(item=>item.Id==id&&item.Selectable)))return false;
             if(!Salvage.Claim(VehicleModel,ids))return false;
+            if(!VehicleModel.ReceiveBonuses(selectedUpgrades))
+            {Debug.LogError("[R4] Niespójny magazyn fizycznych modułów bonusów.");return false;}
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
             if(!Progress.CompleteUnifiedRewards(bonuses))
             {Debug.LogError("[R4] Niespójny stan nagród po zatwierdzeniu odzysku.");return false;}
             if(Progress.State==R1RunState.Garage)
             {
-                Player.Apply(Progress.Stats);
+                // No stat bonus is applied here. Only a mounted, live 1x2x2 module works.
                 Garage.Open();
             }
             Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+
