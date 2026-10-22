@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: core
   Title: "Osłona rdzenia"
-  Description: "+50% maksymalnej wytrzymałości rdzenia w kolejnych walkach. Bonusy kumulują się."
+  Description: "+50% maksymalnej wytrzymałości rdzenia, gdy moduł 1×2×2 jest zamontowany i sprawny."
   Effect: 5
   Amount: 0.5

@@ -33,6 +33,9 @@ namespace RoboRougelike.Mechanics.MOV008
         private CrawlerTrackController owner;
         private System.Func<bool> availabilityFilter;
         private System.Predicate<Collider> groundFilter;
+        private bool useMountAxes;
+        public Vector3 ContactUp=>useMountAxes?transform.up:Vector3.up;
+        public void SetUseMountAxes(bool value)=>useMountAxes=value;
         public void SetAvailabilityFilter(System.Func<bool> filter)=>availabilityFilter=filter;
         public void SetGroundFilter(System.Predicate<Collider> filter)=>groundFilter=filter;
         public void ConfigureTraction(float loadKg,float motorNewtons,float brakeNewtons)
@@ -105,7 +108,7 @@ namespace RoboRougelike.Mechanics.MOV008
             {
                 float zOffset = (i - 1) * halfTrackLength;
                 Vector3 basePoint = transform.TransformPoint(new Vector3(0f, 0f, zOffset));
-                Vector3 rayStart = basePoint + Vector3.up * probeStartAboveModule;
+                Vector3 rayStart = basePoint + ContactUp * probeStartAboveModule;
                 float distance = probeStartAboveModule + probeReachBelowModule;
                 if (TryRaycastGround(chassis, rayStart, distance, out Vector3 groundNormal))
                 {
@@ -124,7 +127,7 @@ namespace RoboRougelike.Mechanics.MOV008
             int count;
             while (true)
             {
-                count = Physics.RaycastNonAlloc(origin, Vector3.down, hits, distance,
+                count = Physics.RaycastNonAlloc(origin, -ContactUp, hits, distance,
                     groundLayers, QueryTriggerInteraction.Ignore);
                 // Never use a truncated buffer as it might omit the true nearest valid hit.
                 if (count < hits.Length) break;
@@ -142,7 +145,7 @@ namespace RoboRougelike.Mechanics.MOV008
                     collider.attachedRigidbody == chassis) continue;
                 if (staticGroundOnly && collider.attachedRigidbody != null) continue;
                 if(groundFilter!=null&&!groundFilter(collider))continue;
-                if (Vector3.Dot(hits[i].normal, Vector3.up) < minUp) continue;
+                if (Vector3.Dot(hits[i].normal, ContactUp) < minUp) continue;
                 if (hits[i].distance >= nearest) continue;
                 nearest = hits[i].distance;
                 normal = hits[i].normal;

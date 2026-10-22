@@ -216,32 +216,12 @@ namespace RogueMachine.P12PipelineSafe
                 corePosition
             );
 
-            connectedBlockCount =
-                connected.Count;
+            connectedBlockCount = connected.Select(cell=>grid[cell]).Distinct().Count();
 
             List<
                 P12_PipelineSafePlayerBlock
-            > disconnectedBlocks =
-                new List<
-                    P12_PipelineSafePlayerBlock
-                >();
-
-            foreach (
-                KeyValuePair<
-                    Vector3Int,
-                    P12_PipelineSafePlayerBlock
-                > entry
-                in grid)
-            {
-                if (!connected.Contains(
-                    entry.Key
-                ))
-                {
-                    disconnectedBlocks.Add(
-                        entry.Value
-                    );
-                }
-            }
+            > disconnectedBlocks = grid.Values.Distinct().Where(block=>
+                !OccupiedGridCells(block).Any(connected.Contains)).ToList();
 
             if (disconnectedBlocks.Count == 0)
                 return;
@@ -252,8 +232,7 @@ namespace RogueMachine.P12PipelineSafe
 
             BuildCurrentGrid();
 
-            connectedBlockCount =
-                grid.Count;
+            connectedBlockCount = grid.Values.Distinct().Count();
         }
 
         private void InitializeLogicalGrid(
@@ -471,27 +450,23 @@ namespace RogueMachine.P12PipelineSafe
                     );
                 }
 
-                Vector3Int p =
-                    block.LogicalGridPosition;
-
-                if (grid.ContainsKey(
-                    p
-                ))
+                foreach(var p in OccupiedGridCells(block))
                 {
-                    Debug.LogWarning(
-                        "[Pack 18] Duplicate structural grid coordinate " +
-                        p +
-                        ". Keeping the first block."
-                    );
-
-                    continue;
+                    if(grid.ContainsKey(p))
+                    {
+                        Debug.LogWarning("[Pack 18] Duplicate structural grid coordinate "+p+". Keeping the first block.");
+                        continue;
+                    }
+                    grid.Add(p,block);
                 }
-
-                grid.Add(
-                    p,
-                    block
-                );
             }
+        }
+
+        private static IEnumerable<Vector3Int> OccupiedGridCells(P12_PipelineSafePlayerBlock block)
+        {
+            var ports=block.GetComponent<RoboRougelike.R3.R3BlockMountPoints>();
+            if(ports==null){yield return block.LogicalGridPosition;yield break;}
+            foreach(var offset in ports.GridOffsets)yield return block.LogicalGridPosition+offset;
         }
 
         private void FloodFillFromCore(
@@ -528,12 +503,9 @@ namespace RogueMachine.P12PipelineSafe
                         continue;
                     }
 
-                    if (!grid.ContainsKey(
-                        next
-                    ))
-                    {
+                    if(!grid.TryGetValue(next,out var nextBlock)||
+                       !RoboRougelike.R3.R3MountingGrid.Compatible(grid[current],nextBlock,offset))
                         continue;
-                    }
 
                     connected.Add(
                         next
@@ -567,10 +539,7 @@ namespace RogueMachine.P12PipelineSafe
                 if (block == null)
                     continue;
 
-                disconnectedGrid[
-                    block.LogicalGridPosition
-                ] =
-                    block;
+                foreach(var cell in OccupiedGridCells(block))disconnectedGrid[cell]=block;
             }
 
             HashSet<Vector3Int> handled =
@@ -617,9 +586,7 @@ namespace RogueMachine.P12PipelineSafe
                         current,
                         out P12_PipelineSafePlayerBlock block))
                     {
-                        component.Add(
-                            block
-                        );
+                        if(!component.Contains(block))component.Add(block);
                     }
 
                     foreach (
@@ -630,15 +597,9 @@ namespace RogueMachine.P12PipelineSafe
                             current +
                             offset;
 
-                        if (handled.Contains(
-                            next
-                        ) ||
-                            !disconnectedGrid.ContainsKey(
-                                next
-                            ))
-                        {
+                        if(handled.Contains(next)||!disconnectedGrid.TryGetValue(next,out var nextBlock)||
+                           !RoboRougelike.R3.R3MountingGrid.Compatible(disconnectedGrid[current],nextBlock,offset))
                             continue;
-                        }
 
                         handled.Add(
                             next
@@ -670,6 +631,11 @@ namespace RogueMachine.P12PipelineSafe
                 blocks.Count == 0)
                 return;
 
+            // Every call path (including core failure) processes physical owners,
+            // even when several occupied grid cells refer to the same module.
+            blocks=blocks.Where(block=>block!=null).Distinct().ToList();
+            if(blocks.Count==0)return;
+
             Vector3 centroid =
                 Vector3.zero;
 
@@ -698,7 +664,10 @@ namespace RogueMachine.P12PipelineSafe
             var ownerBody=GetComponent<Rigidbody>();
             var inheritedVelocity=ownerBody!=null?ownerBody.GetPointVelocity(centroid):Vector3.zero;
             var inheritedSpin=ownerBody!=null?ownerBody.angularVelocity:Vector3.zero;
-            float releasedMass=blocks.Where(b=>b!=null).Sum(b=>RoboRougelike.R6.R6VehicleDrive.PartMass(b.GetComponent<P12PipelineSafeDamageable>()));
+            float releasedMass=blocks.Where(b=>b!=null).Sum(b=>{
+                var hp=b.GetComponent<P12PipelineSafeDamageable>();
+                return hp!=null?RoboRougelike.R6.R6VehicleDrive.PartMass(hp):0f;
+            });
             GameObject chunk =
                 new GameObject(
                     coreFailure

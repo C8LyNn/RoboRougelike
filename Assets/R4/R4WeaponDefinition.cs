@@ -23,12 +23,15 @@ namespace RoboRougelike.R4
         public static float PartMass(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind switch {
             R3PartKind.Gun=>Get(weapon).Mass,R3PartKind.Wheel=>12,R3PartKind.Suspension=>12,
             R3PartKind.Booster=>18,R3PartKind.JumpDrive=>24,R3PartKind.Blink=>28,R3PartKind.Gyroscope=>16,
-            R3PartKind.OmniDrive=>22,R3PartKind.MagneticGrapple=>24,R3PartKind.HoverEngine=>18,R3PartKind.CrawlerTrack=>40,_=>8};
-        public static string PartName(R3PartState part) => PartName(part.Kind,part.Weapon);
+            R3PartKind.OmniDrive=>22,R3PartKind.MagneticGrapple=>24,R3PartKind.HoverEngine=>18,R3PartKind.CrawlerTrack=>40,R3PartKind.BonusModule=>32,_=>8};
+        public static string PartName(R3PartState part) => part.Kind==R3PartKind.BonusModule?
+            (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×2×2":part.UpgradeTitle+" [1×2×2]"):
+            PartName(part.Kind,part.Weapon);
         public static string PartName(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind==R3PartKind.Gun?Get(weapon).Name:
             kind switch {R3PartKind.Wheel=>"Koło",R3PartKind.Suspension=>"Aktywne zawieszenie",R3PartKind.Core=>"Rdzeń",
                 R3PartKind.Booster=>"Booster",R3PartKind.JumpDrive=>"Napęd skokowy",R3PartKind.Blink=>"Blink",
                 R3PartKind.Gyroscope=>"Żyroskop",R3PartKind.OmniDrive=>"Omni",R3PartKind.MagneticGrapple=>"Zaczep magnetyczny",
-                R3PartKind.HoverEngine=>"Silnik zawisu",R3PartKind.CrawlerTrack=>"Gąsienica",_=>"Pancerz"};
+                R3PartKind.HoverEngine=>"Silnik zawisu",R3PartKind.CrawlerTrack=>"Gąsienica",
+                R3PartKind.BonusModule=>"Moduł bonusu 1×2×2",_=>"Pancerz"};
     }
 }

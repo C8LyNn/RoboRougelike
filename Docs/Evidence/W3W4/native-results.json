@@ -1,0 +1,933 @@
+{
+  "testedSource": "5d4b61d1160e9cceac888e070147aead71dfb92b",
+  "native": [
+    {
+      "method": "Native graphical fixture: seeded victory/loss via damage APIs; operator selects one bonus + three parts and rotates/mounts through UI; later repair/range use public APIs",
+      "status": "Passed",
+      "assertions": 29,
+      "width": 1280,
+      "height": 720,
+      "startedUtc": "2026-10-22T17:44:54.2425883Z",
+      "finishedUtc": "2026-10-22T17:47:25.4048776Z",
+      "samples": [
+        {
+          "label": "01-menu",
+          "state": "Ready",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 0,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "02-real-combat-scene-fixture",
+          "state": "Combat",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 0,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "03-rewards-await-operator",
+          "state": "Salvage",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 80,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "04-garage-inactive-inventory",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-4",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-5",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-6",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-7",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-8",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-9",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-10",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "06-mounted-active",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 3,
+          "bonusItems": 0,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "07-next-map-active",
+          "state": "Combat",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 3,
+          "bonusItems": 0,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "08-module-loss-effect-off",
+          "state": "Combat",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 3,
+          "bonusItems": 0,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": -99750.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": false,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "09-paid-repair-remount",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 216,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "10-range-active",
+          "state": "TestDrive",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 216,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "11-workshop-restored",
+          "state": "Garage",
+          "moduleId": "704662853deb45afa919783dce024612",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 216,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        }
+      ],
+      "label": "native-720",
+      "evidenceDirectory": "W34-Native-Fixture-1280x720-0cbe4b3f09f845b9bbeb1205b1ddcbb2",
+      "automationCloseExit": -1073741819
+    },
+    {
+      "method": "Native graphical fixture: seeded victory/loss via damage APIs; operator selects one bonus + three parts and rotates/mounts through UI; later repair/range use public APIs",
+      "status": "Passed",
+      "assertions": 29,
+      "width": 1920,
+      "height": 1080,
+      "startedUtc": "2026-10-22T17:48:02.8383209Z",
+      "finishedUtc": "2026-10-22T17:49:35.5583595Z",
+      "samples": [
+        {
+          "label": "01-menu",
+          "state": "Ready",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 0,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "02-real-combat-scene-fixture",
+          "state": "Combat",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 0,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "03-rewards-await-operator",
+          "state": "Salvage",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 80,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "04-garage-inactive-inventory",
+          "state": "Garage",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "05-rotated-ghost-4",
+          "state": "Garage",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "06-mounted-active",
+          "state": "Garage",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 3,
+          "bonusItems": 0,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "07-next-map-active",
+          "state": "Combat",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 3,
+          "bonusItems": 0,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "08-module-loss-effect-off",
+          "state": "Combat",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 3,
+          "bonusItems": 0,
+          "scrap": 107,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": -99750.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": false,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "09-paid-repair-remount",
+          "state": "Garage",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 216,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "10-range-active",
+          "state": "TestDrive",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 216,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        },
+        {
+          "label": "11-workshop-restored",
+          "state": "Garage",
+          "moduleId": "fe9c186208ce4a759dd89b4345ce9c3f",
+          "inventory": 4,
+          "bonusItems": 1,
+          "scrap": 216,
+          "rotation": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "effectiveDamage": 1.25,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 250.0,
+          "liveMaxHp": 250.0,
+          "moduleOperational": true,
+          "structuralOwners": 1,
+          "moduleColliders": 1
+        }
+      ],
+      "label": "native-1080",
+      "evidenceDirectory": "W34-Native-Fixture-1920x1080-905e9f54ae8248e399ac2122a54fc417",
+      "automationCloseExit": -1073741819
+    },
+    {
+      "method": "Native graphical capacity fixture: 200 owned wheels and seeded victory; operator chooses one bonus + three parts, explicitly confirms dismantling four owned items, returns and claims through UI",
+      "status": "Passed",
+      "assertions": 8,
+      "width": 1280,
+      "height": 720,
+      "startedUtc": "2026-10-22T17:50:12.0757041Z",
+      "finishedUtc": "2026-10-22T17:52:13.7446085Z",
+      "samples": [
+        {
+          "label": "01-menu",
+          "state": "Ready",
+          "moduleId": "",
+          "inventory": 0,
+          "bonusItems": 0,
+          "scrap": 0,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "02-real-combat-scene-fixture",
+          "state": "Combat",
+          "moduleId": "",
+          "inventory": 200,
+          "bonusItems": 0,
+          "scrap": 0,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "03-rewards-await-operator",
+          "state": "Salvage",
+          "moduleId": "",
+          "inventory": 200,
+          "bonusItems": 0,
+          "scrap": 80,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 0.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        },
+        {
+          "label": "04-garage-inactive-inventory",
+          "state": "Garage",
+          "moduleId": "84291ba9fe2e4e569feb6952908e43c2",
+          "inventory": 200,
+          "bonusItems": 1,
+          "scrap": 119,
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "effectiveDamage": 1.0,
+          "baselineDamage": 1.0,
+          "moduleHealth": 1.0,
+          "liveHp": 0.0,
+          "liveMaxHp": 0.0,
+          "moduleOperational": false,
+          "structuralOwners": 0,
+          "moduleColliders": 0
+        }
+      ],
+      "label": "capacity-720",
+      "evidenceDirectory": "W34-Native-Fixture-1280x720-86984d4ce8354c82866bfa4e90f918d7",
+      "automationCloseExit": -1073741819
+    }
+  ],
+  "binariesAtNativeQA": {
+    "retail": {
+      "assemblySha256": "ef7fb8cfc92f3daa4cfb51ec7eef0d124c6cbf89bdfb01916d27072b21233993"
+    },
+    "qa": {
+      "assemblySha256": "87a11d7f677ec6999bded55f017fc9ba6efdc944951add5a04d2493361d0beab"
+    }
+  },
+  "actualCombatPilot": {
+    "method": "Native UI operator + combat input pilot; no direct damage/reward/currency APIs",
+    "status": "ClosedBeforeFinalVictory",
+    "width": 1280,
+    "height": 720,
+    "physicalRounds": 1044,
+    "peakDebris": 10,
+    "won": false,
+    "combatSeconds": 211.43606567382812,
+    "combatFrames": 12684,
+    "errors": [],
+    "evidenceDirectory": "W34-Native-Pilot-1280x720-adf481f1ee554209be79af3b04f76138",
+    "automationCloseExit": -1073741819,
+    "completedEncounters": 4,
+    "limit": "Input pilot navigates directly toward targets and became blocked by an industrial arena wall during encounter five. No six-stage native victory is claimed.",
+    "victories": [
+      {
+        "realtime": 50.834808349609375,
+        "state": "Salvage",
+        "completed": 1,
+        "alive": 0,
+        "scrap": 80,
+        "inventory": 0,
+        "recovered": 0,
+        "bonuses": 0,
+        "damage": 1.0,
+        "hull": 1.0,
+        "core": 1.0,
+        "playerHp": 100.0,
+        "playerMaxHp": 100.0,
+        "inventoryConditions": ""
+      },
+      {
+        "realtime": 191.20437622070312,
+        "state": "Salvage",
+        "completed": 2,
+        "alive": 0,
+        "scrap": 184,
+        "inventory": 3,
+        "recovered": 3,
+        "bonuses": 1,
+        "damage": 1.0,
+        "hull": 1.0,
+        "core": 1.0,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453,
+        "inventoryConditions": "Gun:0.000;Wheel:1.000;Wheel:1.000"
+      },
+      {
+        "realtime": 303.41802978515625,
+        "state": "Salvage",
+        "completed": 3,
+        "alive": 0,
+        "scrap": 300,
+        "inventory": 3,
+        "recovered": 3,
+        "bonuses": 2,
+        "damage": 1.0,
+        "hull": 1.0,
+        "core": 1.0,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453,
+        "inventoryConditions": "Gun:0.000;Wheel:1.000;Wheel:1.000"
+      },
+      {
+        "realtime": 469.3294677734375,
+        "state": "Salvage",
+        "completed": 4,
+        "alive": 0,
+        "scrap": 425,
+        "inventory": 3,
+        "recovered": 3,
+        "bonuses": 3,
+        "damage": 1.0,
+        "hull": 1.0,
+        "core": 1.0,
+        "playerHp": 180.0,
+        "playerMaxHp": 180.0,
+        "inventoryConditions": "Gun:0.000;Wheel:1.000;Wheel:1.000"
+      }
+    ],
+    "mountedCoreHpTransitions": [
+      {
+        "state": "Garage",
+        "completed": 1,
+        "inventory": 4,
+        "playerHp": 100.0,
+        "playerMaxHp": 100.0
+      },
+      {
+        "state": "Garage",
+        "completed": 1,
+        "inventory": 4,
+        "playerHp": 100.0,
+        "playerMaxHp": 100.0
+      },
+      {
+        "state": "Garage",
+        "completed": 1,
+        "inventory": 3,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453
+      },
+      {
+        "state": "Garage",
+        "completed": 2,
+        "inventory": 4,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453
+      },
+      {
+        "state": "Garage",
+        "completed": 2,
+        "inventory": 3,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453
+      },
+      {
+        "state": "Garage",
+        "completed": 2,
+        "inventory": 3,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453
+      },
+      {
+        "state": "Garage",
+        "completed": 3,
+        "inventory": 4,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453
+      },
+      {
+        "state": "Garage",
+        "completed": 3,
+        "inventory": 4,
+        "playerHp": 120.00000762939453,
+        "playerMaxHp": 120.00000762939453
+      },
+      {
+        "state": "Garage",
+        "completed": 3,
+        "inventory": 3,
+        "playerHp": 180.0,
+        "playerMaxHp": 180.0
+      },
+      {
+        "state": "Garage",
+        "completed": 4,
+        "inventory": 4,
+        "playerHp": 180.0,
+        "playerMaxHp": 180.0
+      },
+      {
+        "state": "Garage",
+        "completed": 4,
+        "inventory": 3,
+        "playerHp": 180.0,
+        "playerMaxHp": 180.0
+      },
+      {
+        "state": "Garage",
+        "completed": 4,
+        "inventory": 3,
+        "playerHp": 180.0,
+        "playerMaxHp": 180.0
+      }
+    ]
+  },
+  "unitySuites": [
+    {
+      "mode": "EditMode",
+      "evidenceDirectory": "20261022T174447Z-6fc77cd005f944a78e76a5a5fb150176",
+      "nativeExit": 0,
+      "total": 434,
+      "passed": 434,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "mode": "PlayMode",
+      "evidenceDirectory": "20261022T180640Z-307118fef2f34476a9359389eaf452a1",
+      "nativeExit": 0,
+      "total": 176,
+      "passed": 176,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "finalBuild": {
+    "evidenceDirectory": "20261022T180814Z-0cbb35b6b0fa4f0aa4249e7ed0b795ba",
+    "nativeExit": 0,
+    "summaries": [
+      "[MOV SERIES BUILD] qa=False result=Succeeded bytes=102843460 errors=0 warnings=4",
+      "[MOV SERIES BUILD] qa=True result=Succeeded bytes=102871065 errors=0 warnings=4"
+    ],
+    "assemblyHashesMatchNativeQA": true,
+    "assemblySha256": {
+      "retail": "ef7fb8cfc92f3daa4cfb51ec7eef0d124c6cbf89bdfb01916d27072b21233993",
+      "qa": "87a11d7f677ec6999bded55f017fc9ba6efdc944951add5a04d2493361d0beab"
+    }
+  },
+  "protectedConfigurationSha256": {
+    "ProjectSettings/ProjectVersion.txt": "0e9a62459535e28cbae39573f6a4858db49eeb3b0ec6ebe3241233ff9ca9584e",
+    "Packages/manifest.json": "c2814a414daf59cf769599dd32bf12084e43ee38c9856fc027634c3fc25cf23f",
+    "Packages/packages-lock.json": "e9918aa3b4bec531453946d2db7f4644662676d7d38d8fa2623a260b09e5ed62"
+  }
+}

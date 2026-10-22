@@ -26,7 +26,7 @@ namespace RoboRougelike.MOVSeries
                 switch(part.Kind)
                 {
                     case R3PartKind.Booster:
-                        var booster=part.gameObject.AddComponent<VehicleBooster>();booster.Bind(body,transform);
+                        var booster=part.gameObject.AddComponent<VehicleBooster>();booster.Bind(body,part.transform);
                         booster.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,10f/boostCount,20);
                         booster.SetAvailabilityFilter(()=>Available(part));boosters.Add(booster);break;
                     case R3PartKind.JumpDrive:
