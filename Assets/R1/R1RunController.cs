@@ -165,8 +165,9 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
-            if(ids==null||bonuses==null||ids.Length+bonuses.Length>3||
+            if(ids==null||bonuses==null||ids.Length>3||
                 ids.Distinct().Count()!=ids.Length||!Progress.CanCompleteUnifiedRewards(bonuses))return false;
+            // Two separate reward pools: one bonus and up to three salvaged parts.
             // Reject before settling salvage so that inventory never receives partial rewards.
             if(VehicleModel.Inventory.Count+ids.Length+bonuses.Length>200)return false;
             var selectedUpgrades=bonuses.Select(index=>Progress.Offers[index]).ToArray();
