@@ -77,6 +77,17 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź nagrody i kontynuuj",button))
                 run.ConfirmRewards(lootSelection,bonusSelection);
         }
+        private static string BonusText(R3PartState item)
+        {
+            if(item.UpgradeEffect==R1UpgradeEffect.Repair)return "Regeneracja 2,5% HP/s";
+            string name=item.UpgradeEffect switch {
+                R1UpgradeEffect.Hull=>"Wytrzymałość",R1UpgradeEffect.Damage=>"Obrażenia",
+                R1UpgradeEffect.Reload=>"Czas przeładowania",R1UpgradeEffect.Mobility=>"Mobilność",
+                R1UpgradeEffect.Core=>"Rdzeń",_=>"Bonus"
+            };
+            return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
+                (item.UpgradeAmount*100).ToString("0")+"%";
+        }
         private void DrawInventory(R1RunController run)
         {
             var model=run.VehicleModel;var garage=run.Garage;var items=model.Inventory;
@@ -97,7 +108,7 @@ namespace RoboRougelike.R1
             {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Bonusy 1×2×2 działają wyłącznie po montażu i zajmują cztery sąsiednie pola. Zniszczone moduły napraw przed montażem.\n\nZdjęte moduły wracają do magazynu.",body);return;}
             var profile=R4WeaponDefinition.Get(selected.Weapon);
             GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.BonusModule?
-                $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{selected.UpgradeEffect} +{selected.UpgradeAmount*100:0}% (po montażu)":
+                $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
                 selected.Kind==R3PartKind.Gun?
                 $"{profile.Damage*(run.ActiveStats?.Damage??1f):0} obrażeń • co {profile.Interval*(run.ActiveStats?.FireInterval??1f):0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
             string error=model.PlacementError(garage.Cell,selected.Kind,true,selected.Weapon);
