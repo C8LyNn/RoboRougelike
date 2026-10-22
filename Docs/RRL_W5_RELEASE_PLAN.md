@@ -24,23 +24,23 @@
 ## Task 1: Release history and source integrity
 **Files:** Git history, this plan, `Docs/RRL_W5_RELEASE_QA.md`.
 **Interfaces:** Input verified PR/develop SHAs; output isolated merge commit and baseline source equality.
-- [ ] Verify live PRs/develop, create isolated worktree and merge W2 then PR19 without importing PR17/18 again.
-- [ ] Validate tracked metas/scenes/packages and exact Assets/Packages/ProjectSettings equality against PR19; retain inherited test results as baseline, not new W5 runs.
+- [x] Verify live PRs/develop, create isolated worktree and merge W2 then PR19 without importing PR17/18 again.
+- [x] Validate tracked metas/scenes/packages and exact Assets/Packages/ProjectSettings equality against PR19; retain inherited test results as baseline, not new W5 runs.
 
 ## Task 2: Shutdown investigation and complete native run
 **Files:** Existing `Assets/R4/RRLW2RuntimeQA.cs`; QA-only diagnostic utility if required; relevant production/test files only after a reproduced defect.
 **Interfaces:** Existing command-line QA installation and public run APIs; output native-exit matrix, complete input-pilot run/restart, performance samples.
-- [ ] Gather existing crash logs and fault metadata; compare no-observer Application.Quit with observed shutdown. If needed, repeat with an empty scene or alternate renderer, one variable at a time.
-- [ ] Add only QA-defined diagnostics/performance sampling needed for a conclusive probe. A production fix must follow a reproduced failure and RED→GREEN regression.
-- [ ] Complete six stages using real input/projectiles/active AI, operator reward/garage actions, final reward/Won/restart. Use an unobstructed valid route before changing the simple QA pilot.
-- [ ] Verify 720p/1080p, mounted/lost/repaired bonuses, bridge detachment and part-state persistence using the existing fixtures plus new evidence where W5 changes matter. Record API steps separately.
+- [x] Gather existing crash logs and fault metadata; compare no-observer Application.Quit with observed shutdown. If needed, repeat with an empty scene or alternate renderer, one variable at a time.
+- [x] Add only QA-defined diagnostics/performance sampling needed for a conclusive probe. A production fix must follow a reproduced failure and RED→GREEN regression.
+- [x] Complete six stages using real input/projectiles/active AI, operator reward/garage actions, final reward/Won/restart. Use an unobstructed valid route before changing the simple QA pilot.
+- [x] Verify 720p/1080p, mounted/lost/repaired bonuses, bridge detachment and part-state persistence using the existing fixtures plus new evidence where W5 changes matter. Record API steps separately.
 
 ## Task 3: Final regression and redistributable
 **Files:** Existing Unity runner/build scripts; release packaging helper only if useful; local ignored release output.
 **Interfaces:** Stable tested source → retail Windows files → ZIP → extracted matching files and launched retail process.
-- [ ] Run full EditMode, PlayMode and Windows builds once after fixes; read native codes/XML/logs. Run repository/CI validators and preserve configuration versions.
-- [ ] Create exact requested ZIP with all retail runtime dependencies and a source/checksum manifest. Exclude QA, logs, symbols not required at runtime and licensing data.
-- [ ] Extract to a fresh directory, compare every included file hash and launch the extracted retail EXE. Record startup, renderer, errors, close outcome and ZIP bytes/SHA256.
+- [x] Run full EditMode, PlayMode and Windows builds once after fixes; read native codes/XML/logs. Run repository/CI validators and preserve configuration versions.
+- [x] Create exact requested ZIP with all retail runtime dependencies and a source/checksum manifest. Exclude QA, logs, symbols not required at runtime and licensing data.
+- [x] Extract to a fresh directory, compare every included file hash and launch the extracted retail EXE. Record startup, renderer, errors, close outcome and ZIP bytes/SHA256.
 
 ## Task 4: Review, report and publication
 **Files:** `Docs/RRL_W5_RELEASE_QA.md`, curated evidence and plan status.

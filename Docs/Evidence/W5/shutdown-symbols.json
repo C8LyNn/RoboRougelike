@@ -1,0 +1,19 @@
+{
+  "unityVersion": "6000.3.14.35903",
+  "pdbSignatureMatchesImage": true,
+  "pdbGuid": "223bd7a7-393f-40cf-9b0c-20abedf13a2e",
+  "pdbAge": 1,
+  "faults": [
+    {
+      "rva": "0xb1b031",
+      "nearestPublicFunction": "RuntimeStatic<PlatformAccessibilityManager,0>::StaticDestroy",
+      "displacement": 81
+    },
+    {
+      "rva": "0xb29715",
+      "nearestPublicFunction": "PlatformAccessibilityNodeRoot::get_BoundingRectangle",
+      "displacement": 37
+    }
+  ],
+  "method": "Windows own-app fault metadata; CodeView public function records from matching locally bundled Unity PDB; no game C# frame asserted"
+}

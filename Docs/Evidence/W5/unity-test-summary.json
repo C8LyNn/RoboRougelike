@@ -1,0 +1,42 @@
+{
+  "EditMode": {
+    "artifact": "20261022T224846Z-fd35d8e482184b5aaee4987bd9856e36",
+    "result": {
+      "id": "2",
+      "testcasecount": "434",
+      "result": "Passed",
+      "total": "434",
+      "passed": "434",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-22 23:10:31Z",
+      "end-time": "2026-10-22 23:10:32Z",
+      "duration": "0,6864051"
+    },
+    "nativeExit": 0
+  },
+  "PlayMode": {
+    "artifact": "20261022T231034Z-4cd5374b08c647be874b431c20276c7a",
+    "result": {
+      "id": "2",
+      "testcasecount": "176",
+      "result": "Passed",
+      "total": "176",
+      "passed": "176",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-22 23:10:45Z",
+      "end-time": "2026-10-22 23:11:17Z",
+      "duration": "31,7994108"
+    },
+    "nativeExit": 0
+  }
+}
