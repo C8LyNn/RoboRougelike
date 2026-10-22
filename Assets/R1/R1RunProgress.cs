@@ -17,9 +17,13 @@ namespace RoboRougelike.R1
         public R1RunStats Copy() => new R1RunStats {Hull=Hull,Damage=Damage,FireInterval=FireInterval,Mobility=Mobility,Core=Core};
         public void Apply(R1UpgradeDefinition upgrade)
         {
-            if (upgrade == null || float.IsNaN(upgrade.Amount) || float.IsInfinity(upgrade.Amount)) return;
-            float amount = Mathf.Clamp01(upgrade.Amount);
-            switch (upgrade.Effect)
+            if(upgrade!=null)Apply(upgrade.Effect,upgrade.Amount);
+        }
+        public void Apply(R1UpgradeEffect effect,float rawAmount)
+        {
+            if(float.IsNaN(rawAmount)||float.IsInfinity(rawAmount))return;
+            float amount=Mathf.Clamp01(rawAmount);
+            switch (effect)
             {
                 case R1UpgradeEffect.Hull: Hull = Mathf.Min(3, Hull * (1 + amount)); break;
                 case R1UpgradeEffect.Damage: Damage = Mathf.Min(3, Damage * (1 + amount)); break;
@@ -76,7 +80,8 @@ namespace RoboRougelike.R1
         {
             if (State != R1RunState.UpgradeChoice || index < 0 || index >= offers.Count) return null;
             var chosen = offers[index];
-            Stats.Apply(chosen); acquired.Add(chosen.Title);
+            // The upgrade is a physical garage module, never a permanent stat.
+            acquired.Add(chosen.Title);
             offers.Clear(); EncounterIndex++; State = R1RunState.Garage;
             return chosen;
         }
@@ -101,7 +106,7 @@ namespace RoboRougelike.R1
             var indices=selectedBonuses.ToArray();
             foreach(var index in indices)
             {
-                Stats.Apply(offers[index]);
+                // Taking a bonus yields a module in inventory. It must be mounted to work.
                 acquired.Add(offers[index].Title);
             }
             offers.Clear();
