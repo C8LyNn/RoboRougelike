@@ -23,8 +23,12 @@
 5. Dense reward pages overflow, omitted source/type/condition or hidden confirm; inspect native screenshots at 1280x720 and 1920x1080 with many entries, plus Windows player.
 
 ## Tasks
-- [ ] Baseline targeted model tests/import/compile; read existing integration and reproduce defects with tests.
-- [ ] Reward and repair tests RED; fix model/controller settlement and UI, keep legacy fixtures meaningful under new intended rules. GREEN targeted suite.
-- [ ] Density/threat and real physics tests RED; fix actual roster accounting and immediate debris lifecycle, pause/cleanup/projectiles. GREEN targeted suite.
-- [ ] Adapt old expectations (do not delete cases), full EditMode, full PlayMode, Windows build, observed gameplay loop/native screenshots and visual debris tuning.
-- [ ] Fresh whole-PR review, verify/fix material findings RED→GREEN, audit source/meta/secrets and clean refs; report READY/BLOCKED with actual evidence; push existing PR branch only.
+- [x] Baseline targeted model tests/import/compile; read existing integration and reproduce defects with tests.
+- [x] Reward and repair tests RED; fix model/controller settlement and UI, keep legacy fixtures meaningful under new intended rules. GREEN targeted suite.
+- [x] Density/threat and real physics tests RED; fix actual roster accounting and immediate debris lifecycle, pause/cleanup/projectiles. GREEN targeted suite.
+- [x] Adapt old expectations (do not delete cases), full EditMode, full PlayMode, Windows build, observed gameplay loop/native screenshots and visual debris tuning.
+- [x] Fresh whole-PR review, verify/fix material findings RED→GREEN, audit source/meta/secrets and clean refs; report READY/BLOCKED with actual evidence; push existing PR branch only.
+
+## Final gate outcome
+
+Implementation `c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753`: EditMode385/385, PlayMode176/176, Windows retail+QA PASS; all old cases retained. Native operator + input pilot completed6/6 at1920 before the later garage-only fix; final build separately passed3 physical fights, industrial-garage framing/orbit and range/return at1280. See final QA report for exact evidence, independent-review boundary, engine UIAutomation shutdown failure and cloud activation status. Report/push tasks are executed as delivery work; an overall BLOCKED result is not a claim that the engine failure is fixed.
