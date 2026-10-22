@@ -163,7 +163,9 @@ namespace RoboRougelike.R3
         public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
         {
             var batch=recovered.ToArray();
-            if(batch.Any(p=>p==null||p.Health<0||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||string.IsNullOrEmpty(p.Id)||Owns(p.Id))||
+            if(batch.Any(p=>p==null||p.Health<0||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+                (p.Kind==R3PartKind.BonusModule&&string.IsNullOrWhiteSpace(p.UpgradeId))||
+                string.IsNullOrEmpty(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
             inventory.AddRange(batch.Select(p=>p.Copy()));return true;
         }
@@ -172,12 +174,13 @@ namespace RoboRougelike.R3
             if(rewards==null)return false;
             var offers=rewards.ToArray();
             if(offers.Any(b=>b==null||string.IsNullOrWhiteSpace(b.Id)||
-                string.IsNullOrWhiteSpace(b.Title)||!Enum.IsDefined(typeof(R1UpgradeEffect),b.Effect)))return false;
+                !Enum.IsDefined(typeof(R1UpgradeEffect),b.Effect)))return false;
             if(inventory.Count+offers.Length>200)return false;
             foreach(var bonus in offers)
                 inventory.Add(new R3PartState(default,R3PartKind.BonusModule){
                     Id=Guid.NewGuid().ToString("N"),Source="Bonus za zwycięstwo",
-                    UpgradeId=bonus.Id,UpgradeTitle=bonus.Title,UpgradeDescription=bonus.Description,
+                    UpgradeId=bonus.Id,UpgradeTitle=string.IsNullOrWhiteSpace(bonus.Title)?bonus.Id:bonus.Title,
+                    UpgradeDescription=bonus.Description,
                     UpgradeEffect=bonus.Effect,UpgradeAmount=Mathf.Clamp01(bonus.Amount)});
             return true;
         }
