@@ -79,11 +79,6 @@ namespace RoboRougelike.R3
             return (lm&FaceBit(direction))!=0 && (rm&FaceBit(-direction))!=0;
         }
 
-        public static IEnumerable<Vector3Int> FaceCenters(Vector3Int cell,Vector3Int direction)
-        {
-            // One port is centred on every exterior voxel face.
-            yield return cell;
-        }
     }
 
     /// <summary>Port data on a real physical block or a non-colliding footprint socket.</summary>
