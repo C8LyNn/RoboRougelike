@@ -1,0 +1,21 @@
+{
+  "runId": "e43e857dd7934304bb9bde2f7bffce29",
+  "startedUtc": "2026-10-22T09:29:00.3057183Z",
+  "finishedUtc": "2026-10-22T09:30:51.7462870Z",
+  "exitCode": 0,
+  "exeSha256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "assemblySha256": "11FC980013DA89824EADEB2A4530087BCFA1A7EED33602FD14852D7D9A7A728E",
+  "qa": false,
+  "purpose": "Human Alt+F4 control, no UI automation and no automatic timeout/termination",
+  "result": "PASS",
+  "implementationSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+  "method": "User manually closed the final W2 retail player using Alt+F4; no UI Automation of this process, no automatic timeout or termination.",
+  "userConfirmation": "Zamknęła się poprawnie",
+  "scope": "Normal retail shutdown only; this does not repeat or fix the separate UIAutomation-triggered shutdown failure.",
+  "previousControl": {
+    "runId": "611f863c67e5463da8f1457fcf6d19bd",
+    "timeout": true,
+    "exitCode": -1,
+    "result": "NOT RUN: launcher terminated after30 minutes before user control"
+  }
+}

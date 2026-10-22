@@ -48,14 +48,14 @@ public class R3GarageModelTests
     {
         var model = new R3VehicleModel(Blueprint()); model.Award(50);
         var wheel = model.Parts[2]; wheel.Health = 0.5f;
-        Assert.That(model.RepairCost(wheel), Is.EqualTo(2));
+        Assert.That(model.RepairCost(wheel), Is.EqualTo(3));
         Assert.That(model.Repair(wheel.Cell), Is.True);
         Assert.That(wheel.Health, Is.EqualTo(1));
-        Assert.That(model.Scrap, Is.EqualTo(48));
+        Assert.That(model.Scrap, Is.EqualTo(47));
         wheel.Health = 0;
         Assert.That(model.RepairCost(wheel), Is.EqualTo(15));
         Assert.That(model.Repair(wheel.Cell), Is.True);
-        Assert.That(model.Scrap, Is.EqualTo(33));
+        Assert.That(model.Scrap, Is.EqualTo(32));
         Assert.That(model.Repair(wheel.Cell), Is.False);
     }
     [Test] public void RemovalProtectsCoreEssentialPlanAndConnectedFragments()
@@ -69,16 +69,16 @@ public class R3GarageModelTests
         Assert.That(model.Remove(Vector3Int.forward * 2), Is.True);
         Assert.That(model.Scrap, Is.EqualTo(10), "Usuwanie nie produkuje waluty.");
     }
-    [Test] public void EmergencyOnlyRestoresMissingEssentialsAtQuarterHealth()
+    [Test] public void EmergencyOnlyRebuildsMissingEssentialsAtFullPrice()
     {
         var model = new R3VehicleModel(Blueprint());
         Assert.That(model.EmergencyRepair(), Is.False);
-        model.Parts[1].Health = 0; model.Parts[2].Health = 0;
+        model.Parts[1].Health = 0; model.Parts[2].Health = 0; model.Award(45);
         Assert.That(model.CanDeploy, Is.False);
         Assert.That(model.EmergencyRepair(), Is.True);
         Assert.That(model.CanDeploy, Is.True);
-        Assert.That(model.Parts[1].Health, Is.EqualTo(0.25f));
-        Assert.That(model.Parts[2].Health, Is.EqualTo(0.25f));
+        Assert.That(model.Parts[1].Health, Is.EqualTo(1f));
+        Assert.That(model.Parts[2].Health, Is.EqualTo(1f));
         Assert.That(model.Parts[0].Health, Is.EqualTo(1));
         Assert.That(model.Scrap, Is.Zero);
         Assert.That(model.EmergencyRepair(), Is.False);

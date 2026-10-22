@@ -43,7 +43,7 @@ public class R6DrivingTests
     }
     [UnityTest] public IEnumerator RealVehicleContactTransfersMomentumWithoutExplosiveBounce()
     {
-        var enemy=run.Encounter.Enemies.Single();var other=enemy.GetComponent<Rigidbody>();
+        var enemy=run.Encounter.Enemies.First();var other=enemy.GetComponent<Rigidbody>();
         other.position=new Vector3(0,0,-21);run.Player.MoveTo(new Vector3(0,.7f,-25.5f),Quaternion.identity);Physics.SyncTransforms();
         var body=run.Player.GetComponent<Rigidbody>();body.linearVelocity=Vector3.forward*5;float start=other.position.z;
         float until=Time.time+1.2f,maxSpeed=0,maxSpin=0;

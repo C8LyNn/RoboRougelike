@@ -1,0 +1,21 @@
+{
+  "startup": {
+    "pid": 53980,
+    "windowTitle": "RoboRougelike",
+    "responding": true,
+    "gameReady": true,
+    "detectedErrors": 0,
+    "renderer": [
+      "[D3D12 Device Filter] Vendor Name: NVIDIA",
+      "[D3D12 Device Filter] Device Name: NVIDIA GeForce RTX 5080",
+      "Direct3D:"
+    ]
+  },
+  "exit": {
+    "finishedUtc": "2026-10-22T23:15:51.0069548Z",
+    "exitCode": 0,
+    "pid": 53980
+  },
+  "closeMethod": "Human Alt+F4, no UIA client attached",
+  "humanConfirmation": "Zamknęła się poprawnie"
+}

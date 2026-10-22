@@ -21,9 +21,9 @@ public class R41GarageTests
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
         yield return Until(()=>Run?.Progress!=null,"Bootstrap");Run.StartRun();yield return Until(()=>!Run.Transitioning,"Walka");
-        Run.Encounter.SetCombatActive(false);var enemy=Run.Encounter.Enemies.Single();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);
-        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Odzysk");Run.ConfirmSalvage(Array.Empty<string>());
-        Run.Player.transform.rotation=Quaternion.Euler(0,37,0);Run.ChooseUpgrade(0);yield return null;
+        Run.Encounter.SetCombatActive(false);var enemy=Run.Encounter.Enemies.First();RRLW2TestFlow.DefeatAll(Run);
+        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Odzysk");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
+        Run.Player.transform.rotation=Quaternion.Euler(0,37,0);yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup()
     {if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
@@ -65,7 +65,7 @@ public class R41GarageTests
         Run.Player.GetComponent<R3VehicleAssembly>().Capture();garage.SetTool(R41GarageTool.Repair);
         Assert.That(garage.Point(TopRay(cell)),Is.True);Assert.That(garage.Cell,Is.EqualTo(cell));
         int funds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True);
-        Assert.That(Run.VehicleModel.At(cell).Health,Is.EqualTo(1));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds-2));
+        Assert.That(Run.VehicleModel.At(cell).Health,Is.EqualTo(1));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds-1),"ceil(armor5 * missing0.4 * 0.35) = 1.");
         garage.SetTool(R41GarageTool.Remove);Assert.That(garage.Point(TopRay(cell)),Is.True);Assert.That(garage.ClickTarget(),Is.True);
         Assert.That(Run.VehicleModel.At(cell),Is.Null);Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==id).Health,Is.EqualTo(1));
         garage.SelectedInventoryId=id;garage.SetTool(R41GarageTool.Mount);Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);
@@ -101,6 +101,30 @@ public class R41GarageTests
         garage.Select(new Vector3Int(6,5,7));Assert.That(garage.PreviewValid,Is.False);
         int funds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.False);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
         yield return null;
+    }
+    [UnityTest] public IEnumerator IndustrialGarageKeepsVehicleVisibleAndRestoresArenaWithoutChangingVehicle()
+    {
+        var garage=Run.Garage;garage.Close();float near=Camera.main.nearClipPlane;Run.Arena.Build(RoboRougelike.R5.R5ArenaKind.Industrial);
+        Run.Player.GetComponent<Rigidbody>().interpolation=RigidbodyInterpolation.None;
+        Run.Player.transform.SetPositionAndRotation(new Vector3(-17,.7f,0),Quaternion.identity);Physics.SyncTransforms();
+        var position=Run.Player.transform.position;var rotation=Run.Player.transform.rotation;
+        var model=Run.VehicleModel;string before=string.Join("|",model.Parts.Concat(model.Inventory).Select(p=>JsonUtility.ToJson(p)));int funds=model.Scrap;
+        var arena=Run.Arena.Layout.gameObject;var colliders=arena.GetComponentsInChildren<Collider>();
+        garage.Open();garage.Tilt(-100);yield return null;yield return null;
+        var camera=Camera.main;var target=Run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Core).transform.position;
+        Assert.That(target.x,Is.EqualTo(-17).Within(.1f),"The fixture must actually move the paused vehicle beside the industrial hall.");
+        var direction=target-camera.transform.position;
+        Debug.Log("[W2 Garage fixture] camera="+camera.transform.position+" target="+target+" arena="+arena.transform.position);
+        var sight=new Ray(target,-direction.normalized);
+        var blocking=arena.GetComponentsInChildren<Renderer>().Where(r=>r.gameObject.activeInHierarchy&&r.enabled&&r.bounds.IntersectRay(sight,out float entry)&&entry<direction.magnitude).ToArray();
+        Assert.That(blocking,Is.Empty,"Industrial halls must not obscure the vehicle while orbiting in the garage.");
+        garage.Open();garage.Close();
+        Assert.That(arena.activeSelf,Is.True,"Repeated Open must preserve the original combat arena state.");
+        Assert.That(colliders.All(c=>c.enabled&&c.gameObject.activeInHierarchy),Is.True,"Combat cover must return on leaving the garage.");
+        Assert.That(Run.Player.transform.position,Is.EqualTo(position));Assert.That(Run.Player.transform.rotation,Is.EqualTo(rotation));
+        Assert.That(Run.VehicleModel,Is.SameAs(model));Assert.That(string.Join("|",model.Parts.Concat(model.Inventory).Select(p=>JsonUtility.ToJson(p))),Is.EqualTo(before));
+        Assert.That(Camera.main.nearClipPlane,Is.EqualTo(near));Assert.That(model.Scrap,Is.EqualTo(funds));
+        arena.SetActive(false);garage.Open();garage.Close();Assert.That(arena.activeSelf,Is.False,"An already hidden arena must stay hidden.");
     }
     [TestCase(1280,720)] [TestCase(1024,768)] public void PanelsCannotClickThroughAtBothAspectRatios(int width,int height)
     {

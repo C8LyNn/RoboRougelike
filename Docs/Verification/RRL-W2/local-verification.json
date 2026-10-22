@@ -1,0 +1,37 @@
+{
+  "implementationSha": "c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753",
+  "runtimeSourceSha256": "316ee6f27e2780b7479dadf0e7bf4d5e61dfc2648c417286c3c1800edb641ae9",
+  "localEvidenceDirectory": "Artifacts/Local/20261022T075210Z-095bd98f839a474f95f2752ee84706f4",
+  "gates": {
+    "EditMode": {
+      "total": 385,
+      "passed": 385,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "startedUtc": "2026-10-22T07:52:10.3334794Z",
+      "finishedUtc": "2026-10-22T08:11:25.0641389Z"
+    },
+    "PlayMode": {
+      "total": 176,
+      "passed": 176,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "startedUtc": "2026-10-22T08:11:25.1557422Z",
+      "finishedUtc": "2026-10-22T08:12:09.5837037Z"
+    },
+    "Build": {
+      "exitCode": 0,
+      "startedUtc": "2026-10-22T08:12:09.6636816Z",
+      "task": "Build",
+      "finishedUtc": "2026-10-22T08:12:47.5319942Z"
+    }
+  },
+  "pythonToolTests": {
+    "total": 16,
+    "passed": 16,
+    "repositoryValidationErrors": 0
+  },
+  "runtimeSourceChangedAfterGates": false
+}

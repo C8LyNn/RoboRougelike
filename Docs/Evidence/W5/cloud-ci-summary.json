@@ -1,0 +1,143 @@
+{
+  "reviewedHead": "22fc4aa0d2c89ccd26065aefc219cf40141769fb",
+  "runs": [
+    {
+      "id": 39871626712,
+      "name": "CI-01 Repository Validation",
+      "sha": "22fc4aa0d2c89ccd26065aefc219cf40141769fb",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39871626712",
+      "jobs": [
+        {
+          "name": "validate",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Validator regression tests",
+              "conclusion": "success"
+            },
+            {
+              "name": "Unity repository integrity (Git index)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39871626822,
+      "name": "CI-03 Unity PlayMode",
+      "sha": "22fc4aa0d2c89ccd26065aefc219cf40141769fb",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39871626822",
+      "jobs": [
+        {
+          "name": "tests",
+          "conclusion": "failure",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Validate project before launching Unity",
+              "conclusion": "success"
+            },
+            {
+              "name": "Require valid Unity activation credentials",
+              "conclusion": "failure"
+            },
+            {
+              "name": "Unity 6000.3.14f1 PlayMode",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Require nonempty, fully passing executed test cases",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Preserve XML, Unity logs or activation blocker",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39871626889,
+      "name": "CI-02 Unity EditMode",
+      "sha": "22fc4aa0d2c89ccd26065aefc219cf40141769fb",
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/39871626889",
+      "jobs": [
+        {
+          "name": "tests",
+          "conclusion": "failure",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Validate project before launching Unity",
+              "conclusion": "success"
+            },
+            {
+              "name": "Require valid Unity activation credentials",
+              "conclusion": "failure"
+            },
+            {
+              "name": "Unity 6000.3.14f1 EditMode",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Require nonempty, fully passing executed test cases",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Preserve XML, Unity logs or activation blocker",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

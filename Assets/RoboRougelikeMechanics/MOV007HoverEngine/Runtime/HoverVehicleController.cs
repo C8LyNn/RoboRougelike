@@ -119,14 +119,14 @@ namespace RoboRougelike.Mechanics.MOV007
             {
                 HoverLiftPod pod = _supported[i];
                 float height = _heights[i];
-                float pointSpeed = Vector3.Dot(vehicleBody.GetPointVelocity(pod.transform.position), Vector3.up);
+                float pointSpeed = Vector3.Dot(vehicleBody.GetPointVelocity(pod.transform.position), pod.LiftDirection);
                 float liftForce = HoverPhysicsMath.LiftForceNewtons(
                     vehicleBody.mass, availableCount, gravity, height,
                     pod.targetHeightMeters, pointSpeed, pod.springFrequencyHz,
                     pod.dampingRatio, pod.nominalLoadKg, pod.maximumLiftToNominalWeight);
                 if (liftForce <= 0f) { pod.UpdateDiagnostics(true, height, 0f); continue; }
                 if (!pod.TrySpendEnergy(dt)) { pod.UpdateDiagnostics(false, -1f, 0f); continue; }
-                vehicleBody.AddForceAtPosition(Vector3.up * liftForce, pod.transform.position, ForceMode.Force);
+                vehicleBody.AddForceAtPosition(pod.LiftDirection * liftForce, pod.transform.position, ForceMode.Force);
                 pod.UpdateDiagnostics(true, height, liftForce);
                 paidCount++;
             }

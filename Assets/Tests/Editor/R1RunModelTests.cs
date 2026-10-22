@@ -41,7 +41,7 @@ public class R1RunModelTests
         Assert.That(run.Acquired.Count, Is.EqualTo(1));
         Assert.That(run.EncounterIndex, Is.EqualTo(1));
     }
-    [Test] public void ThirdVictoryEndsRunWithoutAnotherUpgrade()
+    [Test] public void ThirdVictoryOffersOneLastPhysicalBonusBeforeCompletion()
     {
         var run = new R1RunProgress(); run.Start();
         for (int i = 0; i < 3; i++)
@@ -51,7 +51,10 @@ public class R1RunModelTests
         }
         Assert.That(run.State, Is.EqualTo(R1RunState.Won));
         Assert.That(run.CompletedEncounters, Is.EqualTo(3));
-        Assert.That(run.Offers, Is.Empty);
+        Assert.That(run.Offers.Count, Is.EqualTo(3));
+        Assert.That(run.OpenSalvage(),Is.True);
+        Assert.That(run.CompleteUnifiedRewards(new[]{0}),Is.True);
+        Assert.That(run.Offers, Is.Empty);Assert.That(run.Acquired.Count,Is.EqualTo(3));
         run.Lose("late death");
         Assert.That(run.State, Is.EqualTo(R1RunState.Won));
     }

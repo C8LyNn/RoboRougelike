@@ -44,7 +44,7 @@ public class R6RangeTests
         run.StartRun();run.ChooseRoute(0);while(run.Transitioning)yield return null;
         run.Encounter.SetCombatActive(false);foreach(var foe in run.Encounter.Enemies)foe.Core.ApplyDamage(100000,foe.Core.transform.position,Vector3.up);
         while(run.Progress.State==R1RunState.Combat)yield return null;
-        run.ConfirmSalvage(run.Salvage.Items.Where(i=>i.Recoverable).Take(1).Select(i=>i.Id));run.ChooseUpgrade(0);
+        RRLW2TestFlow.Claim(run,run.Salvage.Items.Where(i=>i.Recoverable).Take(1).Select(i=>i.Id));
         var original=run.VehicleModel;string before=Snapshot(original);int earned=run.EarnedScrap,kills=run.DefeatedEnemies,upgrades=run.Progress.Acquired.Count;
         for(int visit=0;visit<2;visit++)
         {

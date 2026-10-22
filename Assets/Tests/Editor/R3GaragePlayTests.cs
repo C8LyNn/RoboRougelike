@@ -17,14 +17,15 @@ public class R3GaragePlayTests
     private Keyboard keyboard;
     private Mouse mouse;
     private InputSettings savedSettings,testSettings;
-    private static IEnumerator Until(Func<bool> condition, string message, float timeout = 15)
+    private static IEnumerator Until(Func<bool> condition, string message, float timeout = 15, bool automaticRewards = true)
     {
         if(R1RunController.Instance?.Progress?.State==R1RunState.Route)Assert.That(R1RunController.Instance.ChooseRoute(0),Is.True);
         float deadline = Time.realtimeSinceStartup + timeout;
         while (Time.realtimeSinceStartup < deadline)
         {
             var run=R1RunController.Instance;
-            if(run?.Progress?.State==R1RunState.Salvage)Assert.That(run.ConfirmSalvage(Array.Empty<string>()),Is.True);
+            if(condition())break;
+            if(automaticRewards&&run?.Progress?.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(run,Array.Empty<string>()),Is.True);
             if(condition())break;yield return null;
         }
         Assert.That(condition(), Is.True, message);
@@ -60,8 +61,8 @@ public class R3GaragePlayTests
             .GetComponent<P12PipelineSafeDamageable>();
         part.ApplyDamage(20, part.transform.position, Vector3.forward);
         foreach (var enemy in Run.Encounter.Enemies) enemy.Core.ApplyDamage(10000, enemy.Core.transform.position, Vector3.up);
-        yield return Until(() => Run.Progress.State == R1RunState.UpgradeChoice, "Nagroda.");
-        Run.ChooseUpgrade(0);
+        yield return Until(() => Run.Progress.State == R1RunState.Garage, "Nagroda.");
+
         yield return Until(() => !Run.Transitioning, "Przejście do garażu.");
         Assert.That(Run.Progress.State.ToString(), Is.EqualTo("Garage"));
         Assert.That(Run.Player.Controller.GameplayInputEnabled, Is.False);
@@ -70,7 +71,7 @@ public class R3GaragePlayTests
     }
     [UnityTest] public IEnumerator EnemyKeepsMovingAlongArenaBoundary()
     {
-        var enemy = Run.Encounter.Enemies.Single();
+        var enemy = Run.Encounter.Enemies.First();
         var body = enemy.GetComponent<Rigidbody>(); body.position = new Vector3(37.99f, 0, 0);
         Run.Player.MoveTo(new Vector3(60, 0.7f, 0), Quaternion.identity);
         Physics.SyncTransforms();
@@ -125,8 +126,8 @@ public class R3GaragePlayTests
         Run.Player.Core.ApplyDamage(10,Run.Player.Core.transform.position,Vector3.forward);
         var armor=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor);var armorCell=armor.Cell;
         armor.Damageable.ApplyDamage(25,armor.transform.position,Vector3.forward);
-        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.UpgradeChoice,"Pierwsze zwycięstwo.");
-        Run.ChooseUpgrade(0);
+        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Pierwsze zwycięstwo.");
+
         int reward=80+Run.Salvage.DismantledScrap;
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward));
         Assert.That(Run.VehicleModel.At(wheelCell).Health,Is.Zero);
@@ -146,7 +147,7 @@ public class R3GaragePlayTests
         Assert.That(Run.GarageRemove(Vector3Int.zero),Is.False);
         int funds=Run.VehicleModel.Scrap;
         Assert.That(Run.GarageBuy(new Vector3Int(1,2,0),R3PartKind.Gun),Is.False);
-        Assert.That(Run.GarageBuy(new Vector3Int(-1,2,0),R3PartKind.Gun),Is.False,"Brak środków.");
+        Assert.That(Run.GarageBuy(new Vector3Int(-1,2,0),R3PartKind.Blink),Is.False,"Brak środków.");
         Assert.That(Run.GarageBuy(new Vector3Int(6,5,7),R3PartKind.Armor),Is.False);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
         assembly=Run.Player.GetComponent<R3VehicleAssembly>();R1EncounterManager.ClearTransientObjects();
@@ -156,29 +157,29 @@ public class R3GaragePlayTests
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Druga walka.");
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(86));
-        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(2));
+        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(3));
         var positions=Run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
         float moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch dwóch AI.");
-        for(int i=0;i<2;i++){Assert.That(Vector3.Distance(positions[i],Run.Encounter.Enemies[i].transform.position),Is.GreaterThan(0.1f));profiles.Add(Run.Encounter.Enemies[i].Archetype);}
+        for(int i=0;i<3;i++){Assert.That(Vector3.Distance(positions[i],Run.Encounter.Enemies[i].transform.position),Is.GreaterThan(0.1f));profiles.Add(Run.Encounter.Enemies[i].Archetype);}
         Run.Encounter.SetCombatActive(false);
         var first=Run.Encounter.Enemies[0];first.Core.ApplyDamage(10000,first.Core.transform.position,Vector3.up);
         float end=Time.time+0.2f;yield return Until(()=>Time.time>=end,"Niezależna śmierć jednego AI.");
-        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(1));Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
-        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.UpgradeChoice,"Drugie zwycięstwo.");Run.ChooseUpgrade(0);
+        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(2));Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
+        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Drugie zwycięstwo.");
         Assert.That(Run.GarageRepair(new Vector3Int(1,2,0)),Is.True);
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Trzecia walka.");
-        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(3));
+        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(4));
         positions=Run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
         moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch trzech AI.");
-        for(int i=0;i<3;i++){Assert.That(Vector3.Distance(positions[i],Run.Encounter.Enemies[i].transform.position),Is.GreaterThan(0.1f));profiles.Add(Run.Encounter.Enemies[i].Archetype);}
+        for(int i=0;i<4;i++){Assert.That(Vector3.Distance(positions[i],Run.Encounter.Enemies[i].transform.position),Is.GreaterThan(0.1f));profiles.Add(Run.Encounter.Enemies[i].Archetype);}
         Assert.That(profiles.Count,Is.EqualTo(4));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(13));Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(2));
-        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.UpgradeChoice,"Trzecie starcie.");
-        while(Run.Progress.State==R1RunState.UpgradeChoice)
+        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Trzecie starcie.");
+        while(Run.Progress.State==R1RunState.Garage)
         {
-            Run.ChooseUpgrade(0);Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Dalszy etap R5.");
-            Run.Encounter.SetCombatActive(false);KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.UpgradeChoice||Run.Progress.State==R1RunState.Won,"Dalsza nagroda R5.");
+            Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Dalszy etap R5.");
+            Run.Encounter.SetCombatActive(false);KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage||Run.Progress.State==R1RunState.Won,"Dalsza nagroda R5.");
         }
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
         var previous=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=previous&&Run.Progress!=null,"Nowa próba.");
@@ -188,7 +189,7 @@ public class R3GaragePlayTests
 
     [UnityTest] public IEnumerator TurretSupportLossDropsEntireRemainingWeapon()
     {
-        var enemy=Run.Encounter.Enemies.Single();var yaw=enemy.transform.Find("Enemy_Yaw");
+        var enemy=Run.Encounter.Enemies.First();var yaw=enemy.transform.Find("Enemy_Yaw");
         yaw.GetChild(0).GetComponent<P12PipelineSafeDamageable>().ApplyDamage(1000,yaw.position,Vector3.up);
         yield return Until(()=>!enemy.WeaponOnline,"Rozbrojenie.");
         yield return null;
@@ -196,20 +197,20 @@ public class R3GaragePlayTests
         Assert.That(enemy.IsDefeated,Is.False);Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
 
-    [UnityTest] public IEnumerator EmergencyRepairProducesFunctionalQuarterHealthModulesWithoutFullReset()
+    [UnityTest] public IEnumerator EmergencyRebuildPaysForEssentialModulesWithoutFullReset()
     {
-        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.UpgradeChoice,"Nagroda.");Run.ChooseUpgrade(0);
+        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Nagroda.");
         var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
             part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.up);
         assembly.Capture();int scrap=Run.VehicleModel.Scrap;
         Assert.That(Run.StartNextEncounter(),Is.False);
         Assert.That(Run.GarageEmergencyRepair(),Is.True);
-        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap-60));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(2));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));
         Assert.That(Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health<=0),Is.EqualTo(10));
         foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
-            Assert.That(part.Damageable.CurrentHp/part.Damageable.MaxHp,Is.EqualTo(0.25f).Within(0.001));
+            Assert.That(part.Damageable.CurrentHp/part.Damageable.MaxHp,Is.EqualTo(1f).Within(0.001));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Walka po pomocy awaryjnej.");
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
@@ -226,15 +227,15 @@ public class R3GaragePlayTests
 
     [UnityTest] public IEnumerator CoreDeathDropsWeaponAndCleansItWhileAnotherEnemySurvives()
     {
-        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.UpgradeChoice,"Pierwsza nagroda.");
-        Run.ChooseUpgrade(0);Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Walka z dwoma przeciwnikami.");
+        KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Pierwsza nagroda.");
+        Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Walka z dwoma przeciwnikami.");
         Run.Encounter.SetCombatActive(false);
         var dead=Run.Encounter.Enemies[0];var yaw=dead.transform.Find("Enemy_Yaw");
         dead.Core.ApplyDamage(10000,dead.Core.transform.position,Vector3.up);
         yield return null;yield return null;
         Assert.That(yaw.IsChildOf(dead.transform),Is.False,"Śmierć rdzenia musi odłączyć całą sprawną wieżyczkę.");
         Assert.That(yaw.GetComponent<Rigidbody>(),Is.Not.Null);
-        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(1));Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
+        Assert.That(Run.Encounter.AliveCount,Is.EqualTo(2));Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
         yield return Until(()=>yaw==null,"Szczątki wieżyczki znikają w trwającej walce.",15);
         Assert.That(dead.IsDefeated,Is.True);Assert.That(dead.enabled,Is.False);
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));

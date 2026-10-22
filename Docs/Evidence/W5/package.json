@@ -1,0 +1,9 @@
+{
+  "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_W5_RC1_Windows_x64.zip",
+  "bytes": 38301521,
+  "sha256": "1f7f2cd735b67680fd2cf26c15081061d5cc8d215bc059ca05a1135274f9eaa8",
+  "runtimeFiles": 186,
+  "sourceCommit": "2d98906b47d76364c37a875527257b03d40e4ec9",
+  "extractedExe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W5-RC1\\Artifacts\\Local\\W5-ZipSmoke-b8c6253f7c62404c83585439c38a585a\\RoboRoguelike_W5_RC1_Windows_x64\\RoboRougelike.exe",
+  "allExtractedHashesMatch": true
+}
