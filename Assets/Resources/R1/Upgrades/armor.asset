@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: armor
   Title: "Wzmocniony pancerz"
-  Description: "+20% maksymalnej wytrzymałości bloków i mocowań. Bonus pozostaje do końca próby."
+  Description: "+20% maksymalnej wytrzymałości bloków i mocowań, gdy moduł 1×2×2 jest zamontowany i sprawny."
   Effect: 0
   Amount: 0.2
