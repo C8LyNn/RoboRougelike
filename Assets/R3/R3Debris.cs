@@ -17,7 +17,7 @@ namespace RoboRougelike.R3
             temporaryColliders.Clear();
             if(debrisBody!=null)debrisBody.useGravity=originalGravity;
         }
-        private void Start()
+        private void BeginSeparation()
         {
             debrisBody=GetComponent<Rigidbody>();
             if(debrisBody!=null){originalGravity=debrisBody.useGravity;debrisBody.useGravity=false;}
@@ -36,6 +36,8 @@ namespace RoboRougelike.R3
         }
         private void Awake()
         {
+            // Awake runs immediately on detachment, before another collision in this frame.
+            BeginSeparation();
             pieces.Enqueue(this);
             while(pieces.Count>70){var old=pieces.Dequeue();if(old!=null){old.gameObject.SetActive(false);Destroy(old.gameObject);}}
             Destroy(gameObject,10);

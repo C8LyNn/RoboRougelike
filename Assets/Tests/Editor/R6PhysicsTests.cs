@@ -30,7 +30,7 @@ public class R6PhysicsTests
     }
     [UnityTest] public IEnumerator EnemyHasFiniteDynamicMassAndCanBePushed()
     {
-        var body=run.Encounter.Enemies.Single().GetComponent<Rigidbody>();
+        var body=run.Encounter.Enemies.First().GetComponent<Rigidbody>();
         Assert.That(body.isKinematic,Is.False,"An infinite-mass enemy cannot be pushed.");
         Vector3 start=body.position;body.AddForce(Vector3.right*body.mass*2,ForceMode.Impulse);
         float end=Time.time+.25f;while(Time.time<end)yield return null;

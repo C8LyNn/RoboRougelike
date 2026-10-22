@@ -711,7 +711,6 @@ namespace RogueMachine.P12PipelineSafe
 
             chunk.transform.rotation =
                 Quaternion.identity;
-            chunk.AddComponent<RoboRougelike.R3.R3Debris>();
 
             foreach (
                 P12_PipelineSafePlayerBlock block

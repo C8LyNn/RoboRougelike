@@ -4,6 +4,9 @@ using UnityEngine;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.R4_1;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace RoboRougelike.R1
 {
@@ -15,11 +18,30 @@ namespace RoboRougelike.R1
         private int lootPage,inventoryPage;
         private bool inventoryOpen;
         private string dismantleConfirmation;
+        private void TrackRewardLedger(R4SalvageLedger ledger)
+        {
+            if(displayedLedger==ledger)return;
+            displayedLedger=ledger;lootSelection.Clear();bonusSelection.Clear();lootPage=0;
+        }
+#if ENABLE_INPUT_SYSTEM
+        public void ReadRewardInput(Keyboard keyboard)
+        {
+            var run=R1RunController.Instance;
+            if(run?.Progress?.State!=R1RunState.Salvage||run.Transitioning||run.Salvage==null)return;
+            TrackRewardLedger(run.Salvage);
+            int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
+            if(index>=0&&index<run.Progress.Offers.Count)
+            {
+                if(bonusSelection.Contains(index))bonusSelection.Remove(index);
+                else if(bonusSelection.Count+lootSelection.Count<3)bonusSelection.Add(index);
+            }
+            if(keyboard.enterKey.wasPressedThisFrame)run.ConfirmRewards(lootSelection,bonusSelection);
+        }
+#endif
         private void DrawSalvage(R1RunController run)
         {
             var ledger=run.Salvage;
-            if(displayedLedger!=ledger)
-            {displayedLedger=ledger;lootSelection.Clear();bonusSelection.Clear();lootPage=0;}
+            TrackRewardLedger(ledger);
             const int limit=3;
             int selected=lootSelection.Count+bonusSelection.Count;
             GUI.Label(new Rect(45,30,1190,60),"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
@@ -55,10 +77,14 @@ namespace RoboRougelike.R1
                 float x=455+(i%2)*390,y=197+(i/2)*116;
                 Panel(new Rect(x,y,375,104));
                 var part=item.ToPart();
-                GUI.Label(new Rect(x+10,y+7,252,31),R4WeaponDefinition.PartName(part),body);
-                string condition=item.Health<=0?"ZNISZCZONA":item.Health<.99999f?"USZKODZONA":"NIENARUSZONA";
-                GUI.Label(new Rect(x+10,y+40,255,57),
-                    $"{condition} • HP: {item.Health*100:0}%\nNaprawa w garażu: {run.VehicleModel.RepairCost(part)} Z",small);
+                var lootTitle=new GUIStyle(body){fontSize=17,wordWrap=true};
+                var lootDetail=new GUIStyle(small){fontSize=13,wordWrap=true};
+                GUI.Label(new Rect(x+10,y+5,252,26),R4WeaponDefinition.PartName(part),lootTitle);
+                string type=item.Kind==R3PartKind.Gun?"Broń":R4WeaponDefinition.PartName(item.Kind);
+                GUI.Label(new Rect(x+10,y+30,252,32),type+" • "+item.Source,lootDetail);
+                string condition=item.Health<=0?"ZNISZCZONA":item.Health<1?"USZKODZONA":"NIENARUSZONA";
+                GUI.Label(new Rect(x+10,y+64,255,37),
+                    $"{condition} • HP: {item.Health*100:0}%\n{(item.Health<=0?"Odbudowa":"Naprawa")}: {run.VehicleModel.RepairCost(part)} Z",lootDetail);
                 bool chosen=lootSelection.Contains(item.Id);
                 GUI.enabled=chosen||selected<limit;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
@@ -66,15 +92,18 @@ namespace RoboRougelike.R1
                 {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);selected=lootSelection.Count+bonusSelection.Count;}
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
+            GUI.enabled=lootPage>0;
             if(GUI.Button(new Rect(465,556,90,35),"←",compactButton))lootPage=Mathf.Max(0,lootPage-1);
             GUI.Label(new Rect(562,559,185,32),$"Strona {lootPage+1}/{pages}",small);
+            GUI.enabled=lootPage<pages-1;
             if(GUI.Button(new Rect(730,556,90,35),"→",compactButton))lootPage=Mathf.Min(pages-1,lootPage+1);
+            GUI.enabled=true;
 
             GUI.Label(new Rect(45,603,685,87),
                 $"Wybrano {selected}/{limit}  •  Bonusy: {bonusSelection.Count}  •  Części: {lootSelection.Count}\n" +
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\n" +
                 "Zniszczone części wymagają odbudowy; uszkodzone tańszej naprawy.",small);
-            if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź nagrody i kontynuuj",button))
+            if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź nagrody [Enter]",button))
                 run.ConfirmRewards(lootSelection,bonusSelection);
         }
         private void DrawInventory(R1RunController run)
@@ -103,7 +132,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))
             {garage.Message=run.GarageMount(selected.Id,garage.Cell)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}
             GUI.enabled=model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
-            if(GUI.Button(new Rect(970,515,280,42),$"Napraw — {model.RepairCost(selected)} Z",compactButton))run.GarageRepairInventory(selected.Id);
+            if(GUI.Button(new Rect(970,515,280,42),$"{(selected.Health<=0?"Odbuduj":"Napraw")} — {model.RepairCost(selected)} Z",compactButton))run.GarageRepairInventory(selected.Id);
             GUI.enabled=true;
             if(GUI.Button(new Rect(970,565,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}

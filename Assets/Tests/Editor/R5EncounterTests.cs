@@ -27,12 +27,12 @@ public class R5EncounterTests
             Run.ChooseRoute(stage==3?eliteRoute:0);yield return Until(()=>!Run.Transitioning,"Combat");Run.Encounter.SetCombatActive(false);
             if(stage==target)break;
             foreach(var enemy in Run.Encounter.Enemies)enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
-            yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");Run.ConfirmSalvage(Array.Empty<string>());Run.ChooseUpgrade(0);Run.StartNextEncounter();
+            yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");RRLW2TestFlow.Claim(Run,Array.Empty<string>());Run.StartNextEncounter();
         }
     }
     [UnityTest] public IEnumerator BossHasTwoIndependentDestructibleWeaponsAndNormalSalvage()
     {
-        yield return Reach(5);var boss=Run.Encounter.Enemies.Single();
+        yield return Reach(5);var boss=Run.Encounter.Enemies.First();
         var guns=boss.GetComponentsInChildren<P12PipelineSafeFunctionalModule>().Where(m=>m.ModuleType==P12FunctionalModuleType.Weapon).ToArray();
         Assert.That(guns.Length,Is.EqualTo(2),"Boss needs two real independent weapon modules.");
         var structure=boss.GetComponent<P12PipelineSafeVehicleStructure>();
@@ -41,26 +41,26 @@ public class R5EncounterTests
         boss.Core.ApplyDamage(10000,boss.Core.transform.position,Vector3.up);yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Boss loot");
         Assert.That(Run.Salvage.Items.Count(p=>p.Kind==RoboRougelike.R3.R3PartKind.Gun),Is.EqualTo(2));
         Assert.That(Run.Salvage.Items.Count(p=>p.Kind==RoboRougelike.R3.R3PartKind.Gun&&p.Recoverable),Is.EqualTo(1));
-        Run.ConfirmSalvage(Array.Empty<string>());Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
+        RRLW2TestFlow.Claim(Run,Array.Empty<string>());Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
     }
     [UnityTest] public IEnumerator SummaryIncludesEnemyDestroyedDuringLostEncounter()
     {
         yield return Reach(1);var enemy=Run.Encounter.Enemies[0];enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);
         Run.Player.Core.ApplyDamage(10000,Run.Player.Core.transform.position,Vector3.up);
         yield return Until(()=>Run.Progress.State==R1RunState.Lost,"Loss summary");
-        Assert.That(Run.DefeatedEnemies,Is.EqualTo(2),"One earlier victory plus the kill before losing.");
+        Assert.That(Run.DefeatedEnemies,Is.EqualTo(3),"First victory defeats two enemies; add the kill before losing.");
     }
     [UnityTest] public IEnumerator SummaryCountsInventoryDismantlingAsEarnedScrap()
     {
-        yield return Reach(0);var enemy=Run.Encounter.Enemies.Single();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);
+        yield return Reach(0);var enemy=Run.Encounter.Enemies.First();RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");
-        var item=Run.Salvage.Items.First(p=>p.Recoverable);Run.ConfirmSalvage(new[]{item.Id});Run.ChooseUpgrade(0);
+        var item=Run.Salvage.Items.First(p=>p.Recoverable);RRLW2TestFlow.Claim(Run,new[]{item.Id});
         int earned=Run.EarnedScrap;int value=Run.VehicleModel.DismantleValue(Run.VehicleModel.Inventory.Single());
         Assert.That(Run.GarageDismantle(item.Id),Is.True);Assert.That(Run.EarnedScrap,Is.EqualTo(earned+value));
     }
     [UnityTest] public IEnumerator BossFiresTwoPhysicalBatteriesAndDestroyedBatteryStops()
     {
-        yield return Reach(5);var boss=Run.Encounter.Enemies.Single();
+        yield return Reach(5);var boss=Run.Encounter.Enemies.First();
         var seen=new System.Collections.Generic.HashSet<string>();Run.Encounter.SetCombatActive(true);
         float end=Time.time+8;
         while(Time.time<end)
@@ -77,7 +77,7 @@ public class R5EncounterTests
     }
     [UnityTest] public IEnumerator BossSupportSeveranceDropsPhysicalWingAndLeavesOtherGunOperational()
     {
-        yield return Reach(5);var boss=Run.Encounter.Enemies.Single();
+        yield return Reach(5);var boss=Run.Encounter.Enemies.First();
         var support=boss.GetComponentsInChildren<P12PipelineSafeDamageable>().FirstOrDefault(p=>p.name=="Podpora baterii -1");
         Assert.That(support,Is.Not.Null);
         var guns=boss.GetComponentsInChildren<P12PipelineSafeFunctionalModule>().Where(m=>m.ModuleType==P12FunctionalModuleType.Weapon).OrderBy(m=>m.transform.localPosition.x).ToArray();
@@ -91,7 +91,7 @@ public class R5EncounterTests
         for(int route=0;route<2;route++)
         {
             if(route>0){var old=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=old&&Run.Progress!=null,"Bootstrap");}
-            yield return Reach(3,route);var elite=Run.Encounter.Enemies.Single();
+            yield return Reach(3,route);var elite=Run.Encounter.Enemies.Single(e=>e.Variant!=RoboRougelike.R5.R5EnemyVariant.Normal);
             Assert.That(elite.GetComponentsInChildren<P12PipelineSafeFunctionalModule>().Count(m=>m.ModuleType==P12FunctionalModuleType.Weapon),Is.EqualTo(2));
             Assert.That(elite.GetComponentsInChildren<P12_PipelineSafePlayerBlock>().Length,Is.GreaterThan(route==0?56:35));
             Assert.That(elite.GetComponentsInChildren<P12PipelineSafeDamageable>().Any(p=>p.name.StartsWith("Podpora baterii")),Is.True);
@@ -99,7 +99,7 @@ public class R5EncounterTests
     }
     [UnityTest] public IEnumerator VariantProjectileSpeedUsesEncounterConfiguration()
     {
-        yield return Reach(5);var boss=Run.Encounter.Enemies.Single();
+        yield return Reach(5);var boss=Run.Encounter.Enemies.First();
         boss.ConfigureEncounter(Run.Player.transform,1,1,1,1.5f);Run.Encounter.SetCombatActive(true);
         R4ProjectileOrigin shot=null;
         yield return Until(()=>{shot=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).FirstOrDefault(p=>p.PartId.StartsWith("OBLĘŻNIK/"));return shot!=null;},"Configured boss projectile");

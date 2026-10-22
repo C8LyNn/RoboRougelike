@@ -151,25 +151,14 @@ namespace RoboRougelike.R1
             if(changed)EarnedScrap+=VehicleModel.Scrap-before;return changed;
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
-        {
-            if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null)return false;
-            var ids=selected?.ToArray();
-            if(!Salvage.Claim(VehicleModel,ids))return false;
-            RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
-            Progress.CompleteSalvage();Debug.Log("[R4] Odzysk rozliczony: magazyn="+VehicleModel.Inventory.Count+", Złom +"+Salvage.DismantledScrap);return true;
-        }
+            => ConfirmRewards(selected,System.Array.Empty<int>());
         public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
             System.Collections.Generic.IEnumerable<int> selectedBonuses)
         {
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
-            if(ids==null||bonuses==null||ids.Length+bonuses.Length>3||
-                ids.Distinct().Count()!=ids.Length||!Progress.CanCompleteUnifiedRewards(bonuses))return false;
-            if(ids.Any(id=>!Salvage.Items.Any(item=>item.Id==id&&item.Selectable)))return false;
-            if(!Salvage.Claim(VehicleModel,ids))return false;
+            if(!R4RewardSettlement.TryClaim(Progress,Salvage,VehicleModel,ids,bonuses))return false;
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
-            if(!Progress.CompleteUnifiedRewards(bonuses))
-            {Debug.LogError("[R4] Niespójny stan nagród po zatwierdzeniu odzysku.");return false;}
             if(Progress.State==R1RunState.Garage)
             {
                 Player.Apply(Progress.Stats);
@@ -256,6 +245,7 @@ namespace RoboRougelike.R1
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) StartRun();
+            else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)
             {
                 if (keyboard.digit1Key.wasPressedThisFrame) ChooseUpgrade(0);

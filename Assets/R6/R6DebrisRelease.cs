@@ -37,6 +37,8 @@ namespace RoboRougelike.R6
             outward.Normalize();
             body.AddForce(outward*Mathf.Max(0,outwardSpeed)+Vector3.up*Mathf.Max(0,upwardSpeed),
                 ForceMode.VelocityChange);
+            if(body.GetComponent<RoboRougelike.R3.R3Debris>()==null)
+                body.gameObject.AddComponent<RoboRougelike.R3.R3Debris>();
         }
         static bool Overlaps(Collider a,Collider b)=>Physics.ComputePenetration(a,a.transform.position,a.transform.rotation,b,b.transform.position,b.transform.rotation,out _,out _);
         void FixedUpdate()
