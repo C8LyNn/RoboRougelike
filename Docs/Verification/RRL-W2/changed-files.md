@@ -4,7 +4,7 @@ Listy wyprowadzono z końcowego indeksu Git. Po zweryfikowanym commicie implemen
 
 ## Naprawy względem początkowego head PR
 
-Baza `07ba9caae03f6e5f4e478ae5e8882cdbb1eb6f29`; 79 plików.
+Baza `07ba9caae03f6e5f4e478ae5e8882cdbb1eb6f29`; 80 plików.
 
 - `Assets/Pack/P12_PipelineSafeTankController.cs`
 - `Assets/Pack/P12_PipelineSafeVehicleStructure.cs`
@@ -79,6 +79,7 @@ Baza `07ba9caae03f6e5f4e478ae5e8882cdbb1eb6f29`; 79 plików.
 - `Docs/Verification/RRL-W2/images/native-stage3-garage-model-occluded.jpg`
 - `Docs/Verification/RRL-W2/images/native-stage4-three-parts-limit.jpg`
 - `Docs/Verification/RRL-W2/local-verification.json`
+- `Docs/Verification/RRL-W2/manual-retail-shutdown.json`
 - `Docs/Verification/RRL-W2/native-final-garage-regression.json`
 - `Docs/Verification/RRL-W2/native-run-before-garage-fix.json`
 - `Docs/Verification/RRL-W2/native-six-wins-1920.json`
@@ -88,7 +89,7 @@ Baza `07ba9caae03f6e5f4e478ae5e8882cdbb1eb6f29`; 79 plików.
 
 ## Cały PR względem develop
 
-Baza `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`; 84 plików.
+Baza `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`; 85 plików.
 
 - `Assets/Pack/P12_PipelineSafeDamageable.cs`
 - `Assets/Pack/P12_PipelineSafeEnemyTurret.cs`
@@ -168,6 +169,7 @@ Baza `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`; 84 plików.
 - `Docs/Verification/RRL-W2/images/native-stage3-garage-model-occluded.jpg`
 - `Docs/Verification/RRL-W2/images/native-stage4-three-parts-limit.jpg`
 - `Docs/Verification/RRL-W2/local-verification.json`
+- `Docs/Verification/RRL-W2/manual-retail-shutdown.json`
 - `Docs/Verification/RRL-W2/native-final-garage-regression.json`
 - `Docs/Verification/RRL-W2/native-run-before-garage-fix.json`
 - `Docs/Verification/RRL-W2/native-six-wins-1920.json`

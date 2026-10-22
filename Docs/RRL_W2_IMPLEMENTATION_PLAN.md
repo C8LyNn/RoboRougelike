@@ -32,3 +32,5 @@
 ## Final gate outcome
 
 Implementation `c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753`: EditMode385/385, PlayMode176/176, Windows retail+QA PASS; all old cases retained. Native operator + input pilot completed6/6 at1920 before the later garage-only fix; final build separately passed3 physical fights, industrial-garage framing/orbit and range/return at1280. See final QA report for exact evidence, independent-review boundary, engine UIAutomation shutdown failure and cloud activation status. Report/push tasks are executed as delivery work; an overall BLOCKED result is not a claim that the engine failure is fixed.
+
+Human retail shutdown control on2026-10-22: user Alt+F4 confirmation plus native exit0, final Assembly-CSharp11fc980...; no UI Automation and no launcher timeout. See manual-retail-shutdown.json. Separate UIAutomation exit failure remains recorded; outstanding delivery blocker is cloud Unity activation.

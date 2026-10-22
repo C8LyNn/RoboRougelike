@@ -1,12 +1,12 @@
 # RRL-W2 — raport integracji i QA
 
-**BLOCKED — zamknięcie Windows EXE po automatyzacji UI odtwarza awarię natywną Unity; mechaniki i nowy garaż przeszły QA, oczekuje kontrola zwykłego zamknięcia.** Ten dokument nie stanowi zgody na scalenie.
+**BLOCKED — zdalny CI Unity wymaga aktywacji. Lokalne mechaniki, nowy garaż i zwykłe ręczne zamknięcie W2: PASS. Zamykanie po automatyzacji UI nadal ma osobny wynik FAIL.** Ten dokument nie stanowi zgody na scalenie.
 
 - Repozytorium: `C8LyNn/RoboRougelike`, PR [#1](https://github.com/C8LyNn/RoboRougelike/pull/1).
 - Gałąź: `feature/unified-rewards-debris-density` → `develop`. Bez zmian `main`, bez merge i force push.
 - Bazowy SHA PR przed naprawami: `07ba9caae03f6e5f4e478ae5e8882cdbb1eb6f29`.
 - `develop`/`main` na początku: `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`.
-- Końcowy zweryfikowany SHA implementacji: [`c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753`](https://github.com/C8LyNn/RoboRougelike/commit/c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753). Kolejny commit zawiera wyłącznie raport i dowody; dokładny końcowy head publikacji podano w opisie PR, aby nie tworzyć samoodwołania SHA we własnym commicie.
+- Końcowy zweryfikowany SHA implementacji: [`c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753`](https://github.com/C8LyNn/RoboRougelike/commit/c16c6aeb81ec20e44cf5b3ef171a1ad9bf14e753). Kolejne commity zawierają wyłącznie raport i dowody; dokładny końcowy head publikacji podano w opisie PR, aby nie tworzyć samoodwołania SHA we własnym commicie.
 - Unity: **6000.3.14f1** (`d68c3f99a318`), lokalny Windows 11.
 - Implementacja i testy w izolowanym worktree istniejącej gałęzi PR.
 
@@ -88,7 +88,7 @@ Końcowy build z `c16c6ae` / runtime `316ee6f…`: próba `c73e598854844f92a5d7c
 
 **FAIL po automatyzacji UI:** Alt+F4 kończy własny player `0xC0000005` w `UnityPlayer.dll`, RVA `0xb1b031`, zarówno D3D12, jak i kontrola D3D11. Pasujący publiczny PDB wskazuje `PlatformAccessibilityManager::StaticDestroy` +0x51. Objaw odpowiada UUM-146676, wymienionemu jako poprawiony w [oficjalnym Unity 6000.6.0b5](https://unity.com/releases/editor/beta/6000.6.0b5). To dopasowanie diagnostyczne, nie potwierdzenie przyczyny przez producenta. Nie potwierdzono poprawki dla wymaganego 6000.3.14f1. [Szczegóły i granice diagnozy](Verification/RRL-W2/windows-shutdown.md).
 
-Zwykłe ręczne zamknięcie bieżącego W2: **NOT RUN**. Potwierdzenie użytkownika dla starszego R6 nie jest dowodem dla tego buildu. Nie zmieniano silnika ani ustawień dostępności w celu ukrycia awarii.
+Zwykłe ręczne zamknięcie bieżącego W2: **PASS**. Użytkownik potwierdził Alt+F4, a metadane własnego procesu wykazały native exit **0**, 22.10.2026 o 09:30:51 UTC. Próba `e43e857dd7934304bb9bde2f7bffce29` używała końcowego retail (Assembly-CSharp SHA256 `11fc980013da89824eadeb2a4530087bcfa1a7eed33602fd14852d7d9a7a728e`), bez interakcji narzędzia UI z tym procesem i bez automatycznego limitu zamknięcia. [Dowód ręcznego wyjścia](Verification/RRL-W2/manual-retail-shutdown.json). Wcześniejsza próba `611f863…` została zatrzymana przez limit skryptu po 30 minutach i pozostaje NOT RUN dla ręcznego zamknięcia. Wynik obecnego W2 jest niezależny od wcześniejszego potwierdzenia R6. Nie zmieniano silnika ani ustawień dostępności; awaria po UI Automation pozostaje odrębnym ograniczeniem automatycznego QA.
 
 
 ## Ograniczenia i decyzje
@@ -98,7 +98,7 @@ Zwykłe ręczne zamknięcie bieżącego W2: **NOT RUN**. Potwierdzenie użytkown
 - Zmieniono dawną darmową pomoc awaryjną 25% HP: obowiązuje pełnopłatna odbudowa 100% HP, ponieważ nowe wymagania obejmują wszystkie ścieżki napraw.
 - Nie dodano MAP/VFX, nie zmieniono wersji Unity, pakietów ani sceny. Nie omijano aktywacji Unity.
 - GitHub CI na commicie implementacji `c16c6ae`: [CI-01 Repository Validation PASS](https://github.com/C8LyNn/RoboRougelike/actions/runs/39747539340); [CI-02 EditMode](https://github.com/C8LyNn/RoboRougelike/actions/runs/39747539354) i [CI-03 PlayMode](https://github.com/C8LyNn/RoboRougelike/actions/runs/39747539416) mają status joba failure, lecz **Unity NOT RUN / BLOCKED**: krok aktywacji kończy się przed silnikiem komunikatem „Unity activation is missing. No tests or build executed.” Wymagana jest obsługiwana konfiguracja `UNITY_EMAIL`, `UNITY_PASSWORD` oraz `UNITY_LICENSE` lub `UNITY_SERIAL`, zgodnie z `Docs/CI_SETUP.md`. Nie publikowano ani nie przenoszono lokalnej licencji. CI-04 nie uruchamia się dla feature PR (tylko push main/develop lub ręczny dispatch): **cloud Windows build NOT RUN**; lokalne oba buildy PASS.
-- Decyzja: **BLOCKED** przez awarię natywnego zamykania po kliencie UI Automation i brak aktywacji Unity w GitHub CI. Mechaniki, pełne lokalne testy, oba buildy, pełny natywny przebieg sprzed ostatniej poprawki widoku i regresja końcowego garażu mają osobne dowody PASS; nie są deklaracją naprawy silnika.
+- Decyzja: **BLOCKED** przez brak aktywacji Unity w GitHub CI. Normalne ręczne zamykanie końcowego retail ma PASS / native exit 0; awaria zamykania po kliencie UI Automation pozostaje znanym ograniczeniem tej ścieżki QA. Mechaniki, pełne lokalne testy, oba buildy, pełny natywny przebieg sprzed ostatniej poprawki widoku i regresja końcowego garażu mają osobne dowody PASS; nie są deklaracją naprawy silnika.
 
 ## Zmienione pliki
 
