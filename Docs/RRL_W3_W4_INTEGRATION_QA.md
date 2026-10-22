@@ -12,7 +12,7 @@ Status: READY for local integration / Draft PR review. This report is authoritat
 
 Integration branch: `feature/rrl-w3-w4-integration`, based on exact verified W2. W4 was merged once with W3 history included. Source PRs are unchanged. No main/develop merge, force push, license upload or engine upgrade.
 
-Final game/test source SHA: `5d4b61d1160e9cceac888e070147aead71dfb92b`. Only evidence/report changes follow this source commit. Draft integration PR: pending; target `feature/unified-rewards-debris-density`.
+Final game/test source SHA: `5d4b61d1160e9cceac888e070147aead71dfb92b`. Only evidence/report changes follow this source commit. Draft integration PR: [#19](https://github.com/C8LyNn/RoboRougelike/pull/19); target `feature/unified-rewards-debris-density`. Published integration snapshot `1e412711841f71d518171b6a0df26dbabb17266f` contains all verified code/evidence; subsequent commits only finalize this report and plan.
 
 ## Transferred source files
 
@@ -71,7 +71,7 @@ Targeted suites overlap and are not summed as a unique test total. All evidence 
 | Native graphical lifecycle, 1920x1080 | 29 / 0 / 0 assertions | gameplay PASS; automation close `C0000005` | `W34-Native-Fixture-1920x1080-905e9f54ae8248e399ac2122a54fc417` |
 | Native full-inventory recovery UI, 1280x720 | 8 / 0 / 0 assertions | gameplay PASS; automation close `C0000005` | `W34-Native-Fixture-1280x720-86984d4ce8354c82866bfa4e90f918d7` |
 
-Repository validation: 725 indexed files, zero errors after the final source fix. CI validator self-tests: 16/16 passed with temporary fixtures inside the writable worktree. Default sandbox TEMP was unwritable; this was an environment failure, not a product test failure.
+Repository validation: 734 indexed files, zero errors with final code and evidence. CI validator self-tests: 16/16 passed with temporary fixtures inside the writable worktree. Default sandbox TEMP was unwritable; this was an environment failure, not a product test failure.
 
 Actual scene assertions cover all 64 XYZ quarter-turn combinations, non-anchor support, reciprocal ports, whole-module bridge ejection and a physical projectile hitting the non-anchor cell for exactly 25 HP. Effects tests fire an actual weapon projectile with the damage multiplier, check real HP/core/reload/omni limits, six simultaneous bonuses and an inactive inventory module, preserve 37% HP over three rebuilds, stop field repair after module loss, and verify range/reset/return plus next-map/repair/remount identity.
 
@@ -117,4 +117,4 @@ Final post-regression retail and QA builds both succeeded (native exit 0, zero e
 
 Decision: READY for a Draft integration PR based on W2. No unresolved Critical or Important code-review finding remains; all local suite/build and required native lifecycle gates passed. Known automation-close and pilot-navigation limits above remain explicit. This is not approval to merge or a claim that cloud Unity tests ran.
 
-The existing workflows target PRs into main/develop, while this integration must target the W2 feature branch. Cloud checks on this integration are therefore NOT RUN unless explicitly dispatched. W2 previously documented a Unity activation blocker; no activation workaround, secret or license upload was attempted. Publication is the remaining task. Raw XML/logs, Library, binaries, local state and license data remain excluded from Git.
+The existing workflows target PRs into main/develop, while this integration must target the W2 feature branch. Cloud checks on this integration are therefore NOT RUN unless explicitly dispatched. W2 previously documented a Unity activation blocker; no activation workaround, secret or license upload was attempted. Draft #19 is published and attached to the task. GitHub reports it mergeable with a clean diff against the unchanged W2 head. Source PRs #1/#17/#18 remain open Drafts at the exact input SHAs above; main/develop remain `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`. No merge was performed. Raw XML/logs, Library, binaries, local state and license data remain excluded from Git.
