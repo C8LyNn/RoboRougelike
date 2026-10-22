@@ -1,12 +1,11 @@
 using UnityEngine;
-using RogueMachine.P12PipelineSafe;
+using System.Linq;
 
 namespace RoboRougelike.R3
 {
     /// <summary>
     /// One damageable/mesh/collider spanning four cells on the horizontal XZ plane.
-    /// Three non-colliding structural sockets expose the footprint to the existing P12
-    /// flood-fill without creating extra inventory items or separate destructible panels.
+    /// All four grid cells resolve to the same physical owner in the P12 graph.
     /// </summary>
     public static class R3BonusModuleGeometry
     {
@@ -44,19 +43,9 @@ namespace RoboRougelike.R3
         }
         public static void AddStructuralSockets(Transform anchor,R3PartState state)
         {
-            var offsets=new[]{Vector3Int.right,Vector3Int.forward,
-                Vector3Int.right+Vector3Int.forward};
-            int worldMask=R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask);
-            foreach(var offset in offsets)
-            {
-                var socket=new GameObject("Bonus contact cell "+offset);
-                socket.transform.SetParent(anchor,false);
-                socket.transform.localPosition=(Vector3)offset*Grid;
-                // One HP value and one collider belong to the parent module.
-                // The sockets only represent neighbouring GRID CONTACT CELLS.
-                socket.AddComponent<P12_PipelineSafePlayerBlock>();
-                socket.AddComponent<R3BlockMountPoints>().Configure(state.Id,worldMask);
-            }
+            // Retain the W3 assembly entry point, but never create helper blocks.
+            anchor.GetComponent<R3BlockMountPoints>().SetFootprint(
+                R3VehicleModel.OccupiedCells(state).Select(cell=>cell-state.Cell));
         }
     }
 }

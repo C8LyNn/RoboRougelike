@@ -81,7 +81,7 @@ namespace RoboRougelike.R3
 
     }
 
-    /// <summary>Port data on a real physical block or a non-colliding footprint socket.</summary>
+    /// <summary>Ports and logical cell offsets belonging to one physical block.</summary>
     [DisallowMultipleComponent]
     public sealed class R3BlockMountPoints : MonoBehaviour
     {
@@ -89,6 +89,12 @@ namespace RoboRougelike.R3
         [SerializeField,Range(0,63)] private int worldMask=R3MountingGrid.AllFaces;
         public string GroupId=>groupId;
         public int WorldMask=>worldMask;
+        private Vector3Int[] gridOffsets={Vector3Int.zero};
+        public IEnumerable<Vector3Int> GridOffsets=>gridOffsets;
+        public void SetFootprint(IEnumerable<Vector3Int> offsets)
+        {
+            gridOffsets=new List<Vector3Int>(offsets).ToArray();
+        }
         public void Configure(string physicalPartId,int mask)
         {
             groupId=physicalPartId;
