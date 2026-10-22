@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using RoboRougelike.R4;
+using RoboRougelike.R1;
 
 namespace RoboRougelike.R3
 {
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack }
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -18,9 +19,15 @@ namespace RoboRougelike.R3
         public string Id = Guid.NewGuid().ToString("N");
         public string Source = "Zakup / pojazd startowy";
         public R4WeaponKind Weapon;
+        // A bonus is a physical, single inventory item occupying a 1x2x2 grid footprint.
+        public string UpgradeId, UpgradeTitle, UpgradeDescription;
+        public R1UpgradeEffect UpgradeEffect;
+        public float UpgradeAmount;
         public float DeviceReadyAt;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,DeviceReadyAt=DeviceReadyAt};
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,DeviceReadyAt=DeviceReadyAt,
+            UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
+            UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount};
     }
     public sealed class R3VehicleDesign
     {
@@ -36,7 +43,8 @@ namespace RoboRougelike.R3
             R3PartKind.Suspension=>25, R3PartKind.Wheel=>WheelCost, R3PartKind.Gun=>GunCost,
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
-            R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45, _=>ArmorCost };
+            R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
+            R3PartKind.BonusModule=>60, _=>ArmorCost };
     }
     public sealed class R3VehicleModel
     {
@@ -71,7 +79,22 @@ namespace RoboRougelike.R3
             return copy;
         }
         public void Award(int amount) { Scrap = (int)Math.Min(100000L, Scrap + (long)Math.Max(0, amount)); }
-        public R3PartState At(Vector3Int cell) => Parts.FirstOrDefault(p => p.Cell == cell);
+        // The bonus is one logical part, but occupies four mounting cells at one height.
+        public static IEnumerable<Vector3Int> OccupiedCells(Vector3Int anchor,R3PartKind kind)
+        {
+            yield return anchor;
+            if(kind!=R3PartKind.BonusModule)yield break;
+            yield return anchor+Vector3Int.right;
+            yield return anchor+Vector3Int.forward;
+            yield return anchor+Vector3Int.right+Vector3Int.forward;
+        }
+        public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part)=>OccupiedCells(part.Cell,part.Kind);
+        public R3PartState At(Vector3Int cell) => Parts.FirstOrDefault(p => OccupiedCells(p).Contains(cell));
+        private bool HasAliveExternalNeighbour(Vector3Int anchor,R3PartKind kind)
+        {
+            var footprint=new HashSet<Vector3Int>(OccupiedCells(anchor,kind));
+            return footprint.Any(c=>Neighbours.Any(n=>!footprint.Contains(c+n)&&At(c+n)?.Health>0));
+        }
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
@@ -79,9 +102,11 @@ namespace RoboRougelike.R3
         {
             if (kind == R3PartKind.Core) return "Rdzeń jest jedyny i nie można go kupić.";
             if (!Enum.IsDefined(typeof(R3PartKind),kind)) return "Nieznany typ części.";
-            if (Math.Abs(cell.x) > 6 || Math.Abs(cell.z) > 7 || cell.y < 0 || cell.y > 5) return "Poza siatką montażową.";
-            if (At(cell) != null) return "Komórka zajęta. Utraconą część odtwórz lub usuń jej plan.";
-            if (Parts.Count >= 180) return "Limit 180 części.";
+            var footprint=OccupiedCells(cell,kind).ToArray();
+            if(footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
+            if(footprint.Any(c=>At(c)!=null))return "Zajęte pole obrysu 1×2×2. Utraconą część odtwórz lub usuń jej plan.";
+            if(Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
+            if(kind==R3PartKind.BonusModule&&!owned)return "Moduły bonusów zdobywa się wyłącznie jako nagrody.";
             if (kind == R3PartKind.Gun && Parts.Count(p => p.Kind == kind) >= 4) return "Limit 4 broni.";
             if (kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
             if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
@@ -89,13 +114,13 @@ namespace RoboRougelike.R3
                 R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,_=>8};
             if(kind>=R3PartKind.Booster&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
-            if (!Neighbours.Any(n => At(cell + n)?.Health > 0)) return "Brak połączenia ze sprawną konstrukcją.";
+            if (!HasAliveExternalNeighbour(cell,kind)) return "Brak połączenia ze sprawną konstrukcją.";
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
             return null;
         }
         public bool Buy(Vector3Int cell, R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)
         {
-            if (PlacementError(cell, kind,false,weapon) != null) return false;
+            if(kind==R3PartKind.BonusModule||PlacementError(cell, kind,false,weapon) != null) return false;
             Scrap -= Price(kind,weapon); Parts.Add(new R3PartState(cell, kind){Weapon=weapon}); return true;
         }
         public int RepairCost(R3PartState part)
@@ -110,7 +135,7 @@ namespace RoboRougelike.R3
         {
             var part = At(cell); int price = RepairCost(part);
             if (part == null || price <= 0 || Scrap < price) return false;
-            if (part.Health <= 0 && !Neighbours.Any(n => At(cell + n)?.Health > 0)) return false;
+            if (part.Health <= 0 && !HasAliveExternalNeighbour(part.Cell,part.Kind)) return false;
             Scrap -= price; part.Health = 1; return true;
         }
         public int RepairAffordable()
@@ -142,6 +167,20 @@ namespace RoboRougelike.R3
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
             inventory.AddRange(batch.Select(p=>p.Copy()));return true;
         }
+        public bool ReceiveBonuses(IEnumerable<R1UpgradeDefinition> rewards)
+        {
+            if(rewards==null)return false;
+            var offers=rewards.ToArray();
+            if(offers.Any(b=>b==null||string.IsNullOrWhiteSpace(b.Id)||
+                string.IsNullOrWhiteSpace(b.Title)||!Enum.IsDefined(typeof(R1UpgradeEffect),b.Effect)))return false;
+            if(inventory.Count+offers.Length>200)return false;
+            foreach(var bonus in offers)
+                inventory.Add(new R3PartState(default,R3PartKind.BonusModule){
+                    Id=Guid.NewGuid().ToString("N"),Source="Bonus za zwycięstwo",
+                    UpgradeId=bonus.Id,UpgradeTitle=bonus.Title,UpgradeDescription=bonus.Description,
+                    UpgradeEffect=bonus.Effect,UpgradeAmount=Mathf.Clamp01(bonus.Amount)});
+            return true;
+        }
         public bool Mount(string id,Vector3Int cell)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);
@@ -162,7 +201,10 @@ namespace RoboRougelike.R3
         }
         public static bool Connected(IEnumerable<R3PartState> parts)
         {
-            var cells = parts.ToDictionary(p => p.Cell);
+            var cells=new Dictionary<Vector3Int,R3PartState>();
+            foreach(var part in parts)
+                foreach(var cell in OccupiedCells(part))
+                    if(!cells.TryAdd(cell,part))return false;
             var core = cells.Values.FirstOrDefault(p => p.Kind == R3PartKind.Core);
             if (core == null) return false;
             var visited = new HashSet<Vector3Int> { core.Cell }; var queue = new Queue<Vector3Int>(); queue.Enqueue(core.Cell);
@@ -202,7 +244,7 @@ namespace RoboRougelike.R3
         public bool EmergencyRepair()
         {
             if (CanDeploy || !Parts.Any(p => p.Kind == R3PartKind.Core && p.Health > 0)) return false;
-            var byCell = Parts.ToDictionary(p => p.Cell); var core = Parts.Single(p => p.Kind == R3PartKind.Core);
+            var byCell=Parts.SelectMany(p=>OccupiedCells(p).Select(cell=>new{cell,part=p})).ToDictionary(x=>x.cell,x=>x.part); var core = Parts.Single(p => p.Kind == R3PartKind.Core);
             var previous = new Dictionary<Vector3Int, Vector3Int> { [core.Cell] = core.Cell };
             var costs = new Dictionary<Vector3Int,int> { [core.Cell]=0 };
             var pending = new List<Vector3Int>{core.Cell};
