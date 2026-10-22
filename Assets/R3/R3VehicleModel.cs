@@ -102,12 +102,18 @@ namespace RoboRougelike.R3
         private bool HasAliveExternalNeighbour(Vector3Int anchor,R3PartKind kind,
             Vector3Int turns=default,int contacts=R3MountingGrid.AllFaces)
         {
-            var candidate=new R3PartState(anchor,kind){
-                RotationQuarterTurns=turns,ContactMask=contacts};
-            var footprint=new HashSet<Vector3Int>(OccupiedCells(candidate));
-            return footprint.Any(c=>Neighbours.Any(n=>
-                !footprint.Contains(c+n)&&At(c+n)?.Health>0 &&
-                R3MountingGrid.Compatible(candidate,At(c+n),n)));
+            var footprint=new HashSet<Vector3Int>(OccupiedCells(anchor,kind,turns));
+            int worldPorts=R3MountingGrid.WorldPortMask(turns,contacts);
+            foreach(var cell in footprint)
+                foreach(var direction in Neighbours)
+                {
+                    if(footprint.Contains(cell+direction)||
+                       (worldPorts&R3MountingGrid.FaceBit(direction))==0)continue;
+                    var neighbour=At(cell+direction);
+                    if(neighbour!=null&&neighbour.Health>0&&
+                       R3MountingGrid.PortOnFace(neighbour,-direction))return true;
+                }
+            return false;
         }
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
