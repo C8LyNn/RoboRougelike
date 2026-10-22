@@ -71,7 +71,7 @@ public class R5RunTests
             Assert.That(run.StartNextEncounter(),Is.True);
         }
         Assert.That(arenas.Count,Is.EqualTo(3));Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(6));Assert.That(run.DefeatedEnemies,Is.EqualTo(foes));
-        Assert.That(run.RecoveredModules,Is.EqualTo(6));Assert.That(run.EarnedScrap,Is.GreaterThan(500));Assert.That(model.Inventory.Count,Is.EqualTo(6));
+        Assert.That(run.RecoveredModules,Is.EqualTo(6));Assert.That(run.EarnedScrap,Is.GreaterThan(500));Assert.That(model.Inventory.Count,Is.EqualTo(12));
         var old=run;run.RestartRun();while(R1RunController.Instance==null||R1RunController.Instance==old||R1RunController.Instance.Progress==null)yield return null;
         run=R1RunController.Instance;Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));run.StartRun();Assert.That(run.VehicleModel.Scrap,Is.Zero);Assert.That(run.VehicleModel.Inventory,Is.Empty);
         Assert.That(run.DefeatedEnemies+run.EarnedScrap+run.RecoveredModules,Is.Zero);yield return new ExitPlayMode();

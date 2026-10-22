@@ -24,6 +24,7 @@ namespace RoboRougelike.R1
         public bool Paused { get; private set; }
         public string Error { get; private set; }
         public R3VehicleModel VehicleModel { get; private set; }
+        public R1RunStats ActiveStats => Player?.GetComponent<R3MountedBonusEffects>()?.EffectiveStats??Progress?.Stats;
         public R3VehicleKind SelectedVehicle { get; private set; }
         public R3GarageView Garage { get; private set; }
         public int LastScrapReward { get; private set; }
@@ -123,8 +124,9 @@ namespace RoboRougelike.R1
             Player.GetComponent<R3VehicleAssembly>().Capture();
             var upgrade = Progress.ChooseUpgrade(index);
             if (upgrade == null) return false;
-            Debug.Log("[R1] Wybrano ulepszenie: " + upgrade.Title);
-            Player.Apply(Progress.Stats);
+            if(!VehicleModel.ReceiveBonuses(new[]{upgrade}))
+            {Debug.LogError("[R1] Nie udało się umieścić modułu bonusu w magazynie.");return false;}
+            Debug.Log("[R1] Zdobyto fizyczny moduł bonusu (nieaktywny): " + upgrade.Title);
             Garage.Open();
             return true;
         }
@@ -140,9 +142,14 @@ namespace RoboRougelike.R1
             if(Transitioning||VehicleModel==null||!VehicleModel.CanDeploy||!Progress.LeaveGarage())return false;
             Garage.Close();SetSimulation(false);return true;
         }
-        public bool GarageBuy(Vector3Int cell,R3PartKind kind) => EditGarage(()=>VehicleModel.Buy(cell,kind));
-        public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind) => EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind));
-        public bool GarageMount(string id,Vector3Int cell) => EditGarage(()=>VehicleModel.Mount(id,cell));
+        public bool GarageBuy(Vector3Int cell,R3PartKind kind,Vector3Int rotation=default) =>
+            EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
+        public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
+            EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind,rotation));
+        public bool GarageMount(string id,Vector3Int cell) =>
+            EditGarage(()=>VehicleModel.Mount(id,cell));
+        public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation) =>
+            EditGarage(()=>VehicleModel.Mount(id,cell,rotation));
         public bool GarageRepairInventory(string id) => EditGarage(()=>VehicleModel.RepairInventory(id));
         public bool GarageDismantle(string id)
         {
@@ -152,6 +159,14 @@ namespace RoboRougelike.R1
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
             => ConfirmRewards(selected,System.Array.Empty<int>());
+        public bool DismantleRewardInventoryItem(string id)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||Salvage.Closed||VehicleModel==null)return false;
+            int before=VehicleModel.Scrap;
+            if(!VehicleModel.Dismantle(id))return false;
+            EarnedScrap+=VehicleModel.Scrap-before;
+            return true;
+        }
         public bool ConfirmRewards(System.Collections.Generic.IEnumerable<string> selectedParts,
             System.Collections.Generic.IEnumerable<int> selectedBonuses)
         {
@@ -161,7 +176,7 @@ namespace RoboRougelike.R1
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
             if(Progress.State==R1RunState.Garage)
             {
-                Player.Apply(Progress.Stats);
+                // No stat bonus is applied here. Only a mounted, live 1x2x2 module works.
                 Garage.Open();
             }
             Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+
@@ -201,7 +216,8 @@ namespace RoboRougelike.R1
             // Start() builds the structure and initializes cloned module references while time is paused.
             yield return null;
             yield return null;
-            Player.Apply(Progress.Stats);
+            // Preserve only modifiers from currently mounted, operational bonus modules.
+            Player.Apply(ActiveStats??Progress.Stats);
             Salvage=new R4SalvageLedger(3);
             Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
             yield return null;

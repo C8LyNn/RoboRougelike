@@ -11,6 +11,8 @@
 /Artifacts/
 /artifacts/
 /TestResults/
+/Assets/Resources/PerformanceTestRunInfo.json*
+/Assets/Resources/PerformanceTestRunSettings.json*
 /coverage/
 /.ci-tmp/
 /.superpowers/

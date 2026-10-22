@@ -168,7 +168,7 @@ namespace RoboRougelike.Mechanics.MOV008
             {
                 CrawlerTrackModule track = contacts[i].Track;
                 Vector3 normal = contacts[i].Normal;
-                Vector3 fore = CrawlerTrackMath.ForwardOnGround(chassis.transform.forward, normal);
+                Vector3 fore = CrawlerTrackMath.ForwardOnGround(track.transform.forward, normal);
                 if (fore == Vector3.zero) continue;
                 Vector3 sideVector = Vector3.Cross(normal, fore).normalized;
                 Vector3 velocity = chassis.GetPointVelocity(track.transform.position);
