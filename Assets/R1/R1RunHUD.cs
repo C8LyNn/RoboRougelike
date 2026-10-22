@@ -124,7 +124,7 @@ namespace RoboRougelike.R1
             else if (progress.State == R1RunState.UpgradeChoice)
             {
                 GUI.Label(new Rect(90, 90, 1120, 65), $"Zwycięstwo!  +{run.LastScrapReward} Złomu", title);
-                GUI.Label(new Rect(90, 170, 1120, 55), "Wybierz ulepszenie, a następnie przygotuj pojazd w garażu", heading);
+                GUI.Label(new Rect(90, 170, 1120, 55), "Wybierz moduł 1×2×2 i zamontuj go w garażu, aby aktywować bonus", heading);
                 // Keep rendering a stable snapshot: a click clears Offers immediately.
                 var offers = new R1UpgradeDefinition[progress.Offers.Count];
                 for (int i = 0; i < offers.Length; i++) offers[i] = progress.Offers[i];
@@ -144,7 +144,7 @@ namespace RoboRougelike.R1
                 bool won = progress.State == R1RunState.Won;
                 GUI.Label(new Rect(160, 130, 1050, 80), won ? "Gauntlet ukończony" : "Porażka", title);
                 GUI.Label(new Rect(160, 235, 960, 70), won ? "Oblężnik pokonany. Wyprawa ukończona." : progress.DefeatReason, heading);
-                GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nUlepszenia: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci bazowy pojazd, 0 Złomu i brak bonusów.", body);
+                GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci bazowy pojazd, 0 Złomu i brak bonusów.", body);
                 if (GUI.Button(new Rect(160, 535, 500, 70), won ? "Zagraj ponownie  [Enter]" : "Spróbuj ponownie  [Enter]", button)) run.RestartRun();
             }
         }
