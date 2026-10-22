@@ -9,6 +9,9 @@ namespace RoboRougelike.R3
         public R3PartKind Kind;
         public RoboRougelike.R4.R4WeaponKind Weapon;
         public string Id;
+        // One physical reward module carries its own independently switchable stat modifier.
+        public RoboRougelike.R1.R1UpgradeEffect UpgradeEffect;
+        public float UpgradeAmount;
         public float NextFireTime;
         public P12PipelineSafeDamageable Damageable;
         public P12_PipelineSafePlayerBlock Block;

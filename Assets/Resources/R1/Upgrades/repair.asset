@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: repair
   Title: "Naprawa polowa"
-  Description: "Odtwarza całą konstrukcję, wszystkie koła i broń. Zachowuje zdobyte bonusy."
+  Description: "Sprawny moduł 1×2×2 regeneruje 2,5% HP żywych części na sekundę podczas walki. Nie odbudowuje zniszczonych części."
   Effect: 4
   Amount: 0

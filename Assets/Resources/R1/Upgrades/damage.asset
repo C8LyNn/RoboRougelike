@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R1.R1UpgradeDefinition
   Id: damage
   Title: "Mocniejsze pociski"
-  Description: "+25% obrażeń broni. Łatwiej przebijesz części przeciwnika."
+  Description: "+25% obrażeń broni tylko podczas pracy zamontowanego modułu 1×2×2."
   Effect: 1
   Amount: 0.25
