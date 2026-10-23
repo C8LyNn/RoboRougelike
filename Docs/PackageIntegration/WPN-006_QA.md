@@ -2,6 +2,8 @@
 
 Source: verified kit WPN006EMP SHA256 `19afc48aa519f093b476af2df779a52daf92766a787af54a1f8a9a22b0c342c0`. Feature feature/rrl-wpn006-integration; base WPN005 checkpointc0056e1 on immutable W5. Original dry-run/apply imported15 Assets files with no overwrite. Unity/package version remains6000.3.14f1.
 
+Integration source checkpoint: `a63f8192fa5c223f47002b71c60e2b51eb49a8c3`. [Draft PR #28](https://github.com/C8LyNn/RoboRougelike/pull/28), stacked on WPN-005 #27. No shared-branch merge.
+
 **State: INTEGRATED; targeted API/physics PASS. Full W6 Edit/Play, Windows build and native-input QA pending. No native gameplay claim is made from Editor API fixtures.**
 
 Original EmpEmitter owns pulse overlap/deduplication, LOS, owner/team exclusion, distance/resistance duration and commit semantics. Defaults remain9m radius,3s maximum disruption,35% edge duration,12s cooldown,0 activation energy,1024/128 query budgets. Valid empty pulses consume cooldown. Existing cadence modifiers snapshot into cooldown; EMP causes0 HP damage and no direct velocity writes. Integration chassis tuning:30kg,140HP,65scrap. Physical garage guns and the Industrial four-enemy escort expose EMP; that escort approaches6m and waits for an8.5m target before pulsing. Other arenas retain railgun/saw/beam paths.
@@ -13,7 +15,7 @@ Temporary operation is explicitly separate from physical survival. R3MountedPart
 ## Targeted evidence and fixes
 
 - Initial RED4/4: missing EMP catalog and electronics receivers. Additional RED caught active enemy wheel count4 despite EMP; effective count now0 without HP loss.
-- Final Emp Edit **50/50 PASS**:40 original cases and10 integration/lifecycle cases. Final original Play **24/24 PASS**, native process0. Original OnDisable case was moved with unchanged assertion from invalid EditMode dispatch to real PlayMode.
+- Final Emp filter **50/50 PASS**:35 original EMP EditMode cases,10 integration/lifecycle cases and5 incidental matches from other existing tests (the substring also matches Empty). Final original Play **24/24 PASS**, native process0. Original OnDisable case was moved with unchanged assertion from invalid EditMode dispatch to real PlayMode.
 - Actual original pulse disables an exposed enemy gun; production timer recovers it automatically; killing it during disruption then clearing EMP cannot restore operation. No HP/momentum change. Frontal armor correctly occluded the gun (5 detected,3 occluded,2 exposed wheels affected); the gun case deliberately emits above armor. Teleport fixture first had stale ClosestPoint132m despite near overlap/raycast until an actual PhysX step; no game query algorithm was changed.
 - Actual expedition stays Combat when all electronics are temporarily disabled. Hover can have no effective drive while its physical drive survives. HP/colliders/vehicle mass/velocity remain intact; saved wheels remain healthy and disrupted after rebuild.
 - Actor-teardown RED exposed canonical disruption3s becoming0 when old Unity objects were disabled. Lifecycle snapshot before receiver ClearEmp fixes it. Elite battery salvage RED exposed2s becoming0; complete state snapshots now retain it.
@@ -26,3 +28,11 @@ Earlier shared RRLW6 runs27/27 and Emp50/50 are API-driven only. Complete fresh 
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-006_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
+
+## W6 closure corrections
+
+Release source checkpoint: `e9ba555e6fab1798c679fe90fa4a8d0e2ad5c8de`. The first full EditMode run was **750/755**, native2; it is not reported as passing. It exposed expired weapon references in enemy salvage, two obsolete loot-count expectations after defense mounts, and one reward-offer assertion that passed in isolation and in the subsequent affected suite without reward-logic changes. The new expiry regression reproduced the MissingReferenceException before the Unity-null guard.
+
+The affected campaign/garage/W6 suite then passed **55/55**, native0, including six actual physical-projectile fights with active AI and ordinary virtual aim/fire input (227.382 seconds for that case). This is automated Editor input/physics evidence, not manual Windows gameplay. A separate finite-resource expiry regression reproduced spent shotgun ammunition11 becoming the initialization sentinel−1. Enemy equipment now retains references to the same canonical R3 data independently of disposable Unity views. Expired shotgun, shield and point-defense loot retains identity,0HP, ammo11/charge40/ammo7 through claiming, paid repair and DeepCopy. Final expiry/range targets **3/3 PASS**, native0. No second HP or resource store was introduced.
+
+The optional practice enemy is now on the left in front of the starting position, within EMP range, still default fireOFF. Full regression and both Windows builds are running against the closure checkpoint; native gates remain pending. [Wave evidence/status](W6_WAVE_QA.md).
