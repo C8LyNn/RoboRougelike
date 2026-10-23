@@ -24,3 +24,5 @@ Native Windows/full W6 campaign and full regression are pending wave closure. Al
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](DEF-002_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
+
+Draft PR #26: https://github.com/C8LyNn/RoboRougelike/pull/26; runtime SHA b92c3f41c02b155a6b8a6de969ebf71fff8fe12d.
