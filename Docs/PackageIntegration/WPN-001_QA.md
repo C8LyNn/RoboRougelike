@@ -2,7 +2,7 @@
 
 Base: W5 PR20 `2154b4341dd6b6fefb135187dc07b4b12d44f908`; feature branch `feature/rrl-wpn001-integration`. Source archive `RoboRougelike_WPN001_Shotgun_v1.zip`, SHA256 `1a4dd6b2fe9ad92a6655e880bda4faea72c7737638be5edbf0c5defec96da2db`. Outer kit and original --verify-all18/18PASS. Original staging dry-run/apply imported20Assets files without overwrites; Unity generated new metas only. No old GUID/scene/prefab/config version changed.
 
-**State: INTEGRATED, API/physical gameplay tests PASS. Decision: BLOCKED pending W6 Windows/native and wave regression gates.** Import alone is not called READY. Integration PR will be recorded after publication.
+**State: INTEGRATED, API/physical gameplay tests PASS. Decision: BLOCKED pending W6 Windows/native and wave regression gates.** Import alone is not called READY. Integration [Draft PR #21](https://github.com/C8LyNn/RoboRougelike/pull/21). Verified source commit `8540c9424e2a58ba406c3f468d4122e10e858f50`; later report-only commits do not alter that runtime.
 
 ## Runtime behavior
 
