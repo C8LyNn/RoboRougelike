@@ -1,0 +1,163 @@
+[
+  {
+    "directory": "W7-cover-green-11a2a1d85c3f4aef98cf0e9528bd5442",
+    "summary": {
+      "id": "2",
+      "testcasecount": "9",
+      "result": "Passed",
+      "total": "9",
+      "passed": "9",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 19:16:24Z",
+      "end-time": "2026-10-23 19:16:24Z",
+      "duration": "0,493211"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW7CoverTests.ActualPlayerProjectileDamagesOnlyContactedCover",
+        "result": "Passed",
+        "duration": "3.895203"
+      },
+      {
+        "fullname": "RRLW7CoverTests.RealArenaUsesOriginalCoverDurabilityWithoutVehicleHpAndRebuildsCleanly",
+        "result": "Passed",
+        "duration": "3.297541"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.AcceptedDamageEventReportsClampedAmount",
+        "result": "Passed",
+        "duration": "0.005304"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.BreakingOuterCoverDoesNotDisableInactiveNestedCoverCollider",
+        "result": "Passed",
+        "duration": "0.001050"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.BrokenOnlyOnceAndResetAllowsAnotherCycle",
+        "result": "Passed",
+        "duration": "0.000642"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.RejectsInvalidDamageWithoutStateMutation",
+        "result": "Passed",
+        "duration": "0.000236"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.ReportsOrderedDamageStages",
+        "result": "Passed",
+        "duration": "0.002284"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.ResetPreservesInitiallyDisabledChildBlocker",
+        "result": "Passed",
+        "duration": "0.000406"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverEditModeTests.StartsIntactWithFullDurabilityAndBlockingCollider",
+        "result": "Passed",
+        "duration": "0.000217"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-23T19:16:26.0471947Z",
+      "filter": "RRLW7CoverTests;RoboRougelike.Mechanics.COV001.Tests",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "W7-cover-original-play-900d59f175ba46419870d11880349d7d",
+    "summary": {
+      "id": "2",
+      "testcasecount": "2",
+      "result": "Passed",
+      "total": "2",
+      "passed": "2",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 19:17:09Z",
+      "end-time": "2026-10-23 19:17:09Z",
+      "duration": "0,0363172"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverPlayModeTests.BreakDisablesPhysicsBlockerAndResetRestoresIt",
+        "result": "Passed",
+        "duration": "0.011330"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.COV001.Tests.DestructibleArenaCoverPlayModeTests.InvalidAndRepeatedHitsNeverDoubleBreak",
+        "result": "Passed",
+        "duration": "0.003851"
+      }
+    ],
+    "exit": {
+      "mode": "PlayMode",
+      "finishedUtc": "2026-10-23T19:17:11.1895689Z",
+      "filter": "RoboRougelike.Mechanics.COV001.Tests",
+      "exitCode": 0
+    }
+  },
+  {
+    "directory": "W7-cover-arena-regression-59390169910b4c0fb3b666334e092576",
+    "summary": {
+      "id": "2",
+      "testcasecount": "5",
+      "result": "Passed",
+      "total": "5",
+      "passed": "5",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 19:21:11Z",
+      "end-time": "2026-10-23 19:21:11Z",
+      "duration": "0,8906434"
+    },
+    "cases": [
+      {
+        "fullname": "R5ArenaTests.SolidLayoutsHaveSafeSpawnsAndAiTraversesIndustrialCover",
+        "result": "Passed",
+        "duration": "21.156526"
+      },
+      {
+        "fullname": "R5RunTests.EconomySupportsModerateRepairsAndAnOptionalWeaponWithoutNewCurrency",
+        "result": "Passed",
+        "duration": "0.025023"
+      },
+      {
+        "fullname": "R5RunTests.NewExpeditionOffersRouteBeforeFirstCombat",
+        "result": "Passed",
+        "duration": "3.194942"
+      },
+      {
+        "fullname": "R5RunTests.SeedReplaysAllRoutesRewardsAndUpgradeRandomWithoutReroll",
+        "result": "Passed",
+        "duration": "0.008124"
+      },
+      {
+        "fullname": "R5RunTests.SixStageBranchPreservesModelAndEndsWithoutGarage",
+        "result": "Passed",
+        "duration": "3.668342"
+      }
+    ],
+    "exit": {
+      "filter": "R5ArenaTests;R5RunTests",
+      "finishedUtc": "2026-10-23T19:21:13.1440388Z",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  }
+]
