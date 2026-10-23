@@ -4,7 +4,7 @@ namespace RoboRougelike.R3
 {
     public sealed class R3VisualPalette : MonoBehaviour
     {
-        public readonly Material[] Parts = new Material[13];
+        public readonly Material[] Parts = new Material[System.Enum.GetValues(typeof(R3PartKind)).Length];
         public Material Valid, Invalid, Missing,Selection;
         public readonly Material[] Weapons=new Material[RoboRougelike.R4.R4WeaponDefinition.Count];
         public void Initialize(Material template)
@@ -13,7 +13,7 @@ namespace RoboRougelike.R3
                 new Color(0.9f,0.62f,0.22f), new Color(0.1f,0.5f,1), new Color(.72f,.35f,.95f),
                 new Color(1,.35f,.12f),new Color(.3f,.9f,.55f),new Color(.2f,.75f,1),new Color(.9f,.8f,.2f),
                 new Color(.2f,.8f,.8f),new Color(.85f,.4f,.7f),new Color(.4f,.6f,1),new Color(.4f,.45f,.3f) };
-            for (int i=0;i<Parts.Length;i++) Parts[i] = Make(template, colors[i]);
+            for (int i=0;i<Parts.Length;i++) Parts[i] = Make(template, i<colors.Length?colors[i]:new Color(.25f,.6f,1));
             Valid=Make(template,Color.green); Invalid=Make(template,new Color(1,0.2f,0.12f));
             Missing=Make(template,new Color(0.4f,0.2f,0.22f));
             Selection=Make(template,new Color(0.1f,0.9f,1,0.2f));

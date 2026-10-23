@@ -131,7 +131,7 @@ namespace RoboRougelike.R3
                     part.RotationQuarterTurns,part.ContactMask);
                 plan.name="Utracony plan "+part.Cell;plan.AddComponent<R41MissingPlan>().Part=part;
                 var collider=plan.AddComponent<BoxCollider>();collider.isTrigger=true;
-                if(part.Kind==R3PartKind.BonusModule){collider.center=new Vector3(R3BonusModuleGeometry.Grid*.5f,0,R3BonusModuleGeometry.Grid*.5f);
+                if(R3VehicleModel.UsesWideFootprint(part.Kind)){collider.center=new Vector3(R3BonusModuleGeometry.Grid*.5f,0,R3BonusModuleGeometry.Grid*.5f);
                     collider.size=new Vector3(R3BonusModuleGeometry.Width,R3BonusModuleGeometry.Height,R3BonusModuleGeometry.Width);}
             }
             UpdatePivot();RefreshMarker();
@@ -146,9 +146,9 @@ namespace RoboRougelike.R3
             item.transform.localRotation=R3MountingGrid.Rotation(rotation);
             item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             item.GetComponent<Renderer>().sharedMaterial=material;
-            if(kind==R3PartKind.BonusModule)R3BonusModuleGeometry.ConfigureCube(item,false);
+            if(R3VehicleModel.UsesWideFootprint(kind))R3BonusModuleGeometry.ConfigureCube(item,false);
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
-            if(kind!=R3PartKind.BonusModule&&(Tool==R41GarageTool.Mount||plan))
+            if(!R3VehicleModel.UsesWideFootprint(kind)&&(Tool==R41GarageTool.Mount||plan))
                 R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
             if(!plan&&Tool==R41GarageTool.Mount)AddPortMarkers(item.transform,kind,contacts,material);
             return item;
@@ -217,7 +217,7 @@ namespace RoboRougelike.R3
                 var nearestCell=target!=null?target.Cell:missing.Part.Cell;
                 var hitPart=target!=null?run.VehicleModel.Parts.FirstOrDefault(p=>p.Id==target.Id):
                     missing?.Part;
-                if(hitPart!=null&&hitPart.Kind==R3PartKind.BonusModule)
+                if(hitPart!=null&&R3VehicleModel.UsesWideFootprint(hitPart.Kind))
                 {
                     Vector3 local=run.Player.transform.InverseTransformPoint(
                         nearestHit.point-nearestHit.normal*.02f);
@@ -226,7 +226,7 @@ namespace RoboRougelike.R3
                 }
                 var face=LocalFace(run.Player.transform,normal);
                 var outside=nearestCell+face;
-                if(Tool==R41GarageTool.Mount&&MountKind==R3PartKind.BonusModule)
+                if(Tool==R41GarageTool.Mount&&R3VehicleModel.UsesWideFootprint(MountKind))
                 {
                     var candidates=R3VehicleModel.OccupiedCells(Vector3Int.zero,MountKind,
                             SelectedRotation).Select(offset=>outside-offset).ToArray();

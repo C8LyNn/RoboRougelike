@@ -1,0 +1,488 @@
+[
+  {
+    "directory": "DEF001-edit-target-158bfd45697b46c289f0c9523104b043",
+    "summary": {
+      "id": "2",
+      "testcasecount": "55",
+      "result": "Passed",
+      "total": "55",
+      "passed": "55",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:36:17Z",
+      "end-time": "2026-10-23 11:36:18Z",
+      "duration": "0,4677218"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.010782"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation",
+        "result": "Passed",
+        "duration": "3.040394"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.162527"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.AngleBeyondArcRejected",
+        "result": "Passed",
+        "duration": "0.001256"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.BehindMountDoesNotBlock",
+        "result": "Passed",
+        "duration": "0.000118"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.CanIgnoreHitPointFrontLimit",
+        "result": "Passed",
+        "duration": "0.000097"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.DistantImpactDoesNotBlock",
+        "result": "Passed",
+        "duration": "0.000096"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.EdgeAtRadiusAccepted",
+        "result": "Passed",
+        "duration": "0.000098"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.FromFrontBlocks",
+        "result": "Passed",
+        "duration": "0.000062"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.FromRearDoesNotBlock",
+        "result": "Passed",
+        "duration": "0.000083"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.FullHalfAngleAllowsRearDirectionIfHitPointInFront",
+        "result": "Passed",
+        "duration": "0.000062"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.HitAtMountPassesDirectionalCheck",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.InfinityPositionRejected",
+        "result": "Passed",
+        "duration": "0.000073"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.NaNPositionRejected",
+        "result": "Passed",
+        "duration": "0.000071"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.NaNTravelRejected",
+        "result": "Passed",
+        "duration": "0.000119"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.NegativeRadiusRejected",
+        "result": "Passed",
+        "duration": "0.000110"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.OutOfRangeAngleRejected",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.PlanarArcIgnoresVerticalComponent",
+        "result": "Passed",
+        "duration": "0.000071"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.RightEdgeAtAngleAccepted",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.RotatedModuleFacesRight",
+        "result": "Passed",
+        "duration": "0.000082"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.VerticalOffsetAllowedWithinSphere",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.VerticalTravelIn3DAccepted",
+        "result": "Passed",
+        "duration": "0.000074"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.VerticalTravelInPlanarRejected",
+        "result": "Passed",
+        "duration": "0.000095"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.ZeroAngleAllowsHeadOn",
+        "result": "Passed",
+        "duration": "0.000082"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.ZeroFacingRejected",
+        "result": "Passed",
+        "duration": "0.000077"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.ZeroRadiusRejected",
+        "result": "Passed",
+        "duration": "0.000061"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldGeometryTests.ZeroTravelRejected",
+        "result": "Passed",
+        "duration": "0.000073"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.CannotOverAbsorb",
+        "result": "Passed",
+        "duration": "0.000174"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.DamageConsumesCapacity",
+        "result": "Passed",
+        "duration": "0.000142"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.DelayBeforeRegeneration",
+        "result": "Passed",
+        "duration": "0.000115"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.EnergyRequirementHonored",
+        "result": "Passed",
+        "duration": "0.000192"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.FullInitially",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.HitLimitIsEnforced",
+        "result": "Passed",
+        "duration": "0.000070"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.InfiniteDamageIgnored",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.MissingEnergyPreventsPaidRegeneration",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.MissingEnergySourceDoesNotConsume",
+        "result": "Passed",
+        "duration": "0.000097"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NanDeltaIgnored",
+        "result": "Passed",
+        "duration": "0.000059"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NanMaximumBecomesZero",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NegativeDamageIgnored",
+        "result": "Passed",
+        "duration": "0.000049"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NegativeDeltaIgnored",
+        "result": "Passed",
+        "duration": "0.000104"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NegativeHitLimitIgnored",
+        "result": "Passed",
+        "duration": "0.000070"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NegativeMaximumBecomesZero",
+        "result": "Passed",
+        "duration": "0.000055"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NoEnergyMeansNoChargeLost",
+        "result": "Passed",
+        "duration": "0.000081"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.NonFiniteEnergyMultiplierIgnored",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.RegenerationAfterDelay",
+        "result": "Passed",
+        "duration": "0.000069"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.RegenerationClampedToMaximum",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.RegenerationCrossingDelayOnlyPartialStep",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.RegenerationRejectedWithInsufficientEnergy",
+        "result": "Passed",
+        "duration": "0.000078"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.RegenerationStartsImmediatelyOnNewReducedState",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.RegenerationWithEnergy",
+        "result": "Passed",
+        "duration": "0.000075"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.ResetRestoresFullCharge",
+        "result": "Passed",
+        "duration": "0.000091"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.SetChargeClamps",
+        "result": "Passed",
+        "duration": "0.000074"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.SetChargeIgnoresNan",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.WithoutEnergyCostWorksWithoutSource",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode.ShieldStateTests.ZeroDamageIgnored",
+        "result": "Passed",
+        "duration": "0.000048"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-23T11:36:19.3533568Z",
+      "filter": "Shield",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "DEF001-play-target-77ddea1835214a2bb615465754277f32",
+    "summary": {
+      "id": "2",
+      "testcasecount": "21",
+      "result": "Passed",
+      "total": "21",
+      "passed": "21",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:36:30Z",
+      "end-time": "2026-10-23 11:36:30Z",
+      "duration": "0,6840372"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.AbsorptionCannotExceedHitLimit",
+        "result": "Passed",
+        "duration": "0.016020"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.ChargeRestoredAfterRepair",
+        "result": "Passed",
+        "duration": "0.000421"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.DepletionEventRaisedExactlyOnce",
+        "result": "Passed",
+        "duration": "0.000700"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.DestroyedComponentCannotProtect",
+        "result": "Passed",
+        "duration": "0.000340"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.DetachedModuleCannotProtectOldOwner",
+        "result": "Passed",
+        "duration": "0.000299"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.DisabledModuleCannotProtect",
+        "result": "Passed",
+        "duration": "0.000176"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.EnergyInsufficientMeansNoShieldChargeLost",
+        "result": "Passed",
+        "duration": "0.000322"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.ExcessDamageReachesRealHealthPipeline",
+        "result": "Passed",
+        "duration": "0.000225"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.FrontAttackIsAbsorbed",
+        "result": "Passed",
+        "duration": "0.000180"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.GeneratorOnAnotherVehicleIsIgnored",
+        "result": "Passed",
+        "duration": "0.000496"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.NonFiniteInputFailsClosed",
+        "result": "Passed",
+        "duration": "0.000213"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.RearAttackPassesThrough",
+        "result": "Passed",
+        "duration": "0.000207"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.RegenerationAfterDelayThroughComponent",
+        "result": "Passed",
+        "duration": "0.000395"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.RegenerationDoesNotRunWhenOffline",
+        "result": "Passed",
+        "duration": "0.000197"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.RemovedModuleCannotProtect",
+        "result": "Passed",
+        "duration": "0.000216"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.RigidbodyBulletCollidesAndIsAbsorbed",
+        "result": "Passed",
+        "duration": "0.320318"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.RigidbodyBulletFromRearReachesBlockDamage",
+        "result": "Passed",
+        "duration": "0.316914"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.SideAttackPassesThrough",
+        "result": "Passed",
+        "duration": "0.000442"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.SuccessfulHitRaisesEventOnce",
+        "result": "Passed",
+        "duration": "0.000444"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.TwoShieldModulesShareDamageWithoutDoubleApplying",
+        "result": "Passed",
+        "duration": "0.000357"
+      },
+      {
+        "fullname": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode.ShieldComponentTests.ZeroDirectionFailsClosed",
+        "result": "Passed",
+        "duration": "0.000229"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-23T11:36:32.1756204Z",
+      "filter": "Shield",
+      "exitCode": 0,
+      "mode": "PlayMode"
+    }
+  },
+  {
+    "directory": "DEF001-integrated-green-9ec4e44402894fb1b2f8739fced6add2",
+    "summary": {
+      "id": "2",
+      "testcasecount": "5",
+      "result": "Passed",
+      "total": "5",
+      "passed": "5",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:31:31Z",
+      "end-time": "2026-10-23 11:31:32Z",
+      "duration": "0,7264513"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.012774"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.192891"
+      },
+      {
+        "fullname": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed",
+        "duration": "3.443463"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed",
+        "duration": "0.007210"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed",
+        "duration": "0.000806"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW6",
+      "finishedUtc": "2026-10-23T11:31:33.5164588Z",
+      "mode": "EditMode",
+      "exitCode": 0
+    }
+  }
+]

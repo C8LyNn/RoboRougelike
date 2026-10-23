@@ -1,0 +1,10 @@
+{
+  "name": "RoboRougelike.DEF001.DirectionalShield.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Defenses.DirectionalShield.Tests.PlayMode",
+  "references": ["RoboRougelike.DEF001.DirectionalShield"],
+  "includePlatforms": [],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

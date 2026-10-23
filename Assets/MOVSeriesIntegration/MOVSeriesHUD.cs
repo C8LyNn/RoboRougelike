@@ -11,18 +11,19 @@ namespace RoboRougelike.R1
         int partsPage,settingsTab;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
-            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica"};
+            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         void DrawMovementCatalog(R1RunController run)
         {
             var garage=run.Garage;
-            if(GUI.Button(new Rect(25,108,40,23),"‹",compactButton))partsPage=(partsPage+2)%3;
-            GUI.Label(new Rect(70,108,205,23),$"Części {partsPage+1}/3 • wybierz moduł",small);
-            if(GUI.Button(new Rect(280,108,40,23),"›",compactButton))partsPage=(partsPage+1)%3;
+            int pages=Mathf.Max(1,(shopKinds.Length+3)/4);partsPage=Mathf.Clamp(partsPage,0,pages-1);
+            if(GUI.Button(new Rect(25,108,40,23),"‹",compactButton))partsPage=(partsPage+pages-1)%pages;
+            GUI.Label(new Rect(70,108,205,23),$"Części {partsPage+1}/{pages} • wybierz moduł",small);
+            if(GUI.Button(new Rect(280,108,40,23),"›",compactButton))partsPage=(partsPage+1)%pages;
             for(int i=0;i<4;i++)
             {
-                int index=partsPage*4+i;var kind=shopKinds[index];
+                int index=partsPage*4+i;if(index>=shopKinds.Length)break;var kind=shopKinds[index];
                 GUI.backgroundColor=garage.SelectedPart==kind?new Color(.3f,.9f,.9f):Color.white;
                 if(GUI.Button(new Rect(25+i%2*150,137+i/2*36,145,33),$"{shopNames[index]} • {run.VehicleModel.Price(kind,garage.SelectedWeapon)} Z",compactButton))
                 {
@@ -72,6 +73,10 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(30,355,280,55),$"Wysokość Hover: {m.HoverHeightMeters:0.0} m\nRozmieść 4 silniki na rogach.",small);
                 if(GUI.Button(new Rect(30,420,135,31),"Niżej − 0,1 m",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters-.1f);
                 if(GUI.Button(new Rect(175,420,135,31),"Wyżej + 0,1 m",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters+.1f);
+            }
+            else if(selected==R3PartKind.DirectionalShield)
+            {
+                GUI.Label(new Rect(30,355,280,100),"Tarcza 1×2×2 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
             }
             else if(selected==R3PartKind.Gyroscope)
             {

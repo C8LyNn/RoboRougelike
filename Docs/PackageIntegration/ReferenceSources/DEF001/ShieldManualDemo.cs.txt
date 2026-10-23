@@ -1,0 +1,25 @@
+// OPCJONALNY przykład. Folder Samples~ jest ignorowany przez Unity.
+// Przenieś ten plik do katalogu Assets innego niż Samples~, jeśli chcesz uruchomić demo.
+using UnityEngine;
+using RoboRougelike.Defenses.DirectionalShield;
+
+public sealed class ShieldManualDemo : MonoBehaviour
+{
+    [SerializeField] private DirectionalShieldReceiver receiver;
+    [SerializeField] private float testDamage = 25f;
+
+    [ContextMenu("DEF001 / Fire from front")]
+    public void FireFront() => Fire(Vector3.forward * 2f, Vector3.back);
+
+    [ContextMenu("DEF001 / Fire from rear")]
+    public void FireRear() => Fire(Vector3.back * 2f, Vector3.forward);
+
+    private void Fire(Vector3 localPoint, Vector3 localDirection)
+    {
+        if (receiver == null) { Debug.LogWarning("DEF001: Missing receiver"); return; }
+        Vector3 p = receiver.transform.TransformPoint(localPoint);
+        Vector3 d = receiver.transform.TransformDirection(localDirection);
+        float remaining = receiver.Mitigate(testDamage, p, d, out var absorbed);
+        Debug.Log($"DEF001 demo: incoming={testDamage}, shielded={absorbed}, R6_damage={remaining}");
+    }
+}

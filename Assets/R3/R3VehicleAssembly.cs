@@ -16,6 +16,7 @@ namespace RoboRougelike.R3
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; }
         public void Capture()
         {
+            foreach(var shield in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>())shield.CaptureState();
             GetComponent<P12PipelineSafeVehicleStructure>().EvaluateStructure();
             GetComponent<P12PipelineSafeVehicleModuleSystem>().RefreshModules();
             foreach (var state in Model.Parts)
@@ -78,23 +79,24 @@ namespace RoboRougelike.R3
                 item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
                 item.transform.localScale=Vector3.one*0.52f;
                 bool bonus=state.Kind==R3PartKind.BonusModule;
+                bool wide=R3VehicleModel.UsesWideFootprint(state.Kind);
                 item.GetComponent<Renderer>().sharedMaterial=state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:
                     palette.Parts[bonus?(int)R3PartKind.Gyroscope:(int)state.Kind];
-                if(bonus)R3BonusModuleGeometry.ConfigureCube(item,true);
+                if(wide)R3BonusModuleGeometry.ConfigureCube(item,true);
                 var hp=item.AddComponent<P12PipelineSafeDamageable>();
                 hp.Configure(state.Kind==R3PartKind.Core?model.Design.CoreHp:state.Kind==R3PartKind.Gun?R4WeaponDefinition.Get(state.Weapon).Hp:
-                    state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100,true);
+                    state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.DirectionalShield?180:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100,true);
                 var block=item.AddComponent<P12_PipelineSafePlayerBlock>();
                 item.AddComponent<R3BlockMountPoints>().Configure(state.Id,
                     R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask));
-                if(bonus)R3BonusModuleGeometry.AddStructuralSockets(item.transform,state);
+                if(wide)R3BonusModuleGeometry.AddStructuralSockets(item.transform,state);
                 if(state.Kind==R3PartKind.Core)core=block;
                 var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Damageable=hp;part.Block=block;
                 part.Id=state.Id;part.Weapon=state.Weapon;
                 part.UpgradeEffect=state.UpgradeEffect;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);
                 Transform payload=null;Transform partMuzzle=null;
-                if(!bonus)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
+                if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);
                 if(state.Kind==R3PartKind.Gun){part.GunPivot=payload;part.Muzzle=partMuzzle;}
                 if(payload!=null&&(state.Kind==R3PartKind.Wheel||state.Kind==R3PartKind.Gun))
@@ -132,6 +134,10 @@ namespace RoboRougelike.R3
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Shotgun))
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.DirectionalShield)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             return vehicle;
         }
     }

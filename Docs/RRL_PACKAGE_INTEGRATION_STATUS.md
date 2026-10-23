@@ -4,12 +4,12 @@ Frozen W5 PR20: `2154b4341dd6b6fefb135187dc07b4b12d44f908`. Unity6000.3.14f1. No
 
 The user supplied the latest Downloads archive after initial search. Outer SHA256 **PASS**, exact requested `bbbc3bdf74ad1e4445fc5ca231eddc60f189090cc68104e6a23e1b1f9469407b`. Original `verify_and_stage.py --verify-all`: **18/18 PASS**, exit0. Twelve selected originals; six older MAP/VFX references verified, not reimported. [Source proof](PackageIntegration/source-verification.json). Temporary source block resolved.
 
-Source integrity is not gameplay readiness. Each row stays BLOCKED until its own compile/targeted tests/runtime/native gates pass. No production package imported at this checkpoint.
+Source integrity is not gameplay readiness. Each row stays BLOCKED until its own compile/targeted tests/runtime/native gates pass. Current implementation and remaining gates are recorded per package below.
 
 | ID | Source / hash | Integration PR | Runtime state | Tests | Decision / next dependency |
 |---|---|---|---|---|---|
 | COM-001 | kit ZIP `bc671889fb26491a7cbbd5cf415891c6224898be3140b888a1bf5c749bde345f`; source corrections PR#4 `cc9fbfbf895a2285a536ecfe70b9557c04921488` | Not created | NOT IMPORTED | Source PASS; Unity/native NOT RUN | BLOCKED: implementation gates pending |
-| DEF-001 | kit ZIP `66a6320db5463ade7f57c13a950b31df15c83cdbc03ee5b290172a4f96d1308c` | Not created | NOT IMPORTED | Source PASS; Unity/native NOT RUN | BLOCKED: implementation gates pending |
+| DEF-001 | kit ZIP `66a6320db5463ade7f57c13a950b31df15c83cdbc03ee5b290172a4f96d1308c` | Pending Draft | INTEGRATED: real shield/HP/charge/repair/AI loot | Edit55/55 + Play21/21, native0; [report](PackageIntegration/DEF-001_QA.md) | BLOCKED: W6 native/full regression pending |
 | DEF-002 | kit ZIP `38b7a2aec225e88f1f203ab367110e081e9e304a4d012baa5a1dd694f0ceb591` | Not created | NOT IMPORTED | Source PASS; Unity/native NOT RUN | BLOCKED: implementation gates pending |
 | MAP-R6 | kit ZIP `137e2e55065b3ba373fca2f8a32f5a47f0d01d6329560059228f06ba08bcd80e`; source corrections PR#3 `79b9605e07864b60fb38892c9e38f1cbb4072218` | Not created | NOT IMPORTED | Source PASS; Unity/native NOT RUN | BLOCKED: implementation gates pending |
 | MOV-011 | kit ZIP `5de4ef944023395f42cd239d3d6a466e45bcabad71049d6c90416aba589e5fa6` | Not created | NOT IMPORTED | Source PASS; Unity/native NOT RUN | BLOCKED: implementation gates pending |

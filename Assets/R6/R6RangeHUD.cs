@@ -46,6 +46,14 @@ namespace RoboRougelike.R1
                         (reload>0?$"{reload:0.0} s":"gotowa");
                     GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).Name+" • "+status,small);row++;
                 }
+                int shieldRow=0;
+                foreach(var part in run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>().Parts)
+                {
+                    if(part==null||part.Kind!=RoboRougelike.R3.R3PartKind.DirectionalShield)continue;
+                    var shield=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
+                    if(shield==null)continue;
+                    GUI.Label(new Rect(940,352+shieldRow*25,305,25),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);shieldRow++;
+                }
             }
             var feedback=Object.FindFirstObjectByType<R6CombatFeedback>();if(feedback==null)return;
             var lines=feedback.Notices();
