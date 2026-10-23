@@ -51,6 +51,12 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
+                    if(part.Weapon==R4WeaponKind.Shotgun)
+                    {
+                        var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+                        if(binding!=null&&binding.Fire())part.NextFireTime=binding.State.DeviceReadyAt;
+                        continue;
+                    }
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
                     controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
                 }
@@ -120,6 +126,12 @@ namespace RoboRougelike.R3
             if(model.Parts.Any(p=>p.Kind>=R3PartKind.Booster&&p.Kind<=R3PartKind.CrawlerTrack))
                 root.AddComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().Configure(assembly);
             root.AddComponent<R3MountedBonusEffects>().Configure(assembly,vehicle,stats);
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Shotgun))
+                root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
             return vehicle;
         }
     }

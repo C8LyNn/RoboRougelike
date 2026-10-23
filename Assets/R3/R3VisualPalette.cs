@@ -6,7 +6,7 @@ namespace RoboRougelike.R3
     {
         public readonly Material[] Parts = new Material[13];
         public Material Valid, Invalid, Missing,Selection;
-        public readonly Material[] Weapons=new Material[3];
+        public readonly Material[] Weapons=new Material[RoboRougelike.R4.R4WeaponDefinition.Count];
         public void Initialize(Material template)
         {
             Color[] colors = { new Color(0.22f,0.6f,0.67f), new Color(0.16f,0.19f,0.22f),
@@ -18,7 +18,7 @@ namespace RoboRougelike.R3
             Missing=Make(template,new Color(0.4f,0.2f,0.22f));
             Selection=Make(template,new Color(0.1f,0.9f,1,0.2f));
             Transparent(Valid,0.42f);Transparent(Invalid,0.42f);Transparent(Missing,0.23f);Transparent(Selection,0.2f);
-            for(int i=0;i<3;i++)Weapons[i]=Make(template,RoboRougelike.R4.R4WeaponDefinition.Get((RoboRougelike.R4.R4WeaponKind)i).Color);
+            for(int i=0;i<Weapons.Length;i++)Weapons[i]=Make(template,RoboRougelike.R4.R4WeaponDefinition.Get((RoboRougelike.R4.R4WeaponKind)i).Color);
         }
         private static Material Make(Material source, Color color)
         {

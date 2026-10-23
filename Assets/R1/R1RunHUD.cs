@@ -8,6 +8,7 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD : MonoBehaviour
     {
         private GUIStyle title, heading, body, small, button, compactButton;
+        private int weaponPage;
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
         private void Setup()
         {
@@ -213,10 +214,18 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(970,465,280,56),$"Odbudowa awaryjna — {emergencyCost} Z\nniezbędne moduły: 100% HP",compactButton))
                 garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędną broń, napęd i połączenia; koszt pobrano raz.":"Brak środków lub poprawnego planu napędu / rdzenia.";
             GUI.enabled=true;
-            for(int w=0;w<3;w++)
-                if(GUI.Button(new Rect(970+w*94,535,90,40),w==0?"Działo":w==1?"Automat":"Ciężka",compactButton))
+            int weaponPages=Mathf.Max(1,(R4WeaponDefinition.Count+2)/3);weaponPage=Mathf.Clamp(weaponPage,0,weaponPages-1);
+            for(int slot=0;slot<3;slot++)
+            {
+                int w=weaponPage*3+slot;if(w>=R4WeaponDefinition.Count)break;
+                string caption=w==0?"Działo":w==1?"Automat":w==2?"Ciężka":R4WeaponDefinition.Get((R4WeaponKind)w).Name;
+                if(GUI.Button(new Rect(970+slot*94,535,90,40),caption,compactButton))
                 {garage.SelectedWeapon=(R4WeaponKind)w;garage.SelectedPart=R3PartKind.Gun;partsPage=0;garage.SelectedInventoryId=null;garage.UseInventory=false;garage.SetTool(R41GarageTool.Mount);}
-            GUI.Label(new Rect(970,582,280,66),selected==null?$"{R4WeaponDefinition.Get(garage.SelectedWeapon).Name}\n{error??"Miejsce poprawne."}":
+            }
+            if(GUI.Button(new Rect(970,580,50,26),"‹",compactButton))weaponPage=(weaponPage+weaponPages-1)%weaponPages;
+            GUI.Label(new Rect(1028,582,155,25),$"Broń {weaponPage+1}/{weaponPages}",small);
+            if(GUI.Button(new Rect(1200,580,50,26),"›",compactButton))weaponPage=(weaponPage+1)%weaponPages;
+            GUI.Label(new Rect(970,615,280,48),selected==null?$"{R4WeaponDefinition.Get(garage.SelectedWeapon).Name}\n{error??"Miejsce poprawne."}":
                 $"{R4WeaponDefinition.PartName(selected)}\nDemontaż po zdjęciu: {model.DismantleValue(selected)} Z",small);
             }
             GUI.Label(new Rect(350,25,580,60),run.SandboxWorkshop?$"{model.Design.Name} • Warsztat poligonu":$"{model.Design.Name}  •  Następna walka {run.Progress.EncounterIndex+1}/{run.Progress.TotalEncounters}",heading);

@@ -58,11 +58,11 @@ namespace RoboRougelike.R4_1
             }
             if(kind!=R3PartKind.Gun)return null;
             var pivot=new GameObject("Obrót broni").transform;pivot.SetParent(block,false);pivot.localPosition=Vector3.up*0.6f;
-            bool heavy=weapon==R4WeaponKind.Heavy,automatic=weapon==R4WeaponKind.Automatic;
+            bool heavy=weapon==R4WeaponKind.Heavy,automatic=weapon==R4WeaponKind.Automatic,shotgun=weapon==R4WeaponKind.Shotgun;
             var barrel=Primitive(PrimitiveType.Cube,pivot,material,solid,"Lufa").transform;
             barrel.localPosition=Vector3.forward*(heavy?1.1f:0.85f);
             barrel.localScale=heavy?new Vector3(0.48f,0.4f,2):automatic?new Vector3(0.13f,0.13f,1.7f):new Vector3(0.2f,0.2f,1.4f);
-            if(automatic)
+            if(automatic||shotgun)
             {
                 var second=Object.Instantiate(barrel,pivot);barrel.localPosition+=Vector3.left*0.18f;second.localPosition+=Vector3.right*0.18f;
             }

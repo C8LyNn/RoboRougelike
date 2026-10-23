@@ -536,6 +536,8 @@ public float CurrentForwardSpeed =>
             SpawnPhysicalShell(barrel,profile.Damage*damageModifier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
+        public float PackageDamageScale => damageModifier;
+        public float PackageIntervalScale => intervalModifier;
         private void SpawnPhysicalShell(Transform barrel,float hitDamage,float projectileSpeed,float projectileDiameter,
             float projectileMass,RoboRougelike.R4.R4WeaponKind kind,string partId)
         {
@@ -1270,6 +1272,7 @@ public float CurrentForwardSpeed =>
     {
         private static readonly System.Collections.Generic.HashSet<P17PhysicalShell> activeShells =
             new System.Collections.Generic.HashSet<P17PhysicalShell>();
+        public static int AvailableSlots => Mathf.Max(0,96-activeShells.Count);
         private void OnEnable()
         {
             if(activeShells.Count>=96){gameObject.SetActive(false);Destroy(gameObject);return;}
@@ -1281,15 +1284,20 @@ public float CurrentForwardSpeed =>
         private float damage;
         private Vector3 launchDirection;
         private bool spent;
+        private Vector3 launchPosition;
+        private float maxTravelDistance=float.PositiveInfinity;
 
         public void Configure(
             Transform owner,
             float damageAmount,
             float lifetime,
             Vector3 initialDirection,
-            Transform targetToIgnoreNonDamageable)
+            Transform targetToIgnoreNonDamageable,
+            float maxDistance=float.PositiveInfinity)
         {
             if(!isActiveAndEnabled)return;
+            launchPosition=transform.position;
+            maxTravelDistance=float.IsNaN(maxDistance)?0:Mathf.Max(0,maxDistance);
             ownerRoot = owner;
             targetRoot =
                 targetToIgnoreNonDamageable;
@@ -1344,6 +1352,12 @@ public float CurrentForwardSpeed =>
                     true
                 );
             }
+        }
+
+        private void Update()
+        {
+            if(!spent&&(transform.position-launchPosition).sqrMagnitude>maxTravelDistance*maxTravelDistance)
+            {spent=true;gameObject.SetActive(false);Destroy(gameObject);}
         }
 
         private void IgnoreTargetHelpers()
@@ -1416,7 +1430,8 @@ public float CurrentForwardSpeed =>
             // Also handles a second collision callback already queued in the death step.
             var deadPart=collision.collider.GetComponentInParent<P12PipelineSafeDamageable>();
             if(collision.collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()!=null||
-                (deadPart!=null&&deadPart.IsDead))
+                (deadPart!=null&&deadPart.IsDead)||
+                !RoboRougelike.WeaponIntegration.RRLHitRouter.CanHit(collision.collider,ownerRoot))
             {
                 var own=GetComponent<Collider>();
                 if(own!=null)Physics.IgnoreCollision(own,collision.collider,true);
@@ -1437,29 +1452,8 @@ public float CurrentForwardSpeed =>
                     ? contact.point
                     : transform.position;
 
-            P12PipelineSafeDamageable damageable =
-                collision.collider
-                .GetComponent<
-                    P12PipelineSafeDamageable
-                >();
-
-            if (damageable == null)
-            {
-                damageable =
-                    collision.collider
-                    .GetComponentInParent<
-                        P12PipelineSafeDamageable
-                    >();
-            }
-
-            if (damageable != null)
-            {
-                damageable.ApplyDamage(
-                    damage,
-                    point,
-                    launchDirection
-                );
-            }
+            if((point-launchPosition).sqrMagnitude<=maxTravelDistance*maxTravelDistance)
+                RoboRougelike.WeaponIntegration.RRLHitRouter.Apply(collision.collider,damage,point,launchDirection,ownerRoot);
 
             Rigidbody hitBody =
                 collision.rigidbody;

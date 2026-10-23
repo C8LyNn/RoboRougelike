@@ -1,0 +1,24 @@
+{
+  "name": "RoboRougelike.WPN001Shotgun.PlayModeTests",
+  "rootNamespace": "RoboRougelike.WPN001Shotgun",
+  "references": [
+    "RoboRougelike.WPN001Shotgun",
+    "RoboRougelike.WPN001Shotgun.Demo"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

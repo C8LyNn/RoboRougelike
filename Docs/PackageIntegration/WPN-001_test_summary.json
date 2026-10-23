@@ -1,0 +1,290 @@
+{
+  "EditMode": {
+    "artifact": "WPN001-edit-final-target-2a849b81d42e452790cc1726c723dcfa",
+    "nativeExit": 0,
+    "result": {
+      "id": "2",
+      "testcasecount": "43",
+      "result": "Passed",
+      "total": "43",
+      "passed": "43",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:09:13Z",
+      "end-time": "2026-10-23 11:09:14Z",
+      "duration": "0,733459"
+    },
+    "cases": [
+      {
+        "name": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed"
+      },
+      {
+        "name": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed"
+      },
+      {
+        "name": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.ConeAngleClampedTo90",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.CooldownNeverZero",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.DefaultPelletCountIsEight",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.FailedCooldownRegistrationDoesNotChangeCount",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateAllowsExactCooldownBoundary",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateBecomesInactive",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateBeginsReady",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateBlocksDuringCooldown",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateClampsZeroCooldown",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateRejectsNanAndInfinity",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.GateResetRestoresInitialState",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.NegativeDamageClampedToZero",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.NegativeRangeClampedToMinimum",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.NonFiniteDamageFallsBack",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.PelletCountClampedAt64",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.PelletCountClampedAtOne",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.ReactivationPreservesCooldown",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.RecoilImpulseClampedToTen",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunConfigAndGateTests.VelocityInheritanceClampedToOne",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSimpleAmmoTests.ConsumeOneRound",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSimpleAmmoTests.InfiniteAmmoDoesNotDecrement",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSimpleAmmoTests.NegativeAmmoConfigurationClampsZero",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSimpleAmmoTests.RefundOneRound",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSimpleAmmoTests.RefuseEmptyMagazine",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.ConsecutiveVolleysHaveDistinctSeeds",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.DifferentSeedChangesPattern",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.DirectionsFollowRotatedMuzzle",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.DirectionsRemainInsideHalfAngle",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.DoesNotModifyGlobalUnityRandomState",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.EveryDirectionHasUnitLength",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.ExactNumberOfDirections",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.NoSpreadPointsExactlyForward",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.OnePelletPointsExactlyForward",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.RejectInvalidCone",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.RejectMoreThan64Pellets",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.RejectNullOutput",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.RejectUndersizedBuffer",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.RejectZeroForward",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.SameSeedProducesIdenticalVectors",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSpreadTests.ZeroSeedWorks",
+        "result": "Passed"
+      }
+    ]
+  },
+  "PlayMode": {
+    "artifact": "WPN001-play-final-target-f129b8f0b5794e47867493d65582c1ff",
+    "nativeExit": 0,
+    "result": {
+      "id": "2",
+      "testcasecount": "18",
+      "result": "Passed",
+      "total": "18",
+      "passed": "18",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:09:27Z",
+      "end-time": "2026-10-23 11:09:28Z",
+      "duration": "0,6643481"
+    },
+    "cases": [
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.AmmoRunsOutAfterFirstVolley",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.CooldownEventuallyExpires",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.CooldownRejectsAnotherShot",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DeactivatedModuleWillNotFire",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DemoPhysicalPelletsDamageDemoTarget",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DetachedWeaponCannotFireWithoutLifecycleRebind",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DisabledModuleWillNotFire",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DisabledSinkWillNotFire",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.FiringEmitsEightPellets",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.InheritVehiclePointVelocity",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.MuzzlePositionUsedNotVehicleCenter",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.PelletDamageIsPerPellet",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.PelletForwardFollowsMuzzleRotation",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.PelletOwnerIdentityIsPreserved",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.RecoilImpulseMovesDynamicBodyBackwards",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.RejectedVolleyDoesNotSpendAmmo",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.SeedIsStableAcrossSeparateModules",
+        "result": "Passed"
+      },
+      {
+        "name": "RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.ShotSequenceOnlyAdvancesOnSuccessfulShot",
+        "result": "Passed"
+      }
+    ]
+  }
+}
