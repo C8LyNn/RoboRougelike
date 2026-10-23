@@ -13,3 +13,5 @@ RED: missing catalog case. Additional RED exposed unreachable initial AI conditi
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-003_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
+
+Draft PR #24: https://github.com/C8LyNn/RoboRougelike/pull/24; runtime SHA e5fb550732edbc3f9dd8ba2560f90d3718729010.
