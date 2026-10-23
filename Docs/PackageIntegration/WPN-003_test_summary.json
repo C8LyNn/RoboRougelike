@@ -1,0 +1,291 @@
+[
+  {
+    "directory": "WPN003-edit-final-249c79b864124146bd4e8fad8a0c4498",
+    "summary": {
+      "id": "2",
+      "testcasecount": "30",
+      "result": "Passed",
+      "total": "30",
+      "passed": "30",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:03:38Z",
+      "end-time": "2026-10-23 12:03:39Z",
+      "duration": "0,7337542"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6BeamPhysicalTests.FourEnemyEncounterActuallyEquipsBeamAndSalvagesItsThermalState",
+        "result": "Passed",
+        "duration": "3.419687"
+      },
+      {
+        "fullname": "RRLW6BeamPhysicalTests.MountedBeamUsesRealRayHeatAndPreservesThermalStateAcrossRebuild",
+        "result": "Passed",
+        "duration": "3.449907"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.DefaultDamage_IsPositive",
+        "result": "Passed",
+        "duration": "0.001435"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.DefaultRange_IsPositive",
+        "result": "Passed",
+        "duration": "0.000082"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_DamageClamped(-1.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000235"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_DamageClamped(0.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000035"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_DamageClamped(7.0f,7.0f)",
+        "result": "Passed",
+        "duration": "0.000022"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_EnergyNonnegative(-1.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000088"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_EnergyNonnegative(3.5f,3.5f)",
+        "result": "Passed",
+        "duration": "0.000023"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_IsCopy",
+        "result": "Passed",
+        "duration": "0.000200"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_LayersPreserved",
+        "result": "Passed",
+        "duration": "0.000318"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_NullOrNaNValues_FallBack",
+        "result": "Passed",
+        "duration": "0.000088"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_ThresholdInRange(-2.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000085"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_ThresholdInRange(0.5f,0.5f)",
+        "result": "Passed",
+        "duration": "0.000024"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamSettingsTests.Sanitized_ThresholdInRange(5.0f,1.0f)",
+        "result": "Passed",
+        "duration": "0.000020"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.AccumulatesHeatByElapsedSeconds",
+        "result": "Passed",
+        "duration": "0.000433"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.CoolingDoesNotGoNegative",
+        "result": "Passed",
+        "duration": "0.000078"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.CoolingReleasesLockoutAfterThreshold",
+        "result": "Passed",
+        "duration": "0.000208"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.FireDurationLimitedByRemainingHeatBudget",
+        "result": "Passed",
+        "duration": "0.000122"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.FireSecondsClampedToStep",
+        "result": "Passed",
+        "duration": "0.000078"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.GetsOverheatedAtCapacity",
+        "result": "Passed",
+        "duration": "0.000071"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.HeatFraction_TracksCapacity",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.InvalidFireTime_DoesNotHeat",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.InvalidStep_NoHeatChange(-1.0f)",
+        "result": "Passed",
+        "duration": "0.000156"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.InvalidStep_NoHeatChange(0.0f)",
+        "result": "Passed",
+        "duration": "0.000024"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.NoHeatRate_AllowsFullTime",
+        "result": "Passed",
+        "duration": "0.000061"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.Overheated_CannotFireImmediately",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.PartialFireTick_CoolsUnusedRemainder",
+        "result": "Passed",
+        "duration": "0.000053"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.ResetClearsOverheat",
+        "result": "Passed",
+        "duration": "0.000077"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamThermalStateTests.StartsColdAndReady",
+        "result": "Passed",
+        "duration": "0.000057"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "filter": "Beam",
+      "finishedUtc": "2026-10-23T12:03:40.2820143Z",
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "WPN003-play-target-e2980067de3347a6a78f5d4a3c97cbe8",
+    "summary": {
+      "id": "2",
+      "testcasecount": "17",
+      "result": "Passed",
+      "total": "17",
+      "passed": "17",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:57:23Z",
+      "end-time": "2026-10-23 11:57:23Z",
+      "duration": "0,1045616"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.ACloserTargetBlocksTargetBehind",
+        "result": "Passed",
+        "duration": "0.018981"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.AutoFixedUpdateFiresOnPhysicsStep",
+        "result": "Passed",
+        "duration": "0.045296"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.DamageUsesActiveDuration_NotFrameCount",
+        "result": "Passed",
+        "duration": "0.001366"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.DestroyedOrDetachedEmitterCannotFire",
+        "result": "Passed",
+        "duration": "0.001320"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.EnergyExactlySpentForActualSeconds",
+        "result": "Passed",
+        "duration": "0.001114"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.FiresIntoNearestCollider",
+        "result": "Passed",
+        "duration": "0.000419"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.LayerMaskCanExcludeTarget",
+        "result": "Passed",
+        "duration": "0.000557"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.MissingMuzzleFailsClosed",
+        "result": "Passed",
+        "duration": "0.000358"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.MuzzleInsideForeignWall_FailsClosedWithoutDamage",
+        "result": "Passed",
+        "duration": "0.000659"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.NoEnergyDoesNotDamageOrHeat",
+        "result": "Passed",
+        "duration": "0.000966"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.NoTrigger_NoDamage",
+        "result": "Passed",
+        "duration": "0.000341"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.OverheatLimitsDamageWithinFixedStep",
+        "result": "Passed",
+        "duration": "0.000422"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.OwnColliderAhead_IsIgnored",
+        "result": "Passed",
+        "duration": "0.000428"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.OwnGraphFilterCanIgnorePartOutsideHierarchy",
+        "result": "Passed",
+        "duration": "0.000659"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.RecoilChangesActualRigidbodyVelocity",
+        "result": "Passed",
+        "duration": "0.008280"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.TriggerColliders_AreNotDamageableOrOccluding",
+        "result": "Passed",
+        "duration": "0.000749"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.BeamCutter.Tests.BeamCutterPlayModeTests.WallWithoutDamageReceiver_StillBlocks",
+        "result": "Passed",
+        "duration": "0.000486"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "filter": "Beam",
+      "finishedUtc": "2026-10-23T11:57:24.7607788Z",
+      "mode": "PlayMode"
+    }
+  }
+]

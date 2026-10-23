@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.WPN003BeamCutter.Samples",
+  "rootNamespace": "RoboRougelike.Mechanics.BeamCutter.Samples",
+  "references": ["RoboRougelike.WPN003BeamCutter"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

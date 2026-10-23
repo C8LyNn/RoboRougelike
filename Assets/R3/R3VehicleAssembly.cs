@@ -16,6 +16,7 @@ namespace RoboRougelike.R3
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; }
         public void Capture()
         {
+            foreach(var beam in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLBeamBinding>())beam.CaptureState();
             foreach(var shield in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>())shield.CaptureState();
             GetComponent<P12PipelineSafeVehicleStructure>().EvaluateStructure();
             GetComponent<P12PipelineSafeVehicleModuleSystem>().RefreshModules();
@@ -47,11 +48,18 @@ namespace RoboRougelike.R3
                         part.GunPivot.rotation,Quaternion.LookRotation(direction),170*Time.deltaTime);
                 }
         }
+        public void SetContinuousFireHeld(bool held)
+        {
+            foreach(var part in Parts)
+                if(part!=null&&part.Weapon==R4WeaponKind.BeamCutter)
+                    part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
+        }
         public void FireGuns()
         {
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
+                    if(part.Weapon==R4WeaponKind.BeamCutter)continue;
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
                         var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
@@ -141,6 +149,10 @@ namespace RoboRougelike.R3
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Railgun)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.BeamCutter)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon>=R4WeaponKind.Shotgun))
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
