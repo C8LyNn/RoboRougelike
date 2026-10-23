@@ -15,3 +15,5 @@ Final Edit filter Saw32/32 (29 original+3 integration), original Play18/18, all 
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-005_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
+
+Draft PR #27: https://github.com/C8LyNn/RoboRougelike/pull/27; runtime SHA a631f272ca1593690a3cc3689a3e4353d7d28f62.
