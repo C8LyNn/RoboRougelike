@@ -42,7 +42,8 @@ namespace RoboRougelike.R1
                     if(gun==null||gun.Kind!=RoboRougelike.R3.R3PartKind.Gun||!gun.Operational||!gun.transform.IsChildOf(run.Player.transform))continue;
                     float reload=Mathf.Max(0,gun.NextFireTime-Time.time);
                     var shotgun=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
-                    string status=shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
+                    var rail=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+                    string status=rail!=null?($"{rail.State.Ammo}/12 • "+(rail.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
                         (reload>0?$"{reload:0.0} s":"gotowa");
                     GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).Name+" • "+status,small);row++;
                 }

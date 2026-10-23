@@ -78,19 +78,22 @@ namespace RogueMachine.P12PipelineSafe
             }
         }
 
-        public void ApplyDamage(
+        public void ApplyDamage(float amount,Vector3 hitPoint,Vector3 hitDirection)
+        { ApplyDamageResolved(amount,hitPoint,hitDirection); }
+
+        public float ApplyDamageResolved(
             float amount,
             Vector3 hitPoint,
             Vector3 hitDirection)
         {
             if (dead || amount<=0 || float.IsNaN(amount) || float.IsInfinity(amount))
-                return;
+                return 0;
 
             var filter=GetComponentInParent<RoboRougelike.WeaponIntegration.IRRLPreHpFilter>();
             if(filter!=null)
             {
                 float filtered=filter.FilterDamage(this,amount,hitPoint,hitDirection);
-                if(filtered<=0||float.IsNaN(filtered)||float.IsInfinity(filtered))return;
+                if(filtered<=0||float.IsNaN(filtered)||float.IsInfinity(filtered))return 0;
                 amount=Mathf.Min(amount,filtered);
             }
 
@@ -100,13 +103,14 @@ namespace RogueMachine.P12PipelineSafe
             if (currentHp <= 0f)
             {
                 Die(hitPoint, hitDirection);
-                return;
+                return amount;
             }
 
             if (flashRoutine != null)
                 StopCoroutine(flashRoutine);
 
             flashRoutine = StartCoroutine(DamageFlash());
+            return amount;
         }
 
         private IEnumerator DamageFlash()

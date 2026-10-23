@@ -50,6 +50,7 @@ namespace RogueMachine.P12PipelineSafe
         public R4WeaponKind WeaponKind { get; private set; }
         public bool CombatActive => combatActive;
         private RoboRougelike.WeaponIntegration.RRLShotgunBinding packageShotgun;
+        private RoboRougelike.WeaponIntegration.RRLRailgunBinding packageRailgun;
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
         public bool EquipDirectionalShield()
         {
@@ -77,6 +78,19 @@ namespace RogueMachine.P12PipelineSafe
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageShotgun=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
             packageShotgun.Bind(state,transform,muzzle,ds,cadence);return true;
+        }
+        public bool EquipRailgun()
+        {
+            if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
+            float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
+            float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.Railgun;
+            var profile=R4WeaponDefinition.Get(WeaponKind);damage=profile.Damage*ds;fireInterval=profile.Interval*cadence;
+            weaponBlock.Configure(profile.Hp*durability,true);weaponBlock.RestoreHealthRatio(condition);
+            var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
+                {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
+            packageRailgun=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+            packageRailgun.Bind(state,transform,muzzle,ds,cadence);return true;
         }
         private R4SalvageLedger salvage;
         private string salvageId;
@@ -257,7 +271,7 @@ namespace RogueMachine.P12PipelineSafe
                         gun.Online(transform)?Condition(gun.Block):0));
                 }
             else items.Add(new R4SalvageItem(salvageId+"/gun",name+" / uzbrojenie",R3PartKind.Gun,WeaponKind,
-                Mathf.Min(Condition(weaponBlock),Condition(turretSupport)),packageShotgun!=null?packageShotgun.State.Ammo:-1));
+                Mathf.Min(Condition(weaponBlock),Condition(turretSupport)),packageRailgun!=null?packageRailgun.State.Ammo:packageShotgun!=null?packageShotgun.State.Ammo:-1));
             for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(salvageId+"/wheel/"+i,
                 name+" / koło "+(i+1),R3PartKind.Wheel,R4WeaponKind.Basic,Condition(driveWheels[i])));
             if(packageShield!=null)
@@ -604,6 +618,7 @@ namespace RogueMachine.P12PipelineSafe
         private void FirePhysicalShell(
             Vector3 aimPoint)
         {
+            if(packageRailgun!=null){packageRailgun.Fire();return;}
             if(packageShotgun!=null){packageShotgun.Fire();return;}
             RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,WeaponKind);
             Vector3 direction =

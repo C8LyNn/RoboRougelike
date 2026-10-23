@@ -38,6 +38,8 @@ namespace RoboRougelike.R1
                     enemy.EquipShotgun();
                 if(count>=3&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipDirectionalShield();
+                if(count>=4&&i==count-2&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
+                    enemy.EquipRailgun();
                 enemies.Add(enemy);
             }
         }

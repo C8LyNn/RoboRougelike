@@ -1,0 +1,458 @@
+[
+  {
+    "directory": "WPN002-edit-target-ef2037ad17e3432fab346239f7e14041",
+    "summary": {
+      "id": "2",
+      "testcasecount": "45",
+      "result": "Passed",
+      "total": "45",
+      "passed": "45",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:50:13Z",
+      "end-time": "2026-10-23 11:50:14Z",
+      "duration": "0,6958717"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair",
+        "result": "Passed",
+        "duration": "0.015797"
+      },
+      {
+        "fullname": "RRLW6RailgunPhysicalTests.MountedRailgunPenetratesDistinctHpPartsOnceWithOneAmmoDebit",
+        "result": "Passed",
+        "duration": "3.492890"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.CommitStartsCooldown",
+        "result": "Passed",
+        "duration": "0.000851"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.CooldownExpiresExactlyAtBoundary",
+        "result": "Passed",
+        "duration": "0.000096"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.DefaultHasPositiveFlightSpeed",
+        "result": "Passed",
+        "duration": "0.000104"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.DefaultHasPositiveRange",
+        "result": "Passed",
+        "duration": "0.000067"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.DefaultHasRecoil",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.DefaultPenetratesMultipleParts",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.FailedCommitDoesNotAdvanceSequence",
+        "result": "Passed",
+        "duration": "0.000356"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.HugeMaximumPartCountIsCapped",
+        "result": "Passed",
+        "duration": "0.000083"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.InactiveGateRejects",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.InitialShotIsReady",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.InvalidClockRejectsInfinity",
+        "result": "Passed",
+        "duration": "0.000049"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.InvalidClockRejectsNaN",
+        "result": "Passed",
+        "duration": "0.000048"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.NanSpeedUsesFallback",
+        "result": "Passed",
+        "duration": "0.000347"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.NegativeEnergyIsClamped",
+        "result": "Passed",
+        "duration": "0.000102"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.NegativeRecoilIsClampedToZero",
+        "result": "Passed",
+        "duration": "0.000160"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.ReenabledGatePreservesCooldown",
+        "result": "Passed",
+        "duration": "0.000077"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.ResetClearsSequenceAndCooldown",
+        "result": "Passed",
+        "duration": "0.000152"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.TooSmallPartCountIsRaised",
+        "result": "Passed",
+        "duration": "0.000069"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunConfigAndGateTests.ZeroCooldownIsClamped",
+        "result": "Passed",
+        "duration": "0.000067"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ClampCapsLowerBound",
+        "result": "Passed",
+        "duration": "0.000093"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ClampCapsUpperBound",
+        "result": "Passed",
+        "duration": "0.000060"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ClampRejectsInfinity",
+        "result": "Passed",
+        "duration": "0.000053"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ClampRejectsNaN",
+        "result": "Passed",
+        "duration": "0.000053"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.DamageCannotExceedCap",
+        "result": "Passed",
+        "duration": "0.000072"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.DamageIsZeroWithoutEnergy",
+        "result": "Passed",
+        "duration": "0.000063"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.DamageScalesWithIncomingEnergy",
+        "result": "Passed",
+        "duration": "0.000055"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.FinalAllowedPartStopsProjectile",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.FirstPenetrablePartAllowsContinuation",
+        "result": "Passed",
+        "duration": "0.000053"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.MinimumEnergyThresholdStopsProjectile",
+        "result": "Passed",
+        "duration": "0.000050"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.NonFiniteResistanceFailsClosed",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.NonPenetrablePartStopsProjectile",
+        "result": "Passed",
+        "duration": "0.000050"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.OnePartMaximumStops",
+        "result": "Passed",
+        "duration": "0.000051"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ResistanceCannotProduceNegativeEnergy",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ResistanceSubtractsEnergy",
+        "result": "Passed",
+        "duration": "0.000059"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelLossIsBounded(100.0f,10.0f,1.0f,90.0f)",
+        "result": "Passed",
+        "duration": "0.000266"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelLossIsBounded(100.0f,0.0f,5.0f,100.0f)",
+        "result": "Passed",
+        "duration": "0.000031"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelLossIsBounded(100.0f,50.0f,5.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000023"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelLossIsBounded(50.0f,-5.0f,2.0f,50.0f)",
+        "result": "Passed",
+        "duration": "0.000023"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelLossIsBounded(0.0f,2.0f,2.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000021"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelRejectsInfinity",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelRejectsInvalidDistance",
+        "result": "Passed",
+        "duration": "0.000051"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.TravelRejectsNaN",
+        "result": "Passed",
+        "duration": "0.000048"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.EditMode.RailgunRulesTests.ZeroResistanceStillConsumesEnergy",
+        "result": "Passed",
+        "duration": "0.000081"
+      }
+    ],
+    "exit": {
+      "filter": "Railgun",
+      "finishedUtc": "2026-10-23T11:50:15.2206253Z",
+      "mode": "EditMode",
+      "exitCode": 0
+    }
+  },
+  {
+    "directory": "WPN002-play-fixed-d98af330ecc44d31a5d55be599905fac",
+    "summary": {
+      "id": "2",
+      "testcasecount": "22",
+      "result": "Passed",
+      "total": "22",
+      "passed": "22",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:51:37Z",
+      "end-time": "2026-10-23 11:51:37Z",
+      "duration": "0,0620722"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.CooldownCannotConsumeASecondRound",
+        "result": "Passed",
+        "duration": "0.014907"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.DestroyedDemoBlockDisablesItsCollider",
+        "result": "Passed",
+        "duration": "0.014465"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.DetachedGunCannotFire",
+        "result": "Passed",
+        "duration": "0.000360"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.DisabledGunCannotConsumeAmmo",
+        "result": "Passed",
+        "duration": "0.000367"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.EnergyExhaustionStopsProjectile",
+        "result": "Passed",
+        "duration": "0.000539"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.HardWallBlocksProjectile",
+        "result": "Passed",
+        "duration": "0.000342"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.InitialShotInheritsVehicleVelocity",
+        "result": "Passed",
+        "duration": "0.000774"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.NoDamageBeyondMaxRange",
+        "result": "Passed",
+        "duration": "0.000252"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.NonPenetrableBlockStopsProjectile",
+        "result": "Passed",
+        "duration": "0.000310"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.PenetrationPartCapStopsProjectile",
+        "result": "Passed",
+        "duration": "0.000328"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.ProjectileCannotExceedRange",
+        "result": "Passed",
+        "duration": "0.000194"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.ProjectileHitsOneBlock",
+        "result": "Passed",
+        "duration": "0.000267"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.ProjectilePenetratesMultipleBlocks",
+        "result": "Passed",
+        "duration": "0.000338"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.ProjectileTravelsInSpace",
+        "result": "Passed",
+        "duration": "0.000188"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.RecoilActsOppositeToMuzzleDirection",
+        "result": "Passed",
+        "duration": "0.003420"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.SecondBlockReceivesLessDamage",
+        "result": "Passed",
+        "duration": "0.000367"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.ShooterColliderIsIgnored",
+        "result": "Passed",
+        "duration": "0.000349"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.SinkCreatesConfiguredProjectile",
+        "result": "Passed",
+        "duration": "0.002197"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.SinkRejectsWithoutPrefab",
+        "result": "Passed",
+        "duration": "0.000184"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.TwoCollidersSameBlockAreCountedOnce",
+        "result": "Passed",
+        "duration": "0.000802"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.WeaponFiresAndConsumesOneRound",
+        "result": "Passed",
+        "duration": "0.000377"
+      },
+      {
+        "fullname": "RoboRougelike.WPN002Railgun.Tests.PlayMode.RailgunPlayModeTests.WeaponRefundsAmmoIfSinkRejects",
+        "result": "Passed",
+        "duration": "0.000679"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-23T11:51:38.9973184Z",
+      "filter": "Railgun",
+      "exitCode": 0,
+      "mode": "PlayMode"
+    }
+  },
+  {
+    "directory": "WPN002-shared-regression-8d07127ec3ca4a00a898921b9b977493",
+    "summary": {
+      "id": "2",
+      "testcasecount": "8",
+      "result": "Passed",
+      "total": "8",
+      "passed": "8",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 11:52:01Z",
+      "end-time": "2026-10-23 11:52:02Z",
+      "duration": "0,6959248"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair",
+        "result": "Passed",
+        "duration": "0.018098"
+      },
+      {
+        "fullname": "RRLW6RailgunPhysicalTests.MountedRailgunPenetratesDistinctHpPartsOnceWithOneAmmoDebit",
+        "result": "Passed",
+        "duration": "3.950649"
+      },
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.001822"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation",
+        "result": "Passed",
+        "duration": "3.250742"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.425378"
+      },
+      {
+        "fullname": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed",
+        "duration": "3.409882"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed",
+        "duration": "0.004928"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed",
+        "duration": "0.000620"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-23T11:52:03.5078726Z",
+      "filter": "RRLW6",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  }
+]

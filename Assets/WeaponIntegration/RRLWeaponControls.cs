@@ -9,7 +9,8 @@ namespace RoboRougelike.WeaponIntegration
     public sealed class RRLWeaponControls : MonoBehaviour
     {
         RRLShotgunBinding[] shotguns;
-        void Start()=>shotguns=GetComponentsInChildren<RRLShotgunBinding>();
+        RRLRailgunBinding[] rails;
+        void Start(){shotguns=GetComponentsInChildren<RRLShotgunBinding>();rails=GetComponentsInChildren<RRLRailgunBinding>();}
         void Update()
         {
             var run=R1RunController.Instance;
@@ -17,7 +18,10 @@ namespace RoboRougelike.WeaponIntegration
                 (run.Progress.State!=R1RunState.Combat&&run.Progress.State!=R1RunState.TestDrive))return;
 #if ENABLE_INPUT_SYSTEM
             if(Keyboard.current?.tKey.wasPressedThisFrame==true)
+            {
                 foreach(var gun in shotguns)if(gun!=null)gun.BeginReload();
+                foreach(var gun in rails)if(gun!=null)gun.BeginReload();
+            }
 #endif
         }
     }
