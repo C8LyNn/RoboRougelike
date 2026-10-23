@@ -1,0 +1,423 @@
+[
+  {
+    "directory": "DEF002-edit-target-5942ae777fab4e84bd05d959309623e0",
+    "summary": {
+      "id": "2",
+      "testcasecount": "30",
+      "result": "Passed",
+      "total": "30",
+      "passed": "30",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:24:15Z",
+      "end-time": "2026-10-23 12:24:16Z",
+      "duration": "0,8591085"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemySalvagePreservesCanonicalCooldownAndReloadWithoutReset",
+        "result": "Passed",
+        "duration": "3.224374"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp",
+        "result": "Passed",
+        "duration": "3.514213"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.Configure_ClampsInitialEnergy",
+        "result": "Passed",
+        "duration": "0.003578"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.ExactBalance_IsSpendable",
+        "result": "Passed",
+        "duration": "0.000416"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.InfiniteCost_IsRejected",
+        "result": "Passed",
+        "duration": "0.000259"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.InsufficientBalance_DoesNotSpend",
+        "result": "Passed",
+        "duration": "0.000193"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.MultipleShots_CannotOverdraw",
+        "result": "Passed",
+        "duration": "0.000177"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.NaNCost_IsRejected",
+        "result": "Passed",
+        "duration": "0.000156"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.NegativeCost_IsRejected",
+        "result": "Passed",
+        "duration": "0.000131"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseEnergyTests.ZeroCost_IsAllowed",
+        "result": "Passed",
+        "duration": "0.000145"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.Alignment_UsesConfiguredTolerance(0.0f,True)",
+        "result": "Passed",
+        "duration": "0.001175"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.Alignment_UsesConfiguredTolerance(2.9f,True)",
+        "result": "Passed",
+        "duration": "0.000047"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.Alignment_UsesConfiguredTolerance(5.1f,False)",
+        "result": "Passed",
+        "duration": "0.000030"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.Alignment_UsesConfiguredTolerance(45.0f,False)",
+        "result": "Passed",
+        "duration": "0.000026"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.ConfigSanitization_RestoresPositiveDefaults",
+        "result": "Passed",
+        "duration": "0.000523"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.ConfigurationCopy_DoesNotShareMutableReference",
+        "result": "Passed",
+        "duration": "0.000516"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.FasterRetreatingTarget_IsImpossible",
+        "result": "Passed",
+        "duration": "0.000137"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.FutureThreatAfterHorizon_IsRejected",
+        "result": "Passed",
+        "duration": "0.000090"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.IncomingDirectThreat_IsRecognized",
+        "result": "Passed",
+        "duration": "0.000180"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.InheritedShooterVelocity_IsUsedForLead",
+        "result": "Passed",
+        "duration": "0.000131"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.MovingAway_IsRejected",
+        "result": "Passed",
+        "duration": "0.000079"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.MovingTarget_LeadIsAhead",
+        "result": "Passed",
+        "duration": "0.000091"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.PassingOutsideProtectedRadius_IsRejected",
+        "result": "Passed",
+        "duration": "0.000071"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.RelativeMotion_IsConsidered",
+        "result": "Passed",
+        "duration": "0.000085"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.Sanitize_NaNIsReplaced",
+        "result": "Passed",
+        "duration": "0.000075"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.ShortLifetime_RejectsLateInterception",
+        "result": "Passed",
+        "duration": "0.000086"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.StaticTarget_LeadMatchesCurrentPosition",
+        "result": "Passed",
+        "duration": "0.000126"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.ThreatAlreadyInsideProtection_IsRecognized",
+        "result": "Passed",
+        "duration": "0.000073"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.ZeroAimDirection_CannotPassAlignment",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefenseMathTests.ZeroProjectileSpeed_IsRejected",
+        "result": "Passed",
+        "duration": "0.000065"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-23T12:24:17.4802622Z",
+      "filter": "PointDefense",
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "DEF002-play-target-f6d2a56f99f04439b7a950f1a1a7921e",
+    "summary": {
+      "id": "2",
+      "testcasecount": "23",
+      "result": "Passed",
+      "total": "23",
+      "passed": "23",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:24:29Z",
+      "end-time": "2026-10-23 12:24:31Z",
+      "duration": "2,3211069"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.AddAmmunition_IncreasesCount",
+        "result": "Passed",
+        "duration": "0.014997"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.DeactivatedModule_CannotTrack",
+        "result": "Passed",
+        "duration": "0.001517"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.DestroyedTarget_IsNotDamagedAgain",
+        "result": "Passed",
+        "duration": "0.379908"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.DetachedModule_CannotTrack",
+        "result": "Passed",
+        "duration": "0.000517"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.EnergyRequiredWithoutBank_PreventsFiring",
+        "result": "Passed",
+        "duration": "0.239208"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.IncomingMissile_IsInterceptedBeforeReachingVehicle",
+        "result": "Passed",
+        "duration": "0.181720"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.InterceptDamageCanRequireMultipleHits",
+        "result": "Passed",
+        "duration": "0.297692"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.LongCooldown_PreventsSecondShot",
+        "result": "Passed",
+        "duration": "0.319946"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.MuzzleInsideForeignCollider_IsNotConsideredClear",
+        "result": "Passed",
+        "duration": "0.000809"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_FiltersDuplicateColliders",
+        "result": "Passed",
+        "duration": "0.001115"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_RecognizesIncomingProjectile",
+        "result": "Passed",
+        "duration": "0.000370"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_RecognizesTriggerBasedRocket",
+        "result": "Passed",
+        "duration": "0.000534"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_RejectsOutOfRangeThreat",
+        "result": "Passed",
+        "duration": "0.000294"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_SelectsSoonerThreat",
+        "result": "Passed",
+        "duration": "0.000389"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_SkipsFriendly",
+        "result": "Passed",
+        "duration": "0.000308"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_SkipsOutgoingProjectile",
+        "result": "Passed",
+        "duration": "0.000305"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.Scanning_SkipsProjectileThatWillMiss",
+        "result": "Passed",
+        "duration": "0.000409"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.SetOperationalTrue_AfterFalse_RestoresTracking",
+        "result": "Passed",
+        "duration": "0.000368"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.SlowRotation_DoesNotFireBeforeAligned",
+        "result": "Passed",
+        "duration": "0.154081"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.TriggerBasedRocket_CanBePhysicallyIntercepted",
+        "result": "Passed",
+        "duration": "0.179901"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.WallBlocksTargetVisibility",
+        "result": "Passed",
+        "duration": "0.000688"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.WallStopsCounterProjectileInFlight",
+        "result": "Passed",
+        "duration": "0.279051"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.PointDefense.Tests.PointDefensePhysicsTests.ZeroAmmunition_PreventsFiring",
+        "result": "Passed",
+        "duration": "0.240028"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-23T12:24:32.7861014Z",
+      "filter": "PointDefense",
+      "mode": "PlayMode"
+    }
+  },
+  {
+    "directory": "DEF002-shared-final-9dab7244b1ed431c8e0ea7c8b3c8fe8e",
+    "summary": {
+      "id": "2",
+      "testcasecount": "15",
+      "result": "Passed",
+      "total": "15",
+      "passed": "15",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:26:43Z",
+      "end-time": "2026-10-23 12:26:44Z",
+      "duration": "0,7403029"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6BeamPhysicalTests.FourEnemyEncounterActuallyEquipsBeamAndSalvagesItsThermalState",
+        "result": "Passed",
+        "duration": "3.295283"
+      },
+      {
+        "fullname": "RRLW6BeamPhysicalTests.MountedBeamUsesRealRayHeatAndPreservesThermalStateAcrossRebuild",
+        "result": "Passed",
+        "duration": "3.390357"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemyDefenseLosesRealArmorMountAndRemainsRepairableSalvage",
+        "result": "Passed",
+        "duration": "3.216985"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemySalvagePreservesCanonicalCooldownAndReloadWithoutReset",
+        "result": "Passed",
+        "duration": "3.161112"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp",
+        "result": "Passed",
+        "duration": "3.505494"
+      },
+      {
+        "fullname": "RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair",
+        "result": "Passed",
+        "duration": "0.006138"
+      },
+      {
+        "fullname": "RRLW6RailgunPhysicalTests.MountedRailgunPenetratesDistinctHpPartsOnceWithOneAmmoDebit",
+        "result": "Passed",
+        "duration": "3.621635"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.MountedRocketDamagesRealHpOncePerPartAndConsumesOneRound",
+        "result": "Passed",
+        "duration": "3.793653"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.TransitionCleansLiveRocketAndRecoveredLauncherKeepsEmptyAmmo",
+        "result": "Passed",
+        "duration": "3.421626"
+      },
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.001804"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation",
+        "result": "Passed",
+        "duration": "3.482017"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.187160"
+      },
+      {
+        "fullname": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed",
+        "duration": "3.540547"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed",
+        "duration": "0.005394"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed",
+        "duration": "0.000707"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-23T12:26:45.1789908Z",
+      "filter": "RRLW6",
+      "mode": "EditMode"
+    }
+  }
+]

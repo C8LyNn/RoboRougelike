@@ -53,6 +53,7 @@ namespace RogueMachine.P12PipelineSafe
         private RoboRougelike.WeaponIntegration.RRLRailgunBinding packageRailgun;
         private RoboRougelike.WeaponIntegration.RRLBeamBinding packageBeam;
         private RoboRougelike.WeaponIntegration.RRLRocketBinding packageRocket;
+        private RoboRougelike.WeaponIntegration.RRLPointDefenseBinding packagePointDefense;
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
         public bool EquipDirectionalShield()
         {
@@ -64,9 +65,23 @@ namespace RogueMachine.P12PipelineSafe
             item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
             R3BonusModuleGeometry.ConfigureCube(item,true);
+            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
             packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();return true;
+        }
+        public bool EquipPointDefense()
+        {
+            if(packagePointDefense!=null||IsDefeated)return false;
+            var state=new R3PartState(new Vector3Int(1,3,3),R3PartKind.PointDefense)
+                {Id=salvageId+"/point-defense",Source=name+" / obrona punktowa",RotationQuarterTurns=new Vector3Int(0,2,0)};
+            var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name="DEF002 mounted defense";
+            item.transform.SetParent(transform,false);item.transform.localPosition=(Vector3)state.Cell*.55f;
+            item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
+            R3BonusModuleGeometry.ConfigureCube(item,true);
+            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
+            var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(160,true);
+            packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);return true;
         }
         public bool EquipShotgun()
         {
@@ -298,17 +313,24 @@ namespace RogueMachine.P12PipelineSafe
                     items.Add(new R4SalvageItem(salvageId+"/gun/"+i,name+" / bateria "+(i+1),R3PartKind.Gun,gun.Kind,
                         gun.Online(transform)?Condition(gun.Block):0));
                 }
-            else items.Add(new R4SalvageItem(salvageId+"/gun",name+" / uzbrojenie",R3PartKind.Gun,WeaponKind,
-                Mathf.Min(Condition(weaponBlock),Condition(turretSupport)),packageRocket!=null?packageRocket.State.Ammo:packageRailgun!=null?packageRailgun.State.Ammo:packageShotgun!=null?packageShotgun.State.Ammo:-1,
-                thermalHeat:packageBeam!=null?packageBeam.State.ThermalHeat:0,thermalLocked:packageBeam!=null&&packageBeam.State.ThermalLocked));
+            else
+            {
+                var state=packageRocket!=null?packageRocket.State:packageBeam!=null?packageBeam.State:packageRailgun!=null?packageRailgun.State:packageShotgun!=null?packageShotgun.State:null;
+                if(packageBeam!=null)packageBeam.CaptureState();
+                float condition=Mathf.Min(Condition(weaponBlock),Condition(turretSupport));
+                items.Add(state!=null?new R4SalvageItem(state,condition):new R4SalvageItem(salvageId+"/gun",name+" / uzbrojenie",R3PartKind.Gun,WeaponKind,condition));
+            }
             for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(salvageId+"/wheel/"+i,
                 name+" / koło "+(i+1),R3PartKind.Wheel,R4WeaponKind.Basic,Condition(driveWheels[i])));
             if(packageShield!=null)
             {
                 packageShield.CaptureState();var state=packageShield.Device.State;
-                items.Add(new R4SalvageItem(state.Id,state.Source,state.Kind,state.Weapon,
-                    packageShield.transform.IsChildOf(transform)?Condition(packageShield.Device.Damageable):0,
-                    -1,state.DefenseCharge,state.DefenseRechargeAge,state.RotationQuarterTurns,state.ContactMask));
+                items.Add(new R4SalvageItem(state,packageShield.transform.IsChildOf(transform)?Condition(packageShield.Device.Damageable):0));
+            }
+            if(packagePointDefense!=null)
+            {
+                packagePointDefense.CaptureState();
+                items.Add(new R4SalvageItem(packagePointDefense.State,packagePointDefense.transform.IsChildOf(transform)?Condition(packagePointDefense.Device.Damageable):0));
             }
             salvage.Record(salvageId,items);
         }

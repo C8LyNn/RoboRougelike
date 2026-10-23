@@ -44,6 +44,8 @@ namespace RoboRougelike.R1
                     enemy.EquipRailgun();
                 if(count>=4&&i==count-3&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipBeam();
+                if(count>=4&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
+                    enemy.EquipPointDefense();
                 enemies.Add(enemy);
             }
         }
@@ -67,6 +69,8 @@ namespace RoboRougelike.R1
             { shell.gameObject.SetActive(false); Object.Destroy(shell.gameObject); }
             foreach(var rocket in Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None))
                 if(rocket.IsInitialized){rocket.gameObject.SetActive(false);Object.Destroy(rocket.gameObject);}
+            foreach(var interceptor in Object.FindObjectsByType<RoboRougelike.Mechanics.PointDefense.PointDefenseInterceptor>(FindObjectsSortMode.None))
+            {interceptor.gameObject.SetActive(false);Object.Destroy(interceptor.gameObject);}
             var debris = new HashSet<GameObject>();
             foreach (var part in Object.FindObjectsByType<P12PipelineSafeDamageable>(FindObjectsSortMode.None))
             {
