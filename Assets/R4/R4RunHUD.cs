@@ -176,6 +176,8 @@ namespace RoboRougelike.R1
             var profile=R4WeaponDefinition.Get(selected.Weapon);
             GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.BonusModule?
                 $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
+                selected.Kind==R3PartKind.PointDefense?
+                $"Obrona 1×2×2 • {(selected.Ammo<0?40:selected.Ammo)}/40 • zasięg 24 m\nMasa 35 kg • HP {selected.Health*100:0}%":
                 selected.Kind==R3PartKind.DirectionalShield?
                 $"Tarcza 1×2×2 • {(selected.DefenseCharge<0?100:selected.DefenseCharge):0}/100 osłony\n120° • 9 m • masa 32 kg • HP {selected.Health*100:0}%":
                 selected.Kind==R3PartKind.Gun?

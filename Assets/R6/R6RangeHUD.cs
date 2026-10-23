@@ -49,6 +49,9 @@ namespace RoboRougelike.R1
                         (reload>0?$"{reload:0.0} s":"gotowa");
                     GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).Name+" • "+status,small);row++;
                 }
+                int defenseRow=0;
+                foreach(var defense in run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>())
+                {GUI.Label(new Rect(940,402+defenseRow*24,305,24),$"DEF002 • {defense.State.Ammo}/40 • T przeładuj",small);defenseRow++;}
                 int shieldRow=0;
                 foreach(var part in run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>().Parts)
                 {

@@ -1278,9 +1278,15 @@ public float CurrentForwardSpeed =>
         {
             if(activeShells.Count>=96){gameObject.SetActive(false);Destroy(gameObject);return;}
             activeShells.Add(this);
+            if(GetComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>()==null)gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseThreat>();
         }
         private void OnDisable(){activeShells.Remove(this);}
         private Transform ownerRoot;
+        public Transform OwnerRoot=>ownerRoot;
+        public bool IsActiveProjectile=>isActiveAndEnabled&&!spent&&ownerRoot!=null;
+        public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
+        public bool Intercept(float amount)
+        {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;}
         private Transform targetRoot;
         private float damage;
         private Vector3 launchDirection;

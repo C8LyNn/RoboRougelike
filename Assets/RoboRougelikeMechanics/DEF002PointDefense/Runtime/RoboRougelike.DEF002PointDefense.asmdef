@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.DEF002PointDefense",
+  "rootNamespace": "RoboRougelike.Mechanics.PointDefense",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -24,7 +24,7 @@ namespace RoboRougelike.WeaponIntegration
             muzzle=barrel;damageScale=damageMultiplier;intervalScale=intervalMultiplier;if(state.Ammo<0)state.Ammo=Magazine;
             var template=new GameObject("WPN004 inactive projectile template");template.SetActive(false);template.transform.SetParent(transform,false);
             var rb=template.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;template.AddComponent<SphereCollider>().isTrigger=true;
-            var prefab=template.AddComponent<RocketProjectile>();
+            var prefab=template.AddComponent<RocketProjectile>();template.AddComponent<RRLPointDefenseThreat>();
             var visual=GameObject.CreatePrimitive(PrimitiveType.Sphere);visual.name="Rocket visual";visual.transform.SetParent(template.transform,false);visual.transform.localScale=Vector3.one*.24f;
             var col=visual.GetComponent<Collider>();col.enabled=false;Destroy(col);
             visual.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;

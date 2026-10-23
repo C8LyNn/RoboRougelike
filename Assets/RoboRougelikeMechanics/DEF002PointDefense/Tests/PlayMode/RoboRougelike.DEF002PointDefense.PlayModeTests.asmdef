@@ -1,0 +1,16 @@
+{
+  "name": "RoboRougelike.DEF002PointDefense.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.PointDefense.Tests",
+  "references": [
+    "RoboRougelike.DEF002PointDefense"
+  ],
+  "includePlatforms": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

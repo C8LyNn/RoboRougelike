@@ -11,6 +11,7 @@ namespace RoboRougelike.WeaponIntegration
         readonly RaycastHit[] hits=new RaycastHit[128];
         readonly HashSet<int> visited=new HashSet<int>();
         RailgunShot shot;Rigidbody body;Vector3 position;float travelled,energy,damageScale;
+        public Vector3 Velocity=>shot.InitialVelocity;
         public void Bind(RailgunShot value,float scale){shot=value;position=value.Origin;energy=value.Spec.InitialEnergy;damageScale=scale;body=GetComponent<Rigidbody>();}
         public void Step(float dt)
         {

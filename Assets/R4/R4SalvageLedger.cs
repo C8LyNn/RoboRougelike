@@ -12,6 +12,7 @@ namespace RoboRougelike.R4
         public readonly R3PartKind Kind;
         public readonly R4WeaponKind Weapon;
         public readonly float Health;
+        private readonly R3PartState snapshot;
         public readonly int Ammo;
         public readonly float ThermalHeat;public readonly bool ThermalLocked;
         public readonly float DefenseCharge,DefenseRechargeAge;
@@ -24,7 +25,15 @@ namespace RoboRougelike.R4
             float defenseCharge=-1,float defenseAge=float.PositiveInfinity,Vector3Int rotation=default,int contacts=R3MountingGrid.AllFaces,float thermalHeat=0,bool thermalLocked=false)
         { Id=id;Source=source;Kind=kind;Weapon=weapon;Ammo=ammo;DefenseCharge=defenseCharge;DefenseRechargeAge=defenseAge;
             Rotation=rotation;Contacts=contacts;ThermalHeat=thermalHeat;ThermalLocked=thermalLocked;Health=float.IsNaN(health)||float.IsInfinity(health)?0:Math.Max(0,Math.Min(1,health)); }
-        public R3PartState ToPart() => new R3PartState(default,Kind,Health){Id=Id,Source=Source,Weapon=Weapon,Ammo=Ammo,
+        public R4SalvageItem(R3PartState part,float health):this(part.Id,part.Source,part.Kind,part.Weapon,health,
+            part.Ammo,part.DefenseCharge,part.DefenseRechargeAge,part.RotationQuarterTurns,part.ContactMask,part.ThermalHeat,part.ThermalLocked)
+        {snapshot=part.Copy();}
+        public R3PartState ToPart()
+        {
+            if(snapshot!=null){var part=snapshot.Copy();part.Health=Health;return part;}
+            return LegacyPart();
+        }
+        R3PartState LegacyPart() => new R3PartState(default,Kind,Health){Id=Id,Source=Source,Weapon=Weapon,Ammo=Ammo,
             ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,RotationQuarterTurns=Rotation,ContactMask=Contacts};
     }
     // One ledger per encounter. Contains no scene objects and survives wreck cleanup.

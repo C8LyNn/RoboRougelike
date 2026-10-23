@@ -17,6 +17,7 @@ namespace RoboRougelike.R3
         public void Capture()
         {
             foreach(var beam in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLBeamBinding>())beam.CaptureState();
+            foreach(var defense in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>())defense.CaptureState();
             foreach(var shield in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>())shield.CaptureState();
             GetComponent<P12PipelineSafeVehicleStructure>().EvaluateStructure();
             GetComponent<P12PipelineSafeVehicleModuleSystem>().RefreshModules();
@@ -105,7 +106,7 @@ namespace RoboRougelike.R3
                 if(wide)R3BonusModuleGeometry.ConfigureCube(item,true);
                 var hp=item.AddComponent<P12PipelineSafeDamageable>();
                 hp.Configure(state.Kind==R3PartKind.Core?model.Design.CoreHp:state.Kind==R3PartKind.Gun?R4WeaponDefinition.Get(state.Weapon).Hp:
-                    state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.DirectionalShield?180:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100,true);
+                    state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.DirectionalShield?180:state.Kind==R3PartKind.PointDefense?160:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100,true);
                 var block=item.AddComponent<P12_PipelineSafePlayerBlock>();
                 item.AddComponent<R3BlockMountPoints>().Configure(state.Id,
                     R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask));
@@ -170,6 +171,12 @@ namespace RoboRougelike.R3
                 if(part.Kind==R3PartKind.DirectionalShield)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.PointDefense)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
+            if(root.GetComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>()==null&&assembly.Parts.Any(p=>p.Kind==R3PartKind.PointDefense))
+                root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
             return vehicle;
         }
     }
