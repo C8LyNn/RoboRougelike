@@ -1,0 +1,9 @@
+{
+  "name": "RoboRougelike.WPN005RotarySaw.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Weapons.RotarySaw.Tests",
+  "references": ["RoboRougelike.WPN005RotarySaw"],
+  "includePlatforms": [],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false
+}

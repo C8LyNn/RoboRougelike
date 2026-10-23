@@ -43,7 +43,9 @@ namespace RoboRougelike.R1
                 if(count>=4&&i==count-2&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipRailgun();
                 if(count>=4&&i==count-3&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
-                    enemy.EquipBeam();
+                {
+                    if(definition.Arena==RoboRougelike.R5.R5ArenaKind.Wasteland)enemy.EquipSaw();else enemy.EquipBeam();
+                }
                 if(count>=4&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipPointDefense();
                 enemies.Add(enemy);

@@ -1,0 +1,7 @@
+{
+  "name": "RoboRougelike.WPN005RotarySaw.Editor",
+  "rootNamespace": "RoboRougelike.Weapons.RotarySaw.Editor",
+  "references": ["RoboRougelike.WPN005RotarySaw"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": false
+}

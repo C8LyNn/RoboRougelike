@@ -16,6 +16,7 @@ namespace RoboRougelike.R3
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; }
         public void Capture()
         {
+            foreach(var saw in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLSawBinding>())saw.CaptureState();
             foreach(var beam in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLBeamBinding>())beam.CaptureState();
             foreach(var defense in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>())defense.CaptureState();
             foreach(var shield in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>())shield.CaptureState();
@@ -54,13 +55,16 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)
                 if(part!=null&&part.Weapon==R4WeaponKind.BeamCutter)
                     part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
+            foreach(var part in Parts)
+                if(part!=null&&part.Weapon==R4WeaponKind.RotarySaw)
+                    part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
         }
         public void FireGuns()
         {
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
-                    if(part.Weapon==R4WeaponKind.BeamCutter)continue;
+                    if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.RotarySaw)continue;
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
                         var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
@@ -164,6 +168,10 @@ namespace RoboRougelike.R3
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.RocketLauncher)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.RotarySaw)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon>=R4WeaponKind.Shotgun))
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
