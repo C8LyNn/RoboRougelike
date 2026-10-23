@@ -49,7 +49,7 @@ namespace RoboRougelike.R1
             Player=R3VehicleAssembly.Build(VehicleModel,testStats,palette,new Vector3(0,.7f,-26),Quaternion.identity);
             if(enemyTemplate!=null)
             {
-                var target=Instantiate(enemyTemplate,new Vector3(-27,0,24),Quaternion.identity,testRange.Layout);
+                var target=Instantiate(enemyTemplate,new Vector3(-5,0,-20),Quaternion.identity,testRange.Layout);
                 target.name="Cel elektroniczny • trening rakietowy";
                 target.ConfigureArchetype(R3EnemyArchetype.Gunner);
                 target.ConfigureVariant(RoboRougelike.R5.R5EnemyVariant.Normal);

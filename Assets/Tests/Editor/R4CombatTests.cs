@@ -184,13 +184,13 @@ public class R4CombatTests
         var enemy=Run.Encounter.Enemies[0];var yaw=enemy.transform.Find("Enemy_Yaw");
         enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);
         yield return Until(()=>!enemy.enabled,"Wyłączenie AI");
-        Assert.That(Run.Salvage.Items.Count,Is.EqualTo(7));var saved=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);
+        Assert.That(Run.Salvage.Items.Count,Is.EqualTo(8));var saved=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);
         Assert.That(saved.Weapon,Is.EqualTo(R4WeaponKind.Heavy));Assert.That(saved.Health,Is.EqualTo(1));
         yield return Until(()=>yaw==null,"Wrak musi faktycznie wygasnąć",15);
-        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));Assert.That(Run.Salvage.Items.Count,Is.EqualTo(7));
+        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));Assert.That(Run.Salvage.Items.Count,Is.EqualTo(8));
         RRLW2TestFlow.DefeatAll(Run);
-        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(17));
-        Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(17));
+        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(18));
+        Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(18));
         Assert.That(RRLW2TestFlow.Claim(Run,new[]{saved.Id}),Is.True);Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==saved.Id).Weapon,Is.EqualTo(R4WeaponKind.Heavy));
     }
 }

@@ -89,8 +89,8 @@ public class R1PlayIntegrationTests
             Assert.That(Run.Encounter.Enemies[0].Core.MaxHp,Is.InRange(60,160));
             DefeatAllEnemies();
             yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Unified rewards",automaticRewards:false);
-            if(wave==5){Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3));Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);break;}
-            Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3));
+            if(wave==5){Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3),$"Wave {wave+1}, state {Run.Progress.State}, completed {Run.Progress.CompletedEncounters}");Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);break;}
+            Assert.That(Run.Progress.Offers.Count,Is.EqualTo(3),$"Wave {wave+1}, state {Run.Progress.State}, completed {Run.Progress.CompletedEncounters}");
             Assert.That(Run.Progress.Offers.Select(x=>x.Id).Distinct().Count(),Is.EqualTo(3));
             Assert.That(Time.timeScale,Is.Zero);
             Assert.That(Run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);

@@ -74,7 +74,10 @@ public class RRLW2GameplayTests
                         if(part.bounds.Intersects(wall.bounds))Assert.That(Physics.ComputePenetration(part,part.transform.position,part.transform.rotation,wall,wall.transform.position,wall.transform.rotation,out _,out float distance)&&distance>.02f,Is.False,"Spawn inside wall: "+foe.name+" / "+wall.name);
             for(int i=0;i<foes.Length;i++)for(int j=i+1;j<foes.Length;j++)
                 Assert.That(Vector3.Distance(foes[i].transform.position,foes[j].transform.position),Is.GreaterThan(6));
-            int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count));
+            // Every physically mounted defense is loot in addition to legacy guns/wheels.
+            int defenses=foes.Sum(e=>e.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>().Length+
+                e.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>().Length);
+            int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count))+defenses;
             RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Full encounter victory");
             Assert.That(run.Salvage.Items.Count,Is.EqualTo(expected));Assert.That(run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(expected));
             Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);

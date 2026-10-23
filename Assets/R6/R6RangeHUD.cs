@@ -30,7 +30,7 @@ namespace RoboRougelike.R1
                 GUI.enabled=!range.TrainingTarget.IsDefeated;
                 if(GUI.Button(new Rect(940,62,305,38),range.TrainingFireRequested?"Wstrzymaj ostrzał rakietowy":"Włącz ostrzał rakietowy",compactButton))range.SetTrainingFire(!range.TrainingFireRequested);
                 GUI.enabled=true;
-                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot w lewym rogu poligonu.\nEMP działa na odsłoniętą elektronikę.",small);
+                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEMP działa na odsłoniętą elektronikę.",small);
             }
             GUI.Label(new Rect(629,341,32,38),"+",heading);
             Panel(new Rect(18,625,1244,78));

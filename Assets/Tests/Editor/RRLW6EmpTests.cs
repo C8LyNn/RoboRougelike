@@ -122,6 +122,63 @@ public class RRLW6EmpPhysicalTests
         var remaining=(float)typeof(R3PartState).GetField("DisruptionRemaining").GetValue(item);
         Assert.That(remaining,Is.EqualTo(2).Within(.001),"Elite battery must retain temporary electronic state through actual salvage");
     }
+    [UnityTest] public IEnumerator ExpiredEnemyPartsRemainRecoverableAndRepairable()
+    {
+        var run=R1RunController.Instance;
+        var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(run);
+        int verified=0;
+        foreach(var variant in new[]{RoboRougelike.R5.R5EnemyVariant.Normal,RoboRougelike.R5.R5EnemyVariant.EliteGunner})
+        {
+            var ledger=new R4SalvageLedger(3);
+            run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{variant}},ledger,"expired-parts");
+            run.Encounter.SetCombatActive(false);
+            int ready=Time.frameCount+3;while(Time.frameCount<ready)yield return null;
+            var enemy=run.Encounter.Enemies.First();var gun=enemy.WeaponBlock;
+            var wheel=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>().First(R6VehicleDrive.IsWheel);
+            gun.ApplyDamage(100000,gun.transform.position,Vector3.up);
+            wheel.ApplyDamage(100000,wheel.transform.position,Vector3.up);
+            // Expire detached wrecks while their owner core still survives.
+            UnityEngine.Object.Destroy(gun.gameObject);UnityEngine.Object.Destroy(wheel.gameObject);
+            ready=Time.frameCount+3;while(Time.frameCount<ready)yield return null;
+            Assert.That(gun==null&&wheel==null,Is.True);
+            Assert.That(enemy.IsDefeated,Is.False);
+            Assert.DoesNotThrow(()=>enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up));
+            string gunId=variant==RoboRougelike.R5.R5EnemyVariant.Normal?"expired-parts/enemy/0/gun":"expired-parts/enemy/0/gun/0";
+            string wheelId="expired-parts/enemy/0/wheel/0";
+            Assert.That(ledger.Items.Single(p=>p.Id==gunId).Health,Is.Zero);
+            Assert.That(ledger.Items.Single(p=>p.Id==wheelId).Health,Is.Zero);
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+            Assert.That(ledger.Claim(model,new[]{gunId,wheelId}),Is.True);model.Award(500);
+            Assert.That(model.RepairInventory(gunId),Is.True);Assert.That(model.RepairInventory(wheelId),Is.True);
+            Assert.That(model.Inventory.Where(p=>p.Id==gunId||p.Id==wheelId).All(p=>p.Health==1),Is.True);verified++;
+        }
+        Assert.That(verified,Is.EqualTo(2));Debug.Log("[W6 EXPIRY QA] Normal and elite expired gun/wheel recovery and paid repair verified");
+    }
+    [UnityTest] public IEnumerator ExpiredPackageDevicesKeepFiniteResourcesAndLootIdentity()
+    {
+        var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        Assert.That(enemy.EquipShotgun(),Is.True);Assert.That(enemy.EquipDirectionalShield(),Is.True);Assert.That(enemy.EquipPointDefense(),Is.True);
+        var gun=enemy.GetComponentInChildren<RRLShotgunBinding>();var shield=enemy.GetComponentInChildren<RRLShieldBinding>();var defense=enemy.GetComponentInChildren<RRLPointDefenseBinding>();
+        enemy.SetCombatActive(true);enemy.ConfigureMovement(0,12,0);
+        Assert.That(gun.Fire(),Is.True);int ammo=gun.State.Ammo;Assert.That(ammo,Is.EqualTo(11));
+        shield.Generator.RestoreState(40,0);shield.CaptureState();defense.Controller.RestoreState(7,.4f);defense.CaptureState();
+        string gunId=gun.State.Id,shieldId=shield.Device.State.Id,defenseId=defense.State.Id;
+        foreach(var hp in new[]{gun.GetComponent<RRLDeviceBinding>().Damageable,shield.Device.Damageable,defense.Device.Damageable})
+        {hp.ApplyDamage(100000,hp.transform.position,Vector3.up);UnityEngine.Object.Destroy(hp.gameObject);}
+        enemy.SetCombatActive(false);
+        int ready=Time.frameCount+3;while(Time.frameCount<ready)yield return null;
+        Assert.That(gun==null&&shield==null&&defense==null,Is.True);
+        Assert.That(enemy.IsDefeated,Is.False);enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        var shot=run.Salvage.Items.Single(p=>p.Id==gunId);Assert.That(shot.Ammo,Is.EqualTo(ammo),"Wreck expiry must not refill finite ammunition");
+        var shieldLoot=run.Salvage.Items.Single(p=>p.Id==shieldId);Assert.That(shieldLoot.DefenseCharge,Is.EqualTo(40).Within(.001));
+        Assert.That(run.Salvage.Items.Single(p=>p.Id==defenseId).Ammo,Is.EqualTo(7));
+        Assert.That(new[]{shot,shieldLoot,run.Salvage.Items.Single(p=>p.Id==defenseId)}.All(p=>p.Health==0),Is.True);
+        Assert.That(run.Salvage.Claim(run.VehicleModel,new[]{gunId,shieldId,defenseId}),Is.True);run.VehicleModel.Award(500);
+        foreach(var id in new[]{gunId,shieldId,defenseId})Assert.That(run.VehicleModel.RepairInventory(id),Is.True);
+        var saved=run.VehicleModel.DeepCopy();Assert.That(saved.Inventory.Single(p=>p.Id==gunId).Ammo,Is.EqualTo(ammo));
+        Assert.That(saved.Inventory.Single(p=>p.Id==shieldId).DefenseCharge,Is.EqualTo(40).Within(.001));Assert.That(saved.Inventory.Single(p=>p.Id==defenseId).Ammo,Is.EqualTo(7));
+        Debug.Log("[W6 EXPIRY QA] Expired shotgun/shield/PDS resources, identities and paid repair verified");
+    }
     [UnityTest] public IEnumerator ActualExpeditionAndAlternativeDriveSurviveTemporaryEmp()
     {
         var run=R1RunController.Instance;var player=run.Player;
