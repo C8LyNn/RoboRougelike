@@ -22,3 +22,5 @@ The source `Samples~/ShieldManualDemo.cs` is preserved unchanged as `ReferenceSo
 - Machine-readable case names/results: [test summaries](DEF-001_test_summary.json). Raw XML/logs remain in ignored Artifacts/Local directories listed there.
 
 Standalone Windows/native, complete W6 campaign and full regression are pending wave closure. These API-driven physics tests are not reported as human-input play. Known W5 UIA shutdown limitation is unchanged; all listed Unity test processes exited0.
+
+Integration [Draft PR #22](https://github.com/C8LyNn/RoboRougelike/pull/22), runtime SHA 52abbbb80b212b1bff296568cb00a01a74577924.
