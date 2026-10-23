@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.HAZ001.Runtime",
+  "rootNamespace": "RoboRougelike.Mechanics.HAZ001",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,21 @@
+{
+  "name": "RoboRougelike.HAZ001.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.HAZ001.Tests",
+  "references": [
+    "RoboRougelike.HAZ001.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
