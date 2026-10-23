@@ -4,7 +4,7 @@ Source: verified kit WPN006EMP SHA256 `19afc48aa519f093b476af2df779a52daf92766a7
 
 Integration source checkpoint: `a63f8192fa5c223f47002b71c60e2b51eb49a8c3`. [Draft PR #28](https://github.com/C8LyNn/RoboRougelike/pull/28), stacked on WPN-005 #27. No shared-branch merge.
 
-**State: INTEGRATED; targeted API/physics PASS. Full W6 Edit/Play, Windows build and native-input QA pending. No native gameplay claim is made from Editor API fixtures.**
+**Current decision: READY in the W6 RC2 aggregate; full757/333 and Windows gates passed, with the known Unity/UIA exit limitation. Editor API fixtures remain distinct from native input gameplay.**
 
 Original EmpEmitter owns pulse overlap/deduplication, LOS, owner/team exclusion, distance/resistance duration and commit semantics. Defaults remain9m radius,3s maximum disruption,35% edge duration,12s cooldown,0 activation energy,1024/128 query budgets. Valid empty pulses consume cooldown. Existing cadence modifiers snapshot into cooldown; EMP causes0 HP damage and no direct velocity writes. Integration chassis tuning:30kg,140HP,65scrap. Physical garage guns and the Industrial four-enemy escort expose EMP; that escort approaches6m and waits for an8.5m target before pulsing. Other arenas retain railgun/saw/beam paths.
 
@@ -23,7 +23,7 @@ Temporary operation is explicitly separate from physical survival. R3MountedPart
 - Practice transition **1/1 PASS**: sandbox budget uses existing600scrap; an existing Gunner/rocket model is reused as an actual electronic target, default fireOFF, optional UI toggle, pause-aware control, no loot/rewards, cleaned on return with workshop scrap unchanged. This makes EMP/shield/PDS testable through actual game UI; no new enemy model/mechanic is synthesized.
 - Weapon inventory briefs now describe DPS/contact/penetration/EMP and real ammo rather than falsely displaying beam as35damage per.02s or EMP as a broken0damage gun. Defense HUD no longer overlaps suspension telemetry.
 
-Earlier shared RRLW6 runs27/27 and Emp50/50 are API-driven only. Complete fresh W6 regression/build/native evidence will be appended at wave closure; until then all eight mechanics remain BLOCKED from the release candidate readiness claim. Known W5 UIA-client shutdown crash is unchanged and is not called fixed.
+Earlier shared RRLW6 runs27/27 and Emp50/50 are API-driven only. The subsequent full W6 regression/build/native evidence is in the wave report; all eight mechanics are READY in the tested RC2 aggregate. Known W5 UIA-client shutdown crash is unchanged and is not called fixed.
 
 **Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 

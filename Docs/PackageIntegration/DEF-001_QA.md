@@ -2,7 +2,7 @@
 
 Source: verified kit `RoboRougelike_DEF001_DirectionalShield_v1.zip`, SHA256 `66a6320db5463ade7f57c13a950b31df15c83cdbc03ee5b290172a4f96d1308c`. Base: WPN001 checkpoint `c8df75f` on frozen W5 `2154b4341dd6b6fefb135187dc07b4b12d44f908`. Feature: `feature/rrl-def001-integration`. Original importer dry-run/apply:13 Assets files, no overwrites. New Unity metas only; old GUIDs/scenes/packages unchanged.
 
-**INTEGRATED; targeted API/physics PASS; BLOCKED pending W6 Windows/native/full-wave regression.**
+**Current decision: READY in the W6 RC2 aggregate; known Unity/UIA exit limitation.**
 
 The original generator/receiver now run on one actual physical R3 four-cell 1x2x2 module (all XYZ rotations/contact ports), with one P12 HP component and one collider. The shared device gate reads existing structural ownership, HP, player pause/transition and enemy combat state. It does not add another HP pool or Rigidbody solver. Pre-HP filtering resolves all P12 damage through the original directional receiver once. Defaults:100 charge,100 maximum absorption per hit,12 charge/s regeneration after3s,60-degree half-angle,9m radius; consumed charge is the source resource (optional energy cost remains original0). Gameplay tuning:180 module HP,32kg,60 scrap,limit2. Existing shop/HUD/inventory expose the shield.
 

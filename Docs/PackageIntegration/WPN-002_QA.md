@@ -8,7 +8,7 @@ Original defaults:85m/s,120m range,.075m radius,100 initial energy,.4 loss/m,.65
 
 RED:2 missing-catalog tests failed as expected. Final Edit filter Railgun45/45 PASS (43 original +2 integration); original Play22/22 PASS. Shared W6 regression8/8 PASS; overlapping cases are not counted again as unique. Physical test fired one actual P17 projectile, consumed12 to11 once, rejected same-frame retry, penetrated two P12 parts with decreasing damage and ignored a second collider on the first part; destroyed gun stopped immediately. Destroyed recovered rail retained ID/ammo4 through paid repair and DeepCopy.
 
-Original source fixture defect: RecoilActsOppositeToMuzzleDirection asserted velocity immediately after AddForce, before PhysX simulation (observed0). It now explicitly advances one .02s physics step with try/finally restoration of the runner simulation mode; assertion and runtime recoil remain unchanged. Original Play previously21/22, corrected22/22. No test was removed or weakened. Native Windows and complete W6 campaign remain pending wave closure.
+Original source fixture defect: RecoilActsOppositeToMuzzleDirection asserted velocity immediately after AddForce, before PhysX simulation (observed0). It now explicitly advances one .02s physics step with try/finally restoration of the runner simulation mode; assertion and runtime recoil remain unchanged. Original Play previously21/22, corrected22/22. No test was removed or weakened. Native Windows and the complete W6 campaign subsequently passed; see the current wave report.
 
 **Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 

@@ -19,7 +19,7 @@ A RED lifecycle test caught lossy enemy loot conversion: weapon cooldown/reload 
 - Actual enemy mounting armor destruction immediately makes source controller non-operational; detached module becomes selectable damaged salvage, paid repair retains7 rounds and its exact cooldown.
 - Actual enemy shotgun salvage retains ammo3 and exact cooldown/reload deadlines.
 
-Native Windows/full W6 campaign and full regression are pending wave closure. All physics tests above are API-driven and distinct from native player-input QA.
+Native Windows, full W6 campaign and full regression subsequently passed; see the current wave report. All physics tests above are API-driven and distinct from native player-input QA.
 
 **Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 
