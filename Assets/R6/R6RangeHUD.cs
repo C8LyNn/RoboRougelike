@@ -11,7 +11,15 @@ namespace RoboRougelike.R1
             {
                 Panel(new Rect(190,115,900,550));
                 GUI.Label(new Rect(230,145,820,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
-                GUI.Label(new Rect(230,225,820,85),"Testujesz kopię. Uszkodzenia, Złom i części z tej próby nie zmieniają konstrukcji w garażu.",body);
+                GUI.Label(new Rect(230,225,820,50),"Testujesz kopię. Uszkodzenia, Złom i części z tej próby nie zmieniają konstrukcji w garażu.",body);
+                var pausedRange=run.GetComponent<R6TestRange>();
+                if(pausedRange?.TrainingTarget!=null)
+                {
+                    GUI.enabled=!run.RangeDisabled&&!pausedRange.TrainingTarget.IsDefeated;
+                    if(GUI.Button(new Rect(230,280,820,36),pausedRange.TrainingFireRequested?"Wstrzymaj ostrzał celu":"Włącz ostrzał celu po wznowieniu",compactButton))
+                        pausedRange.SetTrainingFire(!pausedRange.TrainingFireRequested);
+                    GUI.enabled=true;
+                }
                 if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),"Wznów  [Esc]",button))run.TogglePause();
                 if(GUI.Button(new Rect(230,400,395,60),"Reset próby  [R]",button))run.ResetTestRange();
                 if(GUI.Button(new Rect(650,400,400,60),"Powrót do garażu",button))run.ReturnFromTestRange();
@@ -27,10 +35,8 @@ namespace RoboRougelike.R1
             if(range?.TrainingTarget!=null)
             {
                 Panel(new Rect(925,18,335,150));GUI.Label(new Rect(940,25,305,30),"CEL ELEKTRONICZNY",heading);
-                GUI.enabled=!range.TrainingTarget.IsDefeated;
-                if(GUI.Button(new Rect(940,62,305,38),range.TrainingFireRequested?"Wstrzymaj ostrzał rakietowy":"Włącz ostrzał rakietowy",compactButton))range.SetTrainingFire(!range.TrainingFireRequested);
-                GUI.enabled=true;
-                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEMP działa na odsłoniętą elektronikę.",small);
+                GUI.Label(new Rect(940,62,305,38),range.TrainingFireRequested?"Ostrzał WŁĄCZONY":"Ostrzał WYŁĄCZONY",body);
+                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
             }
             GUI.Label(new Rect(629,341,32,38),"+",heading);
             Panel(new Rect(18,625,1244,78));
