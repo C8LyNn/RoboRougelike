@@ -13,3 +13,5 @@ Original source fixture defect: RecoilActsOppositeToMuzzleDirection asserted vel
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-002_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
+
+Draft PR #23: https://github.com/C8LyNn/RoboRougelike/pull/23; runtime SHA d60d04596773068e08f8967e6bbe179929806be2.
