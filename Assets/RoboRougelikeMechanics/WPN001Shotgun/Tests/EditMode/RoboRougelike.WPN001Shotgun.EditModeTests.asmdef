@@ -1,0 +1,25 @@
+{
+  "name": "RoboRougelike.WPN001Shotgun.EditModeTests",
+  "rootNamespace": "RoboRougelike.WPN001Shotgun",
+  "references": [
+    "RoboRougelike.WPN001Shotgun"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

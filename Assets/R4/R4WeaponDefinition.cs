@@ -3,7 +3,7 @@ using RoboRougelike.R3;
 
 namespace RoboRougelike.R4
 {
-    public enum R4WeaponKind { Basic, Automatic, Heavy }
+    public enum R4WeaponKind { Basic, Automatic, Heavy, Shotgun }
     // Immutable definitions; runtime condition and ownership live in R3PartState.
     public sealed class R4WeaponDefinition
     {
@@ -17,8 +17,16 @@ namespace RoboRougelike.R4
         private static readonly R4WeaponDefinition[] definitions={
             new R4WeaponDefinition("Działo podstawowe",40,0.38f,34,0.20f,1.8f,24,140,30,new Color(0.9f,0.62f,0.22f)),
             new R4WeaponDefinition("Karabin automatyczny",12,0.12f,42,0.10f,0.6f,18,90,36,new Color(0.3f,0.9f,0.55f)),
-            new R4WeaponDefinition("Ciężka armata",100,1.25f,24,0.30f,5,55,220,55,new Color(0.75f,0.4f,1)) };
-        public static R4WeaponDefinition Get(R4WeaponKind kind) => definitions[Mathf.Clamp((int)kind,0,2)];
+            new R4WeaponDefinition("Ciężka armata",100,1.25f,24,0.30f,5,55,220,55,new Color(0.75f,0.4f,1)),
+            // Original WPN001 pellet/cadence/speed; chassis economy/durability are live integration tuning.
+            new R4WeaponDefinition("WPN-001 Shotgun",9,.85f,58,.1f,.2f,28,140,45,new Color(1,.4f,.2f)) };
+        public static int Count => definitions.Length;
+        public static R4WeaponDefinition Get(R4WeaponKind kind)
+        {
+            int index=(int)kind;
+            if(index<0||index>=definitions.Length)throw new System.ArgumentOutOfRangeException(nameof(kind));
+            return definitions[index];
+        }
         public static float PartMass(R3PartState part) => PartMass(part.Kind,part.Weapon);
         public static float PartMass(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind switch {
             R3PartKind.Gun=>Get(weapon).Mass,R3PartKind.Wheel=>12,R3PartKind.Suspension=>12,

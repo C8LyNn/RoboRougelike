@@ -11,12 +11,13 @@ namespace RoboRougelike.R4
         public readonly R3PartKind Kind;
         public readonly R4WeaponKind Weapon;
         public readonly float Health;
+        public readonly int Ammo;
         public bool Recoverable => Health>0;
         // Wrecks are selectable too; armor and cores are not reward choices.
         public bool Selectable => Kind!=R3PartKind.Armor&&Kind!=R3PartKind.Core;
-        public R4SalvageItem(string id,string source,R3PartKind kind,R4WeaponKind weapon,float health)
-        { Id=id;Source=source;Kind=kind;Weapon=weapon;Health=float.IsNaN(health)||float.IsInfinity(health)?0:Math.Max(0,Math.Min(1,health)); }
-        public R3PartState ToPart() => new R3PartState(default,Kind,Health){Id=Id,Source=Source,Weapon=Weapon};
+        public R4SalvageItem(string id,string source,R3PartKind kind,R4WeaponKind weapon,float health,int ammo=-1)
+        { Id=id;Source=source;Kind=kind;Weapon=weapon;Ammo=ammo;Health=float.IsNaN(health)||float.IsInfinity(health)?0:Math.Max(0,Math.Min(1,health)); }
+        public R3PartState ToPart() => new R3PartState(default,Kind,Health){Id=Id,Source=Source,Weapon=Weapon,Ammo=Ammo};
     }
     // One ledger per encounter. Contains no scene objects and survives wreck cleanup.
     public sealed class R4SalvageLedger

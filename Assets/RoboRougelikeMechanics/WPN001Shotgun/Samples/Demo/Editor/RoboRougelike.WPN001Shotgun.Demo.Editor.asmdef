@@ -1,0 +1,19 @@
+{
+  "name": "RoboRougelike.WPN001Shotgun.Demo.Editor",
+  "rootNamespace": "RoboRougelike.WPN001Shotgun",
+  "references": [
+    "RoboRougelike.WPN001Shotgun",
+    "RoboRougelike.WPN001Shotgun.Demo"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

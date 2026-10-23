@@ -1,0 +1,24 @@
+using UnityEngine;
+using RoboRougelike.R1;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
+
+namespace RoboRougelike.WeaponIntegration
+{
+    public sealed class RRLWeaponControls : MonoBehaviour
+    {
+        RRLShotgunBinding[] shotguns;
+        void Start()=>shotguns=GetComponentsInChildren<RRLShotgunBinding>();
+        void Update()
+        {
+            var run=R1RunController.Instance;
+            if(run?.Player==null||run.Player.gameObject!=gameObject||run.Paused||run.Transitioning||
+                (run.Progress.State!=R1RunState.Combat&&run.Progress.State!=R1RunState.TestDrive))return;
+#if ENABLE_INPUT_SYSTEM
+            if(Keyboard.current?.tKey.wasPressedThisFrame==true)
+                foreach(var gun in shotguns)if(gun!=null)gun.BeginReload();
+#endif
+        }
+    }
+}
