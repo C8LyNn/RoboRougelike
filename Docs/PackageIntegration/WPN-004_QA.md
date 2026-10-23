@@ -13,3 +13,5 @@ Final Edit39/39 (37 original plus2 integration) and original Play17/17 PASS, nat
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-004_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
+
+Draft PR #25: https://github.com/C8LyNn/RoboRougelike/pull/25; runtime SHA e71f561e09527ae491c05272a317b152e7d8162e.
