@@ -31,9 +31,11 @@ namespace RoboRougelike.R3
         // Persistent resources belong to the owned part, including during garage rebuilds.
         public int Ammo=-1;
         public float ReloadReadyAt;
+        public float ThermalHeat;
+        public bool ThermalLocked;
         public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};

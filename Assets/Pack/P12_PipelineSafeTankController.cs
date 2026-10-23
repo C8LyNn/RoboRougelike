@@ -262,6 +262,7 @@ public float CurrentForwardSpeed =>
             );
             if (modularAssembly != null) modularAssembly.AimGuns(aimPoint);
 
+            if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(fireHeld);
             if (fireHeld && modularAssembly != null) modularAssembly.FireGuns();
             else if (fireHeld && Time.time >= nextFireTime)
             {

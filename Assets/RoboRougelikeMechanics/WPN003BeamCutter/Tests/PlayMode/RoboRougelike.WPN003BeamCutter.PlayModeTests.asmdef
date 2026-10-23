@@ -1,0 +1,15 @@
+{
+  "name": "RoboRougelike.WPN003BeamCutter.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.BeamCutter.Tests",
+  "references": ["RoboRougelike.WPN003BeamCutter"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

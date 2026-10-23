@@ -13,6 +13,7 @@ namespace RoboRougelike.R4
         public readonly R4WeaponKind Weapon;
         public readonly float Health;
         public readonly int Ammo;
+        public readonly float ThermalHeat;public readonly bool ThermalLocked;
         public readonly float DefenseCharge,DefenseRechargeAge;
         public readonly Vector3Int Rotation;
         public readonly int Contacts;
@@ -20,11 +21,11 @@ namespace RoboRougelike.R4
         // Wrecks are selectable too; armor and cores are not reward choices.
         public bool Selectable => Kind!=R3PartKind.Armor&&Kind!=R3PartKind.Core;
         public R4SalvageItem(string id,string source,R3PartKind kind,R4WeaponKind weapon,float health,int ammo=-1,
-            float defenseCharge=-1,float defenseAge=float.PositiveInfinity,Vector3Int rotation=default,int contacts=R3MountingGrid.AllFaces)
+            float defenseCharge=-1,float defenseAge=float.PositiveInfinity,Vector3Int rotation=default,int contacts=R3MountingGrid.AllFaces,float thermalHeat=0,bool thermalLocked=false)
         { Id=id;Source=source;Kind=kind;Weapon=weapon;Ammo=ammo;DefenseCharge=defenseCharge;DefenseRechargeAge=defenseAge;
-            Rotation=rotation;Contacts=contacts;Health=float.IsNaN(health)||float.IsInfinity(health)?0:Math.Max(0,Math.Min(1,health)); }
+            Rotation=rotation;Contacts=contacts;ThermalHeat=thermalHeat;ThermalLocked=thermalLocked;Health=float.IsNaN(health)||float.IsInfinity(health)?0:Math.Max(0,Math.Min(1,health)); }
         public R3PartState ToPart() => new R3PartState(default,Kind,Health){Id=Id,Source=Source,Weapon=Weapon,Ammo=Ammo,
-            DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,RotationQuarterTurns=Rotation,ContactMask=Contacts};
+            ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,RotationQuarterTurns=Rotation,ContactMask=Contacts};
     }
     // One ledger per encounter. Contains no scene objects and survives wreck cleanup.
     public sealed class R4SalvageLedger
