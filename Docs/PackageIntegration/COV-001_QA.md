@@ -13,3 +13,5 @@ Module mounting, salvage and repair are not applicable to an arena obstacle. Sou
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W7 native Windows and full-wave closure.**
 
 [Machine-readable cases](COV-001_test_summary.json). API fixtures are distinct from native input gameplay.
+
+Integration [Draft PR #29](https://github.com/C8LyNn/RoboRougelike/pull/29); no shared-branch merge.
