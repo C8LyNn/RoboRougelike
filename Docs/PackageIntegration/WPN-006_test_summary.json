@@ -1,0 +1,794 @@
+[
+  {
+    "directory": "WPN006-final-14955581b0bb432e85d0a3754a84d870",
+    "summary": {
+      "id": "2",
+      "testcasecount": "50",
+      "result": "Passed",
+      "total": "50",
+      "passed": "50",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 13:41:49Z",
+      "end-time": "2026-10-23 13:41:49Z",
+      "duration": "0,468301"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ActorTeardownDoesNotEraseOwnedPartEmpBeforeNextFight",
+        "result": "Passed",
+        "duration": "3.133713"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ActualEmpPulseStopsEnemyGunWithoutHpDamagePhysicalLossOrMomentumReset",
+        "result": "Passed",
+        "duration": "4.829348"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ActualExpeditionAndAlternativeDriveSurviveTemporaryEmp",
+        "result": "Passed",
+        "duration": "3.420186"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ArmorFragmentCarriesItsAttachedDeviceMassAndConservesOwnerMass",
+        "result": "Passed",
+        "duration": "3.412614"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.DisruptedWheelsKeepMassMomentumAndHealthySavedParts",
+        "result": "Passed",
+        "duration": "3.368269"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.DynamicallyMountedEnemyDevicesContributeRealRigidbodyMass",
+        "result": "Passed",
+        "duration": "3.263603"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EliteBatterySalvageKeepsTemporaryEmpWithoutConvertingItToDamage",
+        "result": "Passed",
+        "duration": "3.286947"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EnemyWheelEmpStopsActiveDriveWithoutDestroyingHardware",
+        "result": "Passed",
+        "duration": "3.364168"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EveryIntegratedWeaponUsesTemporaryDeviceGateWithoutLosingPhysicalPower",
+        "result": "Passed",
+        "duration": "3.448717"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.RepairedEmpEmitterPreservesCommittedCooldown",
+        "result": "Passed",
+        "duration": "3.179066"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.TransitionCleansLiveRocketAndRecoveredLauncherKeepsEmptyAmmo",
+        "result": "Passed",
+        "duration": "3.459389"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.MOV004GyroscopicStabilizer.Tests.GyroEnergyBudgetTests.CanStartEmpty",
+        "result": "Passed",
+        "duration": "0.001899"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.MOV004GyroscopicStabilizer.Tests.GyroEnergyBudgetTests.ZeroSpendSucceedsEvenIfEmpty",
+        "result": "Passed",
+        "duration": "0.000257"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.MOV008.Tests.CrawlerTrackModuleTests.EmptyEnergyTankPreventsConsumption",
+        "result": "Passed",
+        "duration": "0.002849"
+      },
+      {
+        "fullname": "RoboRougelike.WPN001Shotgun.Tests.EditMode.ShotgunSimpleAmmoTests.RefuseEmptyMagazine",
+        "result": "Passed",
+        "duration": "0.000581"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.EnergyBank_InsufficientEnergyIsAtomic",
+        "result": "Passed",
+        "duration": "0.001073"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.EnergyBank_NegativeSpendRejected",
+        "result": "Passed",
+        "duration": "0.000206"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.EnergyBank_SpendingAndRefundRespectCapacity",
+        "result": "Passed",
+        "duration": "0.000264"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.Receiver_CanStoreOwnership",
+        "result": "Passed",
+        "duration": "0.000363"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.Receiver_ImmuneRejectsPulse",
+        "result": "Passed",
+        "duration": "0.000234"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.Receiver_RefreshDoesNotDoubleStart",
+        "result": "Passed",
+        "duration": "0.000326"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpReceiverAndEnergyTests.Receiver_ReportsStartAndEndExactlyOnce",
+        "result": "Passed",
+        "duration": "0.000243"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Cooldown_DefaultReady",
+        "result": "Passed",
+        "duration": "0.000099"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Cooldown_HandlesZeroDuration",
+        "result": "Passed",
+        "duration": "0.000124"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Cooldown_InvalidCommitFailsSafely",
+        "result": "Passed",
+        "duration": "0.000093"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Cooldown_NegativeTickDoesNotReset",
+        "result": "Passed",
+        "duration": "0.000148"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Cooldown_RequiresFullDuration",
+        "result": "Passed",
+        "duration": "0.000084"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_BadTickDoesNotAdvance",
+        "result": "Passed",
+        "duration": "0.000096"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_ClearReleasesImmediately",
+        "result": "Passed",
+        "duration": "0.000061"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_FirstApplySignalsStart",
+        "result": "Passed",
+        "duration": "0.000053"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_IsInitiallyInactive",
+        "result": "Passed",
+        "duration": "0.000254"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_ReapplyLongerRefreshesToMaximum",
+        "result": "Passed",
+        "duration": "0.000106"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_ReapplyShorterDoesNotStack",
+        "result": "Passed",
+        "duration": "0.000073"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_RejectsInvalidDurations",
+        "result": "Passed",
+        "duration": "0.000073"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Disruption_TickExpiresExactlyOnce",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_ClampsResistanceAndEdgeFalloff",
+        "result": "Passed",
+        "duration": "0.000135"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_FallsOffWithDistance(0.0f,3.0f)",
+        "result": "Passed",
+        "duration": "0.000251"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_FallsOffWithDistance(5.0f,2.025f)",
+        "result": "Passed",
+        "duration": "0.000040"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_FallsOffWithDistance(10.0f,1.05f)",
+        "result": "Passed",
+        "duration": "0.000037"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_Infinity_IsZero",
+        "result": "Passed",
+        "duration": "0.000100"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_Nan_IsZero",
+        "result": "Passed",
+        "duration": "0.000085"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_NegativeDistance_IsZero",
+        "result": "Passed",
+        "duration": "0.000097"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_OutsideRadius_IsZero",
+        "result": "Passed",
+        "duration": "0.000059"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_Resistance(0.0f,3.0f)",
+        "result": "Passed",
+        "duration": "0.000107"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_Resistance(0.25f,2.25f)",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_Resistance(0.5f,1.5f)",
+        "result": "Passed",
+        "duration": "0.000027"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_Resistance(1.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000023"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Duration_ZeroRadius_IsZero",
+        "result": "Passed",
+        "duration": "0.000095"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Radius_ChecksBoundary",
+        "result": "Passed",
+        "duration": "0.000094"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpRulesTests.Radius_RejectsInvalidValues",
+        "result": "Passed",
+        "duration": "0.000048"
+      }
+    ],
+    "exit": {
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-23T13:41:50.6688244Z",
+      "exitCode": 0,
+      "filter": "Emp"
+    }
+  },
+  {
+    "directory": "WPN006-play-lifecycle-final-950cc5c3713d4a94a199f3ae93130bad",
+    "summary": {
+      "id": "2",
+      "testcasecount": "24",
+      "result": "Passed",
+      "total": "24",
+      "passed": "24",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 13:42:04Z",
+      "end-time": "2026-10-23 13:42:04Z",
+      "duration": "0,8583431"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.MOV004GyroscopicStabilizer.Tests.GyroStabilizerPlayModeTests.EmptyEnergyStoreBlocksCorrection",
+        "result": "Passed",
+        "duration": "0.029633"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.MOV008.Tests.CrawlerTrackPlayModeTests.EmptyEnergyDisablesMotorWithoutDisablingGroundChecks",
+        "result": "Passed",
+        "duration": "0.689032"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.EmptyEnergySourceFailsClosed",
+        "result": "Passed",
+        "duration": "0.014319"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_ConsumesCooldownAfterSuccess",
+        "result": "Passed",
+        "duration": "0.005174"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DisabledEmitterRefuses",
+        "result": "Passed",
+        "duration": "0.000291"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DisabledReceiverIsIgnored",
+        "result": "Passed",
+        "duration": "0.000335"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DisruptsOneEnemy",
+        "result": "Passed",
+        "duration": "0.000357"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DoesNotHitBeyondRange",
+        "result": "Passed",
+        "duration": "0.000293"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_ExplicitColliderMappingResolvesDisjointHierarchy",
+        "result": "Passed",
+        "duration": "0.000418"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_IgnoresAlliesByTeamId",
+        "result": "Passed",
+        "duration": "0.000208"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_IgnoresOwnVehicleByStableId",
+        "result": "Passed",
+        "duration": "0.000183"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_InsufficientEnergyDoesNotSpendCooldownOrDisrupt",
+        "result": "Passed",
+        "duration": "0.000495"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_MissingEnergySourceFailsClosed",
+        "result": "Passed",
+        "duration": "0.000254"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_OnlyOneHitWithTwoCollidersOnModule",
+        "result": "Passed",
+        "duration": "0.000450"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_OverlapBudgetOverflowRefusesBeforeSpending",
+        "result": "Passed",
+        "duration": "0.000814"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_RecordsSuccessEventOnlyForFiredPulse",
+        "result": "Passed",
+        "duration": "0.000349"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_RespectsFullResistance",
+        "result": "Passed",
+        "duration": "0.000236"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_RespectsPartialResistance",
+        "result": "Passed",
+        "duration": "0.000298"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_SelfColliderDoesNotBlockVisibility",
+        "result": "Passed",
+        "duration": "0.000310"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_SpendsEnergyOnceForMultipleTargets",
+        "result": "Passed",
+        "duration": "0.000351"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_StopsBehindWall",
+        "result": "Passed",
+        "duration": "0.000297"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_UnknownOcclusionQueryOverflowBlocksHit",
+        "result": "Passed",
+        "duration": "0.000332"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Receiver_DisableDoesNotLeaveStatusLatched",
+        "result": "Passed",
+        "duration": "0.000214"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Receiver_RecoversAutomaticallyAfterDuration",
+        "result": "Passed",
+        "duration": "0.081492"
+      }
+    ],
+    "exit": {
+      "mode": "PlayMode",
+      "finishedUtc": "2026-10-23T13:42:06.3375028Z",
+      "exitCode": 0,
+      "filter": "Emp"
+    }
+  },
+  {
+    "directory": "W6-training-green-66f7677334a4439182f636490deeeebd",
+    "summary": {
+      "id": "2",
+      "testcasecount": "1",
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 13:58:45Z",
+      "end-time": "2026-10-23 13:58:46Z",
+      "duration": "0,4711526"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6TrainingRangeTests.RangeOffersSafeElectronicRocketTargetAndCleansItOnReturn",
+        "result": "Passed",
+        "duration": "3.229425"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW6TrainingRange",
+      "finishedUtc": "2026-10-23T13:58:47.1924168Z",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "W6-regression-fixes-45af3a535e0643b2beefb28a039d3b62",
+    "summary": {
+      "id": "2",
+      "testcasecount": "55",
+      "result": "Passed",
+      "total": "55",
+      "passed": "55",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 16:46:43Z",
+      "end-time": "2026-10-23 16:46:43Z",
+      "duration": "0,5489988"
+    },
+    "nativeExitCode": 0,
+    "method": "API/ordinary synthetic input and physics in Editor; not manual Windows gameplay",
+    "cases": [
+      {
+        "fullname": "R1PlayIntegrationTests.ActualEnemyUsesDesignatedCoreAndDetachesSeveredBaseCorner",
+        "result": "Passed",
+        "duration": "3.267892"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.CoreLossCanEndEachStageAndFreshAttemptHasNoBonuses",
+        "result": "Passed",
+        "duration": "5.434871"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.CoreProtectionReloadAndMobilityReachActualVehicleComponents",
+        "result": "Passed",
+        "duration": "3.150050"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.DestroyedPlayerCoreEndsRunAndRestartClearsState",
+        "result": "Passed",
+        "duration": "3.255998"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.DestroyingEnemyBarrelStopsFireButOnlyCoreDestructionWins",
+        "result": "Passed",
+        "duration": "5.130900"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.EnemyMovesFiresAndStopsDuringPause",
+        "result": "Passed",
+        "duration": "5.640308"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.KeyboardEnterStartsRunWithoutPrematureDefeat",
+        "result": "Passed",
+        "duration": "3.344876"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.KeyboardMovementMouseFireAndPauseUseRealController",
+        "result": "Passed",
+        "duration": "4.195365"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.KeyboardUpgradeChoiceWaitsForNewVehicleInitialization",
+        "result": "Passed",
+        "duration": "3.272815"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.LosingEveryWheelEndsRunWithoutWaitingForCoreDestruction",
+        "result": "Passed",
+        "duration": "3.183414"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.LosingPlayerWeaponEndsRunWhileCoreIsAlive",
+        "result": "Passed",
+        "duration": "3.163093"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.PaidGarageRestoresConstructionAndKeepsEarnedDamageBonus",
+        "result": "Passed",
+        "duration": "3.528758"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits",
+        "result": "Passed",
+        "duration": "227.382143"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.SixRealEncountersRewardsFinaleAndRestart",
+        "result": "Passed",
+        "duration": "3.684730"
+      },
+      {
+        "fullname": "R1PlayIntegrationTests.UpgradeDoesNotReviveDestroyedWheelAndPreservesDamageRatio",
+        "result": "Passed",
+        "duration": "3.485975"
+      },
+      {
+        "fullname": "R4CombatTests.AllWeaponsHaveIndependentCadenceUpgradesAndPhysicalDamage",
+        "result": "Passed",
+        "duration": "3.834087"
+      },
+      {
+        "fullname": "R4CombatTests.CoreDeathSnapshotsActualSurvivingWeaponBeforeWreckCleanup",
+        "result": "Passed",
+        "duration": "3.321888"
+      },
+      {
+        "fullname": "R4CombatTests.DestroyedGunCanBeRebuiltAndDuplicateRewardIsRejected",
+        "result": "Passed",
+        "duration": "3.384278"
+      },
+      {
+        "fullname": "R4CombatTests.EachEnemySnapshotSurvivesItsWreckExpiringBeforeLastCoreDies",
+        "result": "Passed",
+        "duration": "13.310951"
+      },
+      {
+        "fullname": "R4CombatTests.EscapeEventsPauseResumeAndGarageBlocksCombatInput",
+        "result": "Passed",
+        "duration": "3.362901"
+      },
+      {
+        "fullname": "R4CombatTests.RecoveredGunPhysicallyHitsNextEnemyForEveryStarterAndSurvivesWholeRun",
+        "result": "Passed",
+        "duration": "7.266622"
+      },
+      {
+        "fullname": "RRLW2GameplayTests.ConnectedIslandDetachesAsOneMovingBodyWithoutBreakingCoreGraph",
+        "result": "Passed",
+        "duration": "3.372946"
+      },
+      {
+        "fullname": "RRLW2GameplayTests.OnePhysicalBonusChangesLiveStatsOnlyAfterMountAndOpensGarageDirectly",
+        "result": "Passed",
+        "duration": "3.172809"
+      },
+      {
+        "fullname": "RRLW2GameplayTests.RealDestroyedEnemyGunIsStoredRebuiltForFullPriceAndMounted",
+        "result": "Passed",
+        "duration": "3.203643"
+      },
+      {
+        "fullname": "RRLW2GameplayTests.SixStagesUseActualDenseRosterSafeSpawnsNormalEscortAndCompleteLoot",
+        "result": "Passed",
+        "duration": "3.355619"
+      },
+      {
+        "fullname": "RRLW6BeamPhysicalTests.FourEnemyEncounterActuallyEquipsBeamAndSalvagesItsThermalState",
+        "result": "Passed",
+        "duration": "3.272928"
+      },
+      {
+        "fullname": "RRLW6BeamPhysicalTests.MountedBeamUsesRealRayHeatAndPreservesThermalStateAcrossRebuild",
+        "result": "Passed",
+        "duration": "3.526052"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ActorTeardownDoesNotEraseOwnedPartEmpBeforeNextFight",
+        "result": "Passed",
+        "duration": "3.089159"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ActualEmpPulseStopsEnemyGunWithoutHpDamagePhysicalLossOrMomentumReset",
+        "result": "Passed",
+        "duration": "4.782546"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ActualExpeditionAndAlternativeDriveSurviveTemporaryEmp",
+        "result": "Passed",
+        "duration": "3.192822"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ArmorFragmentCarriesItsAttachedDeviceMassAndConservesOwnerMass",
+        "result": "Passed",
+        "duration": "3.249450"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.DisruptedWheelsKeepMassMomentumAndHealthySavedParts",
+        "result": "Passed",
+        "duration": "3.459591"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.DynamicallyMountedEnemyDevicesContributeRealRigidbodyMass",
+        "result": "Passed",
+        "duration": "3.229980"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EliteBatterySalvageKeepsTemporaryEmpWithoutConvertingItToDamage",
+        "result": "Passed",
+        "duration": "3.298746"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EnemyWheelEmpStopsActiveDriveWithoutDestroyingHardware",
+        "result": "Passed",
+        "duration": "3.227714"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EveryIntegratedWeaponUsesTemporaryDeviceGateWithoutLosingPhysicalPower",
+        "result": "Passed",
+        "duration": "3.414474"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ExpiredEnemyPartsRemainRecoverableAndRepairable",
+        "result": "Passed",
+        "duration": "3.408866"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.RepairedEmpEmitterPreservesCommittedCooldown",
+        "result": "Passed",
+        "duration": "3.229525"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemyDefenseLosesRealArmorMountAndRemainsRepairableSalvage",
+        "result": "Passed",
+        "duration": "3.183677"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemySalvagePreservesCanonicalCooldownAndReloadWithoutReset",
+        "result": "Passed",
+        "duration": "3.234360"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp",
+        "result": "Passed",
+        "duration": "3.821390"
+      },
+      {
+        "fullname": "RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair",
+        "result": "Passed",
+        "duration": "0.005424"
+      },
+      {
+        "fullname": "RRLW6RailgunPhysicalTests.MountedRailgunPenetratesDistinctHpPartsOnceWithOneAmmoDebit",
+        "result": "Passed",
+        "duration": "3.519137"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.MountedRocketDamagesRealHpOncePerPartAndConsumesOneRound",
+        "result": "Passed",
+        "duration": "4.081717"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.TransitionCleansLiveRocketAndRecoveredLauncherKeepsEmptyAmmo",
+        "result": "Passed",
+        "duration": "3.474915"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat",
+        "result": "Passed",
+        "duration": "3.854390"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.GarageSawPreviewShowsTheActualWorldSizedCuttingDisc",
+        "result": "Passed",
+        "duration": "3.324266"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.WastelandFourEnemyEscortActuallyUsesMeleeApproachAndSawMotor",
+        "result": "Passed",
+        "duration": "4.462784"
+      },
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.005569"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation",
+        "result": "Passed",
+        "duration": "3.523152"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.509014"
+      },
+      {
+        "fullname": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed",
+        "duration": "3.697989"
+      },
+      {
+        "fullname": "RRLW6TrainingRangeTests.RangeOffersSafeElectronicRocketTargetAndCleansItOnReturn",
+        "result": "Passed",
+        "duration": "3.554091"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed",
+        "duration": "0.004886"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed",
+        "duration": "0.001013"
+      }
+    ]
+  },
+  {
+    "directory": "W6-expired-resources-green-cd576b69b6554e18b8b82d84dae5e662",
+    "summary": {
+      "id": "2",
+      "testcasecount": "3",
+      "result": "Passed",
+      "total": "3",
+      "passed": "3",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 16:49:43Z",
+      "end-time": "2026-10-23 16:49:44Z",
+      "duration": "0,4973411"
+    },
+    "nativeExitCode": 0,
+    "method": "API/ordinary synthetic input and physics in Editor; not manual Windows gameplay",
+    "cases": [
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ExpiredEnemyPartsRemainRecoverableAndRepairable",
+        "result": "Passed",
+        "duration": "3.191705"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.ExpiredPackageDevicesKeepFiniteResourcesAndLootIdentity",
+        "result": "Passed",
+        "duration": "3.156571"
+      },
+      {
+        "fullname": "RRLW6TrainingRangeTests.RangeOffersSafeElectronicRocketTargetAndCleansItOnReturn",
+        "result": "Passed",
+        "duration": "3.382521"
+      }
+    ]
+  }
+]

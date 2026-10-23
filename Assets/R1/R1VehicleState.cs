@@ -38,11 +38,11 @@ namespace RoboRougelike.R1
             get
             {
                 if (structure == null || !structure.CoreAlive) return "Rdzeń pojazdu został zniszczony.";
-                if (modules == null || !modules.WeaponOnline) return "Utracono uzbrojenie.";
+                if (modules == null || !modules.HasSurvivingWeapon) return "Utracono uzbrojenie.";
                 var movement=GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
                 if(movement!=null&&movement.Model.SelectedDrive!=RoboRougelike.R3.R3DriveKind.Wheels)
-                {if(!movement.HasActiveDrive)return "Utracono wybrany napęd.";}
-                else if (modules.ActiveWheelCount == 0) return "Utracono wszystkie koła.";
+                {if(!movement.HasSurvivingDrive)return "Utracono wybrany napęd.";}
+                else if (modules.SurvivingWheelCount == 0) return "Utracono wszystkie koła.";
                 return null;
             }
         }

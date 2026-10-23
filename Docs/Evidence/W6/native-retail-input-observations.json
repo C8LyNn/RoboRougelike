@@ -1,0 +1,16 @@
+{
+  "source": "8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f",
+  "scrapBefore": 600,
+  "ammoAfter": 12,
+  "ammoBefore": 11,
+  "width": 1280,
+  "method": "Operator-recorded observations of native extracted retail screenshots and Sky inputs; not an in-game API fixture or automatically collected counters",
+  "pilotEnabled": false,
+  "input": "Sky mouse shot then press_key t, subsequent screenshot",
+  "height": 720,
+  "loadingLabelObserved": true,
+  "cellsBefore": 83,
+  "scrapAfterMount": 555,
+  "cellsAfterMount": 84,
+  "apiMutation": false
+}

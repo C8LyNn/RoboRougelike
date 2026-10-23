@@ -3,11 +3,12 @@ using RoboRougelike.R3;
 
 namespace RoboRougelike.R4
 {
-    public enum R4WeaponKind { Basic, Automatic, Heavy, Shotgun, Railgun, BeamCutter, RocketLauncher, RotarySaw }
+    public enum R4WeaponKind { Basic, Automatic, Heavy, Shotgun, Railgun, BeamCutter, RocketLauncher, RotarySaw, EmpEmitter }
     // Immutable definitions; runtime condition and ownership live in R3PartState.
     public sealed class R4WeaponDefinition
     {
         public readonly string Name;
+        public string ShortName => Name.StartsWith("WPN-")?Name.Substring(Name.IndexOf(' ')+1):Name;
         public readonly float Damage, Interval, Speed, Diameter, ProjectileMass, Mass, Hp;
         public readonly int Price;
         public readonly Color Color;
@@ -23,8 +24,22 @@ namespace RoboRougelike.R4
             new R4WeaponDefinition("WPN-002 Railgun",65,2.4f,85,.15f,.3f,44,180,65,new Color(.25f,.8f,1)),
             new R4WeaponDefinition("WPN-003 Beam Cutter",35,.02f,0,.065f,0,30,130,55,new Color(.15f,1,.9f)),
             new R4WeaponDefinition("WPN-004 Rocket Launcher",60,1.7f,18,.24f,1,38,160,60,new Color(1,.65f,.15f)),
-            new R4WeaponDefinition("WPN-005 Rotary Saw",52,.02f,0,1.8f,0,25,130,50,new Color(.9f,.3f,.2f)) };
+            new R4WeaponDefinition("WPN-005 Rotary Saw",52,.02f,0,1.8f,0,25,130,50,new Color(.9f,.3f,.2f)),
+            new R4WeaponDefinition("WPN-006 EMP Emitter",0,12,0,0,0,30,140,65,new Color(.5f,.6f,1)) };
         public static int Count => definitions.Length;
+        public static string Brief(R3PartState part,float damageScale=1,float intervalScale=1)
+        {
+            var profile=Get(part.Weapon);
+            string Ammo(int capacity)=>$"{(part.Ammo<0?capacity:part.Ammo)}/{capacity}";
+            return part.Weapon switch {
+                R4WeaponKind.Shotgun=>$"8 × {9*damageScale:0} obrażeń • 40 m\n{Ammo(12)} salw • T przeładuj",
+                R4WeaponKind.Railgun=>$"Penetracja do 6 części • 120 m\n{Ammo(12)} nabojów • T przeładuj",
+                R4WeaponKind.BeamCutter=>$"{35*damageScale:0} obrażeń/s • 16 m\nWiązka • ciepło • puść LPM, by schłodzić",
+                R4WeaponKind.RocketLauncher=>$"Wybuch do {60*damageScale:0} obrażeń • 3,2 m\n{Ammo(10)} rakiet • T przeładuj",
+                R4WeaponKind.RotarySaw=>"Kontakt • do 2800 RPM\nTwarde cele blokują; kontroluj ciepło",
+                R4WeaponKind.EmpEmitter=>$"EMP 9 m • zakłócenie do 3 s\nOdnowienie {12*intervalScale:0.0} s • widoczny cel",
+                _=>$"{profile.Damage*damageScale:0} obrażeń • co {profile.Interval*intervalScale:0.00} s\n{profile.Speed:0} m/s"};
+        }
         public static R4WeaponDefinition Get(R4WeaponKind kind)
         {
             int index=(int)kind;

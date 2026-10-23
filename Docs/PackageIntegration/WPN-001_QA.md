@@ -2,7 +2,7 @@
 
 Base: W5 PR20 `2154b4341dd6b6fefb135187dc07b4b12d44f908`; feature branch `feature/rrl-wpn001-integration`. Source archive `RoboRougelike_WPN001_Shotgun_v1.zip`, SHA256 `1a4dd6b2fe9ad92a6655e880bda4faea72c7737638be5edbf0c5defec96da2db`. Outer kit and original --verify-all18/18PASS. Original staging dry-run/apply imported20Assets files without overwrites; Unity generated new metas only. No old GUID/scene/prefab/config version changed.
 
-**State: INTEGRATED, API/physical gameplay tests PASS. Decision: BLOCKED pending W6 Windows/native and wave regression gates.** Import alone is not called READY. Integration [Draft PR #21](https://github.com/C8LyNn/RoboRougelike/pull/21). Verified source commit `8540c9424e2a58ba406c3f468d4122e10e858f50`; later report-only commits do not alter that runtime.
+**Current decision: READY in the W6 RC2 aggregate; known Unity/UIA exit limitation.** Import alone is not called READY. Integration [Draft PR #21](https://github.com/C8LyNn/RoboRougelike/pull/21). Verified source commit `8540c9424e2a58ba406c3f468d4122e10e858f50`; later report-only commits do not alter that runtime.
 
 ## Runtime behavior
 
@@ -25,4 +25,7 @@ Original package compatibility fixes: PlayMode asmdef incorrectly used Editor-on
 
 The integration fixture uses the existing R6 UnitySetUp/EnterPlayMode pattern and starts real combat (menu intentionally pauses physics). An observed flight trace showed WaitForSeconds in the EditMode enumerator advanced only one physics step; it now waits actual game frames to a Time.time deadline. No game physics solver was changed to accommodate that fixture.
 
-NOT RUN yet: standalone Windows/native UI, full W6 regression, complete six-stage campaign with the whole new W6 loadout set. These execute at wave closure, not after every small edit. Known W5 UIA shutdown limitation remains separate; passing test processes here exited0.
+Historical package-checkpoint gates (now superseded by the wave report): standalone Windows/native UI, full W6 regression, complete six-stage campaign with the whole new W6 loadout set. These execute at wave closure, not after every small edit. Known W5 UIA shutdown limitation remains separate; passing test processes here exited0.
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.

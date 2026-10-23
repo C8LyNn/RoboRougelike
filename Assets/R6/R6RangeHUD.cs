@@ -11,7 +11,15 @@ namespace RoboRougelike.R1
             {
                 Panel(new Rect(190,115,900,550));
                 GUI.Label(new Rect(230,145,820,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
-                GUI.Label(new Rect(230,225,820,85),"Testujesz kopię. Uszkodzenia, Złom i części z tej próby nie zmieniają konstrukcji w garażu.",body);
+                GUI.Label(new Rect(230,225,820,50),"Testujesz kopię. Uszkodzenia, Złom i części z tej próby nie zmieniają konstrukcji w garażu.",body);
+                var pausedRange=run.GetComponent<R6TestRange>();
+                if(pausedRange?.TrainingTarget!=null)
+                {
+                    GUI.enabled=!run.RangeDisabled&&!pausedRange.TrainingTarget.IsDefeated;
+                    if(GUI.Button(new Rect(230,280,820,36),pausedRange.TrainingFireRequested?"Wstrzymaj ostrzał celu":"Włącz ostrzał celu po wznowieniu",compactButton))
+                        pausedRange.SetTrainingFire(!pausedRange.TrainingFireRequested);
+                    GUI.enabled=true;
+                }
                 if(!run.RangeDisabled&&GUI.Button(new Rect(230,325,820,60),"Wznów  [Esc]",button))run.TogglePause();
                 if(GUI.Button(new Rect(230,400,395,60),"Reset próby  [R]",button))run.ResetTestRange();
                 if(GUI.Button(new Rect(650,400,400,60),"Powrót do garażu",button))run.ReturnFromTestRange();
@@ -23,6 +31,13 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(34,26,580,34),"POLIGON • kopia konstrukcji",heading);
             var drive=run.Player.GetComponent<R6VehicleDrive>();var bodyRb=run.Player.GetComponent<Rigidbody>();
             GUI.Label(new Rect(34,65,580,90),$"Prędkość: {bodyRb.linearVelocity.magnitude:0.0} m/s • Masa: {bodyRb.mass:0} kg\nKoła: {drive?.Wheels??0}/{run.Player.Modules.InitialWheelCount} • Broń: {run.Player.Modules.ActiveWeaponCount}\nRdzeń: {run.Player.Core?.CurrentHp??0:0} HP • HP ocalałych części: {run.Player.HealthFraction*100:0}%",small);
+            var range=run.GetComponent<R6TestRange>();
+            if(range?.TrainingTarget!=null)
+            {
+                Panel(new Rect(925,18,335,150));GUI.Label(new Rect(940,25,305,30),"CEL ELEKTRONICZNY",heading);
+                GUI.Label(new Rect(940,62,305,38),range.TrainingFireRequested?"Ostrzał WŁĄCZONY":"Ostrzał WYŁĄCZONY",body);
+                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
+            }
             GUI.Label(new Rect(629,341,32,38),"+",heading);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
@@ -48,18 +63,22 @@ namespace RoboRougelike.R1
                     var saw=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
                     string status=saw!=null?($"{saw.Module.Motor.Rpm:0} RPM • {saw.Module.Motor.Heat:0}%"+(saw.Module.Motor.JamRemaining>0?" • blokada":"")):rocket!=null?($"{rocket.State.Ammo}/10 • "+(rocket.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):beam!=null?($"temperatura {beam.Module.HeatFraction*100:0}%"+(beam.Module.IsOverheated?" • przegrzana":"")):rail!=null?($"{rail.State.Ammo}/12 • "+(rail.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
                         (reload>0?$"{reload:0.0} s":"gotowa");
-                    GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).Name+" • "+status,small);row++;
+                    var emp=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
+                    if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
+                    var disrupted=gun.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
+                    if(disrupted!=null&&disrupted.IsDisrupted)status=$"EMP {disrupted.RemainingSeconds:0.0}s";
+                    GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
                 }
+                var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
+                var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
                 int defenseRow=0;
-                foreach(var defense in run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>())
-                {GUI.Label(new Rect(940,402+defenseRow*24,305,24),$"DEF002 • {defense.State.Ammo}/40 • T przeładuj",small);defenseRow++;}
-                int shieldRow=0;
-                foreach(var part in run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>().Parts)
+                if(defenses.Length+shields.Length>0)
                 {
-                    if(part==null||part.Kind!=RoboRougelike.R3.R3PartKind.DirectionalShield)continue;
-                    var shield=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
-                    if(shield==null)continue;
-                    GUI.Label(new Rect(940,352+shieldRow*25,305,25),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);shieldRow++;
+                    Panel(new Rect(18,184,610,38+25*(defenses.Length+shields.Length)));GUI.Label(new Rect(33,188,580,25),"OBRONA",heading);
+                    foreach(var shield in shields)
+                    {GUI.Label(new Rect(33,219+defenseRow*25,580,25),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);defenseRow++;}
+                    foreach(var defense in defenses)
+                    {GUI.Label(new Rect(33,219+defenseRow*25,580,25),$"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj",small);defenseRow++;}
                 }
             }
             var feedback=Object.FindFirstObjectByType<R6CombatFeedback>();if(feedback==null)return;

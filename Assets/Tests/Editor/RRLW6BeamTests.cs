@@ -46,6 +46,23 @@ public class RRLW6BeamPhysicalTests
         module.SetTriggerHeld(true);Assert.That(module.ManualFixedStep(.2f).Status,Is.EqualTo(BeamStepStatus.Inoperable));
         assembly.Capture();Assert.That(model.Repair(gun.Cell),Is.True);Assert.That(model.DeepCopy().Parts.Single(p=>p.Id==state.Id).Weapon,Is.EqualTo(kind));
     }
+    [UnityTest] public IEnumerator PausedGarageMountingBeamKeepsVehicleInCamera()
+    {
+        var run=R1RunController.Instance;RRLW2TestFlow.DefeatAll(run);
+        float deadline=Time.realtimeSinceStartup+10;
+        while(run.Progress.State!=R1RunState.Salvage&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);run.VehicleModel.Award(200);
+        Assert.That(Time.timeScale,Is.Zero);
+        Assert.That(run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.BeamCutter),Is.True);
+        int ready=Time.frameCount+3;while(Time.frameCount<ready)yield return null;
+        var beam=run.Player.GetComponentInChildren<BeamCutterModule>();Assert.That(beam,Is.Not.Null);
+        Assert.That(beam.GetComponentInChildren<LineRenderer>().enabled,Is.False,"An idle beam is already hidden by the source module");
+        var camera=Camera.main;var bounds=run.Player.Core.GetComponent<Renderer>().bounds;
+        var viewport=camera.WorldToViewportPoint(bounds.center);
+        Assert.That(GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera),bounds),Is.True,
+            $"Physical core must stay in the paused garage view; viewport={viewport}, camera={camera.transform.position}, core={bounds.center}");
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 
     [UnityTest] public IEnumerator FourEnemyEncounterActuallyEquipsBeamAndSalvagesItsThermalState()

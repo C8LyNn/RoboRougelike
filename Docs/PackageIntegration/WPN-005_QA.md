@@ -10,10 +10,13 @@ Canonical thermal state and jam deadline survive capture/DeepCopy/rebuild/paid r
 
 RED2/2 missing catalog/AI. Additional RED caught an empty garage preview without the blade; a single shared rotor factory fixed it. First AI fixture moved but did not spin within1s because a backwards-facing turret legitimately required more than1s to turn180deg; the scoped melee test now starts already facing the target. No source targeting logic was weakened.
 
-Final Edit filter Saw32/32 (29 original+3 integration), original Play18/18, all exits0. Final shared RRLW6 regression18/18 includes paid repair assertions. Real tests verify one damage event for a two-collider P12 part, positive actual HP loss after original spin-up, hard-wall contact rejects the whole batch and jams, heat/jam survive rebuild, destruction stops operation, paid repair retains identity/thermal/deadline, reachable AI closes distance and spins, and garage blade dimensions/no enabled collider. These are API-driven physics checks; native Windows/full W6 gates remain pending.
+Final Edit filter Saw32/32 (29 original+3 integration), original Play18/18, all exits0. Final shared RRLW6 regression18/18 includes paid repair assertions. Real tests verify one damage event for a two-collider P12 part, positive actual HP loss after original spin-up, hard-wall contact rejects the whole batch and jams, heat/jam survive rebuild, destruction stops operation, paid repair retains identity/thermal/deadline, reachable AI closes distance and spins, and garage blade dimensions/no enabled collider. These are API-driven physics checks; native Windows/full W6 gates subsequently passed in the tested aggregate; see the current wave report.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
+**Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-005_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
 
 Draft PR #27: https://github.com/C8LyNn/RoboRougelike/pull/27; runtime SHA a631f272ca1593690a3cc3689a3e4353d7d28f62.
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.

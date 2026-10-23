@@ -152,7 +152,10 @@ namespace RogueMachine.P12PipelineSafe
             var owner=GetComponentInParent<Rigidbody>();
             Vector3 inherited=owner!=null?owner.GetPointVelocity(transform.position):Vector3.zero;
             Vector3 spin=owner!=null?owner.angularVelocity:Vector3.zero;
-            float releasedMass=RoboRougelike.R6.R6VehicleDrive.PartMass(this);
+            float releasedMass=0;
+            foreach(var part in GetComponentsInChildren<P12PipelineSafeDamageable>())
+                if(!part.IsDead&&part.GetComponentInParent<Rigidbody>()==owner)
+                    releasedMass+=RoboRougelike.R6.R6VehicleDrive.PartMass(part);
             dead = true;
             if(flashRoutine!=null)StopCoroutine(flashRoutine);
             SetColor(new Color(.12f,.1f,.09f));
@@ -173,6 +176,7 @@ namespace RogueMachine.P12PipelineSafe
                 body = gameObject.AddComponent<Rigidbody>();
 
             RoboRougelike.R6.R6DebrisRelease.Release(body,owner,inherited,spin,releasedMass);
+            if(owner!=null)owner.GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();
             if(GetComponent<RoboRougelike.R3.R3Debris>()==null)gameObject.AddComponent<RoboRougelike.R3.R3Debris>();
             body.collisionDetectionMode =
                 CollisionDetectionMode.Continuous;

@@ -16,6 +16,8 @@ namespace RoboRougelike.R3
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; }
         public void Capture()
         {
+            foreach(var emp in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLEmpPartState>())emp.CaptureState();
+            foreach(var emitter in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLEmpBinding>())emitter.CaptureState();
             foreach(var saw in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLSawBinding>())saw.CaptureState();
             foreach(var beam in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLBeamBinding>())beam.CaptureState();
             foreach(var defense in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>())defense.CaptureState();
@@ -43,7 +45,7 @@ namespace RoboRougelike.R3
         public void AimGuns(Vector3 point)
         {
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.GunPivot!=null)
+                if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                 {
                     var direction = point - part.GunPivot.position;
                     if(direction.sqrMagnitude>0.001f) part.GunPivot.rotation = Quaternion.RotateTowards(
@@ -64,6 +66,12 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
+                    if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
+                    if(part.Weapon==R4WeaponKind.EmpEmitter)
+                    {
+                        var emp=part.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
+                        if(emp!=null&&emp.Fire())part.NextFireTime=emp.State.DeviceReadyAt;continue;
+                    }
                     if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.RotarySaw)continue;
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
@@ -185,6 +193,10 @@ namespace RoboRougelike.R3
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             if(root.GetComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>()==null&&assembly.Parts.Any(p=>p.Kind==R3PartKind.PointDefense))
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.EmpEmitter)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>().Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
+            RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(root.transform);
             return vehicle;
         }
     }

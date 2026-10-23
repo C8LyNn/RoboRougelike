@@ -103,7 +103,7 @@ namespace RoboRougelike.R1
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
-                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROUGELIKE • MOV 001–009", title);
+                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • W6", title);
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz pojazd do Gauntletu", heading);
                 for(int i=0;i<3;i++)
                 {
@@ -218,7 +218,7 @@ namespace RoboRougelike.R1
             for(int slot=0;slot<3;slot++)
             {
                 int w=weaponPage*3+slot;if(w>=R4WeaponDefinition.Count)break;
-                string caption=w==0?"Działo":w==1?"Automat":w==2?"Ciężka":R4WeaponDefinition.Get((R4WeaponKind)w).Name;
+                string caption=w==0?"Działo":w==1?"Automat":w==2?"Ciężka":R4WeaponDefinition.Get((R4WeaponKind)w).ShortName;
                 if(GUI.Button(new Rect(970+slot*94,535,90,40),caption,compactButton))
                 {garage.SelectedWeapon=(R4WeaponKind)w;garage.SelectedPart=R3PartKind.Gun;partsPage=0;garage.SelectedInventoryId=null;garage.UseInventory=false;garage.SetTool(R41GarageTool.Mount);}
             }

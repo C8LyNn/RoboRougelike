@@ -1,0 +1,10 @@
+{
+  "name": "RoboRougelike.WPN006EMP.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.EMP.Tests",
+  "references": ["RoboRougelike.WPN006EMP"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

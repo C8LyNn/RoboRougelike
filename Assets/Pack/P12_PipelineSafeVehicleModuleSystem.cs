@@ -52,7 +52,8 @@ namespace RogueMachine.P12PipelineSafe
             damageable = GetComponent<P12PipelineSafeDamageable>();
         }
 
-        public bool IsOperational(
+        public bool IsOperational(P12PipelineSafeVehicleStructure structure)=>IsStructurallyOperational(structure)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(gameObject);
+        public bool IsStructurallyOperational(
             P12PipelineSafeVehicleStructure structure)
         {
             if (!moduleLost &&
@@ -196,6 +197,10 @@ namespace RogueMachine.P12PipelineSafe
         public float DriveFactor => driveFactor;
         public float TurnFactor => turnFactor;
         public bool WeaponOnline => weaponOnline;
+        public bool HasSurvivingWeapon
+        {get{foreach(var weapon in WeaponModules)if(weapon!=null&&weapon.IsStructurallyOperational(structure))return true;return false;}}
+        public int SurvivingWheelCount
+        {get{int count=0;foreach(var wheel in wheelModules)if(wheel!=null&&wheel.IsStructurallyOperational(structure))count++;return count;}}
 
         private void Awake()
         {

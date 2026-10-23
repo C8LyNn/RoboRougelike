@@ -47,6 +47,18 @@ namespace RoboRougelike.R1
             if(testRange==null)testRange=gameObject.AddComponent<R6TestRange>();
             testRange.Build(palette);
             Player=R3VehicleAssembly.Build(VehicleModel,testStats,palette,new Vector3(0,.7f,-26),Quaternion.identity);
+            if(enemyTemplate!=null)
+            {
+                var target=Instantiate(enemyTemplate,new Vector3(-5,0,-20),Quaternion.identity,testRange.Layout);
+                target.name="Cel elektroniczny • trening rakietowy";
+                target.ConfigureArchetype(R3EnemyArchetype.Gunner);
+                target.ConfigureVariant(RoboRougelike.R5.R5EnemyVariant.Normal);
+                target.ConfigureSalvage(null,"practice-target");target.gameObject.SetActive(true);
+                target.ConfigureEncounter(Player.transform,1,.35f,1.8f,1);
+                target.ConfigureMovement(0,12,0);target.SetCombatActive(false);target.EquipRocket();
+                RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(target.transform);
+                testRange.SetTrainingTarget(target);
+            }
             followCamera.Configure(Player.transform,Player.CameraPivot);
             yield return null;yield return null;
             Transitioning=false;SetSimulation(true);

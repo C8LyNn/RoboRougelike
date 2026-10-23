@@ -1,0 +1,10 @@
+{
+  "name": "RoboRougelike.WPN006EMP.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.EMP.Tests",
+  "references": ["RoboRougelike.WPN006EMP"],
+  "includePlatforms": [],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

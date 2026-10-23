@@ -1,0 +1,37 @@
+{
+    "method": "QA-only frame-time sampling; optional controlled Application.Quit and empty-scene isolation",
+    "startedUtc": "2026-10-23T18:42:50.0320057Z",
+    "finishedUtc": "2026-10-23T18:44:24.4022244Z",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "cpu": "AMD Ryzen 9 9950X 16-Core Processor ",
+    "width": 1280,
+    "height": 720,
+    "targetFrameRate": 60,
+    "completedEncounters": 1,
+    "bonusAcquisitions": 0,
+    "emptyScene": false,
+    "quitRequested": false,
+    "applicationQuitReached": true,
+    "sawVictory": false,
+    "restartVerified": false,
+    "liveGameControllers": 1,
+    "liveCameras": 1,
+    "maxTransitionSeconds": 0.056446075439453128,
+    "combat": [
+        {
+            "stage": 1,
+            "frames": 857,
+            "peakEnemies": 2,
+            "peakParts": 187,
+            "peakDebris": 9,
+            "encounter": "Pierwszy złom",
+            "seconds": 14.28426456451416,
+            "medianMs": 16.66680145263672,
+            "p95Ms": 16.67030143737793,
+            "p99Ms": 16.698795318603517,
+            "maxMs": 16.852996826171876,
+            "peakAllocatedBytes": 140375213
+        }
+    ],
+    "errors": []
+}

@@ -105,7 +105,11 @@ namespace RoboRougelike.R3
             var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(run.Player.transform)).ToArray();
             var bounds=new Bounds(run.Player.transform.position,Vector3.zero);bool first=true;
             foreach(var part in parts)foreach(var renderer in part.GetComponentsInChildren<Renderer>())
-            {if(first){bounds=renderer.bounds;first=false;}else bounds.Encapsulate(renderer.bounds);}
+            {
+                // Frame physical visuals, not world-space beam/trail/effect bounds.
+                if(!renderer.enabled||renderer is LineRenderer||renderer is TrailRenderer||renderer is ParticleSystemRenderer)continue;
+                if(first){bounds=renderer.bounds;first=false;}else bounds.Encapsulate(renderer.bounds);
+            }
             foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))
                 foreach(var cell in R3VehicleModel.OccupiedCells(part))
                     bounds.Encapsulate(run.Player.transform.TransformPoint((Vector3)cell*R41PartGeometry.Grid));

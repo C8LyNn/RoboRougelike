@@ -53,9 +53,12 @@ namespace RogueMachine.P12PipelineSafe
         private RoboRougelike.WeaponIntegration.RRLRailgunBinding packageRailgun;
         private RoboRougelike.WeaponIntegration.RRLBeamBinding packageBeam;
         private RoboRougelike.WeaponIntegration.RRLSawBinding packageSaw;
+        private RoboRougelike.WeaponIntegration.RRLEmpBinding packageEmp;
         private RoboRougelike.WeaponIntegration.RRLRocketBinding packageRocket;
         private RoboRougelike.WeaponIntegration.RRLPointDefenseBinding packagePointDefense;
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
+        // Equipment data belongs to the enemy, independently of temporary debris views.
+        private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState;
         public bool EquipDirectionalShield()
         {
             if(packageShield!=null||IsDefeated)return false;
@@ -68,7 +71,7 @@ namespace RogueMachine.P12PipelineSafe
             R3BonusModuleGeometry.ConfigureCube(item,true);
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
-            packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);
+            packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);packageShieldState=state;
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();return true;
         }
         public bool EquipPointDefense()
@@ -82,7 +85,7 @@ namespace RogueMachine.P12PipelineSafe
             R3BonusModuleGeometry.ConfigureCube(item,true);
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(160,true);
-            packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);return true;
+            packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);packagePointDefenseState=state;return true;
         }
         public bool EquipShotgun()
         {
@@ -95,7 +98,7 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageShotgun=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
-            packageShotgun.Bind(state,transform,muzzle,ds,cadence);return true;
+            packageShotgun.Bind(state,transform,muzzle,ds,cadence);packageWeaponState=state;return true;
         }
         public bool EquipRailgun()
         {
@@ -108,7 +111,7 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageRailgun=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
-            packageRailgun.Bind(state,transform,muzzle,ds,cadence);return true;
+            packageRailgun.Bind(state,transform,muzzle,ds,cadence);packageWeaponState=state;return true;
         }
         public bool EquipRocket()
         {
@@ -121,7 +124,7 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageRocket=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
-            packageRocket.Bind(state,transform,muzzle,ds,cadence);return true;
+            packageRocket.Bind(state,transform,muzzle,ds,cadence);packageWeaponState=state;return true;
         }
         public bool EquipBeam()
         {
@@ -134,7 +137,20 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageBeam=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>();
-            packageBeam.Bind(state,transform,muzzle,ds);return true;
+            packageBeam.Bind(state,transform,muzzle,ds);packageWeaponState=state;return true;
+        }
+        public bool EquipEmp()
+        {
+            if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
+            float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
+            float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.EmpEmitter;
+            var profile=R4WeaponDefinition.Get(WeaponKind);damage=profile.Damage*ds;fireInterval=profile.Interval*cadence;
+            weaponBlock.Configure(profile.Hp*durability,true);weaponBlock.RestoreHealthRatio(condition);
+            var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
+                {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
+            packageEmp=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
+            packageEmp.Bind(state,transform,cadence);packageWeaponState=state;preferredDistance=6;moveSpeed=Mathf.Max(moveSpeed,2.5f);return true;
         }
         public bool EquipSaw()
         {
@@ -147,7 +163,7 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageSaw=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
-            packageSaw.Bind(state,transform,muzzle,ds);preferredDistance=1.6f;moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
+            packageSaw.Bind(state,transform,muzzle,ds);packageWeaponState=state;preferredDistance=1.6f;moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
         }
         private R4SalvageLedger salvage;
         private string salvageId;
@@ -156,7 +172,7 @@ namespace RogueMachine.P12PipelineSafe
         public P12PipelineSafeDamageable WeaponBlock => variantGuns.Count>0?variantGuns[0].Block:weaponBlock;
         public void ConfigureSalvage(R4SalvageLedger ledger,string id){salvage=ledger;salvageId=id;}
         public R3EnemyArchetype Archetype { get; private set; }
-        public int ActiveWheelCount => driveWheels.Count(p=>p!=null&&!p.IsDead&&p.transform.IsChildOf(transform));
+        public int ActiveWheelCount => driveWheels.Count(p=>p!=null&&!p.IsDead&&p.transform.IsChildOf(transform)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject));
         public int InitialWheelCount => driveWheels.Count;
 
         public void ConfigureArchetype(R3EnemyArchetype kind)
@@ -315,37 +331,46 @@ namespace RogueMachine.P12PipelineSafe
                 Destroy(runtimeProjectileMaterial);
         }
         private static float Condition(P12PipelineSafeDamageable part) => part==null||part.IsDead?0:Mathf.Clamp01(part.CurrentHp/part.MaxHp);
+        // Unity keeps a managed reference after a detached wreck expires.
+        // A physically missing module still yields a repairable 0-HP salvage item.
+        private static float SalvageDisruption(P12PipelineSafeDamageable part) =>
+            part!=null?part.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>()?.RemainingSeconds??0:0;
         private void HandleCoreDeath(){CaptureSalvage();DropTurret();}
         private void CaptureSalvage()
         {
             if(snapshotTaken||salvage==null)return;snapshotTaken=true;
+            foreach(var emp in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLEmpPartState>())emp.CaptureState();
+            if(packageEmp!=null)packageEmp.CaptureState();
             var items=new List<R4SalvageItem>();
             if(variantGuns.Count>0)
                 for(int i=0;i<variantGuns.Count;i++)
                 {
                     var gun=variantGuns[i];
-                    items.Add(new R4SalvageItem(salvageId+"/gun/"+i,name+" / bateria "+(i+1),R3PartKind.Gun,gun.Kind,
-                        gun.Online(transform)?Condition(gun.Block):0));
+                    var state=new R3PartState(default,R3PartKind.Gun){Id=salvageId+"/gun/"+i,Source=name+" / bateria "+(i+1),Weapon=gun.Kind,
+                        DisruptionRemaining=SalvageDisruption(gun.Block)};
+                    items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
                 }
             else
             {
-                var state=packageSaw!=null?packageSaw.State:packageRocket!=null?packageRocket.State:packageBeam!=null?packageBeam.State:packageRailgun!=null?packageRailgun.State:packageShotgun!=null?packageShotgun.State:null;
+                var state=packageWeaponState;
                 if(packageSaw!=null)packageSaw.CaptureState();
                 if(packageBeam!=null)packageBeam.CaptureState();
                 float condition=Mathf.Min(Condition(weaponBlock),Condition(turretSupport));
-                items.Add(state!=null?new R4SalvageItem(state,condition):new R4SalvageItem(salvageId+"/gun",name+" / uzbrojenie",R3PartKind.Gun,WeaponKind,condition));
+                items.Add(state!=null?new R4SalvageItem(state,condition):new R4SalvageItem(new R3PartState(default,R3PartKind.Gun){Id=salvageId+"/gun",Source=name+" / uzbrojenie",Weapon=WeaponKind,DisruptionRemaining=SalvageDisruption(weaponBlock)},condition));
             }
-            for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(salvageId+"/wheel/"+i,
-                name+" / koło "+(i+1),R3PartKind.Wheel,R4WeaponKind.Basic,Condition(driveWheels[i])));
-            if(packageShield!=null)
+            for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(new R3PartState(default,R3PartKind.Wheel)
+                {Id=salvageId+"/wheel/"+i,Source=name+" / koło "+(i+1),DisruptionRemaining=SalvageDisruption(driveWheels[i])},Condition(driveWheels[i])));
+            if(packageShieldState!=null)
             {
-                packageShield.CaptureState();var state=packageShield.Device.State;
-                items.Add(new R4SalvageItem(state,packageShield.transform.IsChildOf(transform)?Condition(packageShield.Device.Damageable):0));
+                if(packageShield!=null)packageShield.CaptureState();
+                float condition=packageShield!=null&&packageShield.transform.IsChildOf(transform)?Condition(packageShield.Device.Damageable):0;
+                items.Add(new R4SalvageItem(packageShieldState,condition));
             }
-            if(packagePointDefense!=null)
+            if(packagePointDefenseState!=null)
             {
-                packagePointDefense.CaptureState();
-                items.Add(new R4SalvageItem(packagePointDefense.State,packagePointDefense.transform.IsChildOf(transform)?Condition(packagePointDefense.Device.Damageable):0));
+                if(packagePointDefense!=null)packagePointDefense.CaptureState();
+                float condition=packagePointDefense!=null&&packagePointDefense.transform.IsChildOf(transform)?Condition(packagePointDefense.Device.Damageable):0;
+                items.Add(new R4SalvageItem(packagePointDefenseState,condition));
             }
             salvage.Record(salvageId,items);
         }
@@ -396,6 +421,7 @@ namespace RogueMachine.P12PipelineSafe
                 DropTurret();
                 return;
             }
+            if(weaponBlock!=null&&RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(weaponBlock.gameObject))return;
             if (playerRoot == null ||
                 yawPivot == null ||
                 muzzle == null ||
@@ -467,6 +493,7 @@ namespace RogueMachine.P12PipelineSafe
             if(packageSaw!=null){packageSaw.SetMotorRequested(!FriendlyInLine(aimPoint));return;}
             if(packageBeam!=null)
             {packageBeam.SetTriggerHeld(!FriendlyInLine(aimPoint));return;}
+            if(packageEmp!=null&&distance>8.5f)return;
             if (Time.time <
                 nextFireTime)
                 return;
@@ -689,6 +716,7 @@ namespace RogueMachine.P12PipelineSafe
         private void FirePhysicalShell(
             Vector3 aimPoint)
         {
+            if(packageEmp!=null){packageEmp.Fire();return;}
             if(packageRocket!=null){packageRocket.Fire();return;}
             if(packageRailgun!=null){packageRailgun.Fire();return;}
             if(packageShotgun!=null){packageShotgun.Fire();return;}
@@ -944,7 +972,7 @@ namespace RogueMachine.P12PipelineSafe
             var point=currentTarget.bounds.center;
             foreach(var gun in variantGuns)
             {
-                if(!gun.Online(transform))continue;
+                if(!gun.Online(transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(gun.Block.gameObject))continue;
                 var delta=point-gun.Pivot.position;
                 gun.Pivot.rotation=Quaternion.RotateTowards(gun.Pivot.rotation,Quaternion.LookRotation(delta),85*Time.deltaTime);
                 if(delta.magnitude>maxRange||Vector3.Angle(gun.Pivot.forward,delta)>9||Time.time<gun.NextShot)continue;

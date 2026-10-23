@@ -5,8 +5,9 @@ using RoboRougelike.Defenses.DirectionalShield;
 namespace RoboRougelike.WeaponIntegration
 {
     [DisallowMultipleComponent]
-    public sealed class RRLShieldBinding : MonoBehaviour
+    public sealed class RRLShieldBinding : MonoBehaviour,IRRLDeviceLifecycle
     {
+        public void RefreshAvailability(){RefreshOperational();}
         public RRLDeviceBinding Device {get;private set;}
         public DirectionalShieldGenerator Generator {get;private set;}
         RRLShieldDamageFilter filter;

@@ -5,8 +5,9 @@ using RoboRougelike.Mechanics.PointDefense;
 namespace RoboRougelike.WeaponIntegration
 {
     [DisallowMultipleComponent]
-    public sealed class RRLPointDefenseBinding : MonoBehaviour
+    public sealed class RRLPointDefenseBinding : MonoBehaviour,IRRLDeviceLifecycle
     {
+        public void RefreshAvailability(){if(Controller!=null)Controller.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);}
         public RRLDeviceBinding Device {get;private set;}
         public PointDefenseController Controller {get;private set;}
         public R3PartState State=>Device.State;
