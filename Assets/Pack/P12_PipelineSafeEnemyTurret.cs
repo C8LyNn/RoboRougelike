@@ -52,6 +52,7 @@ namespace RogueMachine.P12PipelineSafe
         private RoboRougelike.WeaponIntegration.RRLShotgunBinding packageShotgun;
         private RoboRougelike.WeaponIntegration.RRLRailgunBinding packageRailgun;
         private RoboRougelike.WeaponIntegration.RRLBeamBinding packageBeam;
+        private RoboRougelike.WeaponIntegration.RRLSawBinding packageSaw;
         private RoboRougelike.WeaponIntegration.RRLRocketBinding packageRocket;
         private RoboRougelike.WeaponIntegration.RRLPointDefenseBinding packagePointDefense;
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
@@ -134,6 +135,19 @@ namespace RogueMachine.P12PipelineSafe
                 {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageBeam=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>();
             packageBeam.Bind(state,transform,muzzle,ds);return true;
+        }
+        public bool EquipSaw()
+        {
+            if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
+            float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
+            float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.RotarySaw;
+            var profile=R4WeaponDefinition.Get(WeaponKind);damage=profile.Damage*ds;fireInterval=profile.Interval*cadence;
+            weaponBlock.Configure(profile.Hp*durability,true);weaponBlock.RestoreHealthRatio(condition);
+            var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
+                {Id=salvageId+"/gun",Weapon=WeaponKind,Source=name+" / uzbrojenie"};
+            packageSaw=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
+            packageSaw.Bind(state,transform,muzzle,ds);preferredDistance=1.6f;moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
         }
         private R4SalvageLedger salvage;
         private string salvageId;
@@ -315,7 +329,8 @@ namespace RogueMachine.P12PipelineSafe
                 }
             else
             {
-                var state=packageRocket!=null?packageRocket.State:packageBeam!=null?packageBeam.State:packageRailgun!=null?packageRailgun.State:packageShotgun!=null?packageShotgun.State:null;
+                var state=packageSaw!=null?packageSaw.State:packageRocket!=null?packageRocket.State:packageBeam!=null?packageBeam.State:packageRailgun!=null?packageRailgun.State:packageShotgun!=null?packageShotgun.State:null;
+                if(packageSaw!=null)packageSaw.CaptureState();
                 if(packageBeam!=null)packageBeam.CaptureState();
                 float condition=Mathf.Min(Condition(weaponBlock),Condition(turretSupport));
                 items.Add(state!=null?new R4SalvageItem(state,condition):new R4SalvageItem(salvageId+"/gun",name+" / uzbrojenie",R3PartKind.Gun,WeaponKind,condition));
@@ -371,6 +386,7 @@ namespace RogueMachine.P12PipelineSafe
         private void Update()
         {
             // A missing destroyed core is still a dead enemy, even after its debris expires.
+            if(packageSaw!=null)packageSaw.SetMotorRequested(false);
             if(packageBeam!=null)packageBeam.SetTriggerHeld(false);
             if (IsDefeated) { DropTurret(); defeated = true; enabled=false; return; }
             if (!combatActive) return;
@@ -448,6 +464,7 @@ namespace RogueMachine.P12PipelineSafe
                 aimToleranceDegrees)
                 return;
 
+            if(packageSaw!=null){packageSaw.SetMotorRequested(!FriendlyInLine(aimPoint));return;}
             if(packageBeam!=null)
             {packageBeam.SetTriggerHeld(!FriendlyInLine(aimPoint));return;}
             if (Time.time <

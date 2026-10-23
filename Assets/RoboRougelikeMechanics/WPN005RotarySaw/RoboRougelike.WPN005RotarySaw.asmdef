@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.WPN005RotarySaw",
+  "rootNamespace": "RoboRougelike.Weapons.RotarySaw",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

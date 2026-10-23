@@ -3,7 +3,7 @@ using RoboRougelike.R3;
 
 namespace RoboRougelike.R4
 {
-    public enum R4WeaponKind { Basic, Automatic, Heavy, Shotgun, Railgun, BeamCutter, RocketLauncher }
+    public enum R4WeaponKind { Basic, Automatic, Heavy, Shotgun, Railgun, BeamCutter, RocketLauncher, RotarySaw }
     // Immutable definitions; runtime condition and ownership live in R3PartState.
     public sealed class R4WeaponDefinition
     {
@@ -22,7 +22,8 @@ namespace RoboRougelike.R4
             new R4WeaponDefinition("WPN-001 Shotgun",9,.85f,58,.1f,.2f,28,140,45,new Color(1,.4f,.2f)),
             new R4WeaponDefinition("WPN-002 Railgun",65,2.4f,85,.15f,.3f,44,180,65,new Color(.25f,.8f,1)),
             new R4WeaponDefinition("WPN-003 Beam Cutter",35,.02f,0,.065f,0,30,130,55,new Color(.15f,1,.9f)),
-            new R4WeaponDefinition("WPN-004 Rocket Launcher",60,1.7f,18,.24f,1,38,160,60,new Color(1,.65f,.15f)) };
+            new R4WeaponDefinition("WPN-004 Rocket Launcher",60,1.7f,18,.24f,1,38,160,60,new Color(1,.65f,.15f)),
+            new R4WeaponDefinition("WPN-005 Rotary Saw",52,.02f,0,1.8f,0,25,130,50,new Color(.9f,.3f,.2f)) };
         public static int Count => definitions.Length;
         public static R4WeaponDefinition Get(R4WeaponKind kind)
         {

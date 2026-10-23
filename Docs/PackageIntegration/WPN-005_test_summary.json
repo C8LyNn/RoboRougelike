@@ -1,0 +1,423 @@
+[
+  {
+    "directory": "WPN005-edit-final-2efbb185d942499685f0f394eeafb4f1",
+    "summary": {
+      "id": "2",
+      "testcasecount": "32",
+      "result": "Passed",
+      "total": "32",
+      "passed": "32",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:37:09Z",
+      "end-time": "2026-10-23 12:37:10Z",
+      "duration": "1,4378604"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6SawPhysicalTests.ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat",
+        "result": "Passed",
+        "duration": "3.757258"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.GarageSawPreviewShowsTheActualWorldSizedCuttingDisc",
+        "result": "Passed",
+        "duration": "3.192782"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.WastelandFourEnemyEscortActuallyUsesMeleeApproachAndSawMotor",
+        "result": "Passed",
+        "duration": "4.247465"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.ArcDoesNotHitOutsideBlade",
+        "result": "Passed",
+        "duration": "0.001612"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.AtMinimumRpmCanCut",
+        "result": "Passed",
+        "duration": "0.000160"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.ClampInvalidFloatToFallback",
+        "result": "Passed",
+        "duration": "0.002244"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.ConfigCopiedByMotor",
+        "result": "Passed",
+        "duration": "0.000096"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.ConfigurationClampsDangerousValues",
+        "result": "Passed",
+        "duration": "0.000317"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DamageCannotBeNegative",
+        "result": "Passed",
+        "duration": "0.000476"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DamageScalesWithResistance",
+        "result": "Passed",
+        "duration": "0.000062"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DamageScalesWithTime",
+        "result": "Passed",
+        "duration": "0.000044"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DeactivatedCannotCut",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DiscAcceptsCuttingRim",
+        "result": "Passed",
+        "duration": "0.000074"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DiscRejectsAxialSeparation",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DiscRejectsHub",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.DiscRejectsInvalidAxle",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.InvalidResistanceCannotCauseDamage",
+        "result": "Passed",
+        "duration": "0.000048"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.JamAddsHeat",
+        "result": "Passed",
+        "duration": "0.000129"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.JamCannotEndEarly",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.JamEventuallyRecovers",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.JamStopsImmediately",
+        "result": "Passed",
+        "duration": "0.000113"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.MissingEnergyCannotCut",
+        "result": "Passed",
+        "duration": "0.000051"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.MotorStopsWhenRequestedOff",
+        "result": "Passed",
+        "duration": "0.000076"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.NegativeDeltaDoesNotSpinMotor",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.OverheatBlocksCutting",
+        "result": "Passed",
+        "duration": "0.000061"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.OverheatReleasesBelowThreshold",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.ResetClearsJamHeatAndSpin",
+        "result": "Passed",
+        "duration": "0.000114"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.RpmCannotExceedMaximum",
+        "result": "Passed",
+        "duration": "0.000057"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.RpmRampsInTime",
+        "result": "Passed",
+        "duration": "0.000049"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.SlowMotorCannotCut",
+        "result": "Passed",
+        "duration": "0.000047"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.StopImmediatelyResetsRpm",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawMathAndMotorTests.StoppedByDefault",
+        "result": "Passed",
+        "duration": "0.000064"
+      }
+    ],
+    "exit": {
+      "mode": "EditMode",
+      "exitCode": 0,
+      "filter": "Saw",
+      "finishedUtc": "2026-10-23T12:37:11.6795721Z"
+    }
+  },
+  {
+    "directory": "WPN005-play-final-45841989ce4e41a79cbfaa15ea3f1cf1",
+    "summary": {
+      "id": "2",
+      "testcasecount": "18",
+      "result": "Passed",
+      "total": "18",
+      "passed": "18",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:37:23Z",
+      "end-time": "2026-10-23 12:37:24Z",
+      "duration": "0,5409542"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.BlockOutsideRadiusIsSafe",
+        "result": "Passed",
+        "duration": "0.031454"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.ContactReactionCanMoveVehicle",
+        "result": "Passed",
+        "duration": "0.148145"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.DetachedModuleDoesNoDamage",
+        "result": "Passed",
+        "duration": "0.017056"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.DisabledModuleDoesNoDamage",
+        "result": "Passed",
+        "duration": "0.019815"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.DisablingDamageSinkBlocksDamage",
+        "result": "Passed",
+        "duration": "0.019922"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.EmptyEnergySourceFailsClosed",
+        "result": "Passed",
+        "duration": "0.019718"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.HardMaterialJamsWithoutDamage",
+        "result": "Passed",
+        "duration": "0.020032"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.JamDoesNotPartiallyDamageOtherContacts",
+        "result": "Passed",
+        "duration": "0.019572"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.MissingEnergySourceFailsClosed",
+        "result": "Passed",
+        "duration": "0.019919"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.MultipleCollidersOnPartDamageOnlyOncePerStep",
+        "result": "Passed",
+        "duration": "0.020289"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.NoSinkNeverDealsDamage",
+        "result": "Passed",
+        "duration": "0.021336"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.NotRequestedDoesNoDamage",
+        "result": "Passed",
+        "duration": "0.018111"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.OffPlaneBlockIsSafe",
+        "result": "Passed",
+        "duration": "0.019779"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.OverlapOverflowDoesNotPartiallyDamage",
+        "result": "Passed",
+        "duration": "0.020269"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.OwnPartsNotCut",
+        "result": "Passed",
+        "duration": "0.019390"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.RegisteredExternalOwnerColliderIsIgnored",
+        "result": "Passed",
+        "duration": "0.019859"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.SawCanResumeAfterRepaired",
+        "result": "Passed",
+        "duration": "0.039938"
+      },
+      {
+        "fullname": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests.TouchingBlockTakesDamage",
+        "result": "Passed",
+        "duration": "0.019668"
+      }
+    ],
+    "exit": {
+      "mode": "PlayMode",
+      "exitCode": 0,
+      "filter": "Saw",
+      "finishedUtc": "2026-10-23T12:37:25.5933242Z"
+    }
+  },
+  {
+    "directory": "WPN005-shared-final-b795e5bb822344fcba2a53efff162d6f",
+    "summary": {
+      "id": "2",
+      "testcasecount": "18",
+      "result": "Passed",
+      "total": "18",
+      "passed": "18",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:40:05Z",
+      "end-time": "2026-10-23 12:40:06Z",
+      "duration": "0,7166291"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6BeamPhysicalTests.FourEnemyEncounterActuallyEquipsBeamAndSalvagesItsThermalState",
+        "result": "Passed",
+        "duration": "3.632049"
+      },
+      {
+        "fullname": "RRLW6BeamPhysicalTests.MountedBeamUsesRealRayHeatAndPreservesThermalStateAcrossRebuild",
+        "result": "Passed",
+        "duration": "3.670220"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemyDefenseLosesRealArmorMountAndRemainsRepairableSalvage",
+        "result": "Passed",
+        "duration": "3.551949"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.EnemySalvagePreservesCanonicalCooldownAndReloadWithoutReset",
+        "result": "Passed",
+        "duration": "3.334148"
+      },
+      {
+        "fullname": "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp",
+        "result": "Passed",
+        "duration": "3.773364"
+      },
+      {
+        "fullname": "RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair",
+        "result": "Passed",
+        "duration": "0.008404"
+      },
+      {
+        "fullname": "RRLW6RailgunPhysicalTests.MountedRailgunPenetratesDistinctHpPartsOnceWithOneAmmoDebit",
+        "result": "Passed",
+        "duration": "3.523736"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.MountedRocketDamagesRealHpOncePerPartAndConsumesOneRound",
+        "result": "Passed",
+        "duration": "3.639819"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.TransitionCleansLiveRocketAndRecoveredLauncherKeepsEmptyAmmo",
+        "result": "Passed",
+        "duration": "3.153854"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat",
+        "result": "Passed",
+        "duration": "3.754251"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.GarageSawPreviewShowsTheActualWorldSizedCuttingDisc",
+        "result": "Passed",
+        "duration": "3.164462"
+      },
+      {
+        "fullname": "RRLW6SawPhysicalTests.WastelandFourEnemyEscortActuallyUsesMeleeApproachAndSawMotor",
+        "result": "Passed",
+        "duration": "4.268406"
+      },
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.003787"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation",
+        "result": "Passed",
+        "duration": "3.081993"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.288655"
+      },
+      {
+        "fullname": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed",
+        "duration": "3.465865"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed",
+        "duration": "0.004965"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed",
+        "duration": "0.000640"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-23T12:40:07.1935153Z",
+      "filter": "RRLW6",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  }
+]

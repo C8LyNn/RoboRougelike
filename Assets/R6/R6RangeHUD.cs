@@ -45,7 +45,8 @@ namespace RoboRougelike.R1
                     var rail=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
                     var beam=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>();
                     var rocket=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
-                    string status=rocket!=null?($"{rocket.State.Ammo}/10 • "+(rocket.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):beam!=null?($"temperatura {beam.Module.HeatFraction*100:0}%"+(beam.Module.IsOverheated?" • przegrzana":"")):rail!=null?($"{rail.State.Ammo}/12 • "+(rail.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
+                    var saw=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
+                    string status=saw!=null?($"{saw.Module.Motor.Rpm:0} RPM • {saw.Module.Motor.Heat:0}%"+(saw.Module.Motor.JamRemaining>0?" • blokada":"")):rocket!=null?($"{rocket.State.Ammo}/10 • "+(rocket.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):beam!=null?($"temperatura {beam.Module.HeatFraction*100:0}%"+(beam.Module.IsOverheated?" • przegrzana":"")):rail!=null?($"{rail.State.Ammo}/12 • "+(rail.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
                         (reload>0?$"{reload:0.0} s":"gotowa");
                     GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).Name+" • "+status,small);row++;
                 }

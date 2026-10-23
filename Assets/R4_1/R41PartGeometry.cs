@@ -58,6 +58,8 @@ namespace RoboRougelike.R4_1
             }
             if(kind!=R3PartKind.Gun)return null;
             var pivot=new GameObject("Obrót broni").transform;pivot.SetParent(block,false);pivot.localPosition=Vector3.up*0.6f;
+            if(weapon==R4WeaponKind.RotarySaw)
+            {muzzle=new GameObject("Środek piły").transform;muzzle.SetParent(pivot,false);muzzle.localPosition=Vector3.forward*1.65f;SawRotor(muzzle,material);return pivot;}
             bool heavy=weapon==R4WeaponKind.Heavy,automatic=weapon==R4WeaponKind.Automatic,shotgun=weapon==R4WeaponKind.Shotgun;
             var barrel=Primitive(PrimitiveType.Cube,pivot,material,solid,"Lufa").transform;
             barrel.localPosition=Vector3.forward*(heavy?1.1f:0.85f);
@@ -68,6 +70,13 @@ namespace RoboRougelike.R4_1
             }
             muzzle=new GameObject("Wylot").transform;muzzle.SetParent(pivot,false);muzzle.localPosition=Vector3.forward*(heavy?2.2f:automatic?1.8f:1.65f);
             return pivot;
+        }
+        public static Transform SawRotor(Transform center,Material material)
+        {
+            var existing=center.Find("WPN005 visual rotor");if(existing!=null)return existing;
+            var rotor=Primitive(PrimitiveType.Cylinder,null,material,false,"WPN005 visual rotor").transform;
+            rotor.SetPositionAndRotation(center.position,center.rotation*Quaternion.Euler(0,0,90));
+            rotor.localScale=new Vector3(1.8f,.14f,1.8f);rotor.SetParent(center,true);return rotor;
         }
     }
     public enum R41GarageTool { Mount, Inspect, Repair, Remove }
