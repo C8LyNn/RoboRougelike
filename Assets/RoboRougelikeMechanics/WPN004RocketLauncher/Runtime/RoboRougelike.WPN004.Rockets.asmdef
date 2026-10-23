@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.WPN004.Rockets",
+  "rootNamespace": "RoboRougelike.Mechanics.Rockets",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "RoboRougelike.WPN004.Demo.Editor",
+  "references": [
+    "RoboRougelike.WPN004.Rockets",
+    "RoboRougelike.WPN004.Demo"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}

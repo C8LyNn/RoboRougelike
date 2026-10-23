@@ -66,6 +66,12 @@ namespace RoboRougelike.R3
                         if(binding!=null&&binding.Fire())part.NextFireTime=binding.State.DeviceReadyAt;
                         continue;
                     }
+                    if(part.Weapon==R4WeaponKind.RocketLauncher)
+                    {
+                        var rocket=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
+                        if(rocket!=null&&rocket.Fire())part.NextFireTime=rocket.State.DeviceReadyAt;
+                        continue;
+                    }
                     if(part.Weapon==R4WeaponKind.Railgun)
                     {
                         var rail=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
@@ -153,6 +159,10 @@ namespace RoboRougelike.R3
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.BeamCutter)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.RocketLauncher)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon>=R4WeaponKind.Shotgun))
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();

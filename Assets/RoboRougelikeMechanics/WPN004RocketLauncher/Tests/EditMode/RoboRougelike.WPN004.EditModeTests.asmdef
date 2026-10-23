@@ -1,0 +1,16 @@
+{
+  "name": "RoboRougelike.WPN004.EditModeTests",
+  "references": [
+    "RoboRougelike.WPN004.Rockets"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "autoReferenced": false
+}

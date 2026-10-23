@@ -1,0 +1,13 @@
+{
+  "name": "RoboRougelike.WPN004.PlayModeTests",
+  "references": [
+    "RoboRougelike.WPN004.Rockets"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "autoReferenced": false
+}
