@@ -181,7 +181,9 @@ namespace RoboRougelike.R1
                 selected.Kind==R3PartKind.DirectionalShield?
                 $"Tarcza 1×2×2 • {(selected.DefenseCharge<0?100:selected.DefenseCharge):0}/100 osłony\n120° • 9 m • masa 32 kg • HP {selected.Health*100:0}%":
                 selected.Kind==R3PartKind.Gun?
-                $"{profile.Damage*(run.ActiveStats?.Damage??1f):0} obrażeń • co {profile.Interval*(run.ActiveStats?.FireInterval??1f):0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
+                R4WeaponDefinition.Brief(selected,run.ActiveStats?.Damage??1f,run.ActiveStats?.FireInterval??1f)+$"\nMasa {profile.Mass:0} kg • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
+            if(selected.DisruptionRemaining>0)
+                GUI.Label(new Rect(970,446,280,18),$"EMP jeszcze {selected.DisruptionRemaining:0.0} s po montażu",small);
             string error=garage.PlacementIssue;
             GUI.enabled=garage.HasTarget&&error==null&&selected.Health>0;
             if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))

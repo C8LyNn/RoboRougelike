@@ -37,7 +37,13 @@ namespace RoboRougelike.R6
             body.maxAngularVelocity=3;body.linearDamping=0;body.angularDamping=.1f;
             material=new PhysicsMaterial("Kontakt pojazdu R6") {bounciness=0,dynamicFriction=R6Tuning.Current.ContactFriction,
                 staticFriction=R6Tuning.Current.ContactFriction,frictionCombine=PhysicsMaterialCombine.Minimum,bounceCombine=PhysicsMaterialCombine.Minimum};
-            foreach(var col in GetComponentsInChildren<Collider>())col.sharedMaterial=material;
+            RefreshParts();
+        }
+        public void RefreshParts()
+        {
+            if(body==null||material==null)return;
+            foreach(var col in GetComponentsInChildren<Collider>())
+                if(col.attachedRigidbody==body)col.sharedMaterial=material;
             parts=GetComponentsInChildren<P12PipelineSafeDamageable>();RefreshMass();
         }
         public static float PartMass(P12PipelineSafeDamageable part)
@@ -49,7 +55,7 @@ namespace RoboRougelike.R6
             var module=part.GetComponent<P12PipelineSafeFunctionalModule>();
             return module!=null&&module.ModuleType==P12FunctionalModuleType.Weapon?32:IsWheel(part)?12:8;
         }
-        static bool IsWheel(P12PipelineSafeDamageable part)
+        public static bool IsWheel(P12PipelineSafeDamageable part)
         {
             var mounted=part.GetComponent<R3MountedPart>();
             if(mounted!=null)return mounted.Kind==R3PartKind.Wheel;
@@ -71,7 +77,7 @@ namespace RoboRougelike.R6
                 if(!BelongsToBody(part))continue;
                 float m=PartMass(part);var local=transform.InverseTransformPoint(part.transform.position);
                 mass+=m;center+=local*m;
-                if(!IsWheel(part))continue;
+                if(!IsWheel(part)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 float condition=Mathf.Lerp(R6Tuning.Current.DamageTractionFloor,1,part.CurrentHp/part.MaxHp);
                 traction+=condition;Wheels++;track+=Mathf.Abs(local.x);
                 if(local.x<0)left+=condition;else right+=condition;

@@ -1,0 +1,28 @@
+# WPN-006 EMP Emitter and W6 closure QA
+
+Source: verified kit WPN006EMP SHA256 `19afc48aa519f093b476af2df779a52daf92766a787af54a1f8a9a22b0c342c0`. Feature feature/rrl-wpn006-integration; base WPN005 checkpointc0056e1 on immutable W5. Original dry-run/apply imported15 Assets files with no overwrite. Unity/package version remains6000.3.14f1.
+
+**State: INTEGRATED; targeted API/physics PASS. Full W6 Edit/Play, Windows build and native-input QA pending. No native gameplay claim is made from Editor API fixtures.**
+
+Original EmpEmitter owns pulse overlap/deduplication, LOS, owner/team exclusion, distance/resistance duration and commit semantics. Defaults remain9m radius,3s maximum disruption,35% edge duration,12s cooldown,0 activation energy,1024/128 query budgets. Valid empty pulses consume cooldown. Existing cadence modifiers snapshot into cooldown; EMP causes0 HP damage and no direct velocity writes. Integration chassis tuning:30kg,140HP,65scrap. Physical garage guns and the Industrial four-enemy escort expose EMP; that escort approaches6m and waits for an8.5m target before pulsing. Other arenas retain railgun/saw/beam paths.
+
+A receiver belongs to each actual electronic part: guns, wheel motors, active movement devices, suspension, shield and point defense. Armor/core/passive bonuses remain immune. The receiver keeps its original enabled recovery clock; a narrow Disabling event snapshots persistent state before its existing ClearEmp callback. The emitter alone opts into a controlled clock and bounded cooldown restore. Canonical R3 DisruptionRemaining/DeviceReadyAt survive capture, inventory, actual actor teardown, copy, paid repair and rebuild. Complete R4 snapshots also preserve the state of ordinary and elite weapons/wheels. No extra vehicle HP or Rigidbody solver is introduced.
+
+Temporary operation is explicitly separate from physical survival. R3MountedPart.Operational remains physical so capture never marks EMP-disabled parts destroyed. P12 functional modules expose physical and effective queries; defeat checks use surviving wheels/weapons/drives, while torque/fire use effective availability. Enemy WeaponOnline remains physical so EMP cannot call DropTurret. Existing R6 wheel forces, enemy wheel counts, MOV-series availability and MOV009 support filters respect disruption while preserving mass and momentum. Shared IRRLDeviceLifecycle refreshes all package source modules synchronously on status changes; expiry cannot resurrect destroyed/detached parts.
+
+## Targeted evidence and fixes
+
+- Initial RED4/4: missing EMP catalog and electronics receivers. Additional RED caught active enemy wheel count4 despite EMP; effective count now0 without HP loss.
+- Final Emp Edit **50/50 PASS**:40 original cases and10 integration/lifecycle cases. Final original Play **24/24 PASS**, native process0. Original OnDisable case was moved with unchanged assertion from invalid EditMode dispatch to real PlayMode.
+- Actual original pulse disables an exposed enemy gun; production timer recovers it automatically; killing it during disruption then clearing EMP cannot restore operation. No HP/momentum change. Frontal armor correctly occluded the gun (5 detected,3 occluded,2 exposed wheels affected); the gun case deliberately emits above armor. Teleport fixture first had stale ClosestPoint132m despite near overlap/raycast until an actual PhysX step; no game query algorithm was changed.
+- Actual expedition stays Combat when all electronics are temporarily disabled. Hover can have no effective drive while its physical drive survives. HP/colliders/vehicle mass/velocity remain intact; saved wheels remain healthy and disrupted after rebuild.
+- Actor-teardown RED exposed canonical disruption3s becoming0 when old Unity objects were disabled. Lifecycle snapshot before receiver ClearEmp fixes it. Elite battery salvage RED exposed2s becoming0; complete state snapshots now retain it.
+- W6 shared physics RED: dynamic shield mass stayed208kg instead of240kg due R6 Awake part cache. Explicit RefreshParts at mounting/final composition now includes actual new parts/materials. Destroyed armor carrying a PDS previously made an8kg fragment; live same-body subtree is43kg (8armor+35PDS), removed immediately from its owner once, with no duplicate solver. These shared fixes are dependencies for earlier shield/PDS feature checkpoints when using them in the aggregate.
+- Practice transition **1/1 PASS**: sandbox budget uses existing600scrap; an existing Gunner/rocket model is reused as an actual electronic target, default fireOFF, optional UI toggle, pause-aware control, no loot/rewards, cleaned on return with workshop scrap unchanged. This makes EMP/shield/PDS testable through actual game UI; no new enemy model/mechanic is synthesized.
+- Weapon inventory briefs now describe DPS/contact/penetration/EMP and real ammo rather than falsely displaying beam as35damage per.02s or EMP as a broken0damage gun. Defense HUD no longer overlaps suspension telemetry.
+
+Earlier shared RRLW6 runs27/27 and Emp50/50 are API-driven only. Complete fresh W6 regression/build/native evidence will be appended at wave closure; until then all eight mechanics remain BLOCKED from the release candidate readiness claim. Known W5 UIA-client shutdown crash is unchanged and is not called fixed.
+
+**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
+
+[Machine-readable test evidence](WPN-006_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.

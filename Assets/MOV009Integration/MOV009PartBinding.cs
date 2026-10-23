@@ -12,7 +12,7 @@ namespace RoboRougelike.MOV009Integration
         public void Configure(R3MountedPart mounted,ActiveSuspensionModule support)
         {
             part=mounted;module=support;part.Damageable.Died+=DisableSupport;
-            module.SetAvailabilityFilter(()=>part!=null&&part.Operational);
+            module.SetAvailabilityFilter(()=>part!=null&&part.Operational&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject));
             module.SetGroundFilter(IsTerrain);
         }
         static bool IsTerrain(Collider collider) => collider!=null && collider.attachedRigidbody==null &&

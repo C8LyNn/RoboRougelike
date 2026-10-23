@@ -5,9 +5,23 @@ using RogueMachine.P12PipelineSafe;
 
 namespace RoboRougelike.R6
 {
+    [DefaultExecutionOrder(-500)]
     public sealed class R6TestRange : MonoBehaviour
     {
         public Transform Layout {get;private set;}
+        public P12PipelineSafeEnemyTurret TrainingTarget {get;private set;}
+        public bool TrainingFireRequested {get;private set;}
+        public void SetTrainingTarget(P12PipelineSafeEnemyTurret target)
+        {TrainingTarget=target;SetTrainingFire(false);}
+        public void SetTrainingFire(bool active)
+        {TrainingFireRequested=active&&TrainingTarget!=null&&!TrainingTarget.IsDefeated;RefreshTrainingFire();}
+        void RefreshTrainingFire()
+        {
+            var run=R1RunController.Instance;
+            if(TrainingTarget!=null)TrainingTarget.SetCombatActive(TrainingFireRequested&&!TrainingTarget.IsDefeated&&
+                run!=null&&run.Progress.State==R1RunState.TestDrive&&!run.Paused&&!run.Transitioning);
+        }
+        void Update()=>RefreshTrainingFire();
         Material material;
         public void Build(R3VisualPalette palette)
         {
@@ -50,7 +64,7 @@ namespace RoboRougelike.R6
         }
         static void Tint(Renderer renderer,Color color)
         {var props=new MaterialPropertyBlock();props.SetColor("_BaseColor",color);renderer.SetPropertyBlock(props);renderer.GetComponent<P12PipelineSafeDamageable>()?.SetBaseTint(color);}
-        public void Clear(){if(Layout!=null){Layout.gameObject.SetActive(false);Destroy(Layout.gameObject);Layout=null;}}
+        public void Clear(){SetTrainingFire(false);TrainingTarget=null;if(Layout!=null){Layout.gameObject.SetActive(false);Destroy(Layout.gameObject);Layout=null;}}
         void OnDestroy(){Clear();}
     }
 }

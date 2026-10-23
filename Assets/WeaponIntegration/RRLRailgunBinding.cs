@@ -7,8 +7,9 @@ using RogueMachine.P12PipelineSafe;
 namespace RoboRougelike.WeaponIntegration
 {
     [DisallowMultipleComponent]
-    public sealed class RRLRailgunBinding : MonoBehaviour,IRailgunShotSink,IRailgunShotResourceBank
+    public sealed class RRLRailgunBinding : MonoBehaviour,IRRLDeviceLifecycle,IRailgunShotSink,IRailgunShotResourceBank
     {
+        public void RefreshAvailability(){if(Module!=null)Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);}
         public const int Magazine=12;
         public RRLDeviceBinding Device {get;private set;}
         public R3PartState State=>Device.State;

@@ -7,8 +7,9 @@ using RogueMachine.P12PipelineSafe;
 namespace RoboRougelike.WeaponIntegration
 {
     [DisallowMultipleComponent]
-    public sealed class RRLBeamBinding : MonoBehaviour,IBeamDamageSink
+    public sealed class RRLBeamBinding : MonoBehaviour,IRRLDeviceLifecycle,IBeamDamageSink
     {
+        public void RefreshAvailability(){if(Module!=null){Module.SetOperational(Device.Available);Module.SetAttached(Device.Available);}}
         public RRLDeviceBinding Device {get;private set;}
         public R3PartState State=>Device.State;
         public BeamCutterModule Module {get;private set;}

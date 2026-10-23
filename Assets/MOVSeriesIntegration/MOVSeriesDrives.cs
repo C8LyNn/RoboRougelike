@@ -17,6 +17,11 @@ namespace RoboRougelike.MOVSeries
             R3DriveKind.Tracks=>assembly.Parts.Any(p=>p.Kind==R3PartKind.CrawlerTrack&&Available(p)),
             R3DriveKind.Omni=>assembly.Parts.Any(p=>p.Kind==R3PartKind.OmniDrive&&Available(p)),
             R3DriveKind.Hover=>assembly.Parts.Any(p=>p.Kind==R3PartKind.HoverEngine&&Available(p)),_=>false});
+        public bool HasSurvivingDrive=>assembly!=null&&(Model.SelectedDrive switch {
+            R3DriveKind.Wheels=>assembly.Parts.Any(p=>p.Kind==R3PartKind.Wheel&&StructurallyAvailable(p)),
+            R3DriveKind.Tracks=>assembly.Parts.Any(p=>p.Kind==R3PartKind.CrawlerTrack&&StructurallyAvailable(p)),
+            R3DriveKind.Omni=>assembly.Parts.Any(p=>p.Kind==R3PartKind.OmniDrive&&StructurallyAvailable(p)),
+            R3DriveKind.Hover=>assembly.Parts.Any(p=>p.Kind==R3PartKind.HoverEngine&&StructurallyAvailable(p)),_=>false});
         void ConfigureDrives()
         {
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.OmniDrive))

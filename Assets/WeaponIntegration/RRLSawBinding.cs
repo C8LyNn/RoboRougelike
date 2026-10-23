@@ -6,8 +6,9 @@ using RogueMachine.P12PipelineSafe;
 namespace RoboRougelike.WeaponIntegration
 {
     [DisallowMultipleComponent]
-    public sealed class RRLSawBinding : MonoBehaviour,IRotarySawDamageSink
+    public sealed class RRLSawBinding : MonoBehaviour,IRRLDeviceLifecycle,IRotarySawDamageSink
     {
+        public void RefreshAvailability(){if(Module!=null)Module.SetOperational(Device.Available);}
         public RRLDeviceBinding Device {get;private set;}
         public RotarySawModule Module {get;private set;}
         public R3PartState State=>Device.State;

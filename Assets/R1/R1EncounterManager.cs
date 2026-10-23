@@ -41,13 +41,16 @@ namespace RoboRougelike.R1
                 if(count>=3&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipDirectionalShield();
                 if(count>=4&&i==count-2&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
-                    enemy.EquipRailgun();
+                {
+                    if(definition.Arena==RoboRougelike.R5.R5ArenaKind.Industrial)enemy.EquipEmp();else enemy.EquipRailgun();
+                }
                 if(count>=4&&i==count-3&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                 {
                     if(definition.Arena==RoboRougelike.R5.R5ArenaKind.Wasteland)enemy.EquipSaw();else enemy.EquipBeam();
                 }
                 if(count>=4&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipPointDefense();
+                RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
                 enemies.Add(enemy);
             }
         }

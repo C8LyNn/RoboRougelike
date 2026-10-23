@@ -103,7 +103,7 @@ namespace RoboRougelike.R1
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
-                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROUGELIKE • MOV 001–009", title);
+                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • W6", title);
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz pojazd do Gauntletu", heading);
                 for(int i=0;i<3;i++)
                 {

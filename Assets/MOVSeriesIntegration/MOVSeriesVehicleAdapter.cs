@@ -26,7 +26,8 @@ namespace RoboRougelike.MOVSeries
             drive.RefreshMass();drive.EnableSuspensionPhysics(.05f);ConfigureDevices();ConfigureSpecialDevices();ConfigureDrives();SyncDevices();SyncDrives();
             gameObject.AddComponent<MOVSeriesInput>().Bind(this);
         }
-        internal bool Available(R3MountedPart part)=>part!=null&&part.Operational&&
+        internal bool Available(R3MountedPart part)=>StructurallyAvailable(part)&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject);
+        internal bool StructurallyAvailable(R3MountedPart part)=>part!=null&&part.Operational&&
             part.transform.IsChildOf(transform)&&part.GetComponentInParent<Rigidbody>()==body&&structure!=null&&structure.CoreAlive&&structure.IsBlockConnected(part.Block);
         internal R3PartState State(R3MountedPart part)=>Model.Parts.First(p=>p.Id==part.Id);
         internal bool PrepareAction()

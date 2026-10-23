@@ -9,8 +9,9 @@ using RogueMachine.P12PipelineSafe;
 namespace RoboRougelike.WeaponIntegration
 {
     [DisallowMultipleComponent]
-    public sealed class RRLShotgunBinding : MonoBehaviour,IShotgunVolleySink,IShotgunShotResourceBank
+    public sealed class RRLShotgunBinding : MonoBehaviour,IRRLDeviceLifecycle,IShotgunVolleySink,IShotgunShotResourceBank
     {
+        public void RefreshAvailability(){if(Module!=null)Module.SetOperational(Available&&State.ReloadReadyAt<=Time.time);}
         public const int MagazineSalvos=12;
         public const float ReloadSeconds=1.5f;
         public R3PartState State { get; private set; }

@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path, PurePosixPath
 import zipfile
 
@@ -11,12 +12,14 @@ def sha256(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def package(build, archive, extracted, source_sha):
+def package(build, archive, extracted, source_sha, release_id='W5_RC1'):
     build, archive, extracted = build.resolve(), archive.resolve(), extracted.resolve()
     if archive.exists() or extracted.exists():
         raise ValueError('Archive/extraction destination must be new; preserve previous candidates.')
     if len(source_sha) != 40 or any(c not in '0123456789abcdef' for c in source_sha):
         raise ValueError('Provide the exact tested source commit SHA.')
+    if not re.fullmatch(r'[A-Z0-9]+(?:_[A-Z0-9]+)*', release_id):
+        raise ValueError('Release id must contain uppercase letters, numbers and underscores only.')
     required = ['RoboRougelike.exe', 'UnityPlayer.dll', 'UnityCrashHandler64.exe',
                 'RoboRougelike_Data/globalgamemanagers',
                 'RoboRougelike_Data/Managed/Assembly-CSharp.dll',
@@ -32,10 +35,12 @@ def package(build, archive, extracted, source_sha):
         if not path.is_file() or path.suffix.lower() == '.pdb' or any('DoNotShip' in p or 'BackUpThisFolder' in p for p in relative.parts):
             continue
         files[relative.as_posix()] = path
-    manifest = {'product': 'RoboRoguelike W5 RC1', 'platform': 'Windows x64',
+    product = 'RoboRoguelike '+release_id.replace('_', ' ')
+    report = 'Docs/RRL_W5_RELEASE_QA.md' if release_id == 'W5_RC1' else 'Docs/RRL_PACKAGE_INTEGRATION_STATUS.md'
+    manifest = {'product': product, 'platform': 'Windows x64',
                 'unity': '6000.3.14f1', 'testedSource': source_sha,
                 'files': {name: {'bytes': p.stat().st_size, 'sha256': sha256(p)} for name, p in files.items()}}
-    readme = ('RoboRoguelike W5 RC1 — Windows x64\n\n'
+    readme = (product+' — Windows x64\n\n'
               'Wypakuj cały folder i uruchom RoboRougelike.exe.\n'
               'Zachowaj folder RoboRougelike_Data, MonoBleedingEdge i biblioteki DLL obok EXE.\n\n'
               'WASD: jazda i skręt; mysz: celowanie; LPM: strzał; Esc: pauza.\n'
@@ -43,10 +48,14 @@ def package(build, archive, extracted, source_sha):
               'Po walce wybierz jeden bonus i do trzech części; bonus działa po montażu.\n'
               'Alt+F4 zamyka grę.\n\n'
               'Znane ograniczenie RC: klient Windows UI Automation może wywołać błąd Unity przy zamykaniu.\n'
-              'Szczegółowy raport: Docs/RRL_W5_RELEASE_QA.md w repozytorium.\n')
+              f'Szczegółowy raport: {report} w repozytorium.\n')
+    if release_id != 'W5_RC1':
+        readme += ('\nBroń: T — przeładowanie. LPM — strzał, wiązka, piła lub impuls EMP.\n'
+                   'W garażu swobodnym dostępny jest budżet testowy. Poligon oferuje\n'
+                   'cel elektroniczny z opcjonalnym ostrzałem rakietowym, początkowo wyłączonym.\n')
     generated = {'README.txt': readme.encode('utf-8'),
                  'release-manifest.json': (json.dumps(manifest, ensure_ascii=False, indent=2)+'\n').encode('utf-8')}
-    root = 'RoboRoguelike_W5_RC1_Windows_x64'
+    root = f'RoboRoguelike_{release_id}_Windows_x64'
     archive.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(archive, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as output:
         for name, path in files.items():
@@ -82,5 +91,6 @@ if __name__ == '__main__':
     parser.add_argument('--archive', type=Path, required=True)
     parser.add_argument('--extract', type=Path, required=True)
     parser.add_argument('--source-sha', required=True)
+    parser.add_argument('--release-id', default='W5_RC1')
     args = parser.parse_args()
-    print(json.dumps(package(args.build, args.archive, args.extract, args.source_sha), indent=2))
+    print(json.dumps(package(args.build, args.archive, args.extract, args.source_sha, args.release_id), indent=2))
