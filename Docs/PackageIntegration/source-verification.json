@@ -1,0 +1,152 @@
+{
+  "kitSha256": "bbbc3bdf74ad1e4445fc5ca231eddc60f189090cc68104e6a23e1b1f9469407b",
+  "kitBytes": 815696,
+  "originalCommand": "verify_and_stage.py --verify-all",
+  "exitCode": 0,
+  "sources": [
+    {
+      "id": "COM-001",
+      "sha256": "bc671889fb26491a7cbbd5cf415891c6224898be3140b888a1bf5c749bde345f",
+      "selected": true,
+      "verified": true,
+      "file_count": 24,
+      "checked": 23
+    },
+    {
+      "id": "DEF-001",
+      "sha256": "66a6320db5463ade7f57c13a950b31df15c83cdbc03ee5b290172a4f96d1308c",
+      "selected": true,
+      "verified": true,
+      "file_count": 20,
+      "checked": 19
+    },
+    {
+      "id": "DEF-002",
+      "sha256": "38b7a2aec225e88f1f203ab367110e081e9e304a4d012baa5a1dd694f0ceb591",
+      "selected": true,
+      "verified": true,
+      "file_count": 23,
+      "checked": 22
+    },
+    {
+      "id": "MAP-R3",
+      "sha256": "e29e25d0c044984af1c2c999e633ef69d22736b65b00ea72c2dc408997684d73",
+      "selected": false,
+      "verified": true,
+      "file_count": 17,
+      "checked": 16
+    },
+    {
+      "id": "MAP-R4",
+      "sha256": "05d954a0c023b9107639b03595ab0f974747c5698078daf794eb0ceed87355de",
+      "selected": false,
+      "verified": true,
+      "file_count": 78,
+      "checked": 77
+    },
+    {
+      "id": "MAP-R5",
+      "sha256": "43c840ffce76dda53d48cffa7719b2f35c5c01cfba4066632749305479ddc890",
+      "selected": false,
+      "verified": true,
+      "file_count": 91,
+      "checked": 90
+    },
+    {
+      "id": "MAP-R6",
+      "sha256": "137e2e55065b3ba373fca2f8a32f5a47f0d01d6329560059228f06ba08bcd80e",
+      "selected": true,
+      "verified": true,
+      "file_count": 123,
+      "checked": 122
+    },
+    {
+      "id": "MOV-011",
+      "sha256": "5de4ef944023395f42cd239d3d6a466e45bcabad71049d6c90416aba589e5fa6",
+      "selected": true,
+      "verified": true,
+      "file_count": 22,
+      "checked": 21
+    },
+    {
+      "id": "VFX-001-v2",
+      "sha256": "94a30246c3c4562458896deb9896101a4690250e107f29ec97ca2142c583bffc",
+      "selected": false,
+      "verified": true,
+      "file_count": 84,
+      "checked": 83
+    },
+    {
+      "id": "VFX-001-v3",
+      "sha256": "175da2ee25ea212e757acce3df713ce1c74ba68e97297caecdce0bf05ff52c9e",
+      "selected": false,
+      "verified": true,
+      "file_count": 107,
+      "checked": 106
+    },
+    {
+      "id": "VFX-001-v4",
+      "sha256": "a955c0d694e9e9873c0dc004a28643346d2b970062c298d336bca8343cf35565",
+      "selected": false,
+      "verified": true,
+      "file_count": 132,
+      "checked": 131
+    },
+    {
+      "id": "VFX-001-v5",
+      "sha256": "86133261e6693cf90017e7434fdc26f02e72bb4443b3f493a8de835ca6a7d597",
+      "selected": true,
+      "verified": true,
+      "file_count": 154,
+      "checked": 153
+    },
+    {
+      "id": "WPN-001",
+      "sha256": "1a4dd6b2fe9ad92a6655e880bda4faea72c7737638be5edbf0c5defec96da2db",
+      "selected": true,
+      "verified": true,
+      "file_count": 27,
+      "checked": 26
+    },
+    {
+      "id": "WPN-002",
+      "sha256": "887f10cc5f7d7103e293cf49d88f0f1862d9201ef5381eb8edc4d02a1132b392",
+      "selected": true,
+      "verified": true,
+      "file_count": 26,
+      "checked": 25
+    },
+    {
+      "id": "WPN-003",
+      "sha256": "5186dbb7eebada6969f8b9f5fb9b853ae11eb9cdae06968bb05aa3e787242c2d",
+      "selected": true,
+      "verified": true,
+      "file_count": 21,
+      "checked": 20
+    },
+    {
+      "id": "WPN-004",
+      "sha256": "d03102b35ea7ed08e93387ee866689fa7cd897145d16438633f328c2eec25179",
+      "selected": true,
+      "verified": true,
+      "file_count": 25,
+      "checked": 24
+    },
+    {
+      "id": "WPN-005",
+      "sha256": "240afef467981b1b051c241212aa39392c1e97b806915468900dd58dbee2efe8",
+      "selected": true,
+      "verified": true,
+      "file_count": 23,
+      "checked": 22
+    },
+    {
+      "id": "WPN-006",
+      "sha256": "19afc48aa519f093b476af2df779a52daf92766a787af54a1f8a9a22b0c342c0",
+      "selected": true,
+      "verified": true,
+      "file_count": 23,
+      "checked": 22
+    }
+  ]
+}
