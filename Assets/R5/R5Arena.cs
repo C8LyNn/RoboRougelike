@@ -25,32 +25,33 @@ namespace RoboRougelike.R5
             {
                 for(int side=-1;side<=1;side+=2)
                 {
-                    Box("Prasa złomu",new Vector3(side*10,.85f,0),new Vector3(3,1.7f,5));
-                    Box("Wrak osłony",new Vector3(side*21,.6f,13),new Vector3(5,1.2f,2));
-                    Box("Niska osłona",new Vector3(side*20,.6f,-13),new Vector3(4,1.2f,3));
+                    Box("Prasa złomu",new Vector3(side*10,.85f,0),new Vector3(3,1.7f,5),true);
+                    Box("Wrak osłony",new Vector3(side*21,.6f,13),new Vector3(5,1.2f,2),true);
+                    Box("Niska osłona",new Vector3(side*20,.6f,-13),new Vector3(4,1.2f,3),true);
                 }
             }
             else if(kind==R5ArenaKind.Wasteland)
             {
-                Box("Ostaniec zachodni",new Vector3(-26,1,-5),new Vector3(4,2,6));
-                Box("Ostaniec wschodni",new Vector3(26,.7f,8),new Vector3(6,1.4f,3));
+                Box("Ostaniec zachodni",new Vector3(-26,1,-5),new Vector3(4,2,6),true);
+                Box("Ostaniec wschodni",new Vector3(26,.7f,8),new Vector3(6,1.4f,3),true);
             }
             else
             {
                 for(int side=-1;side<=1;side+=2)for(int row=-1;row<=1;row+=2)
                     Box("Hala przemysłowa",new Vector3(side*17,2.5f,row*7),new Vector3(10,5,9));
-                Box("Łącznik zachodni",new Vector3(-31,1.5f,0),new Vector3(3,3,14));
-                Box("Łącznik wschodni",new Vector3(31,1.5f,0),new Vector3(3,3,14));
+                Box("Łącznik zachodni",new Vector3(-31,1.5f,0),new Vector3(3,3,14),true);
+                Box("Łącznik wschodni",new Vector3(31,1.5f,0),new Vector3(3,3,14),true);
             }
             // Floor tint is an instance property, never a modification to the scene asset.
             var floor=GameObject.Find("P12_Ground")?.GetComponent<Renderer>();
             if(floor!=null){var properties=new MaterialPropertyBlock();properties.SetColor("_BaseColor",color*.6f);floor.SetPropertyBlock(properties);}
             Physics.SyncTransforms();
         }
-        private void Box(string name,Vector3 position,Vector3 size)
+        private void Box(string name,Vector3 position,Vector3 size,bool destructible=false)
         {
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name;obj.transform.SetParent(Layout,false);
             obj.transform.localPosition=position;obj.transform.localScale=size;obj.GetComponent<Renderer>().sharedMaterial=material;
+            if(destructible)obj.AddComponent<RoboRougelike.PackageIntegration.RRLCoverAdapter>();
         }
         private void OnDestroy(){if(material!=null)Destroy(material);}
     }
