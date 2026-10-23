@@ -9,7 +9,7 @@
 
 ## Global constraints
 - Frozen W5 `2154b4341dd6b6fefb135187dc07b4b12d44f908`; no main/develop/W5 edits or merges.
-- Source gate missing WPN001–006/DEF001–002/MOV011; never synthesize original implementations.
+- Kit source gate PASS18/18; use verified originals and pinned PR corrections, never synthesize original implementations.
 - Every mechanic has pinned source, ID, frozen feature branch, Draft PR, report; status centralized in `Docs/RRL_PACKAGE_INTEGRATION_STATUS.md`.
 - Preserve GUIDs/scenes/prefabs, four-cell XYZ/contact ownership and existing HP/salvage/repair.
 - Targeted RED→GREEN for new behavior; original-package tests; one full regression/build/native wave closure.
@@ -24,6 +24,19 @@
 ## Task1 — source catalog and W6 gate
 - [x] Verify W5 and all source PR SHAs; isolate checkout; search kit and verifier; mark exact missing sources.
 - [ ] Commit source/design/status record; retain fresh W5 baseline610 cases without redundant initial rerun.
+
+## Task W6 — original weapons/defense and shared adapters
+**Files:** original per-ID Assets/RoboRougelikeMechanics sources; new Assets/WeaponIntegration adapters/resource/hit boundary; existing R4WeaponDefinition, R3PartState/assembly/palette/garage and enemy/salvage/projectile seams; targeted RRLW6 tests.
+**Interfaces:** R3PartState owns persistent resources/readiness; original module sink/resource contracts bind to one P12 hit resolver and R6 physical projectiles/body. Demo health/input/motor never enter production.
+- [ ] WPN001: clean feature dry-run/apply, original tests; RED eight physical pellets, one resource debit, cooldown/owner/range/detach and salvage/repair; implement sink/catalog/AI and target tests/native/report/PR.
+- [ ] DEF001: directional pre-HP interception, exact resource/spill/disabled semantics; target tests/report/PR.
+- [ ] WPN002: original rail sorted logical-block penetration through shared shield/HP/resources/recoil; target tests/report/PR.
+- [ ] WPN003: original continuous beam/heat/energy, actual ray damage and detach stop; target tests/report/PR.
+- [ ] WPN004: original swept rocket/threat/AOE once per logical part, owner protection; target tests/report/PR.
+- [ ] DEF002: original threat interception before explosion, shared resources and availability; target tests/report/PR.
+- [ ] WPN005: original contact saw cadence/dedupe/body force, shared HP; target tests/report/PR.
+- [ ] WPN006: original EMP status separate from HP/dead/detached; capability gating preserves momentum; target tests/report/PR.
+- [ ] Close W6 with full Edit/Play, Windows retail/QA and native mount/damage/recovery/repair flow plus W5 regression. Incomplete mechanics stay outside candidate.
 
 ## Task2 — W7 COV001 + shared collider damage boundary
 **Files:** imported COV001 source/tests/metas; new `Assets/PackageIntegration/RRLHitRouter.cs`, `RRLCoverAdapter.cs`; modify real shell collision in `Assets/Pack/P12_PipelineSafeTankController.cs` and arena construction; integration tests under `Assets/Tests/Editor/RRLPackageIntegrationTests.cs` and PlayMode equivalent.
@@ -47,7 +60,7 @@
 **Files:** pinned sources and adapters; new physical scanner device binding; existing R3 model/assembly/garage/palette/salvage; sensor HUD/input; targeted tests.
 **Interfaces:** shared availability/activation snapshot boundary; distinct COM visible structure vs SEN area signals; source-defined settings/profiles.
 - [ ] Audit overlap before code (done); RED physical mount/removal/loss/recovery/repair/map-copy and no self/occluded structural contacts.
-- [ ] Integrate COM then SEN separately with checkpoints/reports/target package tests. MOV011 stays source-blocked unless kit arrives.
+- [ ] Integrate COM then SEN separately with checkpoints/reports/target package tests. Integrate original MOV011 steering geometry through R6 after COM/SEN.
 - [ ] Full wave regression/build/native Windows with both mounted/lost/repaired and old campaign flow.
 
 ## Task6 — W9 MAPR6 / RAC001 / OBJ001
