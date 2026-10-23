@@ -58,6 +58,12 @@ namespace RoboRougelike.R3
                         if(binding!=null&&binding.Fire())part.NextFireTime=binding.State.DeviceReadyAt;
                         continue;
                     }
+                    if(part.Weapon==R4WeaponKind.Railgun)
+                    {
+                        var rail=part.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+                        if(rail!=null&&rail.Fire())part.NextFireTime=rail.State.DeviceReadyAt;
+                        continue;
+                    }
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
                     controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
                 }
@@ -132,7 +138,11 @@ namespace RoboRougelike.R3
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
-            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Shotgun))
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Railgun)
+                    part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform,part.Muzzle);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.Gun&&p.Weapon>=R4WeaponKind.Shotgun))
                 root.AddComponent<RoboRougelike.WeaponIntegration.RRLWeaponControls>();
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.DirectionalShield)

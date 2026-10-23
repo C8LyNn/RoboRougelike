@@ -1286,6 +1286,11 @@ public float CurrentForwardSpeed =>
         private bool spent;
         private Vector3 launchPosition;
         private float maxTravelDistance=float.PositiveInfinity;
+        private RoboRougelike.WeaponIntegration.RRLRailPenetration railgun;
+        public void ConfigureRailgun(RoboRougelike.WPN002Railgun.RailgunShot shot,float damageScale)
+        {railgun=gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailPenetration>();railgun.Bind(shot,damageScale);}
+        private void FixedUpdate(){if(railgun!=null&&isActiveAndEnabled)railgun.Step(Time.fixedDeltaTime);}
+
 
         public void Configure(
             Transform owner,
@@ -1410,7 +1415,7 @@ public float CurrentForwardSpeed =>
         private void OnCollisionEnter(
             Collision collision)
         {
-            if (spent ||
+            if (railgun!=null || spent ||
                 collision == null ||
                 collision.collider == null)
                 return;

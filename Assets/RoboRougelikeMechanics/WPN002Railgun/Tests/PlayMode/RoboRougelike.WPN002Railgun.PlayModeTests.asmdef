@@ -1,0 +1,22 @@
+{
+  "name": "RoboRougelike.WPN002Railgun.PlayModeTests",
+  "rootNamespace": "RoboRougelike_WPN002Railgun_PlayModeTests",
+  "references": [
+    "RoboRougelike.WPN002Railgun",
+    "RoboRougelike.WPN002Railgun.Demo"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

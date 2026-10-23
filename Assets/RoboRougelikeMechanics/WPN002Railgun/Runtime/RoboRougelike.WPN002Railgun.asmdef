@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.WPN002Railgun",
+  "rootNamespace": "RoboRougelike_WPN002Railgun",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
