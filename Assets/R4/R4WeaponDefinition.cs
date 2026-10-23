@@ -8,6 +8,7 @@ namespace RoboRougelike.R4
     public sealed class R4WeaponDefinition
     {
         public readonly string Name;
+        public string ShortName => Name.StartsWith("WPN-")?Name.Substring(Name.IndexOf(' ')+1):Name;
         public readonly float Damage, Interval, Speed, Diameter, ProjectileMass, Mass, Hp;
         public readonly int Price;
         public readonly Color Color;

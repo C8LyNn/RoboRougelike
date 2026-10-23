@@ -218,7 +218,7 @@ namespace RoboRougelike.R1
             for(int slot=0;slot<3;slot++)
             {
                 int w=weaponPage*3+slot;if(w>=R4WeaponDefinition.Count)break;
-                string caption=w==0?"Działo":w==1?"Automat":w==2?"Ciężka":R4WeaponDefinition.Get((R4WeaponKind)w).Name;
+                string caption=w==0?"Działo":w==1?"Automat":w==2?"Ciężka":R4WeaponDefinition.Get((R4WeaponKind)w).ShortName;
                 if(GUI.Button(new Rect(970+slot*94,535,90,40),caption,compactButton))
                 {garage.SelectedWeapon=(R4WeaponKind)w;garage.SelectedPart=R3PartKind.Gun;partsPage=0;garage.SelectedInventoryId=null;garage.UseInventory=false;garage.SetTool(R41GarageTool.Mount);}
             }
