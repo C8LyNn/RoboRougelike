@@ -1,0 +1,292 @@
+{
+    "method": "Windows native API/physics fixture; temporary actors and damage APIs; NOT manual gameplay",
+    "status": "Passed",
+    "startedUtc": "2026-10-23T19:06:24.7544488Z",
+    "finishedUtc": "2026-10-23T19:06:35.7905102Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "checks": [
+        {
+            "id": "WPN-001",
+            "name": "Actual production binding activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-001",
+            "name": "Real native physics/ray/contact damage",
+            "detail": "72,000",
+            "passed": true
+        },
+        {
+            "id": "WPN-001",
+            "name": "Exactly one ammunition debit",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-001",
+            "name": "Physical destruction captured",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-001",
+            "name": "Paid repair of original module",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-001",
+            "name": "Identity and resources survive repair/rebuild",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-002",
+            "name": "Actual production binding activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-002",
+            "name": "Real native physics/ray/contact damage",
+            "detail": "64,044",
+            "passed": true
+        },
+        {
+            "id": "WPN-002",
+            "name": "Exactly one ammunition debit",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-002",
+            "name": "Physical destruction captured",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-002",
+            "name": "Paid repair of original module",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-002",
+            "name": "Identity and resources survive repair/rebuild",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-003",
+            "name": "Actual production binding activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-003",
+            "name": "Real native physics/ray/contact damage",
+            "detail": "35,001",
+            "passed": true
+        },
+        {
+            "id": "WPN-003",
+            "name": "Physical destruction captured",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-003",
+            "name": "Paid repair of original module",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-003",
+            "name": "Identity and resources survive repair/rebuild",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-004",
+            "name": "Actual production binding activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-004",
+            "name": "Real native physics/ray/contact damage",
+            "detail": "59,681",
+            "passed": true
+        },
+        {
+            "id": "WPN-004",
+            "name": "Exactly one ammunition debit",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-004",
+            "name": "Physical destruction captured",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-004",
+            "name": "Paid repair of original module",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-004",
+            "name": "Identity and resources survive repair/rebuild",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-005",
+            "name": "Actual production binding activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-005",
+            "name": "Real native physics/ray/contact damage",
+            "detail": "12,469",
+            "passed": true
+        },
+        {
+            "id": "WPN-005",
+            "name": "Physical destruction captured",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-005",
+            "name": "Paid repair of original module",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-005",
+            "name": "Identity and resources survive repair/rebuild",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-006",
+            "name": "Actual production binding activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-006",
+            "name": "Original EMP changes status without HP/momentum",
+            "detail": "2,002",
+            "passed": true
+        },
+        {
+            "id": "WPN-006",
+            "name": "Original automatic EMP recovery",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-006",
+            "name": "Physical destruction captured",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-006",
+            "name": "Paid repair of original module",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "WPN-006",
+            "name": "Identity and resources survive repair/rebuild",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-001",
+            "name": "Physical garage admission",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-001",
+            "name": "Directional shield intercepts front hit before shared HP",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-001",
+            "name": "Rear hit reaches shared HP",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-001",
+            "name": "Destroyed physical shield stops protection",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-001",
+            "name": "Shield paid repair",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-001",
+            "name": "Shield repair preserves charge",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "Physical garage admission",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "Actual enemy rocket equipment",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "Original incoming rocket fired",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "Real interceptors deplete original rocket HP",
+            "detail": "0 / ammo 38",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "Intercepted rocket does not damage defense",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "Destroyed PDS stops and can be repaired",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "DEF-002",
+            "name": "PDS paid repair preserves finite ammunition",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "errors": []
+}

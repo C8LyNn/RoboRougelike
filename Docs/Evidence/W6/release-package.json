@@ -1,0 +1,9 @@
+{
+  "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_W6_RC2_Windows_x64.zip",
+  "bytes": 38398940,
+  "sha256": "edfeb51c8e2ab726a1beec0ad9b2127fde1377e5857984be92fa4b02608d4518",
+  "runtimeFiles": 196,
+  "sourceCommit": "8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f",
+  "extractedExe": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\W6-RC2-Extracted\\RoboRoguelike_W6_RC2_Windows_x64\\RoboRougelike.exe",
+  "allExtractedHashesMatch": true
+}

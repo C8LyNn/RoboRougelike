@@ -10,8 +10,11 @@ RED:2 missing-catalog tests failed as expected. Final Edit filter Railgun45/45 P
 
 Original source fixture defect: RecoilActsOppositeToMuzzleDirection asserted velocity immediately after AddForce, before PhysX simulation (observed0). It now explicitly advances one .02s physics step with try/finally restoration of the runner simulation mode; assertion and runtime recoil remain unchanged. Original Play previously21/22, corrected22/22. No test was removed or weakened. Native Windows and complete W6 campaign remain pending wave closure.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
+**Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-002_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
 
 Draft PR #23: https://github.com/C8LyNn/RoboRougelike/pull/23; runtime SHA d60d04596773068e08f8967e6bbe179929806be2.
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.

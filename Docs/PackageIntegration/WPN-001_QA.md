@@ -25,4 +25,7 @@ Original package compatibility fixes: PlayMode asmdef incorrectly used Editor-on
 
 The integration fixture uses the existing R6 UnitySetUp/EnterPlayMode pattern and starts real combat (menu intentionally pauses physics). An observed flight trace showed WaitForSeconds in the EditMode enumerator advanced only one physics step; it now waits actual game frames to a Time.time deadline. No game physics solver was changed to accommodate that fixture.
 
-NOT RUN yet: standalone Windows/native UI, full W6 regression, complete six-stage campaign with the whole new W6 loadout set. These execute at wave closure, not after every small edit. Known W5 UIA shutdown limitation remains separate; passing test processes here exited0.
+Historical package-checkpoint gates (now superseded by the wave report): standalone Windows/native UI, full W6 regression, complete six-stage campaign with the whole new W6 loadout set. These execute at wave closure, not after every small edit. Known W5 UIA shutdown limitation remains separate; passing test processes here exited0.
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.

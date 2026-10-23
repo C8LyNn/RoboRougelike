@@ -10,8 +10,11 @@ Expected RED:2 missing-catalog failures. Initial source compile failed because D
 
 Final Edit39/39 (37 original plus2 integration) and original Play17/17 PASS, native0. Shared W6 regression12/12 PASS. Actual mounted rocket consumes10 to9 once, rejects cooldown retry, applies at most60 damage once to a two-collider P12 part and less to a nearby exposed part, excludes owner, and stops new fire immediately on gun death. Transition cleanup removes live initialized rockets. Destroyed recovered launcher keeps stable ID and empty ammo through paid repair and DeepCopy. These API-driven physics cases are separate from native-input play. Native Windows/full-wave W6 gates remain pending.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
+**Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-004_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
 
 Draft PR #25: https://github.com/C8LyNn/RoboRougelike/pull/25; runtime SHA e71f561e09527ae491c05272a317b152e7d8162e.
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.

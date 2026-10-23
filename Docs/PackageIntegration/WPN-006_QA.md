@@ -25,7 +25,7 @@ Temporary operation is explicitly separate from physical survival. R3MountedPart
 
 Earlier shared RRLW6 runs27/27 and Emp50/50 are API-driven only. Complete fresh W6 regression/build/native evidence will be appended at wave closure; until then all eight mechanics remain BLOCKED from the release candidate readiness claim. Known W5 UIA-client shutdown crash is unchanged and is not called fixed.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W6 Windows/native and full wave regression.** API-driven physics is recorded separately from native player-input gameplay.
+**Current decision: READY in the W6 RC2 aggregate, with the documented Unity/UIA shutdown limitation.** API-driven physics is recorded separately from native player-input gameplay.
 
 [Machine-readable test evidence](WPN-006_test_summary.json). Raw XML and logs: ignored Artifacts/Local paths listed there.
 
@@ -35,4 +35,7 @@ Release source checkpoint: `e9ba555e6fab1798c679fe90fa4a8d0e2ad5c8de`. The first
 
 The affected campaign/garage/W6 suite then passed **55/55**, native0, including six actual physical-projectile fights with active AI and ordinary virtual aim/fire input (227.382 seconds for that case). This is automated Editor input/physics evidence, not manual Windows gameplay. A separate finite-resource expiry regression reproduced spent shotgun ammunition11 becoming the initialization sentinel−1. Enemy equipment now retains references to the same canonical R3 data independently of disposable Unity views. Expired shotgun, shield and point-defense loot retains identity,0HP, ammo11/charge40/ammo7 through claiming, paid repair and DeepCopy. Final expiry/range targets **3/3 PASS**, native0. No second HP or resource store was introduced.
 
-The optional practice enemy is now on the left in front of the starting position, within EMP range, still default fireOFF. Full regression and both Windows builds are running against the closure checkpoint; native gates remain pending. [Wave evidence/status](W6_WAVE_QA.md).
+The optional practice enemy is now on the left in front of the starting position, within EMP range, still default fireOFF. The full757/333 run, both Windows builds,47 native API checks and six-stage native input campaign subsequently passed; see current wave evidence. [Wave evidence/status](W6_WAVE_QA.md).
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.

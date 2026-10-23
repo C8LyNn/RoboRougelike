@@ -21,6 +21,9 @@ The source `Samples~/ShieldManualDemo.cs` is preserved unchanged as `ReferenceSo
 - Actual enemy core defeat produces selectable shield salvage with HP.75,charge35,age1.2,rotationY2 and stable ID through inventory/DeepCopy.
 - Machine-readable case names/results: [test summaries](DEF-001_test_summary.json). Raw XML/logs remain in ignored Artifacts/Local directories listed there.
 
-Standalone Windows/native, complete W6 campaign and full regression are pending wave closure. These API-driven physics tests are not reported as human-input play. Known W5 UIA shutdown limitation is unchanged; all listed Unity test processes exited0.
+At the package checkpoint Windows/native and full regression were pending; the wave report now supplies those results. These API-driven physics tests are not reported as human-input play. Known W5 UIA shutdown limitation is unchanged; all listed Unity test processes exited0.
 
 Integration [Draft PR #22](https://github.com/C8LyNn/RoboRougelike/pull/22), runtime SHA 52abbbb80b212b1bff296568cb00a01a74577924.
+
+
+Current aggregate source `8cf4ff8c80178f04f8d60dc6f57d03a2e7f7f32f`: all W6 gates and known limits are recorded in [W6 wave QA](W6_WAVE_QA.md). Native per-device checks use APIs/real physics; UI-driven garage/campaign flow and virtual-input combat are identified separately. Earlier frozen feature SHAs do not include all shared closure fixes.
