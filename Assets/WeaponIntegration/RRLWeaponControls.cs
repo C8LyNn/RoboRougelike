@@ -10,7 +10,8 @@ namespace RoboRougelike.WeaponIntegration
     {
         RRLShotgunBinding[] shotguns;
         RRLRailgunBinding[] rails;
-        void Start(){shotguns=GetComponentsInChildren<RRLShotgunBinding>();rails=GetComponentsInChildren<RRLRailgunBinding>();}
+        RRLRocketBinding[] rockets;
+        void Start(){shotguns=GetComponentsInChildren<RRLShotgunBinding>();rails=GetComponentsInChildren<RRLRailgunBinding>();rockets=GetComponentsInChildren<RRLRocketBinding>();}
         void Update()
         {
             var run=R1RunController.Instance;
@@ -21,6 +22,7 @@ namespace RoboRougelike.WeaponIntegration
             {
                 foreach(var gun in shotguns)if(gun!=null)gun.BeginReload();
                 foreach(var gun in rails)if(gun!=null)gun.BeginReload();
+                foreach(var gun in rockets)if(gun!=null)gun.BeginReload();
             }
 #endif
         }

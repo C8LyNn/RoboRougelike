@@ -1,0 +1,423 @@
+[
+  {
+    "directory": "WPN004-edit-target-db72478b39644bada425b6e4cf6b474c",
+    "summary": {
+      "id": "2",
+      "testcasecount": "39",
+      "result": "Passed",
+      "total": "39",
+      "passed": "39",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:11:43Z",
+      "end-time": "2026-10-23 12:11:43Z",
+      "duration": "0,4343893"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6RocketPhysicalTests.MountedRocketDamagesRealHpOncePerPartAndConsumesOneRound",
+        "result": "Passed",
+        "duration": "3.685024"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.TransitionCleansLiveRocketAndRecoveredLauncherKeepsEmptyAmmo",
+        "result": "Passed",
+        "duration": "3.069823"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.AmmoMagazineRejectsOverdraft",
+        "result": "Passed",
+        "duration": "0.001987"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.AmmoMagazineSpendAndRefund",
+        "result": "Passed",
+        "duration": "0.000332"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.BlastNegativeDamageNoDamage",
+        "result": "Passed",
+        "duration": "0.000424"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.BlastZeroRadiusNoDamage",
+        "result": "Passed",
+        "duration": "0.000070"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.EnergyStoreRejectsInsufficientCharge",
+        "result": "Passed",
+        "duration": "0.000311"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.EnergyStoreRejectsNaNAndNegativeCharge",
+        "result": "Passed",
+        "duration": "0.000218"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.EnergyStoreSpendAndRefund",
+        "result": "Passed",
+        "duration": "0.000233"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.FireGateBlocksUntilCooldownExpires",
+        "result": "Passed",
+        "duration": "0.000093"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.FireGateIgnoresNegativeCooldown",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.FireGateResetRestoresReadiness",
+        "result": "Passed",
+        "duration": "0.000067"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.FireGateStartsReady",
+        "result": "Passed",
+        "duration": "0.000048"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.NonNegativeRejectsInvalid(-1.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000602"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.NonNegativeRejectsInvalid(0.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000036"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.NonNegativeRejectsInvalid(2.0f,2.0f)",
+        "result": "Passed",
+        "duration": "0.000025"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.NonNegativeRejectsInvalid(float.NaN,0.0f)",
+        "result": "Passed",
+        "duration": "0.000022"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.NonNegativeRejectsInvalid(float.PositiveInfinity,0.0f)",
+        "result": "Passed",
+        "duration": "0.000022"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.PositiveRejectsInvalid(12.0f,1.0f,12.0f)",
+        "result": "Passed",
+        "duration": "0.000165"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.PositiveRejectsInvalid(0.0f,2.0f,2.0f)",
+        "result": "Passed",
+        "duration": "0.000029"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.PositiveRejectsInvalid(-5.0f,7.0f,7.0f)",
+        "result": "Passed",
+        "duration": "0.000023"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.PositiveRejectsInvalid(float.NaN,8.0f,8.0f)",
+        "result": "Passed",
+        "duration": "0.000022"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.PositiveRejectsInvalid(float.PositiveInfinity,4.0f,4.0f)",
+        "result": "Passed",
+        "duration": "0.000021"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SnapshotDefaultsProduceValidParameters",
+        "result": "Passed",
+        "duration": "0.002210"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SnapshotIsImmutableWhenConfigChanges",
+        "result": "Passed",
+        "duration": "0.000099"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SnapshotPreservesGuidanceAndMasks",
+        "result": "Passed",
+        "duration": "0.000105"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SnapshotSanitizesDangerousParameters",
+        "result": "Passed",
+        "duration": "0.000140"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SpeedIsClamped(10.0f,20.0f,40.0f,0.5f,20.0f)",
+        "result": "Passed",
+        "duration": "0.000207"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SpeedIsClamped(30.0f,20.0f,40.0f,1.0f,40.0f)",
+        "result": "Passed",
+        "duration": "0.000031"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SpeedIsClamped(10.0f,-5.0f,40.0f,1.0f,10.0f)",
+        "result": "Passed",
+        "duration": "0.000040"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SpeedIsClamped(10.0f,15.0f,40.0f,-1.0f,10.0f)",
+        "result": "Passed",
+        "duration": "0.000031"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SplashLinearFalloff(0.0f,3.0f,100.0f)",
+        "result": "Passed",
+        "duration": "0.000085"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SplashLinearFalloff(1.5f,3.0f,60.0f)",
+        "result": "Passed",
+        "duration": "0.000026"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SplashLinearFalloff(3.0f,3.0f,20.0f)",
+        "result": "Passed",
+        "duration": "0.000021"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SplashLinearFalloff(3.1f,3.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000024"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SplashLinearFalloff(-1.0f,3.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000023"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SteerLimitedTurnAngle",
+        "result": "Passed",
+        "duration": "0.000494"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SteerZeroTargetKeepsForward",
+        "result": "Passed",
+        "duration": "0.001252"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.EditMode.RocketCoreTests.SteerZeroTurnRateDoesNotChangeForward",
+        "result": "Passed",
+        "duration": "0.000453"
+      }
+    ],
+    "exit": {
+      "filter": "Rocket",
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-23T12:11:44.6875212Z",
+      "exitCode": 0
+    }
+  },
+  {
+    "directory": "WPN004-play-target-3fdd0b918ded42b19bb042f1e163904e",
+    "summary": {
+      "id": "2",
+      "testcasecount": "17",
+      "result": "Passed",
+      "total": "17",
+      "passed": "17",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:11:56Z",
+      "end-time": "2026-10-23 12:11:56Z",
+      "duration": "0,5642528"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.BlastCanDamageOwnVehicleWhenEnabled",
+        "result": "Passed",
+        "duration": "0.017980"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.BlastDamagesOneReceiverOnceForMultipleColliders",
+        "result": "Passed",
+        "duration": "0.003557"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.BlastDoesNotDamageOwnVehicleByDefault",
+        "result": "Passed",
+        "duration": "0.000661"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.BlastFailsClosedOnOverlapOverflow",
+        "result": "Passed",
+        "duration": "0.000657"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.BlastHasNoDamageBeyondRadius",
+        "result": "Passed",
+        "duration": "0.000384"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.LauncherRefundsAmmoAfterEnergyFailure",
+        "result": "Passed",
+        "duration": "0.001767"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.LauncherRejectsDetachedModule",
+        "result": "Passed",
+        "duration": "0.000283"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.LauncherRejectsDisabledModule",
+        "result": "Passed",
+        "duration": "0.000226"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.LauncherRejectsMissingMuzzle",
+        "result": "Passed",
+        "duration": "0.000212"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.LauncherRejectsMissingPrefab",
+        "result": "Passed",
+        "duration": "0.000211"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.LauncherRejectsOutOfAmmoWithoutFiring",
+        "result": "Passed",
+        "duration": "0.000271"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.MissileExpiresWithoutHittingAnything",
+        "result": "Passed",
+        "duration": "0.077891"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.RocketCanBeInterceptedInFlight",
+        "result": "Passed",
+        "duration": "0.002309"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.RocketHitsReceiverAndDamagesIt",
+        "result": "Passed",
+        "duration": "0.118448"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.RocketHitsSolidWallWithoutHittingBlockedTarget",
+        "result": "Passed",
+        "duration": "0.278870"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.RocketMovesForwardInPhysicsTime",
+        "result": "Passed",
+        "duration": "0.039761"
+      },
+      {
+        "fullname": "RoboRougelike.WPN004.Tests.PlayMode.RocketIntegrationTests.RocketSpawnsWithConfiguredLifetime",
+        "result": "Passed",
+        "duration": "0.000465"
+      }
+    ],
+    "exit": {
+      "filter": "Rocket",
+      "mode": "PlayMode",
+      "finishedUtc": "2026-10-23T12:11:57.9154756Z",
+      "exitCode": 0
+    }
+  },
+  {
+    "directory": "WPN004-shared-final-f59e147e8b944aa784065460f873516f",
+    "summary": {
+      "id": "2",
+      "testcasecount": "12",
+      "result": "Passed",
+      "total": "12",
+      "passed": "12",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 12:14:05Z",
+      "end-time": "2026-10-23 12:14:06Z",
+      "duration": "0,7619199"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW6BeamPhysicalTests.FourEnemyEncounterActuallyEquipsBeamAndSalvagesItsThermalState",
+        "result": "Passed",
+        "duration": "3.435914"
+      },
+      {
+        "fullname": "RRLW6BeamPhysicalTests.MountedBeamUsesRealRayHeatAndPreservesThermalStateAcrossRebuild",
+        "result": "Passed",
+        "duration": "3.450164"
+      },
+      {
+        "fullname": "RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair",
+        "result": "Passed",
+        "duration": "0.005063"
+      },
+      {
+        "fullname": "RRLW6RailgunPhysicalTests.MountedRailgunPenetratesDistinctHpPartsOnceWithOneAmmoDebit",
+        "result": "Passed",
+        "duration": "3.566470"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.MountedRocketDamagesRealHpOncePerPartAndConsumesOneRound",
+        "result": "Passed",
+        "duration": "3.687863"
+      },
+      {
+        "fullname": "RRLW6RocketPhysicalTests.TransitionCleansLiveRocketAndRecoveredLauncherKeepsEmptyAmmo",
+        "result": "Passed",
+        "duration": "3.107584"
+      },
+      {
+        "fullname": "RRLW6ShieldModelTests.ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses",
+        "result": "Passed",
+        "duration": "0.001576"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation",
+        "result": "Passed",
+        "duration": "3.139620"
+      },
+      {
+        "fullname": "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss",
+        "result": "Passed",
+        "duration": "3.348639"
+      },
+      {
+        "fullname": "RRLW6ShotgunPhysicalTests.MountedShotgunFiresEightPhysicalPelletsAgainstExistingHp",
+        "result": "Passed",
+        "duration": "3.808152"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy",
+        "result": "Passed",
+        "duration": "0.008928"
+      },
+      {
+        "fullname": "RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals",
+        "result": "Passed",
+        "duration": "0.002406"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW6",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-23T12:14:07.8227624Z",
+      "mode": "EditMode"
+    }
+  }
+]

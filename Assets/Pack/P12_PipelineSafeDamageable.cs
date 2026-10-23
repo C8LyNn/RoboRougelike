@@ -63,6 +63,8 @@ namespace RogueMachine.P12PipelineSafe
         private void Awake()
         {
             baseMaxHp = Mathf.Max(1f, maxHp);
+            if(GetComponent<RoboRougelike.WeaponIntegration.RRLRocketDamageReceiver>()==null)
+                gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketDamageReceiver>();
             cachedRenderer = GetComponent<Renderer>();
             propertyBlock = new MaterialPropertyBlock();
 

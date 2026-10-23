@@ -35,7 +35,9 @@ namespace RoboRougelike.R1
                 enemy.ConfigureMovement(definition.MoveSpeed, definition.PreferredDistance, definition.StrafeStrength);
                 // One real shotgun escort on larger encounters; its actual equipment enters salvage.
                 if(count>=3&&i==count-1&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
-                    enemy.EquipShotgun();
+                {
+                    if(definition.HealthMultiplier>=1.2f)enemy.EquipRocket();else enemy.EquipShotgun();
+                }
                 if(count>=3&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipDirectionalShield();
                 if(count>=4&&i==count-2&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
@@ -63,6 +65,8 @@ namespace RoboRougelike.R1
         {
             foreach (var shell in Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))
             { shell.gameObject.SetActive(false); Object.Destroy(shell.gameObject); }
+            foreach(var rocket in Object.FindObjectsByType<RoboRougelike.Mechanics.Rockets.RocketProjectile>(FindObjectsSortMode.None))
+                if(rocket.IsInitialized){rocket.gameObject.SetActive(false);Object.Destroy(rocket.gameObject);}
             var debris = new HashSet<GameObject>();
             foreach (var part in Object.FindObjectsByType<P12PipelineSafeDamageable>(FindObjectsSortMode.None))
             {

@@ -1,0 +1,7 @@
+{
+  "name": "RoboRougelike.WPN004.Demo",
+  "references": ["RoboRougelike.WPN004.Rockets"],
+  "includePlatforms": [],
+  "defineConstraints": ["UNITY_EDITOR"],
+  "autoReferenced": true
+}
