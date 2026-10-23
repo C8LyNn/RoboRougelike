@@ -22,30 +22,17 @@ namespace RoboRougelike.WeaponIntegration
         Material projectileMaterial;
         P12PipelineSafeTankController tank;
         P12PipelineSafeEnemyTurret enemy;
-        R1VehicleState vehicle;
         bool debitPending;
         float damageScale=1,intervalScale=1;
-        public bool Available
-        {
-            get
-            {
-                if(State==null||Owner==null||body==null||hp==null||hp.IsDead||!isActiveAndEnabled||
-                    !Owner.gameObject.activeInHierarchy||!transform.IsChildOf(Owner))return false;
-                var mounted=GetComponent<R3MountedPart>();
-                if(mounted!=null&&!mounted.Operational)return false;
-                if(enemy!=null&&(!enemy.isActiveAndEnabled||enemy.IsDefeated||!enemy.CombatActive))return false;
-                var run=R1RunController.Instance;
-                if(run?.Player?.transform==Owner&&(run.Paused||run.Transitioning||
-                    (run.Progress.State!=R1RunState.Combat&&run.Progress.State!=R1RunState.TestDrive)))return false;
-                return vehicle==null||(vehicle.Structure!=null&&vehicle.Structure.CoreAlive);
-            }
-        }
+        RRLDeviceBinding device;
+        public bool Available => device!=null&&device.Available;
         public void Bind(R3PartState state,Transform owner,Transform barrel,float damageMultiplier=1,float intervalMultiplier=1)
         {
             State=state;Owner=owner;muzzle=barrel;body=owner.GetComponent<Rigidbody>();
             hp=GetComponent<P12PipelineSafeDamageable>();
             tank=owner.GetComponent<P12PipelineSafeTankController>();enemy=owner.GetComponent<P12PipelineSafeEnemyTurret>();
-            vehicle=owner.GetComponent<R1VehicleState>();
+            device=GetComponent<RRLDeviceBinding>();if(device==null)device=gameObject.AddComponent<RRLDeviceBinding>();
+            device.Bind(state,owner);
             damageScale=Mathf.Max(0,damageMultiplier);intervalScale=Mathf.Max(.01f,intervalMultiplier);
             if(State.Ammo<0)State.Ammo=MagazineSalvos;
             Module=GetComponent<ShotgunModule>();if(Module==null)Module=gameObject.AddComponent<ShotgunModule>();
@@ -83,7 +70,7 @@ namespace RoboRougelike.WeaponIntegration
         void Update()
         {
             RefreshResources();if(Module!=null)Module.SetOperational(Available&&State.ReloadReadyAt<=Time.time);
-            if(Owner!=null&&Owner.GetComponent<P12PipelineSafeEnemyTurret>()!=null&&Available&&State.Ammo==0)BeginReload();
+            if(enemy!=null&&Available&&State.Ammo==0)BeginReload();
         }
         public bool TryConsumeShot()
         {

@@ -50,6 +50,21 @@ namespace RogueMachine.P12PipelineSafe
         public R4WeaponKind WeaponKind { get; private set; }
         public bool CombatActive => combatActive;
         private RoboRougelike.WeaponIntegration.RRLShotgunBinding packageShotgun;
+        private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
+        public bool EquipDirectionalShield()
+        {
+            if(packageShield!=null||IsDefeated)return false;
+            var state=new R3PartState(new Vector3Int(-1,3,3),R3PartKind.DirectionalShield)
+                {Id=salvageId+"/shield",Source=name+" / generator",RotationQuarterTurns=new Vector3Int(0,2,0)};
+            var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name="DEF001 mounted shield";
+            item.transform.SetParent(transform,false);item.transform.localPosition=(Vector3)state.Cell*.55f;
+            item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
+            item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
+            R3BonusModuleGeometry.ConfigureCube(item,true);
+            var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
+            packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);
+            GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();return true;
+        }
         public bool EquipShotgun()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
@@ -245,6 +260,13 @@ namespace RogueMachine.P12PipelineSafe
                 Mathf.Min(Condition(weaponBlock),Condition(turretSupport)),packageShotgun!=null?packageShotgun.State.Ammo:-1));
             for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(salvageId+"/wheel/"+i,
                 name+" / koło "+(i+1),R3PartKind.Wheel,R4WeaponKind.Basic,Condition(driveWheels[i])));
+            if(packageShield!=null)
+            {
+                packageShield.CaptureState();var state=packageShield.Device.State;
+                items.Add(new R4SalvageItem(state.Id,state.Source,state.Kind,state.Weapon,
+                    packageShield.transform.IsChildOf(transform)?Condition(packageShield.Device.Damageable):0,
+                    -1,state.DefenseCharge,state.DefenseRechargeAge,state.RotationQuarterTurns,state.ContactMask));
+            }
             salvage.Record(salvageId,items);
         }
 

@@ -42,6 +42,8 @@ namespace RoboRougelike.R6
         }
         public static float PartMass(P12PipelineSafeDamageable part)
         {
+            var device=part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
+            if(device?.State!=null)return R4WeaponDefinition.PartMass(device.State);
             var mounted=part.GetComponent<R3MountedPart>();
             if(mounted!=null)return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon);
             var module=part.GetComponent<P12PipelineSafeFunctionalModule>();

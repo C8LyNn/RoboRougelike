@@ -163,7 +163,7 @@ namespace RoboRougelike.R1
             foreach(var item in items.Skip(inventoryPage*4).Take(4).ToArray())
             {
                 GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(0.3f,0.9f,0.9f):Color.white;
-                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • {(item.Kind==R3PartKind.BonusModule?"1×2×2 • ":"")}HP {item.Health*100:0}%",compactButton))
+                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • {(R3VehicleModel.UsesWideFootprint(item.Kind)?"1×2×2 • ":"")}HP {item.Health*100:0}%",compactButton))
                 {garage.ChooseInventory(item.Id);dismantleConfirmation=null;}row++;
             }
             GUI.backgroundColor=Color.white;
@@ -176,6 +176,8 @@ namespace RoboRougelike.R1
             var profile=R4WeaponDefinition.Get(selected.Weapon);
             GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.BonusModule?
                 $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
+                selected.Kind==R3PartKind.DirectionalShield?
+                $"Tarcza 1×2×2 • {(selected.DefenseCharge<0?100:selected.DefenseCharge):0}/100 osłony\n120° • 9 m • masa 32 kg • HP {selected.Health*100:0}%":
                 selected.Kind==R3PartKind.Gun?
                 $"{profile.Damage*(run.ActiveStats?.Damage??1f):0} obrażeń • co {profile.Interval*(run.ActiveStats?.FireInterval??1f):0.00} s\n{profile.Speed:0} m/s • masa {profile.Mass:0} • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
             string error=garage.PlacementIssue;

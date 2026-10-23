@@ -86,6 +86,14 @@ namespace RogueMachine.P12PipelineSafe
             if (dead || amount<=0 || float.IsNaN(amount) || float.IsInfinity(amount))
                 return;
 
+            var filter=GetComponentInParent<RoboRougelike.WeaponIntegration.IRRLPreHpFilter>();
+            if(filter!=null)
+            {
+                float filtered=filter.FilterDamage(this,amount,hitPoint,hitDirection);
+                if(filtered<=0||float.IsNaN(filtered)||float.IsInfinity(filtered))return;
+                amount=Mathf.Min(amount,filtered);
+            }
+
             currentHp -= Mathf.Max(0f, amount);
             RoboRougelike.R6.R6CombatFeedback.Hit(this,hitPoint,currentHp<=0);
 

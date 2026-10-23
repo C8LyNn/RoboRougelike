@@ -1,0 +1,10 @@
+{
+  "name": "RoboRougelike.DEF001.DirectionalShield.EditModeTests",
+  "rootNamespace": "RoboRougelike.Defenses.DirectionalShield.Tests.EditMode",
+  "references": ["RoboRougelike.DEF001.DirectionalShield"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}

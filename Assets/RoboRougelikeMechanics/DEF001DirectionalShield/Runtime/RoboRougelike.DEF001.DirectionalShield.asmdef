@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.DEF001.DirectionalShield",
+  "rootNamespace": "RoboRougelike.Defenses.DirectionalShield",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
