@@ -2,7 +2,7 @@ name: M02-011 Double Wishbone Blender QA
 on:
   push:
     branches:
-      - feature/rrl-model-m02-011-independent-control-arm
+      - feature/rrl-model-m02-011-double-wishbone-suspension
     paths:
       - "Tools/ModelFactory/M02/M02-011/**"
       - ".github/workflows/ci-m02-011.yml"
