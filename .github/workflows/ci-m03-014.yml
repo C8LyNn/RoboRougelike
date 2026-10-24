@@ -84,6 +84,10 @@ jobs:
           assert report['unity_import']=='NOT RUN'
           print('PASS actual GLB: 18 meshes, 5 materials, root and 4 SNAP nodes')
           PY
+      - name: Verify bpy repeatability in one session
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \\
+            --python Tools/ModelFactory/M03/M03-014/qa_blender_m03_014.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: M03-014-Blender-GLB-FBX-BLEND
