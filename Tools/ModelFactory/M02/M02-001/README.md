@@ -10,6 +10,16 @@
 - `MOUNT_AXLE` → `WHEEL_ROTATOR` → części; animacja referencyjna: pełny obrót, 60 klatek / 60 FPS.
 - Klocki mają przerwy kątowe i między pasami; połączenia szprych z piastą/obręczą oraz klocków z gumą są celowo zakładkowe, jak w fizycznej konstrukcji.
 
+## Gotowe artefakty w repozytorium
+
+W katalogu `generated/` zapisano **rzeczywisty model**:
+
+- `M02-001_segmented_offroad_wheel.obj` + `.mtl` — statyczna siatka do importu w Unity bez dodatkowego importera; Y-up, obrót wokół +X.
+- `M02-001_segmented_offroad_wheel.glb` — gotowy glTF 2.0 GLB z 7 materiałami PBR i **animacją referencyjną** `Wheel_Spin_60RPM` (1 sekunda, 5 klatek kluczowych, pełny obrót). Ten plik powstał przez bezpośrednie pakowanie geometrii OBJ do glTF, **nie przez uruchomienie Blendera**. Do importu GLB w Unity potrzebny jest kompatybilny importer glTF; bez niego użyj OBJ lub wyeksportuj FBX z Blendera.
+- `M02-001_static_qa.json` — raport statycznego sprawdzenia OBJ.
+
+Zapisano 100 części, 3360 wierzchołków, 6336 trójkątów i 60 klocków bieżnika. Obecność modelu GLB w repozytorium nie oznacza, że wykonano Blender/Unity Play Mode.
+
 ## Generowanie
 
 **Blender 4.2+ (zalecane):**
