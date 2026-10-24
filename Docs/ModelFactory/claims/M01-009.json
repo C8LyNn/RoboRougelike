@@ -1,8 +1,18 @@
 {
   "id": "M01-009",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "IN_PROGRESS",
   "claimed_at_utc": "2026-10-24T18:49:33.950Z",
   "model": "Trójsegmentowa wyrzutnia rakiet",
-  "run": "2026-10-24T18:00Z"
+  "run": "2026-10-24T18:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/105",
+  "branch": "feature/rrl-model-m01-009-trisegment-rocket-launcher",
+  "source_commit": "f2cf3da0cb938d61592f60f8f2f25956f5d41e28",
+  "qa": {
+    "source_geometry": "PASS",
+    "static_obj": "PASS",
+    "blender": "RUNNING",
+    "unity": "NOT RUN",
+    "run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122809440"
+  }
 }
