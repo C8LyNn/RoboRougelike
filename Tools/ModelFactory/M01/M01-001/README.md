@@ -44,3 +44,11 @@ Zaimportuj **FBX** do `Assets/` w Unity 6, sprawdź importowane materiały i kli
 ## Reguły repo
 
 Wszystkie zmiany ograniczają się do `Tools/ModelFactory/M01/M01-001/`. Brak modyfikacji `Assets/`, `ProjectSettings/`, istniejących WPN, scen, `main` i `develop`. Wydanie wyłącznie przez osobny DRAFT PR.
+
+## Poprawka hierarchii i animacji — 2026-10-24
+
+W pierwszej wersji źródłowej znacznik `MOUNT_TOP_SOCKET` nie był rodzicem statycznych siatek ani osi obrotu bębna. W eksporcie glTF/FBX groziło to utworzeniem wielu obiektów na głównym poziomie zamiast pojedynczego montowalnego prefabrykatu. Poprawiony generator podpina wszystkie stałe siatki i `ROTOR_Y_AXIS` do `MOUNT_TOP_SOCKET` z zachowaniem globalnych transformacji. Dodatkowa asercja sprawdza brak osieroconych części.
+
+Zastąpiono dwie klatki animacji (0°→360°) regularnymi klatkami co 3 ramki (22,5°). Daje to poprawną interpolację po konwersji do kwaternionów w formatach glTF/Unity, bez zredukowania obrotu do pozornej bezczynności. Zakres nadal obejmuje 48 ramek przy 24 FPS.
+
+**Ograniczenie QA:** statyczny przegląd kodu wykonany, natomiast Blender/Unity i właściwy FBX/GLB runtime pozostają NOT RUN. Zmiany są przeznaczone do macierzystego Draft PR #36 po weryfikacji, nie należy scalać ich bezpośrednio do develop/main.
