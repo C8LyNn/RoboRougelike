@@ -163,10 +163,37 @@ def validate(parts):
     assert bounds["Vertical_Web"][2][1]>=.605
     assert bounds["Upper_T_Crossbar"][2][0]<=.60
     assert max(abs(v[0]) for p in parts for v in p["vertices"])<=.43
+    # Contact checks for rigid decorative and structural components.
+    # AABB contact is sufficient for these convex overlapping seat surfaces;
+    # this does NOT replace a full rendered intersection inspection.
+    contact_pairs=[
+        ("Ceramic_Stem_Cheek","Vertical_Web",.003),
+        ("Amber_Stem_Indicator","Ceramic_Stem_Cheek",.003),
+        ("Gusset_Left","Vertical_Web",.005),
+        ("Gusset_Right","Vertical_Web",.005),
+        ("Gusset_Left","Upper_T_Crossbar",.005),
+        ("Gusset_Right","Upper_T_Crossbar",.005),
+    ]
+    for i in range(2):
+        contact_pairs.extend([
+            (f"Top_Ceramic_Panel_{i}","Upper_T_Crossbar",.003),
+            (f"Amber_Tip_Marker_{i}",f"Top_Ceramic_Panel_{i}",.002),
+            (f"Foot_Wear_Pad_{i}","Foot_Crossbar",.003),
+            (f"Rear_Web_Rib_{i}","Vertical_Web",.002),
+            (f"Foot_Boss_Bored_{i}","Foot_Crossbar",.005),
+            (f"Top_Boss_Bored_{i}","Upper_T_Crossbar",.005),
+            (f"Foot_Bolt_Head_{i}",f"Foot_Boss_Bored_{i}",.002),
+            (f"Top_Bolt_Head_{i}",f"Top_Boss_Bored_{i}",.002),
+        ])
+    for a,b,min_overlap in contact_pairs:
+        overlap=[min(bounds[a][k][1],bounds[b][k][1])-
+                 max(bounds[a][k][0],bounds[b][k][0]) for k in range(3)]
+        assert min(overlap)>=min_overlap-1e-8,(a,b,overlap)
     return dict(id="M03-007",model="Uchwyt pionowy T",units="metres",
                 parts=len(parts),vertices=total_v,triangles=total_f,
                 materials=len(MATERIALS),foot_bores=2,top_bores=2,
                 bolt_shafts=4,visible_bolt_heads=4,
+                verified_rigid_contact_pairs=len(contact_pairs),
                 shaft_radial_clearance_m=.009,
                 pivot=[0,0,0],mount_normal=[0,0,1],
                 foot_bolt_centers=[[x,0,0] for x in BOLT_X],
