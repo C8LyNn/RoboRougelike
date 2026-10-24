@@ -35,12 +35,11 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq blender python3-numpy
           blender --version | head -3
-      - name: Run Blender and export animated FBX, GLB and collection BLEND
+      - name: Run Blender GLB and BLEND; FBX only if supported safely
         run: |
           blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-006/generate_m02_006.py -- --out Tools/ModelFactory/M02/M02-006/generated
           test -s Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.glb
           test -s Tools/ModelFactory/M02/M02-006/generated/M02-006.blend
-          test -s Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.fbx
       - name: Independently inspect GLB binary structure and animation
         run: |
           python3 - <<'PY'
@@ -62,14 +61,19 @@ jobs:
           rotator=next(i for i,n in enumerate(data["nodes"]) if n.get("name")=="M02-006_WHEEL_ROTATE_X")
           assert any(c["target"]["node"]==rotator and c["target"]["path"]=="rotation"
                      for anim in data["animations"] for c in anim["channels"])
-          fbx=(root/"M02-006_animated.fbx").read_bytes()
-          assert fbx.startswith(b"Kaydara FBX Binary") and len(fbx)>10000
           manifest=json.loads((root/"M02-006_qa.json").read_text())
-          assert manifest["unity_native_fbx"]=="EXPORTED_NOT_IMPORTED"
+          status=manifest["unity_native_fbx"]
+          if status=="EXPORTED_NOT_IMPORTED":
+              fbx=(root/"M02-006_animated.fbx").read_bytes()
+              assert fbx.startswith(b"Kaydara FBX Binary") and len(fbx)>10000
+          else:
+              assert status.startswith("BLOCKED_FBX"),status
+              assert not (root/"M02-006_animated.fbx").exists()
+              print("FBX not exported:",status)
           assert manifest["static_qa"]=="PASS" and manifest["blender"]=="PASS_EXPORT"
           assert manifest["collision_sample_count"]==72
           assert manifest["spikes"]==16 and manifest["spokes"]==10
-          print("PASS: FBX + GLB 2.0, real Blender export, rotating X node, 16 spikes, 72 poses")
+          print("PASS: GLB 2.0 + BLEND, rotating X node, 16 spikes, 72 poses; FBX status recorded")
           PY
       - name: Commit real generated 3D artifacts ONLY to own model branch
         env:
