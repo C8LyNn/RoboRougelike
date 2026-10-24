@@ -40,7 +40,8 @@ def bevel(o, width=0.025, segments=2):
     mod = o.modifiers.new("ControlledChamfer", "BEVEL")
     mod.width = width
     mod.segments = segments
-    mod.affect = 'EDGES' if hasattr(mod, "affect") else None
+    if hasattr(mod, "affect"):
+        mod.affect = "EDGES"
     normal = o.modifiers.new("WeightedNormals", "WEIGHTED_NORMAL")
     normal.keep_sharp = True
     return o
