@@ -1,0 +1,54 @@
+{
+  "model": "M05-009",
+  "status": "PASS",
+  "mount_origin_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "outward_axis": "+X",
+  "fan_pivot_m": [
+    0.45,
+    0.0,
+    0.025
+  ],
+  "fan_rotation_axis": "+X",
+  "fan_blades": 7,
+  "fan_full_rotation_deg": 360,
+  "fan_rotation_frames": [
+    1,
+    61
+  ],
+  "radial_clearance_m": 0.027,
+  "rear_axial_clearance_m": 0.095,
+  "front_axial_clearance_m": 0.06,
+  "meshes": 81,
+  "materials": 8,
+  "dimensions_xyz_m": [
+    0.5605,
+    0.906,
+    0.67
+  ],
+  "bounds_xyz_m": [
+    [
+      0.0,
+      0.5605
+    ],
+    [
+      -0.453,
+      0.453
+    ],
+    [
+      -0.335,
+      0.335
+    ]
+  ],
+  "front_guard_structural_posts": 4,
+  "vertices": 4808,
+  "triangles": 9304,
+  "manifold": "PASS",
+  "collisions": "PASS (analytic continuous fan envelope)",
+  "unity_import": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "repeatability": "PASS (two builds, foreign object preserved)"
+}
