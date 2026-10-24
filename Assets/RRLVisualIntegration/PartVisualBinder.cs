@@ -58,6 +58,10 @@ namespace RoboRougelike.VisualIntegration
                 spin.Configure(visual.transform, blockRoot.GetComponent<R3MountedPart>(), 0.39f);
             }
 
+            if (kind == R3PartKind.HoverEngine)
+                anchor.AddComponent<PartVisualHoverRotor>()
+                    .Configure(visual.transform, blockRoot.GetComponent<R3MountedPart>());
+
             // Preserve root block's visible renderer, HP, colliders, module bindings,
             // muzzle and detached-part behavior. Only hide the old child mesh objects.
             foreach (var renderer in blockRoot.GetComponentsInChildren<Renderer>(true))

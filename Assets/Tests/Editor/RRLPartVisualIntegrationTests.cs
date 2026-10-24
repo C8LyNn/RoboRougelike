@@ -113,6 +113,16 @@ public class RRLPartVisualIntegrationTests
     }
 
     [Test]
+    public void HoverLiftNormalizationNeverExceedsBounds()
+    {
+        Assert.AreEqual(0f, PartVisualHoverRotor.NormalizedLift(0f, 160f));
+        Assert.AreEqual(0f, PartVisualHoverRotor.NormalizedLift(100f, 0f));
+        Assert.AreEqual(1f, PartVisualHoverRotor.NormalizedLift(999999f, 160f));
+        Assert.That(PartVisualHoverRotor.NormalizedLift(160f * 9.81f / 2f, 160f),
+            Is.EqualTo(.5f).Within(.0001f));
+    }
+
+    [Test]
     public void RejectsPrefabWithRigidbodyWithoutDisablingFallback()
     {
         var block = GameObject.CreatePrimitive(PrimitiveType.Cube);

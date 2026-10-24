@@ -73,3 +73,11 @@ The installer only writes the three specific SHA-256-verified GLBs under
 Assets/RRLImportedModels. It refuses to overwrite different models and does not
 modify Unity .meta or package dependencies. glTFast editor import, generated
 meta files, Unity compilation and PlayMode remain REQUIRED and NOT RUN here.
+
+## H01 runtime visual animation
+Actual H01 V4 GLB contains `RotorAssembly` and eight `GuidePivot_XX`
+nodes. The GLB animations use local **Y** for rotor and **X** for guide vanes.
+`PartVisualHoverRotor` reads the existing MOV007 `HoverLiftPod` force
+diagnostics and operational state; it never adds lift force or energy logic.
+Imported demo Animator/Animation components are disabled on the visual instance.
+The resulting look still requires Unity PlayMode/visual QA.
