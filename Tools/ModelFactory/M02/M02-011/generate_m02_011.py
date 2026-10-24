@@ -189,15 +189,19 @@ def build():
             # Mount the fixed bearing coaxially with the matching moving
             # bushing; a diagonal gusset ties it to the main upright.
             px=x if level=="LOWER" else x*.165/.215
+            sign=-1 if x<0 else 1
+            support_x=px+sign*.056
             put(beam("ChassisHingePost_"+level+"_"+tag,
-                     (x,.055,pivot[2]),(px,.120,pivot[2]),
+                     (x,.055,pivot[2]),(support_x,.120,pivot[2]),
                      .028,"GraphiteArmor"))
-            put(cylinder("FixedPivotBearing_"+level+"_"+tag,
-                         (px,.120,pivot[2]),(1,0,0),.028,.048,
-                         "CopperHardware"))
+            # Fixed carrier is outside the moving bushing by 9mm in X.
+            # A 12mm pin passes both bores without radial intersection.
+            put(ring("FixedPivotBearing_"+level+"_"+tag,
+                     (support_x,.120,pivot[2]),(1,0,0),
+                     .014,.036,.030,"CopperHardware"))
             put(cylinder("HingePin_"+level+"_"+tag,
-                         (px,.120,pivot[2]),(1,0,0),.014,.088,
-                         "ChromedRod"))
+                         (px+sign*.015,.120,pivot[2]),(1,0,0),
+                         .012,.145,"ChromedRod"))
         for z in (-.210,.210):
             put(cylinder("MountBolt_%s_%s"%(tag,"T" if z>0 else "B"),
                          (x,.001,z),(0,1,0),.010,.014,
@@ -374,8 +378,8 @@ def sweep_qa():
                     min_coil_gap=min(min_coil_gap,gap)
                     assert gap>.001,(i,k,pivot,sign,gap)
                     sample_count+=1
-        # 14mm axle in 17mm rubber bearing: 3mm radial clearance.
-        assert .017-.014>=.003-1e-10
+        # 12mm axle in 17mm rubber bearing: 5mm radial clearance.
+        assert .017-.012>=.005-1e-10
     return dict(pose_samples=97,arm_swing_degrees=[-10,10],
                 hub_vertical_range_m=[round(min(hub_z),6),round(max(hub_z),6)],
                 knuckle_ball_spacing_m=.300,
@@ -383,7 +387,7 @@ def sweep_qa():
                 shock_length_range_m=[round(min(lengths),6),round(max(lengths),6)],
                 min_coil_to_arm_envelope_m=round(min_coil_gap,6),
                 coil_to_shock_radial_clearance_m=.018,
-                bearing_radial_clearance_m=.003,
+                bearing_radial_clearance_m=.005,
                 coil_arm_pair_checks=sample_count)
 
 def validate(parts):
