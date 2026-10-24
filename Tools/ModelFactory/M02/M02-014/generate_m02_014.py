@@ -186,7 +186,8 @@ def rebuild():
     annulus("ventilated_rotor_shroud",0.215,0.421,CY,CZ,0.099,0.115,blue,rotor)
     annulus("rotor_spider_rear",0.214,0.226,CY,CZ,0.025,0.115,titanium,rotor)
     annulus("rotor_spider_front",0.409,0.421,CY,CZ,0.025,0.115,titanium,rotor)
-    rod("input_shaft",0.140,0.645,CY,CZ,0.023,copper,rotor)\n    annulus("input_sun_keyed_coupler",0.598,0.642,CY,CZ,0.022,0.024,copper,rotor)
+    rod("input_shaft",0.140,0.645,CY,CZ,0.023,copper,rotor)
+    annulus("input_sun_keyed_coupler",0.598,0.642,CY,CZ,0.022,0.024,copper,rotor)
     for i in range(12):
         a=TAU*i/12
         yy=CY+0.118*math.cos(a)
@@ -201,7 +202,8 @@ def rebuild():
     gear("sun_gear_16T",0.600,0.646,CY,CZ,16,0.047,0.053,copper,rotor,bore=0.024)
     gear("planet_carrier_plate",0.685,0.704,CY,CZ,16,0.127,0.133,titanium,carrier,bore=0.025)
     annulus("carrier_hub",0.704,0.751,CY,CZ,0.025,0.040,copper,carrier)
-    rod("output_drive_shaft",0.715,0.937,CY,CZ,0.024,titanium,carrier)\n    annulus("output_carrier_keyed_coupler",0.715,0.749,CY,CZ,0.023,0.025,copper,carrier)
+    rod("output_drive_shaft",0.715,0.937,CY,CZ,0.024,titanium,carrier)
+    annulus("output_carrier_keyed_coupler",0.715,0.749,CY,CZ,0.023,0.025,copper,carrier)
     annulus("output_spline_flange",0.896,0.922,CY,CZ,0.024,0.060,copper,carrier)
     for k in range(3):
         a=TAU*k/3
@@ -263,7 +265,9 @@ def main():
     bpy.ops.wm.save_as_mainfile(filepath=str((out/"M02-014.blend").resolve()))
     bpy.ops.export_scene.gltf(filepath=str((out/"M02-014_animated.glb").resolve()),
         export_format="GLB",export_animations=True,export_apply=False)
-    if not (out/"M02-014_animated.glb").is_file():\n        raise RuntimeError("GLB export missing: do not report Blender PASS")\n    (out/"M02-014_qa.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
+    if not (out/"M02-014_animated.glb").is_file():
+        raise RuntimeError("GLB export missing: do not report Blender PASS")
+    (out/"M02-014_qa.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     print("M02-014 EXPORT PASS",json.dumps(report))
 
 if __name__=="__main__":
