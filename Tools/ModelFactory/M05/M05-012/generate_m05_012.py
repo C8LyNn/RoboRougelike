@@ -308,7 +308,7 @@ def validate():
     meshes=[o for o in COL.objects if o.type=="MESH"]
     assert len(MATS)==9
     assert len(MOUNTS)==5
-    assert len(MOVING)==37,(len(MOVING),"moving meshes")
+    assert len(MOVING)==22,(len(MOVING),"moving meshes")
     assert all(o.parent is ROTOR for o in MOVING)
     assert tuple(round(v,4) for v in ROTOR.location)==PIVOT
     manifold=0
