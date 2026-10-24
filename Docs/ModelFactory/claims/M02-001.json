@@ -1,8 +1,25 @@
 {
   "id": "M02-001",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT",
   "claimed_at_utc": "2026-10-24T10:45:21.997Z",
   "model": "Koło terenowe z segmentowym bieżnikiem",
-  "run": "2026-10-24T10:00Z"
+  "run": "2026-10-24T10:00Z",
+  "branch": "feature/rrl-model-m02-001-segmented-offroad-wheel",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/40",
+  "head_commit": "5063e64f45ae396d99bb233b3b1d4fea98e28ecf",
+  "assets": [
+    "Tools/ModelFactory/M02/M02-001/generated/M02-001_segmented_offroad_wheel.obj",
+    "Tools/ModelFactory/M02/M02-001/generated/M02-001_segmented_offroad_wheel.mtl",
+    "Tools/ModelFactory/M02/M02-001/generated/M02-001_segmented_offroad_wheel.glb",
+    "Tools/ModelFactory/M02/M02-001/generate_m02_001.py"
+  ],
+  "qa": {
+    "obj_static": "PASS",
+    "glb_structure": "PASS",
+    "python_ci": "PENDING",
+    "blender": "NOT RUN",
+    "unity": "NOT RUN"
+  },
+  "updated_at_utc": "2026-10-24T10:54:15.504Z"
 }
