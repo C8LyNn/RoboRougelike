@@ -1,0 +1,31 @@
+{
+  "id": "M04-007",
+  "status": "PASS_STATIC",
+  "units": "metres",
+  "mount": "underside_frame",
+  "mount_origin_m": [
+    0,
+    0,
+    0
+  ],
+  "emitter_count": 4,
+  "moving_pulse_roots": 4,
+  "animated_meshes": 12,
+  "parts": 84,
+  "vertices": 5736,
+  "triangles": 11216,
+  "materials": 7,
+  "closed_manifold_meshes": "PASS",
+  "positive_signed_volume": "PASS",
+  "pulse_sweep_frames": 81,
+  "kinematic_aabb_pairs_checked": 74358,
+  "annular_radial_separation_checks": 1915,
+  "min_verified_moving_radial_clearance_m": 0.01654,
+  "moving_collision_test": "PASS_CONSERVATIVE_AABB_PLUS_RING_RADIAL",
+  "blender": "NOT_RUN",
+  "glb": "NOT_RUN",
+  "unity_import": "NOT_RUN",
+  "unity_editmode": "NOT_RUN",
+  "unity_playmode": "NOT_RUN",
+  "visual_review": "NOT_RUN"
+}
