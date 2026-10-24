@@ -234,6 +234,14 @@ def make_blender(spec,output):
         for obj in tuple(old.objects):
             bpy.data.objects.remove(obj,do_unlink=True)
         bpy.data.collections.remove(old)
+    # Remove orphaned datablocks left by an earlier generation, but NEVER
+    # remove datablocks still referenced by the user's other objects.
+    for mesh in tuple(bpy.data.meshes):
+        if mesh.name.startswith("M05-006_") and mesh.users == 0:
+            bpy.data.meshes.remove(mesh)
+    for mat in tuple(bpy.data.materials):
+        if mat.name.startswith("M05-006_") and mat.users == 0:
+            bpy.data.materials.remove(mat)
     owned=bpy.data.collections.new(collection_name)
     bpy.context.scene.collection.children.link(owned)
     mats={}
