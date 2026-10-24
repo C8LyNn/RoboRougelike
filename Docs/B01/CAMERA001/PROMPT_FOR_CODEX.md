@@ -2,7 +2,7 @@
 
 You are CODEX, RoboRougelike's sole target-game integrator. Scope: one isolated B01 CAMERA001 visibility package. Do not implement alternative wheel physics, MAPGEN, RAC, weapons or economics.
 
-SOURCE: https://github.com/C8LyNn/RoboRougelike/pull/<CAMERA_DRAFT_PR>
+SOURCE: https://github.com/C8LyNn/RoboRougelike/pull/134
 SOURCE BRANCH: feature/b01-camera001-s02-r1-isolated
 IMMUTABLE SOURCE SHA: read the exact pin posted by B01-00 in Issue #66 / PR after source freeze; reject moving heads or mismatched content.
 SOURCE FILES: Assets/B01Packages/CAMERA001/** plus original parent .meta as needed.
