@@ -1,0 +1,18 @@
+{
+  "model_id": "M02-002",
+  "status": "STATIC_QA_PENDING_CI",
+  "part_count": 30,
+  "vertices": 6016,
+  "triangles": 11952,
+  "materials": 7,
+  "spokes": 10,
+  "rotating_parts": 27,
+  "stationary_parts": 3,
+  "outer_radius_m": 0.523,
+  "tire_width_m": 0.18,
+  "mount_plane_x_m": 0,
+  "shaft_clearance_m": 0.01,
+  "animation": "X-axis 360 degrees, 2 seconds, 9 quaternion keys",
+  "blender": "NOT_RUN",
+  "unity": "NOT_RUN"
+}
