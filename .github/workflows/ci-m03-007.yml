@@ -83,7 +83,7 @@ jobs:
           test -s /tmp/m03-007-blender/M03-007_vertical_T_bracket.blend
       - name: Test bpy repeatability in one process
         run: |
-          blender --background --factory-startup --python-exit-code 1 --python-expr "import bpy,sys; from pathlib import Path; sys.path.insert(0,'Tools/ModelFactory/M03/M03-007'); import generate_m03_007 as m; p=m.build(); out=Path('/tmp/m03-007-repeat'); out.mkdir(exist_ok=True); m.export_blender(p,out); m.export_blender(p,out); assert len([o for o in bpy.data.objects if o.name.startswith('M03_007_')])==28; assert len([x for x in bpy.data.meshes if x.name.startswith('M03_007_')])==27; print('PASS: no duplicated owned objects or meshes after repeat')"
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import bpy,sys; from pathlib import Path; sys.path.insert(0,'Tools/ModelFactory/M03/M03-007'); import generate_m03_007 as m; p=m.build(); out=Path('/tmp/m03-007-repeat'); out.mkdir(exist_ok=True); m.export_blender(p,out); m.export_blender(p,out); assert len([o for o in bpy.data.objects if o.name.startswith('M03_007_') ])==32; assert len([x for x in bpy.data.meshes if x.name.startswith('M03_007_')])==27; print('PASS: no duplicated owned objects or meshes after repeat')"
       - name: Inspect Blender-generated GLB
         run: |
           python3 - <<'PY'
@@ -100,6 +100,7 @@ jobs:
           assert len(doc['materials'])==5
           assert len([n for n in doc['nodes'] if 'mesh' in n])==27
           assert any(n.get('name')=='M03_007_TOP_MOUNT_PIVOT' for n in doc['nodes'])
+          assert len([n for n in doc['nodes'] if n.get('name','').startswith('M03_007_SNAP_')])==4
           assert not doc.get('animations')
           print('PASS real Blender GLB: 27 mesh nodes, 5 PBR materials, top pivot, static')
           PY
