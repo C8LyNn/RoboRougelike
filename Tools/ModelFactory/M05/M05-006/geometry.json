@@ -1,0 +1,1372 @@
+{
+  "id": "M05-006",
+  "name": "Projektor bariery kierunkowej",
+  "category": "M05",
+  "purpose": "visual_only_no_gameplay",
+  "units": "meters",
+  "coordinate_system": "Blender_Z_UP",
+  "front_direction": [
+    0,
+    -1,
+    0
+  ],
+  "mount_origin": [
+    0,
+    0,
+    0
+  ],
+  "mount_type": "front",
+  "hinges": {
+    "L": {
+      "pivot": [
+        -0.34,
+        -0.22,
+        0
+      ],
+      "axis": "Z",
+      "angles_deg": [
+        0,
+        -15,
+        -30,
+        -15,
+        0
+      ],
+      "frames": [
+        1,
+        16,
+        31,
+        46,
+        61
+      ]
+    },
+    "R": {
+      "pivot": [
+        0.34,
+        -0.22,
+        0
+      ],
+      "axis": "Z",
+      "angles_deg": [
+        0,
+        15,
+        30,
+        15,
+        0
+      ],
+      "frames": [
+        1,
+        16,
+        31,
+        46,
+        61
+      ]
+    }
+  },
+  "materials": {
+    "Graphite": {
+      "color": [
+        0.085,
+        0.12,
+        0.16,
+        1
+      ],
+      "metallic": 0.75,
+      "roughness": 0.34
+    },
+    "Ceramic": {
+      "color": [
+        0.65,
+        0.71,
+        0.72,
+        1
+      ],
+      "metallic": 0.2,
+      "roughness": 0.4
+    },
+    "Copper": {
+      "color": [
+        0.69,
+        0.34,
+        0.12,
+        1
+      ],
+      "metallic": 0.8,
+      "roughness": 0.29
+    },
+    "Rubber": {
+      "color": [
+        0.03,
+        0.05,
+        0.06,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.8
+    },
+    "Glass": {
+      "color": [
+        0.02,
+        0.13,
+        0.19,
+        1
+      ],
+      "metallic": 0.28,
+      "roughness": 0.18,
+      "alpha": 0.72
+    },
+    "Cyan": {
+      "color": [
+        0.02,
+        0.45,
+        0.82,
+        1
+      ],
+      "metallic": 0.1,
+      "roughness": 0.27,
+      "emission": [
+        0.01,
+        0.32,
+        0.8,
+        1
+      ],
+      "emission_strength": 2.4
+    },
+    "Amber": {
+      "color": [
+        0.95,
+        0.38,
+        0.045,
+        1
+      ],
+      "metallic": 0.1,
+      "roughness": 0.32,
+      "emission": [
+        0.7,
+        0.18,
+        0.01,
+        1
+      ],
+      "emission_strength": 1.25
+    }
+  },
+  "parts": [
+    {
+      "name": "mount_gasket",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        0.003,
+        0
+      ],
+      "size": [
+        0.53,
+        0.014,
+        0.36
+      ],
+      "material": "Rubber",
+      "bevel": 0.04
+    },
+    {
+      "name": "main_housing",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.07,
+        0
+      ],
+      "size": [
+        0.58,
+        0.14,
+        0.4
+      ],
+      "material": "Graphite",
+      "bevel": 0.055
+    },
+    {
+      "name": "front_ceramic_cover",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.15,
+        0
+      ],
+      "size": [
+        0.46,
+        0.022,
+        0.31
+      ],
+      "material": "Ceramic",
+      "bevel": 0.045
+    },
+    {
+      "name": "front_cyan_status",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.165,
+        0.1
+      ],
+      "size": [
+        0.27,
+        0.008,
+        0.018
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "front_copper_chevron",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.166,
+        -0.09
+      ],
+      "size": [
+        0.22,
+        0.008,
+        0.026
+      ],
+      "material": "Copper",
+      "bevel": 0.009
+    },
+    {
+      "name": "hinge_bracket_L",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        -0.34,
+        -0.095,
+        0
+      ],
+      "size": [
+        0.12,
+        0.13,
+        0.11
+      ],
+      "material": "Graphite",
+      "bevel": 0.017
+    },
+    {
+      "name": "hinge_ring_L",
+      "parent": "base",
+      "shape": "torus",
+      "center": [
+        -0.34,
+        -0.22,
+        0
+      ],
+      "major": 0.079,
+      "minor": 0.015,
+      "segments": 32,
+      "tube_segments": 10,
+      "material": "Copper"
+    },
+    {
+      "name": "hinge_lip_L",
+      "parent": "base",
+      "shape": "torus",
+      "center": [
+        -0.34,
+        -0.22,
+        0.035
+      ],
+      "major": 0.072,
+      "minor": 0.007,
+      "segments": 32,
+      "tube_segments": 10,
+      "material": "Ceramic"
+    },
+    {
+      "name": "mount_bolt_L_D",
+      "parent": "base",
+      "shape": "cylinder",
+      "center": [
+        -0.21,
+        0.012,
+        -0.14
+      ],
+      "radius": 0.018,
+      "depth": 0.02,
+      "axis": "Y",
+      "segments": 12,
+      "material": "Copper"
+    },
+    {
+      "name": "mount_bolt_L_U",
+      "parent": "base",
+      "shape": "cylinder",
+      "center": [
+        -0.21,
+        0.012,
+        0.14
+      ],
+      "radius": 0.018,
+      "depth": 0.02,
+      "axis": "Y",
+      "segments": 12,
+      "material": "Copper"
+    },
+    {
+      "name": "vent_L_0",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        -0.26,
+        -0.09,
+        -0.11
+      ],
+      "size": [
+        0.024,
+        0.07,
+        0.014
+      ],
+      "material": "Ceramic",
+      "bevel": 0.004
+    },
+    {
+      "name": "vent_L_1",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        -0.26,
+        -0.09,
+        -0.0050000000000000044
+      ],
+      "size": [
+        0.024,
+        0.07,
+        0.014
+      ],
+      "material": "Ceramic",
+      "bevel": 0.004
+    },
+    {
+      "name": "vent_L_2",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        -0.26,
+        -0.09,
+        0.09999999999999999
+      ],
+      "size": [
+        0.024,
+        0.07,
+        0.014
+      ],
+      "material": "Ceramic",
+      "bevel": 0.004
+    },
+    {
+      "name": "hinge_bracket_R",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0.34,
+        -0.095,
+        0
+      ],
+      "size": [
+        0.12,
+        0.13,
+        0.11
+      ],
+      "material": "Graphite",
+      "bevel": 0.017
+    },
+    {
+      "name": "hinge_ring_R",
+      "parent": "base",
+      "shape": "torus",
+      "center": [
+        0.34,
+        -0.22,
+        0
+      ],
+      "major": 0.079,
+      "minor": 0.015,
+      "segments": 32,
+      "tube_segments": 10,
+      "material": "Copper"
+    },
+    {
+      "name": "hinge_lip_R",
+      "parent": "base",
+      "shape": "torus",
+      "center": [
+        0.34,
+        -0.22,
+        0.035
+      ],
+      "major": 0.072,
+      "minor": 0.007,
+      "segments": 32,
+      "tube_segments": 10,
+      "material": "Ceramic"
+    },
+    {
+      "name": "mount_bolt_R_D",
+      "parent": "base",
+      "shape": "cylinder",
+      "center": [
+        0.21,
+        0.012,
+        -0.14
+      ],
+      "radius": 0.018,
+      "depth": 0.02,
+      "axis": "Y",
+      "segments": 12,
+      "material": "Copper"
+    },
+    {
+      "name": "mount_bolt_R_U",
+      "parent": "base",
+      "shape": "cylinder",
+      "center": [
+        0.21,
+        0.012,
+        0.14
+      ],
+      "radius": 0.018,
+      "depth": 0.02,
+      "axis": "Y",
+      "segments": 12,
+      "material": "Copper"
+    },
+    {
+      "name": "vent_R_0",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0.26,
+        -0.09,
+        -0.11
+      ],
+      "size": [
+        0.024,
+        0.07,
+        0.014
+      ],
+      "material": "Ceramic",
+      "bevel": 0.004
+    },
+    {
+      "name": "vent_R_1",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0.26,
+        -0.09,
+        -0.0050000000000000044
+      ],
+      "size": [
+        0.024,
+        0.07,
+        0.014
+      ],
+      "material": "Ceramic",
+      "bevel": 0.004
+    },
+    {
+      "name": "vent_R_2",
+      "parent": "base",
+      "shape": "bevel_box",
+      "center": [
+        0.26,
+        -0.09,
+        0.09999999999999999
+      ],
+      "size": [
+        0.024,
+        0.07,
+        0.014
+      ],
+      "material": "Ceramic",
+      "bevel": 0.004
+    },
+    {
+      "name": "axle_L",
+      "parent": "arm_L",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0,
+        0.06
+      ],
+      "radius": 0.046,
+      "depth": 0.17,
+      "axis": "Z",
+      "segments": 32,
+      "material": "Graphite"
+    },
+    {
+      "name": "axle_cap_L",
+      "parent": "arm_L",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0,
+        0.165
+      ],
+      "radius": 0.056,
+      "depth": 0.024,
+      "axis": "Z",
+      "segments": 24,
+      "material": "Copper"
+    },
+    {
+      "name": "arm_neck_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.052,
+        0.12
+      ],
+      "size": [
+        0.088,
+        0.13,
+        0.075
+      ],
+      "material": "Graphite",
+      "bevel": 0.012
+    },
+    {
+      "name": "arm_spar_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.285,
+        0.12
+      ],
+      "size": [
+        0.092,
+        0.44,
+        0.085
+      ],
+      "material": "Graphite",
+      "bevel": 0.018
+    },
+    {
+      "name": "arm_spine_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.3,
+        0.173
+      ],
+      "size": [
+        0.045,
+        0.35,
+        0.025
+      ],
+      "material": "Copper",
+      "bevel": 0.009
+    },
+    {
+      "name": "panel_chassis_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.52,
+        0.04
+      ],
+      "size": [
+        0.31,
+        0.044,
+        0.52
+      ],
+      "material": "Graphite",
+      "bevel": 0.044
+    },
+    {
+      "name": "panel_ceramic_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.545,
+        0.04
+      ],
+      "size": [
+        0.27,
+        0.015,
+        0.47
+      ],
+      "material": "Ceramic",
+      "bevel": 0.036
+    },
+    {
+      "name": "panel_field_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.555,
+        0.04
+      ],
+      "size": [
+        0.226,
+        0.01,
+        0.405
+      ],
+      "material": "Glass",
+      "bevel": 0.03
+    },
+    {
+      "name": "panel_rail_left_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        -0.147,
+        -0.555,
+        0.04
+      ],
+      "size": [
+        0.017,
+        0.02,
+        0.48
+      ],
+      "material": "Copper",
+      "bevel": 0.005
+    },
+    {
+      "name": "panel_rail_right_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0.147,
+        -0.555,
+        0.04
+      ],
+      "size": [
+        0.017,
+        0.02,
+        0.48
+      ],
+      "material": "Copper",
+      "bevel": 0.005
+    },
+    {
+      "name": "panel_rail_bottom_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.557,
+        -0.20099999999999998
+      ],
+      "size": [
+        0.31,
+        0.023,
+        0.022
+      ],
+      "material": "Ceramic",
+      "bevel": 0.006
+    },
+    {
+      "name": "warning_bottom_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.574,
+        -0.20099999999999998
+      ],
+      "size": [
+        0.12,
+        0.007,
+        0.009
+      ],
+      "material": "Amber",
+      "bevel": 0.003
+    },
+    {
+      "name": "panel_rail_top_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.557,
+        0.28099999999999997
+      ],
+      "size": [
+        0.31,
+        0.023,
+        0.022
+      ],
+      "material": "Ceramic",
+      "bevel": 0.006
+    },
+    {
+      "name": "warning_top_L",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.574,
+        0.28099999999999997
+      ],
+      "size": [
+        0.12,
+        0.007,
+        0.009
+      ],
+      "material": "Amber",
+      "bevel": 0.003
+    },
+    {
+      "name": "emitter_strip_L_0",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        -0.073,
+        -0.566,
+        0.04
+      ],
+      "size": [
+        0.018,
+        0.009,
+        0.32
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "emitter_strip_L_1",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.566,
+        0.04
+      ],
+      "size": [
+        0.018,
+        0.009,
+        0.32
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "emitter_strip_L_2",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0.073,
+        -0.566,
+        0.04
+      ],
+      "size": [
+        0.018,
+        0.009,
+        0.32
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "field_trace_L_0",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        -0.1
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Amber",
+      "bevel": 0.002
+    },
+    {
+      "name": "field_trace_L_1",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        -0.008000000000000007
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Cyan",
+      "bevel": 0.002
+    },
+    {
+      "name": "field_trace_L_2",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        0.08399999999999999
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Amber",
+      "bevel": 0.002
+    },
+    {
+      "name": "field_trace_L_3",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        0.17600000000000002
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Cyan",
+      "bevel": 0.002
+    },
+    {
+      "name": "lens_L",
+      "parent": "arm_L",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.583,
+        0.04
+      ],
+      "radius": 0.052,
+      "depth": 0.018,
+      "axis": "Y",
+      "segments": 32,
+      "material": "Cyan"
+    },
+    {
+      "name": "lens_guard_L",
+      "parent": "arm_L",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.574,
+        0.04
+      ],
+      "radius": 0.068,
+      "depth": 0.008,
+      "axis": "Y",
+      "segments": 32,
+      "material": "Copper"
+    },
+    {
+      "name": "rear_heat_sink_L_0",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        -0.09,
+        -0.489,
+        0.045
+      ],
+      "size": [
+        0.025,
+        0.018,
+        0.3
+      ],
+      "material": "Copper",
+      "bevel": 0.006
+    },
+    {
+      "name": "rear_heat_sink_L_1",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.489,
+        0.045
+      ],
+      "size": [
+        0.025,
+        0.018,
+        0.3
+      ],
+      "material": "Copper",
+      "bevel": 0.006
+    },
+    {
+      "name": "rear_heat_sink_L_2",
+      "parent": "arm_L",
+      "shape": "bevel_box",
+      "center": [
+        0.09,
+        -0.489,
+        0.045
+      ],
+      "size": [
+        0.025,
+        0.018,
+        0.3
+      ],
+      "material": "Copper",
+      "bevel": 0.006
+    },
+    {
+      "name": "axle_R",
+      "parent": "arm_R",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0,
+        0.06
+      ],
+      "radius": 0.046,
+      "depth": 0.17,
+      "axis": "Z",
+      "segments": 32,
+      "material": "Graphite"
+    },
+    {
+      "name": "axle_cap_R",
+      "parent": "arm_R",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0,
+        0.165
+      ],
+      "radius": 0.056,
+      "depth": 0.024,
+      "axis": "Z",
+      "segments": 24,
+      "material": "Copper"
+    },
+    {
+      "name": "arm_neck_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.052,
+        0.12
+      ],
+      "size": [
+        0.088,
+        0.13,
+        0.075
+      ],
+      "material": "Graphite",
+      "bevel": 0.012
+    },
+    {
+      "name": "arm_spar_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.285,
+        0.12
+      ],
+      "size": [
+        0.092,
+        0.44,
+        0.085
+      ],
+      "material": "Graphite",
+      "bevel": 0.018
+    },
+    {
+      "name": "arm_spine_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.3,
+        0.173
+      ],
+      "size": [
+        0.045,
+        0.35,
+        0.025
+      ],
+      "material": "Copper",
+      "bevel": 0.009
+    },
+    {
+      "name": "panel_chassis_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.52,
+        0.04
+      ],
+      "size": [
+        0.31,
+        0.044,
+        0.52
+      ],
+      "material": "Graphite",
+      "bevel": 0.044
+    },
+    {
+      "name": "panel_ceramic_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.545,
+        0.04
+      ],
+      "size": [
+        0.27,
+        0.015,
+        0.47
+      ],
+      "material": "Ceramic",
+      "bevel": 0.036
+    },
+    {
+      "name": "panel_field_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.555,
+        0.04
+      ],
+      "size": [
+        0.226,
+        0.01,
+        0.405
+      ],
+      "material": "Glass",
+      "bevel": 0.03
+    },
+    {
+      "name": "panel_rail_left_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        -0.147,
+        -0.555,
+        0.04
+      ],
+      "size": [
+        0.017,
+        0.02,
+        0.48
+      ],
+      "material": "Copper",
+      "bevel": 0.005
+    },
+    {
+      "name": "panel_rail_right_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0.147,
+        -0.555,
+        0.04
+      ],
+      "size": [
+        0.017,
+        0.02,
+        0.48
+      ],
+      "material": "Copper",
+      "bevel": 0.005
+    },
+    {
+      "name": "panel_rail_bottom_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.557,
+        -0.20099999999999998
+      ],
+      "size": [
+        0.31,
+        0.023,
+        0.022
+      ],
+      "material": "Ceramic",
+      "bevel": 0.006
+    },
+    {
+      "name": "warning_bottom_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.574,
+        -0.20099999999999998
+      ],
+      "size": [
+        0.12,
+        0.007,
+        0.009
+      ],
+      "material": "Amber",
+      "bevel": 0.003
+    },
+    {
+      "name": "panel_rail_top_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.557,
+        0.28099999999999997
+      ],
+      "size": [
+        0.31,
+        0.023,
+        0.022
+      ],
+      "material": "Ceramic",
+      "bevel": 0.006
+    },
+    {
+      "name": "warning_top_R",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.574,
+        0.28099999999999997
+      ],
+      "size": [
+        0.12,
+        0.007,
+        0.009
+      ],
+      "material": "Amber",
+      "bevel": 0.003
+    },
+    {
+      "name": "emitter_strip_R_0",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        -0.073,
+        -0.566,
+        0.04
+      ],
+      "size": [
+        0.018,
+        0.009,
+        0.32
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "emitter_strip_R_1",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.566,
+        0.04
+      ],
+      "size": [
+        0.018,
+        0.009,
+        0.32
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "emitter_strip_R_2",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0.073,
+        -0.566,
+        0.04
+      ],
+      "size": [
+        0.018,
+        0.009,
+        0.32
+      ],
+      "material": "Cyan",
+      "bevel": 0.005
+    },
+    {
+      "name": "field_trace_R_0",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        -0.1
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Amber",
+      "bevel": 0.002
+    },
+    {
+      "name": "field_trace_R_1",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        -0.008000000000000007
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Cyan",
+      "bevel": 0.002
+    },
+    {
+      "name": "field_trace_R_2",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        0.08399999999999999
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Amber",
+      "bevel": 0.002
+    },
+    {
+      "name": "field_trace_R_3",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.571,
+        0.17600000000000002
+      ],
+      "size": [
+        0.19,
+        0.007,
+        0.007
+      ],
+      "material": "Cyan",
+      "bevel": 0.002
+    },
+    {
+      "name": "lens_R",
+      "parent": "arm_R",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.583,
+        0.04
+      ],
+      "radius": 0.052,
+      "depth": 0.018,
+      "axis": "Y",
+      "segments": 32,
+      "material": "Cyan"
+    },
+    {
+      "name": "lens_guard_R",
+      "parent": "arm_R",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.574,
+        0.04
+      ],
+      "radius": 0.068,
+      "depth": 0.008,
+      "axis": "Y",
+      "segments": 32,
+      "material": "Copper"
+    },
+    {
+      "name": "rear_heat_sink_R_0",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        -0.09,
+        -0.489,
+        0.045
+      ],
+      "size": [
+        0.025,
+        0.018,
+        0.3
+      ],
+      "material": "Copper",
+      "bevel": 0.006
+    },
+    {
+      "name": "rear_heat_sink_R_1",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0,
+        -0.489,
+        0.045
+      ],
+      "size": [
+        0.025,
+        0.018,
+        0.3
+      ],
+      "material": "Copper",
+      "bevel": 0.006
+    },
+    {
+      "name": "rear_heat_sink_R_2",
+      "parent": "arm_R",
+      "shape": "bevel_box",
+      "center": [
+        0.09,
+        -0.489,
+        0.045
+      ],
+      "size": [
+        0.025,
+        0.018,
+        0.3
+      ],
+      "material": "Copper",
+      "bevel": 0.006
+    }
+  ],
+  "qa": {
+    "sweep_degrees": [
+      0,
+      30
+    ],
+    "step_deg": 1,
+    "hinge_inner_clearance_m": 0.018000000000000002,
+    "notes": "AABB tests every fixed/moving pair except coaxial bearing ring and shaft, whose radial gap is analytically verified."
+  }
+}
