@@ -4,7 +4,7 @@
 Pivot/mount: (0,0,0), vehicle side mounting plane X=0.
 Axle and wheel rotation: +X. Wheel centre at X≈0.18 m.
 Dependency-free static OBJ/MTL + structural QA; Blender 4.2+/5.x exports
-animated GLB and an appendable .blend collection library. No gameplay edits.
+animated GLB, Unity-native animated FBX and an appendable .blend collection library. No gameplay edits.
 """
 from __future__ import annotations
 import argparse
@@ -319,8 +319,14 @@ def export_blender(parts,out):
                                   use_selection=True,export_animations=True,
                                   export_force_sampling=True,
                                   export_frame_range=True)
-        assert blend.is_file() and glb.is_file()
-        return {"blender":"PASS_EXPORT","blend":str(blend),"glb":str(glb)}
+        fbx=out/"M02-006_animated.fbx"
+        bpy.ops.export_scene.fbx(
+            filepath=str(fbx),use_selection=True,
+            axis_forward="-Z",axis_up="Y",add_leaf_bones=False,
+            bake_anim=True,bake_anim_use_all_actions=False)
+        assert blend.is_file() and glb.is_file() and fbx.is_file()
+        return {"blender":"PASS_EXPORT","blend":str(blend),"glb":str(glb),
+                "fbx":str(fbx),"unity_native_fbx":"EXPORTED_NOT_IMPORTED"}
     finally:
         bpy.ops.object.select_all(action="DESELECT")
         for ob in previous[4]:
