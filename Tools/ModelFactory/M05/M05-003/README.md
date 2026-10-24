@@ -37,3 +37,15 @@ This additionally authors all Blender meshes/materials, builds the mount and two
 The generator verifies closed-manifold triangles, positive volume, non-degenerate faces, finite coordinates, unique names, material assignments, exact iris count, model bounds, and analytic swept clearance for both rotors. `qa_static.py` independently parses the actual OBJ and MTL, checks face integrity and per-object manifold topology, validates emissive materials, and regenerates the static assets to compare SHA-256 hashes.
 
 **Current restrictions:** Blender runtime and animated FBX/GLB export: **NOT RUN unless an actual Blender job executes**. Unity import/Play Mode, visual inspection, rig/animation import and vehicle clearance: **NOT RUN**. Passing Python QA does not authorize merging. This PR must remain Draft until those checks are performed. No scenes, gameplay scripts, ProjectSettings, main or develop are modified.
+
+## Poprawka V2 — spójne połączenia tęczówek (24.10.2026)
+
+**Wykryta usterka:** dziesięć płatków skanera optycznego miało promień początkowy **24 mm**, gdy centralna piasta wirnika kończyła się na **18 mm**. Dawało to sześć milimetrów pustej przestrzeni pomiędzy elementami, które mają obracać się jako jeden zespół. Dwa ozdobne znaczniki indeksujące zaczynały się dokładnie na promieniu końca płatka 69 mm, przez co ich kontakt z płatkami miał zerową grubość.
+
+**Naprawa geometrii:** płatki zaczynają się teraz na promieniu **15 mm**, zachodząc na centralną piastę **3 mm**. Dwa znaczniki `Iris_Index_Mark_*` zaczynają się przy **67 mm**, czyli zachodzą na pierwszy płatek o **2 mm**; oba obracają się wraz z odpowiednim wirnikiem. Pięć płatków na każdej stronie nadal pozostaje od siebie rozdzielonych kątowo; przednia i tylna szczelina względem soczewek, oprawy i obudowy pozostaje niezmieniona. To celowe styki wewnątrz ruchomej grupy, nie nowa kolizja z elementami nieruchomymi.
+
+**Rzeczywiste artefakty:** zmodyfikowano generator `generate_m05_003.py`, faktyczny `generated/M05-003_dual_optical_scanner.obj` (96 współrzędnych w 12 osobnych komponentach), manifest `generated/M05-003_manifest.json`, niezależny walidator oraz dodano izolowany workflow CI. Pozostaje **44 części, 2526 wierzchołków, 4912 trójkątów i 9 materiałów**. Plik MTL nie wymagał zmiany.
+
+**Weryfikacja:** [GitHub Actions run 40118825749](https://github.com/C8LyNn/RoboRougelike/actions/runs/40118825749) sprawdza generator, 12 kontaktów z pomiarów rzeczywistych wierzchołków OBJ, geometrię zamkniętą i prześwity wirników, deterministyczne odtworzenie OBJ/MTL oraz integralność manifestu. Zapisuje artefakt `M05-003-V2-connected-irises-OBJ-MTL`.
+
+**Nadal NOT RUN:** wykonanie Blendera, eksport rzeczywistego animowanego FBX/GLB, wizualny test obrotu i Unity 6 EditMode/PlayMode. Nie wykonano zmian w kodzie istniejącego systemu skanera lub scenach gry. Poprawka służy do review w oryginalnym Draft PR #53, nie jest kolejną pozycją katalogową ani nową rezerwacją M05.
