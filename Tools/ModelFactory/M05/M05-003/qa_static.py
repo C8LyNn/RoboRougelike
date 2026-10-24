@@ -34,6 +34,11 @@ def verify(directory):
     assert data["id"]=="M05-003"
     assert data["qa_geometry"]=="PASS"
     assert data["rotor_clearance_qa"]=="PASS_5_ANGLES_EACH"
+    assert data["geometry_revision"]=="M05-003_V2_CONNECTED_IRIS"
+    assert data["iris_petals_seated_in_hubs"]==10
+    assert data["iris_index_markers_attached"]==2
+    assert abs(data["iris_hub_overlap_m"]-.003)<1e-9
+    assert abs(data["iris_index_overlap_m"]-.002)<1e-9
     assert data["blender_export"] in ("NOT RUN","RUN")
     assert data["mount_pivot"]==[0,0,0]
     assert data["optical_axis"]=="+Z" and data["rotation_axis"]=="+Z"
@@ -68,7 +73,7 @@ def verify(directory):
         elif tokens[0]=="o":
             current=tokens[1]
             assert current not in objects
-            objects[current]={"faces":[],"material":None}
+            objects[current]={"faces":[],"material":None,"vertices":[]}
         elif tokens[0]=="usemtl":
             material=tokens[1]
             assert material in mats and current is not None
@@ -79,6 +84,7 @@ def verify(directory):
             v=tuple(float(x) for x in tokens[1:])
             assert all(math.isfinite(x) for x in v)
             verts.append(v)
+            objects[current]["vertices"].append(v)
         elif tokens[0]=="f":
             assert current is not None and material is not None
             assert len(tokens)==4
@@ -99,6 +105,32 @@ def verify(directory):
                 key=(min(u,v),max(u,v))
                 edges[key]=edges.get(key,0)+1
         assert all(v==2 for v in edges.values()),("non-manifold",name)
+    # Actual generated OBJ geometry, independent of procedural source.
+    # Before the repair, r0=24mm petals floated 6mm outside the 18mm
+    # rotor hub, while 69mm index marker only grazed the petal outline.
+    # Both were invisible/mechanically implausible assembly seams.
+    contacts=0
+    for side,cx in (("L",-.215),("R",.215)):
+        cy=.020
+        def radial(name):
+            v=objects[name]["vertices"]
+            assert v,name
+            return (min(math.hypot(x-cx,y-cy) for x,y,z in v),
+                    max(math.hypot(x-cx,y-cy) for x,y,z in v))
+        hub=radial("Iris_Center_Hub_"+side)
+        assert abs(hub[1]-.018)<2e-7
+        for i in range(1,6):
+            petal=radial(f"Iris_Petal_{side}_{i:02d}")
+            assert abs(petal[0]-.015)<2e-7, (side,i,"detached")
+            assert abs(petal[1]-.069)<2e-7
+            assert hub[1]-petal[0]>=.003-2e-7
+            contacts+=1
+        marker=radial("Iris_Index_Mark_"+side)
+        assert abs(marker[0]-.067)<2e-7
+        assert abs(marker[1]-.073)<2e-7
+        assert .069-marker[0]>=.002-2e-7
+        contacts+=1
+    assert contacts==12
     xs=[v[0] for v in verts]
     ys=[v[1] for v in verts]
     zs=[v[2] for v in verts]
@@ -118,6 +150,7 @@ def verify(directory):
             "materials":len(mats),"emissive_materials":sorted(glowing),
             "all_parts_closed_manifold":True,
             "obj_mtl_reproducibility":"PASS",
+            "verified_iris_contacts":12,
             "blender":"NOT RUN by this script",
             "unity":"NOT RUN by this script",
             "obj_sha256":digest(obj),"mtl_sha256":digest(mtl)}
