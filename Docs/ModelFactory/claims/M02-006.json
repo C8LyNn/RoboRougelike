@@ -1,8 +1,18 @@
 {
   "id": "M02-006",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_READY",
   "claimed_at_utc": "2026-10-24T15:53:14.500Z",
   "model": "Koło kolczaste na rumowisko",
-  "run": "2026-10-24T15:00:00Z"
+  "run": "2026-10-24T15:00:00Z",
+  "pr_number": 82,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/82",
+  "model_branch": "feature/rrl-model-m02-006-spiked-rubble-wheel",
+  "model_commit": "95b0743ad2037edb9e742c1ddd270502b0cf11cd",
+  "qa_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109807848",
+  "qa_static": "PASS",
+  "qa_blender_glb": "PASS",
+  "qa_fbx": "BLOCKED_FBX_OPERATOR",
+  "qa_unity": "NOT_RUN",
+  "artifacts_path": "Tools/ModelFactory/M02/M02-006/generated/"
 }
