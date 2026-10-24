@@ -1,8 +1,12 @@
 {
   "id": "M03-008",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T17:52:28.150Z",
   "model": "Płyta pancerza klinowego",
-  "run": "2026-10-24T17:00Z"
+  "run": "2026-10-24T17:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/98",
+  "branch": "feature/rrl-model-m03-008-wedge-armor-plate",
+  "claim_commit": "aa00254a67072305c932a8dbabc03fda0c9942bd",
+  "qa": "STATIC_PASS_BLENDER_EXPORT_EXECUTED_GLB_QA_PENDING_UNITY_NOT_RUN"
 }
