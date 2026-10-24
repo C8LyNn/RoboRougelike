@@ -23,8 +23,11 @@ w trakcie ruchu. Sześć aluminiowych żeber radiatora na cylinder, oddzielne
 głowice i świece, miedziane elementy i jasne akcenty sygnalizacyjne.
 Dolna obudowa korbowa jest otwarta wokół wału, z pierścieniowymi łożyskami
 i uszczelnieniami z prawdziwym otworem; wał ma promieniowy luz do uszczelnień.
-Elementy o nazwach `PISTON_RIG_L/R`, `CONROD_RIG_L/R` oraz
-`CRANKSHAFT_ROTOR` są niezależnymi animowanymi grupami.
+Elementy `PISTON_RIG_L/R`, `CONROD_RIG_L/R`, `CRANK_EYE_RIG_L/R` oraz
+`CRANKSHAFT_ROTOR` stanowią siedem niezależnie animowanych grup. Duże
+oczka korbowodów mają otwory współosiowe z czopami wału, małe oczka
+współosiowe ze sworzniami tłokowymi. Ramiona korbowodów nie wypełniają
+otworów łożysk. Tarcze korbowe nachodzą na czopy o 10 mm.
 
 **Jednostki:** 1 Blender unit = 1 metr.
 **Pivot montażowy:** `MOUNT_CHASSIS_ORIGIN` w (0,0,0), dolny środek modułu.
