@@ -1,8 +1,16 @@
 {
   "id": "M05-007",
   "agent": "MODEL-05",
-  "status": "CLAIMED",
+  "status": "PRODUCED_DRAFT_QA_PENDING_BLENDER",
   "claimed_at_utc": "2026-10-24T16:44:39.574Z",
   "model": "Akumulator kasetowy",
-  "run": "2026-10-24T16:00:00Z_MODEL-05_HOURLY"
+  "run": "2026-10-24T16:00:00Z_MODEL-05_HOURLY",
+  "branch": "feature/rrl-model-m05-007-cassette-accumulator",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/87",
+  "model_path": "Tools/ModelFactory/M05/M05-007/",
+  "static_qa": "PASS",
+  "static_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113194384",
+  "blender_qa": "PENDING_VERIFIED_RUN",
+  "unity_qa": "NOT_RUN",
+  "notes": "Four-cell cassette with two 0.21m sliding drawers, 79 closed parts, 7 materials. Static geometry, 22-sample sweep, deterministic committed OBJ/MTL passed; Blender smoke corrected to require explicit JSON sentinel, awaiting latest CI."
 }
