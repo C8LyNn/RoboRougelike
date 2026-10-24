@@ -90,7 +90,9 @@ jobs:
           assert (root/"M01-004_animated.glb").read_bytes()[:4]==b"glTF"
           header=(root/"M01-004.blend").read_bytes()[:16]
           print("BLEND header bytes:",repr(header))
-          assert header.startswith(b"BLENDER") or header.startswith(bytes([0x1f,0x8b])),repr(header)
+          assert (header.startswith(b"BLENDER") or
+                  header.startswith(bytes([0x1f,0x8b])) or
+                  header.startswith(bytes([0x28,0xb5,0x2f,0xfd]))),repr(header)
           import json, struct
           data=(root/"M01-004_animated.glb").read_bytes()
           assert struct.unpack_from("<I",data,4)[0]==2
