@@ -1,10 +1,10 @@
 {
   "id": "M01-002",
   "method": "JS mesh-construction assertions and deterministic OBJ generation",
-  "result": "STATIC_STRUCTURE_PASS",
-  "parts": 55,
-  "vertices": 2376,
-  "triangles": 4568,
+  "result": "V2_STATIC_SOURCE_PENDING_CI",
+  "parts": 57,
+  "vertices": 2640,
+  "triangles": 5104,
   "materials": 7,
   "bounds_m": {
     "min": [
@@ -28,7 +28,15 @@
     "Piston rods deliberately telescope inside housings (intentional internal overlap).",
     "Other adjacent receiver/barrel and collar joints intentionally share interface volumes.",
     "Geometric collision across full animated motion NOT tested in Blender.",
-    "OBJ has no animation; Blender GLB/FBX export NOT RUN.",
-    "Unity import and visual QA NOT RUN."
-  ]
+    "Unity import and visual QA NOT RUN.",
+    "Four hollow piston housing/collar shells; two longer moving rods seat 25 mm into housing in rest pose; two connector brackets attach pistons to moving receiver.",
+    "21 poses over +0.12m recoil are subjected to source and OBJ static analysis, pending CI evidence.",
+    "Blender, FBX/GLB export, Unity import and dynamic physical collision tests NOT RUN."
+  ],
+  "hydraulic_shells_with_real_bores": 4,
+  "rod_bore_radial_clearance_m": 0.007,
+  "rod_engagement_at_rest_m": 0.025,
+  "piston_receiver_anchors": 2,
+  "recoil_samples_analytic": 21,
+  "generated_revision": "M01-002_V2_HOLLOW_PISTONS"
 }

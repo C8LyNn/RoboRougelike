@@ -1,0 +1,45 @@
+name: M01-002 recoil piston geometry QA
+
+on:
+  push:
+    branches:
+      - fix/rrl-m01-002-recoil-piston-housings
+    paths:
+      - 'Tools/ModelFactory/M01/M01-002/**'
+      - '.github/workflows/ci-m01-002-piston-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  m01-piston-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout isolated fix
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile modified Blender generator and OBJ validator
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-002/generate_m01_002.py
+          python3 -m py_compile Tools/ModelFactory/M01/M01-002/validate_static.py
+      - name: Execute 57-body mesh and 21-pose recoil validation
+        run: python3 Tools/ModelFactory/M01/M01-002/validate_static.py
+      - name: Match V2 manifest to source-backed mesh
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('Tools/ModelFactory/M01/M01-002')
+          j=json.loads((root/'M01-002.static-qa.json').read_text('utf-8'))
+          assert j['parts']==57 and j['vertices']==2640
+          assert j['triangles']==5104 and j['materials']==7
+          assert j['hydraulic_shells_with_real_bores']==4
+          assert j['piston_receiver_anchors']==2
+          assert abs(j['rod_bore_radial_clearance_m']-.007)<1e-8
+          assert abs(j['rod_engagement_at_rest_m']-.025)<1e-8
+          assert j['generated_revision']=='M01-002_V2_HOLLOW_PISTONS'
+          print('PASS manifest/source/mesh parity; Blender+Unity NOT RUN')
+          PY
