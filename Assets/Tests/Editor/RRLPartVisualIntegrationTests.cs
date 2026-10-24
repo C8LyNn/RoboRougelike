@@ -123,6 +123,27 @@ public class RRLPartVisualIntegrationTests
     }
 
     [Test]
+    public void W01SpinTargetsNamedWheelPivotNotImportedRoot()
+    {
+        var root = new GameObject("ImportedW01Root");
+        var child = new GameObject("WheelRotationPivot");
+        child.transform.SetParent(root.transform, false);
+        var owner = new GameObject("Driver");
+        try
+        {
+            var spin = owner.AddComponent<PartVisualWheelSpin>();
+            spin.Configure(root.transform, null, 0.39f);
+            Assert.AreSame(child.transform, spin.RotationTarget);
+            Assert.AreNotSame(root.transform, spin.RotationTarget);
+        }
+        finally
+        {
+            Object.DestroyImmediate(root);
+            Object.DestroyImmediate(owner);
+        }
+    }
+
+    [Test]
     public void RejectsPrefabWithRigidbodyWithoutDisablingFallback()
     {
         var block = GameObject.CreatePrimitive(PrimitiveType.Cube);
