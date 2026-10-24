@@ -11,7 +11,7 @@
   "claim_create_commit": "70f903816ff42877f500b0254c6fd388f25a45ad",
   "qa_status": "PASS_BLENDER_GLB",
   "blender": "PASS",
-  "unity": "NOT RUN",
+  "unity": "BLOCKED_UNITY_ACTIVATION",
   "model_commit": "ffb48302ef2acd9a2228a48db475fdd8162c7cbd",
   "qa_run_id": 40136325107,
   "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136325107",
@@ -29,5 +29,10 @@
     "max_rod_length_error_m": 4.173679388208562e-8,
     "min_head_clearance_m": 0.061999984905800554,
     "radial_clearance_m": 0.008000000000000007
-  }
+  },
+  "unity_tests": "NOT RUN",
+  "unity_editmode_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136328572",
+  "unity_playmode_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136328574",
+  "repository_validation": "PASS",
+  "repository_validation_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136328618"
 }
