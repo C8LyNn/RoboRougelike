@@ -13,3 +13,10 @@
 - Ramps are treated as solid blockers for the safe flat bypass, and their nominal pitch is constrained by `MaxSlopeDegrees`; an optional ramp is not certified physically climbable without Unity driving evidence.
 - The new 12-case physics traversal UnityTest uses a *simple Rigidbody cube with forces and torque*, not the final W8 vehicle; the integrated vehicle/controller still needs separate GPT OSS driving QA.
 - Source/test additions have not yet been executed in licensed Unity; `UNITY_NOT_RUN`, `B01_60_QA_PENDING`, `G2_HOLD`.
+
+## R3 open risks and evidence gates
+- The fillet-radius test assumes up to half the adjacent straight-line segments can be reserved for smooth turns; it does not actually construct or collision-test a feasible 3D arc. Sharp manoeuvres and true kinematic steering require independent Unity PlayMode/manual driving.
+- 3x3 floor support samples are not continuous support under arbitrary polygonal holes, rotated floors or ramps. R3 generates flat cube floors and a conservative bypass around optional ramps.
+- Geometry changes (seed-dependent cover offsets, ramp pitch) may affect dynamics and collision restitution: **no manual traversal was run in this environment**. Re-test ALL 12 documented 3-seed x 2-recipe x 2-rig scenarios on the exact final SHA.
+- Release ZIP file and complete package archive SHA256 are **not supplied** by source commits. GitHub blob IDs are SHA-1, not archive SHA-256; scoped per-file SHA-256 can be audited via manifest, but does not replace ZIP or runtime tests.
+- No independently approved B01-60 QA, no recipient target worktree scope ACK, no GPT OSS handoff permission. G1/G2 remain HOLD.
