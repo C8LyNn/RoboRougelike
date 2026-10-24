@@ -1,0 +1,21 @@
+# M03-004 deterministic PBR approximation palette
+newmtl frame_graphite
+Kd 0.075000 0.090000 0.115000
+Pm 0.780000
+Pr 0.350000
+
+newmtl x_rib_titanium
+Kd 0.390000 0.470000 0.530000
+Pm 0.700000
+Pr 0.280000
+
+newmtl port_ceramic
+Kd 0.760000 0.790000 0.750000
+Pm 0.160000
+Pr 0.300000
+
+newmtl joint_orange
+Kd 0.980000 0.420000 0.065000
+Pm 0.420000
+Pr 0.340000
+

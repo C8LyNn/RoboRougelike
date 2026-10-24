@@ -1,0 +1,119 @@
+{
+  "id": "M03-004",
+  "result": "STATIC_GEOMETRY_PASS",
+  "parts": 32,
+  "vertices": 256,
+  "quads": 192,
+  "triangles": 384,
+  "materials_used": [
+    "frame_graphite",
+    "joint_orange",
+    "port_ceramic",
+    "x_rib_titanium"
+  ],
+  "bounds_xyz_m": [
+    [
+      -0.5,
+      0.5
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      -0.5,
+      0.5
+    ]
+  ],
+  "pivot_rear_m": [
+    0,
+    0,
+    0
+  ],
+  "snap_ports": {
+    "REAR": {
+      "position_m": [
+        0,
+        0,
+        0
+      ],
+      "outward_normal": [
+        0,
+        -1,
+        0
+      ]
+    },
+    "FRONT": {
+      "position_m": [
+        0,
+        1,
+        0
+      ],
+      "outward_normal": [
+        0,
+        1,
+        0
+      ]
+    },
+    "LEFT": {
+      "position_m": [
+        -0.5,
+        0.5,
+        0
+      ],
+      "outward_normal": [
+        -1,
+        0,
+        0
+      ]
+    },
+    "RIGHT": {
+      "position_m": [
+        0.5,
+        0.5,
+        0
+      ],
+      "outward_normal": [
+        1,
+        0,
+        0
+      ]
+    },
+    "BOTTOM": {
+      "position_m": [
+        0,
+        0.5,
+        -0.5
+      ],
+      "outward_normal": [
+        0,
+        0,
+        -1
+      ]
+    },
+    "TOP": {
+      "position_m": [
+        0,
+        0.5,
+        0.5
+      ],
+      "outward_normal": [
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "side_x_brace_count": 8,
+  "diagonal_crossings": "two bolted central hubs",
+  "mesh_winding": "PASS: all 192 quad face normals point outwards",
+  "min_face_normal_outward_dot": 0.000811801,
+  "closed_meshes": "32 individual oriented closed hexahedra",
+  "intended_joints": "overlaps at welded frame intersections and central hub capture are intentional",
+  "animation": "NONE_REQUIRED",
+  "blender": "NOT RUN",
+  "unity": "NOT RUN",
+  "visual_qa": "NOT RUN",
+  "obj": "M03-004.obj",
+  "mtl": "M03-004.mtl"
+}
