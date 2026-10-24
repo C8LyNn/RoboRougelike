@@ -210,6 +210,7 @@ namespace RoboRougelike.R3
                     part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(root.transform);
+            root.AddComponent<RoboRougelike.R6.R6CoreRecovery>().Configure(assembly);
             return vehicle;
         }
     }
