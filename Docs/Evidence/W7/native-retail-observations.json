@@ -1,0 +1,14 @@
+{
+  "source": "e2dd53bef859e819cc3896748b3fd92286c12f70",
+  "method": "Native screenshots/mouse, extracted retail; no QA flags/pilot or damage API",
+  "menu": true,
+  "sandboxGarageScrap": 600,
+  "rangeEntered": true,
+  "nativeMouseShotCooldownObserved": 0.3,
+  "targetDamageClaimed": false,
+  "qaClassesAbsentFromRetailDll": true,
+  "requestedWidth": 1280,
+  "requestedHeight": 720,
+  "runtimeExceptionsInPlayerLog": false,
+  "exitCode": -1073741819
+}

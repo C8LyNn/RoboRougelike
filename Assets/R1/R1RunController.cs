@@ -50,6 +50,7 @@ namespace RoboRougelike.R1
 
         private void Start()
         {
+            RoboRougelike.VFX001Integration.Vfx001R6LiveBridge.EnsureFor(this);
             var sourceDefinition = Resources.Load<R1RunDefinition>("R1/Run");
             Definition = sourceDefinition != null ? Instantiate(sourceDefinition) : null;
             gameObject.AddComponent<R1RunHUD>();

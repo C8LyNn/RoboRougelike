@@ -1,0 +1,15 @@
+{
+  "play": {
+    "directory": "Artifacts/Local/20261024T030116Z-c71b3239107b4b9b94d44f9329539710",
+    "exitCode": "0",
+    "total": "359",
+    "failed": "0"
+  },
+  "source": "e2dd53bef859e819cc3896748b3fd92286c12f70",
+  "edit": {
+    "directory": "Artifacts/Local/20261024T023411Z-8f62d2b8147b4cbc8f6adff9d8a0087b",
+    "exitCode": "0",
+    "total": "841",
+    "failed": "0"
+  }
+}

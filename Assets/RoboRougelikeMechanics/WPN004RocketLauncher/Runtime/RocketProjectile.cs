@@ -21,6 +21,8 @@ namespace RoboRougelike.Mechanics.Rockets
         private float speed, age, hitPoints;
         private bool initialized, resolved, checkedLaunchClearance;
 
+        // Notification only; original flight, blast and interception remain authoritative.
+        public static event System.Action<RocketProjectile,Vector3,Vector3> Detonated;
         public bool IsResolved => resolved;
         public bool IsInitialized => initialized;
         public float HitPoints => hitPoints;
@@ -168,6 +170,7 @@ namespace RoboRougelike.Mechanics.Rockets
                     ownerRoot, attacker, blastBuffer, occlusionBuffer);
                 if (result.Overflow)
                     Debug.LogWarning("WPN-004: blast overlap overflow; no explosion damage applied.", this);
+                try{Detonated?.Invoke(this,point,normal);}catch(System.Exception error){Debug.LogException(error);}
             }
             if (optionalExplosionVfxPrefab != null)
                 Instantiate(optionalExplosionVfxPrefab, point, Quaternion.identity);

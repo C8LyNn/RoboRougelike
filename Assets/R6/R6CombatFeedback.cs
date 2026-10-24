@@ -15,6 +15,12 @@ namespace RoboRougelike.R6
         readonly Queue<(string text,float until)> notices=new Queue<(string,float)>();
         readonly HashSet<int> losses=new HashSet<int>();
         static R6CombatFeedback instance;
+        // Accepted HP damage has already been settled. Cosmetic listeners cannot interrupt death.
+        public static event System.Action<P12PipelineSafeDamageable,Vector3,bool> ResolvedHit;
+        public static void ClearTransientVisuals()
+        {
+            if(instance!=null)while(instance.effects.Count>0)instance.RemoveFirst();
+        }
         Material material;
         int playerId;
         public static R6CombatFeedback Ensure()
@@ -32,7 +38,10 @@ namespace RoboRougelike.R6
         }
         public static void Hit(P12PipelineSafeDamageable part,Vector3 point,bool destroyed)
         {
-            Ensure().Emit(point,PartColor(part),destroyed?.42f:.15f,destroyed?.32f:.16f,part.GetComponent<Renderer>()?.sharedMaterial);
+            if(ResolvedHit==null)
+                Ensure().Emit(point,PartColor(part),destroyed?.42f:.15f,destroyed?.32f:.16f,part.GetComponent<Renderer>()?.sharedMaterial);
+            else
+                try{ResolvedHit.Invoke(part,point,destroyed);}catch(System.Exception error){Debug.LogException(error);}
             if(destroyed)ModuleLost(part);
         }
         public static void ModuleLost(P12PipelineSafeDamageable part)

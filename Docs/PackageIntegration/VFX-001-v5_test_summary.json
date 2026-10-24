@@ -1,0 +1,493 @@
+[
+  {
+    "directory": "W7-vfx-green2-b0539ecc12bd41edb6d5af0cfd6d22ca",
+    "summary": {
+      "id": "2",
+      "testcasecount": "61",
+      "result": "Passed",
+      "total": "61",
+      "passed": "61",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 02:24:05Z",
+      "end-time": "2026-10-24 02:24:06Z",
+      "duration": "0,5044338"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW7VfxTests.ActualCoverAndFragmentEventsRespectDisabledEffectsWithoutReplayingHistory",
+        "result": "Passed",
+        "duration": "3.689163"
+      },
+      {
+        "fullname": "RRLW7VfxTests.EnemyCoreDestructionUsesCoreShockwaveWhileOtherEnemyRemains",
+        "result": "Passed",
+        "duration": "3.789428"
+      },
+      {
+        "fullname": "RRLW7VfxTests.LeavingCombatClearsEffectsAndSceneRestartReinstallsExactlyOneBridge",
+        "result": "Passed",
+        "duration": "4.185082"
+      },
+      {
+        "fullname": "RRLW7VfxTests.MuzzleFlashDoesNotBecomeAHitOrExplosion",
+        "result": "Passed",
+        "duration": "3.361932"
+      },
+      {
+        "fullname": "RRLW7VfxTests.RealRocketDetonationShowsExplosionEvenWhenDurablePartSurvives",
+        "result": "Passed",
+        "duration": "3.669609"
+      },
+      {
+        "fullname": "RRLW7VfxTests.SettledPartHitImmediatelyEmitsOnceWithoutLegacySphereOrPhysicalMutation",
+        "result": "Passed",
+        "duration": "3.336590"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.LegacyCompatibilityTests.V1Resolver_Preserved",
+        "result": "Passed",
+        "duration": "0.003086"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.LegacyCompatibilityTests.V1Spec_Valid",
+        "result": "Passed",
+        "duration": "0.000395"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxBudgetTests.ActiveCap_IsAlwaysRespected",
+        "result": "Passed",
+        "duration": "0.000277"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxBudgetTests.CoreExplosion_BypassesPerFrameLimit",
+        "result": "Passed",
+        "duration": "0.000163"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxBudgetTests.InvalidConfig_IsClamped",
+        "result": "Passed",
+        "duration": "0.000119"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxBudgetTests.NewFrame_ResetsPerFrameCounter",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxBudgetTests.NormalEvents_StopAtPerFrameLimit",
+        "result": "Passed",
+        "duration": "0.000057"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.Detached_HasIndependentHighestPriority",
+        "result": "Passed",
+        "duration": "0.000185"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.FlashOnlyOnMeaningfulEscalation",
+        "result": "Passed",
+        "duration": "0.000087"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.Health_MapsToExpectedStage(1.0f,Healthy)",
+        "result": "Passed",
+        "duration": "0.000195"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.Health_MapsToExpectedStage(0.7f,Scratched)",
+        "result": "Passed",
+        "duration": "0.000045"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.Health_MapsToExpectedStage(0.5f,Smoking)",
+        "result": "Passed",
+        "duration": "0.000036"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.Health_MapsToExpectedStage(0.1f,Critical)",
+        "result": "Passed",
+        "duration": "0.000036"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxDamageResponseTests.Smoke_OnlyBelowThreshold_AndClamped",
+        "result": "Passed",
+        "duration": "0.000274"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxEventBatcherTests.DifferentSequence_DoesNotMerge",
+        "result": "Passed",
+        "duration": "0.001113"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxEventBatcherTests.SameCauseNearbyDetachment_IsMerged",
+        "result": "Passed",
+        "duration": "0.000323"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxEventBatcherTests.UnknownCause_DoesNotMerge",
+        "result": "Passed",
+        "duration": "0.000231"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.CoreDestroyed_MoreVisibleParticles_ThanHit",
+        "result": "Passed",
+        "duration": "0.000219"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.Energy_IsBlueDominant",
+        "result": "Passed",
+        "duration": "0.000109"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.Event_NormalIsNormalized_AndIntensityClamped",
+        "result": "Passed",
+        "duration": "0.000545"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.Event_ZeroNormalUsesUp",
+        "result": "Passed",
+        "duration": "0.000112"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.EveryKind_ProducesFiniteNonNegativeValues(Hit)",
+        "result": "Passed",
+        "duration": "0.000386"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.EveryKind_ProducesFiniteNonNegativeValues(Detached)",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.EveryKind_ProducesFiniteNonNegativeValues(Explosion)",
+        "result": "Passed",
+        "duration": "0.000044"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.EveryKind_ProducesFiniteNonNegativeValues(CoreDestroyed)",
+        "result": "Passed",
+        "duration": "0.000045"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.EveryKind_ProducesFiniteNonNegativeValues(LandingDust)",
+        "result": "Passed",
+        "duration": "0.000043"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxResolverTests.Rubber_DoesNotProduceFlash",
+        "result": "Passed",
+        "duration": "0.000112"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxTimelineTests.DustHasNoMetalFragments",
+        "result": "Passed",
+        "duration": "0.000134"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxTimelineTests.ExplosionHasSmokeAndFragments",
+        "result": "Passed",
+        "duration": "0.000105"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4CoreTimelineTests.CoreBeatsHaveMonotonicTimes",
+        "result": "Passed",
+        "duration": "0.000226"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4CoreTimelineTests.CoreHasExactlyOneMainDetonation",
+        "result": "Passed",
+        "duration": "0.000086"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4CoreTimelineTests.CoreTimelineStartsWithFlashAndEndsWithDebris",
+        "result": "Passed",
+        "duration": "0.000078"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4CoreTimelineTests.NegativeCoreBeatThrows",
+        "result": "Passed",
+        "duration": "0.000805"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.DistanceLodIsBoundedAndFades",
+        "result": "Passed",
+        "duration": "0.000239"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.DistanceLodRejectsNonfiniteDistance",
+        "result": "Passed",
+        "duration": "0.000077"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.HighIntensityHasHigherOpacity",
+        "result": "Passed",
+        "duration": "0.000184"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.RubberCracksAreLesserThanMetal",
+        "result": "Passed",
+        "duration": "0.000159"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.ScarControllerRejectsMissingNormalsWithoutCreatingMarks",
+        "result": "Passed",
+        "duration": "0.000892"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.ScarDiameterClamps(-4.0f,0.12f)",
+        "result": "Passed",
+        "duration": "0.000181"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.ScarDiameterClamps(0.0f,0.12f)",
+        "result": "Passed",
+        "duration": "0.000063"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.ScarDiameterClamps(1.0f,0.48f)",
+        "result": "Passed",
+        "duration": "0.000048"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4ScarTests.ScarDiameterClamps(8.0f,0.48f)",
+        "result": "Passed",
+        "duration": "0.000048"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5CosmeticTransformTests.CameraImpulse_IgnoresRemoteAndUnrelatedEvents",
+        "result": "Passed",
+        "duration": "0.001186"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5CosmeticTransformTests.CameraImpulse_OverlappingEventsRemainWithinCap",
+        "result": "Passed",
+        "duration": "0.001183"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5CosmeticTransformTests.CameraImpulse_RejectsRigAndFadesToRest",
+        "result": "Passed",
+        "duration": "0.000738"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5CosmeticTransformTests.MechanicalJolt_RecoveryRestoresOriginalChildPose",
+        "result": "Passed",
+        "duration": "0.001094"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5CosmeticTransformTests.MechanicalJolt_RejectsPhysicsRoot",
+        "result": "Passed",
+        "duration": "0.000174"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Attenuation_ClampsDistance(0.0f,1.0f)",
+        "result": "Passed",
+        "duration": "0.000089"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Attenuation_ClampsDistance(5.0f,1.0f)",
+        "result": "Passed",
+        "duration": "0.000028"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Attenuation_ClampsDistance(30.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000024"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Attenuation_ClampsDistance(100.0f,0.0f)",
+        "result": "Passed",
+        "duration": "0.000022"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Attenuation_IsMonotonic",
+        "result": "Passed",
+        "duration": "0.000125"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Attenuation_NanDoesNotPoisonEffect",
+        "result": "Passed",
+        "duration": "0.000070"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Bounded_RestrictsTranslation",
+        "result": "Passed",
+        "duration": "0.000144"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5ImpulseEnvelopeTests.Decay_StartAndEnd",
+        "result": "Passed",
+        "duration": "0.000066"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW7VfxTests;RoboRougelike.VFX001.Tests",
+      "mode": "EditMode",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-24T02:24:07.2233862Z"
+    }
+  },
+  {
+    "directory": "W7-vfx-play-green-8cb4df5265064c7c9e1007c8495d873e",
+    "summary": {
+      "id": "2",
+      "testcasecount": "20",
+      "result": "Passed",
+      "total": "20",
+      "passed": "20",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 02:25:25Z",
+      "end-time": "2026-10-24 02:25:27Z",
+      "duration": "2,1737134"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxBatcherIntegrationTests.MultipleConnectedFragments_YieldOneTransient",
+        "result": "Passed",
+        "duration": "0.027559"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxModuleTests.LegacyTransient_DestroysAfterSetLifetime",
+        "result": "Passed",
+        "duration": "0.201223"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxModuleTests.Recoil_OnlyMovesVisualChild",
+        "result": "Passed",
+        "duration": "0.052245"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxModuleTests.Thruster_DoesNotScalePhysicsRoot",
+        "result": "Passed",
+        "duration": "0.004778"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxPoolingTests.Pool_ClearAll_ReleasesTransientObjects",
+        "result": "Passed",
+        "duration": "0.003702"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxPoolingTests.Pool_ReusesObjectAfterCompletion",
+        "result": "Passed",
+        "duration": "1.103790"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV3RuntimeTests.CoreBurst_ContainsAnimatedRing_AndRecyclesIt",
+        "result": "Passed",
+        "duration": "0.721253"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV3RuntimeTests.ExhaustTrail_HasNoGameplayBodySideEffects",
+        "result": "Passed",
+        "duration": "0.003548"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV3RuntimeTests.GroundSkid_RequiresContactSlipAndSpeed",
+        "result": "Passed",
+        "duration": "0.003339"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV3RuntimeTests.PersistentSmoke_RespondsToDamageAndDetachment",
+        "result": "Passed",
+        "duration": "0.002165"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4RuntimeTests.ArmorScarsReuseBoundedOverlayWithoutCollider",
+        "result": "Passed",
+        "duration": "0.003830"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4RuntimeTests.CoreDirectorFinishesAndCanCancel",
+        "result": "Passed",
+        "duration": "0.003161"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4RuntimeTests.CosmeticBurning_DoesNotAddGameplayPhysics",
+        "result": "Passed",
+        "duration": "0.002917"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4RuntimeTests.DebrisMeshIsGeometryNotRigidbody",
+        "result": "Passed",
+        "duration": "0.000855"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV4RuntimeTests.DetachedTrailRequiresDetachedAndSpeed",
+        "result": "Passed",
+        "duration": "0.001270"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5OrchestrationTests.RoutedImpact_DoesNotMutatePhysics",
+        "result": "Passed",
+        "duration": "0.003456"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5RuntimeTests.CameraRigDoesNotMoveOnImpulse",
+        "result": "Passed",
+        "duration": "0.001599"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5RuntimeTests.HeatGlow_IsBoundedAndClears",
+        "result": "Passed",
+        "duration": "0.003234"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5RuntimeTests.HeatGlow_RejectsInvalidSurfaceNormal",
+        "result": "Passed",
+        "duration": "0.000767"
+      },
+      {
+        "fullname": "RoboRougelike.VFX001.Tests.VfxV5RuntimeTests.MechanicalJolt_DisablingRestoresPose",
+        "result": "Passed",
+        "duration": "0.001775"
+      }
+    ],
+    "exit": {
+      "mode": "PlayMode",
+      "filter": "RoboRougelike.VFX001.Tests",
+      "finishedUtc": "2026-10-24T02:25:29.2707829Z",
+      "exitCode": 0
+    }
+  },
+  {
+    "directory": "W7-feedback-contract-green-ba130eca7f90496d8034910f6921bd2e",
+    "summary": {
+      "id": "2",
+      "testcasecount": "1",
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 02:31:25Z",
+      "end-time": "2026-10-24 02:31:27Z",
+      "duration": "1,6007374"
+    },
+    "cases": [
+      {
+        "fullname": "R6FeedbackTests.HitsLeaveReadableDamageAndBoundedEffectsWithoutCollisionShapes",
+        "result": "Passed",
+        "duration": "4.408649"
+      }
+    ],
+    "exit": {
+      "filter": "R6FeedbackTests",
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-24T02:31:28.4838143Z",
+      "exitCode": 0
+    }
+  }
+]

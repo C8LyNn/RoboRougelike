@@ -6,6 +6,7 @@ namespace RoboRougelike.R3
     public sealed class R3Debris : MonoBehaviour
     {
         private static readonly Queue<R3Debris> pieces=new Queue<R3Debris>();
+        public static event System.Action<R3Debris> Separated;
         // Detached wreckage is briefly non-solid so it cannot shield live modules.
         private readonly List<Collider> temporaryColliders=new List<Collider>();
         private Rigidbody debrisBody;
@@ -41,6 +42,7 @@ namespace RoboRougelike.R3
             pieces.Enqueue(this);
             while(pieces.Count>70){var old=pieces.Dequeue();if(old!=null){old.gameObject.SetActive(false);Destroy(old.gameObject);}}
             Destroy(gameObject,10);
+            try{Separated?.Invoke(this);}catch(System.Exception error){Debug.LogException(error);}
         }
     }
 }
