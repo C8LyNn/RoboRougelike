@@ -1,8 +1,12 @@
 {
   "id": "M02-008",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "IN_PROGRESS",
   "claimed_at_utc": "2026-10-24T17:45:41.770Z",
   "model": "Pojedynczy moduł gąsienicy",
-  "run": "2026-10-24T17:00Z"
+  "run": "2026-10-24T17:00Z",
+  "branch": "feature/rrl-model-m02-008-single-track-module",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/94",
+  "source_commit": "04f8d287317bd40c1cc1b3507d8c8dff5ca16691",
+  "qa": "STATIC_PASS_BLENDER_PENDING_UNITY_NOT_RUN"
 }
