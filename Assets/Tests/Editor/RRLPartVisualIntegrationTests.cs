@@ -62,13 +62,54 @@ public class RRLPartVisualIntegrationTests
             Assert.AreEqual(oldColliders + 1, block.GetComponentsInChildren<Collider>(true).Length);
             var visual = block.GetComponentInChildren<PartVisualMarker>();
             Assert.IsNotNull(visual);
-            Assert.IsFalse(visual.GetComponent<Collider>().enabled);
+            Assert.IsFalse(visual.GetComponentInChildren<Collider>(true).enabled);
             Assert.IsNull(visual.GetComponent<Rigidbody>());
             Assert.IsTrue(PartVisualBinder.TryApply(block.transform, Vector3Int.left,
                 R3PartKind.Wheel, R4WeaponKind.Basic, logical.transform, catalog));
             Assert.AreEqual(1, block.GetComponentsInChildren<PartVisualMarker>().Length);
         }
         finally { Object.DestroyImmediate(block); Object.DestroyImmediate(candidate); Object.DestroyImmediate(catalog); }
+    }
+
+    [Test]
+    public void WheelSpinHasCorrectTravelSignAndGuardedZeroRadius()
+    {
+        Assert.AreEqual(180f / Mathf.PI, PartVisualWheelSpin.SpinDegrees(1f, 1f, 1f), .0001f);
+        Assert.AreEqual(-180f / Mathf.PI, PartVisualWheelSpin.SpinDegrees(-1f, 1f, 1f), .0001f);
+        Assert.AreEqual(0f, PartVisualWheelSpin.SpinDegrees(10f, 0f, 1f));
+    }
+
+    [Test]
+    public void PoseFollowerDoesNotOverwriteNestedWheelRotation()
+    {
+        var block = new GameObject("block");
+        var logical = new GameObject("logical");
+        logical.transform.SetParent(block.transform, false);
+        var source = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        var catalog = ScriptableObject.CreateInstance<PartVisualCatalog>();
+        catalog.entries.Add(new PartVisualCatalog.Entry
+        {
+            kind = R3PartKind.Wheel, prefab = source,
+            followLogicalPivot = true
+        });
+        try
+        {
+            Assert.IsTrue(PartVisualBinder.TryApply(block.transform, Vector3Int.right,
+                R3PartKind.Wheel, R4WeaponKind.Basic, logical.transform, catalog));
+            var marker = block.GetComponentInChildren<PartVisualMarker>();
+            var child = marker.transform.Find("Model");
+            child.localRotation = Quaternion.Euler(31f, 0f, 0f);
+            marker.GetComponent<PartVisualFollowPose>().SyncNow();
+            Assert.That(Quaternion.Angle(child.localRotation, Quaternion.Euler(31f, 0f, 0f)),
+                Is.LessThan(.01f));
+            Assert.IsNotNull(marker.GetComponent<PartVisualWheelSpin>());
+        }
+        finally
+        {
+            Object.DestroyImmediate(block);
+            Object.DestroyImmediate(source);
+            Object.DestroyImmediate(catalog);
+        }
     }
 
     [Test]

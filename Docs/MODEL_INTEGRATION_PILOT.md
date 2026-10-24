@@ -52,3 +52,10 @@ unrelated catalog entries and writes Resources/RRLPartVisualCatalog.asset.
 Review scale, axis and pivot on Windows Unity — the provided numbers are
 starting estimates, not verified by runtime tests. Do not track Unity-generated
 model .meta files until import and visual QA are satisfactory.
+
+## Wheel spin correction
+- W01's imported GLB is nested below a pose-follower anchor. The original logical collider and module remain unchanged.
+- `PartVisualWheelSpin` rotates the W01 child around its +X axle using chassis forward speed in LateUpdate, no added forces.
+- A dead/detached wheel stops spinning; a garage ghost has no Rigidbody and stays static.
+- The visual radius baseline (0.39 m) matches the old wheel proxy and requires Unity on-screen calibration.
+- Added two EditMode tests for wheel rotation and preserving nested animation transforms. No test execution claimed.
