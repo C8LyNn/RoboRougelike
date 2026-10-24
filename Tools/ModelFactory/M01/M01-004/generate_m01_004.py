@@ -242,7 +242,6 @@ def write_obj(out):
 
 def build_blender(out):
     import bpy
-    from mathutils import Matrix
     scene=bpy.context.scene
     name=ID+"_ASSET"
     old=bpy.data.collections.get(name)
@@ -268,8 +267,12 @@ def build_blender(out):
             bsdf.inputs["Metallic"].default_value=p["metallic"]
             bsdf.inputs["Roughness"].default_value=p["roughness"]
             if p.get("emission"):
-                bsdf.inputs["Emission Color"].default_value=(*p["rgb"],1)
-                bsdf.inputs["Emission Strength"].default_value=p["emission"]
+                if "Emission Color" in bsdf.inputs:
+                    bsdf.inputs["Emission Color"].default_value=(*p["rgb"],1)
+                elif "Emission" in bsdf.inputs:
+                    bsdf.inputs["Emission"].default_value=(*p["rgb"],1)
+                if "Emission Strength" in bsdf.inputs:
+                    bsdf.inputs["Emission Strength"].default_value=p["emission"]
         mats[matname]=m
 
     def empty(label,parent=None,location=(0,0,0)):
@@ -308,7 +311,8 @@ def build_blender(out):
             bevel=obj.modifiers.new("Machined_edges","BEVEL")
             bevel.width=.004
             bevel.segments=2
-            bevel.affect="EDGES" if hasattr(bevel,"affect") else None
+            if hasattr(bevel,"affect"):
+                bevel.affect="EDGES"
             normal=obj.modifiers.new("Weighted_face_normals","WEIGHTED_NORMAL")
             normal.keep_sharp=True
         obj["module_id"]=ID
