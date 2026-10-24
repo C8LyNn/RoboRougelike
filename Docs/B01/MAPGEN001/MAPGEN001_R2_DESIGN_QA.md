@@ -72,3 +72,38 @@ Pozostałe **21 normal + 54 hard = 75** prób Heavy kończą się w modelu offli
 `R2_CODE_PRESENT / MGD_01_PARTIAL_REWORK / MGD_02_FAIL / MGD_03_FAIL / OFFLINE_HEAVY_REJECT_75_OF_200_NORMAL_HARD / UNITY_NOT_RUN / G1_BLOCKED / DESIGN_FAIL / G2_HOLD / GPT_OSS_NOT_AUTHORIZED / NO_MERGE`.
 
 Wyniki źródłowe tego audytu: niezależny skrypt `mapgen_r2_offline_audit.py`, 600-wierszowy CSV layoutów i 1200-wierszowy CSV route-check dostępne jako artefakty rozmowy B01-10; **nie są to pliki źródłowe Unity ani oficjalne wyniki Test Runnera**.
+
+
+---
+
+# Addendum — ponowny audyt kolejnego SHA (R3 / 2026-10-24)
+
+**Badany exact SHA:** `9a35fe149eb79e88ca0eabf4f410d05d88ab8e78`. Jest to kolejny, odrębny audyt po zmianie HEAD PR #103; wszystkie pomiary R2 powyżej zachowują swój oryginalny kontekst SHA `a2993a4...`.
+
+## Co B01-20 zmienił
+- `MapGenRouteValidator`: krok spine 0,5→0,25 m; footprint floor-probe 4 narożniki→3×3; nowa walidacja spawnów (blocked/overlap); ostrożniejsze ograniczenie promienia skrętu z użyciem tangent fillet.
+- `MapGenPlanner`: offsety osłon zależne od seeda oraz Difficulty, rampa zmienia nachylenie 4–8 stopni.
+- `MapGenBuilder`: rozszerzono obsługę sytuacji wyjątkowych i alias Regenerate; demo otrzymało poprawki kamery/sterowania.
+- Testy EditMode i PlayMode rozszerzono **na poziomie kodu**, lecz wyników działania Unity nadal nie otrzymano.
+
+## Ponowne wykonanie symulacji offline (R3)
+Zaktualizowano niezależny emulator dokładnie w zakresie zmian R3, uruchomiono 600 layoutów (2 receptury×3 presety×100 seedów), a następnie sprawdzono 1200 scenariuszy Light/Heavy przy próbkowaniu spine 0,25m, floor 3×3 i BFS 1m. **Nie jest to natywny Unity PASS.**
+
+| Receptura / preset | Light route OK / 100 | Heavy route OK / 100 | Średnia liczba osłon (arena) |
+|---|---:|---:|---:|
+| Arena easy | 100 | 100 | 4,33 |
+| Arena normal | 100 | 100 | 8,22 |
+| Arena hard | 100 | 100 | 12,09 |
+| Course easy | 100 | 100 | — |
+| Course normal | 100 | **79** | — |
+| Course hard | 100 | **46** | — |
+
+**Najważniejsze:** P0-01 **nadal występuje** (21 normal + 54 hard odrzucone przez `SPINE_FOOTPRINT_BLOCKED`). Nowe próbkowanie jest dokładniejsze, lecz nie zmieniło rampy/przeszkody kolidującej z certyfikowaną spine. Przykłady do oryginalnego C#/Unity: (Course,normal,Heavy,seed 2/7/31), (Course,hard,Heavy,seed 0/2/7/**19**). Dla hard seed 19 model wskazuje konflikt w okolicy X=-2,795, Z=32,446. W źródłowym EditMode teście `CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute` użyto właśnie hard seed 19; programowe `Plan(...Heavy)` może rzucić wyjątek przed asercją. **Natywne potwierdzenie wymagane.**
+
+**MGD-02 nadal FAIL:** rampy i slalom pozostają opcjonalnymi przeszkodami bocznymi; pitch 4→8 stopni nie dowodzi postępu umiejętności gracza. Długość spine nadal ~56,02/56,11/56,25 m.
+
+**MGD-03 nadal FAIL:** osłony mają dodatkowy jitter, lecz centralna kolumna `ix==0` pozostaje pusta i wszystkie 100/100 seedów/preset mają bezpośrednią linię gracz→środkowy enemy spawn; liczba różnych hashy nie mierzy taktycznych opcji.
+
+**B01-20 priorytet:** NAPRAWIĆ konflikt Heavy na spine albo dodać bounded deterministic retry z nowym kandydatem; dopiero potem balans toru i areny. W szczególności nie wolno maskować P0 poszerzeniem deklarowanego clearance bez przesunięcia rzeczywistej geometrii. Potem nowy SHA, przetestować 100 seedów/preset/rig, 12 Unity Rigidbody runs, 12 ręcznych prób (3 seedy×2 receptury×2 profile) i testy negatywne.
+
+**Stan R3:** `DESIGN_FAIL / HEAVY_P0_REPRO_OFFLINE / UNITY_NOT_RUN / G1_BLOCKED / G2_HOLD / NO_MERGE`.
