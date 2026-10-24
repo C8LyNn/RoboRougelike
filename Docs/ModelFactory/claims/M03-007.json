@@ -1,8 +1,14 @@
 {
   "id": "M03-007",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T16:43:46.153Z",
   "model": "Uchwyt pionowy T",
-  "run": "2026-10-24T16:00Z"
+  "run": "2026-10-24T16:00Z",
+  "branch": "feature/rrl-model-m03-007-vertical-t-bracket",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/86",
+  "source_path": "Tools/ModelFactory/M03/M03-007",
+  "last_commit": "51bae7e0bfadd896c116660cd5166bc4a01b8915",
+  "blender": "PASS_CI_PREVIOUS_REVISION",
+  "unity": "BLOCKED_UNITY_ACTIVATION"
 }
