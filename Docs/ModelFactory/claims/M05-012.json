@@ -4,5 +4,15 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-24T21:50:51.040Z",
   "model": "Generator awaryjny",
-  "run": "2026-10-24T21Z"
+  "run": "2026-10-24T21Z",
+  "model_branch": "feature/rrl-model-m05-012-emergency-generator",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/123",
+  "model_commit": "bf789462cc09044030d4e422303a80e6d8da6ac2",
+  "qa_status": "BLENDER_CI_RUNNING",
+  "blender_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136160449",
+  "unity_status": "NOT RUN",
+  "unity_import": "NOT RUN",
+  "urp_visual_review": "NOT RUN",
+  "unity_editmode": "NOT RUN",
+  "unity_playmode": "NOT RUN"
 }
