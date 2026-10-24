@@ -11,9 +11,22 @@
   "claim_commit_sha": "8a7aa354f5b90d9551064d20baee588bfda7bf83",
   "asset_commit_sha": "c65cb57777f5d124adfd1470f7a7194536accfce",
   "qa": {
-    "static": "PASS (GitHub Actions run 40140621600, 361 sampled poses, 52 watertight meshes)",
-    "blender": "PENDING_RETEST (missing numpy dependency fixed)",
-    "unity": "NOT RUN",
+    "static": "PASS: 52 closed oriented meshes, 1512 vertices, 2816 triangles, 8 materials, 361 sampled kinematic poses; GitHub Actions 40140720423",
+    "blender": "PASS: Blender 4.0.2 repeated build, 36 frames, 3 animated joints, GLB FBX BLEND real exports; GLB independent inspection PASS; GitHub Actions 40140720423",
+    "repository_validation": "PASS: GitHub Actions 40140720417",
+    "unity": "BLOCKED_ACTIVATION: EditMode run 40140720425 and PlayMode run 40140720470 failed at Require valid Unity activation credentials; Unity import/PlayMode NOT RUN",
     "visual_review": "NOT RUN"
-  }
+  },
+  "artifacts": [
+    {
+      "type": "OBJ_MTL_QA",
+      "id": 12579270462,
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140720423/artifacts/12579270462"
+    },
+    {
+      "type": "GLB_FBX_BLEND_QA",
+      "id": 12578807284,
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140720423/artifacts/12578807284"
+    }
+  ]
 }
