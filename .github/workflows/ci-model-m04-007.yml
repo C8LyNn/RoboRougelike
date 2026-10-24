@@ -1,0 +1,132 @@
+name: M04-007 Quad Hover Emitter QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-007-quad-hover-emitter
+    paths:
+      - 'Tools/ModelFactory/M04/M04-007/**'
+      - '.github/workflows/ci-model-m04-007.yml'
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-007/**'
+      - '.github/workflows/ci-model-m04-007.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Python syntax and deterministic 81-frame swept QA
+        run: |
+          set -euo pipefail
+          root=Tools/ModelFactory/M04/M04-007
+          python3 -m py_compile "$root/generate_m04_007.py" "$root/qa_mesh_m04_007.py"
+          mkdir -p /tmp/m04-007-a /tmp/m04-007-b
+          python3 "$root/generate_m04_007.py" --self-test --output-dir /tmp/m04-007-a
+          python3 "$root/generate_m04_007.py" --self-test --output-dir /tmp/m04-007-b
+          for f in M04-007.obj M04-007.mtl M04-007.static-qa.json; do
+            cmp "/tmp/m04-007-a/$f" "/tmp/m04-007-b/$f"
+            if test -f "$root/$f"; then cmp "$root/$f" "/tmp/m04-007-a/$f"; fi
+          done
+          python3 "$root/qa_mesh_m04_007.py" --asset-dir /tmp/m04-007-a
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('/tmp/m04-007-a/M04-007.static-qa.json').read_text())
+          assert q['status']=='PASS_STATIC'
+          assert q['emitter_count']==4
+          assert q['moving_pulse_roots']==4
+          assert q['animated_meshes']==12
+          assert q['pulse_sweep_frames']==81
+          assert q['annular_radial_separation_checks']>0
+          assert q['min_verified_moving_radial_clearance_m']>=.010
+          assert q['blender']=='NOT_RUN' and q['unity_import']=='NOT_RUN'
+          print('M04-007 static generator and swept animation QA PASS',q)
+          PY
+      - name: Check Blender safety boundaries
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          source=Path('Tools/ModelFactory/M04/M04-007/generate_m04_007.py').read_text()
+          assert 'bpy.ops.object.delete(' not in source
+          assert 'bpy.data.libraries.write(' in source
+          assert 'use_selection=True' in source
+          assert 'M04-007_ASSET' in source
+          print('M04-007 isolated collection source PASS')
+          PY
+      - name: Persist validated static OBJ, MTL and QA on feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m04-007-quad-hover-emitter'
+        run: |
+          set -euo pipefail
+          dst=Tools/ModelFactory/M04/M04-007
+          cp /tmp/m04-007-a/M04-007.obj "$dst/"
+          cp /tmp/m04-007-a/M04-007.mtl "$dst/"
+          cp /tmp/m04-007-a/M04-007.static-qa.json "$dst/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dst/M04-007.obj" "$dst/M04-007.mtl" "$dst/M04-007.static-qa.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "asset(M04-007): persist validated quad hover OBJ MTL and static QA"
+            git push origin HEAD:feature/rrl-model-m04-007-quad-hover-emitter
+          fi
+      - name: Upload deterministic OBJ and MTL
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-007-quad-hover-static
+          path: |
+            /tmp/m04-007-a/M04-007.obj
+            /tmp/m04-007-a/M04-007.mtl
+            /tmp/m04-007-a/M04-007.static-qa.json
+          if-no-files-found: error
+          retention-days: 30
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install real Blender with glTF exporter
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Export Blender library and animated GLB
+        run: |
+          set -euo pipefail
+          root=Tools/ModelFactory/M04/M04-007
+          mkdir -p /tmp/m04-007-blender
+          blender -b --factory-startup --python "$root/generate_m04_007.py" -- --output-dir /tmp/m04-007-blender --require-blender
+          test -s /tmp/m04-007-blender/M04-007.blend
+          test -s /tmp/m04-007-blender/M04-007_animated.glb
+          python3 "$root/qa_mesh_m04_007.py" --asset-dir /tmp/m04-007-blender --glb /tmp/m04-007-blender/M04-007_animated.glb
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('/tmp/m04-007-blender/M04-007.static-qa.json').read_text())
+          assert q['blender']=='EXECUTED'
+          assert q['glb']=='EXPORTED_NOT_UNITY_VERIFIED'
+          print('M04-007 real Blender export PASS')
+          PY
+      - name: Upload animated Blender and GLB
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-007-quad-hover-animated
+          path: |
+            /tmp/m04-007-blender/M04-007.blend
+            /tmp/m04-007-blender/M04-007_animated.glb
+            /tmp/m04-007-blender/M04-007.static-qa.json
+          if-no-files-found: error
+          retention-days: 30
