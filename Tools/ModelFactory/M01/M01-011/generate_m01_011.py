@@ -221,6 +221,12 @@ def build():
           .058,.065,"Titanium_Satin",.010)
     strut("Right_Light_Diagonal_Brace",(.190,.193,.455),(.208,.182,1.300),
           .026,.038,"Copper_Anodized",.005)
+    # Real lateral webs connect both diagonal braces to the receiver.
+    for n,z in enumerate((.450,.860,1.055)):
+        box("Left_Brace_Load_Web_%d"%n,(-.176,.226,z),
+            (.148,.063,.052),"Graphite_Cerakote",bevel=.007)
+        box("Right_Brace_Load_Web_%d"%n,(.164,.195,z),
+            (.104,.052,.055),"Titanium_Satin",bevel=.006)
     for n,z in enumerate((.440,.650,.870,1.090)):
         box("Left_Brace_Ceramic_Saddle_%d"%n,(-.222,.255,z),
             (.073,.015,.060),"Ceramic_Ivory",bevel=.006)
@@ -239,7 +245,7 @@ def build():
               "Copper_Anodized")
         for side,label in ((-1,"L"),(1,"R")):
             box("Barrel_Floating_Side_Rail_%s_%d"%(label,n),
-                (side*.086,.270,z),(.015,.042,.105),
+                (side*.060,.270,z),(.022,.042,.105),
                 "Ceramic_Ivory",bevel=.006)
     tube("Muzzle_Brake_Bored",(0,.270,2.220),.071,.040,.155,
          "Graphite_Cerakote",segments=48)
