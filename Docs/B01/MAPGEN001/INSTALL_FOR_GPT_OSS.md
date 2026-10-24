@@ -11,3 +11,7 @@
 7. After B01-00 READY_FOR_GPT_OSS, send exact PR+HEAD+file manifest+independent QA to GPT OSS, obtain explicit ACK of target branch/worktree. GPT OSS owns later integration and game builds, not B01.
 
 **Conditional integration prompt to GPT OSS:** "Inspect exact approved MAPGEN001 Draft PR HEAD and source hashes, reproduce Unity test suite in isolated worktree, integrate only via an opt-in host adapter into the existing R5 run without rewriting its economy, damage, enemies or garage, maintain CHL003 separation and report actual compile/tests/Windows build/manual drive QA with explicit FAIL/NOT_RUN. Never merge/deploy without owner approval."
+
+## R2 candidate / integration hold
+Follow-up R2 branch `feature/b01-mapgen001-r2-validation` **depends on** R1 Draft PR #99 HEAD `6dd21a72c6ec1590015042be6775a7bd0f57f3e1`. Do not import R1 and R2 as competing independent generators. Install **only the latest validated R2 tree** if B01-00 later authorizes G2, retaining all Unity .meta GUIDs, asmdef names and isolated `Assets/B01Packages/MAPGEN001/**` paths. Target game integration, actual Unity 6 compilation, and builds are GPT OSS responsibility.
+Before import obtain `CODEX/GPT_OSS SCOPE ACK` for reserved game paths, verify actual commit/manifest hashes, review `MapGenRouteValidator` behavior (grid-based conservative pass). Run full EditMode/PlayMode suite including physical rover traversal and manual inspection. Keep the original R1 changes available for rollback. **Current authorization: HOLD, pending B01-60 independent QA and B01-40 package checks.**
