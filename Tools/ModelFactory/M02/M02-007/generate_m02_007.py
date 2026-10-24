@@ -212,8 +212,8 @@ def validate(parts):
     assert len([p for p in parts if "Raised_Tread" in p["name"]])==32
     assert len([p for p in parts if "Damper_Housing" in p["name"]])==4
     assert len([p for p in parts if "Sliding_Piston" in p["name"]])==4
-    assert len([p for p in parts if p["role"]=="rotor"])==40
-    assert len([p for p in parts if p["role"]=="carrier"])==22
+    assert len([p for p in parts if p["role"]=="rotor"])==42
+    assert len([p for p in parts if p["role"]=="carrier"])==26
     # Independent kinematic clearance gates at 81 suspension poses and
     # 72 rotor angles per pose. Concentric shaft/bore separation is invariant
     # under spin. Static housings surround piston with a 7 mm radial gap.
