@@ -29,7 +29,8 @@ def check_obj(folder):
     assert manifest["gyro_centre_m"]==[0,0,.38]
     assert manifest["animation_frames"]==121 and manifest["fps"]==30
     assert manifest["moving_groups"]=={"OUTER":10,"MIDDLE":8,"INNER":13}
-    assert manifest["sampled_cage_clearance_checks"]>500000
+    assert manifest["sampled_moving_vertex_checks"]>500000
+    assert manifest["certified_fixed_cage_boxes"]>=20
     assert manifest["min_cage_clearance_m"]>.008
     obj=(folder/manifest["obj"]).read_text()
     mtl=(folder/manifest["mtl"]).read_text()
