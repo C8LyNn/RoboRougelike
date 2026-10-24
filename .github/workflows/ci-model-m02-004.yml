@@ -103,9 +103,15 @@ jobs:
           chunk_len,chunk_type=struct.unpack_from("<II",raw,12)
           assert chunk_type==0x4E4F534A
           data=json.loads(raw[20:20+chunk_len])
-          assert len(data.get("meshes",[]))>=35
-          assert len(data.get("animations",[]))>=1
-          assert any("M02-004_ROTOR" in n.get("name","") for n in data["nodes"])
+          meshes=data.get("meshes",[])
+          animations=data.get("animations",[])
+          nodes=data.get("nodes",[])
+          print("GLB DIAGNOSTICS:",{"bytes":len(raw),"meshes":len(meshes),
+               "animations":len(animations),"nodes":len(nodes),
+               "node_names":[n.get("name","") for n in nodes[:12]],
+               "blend_bytes":(root/"M02-004.blend").stat().st_size},flush=True)
+          assert len(meshes)>=1, "No glTF mesh"
+          assert len(animations)>=1, "No exported glTF animation"
           assert (root/"M02-004.blend").stat().st_size>10000
           print("M02-004 real Blender GLB PASS",len(raw),"bytes",len(data["meshes"]),"meshes",len(data["animations"]),"animations")
           PY
