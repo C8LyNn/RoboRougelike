@@ -88,6 +88,10 @@ jobs:
           assert report["unity_import"]=="NOT RUN"
           print("PASS real GLB: 38 meshes, 5 materials, 4 SNAP ports, no animation")
           PY
+      - name: Verify Blender repeat generation in same session
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-013/qa_blender_m03_013.py
       - name: Upload Blender GLB FBX BLEND
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
