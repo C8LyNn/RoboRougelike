@@ -319,48 +319,35 @@ def export_blender(parts,out):
                                   use_selection=True,export_animations=True,
                                   export_force_sampling=True,
                                   export_frame_range=True)
+        # FBX is optional: Ubuntu Blender 5.0.1 registers a broken/minimal
+        # operator (only filepath/axis) that cannot safely isolate objects.
+        # Do not fake an FBX export or fail the verified GLB/BLEND pipeline.
         fbx=out/"M02-006_animated.fbx"
-        # Ubuntu Blender 5 can register a minimal native FBX operator with
-        # only filepath/axis properties; enable the full legacy addon when
-        # available, otherwise isolate export in a temporary dedicated scene.
+        fbx_status="BLOCKED_FBX_OPERATOR"
         props={p.identifier for p in bpy.ops.export_scene.fbx.get_rna_type().properties}
-        if "use_selection" not in props and "collection" not in props:
+        if "use_selection" in props or "collection" in props:
+            kw={"filepath":str(fbx)}
+            if "use_selection" in props:kw["use_selection"]=True
+            else:kw["collection"]=coll.name
+            for key,value in {"axis_forward":"-Z","axis_up":"Y",
+                              "bake_anim":True,"bake_anim_use_all_actions":False,
+                              "add_leaf_bones":False}.items():
+                if key in props:kw[key]=value
             try:
-                import addon_utils
-                addon_utils.enable("io_scene_fbx",default_set=False,persistent=False)
+                bpy.ops.export_scene.fbx(**kw)
+                if fbx.is_file() and fbx.stat().st_size>10000:
+                    fbx_status="EXPORTED_NOT_IMPORTED"
+                else:
+                    fbx_status="BLOCKED_FBX_EMPTY"
             except Exception as exc:
-                print("M02-006 FBX addon enable unavailable:",str(exc))
-            props={p.identifier for p in bpy.ops.export_scene.fbx.get_rna_type().properties}
-        print("M02-006 FBX operator properties:",sorted(props))
-        kw={"filepath":str(fbx)}
-        for key,value in {"axis_forward":"-Z","axis_up":"Y",
-                          "add_leaf_bones":False,"bake_anim":True,
-                          "bake_anim_use_all_actions":False}.items():
-            if key in props:kw[key]=value
-        if "use_selection" in props:
-            kw["use_selection"]=True
-            bpy.ops.export_scene.fbx(**kw)
-            fbx_animation="EXPORTED_WITH_BAKE"
-        elif "collection" in props:
-            kw["collection"]=coll.name
-            bpy.ops.export_scene.fbx(**kw)
-            fbx_animation="EXPORTED_WITH_BAKE" if "bake_anim" in props else "UNVERIFIED"
+                print("M02-006 FBX unavailable:",str(exc))
+                fbx_status="BLOCKED_FBX_EXPORT_ERROR"
         else:
-            # Only our collection exists in this temporary scene. No other
-            # user objects can leak into the FBX even with a minimal operator.
-            temp=bpy.data.scenes.new("M02-006_TEMP_FBX_EXPORT")
-            try:
-                temp.collection.children.link(coll)
-                temp.frame_start=1;temp.frame_end=61;temp.render.fps=30
-                with bpy.context.temp_override(scene=temp,view_layer=temp.view_layers[0]):
-                    bpy.ops.export_scene.fbx(**kw)
-            finally:
-                bpy.data.scenes.remove(temp)
-            fbx_animation="UNVERIFIED_NATIVE_EXPORTER"
-        assert blend.is_file() and glb.is_file() and fbx.is_file()
+            print("M02-006 FBX BLOCKED: operator lacks selection isolation; GLB remains valid")
+        assert blend.is_file() and glb.is_file()
         return {"blender":"PASS_EXPORT","blend":str(blend),"glb":str(glb),
-                "fbx":str(fbx),"fbx_animation":fbx_animation,
-                "unity_native_fbx":"EXPORTED_NOT_IMPORTED"}
+                "fbx":str(fbx) if fbx_status=="EXPORTED_NOT_IMPORTED" else None,
+                "unity_native_fbx":fbx_status}
     finally:
         bpy.ops.object.select_all(action="DESELECT")
         for ob in previous[4]:
