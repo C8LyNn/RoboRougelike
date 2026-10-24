@@ -5,31 +5,33 @@ on:
       - 'Tools/ModelFactory/M05/M05-002/**'
       - '.github/workflows/ci-model-m05-002.yml'
   pull_request:
+    branches: [develop]
     paths:
       - 'Tools/ModelFactory/M05/M05-002/**'
       - '.github/workflows/ci-model-m05-002.yml'
   workflow_dispatch:
-
+permissions:
+  contents: read
 jobs:
   static-geometry:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          python-version: '3.12'
+          persist-credentials: false
       - name: Validate Python syntax and procedural geometry
         run: |
-          python -m py_compile Tools/ModelFactory/M05/M05-002/generate_m05_002.py
-          python Tools/ModelFactory/M05/M05-002/generate_m05_002.py --self-test
+          python3 -m py_compile Tools/ModelFactory/M05/M05-002/generate_m05_002.py
+          python3 Tools/ModelFactory/M05/M05-002/generate_m05_002.py --self-test
       - name: Regenerate OBJ and compare with checked-in mesh
         run: |
-          python Tools/ModelFactory/M05/M05-002/generate_m05_002.py --output-dir /tmp/m05-002
+          python3 Tools/ModelFactory/M05/M05-002/generate_m05_002.py --output-dir /tmp/m05-002
           cmp Tools/ModelFactory/M05/M05-002/M05-002.obj /tmp/m05-002/M05-002.obj
           cmp Tools/ModelFactory/M05/M05-002/M05-002.mtl /tmp/m05-002/M05-002.mtl
       - name: Verify mesh file integrity
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
           p=Path('Tools/ModelFactory/M05/M05-002/M05-002.obj')
           lines=p.read_text().splitlines()
