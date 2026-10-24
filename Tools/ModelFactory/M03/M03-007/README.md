@@ -5,10 +5,10 @@
 ## Konstrukcja i wygląd
 
 - Sylwetka **T**, pionowy wspornik z górną belką, dwoma trójkątnymi żebrami i czytelnymi śrubami na dwóch wysokościach.
-- Wymiary w lokalnym układzie: szerokość około **0,842 m**, wysokość **0,739 m**, głębokość około **0,262 m**. Unity 1 unit = 1 m; oś +Z w górę, front -Y.
+- Wymiary w lokalnym układzie: szerokość około **0,844 m**, wysokość geometrii **0,725 m** (maksymalny Z **0,739 m** ponad pivotem), głębokość około **0,263 m**. Unity 1 unit = 1 m; oś +Z w górę, front -Y.
 - Pivot główny **(0,0,0)** — środek górnego gniazda ramy pojazdu; normalna mocowania **+Z**. Element wystaje ponad powierzchnię ramy.
 - Dwa dolne porty z rzeczywistymi otworami: X=±0,34 m, Z=0, osie +Z; dwa górne porty w poprzeczce: X=±0,34 m, Z=0,657 m, otwory na osi Y. Promień otworu **28 mm**, promień trzpienia **19 mm**, luz promieniowy **9 mm**.
-- Cztery widoczne łby śrub; dwa wzmacniające gussety, dodatkowe żebra tylne, ceramiczne okładziny, bursztynowe znaczniki oraz wymienne nakładki na dolnej belce.
+- Cztery lokatory SNAP w Blenderze (`M03_007_SNAP_FOOT_LEFT/RIGHT`, `M03_007_SNAP_TOP_LEFT/RIGHT`) są dziećmi pivotu, a root przechowuje krok siatki 1 m. Nie zmienia to geometrii ani istniejącego systemu SNAP w grze.\n- Cztery widoczne łby śrub; dwa wzmacniające gussety, dodatkowe żebra tylne, ceramiczne okładziny, bursztynowe znaczniki oraz wymienne nakładki na dolnej belce.
 - Pięć materiałów PBR: grafit konstrukcyjny, tytan szczotkowany, jasna ceramika, miedź śrub, bursztynowe akcenty. Brak emisji wymuszanej sztucznie.
 - **27 osobnych zamkniętych siatek, 1100 wierzchołków, 2108 trójkątów.** Statyczny uchwyt: **animacja nie jest wymagana**.
 
@@ -36,6 +36,6 @@ Pierwsze dwa polecenia nie wymagają Blendera. W Blenderze skrypt tworzy `M03-00
 
 ## QA i ograniczenia
 
-Walidator kontroluje spójność siatek (każda krawędź w dokładnie dwóch trójkątach), dodatnią objętość i niedegenerujące trójkąty. Dodatkowe testy obejmują otwory i wymiary oraz deterministyczność OBJ/MTL. Renderowane oględziny w Blenderze, import i PlayMode w Unity 6, rzeczywiste kolizje w prefabach i podgląd materiałów są osobnymi bramkami. W szczególności brak fizycznego `Collider` w assetach — ma go zdefiniować właściciel integracji.
+Walidator kontroluje 22 styki sztywnych okładzin, bossów, żeber i łbów śrub, aby uniknąć elementów unoszących się w powietrzu. To test AABB dla celowo nakładających się brył, nie pełna symulacja kolizji. Walidator kontroluje spójność siatek (każda krawędź w dokładnie dwóch trójkątach), dodatnią objętość i niedegenerujące trójkąty. Dodatkowe testy obejmują otwory i wymiary oraz deterministyczność OBJ/MTL. Renderowane oględziny w Blenderze, import i PlayMode w Unity 6, rzeczywiste kolizje w prefabach i podgląd materiałów są osobnymi bramkami. W szczególności brak fizycznego `Collider` w assetach — ma go zdefiniować właściciel integracji.
 
 **Claim:** `Docs/ModelFactory/claims/M03-007.json` na `feature/rrl-model-factory-queue-v1`, atomowy CREATE commit `6ac0597f1cd83ddc8c50324f5800d772ad677109`, blob `e411a0f62d66f8d10ace3ab062570279fe9ea756`, 2026-10-24T16:43:46.153Z. Tylko M03-007. Bez zmian scen, `ProjectSettings`, innych modeli lub rozgrywki.
