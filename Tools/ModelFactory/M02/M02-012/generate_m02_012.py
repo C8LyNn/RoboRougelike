@@ -431,8 +431,15 @@ def main():
     args=ap.parse_args(__import__("sys").argv[__import__("sys").argv.index("--")+1:]
                        if "--" in __import__("sys").argv else [])
     rotor=build()
+    first=(len(OBJECTS),len(MATERIALS),
+           len([o for o in bpy.data.objects if o.name.startswith(MODEL_ID+"_")]))
+    rotor=build()
+    second=(len(OBJECTS),len(MATERIALS),
+            len([o for o in bpy.data.objects if o.name.startswith(MODEL_ID+"_")]))
+    assert first==second,(first,second,"non-idempotent bpy rebuild")
     animate(rotor)
     report=validate()
+    report["repeat_build"]="PASS_TWO_BUILDS"
     report["exports"]=export(Path(args.out).resolve())
     Path(args.out).mkdir(parents=True,exist_ok=True)
     (Path(args.out)/"M02-012_qa.json").write_text(
