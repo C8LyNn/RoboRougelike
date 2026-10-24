@@ -1,0 +1,42 @@
+name: MODEL-02 M02-012 Compact V2 Blender and GLB QA
+on:
+  push:
+    branches: [feature/rrl-model-m02-012-compact-v2-engine]
+    paths:
+      - "Tools/ModelFactory/M02/M02-012/**"
+      - ".github/workflows/qa-m02-012-compact-v2.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install actual Blender from Ubuntu repositories
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
+          blender --version | head -n 2
+      - name: Compile scripts
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-012/generate_m02_012.py
+          python3 -m py_compile Tools/ModelFactory/M02/M02-012/qa_m02_012.py
+      - name: Generate actual animated 3D asset and kinematic QA
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-012/generate_m02_012.py -- --out "$RUNNER_TEMP/M02-012"
+      - name: Independently verify actual exported GLB, BLEND, rig and materials
+        run: |
+          python3 Tools/ModelFactory/M02/M02-012/qa_m02_012.py --dir "$RUNNER_TEMP/M02-012"
+      - name: Publish generated 3D and QA files for Unity importer
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M02-012-compact-V2-animated-GLB-BLEND-QA
+          path: |
+            ${{ runner.temp }}/M02-012/M02-012.blend
+            ${{ runner.temp }}/M02-012/M02-012_animated.glb
+            ${{ runner.temp }}/M02-012/M02-012_qa.json
+          if-no-files-found: error
