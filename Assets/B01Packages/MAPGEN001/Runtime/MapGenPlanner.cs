@@ -40,8 +40,8 @@ namespace B01.MAPGEN001
                 if (config.Segments < 3 || config.Segments > 5
                     || !Finite(config.LaneWidth) || config.LaneWidth < 10f || config.LaneWidth > 30f)
                     throw new ArgumentException("Course requires 3..5 segments and lane width 10..30m");
-                if (vehicle.Width + 5f > config.LaneWidth)
-                    throw new ArgumentException("IMPOSSIBLE_COURSE_PROFILE: clearance width cannot fit vehicle");
+                if (vehicle.Width + .5f > config.LaneWidth * .62f)
+                    throw new ArgumentException("IMPOSSIBLE_COURSE_PROFILE: reserved centre clearance cannot fit vehicle");
                 if (vehicle.MinTurnRadius > 15f)
                     throw new ArgumentException("IMPOSSIBLE_COURSE_TURN_RADIUS");
             }
