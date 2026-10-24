@@ -1,0 +1,80 @@
+name: MODEL-05 M05-007 cassette accumulator QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-007-cassette-accumulator
+    paths:
+      - 'Tools/ModelFactory/M05/M05-007/**'
+      - '.github/workflows/ci-model-m05-007.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-007/**'
+      - '.github/workflows/ci-model-m05-007.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Python syntax and full procedural geometry self-test
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-007/generate_m05_007.py
+          python3 Tools/ModelFactory/M05/M05-007/generate_m05_007.py --self-test
+      - name: Generate static model twice and compare deterministic outputs
+        run: |
+          python3 Tools/ModelFactory/M05/M05-007/generate_m05_007.py --out /tmp/m05-007-a
+          python3 Tools/ModelFactory/M05/M05-007/generate_m05_007.py --out /tmp/m05-007-b
+          cmp /tmp/m05-007-a/M05-007.obj /tmp/m05-007-b/M05-007.obj
+          cmp /tmp/m05-007-a/M05-007.mtl /tmp/m05-007-b/M05-007.mtl
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('/tmp/m05-007-a/M05-007.report.json').read_text())
+          assert report['cells']==4 and report['drawers']==2
+          assert report['materials']>=3
+          assert report['closed_manifold']=='PASS'
+          assert report['positive_winding']=='PASS'
+          assert report['swept_aabb_clearance']=='PASS'
+          assert report['sweep_samples']==22
+          assert report['drawer_travel_m']==.21
+          assert report['blender']=='NOT_RUN' and report['unity']=='NOT_RUN'
+          print('STATIC PASS',report)
+          PY
+      - name: Upload generated static OBJ and material library
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M05-007-static-OBJ-MTL-QA
+          path: /tmp/m05-007-a/
+          if-no-files-found: error
+          retention-days: 14
+  blender-animated:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate and verify real Blender animated GLB and BLEND
+        run: |
+          blender -b --python Tools/ModelFactory/M05/M05-007/blender_smoke.py -- /tmp/m05-007-blender
+      - name: Upload real Blender exports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M05-007-animated-GLB-BLEND
+          path: |
+            /tmp/m05-007-blender/M05-007.blend
+            /tmp/m05-007-blender/M05-007_animated.glb
+            /tmp/m05-007-blender/M05-007.report.json
+          if-no-files-found: error
+          retention-days: 14
