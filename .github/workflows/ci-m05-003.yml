@@ -1,0 +1,53 @@
+name: M05-003 Dual Optical Scanner Static Asset QA
+on:
+  push:
+    branches: ["feature/rrl-model-m05-003-dual-optical-scanner"]
+    paths:
+      - "Tools/ModelFactory/M05/M05-003/**"
+      - ".github/workflows/ci-m05-003.yml"
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M05/M05-003/**"
+      - ".github/workflows/ci-m05-003.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: m05-003-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-and-static-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Compile and verify geometry plus iris swept clearance
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-003/generate_m05_003.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-003/qa_static.py
+          python3 Tools/ModelFactory/M05/M05-003/generate_m05_003.py --self-test
+      - name: Generate real OBJ MTL and manifest
+        run: |
+          python3 Tools/ModelFactory/M05/M05-003/generate_m05_003.py --out Tools/ModelFactory/M05/M05-003/generated
+      - name: Independent OBJ topology, materials and determinism QA
+        run: |
+          python3 Tools/ModelFactory/M05/M05-003/qa_static.py --asset-dir Tools/ModelFactory/M05/M05-003/generated
+      - name: Upload reviewed static model artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-003-dual-optical-scanner-OBJ-MTL
+          path: Tools/ModelFactory/M05/M05-003/generated/
+          if-no-files-found: error
+      - name: Commit generated static asset ONLY to the isolated feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m05-003-dual-optical-scanner'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- Tools/ModelFactory/M05/M05-003/generated/
+          if ! git diff --cached --quiet; then
+            git commit -m "build(M05-003): reproducible static OBJ MTL and manifest [skip ci]"
+            git push origin HEAD:refs/heads/feature/rrl-model-m05-003-dual-optical-scanner
+          fi
