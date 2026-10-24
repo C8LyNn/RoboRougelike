@@ -91,7 +91,18 @@ jobs:
           doc=json.loads(blob[20:20+n])
           print('GLB material count/names:',len(doc.get('materials',[])),[m.get('name') for m in doc.get('materials',[])],flush=True)
           print('GLB mesh node count:',sum('mesh' in x for x in doc.get('nodes',[])),flush=True)
-          assert len(doc['materials'])==5
+          # Blender 4.x glTF exporter may split one source material
+          # into two GLB entries for different mesh/shading attributes.
+          # Enforce exactly five DISTINCT authored PBR material identities.
+          materials=doc['materials']
+          expected={'RRL_M03_008_'+name for name in (
+              'StructuralSteel','Gunmetal','Ceramic','Elastomer','Amber')}
+          assert {m['name'] for m in materials}==expected
+          assert 5<=len(materials)<=6
+          for name in expected:
+              entries=[m for m in materials if m['name']==name]
+              pbr=[m.get('pbrMetallicRoughness') for m in entries]
+              assert all(x==pbr[0] for x in pbr), ('PBR mismatch',name)
           nodes=doc['nodes']
           assert len([x for x in nodes if 'mesh' in x])==19
           assert any(x.get('name')=='RRL_M03_008_ROOT' for x in nodes)
@@ -101,7 +112,7 @@ jobs:
           manifest=json.loads((root/'M03-008_wedge_armor_manifest.json').read_text())
           assert manifest['backend']=='blender-bpy' and manifest['blender']=='EXPORTED'
           assert manifest['unity']=='NOT RUN'
-          print('PASS: real GLB 19 meshes, 5 PBR materials, root and 5 sockets')
+          print('PASS: real GLB 19 meshes, 5 distinct authored PBR materials, root and 5 sockets')
           PY
       - name: Upload actual Blender geometry
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
