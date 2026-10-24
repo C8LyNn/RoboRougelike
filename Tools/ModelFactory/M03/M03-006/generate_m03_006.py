@@ -54,13 +54,13 @@ def export_static(s,out):
         lines+=['v '+' '.join(f'{x:.8f}' for x in v) for v in p['vertices']]
         lines+=['f '+' '.join(str(offset+i) for i in face) for face in p['faces']]
         offset+=len(p['vertices'])
-    (out/(NAME+'.obj')).write_text('\\n'.join(lines)+'\\n',encoding='utf-8')
+    (out/(NAME+'.obj')).write_text('\n'.join(lines)+'\n',encoding='utf-8')
     mtl=[]
     for name,(rgba,metal,rough) in s['materials'].items():
         mtl+=['newmtl '+name,'Kd '+' '.join(f'{x:.5f}' for x in rgba[:3]),
               'Ks '+' '.join(f'{metal*.45:.5f}' for _ in range(3)),
               f'Ns {(1-rough)*400:.2f}','d 1.0','illum 2','']
-    (out/(NAME+'.mtl')).write_text('\\n'.join(mtl)+'\\n',encoding='utf-8')
+    (out/(NAME+'.mtl')).write_text('\n'.join(mtl)+'\n',encoding='utf-8')
 def export_blender(s,out):
     import bpy
     scene=bpy.context.scene
@@ -125,6 +125,6 @@ def main():
         else:
             export_blender(spec,out)
             report['blender']='EXPORTED_BPY'
-        (out/'M03-006_static_qa.json').write_text(json.dumps(report,indent=2)+'\\n')
+        (out/'M03-006_static_qa.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))
 if __name__=='__main__':main()
