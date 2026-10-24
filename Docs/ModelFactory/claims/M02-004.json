@@ -1,15 +1,17 @@
 {
   "id": "M02-004",
   "agent": "M02",
-  "status": "DRAFT_PR",
+  "status": "DRAFT_PR_QA_PASS",
   "claimed_at_utc": "2026-10-24T13:47:22.789Z",
   "model": "Koło stalowe perforowane",
   "run": "2026-10-24T13Z",
   "model_branch": "feature/rrl-model-m02-004-perforated-steel-wheel",
   "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/63",
   "model_source_commit": "71e1a00b472ba64ed70c22b73ded6f9f19635e97",
-  "static_artifact_commit": "6df97d7c091f4d8edf587b882f6402c04f936a73",
-  "static_qa": "PASS (actual Python GitHub Actions run 40099989907)",
-  "blender_qa": "PENDING (actual Blender CI, inspect diagnostic)",
-  "unity_qa": "NOT RUN"
+  "static_artifact_commit": "820b605c4d731036984432f5a49e8a07d8ac76e5",
+  "static_qa": "PASS (actual GitHub Actions 40100348344)",
+  "blender_qa": "PASS (actual Blender 5.0.1 GLB 2.0, 37 meshes, 1 animation, 167704 bytes)",
+  "unity_qa": "NOT RUN",
+  "blender_artifact_commit": "e225d9937614c9d6a9fc5ebe2c4041632c91eec4",
+  "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40100348344"
 }
