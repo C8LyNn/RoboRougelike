@@ -97,7 +97,7 @@ def build():
     add(box("Mount_Front_Socket","Armor_Graphite",0,.36,.06,.66,.48,.12,.024))
     add(box("Mount_Ceramic_Key_L","Ceramic_Ivory",-.225,.36,.155,.09,.18,.19,.012))
     add(box("Mount_Ceramic_Key_R","Ceramic_Ivory", .225,.36,.155,.09,.18,.19,.012))
-    add(box("Mount_Titanium_Bridge","Titanium_Frame",0,.36,.255,.45,.30,.22,.024))
+    add(box("Mount_Titanium_Bridge","Titanium_Frame",0,.36,.225,.45,.30,.28,.024))
     add(box("Rear_Electronics_Housing","Armor_Graphite",0,.36,.43,.55,.35,.29,.026))
     add(box("Rear_Service_Ceramic","Ceramic_Ivory",0,.565,.43,.34,.035,.22,.008))
     add(box("Rear_Copper_Heat_Sink","Copper_Guides",0,.155,.43,.35,.028,.23,.009))
