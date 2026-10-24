@@ -87,7 +87,7 @@ def ring(name, center, axis, r_inner, r_outer, depth, material,
          start=0.0, sweep=2*math.pi, segments=48):
     """Closed manifold annular sector, cut away on front of each barrel."""
     u = Vector(axis).normalized()
-    e1 = Vector((0,-1,0))
+    e1 = Vector((0,-1,0)) if abs(u.y)<.95 else Vector((1,0,0))
     e2 = u.cross(e1).normalized()
     c = Vector(center)
     vs = []
@@ -207,12 +207,12 @@ def build():
         ring("Crankcase_End_Bearing_%s"%int(y*1000),
              (0,y,CRANK_Z),(0,1,0),.044,.176,.034,
              "Graphite_Cast",segments=64)
-        cylinder("End_Seal_%s"%int(y*1000),(0,y,CRANK_Z),
-                 .040,.005,"Rubber_Isolator",axis=(0,1,0))
+        ring("End_Seal_%s"%int(y*1000),(0,y,CRANK_Z),
+             (0,1,0),.032,.042,.005,"Rubber_Isolator",segments=48)
     box("Nameplate",(0,-.288,.232),(.17,.013,.043),"Amber_Marking",.004)
 
     rotor=empty("CRANKSHAFT_ROTOR",(0,0,CRANK_Z))
-    shaft=cylinder("Crankshaft",(0,0,CRANK_Z),.027,.72,
+    shaft=cylinder("Crankshaft",(0,0,CRANK_Z),.027,.81,
                    "Brushed_Steel",axis=(0,1,0),vertices=48)
     parent_keep_world(shaft,rotor)
     for sign in (-1,1):
@@ -247,7 +247,7 @@ def build():
                  "Brushed_Steel",axis=u,vertices=48)
         cylinder("Spark_Plug_"+label,base+u*.477,.022,.044,
                  "Ceramic_Piston",axis=u,vertices=24)
-        cylinder("Head_Copper_Trim_"+label,base+u*.466,.039,.010,
+        cylinder("Head_Copper_Trim_"+label,base+u*.458,.039,.010,
                  "Copper_Pipes",axis=u,vertices=32)
         # Movable piston body and crown are one rigid group.
         piston=empty("PISTON_RIG_"+label,(0,0,0))
