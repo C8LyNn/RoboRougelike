@@ -6,7 +6,7 @@
   "model": "Wirnik podwójny przeciwsobny",
   "run": "2026-10-24T11Z",
   "production_branch": "feature/rrl-model-m04-002-contra-rotor",
-  "production_head_sha": "57e332eb746573e510d000755dc5559af238bd67",
+  "production_head_sha": "b5272542fca5a7ade1a047a52e3cc0df689c7c90",
   "draft_pr": 42,
   "files": [
     "Tools/ModelFactory/M04/M04-002/generate_m04_002.py",
