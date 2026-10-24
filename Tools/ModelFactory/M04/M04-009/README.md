@@ -4,7 +4,7 @@
 
 ## Geometry and artistic direction
 
-A compact internal gyroscope suspended inside a four-pylon graphite/titanium safety cage. Three distinct, concentric **spherical great-circle gimbals** form an articulated X/Y/Z nesting: outer titanium/copper Z ring, intermediate graphite/copper Y ring and inner titanium/ivory X ring. The inner ring carries a blue glass spherical rotor with an emissive central lumen and four copper spokes. Peripheral cyan electromagnetic nodes, copper trims, an eight-material palette, amber corner status lights and visible cage fasteners improve readability at typical third-person camera distances.
+A compact internal gyroscope suspended inside a four-pylon graphite/titanium safety cage. Three distinct, concentric **spherical great-circle gimbals** form an articulated X/Y/Z nesting: outer titanium/copper Z ring, intermediate graphite/copper Y ring and inner titanium/ivory X ring. The inner ring carries a translucent blue glass spherical rotor (alpha 0.38) with a visible emissive central lumen and four copper spokes. Peripheral cyan electromagnetic nodes, copper trims, an eight-material palette, amber corner status lights and visible cage fasteners improve readability at typical third-person camera distances.
 
 **Mounting:** The local root `RRL_M04_009_FLOOR_MOUNT_ROOT` is **(0,0,0)** on the *bottom centre of the internal chassis floor*. The underside of `MOUNT_FLOOR` lies at **Z=0**; **+Z** points up, **X/Y** span the floor. No side or top mount is substituted. 1 Blender unit = 1 Unity metre. Gimbal centre is **(0,0,0.380 m)**. This is an internal module, not an exposed weapon or thrust source.
 
