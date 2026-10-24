@@ -1,8 +1,19 @@
 {
   "id": "M04-001",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT",
   "claimed_at_utc": "2026-10-24T10:50:58.841Z",
   "model": "Wirnik boczny w osłonie",
-  "run": "2026-10-24T10Z"
+  "run": "2026-10-24T10Z",
+  "claim_commit_sha": "13dd5065c89ab3282e0bf6e6cb4261d3d21e2297",
+  "work_branch": "feature/rrl-model-m04-001-side-ducted-rotor",
+  "work_commit_sha": "0a2a9851a492e20c4a40d3e0eca1da5260712b6d",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/37",
+  "result": "Blender Python generator + README; no prebuilt GLB",
+  "qa": {
+    "github_write": "PASS",
+    "static_clearance": "PASS_0.038m",
+    "blender": "NOT_RUN",
+    "unity": "NOT_RUN"
+  }
 }
