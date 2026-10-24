@@ -78,6 +78,24 @@ def inspect(obj,mtl,manifest):
         assert all(count==1 and directed.get((j,i))==1
                    for (i,j),count in directed.items()),(name,"non-manifold")
         assert volume>1e-12,(name,"inverted",volume)
+    # Independent broad-phase collision check on the exported OBJ,
+    # including both perforated sheets, frame, fasteners and lugs.
+    bounds={}
+    for name,item in objects.items():
+        vv=[verts[i] for i in item["vertices"]]
+        bounds[name]=[(min(v[k] for v in vv),max(v[k] for v in vv))
+                      for k in range(3)]
+    names=list(bounds)
+    collisions_checked=0
+    for index,name in enumerate(names):
+        for other in names[index+1:]:
+            a,b=bounds[name],bounds[other]
+            overlap=[min(a[k][1],b[k][1])-max(a[k][0],b[k][0])
+                     for k in range(3)]
+            assert min(overlap)<=1e-8,(name,other,"AABB penetration",overlap)
+            collisions_checked+=1
+    assert collisions_checked==325
+    assert manifest["no_volume_overlap_pair_checks"]==325
     assert manifest["outer_real_through_holes"]==24
     assert manifest["inner_real_through_holes"]==96
     assert manifest["through_bored_mounts"]==4
@@ -142,6 +160,7 @@ def inspect(obj,mtl,manifest):
                 triangles=sum(len(o["faces"]) for o in objects.values()),
                 outer_real_holes=24,backing_real_holes=96,
                 mount_through_bores=4,manifold="PASS",
+                aabb_nonpenetration_pairs=collisions_checked,
                 blender="NOT RUN",unity="NOT RUN")
 
 
