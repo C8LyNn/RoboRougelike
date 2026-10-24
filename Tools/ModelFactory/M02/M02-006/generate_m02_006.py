@@ -242,7 +242,7 @@ def export_obj(parts,out):
     mats=[]
     for key,(color,metal,rough) in MATERIALS.items():
         mats.extend(("newmtl "+key,"Kd %.5f %.5f %.5f"%color[:3],
-                     "Ks %.5f %.5f %.5f"%(metal*.45,)*3,
+                     "Ks %.5f %.5f %.5f"%((metal*.45,)*3),
                      "Ns %.2f"%((1-rough)*400),"d 1.0","illum 2",""))
     mtl.write_text("\n".join(mats)+"\n",encoding="utf-8")
     return [str(obj),str(mtl)]
