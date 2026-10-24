@@ -44,11 +44,11 @@ jobs:
       - name: Install Blender from Ubuntu package repository
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -2
       - name: Generate .blend and animated .glb with real bpy
         run: |
-          blender -b --factory-startup --python \
+          blender -b --factory-startup --python-exit-code 1 --python \
             Tools/ModelFactory/M04/M04-008/generate_m04_008.py -- \
             --out build/M04-008
       - name: Independent GLB animation channel and geometry QA
