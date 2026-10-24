@@ -4,5 +4,13 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-24T20:51:34.275Z",
   "model": "Reaktor miniaturowy w klatce",
-  "run": "2026-10-24T20Z"
+  "run": "2026-10-24T20Z",
+  "model_branch": "feature/rrl-model-m05-011-caged-mini-reactor",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/116",
+  "model_commit": "4e09fb0c9e5474e185c2f8aac883ca2ba30b7b85",
+  "qa_status": "BLENDER_CI_PENDING",
+  "blender_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131808180",
+  "unity_status": "NOT RUN",
+  "unity_import": "NOT RUN",
+  "urp_visual_review": "NOT RUN"
 }
