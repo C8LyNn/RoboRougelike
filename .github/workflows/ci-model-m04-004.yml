@@ -94,9 +94,22 @@ jobs:
           header=p.read_bytes()[:12]
           magic,version,length=struct.unpack("<4sII",header)
           assert magic==b"glTF" and version==2 and length==p.stat().st_size
+          data=p.read_bytes()
+          json_size,json_type=struct.unpack("<I4s",data[12:20])
+          assert json_type==b"JSON"
+          gltf=json.loads(data[20:20+json_size].decode("utf-8"))
+          nodes=[n.get("name","") for n in gltf.get("nodes",[])]
+          assert any("YAW_Z" in name for name in nodes),nodes
+          assert any("PITCH_X" in name for name in nodes),nodes
+          assert len(gltf.get("meshes",[]))>=40
+          assert len(gltf.get("materials",[]))>=5
+          animations=gltf.get("animations",[])
+          assert animations and sum(len(a.get("channels",[])) for a in animations)>=2
+          assert all(n.startswith("M04-004_") for n in nodes),nodes
           q=json.loads(Path("/tmp/m04-blender/M04-004.static-qa.json").read_text())
           assert q["blender"]=="EXECUTED"
-          print("Real Blender GLB export PASS, bytes",p.stat().st_size)
+          print("Real Blender animated GLB PASS:",len(nodes),"nodes,",
+                len(gltf["meshes"]),"meshes,",len(animations),"animations,",p.stat().st_size,"bytes")
           PY
       - name: Upload animated GLB and editable blend
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
