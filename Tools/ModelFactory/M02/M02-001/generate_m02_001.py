@@ -110,9 +110,9 @@ def build():
     add = parts.append
     # Rubber torus: profiled sidewalls and flat central tread carcass.
     add(ring("Tire_Carcass",
-        [(-.155,.295),(-.170,.337),(-.170,.438),(-.157,.475),
-         (-.135,.493),(-.118,.500),(.118,.500),(.135,.493),
-         (.157,.475),(.170,.438),(.170,.337),(.155,.295)],
+        [(-.155,.295),(-.170,.337),(-.170,.438),(-.167,.470),
+         (-.160,.500),(.160,.500),(.167,.470),
+         (.170,.438),(.170,.337),(.155,.295)],
         "Tire_Sidewall"))
     # Interleaved three-lane lugs; separated in X and by 4+ cm radial gaps.
     pitch = 2*math.pi/LUG_COUNT
@@ -152,7 +152,7 @@ def build():
             add(cylinder_x(f"Bolt_{side}_{i+1:02d}",.011,x0,x1,y,z,
                            "Fastener_Silver",12))
     # Contrasting valve stem; no protrusion beyond the tire.
-    add(cylinder_x("Valve_Stem",.008,.171,.196,
+    add(cylinder_x("Valve_Stem",.008,.148,.186,
                    .243, .145,"Fastener_Silver",12))
     return parts
 
