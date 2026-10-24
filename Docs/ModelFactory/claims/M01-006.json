@@ -1,0 +1,22 @@
+{
+  "id": "M01-006",
+  "agent": "M01",
+  "status": "DRAFT_PR_ASSET_GENERATED",
+  "claimed_at_utc": "2026-10-24T15:52:36Z",
+  "model": "Wyrzutnia igieł ceramicznych",
+  "run": "2026-10-24T15:00Z",
+  "branch": "feature/rrl-model-m01-006-ceramic-needle-launcher",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/84",
+  "commit": "fa7ee7e1f687e52a4d9d022313cae3f392f1409e",
+  "paths": [
+    "Tools/ModelFactory/M01/M01-006/",
+    ".github/workflows/ci-model-m01-006.yml"
+  ],
+  "qa_static": "PASS_LOCAL_37_POSES_31820_AABB_PAIRS",
+  "qa_blender": "PASS_GITHUB_ACTIONS_REAL_EXPORT_GLB_FBX_BLEND",
+  "qa_unity": "NOT_RUN",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109360877",
+  "artifact": "M01-006-ceramic-needle-launcher-3D",
+  "artifact_id": 12565674208,
+  "qa_visual_review": "NOT_RUN"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "M05-003",
+  "agent": "M05",
+  "status": "DRAFT_PR_STATIC_QA_PASS_BLENDER_HOLD",
+  "claimed_at_utc": "2026-10-24T12:49:24.267Z",
+  "model": "Skaner optyczny podwójny",
+  "run": "2026-10-24T12Z",
+  "production_branch": "feature/rrl-model-m05-003-dual-optical-scanner",
+  "production_head_sha": "340ec047961b1815a12428b53e8088ea3429d9ce",
+  "draft_pr": 53,
+  "draft_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/53",
+  "updated_at_utc": "2026-10-24T12:53:03.898Z",
+  "deliverables": [
+    "Tools/ModelFactory/M05/M05-003/generate_m05_003.py",
+    "Tools/ModelFactory/M05/M05-003/qa_static.py",
+    "Tools/ModelFactory/M05/M05-003/README.md",
+    "Tools/ModelFactory/M05/M05-003/generated/M05-003_dual_optical_scanner.obj",
+    "Tools/ModelFactory/M05/M05-003/generated/M05-003_dual_optical_scanner.mtl",
+    "Tools/ModelFactory/M05/M05-003/generated/M05-003_manifest.json",
+    ".github/workflows/ci-m05-003.yml"
+  ],
+  "qa": {
+    "python_syntax": "PASS_GITHUB_ACTIONS",
+    "static_geometry_selftest": "PASS_GITHUB_ACTIONS",
+    "obj_mtl_reproducibility": "PASS_GITHUB_ACTIONS",
+    "obj_integrity": "PASS_GITHUB_ACTIONS",
+    "manifold_meshes": "44/44 PASS",
+    "iris_swept_clearance": "PASS_5_ANGLES_EACH",
+    "workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40095744767",
+    "blender": "NOT_RUN",
+    "animated_fbx_glb": "NOT_RUN",
+    "unity_import": "NOT_RUN",
+    "visual_qa": "NOT_RUN"
+  }
+}

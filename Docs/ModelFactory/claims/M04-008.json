@@ -1,0 +1,36 @@
+{
+  "id": "M04-008",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE_BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "claimed_at_utc": "2026-10-24T17:44:56.459Z",
+  "model": "Hover boczny stabilizujący",
+  "run": "2026-10-24T17:00Z",
+  "branch": "feature/rrl-model-m04-008-side-stabilizing-hover",
+  "pr": 95,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/95",
+  "commit": "1f2f8d17c448924ca6fe9ddcf297e86ad6aca490",
+  "qa": {
+    "static": "PASS",
+    "blender": "PASS",
+    "glb": "PASS",
+    "weighted_normal_warnings": 0,
+    "unity": "NOT RUN — missing activation credentials",
+    "visual": "NOT RUN",
+    "parts": 65,
+    "triangles": 7420,
+    "materials": 7,
+    "moving_meshes": 22,
+    "animation_poses": 65,
+    "animated_vertex_checks": 113360,
+    "min_radial_clearance_m": 0.017402,
+    "glb_animations": 2,
+    "glb_rotation_channels": 2
+  },
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118277996",
+  "artifacts": {
+    "blender_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118277996/artifacts/12570197220",
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118277996/artifacts/12570282232"
+  },
+  "completed_at_utc": "2026-10-24T17:54:52.189Z",
+  "ci_verified_head": "1f2f8d17c448924ca6fe9ddcf297e86ad6aca490"
+}

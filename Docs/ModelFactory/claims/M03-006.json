@@ -1,0 +1,20 @@
+{
+  "id": "M03-006",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-24T15:50:40.927Z",
+  "model": "Uchwyt boczny L",
+  "run": "2026-10-24T15:00Z",
+  "mount": "boczne gniazdo",
+  "animation": "brak",
+  "catalog_ref": "feature/rrl-model-factory-queue-v1",
+  "pr": 83,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/83",
+  "branch": "feature/rrl-model-m03-006-side-l-bracket",
+  "commit_sha": "05fbd90347268895146ce284acd2a65c2db786a5",
+  "qa_static": "PASS",
+  "blender": "PASS_CI",
+  "unity": "BLOCKED_UNITY_ACTIVATION",
+  "blender_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109422640",
+  "glb_artifact_id": 12565997069
+}

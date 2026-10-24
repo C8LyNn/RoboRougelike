@@ -1,0 +1,15 @@
+{
+  "id": "M01-003",
+  "agent": "M01",
+  "status": "DRAFT_PR",
+  "claimed_at_utc": "2026-10-24T12:47:07Z",
+  "model": "Podwójny emiter łuku",
+  "run": "2026-10-24T12:00Z",
+  "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/52",
+  "asset_branch": "feature/rrl-model-m01-003-dual-arc-emitter",
+  "head_commit": "eb2efc3c7d8b5d0ecf491a4eb7c3492e5c6ddb51",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40095577978",
+  "ci_result": "PASS_STATIC_OBJ_MTL",
+  "blender_export": "NOT RUN",
+  "unity_play_mode": "NOT RUN"
+}

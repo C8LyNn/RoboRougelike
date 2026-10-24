@@ -1,0 +1,18 @@
+{
+  "id": "M02-003",
+  "agent": "M02",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T12:48:57.343Z",
+  "model": "Koło balonowe na piasek",
+  "run": "2026-10-24T12:00Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/54",
+  "model_branch": "feature/rrl-model-m02-003-balloon-sand-wheel",
+  "source_commit": "06598ca2ce47cf0cb87d771bb1ff877677c67f4f",
+  "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40095737048",
+  "static_assets": [
+    "Tools/ModelFactory/M02/M02-003/generated/M02-003_balloon_sand_wheel.obj",
+    "Tools/ModelFactory/M02/M02-003/generated/M02-003_balloon_sand_wheel.mtl"
+  ],
+  "blender": "NOT RUN",
+  "unity": "NOT RUN"
+}

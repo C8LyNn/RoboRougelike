@@ -1,0 +1,14 @@
+{
+  "id": "M05-004",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T13:44:27Z",
+  "model": "Lidar kopułowy",
+  "run": "20261024T13Z",
+  "asset_branch": "feature/rrl-model-m05-004-dome-lidar",
+  "asset_commit": "15f4eca5f9ea47ab4b4b451267c1d0c299aa7c76",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/60",
+  "static_qa": "PASS",
+  "blender_qa": "NOT RUN",
+  "unity_qa": "NOT RUN"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "M02-008",
+  "agent": "M02",
+  "status": "DRAFT_PR_QA_PASS",
+  "claimed_at_utc": "2026-10-24T17:45:41.770Z",
+  "model": "Pojedynczy moduł gąsienicy",
+  "run": "2026-10-24T17:00Z",
+  "branch": "feature/rrl-model-m02-008-single-track-module",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/94",
+  "source_commit": "5a89dc82f02fb0647629059268e99ae14dfebdbb",
+  "qa": "STATIC_PASS_BLENDER_4_0_2_PASS_GLB_PASS_UNITY_BLOCKED_ACTIVATION",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40117916238",
+  "static_artifact_id": 12570222301,
+  "animated_artifact_id": 12569272019
+}

@@ -1,0 +1,21 @@
+{
+  "id": "M02-007",
+  "agent": "M02",
+  "status": "PRODUCED_DRAFT_QA_STATIC_BLENDER_PASS",
+  "claimed_at_utc": "2026-10-24T16:49:39Z",
+  "model": "Para rolek podporowych",
+  "run": "2026-10-24T16:00:00Z",
+  "claim_create_commit": "ee3e62e560c374e694f8500c22e8eb8bf5b92de8",
+  "branch": "feature/rrl-model-m02-007-support-roller-pair",
+  "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/89",
+  "asset_commit": "c86d4a9ac22eebea71946ed5571e639188ecc902",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113603252",
+  "artifact_directory": "Tools/ModelFactory/M02/M02-007/generated/",
+  "qa": {
+    "python_geometry": "PASS",
+    "blender": "PASS_EXPORT",
+    "animated_glb": "PASS",
+    "unity": "NOT_RUN",
+    "fbx": "NOT_RUN"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "M03-002",
+  "agent": "M03",
+  "status": "DRAFT_QA_HOLD",
+  "claimed_at_utc": "2026-10-24T11:45:53.551Z",
+  "model": "Belka teleskopowa 1x2x1",
+  "run": "2026-10-24T11Z",
+  "production_branch": "feature/rrl-model-m03-002-telescopic-beam",
+  "production_head_sha": "702bb79f96eb4c2e28f9872b5d13135e662ea125",
+  "draft_pr": 44,
+  "deliverables": [
+    "Tools/ModelFactory/M03/M03-002/generate_m03_002.py",
+    "Tools/ModelFactory/M03/M03-002/M03-002.obj",
+    "Tools/ModelFactory/M03/M03-002/M03-002.mtl",
+    "Tools/ModelFactory/M03/M03-002/M03-002.static-qa.json",
+    "Tools/ModelFactory/M03/M03-002/README.md",
+    ".github/workflows/ci-model-m03-002.yml"
+  ],
+  "qa": {
+    "python_syntax": "PASS_CI",
+    "static_obj_mtl_deterministic": "PASS_CI",
+    "moving_fixed_collision_aabb_21_samples": "PASS_CI",
+    "repository_validation": "PASS_CI",
+    "blender": "NOT_RUN",
+    "animated_glb": "NOT_RUN",
+    "unity_editmode": "BLOCKED_UNITY_ACTIVATION",
+    "unity_playmode": "BLOCKED_UNITY_ACTIVATION",
+    "unity_import": "NOT_RUN",
+    "visual": "NOT_RUN"
+  },
+  "qa_evidence": {
+    "geometry": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503390",
+    "repository": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503386",
+    "unity_editmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503387",
+    "unity_playmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503385"
+  },
+  "updated_at_utc": "2026-10-24T11:50:55.126Z"
+}

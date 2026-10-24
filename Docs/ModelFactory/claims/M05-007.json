@@ -1,0 +1,25 @@
+{
+  "id": "M05-007",
+  "agent": "MODEL-05",
+  "status": "PRODUCED_DRAFT_STATIC_AND_BLENDER_PASS_UNITY_BLOCKED",
+  "claimed_at_utc": "2026-10-24T16:44:39.574Z",
+  "model": "Akumulator kasetowy",
+  "run": "2026-10-24T16:00:00Z_MODEL-05_HOURLY",
+  "branch": "feature/rrl-model-m05-007-cassette-accumulator",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/87",
+  "model_path": "Tools/ModelFactory/M05/M05-007/",
+  "static_qa": "PASS",
+  "static_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113194384",
+  "blender_qa": "PASS",
+  "unity_qa": "BLOCKED_ACTIVATION_NOT_RUN",
+  "notes": "79 closed parts, 5464 vertices, 4786 polygons, 7 materials, four cells, two drawers; 22 sweep samples, 28336 fixed-vs-moving AABB checks PASS; deterministic committed OBJ/MTL parity PASS; Blender 4.0.2 rerun and GLB/BLEND PASS with positive sentinel; Unity EditMode/PlayMode blocked due missing activation credentials; manual visual review NOT RUN.",
+  "final_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113334345",
+  "final_model_commit": "d4928561bc6e1dfa39fd3e214dd753bb2acbcd00",
+  "model_assets": [
+    "Tools/ModelFactory/M05/M05-007/M05-007.obj",
+    "Tools/ModelFactory/M05/M05-007/M05-007.mtl",
+    "Tools/ModelFactory/M05/M05-007/generate_m05_007.py",
+    "Tools/ModelFactory/M05/M05-007/blender_smoke.py"
+  ],
+  "export_artifact": "M05-007-animated-GLB-BLEND"
+}

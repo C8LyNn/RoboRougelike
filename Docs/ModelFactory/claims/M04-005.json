@@ -1,0 +1,19 @@
+{
+  "id": "M04-005",
+  "agent": "M04",
+  "status": "DRAFT_PR",
+  "claimed_at_utc": "2026-10-24T14:53:30.605Z",
+  "model": "Dopalacz dwukomorowy",
+  "run": "20261024T1453Z-M04",
+  "pr": 78,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/78",
+  "asset_branch": "feature/rrl-model-m04-005-dual-chamber-afterburner",
+  "asset_path": "Tools/ModelFactory/M04/M04-005/",
+  "asset_commit": "cfb5e88951a243a294cf1385b35b22a102e2b598",
+  "qa_static": "PASS (GitHub Actions 40104940597, 62 manifold components, 21 poses, 9072 fixed-vs-moving checks)",
+  "qa_blender": "PASS (GitHub Actions 40104940597, real bpy + GLB export, 8+ animation channels)",
+  "qa_unity": "NOT_RUN — CI-02 and CI-03 blocked at Require valid Unity activation credentials",
+  "qa_visual": "NOT_RUN — no rendered human review",
+  "last_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104940597",
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104940597/artifacts/12563329745"
+}

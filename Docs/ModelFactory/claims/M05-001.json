@@ -1,0 +1,18 @@
+{
+  "id": "M05-001",
+  "agent": "M05",
+  "status": "DRAFT_QA_HOLD",
+  "claimed_at_utc": "2026-10-24T10:49:43.249Z",
+  "model": "Radar obrotowy talerzowy",
+  "run": "2026-10-24T10:49Z",
+  "catalog_branch": "feature/rrl-model-factory-queue-v1",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/38",
+  "asset_branch": "feature/rrl-model-m05-001-dish-radar",
+  "asset_commit": "0645d3287f7c4e6186934010bf1a40f41a57a38f",
+  "deliverables": [
+    "Tools/ModelFactory/M05/M05-001/generate.py",
+    "Tools/ModelFactory/M05/M05-001/M05-001.obj",
+    "Tools/ModelFactory/M05/M05-001/M05-001.mtl"
+  ],
+  "qa": "STATIC_OBJ_PASS; BLENDER_NOT_RUN; UNITY_NOT_RUN"
+}
