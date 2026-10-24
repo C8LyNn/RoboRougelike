@@ -1,0 +1,66 @@
+name: M04-010 Centrifugal Stabilizer Asset QA
+on:
+  push:
+    branches: [feature/rrl-model-m04-010-centrifugal-stabilizer]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-010/**'
+      - '.github/workflows/ci-m04-010.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-010/**'
+      - '.github/workflows/ci-m04-010.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile source and QA scripts
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M04/M04-010/generate_m04_010.py
+          python3 -m py_compile Tools/ModelFactory/M04/M04-010/qa_m04_010.py
+      - name: Validate real geometry, moving swept envelopes and deterministic OBJ
+        run: python3 Tools/ModelFactory/M04/M04-010/qa_m04_010.py
+      - name: Export static model
+        run: |
+          python3 Tools/ModelFactory/M04/M04-010/generate_m04_010.py \
+            --static-obj --out build/M04-010
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M04-010-static-OBJ-MTL-manifest
+          path: build/M04-010/
+          if-no-files-found: error
+          retention-days: 30
+  blender-animation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender and glTF dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -2
+      - name: Execute real bpy generator, export blend and animated GLB
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python \
+            Tools/ModelFactory/M04/M04-010/generate_m04_010.py -- \
+            --out build/M04-010
+      - name: Inspect actual GLB meshes, materials and two spin channels
+        run: |
+          python3 Tools/ModelFactory/M04/M04-010/qa_m04_010.py \
+            --check-glb build/M04-010/M04-010_centrifugal_stabilizer.glb
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M04-010-Blender-animated-GLB-manifest
+          path: build/M04-010/
+          if-no-files-found: error
+          retention-days: 30
