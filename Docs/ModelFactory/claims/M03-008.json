@@ -8,11 +8,17 @@
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/98",
   "branch": "feature/rrl-model-m03-008-wedge-armor-plate",
   "claim_commit": "aa00254a67072305c932a8dbabc03fda0c9942bd",
-  "qa": "STATIC_PASS_BLENDER_GLTF_FBX_BLEND_PASS_UNITY_NOT_RUN",
+  "qa": "STATIC_PASS_BLENDER_PASS_REPO_VALIDATION_PASS_UNITY_BLOCKED_ACTIVATION",
   "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118550934",
   "head_commit": "4b0faf16b580f6fc921a8570020d7843f30d0e74",
   "artifacts": [
     "M03-008-static-OBJ-MTL",
     "M03-008-Blender-GLB-FBX-BLEND"
+  ],
+  "unity": "NOT RUN",
+  "unity_blocker": "Missing Unity activation credentials; CI-02/CI-03 stopped before editor tests",
+  "unity_ci_runs": [
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118554073",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118553950"
   ]
 }
