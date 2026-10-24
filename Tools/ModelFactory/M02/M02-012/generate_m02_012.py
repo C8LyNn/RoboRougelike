@@ -61,8 +61,10 @@ def track(obj, material, bevel=0.0):
         mod.segments = 2
         if hasattr(mod, "affect"):
             mod.affect = "EDGES"
-        normal = obj.modifiers.new("Weighted_face_normals", "WEIGHTED_NORMAL")
-        normal.keep_sharp = True
+        if hasattr(obj.data, "use_auto_smooth"):
+            obj.data.use_auto_smooth = True
+            normal = obj.modifiers.new("Weighted_face_normals", "WEIGHTED_NORMAL")
+            normal.keep_sharp = True
     return obj
 
 def box(name, loc, size, material, bevel=.008):
@@ -308,7 +310,7 @@ def animate(rotor):
     scene.render.fps=30
     for f in range(1,FRAME_END+1):
         angle=2*math.pi*(f-1)/(FRAME_END-1)
-        rotor.rotation_mode="EULER"
+        rotor.rotation_mode="XYZ"
         rotor.rotation_euler=(0,angle,0)
         rotor.keyframe_insert(data_path="rotation_euler",frame=f,group="Crankshaft")
         for label,bank in BANKS.items():
