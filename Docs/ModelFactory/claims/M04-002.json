@@ -26,6 +26,15 @@
     "blender": "NOT_RUN",
     "glb_export": "NOT_RUN",
     "unity": "NOT_RUN",
-    "github_actions": "PENDING_OR_NOT_VISIBLE"
+    "github_actions": "PASS",
+    "repository_ci": "PASS",
+    "unity_editmode": "BLOCKED_UNITY_ACTIVATION",
+    "unity_playmode": "BLOCKED_UNITY_ACTIVATION",
+    "evidence": {
+      "model_factory": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091387982",
+      "repository": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091387879",
+      "editmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091387979",
+      "playmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091387912"
+    }
   }
 }
