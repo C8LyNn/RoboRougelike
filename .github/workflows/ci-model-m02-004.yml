@@ -81,8 +81,9 @@ jobs:
       - name: Install actual Blender (not a simulated bpy stub)
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -n 2
+          blender --background --factory-startup --python-exit-code 1 --python-expr 'import numpy; print("GLTF_DEPENDENCY_NUMPY",numpy.__version__)'
       - name: Run real Blender with error capture and nonzero Python exit
         run: |
           set +e
