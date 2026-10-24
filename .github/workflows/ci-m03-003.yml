@@ -1,5 +1,11 @@
 name: M03-003 Bridge Frame Geometry QA
 on:
+  push:
+    branches:
+      - fix/rrl-m03-003-visible-snap-markers
+    paths:
+      - "Tools/ModelFactory/M03/M03-003/**"
+      - ".github/workflows/ci-m03-003.yml"
   pull_request:
     branches: [develop]
     paths:
@@ -23,10 +29,28 @@ jobs:
         run: |
           python3 Tools/ModelFactory/M03/M03-003/generate_m03_003.py \
             --static-obj --out build/M03-003
+      - name: Validate generation manifest and visible marker geometry
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/M03-003/M03-003_manifest.json')
+          j=json.loads(p.read_text())
+          assert j['result']=='PASS'
+          assert j['structural_revision']=='M03-003_V2_VISIBLE_SNAP_MARKERS'
+          assert j['exposed_snap_markers']==6
+          assert j['physical_snap_contact_faces_flush']==6
+          assert abs(j['marker_side_exposure_m']-.006)<1e-8
+          assert abs(j['marker_pad_engagement_m']-.002)<1e-8
+          assert j['size_m']==[2,1,1]
+          assert j['blender']=='NOT RUN'
+          assert j['unity_execution']=='NOT RUN'
+          print('PASS: 6 visible markers and 6 flush mounting faces; Blender/Unity NOT RUN')
+          PY
       - name: Upload M03-003 static asset
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: M03-003-bridge-frame-static-OBJ
+          name: M03-003-V2-visible-SNAP-markers-static-OBJ
           path: build/M03-003/
           if-no-files-found: error
           retention-days: 14
