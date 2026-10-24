@@ -58,9 +58,13 @@ namespace B01.BUILD001
             if (installed.Count == 0)
                 return BuildPlacementResult.NoSupport;
 
+            // A physically alive fragment with no surviving route to Core must
+            // not become a new structural foundation in the garage.
+            var coreConnected = Reachable(installed);
             foreach (var existing in installed)
             {
-                if (!existing.Alive || !existing.Definition.SupportsOtherParts) continue;
+                if (!existing.Alive || !existing.Definition.SupportsOtherParts ||
+                    !coreConnected.Contains(existing.PartId)) continue;
                 if (BuildSocketGeometry.Touches(existing.Definition, existing.Pose,
                     candidate.Definition, candidate.Pose, out _))
                 {
