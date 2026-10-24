@@ -1,0 +1,144 @@
+{
+  "id": "M04-006",
+  "name": "Dopalacz płaski szczelinowy",
+  "kind": "visual-only",
+  "coordinate_system": "Blender Z-up, +Y toward vehicle front, exhaust -Y",
+  "unit_m": 1,
+  "mount": "rear frame",
+  "mount_origin_m": [
+    0,
+    0,
+    0
+  ],
+  "mount_face_normal": [
+    0,
+    1,
+    0
+  ],
+  "dimensions_m": {
+    "width": 1.55,
+    "length": 0.87,
+    "height": 0.79
+  },
+  "slot": {
+    "width_m": 1.18,
+    "height_m": 0.58,
+    "opening_center_y_m": -0.71,
+    "opening_center_z_m": 0
+  },
+  "louver": {
+    "count": 5,
+    "centers_z_m": [
+      -0.2,
+      -0.1,
+      0,
+      0.1,
+      0.2
+    ],
+    "hinge_y_m": -0.705,
+    "hinge_axis": "X",
+    "width_m": 1.15,
+    "length_m": 0.15,
+    "angles_deg": [
+      0,
+      18,
+      0,
+      -8,
+      0
+    ],
+    "frames": [
+      1,
+      20,
+      40,
+      60,
+      80
+    ]
+  },
+  "materials": {
+    "graphite": {
+      "color": [
+        0.055,
+        0.07,
+        0.09,
+        1
+      ],
+      "metallic": 0.72,
+      "roughness": 0.39
+    },
+    "titanium": {
+      "color": [
+        0.43,
+        0.49,
+        0.55,
+        1
+      ],
+      "metallic": 0.82,
+      "roughness": 0.28
+    },
+    "ceramic": {
+      "color": [
+        0.78,
+        0.8,
+        0.77,
+        1
+      ],
+      "metallic": 0.15,
+      "roughness": 0.41
+    },
+    "copper": {
+      "color": [
+        0.56,
+        0.29,
+        0.11,
+        1
+      ],
+      "metallic": 0.76,
+      "roughness": 0.3
+    },
+    "rubber": {
+      "color": [
+        0.025,
+        0.03,
+        0.035,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.84
+    },
+    "ion_cyan": {
+      "color": [
+        0.02,
+        0.44,
+        0.74,
+        1
+      ],
+      "metallic": 0.12,
+      "roughness": 0.24,
+      "emission": [
+        0.02,
+        0.35,
+        0.7,
+        1
+      ],
+      "emission_strength": 2.6
+    },
+    "amber": {
+      "color": [
+        0.9,
+        0.33,
+        0.04,
+        1
+      ],
+      "metallic": 0.1,
+      "roughness": 0.31,
+      "emission": [
+        0.75,
+        0.23,
+        0.02,
+        1
+      ],
+      "emission_strength": 1.6
+    }
+  },
+  "notes": "One broad, flat rectangular slit with five independent horizontal louvers. Unlike M04-005 two round chambers, this has a single flat slot. No gameplay thrust."
+}
