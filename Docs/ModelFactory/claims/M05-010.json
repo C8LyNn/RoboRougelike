@@ -7,8 +7,8 @@
   "run": "2026-10-24T19Z",
   "model_branch": "feature/rrl-model-m05-010-vertical-radiator",
   "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/112",
-  "model_commit": "695eb5df159913d1f3abb2f2c3405a6fa06475b7",
-  "qa_status": "PENDING_BLENDER_CI",
-  "unity_status": "NOT RUN",
-  "blender_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127206497"
+  "model_commit": "80a4475e094c9d4666c63dc8c748e1814c415cf1",
+  "qa_status": "RUNNING_BLENDER_EXPORT_CI",
+  "unity_status": "BLOCKED_ACTIVATION",
+  "blender_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127477336"
 }
