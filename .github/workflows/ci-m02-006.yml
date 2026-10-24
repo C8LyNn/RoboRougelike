@@ -1,0 +1,82 @@
+name: MODEL-02 M02-006 Spiked Rubble Wheel QA
+
+on:
+  push:
+    branches: [feature/rrl-model-m02-006-spiked-rubble-wheel]
+    paths:
+      - 'Tools/ModelFactory/M02/M02-006/generate_m02_006.py'
+      - 'Tools/ModelFactory/M02/M02-006/README.md'
+      - '.github/workflows/ci-m02-006.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  geometry-and-blender:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: true
+      - name: Python compile and mechanical self-test
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-006/generate_m02_006.py
+          python3 Tools/ModelFactory/M02/M02-006/generate_m02_006.py --self-test
+      - name: Generate deterministic OBJ and MTL
+        run: |
+          python3 Tools/ModelFactory/M02/M02-006/generate_m02_006.py --out Tools/ModelFactory/M02/M02-006/generated
+          test -s Tools/ModelFactory/M02/M02-006/generated/M02-006_spiked_rubble_wheel.obj
+          test -s Tools/ModelFactory/M02/M02-006/generated/M02-006_spiked_rubble_wheel.mtl
+      - name: Install Blender (real bpy runtime)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq blender
+          blender --version | head -3
+      - name: Run Blender and export animated GLB and collection BLEND
+        run: |
+          blender --background --factory-startup --python Tools/ModelFactory/M02/M02-006/generate_m02_006.py -- --out Tools/ModelFactory/M02/M02-006/generated
+          test -s Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.glb
+          test -s Tools/ModelFactory/M02/M02-006/generated/M02-006.blend
+      - name: Independently inspect GLB binary structure and animation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, struct
+          root=Path("Tools/ModelFactory/M02/M02-006/generated")
+          glb=(root/"M02-006_animated.glb").read_bytes()
+          magic,version,total=struct.unpack_from("<III",glb,0)
+          assert magic==0x46546C67 and version==2 and total==len(glb)
+          jsonlen,kind=struct.unpack_from("<II",glb,12)
+          assert kind==0x4E4F534A
+          data=json.loads(glb[20:20+jsonlen].decode("utf-8"))
+          assert data["asset"]["version"]=="2.0"
+          assert len(data.get("meshes",[]))>=70
+          assert len(data.get("materials",[]))>=7
+          assert len(data.get("animations",[]))>=1
+          names={node.get("name") for node in data["nodes"]}
+          assert "M02-006_WHEEL_ROTATE_X" in names
+          rotator=next(i for i,n in enumerate(data["nodes"]) if n.get("name")=="M02-006_WHEEL_ROTATE_X")
+          assert any(c["target"]["node"]==rotator and c["target"]["path"]=="rotation"
+                     for anim in data["animations"] for c in anim["channels"])
+          manifest=json.loads((root/"M02-006_qa.json").read_text())
+          assert manifest["static_qa"]=="PASS" and manifest["blender"]=="PASS_EXPORT"
+          assert manifest["collision_sample_count"]==72
+          assert manifest["spikes"]==16 and manifest["spokes"]==10
+          print("PASS: GLB 2.0, real Blender export, rotating X node, 16 spikes, 72 poses")
+          PY
+      - name: Commit real generated 3D artifacts ONLY to own model branch
+        env:
+          BRANCH: feature/rrl-model-m02-006-spiked-rubble-wheel
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Tools/ModelFactory/M02/M02-006/generated/
+          if git diff --cached --quiet; then
+            echo "No artifact changes"
+          else
+            git commit -m "asset(M02-006): real Blender BLEND/GLB, deterministic OBJ/MTL and QA report"
+            git push origin "HEAD:refs/heads/$BRANCH"
+          fi
