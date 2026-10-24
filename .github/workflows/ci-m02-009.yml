@@ -1,0 +1,72 @@
+name: M02-009 Three Wheel Track Bogie Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-009-triwheel-track-bogie
+    paths:
+      - "Tools/ModelFactory/M02/M02-009/**"
+      - ".github/workflows/ci-m02-009.yml"
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M02/M02-009/**"
+      - ".github/workflows/ci-m02-009.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  m02-009-static:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independently validate real OBJ manifold, material and swept SAT
+        run: python3 Tools/ModelFactory/M02/M02-009/qa_m02_009.py
+      - name: Export actual static OBJ, MTL and QA
+        run: |
+          python3 Tools/ModelFactory/M02/M02-009/generate_m02_009.py \
+            --static-obj --out build/M02-009-static
+          test -s build/M02-009-static/M02-009_triwheel_bogie.obj
+          test -s build/M02-009-static/M02-009_triwheel_bogie.mtl
+          test -s build/M02-009-static/M02-009_qa.json
+      - name: Publish static asset
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M02-009-static-OBJ-MTL-QA
+          path: build/M02-009-static/
+          if-no-files-found: error
+          retention-days: 14
+  m02-009-blender:
+    needs: m02-009-static
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install real Blender and dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq blender python3-numpy
+          blender --version | head -3
+      - name: Generate real animated GLB and editable BLEND
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M02/M02-009/generate_m02_009.py \
+            -- --out build/M02-009-blender
+          test -s build/M02-009-blender/M02-009_animated.glb
+          test -s build/M02-009-blender/M02-009.blend
+          test -s build/M02-009-blender/M02-009_qa.json
+      - name: Independently inspect animated glTF 2.0
+        run: |
+          python3 Tools/ModelFactory/M02/M02-009/qa_m02_009.py \
+            build/M02-009-blender/M02-009_animated.glb
+      - name: Publish actual Blender project and animated model
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M02-009-animated-GLB-BLEND-QA
+          path: build/M02-009-blender/
+          if-no-files-found: error
+          retention-days: 14
