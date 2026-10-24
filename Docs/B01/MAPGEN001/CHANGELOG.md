@@ -24,3 +24,7 @@
 - Follow demo Rigidbody with smooth camera, constrain roll/pitch, add damping for playable manual traversals.
 - New EditMode negative cases: middle-of-chassis floor pit, overly tight 90-degree turn, blocked/overlapping enemy spawns, difficulty variation, 100-seed arena challenge preflight; PlayMode 3-cycle regenerate/clear collider-retirement case.
 - All edits limited to isolated MAPGEN001 sources/docs. **Native Unity compile, EditMode, PlayMode, real physical completion still NOT_RUN.** Independent B01-60 review and B01-40 G2 still required.
+
+### R3.1 narrow-lane correction
+- Tightened per-segment lateral wandering as a function of LaneWidth and moved optional ramps toward the side boundary (without overlapping the wall) to retain a larger safe corridor for 10m Light and 16m Heavy challenges at Difficulty=1. This follows a mathematical worst-case geometry review; native Unity runtime proof is still NOT_RUN.
+- Added 600 further authored extreme course cases: 100 seeds x 3 segment counts x Light@10m/Heavy@16m at density=100/difficulty=1.
