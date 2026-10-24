@@ -27,6 +27,9 @@ jobs:
             sudo apt-get update -qq
             sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq blender
           fi
+          # Ubuntu's blender 4.0.2 package does not require numpy, but its
+          # bundled glTF exporter imports numpy at runtime.
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3-numpy python3-pil
           blender --version | head -n 2
       - name: Two consecutive builds, moving-part clearance and real GLB validation
         run: |
