@@ -242,6 +242,23 @@ def validate(parts):
         assert volume>1e-12,(p["name"],"negative volume",volume)
         total_v+=len(v)
         total_f+=len(f)
+    # Conservative AABB broad-phase collision gate. Separate visual
+    # components are assembled by flush contacts, never by interpenetrating
+    # volumes. This deliberately rejects positive overlap on all 3 axes.
+    boxes=[]
+    for p in parts:
+        bounds=[(min(v[k] for v in p["vertices"]),
+                 max(v[k] for v in p["vertices"])) for k in range(3)]
+        boxes.append((p["name"],bounds))
+    pair_checks=0
+    for i,(name_a,a) in enumerate(boxes):
+        for name_b,b in boxes[i+1:]:
+            overlap=[min(a[k][1],b[k][1])-max(a[k][0],b[k][0])
+                     for k in range(3)]
+            assert min(overlap)<=1e-8,(
+                "unintended volumetric overlap",name_a,name_b,overlap)
+            pair_checks+=1
+    assert pair_checks==325
     assert sum("Mount_Bore_" in n for n in names)==4
     assert sum("Mount_Bridge_" in n for n in names)==4
     assert sum("Frame_Rivet_" in n for n in names)==8
@@ -266,6 +283,7 @@ def validate(parts):
                 triangles=total_f,materials=len(MATERIALS),
                 outer_real_through_holes=24,inner_real_through_holes=96,
                 through_bored_mounts=4,snap_points=len(MOUNT_POINTS),
+                no_volume_overlap_pair_checks=pair_checks,
                 sheet_air_gap_m=.009,static_model=True,
                 scale="1 unit = 1 metre",
                 pivot=[0,0,0],mount_normal=[0,1,0],
