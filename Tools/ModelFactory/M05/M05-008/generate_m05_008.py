@@ -376,6 +376,10 @@ def export_blender(parts, folder):
         obj.parent = hinge if moving else root
         mesh.materials.append(mats[p["material"]])
         if p["bevel"] > 0:
+            # Blender 4.0 Weighted Normal modifier requires Auto Smooth;
+            # on Blender 4.1+ this legacy property was removed.
+            if hasattr(mesh, "use_auto_smooth"):
+                mesh.use_auto_smooth = True
             modifier = obj.modifiers.new("Edge_chamfer","BEVEL")
             modifier.width = p["bevel"]
             modifier.segments = 3
