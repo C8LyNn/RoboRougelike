@@ -1,0 +1,42 @@
+name: M02-002 Narrow Speed Wheel QA
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M02/M02-002/**'
+      - '.github/workflows/ci-m02-002.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  procedural-wheel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M02/M02-002/generate_m02_002.py Tools/ModelFactory/M02/M02-002/validate_m02_002.py
+      - name: Generator self-test
+        run: python3 Tools/ModelFactory/M02/M02-002/generate_m02_002.py --self-test
+      - name: Validate committed OBJ, MTL and animated glTF
+        run: python3 Tools/ModelFactory/M02/M02-002/validate_m02_002.py
+      - name: Regenerate procedural OBJ and MTL
+        run: |
+          python3 Tools/ModelFactory/M02/M02-002/generate_m02_002.py --out /tmp/m02-002
+          test -s /tmp/m02-002/M02-002_narrow_speed_wheel.obj
+          test -s /tmp/m02-002/M02-002_narrow_speed_wheel.mtl
+      - name: Verify regenerated geometry counts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/m02-002/M02-002_narrow_speed_wheel.obj')
+          lines=p.read_text().splitlines()
+          assert sum(x.startswith('v ') for x in lines)==6016
+          assert sum(x.startswith('f ') for x in lines)==11952
+          assert sum(x.startswith('o ') for x in lines)==30
+          print('PASS: regenerated 30 parts, 6016 vertices, 11952 triangles')
+          PY
