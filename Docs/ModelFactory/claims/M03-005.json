@@ -1,8 +1,18 @@
 {
   "id": "M03-005",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T14:45:57Z",
   "model": "Adapter ośmiokątny uniwersalny",
-  "run": "2026-10-24T14:00:00Z"
+  "run": "2026-10-24T14:00:00Z",
+  "claim_create_commit_sha": "9103d5f02c714f073a57b009e1ee50c3e2d2ca9e",
+  "asset_branch": "feature/rrl-model-m03-005-octagonal-universal-adapter",
+  "asset_commit_sha": "d82d84f182ce1fc69c3317ea42790458a8f9f1e8",
+  "asset_path": "Tools/ModelFactory/M03/M03-005/",
+  "pr_number": 75,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/75",
+  "qa_status": "STATIC_QA_PASS; BLENDER_GLB_EXPORT_PASS",
+  "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104556873",
+  "unity_status": "BLOCKED_UNITY_ACTIVATION; NOT RUN",
+  "updated_at_utc": "2026-10-24T14:55:44Z"
 }
