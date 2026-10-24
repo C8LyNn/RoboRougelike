@@ -1,0 +1,54 @@
+{
+  "id": "M01-008",
+  "result": "PASS_STATIC",
+  "parts": 93,
+  "vertices": 2238,
+  "triangles": 4128,
+  "materials": 8,
+  "closed_positive_volume_components": 93,
+  "mount_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "mount_plane": "Z=0",
+  "mount_type": "top_socket",
+  "forward_axis": "+Y",
+  "up_axis": "+Z",
+  "animation_axis": "+Y",
+  "pump_groups": [
+    "PUMP_L",
+    "PUMP_R"
+  ],
+  "pump_stroke_amplitude_m": 0.07,
+  "animation_pose_samples": 61,
+  "moving_parts": 8,
+  "static_parts": 85,
+  "moving_static_aabb_checks": 41480,
+  "moving_static_intersections": 0,
+  "extent_m": [
+    [
+      -0.5045,
+      0.5045
+    ],
+    [
+      -0.3655,
+      1.763
+    ],
+    [
+      0.0,
+      0.838
+    ]
+  ],
+  "blender_export": "PASS",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN",
+  "gameplay": "UNCHANGED",
+  "obj": "M01-008_liquid_cooled_rifle.obj",
+  "mtl": "M01-008_liquid_cooled_rifle.mtl",
+  "obj_sha256": "17f0f82037f518f9935ba2d44671e5190710a97bea6562ecfe1268289cd544d1",
+  "mtl_sha256": "466517d8daad224cb17fc420b74fd0dd1349b8c33688ed60c6da863898e698c2",
+  "glb": "M01-008_liquid_cooled_rifle_animated.glb",
+  "fbx": "M01-008_liquid_cooled_rifle_animated.fbx",
+  "blend": "M01-008_liquid_cooled_rifle.blend"
+}
