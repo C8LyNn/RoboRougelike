@@ -1,6 +1,6 @@
 {
   "model_id": "M02-002",
-  "status": "STATIC_QA_PENDING_CI",
+  "status": "STATIC_QA_V2_PENDING_CI",
   "part_count": 30,
   "vertices": 6016,
   "triangles": 11952,
@@ -14,5 +14,12 @@
   "shaft_clearance_m": 0.01,
   "animation": "X-axis 360 degrees, 2 seconds, 9 quaternion keys",
   "blender": "NOT_RUN",
-  "unity": "NOT_RUN"
+  "unity": "NOT_RUN",
+  "geometry_revision": "M02-002_V2_CONNECTED_ASSEMBLY",
+  "structural_contacts_verified": 15,
+  "obj_gltf_parity_vertices": 6016,
+  "geometry_parts_revised": 15,
+  "model_counts_unchanged": true,
+  "connection_summary": "Tire/rim 5mm radial seat; ceramic spoke overlays 4mm axial seat; hub carrier/front cap 3mm axial seat; amber ring/rim 4mm axial seat; brake rotor/hub 6mm axial seat; static axle/retainer 2mm axial seat.",
+  "qa_notes": "Geometry and normals updated in embedded animated glTF and statically in OBJ. Blender/Unity visual and animation tests NOT RUN."
 }
