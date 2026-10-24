@@ -1,0 +1,49 @@
+newmtl Tire_Graphite
+Kd 0.11400 0.13300 0.16100
+Ks 0.00000 0.00000 0.00000
+Ns 52.0
+d 1.0
+illum 2
+
+newmtl Rim_Titanium
+Kd 0.60400 0.65500 0.68600
+Ks 0.36900 0.36900 0.36900
+Ns 288.0
+d 1.0
+illum 2
+
+newmtl Spoke_Ceramic
+Kd 0.83100 0.84700 0.83500
+Ks 0.16200 0.16200 0.16200
+Ns 280.0
+d 1.0
+illum 2
+
+newmtl Hub_Copper
+Kd 0.72900 0.46700 0.31400
+Ks 0.35550 0.35550 0.35550
+Ns 268.0
+d 1.0
+illum 2
+
+newmtl Accent_Amber
+Kd 0.91400 0.67500 0.24700
+Ks 0.15750 0.15750 0.15750
+Ns 272.0
+d 1.0
+illum 2
+
+newmtl Mount_Steel
+Kd 0.25900 0.29800 0.33700
+Ks 0.37350 0.37350 0.37350
+Ns 216.0
+d 1.0
+illum 2
+
+newmtl Brake_Graphite
+Kd 0.16000 0.18500 0.20300
+Ks 0.34200 0.34200 0.34200
+Ns 204.0
+d 1.0
+illum 2
+
