@@ -1,0 +1,150 @@
+{
+    "method": "Windows native API/physics fixture; controlled placement, damage APIs and actual projectile flight; NOT manual gameplay",
+    "status": "Passed",
+    "startedUtc": "2026-10-24T02:33:43.8360221Z",
+    "finishedUtc": "2026-10-24T02:33:48.3921472Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "width": 1280,
+    "height": 720,
+    "checks": [
+        {
+            "id": "W7",
+            "name": "Real gameplay scene initialized",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W7",
+            "name": "Actual expedition start",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W7",
+            "name": "Original pool installed in real run",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COV-001",
+            "name": "Actual salvage yard covers bound",
+            "detail": "6",
+            "passed": true
+        },
+        {
+            "id": "COV-001",
+            "name": "Actual P17 projectile damages contacted cover",
+            "detail": "10",
+            "passed": true
+        },
+        {
+            "id": "COV-001",
+            "name": "Shared hit breaks real blocker and mesh",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COV-001",
+            "name": "Reset restores original durability and collision",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "HAZ-001",
+            "name": "Original hazard cycle begins",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "HAZ-001",
+            "name": "Automatic warning is visible and harmless before activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "HAZ-001",
+            "name": "Automatic active phase damages exactly one living part",
+            "detail": "5",
+            "passed": true
+        },
+        {
+            "id": "HAZ-001",
+            "name": "Pause blocks source clock and explicit damage requests",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Settled hit emits once without changing gameplay physics",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Cosmetic pool contains no physics bodies or colliders",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Muzzle flash is not a hit",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Real designated core uses original core shockwave",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Actual original rocket launch",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Nonlethal native rocket impact produces explosion shockwave",
+            "detail": "440,3187",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Disabling effects clears all active bursts",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Re-enabling does not replay old impacts or fragments",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Reward transition clears VFX and disables hazard",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Scene restart installs exactly one new bridge",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Restarted expedition enters combat",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "VFX-001-v5",
+            "name": "Fresh run owns working hit subscription",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "errors": []
+}

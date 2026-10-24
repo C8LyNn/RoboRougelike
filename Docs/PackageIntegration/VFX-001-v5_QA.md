@@ -17,3 +17,6 @@ An explicit MOVSERIES_VISUAL_QA Windows fixture was added for COV/HAZ/VFX and is
 [Machine-readable cases](VFX-001-v5_test_summary.json). API fixtures are distinct from native input gameplay.
 
 Integration [Draft PR #31](https://github.com/C8LyNn/RoboRougelike/pull/31); no shared-branch merge.
+
+
+W7 build source e2dd53bef859e819cc3896748b3fd92286c12f70: Windows builds succeeded0errors; native720 API/physics23/23 checks/errors[]/actualexit0. Full regression and ordinary-input campaign/visual/performance gates remain pending. See [current W7 wave QA](W7_WAVE_QA.md) for evidence, release status and API/gameplay distinction.
