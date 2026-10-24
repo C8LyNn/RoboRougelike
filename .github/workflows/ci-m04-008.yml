@@ -1,0 +1,63 @@
+name: M04-008 Side Hover Geometry and Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-008-side-stabilizing-hover
+    paths:
+      - 'Tools/ModelFactory/M04/M04-008/**'
+      - '.github/workflows/ci-m04-008.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-008/**'
+      - '.github/workflows/ci-m04-008.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify real generated geometry and static export
+        run: python3 Tools/ModelFactory/M04/M04-008/qa_m04_008.py
+      - name: Export actual OBJ and MTL
+        run: |
+          python3 Tools/ModelFactory/M04/M04-008/generate_m04_008.py \
+            --static-obj --out build/M04-008
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M04-008-real-OBJ-MTL-manifest
+          path: build/M04-008/
+          if-no-files-found: error
+          retention-days: 30
+  blender-animation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender from Ubuntu package repository
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -2
+      - name: Generate .blend and animated .glb with real bpy
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python \
+            Tools/ModelFactory/M04/M04-008/generate_m04_008.py -- \
+            --out build/M04-008
+      - name: Independent GLB animation channel and geometry QA
+        run: |
+          python3 Tools/ModelFactory/M04/M04-008/qa_m04_008.py \
+            --check-glb build/M04-008/M04-008_side_hover.glb
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M04-008-Blender-and-animated-GLB
+          path: build/M04-008/
+          if-no-files-found: error
+          retention-days: 30
