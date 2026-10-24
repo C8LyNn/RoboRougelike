@@ -7,7 +7,7 @@ using RoboRougelike.R1;
 
 namespace RoboRougelike.R3
 {
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner }
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -56,7 +56,7 @@ namespace RoboRougelike.R3
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
-            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40, _=>ArmorCost };
+            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30, _=>ArmorCost };
     }
     public sealed class R3VehicleModel
     {
@@ -96,7 +96,7 @@ namespace RoboRougelike.R3
         // occupying 2x2x1 cells; 90-degree rotations allow vertical placement.
         public static IEnumerable<Vector3Int> OccupiedCells(Vector3Int anchor,R3PartKind kind) =>
             OccupiedCells(anchor,kind,default);
-        public static bool UsesWideFootprint(R3PartKind kind) => kind==R3PartKind.BonusModule||kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.StructuralScanner;
+        public static bool UsesWideFootprint(R3PartKind kind) => kind==R3PartKind.BonusModule||kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.StructuralScanner||kind==R3PartKind.ScannerPulse;
         public static IEnumerable<Vector3Int> OccupiedCells(Vector3Int anchor,R3PartKind kind,Vector3Int turns)
         {
             yield return anchor;
@@ -143,7 +143,7 @@ namespace RoboRougelike.R3
             if (kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
             if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
             int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
-                R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,_=>8};
+                R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,_=>8};
             if(kind>=R3PartKind.Booster&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask))
