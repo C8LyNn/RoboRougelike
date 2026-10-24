@@ -1,0 +1,70 @@
+name: MODEL-05 M05-011 Caged Mini Reactor Blender QA
+on:
+  push:
+    branches: [feature/rrl-model-m05-011-caged-mini-reactor]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-011/**'
+      - '.github/workflows/ci-model-m05-011.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  blender-reactor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile Python scripts
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-011/generate_m05_011.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-011/qa_blender_m05_011.py
+      - name: Install Blender and glTF Python dependencies
+        run: |
+          if ! command -v blender >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq blender
+          fi
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3-numpy python3-pil
+          blender --version | head -n 2
+      - name: Actual bpy two-build, animation, collision and GLB validation
+        run: |
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-011/qa_blender_m05_011.py 2>&1 | tee /tmp/m05-011-qa.log
+          grep -q 'M05-011 QA PASS' /tmp/m05-011-qa.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-011-qa.log
+      - name: Produce actual GLB FBX BLEND and validate report
+        run: |
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-011/generate_m05_011.py -- --out build/M05-011 2>&1 | tee /tmp/m05-011-build.log
+          grep -q 'M05-011 EXPORT PASS' /tmp/m05-011-build.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-011-build.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("build/M05-011")
+          j=json.loads((p/"M05-011_qa.json").read_text())
+          assert j["id"]=="M05-011"
+          assert j["geometry_revision"]=="M05-011_V1_CAGED_MINI_REACTOR"
+          assert j["materials"]==9
+          assert j["moving_meshes"]==30
+          assert j["mounting_markers"]==5
+          assert j["core_clearance_m"]>.06
+          assert j["cage_clearance_m"]>.01
+          assert j["moving_vertex_samples"]>100000
+          assert j["export_glb"]==j["export_fbx"]==j["save_blend"]=="PASS"
+          assert j["unity"]=="NOT RUN"
+          for ext in ("glb","fbx","blend"):
+              f=p/("M05-011_caged_mini_reactor."+ext)
+              assert f.exists() and f.stat().st_size>1024,(ext,f)
+          print("M05-011 production QA PASS",j)
+          PY
+      - name: Upload deliverable model and QA report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-011-caged-reactor-GLB-FBX-BLEND-QA
+          path: build/M05-011/
+          retention-days: 14
+          if-no-files-found: error
