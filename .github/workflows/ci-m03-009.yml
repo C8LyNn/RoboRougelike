@@ -1,0 +1,108 @@
+name: M03-009 Perforated Armor QA
+
+on:
+  push:
+    branches: [feature/rrl-model-m03-009-perforated-armor-plate]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-009/**'
+      - '.github/workflows/ci-m03-009.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-009/**'
+      - '.github/workflows/ci-m03-009.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate independent actual OBJ and 120 real holes
+        run: python3 Tools/ModelFactory/M03/M03-009/qa_m03_009.py
+      - name: Export static 3D OBJ MTL and manifest
+        run: |
+          python3 Tools/ModelFactory/M03/M03-009/generate_m03_009.py --static-obj --out /tmp/m03-009-static
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/m03-009-static/M03-009_perforated_side_armor_manifest.json")
+          j=json.loads(p.read_text())
+          assert j["result"]=="PASS" and j["parts"]==26
+          assert j["outer_real_through_holes"]==24
+          assert j["inner_real_through_holes"]==96
+          assert j["through_bored_mounts"]==4 and j["materials"]==5
+          assert j["blender"]=="NOT RUN" and j["unity"]=="NOT RUN"
+          print("PASS: real static OBJ MTL, 120 through-holes and four mounts")
+          PY
+      - name: Upload actual static geometry
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-009-static-OBJ-MTL
+          path: /tmp/m03-009-static/
+          if-no-files-found: error
+          retention-days: 14
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Execute actual bpy generator and export GLB FBX BLEND
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-009/generate_m03_009.py \
+            -- --out /tmp/m03-009-blender
+          test -s /tmp/m03-009-blender/M03-009_perforated_side_armor.glb
+          test -s /tmp/m03-009-blender/M03-009_perforated_side_armor.fbx
+          test -s /tmp/m03-009-blender/M03-009_perforated_side_armor.blend
+      - name: Validate repeat bpy generation in the same Blender process
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python-expr \
+            "import bpy,sys;from pathlib import Path;sys.path.insert(0,'Tools/ModelFactory/M03/M03-009');import generate_m03_009 as m;p=m.build_parts();out=Path('/tmp/m03-009-repeat');m.blender_export(p,out);m.blender_export(p,out);c=bpy.data.collections[m.COLLECTION];assert len([o for o in c.objects if o.type=='MESH'])==26;assert len([o for o in c.objects if o.type=='EMPTY'])==5;assert len([x for x in bpy.data.meshes if x.name.startswith(m.PREFIX)])==26;print('PASS: no duplicate meshes on repeat')"
+      - name: Inspect real Blender GLB materials, nodes and manifest
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path("/tmp/m03-009-blender")
+          blob=(root/"M03-009_perforated_side_armor.glb").read_bytes()
+          magic,version,length=struct.unpack_from("<4sII",blob)
+          assert (magic,version,length)==(b"glTF",2,len(blob))
+          size,kind=struct.unpack_from("<I4s",blob,12)
+          assert kind==b"JSON"
+          gltf=json.loads(blob[20:20+size])
+          expected={"RRL_M03_009_"+x for x in
+                    ("GraphiteFrame","PerforatedSteel","CopperMesh",
+                     "TitaniumMount","AmberWarning")}
+          assert {m["name"] for m in gltf["materials"]}==expected
+          assert len([n for n in gltf["nodes"] if "mesh" in n])==26
+          assert any(n.get("name")=="RRL_M03_009_ROOT_PIVOT" for n in gltf["nodes"])
+          assert len([n for n in gltf["nodes"] if n.get("name","").startswith("RRL_M03_009_SNAP_")])==4
+          assert not gltf.get("animations")
+          j=json.loads((root/"M03-009_perforated_side_armor_manifest.json").read_text())
+          assert j["backend"]=="blender-bpy" and j["blender"]=="EXPORTED"
+          assert j["unity"]=="NOT RUN"
+          print("PASS: 26 Blender meshes, 5 PBR materials, four sockets, static rig")
+          PY
+      - name: Upload Blender-generated model
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-009-Blender-GLB-FBX-BLEND
+          path: /tmp/m03-009-blender/
+          if-no-files-found: error
+          retention-days: 14
