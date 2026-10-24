@@ -1,0 +1,60 @@
+name: M01-014 Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-014-electromagnetic-pulser
+    paths:
+      - 'Tools/ModelFactory/M01/M01-014/**'
+      - '.github/workflows/ci-model-m01-014.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Python static topology, swept clearance and export
+        run: |
+          python Tools/ModelFactory/M01/M01-014/generate_m01_014.py --self-test
+          python Tools/ModelFactory/M01/M01-014/generate_m01_014.py --out Tools/ModelFactory/M01/M01-014/generated
+          python Tools/ModelFactory/M01/M01-014/qa_m01_014.py --out Tools/ModelFactory/M01/M01-014/generated
+          sha256sum Tools/ModelFactory/M01/M01-014/generated/*.obj Tools/ModelFactory/M01/M01-014/generated/*.mtl > /tmp/m01-014-static-sha
+      - name: Install actual Blender runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender --version
+      - name: Actual Blender animation, exports and idempotence
+        run: |
+          blender --background --python Tools/ModelFactory/M01/M01-014/generate_m01_014.py -- --out Tools/ModelFactory/M01/M01-014/generated --repeat-blender
+          sha256sum -c /tmp/m01-014-static-sha
+          python Tools/ModelFactory/M01/M01-014/qa_m01_014.py --out Tools/ModelFactory/M01/M01-014/generated --require-blender
+      - name: Upload real 3D exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-014-electromagnetic-pulser-3D
+          path: Tools/ModelFactory/M01/M01-014/generated/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish exports only on exclusive feature branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Tools/ModelFactory/M01/M01-014/generated/
+          if git diff --cached --quiet; then
+            echo "Generated files already committed."
+          else
+            git commit -m "MODEL-01 M01-014: actual Blender exports and verified QA"
+            git push origin HEAD:feature/rrl-model-m01-014-electromagnetic-pulser || echo "::warning::Binary publication BLOCKED; workflow artifact remains available"
+          fi
