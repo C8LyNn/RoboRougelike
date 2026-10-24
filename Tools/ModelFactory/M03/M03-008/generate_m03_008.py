@@ -249,7 +249,7 @@ def validate(parts):
     assert len([x for x in names if x.startswith("MountCollar_")]) == 4
     assert len([x for x in names if x.startswith("AngledRib_")]) == 2
     assert len([x for x in names if x.startswith("CrestWarning_")]) == 2
-    assert len(parts) == 18
+    assert len(parts) == 19
     assert all(abs(v-t) < 1e-8 for v,t in zip(minv, (-.48,-.184,-.36)))
     assert all(abs(v-t) < 1e-8 for v,t in zip(maxv, (.48,0,.36)))
 
