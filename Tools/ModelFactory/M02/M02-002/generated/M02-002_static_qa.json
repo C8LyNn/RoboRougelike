@@ -1,6 +1,6 @@
 {
   "model_id": "M02-002",
-  "status": "STATIC_QA_PENDING_CI",
+  "status": "PASS_GITHUB_ACTIONS_STATIC_AND_EMBEDDED_GLTF_PARITY",
   "part_count": 30,
   "vertices": 6016,
   "triangles": 11952,
@@ -14,5 +14,13 @@
   "shaft_clearance_m": 0.01,
   "animation": "X-axis 360 degrees, 2 seconds, 9 quaternion keys",
   "blender": "NOT_RUN",
-  "unity": "NOT_RUN"
+  "unity": "NOT_RUN",
+  "geometry_revision": "M02-002_V2_CONNECTED_ASSEMBLY",
+  "structural_contacts_verified": 15,
+  "obj_gltf_parity_vertices": 6016,
+  "geometry_parts_revised": 15,
+  "model_counts_unchanged": true,
+  "connection_summary": "Tire/rim 5mm radial seat; ceramic spoke overlays 4mm axial seat; hub carrier/front cap 3mm axial seat; amber ring/rim 4mm axial seat; brake rotor/hub 6mm axial seat; static axle/retainer 2mm axial seat.",
+  "qa_notes": "Valid source geometry; regenerated OBJ byte-for-byte identical; 15 mechanical interfaces check; all 6016 OBJ vertex positions equal the embedded glTF coordinates after Z-up to Y-up conversion, and glTF normals/animation verified. This is not a Blender or Unity runtime check.",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109497917"
 }

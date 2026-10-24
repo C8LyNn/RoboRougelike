@@ -120,21 +120,21 @@ def build():
         part=ring(name,[(x0,r0),(x0,r1),(x1,r1),(x1,r0)],mat)
         part["stationary"]=stationary
         add(part)
-    ann("Forged_Rim","Rim_Titanium",.143,.228,.286,.333)
+    ann("Forged_Rim","Rim_Titanium",.143,.228,.286,.340)
     ann("Rear_Rim_Lip","Mount_Steel",.127,.144,.295,.331)
-    ann("Amber_Front_Ring","Accent_Amber",.230,.237,.299,.310)
+    ann("Amber_Front_Ring","Accent_Amber",.224,.237,.299,.310)
     ann("Hub_Carrier","Hub_Copper",.145,.230,.043,.112)
-    ann("Hub_Front","Rim_Titanium",.232,.246,.050,.098)
-    ann("Brake_Rotor","Brake_Graphite",.130,.140,.112,.273)
+    ann("Hub_Front","Rim_Titanium",.227,.246,.050,.098)
+    ann("Brake_Rotor","Brake_Graphite",.135,.151,.108,.273)
     for i in range(10):
         a=2*math.pi*(i+.08)/10
         add(wedge(f"Spoke_Alloy_{i:02}",.150,.225,.106,.305,
                   a-.09,a+.09,"Rim_Titanium"))
-        add(wedge(f"Spoke_Ceramic_{i:02}",.226,.233,.157,.281,
+        add(wedge(f"Spoke_Ceramic_{i:02}",.221,.233,.157,.281,
                   a-.046,a+.046,"Spoke_Ceramic"))
     ann("Mount_Flange_STATIC","Mount_Steel",-.040,.000,.013,.072,True)
     ann("Axle_Shaft_STATIC","Rim_Titanium",.000,.258,.012,.033,True)
-    ann("Axle_Retainer_STATIC","Hub_Copper",.259,.275,.012,.038,True)
+    ann("Axle_Retainer_STATIC","Hub_Copper",.256,.275,.012,.038,True)
     return parts
 
 def validate(parts):
@@ -160,6 +160,38 @@ def validate(parts):
             triangles+=1
         assert all(n==2 for n in edges.values()),p["name"]
         vertices+=len(vs)
+    # Assembly continuity gate: visual solids must intersect at their
+    # mounting faces. V1 had a floating tire (2 mm radial gap), ceramic
+    # spoke overlays, a hub cap, accent ring, and brake disc separated
+    # from the structural wheel assembly. These are not articulated joints.
+    components={p["name"]:p for p in parts}
+    def x_bounds(part):
+        return min(v[0] for v in part["vertices"]), max(v[0] for v in part["vertices"])
+    def radial_bounds(part):
+        rr=[math.hypot(v[1],v[2]) for v in part["vertices"]]
+        return min(rr),max(rr)
+    def overlap(interval1,interval2):
+        return min(interval1[1],interval2[1])-max(interval1[0],interval2[0])
+    contact_pairs=[
+        ("Narrow_Rubber_Tire","Forged_Rim",.004,.004),
+        ("Forged_Rim","Amber_Front_Ring",.003,.005),
+        ("Hub_Carrier","Hub_Front",.002,.04),
+        ("Hub_Carrier","Brake_Rotor",.004,.003),
+        ("Axle_Shaft_STATIC","Axle_Retainer_STATIC",.001,.015),
+    ]
+    for a,b,min_x,min_radial in contact_pairs:
+        lhs,rhs=components[a],components[b]
+        assert overlap(x_bounds(lhs),x_bounds(rhs))>=min_x-1e-8,(a,b,"axial gap")
+        assert overlap(radial_bounds(lhs),radial_bounds(rhs))>=min_radial-1e-8,(a,b,"radial gap")
+    for i in range(10):
+        base=components[f"Spoke_Alloy_{i:02}"]
+        ceramic=components[f"Spoke_Ceramic_{i:02}"]
+        assert overlap(x_bounds(base),x_bounds(ceramic))>=.003-1e-8
+        assert overlap(radial_bounds(base),radial_bounds(ceramic))>.10
+    # Still preserve a REAL shaft-to-hub bore radial air gap through travel.
+    assert min(radial_bounds(components[n])[0] for n in
+               ("Hub_Carrier","Hub_Front")) >= .043-1e-8
+    assert radial_bounds(components["Axle_Shaft_STATIC"])[1] <= .033+1e-8
     assert len([p for p in parts if p["name"].startswith("Spoke_Alloy")])==10
     assert len([p for p in parts if p.get("stationary")])==3
     assert abs(.043-.033-.010)<1e-9
@@ -168,6 +200,9 @@ def validate(parts):
        tire_radius_m=.523,tire_width_m=.180,mount_plane_x_m=0,
        wheel_center_x_m=.185,axle_axis="+X",
        axle_radial_clearance_m=.010,all_parts_closed_manifold=True,
+       fixed_contact_pairs_verified=len(contact_pairs),
+       spoke_ceramic_contacts_verified=10,
+       structural_revision="M02-002_V2_CONNECTED_ASSEMBLY",
        qa_geometry="PASS_STATIC",blender="NOT_RUN",unity="NOT_RUN")
 
 def blender_export(parts,outdir):

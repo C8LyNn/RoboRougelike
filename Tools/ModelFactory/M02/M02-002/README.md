@@ -37,3 +37,21 @@ Blender wygeneruje FBX i animowany GLB z tą samą geometrią. **Eksport Blender
 ## Status QA
 
 Statyczne testy geometrii oraz struktury animacji można uruchomić bez Unity. Nie zastępują one oceny wizualnej, testu clippingu w pełnym cyklu animacji w Blenderze ani testu importu w Unity. Wszystkie te testy pozostają **NOT RUN**, dopóki nie ma rzeczywistych logów i zrzutów z aplikacji. Model pozostaje w DRAFT PR, bez scalania do `develop`.
+
+## Iteracja V2 — zamknięcie szczelin w zespole koła (24.10.2026)
+
+**Zidentyfikowany problem:** pierwotna opona była oddzielona od obręczy szczeliną **2 mm**; dziesięć ceramicznych nakładek szprych miało **1 mm** odstępu od metalowych ramion; przedni dekiel piasty, bursztynowy pierścień i tarcza hamulcowa nie zachodziły na sąsiednie konstrukcje. Statyczne zabezpieczenie osi również nie stykało się z wałkiem. Wszystkie te elementy wyglądały na luźne, mimo że powinny stanowić jeden zespół.
+
+**Naprawy rzeczywistej geometrii:**
+- `Forged_Rim` — zewnętrzny promień zwiększony z 0,333 do **0,340 m**, czyli 5 mm osadzenia w oponie przy zachowaniu pierwotnej średnicy opony 1,046 m.
+- `Spoke_Ceramic_00…09` — przednie nakładki wsunięte o **4 mm** w ramiona metalowe; nadal widoczne od frontu.
+- `Amber_Front_Ring` — osadzenie w obręczy zwiększone do **4 mm**.
+- `Hub_Front` — czołowy dekiel zachodzi na nośnik piasty o **3 mm**.
+- `Brake_Rotor` — poszerzono zakres X do 0,135–0,151 m i wewnętrzną krawędź R do 0,108 m; uzyskano 6 mm osiowego i 4 mm promieniowego osadzenia w nośniku piasty.
+- `Axle_Retainer_STATIC` — cofnięto początek do X=0,256 m, aby zachodził na nieruchomy wałek o **2 mm**. Oś obrotu pozostaje +X; prześwit promieniowy pręt–piasta **10 mm** nie zmienił się.
+
+**Poprawione artefakty:** `generate_m02_002.py`, rzeczywisty `generated/M02-002_narrow_speed_wheel.obj`, **animowany** `generated/M02-002_narrow_speed_wheel_animated.gltf` wraz z osadzonym buforem i normalnymi, `validate_m02_002.py`, raport QA i workflow. Zmieniono położenie/normale **2000 wierzchołków** w 15 komponentach; zachowano 30 komponentów, 6016 wierzchołków, 11952 trójkąty, siedem materiałów oraz dziewięć klatek kwaternionowego obrotu. Korektę osadzonego glTF wykonano programowo, **bez Blendera**. Nie jest to nowy Blender GLB/FBX.
+
+**Wykonane QA:** [GitHub Actions 40109497917 — PASS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40109497917). Uruchomiono test generatora, walidację 15 połączeń (pięć połączeń par głównych oraz 10 nakładek szprych), ponowne wygenerowanie OBJ/MTL i porównanie bajt w bajt, weryfikację wszystkich **6016** pozycji w OBJ wobec osadzonego glTF po konwersji osi oraz sprawdzenie normalnych i klatek animacji. Artefakt `M02-002-V2-connected-narrow-speed-wheel` zawiera spójne OBJ/MTL/glTF i raport.
+
+**Ograniczenia:** Blender `bpy`, uruchomiony FBX/GLB exporter, podgląd animacji, Unity EditMode/PlayMode i inspekcja wizualna to nadal **NOT RUN**. Zachowane są też zamierzone rozdziały ruchomego koła i statycznego wału. Samo QA źródłowe nie zastępuje kontroli w silniku. Zmiana jest przygotowana do review w macierzystym Draft PR #45; nie ingeruje w rozgrywkę, prefabrykaty ani ProjectSettings.
