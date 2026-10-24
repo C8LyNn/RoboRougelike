@@ -1,6 +1,25 @@
 # MAPGEN001_PACKAGE_GATE.md — B01-40 P0 independent package gate
 
 
+## Latest audited snapshot: PR #103 at 7d48b4df34639480ea3818ee429ec7ce584bf1b0 (R3 iteration)
+
+**Chronology:** starting checkpoint a2993a4 -> e22906f (+7 C# rework commits) -> 9b52f60 (+10 documentation/manifest commits) -> **7d48b4df34639480ea3818ee429ec7ce584bf1b0** (+3 more commits). The final hop changes **only three files**, so the earlier table + R3 documentary overrides remain valid for **40 of the 43 files**. These three SHA-256 hashes supersede the previously reported rows at this immutable snapshot:
+
+| Full path | Bytes | SHA-256 |
+|---|---:|---|
+| Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs | 9176 | 6fc6ed576920ace74030094d839c587350753c36e7eee7eb448e1214e9982e3d |
+| Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs | 9640 | 1aab3b5536518a78d75ad54cbd6c1f63bbc26df8f654ad2c8a38a4dc15da0494 |
+| Docs/B01/MAPGEN001/manifest.json | 12094 | e3d6ee30bf567849a6b2ffa026b07a411446a39c6a4df5f8ad3e497cf621d82c |
+
+**G0 fail now narrowed to TWO stale files:** the source-file Git SHA-1 entries for MapGenPlanner.cs and MapGenRouteValidationTests.cs do not equal the actual Git blob SHA-1. The manifest source_file_sha256_by_path now covers **42 of 42 non-self paths**, but these **same two SHA-256 entries are also stale**. Correct values above; actual Git blob IDs are respectively 420af266105e19a73c651d08613ddd59c50d7828 and c99c721f08228090f1aa7707e7f303f52f8d790d. The manifest does not independently attest to its own bytes (self-hash requires out-of-band checksum). Per-file SHA256 is not a ZIP signature.
+
+**Latest snapshot decision: G0=FAIL (2 stale paths) / G1=BLOCKED (licensed Unity compile, EditMode, PlayMode, manual drives and independent B01-60 NOT_RUN) / G2=BLOCKED / REWORK.** The producer must atomically freeze the source revision, refresh both SHA algorithms and byte lengths, lock the installer, then request B01-60 and B01-40 rechecks. Future HEAD moves invalidate any claim that these numbers apply to the moving PR.
+
+---
+
+
+
+
 ## Update 2026-10-24 — subsequently published R3 snapshot, NOT the original R2 audit
 
 **Second immutable snapshot:** [PR #103 at 9b52f60aac7e28315b1e3aa1251f3f1cd7b26098](https://github.com/C8LyNn/RoboRougelike/commit/9b52f60aac7e28315b1e3aa1251f3f1cd7b26098) advanced **10 more commits** beyond audited e22906f, with only **8 documentation/manifest files changed**. Therefore the 35 other checksums listed in the R2 table below remain valid for R3. The following 8 SHA-256 checksums supersede their R2 table rows **only for this exact R3 snapshot**:
