@@ -23,3 +23,5 @@ Complete EditMode/PlayMode is running on the final built source. Native UI/ordin
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W8 native Windows and full-wave closure.**
 
 [Machine-readable cases](MOV-011_test_summary.json). API fixtures are distinct from native input gameplay.
+
+Integration [Draft PR #34](https://github.com/C8LyNn/RoboRougelike/pull/34); no shared-branch merge.
