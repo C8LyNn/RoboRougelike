@@ -26,11 +26,19 @@ jobs:
       - name: Install Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -n 3
+          blender --background --python-expr 'import numpy; print("NUMPY_OK", numpy.__version__)' 2>&1 | tee /tmp/m01-013-numpy.log
+          grep -q NUMPY_OK /tmp/m01-013-numpy.log
       - name: Generate real OBJ MTL GLB FBX BLEND and test Blender rerun
         run: |
-          blender --background --python Tools/ModelFactory/M01/M01-013/generate_m01_013.py -- --out build/M01-013 --repeat-blender
+          set -euo pipefail
+          blender --background --python Tools/ModelFactory/M01/M01-013/generate_m01_013.py -- --out build/M01-013 --repeat-blender 2>&1 | tee /tmp/m01-013-blender.log
+          for ext in obj mtl glb fbx blend; do
+            test -s "build/M01-013/M01-013_disruption_net_launcher.$ext"
+          done
+          test -s build/M01-013/M01-013_disruption_net_launcher_qa.json
+          grep -q '"blender_repeatability": "PASS' build/M01-013/M01-013_disruption_net_launcher_qa.json
       - name: Independently validate real GLB animation and binary exports
         run: python3 Tools/ModelFactory/M01/M01-013/qa_m01_013.py --out build/M01-013 --require-blender
       - name: Publish actual Blender outputs
