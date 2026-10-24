@@ -23,12 +23,12 @@ jobs:
           persist-credentials: false
       - name: Compile scripts and independently validate real OBJ topology
         run: |
-          python3 -m py_compile Tools/ModelFactory/M03/M03-012/generate_m03_011.py
-          python3 -m py_compile Tools/ModelFactory/M03/M03-012/qa_m03_011.py
-          python3 Tools/ModelFactory/M03/M03-012/qa_m03_011.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-012/generate_m03_012.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-012/qa_m03_012.py
+          python3 Tools/ModelFactory/M03/M03-012/qa_m03_012.py
       - name: Produce reproducible static model
         run: |
-          python3 Tools/ModelFactory/M03/M03-012/generate_m03_011.py --out /tmp/m03-012-static
+          python3 Tools/ModelFactory/M03/M03-012/generate_m03_012.py --out /tmp/m03-012-static
           test -s /tmp/m03-012-static/M03-012_u_spring_bumper.obj
           test -s /tmp/m03-012-static/M03-012_u_spring_bumper.mtl
           test -s /tmp/m03-012-static/M03-012_manifest.json
@@ -56,7 +56,7 @@ jobs:
       - name: Execute Blender bpy generator and animated export
         run: |
           blender -b --factory-startup --python-exit-code 1 \
-            --python Tools/ModelFactory/M03/M03-012/generate_m03_011.py \
+            --python Tools/ModelFactory/M03/M03-012/generate_m03_012.py \
             -- --blender --out /tmp/m03-012-blender
           test -s /tmp/m03-012-blender/M03-012_u_spring_bumper.glb
           test -s /tmp/m03-012-blender/M03-012_u_spring_bumper.fbx
