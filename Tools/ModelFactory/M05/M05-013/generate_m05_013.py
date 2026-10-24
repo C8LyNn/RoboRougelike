@@ -384,7 +384,9 @@ def blender_export(parts,out,repeat_check=False):
             ob.parent=parents[p["group"]]
             mesh.materials.append(mats[p["material"]])
             for face in mesh.polygons:
-                face.use_smooth=p["smooth"]
+                # Curved side walls are smooth; both end caps remain flat.
+                # tube() emits [side, side, lower cap, upper cap] per ring.
+                face.use_smooth=p["smooth"] and face.index % 4 in (0,1)
         for frame,angles in KEYS:
             for ob,deg in zip((shoulder,elbow,wrist),angles):
                 ob.rotation_euler[2]=math.radians(deg)
