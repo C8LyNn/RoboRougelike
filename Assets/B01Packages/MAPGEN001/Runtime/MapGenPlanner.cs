@@ -18,10 +18,15 @@ namespace B01.MAPGEN001
             var rng = new System.Random(unchecked(seed * 486187739 + (int)recipe * 16777619 + 101));
             if (recipe == MapRecipe.CombatArena) MakeArena(plan, rng, config);
             else MakeCourse(plan, rng, config);
+            // Reject unusable generated geometry before building any scene objects.
+            var route = MapGenRouteValidator.Validate(plan, vehicle);
+            if (!route.Passed)
+                throw new ArgumentException("IMPOSSIBLE_GENERATED_ROUTE: " + route.Code);
             plan.GeometryHash = HashLayout(plan);
             plan.Diagnostics = "MAPGEN001/v1 recipe=" + recipe + " seed=" + seed
                 + " geometry=" + plan.GeometryHash + " elements=" + plan.Elements.Count
-                + " guaranteed_clearance=" + plan.GuaranteedClearanceWidth.ToString("F2", CultureInfo.InvariantCulture);
+                + " guaranteed_clearance=" + plan.GuaranteedClearanceWidth.ToString("F2", CultureInfo.InvariantCulture)
+                + " route=" + route.ToString();
             return plan;
         }
 
@@ -90,11 +95,12 @@ namespace B01.MAPGEN001
             float width = config.LaneWidth;
             float[] cx = new float[config.Segments];
             for (int i = 1; i < cx.Length; i++)
-                cx[i] = cx[i - 1] + (rng.Next(-2, 3) * .55f);
+                cx[i] = cx[i - 1] + (rng.Next(-2, 3) * (.35f + config.Difficulty * .8f));
             float maxX = cx.Max(x => Mathf.Abs(x));
             p.Bounds = new Bounds(new Vector3(0, 0, config.Segments * 8),
                 new Vector3(2 * (maxX + width * .5f + 3), 8, config.Segments * 16f + 5));
-            p.Start = new Vector3(cx[0], 1.25f, 2);
+            // Start is >= 3.25m from the edge to support the heavy vehicle's full footprint.
+            p.Start = new Vector3(cx[0], 1.25f, 5f);
             p.Finish = new Vector3(cx[cx.Length - 1], 1.25f, config.Segments * 16f - 3);
             p.GuaranteedClearanceWidth = width * .60f - 3f; // full free width between side ramps
             for (int i = 0; i < cx.Length; i++)
