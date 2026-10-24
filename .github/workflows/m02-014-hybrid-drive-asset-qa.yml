@@ -1,0 +1,37 @@
+name: M02-014 hybrid drive asset QA
+
+on:
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M02/M02-014/**"
+      - ".github/workflows/m02-014-hybrid-drive-asset-qa.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-asset-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static independent QA
+        run: python3 Tools/ModelFactory/M02/M02-014/qa_m02_014.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Run real Blender generation and export
+        run: blender --background --threads 2 --python Tools/ModelFactory/M02/M02-014/generate_m02_014.py -- --out build/M02-014
+      - name: Independently validate real exported files
+        run: python3 Tools/ModelFactory/M02/M02-014/qa_m02_014.py --export --out build/M02-014
+      - name: Archive generated assets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-014-hybrid-drive-blender-assets
+          path: build/M02-014/
+          if-no-files-found: warn
+          retention-days: 14
