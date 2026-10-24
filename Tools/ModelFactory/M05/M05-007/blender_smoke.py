@@ -31,10 +31,15 @@ for iteration in range(2):
         for label,target in (("L",left),("R",right)):
             ob=bpy.data.objects["M05-007_DRAWER_"+label]
             assert abs(ob.location.y-target)<1e-5,(frame,label,ob.location.y,target)
+    bevel_count=sum(any(m.type=="BEVEL" for m in ob.modifiers)
+                    for ob in owned if ob.type=="MESH")
+    assert bevel_count>=20,("Machined bevels missing",bevel_count)
     stats.append((
         len(owned),
         len([m for m in bpy.data.meshes if m.name.startswith("M05-007_")]),
         len([m for m in bpy.data.materials if m.name.startswith("M05-007_")]),
+        len([a for a in bpy.data.actions if a.name.startswith("M05-007_")]),
+        bevel_count,
     ))
 assert stats[0]==stats[1],("Blender datablocks leaked",stats)
 glb=out/"M05-007_animated.glb"
