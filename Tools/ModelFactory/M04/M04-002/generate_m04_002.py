@@ -234,7 +234,7 @@ def export_blender(out):
     if bpy is None: return None
     scene=bpy.context.scene
     scene.unit_settings.system="METRIC";scene.unit_settings.scale_length=1.0
-    scene.frame_start=FRAMES[0];scene.frame_end=FRAMES[1]-1;scene.render.fps=24
+    scene.frame_start=FRAMES[0];scene.frame_end=FRAMES[1];scene.render.fps=24
     old=bpy.data.collections.get(ROOT)
     if old:
         for ob in list(old.objects):bpy.data.objects.remove(ob,do_unlink=True)
@@ -269,6 +269,9 @@ def export_blender(out):
         col.objects.link(pivot)
         pivot.parent=root
         pivots.append(pivot)
+    # Evaluate the pivots' world matrices BEFORE computing mesh parent
+    # inverses, so each procedural world-space mesh keeps its authored pose.
+    bpy.context.view_layer.update()
     for name,verts,faces,mat,rotor in PARTS:
         mesh=bpy.data.meshes.new(name+"_mesh");mesh.from_pydata(verts,[],faces);mesh.update()
         ob=bpy.data.objects.new(name,mesh);col.objects.link(ob);ob.data.materials.append(mats[mat])
@@ -299,6 +302,18 @@ def export_blender(out):
                 for fc in curves:
                     for kp in fc.keyframe_points:kp.interpolation="LINEAR"
     scene.frame_set(FRAMES[0])
+    bpy.context.view_layer.update()
+    assert all(p.parent == root for p in pivots)
+    assert all(o.parent in (*pivots, root)
+               for o in col.objects if o.type=="MESH"), "Orphaned mesh in side-mount hierarchy"
+    # At rest, each moving mesh must remain at its authored world position.
+    for o in col.objects:
+        if o.type=="MESH" and o.parent in pivots:
+            original=next((verts for name,verts,faces,mat,rotor in PARTS
+                           if name==o.name),None)
+            if original:
+                p=o.matrix_world @ o.data.vertices[0].co
+                assert max(abs(float(p[k])-original[0][k]) for k in range(3)) < 1e-5, o.name
     bpy.ops.object.select_all(action="DESELECT")
     for ob in col.objects:
         ob.select_set(True)
