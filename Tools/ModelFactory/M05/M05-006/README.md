@@ -47,3 +47,9 @@ Eksport `M05-006_animated.glb` jest wykonywany wyłącznie w Blenderze. `M05-006
 **Blender bpy / animowany GLB / .blend:** wyniki rzeczywistego workflow należy sprawdzić w GitHub Actions; sam PASS statyczny nie dowodzi udanego eksportu. **Unity 6 import, URP, PlayMode i ocena artystyczna: NOT RUN** do czasu uruchomienia projektu z poprawną aktywacją i inspekcji.
 
 **Integracja:** wyłącznie Draft PR do `develop`. Nie modyfikować `Assets`, `ProjectSettings`, scen, mechanik DEF ani pozostałych modeli bez osobnej decyzji. Import GLB do Unity 6 może wymagać zgodnego importera glTF; alternatywnie należy użyć FBX z Blendera.
+
+## Potwierdzone wyniki uruchomienia — 2026-10-24
+
+- **STATIC PASS:** rzeczywiste uruchomienie Pythona w GitHub Actions, test wszystkich 73 zamkniętych brył, weryfikacja kierunku normalnych, **54 808 porównań AABB** (31 próbek), analityczny prześwit 18 mm i odtwarzalność OBJ/MTL. 124 pary współosiowego wału z pierścieniem nie są oceniane AABB, ponieważ wał znajduje się wewnątrz otworu łożyska; są kontrolowane promieniowo.
+- **BLENDER PASS:** [workflow 40108881718](https://github.com/C8LyNn/RoboRougelike/actions/runs/40108881718) wykonał dwa pełne uruchomienia generatora w rzeczywistym Blenderze, potwierdził zachowanie obcego obiektu, brak narastania osieroconych własnych siatek/materiałów, poprawne kąty pięciu klatek, obecność dwóch animowanych zawiasów w GLB oraz zawartość kolekcji w bibliotece BLEND. Oba pliki wyeksportowano i zapisano jako artefakt Actions `M05-006-Blender-animated-asset` (artifact ID `12565985514`, 14 dni retencji).
+- **NOT RUN:** otwarcie w Unity 6, EditMode, PlayMode, materiały URP, render i ręczna ocena wyglądu. Nie deklarować pełnego QA gry na podstawie statycznych/Blenderowych testów.
