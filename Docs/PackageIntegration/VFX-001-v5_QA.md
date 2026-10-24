@@ -15,3 +15,5 @@ An explicit MOVSERIES_VISUAL_QA Windows fixture was added for COV/HAZ/VFX and is
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W7 native Windows and full-wave closure.**
 
 [Machine-readable cases](VFX-001-v5_test_summary.json). API fixtures are distinct from native input gameplay.
+
+Integration [Draft PR #31](https://github.com/C8LyNn/RoboRougelike/pull/31); no shared-branch merge.
