@@ -46,3 +46,11 @@ No file in `Assets/` was modified by this PR; importing and integrating into the
 **NOT RUN:** Blender Python syntax compilation, Blender scene build, animated collision sweep, actual FBX export, Unity import, URP material inspection, and gameplay test. Blender/Unity executables were unavailable in this environment. The generated OBJ has not been visually inspected in a 3D viewer.
 
 **Integration gate:** Hold merge until Blender runs successfully, FBX is imported into Unity, yaw/tilt clips are verified without penetration, and a reviewer accepts the visual silhouette and scale.
+
+## Poprawka animacji i ponownego generowania — 2026-10-24
+
+Oryginalny generator ustawiał azymut radaru wyłącznie między 0° a 360°. Po konwersji do kwaternionów te same pozycje mogą oznaczać brak obrotu zamiast pełnego obrotu. Poprawka dodaje **13 klatek kluczowych** co 10 ramek (30°) pomiędzy klatkami 1–121. Ruch pochylenia ±12° pozostaje bez zmian.
+
+Poprawiono też `reset()`: wcześniej usuwano obiekty sceny, ale pozostawiano nieużywane dane siatek i `Action`, które mogły narastać przy wielokrotnym generowaniu. Teraz czyszczone są wyłącznie nieużywane zasoby z prefiksem tego modelu. Do walidatora dodano weryfikację łańcucha pivotów `ROOT→YAW→ELEVATION`.
+
+**Status:** poprawka kodu i audyt statyczny; rzeczywiste wykonanie w Blenderze, eksport FBX i import Unity pozostają NOT RUN. Zmiany należy ocenić i włączyć do macierzystej gałęzi PR #38 przed integracją do develop.
