@@ -59,5 +59,22 @@ public class OBJ001IntegrationTests
         Assert.That(objective.State,Is.EqualTo(DefenseState.Lost));Assert.That((bool)Call(objective,"CompleteDefense"),Is.False);
         objective.ResetObjective();Assert.That(objective.Begin(),Is.False,"Reset cannot resurrect an already destroyed physical actor");yield return null;
     }
+    [UnityTest] public IEnumerator ExternalFatalIntegrityBeatsManualDeadlineWhileInvalidTicksRemainInert()
+    {
+        var actor=RoboRougelike.OBJ001Integration.OBJ001ReactorActor.Build(run.transform,run.GetComponent<R3VisualPalette>().Parts[0],new Vector3(100,1.2f,100),100);
+        var objective=actor.Objective;int wins=0,losses=0;
+        objective.StateChanged+=s=>{if(s==DefenseState.Won)wins++;if(s==DefenseState.Lost)losses++;};
+        Assert.That(objective.Begin(),Is.True);
+        // The public source contract requires no P12-specific event subscription.
+        actor.Damageable.Died-=objective.SynchronizeIntegrity;objective.enabled=false;
+        actor.Damageable.ApplyDamage(1000,actor.transform.position,Vector3.zero);
+        Assert.That(objective.Tick(1),Is.False);Assert.That(objective.State,Is.EqualTo(DefenseState.Defending));
+        objective.enabled=true;Assert.That(objective.Tick(float.NaN)||objective.Tick(0),Is.False);
+        Assert.That(objective.State,Is.EqualTo(DefenseState.Defending));
+        objective.Tick(objective.DefendSeconds);
+        Assert.That(objective.State,Is.EqualTo(DefenseState.Lost),"External fatal HP must be observed before settling the timer");
+        Assert.That(wins,Is.Zero);Assert.That(losses,Is.EqualTo(1));Assert.That(objective.Tick(1),Is.False);
+        Assert.That(losses,Is.EqualTo(1));yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

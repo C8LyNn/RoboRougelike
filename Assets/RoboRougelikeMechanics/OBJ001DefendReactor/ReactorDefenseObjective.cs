@@ -139,6 +139,8 @@ namespace RoboRougelike.Mechanics.OBJ001
         {
             if (!isActiveAndEnabled || State != DefenseState.Defending ||
                 !Finite(deltaSeconds) || deltaSeconds <= 0f) return false;
+            SynchronizeIntegrity();
+            if(State!=DefenseState.Defending)return false;
             ElapsedSeconds = Mathf.Min(defendSeconds, ElapsedSeconds + deltaSeconds);
             if (ElapsedSeconds >= defendSeconds) { ChangeState(DefenseState.Won); onWon?.Invoke(); }
             return true;

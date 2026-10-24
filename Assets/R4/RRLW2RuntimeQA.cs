@@ -22,6 +22,7 @@ namespace RoboRougelike.R4
         {
             public float realtime;public string state;public int completed,alive,scrap,inventory,recovered,bonuses;
             public float damage,hull,core,playerHp,playerMaxHp;public string inventoryConditions;
+            public int defenseWave;public float reactorHp;public bool reactorActive,lastActivityWasReactor;
         }
         [Serializable] public sealed class DebrisObservation
         {
@@ -31,7 +32,7 @@ namespace RoboRougelike.R4
         [Serializable] public sealed class Result
         {
             public string runId,startedUtc,finishedUtc,status="Running",method="Native UI operator + combat input pilot; no direct damage/reward/currency APIs",graphics;
-            public int width,height,physicalRounds,peakShells,peakDebris;public bool won;public float combatSeconds;public int combatFrames;
+            public int width,height,physicalRounds,peakShells,peakDebris;public bool won,reactorDefenseWon;public float combatSeconds;public int combatFrames;
             public List<Observation> observations=new List<Observation>();
             public List<DebrisObservation> debris=new List<DebrisObservation>();
             public List<string> screenshots=new List<string>();public List<string> errors=new List<string>();
@@ -66,12 +67,15 @@ namespace RoboRougelike.R4
             if(run.Transitioning)return;
             string inv=run.VehicleModel==null?"":string.Join(";",run.VehicleModel.Inventory.Select(p=>p.Kind+":"+p.Health.ToString("0.000",System.Globalization.CultureInfo.InvariantCulture)));
             string key=run.Progress.State+"/"+run.Progress.CompletedEncounters+"/"+(run.Encounter?.AliveCount??0)+"/"+run.VehicleModel?.Scrap+"/"+run.VehicleModel?.Inventory.Count+"/"+run.Progress.Acquired.Count+"/"+inv;
+            key+="/defense/"+run.DefenseWave+"/"+run.ReactorActive+"/"+run.LastActivityWasReactor;
             if(key==lastKey)return;lastKey=key;
             var o=new Observation{realtime=Time.unscaledTime,state=run.Progress.State.ToString(),completed=run.Progress.CompletedEncounters,
                 alive=run.Encounter?.AliveCount??0,scrap=run.VehicleModel?.Scrap??0,inventory=run.VehicleModel?.Inventory.Count??0,recovered=run.RecoveredModules,
                 bonuses=run.Progress.Acquired.Count,damage=run.Progress.Stats.Damage,hull=run.Progress.Stats.Hull,core=run.Progress.Stats.Core,inventoryConditions=inv,
-                playerHp=run.Player!=null&&run.Player.Core!=null?run.Player.Core.CurrentHp:0,playerMaxHp=run.Player!=null&&run.Player.Core!=null?run.Player.Core.MaxHp:0};
+                playerHp=run.Player!=null&&run.Player.Core!=null?run.Player.Core.CurrentHp:0,playerMaxHp=run.Player!=null&&run.Player.Core!=null?run.Player.Core.MaxHp:0,
+                defenseWave=run.DefenseWave,reactorHp=run.ReactorHp,reactorActive=run.ReactorActive,lastActivityWasReactor=run.LastActivityWasReactor};
             result.observations.Add(o);result.won|=run.Progress.State==R1RunState.Won;
+            result.reactorDefenseWon|=run.LastActivityWasReactor&&run.Progress.State==R1RunState.Salvage&&!run.ReactorActive&&run.ReactorHp>0;
             captureName=result.observations.Count.ToString("D3")+"-"+o.state+"-stage"+o.completed;
             captureAt=Time.unscaledTime+.35f;Save();
         }
@@ -162,7 +166,7 @@ namespace RoboRougelike.R4
         }
         void OnApplicationQuit()
         {
-            result.finishedUtc=DateTime.UtcNow.ToString("o");result.status=result.won?"ClosedAfterVictory":"ClosedBeforeFinalVictory";Save();
+            result.finishedUtc=DateTime.UtcNow.ToString("o");result.status=result.won?"ClosedAfterVictory":result.reactorDefenseWon?"ClosedAfterReactorDefenseVictory":"ClosedBeforeFinalVictory";Save();
         }
         void OnDestroy(){Application.logMessageReceived-=OnLog;}
     }
