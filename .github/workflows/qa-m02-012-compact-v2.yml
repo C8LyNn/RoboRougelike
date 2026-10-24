@@ -27,7 +27,7 @@ jobs:
           python3 -m py_compile Tools/ModelFactory/M02/M02-012/qa_m02_012.py
       - name: Generate actual animated 3D asset and kinematic QA
         run: |
-          blender --background --factory-startup --python Tools/ModelFactory/M02/M02-012/generate_m02_012.py -- --out "$RUNNER_TEMP/M02-012"
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-012/generate_m02_012.py -- --out "$RUNNER_TEMP/M02-012"
       - name: Independently verify actual exported GLB, BLEND, rig and materials
         run: |
           python3 Tools/ModelFactory/M02/M02-012/qa_m02_012.py --dir "$RUNNER_TEMP/M02-012"
