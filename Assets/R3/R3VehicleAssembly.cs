@@ -80,6 +80,8 @@ namespace RoboRougelike.R3
                 Transform payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out var partMuzzle);
                 if(state.Kind==R3PartKind.Gun){part.GunPivot=payload;part.Muzzle=partMuzzle;}
+                RoboRougelike.VisualIntegration.PartVisualBinder.TryApply(item.transform,
+                    state.Cell, state.Kind, state.Weapon, payload);
                 if(payload!=null&&(state.Kind==R3PartKind.Wheel||state.Kind==R3PartKind.Gun))
                 {
                     var module=item.AddComponent<P12PipelineSafeFunctionalModule>();

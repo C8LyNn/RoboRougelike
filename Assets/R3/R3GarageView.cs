@@ -102,7 +102,12 @@ namespace RoboRougelike.R3
             item.transform.localRotation=Quaternion.identity;item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             item.GetComponent<Renderer>().sharedMaterial=material;
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
-            if(Tool==R41GarageTool.Mount||plan)R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
+            if(Tool==R41GarageTool.Mount||plan)
+            {
+                var visualPivot = R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
+                RoboRougelike.VisualIntegration.PartVisualBinder.TryApply(item.transform,
+                    cell, kind, weapon, visualPivot);
+            }
             return item;
         }
         public void RefreshMarker()
