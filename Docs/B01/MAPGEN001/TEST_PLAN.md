@@ -15,3 +15,10 @@
 - PERFORMANCE: record runtime generated game objects, 100-plan iteration time, scene allocation profile and GC in Unity Profiler; no invented budgets.
 
 **Status at initial creation:** Unity compile NOT_RUN, EditMode NOT_RUN, PlayMode NOT_RUN, Windows build NOT_RUN, independent B01-60 QA NOT_RUN. Failure => smallest patch, new exact SHA, rerun affected and essential regressions.
+
+## R2 target acceptance (actual execution required)
+1. Unity 6000.3.14f1 **EditMode**: run `MapGenEditModeTests` and `MapGenRouteValidationTests` from the Test Runner, save NUnit XML, editor.log, exit code. Include 100 seeds per recipe for Light and Heavy, impossible blockers/start footprint/slope/turn cases. Log failing seeds/config, never count written tests as passed.
+2. Unity **PlayMode**: run `MapGenPlayModeTests` and `MapGenPhysicalTraversalTests`; save the 12-case Rigidbody drive result (2 recipes x 3 seeds x 2 envelopes), generate/clear, actual collisions, atomic regenerate. Do not replace real motion with Transform teleport.
+3. Manual in standalone `MAPGEN001_Demo.unity`: 3 seeds per recipe for 2 profiles, actual forward/back/turn, capture 720p/1080p screenshots/video including visible start/finish and collider contact. Compare easy/hard layouts on identical seeds for meaningful route/cover changes.
+4. B01-60 independent rerun **exact R2 HEAD**, tag per-case PASS/FAIL/BLOCKED and raw logs (NOT_RUN if Unity/license unavailable); producer B01-20 repairs each real FAIL at a new SHA followed by retest.
+5. B01-40 verifies .meta/GUID, source provenance, all SHA256, no R1/R6/W8 or Codex shared files modified, README/API/INSTALL compatibility; B01-00 alone determines G2 handoff to GPT OSS, never a release/merge.
