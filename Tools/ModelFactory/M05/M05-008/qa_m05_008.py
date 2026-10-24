@@ -15,7 +15,9 @@ GEN = HERE/"generate_m05_008.py"
 
 def command(*args):
     r = subprocess.run([sys.executable,str(GEN),*args],
-                       check=True,capture_output=True,text=True)
+                       check=False,capture_output=True,text=True)
+    if r.returncode:
+        raise RuntimeError("Generator failed: "+r.stderr+"\n"+r.stdout)
     return json.loads(r.stdout)
 
 
