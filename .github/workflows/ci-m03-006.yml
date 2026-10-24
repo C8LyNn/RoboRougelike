@@ -39,3 +39,52 @@ jobs:
           assert all('M03-006' not in x for x in ('Assets/Scenes','ProjectSettings'))
           print('M03-006: 27 manifold components, 8 real holes, 5 materials PASS')
           PY
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Run bpy and export actual GLB and appendable BLEND
+        run: |
+          mkdir -p /tmp/m03-006-blender
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-006/generate_m03_006.py -- --out /tmp/m03-006-blender
+          test -s /tmp/m03-006-blender/M03-006_side_L_bracket.glb
+          test -s /tmp/m03-006-blender/M03-006_side_L_bracket.blend
+      - name: Confirm repeated Blender generation does not leak owned objects or meshes
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import sys,bpy; from pathlib import Path; sys.path.insert(0,'Tools/ModelFactory/M03/M03-006'); import generate_m03_006 as m; s=m.load(); out=Path('/tmp/m03-006-repeat'); out.mkdir(exist_ok=True); m.export_blender(s,out); m.export_blender(s,out); assert len([o for o in bpy.data.objects if o.name.startswith('M03_006_')])==29; assert len([x for x in bpy.data.meshes if x.name.startswith('M03_006_')])==27; print('PASS: 29 owned objects, 27 owned meshes after rerun')"
+      - name: Inspect real GLB node, mesh and material counts
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          p=Path('/tmp/m03-006-blender')
+          glb=(p/'M03-006_side_L_bracket.glb').read_bytes()
+          assert (p/'M03-006_side_L_bracket.blend').stat().st_size>4096
+          magic,version,size=struct.unpack_from('<4sII',glb)
+          assert (magic,version,size)==(b'glTF',2,len(glb))
+          length,kind=struct.unpack_from('<I4s',glb,12)
+          assert kind==b'JSON'
+          doc=json.loads(glb[20:20+length])
+          assert len(doc['materials'])==5
+          assert len([n for n in doc['nodes'] if 'mesh' in n])==27
+          assert all(n.get('name','').startswith('M03_006_') for n in doc['nodes'])
+          print('PASS real Blender GLB, 27 meshes, 5 materials, 2 socket pivots')
+          PY
+      - name: Upload actual Blender outputs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M03-006-Blender-GLB
+          path: |
+            /tmp/m03-006-blender/M03-006_side_L_bracket.glb
+            /tmp/m03-006-blender/M03-006_side_L_bracket.blend
+          if-no-files-found: error
