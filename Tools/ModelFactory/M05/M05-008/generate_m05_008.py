@@ -276,6 +276,16 @@ def validate(parts):
     box3 = bounds(allverts)
     assert box3[2][0] >= -1e-8 and box3[2][1] <= .800
     assert len(SOCKETS) == 3
+    # Local +Z socket axes must face away from the battery housing.
+    expected_outward = {
+        "MOUNT_BOTTOM": (0.0,0.0,-1.0),
+        "SERVICE_FRONT": (0.0,-1.0,0.0),
+        "POWER_REAR": (0.0,1.0,0.0),
+    }
+    for name,(_,rot) in SOCKETS.items():
+        normal = (0.0,-math.sin(rot[0]),math.cos(rot[0]))
+        assert all(abs(a-b)<1e-8 for a,b in
+                   zip(normal,expected_outward[name])),name
     clearance = verify_hatch_clearance(parts)
     return dict(asset=ASSET, result="PASS", parts=len(parts),
                 vertices=len(allverts), triangles=triangles,
@@ -283,6 +293,7 @@ def validate(parts):
                 closed_bounds_m=[[round(a,6),round(b,6)] for a,b in box3],
                 mount_pivot_m=[0,0,0],
                 sockets={k:list(v[0]) for k,v in SOCKETS.items()},
+                socket_outward_axes={k:list(v) for k,v in expected_outward.items()},
                 hinge_axis="X", hinge_origin_m=list(HINGE),
                 hinge_open_degrees=OPEN_DEGREES,
                 visual_only=True, **clearance,
