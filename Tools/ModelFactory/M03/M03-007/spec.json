@@ -20,8 +20,8 @@
   },
   "dimensions": {
     "total_width_m": 0.842,
-    "total_height_m": 0.74,
-    "max_depth_m": 0.276,
+    "total_height_m": 0.739,
+    "max_depth_m": 0.262,
     "stem_width_m": 0.18
   },
   "foot_mounts": {
@@ -78,5 +78,15 @@
     "create_commit": "6ac0597f1cd83ddc8c50324f5800d772ad677109",
     "blob_sha": "e411a0f62d66f8d10ace3ab062570279fe9ea756",
     "claimed_at_utc": "2026-10-24T16:43:46.153Z"
+  },
+  "qa_requirements": {
+    "closed_manifold_parts": 27,
+    "materials": 5,
+    "rigid_contact_pairs": 22,
+    "foot_through_bores": 2,
+    "top_through_bores": 2,
+    "deterministic_obj_mtl": true,
+    "blender_export_required_for_release": true,
+    "unity_integration_required_for_release": true
   }
 }
