@@ -176,9 +176,9 @@ def build():
                      "Fastener_Steel",24,parent=parent))
         for i in range(5):
             a=2*math.pi*i/5
-            add(sector("Iris_Petal_%s_%02d"%(side,i+1),.024,.069,
+            add(sector("Iris_Petal_%s_%02d"%(side,i+1),.015,.069,
                        a+.10,a+.72,-.003,.003,"Iris_Gunmetal",parent))
-        add(sector("Iris_Index_Mark_"+side,.069,.073,.10,.27,
+        add(sector("Iris_Index_Mark_"+side,.067,.073,.10,.27,
                    -.002,.002,"Amber_Status",parent))
     # Centre status display and ventilation, separated from the two barrels.
     add(chamfer_box("Centre_Status_Bridge",0,-.122,.434,.462,
@@ -238,6 +238,30 @@ def validate(parts):
     for side in ("L","R"):
         rotor=[p for p in parts if p["parent"]=="LENS_ROTOR_"+side]
         assert len(rotor)==7, (side,len(rotor))
+        # Mechanical visual continuity. V1 had a full 6 mm radial gap
+        # between central rotor hub (18 mm radius) and all 5 petals
+        # (24 mm minimum radius). Index tags touched only a line at
+        # the petal tip (69 mm). Both were floating details.
+        hub=next(p for p in rotor if p["name"]=="Iris_Center_Hub_"+side)
+        petals=[p for p in rotor if p["name"].startswith("Iris_Petal_")]
+        index=next(p for p in rotor if p["name"]=="Iris_Index_Mark_"+side)
+        assert len(petals)==5
+        def radial_limits(part):
+            r=[math.hypot(v[0],v[1]) for v in part["vertices"]]
+            return (min(r),max(r))
+        hub_min,hub_max=radial_limits(hub)
+        assert abs(hub_max-.018)<1e-9
+        for petal in petals:
+            pmin,pmax=radial_limits(petal)
+            assert abs(pmin-.015)<1e-9 and abs(pmax-.069)<1e-9
+            assert hub_max-pmin >= .003-1e-9, (petal["name"],"floating hub")
+        index_min,index_max=radial_limits(index)
+        assert abs(index_min-.067)<1e-9 and abs(index_max-.073)<1e-9
+        assert radial_limits(petals[0])[1]-index_min >= .002-1e-9
+        # The index mark's angular sector (.10 .. .27 rad) overlaps the
+        # first petal's (.10 .. .72 rad); radial overlap is therefore
+        # a true volumetric seat, not an accidental concentric tangent.
+        assert index["faces"] and index["parent"]=="LENS_ROTOR_"+side
         maxr=max(math.hypot(v[0],v[1]) for p in rotor for v in p["vertices"])
         minz=min(v[2]+ROTOR_Z for p in rotor for v in p["vertices"])
         maxz=max(v[2]+ROTOR_Z for p in rotor for v in p["vertices"])
@@ -257,6 +281,11 @@ def validate(parts):
             "parts":len(parts),"vertices":vertices_total,"triangles":tri_count,
             "materials":len(materials),"iris_petals":10,
             "lens_count":2,"rotor_clearance_qa":"PASS_5_ANGLES_EACH",
+            "iris_petals_seated_in_hubs":10,
+            "iris_index_markers_attached":2,
+            "iris_hub_overlap_m":.003,
+            "iris_index_overlap_m":.002,
+            "geometry_revision":"M05-003_V2_CONNECTED_IRIS",
             "rotor_housing_radial_clearance_min_m":round(
                 BARREL_BORE_RADIUS-ROTOR_RADIUS_LIMIT,3),
             "rotor_lens_axial_clearance_min_m":round(
