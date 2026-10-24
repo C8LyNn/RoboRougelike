@@ -1,0 +1,32 @@
+name: M03-003 Bridge Frame Geometry QA
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M03/M03-003/**"
+      - ".github/workflows/ci-m03-003.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  m03-003-static-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test generated source and OBJ geometry
+        run: python3 Tools/ModelFactory/M03/M03-003/qa_m03_003.py
+      - name: Export real static OBJ and MTL preview
+        run: |
+          python3 Tools/ModelFactory/M03/M03-003/generate_m03_003.py \
+            --static-obj --out build/M03-003
+      - name: Upload M03-003 static asset
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M03-003-bridge-frame-static-OBJ
+          path: build/M03-003/
+          if-no-files-found: error
+          retention-days: 14
