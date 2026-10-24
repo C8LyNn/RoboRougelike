@@ -52,9 +52,20 @@ def ring_tube(name, profile, material, group, segments=N):
     part(name, v, f, material, group, smooth=True)
 
 def cylinder(name, x0, x1, radius, material, group, segments=32):
-    # Profile goes around rectangular cross-section, includes axial end caps.
-    ring_tube(name, ((x0, 0.0), (x1, 0.0), (x1, radius), (x0, radius)),
-              material, group, segments)
+    # True capped cylinder: one centre vertex per cap (no degenerate r=0 ring).
+    vertices=[polar(x,radius,TAU*i/segments) for x in (x0,x1)
+              for i in range(segments)]
+    rear_centre=len(vertices)
+    vertices.append((x0,0.0,0.0))
+    front_centre=len(vertices)
+    vertices.append((x1,0.0,0.0))
+    faces=[]
+    for i in range(segments):
+        j=(i+1)%segments
+        faces.append((i,j,segments+j,segments+i))
+        faces.append((rear_centre,j,i))
+        faces.append((front_centre,segments+i,segments+j))
+    part(name,vertices,faces,material,group,smooth=True)
 
 def perforated_web():
     """12 true THROUGH apertures, not black decals or boolean-only cutouts.
@@ -141,9 +152,7 @@ def build():
     # Stationary axle, mount collar and floating dust seal are concentric.
     cylinder("Stationary_axle",AXLE_MIN,AXLE_MAX,SHAFT_R,
              "forged_steel","fixed")
-    ring_tube("Rear_mount_flange",
-              ((0.0,.0),(0.0,.075),(.050,.075),(.050,.0)),
-              "copper","fixed",48)
+    cylinder("Rear_mount_flange",0.0,.050,.075,"copper","fixed",48)
     ring_tube("Stationary_dust_seal",
               ((.262,.057),(.262,SEAL_R),(.289,SEAL_R),(.289,.057)),
               "rubber","fixed",48)
@@ -177,7 +186,7 @@ def qa():
     assert len({m["material"] for m in meshes})>=3
     assert sum("traction_tooth" in m["name"] for m in meshes)==24
     assert sum("Hub_bolt_" in m["name"] for m in meshes)==6
-    assert len(meshes)==35, len(meshes)
+    assert len(meshes)==37, len(meshes)
     for m in meshes:
         assert m["material"] in MATERIALS
         for vertex in m["vertices"]:
