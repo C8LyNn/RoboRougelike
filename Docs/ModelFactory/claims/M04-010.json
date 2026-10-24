@@ -1,8 +1,22 @@
 {
   "id": "M04-010",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "IN_PROGRESS",
   "claimed_at_utc": "2026-10-24T19:53:15.481Z",
   "model": "Stabilizator odśrodkowy",
-  "run": "2026-10-24T19:00Z"
+  "run": "2026-10-24T19:00Z",
+  "branch": "feature/rrl-model-m04-010-centrifugal-stabilizer",
+  "pr_number": 114,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/114",
+  "claim_commit": "4628aa215b8baad2480f9feb62289c49ceea1c56",
+  "model_commit": "0705b4447730325a03b7d24254dd22dc25a93653",
+  "qa": {
+    "static_geometry": "PASS",
+    "obj_mtl_determinism": "PASS",
+    "blender": "IN_PROGRESS",
+    "unity_editmode": "NOT RUN - BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT RUN - BLOCKED_ACTIVATION",
+    "visual_inspection": "NOT RUN"
+  },
+  "static_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127625685"
 }
