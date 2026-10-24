@@ -1,8 +1,14 @@
 {
   "id": "M01-010",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "IN_PROGRESS",
   "claimed_at_utc": "2026-10-24T19:48:10.458Z",
   "model": "Energetyczny widełkowy projektor",
-  "run": "2026-10-24T19Z"
+  "run": "2026-10-24T19Z",
+  "branch": "feature/rrl-model-m01-010-energy-fork-projector",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/111",
+  "source_commit": "e2d84058808a6d2ddbf8b806f23d2d015734ce18",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127172626",
+  "qa_status": "IN_PROGRESS",
+  "unity": "NOT RUN"
 }
