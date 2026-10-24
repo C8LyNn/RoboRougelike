@@ -1,8 +1,13 @@
 {
   "id": "M03-012",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T21:51:27.108Z",
   "model": "Zderzak sprężynujący U",
-  "run": "2026-10-24T21Z"
+  "run": "2026-10-24T21Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/124",
+  "branch": "feature/rrl-model-m03-012-u-spring-bumper",
+  "model_commit": "c3d3db02ced1f0a1ea7a9c164f784ff18323e515",
+  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/workflows/ci-m03-012.yml",
+  "unity": "NOT RUN"
 }
