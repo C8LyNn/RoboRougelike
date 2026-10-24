@@ -320,25 +320,47 @@ def export_blender(parts,out):
                                   export_force_sampling=True,
                                   export_frame_range=True)
         fbx=out/"M02-006_animated.fbx"
-        # Blender 5 FBX operator parameter names can differ by exporter.
-        # Never silently export the entire user's unrelated scene.
+        # Ubuntu Blender 5 can register a minimal native FBX operator with
+        # only filepath/axis properties; enable the full legacy addon when
+        # available, otherwise isolate export in a temporary dedicated scene.
         props={p.identifier for p in bpy.ops.export_scene.fbx.get_rna_type().properties}
+        if "use_selection" not in props and "collection" not in props:
+            try:
+                import addon_utils
+                addon_utils.enable("io_scene_fbx",default_set=False,persistent=False)
+            except Exception as exc:
+                print("M02-006 FBX addon enable unavailable:",str(exc))
+            props={p.identifier for p in bpy.ops.export_scene.fbx.get_rna_type().properties}
         print("M02-006 FBX operator properties:",sorted(props))
         kw={"filepath":str(fbx)}
-        if "use_selection" in props:
-            kw["use_selection"]=True
-        elif "collection" in props:
-            kw["collection"]=coll.name
-        else:
-            raise RuntimeError("FBX exporter lacks safe selection/collection isolation")
         for key,value in {"axis_forward":"-Z","axis_up":"Y",
                           "add_leaf_bones":False,"bake_anim":True,
                           "bake_anim_use_all_actions":False}.items():
             if key in props:kw[key]=value
-        bpy.ops.export_scene.fbx(**kw)
+        if "use_selection" in props:
+            kw["use_selection"]=True
+            bpy.ops.export_scene.fbx(**kw)
+            fbx_animation="EXPORTED_WITH_BAKE"
+        elif "collection" in props:
+            kw["collection"]=coll.name
+            bpy.ops.export_scene.fbx(**kw)
+            fbx_animation="EXPORTED_WITH_BAKE" if "bake_anim" in props else "UNVERIFIED"
+        else:
+            # Only our collection exists in this temporary scene. No other
+            # user objects can leak into the FBX even with a minimal operator.
+            temp=bpy.data.scenes.new("M02-006_TEMP_FBX_EXPORT")
+            try:
+                temp.collection.children.link(coll)
+                temp.frame_start=1;temp.frame_end=61;temp.render.fps=30
+                with bpy.context.temp_override(scene=temp,view_layer=temp.view_layers[0]):
+                    bpy.ops.export_scene.fbx(**kw)
+            finally:
+                bpy.data.scenes.remove(temp)
+            fbx_animation="UNVERIFIED_NATIVE_EXPORTER"
         assert blend.is_file() and glb.is_file() and fbx.is_file()
         return {"blender":"PASS_EXPORT","blend":str(blend),"glb":str(glb),
-                "fbx":str(fbx),"unity_native_fbx":"EXPORTED_NOT_IMPORTED"}
+                "fbx":str(fbx),"fbx_animation":fbx_animation,
+                "unity_native_fbx":"EXPORTED_NOT_IMPORTED"}
     finally:
         bpy.ops.object.select_all(action="DESELECT")
         for ob in previous[4]:
