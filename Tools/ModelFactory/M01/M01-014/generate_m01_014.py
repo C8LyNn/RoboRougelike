@@ -17,7 +17,7 @@ ASSET_ID = "M01-014"
 STEM = "M01-014_electromagnetic_pulser"
 CORE_CENTER = (0.0, 0.36, 0.0)
 CORE_TRAVEL_M = 0.18
-FRAMES = 73
+FRAMES = 61
 FPS = 30
 MATS = {
     "Armor_Graphite": ((.066,.084,.105,1),.72,.36,(0,0,0),0),
