@@ -1,0 +1,62 @@
+name: M01-009 Publish Verified Blender Artifact
+on:
+  push:
+    branches: [feature/rrl-model-m01-009-trisegment-rocket-launcher]
+    paths:
+      - '.github/workflows/publish-m01-009-verified-assets.yml'
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish-verified:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout own isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Retrieve completed independent PR Blender QA artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/m01-009-verified
+          gh run download 40122825844 \
+            --repo C8LyNn/RoboRougelike \
+            --name M01-009-tri-segment-rocket-launcher-3D \
+            --dir /tmp/m01-009-verified
+      - name: Verify actual GLB and OBJ and source parity before publishing
+        run: |
+          python3 Tools/ModelFactory/M01/M01-009/validate_m01_009.py /tmp/m01-009-verified
+          python3 Tools/ModelFactory/M01/M01-009/generate_m01_009.py --out /tmp/m01-009-parity
+          cmp /tmp/m01-009-parity/M01-009_tri_segment_rocket_launcher.obj /tmp/m01-009-verified/M01-009_tri_segment_rocket_launcher.obj
+          cmp /tmp/m01-009-parity/M01-009_tri_segment_rocket_launcher.mtl /tmp/m01-009-verified/M01-009_tri_segment_rocket_launcher.mtl
+      - name: Commit only M01-009 verified generated files to own branch
+        run: |
+          set -euo pipefail
+          dest=Tools/ModelFactory/M01/M01-009/generated
+          mkdir -p "$dest"
+          for filename in M01-009_tri_segment_rocket_launcher.obj \
+                          M01-009_tri_segment_rocket_launcher.mtl \
+                          M01-009_tri_segment_rocket_launcher_animated.glb \
+                          M01-009_tri_segment_rocket_launcher_animated.fbx \
+                          M01-009_tri_segment_rocket_launcher.blend \
+                          M01-009_qa.json; do
+            cp "/tmp/m01-009-verified/$filename" "$dest/"
+          done
+          git add "$dest"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-009): verified Blender OBJ MTL GLB FBX BLEND"
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-009-trisegment-rocket-launcher:refs/remotes/origin/feature/rrl-model-m01-009-trisegment-rocket-launcher
+              git rebase origin/feature/rrl-model-m01-009-trisegment-rocket-launcher
+              if git push origin HEAD:feature/rrl-model-m01-009-trisegment-rocket-launcher; then
+                echo "M01-009 real Blender assets committed to own branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                exit 1
+              fi
+            done
+          fi

@@ -1,0 +1,91 @@
+name: M01-009 Tri-Segment Rocket Launcher Blender and QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-009-trisegment-rocket-launcher
+    paths:
+      - 'Tools/ModelFactory/M01/M01-009/**'
+      - '.github/workflows/ci-model-m01-009.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-009/**'
+      - '.github/workflows/ci-model-m01-009.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: m01-009-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  geometry-and-blender:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Syntax and source manifold, 129 pose clearance checks
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-009/generate_m01_009.py
+          python3 -m py_compile Tools/ModelFactory/M01/M01-009/validate_m01_009.py
+          python3 Tools/ModelFactory/M01/M01-009/generate_m01_009.py --self-test
+      - name: Generate actual static OBJ MTL and verify independently
+        run: |
+          python3 Tools/ModelFactory/M01/M01-009/generate_m01_009.py --out /tmp/m01-009-static
+          python3 Tools/ModelFactory/M01/M01-009/validate_m01_009.py /tmp/m01-009-static
+      - name: Install real Blender
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Generate real BLEND animated GLB FBX
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M01/M01-009/generate_m01_009.py \
+            -- --out /tmp/m01-009-blender --blender
+          python3 Tools/ModelFactory/M01/M01-009/validate_m01_009.py /tmp/m01-009-blender
+          cmp /tmp/m01-009-static/M01-009_tri_segment_rocket_launcher.obj /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.obj
+          cmp /tmp/m01-009-static/M01-009_tri_segment_rocket_launcher.mtl /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.mtl
+      - name: Commit only actual generated M01-009 assets to own branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m01-009-trisegment-rocket-launcher'
+        run: |
+          set -euo pipefail
+          dest=Tools/ModelFactory/M01/M01-009/generated
+          mkdir -p "$dest"
+          cp /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.obj "$dest/"
+          cp /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.mtl "$dest/"
+          cp /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher_animated.glb "$dest/"
+          cp /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher_animated.fbx "$dest/"
+          cp /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.blend "$dest/"
+          cp /tmp/m01-009-blender/M01-009_qa.json "$dest/"
+          git add "$dest/"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-009): real Blender OBJ MTL GLB FBX BLEND and QA"
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-009-trisegment-rocket-launcher:refs/remotes/origin/feature/rrl-model-m01-009-trisegment-rocket-launcher
+              git rebase origin/feature/rrl-model-m01-009-trisegment-rocket-launcher
+              if git push origin HEAD:feature/rrl-model-m01-009-trisegment-rocket-launcher; then
+                echo "Committed real M01-009 assets to isolated branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Could not publish Blender assets"
+                exit 1
+              fi
+            done
+          fi
+      - name: Upload actual exported 3D files
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M01-009-tri-segment-rocket-launcher-3D
+          path: |
+            /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.obj
+            /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.mtl
+            /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher_animated.glb
+            /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher_animated.fbx
+            /tmp/m01-009-blender/M01-009_tri_segment_rocket_launcher.blend
+            /tmp/m01-009-blender/M01-009_qa.json
+          if-no-files-found: error
+          retention-days: 30
