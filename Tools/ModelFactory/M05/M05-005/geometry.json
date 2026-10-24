@@ -233,7 +233,7 @@
       "center": [
         -0.43,
         0,
-        0.342
+        0.341
       ],
       "radius": 0.024,
       "depth": 0.43,
@@ -247,7 +247,7 @@
       "center": [
         -0.43,
         0,
-        0.569
+        0.568
       ],
       "radius": 0.032,
       "depth": 0.024,
@@ -261,7 +261,7 @@
       "center": [
         -0.43,
         0,
-        0.583
+        0.582
       ],
       "radius": 0.018,
       "depth": 0.004,
@@ -275,7 +275,7 @@
       "center": [
         0.43,
         0,
-        0.342
+        0.341
       ],
       "radius": 0.024,
       "depth": 0.43,
@@ -289,7 +289,7 @@
       "center": [
         0.43,
         0,
-        0.569
+        0.568
       ],
       "radius": 0.032,
       "depth": 0.024,
@@ -303,7 +303,7 @@
       "center": [
         0.43,
         0,
-        0.583
+        0.582
       ],
       "radius": 0.018,
       "depth": 0.004,
@@ -317,7 +317,7 @@
       "center": [
         0,
         -0.43,
-        0.342
+        0.341
       ],
       "radius": 0.024,
       "depth": 0.43,
@@ -331,7 +331,7 @@
       "center": [
         0,
         -0.43,
-        0.569
+        0.568
       ],
       "radius": 0.032,
       "depth": 0.024,
@@ -345,7 +345,7 @@
       "center": [
         0,
         -0.43,
-        0.583
+        0.582
       ],
       "radius": 0.018,
       "depth": 0.004,
@@ -359,7 +359,7 @@
       "center": [
         0,
         0.43,
-        0.342
+        0.341
       ],
       "radius": 0.024,
       "depth": 0.43,
@@ -373,7 +373,7 @@
       "center": [
         0,
         0.43,
-        0.569
+        0.568
       ],
       "radius": 0.032,
       "depth": 0.024,
@@ -387,7 +387,7 @@
       "center": [
         0,
         0.43,
-        0.583
+        0.582
       ],
       "radius": 0.018,
       "depth": 0.004,
@@ -764,6 +764,70 @@
       "major_segments": 32,
       "minor_segments": 8,
       "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "post_foot_XN",
+      "shape": "box",
+      "center": [
+        -0.43,
+        0,
+        0.117
+      ],
+      "size": [
+        0.086,
+        0.086,
+        0.018
+      ],
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "post_foot_XP",
+      "shape": "box",
+      "center": [
+        0.43,
+        0,
+        0.117
+      ],
+      "size": [
+        0.086,
+        0.086,
+        0.018
+      ],
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "post_foot_YN",
+      "shape": "box",
+      "center": [
+        0,
+        -0.43,
+        0.117
+      ],
+      "size": [
+        0.086,
+        0.086,
+        0.018
+      ],
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "post_foot_YP",
+      "shape": "box",
+      "center": [
+        0,
+        0.43,
+        0.117
+      ],
+      "size": [
+        0.086,
+        0.086,
+        0.018
+      ],
+      "material": "Copper",
       "parent": "root"
     }
   ],
