@@ -1,0 +1,89 @@
+name: M01-010 Energy Fork Projector Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-010-energy-fork-projector
+    paths:
+      - 'Tools/ModelFactory/M01/M01-010/generate_m01_010.py'
+      - 'Tools/ModelFactory/M01/M01-010/validate_m01_010.py'
+      - 'Tools/ModelFactory/M01/M01-010/README.md'
+      - '.github/workflows/ci-model-m01-010.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-010/generate_m01_010.py'
+      - 'Tools/ModelFactory/M01/M01-010/validate_m01_010.py'
+      - 'Tools/ModelFactory/M01/M01-010/README.md'
+      - '.github/workflows/ci-model-m01-010.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: m01-010-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  blender-asset-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout isolated feature branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Compile Python generator and independent validator
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-010/generate_m01_010.py
+          python3 -m py_compile Tools/ModelFactory/M01/M01-010/validate_m01_010.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Generate real 3D files and run swept-volume mesh QA
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M01/M01-010/generate_m01_010.py \
+            -- --out /tmp/m01-010
+      - name: Independently inspect GLB animation, FBX, BLEND, OBJ, MTL
+        run: python3 Tools/ModelFactory/M01/M01-010/validate_m01_010.py /tmp/m01-010
+      - name: Commit actual Blender exports only to M01-010 own branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m01-010-energy-fork-projector'
+        run: |
+          set -euo pipefail
+          dest=Tools/ModelFactory/M01/M01-010/generated
+          mkdir -p "$dest"
+          cp /tmp/m01-010/M01-010_energy_fork_projector.blend "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector_animated.glb "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector_animated.fbx "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector.obj "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector.mtl "$dest/"
+          cp /tmp/m01-010/M01-010_qa.json "$dest/"
+          git add "$dest"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-010): real Blender BLEND FBX GLB OBJ MTL and QA"
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-010-energy-fork-projector:refs/remotes/origin/feature/rrl-model-m01-010-energy-fork-projector
+              git rebase origin/feature/rrl-model-m01-010-energy-fork-projector
+              if git push origin HEAD:feature/rrl-model-m01-010-energy-fork-projector; then
+                echo "Published real Blender exports to isolated M01-010 branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Cannot publish Blender exports"
+                exit 1
+              fi
+            done
+          fi
+      - name: Upload real 3D exports for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M01-010-energy-fork-projector-3D
+          path: |
+            /tmp/m01-010/M01-010_energy_fork_projector.blend
+            /tmp/m01-010/M01-010_energy_fork_projector_animated.glb
+            /tmp/m01-010/M01-010_energy_fork_projector_animated.fbx
+            /tmp/m01-010/M01-010_energy_fork_projector.obj
+            /tmp/m01-010/M01-010_energy_fork_projector.mtl
+            /tmp/m01-010/M01-010_qa.json
+          if-no-files-found: error
+          retention-days: 30
