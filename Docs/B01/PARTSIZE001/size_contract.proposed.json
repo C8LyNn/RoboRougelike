@@ -1,0 +1,355 @@
+{
+  "schema_version": "B01_PARTSIZE_DESIGN_R1",
+  "status": "PROPOSED_NOT_CANONICAL",
+  "source_issues": [
+    "#140",
+    "#141",
+    "#142",
+    "#143",
+    "#144"
+  ],
+  "canonical_observed_grid_m": 0.55,
+  "canonical_observed_block_side_m": 0.52,
+  "axes": "Unity local X=right,Y=up,Z=forward",
+  "allocation": "integer_cells_one_owned_part_one_hp_record",
+  "disclaimer": "cells beyond legacy 1x1x1 and wide 2x1x2 are unapproved design proposals; do not migrate R3 saves or global scale.",
+  "parts": [
+    {
+      "id": "Armor",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "cell-center",
+      "mount": [
+        "all_six_faces"
+      ],
+      "functional_exclusion": null,
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "AngledArmor_proposed",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "cell-center",
+      "mount": [
+        "actual_contact_patches_only"
+      ],
+      "functional_exclusion": null,
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "NEW_KIND_REQUIRES_CODEX_ACK"
+    },
+    {
+      "id": "Wheel",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "hub-center_candidate",
+      "mount": [
+        "axle_only"
+      ],
+      "functional_exclusion": "swept_tire_radius_measured_in_Unity",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "Suspension",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "base-center_candidate",
+      "mount": [
+        "suspension_base",
+        "outboard_axle"
+      ],
+      "functional_exclusion": "moving_suspension_sweep",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "Gun",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "base_candidate",
+      "mount": [
+        "bottom_weapon_base"
+      ],
+      "functional_exclusion": "yaw_pitch_sweep_and_muzzle_los",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "Core",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "cell-center",
+      "mount": [
+        "all_six_faces_if_real"
+      ],
+      "functional_exclusion": null,
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "CrawlerTrack",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "measured_tbd",
+      "mount": [
+        "structural_base"
+      ],
+      "functional_exclusion": "track_contact_and_motion",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "HoverEngine",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "measured_tbd",
+      "mount": [
+        "base"
+      ],
+      "functional_exclusion": "lift_clearance",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "Booster",
+      "cells": [
+        1,
+        1,
+        1
+      ],
+      "pivot": "base_candidate",
+      "mount": [
+        "structural_base"
+      ],
+      "functional_exclusion": "rear_exhaust_plume",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "BonusModule",
+      "cells": [
+        2,
+        1,
+        2
+      ],
+      "pivot": "logical_anchor_cell",
+      "mount": [
+        "exposed_external_faces_only"
+      ],
+      "functional_exclusion": null,
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        1.1,
+        0.55,
+        1.1
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "DirectionalShield",
+      "cells": [
+        2,
+        1,
+        2
+      ],
+      "pivot": "logical_anchor_cell",
+      "mount": [
+        "exposed_external_faces_only"
+      ],
+      "functional_exclusion": "field_projector_clearance",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        1.1,
+        0.55,
+        1.1
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "PointDefense",
+      "cells": [
+        2,
+        1,
+        2
+      ],
+      "pivot": "logical_anchor_cell",
+      "mount": [
+        "structural_base"
+      ],
+      "functional_exclusion": "turret_barrel_sweep",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        1.1,
+        0.55,
+        1.1
+      ],
+      "mapping_status": "EXISTING_KIND_NEEDS_REAL_MEASURE"
+    },
+    {
+      "id": "DeployableRamp_proposed",
+      "cells": [
+        1,
+        1,
+        2
+      ],
+      "pivot": "base_candidate",
+      "mount": [
+        "structural_module_base"
+      ],
+      "functional_exclusion": "placement_ramp_hull",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        1.1
+      ],
+      "mapping_status": "NEW_KIND_REQUIRES_CODEX_ACK"
+    },
+    {
+      "id": "DeployableJumpPad_proposed",
+      "cells": [
+        1,
+        1,
+        2
+      ],
+      "pivot": "base_candidate",
+      "mount": [
+        "structural_module_base"
+      ],
+      "functional_exclusion": "placement_disc_and_actor_clearance",
+      "measured_mesh_aabb_m": null,
+      "measured_physics_collider_aabb_m": null,
+      "measured_mass_kg": null,
+      "measured_hp": null,
+      "raw_model_asset_sha": null,
+      "proposed_dims_m": [
+        0.55,
+        0.55,
+        1.1
+      ],
+      "mapping_status": "NEW_KIND_REQUIRES_CODEX_ACK"
+    }
+  ]
+}
