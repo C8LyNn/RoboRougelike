@@ -46,3 +46,26 @@ jobs:
                   assert 1 <= int(idx) <= len(v)
           print('M05-002 OBJ integrity PASS:',len(v),'vertices,',len(f),'polygons,',len(m),'parts')
           PY
+      - name: Validate 45 pose sweep, geometry manifest, and isolated Blender source
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('Tools/ModelFactory/M05/M05-002')
+          src=(base/'generate_m05_002.py').read_text()
+          manifest=json.loads((base/'M05-002.static-qa.json').read_text())
+          spec=json.loads((base/'geometry.json').read_text())
+          assert manifest['swept_base_tilt_aabb']=='PASS'
+          assert manifest['swept_animation_samples']==45
+          assert manifest['swept_checked_pairs']==45*13*114
+          assert manifest['hinge_pivot_m']==spec['hinge_pivot']==[0,0.235,0.535]
+          assert spec['qa_kinematics']['sample_step_deg']==1
+          assert 'bpy.ops.object.delete' not in src
+          assert 'bpy.ops.object.select_all(action="SELECT")' not in src
+          assert 'use_selection=True' in src
+          assert 'bpy.data.libraries.write(' in src
+          assert 'for obj in tuple(owned.objects)' in src
+          assert manifest['blender_execution']=='NOT_RUN'
+          assert manifest['unity_import']=='NOT_RUN'
+          print('M05-002 PASS: 45 sweep positions, 66,690 conservative AABB comparisons, collection isolation')
+          PY
