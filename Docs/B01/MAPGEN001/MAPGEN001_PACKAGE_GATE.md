@@ -10,7 +10,7 @@
 
 ## Audited contents and static checks
 
-- 43 tracked package files total: 20 .meta, 3 .asmdef, 7 C# (runtime 5; tests 4? see note), one .unity demo and 10 documentation files including existing manifest. **Correct count is 5 runtime C# + 4 test C# = 9 total C#**. Counts in this paragraph should use this correction: 43 total files, 20 .meta, 3 asmdef, 9 C#, 1 demo scene, 10 docs.
+- 43 tracked package files total: 20 Unity .meta files, 3 .asmdef files, 9 C# files (5 runtime and 4 test sources), one .unity demo scene and 10 documentation files including the existing manifest.
 - All .cs/.asmdef/.unity source assets in the frozen tree have matching .meta paths; 20 inspected package GUIDs have valid 32-hex format and no intra-package duplication; scene m_Script GUID b01a000100000000000000000000000d refers to MapGenDemo.cs.meta. Exhaustive collisions with a *different/unpublished* target worktree cannot be proven from published Git alone; target Unity import/GUID collision scan remains required.
 - The R2 delta from R1 is package-path-only. The additional seven commits from a2993a4 to e22906f modify only six package C# paths. No path overlap with the 109 changed MAP-R6 PR #3 paths or main/develop file paths. This is a PATH check, not a proof of semantic compatibility with unpublished code.
 - Runtime source inspection: B01.MAPGEN001 namespace and B01.MAPGEN001.Runtime assembly has empty references; separate NUnit EditMode and PlayMode asmdefs use Unity Test Runner. The generator does not statically call MAP-R6, MAP-001, CHL-003, run controller, rewards, garage or AI. CHL-003 checkpoints remain descriptors only.
