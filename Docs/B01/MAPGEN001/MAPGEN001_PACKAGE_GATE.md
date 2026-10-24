@@ -1,6 +1,38 @@
 # MAPGEN001_PACKAGE_GATE.md — B01-40 P0 independent package gate
 
 
+## LATEST FROZEN VERIFIED SNAPSHOT — R3.1 at ac7d957799588452f831a645162a0ab7c05246e0
+
+At immutable [source commit ac7d957799588452f831a645162a0ab7c05246e0](https://github.com/C8LyNn/RoboRougelike/commit/ac7d957799588452f831a645162a0ab7c05246e0), **static source integrity checks now PASS**:
+
+- Actual Git tree: **43 committed package files**, **104,829 bytes**.
+- Producer manifest: **42/42 non-self Git blob SHA-1 identities match actual Git tree**, **42/42 producer SHA-256 values match independent SHA-256 values calculated from exact fetched source bytes**; all **43/43 file byte lengths** match the immutable Git tree. The 43rd file is manifest.json itself, which cannot self-contain a stable checksum; its out-of-band SHA-256 is below.
+- Previous two stale source identities at 7d48 and eight stale entries at 9b52 are **fixed in R3.1**. They remain documented below as historical failures at their exact immutable commits, not failures of ac7d957.
+- All package .meta path pairs, package-internal 20 GUID uniqueness, asmdef reference shapes and namespace/path isolation remain as reviewed. Import-specific GUID collisions in GPT OSS's unpushed target checkout cannot be tested remotely. CODEX/GPT OSS scope/target SHA ACK **PENDING**.
+
+Source changes 7d48 -> ac7d are documentation/manifest only; the 40 other recorded SHA-256 values remain valid. Apply these final five overrides to the previous historical checksum tables to reconstruct **all 43 R3.1 file hashes**:
+
+| Full path | Bytes | SHA-256 |
+|---|---:|---|
+| Docs/B01/MAPGEN001/CHANGELOG.md | 3288 | a19888bdf9c2e43e95773ed512600e74fb48d8b2ae68d808f6efcbd5add112e5 |
+| Docs/B01/MAPGEN001/KNOWN_LIMITATIONS.md | 3662 | bdb167b4b573347976748b72727507c32cf5aa3fb35255628171587e33798762 |
+| Docs/B01/MAPGEN001/TEST_EVIDENCE.md | 2251 | 642d0c37933d3fe3f83a3f04180df658b74ac5f41768df67bbd0f9190c727d46 |
+| Docs/B01/MAPGEN001/TEST_PLAN.md | 5765 | 6ffc4478b4eb80b2cd8543d8c5d3892852eeeb679eadc66255f55976c8c2fe08 |
+| Docs/B01/MAPGEN001/manifest.json | 12353 | 3833e466c0fc5eb4901f2253ea779d6179feacb410ab79019734b9d7605687f9 |
+
+**Current gates at this immutable R3.1 SHA:**
+- **G0 static file integrity/manifest/path/meta = PASS.** G0 complete recipient-specific compatibility/scope ACK = **PENDING** (cannot inspect an unpublished worktree).
+- **G1 = BLOCKED:** Unity 6000.3.14f1 compile, EditMode, PlayMode, Rigidbody/manual rover trials and independent B01-60 QA all **NOT_RUN / no verified evidence**; prior R1 Unity CI was skipped at license preflight.
+- **G2 = BLOCKED / HOLD:** no B01-00 approval, receiver target SHA/ACK, source-to-target import result or release-ready ZIP. There is a usable immutable source tree, but **no physical ZIP URL or ZIP SHA-256**. ZIP remains NOT_AVAILABLE; do not guess its hash.
+- **Recommendation:** SOURCE INTEGRITY PASSED, but **HANDOFF BLOCKED**; continue QA and deconfliction. No game merge, integration, build, or release.
+
+All sections below are chronological snapshots and must not override this newer frozen commit decision. A later moving PR HEAD requires fresh checks again.
+
+---
+
+
+
+
 ## Latest audited snapshot: PR #103 at 7d48b4df34639480ea3818ee429ec7ce584bf1b0 (R3 iteration)
 
 **Chronology:** starting checkpoint a2993a4 -> e22906f (+7 C# rework commits) -> 9b52f60 (+10 documentation/manifest commits) -> **7d48b4df34639480ea3818ee429ec7ce584bf1b0** (+3 more commits). The final hop changes **only three files**, so the earlier table + R3 documentary overrides remain valid for **40 of the 43 files**. These three SHA-256 hashes supersede the previously reported rows at this immutable snapshot:
