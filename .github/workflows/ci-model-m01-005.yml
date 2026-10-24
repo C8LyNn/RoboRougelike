@@ -1,0 +1,97 @@
+name: Model Factory M01-005 QA
+on:
+  push:
+    paths:
+      - 'Tools/ModelFactory/M01/M01-005/**'
+      - '.github/workflows/ci-model-m01-005.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-005/**'
+      - '.github/workflows/ci-model-m01-005.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-and-blender:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate Python syntax and 73-frame swept clearance
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-005/generate_m01_005.py
+          python3 Tools/ModelFactory/M01/M01-005/generate_m01_005.py --self-test
+      - name: Generate static OBJ and verify all faces and materials
+        run: |
+          python3 Tools/ModelFactory/M01/M01-005/generate_m01_005.py --output-dir /tmp/m01-005-static
+          cmp Tools/ModelFactory/M01/M01-005/M01-005.obj /tmp/m01-005-static/M01-005.obj
+          cmp Tools/ModelFactory/M01/M01-005/M01-005.mtl /tmp/m01-005-static/M01-005.mtl
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('/tmp/m01-005-static')
+          src=Path('Tools/ModelFactory/M01/M01-005')
+          spec=json.loads((src/'geometry.json').read_text())
+          obj=(base/'M01-005.obj').read_text().splitlines()
+          mtl=(base/'M01-005.mtl').read_text().splitlines()
+          vertices=[x for x in obj if x.startswith('v ')]
+          faces=[x for x in obj if x.startswith('f ')]
+          meshes=[x for x in obj if x.startswith('o ')]
+          assert len(meshes)==len(spec['parts'])
+          assert len([x for x in mtl if x.startswith('newmtl ')])==7
+          for f in faces:
+              for index in f.split()[1:]:
+                  assert 1<=int(index)<=len(vertices)
+          print('Static OBJ PASS:',len(vertices),'vertices,',len(faces),'faces')
+          PY
+      - name: Install Blender for real animated export
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender --version | head -n 2
+          blender -b --python-expr 'import numpy; import PIL; print("Blender exporter dependencies OK")'
+      - name: Generate real Blender library and animated GLB
+        run: |
+          blender -b --python Tools/ModelFactory/M01/M01-005/generate_m01_005.py -- --output-dir /tmp/m01-005-export
+          test -s /tmp/m01-005-export/M01-005_animated.glb
+          test -s /tmp/m01-005-export/M01-005.blend
+      - name: Validate binary GLB contents and Blender output
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          d=Path('/tmp/m01-005-export')
+          glb=(d/'M01-005_animated.glb').read_bytes()
+          assert glb[:4]==b'glTF' and len(glb)>10000
+          version,length=struct.unpack_from('<II',glb,4)
+          assert version==2 and length==len(glb)
+          n,chunk=struct.unpack_from('<I4s',glb,12)
+          assert chunk==b'JSON'
+          data=json.loads(glb[20:20+n])
+          assert len(data.get('meshes',[]))>=75
+          assert len(data.get('materials',[]))>=7
+          assert len(data.get('animations',[]))>=1
+          assert (d/'M01-005.blend').stat().st_size>10000
+          report=json.loads((d/'M01-005.run-report.json').read_text())
+          assert report['base_vs_rotors']=='PASS'
+          assert report['rotor_vs_rotor']=='PASS'
+          assert report['blender_export'].startswith('GENERATED')
+          print('Animated GLB PASS',len(glb),'bytes,',
+                len(data['meshes']),'meshes,',
+                len(data['animations']),'animations')
+          PY
+      - name: Upload actual generated 3D assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-005-side-disc-launcher-3D
+          path: |
+            /tmp/m01-005-export/M01-005.obj
+            /tmp/m01-005-export/M01-005.mtl
+            /tmp/m01-005-export/M01-005.blend
+            /tmp/m01-005-export/M01-005_animated.glb
+            /tmp/m01-005-export/M01-005.run-report.json
+          if-no-files-found: error
+          retention-days: 30
