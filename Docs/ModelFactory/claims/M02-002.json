@@ -1,8 +1,38 @@
 {
   "id": "M02-002",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_STATIC_QA_PASS_UNITY_HOLD",
   "claimed_at_utc": "2026-10-24T11:44:44.147Z",
   "model": "Koło wąskie do prędkości",
-  "run": "2026-10-24T11Z"
+  "run": "2026-10-24T11Z",
+  "updated_at_utc": "2026-10-24T11:50:48.324Z",
+  "production_branch": "feature/rrl-model-m02-002-narrow-speed-wheel",
+  "production_head_sha": "1a480bf4df4bbac60215a40cbb2eb5e48a70100d",
+  "draft_pr": 45,
+  "assets": [
+    "Tools/ModelFactory/M02/M02-002/generate_m02_002.py",
+    "Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel.obj",
+    "Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel.mtl",
+    "Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel_animated.gltf"
+  ],
+  "qa": {
+    "generator_syntax": "PASS",
+    "generator_selftest": "PASS",
+    "static_obj_manifold": "PASS",
+    "animated_gltf_structure": "PASS",
+    "regeneration": "PASS",
+    "ci_repository": "PASS",
+    "ci_model": "PASS",
+    "unity_editmode": "BLOCKED_UNITY_ACTIVATION",
+    "unity_playmode": "BLOCKED_UNITY_ACTIVATION",
+    "blender": "NOT_RUN",
+    "unity_import": "NOT_RUN",
+    "visual_qa": "NOT_RUN"
+  },
+  "qa_evidence": {
+    "model_factory": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503339",
+    "repository": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503308",
+    "unity_editmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503312",
+    "unity_playmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091503302"
+  }
 }
