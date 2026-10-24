@@ -27,7 +27,7 @@ namespace RoboRougelike.WeaponIntegration
         }
         public void RefreshAvailability()
         {foreach(var component in GetComponents<MonoBehaviour>())if(component!=null&&component is IRRLDeviceLifecycle device)device.RefreshAvailability();}
-        public bool Available
+        public bool HardwareAvailable
         {
             get
             {
@@ -35,8 +35,16 @@ namespace RoboRougelike.WeaponIntegration
                     !Owner.gameObject.activeInHierarchy||!transform.IsChildOf(Owner)||GetComponentInParent<Rigidbody>()!=Body)return false;
                 if(RRLEmpPartState.IsBlocked(gameObject))return false;
                 if(part!=null&&!part.Operational)return false;
-                if(enemy!=null&&(!enemy.isActiveAndEnabled||enemy.IsDefeated||!enemy.CombatActive))return false;
+                if(enemy!=null&&(!enemy.isActiveAndEnabled||enemy.IsDefeated))return false;
                 if(player!=null&&(player.Structure==null||!player.Structure.CoreAlive))return false;
+                return true;
+            }
+        }
+        public bool Available
+        {
+            get
+            {
+                if(!HardwareAvailable||(enemy!=null&&!enemy.CombatActive))return false;
                 var run=R1RunController.Instance;
                 return run?.Player?.transform!=Owner||(!run.Paused&&!run.Transitioning&&
                     (run.Progress.State==R1RunState.Combat||run.Progress.State==R1RunState.TestDrive));

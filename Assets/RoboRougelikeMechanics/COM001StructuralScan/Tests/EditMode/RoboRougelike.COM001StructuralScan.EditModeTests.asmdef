@@ -1,0 +1,10 @@
+{
+  "name": "RoboRougelike.COM001StructuralScan.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode",
+  "references": ["RoboRougelike.COM001StructuralScan"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "autoReferenced": false,
+  "noEngineReferences": false
+}
