@@ -132,7 +132,11 @@ PITCH=PERIMETER/N_LINKS
 assert abs(ARC_A+ARC_B+ARC_C-2*math.pi)<1e-9
 
 def path_pose(distance):
-    """Return world location and unwrapped Blender Y Euler angle."""
+    """Return world location and unwrapped Y Euler angle.
+
+    Local +Z must point OUTWARD from the track, not into the wheels.
+    Therefore local X is anti-parallel to belt travel (180-degree offset).
+    """
     lap=math.floor(distance/PERIMETER)
     s=distance-lap*PERIMETER
     # Each edge is followed by the round corner at its endpoint.
@@ -144,16 +148,16 @@ def path_pose(distance):
             p=(start[0]+R*outward[0]+s*tangent[0],
                start[1]+R*outward[1]+s*tangent[1])
             return ((p[0],Y_CENTRE,p[1]),
-                    math.atan2(-tangent[1],tangent[0])-2*math.pi*lap
+                    math.pi+math.atan2(-tangent[1],tangent[0])-2*math.pi*lap
                     if edge_idx==0 else
-                    -accumulated_angle-2*math.pi*lap)
+                    math.pi-accumulated_angle-2*math.pi*lap)
         s-=length
         if s<R*arc:
             q=s/R
             angle=phi+q
             p=(end[0]+R*math.cos(angle),end[1]+R*math.sin(angle))
             return ((p[0],Y_CENTRE,p[1]),
-                    -(accumulated_angle+q)-2*math.pi*lap)
+                    math.pi-(accumulated_angle+q)-2*math.pi*lap)
         s-=R*arc
         accumulated_angle+=arc
     raise AssertionError((distance,s))
