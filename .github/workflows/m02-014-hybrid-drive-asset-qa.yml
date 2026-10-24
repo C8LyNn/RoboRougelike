@@ -21,7 +21,7 @@ jobs:
       - name: Install Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
       - name: Run real Blender generation and export
         run: blender --background --threads 2 --python Tools/ModelFactory/M02/M02-014/generate_m02_014.py -- --out build/M02-014
