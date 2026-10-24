@@ -193,7 +193,7 @@ def build():
             (.013,.037,.418),"Copper_Coil",hinge,label,bevel=.004)
         box("Fork_Inner_Cyan_Light_"+label,(-side*.063,.012,.371),
             (.008,.018,.335),"Cyan_Emitter",hinge,label,bevel=.002)
-        box("Fork_Heel_Slider_"+label,(0,-.007,.097),(.085,.080,.098),
+        box("Fork_Heel_Slider_"+label,(0,-.007,.145),(.085,.080,.100),
             "Titanium_Frame",hinge,label,bevel=.010)
         for n in range(3):
             box("Fork_Ceramic_Armor_"+label+"_"+str(n),
