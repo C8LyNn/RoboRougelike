@@ -1,0 +1,63 @@
+name: Model Factory M05-004 Dome Lidar Static QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-004-dome-lidar
+    paths:
+      - "Tools/ModelFactory/M05/M05-004/**"
+      - ".github/workflows/ci-model-m05-004.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M05/M05-004/**"
+      - ".github/workflows/ci-model-m05-004.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  procedural-lidar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Compile and generate geometry without Blender
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/ModelFactory/M05/M05-004/generate_m05_004.py
+          mkdir -p /tmp/m05-004
+          python3 Tools/ModelFactory/M05/M05-004/generate_m05_004.py --self-test --output-dir /tmp/m05-004
+      - name: Assert mesh topology, rotor clearance and unique ID
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path("/tmp/m05-004/M05-004.static-qa.json").read_text())
+          assert q["id"]=="M05-004" and q["status"]=="STATIC_QA_PASS"
+          assert q["fixed_parts"]>10 and q["rotating_parts"]>=20
+          assert len(q["materials_used"])>=5
+          assert q["manifold_edges_checked"]>1000
+          assert q["rotor_to_dome_ceiling_clearance_m"]>.02
+          assert q["rotor_to_lower_guard_clearance_m"]>.04
+          assert q["mount_m"]==[0,0,0]
+          assert q["animation_keyframes"]==[1,31,61,91,121]
+          assert q["blender"]=="NOT RUN" and q["unity"]=="NOT RUN"
+          print("M05-004 source geometry + topology QA PASS")
+          PY
+      - name: Compare committed reproducible static OBJ and MTL
+        run: |
+          set -euo pipefail
+          cmp Tools/ModelFactory/M05/M05-004/M05-004.obj /tmp/m05-004/M05-004.obj
+          cmp Tools/ModelFactory/M05/M05-004/M05-004.mtl /tmp/m05-004/M05-004.mtl
+      - name: Confirm selected-only glTF and non-invasive generator
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path("Tools/ModelFactory/M05/M05-004/generate_m05_004.py").read_text()
+          assert "use_selection=True" in s
+          assert "export_force_sampling=True" in s
+          assert "old=bpy.data.collections.get(ID+\"_ASSET\")" in s
+          assert "rotation_mode=\"QUATERNION\"" in s
+          assert "previous_selection" in s and "finally:" in s
+          print("M05-004 GLB exporter static review PASS (Blender NOT RUN)")
+          PY
