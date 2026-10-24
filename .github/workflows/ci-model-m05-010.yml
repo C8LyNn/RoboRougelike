@@ -30,10 +30,16 @@ jobs:
           blender --version | head -n 2
       - name: Two consecutive builds, moving-part clearance and real GLB validation
         run: |
-          blender -b -t 2 --python Tools/ModelFactory/M05/M05-010/qa_blender_m05_010.py
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-010/qa_blender_m05_010.py 2>&1 | tee /tmp/m05-010-bpy-qa.log
+          grep -q 'M05-010 QA PASS' /tmp/m05-010-bpy-qa.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-010-bpy-qa.log
       - name: Produce deliverable Blender GLB FBX and QA manifest
         run: |
-          blender -b -t 2 --python Tools/ModelFactory/M05/M05-010/generate_m05_010.py -- --out build/M05-010
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-010/generate_m05_010.py -- --out build/M05-010 2>&1 | tee /tmp/m05-010-production.log
+          grep -q 'M05-010 EXPORT' /tmp/m05-010-production.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-010-production.log
           python3 - <<'PY'
           import json
           from pathlib import Path
