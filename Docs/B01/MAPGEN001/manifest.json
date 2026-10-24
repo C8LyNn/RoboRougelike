@@ -9,7 +9,7 @@
   "code_scope": "Assets/B01Packages/MAPGEN001/**",
   "docs_scope": "Docs/B01/MAPGEN001/**",
   "source_dependency": "UnityEngine only; no MAP-R6/W8 runtime dependency",
-  "g0": "PATH_AND_META_PAIRS_STATIC_CHECKED; SHA256_AND_SCOPE_ACK_PENDING",
+  "g0": "SCOPED_SOURCE_META_GIT_BLOB_CHECKED; RECIPIENT_SCOPE_ACK_PENDING",
   "g1": "UNITY_COMPILE_EDIT_PLAY_PHYSICS_NOT_RUN",
   "g2": "B01_60_INDEPENDENT_QA_PENDING; B01_40_ZIP_INSTALL_PENDING; GPT_OSS_HANDOFF_HOLD",
   "codex_target_sha": null,
@@ -47,17 +47,17 @@
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef.meta": "a2f779fcbe18417e6ddbfbee2ef7fbadc8b5c682",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs": "acebb46cccec91ed3da7e54074914ab91ad48104",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs.meta": "d2921cfdd1838787a7c9f0ede9518ca5a048fe6e",
-    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs": "61a7ea41f7577666d16f60b3ef2aad22ccbbbcb6",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs": "a7d878428f41f3b9196f36f4cfb06ad8f6086b36",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs.meta": "a95598b7a7fb7550d401a6aade69f2808a1442b3",
-    "Docs/B01/MAPGEN001/API.md": "b83aa07bbd8dbdfda0fbe4e85991285da0a9c0a6",
-    "Docs/B01/MAPGEN001/CHANGELOG.md": "d465668c1ed65382e21789dc723abb424ed089a2",
-    "Docs/B01/MAPGEN001/INSTALL_FOR_GPT_OSS.md": "af87656948c1fed085b51d088911367737cb3478",
-    "Docs/B01/MAPGEN001/KNOWN_LIMITATIONS.md": "1d0dfd16dbcd55b25a4316d0851345428397bef0",
+    "Docs/B01/MAPGEN001/API.md": "e59b1e9192c5715745d60c5d1345a7de50255806",
+    "Docs/B01/MAPGEN001/CHANGELOG.md": "f2b471d133250d54daa075022a954e7f164ae48d",
+    "Docs/B01/MAPGEN001/INSTALL_FOR_GPT_OSS.md": "316bcd613aa9af0c8f75237f4dd8608152778f35",
+    "Docs/B01/MAPGEN001/KNOWN_LIMITATIONS.md": "4a5025c831c029da2e340a07b504e753c528abd3",
     "Docs/B01/MAPGEN001/QA_B01_60.md": "13462c24b3ea5356616aab28b3c223ac26181bdb",
-    "Docs/B01/MAPGEN001/README.md": "ffee083894ca9f834c888631682f7840481cb056",
+    "Docs/B01/MAPGEN001/README.md": "05cdf838af745163fc07b1ce7471ef38f06210d8",
     "Docs/B01/MAPGEN001/REUSE_DECISION.md": "1e4214f2344ce94f952c254fadce0b4ac716f512",
-    "Docs/B01/MAPGEN001/TEST_EVIDENCE.md": "07d6f7b7bc4089b70c69e99bea0959c2c3d7db7c",
-    "Docs/B01/MAPGEN001/TEST_PLAN.md": "1748b8b9c38fb472dc19487d030c25b6f0af03a1"
+    "Docs/B01/MAPGEN001/TEST_EVIDENCE.md": "1f59fba48ad3553a7720cf62614b6b0a59e1fbde",
+    "Docs/B01/MAPGEN001/TEST_PLAN.md": "673d22f615b5bcdcff78bcecf2b315c8564e6167"
   },
   "git_blob_note": "Git blob hashes are SHA-1 CONTENT IDENTITIES, NOT SHA-256. Must add calculated SHA-256 for physical package before handoff.",
   "last_source_commit_before_manifest": "9a35fe149eb79e88ca0eabf4f410d05d88ab8e78",
@@ -87,7 +87,9 @@
   "static_tree_audit": {
     "checked_files": 42,
     "missing_cs_asmdef_unity_meta": [],
-    "same_repo_source": "stacked PR #103 based on #99"
+    "per_path_sha256_entries": 42,
+    "unity_compilation": "NOT_RUN",
+    "source_files_hash_checked": true
   },
   "source_file_sha256_by_path": {
     "Assets/B01Packages.meta": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed",
@@ -119,7 +121,19 @@
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode.meta": "88dd9cbd0f7b007ab143ea359213e1696e591361e040470d8180995353ff7c46",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef": "c59e2b273efd1d7d5519402fb20ab2cee7d79170fca66fda93102f107111e244",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef.meta": "326d450ea88bd6f9984e4ce178cf1e122cf6d08c95bd8a3ec4c45db014c9afd2",
-    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs": "c03e0658f40488459b3e8b8511191581e91fa99002aeca7708ed41d558bcd4ab"
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs": "c03e0658f40488459b3e8b8511191581e91fa99002aeca7708ed41d558bcd4ab",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs.meta": "a22a7e272539a06c87acd32acf2afc0fb3589475922d211e367081d4f6cee097",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs": "d79211f7dc129b3029cccc80da16d87e780d7387c42d22eff99b035d1b8ef981",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs.meta": "0b287073130289cc68af687465d65f55f7c38e350962e769cf5ebd7bbc9e6fcb",
+    "Docs/B01/MAPGEN001/API.md": "293ea715a0c82f38fb71f4f836259d44a54c508050245f8704e3891541466fa8",
+    "Docs/B01/MAPGEN001/CHANGELOG.md": "ee657437c695e397ca6942ec0cc4ad0aa5ab7eb2499b8058967dca08559d8d6e",
+    "Docs/B01/MAPGEN001/INSTALL_FOR_GPT_OSS.md": "3906645e9a650ff94cee88547f55ced0ffeea55ec5bea984f6b1d1a89c0c6bc5",
+    "Docs/B01/MAPGEN001/KNOWN_LIMITATIONS.md": "b476d1d9b1810611741e425b5015f3a4281d5e0f067e93ac2f69a5c2b992ecca",
+    "Docs/B01/MAPGEN001/QA_B01_60.md": "1555a4a4dbc5ce1bc3c02fb05761804de30b4cbe320d09af86dea8896a92daa5",
+    "Docs/B01/MAPGEN001/README.md": "de049f84894380ef1a663500c5a52407ef9bc704ae402a65e96af37561b69414",
+    "Docs/B01/MAPGEN001/REUSE_DECISION.md": "b9c9c561b4d37b163f68fb10277c2bed6efefbc1703fe094448366386aeea8f8",
+    "Docs/B01/MAPGEN001/TEST_EVIDENCE.md": "4f2d48c5a59feb1128fe48df95e5849c25fe1dc54ed85fb51b973028fea1ecd5",
+    "Docs/B01/MAPGEN001/TEST_PLAN.md": "9debbf54be95eac31f89895077264c53ef156d4e5688ef376d9c939f6bcd0f67"
   },
   "parent_package_r2_sha": "a2993a4cb09275864a04c6eaf8bc7b9f4dfb9946",
   "source_sha256_note": "Per-source SHA256 derived from exact UTF-8 GitHub file contents, excluding this self-referential manifest. Recheck after checkout; no physical ZIP/archive SHA256 is available."
