@@ -1,0 +1,23 @@
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-kubap" at "2026-10-24T18:28:03.7215056Z"
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-kubap" (connect: 0.00s, validation: 0.00s, handshake: 0.04s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-kubap-notifications" at "2026-10-24T18:28:03.7640792Z"
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+[MOV SERIES BUILD] qa=False result=Succeeded bytes=103275407 errors=0 warnings=4
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+[MOV SERIES BUILD] qa=True result=Succeeded bytes=103359247 errors=0 warnings=4
+[Licensing::IpcConnector] LicenseClient-kubap-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-kubap channel disconnected successfully.

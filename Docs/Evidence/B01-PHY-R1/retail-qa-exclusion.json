@@ -1,0 +1,45 @@
+{
+  "method": "PE/CLR metadata class-name inventory in final DLLs; MOV009_VISUAL_QA and R6_VISUAL_QA are not selected by MOVSeriesBuild",
+  "initialAudit": "Expected all seven in QA; corrected that harness assumption after reading the two specific defines. All seven were already absent retail.",
+  "source": "523046f5bf6ddab0caf62253615c962e808c3053",
+  "retailSha256": "84bbcc43d9eca359f8fbb71ffe480811f63fff5d61fc06404bd2f386bfbc6d30",
+  "qaSha256": "f87b6f1ecb89a26620e2f784ee42ee9d813e404631d705ba15590dc019182b53",
+  "checks": {
+    "B01PhysicsRuntimeQA": {
+      "retailPresent": false,
+      "qaPresent": true,
+      "qaExpected": true
+    },
+    "RRLW8RuntimeQA": {
+      "retailPresent": false,
+      "qaPresent": true,
+      "qaExpected": true
+    },
+    "RRLW2RuntimeQA": {
+      "retailPresent": false,
+      "qaPresent": true,
+      "qaExpected": true
+    },
+    "RRLW5RuntimeDiagnostics": {
+      "retailPresent": false,
+      "qaPresent": true,
+      "qaExpected": true
+    },
+    "MOVSeriesVisualQA": {
+      "retailPresent": false,
+      "qaPresent": true,
+      "qaExpected": true
+    },
+    "MOV009VisualQA": {
+      "retailPresent": false,
+      "qaPresent": false,
+      "qaExpected": false
+    },
+    "R6VisualQA": {
+      "retailPresent": false,
+      "qaPresent": false,
+      "qaExpected": false
+    }
+  },
+  "coreRecoveryPresentInRetail": true
+}

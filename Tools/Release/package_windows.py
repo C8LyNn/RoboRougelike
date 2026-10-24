@@ -36,7 +36,9 @@ def package(build, archive, extracted, source_sha, release_id='W5_RC1'):
             continue
         files[relative.as_posix()] = path
     product = 'RoboRoguelike '+release_id.replace('_', ' ')
-    report = 'Docs/RRL_W5_RELEASE_QA.md' if release_id == 'W5_RC1' else 'Docs/RRL_PACKAGE_INTEGRATION_STATUS.md'
+    report = ('Docs/Physics/B01-CODEX-PHY-R1-REPORT.md' if release_id == 'B01_PHY_R1'
+              else 'Docs/RRL_W5_RELEASE_QA.md' if release_id == 'W5_RC1'
+              else 'Docs/RRL_PACKAGE_INTEGRATION_STATUS.md')
     manifest = {'product': product, 'platform': 'Windows x64',
                 'unity': '6000.3.14f1', 'testedSource': source_sha,
                 'files': {name: {'bytes': p.stat().st_size, 'sha256': sha256(p)} for name, p in files.items()}}
@@ -53,6 +55,12 @@ def package(build, archive, extracted, source_sha, release_id='W5_RC1'):
         readme += ('\nBroń: T — przeładowanie. LPM — strzał, wiązka, piła lub impuls EMP.\n'
                    'W garażu swobodnym dostępny jest budżet testowy. Poligon oferuje\n'
                    'cel elektroniczny z opcjonalnym ostrzałem rakietowym, początkowo wyłączonym.\n')
+    if release_id == 'B01_PHY_R1':
+        readme += ('\nB01: napęd kół wymaga rzeczywistego kontaktu z terenem.\n'
+                   'Podniesiony FullSupport MOV009 może unieść sztywno zamontowane koła;\n'
+                   'obniż offset do 0 m, aby odzyskać kontakt i napęd.\n'
+                   'Sprawny Core automatycznie podejmuje ograniczoną próbę powrotu\n'
+                   'po utrzymującym się przewróceniu na podłożu; EMP blokuje zdolność.\n')
     generated = {'README.txt': readme.encode('utf-8'),
                  'release-manifest.json': (json.dumps(manifest, ensure_ascii=False, indent=2)+'\n').encode('utf-8')}
     root = f'RoboRoguelike_{release_id}_Windows_x64'

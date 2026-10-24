@@ -1,0 +1,22 @@
+{
+  "method": "Windows minidump exception/module streams, no symbolic stack unwind; raw dump retained locally, not uploaded",
+  "dumpPath": "C:\\Users\\kubap\\AppData\\Local\\CrashDumps\\RoboRougelike.exe.54396.dmp",
+  "processId": 54396,
+  "dumpBytes": 37418032,
+  "dumpSha256": "f717c523f9dbf0912e968eefa341d39fcbef868bdd4ea468c1e0bce1843d6f94",
+  "dumpUtc": "2026-10-24T21:47:39.640691+00:00",
+  "threadId": 48444,
+  "exceptionCode": "0xc0000005",
+  "exceptionFlags": 0,
+  "exceptionAddress": "0x7ffd613cb031",
+  "exceptionParameters": [
+    "0x0",
+    "0xe0"
+  ],
+  "faultModule": "UnityPlayer.dll",
+  "moduleOffset": "0xb1b031",
+  "relevantLoadedModules": [
+    "UnityPlayer.dll",
+    "UIAutomationCore.DLL"
+  ]
+}

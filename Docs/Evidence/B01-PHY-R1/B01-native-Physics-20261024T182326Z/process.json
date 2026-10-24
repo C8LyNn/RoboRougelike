@@ -1,0 +1,27 @@
+{
+  "assetsTree": "c2907d3de2311236d61c7e6947861c2363134bf3",
+  "startedUtc": "2026-10-24T18:23:26.5465362Z",
+  "assemblySha256": "51f2c1ded642c2a8e1d323acef109e167641517c628f8750fdc398dc83d94530",
+  "processId": 70568,
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1280,
+    "-screen-height",
+    720,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Artifacts\\Local\\B01-native-Physics-20261024T182326Z\\Player.log\"",
+    "-b01-phy-native-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Artifacts\\Local\\B01-native-Physics-20261024T182326Z\""
+  ],
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Builds\\MOVSeries-QA-Windows\\RoboRougelike.exe",
+  "finishedUtc": "2026-10-24T18:25:09.0198330Z",
+  "assetsDiff": null,
+  "skyAttached": "record separately",
+  "method": "Physics",
+  "sourceSha": "ceeac6f8d5002342c24a9753f112ed13dca1426b",
+  "exitCode": -1,
+  "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8"
+}

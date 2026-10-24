@@ -1,0 +1,11 @@
+{
+  "exitCode": 0,
+  "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+  "sourceSha": "523046f5bf6ddab0caf62253615c962e808c3053",
+  "assemblySha256": "84bbcc43d9eca359f8fbb71ffe480811f63fff5d61fc06404bd2f386bfbc6d30",
+  "pid": 64232,
+  "startedUtc": "2026-10-24T21:49:18.4151352Z",
+  "finishedUtc": "2026-10-24T21:50:02.4257063Z",
+  "method": "Fresh extracted retail; human Alt+F4 requested; no Sky/UIA connection; Editor running independently",
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01-PHY-R1-extracted\\RoboRoguelike_B01_PHY_R1_Windows_x64\\RoboRougelike.exe"
+}

@@ -29,35 +29,37 @@
 
 **Files:** add Assets/Tests/Editor/B01GroundedDriveTests.cs; maintain Docs/Physics/B01-CODEX-PHY-R1-REPORT.md.
 **Interfaces:** consumes R3VehicleAssembly.Build, R6VehicleDrive.Step/StepWorld and existing P12 damage/EMP; produces actual RED contact evidence.
-- [ ] Add real Light collider/floor tests PHY-GROUND01..06 plus trigger/self/rotation/edge filters, no mocked contact state.
-- [ ] Run targeted EditMode via the local runner with filter B01GroundedDriveTests. Expected: airborne/roof/AI wheel forces violate zero traction; retain actual XML/log/exit.
-- [ ] Commit tests and source audit only, before production edits.
+- [x] Add real Light collider/floor tests PHY-GROUND01..06 plus trigger/self/rotation/edge filters, no mocked contact state.
+- [x] Run targeted EditMode via the local runner with filter B01GroundedDriveTests. Expected: airborne/roof/AI wheel forces violate zero traction; retain actual XML/log/exit.
+- [x] Commit tests and source audit only, before production edits.
 
 ### Task2: Existing R6 wheel forces consume physical contacts
 
 **Files:** add Assets/R6/R6WheelContacts.cs; modify Assets/R6/R6VehicleDrive.cs only at mass/step boundaries; tests fromTask1.
 **Interfaces:** R6WheelContacts.Refresh(Rigidbody,P12PipelineSafeDamageable[]) exposes GroundedCount, weighted traction/left/right/track and support normal, independent of installed-wheel count. Step and StepWorld consume the same snapshot each call.
-- [ ] Derive a bounded tread probe from the actual wheel collider/transform; short skin tolerance, terrain-normal and mount-facing checks, ignore own/trigger/debris/detached bodies. No contact means no Wheel thrust/grip/yaw or air drag.
-- [ ] Preserve damage/EMP/attachment tests per sample, contact-weighted asymmetry, cap sparse-contact yaw; leave Tracks/Omni/Hover delegation ahead of Wheel force.
-- [ ] Characterize default planar versus full body mode; ordinary Wheels must obey gravity and be capable of physical overturning. Reuse existing R6 physical-mode switch, never add stabilization/hover to fake grounding. Document any intentional obsolete planar-test assertions.
-- [ ] Run contact suite + R6Driving/R6Physics/MOV009/Steering targeted regression; expected all final contact cases PASS with native0; fix causes, do not weaken contact assertions.
-- [ ] Commit verified grounding.
+- [x] Derive a bounded tread probe from the actual wheel collider/transform; short skin tolerance, terrain-normal and mount-facing checks, ignore own/trigger/debris/detached bodies. No contact means no Wheel thrust/grip/yaw or air drag.
+- [x] Preserve damage/EMP/attachment tests per sample, contact-weighted asymmetry, cap sparse-contact yaw; leave Tracks/Omni/Hover delegation ahead of Wheel force.
+- [x] Characterize default planar versus full body mode; ordinary Wheels must obey gravity and be capable of physical overturning. Reuse existing R6 physical-mode switch, never add stabilization/hover to fake grounding. Document any intentional obsolete planar-test assertions.
+- [x] Run contact suite + R6Driving/R6Physics/MOV009/Steering targeted regression; expected all final contact cases PASS with native0; fix causes, do not weaken contact assertions.
+- [x] Commit verified grounding.
 
 ### Task3: Bounded Core emergency recovery
 
 **Files:** add Assets/R6/R6CoreRecovery.cs, Assets/Tests/Editor/B01CoreRecoveryTests.cs; wire only existing vehicle initialization.
 **Interfaces:** sole Rigidbody force API, actual R1/P12 Core availability/EMP and R6 contact snapshot. Serialized threshold/confirmation/lift/torque/duration/cooldown settings and read-only attempt telemetry; no key binding.
-- [ ] Write physical RED PHY-CORE01..05 for sustained inversion, normal slope/air rejection, live/dead/EMP Core, finite lift/torque budget/cooldown, obstruction, surviving part state. Observe missing ability before implementing.
-- [ ] Auto-confirm inversion only while grounded on actual terrain, slowly moving and playable. Apply one mass-bounded lift impulse and short capped roll torque; stop on upright/death/pause/EMP, preserve attempt cooldown and require landing/reconfirmation before retry.
-- [ ] Use Core authority and existing body, never write position/rotation/velocity or restore HP/parts; coexist with MOV004 gyro.
-- [ ] Run new Core + contact tests, inspect real roll outcome and limits. Commit GREEN code/evidence.
+- [x] Write physical RED PHY-CORE01..05 for sustained inversion, normal slope/air rejection, live/dead/EMP Core, finite lift/torque budget/cooldown, obstruction, surviving part state. Observe missing ability before implementing.
+- [x] Auto-confirm inversion only while grounded on actual terrain, slowly moving and playable. Apply one mass-bounded lift impulse and short capped roll torque; stop on upright/death/pause/EMP, preserve attempt cooldown and require landing/reconfirmation before retry.
+- [x] Use Core authority and existing body, never write position/rotation/velocity or restore HP/parts; coexist with MOV004 gyro.
+- [x] Run new Core + contact tests, inspect real roll outcome and limits. Commit GREEN code/evidence.
 
 ### Task4: Integration, full regression, native QA and Draft PR
 
 **Files:** targeted existing tests if fixtures assumed ghost traction/planar locked height; QA-only native fixture if needed; Docs/Physics/B01-CODEX-PHY-R1-REPORT.md and evidence.
 **Interfaces:** existing Run-Unity.ps1 EditMode/PlayMode/Build, actual ZIP/EXE hashes, native visible game.
-- [ ] Run PHY-REG01 (MOV009/MOV011/all MOV modes) and PHY-REG02 (actual loss/garage/next encounter). Preserve geometry/HP/resources and original mode solvers.
-- [ ] One fresh whole-branch review, rule on findings, one RED/GREEN fix pass; no per-task reviewer or second review.
-- [ ] Full EditMode and PlayMode after targeted GREEN, Windows build if licensed support remains available. Record all failures/skip/native exits and immutable source.
-- [ ] Windows native actual Light/Heavy flat/slope/roof/recovery/loss/camera/garage/one encounter transition; distinguish controlled physics QA, native UI/pilot and human smoke. Alt+F4 separately classed; no unproven fix.
-- [ ] Complete source/report/evidence, CRC/extraction and actual launch, SHA256 ZIP/EXE. Push own branch, create/attach Draft PR, report DONE/PARTIAL/BLOCKED/NOT_RUN per requirement, stop at this iteration.
+- [x] Run PHY-REG01 (MOV009/MOV011/all MOV modes) and PHY-REG02 (actual loss/garage/next encounter). Preserve geometry/HP/resources and original mode solvers.
+- [x] One fresh whole-branch review, rule on findings, one RED/GREEN fix pass; no per-task reviewer or second review.
+- [x] Full EditMode and PlayMode after targeted GREEN, Windows build if licensed support remains available. Record all failures/skip/native exits and immutable source.
+- [x] Windows native actual Light/Heavy flat/slope/roof/recovery/loss/camera/garage/one encounter transition; distinguish controlled physics QA, native UI/pilot and human smoke. Alt+F4 separately classed; no unproven fix.
+- [x] Complete source/report/evidence, CRC/extraction and actual launch, SHA256 ZIP/EXE. Push own branch, create/attach Draft PR, report DONE/PARTIAL/BLOCKED/NOT_RUN per requirement, stop at this iteration.
+
+Closure: all steps executed. Full EditMode992/999 with7 obsolete gravity-dependent fixture failures; entire five corrected classes28/28 and full PlayMode398/398. Product runtime unchanged; current coverage999 unique/0 unresolved is a reconciliation, NOT a fresh full green run. See the report for costs, known C0000005, human/operator/API distinctions and Draft link.

@@ -1,0 +1,32 @@
+{
+  "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+  "skyAttached": "record separately",
+  "finishedUtc": "2026-10-24T18:50:09.6377590Z",
+  "assetsTree": "0e27d1fed8cf0a8b188ff235dd0b4312be95790e",
+  "exitCode": -1,
+  "timeoutTerminated": true,
+  "processId": 95740,
+  "assetsDiff": null,
+  "method": "Pilot",
+  "assemblySha256": "f87b6f1ecb89a26620e2f784ee42ee9d813e404631d705ba15590dc019182b53",
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Artifacts\\Local\\B01-native-Pilot-20261024T183009Z\\Player.log\"",
+    "-rrl-w2-qa-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Artifacts\\Local\\B01-native-Pilot-20261024T183009Z\"",
+    "-rrl-w2-run-id",
+    "B01-PHY-R1-native-input",
+    "-rrl-w5-diagnostics-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Artifacts\\Local\\B01-native-Pilot-20261024T183009Z\""
+  ],
+  "startedUtc": "2026-10-24T18:30:09.4626438Z",
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Builds\\MOVSeries-QA-Windows\\RoboRougelike.exe",
+  "sourceSha": "523046f5bf6ddab0caf62253615c962e808c3053"
+}
