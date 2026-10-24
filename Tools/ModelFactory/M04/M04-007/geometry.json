@@ -1,0 +1,146 @@
+{
+  "id": "M04-007",
+  "name_pl": "Silnik hover z czterema emiterami",
+  "visual_only": true,
+  "units": "metres",
+  "coordinate_system": "Blender Z-up; X right, Y forward, Z up",
+  "mount": "underside_frame",
+  "mount_origin_m": [
+    0,
+    0,
+    0
+  ],
+  "mount_plane_z_m": 0,
+  "emitter_centers_xy_m": [
+    [
+      -0.45,
+      -0.4
+    ],
+    [
+      -0.45,
+      0.4
+    ],
+    [
+      0.45,
+      -0.4
+    ],
+    [
+      0.45,
+      0.4
+    ]
+  ],
+  "pod_outer_radius_m": 0.298,
+  "emitter_max_radius_m": 0.19046,
+  "inner_liner_min_radius_m": 0.207,
+  "animation": {
+    "frames": [
+      1,
+      11,
+      21,
+      31,
+      41,
+      51,
+      61,
+      71,
+      81
+    ],
+    "fps": 60,
+    "period_frames": 80,
+    "radial_scale_amplitude": 0.07,
+    "vertical_displacement_amplitude_m": 0.012,
+    "phase_offsets_deg": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "animated_axis": "emitter local Z; pulse in XY scale and Z translation",
+    "repeat": "one full sinusoidal period"
+  },
+  "materials": {
+    "graphite": {
+      "color": [
+        0.095,
+        0.12,
+        0.16,
+        1
+      ],
+      "metallic": 0.52,
+      "roughness": 0.51
+    },
+    "titanium": {
+      "color": [
+        0.53,
+        0.62,
+        0.68,
+        1
+      ],
+      "metallic": 0.83,
+      "roughness": 0.28
+    },
+    "ceramic": {
+      "color": [
+        0.77,
+        0.83,
+        0.82,
+        1
+      ],
+      "metallic": 0.12,
+      "roughness": 0.39
+    },
+    "copper": {
+      "color": [
+        0.69,
+        0.38,
+        0.19,
+        1
+      ],
+      "metallic": 0.74,
+      "roughness": 0.36
+    },
+    "rubber": {
+      "color": [
+        0.047,
+        0.058,
+        0.07,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.88
+    },
+    "ion_cyan": {
+      "color": [
+        0.12,
+        0.65,
+        0.78,
+        1
+      ],
+      "metallic": 0.18,
+      "roughness": 0.22,
+      "emission": [
+        0.025,
+        0.52,
+        0.9,
+        1
+      ],
+      "emission_strength": 3.2
+    },
+    "amber": {
+      "color": [
+        0.95,
+        0.51,
+        0.11,
+        1
+      ],
+      "metallic": 0.31,
+      "roughness": 0.29,
+      "emission": [
+        0.85,
+        0.29,
+        0.015,
+        1
+      ],
+      "emission_strength": 1.3
+    }
+  }
+}
