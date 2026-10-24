@@ -26,6 +26,10 @@ TAU = 2 * math.pi
 FRAMES = (1, 49)
 ROTOR_AXIAL = (0.280, 0.520)
 ROTOR_RADIAL_MAX = 0.345
+STATIONARY_SHAFT_RADIUS = 0.038
+MOVING_HUB_BORE_RADIUS = 0.047
+MIN_SHAFT_RADIAL_CLEARANCE = 0.008  # 9 mm nominal clearance
+BLENDER_ANIMATION_KEY_STEP = 3
 RING_INNER = 0.386
 AXIAL_BLADE_HALF_EXTENT = 0.025
 MATERIALS = {
@@ -64,6 +68,33 @@ def cylinder_x(name, x, y, z, radius, length, mat, rotor=None, segments=48):
     for j in range(segments):
         k=(j+1)%segments
         f.append((j,k,segments+k,segments+j))
+    add(name,v,f,mat,rotor)
+
+
+def annular_cylinder_x(name, x, outer_radius, bore_radius, length, mat,
+                       rotor=None, segments=48):
+    """Closed annular hub shell with a genuine concentric through-bore.
+
+    The fixed shaft may occupy this volume's central void. Four strips
+    (outer wall, front annulus, inner wall, rear annulus) share vertices
+    and form a watertight manifold, unlike two overlapping cylinders.
+    """
+    assert outer_radius > bore_radius > STATIONARY_SHAFT_RADIUS
+    assert bore_radius - STATIONARY_SHAFT_RADIUS >= MIN_SHAFT_RADIAL_CLEARANCE
+    assert length > 0 and segments >= 12
+    rings = ((x-length/2, outer_radius), (x+length/2, outer_radius),
+             (x-length/2, bore_radius), (x+length/2, bore_radius))
+    v = [(xx, rr*math.cos(TAU*i/segments), rr*math.sin(TAU*i/segments))
+         for xx,rr in rings for i in range(segments)]
+    f = []
+    for i in range(segments):
+        j = (i+1)%segments
+        f.extend((
+            (i,j,segments+j,segments+i),                          # outer
+            (segments+i,segments+j,3*segments+j,3*segments+i),   # front
+            (3*segments+i,3*segments+j,2*segments+j,2*segments+i), # bore
+            (2*segments+i,2*segments+j,j,i),                     # back
+        ))
     add(name,v,f,mat,rotor)
 
 
@@ -108,7 +139,10 @@ def rod(name,p,q,radius,mat,segments=12):
 def blade(name,rotor_index,angle,mat):
     """Closed tapered, pitched blade, spinning around +X."""
     center=ROTOR_AXIAL[rotor_index]
-    stations=((0.102,0.085,-0.005),(0.166,0.112,0.002),
+    # Root station extends INTO the outer hub radius (0.091 m) to avoid
+    # floating detached blades; 7-blade root angular sectors still have
+    # positive gap between neighbours.
+    stations=((0.076,0.070,-0.005),(0.166,0.112,0.002),
               (0.249,0.087,0.011),(0.340,0.044,0.018))
     v=[]
     for r,chord,pitch in stations:
@@ -129,6 +163,9 @@ def build():
     PARTS.clear()  # Re-entrant in Blender's persistent Python interpreter.
     assert ROTOR_RADIAL_MAX < RING_INNER-0.03
     assert ROTOR_AXIAL[1]-ROTOR_AXIAL[0] > 2*AXIAL_BLADE_HALF_EXTENT+0.10
+    assert MOVING_HUB_BORE_RADIUS - STATIONARY_SHAFT_RADIUS >= MIN_SHAFT_RADIAL_CLEARANCE
+    # Root chord fits seven angular sectors without intersecting other blades.
+    assert 2*math.atan(0.070/2/0.076) < TAU/7
     box("SideMount_160mm",(.027,0,0),(.054,.232,.232),"graphite")
     box("MountInset",(.059,0,0),(.012,.168,.168),"titanium")
     for sy in (-1,1):
@@ -154,9 +191,12 @@ def build():
         rod(f"AxialRib_{i}",(.228,y,z),(.576,y,z),.011,"titanium")
     for rotor in (0,1):
         x=ROTOR_AXIAL[rotor]
-        cylinder_x(f"Hub_{rotor}",x,0,0,.091,.046,"copper" if rotor==0 else "ceramic",rotor)
-        cylinder_x(f"HubRing_{rotor}",x+.027,0,0,.063,.010,"graphite",rotor)
-        cylinder_x(f"RotorCore_{rotor}",x-.025,0,0,.045,.010,"titanium",rotor)
+        annular_cylinder_x(f"Hub_{rotor}",x,.091,MOVING_HUB_BORE_RADIUS,.046,
+                           "copper" if rotor==0 else "ceramic",rotor)
+        annular_cylinder_x(f"HubRing_{rotor}",x+.027,.063,MOVING_HUB_BORE_RADIUS,.010,
+                           "graphite",rotor)
+        annular_cylinder_x(f"RotorCore_{rotor}",x-.025,.064,MOVING_HUB_BORE_RADIUS,.010,
+                           "titanium",rotor)
         count=(5,7)[rotor]
         for i in range(count):
             blade(f"Blade_{rotor}_{i:02d}",rotor,TAU*i/count+(0.0 if rotor==0 else TAU/14),
@@ -194,7 +234,7 @@ def export_blender(out):
     if bpy is None: return None
     scene=bpy.context.scene
     scene.unit_settings.system="METRIC";scene.unit_settings.scale_length=1.0
-    scene.frame_start=FRAMES[0];scene.frame_end=FRAMES[1]-1;scene.render.fps=24
+    scene.frame_start=FRAMES[0];scene.frame_end=FRAMES[1];scene.render.fps=24
     old=bpy.data.collections.get(ROOT)
     if old:
         for ob in list(old.objects):bpy.data.objects.remove(ob,do_unlink=True)
@@ -214,23 +254,43 @@ def export_blender(out):
             socket=p.inputs.get("Emission Strength")
             if socket:socket.default_value=em
         mat.diffuse_color=rgba;mats[name]=mat
+    # One mountable exported hierarchy, not separate unparented scene roots.
+    root=bpy.data.objects.new("M04_002_ROOT_SIDE_X_POS",None)
+    root.location=(0,0,0)
+    root.empty_display_type="ARROWS";root.empty_display_size=.09
+    root["model_id"]=MODEL
+    root["side_mount_normal"]=(1.0,0.0,0.0)
+    root["unit_scale_m"]=1.0
+    col.objects.link(root)
     pivots=[]
     for i,x in enumerate(ROTOR_AXIAL):
         pivot=bpy.data.objects.new(f"Spin_{i}_{'CW' if i==0 else 'CCW'}",None)
         pivot.location=(x,0,0);pivot.empty_display_type="CIRCLE";pivot.empty_display_size=.09
-        col.objects.link(pivot);pivots.append(pivot)
+        col.objects.link(pivot)
+        pivot.parent=root
+        pivots.append(pivot)
+    # Evaluate the pivots' world matrices BEFORE computing mesh parent
+    # inverses, so each procedural world-space mesh keeps its authored pose.
+    bpy.context.view_layer.update()
     for name,verts,faces,mat,rotor in PARTS:
         mesh=bpy.data.meshes.new(name+"_mesh");mesh.from_pydata(verts,[],faces);mesh.update()
         ob=bpy.data.objects.new(name,mesh);col.objects.link(ob);ob.data.materials.append(mats[mat])
         if rotor is not None:
             ob.parent=pivots[rotor]
             ob.matrix_parent_inverse=pivots[rotor].matrix_world.inverted()
+        else:
+            ob.parent=root
         for poly in mesh.polygons:
             poly.use_smooth=len(poly.vertices)==4 and ("Guard" in name or "Halo" in name or "Hub" in name)
     for i,p in enumerate(pivots):
         p.rotation_mode="XYZ"
-        for frame,turn in ((FRAMES[0],0),(FRAMES[1],TAU*(1 if i==0 else -1))):
-            p.rotation_euler[0]=turn;p.keyframe_insert(data_path="rotation_euler",index=0,frame=frame)
+        # 0° and 360° are the SAME quaternion: endpoint-only keys can
+        # collapse rotation to a static pose on glTF/Unity import. Sample
+        # every 45° (three frames) for two opposite continuous revolutions.
+        for frame in range(FRAMES[0], FRAMES[1]+1, BLENDER_ANIMATION_KEY_STEP):
+            turn=TAU * (frame-FRAMES[0]) / (FRAMES[1]-FRAMES[0])
+            p.rotation_euler[0]=turn*(1 if i==0 else -1)
+            p.keyframe_insert(data_path="rotation_euler",index=0,frame=frame)
         if p.animation_data and p.animation_data.action:
             action=p.animation_data.action
             curves=getattr(action,"fcurves",None)
@@ -242,6 +302,18 @@ def export_blender(out):
                 for fc in curves:
                     for kp in fc.keyframe_points:kp.interpolation="LINEAR"
     scene.frame_set(FRAMES[0])
+    bpy.context.view_layer.update()
+    assert all(p.parent == root for p in pivots)
+    assert all(o.parent in (*pivots, root)
+               for o in col.objects if o.type=="MESH"), "Orphaned mesh in side-mount hierarchy"
+    # At rest, each moving mesh must remain at its authored world position.
+    for o in col.objects:
+        if o.type=="MESH" and o.parent in pivots:
+            original=next((verts for name,verts,faces,mat,rotor in PARTS
+                           if name==o.name),None)
+            if original:
+                p=o.matrix_world @ o.data.vertices[0].co
+                assert max(abs(float(p[k])-original[0][k]) for k in range(3)) < 1e-5, o.name
     bpy.ops.object.select_all(action="DESELECT")
     for ob in col.objects:
         ob.select_set(True)
@@ -265,6 +337,13 @@ def main():
             "rotation_1":"+360 degrees / 48 frames","rotation_2":"-360 degrees / 48 frames",
             "minimum_nominal_radial_clearance_m":round(RING_INNER-ROTOR_RADIAL_MAX,4),
             "minimum_nominal_axial_clearance_m":round(ROTOR_AXIAL[1]-ROTOR_AXIAL[0]-2*AXIAL_BLADE_HALF_EXTENT,4),
+            "stationary_shaft_radius_m":STATIONARY_SHAFT_RADIUS,
+            "moving_hub_bore_radius_m":MOVING_HUB_BORE_RADIUS,
+            "shaft_hub_radial_clearance_m":round(MOVING_HUB_BORE_RADIUS-STATIONARY_SHAFT_RADIUS,4),
+            "hollow_hub_shells":6,
+            "blade_root_radial_station_m":0.076,
+            "intermediate_rotation_keys_per_pivot":17,
+            "mount_root":"M04_002_ROOT_SIDE_X_POS",
             "obj":obj.name,"mtl":mtl.name,"glb":Path(glb).name if glb else None,
             "blender_executed":bpy is not None,"unity_import_tested":False,
             "note":"Clearances are conservative design bounds; full dynamic collision QA pending Blender/Unity."}

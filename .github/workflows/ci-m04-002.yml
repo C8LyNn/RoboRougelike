@@ -1,6 +1,12 @@
 name: Model Factory M04-002 Static QA
 
 on:
+  push:
+    branches:
+      - fix/rrl-m04-002-hollow-hubs-spin
+    paths:
+      - 'Tools/ModelFactory/M04/M04-002/**'
+      - '.github/workflows/ci-m04-002.yml'
   pull_request:
     branches: [develop]
     paths:
@@ -13,12 +19,34 @@ permissions:
 
 jobs:
   geometry:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Python syntax
         run: python3 -m py_compile Tools/ModelFactory/M04/M04-002/generate_m04_002.py Tools/ModelFactory/M04/M04-002/test_m04_002.py
-      - name: Geometry, materials, manifold topology and clearance assertions
+      - name: Closed annular hubs, attached blades, material and spin checks
         run: python3 Tools/ModelFactory/M04/M04-002/test_m04_002.py
+      - name: Build fixed static rotor OBJ, MTL and manifest for review
+        run: |
+          python3 Tools/ModelFactory/M04/M04-002/generate_m04_002.py --out build/M04-002-fixed
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          out=Path("build/M04-002-fixed")
+          data=json.loads((out/"M04-002.manifest.json").read_text())
+          assert data["hollow_hub_shells"]==6
+          assert data["shaft_hub_radial_clearance_m"]>=.008
+          assert data["blender_executed"] is False
+          assert data["glb"] is None
+          assert data["vertices"]==8528 and data["faces"]==8010
+          assert (out/"M04-002.obj").stat().st_size>100_000
+          print("M04-002 revised static export PASS; Blender/Unity NOT RUN")
+          PY
+      - name: Upload corrected OBJ and MTL
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-002-hollow-hubs-corrected-static-OBJ
+          path: build/M04-002-fixed/
+          if-no-files-found: error
