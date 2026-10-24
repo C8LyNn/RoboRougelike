@@ -1,0 +1,1362 @@
+{
+  "id": "M01-005",
+  "name": "Boczny miotacz tarcz",
+  "units": "meters",
+  "coordinate_system": "Blender Z-up; GLB glTF Y-up",
+  "mount_type": "side",
+  "mount_origin": [
+    0,
+    0,
+    0
+  ],
+  "forward_axis": "-Y",
+  "rotor_axis": "X",
+  "pivots": {
+    "rotor_left": [
+      0.755,
+      -0.255,
+      0.07
+    ],
+    "rotor_right": [
+      0.755,
+      0.255,
+      0.07
+    ]
+  },
+  "keyframes": [
+    1,
+    49,
+    97
+  ],
+  "rotation_degrees": {
+    "rotor_left": [
+      0,
+      180,
+      360
+    ],
+    "rotor_right": [
+      0,
+      -180,
+      -360
+    ]
+  },
+  "materials": {
+    "Graphite": {
+      "color": [
+        0.065,
+        0.083,
+        0.111,
+        1
+      ],
+      "metallic": 0.76,
+      "roughness": 0.34
+    },
+    "Steel": {
+      "color": [
+        0.31,
+        0.37,
+        0.41,
+        1
+      ],
+      "metallic": 0.79,
+      "roughness": 0.32
+    },
+    "Ceramic": {
+      "color": [
+        0.71,
+        0.75,
+        0.72,
+        1
+      ],
+      "metallic": 0.12,
+      "roughness": 0.44
+    },
+    "Copper": {
+      "color": [
+        0.72,
+        0.32,
+        0.13,
+        1
+      ],
+      "metallic": 0.78,
+      "roughness": 0.29
+    },
+    "Rubber": {
+      "color": [
+        0.025,
+        0.032,
+        0.044,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.86
+    },
+    "TealLED": {
+      "color": [
+        0.015,
+        0.51,
+        0.65,
+        1
+      ],
+      "metallic": 0.08,
+      "roughness": 0.24,
+      "emission": [
+        0.01,
+        0.42,
+        0.7,
+        1
+      ],
+      "emission_strength": 2.4
+    },
+    "AmberLED": {
+      "color": [
+        0.92,
+        0.43,
+        0.07,
+        1
+      ],
+      "metallic": 0.07,
+      "roughness": 0.27,
+      "emission": [
+        0.8,
+        0.24,
+        0.02,
+        1
+      ],
+      "emission_strength": 1.6
+    }
+  },
+  "parts": [
+    {
+      "name": "side_mount_rubber",
+      "shape": "box",
+      "center": [
+        0.009,
+        0,
+        0
+      ],
+      "size": [
+        0.018,
+        0.44,
+        0.39
+      ],
+      "material": "Rubber",
+      "parent": "base"
+    },
+    {
+      "name": "side_mount_steel",
+      "shape": "box",
+      "center": [
+        0.065,
+        0,
+        0
+      ],
+      "size": [
+        0.11,
+        0.49,
+        0.44
+      ],
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "mount_bolt_F_D",
+      "shape": "cylinder",
+      "center": [
+        0.128,
+        -0.175,
+        -0.15
+      ],
+      "radius": 0.023,
+      "depth": 0.016,
+      "axis": "X",
+      "segments": 16,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "mount_bolt_F_U",
+      "shape": "cylinder",
+      "center": [
+        0.128,
+        -0.175,
+        0.15
+      ],
+      "radius": 0.023,
+      "depth": 0.016,
+      "axis": "X",
+      "segments": 16,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "mount_bolt_B_D",
+      "shape": "cylinder",
+      "center": [
+        0.128,
+        0.175,
+        -0.15
+      ],
+      "radius": 0.023,
+      "depth": 0.016,
+      "axis": "X",
+      "segments": 16,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "mount_bolt_B_U",
+      "shape": "cylinder",
+      "center": [
+        0.128,
+        0.175,
+        0.15
+      ],
+      "radius": 0.023,
+      "depth": 0.016,
+      "axis": "X",
+      "segments": 16,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "lower_main_spine",
+      "shape": "box",
+      "center": [
+        0.265,
+        0,
+        -0.1
+      ],
+      "size": [
+        0.3,
+        0.85,
+        0.28
+      ],
+      "material": "Graphite",
+      "parent": "base"
+    },
+    {
+      "name": "upper_chassis",
+      "shape": "box",
+      "center": [
+        0.37,
+        0,
+        0.16
+      ],
+      "size": [
+        0.38,
+        0.79,
+        0.19
+      ],
+      "material": "Graphite",
+      "parent": "base"
+    },
+    {
+      "name": "white_ceramic_spine",
+      "shape": "box",
+      "center": [
+        0.44,
+        0.04,
+        0.272
+      ],
+      "size": [
+        0.3,
+        0.5,
+        0.054
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "copper_cable_track",
+      "shape": "box",
+      "center": [
+        0.54,
+        0.14,
+        -0.18
+      ],
+      "size": [
+        0.11,
+        0.55,
+        0.06
+      ],
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "lower_rear_guard",
+      "shape": "box",
+      "center": [
+        0.48,
+        0.42,
+        -0.24
+      ],
+      "size": [
+        0.18,
+        0.2,
+        0.09
+      ],
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "upper_front_guard",
+      "shape": "box",
+      "center": [
+        0.47,
+        -0.42,
+        0.25
+      ],
+      "size": [
+        0.21,
+        0.18,
+        0.065
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_bearing",
+      "shape": "cylinder",
+      "center": [
+        0.53,
+        -0.255,
+        0.07
+      ],
+      "radius": 0.14,
+      "depth": 0.09,
+      "axis": "X",
+      "segments": 32,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_spindle",
+      "shape": "cylinder",
+      "center": [
+        0.652,
+        -0.255,
+        0.07
+      ],
+      "radius": 0.064,
+      "depth": 0.124,
+      "axis": "X",
+      "segments": 32,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_ring",
+      "shape": "ring",
+      "center": [
+        0.872,
+        -0.255,
+        0.07
+      ],
+      "radius": 0.215,
+      "inner_radius": 0.194,
+      "depth": 0.024,
+      "axis": "X",
+      "segments": 40,
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_bolt_0",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        -0.028999999999999998,
+        0.07
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_bolt_1",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        -0.14199999999999996,
+        0.26572174125528314
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_bolt_2",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        -0.36799999999999994,
+        0.26572174125528314
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_bolt_3",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        -0.481,
+        0.07000000000000003
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_bolt_4",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        -0.3680000000000001,
+        -0.12572174125528307
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_guard_bolt_5",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        -0.14199999999999996,
+        -0.12572174125528313
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_L_disc",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0,
+        0
+      ],
+      "radius": 0.166,
+      "depth": 0.072,
+      "axis": "X",
+      "segments": 48,
+      "material": "Graphite",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_outer_rim",
+      "shape": "ring",
+      "center": [
+        0,
+        0,
+        0
+      ],
+      "radius": 0.185,
+      "inner_radius": 0.167,
+      "depth": 0.063,
+      "axis": "X",
+      "segments": 48,
+      "material": "Copper",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_central_hub",
+      "shape": "cylinder",
+      "center": [
+        0.042,
+        0,
+        0
+      ],
+      "radius": 0.051,
+      "depth": 0.024,
+      "axis": "X",
+      "segments": 32,
+      "material": "Steel",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_hub_led",
+      "shape": "cylinder",
+      "center": [
+        0.057,
+        0,
+        0
+      ],
+      "radius": 0.024,
+      "depth": 0.012,
+      "axis": "X",
+      "segments": 24,
+      "material": "TealLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_cassette_disc_0",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        0.122,
+        0
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Steel",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_slot_indicator_0",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        0.122,
+        0
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "AmberLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_cassette_disc_1",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        0.06100000000000001,
+        0.10565509926170151
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Ceramic",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_slot_indicator_1",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        0.06100000000000001,
+        0.10565509926170151
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_cassette_disc_2",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        -0.06099999999999997,
+        0.10565509926170152
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Steel",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_slot_indicator_2",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        -0.06099999999999997,
+        0.10565509926170152
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_cassette_disc_3",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        -0.122,
+        1.494069094959771e-17
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Ceramic",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_slot_indicator_3",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        -0.122,
+        1.494069094959771e-17
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "AmberLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_cassette_disc_4",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        -0.061000000000000054,
+        -0.10565509926170148
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Steel",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_slot_indicator_4",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        -0.061000000000000054,
+        -0.10565509926170148
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_cassette_disc_5",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        0.06100000000000001,
+        -0.10565509926170151
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Ceramic",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_L_slot_indicator_5",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        0.06100000000000001,
+        -0.10565509926170151
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_left"
+    },
+    {
+      "name": "rotor_R_bearing",
+      "shape": "cylinder",
+      "center": [
+        0.53,
+        0.255,
+        0.07
+      ],
+      "radius": 0.14,
+      "depth": 0.09,
+      "axis": "X",
+      "segments": 32,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_spindle",
+      "shape": "cylinder",
+      "center": [
+        0.652,
+        0.255,
+        0.07
+      ],
+      "radius": 0.064,
+      "depth": 0.124,
+      "axis": "X",
+      "segments": 32,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_ring",
+      "shape": "ring",
+      "center": [
+        0.872,
+        0.255,
+        0.07
+      ],
+      "radius": 0.215,
+      "inner_radius": 0.194,
+      "depth": 0.024,
+      "axis": "X",
+      "segments": 40,
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_bolt_0",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        0.481,
+        0.07
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_bolt_1",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        0.36800000000000005,
+        0.26572174125528314
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_bolt_2",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        0.14200000000000007,
+        0.26572174125528314
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_bolt_3",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        0.028999999999999998,
+        0.07000000000000003
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_bolt_4",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        0.1419999999999999,
+        -0.12572174125528307
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_guard_bolt_5",
+      "shape": "cylinder",
+      "center": [
+        0.872,
+        0.36800000000000005,
+        -0.12572174125528313
+      ],
+      "radius": 0.012,
+      "depth": 0.025,
+      "axis": "X",
+      "segments": 12,
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "rotor_R_disc",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0,
+        0
+      ],
+      "radius": 0.166,
+      "depth": 0.072,
+      "axis": "X",
+      "segments": 48,
+      "material": "Graphite",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_outer_rim",
+      "shape": "ring",
+      "center": [
+        0,
+        0,
+        0
+      ],
+      "radius": 0.185,
+      "inner_radius": 0.167,
+      "depth": 0.063,
+      "axis": "X",
+      "segments": 48,
+      "material": "Copper",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_central_hub",
+      "shape": "cylinder",
+      "center": [
+        0.042,
+        0,
+        0
+      ],
+      "radius": 0.051,
+      "depth": 0.024,
+      "axis": "X",
+      "segments": 32,
+      "material": "Steel",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_hub_led",
+      "shape": "cylinder",
+      "center": [
+        0.057,
+        0,
+        0
+      ],
+      "radius": 0.024,
+      "depth": 0.012,
+      "axis": "X",
+      "segments": 24,
+      "material": "TealLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_cassette_disc_0",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        0.122,
+        0
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Steel",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_slot_indicator_0",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        0.122,
+        0
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "AmberLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_cassette_disc_1",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        0.06100000000000001,
+        0.10565509926170151
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Ceramic",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_slot_indicator_1",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        0.06100000000000001,
+        0.10565509926170151
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_cassette_disc_2",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        -0.06099999999999997,
+        0.10565509926170152
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Steel",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_slot_indicator_2",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        -0.06099999999999997,
+        0.10565509926170152
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_cassette_disc_3",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        -0.122,
+        1.494069094959771e-17
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Ceramic",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_slot_indicator_3",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        -0.122,
+        1.494069094959771e-17
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "AmberLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_cassette_disc_4",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        -0.061000000000000054,
+        -0.10565509926170148
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Steel",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_slot_indicator_4",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        -0.061000000000000054,
+        -0.10565509926170148
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_cassette_disc_5",
+      "shape": "cylinder",
+      "center": [
+        0.045,
+        0.06100000000000001,
+        -0.10565509926170151
+      ],
+      "radius": 0.028,
+      "depth": 0.017,
+      "axis": "X",
+      "segments": 20,
+      "material": "Ceramic",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "rotor_R_slot_indicator_5",
+      "shape": "cylinder",
+      "center": [
+        0.058,
+        0.06100000000000001,
+        -0.10565509926170151
+      ],
+      "radius": 0.012,
+      "depth": 0.009,
+      "axis": "X",
+      "segments": 16,
+      "material": "TealLED",
+      "parent": "rotor_right"
+    },
+    {
+      "name": "muzzle_rail_lower",
+      "shape": "box",
+      "center": [
+        0.67,
+        -0.545,
+        -0.15
+      ],
+      "size": [
+        0.3,
+        0.165,
+        0.058
+      ],
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rear_feed_rail_lower",
+      "shape": "box",
+      "center": [
+        0.66,
+        0.545,
+        -0.15
+      ],
+      "size": [
+        0.29,
+        0.165,
+        0.058
+      ],
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "muzzle_rail_upper",
+      "shape": "box",
+      "center": [
+        0.67,
+        -0.545,
+        0.15
+      ],
+      "size": [
+        0.3,
+        0.165,
+        0.058
+      ],
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "rear_feed_rail_upper",
+      "shape": "box",
+      "center": [
+        0.66,
+        0.545,
+        0.15
+      ],
+      "size": [
+        0.29,
+        0.165,
+        0.058
+      ],
+      "material": "Steel",
+      "parent": "base"
+    },
+    {
+      "name": "muzzle_lower_bridge",
+      "shape": "box",
+      "center": [
+        0.67,
+        -0.665,
+        -0.09
+      ],
+      "size": [
+        0.31,
+        0.048,
+        0.07
+      ],
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "muzzle_upper_bridge",
+      "shape": "box",
+      "center": [
+        0.67,
+        -0.665,
+        0.09
+      ],
+      "size": [
+        0.31,
+        0.048,
+        0.07
+      ],
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "muzzle_slot_upper_lip",
+      "shape": "box",
+      "center": [
+        0.83,
+        -0.63,
+        0.045
+      ],
+      "size": [
+        0.065,
+        0.075,
+        0.028
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "muzzle_slot_lower_lip",
+      "shape": "box",
+      "center": [
+        0.83,
+        -0.63,
+        -0.045
+      ],
+      "size": [
+        0.065,
+        0.075,
+        0.028
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "rear_power_cell",
+      "shape": "box",
+      "center": [
+        0.42,
+        0.56,
+        0
+      ],
+      "size": [
+        0.2,
+        0.12,
+        0.16
+      ],
+      "material": "Graphite",
+      "parent": "base"
+    },
+    {
+      "name": "rear_power_cell_face",
+      "shape": "box",
+      "center": [
+        0.54,
+        0.565,
+        0
+      ],
+      "size": [
+        0.035,
+        0.1,
+        0.13
+      ],
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "side_radiator_fin_0",
+      "shape": "box",
+      "center": [
+        0.49,
+        0.42,
+        -0.09
+      ],
+      "size": [
+        0.095,
+        0.1,
+        0.018
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "side_radiator_fin_1",
+      "shape": "box",
+      "center": [
+        0.49,
+        0.42,
+        -0.036
+      ],
+      "size": [
+        0.095,
+        0.1,
+        0.018
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "side_radiator_fin_2",
+      "shape": "box",
+      "center": [
+        0.49,
+        0.42,
+        0.018000000000000002
+      ],
+      "size": [
+        0.095,
+        0.1,
+        0.018
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "side_radiator_fin_3",
+      "shape": "box",
+      "center": [
+        0.49,
+        0.42,
+        0.07200000000000001
+      ],
+      "size": [
+        0.095,
+        0.1,
+        0.018
+      ],
+      "material": "Ceramic",
+      "parent": "base"
+    },
+    {
+      "name": "front_teal_strip",
+      "shape": "box",
+      "center": [
+        0.665,
+        -0.645,
+        0
+      ],
+      "size": [
+        0.22,
+        0.015,
+        0.013
+      ],
+      "material": "TealLED",
+      "parent": "base"
+    },
+    {
+      "name": "rear_amber_status",
+      "shape": "box",
+      "center": [
+        0.66,
+        0.645,
+        0
+      ],
+      "size": [
+        0.19,
+        0.015,
+        0.018
+      ],
+      "material": "AmberLED",
+      "parent": "base"
+    },
+    {
+      "name": "chassis_rivet_strip_L",
+      "shape": "box",
+      "center": [
+        0.46,
+        -0.29,
+        -0.255
+      ],
+      "size": [
+        0.17,
+        0.035,
+        0.019
+      ],
+      "material": "Copper",
+      "parent": "base"
+    },
+    {
+      "name": "chassis_rivet_strip_R",
+      "shape": "box",
+      "center": [
+        0.46,
+        0.29,
+        -0.255
+      ],
+      "size": [
+        0.17,
+        0.035,
+        0.019
+      ],
+      "material": "Copper",
+      "parent": "base"
+    }
+  ],
+  "notes": "Visual-only dual flat rotating cassette magazine; no projectile, damage, WPN gameplay or sensor implementation."
+}
