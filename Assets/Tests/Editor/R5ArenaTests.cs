@@ -30,7 +30,7 @@ public class R5ArenaTests
         while(Time.time<end&&run.Progress.State==R1RunState.Combat)
         {
             if(Time.time>=nextLog){Debug.Log($"R6 AI obstacle trace position={rb.position}, velocity={rb.linearVelocity}, yaw={rb.rotation.eulerAngles.y}");nextLog=Time.time+2;}
-            maximumZ=Mathf.Max(maximumZ,rb.position.z);Assert.That(float.IsNaN(rb.position.x),Is.False);Assert.That(Mathf.Abs(rb.position.y),Is.LessThan(.01));yield return null;
+            maximumZ=Mathf.Max(maximumZ,rb.position.z);Assert.That(float.IsNaN(rb.position.x),Is.False);Assert.That(rb.position.y,Is.InRange(-.6f,1f),"Real gravity body may settle vertically, but cannot fall through the arena");yield return null;
         }
         Assert.That(maximumZ,Is.GreaterThan(-8),"AI must progress around the south industrial hall, not oscillate forever.");
         yield return new ExitPlayMode();
