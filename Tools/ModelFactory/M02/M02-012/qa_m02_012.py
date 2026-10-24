@@ -32,6 +32,7 @@ def main():
     assert report["materials"]>=8
     assert report["mesh_objects"]>40
     assert report["animated_groups"]==7
+    assert report["repeat_build"]=="PASS_TWO_BUILDS"
     assert (d/"M02-012.blend").stat().st_size>10000
     gltf=load_glb(d/"M02-012_animated.glb")
     mats=gltf.get("materials",[])
