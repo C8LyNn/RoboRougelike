@@ -12,7 +12,7 @@ Geometria jest zamknięta i składa się z osobnych, łatwych do wymiany częśc
 
 ## Źródło i eksport
 
-`generate_m02_006.py` tworzy deterministyczne OBJ i MTL przy użyciu standardowej biblioteki Python. W środowisku `bpy` dodatkowo tworzy animowany GLB oraz FBX kompatybilny z natywnym importerem Unity (pełny obrót w 2 s, pięć kluczy z wymuszonym próbkowaniem GLB) i bibliotekę kolekcji `M02-006.blend` do importu przez **Append**. Generator usuwa tylko własną kolekcję `M02-006_ASSET` i przywraca poprzedni stan sceny. Nie usuwa cudzych obiektów.
+`generate_m02_006.py` tworzy deterministyczne OBJ i MTL przy użyciu standardowej biblioteki Python. W środowisku `bpy` dodatkowo tworzy animowany GLB (pełny obrót w 2 s, pięć kluczy z wymuszonym próbkowaniem), a opcjonalnie FBX, jeśli lokalny eksporter Blendera udostępnia bezpieczny eksport tylko własnej kolekcji i bibliotekę kolekcji `M02-006.blend` do importu przez **Append**. Generator usuwa tylko własną kolekcję `M02-006_ASSET` i przywraca poprzedni stan sceny. Nie usuwa cudzych obiektów.
 
 ```bash
 python3 Tools/ModelFactory/M02/M02-006/generate_m02_006.py --self-test
@@ -30,4 +30,4 @@ Self-test kontroluje każdą bryłę pod względem niezerowych trójkątów, zam
 
 **Claim:** `Docs/ModelFactory/claims/M02-006.json` na `feature/rrl-model-factory-queue-v1`; commit CREATE `45b7b0ecd9972fab008402ac87f73f512616bc3c`.
 
-**Import Unity:** `generated/M02-006_animated.fbx` jest przeznaczony do bezpośredniego importu do Unity 6. Po imporcie należy zweryfikować oś obrotu +X, pivot, skalę 1 m i zachowanie animacji w prefabie. Sam eksport FBX nie jest potwierdzeniem poprawnego importu w Unity.
+**Import Unity:** OBJ może zostać zaimportowany jako model statyczny. Animowany GLB wymaga zgodnego importera glTF, np. glTFast. FBX jest opcjonalny i może być niedostępny w Blenderze 5.0.1 z Ubuntu, którego operator w tym środowisku nie udostępnia bezpiecznego eksportu wybranych obiektów. Jeśli powstanie `generated/M02-006_animated.fbx`, można spróbować natywnego importu Unity 6; jego poprawność pozostaje niezweryfikowana. Po imporcie trzeba sprawdzić oś +X, pivot, skalę 1 m i animację.
