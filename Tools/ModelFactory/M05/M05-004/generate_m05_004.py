@@ -246,9 +246,20 @@ def build_blender(out,meshes):
     # Idempotent cleanup restricted to this model's own collection.
     old=bpy.data.collections.get(ID+"_ASSET")
     if old:
+        # Removing objects alone leaves orphan Mesh datablocks and Actions.
+        # Clear only datablocks owned by this model; never purge artist data.
+        old_meshes=[ob.data for ob in tuple(old.objects) if ob.type=="MESH"]
+        old_actions=[ob.animation_data.action for ob in tuple(old.objects)
+                     if ob.animation_data and ob.animation_data.action]
         for ob in tuple(old.objects):
             bpy.data.objects.remove(ob,do_unlink=True)
         bpy.data.collections.remove(old)
+        for mesh in old_meshes:
+            if mesh.users==0:
+                bpy.data.meshes.remove(mesh)
+        for action in old_actions:
+            if action.users==0:
+                bpy.data.actions.remove(action)
     col=bpy.data.collections.new(ID+"_ASSET")
     bpy.context.scene.collection.children.link(col)
     mats={}
