@@ -86,7 +86,11 @@ namespace B01.MAPGEN001
                 if (Math.Abs(iz) == 2 && Math.Abs(ix) == 2) continue; // spawn shoulders
                 if (rng.Next(100) > config.ObstacleDensity) continue;
                 float scale = 1.8f + (float)rng.NextDouble() * (1.1f + config.Difficulty * .6f);
-                Add(p, MapElementKind.Cover, ix * 10f, scale * .5f, iz * 10f, scale, scale, scale);
+                float jitter = .45f + config.Difficulty * .8f;
+                float dx = ((float)rng.NextDouble() * 2f - 1f) * jitter;
+                float dz = ((float)rng.NextDouble() * 2f - 1f) * jitter;
+                Add(p, MapElementKind.Cover, ix * 10f + dx, scale * .5f,
+                    iz * 10f + dz, scale, scale, scale);
             }
         }
 
@@ -120,8 +124,9 @@ namespace B01.MAPGEN001
                 if (i == 1 || (i > 1 && rng.Next(100) < config.ObstacleDensity / 2))
                 {
                     // Optional physical ramp in the opposite side lane; centre stays passable.
+                    float pitch = 4f + config.Difficulty * 4f;
                     Add(p, MapElementKind.Ramp, cx[i] - side * width * .30f,
-                        .32f, z - 1f, 3f, .45f, 7f, 7f);
+                        .32f, z - 1f, 3f, .45f, 7f, pitch);
                 }
             }
         }
