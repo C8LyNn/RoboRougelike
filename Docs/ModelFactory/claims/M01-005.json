@@ -1,8 +1,17 @@
 {
   "id": "M01-005",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T14:51:43.997Z",
   "model": "Boczny miotacz tarcz",
-  "run": "2026-10-24T14Z"
+  "run": "2026-10-24T14Z",
+  "branch": "feature/rrl-model-m01-005-side-disc-launcher",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/76",
+  "source_commit": "fd00cea931e528040b43a161f8ca9b4afad09bd0",
+  "asset_paths": [
+    "Tools/ModelFactory/M01/M01-005/M01-005.obj",
+    "Tools/ModelFactory/M01/M01-005/M01-005.mtl",
+    "Tools/ModelFactory/M01/M01-005/generate_m01_005.py"
+  ],
+  "qa": "STATIC_GEOMETRY_PASS__BLENDER_CI_RUNNING__UNITY_NOT_RUN"
 }
