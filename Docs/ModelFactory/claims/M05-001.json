@@ -1,0 +1,9 @@
+{
+  "id": "M05-001",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T10:49:43.249Z",
+  "model": "Radar obrotowy talerzowy",
+  "run": "2026-10-24T10:49Z",
+  "catalog_branch": "feature/rrl-model-factory-queue-v1"
+}
