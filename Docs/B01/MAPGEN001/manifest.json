@@ -1,0 +1,18 @@
+{
+  "id": "B01-MAPGEN-001",
+  "revision": "R1",
+  "status": "SOURCE_CANDIDATE_QA_PENDING",
+  "recipient": "GPT_OSS",
+  "repo": "C8LyNn/RoboRougelike",
+  "branch": "feature/b01-mapgen001-r1-isolated",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "code_scope": "Assets/B01Packages/MAPGEN001/**",
+  "docs_scope": "Docs/B01/MAPGEN001/**",
+  "source_dependency": "UnityEngine only; no MAP-R6/W8 runtime dependency",
+  "g0": "SOURCE_PATHS_ISOLATED_AWAIT_SCOPE_ACK",
+  "g1": "UNITY_NOT_RUN",
+  "g2": "INDEPENDENT_QA_NOT_RUN",
+  "codex_target_sha": null,
+  "gpt_oss_target_sha": null,
+  "merged": false
+}
