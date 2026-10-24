@@ -1,0 +1,50 @@
+name: MODEL-05 M05-006 directional barrier QA
+on:
+  push:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-006/**'
+      - '.github/workflows/ci-model-m05-006.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-006/**'
+      - '.github/workflows/ci-model-m05-006.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile and validate manifold topology, materials, and hinge sweep
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-006/generate_m05_006.py
+          python3 Tools/ModelFactory/M05/M05-006/generate_m05_006.py --self-test
+      - name: Regenerate OBJ and MTL and verify source parity
+        run: |
+          python3 Tools/ModelFactory/M05/M05-006/generate_m05_006.py --output-dir /tmp/m05-006
+          test -s /tmp/m05-006/M05-006.obj
+          test -s /tmp/m05-006/M05-006.mtl
+          cmp Tools/ModelFactory/M05/M05-006/M05-006.obj /tmp/m05-006/M05-006.obj
+          cmp Tools/ModelFactory/M05/M05-006/M05-006.mtl /tmp/m05-006/M05-006.mtl
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/m05-006')
+          data=json.loads((p/'M05-006.run-report.json').read_text())
+          spec=json.loads(Path('Tools/ModelFactory/M05/M05-006/geometry.json').read_text())
+          assert data['parts']==len(spec['parts'])==73
+          assert data['materials']==len(spec['materials'])==7
+          assert data['manifold_edges']=='PASS'
+          assert data['positive_winding']=='PASS'
+          assert data['swept_collision_qa']=='PASS'
+          assert data['sweep_samples']==31
+          assert data['minimum_bearing_radial_gap_m']>=.017
+          assert data['blender_execution']=='NOT_RUN'
+          assert data['unity_import']=='NOT_RUN'
+          print('M05-006 STATIC QA PASS',data)
+          PY
