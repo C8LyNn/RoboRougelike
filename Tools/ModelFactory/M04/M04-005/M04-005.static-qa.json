@@ -1,0 +1,46 @@
+{
+  "id": "M04-005",
+  "status": "STATIC_QA_PASS",
+  "parts": 62,
+  "fixed_parts": 54,
+  "moving_parts": 8,
+  "vertices": 3792,
+  "polygons": 3700,
+  "triangles": 7400,
+  "materials": [
+    "graphite",
+    "titanium",
+    "ceramic",
+    "copper",
+    "rubber",
+    "ion_cyan",
+    "hot_amber",
+    "warning_yellow"
+  ],
+  "closed_manifold_parts": 62,
+  "negative_volume_parts": 0,
+  "animation_degrees": [
+    0,
+    20,
+    0
+  ],
+  "animation_keyframes": [
+    1,
+    25,
+    49
+  ],
+  "swept_samples": 21,
+  "fixed_moving_plane_checks": 9072,
+  "minimum_flap_to_fixed_y_gap_m": 0.015654,
+  "minimum_between_chambers_x_gap_m": 0.163976,
+  "sector_gap_degrees": 22,
+  "mount_origin_m": [
+    0,
+    0,
+    0
+  ],
+  "blender": "NOT_RUN",
+  "animated_glb": "NOT_RUN",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN"
+}

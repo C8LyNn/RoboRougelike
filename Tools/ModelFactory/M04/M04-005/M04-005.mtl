@@ -1,0 +1,65 @@
+# M04-005 material definitions
+newmtl graphite
+Ka 0.04 0.04 0.04
+Kd 0.07500 0.10200 0.13500
+Ks 0.30 0.30 0.30
+Ns 98.0
+d 1.0
+illum 2
+
+newmtl titanium
+Ka 0.04 0.04 0.04
+Kd 0.48000 0.54000 0.59000
+Ks 0.30 0.30 0.30
+Ns 93.0
+d 1.0
+illum 2
+
+newmtl ceramic
+Ka 0.04 0.04 0.04
+Kd 0.82000 0.75000 0.62000
+Ks 0.30 0.30 0.30
+Ns 36.0
+d 1.0
+illum 2
+
+newmtl copper
+Ka 0.04 0.04 0.04
+Kd 0.71000 0.32000 0.12000
+Ks 0.30 0.30 0.30
+Ns 106.0
+d 1.0
+illum 2
+
+newmtl rubber
+Ka 0.04 0.04 0.04
+Kd 0.03500 0.04400 0.05400
+Ks 0.30 0.30 0.30
+Ns 22.0
+d 1.0
+illum 2
+
+newmtl ion_cyan
+Ka 0.04 0.04 0.04
+Kd 0.02000 0.40000 0.74000
+Ks 0.30 0.30 0.30
+Ns 28.0
+d 1.0
+illum 2
+
+newmtl hot_amber
+Ka 0.04 0.04 0.04
+Kd 0.96000 0.32000 0.05000
+Ks 0.30 0.30 0.30
+Ns 33.0
+d 1.0
+illum 2
+
+newmtl warning_yellow
+Ka 0.04 0.04 0.04
+Kd 0.91000 0.68000 0.08000
+Ks 0.30 0.30 0.30
+Ns 43.0
+d 1.0
+illum 2
+

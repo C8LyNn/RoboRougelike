@@ -1,0 +1,129 @@
+{
+  "id": "M04-005",
+  "model": "Dopalacz dwukomorowy",
+  "description": "Rear-frame dual afterburner with independently hinged variable-area exhaust petals and two luminous throats; purely visual.",
+  "units": "meters",
+  "axes": "Blender Z up, +Y forward, exhaust -Y; glTF exports Y up",
+  "mount_origin": [
+    0,
+    0,
+    0
+  ],
+  "mount_face": "Rear vehicle frame, local Y=0 plane",
+  "chamber_centers_x": [
+    -0.45,
+    0.45
+  ],
+  "chamber_center_z": 0,
+  "petals_per_chamber": 4,
+  "petal_width_degrees": 68,
+  "petal_hinge_radius_m": 0.255,
+  "petal_hinge_y_m": -0.827,
+  "petal_angle_degrees": [
+    0,
+    20,
+    0
+  ],
+  "keyframes": [
+    1,
+    25,
+    49
+  ],
+  "materials": {
+    "graphite": {
+      "color": [
+        0.075,
+        0.102,
+        0.135,
+        1
+      ],
+      "metallic": 0.78,
+      "roughness": 0.34
+    },
+    "titanium": {
+      "color": [
+        0.48,
+        0.54,
+        0.59,
+        1
+      ],
+      "metallic": 0.73,
+      "roughness": 0.28
+    },
+    "ceramic": {
+      "color": [
+        0.82,
+        0.75,
+        0.62,
+        1
+      ],
+      "metallic": 0.16,
+      "roughness": 0.47
+    },
+    "copper": {
+      "color": [
+        0.71,
+        0.32,
+        0.12,
+        1
+      ],
+      "metallic": 0.86,
+      "roughness": 0.27
+    },
+    "rubber": {
+      "color": [
+        0.035,
+        0.044,
+        0.054,
+        1
+      ],
+      "metallic": 0.02,
+      "roughness": 0.83
+    },
+    "ion_cyan": {
+      "color": [
+        0.02,
+        0.4,
+        0.74,
+        1
+      ],
+      "metallic": 0.08,
+      "roughness": 0.24,
+      "emission": [
+        0.015,
+        0.48,
+        1,
+        1
+      ],
+      "emission_strength": 3.2
+    },
+    "hot_amber": {
+      "color": [
+        0.96,
+        0.32,
+        0.05,
+        1
+      ],
+      "metallic": 0.13,
+      "roughness": 0.29,
+      "emission": [
+        1,
+        0.18,
+        0.008,
+        1
+      ],
+      "emission_strength": 2.4
+    },
+    "warning_yellow": {
+      "color": [
+        0.91,
+        0.68,
+        0.08,
+        1
+      ],
+      "metallic": 0.23,
+      "roughness": 0.42
+    }
+  },
+  "notes": "Visual only; no gameplay, thrust, physics, particle effects or Unity integration. Each exhaust petal pivots about a tangential hinge axis and opens radially outward."
+}
