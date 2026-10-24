@@ -463,7 +463,7 @@ def blender_export(parts,out,report):
             assert (actual-Vector(bottom)).length<1e-5, (
                 "Blender evaluated rig endpoint mismatch",sample,ob.name,
                 tuple(actual),bottom)
-        assert abs(spring.scale.z-L)<1e-8
+        assert abs(spring.scale.z-L)<1e-6  # Blender stores scale as float32
     scene.frame_start=1;scene.frame_end=97;scene.render.fps=24
     scene.frame_set(1)
     out.mkdir(parents=True,exist_ok=True)
