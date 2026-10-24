@@ -26,9 +26,17 @@ def reset():
     for obj in tuple(bpy.data.objects):
         if obj.name.startswith(PREFIX):
             bpy.data.objects.remove(obj, do_unlink=True)
+    # Removing objects does not remove old orphaned mesh datablocks or Actions.
+    # Delete only unused resources belonging to THIS model after deleting objects.
+    for mesh in tuple(bpy.data.meshes):
+        if mesh.name.startswith(PREFIX) and mesh.users == 0:
+            bpy.data.meshes.remove(mesh)
+    for action in tuple(bpy.data.actions):
+        if action.name.startswith(PREFIX) and action.users == 0:
+            bpy.data.actions.remove(action)
     for mat in tuple(bpy.data.materials):
-        if mat.name.startswith(PREFIX):
-            bpy.data.materials.remove(mat, do_unlink=True)
+        if mat.name.startswith(PREFIX) and mat.users == 0:
+            bpy.data.materials.remove(mat)
 
 
 def material(label, rgba, metallic=0.0, roughness=0.5, emission=0.0):
@@ -264,9 +272,11 @@ def build():
 def animate(yaw,tilt):
     yaw.rotation_mode = "XYZ"
     tilt.rotation_mode = "XYZ"
-    for frame,angle in ((1,0),(121,TAU)):
-        yaw.rotation_euler[2]=angle
-        yaw.keyframe_insert(data_path="rotation_euler",index=2,frame=frame)
+    # A full 360-degree turn needs intermediate keys after quaternion export;
+    # endpoint-only 0 -> 360 can otherwise become an identity orientation.
+    for frame in range(1, 122, 10):
+        yaw.rotation_euler[2] = TAU * (frame - 1) / 120.0
+        yaw.keyframe_insert(data_path="rotation_euler", index=2, frame=frame)
     for frame,angle in ((1,0),(31,math.radians(12)),
                         (61,0),(91,math.radians(-12)),(121,0)):
         tilt.rotation_euler[0]=angle
@@ -290,6 +300,7 @@ def validate(root,yaw,tilt):
     materials={m.name for obj in meshes for m in obj.data.materials if m}
     assert len(materials)>=3, "At least three materials required"
     assert yaw.animation_data and tilt.animation_data, "Yaw/tilt animation missing"
+    assert yaw.parent == root and tilt.parent == yaw, "Incorrect radar pivot hierarchy"
     assert root.location.length < 1e-8, "Mount origin must be world origin"
     for obj in meshes:
         assert len(obj.data.vertices)>0 and len(obj.data.polygons)>0, obj.name
