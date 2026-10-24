@@ -1,0 +1,65 @@
+name: M04-009 Three-Axis Gyroscope QA
+on:
+  push:
+    branches: [feature/rrl-model-m04-009-three-axis-gyroscope]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-009/**'
+      - '.github/workflows/ci-m04-009.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-009/**'
+      - '.github/workflows/ci-m04-009.yml'
+  workflow_dispatch:
+concurrency:
+  group: m04-009-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify generated geometry, topology and determinism
+        run: python3 Tools/ModelFactory/M04/M04-009/qa_m04_009.py
+      - name: Generate actual OBJ and MTL
+        run: |
+          python3 Tools/ModelFactory/M04/M04-009/generate_m04_009.py \
+            --static-obj --out build/M04-009
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M04-009-OBJ-MTL-and-QA
+          path: build/M04-009/
+          if-no-files-found: error
+          retention-days: 30
+  blender-animation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install actual Blender with numpy for glTF
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -2
+      - name: Execute bpy model generator and animated GLB export
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python \
+            Tools/ModelFactory/M04/M04-009/generate_m04_009.py -- \
+            --out build/M04-009
+      - name: Independently inspect GLB nodes and three rotation channels
+        run: |
+          python3 Tools/ModelFactory/M04/M04-009/qa_m04_009.py \
+            --check-glb build/M04-009/M04-009_gyroscope.glb
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M04-009-Blender-and-animated-GLB
+          path: build/M04-009/
+          if-no-files-found: error
+          retention-days: 30
