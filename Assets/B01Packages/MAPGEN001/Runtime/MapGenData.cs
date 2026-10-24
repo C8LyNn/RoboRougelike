@@ -24,8 +24,9 @@ namespace B01.MAPGEN001
         public float Width;
         public float Length;
         public float MinTurnRadius;
-        public static MapVehicleProfile Light => new MapVehicleProfile { Width = 2.1f, Length = 3.2f, MinTurnRadius = 3f };
-        public static MapVehicleProfile Heavy => new MapVehicleProfile { Width = 4.5f, Length = 5.8f, MinTurnRadius = 6f };
+        public float MaxSlopeDegrees; // 0 = legacy default (12 degrees)
+        public static MapVehicleProfile Light => new MapVehicleProfile { Width = 2.1f, Length = 3.2f, MinTurnRadius = 3f, MaxSlopeDegrees = 14f };
+        public static MapVehicleProfile Heavy => new MapVehicleProfile { Width = 4.5f, Length = 5.8f, MinTurnRadius = 6f, MaxSlopeDegrees = 10f };
     }
 
     public struct MapElement

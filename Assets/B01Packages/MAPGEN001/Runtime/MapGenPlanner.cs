@@ -18,10 +18,15 @@ namespace B01.MAPGEN001
             var rng = new System.Random(unchecked(seed * 486187739 + (int)recipe * 16777619 + 101));
             if (recipe == MapRecipe.CombatArena) MakeArena(plan, rng, config);
             else MakeCourse(plan, rng, config);
+            // Reject unusable generated geometry before building any scene objects.
+            var route = MapGenRouteValidator.Validate(plan, vehicle);
+            if (!route.Passed)
+                throw new ArgumentException("IMPOSSIBLE_GENERATED_ROUTE: " + route.Code);
             plan.GeometryHash = HashLayout(plan);
             plan.Diagnostics = "MAPGEN001/v1 recipe=" + recipe + " seed=" + seed
                 + " geometry=" + plan.GeometryHash + " elements=" + plan.Elements.Count
-                + " guaranteed_clearance=" + plan.GuaranteedClearanceWidth.ToString("F2", CultureInfo.InvariantCulture);
+                + " guaranteed_clearance=" + plan.GuaranteedClearanceWidth.ToString("F2", CultureInfo.InvariantCulture)
+                + " route=" + route.ToString();
             return plan;
         }
 
@@ -81,7 +86,11 @@ namespace B01.MAPGEN001
                 if (Math.Abs(iz) == 2 && Math.Abs(ix) == 2) continue; // spawn shoulders
                 if (rng.Next(100) > config.ObstacleDensity) continue;
                 float scale = 1.8f + (float)rng.NextDouble() * (1.1f + config.Difficulty * .6f);
-                Add(p, MapElementKind.Cover, ix * 10f, scale * .5f, iz * 10f, scale, scale, scale);
+                float jitter = .45f + config.Difficulty * .8f;
+                float dx = ((float)rng.NextDouble() * 2f - 1f) * jitter;
+                float dz = ((float)rng.NextDouble() * 2f - 1f) * jitter;
+                Add(p, MapElementKind.Cover, ix * 10f + dx, scale * .5f,
+                    iz * 10f + dz, scale, scale, scale);
             }
         }
 
@@ -89,12 +98,17 @@ namespace B01.MAPGEN001
         {
             float width = config.LaneWidth;
             float[] cx = new float[config.Segments];
+            // Narrow 10m lanes cannot absorb the same lateral wander as 30m
+            // lanes. Bound each segment's shift by lateral free-space.
+            float lateralStep = Mathf.Min(.35f + config.Difficulty * .8f,
+                .8f + (width - 10f) * .05f);
             for (int i = 1; i < cx.Length; i++)
-                cx[i] = cx[i - 1] + (rng.Next(-2, 3) * .55f);
+                cx[i] = cx[i - 1] + rng.Next(-2, 3) * lateralStep;
             float maxX = cx.Max(x => Mathf.Abs(x));
             p.Bounds = new Bounds(new Vector3(0, 0, config.Segments * 8),
                 new Vector3(2 * (maxX + width * .5f + 3), 8, config.Segments * 16f + 5));
-            p.Start = new Vector3(cx[0], 1.25f, 2);
+            // Start is >= 3.25m from the edge to support the heavy vehicle's full footprint.
+            p.Start = new Vector3(cx[0], 1.25f, 5f);
             p.Finish = new Vector3(cx[cx.Length - 1], 1.25f, config.Segments * 16f - 3);
             p.GuaranteedClearanceWidth = width * .60f - 3f; // full free width between side ramps
             for (int i = 0; i < cx.Length; i++)
@@ -114,8 +128,13 @@ namespace B01.MAPGEN001
                 if (i == 1 || (i > 1 && rng.Next(100) < config.ObstacleDensity / 2))
                 {
                     // Optional physical ramp in the opposite side lane; centre stays passable.
-                    Add(p, MapElementKind.Ramp, cx[i] - side * width * .30f,
-                        .32f, z - 1f, 3f, .45f, 7f, 7f);
+                    float pitch = 4f + config.Difficulty * 4f;
+                    // Put ramp in the outer side lane, with a small gap to
+                    // boundary. This protects the Light 10m-lane route even
+                    // when its centreline changes between segments.
+                    float rampLateral = width * .5f - 1.55f;
+                    Add(p, MapElementKind.Ramp, cx[i] - side * rampLateral,
+                        .32f, z - 1f, 3f, .45f, 7f, pitch);
                 }
             }
         }

@@ -8,6 +8,9 @@ namespace B01.MAPGEN001
     {
         public MapResult Current { get; private set; }
 
+        public MapResult Regenerate(MapRecipe recipe, int seed, MapGenConfig config, MapVehicleProfile vehicle) =>
+            Generate(recipe, seed, config, vehicle);
+
         public MapResult Generate(MapRecipe recipe, int seed, MapGenConfig config, MapVehicleProfile vehicle)
         {
             // Validate and plan BEFORE changing an existing generated level.
@@ -37,13 +40,6 @@ namespace B01.MAPGEN001
                         renderer.SetPropertyBlock(block);
                     }
                 }
-            }
-            catch
-            {
-                root.SetActive(false);
-                Release(root);
-                throw;
-            }
             // Public points are WORLD coordinates, even if the opt-in host is offset or rotated.
             Physics.SyncTransforms();
             var spawns = new Vector3[p.EnemySpawns.Count];
@@ -51,6 +47,7 @@ namespace B01.MAPGEN001
             for (int i = 0; i < spawns.Length; i++) spawns[i] = root.transform.TransformPoint(p.EnemySpawns[i]);
             for (int i = 0; i < checkpoints.Length; i++) checkpoints[i] = root.transform.TransformPoint(p.Checkpoints[i]);
             var colliders = root.GetComponentsInChildren<Collider>();
+            if (colliders.Length == 0) throw new InvalidOperationException("MAPGEN001_NO_COLLIDERS");
             Bounds worldBounds = colliders[0].bounds;
             for (int i = 1; i < colliders.Length; i++) worldBounds.Encapsulate(colliders[i].bounds);
             var next = new MapResult {
@@ -62,10 +59,19 @@ namespace B01.MAPGEN001
                 Bounds = worldBounds, GeometryHash = p.GeometryHash, Diagnostics = p.Diagnostics
             };
             // Fully deactivate old collision geometry before postponing Destroy until end of frame.
+            // Finalize only after all geometry, bounds and metadata succeeded.
+            // No engine calls after publishing Current: avoid a partial commit.
             Clear();
             Current = next;
-            Physics.SyncTransforms();
             return Current;
+            }
+            catch
+            {
+                // Any failure before commit must preserve the previous scene.
+                root.SetActive(false);
+                Release(root);
+                throw;
+            }
         }
 
         public void Clear()

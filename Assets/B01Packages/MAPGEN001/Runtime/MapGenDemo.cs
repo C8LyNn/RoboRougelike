@@ -34,6 +34,10 @@ namespace B01.MAPGEN001
                 actor.transform.localScale = new Vector3(profile.Width, 1f, profile.Length);
                 rover = actor.AddComponent<Rigidbody>();
                 rover.mass = heavyVehicle ? 500f : 120f;
+                // Graybox driving: yaw only, with damping to avoid endless spin.
+                rover.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                rover.linearDamping = .35f;
+                rover.angularDamping = 2f;
                 rover.interpolation = RigidbodyInterpolation.Interpolate;
                 rover.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 if (view == null)
@@ -53,6 +57,16 @@ namespace B01.MAPGEN001
                 notice = result.Diagnostics + " / demo only (no challenge win state)";
             }
             catch (System.Exception ex) { notice = "MAPGEN001 FAILED: " + ex.Message; Debug.LogException(ex); }
+        }
+
+        private void LateUpdate()
+        {
+            if (view == null || rover == null) return;
+            // Do not lose the physical rover off-screen on long generated courses.
+            Vector3 follow = rover.position + new Vector3(0f, 28f, -22f);
+            view.transform.position = Vector3.Lerp(view.transform.position, follow,
+                1f - Mathf.Exp(-5f * Time.deltaTime));
+            view.transform.LookAt(rover.position + new Vector3(0f, 0f, 13f));
         }
 
         private void FixedUpdate()
