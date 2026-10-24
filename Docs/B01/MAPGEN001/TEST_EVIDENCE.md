@@ -19,3 +19,6 @@ After a future actual execution append new dated evidence, exact SHA, command, e
 - Manual 3 seeds x 2 recipes x 2 vehicle profiles: **NOT_RUN**; screenshot/video evidence: NONE.
 - B01-60 independent R3 red/green review: **PENDING**. B01-40 integration/package gate: **PENDING**. G2 READY_FOR_GPT_OSS: **HOLD**.
 - Source test definitions are not results; preserve previous R1/R2 NOT_RUN reports unchanged.
+
+### R3.1 producer note
+- Additional C# correction and 600-case Unity EditMode source test were committed after the initial R3 static report. Native test execution remains **NOT_RUN**. The per-source SHA256 manifest was refreshed after this source edit; no ZIP/Unity output was generated.
