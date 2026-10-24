@@ -52,6 +52,27 @@ namespace B01.MAPGEN001.Tests
             finally { Object.Destroy(rover); Object.Destroy(host); }
         }
 
+        [UnityTest] public IEnumerator OffsetAndRotatedHostReturnsWorldSpaceMetadata()
+        {
+            var host = new GameObject("MapGenOffsetHost");
+            host.transform.position = new Vector3(21f, 3f, -17f);
+            host.transform.rotation = Quaternion.Euler(0f, 37f, 0f);
+            var gen = host.AddComponent<MapGenBuilder>();
+            try
+            {
+                var blueprint = MapGenPlanner.Plan(MapRecipe.ObstacleCourse, 92, MapGenConfig.Default, MapVehicleProfile.Light);
+                var result = gen.Generate(MapRecipe.ObstacleCourse, 92, MapGenConfig.Default, MapVehicleProfile.Light);
+                Assert.Less(Vector3.Distance(result.Start, host.transform.TransformPoint(blueprint.Start)), .001f);
+                Assert.Less(Vector3.Distance(result.Finish, host.transform.TransformPoint(blueprint.Finish)), .001f);
+                Assert.AreEqual(blueprint.Checkpoints.Count, result.CheckpointDescriptors.Length);
+                Assert.Less(Vector3.Distance(result.CheckpointDescriptors[0],
+                    host.transform.TransformPoint(blueprint.Checkpoints[0])), .001f);
+                Assert.IsTrue(result.Bounds.Contains(result.Start));
+                yield return null;
+            }
+            finally { Object.Destroy(host); }
+        }
+
         [UnityTest] public IEnumerator RejectedInputPreservesPreviousLiveLevel()
         {
             var host = new GameObject("MapGenAtomicityTest");
