@@ -41,8 +41,15 @@ def clear_own_collection():
     MATS={}
     old=bpy.data.collections.get(COLLECTION)
     if old:
+        # Removing Blender objects does NOT necessarily remove their mesh
+        # datablocks. Orphan meshes keep material users >0, causing a
+        # hidden material leak across repeated procedural rebuilds.
+        owned_mesh_data=[ob.data for ob in old.objects if ob.type=="MESH"]
         for ob in list(old.objects):
             bpy.data.objects.remove(ob,do_unlink=True)
+        for mesh in owned_mesh_data:
+            if mesh.users==0:
+                bpy.data.meshes.remove(mesh)
         bpy.data.collections.remove(old)
     # Materials from a previous invocation are removed only if orphaned.
     for mat in list(bpy.data.materials):
