@@ -21,6 +21,10 @@ NODE_SIZE = 0.150
 BEAM_INNER = 0.350
 BEAM_THICKNESS = 0.075
 BRACE_THICKNESS = 0.046
+PORT_PAD_SIDE = 0.200
+PORT_PAD_DEPTH = 0.060
+PORT_PAD_CENTRE = 0.470
+PORT_SUPPORT_THICKNESS = 0.046
 EXPORT_DIR = Path(os.environ.get(
     "RRL_MODEL_OUTPUT", str(Path(__file__).resolve().parent / "export")
 )).expanduser().resolve()
@@ -125,6 +129,8 @@ def snap_empty(name, position, normal, coll, root):
     obj.empty_display_size = 0.09
     obj["rrl_socket"] = "FRAME_GRID_1M"
     obj["rrl_outward"] = list(normal)
+    obj["rrl_contact_plate"] = "MOUNT_PAD_" + name.removeprefix("SNAP_")
+    obj["rrl_port_type"] = "physical_face_pad_1m_grid"
     return obj
 
 
@@ -213,8 +219,37 @@ def create_geometry(coll, root):
             copper, coll, root, bevel_width=0.003
         )
 
-    # Logical snap transforms; no solid socket geometry at the face centres
-    # (the diagonal bracing occupies these positions).
+    # All six grid-centre ports must have *real*, flush outward-facing
+    # contact plates. The original SNAP empties floated above hollow faces.
+    # Face plates overlap vertical diagonal bracing at their inner end.
+    # Top/bottom braces below tie their plates into the structural perimeter.
+    pad_specs = [
+        ("PX", ( PORT_PAD_CENTRE, 0, 0), (PORT_PAD_DEPTH, PORT_PAD_SIDE, PORT_PAD_SIDE)),
+        ("NX", (-PORT_PAD_CENTRE, 0, 0), (PORT_PAD_DEPTH, PORT_PAD_SIDE, PORT_PAD_SIDE)),
+        ("PY", (0,  PORT_PAD_CENTRE, 0), (PORT_PAD_SIDE, PORT_PAD_DEPTH, PORT_PAD_SIDE)),
+        ("NY", (0, -PORT_PAD_CENTRE, 0), (PORT_PAD_SIDE, PORT_PAD_DEPTH, PORT_PAD_SIDE)),
+        ("PZ", (0, 0,  PORT_PAD_CENTRE), (PORT_PAD_SIDE, PORT_PAD_SIDE, PORT_PAD_DEPTH)),
+        ("NZ", (0, 0, -PORT_PAD_CENTRE), (PORT_PAD_SIDE, PORT_PAD_SIDE, PORT_PAD_DEPTH)),
+    ]
+    for label, pos, dims in pad_specs:
+        bevelled_box("MOUNT_PAD_" + label, pos, dims,
+                      titanium, coll, root, bevel_width=0.006)
+    # Four stiffener ribs per top/bottom port. They intersect the perimeter
+    # rails and pad intentionally; none protrude beyond the 1 m bounding cube.
+    for sign, label in ((1, "PZ"), (-1, "NZ")):
+        centre = (0, 0, sign * CORNER)
+        for direction, end in (
+            ("PX", ( CORNER, 0, sign * CORNER)),
+            ("NX", (-CORNER, 0, sign * CORNER)),
+            ("PY", (0,  CORNER, sign * CORNER)),
+            ("NY", (0, -CORNER, sign * CORNER)),
+        ):
+            strut("MOUNT_RIB_" + label + "_" + direction,
+                  centre, end, PORT_SUPPORT_THICKNESS, steel,
+                  coll, root, bevel_width=0.003)
+
+    # All six logical SNAP transforms align to the actual contact pad outer
+    # planes at +/- 0.5 m, instead of unused empty space.
     for label, pos, normal in [
         ("PX", ( 0.5, 0, 0), ( 1, 0, 0)),
         ("NX", (-0.5, 0, 0), (-1, 0, 0)),
@@ -235,7 +270,23 @@ def validate_geometry(coll):
     assert len([n for n in names if n.startswith("DIAGONAL_")]) == 4
     assert len([n for n in names if n.startswith("SOCKET_")]) == 24
     assert len([n for n in names if n.startswith("STATUS_")]) == 4
+    assert len([n for n in names if n.startswith("MOUNT_PAD_")]) == 6
+    assert len([n for n in names if n.startswith("MOUNT_RIB_")]) == 8
     assert len([obj for obj in coll.objects if obj.name.startswith("SNAP_")]) == 6
+    # Verify each SNAP references a physical pad flush with its outward
+    # face; use world bounds rather than trusting the model manifest alone.
+    for snap in (obj for obj in coll.objects if obj.name.startswith("SNAP_")):
+        pad = coll.objects.get(snap["rrl_contact_plate"])
+        assert pad is not None, "Missing physical contact plate: " + snap.name
+        normal = tuple(snap["rrl_outward"])
+        axis = next(i for i, v in enumerate(normal) if v)
+        actual = [pad.matrix_world @ Vector(v) for v in pad.bound_box]
+        outward_surface = (max if normal[axis] > 0 else min)(
+            p[axis] for p in actual
+        )
+        assert abs(outward_surface - snap.location[axis]) < 1e-5, (
+            snap.name, outward_surface, snap.location[axis]
+        )
     used = {mat.name for obj in meshes for mat in obj.data.materials if mat}
     assert len(used) >= 3, "At least 3 material slots must be used"
     bounds = [[], [], []]
@@ -255,11 +306,13 @@ def validate_geometry(coll):
         "corner_nodes": 8,
         "straight_beams": 12,
         "diagonal_braces": 4,
+        "physical_mount_pads": 6,
+        "top_bottom_support_ribs": 8,
         "snap_points": 6,
         "materials_used": sorted(used),
         "pivot": [0, 0, 0],
         "movement": "none; rigid modular frame",
-        "intersections": "Only intentional brace-to-node seats and flush face decals",
+        "intersections": "Intentional brace-to-node, pad-to-brace, rib-to-rail contact and flush face decals",
         "export_qa": "Geometry checks executed in Blender; Unity import not tested"
     }
 

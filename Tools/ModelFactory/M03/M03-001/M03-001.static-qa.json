@@ -1,10 +1,10 @@
 {
   "asset_id": "M03-001",
   "kind": "static OBJ mesh generated without Blender",
-  "mesh_objects": 52,
-  "vertices": 1920,
-  "faces": 1352,
-  "mesh_components_watertight": 52,
+  "mesh_objects": 66,
+  "vertices": 2032,
+  "faces": 1436,
+  "mesh_components_watertight": 66,
   "watertight_edge_incidence_2": true,
   "dimensions_m": [
     1,
@@ -65,5 +65,13 @@
   "materials": 5,
   "blender_execution": "NOT RUN",
   "unity_import": "NOT RUN",
-  "note": "Braces seated in nodes and face discs recessed intentionally; OBJ is static preview, bpy script can export FBX with SNAP empties."
+  "note": "OBJ reflects 6 new structural mount pads and 8 additional support ribs. Braces intentionally overlap pads by ~8 mm; Z mounting ribs intentionally overlap plate and frame rails. bpy Blender runtime and Unity import are NOT RUN.",
+  "physical_mount_pads": 6,
+  "top_bottom_support_ribs": 8,
+  "snap_physical_contact": "six face-centre plates outer surface at +/- 0.5 m",
+  "top_bottom_mounting": "each Z port has four radial stiffening ribs linking plate to perimeter beams",
+  "geometry_revision": "M03-001_PHYSICAL_SNAP_PADS_V2",
+  "validation_status": "PASS_GITHUB_ACTIONS_STATIC",
+  "qa_evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40096135238",
+  "validation_scope": "OBJ 66 closed mesh components; 6 outward flush pads; 8 top/bottom ribs; exact 1m bounds; source AST; manifest parity"
 }
