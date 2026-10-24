@@ -234,6 +234,11 @@ def build():
                  .030,.210,"GraphiteArmor","DAMPER",sides=32))
     put(ring("DamperCopperCollar",(0,0,.214),(0,0,1),
              .017,.039,.016,"CopperHardware","DAMPER"))
+    # Two thin ceramic scale markings overlap the barrel by 1 mm rather
+    # than floating off its surface. The eighth PBR material is exported.
+    for k,z in enumerate((.071,.166)):
+        put(ring("CeramicServiceBand_%d"%k,(0,0,z),(0,0,1),
+                 .029,.034,.008,"CeramicWhite","DAMPER"))
     put(ring("DamperTopFlange",(0,0,.031),(0,0,1),
              .020,.047,.015,"SatinTitanium","DAMPER"))
     put(cylinder("ChromeTelescopingRod",(0,0,.140),(0,0,1),
@@ -444,6 +449,21 @@ def blender_export(parts,out,report):
             damper.keyframe_insert(data_path=prop,frame=frame_num)
         rod.location=(0.,0.,L-ROD_LENGTH)
         rod.keyframe_insert(data_path="location",frame=frame_num)
+    # Blender-side evaluation of the ACTUAL parent transforms at the
+    # neutral and two mechanical travel extremes, independent of source QA.
+    for sample in (1,25,49,73,97):
+        scene.frame_set(sample)
+        bpy.context.view_layer.update()
+        theta=MAX_SWING*math.sin(2*math.pi*(sample-1)/FRAMES)
+        bottom,_,L=suspension(theta)
+        for ob,point in ((arm,LOWER_LOCAL),
+                         (spring,(0.,0.,1.)),
+                         (rod,(0.,0.,ROD_LENGTH))):
+            actual=ob.matrix_world @ Vector(point)
+            assert (actual-Vector(bottom)).length<1e-5, (
+                "Blender evaluated rig endpoint mismatch",sample,ob.name,
+                tuple(actual),bottom)
+        assert abs(spring.scale.z-L)<1e-8
     scene.frame_start=1;scene.frame_end=97;scene.render.fps=24
     scene.frame_set(1)
     out.mkdir(parents=True,exist_ok=True)
@@ -458,7 +478,7 @@ def blender_export(parts,out,report):
     assert blend.stat().st_size>10000 and glb.stat().st_size>10000
     report.update(backend="blender-bpy",blender="PASS",
                   blend=blend.name,glb=glb.name,
-                  animation_frames=97,
+                  animation_frames=97,blender_evaluated_pose_checks=5,
                   animation_channels=["ARM rotation","SPRING pose+length",
                                       "DAMPER aim","ROD telescopic extension"])
     (out/(ID+"_qa.json")).write_text(json.dumps(report,indent=2)+"\n")
