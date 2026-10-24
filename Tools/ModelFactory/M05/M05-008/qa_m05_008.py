@@ -34,6 +34,11 @@ def run():
     assert first["min_front_separation_m"] > .004
     assert first["mount_pivot_m"] == [0,0,0]
     assert len(first["sockets"]) == 3
+    assert first["socket_outward_axes"] == {
+        "MOUNT_BOTTOM":[0.0,0.0,-1.0],
+        "SERVICE_FRONT":[0.0,-1.0,0.0],
+        "POWER_REAR":[0.0,1.0,0.0],
+    }
     with tempfile.TemporaryDirectory() as td:
         folder = Path(td)
         a,b = folder/"a",folder/"b"
