@@ -38,5 +38,10 @@
   "blender_export": "NOT RUN",
   "fbx": "NOT RUN",
   "glb": "NOT RUN",
-  "unity_import": "NOT RUN"
+  "unity_import": "NOT RUN",
+  "geometry_revision": "M05-003_V2_CONNECTED_IRIS",
+  "iris_petals_seated_in_hubs": 10,
+  "iris_index_markers_attached": 2,
+  "iris_hub_overlap_m": 0.003,
+  "iris_index_overlap_m": 0.002
 }
