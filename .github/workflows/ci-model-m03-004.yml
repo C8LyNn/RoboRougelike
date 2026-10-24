@@ -60,8 +60,9 @@ jobs:
       - name: Install Blender from Ubuntu repositories
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
+          blender --background --factory-startup --python-expr "import numpy; print('Blender numpy:', numpy.__version__)"
       - name: Execute actual bpy source and export GLB + editable blend
         run: |
           set -euo pipefail
