@@ -1,0 +1,69 @@
+name: MODEL-05 M05-010 Vertical Radiator Blender QA
+on:
+  push:
+    branches: [feature/rrl-model-m05-010-vertical-radiator]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-010/**'
+      - '.github/workflows/ci-model-m05-010.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  blender-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate Python syntax
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-010/generate_m05_010.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-010/qa_blender_m05_010.py
+      - name: Install Blender if missing
+        run: |
+          if ! command -v blender >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq blender
+          fi
+          # Ubuntu's blender 4.0.2 package does not require numpy, but its
+          # bundled glTF exporter imports numpy at runtime.
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3-numpy python3-pil
+          blender --version | head -n 2
+      - name: Two consecutive builds, moving-part clearance and real GLB validation
+        run: |
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-010/qa_blender_m05_010.py 2>&1 | tee /tmp/m05-010-bpy-qa.log
+          grep -q 'M05-010 QA PASS' /tmp/m05-010-bpy-qa.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-010-bpy-qa.log
+      - name: Produce deliverable Blender GLB FBX and QA manifest
+        run: |
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-010/generate_m05_010.py -- --out build/M05-010 2>&1 | tee /tmp/m05-010-production.log
+          grep -q 'M05-010 EXPORT' /tmp/m05-010-production.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-010-production.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("build/M05-010")
+          r=json.loads((p/"M05-010_qa.json").read_text())
+          assert r["id"]=="M05-010"
+          assert r["geometry_revision"]=="M05-010_V1_VERTICAL_RADIATOR"
+          assert r["materials"]==8 and r["lamellae"]==30
+          assert r["fan_blades"]==7 and r["animated_meshes"]==12
+          assert r["fan_radial_clearance_m"]>=.009
+          assert r["export_glb"]==r["export_fbx"]==r["save_blend"]=="PASS"
+          assert r["unity"]=="NOT RUN"
+          for ext in ("glb","fbx","blend"):
+              f=p/("M05-010_vertical_radiator."+ext)
+              assert f.exists() and f.stat().st_size>1024,(ext,f)
+          print("M05-010 production assets validated",r)
+          PY
+      - name: Upload actual Blender assets and QA manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-010-vertical-radiator-GLB-FBX-BLEND-QA
+          path: build/M05-010/
+          retention-days: 14
+          if-no-files-found: error
