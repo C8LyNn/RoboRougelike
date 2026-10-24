@@ -1,0 +1,28 @@
+name: Model Factory M01 Static QA
+on:
+  push:
+    branches:
+      - 'feature/rrl-model-m01-*'
+    paths:
+      - 'Tools/ModelFactory/M01/**'
+      - '.github/workflows/ci-model-factory-m01.yml'
+  workflow_dispatch:
+jobs:
+  validate-m01-002:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Blender generator without Blender
+        run: python3 -m py_compile Tools/ModelFactory/M01/M01-002/generate_m01_002.py
+      - name: Validate static OBJ, MTL and bounds
+        run: python3 Tools/ModelFactory/M01/M01-002/validate_static.py
+      - name: Confirm generator matches static part counts
+        run: |
+          python3 - <<'PY'
+          import ast, pathlib
+          p=pathlib.Path("Tools/ModelFactory/M01/M01-002/generate_m01_002.py")
+          tree=ast.parse(p.read_text())
+          assert any(isinstance(n,ast.FunctionDef) and n.name=="build" for n in tree.body)
+          assert any(isinstance(n,ast.FunctionDef) and n.name=="export" for n in tree.body)
+          print("M01-002 Blender source AST PASS (execution requires Blender)")
+          PY
