@@ -34,7 +34,7 @@ MATERIALS = {
     "Dark_Elastomer": ((.035,.042,.049,1), .05,.77,0),
     "Cyan_Magnetic": ((.025,.77,.96,1), .25,.25,3.2),
     "Amber_Status": ((1.0,.43,.07,1), .24,.33,2.0),
-    "Core_Glass": ((.16,.34,.44,1), .22,.18,.7),
+    "Core_Glass": ((.16,.34,.44,.38), .22,.18,.7),
 }
 BOX_FACES = [
     (0,3,2),(0,2,1),(4,5,6),(4,6,7),
@@ -336,6 +336,7 @@ def export_obj(parts,folder):
             "Ks %.4f %.4f %.4f"%(metal,metal,metal),
             "Ns %.3f"%((1-rough)*800),
             "Ke %.4f %.4f %.4f"%tuple(c*emission for c in rgba[:3]),
+            "d %.4f"%rgba[3],
             "illum 2",""))
     (folder/mtl).write_text("\n".join(mtl_lines),encoding="utf-8")
     lines=["# Rest-pose OBJ; animation and pivot empties only in GLB",
@@ -400,6 +401,13 @@ def blender_export(parts,folder):
                 bsdf.inputs["Emission"].default_value=rgba
             if "Emission Strength" in bsdf.inputs:
                 bsdf.inputs["Emission Strength"].default_value=emission
+        if rgba[3]<1:
+            bsdf.inputs["Alpha"].default_value=rgba[3]
+            # Blender 4.0 uses blend_method, later Blender versions may
+            # replace this setting. Do not fail if the enum differs.
+            if hasattr(m,"blend_method"):
+                try: m.blend_method="BLEND"
+                except (TypeError,ValueError): pass
         m.diffuse_color=rgba
         mats[name]=m
     for p in parts:
