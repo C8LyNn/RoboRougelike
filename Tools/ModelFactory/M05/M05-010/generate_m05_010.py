@@ -159,7 +159,7 @@ def build():
     # Header and two side beams; 30 lamellae do not touch one another.
     cube("Bottom_Header",(0,.175,.085),(.78,.09,.23),"Copper",.012)
     cube("Upper_Header",(0,1.118,.085),(.78,.095,.23),"Copper",.012)
-    cube("Top_Ceramic_Cap",(0,1.183,.085),(.76,.034,.24),"Ceramic",.009)
+    cube("Top_Ceramic_Cap",(0,1.180,.085),(.76,.034,.24),"Ceramic",.009)
     for side,x in (("L",-.383),("R",.383)):
         cube("Side_Stanchion_"+side,(x,.646,.083),(.034,.89,.17),"Graphite",.006)
         cylinder("Coolant_Riser_"+side,(x*.81,.65,.194),.016,.96,"Coolant",20,axis="Y")
@@ -170,7 +170,7 @@ def build():
              "Titanium" if i%5 else "Ceramic",.0015)
     # Cross-braced fan mounts reach the stationary heat exchanger.
     for side,x in (("L",-.289),("R",.289)):
-        cube("Turbine_Arm_"+side,(x,.78,-.095),(.193,.036,.31),"Graphite",.007)
+        cube("Turbine_Arm_"+side,(x,.78,-.125),(.193,.036,.26),"Graphite",.007)
         cube("Arm_Copper_Inlay_"+side,(x,.78,-.16),(.117,.015,.08),"Copper",.004)
 
     # Two caged toroidal rings and 12 cross rods surround the rotor. Rings
