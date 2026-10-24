@@ -411,7 +411,7 @@ def main():
         manifest["blender"]="EXPORTED"
         manifest["blender_export"]=export
         (out/"M03-011_manifest.json").write_text(
-            json.dumps(manifest,indent=2,ensure_ascii=False)+"\\n",
+            json.dumps(manifest,indent=2,ensure_ascii=False)+"\n",
             encoding="utf-8")
     (out/"M03-011_qa.json").write_text(
         json.dumps(report,indent=2)+"\n",encoding="utf-8")
