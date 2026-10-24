@@ -1,0 +1,141 @@
+name: MODEL-02 M02-005 Folding Paddle Wheel QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-005-folding-paddle-wheel
+    paths:
+      - "Tools/ModelFactory/M02/M02-005/**"
+      - ".github/workflows/ci-model-m02-005.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mesh-blender-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Compile and generate real OBJ/MTL without bpy
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/ModelFactory/M02/M02-005/generate_m02_005.py
+          python3 Tools/ModelFactory/M02/M02-005/generate_m02_005.py \
+            --self-test --output-dir /tmp/m02-005
+      - name: Verify 70 watertight bodies and deployment clearances
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('/tmp/m02-005')
+          q=json.loads((root/'M02-005.static-qa.json').read_text())
+          assert q['result']=='STATIC_GEOMETRY_PASS',q
+          assert q['mesh_count']==70 and q['closed_manifold_meshes']==70
+          assert q['paddles']==8 and q['paddle_sweep_samples']==81
+          assert q['rotor_rotation_samples']==25
+          assert q['paddle_to_tire_min_radial_clearance_m']>.009
+          assert q['adjacent_paddle_sector_min_gap_deg']>8
+          assert q['seal_to_bore_clearance_m']>=.007
+          assert len(q['materials_used'])>=3
+          obj=(root/'M02-005.obj').read_text().splitlines()
+          assert sum(s.startswith('o ') for s in obj)==70
+          assert sum(s.startswith('v ') for s in obj)==q['obj_vertices']
+          assert sum(s.startswith('f ') for s in obj)==q['obj_polygons']
+          assert (root/'M02-005.mtl').stat().st_size>300
+          print('PASS static',q['mesh_count'],q['obj_vertices'],q['obj_polygons'])
+          PY
+      - name: Install real Blender and glTF exporter
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Run real Blender animation export
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/m02-005-blender
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M02/M02-005/generate_m02_005.py \
+            -- --output-dir /tmp/m02-005-blender --require-blender \
+            2>&1 | tee /tmp/m02-005-blender/blender.log
+      - name: Independently inspect GLB binary and animation
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path('/tmp/m02-005-blender')
+          glb=root/'M02-005_animated.glb'
+          blend=root/'M02-005.blend'
+          assert blend.stat().st_size>10000
+          raw=glb.read_bytes()
+          assert raw[:4]==b'glTF'
+          version,total=struct.unpack_from('<II',raw,4)
+          assert version==2 and total==len(raw)
+          n,kind=struct.unpack_from('<II',raw,12)
+          assert kind==0x4E4F534A
+          doc=json.loads(raw[20:20+n])
+          nodes=doc.get('nodes',[])
+          animations=doc.get('animations',[])
+          names={node.get('name','') for node in nodes}
+          assert any('WHEEL_ROTOR' in name for name in names),names
+          for i in range(8):
+              assert any('PADDLE_HINGE_%02d'%i in name for name in names),i
+          assert len(doc.get('meshes',[]))>=70
+          assert len(animations)>=1
+          channels=sum(len(a.get('channels',[])) for a in animations)
+          assert channels>=9,channels
+          report={
+              'id':'M02-005','status':'PASS',
+              'blender_executed':True,'glb_version':version,
+              'meshes':len(doc.get('meshes',[])),
+              'nodes':len(nodes),'animations':len(animations),
+              'animation_channels':channels,'hinges':8,
+              'glb_bytes':len(raw),'blend_bytes':blend.stat().st_size,
+              'unity_import':'NOT RUN',
+          }
+          (root/'M02-005.blender-qa.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Publish verified artifacts only to isolated M02-005 branch
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          branch=feature/rrl-model-m02-005-folding-paddle-wheel
+          git fetch origin "$branch"
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/$branch)" ]; then
+            echo "Branch advanced; skip stale artifact commit."
+            exit 0
+          fi
+          target=Tools/ModelFactory/M02/M02-005/generated
+          mkdir -p "$target"
+          cp /tmp/m02-005/M02-005.obj /tmp/m02-005/M02-005.mtl \
+             /tmp/m02-005/M02-005.static-qa.json "$target/"
+          cp /tmp/m02-005-blender/M02-005.blend \
+             /tmp/m02-005-blender/M02-005_animated.glb \
+             /tmp/m02-005-blender/M02-005.blender-qa.json "$target/"
+          git add "$target"
+          if git diff --cached --quiet; then
+            echo "Artifacts already identical"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "asset(M02-005): real OBJ MTL Blender GLB and QA [skip ci]"
+          git push origin HEAD:"$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M02-005-wheel-geometry-and-animation
+          path: |
+            /tmp/m02-005/M02-005.obj
+            /tmp/m02-005/M02-005.mtl
+            /tmp/m02-005/M02-005.static-qa.json
+            /tmp/m02-005-blender/M02-005.blend
+            /tmp/m02-005-blender/M02-005_animated.glb
+            /tmp/m02-005-blender/M02-005.blender-qa.json
+            /tmp/m02-005-blender/blender.log
+          retention-days: 30
