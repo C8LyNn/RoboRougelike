@@ -26,10 +26,11 @@
     "glb_animations": 2,
     "glb_rotation_channels": 2
   },
-  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118193569",
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118277996",
   "artifacts": {
-    "blender_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118193569/artifacts/12569832094",
-    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118193569/artifacts/12569747845"
+    "blender_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118277996/artifacts/12570197220",
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118277996/artifacts/12570282232"
   },
-  "completed_at_utc": "2026-10-24T17:54:52.189Z"
+  "completed_at_utc": "2026-10-24T17:54:52.189Z",
+  "ci_verified_head": "1f2f8d17c448924ca6fe9ddcf297e86ad6aca490"
 }
