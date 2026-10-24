@@ -255,13 +255,13 @@ def static_export(parts,outdir):
         lines.extend(f"v {x:.7f} {y:.7f} {z:.7f}" for x,y,z in p["vertices"])
         lines.extend("f "+" ".join(str(offset+i) for i in face) for face in p["faces"])
         offset+=len(p["vertices"])
-    obj.write_text("\\n".join(lines)+"\\n",encoding="utf-8")
+    obj.write_text("\n".join(lines)+"\n",encoding="utf-8")
     ml=[]
     for name,(rgba,metal,rough) in MATERIALS.items():
         ml.extend([f"newmtl {name}",f"Kd {rgba[0]:.5f} {rgba[1]:.5f} {rgba[2]:.5f}",
           f"Ks {metal*.45:.5f} {metal*.45:.5f} {metal*.45:.5f}",
           f"Ns {(1-rough)*400:.1f}","d 1.0","illum 2",""])
-    mtl.write_text("\\n".join(ml)+"\\n",encoding="utf-8")
+    mtl.write_text("\n".join(ml)+"\n",encoding="utf-8")
     return {"backend":"stdlib","obj":str(obj),"mtl":str(mtl),
             "animation":"NOT EXPORTED: run Blender for animated FBX/GLB"}
 
