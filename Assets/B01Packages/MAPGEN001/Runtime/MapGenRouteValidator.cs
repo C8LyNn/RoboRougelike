@@ -37,6 +37,8 @@ namespace B01.MAPGEN001
                 return Fail("INVALID_PROFILE", 0, 0);
             if (plan.Elements.Count == 0) return Fail("EMPTY_MAP", 0, 0);
 
+            if (!Finite(vehicle.MaxSlopeDegrees) || vehicle.MaxSlopeDegrees < 0f || vehicle.MaxSlopeDegrees > 45f)
+                return Fail("INVALID_SLOPE_LIMIT", 0, 0);
             float maxSlope = vehicle.MaxSlopeDegrees > 0f ? vehicle.MaxSlopeDegrees : 12f;
             if (!Finite(maxSlope) || maxSlope < 0f || maxSlope > 45f)
                 return Fail("INVALID_SLOPE_LIMIT", 0, 0);
