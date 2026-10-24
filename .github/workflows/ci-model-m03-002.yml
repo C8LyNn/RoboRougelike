@@ -1,0 +1,40 @@
+name: Model Factory M03-002 Static Geometry QA
+
+on:
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M03/M03-002/**"
+      - ".github/workflows/ci-model-m03-002.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-procedural-asset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Compile and regenerate static geometry
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/ModelFactory/M03/M03-002/generate_m03_002.py
+          mkdir -p /tmp/m03-002
+          python3 Tools/ModelFactory/M03/M03-002/generate_m03_002.py --self-test --output-dir /tmp/m03-002
+      - name: Check deterministic OBJ and material output
+        run: |
+          set -euo pipefail
+          cmp Tools/ModelFactory/M03/M03-002/M03-002.obj /tmp/m03-002/M03-002.obj
+          cmp Tools/ModelFactory/M03/M03-002/M03-002.mtl /tmp/m03-002/M03-002.mtl
+      - name: Verify 21-step moving clearance
+        run: |
+          python3 - <<'PY'
+          import json
+          q=json.load(open('/tmp/m03-002/M03-002.static-qa.json',encoding='utf-8'))
+          assert q['static_geometry']=='PASS'
+          assert q['collision_samples']==21
+          assert q['minimum_overlap_m']>=0.29
+          assert len(q['materials'])>=3
+          assert q['moving_fixed_aabb_checks']>1000
+          print('M03-002 static QA PASS')
+          PY
