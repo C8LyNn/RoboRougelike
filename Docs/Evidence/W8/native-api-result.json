@@ -1,0 +1,294 @@
+{
+    "method": "Windows native API/physics fixture; garage APIs, controlled damage/EMP and R6 force commands; NOT manual gameplay",
+    "status": "Passed",
+    "startedUtc": "2026-10-24T09:39:55.3876373Z",
+    "finishedUtc": "2026-10-24T09:40:01.5187542Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "width": 1280,
+    "height": 720,
+    "checks": [
+        {
+            "id": "W8",
+            "name": "Real gameplay scene initialized",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "Real Light workshop entry",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "COM purchased and mounted through actual garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "SEN purchased and mounted through actual garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "MOV011 purchased and mounted through actual garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "Three modules spend original workshop funds exactly once",
+            "detail": "485",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "Real range transition",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "Three owned devices bind existing player/body",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "One vehicle body and no standalone demo drive",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8",
+            "name": "Each module uses one existing P12 HP/availability boundary",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Solid wall blocks structural scan without spending cooldown",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Original pulse reveals actual enemy through wall",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Scanning does not damage actual target",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Visible actual enemy yields original structural HP contacts",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Cooldown rejects repeated input on both source clocks",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Pause rejects activation and freezes both source clocks",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Pause preserves valid information",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Owned MOV011 accepts actual player mode selection",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "EMP clears scanner information and steering angles",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "EMP availability changes preserve existing momentum",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "EMP blocks all three device actions",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Automatic EMP recovery preserves committed cooldowns",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "COM-001 / SEN-001",
+            "name": "Retained COM view resumes canonical cooldown without free activation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011",
+            "name": "Crab mode after EMP",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011",
+            "name": "Default R6 planar physics retained without suspension parts",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011",
+            "name": "Actual default-planar R6 crab translation",
+            "detail": "delta=(0.89, 0.00, 2.15); yaw=0",
+            "passed": true
+        },
+        {
+            "id": "MOV-011",
+            "name": "Counter-phase mode",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011",
+            "name": "Actual R6 counter-phase yaw",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011",
+            "name": "Persistent mode selected before loss",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Actual physical device destruction captured in canonical owned state",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "All three destroyed devices repaired at actual full purchase cost",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Actual remove/inventory/remount preserves owned identity",
+            "detail": "StructuralScanner",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Actual remove/inventory/remount preserves owned identity",
+            "detail": "ScannerPulse",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Actual remove/inventory/remount preserves owned identity",
+            "detail": "IndependentSteering",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Paid repair/rebuild retains source readiness and selected mode",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Actual return to workshop",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "W8 physical repair / ownership",
+            "name": "Disposable range damage does not leak into workshop",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Actual MOV009 support purchased",
+            "detail": "-1,0,-3",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Actual MOV009 support purchased",
+            "detail": "-1,0,3",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Actual MOV009 support purchased",
+            "detail": "1,0,-3",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Actual MOV009 support purchased",
+            "detail": "1,0,3",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Range with original four-point active suspension",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Actual MOV009 four supports, gravity and unconstrained body",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Crab with active suspension",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Actual MOV009-supported R6 crab translation without competing solver",
+            "detail": "delta=(0.76, 0.00, 1.78); yaw=0,0001818744; lift=2766,432",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Supported rig returns to workshop",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "id": "MOV-011 + MOV-009",
+            "name": "Restart removes old owned sensor/input views",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "errors": []
+}
