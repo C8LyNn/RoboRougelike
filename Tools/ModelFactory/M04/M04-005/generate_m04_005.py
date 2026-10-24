@@ -280,6 +280,14 @@ def make_blender(spec,parts,out):
         for obj in tuple(old.objects):
             bpy.data.objects.remove(obj,do_unlink=True)
         bpy.data.collections.remove(old)
+    # Drop only orphaned data blocks from a previous M04-005 generation.
+    # Other assets, linked collections and active scene objects are untouched.
+    for mesh in tuple(bpy.data.meshes):
+        if mesh.name.startswith('M04-005_') and mesh.users == 0:
+            bpy.data.meshes.remove(mesh)
+    for material in tuple(bpy.data.materials):
+        if material.name.startswith('M04-005_') and material.users == 0:
+            bpy.data.materials.remove(material)
     collection=bpy.data.collections.new(collection_name)
     bpy.context.scene.collection.children.link(collection)
     mats={}
@@ -321,8 +329,10 @@ def make_blender(spec,parts,out):
         smooth=('_shell' in p['name'] or '_flange' in p['name'] or
                 '_jacket' in p['name'] or '_lip' in p['name'] or
                 '_throat' in p['name'] or '_ring' in p['name'])
-        for polygon in mesh.polygons:
-            polygon.use_smooth=smooth
+        for index,polygon in enumerate(mesh.polygons):
+            # ring() emits four faces per circumferential segment:
+            # only the two radial cylinder walls should have smooth normals.
+            polygon.use_smooth=(smooth and index % 4 in (0,1))
         if p.get('moving'):
             obj.rotation_mode='QUATERNION'
             for frame,degrees in zip(spec['keyframes'],spec['petal_angle_degrees']):
