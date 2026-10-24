@@ -12,7 +12,7 @@ on:
       - ".github/workflows/ci-model-m02-004.yml"
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   static-mesh:
     runs-on: ubuntu-latest
@@ -45,6 +45,27 @@ jobs:
           assert (p/"M02-004.mtl").stat().st_size>200
           print("M02-004 STATIC QA PASS",q["obj_vertices"],q["obj_faces"])
           PY
+      - name: Commit verified static OBJ/MTL/QA to this model branch only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m02-004-perforated-steel-wheel'
+        run: |
+          set -euo pipefail
+          target=Tools/ModelFactory/M02/M02-004/generated
+          mkdir -p "$target"
+          cp /tmp/m02-004/M02-004.obj /tmp/m02-004/M02-004.mtl /tmp/m02-004/M02-004.static-qa.json "$target/"
+          git fetch origin feature/rrl-model-m02-004-perforated-steel-wheel
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/feature/rrl-model-m02-004-perforated-steel-wheel)" ]; then
+            echo "Branch advanced since job checkout; avoid stale push."
+            exit 0
+          fi
+          git add "$target"
+          if git diff --cached --quiet; then
+            echo "Static assets already identical"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "asset(M02-004): verified generated OBJ MTL QA [skip ci]"
+          git push origin HEAD:feature/rrl-model-m02-004-perforated-steel-wheel
       - uses: actions/upload-artifact@v4
         with:
           name: M02-004-OBJ-MTL-QA
