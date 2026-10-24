@@ -48,6 +48,20 @@ jobs:
           assert data['unity_import']=='NOT_RUN'
           print('M05-006 STATIC QA PASS',data)
           PY
+      - name: Verify recorded QA manifest against live geometry output
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('Tools/ModelFactory/M05/M05-006')
+          manifest=json.loads((base/'M05-006.static-qa.json').read_text())
+          actual=json.loads(Path('/tmp/m05-006/M05-006.run-report.json').read_text())
+          for key in ('parts','vertices','polygons','triangles','materials','sweep_samples','swept_aabb_pair_checks','bearing_ring_axle_exemptions','minimum_bearing_radial_gap_m','manifold_edges','positive_winding','swept_collision_qa'):
+              assert manifest[key]==actual[key],(key,manifest[key],actual[key])
+          assert manifest['unity_import']=='NOT_RUN'
+          assert manifest['visual_review']=='NOT_RUN'
+          print('M05-006 QA manifest parity PASS')
+          PY
   blender-smoke:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
