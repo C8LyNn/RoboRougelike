@@ -44,3 +44,45 @@ jobs:
           path: build/M05-009/
           if-no-files-found: error
           retention-days: 14
+  publish-model-assets:
+    needs: blender-radiator-qa
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m05-009-side-liquid-radiator'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Download validated Blender outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: M05-009-Blender-FBX-GLB-BLEND-QA
+          path: build/M05-009
+      - name: Commit only validated assets to the exclusive M05-009 branch
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          branch=feature/rrl-model-m05-009-side-liquid-radiator
+          remote_head="$(git ls-remote origin "refs/heads/$branch" | cut -f1)"
+          if [ "$remote_head" != "$EXPECTED_HEAD" ]; then
+            echo "Branch moved after QA; skip stale artifact publication"
+            exit 0
+          fi
+          dest=Tools/ModelFactory/M05/M05-009/generated
+          mkdir -p "$dest"
+          cp build/M05-009/M05-009_side_liquid_radiator.glb "$dest/"
+          cp build/M05-009/M05-009_side_liquid_radiator.fbx "$dest/"
+          cp build/M05-009/M05-009_side_liquid_radiator.blend "$dest/"
+          cp build/M05-009/M05-009_QA.json "$dest/"
+          git add -- "$dest"
+          if git diff --cached --quiet; then
+            echo "Validated binaries already match the branch"
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "asset(M05-009): publish validated Blender FBX GLB BLEND"
+          git push origin "HEAD:refs/heads/$branch"
