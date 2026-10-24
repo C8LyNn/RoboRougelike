@@ -36,3 +36,6 @@
   - `"$env:UNITY_EXE" -batchmode -nographics -projectPath "$env:PROJECT" -runTests -testPlatform EditMode -testResults "MapGen_EditMode.xml" -logFile "MapGen_EditMode.log" -quit`
   - `"$env:UNITY_EXE" -batchmode -nographics -projectPath "$env:PROJECT" -runTests -testPlatform PlayMode -testResults "MapGen_PlayMode.xml" -logFile "MapGen_PlayMode.log" -quit`
 - Collect actual process exit, immutable HEAD, test XML, editor logs and screenshots; compilation alone is not physical driving.
+
+### R3.1 extreme difficulty / minimum lane width (new EditMode source case)
+- E11: for 100 seeds each, verify Segments=3/4/5, Density=100 and Difficulty=1 on Light + LaneWidth=10 and Heavy + LaneWidth=16 (600 generator calls). No attempt may silently substitute a seed; record explicit fail IDs. These are AUTHORED Unity tests and remain NOT_RUN until Unity execution.
