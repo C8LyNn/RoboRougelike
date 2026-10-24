@@ -413,18 +413,35 @@ def motion_qa(scene):
 def export(out):
     out.mkdir(parents=True,exist_ok=True)
     bpy.context.scene.frame_set(1)
-    bpy.ops.wm.save_as_mainfile(filepath=str(out/(STEM+".blend")))
-    bpy.ops.export_scene.gltf(filepath=str(out/(STEM+"_animated.glb")),
-                              export_format="GLB",export_animations=True)
-    bpy.ops.export_scene.fbx(filepath=str(out/(STEM+"_animated.fbx")),
-                             axis_forward="-Z",axis_up="Y",add_leaf_bones=False,
-                             bake_anim=True)
-    if hasattr(bpy.ops.wm,"obj_export"):
-        bpy.ops.wm.obj_export(filepath=str(out/(STEM+".obj")),
-                              export_materials=True)
-    else:
-        bpy.ops.export_scene.obj(filepath=str(out/(STEM+".obj")),
-                                 use_materials=True)
+    previous_selection = tuple(bpy.context.selected_objects)
+    previous_active = bpy.context.view_layer.objects.active
+    try:
+        bpy.ops.object.select_all(action="DESELECT")
+        for ob in COL.objects:
+            ob.select_set(True)
+        bpy.context.view_layer.objects.active = ROOT
+        bpy.ops.wm.save_as_mainfile(filepath=str(out/(STEM+".blend")))
+        bpy.ops.export_scene.gltf(
+            filepath=str(out/(STEM+"_animated.glb")),
+            export_format="GLB",export_animations=True,use_selection=True)
+        bpy.ops.export_scene.fbx(
+            filepath=str(out/(STEM+"_animated.fbx")),
+            axis_forward="-Z",axis_up="Y",add_leaf_bones=False,
+            bake_anim=True,use_selection=True)
+        if hasattr(bpy.ops.wm,"obj_export"):
+            bpy.ops.wm.obj_export(filepath=str(out/(STEM+".obj")),
+                                  export_materials=True,
+                                  export_selected_objects=True)
+        else:
+            bpy.ops.export_scene.obj(filepath=str(out/(STEM+".obj")),
+                                     use_materials=True,use_selection=True)
+    finally:
+        bpy.ops.object.select_all(action="DESELECT")
+        for ob in previous_selection:
+            if bpy.data.objects.get(ob.name) is ob:
+                ob.select_set(True)
+        if previous_active and bpy.data.objects.get(previous_active.name) is previous_active:
+            bpy.context.view_layer.objects.active = previous_active
     for suffix in (".blend","_animated.glb","_animated.fbx",".obj",".mtl"):
         p=out/(STEM+suffix)
         assert p.exists() and p.stat().st_size>100,(p,"export missing")
