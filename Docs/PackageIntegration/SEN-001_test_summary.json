@@ -1,0 +1,245 @@
+[
+  {
+    "directory": "W8-sen-green-5289accc77af45fdb192a79b7403a2d4",
+    "summary": {
+      "id": "2",
+      "testcasecount": "16",
+      "result": "Passed",
+      "total": "16",
+      "passed": "16",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:10:22Z",
+      "end-time": "2026-10-24 04:10:22Z",
+      "duration": "0,4889337"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8PulseScannerTests.ActualGauntletHazardsAndDestroyedEnemyDebrisHaveTypedWorldSignals",
+        "result": "Passed",
+        "duration": "3.139841"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.DensePhysicalVehiclesDoNotTruncateSignalsOrAlterOwnerPhysics",
+        "result": "Passed",
+        "duration": "3.318573"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PauseFreezesRevealButEmpClearsItWithoutGrantingFreeCooldown",
+        "result": "Passed",
+        "duration": "4.631125"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PlayerGuiLUsesOwnModuleAndRejectsPausedOrDestroyedActivation",
+        "result": "Passed",
+        "duration": "3.105342"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PulseCooldownAndIdentitySurviveDestructionPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.385994"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PulseRevealsRealEnemyThroughWallWhileStructuralScanCannotSeeHp",
+        "result": "Passed",
+        "duration": "3.161452"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.ValidEmptyPulseCommitsCooldownAndRetryCannotSpendAgain",
+        "result": "Passed",
+        "duration": "3.268722"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.CooldownAndResetAreDeterministic",
+        "result": "Passed",
+        "duration": "0.004323"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.DisabledMarkerIsNotDetected",
+        "result": "Passed",
+        "duration": "0.000403"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.DisabledRevealedMarkerIsHiddenAndPrunedOnNextPulse",
+        "result": "Passed",
+        "duration": "0.000652"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.EmptySignalMaskFindsNothingAndUnknownCanBeReenabled",
+        "result": "Passed",
+        "duration": "0.000324"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.FindsMarkedTargetAndLeavesColliderUntouched",
+        "result": "Passed",
+        "duration": "0.000649"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.LayerMaskExcludesTargetsOutsideMask",
+        "result": "Passed",
+        "duration": "0.000407"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.MultipleCollidersOnSameTargetAreDeduplicated",
+        "result": "Passed",
+        "duration": "0.000341"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.SelfHierarchyIsExcluded",
+        "result": "Passed",
+        "duration": "0.000282"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulseEditModeTests.SignalMaskFiltersKindsWithoutChangingTargets",
+        "result": "Passed",
+        "duration": "0.000842"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW8PulseScannerTests;RoboRougelike.Mechanics.SEN001.Tests",
+      "exitCode": 0,
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-24T04:10:24.5117654Z"
+    }
+  },
+  {
+    "directory": "W8-sen-original-play-5296653958f744d399ea0b57d7e47376",
+    "summary": {
+      "id": "2",
+      "testcasecount": "3",
+      "result": "Passed",
+      "total": "3",
+      "passed": "3",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:10:52Z",
+      "end-time": "2026-10-24 04:10:52Z",
+      "duration": "0,2748102"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulsePlayModeTests.CooldownExpiresAndNextPulseIsAllowed",
+        "result": "Passed",
+        "duration": "0.130681"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulsePlayModeTests.DisablingScannerClearsState",
+        "result": "Passed",
+        "duration": "0.001402"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.SEN001.Tests.ScannerPulsePlayModeTests.RevealExpiresWithoutChangingTarget",
+        "result": "Passed",
+        "duration": "0.121236"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "mode": "PlayMode",
+      "finishedUtc": "2026-10-24T04:10:53.8004760Z",
+      "filter": "RoboRougelike.Mechanics.SEN001.Tests"
+    }
+  },
+  {
+    "directory": "W8-sen-com-regression-c0a115eacb19482287497e22a327677d",
+    "summary": {
+      "id": "2",
+      "testcasecount": "7",
+      "result": "Passed",
+      "total": "7",
+      "passed": "7",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:11:35Z",
+      "end-time": "2026-10-24 04:11:35Z",
+      "duration": "0,495778"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8ScanAdapterTests.PartInReleasedBodyCannotRemainAnAttachedScanTargetUnderOldHierarchy",
+        "result": "Passed",
+        "duration": "0.010198"
+      },
+      {
+        "fullname": "RRLW8ScanAdapterTests.PartScanReadsExistingEmpStateWithoutChangingItsHp",
+        "result": "Passed",
+        "duration": "0.004424"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.ActualRangeModuleScansForeignVisiblePartsWithoutChangingHpOrPhysics",
+        "result": "Passed",
+        "duration": "3.341471"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.DestroyedPhysicalScannerKeepsIdentityAndCooldownThroughPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.181804"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PausedSnapshotFreezesButEmpClearsResultsWithoutResettingCooldown",
+        "result": "Passed",
+        "duration": "4.637998"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PlayerGuiActivationHonorsPauseCooldownAndPhysicalLoss",
+        "result": "Passed",
+        "duration": "3.187239"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.SolidOccluderBlocksStructuralHpAndFailedScanDoesNotConsumeCooldown",
+        "result": "Passed",
+        "duration": "3.298617"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-24T04:11:37.4382275Z",
+      "exitCode": 0,
+      "filter": "RRLW8StructuralScanTests;RRLW8ScanAdapterTests",
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "W8-sen-hud-compile-8d74054168ce4c46a09d6857889c0874",
+    "summary": {
+      "id": "2",
+      "testcasecount": "1",
+      "result": "Passed",
+      "total": "1",
+      "passed": "1",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:12:48Z",
+      "end-time": "2026-10-24 04:12:49Z",
+      "duration": "0,4705509"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8PulseScannerTests.PlayerGuiLUsesOwnModuleAndRejectsPausedOrDestroyedActivation",
+        "result": "Passed",
+        "duration": "3.422868"
+      }
+    ],
+    "exit": {
+      "mode": "EditMode",
+      "filter": "RRLW8PulseScannerTests.PlayerGuiLUsesOwnModuleAndRejectsPausedOrDestroyedActivation",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-24T04:12:50.2858767Z"
+    }
+  }
+]
