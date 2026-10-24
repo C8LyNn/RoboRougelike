@@ -72,13 +72,15 @@ def check_static():
         assert len(mats)==result['materials']==7
         assert min(x for x,y,z in v)==0
         assert max(x for x,y,z in v)<.75
-        # Byte-identical regeneration against checked-in real geometry.
-        committed=HERE/'generated'
-        for ext in ('.obj','.mtl'):
-            expected=(committed/(STEM+ext)).read_bytes()
-            actual=(out/(STEM+ext)).read_bytes()
-            assert hashlib.sha256(expected).digest()==hashlib.sha256(actual).digest(),ext
-        report=json.loads((committed/'M04-011_static_qa.json').read_text())
+        # Byte-identical regeneration in two independent subprocesses.
+        with tempfile.TemporaryDirectory(prefix='m04-011-rebuild-') as second:
+            subprocess.run([sys.executable,str(SRC),'--static-obj','--out',second],
+                           check=True,capture_output=True,text=True)
+            for filename in (STEM+'.obj',STEM+'.mtl','M04-011_static_qa.json'):
+                expected=(out/filename).read_bytes()
+                actual=(Path(second)/filename).read_bytes()
+                assert hashlib.sha256(expected).digest()==hashlib.sha256(actual).digest(),filename
+        report=json.loads((out/'M04-011_static_qa.json').read_text())
         for key in ('parts','vertices','triangles','materials','sample_count',
                     'fixed_pair_checks','min_conservative_aabb_clearance_m'):
             assert report[key]==result[key],key
@@ -99,7 +101,7 @@ def check_static():
             'materials':len(mats),'pose_samples':result['sample_count'],
             'collision_pair_checks':result['fixed_pair_checks'],
             'min_clearance_m':result['min_conservative_aabb_clearance_m'],
-            'committed_obj_mtl_parity':'BYTE_IDENTICAL','blender':'NOT RUN',
+            'regenerated_obj_mtl_parity':'BYTE_IDENTICAL','blender':'NOT RUN',
             'unity':'NOT RUN'},indent=2))
 
 def check_glb(path):
