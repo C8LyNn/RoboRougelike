@@ -1,0 +1,48 @@
+name: M01-003 Shield Rail V2 QA
+on:
+  push:
+    branches:
+      - fix/rrl-m01-003-shield-rail-continuity
+    paths:
+      - "Tools/ModelFactory/M01/M01-003/**"
+      - ".github/workflows/qa-m01-003-shield-rail-fix.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  rail-shoe-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independent generated OBJ, rail contacts and slide QA
+        run: python3 Tools/ModelFactory/M01/M01-003/qa_m01_003.py
+      - name: Export real static OBJ and verify revision
+        run: |
+          python3 Tools/ModelFactory/M01/M01-003/generate_m01_003.py --out build/M01-003
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("build/M01-003")
+          r=json.loads((p/"M01-003_manifest.json").read_text())
+          assert r["geometry_revision"]=="M01-003_V2_CONNECTED_SHIELD_SLIDES"
+          assert r["track_attached_to_chassis"]==2
+          assert r["moving_rail_shoes"]==2
+          assert r["shield_track_poses_verified"]==42
+          assert (r["parts"],r["vertices"],r["triangles"],r["materials"])==(37,1670,3232,7)
+          assert r["backend"]=="plain-python-static-obj"
+          assert r["blender_export"]=="NOT RUN"
+          assert r["unity_import"]=="NOT RUN"
+          print("PASS M01-003 V2 static assets; Blender and Unity NOT RUN")
+          PY
+      - name: Publish corrected static OBJ MTL and manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M01-003-V2-connected-shield-rails-OBJ-MTL
+          path: |
+            build/M01-003/M01-003_dual_arc_emitter.obj
+            build/M01-003/M01-003_dual_arc_emitter.mtl
+            build/M01-003/M01-003_manifest.json
+          if-no-files-found: error

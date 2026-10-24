@@ -20,6 +20,18 @@ OPEN_DISTANCE = 0.115
 SHIELD_CENTRE_X = 0.420
 SHIELD_HALF_WIDTH = 0.035
 FIXED_MAX_X = 0.365
+# Fixed slide track spans each shield's entire 115mm X travel. Its inner
+# 15mm is mechanically seated in the chassis. A moving shoe (seated in
+# the shield) rests on the track with zero negative clearance, throughout
+# travel, instead of floating ~41mm above a Z-facing cosmetic strip.
+GUIDE_CENTRE_X = .465
+GUIDE_SPAN_X = .230
+GUIDE_CENTRE_Y = .263
+GUIDE_HEIGHT = .035
+SHOE_CENTRE_Y = .300
+SHOE_HEIGHT = .039
+SHOE_WIDTH = .045
+SHOE_LENGTH_Z = .350
 CORE_CENTRES = (-0.220, 0.220)
 CORE_RING_RADIUS = 0.116
 FPS = 30
@@ -136,9 +148,11 @@ def build():
         for i,z in enumerate((.600,.795),1):
             add(annulus_z("Insulator_"+label+"_"+str(i),
                           "Gasket_Black",x,.415,z,z+.016,.074,.094))
-        # Rail below moving shield; never intersects its travel envelope.
+        # X-direction track anchored to the chassis and spanning the
+        # whole outward shield stroke. Rail ends at +/- .580 m.
         add(chamfer_box("Shield_Guide_"+label,"Copper_Coils",
-                        side*.421,.263,.704,.046,.025,.475,.008))
+                        side*GUIDE_CENTRE_X,GUIDE_CENTRE_Y,.704,
+                        GUIDE_SPAN_X,GUIDE_HEIGHT,.475,.008))
         # Exposed fixed metal undercarriage with distinct white highlight.
         add(chamfer_box("Lower_Fin_"+label,"Ceramic_Ivory",
                         side*.278,.204,.49,.094,.038,.37,.010))
@@ -147,6 +161,11 @@ def build():
         add(chamfer_box("Shield_"+label,"Graphite_Armor",
                         side*SHIELD_CENTRE_X,.414,.709,.070,.195,.386,
                         .015,moving))
+        # Moving foot touches the top of the copper X-guide without
+        # penetrating the rail; its upper 3mm is welded inside shield.
+        add(chamfer_box("Shield_Slider_Shoe_"+label,"Gasket_Black",
+                        side*SHIELD_CENTRE_X,SHOE_CENTRE_Y,.704,
+                        SHOE_WIDTH,SHOE_HEIGHT,SHOE_LENGTH_Z,.006,moving))
         add(chamfer_box("Shield_Trim_"+label,"Ceramic_Ivory",
                         side*(SHIELD_CENTRE_X+.001),.508,.709,
                         .048,.014,.280,.006,moving))
@@ -183,9 +202,9 @@ def validate(parts):
             "open or nonmanifold part: "+p["name"])
         if p["moving"]:
             groups[p["moving"]]+=1
-    assert groups=={"L":3,"R":3}, groups
+    assert groups=={"L":4,"R":4}, groups
     assert len(MATERIALS)>=3
-    assert len(parts)>=30
+    assert len(parts)==37
     # Conservative AABB clearance: even closed shields must not touch
     # the fixed chassis; outward-only travel monotonically increases gap.
     min_shield_x=SHIELD_CENTRE_X-SHIELD_HALF_WIDTH
@@ -198,6 +217,37 @@ def validate(parts):
             moving_inner=SHIELD_CENTRE_X+extent*OPEN_DISTANCE-SHIELD_HALF_WIDTH
             assert moving_inner>FIXED_MAX_X+.015
             assert moving_inner>abs(CORE_CENTRES[0])+CORE_RING_RADIUS+.015
+    # Validate actual procedurally generated mesh vertices, not just
+    # constants: rails attach to the stationary chassis and moving shoes
+    # stay seated for 21 continuous pose samples per side.
+    by_name={p["name"]:p for p in parts}
+    def bounds(p):
+        return [(min(v[k] for v in p["vertices"]),
+                 max(v[k] for v in p["vertices"])) for k in range(3)]
+    chassis=bounds(by_name["Emitter_Chassis"])
+    sampled_track_poses=0
+    for label,side in (("L",-1),("R",1)):
+        guide=by_name["Shield_Guide_"+label]
+        shoe=by_name["Shield_Slider_Shoe_"+label]
+        shield=by_name["Shield_"+label]
+        assert guide["moving"] is None
+        assert shoe["moving"]==shield["moving"]==label
+        r,b,h=(bounds(p) for p in (guide,shoe,shield))
+        # The rail has a load path into the rigid frame, not a floating
+        # narrow strip outside the body shell.
+        attachment=[min(r[k][1],chassis[k][1]) -
+                    max(r[k][0],chassis[k][0]) for k in range(3)]
+        assert min(attachment) >= .014-1e-8, (label,attachment)
+        assert abs(r[1][1]-b[1][0])<1e-8,(label,"rail/shoe y gap")
+        assert h[1][0] < b[1][1]-.0029,(label,"shoe not in shield")
+        assert b[2][0]>=h[2][0] and b[2][1]<=h[2][1]
+        for k in range(21):
+            delta=side*OPEN_DISTANCE*k/20
+            bx0,bx1=(b[0][0]+delta,b[0][1]+delta)
+            assert bx0 >= r[0][0]+.001 and bx1 <= r[0][1]-.001, (
+                label,k,"shoe escapes fixed track",bx0,bx1,r[0])
+            sampled_track_poses+=1
+    assert sampled_track_poses==42
     assert KEYS[0][1]==0 and KEYS[-1][1]==0
     assert any(k[1]==1 for k in KEYS)
     return {
@@ -205,6 +255,12 @@ def validate(parts):
         "triangles":triangles,"materials":len(MATERIALS),
         "mount":"MOUNT_TOP_SOCKET at (0,0,0), Y up, +Z forward",
         "moving_groups":groups,"shield_axis":"local X, outward per side",
+        "track_attached_to_chassis":2,
+        "moving_rail_shoes":2,
+        "shield_track_poses_verified":sampled_track_poses,
+        "nominal_shoe_rail_vertical_gap_m":0.,
+        "guide_into_chassis_min_x_m":.015,
+        "geometry_revision":"M01-003_V2_CONNECTED_SHIELD_SLIDES",
         "shield_travel_m":OPEN_DISTANCE,
         "shield_fixed_chassis_clearance_m":round(
             min_shield_x-FIXED_MAX_X,4),
