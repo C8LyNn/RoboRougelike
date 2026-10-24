@@ -1,0 +1,35 @@
+# M03-001 materials | approximate OBJ preview; emission configured in Blender generator
+newmtl M03_001_Graphite_Steel
+Ka 0.018 0.025 0.031
+Kd 0.095 0.125 0.155
+Ks 0.50 0.54 0.58
+Ns 220
+illum 2
+
+newmtl M03_001_Brushed_Titanium
+Ka 0.11 0.12 0.13
+Kd 0.47 0.52 0.55
+Ks 0.68 0.71 0.73
+Ns 280
+illum 2
+
+newmtl M03_001_Brace_Copper
+Ka 0.14 0.06 0.02
+Kd 0.58 0.28 0.10
+Ks 0.69 0.42 0.23
+Ns 190
+illum 2
+
+newmtl M03_001_Socket_Graphite
+Ka 0.005 0.007 0.010
+Kd 0.025 0.037 0.048
+Ks 0.13 0.15 0.18
+Ns 90
+illum 2
+
+newmtl M03_001_Indicator_Cyan
+Ka 0.00 0.15 0.23
+Kd 0.03 0.42 0.58
+Ks 0.12 0.57 0.75
+Ns 180
+illum 2
