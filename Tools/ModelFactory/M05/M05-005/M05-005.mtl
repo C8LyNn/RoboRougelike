@@ -1,0 +1,57 @@
+# M05-005 material palette
+newmtl Graphite
+Ka 0.05 0.05 0.05
+Kd 0.07500 0.09500 0.12000
+Ks 0.25 0.25 0.25
+Ns 112.0
+d 1.00000
+illum 2
+
+newmtl Titanium
+Ka 0.05 0.05 0.05
+Kd 0.48000 0.55000 0.60000
+Ks 0.25 0.25 0.25
+Ns 104.0
+d 1.00000
+illum 2
+
+newmtl Copper
+Ka 0.05 0.05 0.05
+Kd 0.68000 0.33000 0.12000
+Ks 0.25 0.25 0.25
+Ns 107.0
+d 1.00000
+illum 2
+
+newmtl Gasket
+Ka 0.05 0.05 0.05
+Kd 0.02200 0.03000 0.04200
+Ks 0.25 0.25 0.25
+Ns 30.0
+d 1.00000
+illum 2
+
+newmtl TealGlass
+Ka 0.05 0.05 0.05
+Kd 0.06000 0.58000 0.70000
+Ks 0.25 0.25 0.25
+Ns 45.0
+d 0.42000
+illum 2
+
+newmtl CyanEnergy
+Ka 0.05 0.05 0.05
+Kd 0.04500 0.72000 0.95000
+Ks 0.25 0.25 0.25
+Ns 35.0
+d 1.00000
+illum 2
+
+newmtl AmberStatus
+Ka 0.05 0.05 0.05
+Kd 1.00000 0.42000 0.06500
+Ks 0.25 0.25 0.25
+Ns 35.0
+d 1.00000
+illum 2
+
