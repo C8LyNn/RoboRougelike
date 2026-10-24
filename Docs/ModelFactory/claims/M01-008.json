@@ -1,8 +1,18 @@
 {
   "id": "M01-008",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "MODEL_GENERATED",
   "claimed_at_utc": "2026-10-24T17:49:32.220Z",
   "model": "Karabin chłodzony cieczą",
-  "run": "2026-10-24T17:00Z"
+  "run": "2026-10-24T17:00Z",
+  "claim_commit": "c3389aca27e5bb90c87313de3720f000e58ffd80",
+  "branch": "feature/rrl-model-m01-008-liquid-cooled-rifle",
+  "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/97",
+  "asset_commit": "a9332875553ee6fd5f8b8031fb8baa695a869111",
+  "asset_dir": "Tools/ModelFactory/M01/M01-008/generated/",
+  "qa_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118133915",
+  "qa_status": "PASS_STATIC_AND_BLENDER_EXPORT",
+  "blender": "PASS",
+  "unity": "NOT_RUN",
+  "visual_review": "NOT_RUN"
 }
