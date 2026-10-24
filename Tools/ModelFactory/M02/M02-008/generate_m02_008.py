@@ -50,6 +50,20 @@ def box(name, center, size, mat, parent="STATIC", bevel=0.0):
                 material=mat,parent=parent,bevel=bevel)
 
 
+def wedge(name, center, base_length, top_length, width, height, mat, parent="STATIC"):
+    """Closed real trapezoidal rubber cleat: tapered upper contact surface."""
+    assert 0 < top_length < base_length
+    x,y,z=center
+    a,b=base_length/2,top_length/2
+    w,h=width/2,height/2
+    v=[(x-a,y-w,z-h),(x+a,y-w,z-h),
+       (x+a,y+w,z-h),(x-a,y+w,z-h),
+       (x-b,y-w,z+h),(x+b,y-w,z+h),
+       (x+b,y+w,z+h),(x-b,y+w,z+h)]
+    return dict(name=name,vertices=v,faces=list(FACES_BOX),
+                material=mat,parent=parent,bevel=0)
+
+
 def cylinder(name, center, radius, width, axis, mat, parent="STATIC", sides=24):
     assert axis in ("X","Y","Z")
     x,y,z=center
@@ -176,13 +190,12 @@ def build_parts():
             a=2*math.pi*j/16
             # Rounded-off teeth with an intentional 9mm radial clearance
             # to the track inner surface at the ends.
-            x=.169*math.cos(a)
-            z=.169*math.sin(a)
-            part=box("DriveTooth_%s_%02d"%(label,j),(x,0,z),
+            # Build in radial local +Z, then rotate around the axle so
+            # every tooth actually follows the circumference (not world axes).
+            part=box("DriveTooth_%s_%02d"%(label,j),(0,0,.169),
                      (.018,.075,.026),"BrushedTitanium",p,bevel=.004)
-            # Orient each tooth radially inside the drive rotor.
-            part["vertices"]=[rotate_y(v,0) for v in part["vertices"]]
-            # The rectangular tooth has a conservative radius < 0.183m.
+            part["vertices"]=[rotate_y(v,math.pi/2-a) for v in part["vertices"]]
+            # Conservative tip radius sqrt(.182**2+.009**2) < .183m.
             add(part)
         for j in range(8):
             a=2*math.pi*j/8
@@ -206,8 +219,8 @@ def build_parts():
         add(box("LinkPlate_%02d"%i,(0,0,0),
                 (.071,.210,.032),"BlackenedSteel",parent,bevel=.004))
         # Wedge-shaped / stepped rubber cleat on each link's outer face.
-        add(box("WedgeCleat_%02d"%i,(0,0,.023),
-                (.058,.224,.018),"TreadRubber",parent,bevel=.005))
+        add(wedge("WedgeCleat_%02d"%i,(0,0,.023),
+                  .060,.047,.224,.018,"TreadRubber",parent))
         for side in (-1,1):
             # Side-mounted bronze joint caps, outside the sprocket wheel.
             add(cylinder("JointPin_%02d_%+d"%(i,side),
