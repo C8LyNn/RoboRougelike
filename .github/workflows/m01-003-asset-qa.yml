@@ -1,0 +1,37 @@
+name: M01-003 Dual Arc Emitter Static Asset QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-003-dual-arc-emitter
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M01/M01-003/**"
+      - ".github/workflows/m01-003-asset-qa.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: m01-003-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  static-mesh:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile and run independent QA
+        run: python3 Tools/ModelFactory/M01/M01-003/qa_m01_003.py
+      - name: Generate actual static Unity OBJ MTL and manifest
+        run: python3 Tools/ModelFactory/M01/M01-003/generate_m01_003.py --out build/M01-003
+      - name: Publish actual static 3D assets
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M01-003-dual-arc-emitter-static-OBJ-MTL
+          path: |
+            build/M01-003/M01-003_dual_arc_emitter.obj
+            build/M01-003/M01-003_dual_arc_emitter.mtl
+            build/M01-003/M01-003_manifest.json
+          if-no-files-found: error
