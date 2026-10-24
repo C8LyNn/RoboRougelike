@@ -48,11 +48,14 @@ jobs:
       - name: Install Blender for real animated export
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy python3-pil
           blender --version | head -n 2
+          blender -b --python-expr 'import numpy; import PIL; print("Blender exporter dependencies OK")'
       - name: Generate real Blender library and animated GLB
         run: |
           blender -b --python Tools/ModelFactory/M01/M01-005/generate_m01_005.py -- --output-dir /tmp/m01-005-export
+          test -s /tmp/m01-005-export/M01-005_animated.glb
+          test -s /tmp/m01-005-export/M01-005.blend
       - name: Validate binary GLB contents and Blender output
         run: |
           python3 - <<'PY'
