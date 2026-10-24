@@ -1,0 +1,40 @@
+name: M03-001 physical SNAP geometry QA
+on:
+  push:
+    branches:
+      - fix/rrl-m03-001-physical-snap-pads
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-m03-001:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Validate static OBJ manifold and physical mount geometry
+        run: python3 Tools/ModelFactory/M03/M03-001/validate_static.py
+      - name: Verify source and manifest parity
+        run: |
+          python3 - <<'PY'
+          import ast, json
+          from pathlib import Path
+          root = Path("Tools/ModelFactory/M03/M03-001")
+          source = (root / "generate_m03_001.py").read_text("utf-8")
+          ast.parse(source)
+          data = json.loads((root / "M03-001.static-qa.json").read_text("utf-8"))
+          assert data["mesh_objects"] == 66
+          assert data["vertices"] == 2032
+          assert data["faces"] == 1436
+          assert data["physical_mount_pads"] == 6
+          assert data["top_bottom_support_ribs"] == 8
+          assert data["geometry_revision"] == "M03-001_PHYSICAL_SNAP_PADS_V2"
+          assert data["blender_execution"] == "NOT RUN"
+          assert data["unity_import"] == "NOT RUN"
+          for x in ("MOUNT_PAD_", "MOUNT_RIB_", "rrl_contact_plate"):
+              assert x in source, x
+          print("PASS source and static manifest counts")
+          PY
