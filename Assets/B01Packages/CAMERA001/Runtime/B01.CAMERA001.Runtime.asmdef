@@ -1,0 +1,14 @@
+{
+  "name": "B01.CAMERA001.Runtime",
+  "rootNamespace": "B01.CAMERA001",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
