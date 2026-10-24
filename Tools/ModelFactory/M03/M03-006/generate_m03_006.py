@@ -69,7 +69,10 @@ def export_blender(s,out):
     old_active=bpy.context.view_layer.objects.active
     owned=bpy.data.collections.get(COLLECTION)
     if owned:
-        for ob in tuple(owned.objects):bpy.data.objects.remove(ob,do_unlink=True)
+        for ob in tuple(owned.objects):
+            mesh=ob.data if ob.type=='MESH' else None
+            bpy.data.objects.remove(ob,do_unlink=True)
+            if mesh is not None and mesh.users==0:bpy.data.meshes.remove(mesh)
         bpy.data.collections.remove(owned)
     owned=bpy.data.collections.new(COLLECTION)
     scene.collection.children.link(owned)
