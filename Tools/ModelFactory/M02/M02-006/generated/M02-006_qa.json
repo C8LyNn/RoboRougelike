@@ -1,0 +1,35 @@
+{
+  "id": "M02-006",
+  "parts": 78,
+  "vertices": 5348,
+  "triangles": 10416,
+  "materials": 7,
+  "spikes": 16,
+  "spokes": 10,
+  "rotating_parts": 75,
+  "stationary_parts": 3,
+  "maximum_radius_m": 0.535,
+  "tire_width_m": 0.132,
+  "mount_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "axis": "+X",
+  "wheel_center_x_m": 0.18,
+  "nominal_shaft_bore_clearance_m": 0.023,
+  "collision_sample_count": 72,
+  "collision_pairs": 16200,
+  "min_measured_rotor_shaft_clearance_m": 0.023,
+  "closed_positive_volume_meshes": 78,
+  "contact_checks": 63,
+  "static_qa": "PASS",
+  "blender": "PASS_EXPORT",
+  "unity": "NOT_RUN",
+  "files": [
+    "Tools/ModelFactory/M02/M02-006/generated/M02-006_spiked_rubble_wheel.obj",
+    "Tools/ModelFactory/M02/M02-006/generated/M02-006_spiked_rubble_wheel.mtl"
+  ],
+  "blend": "Tools/ModelFactory/M02/M02-006/generated/M02-006.blend",
+  "glb": "Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.glb"
+}
