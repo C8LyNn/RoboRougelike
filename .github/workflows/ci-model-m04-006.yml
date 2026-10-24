@@ -1,0 +1,125 @@
+name: M04-006 Flat Slot Afterburner QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-006-flat-slot-afterburner
+    paths:
+      - 'Tools/ModelFactory/M04/M04-006/**'
+      - '.github/workflows/ci-model-m04-006.yml'
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-006/**'
+      - '.github/workflows/ci-model-m04-006.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Validate syntax and 27-angle swept geometry
+        run: |
+          set -euo pipefail
+          root=Tools/ModelFactory/M04/M04-006
+          python3 -m py_compile "$root/generate_m04_006.py" "$root/qa_mesh_m04_006.py"
+          mkdir -p /tmp/m04-006a /tmp/m04-006b
+          python3 "$root/generate_m04_006.py" --self-test --output-dir /tmp/m04-006a
+          python3 "$root/generate_m04_006.py" --self-test --output-dir /tmp/m04-006b
+          for f in M04-006.obj M04-006.mtl M04-006.static-qa.json; do
+            cmp "/tmp/m04-006a/$f" "/tmp/m04-006b/$f"
+            if test -f "$root/$f"; then cmp "$root/$f" "/tmp/m04-006a/$f"; fi
+          done
+          python3 "$root/qa_mesh_m04_006.py" --asset-dir /tmp/m04-006a
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('/tmp/m04-006a/M04-006.static-qa.json').read_text())
+          assert q['sweep_samples']==27
+          assert q['animated_parts']==10
+          assert q['moving_vs_static_and_other_vanes']=='PASS'
+          assert q['aabb_pairs_checked']>10000
+          assert q['blender']=='NOT_RUN' and q['unity_import']=='NOT_RUN'
+          print('M04-006 deterministic swept collision QA PASS',q)
+          PY
+      - name: Ensure generator cannot delete unrelated scene objects
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('Tools/ModelFactory/M04/M04-006/generate_m04_006.py').read_text()
+          assert 'bpy.ops.object.delete(' not in s
+          assert 'bpy.data.libraries.write(' in s
+          assert 'use_selection=True' in s
+          assert 'M04-006_ASSET' in s
+          assert 'Quaternion((1,0,0)' in s
+          print('M04-006 Blender collection safety source PASS')
+          PY
+      - name: Persist generated OBJ MTL QA on isolated feature branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m04-006-flat-slot-afterburner'
+        run: |
+          set -euo pipefail
+          dst=Tools/ModelFactory/M04/M04-006
+          cp /tmp/m04-006a/M04-006.obj "$dst/"
+          cp /tmp/m04-006a/M04-006.mtl "$dst/"
+          cp /tmp/m04-006a/M04-006.static-qa.json "$dst/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dst/M04-006.obj" "$dst/M04-006.mtl" "$dst/M04-006.static-qa.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "asset(M04-006): persist validated flat-slot OBJ MTL and static QA"
+            git push origin HEAD:feature/rrl-model-m04-006-flat-slot-afterburner
+          fi
+      - name: Upload deterministic static asset
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-006-static-obj
+          path: |
+            /tmp/m04-006a/M04-006.obj
+            /tmp/m04-006a/M04-006.mtl
+            /tmp/m04-006a/M04-006.static-qa.json
+          retention-days: 30
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender and glTF exporter
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Generate Blender collection library and animated GLB
+        run: |
+          set -euo pipefail
+          root=Tools/ModelFactory/M04/M04-006
+          mkdir -p /tmp/m04-006-blender
+          blender -b --factory-startup --python "$root/generate_m04_006.py" -- --output-dir /tmp/m04-006-blender --require-blender
+          test -s /tmp/m04-006-blender/M04-006.blend
+          test -s /tmp/m04-006-blender/M04-006_animated.glb
+          python3 "$root/qa_mesh_m04_006.py" --asset-dir /tmp/m04-006-blender --glb /tmp/m04-006-blender/M04-006_animated.glb
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path('/tmp/m04-006-blender/M04-006.static-qa.json').read_text())
+          assert q['blender']=='EXECUTED'
+          assert q['animated_glb']=='GENERATED_NOT_UNITY_VERIFIED'
+          print('M04-006 actual Blender animation export PASS')
+          PY
+      - name: Upload Blender and animated GLB artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-006-flat-slot-animated
+          path: |
+            /tmp/m04-006-blender/M04-006.blend
+            /tmp/m04-006-blender/M04-006_animated.glb
+            /tmp/m04-006-blender/M04-006.static-qa.json
+          retention-days: 30
