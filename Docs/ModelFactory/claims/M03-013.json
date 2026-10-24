@@ -9,6 +9,12 @@
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/129",
   "claim_create_commit": "32226480d40515a42ec9276ee807e7370ce6de30",
   "static_qa": "PASS",
-  "blender_qa": "PENDING",
-  "unity_qa": "NOT RUN"
+  "blender_qa": "PASS",
+  "unity_qa": "NOT RUN",
+  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140600772",
+  "static_obj_sha256": "34b8ef277c26bbca08025f20df5bc56e79baed7879d2a8862f334d22b3f99838",
+  "asset_parts": 38,
+  "asset_vertices": 2844,
+  "asset_triangles": 5568,
+  "asset_materials": 5
 }
