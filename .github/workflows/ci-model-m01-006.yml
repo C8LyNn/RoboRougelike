@@ -1,0 +1,74 @@
+name: Model Factory M01-006 Ceramic Needle Launcher QA
+on:
+  push:
+    paths:
+      - 'Tools/ModelFactory/M01/M01-006/**'
+      - '.github/workflows/ci-model-m01-006.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-006/**'
+      - '.github/workflows/ci-model-m01-006.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  geometry-and-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Python compile and 37-pose sweep
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-006/generate_m01_006.py Tools/ModelFactory/M01/M01-006/validate_m01_006.py
+          python3 Tools/ModelFactory/M01/M01-006/generate_m01_006.py --self-test
+      - name: Validate committed OBJ and MTL
+        run: python3 Tools/ModelFactory/M01/M01-006/validate_m01_006.py
+      - name: Deterministic static OBJ and MTL byte parity
+        run: |
+          python3 Tools/ModelFactory/M01/M01-006/generate_m01_006.py --out /tmp/m01-006-static
+          cmp /tmp/m01-006-static/M01-006_ceramic_needle_launcher.obj Tools/ModelFactory/M01/M01-006/generated/M01-006_ceramic_needle_launcher.obj
+          cmp /tmp/m01-006-static/M01-006_ceramic_needle_launcher.mtl Tools/ModelFactory/M01/M01-006/generated/M01-006_ceramic_needle_launcher.mtl
+      - name: Install Blender for actual animated exports
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender --version | head -n 2
+      - name: Execute Blender and export GLB FBX and BLEND
+        run: |
+          blender -b --python Tools/ModelFactory/M01/M01-006/generate_m01_006.py -- --out /tmp/m01-006-blender
+          test -s /tmp/m01-006-blender/M01-006_ceramic_needle_launcher_animated.glb
+          test -s /tmp/m01-006-blender/M01-006_ceramic_needle_launcher_animated.fbx
+          test -s /tmp/m01-006-blender/M01-006_ceramic_needle_launcher.blend
+      - name: Verify actual GLB animation and export parity
+        run: |
+          python3 Tools/ModelFactory/M01/M01-006/validate_m01_006.py /tmp/m01-006-blender
+          cmp /tmp/m01-006-blender/M01-006_ceramic_needle_launcher.obj Tools/ModelFactory/M01/M01-006/generated/M01-006_ceramic_needle_launcher.obj
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/m01-006-blender')
+          qa=json.loads((p/'M01-006_qa.json').read_text())
+          assert qa['blender_export']=='PASS'
+          assert qa['static_moving_collision_count']==0
+          assert qa['aabb_pair_checks']==31820
+          assert (p/'M01-006_ceramic_needle_launcher.blend').stat().st_size>10000
+          assert (p/'M01-006_ceramic_needle_launcher_animated.fbx').stat().st_size>10000
+          print('M01-006 Blender GLB/FBX/BLEND export PASS')
+          PY
+      - name: Upload real exported 3D assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-006-ceramic-needle-launcher-3D
+          path: |
+            /tmp/m01-006-blender/M01-006_ceramic_needle_launcher.obj
+            /tmp/m01-006-blender/M01-006_ceramic_needle_launcher.mtl
+            /tmp/m01-006-blender/M01-006_ceramic_needle_launcher_animated.glb
+            /tmp/m01-006-blender/M01-006_ceramic_needle_launcher_animated.fbx
+            /tmp/m01-006-blender/M01-006_ceramic_needle_launcher.blend
+            /tmp/m01-006-blender/M01-006_qa.json
+          if-no-files-found: error
+          retention-days: 30
