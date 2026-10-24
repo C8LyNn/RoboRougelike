@@ -1,8 +1,19 @@
 {
   "id": "M02-010",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "PRODUCED_DRAFT",
   "claimed_at_utc": "2026-10-24T19:48:04.902Z",
   "model": "Wahacz niezależnego zawieszenia",
-  "run": "2026-10-24T19:00:00Z"
+  "run": "2026-10-24T19:00:00Z",
+  "claim_create_commit": "e7da94a9b16d725804385abcebb8461ab0083b86",
+  "production_branch": "feature/rrl-model-m02-010-independent-control-arm",
+  "pr_number": 113,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/113",
+  "head_commit": "49e7e7bb138612c722c403313f315fde9e553a22",
+  "qa_static": "PASS (54 closed manifold meshes, 97 analytical poses, deterministic OBJ/MTL)",
+  "qa_blender": "PASS (Blender 4.0.2, 5 evaluated rig poses, Actions 40127426299)",
+  "qa_glb": "PASS (glTF 2.0, 54 meshes, 4 animations, 7 channels)",
+  "qa_unity": "BLOCKED_UNITY_ACTIVATION (EditMode/PlayMode credentials missing)",
+  "artifact_animated": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127426299/artifacts/12573229073",
+  "artifact_static": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127426299/artifacts/12572778824"
 }
