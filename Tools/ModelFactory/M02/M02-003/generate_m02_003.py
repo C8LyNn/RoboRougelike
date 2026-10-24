@@ -160,7 +160,7 @@ def build():
     return parts
 
 def validate(parts):
-    assert len(parts)==46, len(parts)
+    assert len(parts)==47, len(parts)
     assert len({p["name"] for p in parts})==len(parts)
     counts=Counter()
     all_radii=[]
