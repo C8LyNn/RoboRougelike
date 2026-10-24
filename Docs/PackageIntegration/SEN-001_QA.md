@@ -17,3 +17,5 @@ These are Editor API/physics/input fixtures, not native Windows gameplay. W8 Win
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W8 native Windows and full-wave closure.**
 
 [Machine-readable cases](SEN-001_test_summary.json). API fixtures are distinct from native input gameplay.
+
+Integration [Draft PR #33](https://github.com/C8LyNn/RoboRougelike/pull/33); no shared-branch merge.
