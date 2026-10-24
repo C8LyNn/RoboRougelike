@@ -32,7 +32,7 @@
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemo.cs.meta": "3e5d0bab9acff46d99dfdcebfe0b9dbe398455ed",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs": "6174d04886fbe5225c7f51e8489a363495bf2d44",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs.meta": "c6866a0f50bb571983cc7fc560acc4c13fa11efc",
-    "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs": "90f1d4b8c1fab7fc069030db85dbf886f18b061a",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs": "08ff3069740e53f573a97a64f1be31f448aeab11",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs.meta": "2a0e77eeed0f0605b47dcc8cf8148cca1920e8dc",
     "Assets/B01Packages/MAPGEN001/Tests.meta": "fa1440474e6e7104975168b7eae272b62c5070db",
     "Assets/B01Packages/MAPGEN001/Tests/EditMode.meta": "3e7ba82e79948b23a0b99543096f48ef1f68958e",
@@ -60,7 +60,7 @@
     "Docs/B01/MAPGEN001/TEST_PLAN.md": "1748b8b9c38fb472dc19487d030c25b6f0af03a1"
   },
   "git_blob_note": "Git blob hashes are SHA-1 CONTENT IDENTITIES, NOT SHA-256. Must add calculated SHA-256 for physical package before handoff.",
-  "last_source_commit_before_manifest": null,
+  "last_source_commit_before_manifest": "5ae8abe5be811dc4b11865988d1579141344aa16",
   "expected_tests": {
     "edit_mode": "NOT_RUN",
     "play_mode": "NOT_RUN",
@@ -87,6 +87,6 @@
   "static_tree_audit": {
     "checked_files": 42,
     "missing_cs_asmdef_unity_meta": [],
-    "same_repo_source": "isolated R1 package branch"
+    "same_repo_source": "stacked PR #103 based on #99"
   }
 }
