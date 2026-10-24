@@ -36,7 +36,7 @@ blender -b --python Tools/ModelFactory/M05/M05-007/blender_smoke.py -- /tmp/m05-
 
 W Blenderze 4.x: `blender -b --python Tools/ModelFactory/M05/M05-007/generate_m05_007.py -- --out /tmp/m05-007 --require-blender`.
 
-Generator usuwa wyłącznie kolekcję `M05-007_ASSET` i osierocone datablocki ze swoim prefiksem. Zachowuje inne obiekty sceny i przywraca wcześniejszy stan zaznaczenia oraz osi czasu.
+Generator dodaje w Blenderze niewielkie **dwusegmentowe fazy (bevel)** do krawędzi obrabianych elementów skrzynkowych i wygładza tylko zakrzywione ściany cylindrów, zachowując płaskie denka. Statyczny OBJ pozostaje uproszczoną, bezfazową reprezentacją, a animowany GLB eksportuje wersję Blender. Generator usuwa wyłącznie kolekcję `M05-007_ASSET` i osierocone datablocki ze swoim prefiksem (w tym nieużywane akcje animacji). Zachowuje inne obiekty sceny i przywraca wcześniejszy stan zaznaczenia oraz osi czasu.
 
 ## QA
 
