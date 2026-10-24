@@ -1,8 +1,24 @@
 {
   "id": "M04-008",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "STATIC_QA_PASS_BLENDER_PENDING",
   "claimed_at_utc": "2026-10-24T17:44:56.459Z",
   "model": "Hover boczny stabilizujący",
-  "run": "2026-10-24T17:00Z"
+  "run": "2026-10-24T17:00Z",
+  "branch": "feature/rrl-model-m04-008-side-stabilizing-hover",
+  "pr": 95,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/95",
+  "commit": "be31a4215ae0d663a780bf915c8a42e05216cd82",
+  "qa": {
+    "static": "PASS",
+    "blender": "IN_PROGRESS",
+    "unity": "NOT RUN",
+    "visual": "NOT RUN",
+    "parts": 65,
+    "triangles": 7420,
+    "materials": 7,
+    "animation_poses": 65,
+    "min_radial_clearance_m": 0.017402
+  },
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40118029920"
 }
