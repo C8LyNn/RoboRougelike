@@ -1,0 +1,67 @@
+name: M04-011 Deployable Aero Fin Asset QA
+on:
+  push:
+    branches: [feature/rrl-model-m04-011-deployable-aero-fin]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-011/**'
+      - '.github/workflows/ci-m04-011.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-011/**'
+      - '.github/workflows/ci-m04-011.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile and validate generated source
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M04/M04-011/generate_m04_011.py
+          python3 -m py_compile Tools/ModelFactory/M04/M04-011/qa_m04_011.py
+          python3 Tools/ModelFactory/M04/M04-011/generate_m04_011.py --self-test
+      - name: Independent OBJ topology, deterministic export and sampled fin collision QA
+        run: python3 Tools/ModelFactory/M04/M04-011/qa_m04_011.py
+      - name: Export static OBJ MTL and JSON manifest
+        run: |
+          python3 Tools/ModelFactory/M04/M04-011/generate_m04_011.py \
+            --static-obj --out build/M04-011
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-011-static-OBJ-MTL-manifest
+          path: build/M04-011/
+          if-no-files-found: error
+          retention-days: 30
+  blender-animation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install real Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -2
+      - name: Generate and export actual bpy blend and animated GLB
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python \
+            Tools/ModelFactory/M04/M04-011/generate_m04_011.py -- \
+            --out build/M04-011
+      - name: Independently parse GLB and verify three Y hinge rotation channels
+        run: |
+          python3 Tools/ModelFactory/M04/M04-011/qa_m04_011.py \
+            --check-glb build/M04-011/M04-011_deployable_aero_fin.glb
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-011-Blender-animated-GLB
+          path: build/M04-011/
+          if-no-files-found: error
+          retention-days: 30
