@@ -3,16 +3,18 @@ on:
   push:
     branches: ["feature/rrl-model-m02-003-balloon-sand-wheel"]
     paths:
-      - "Tools/ModelFactory/M02/M02-003/**"
+      - "Tools/ModelFactory/M02/M02-003/generate_m02_003.py"
+      - "Tools/ModelFactory/M02/M02-003/README.md"
       - ".github/workflows/model-m02-003-qa.yml"
   pull_request:
     branches: [develop]
     paths:
-      - "Tools/ModelFactory/M02/M02-003/**"
+      - "Tools/ModelFactory/M02/M02-003/generate_m02_003.py"
+      - "Tools/ModelFactory/M02/M02-003/README.md"
       - ".github/workflows/model-m02-003-qa.yml"
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   wheel-geometry:
     runs-on: ubuntu-24.04
@@ -20,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          persist-credentials: false
+          persist-credentials: true
       - name: Python syntax and mesh topology self-test
         run: |
           python3 -m py_compile Tools/ModelFactory/M02/M02-003/generate_m02_003.py
@@ -69,3 +71,19 @@ jobs:
             build/M02-003/M02-003_balloon_sand_wheel.mtl
             build/M02-003/M02-003_manifest.json
           if-no-files-found: error
+      - name: Commit verified static OBJ MTL and manifest to M02-003 branch only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m02-003-balloon-sand-wheel'
+        run: |
+          mkdir -p Tools/ModelFactory/M02/M02-003/generated
+          cp build/M02-003/M02-003_balloon_sand_wheel.obj Tools/ModelFactory/M02/M02-003/generated/
+          cp build/M02-003/M02-003_balloon_sand_wheel.mtl Tools/ModelFactory/M02/M02-003/generated/
+          cp build/M02-003/M02-003_manifest.json Tools/ModelFactory/M02/M02-003/generated/
+          git add Tools/ModelFactory/M02/M02-003/generated/
+          if git diff --cached --quiet; then
+            echo "No changes in generated static asset"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "assets(M02-003): commit verified deterministic OBJ MTL and manifest"
+            git push origin HEAD:feature/rrl-model-m02-003-balloon-sand-wheel
+          fi
