@@ -27,7 +27,7 @@ def load_spec():
     return spec
 
 
-def part_geometry(part, pivot_z=0.535, world=True):
+def part_geometry(part, pivot=(0.0, 0.235, 0.535), world=True):
     """Return closed manifold primitive vertices/faces, outward winding."""
     if part["shape"] == "box":
         a, b, d = (float(n) / 2.0 for n in part["size"])
@@ -64,7 +64,9 @@ def part_geometry(part, pivot_z=0.535, world=True):
 
     cx, cy, cz = (float(x) for x in part["center"])
     if world and part["parent"] == "tilt":
-        cz += pivot_z
+        cx += pivot[0]
+        cy += pivot[1]
+        cz += pivot[2]
     vertices = [(x+cx, y+cy, z+cz) for x, y, z in vertices]
     return vertices, faces
 
@@ -84,6 +86,55 @@ def signed_volume(vertices, faces):
     return total
 
 
+def animated_bounds(part, pivot, degrees):
+    """World AABB of actual polygon vertices at the requested hinge angle."""
+    verts, _ = part_geometry(part, pivot=pivot, world=False)
+    if part["parent"] == "tilt":
+        angle = math.radians(degrees)
+        cs, sn = math.cos(angle), math.sin(angle)
+        verts = [(x + pivot[0], y*cs - z*sn + pivot[1],
+                  y*sn + z*cs + pivot[2]) for x,y,z in verts]
+    return [(min(v[i] for v in verts), max(v[i] for v in verts))
+            for i in range(3)]
+
+
+def swept_clearance(spec):
+    """Check ALL 13 fixed vs 114 moving pieces across 45 one-degree poses.
+
+    Conservative AABB non-overlap: PASS excludes inter-part mesh penetration.
+    AABB collisions can over-report near misses, not under-report them.
+    """
+    base = [p for p in spec["parts"] if p["parent"] == "base"]
+    moving = [p for p in spec["parts"] if p["parent"] == "tilt"]
+    pivot = spec["hinge_pivot"]
+    checked = 0
+    min_mast_y_gap = float("inf")
+    for degrees in range(-22, 23):
+        fixed_bounds = [(p, animated_bounds(p,pivot,0)) for p in base]
+        moving_bounds = [(p, animated_bounds(p,pivot,degrees))
+                         for p in moving]
+        for b, bb in fixed_bounds:
+            for m, mb in moving_bounds:
+                overlaps = [max(0, min(bb[i][1], mb[i][1]) -
+                                    max(bb[i][0], mb[i][0])) for i in range(3)]
+                volume = math.prod(overlaps)
+                assert volume <= 1e-10, (
+                    "M05-002 animated base/panel overlap",
+                    b["name"], m["name"], degrees, volume)
+                checked += 1
+                if b["name"] == "mast_center":
+                    min_mast_y_gap = min(min_mast_y_gap,
+                        bb[1][0] - mb[1][1])
+    assert checked == 45 * len(base) * len(moving), checked
+    return {
+        "swept_collision_samples": 45,
+        "fixed_parts":len(base), "animated_parts":len(moving),
+        "swept_aabb_pairs_checked":checked,
+        "swept_base_vs_panel_aabb":"PASS",
+        "mast_to_panel_y_gap_lower_bound_m":round(min_mast_y_gap,5),
+    }
+
+
 def validate(spec):
     assert spec["mount_origin"] == [0, 0, 0]
     assert len(spec["materials"]) >= 3
@@ -100,17 +151,17 @@ def validate(spec):
         assert signed_volume(vertices, faces) > 1e-10, part["name"]
         vertices_total += len(vertices)
         polygons_total += len(faces)
-    # Conservative envelope check: max panel rear extent versus front of mast.
-    max_rear = 0.055*math.cos(math.radians(22)) + 0.34*math.sin(math.radians(22))
-    mast_front = 0.36 - 0.14/2
-    clearance = mast_front - max_rear
-    assert clearance > 0.10, "Panel could collide with the mast"
+    # Earlier version checked only panel rear vs mast at +/-22 degrees,
+    # ignoring the hinge bridge, shaft, collars and every intervening pose.
+    assert spec["hinge_pivot"] == [0, 0.235, 0.535]
     assert vertices_total == 1160 and polygons_total == 834
+    sweep = swept_clearance(spec)
+    assert sweep["mast_to_panel_y_gap_lower_bound_m"] > 0.06, sweep
     return {
         "model": spec["id"], "parts": len(names), "vertices": vertices_total,
         "polygons": polygons_total, "materials": len(spec["materials"]),
-        "mast_clearance_m": round(clearance, 5), "primitive_winding": "PASS",
-        "tilt_extremes_deg": [-22, 22],
+        "primitive_winding": "PASS", "tilt_extremes_deg": [-22, 22],
+        "hinge_pivot_m":spec["hinge_pivot"], **sweep,
         "blender_render": "NOT RUN by self-test", "unity_import": "NOT RUN",
     }
 
@@ -148,10 +199,19 @@ def write_static_obj(spec, output_dir):
 
 def make_blender_scene(spec, output_dir):
     import bpy
-    bpy.ops.object.select_all(action="SELECT")
-    bpy.ops.object.delete(use_global=False)
-    bpy.context.scene.unit_settings.system = "METRIC"
-    bpy.context.scene.unit_settings.scale_length = 1.0
+    # The original generator deleted EVERY object in the user's open scene.
+    # Replace only our owned collection and leave unrelated objects untouched.
+    collection_name = "M05-002_ASSET"
+    owned = bpy.data.collections.get(collection_name)
+    if owned is not None:
+        for obj in tuple(owned.objects):
+            bpy.data.objects.remove(obj, do_unlink=True)
+        bpy.data.collections.remove(owned)
+    owned = bpy.data.collections.new(collection_name)
+    bpy.context.scene.collection.children.link(owned)
+    for old in tuple(bpy.data.materials):
+        if old.name.startswith("M05-002_") and old.users == 0:
+            bpy.data.materials.remove(old)
 
     material_map = {}
     for name, info in spec["materials"].items():
@@ -167,11 +227,11 @@ def make_blender_scene(spec, output_dir):
         material_map[name] = mat
 
     root = bpy.data.objects.new("M05-002_MOUNT_ROOT", None)
-    bpy.context.collection.objects.link(root)
+    owned.objects.link(root)
     root.empty_display_type = "PLAIN_AXES"
     root.empty_display_size = 0.12
     tilt = bpy.data.objects.new("M05-002_TILT_X", None)
-    bpy.context.collection.objects.link(tilt)
+    owned.objects.link(tilt)
     tilt.parent = root
     tilt.location = tuple(spec["hinge_pivot"])
     tilt.rotation_mode = "XYZ"
@@ -180,11 +240,11 @@ def make_blender_scene(spec, output_dir):
 
     for part in spec["parts"]:
         vertices, faces = part_geometry(part, world=False)
-        mesh = bpy.data.meshes.new(part["name"]+"_mesh")
+        mesh = bpy.data.meshes.new("M05-002_"+part["name"]+"_mesh")
         mesh.from_pydata(vertices, [], faces)
         mesh.update(calc_edges=True)
-        obj = bpy.data.objects.new(part["name"], mesh)
-        bpy.context.collection.objects.link(obj)
+        obj = bpy.data.objects.new("M05-002_"+part["name"], mesh)
+        owned.objects.link(obj)
         obj.parent = tilt if part["parent"] == "tilt" else root
         obj.data.materials.append(material_map[part["material"]])
         # Flat hard-surface surfaces: deliberate sharp normals, no auto smoothing artifacts.
@@ -204,20 +264,44 @@ def make_blender_scene(spec, output_dir):
             for curve in action.fcurves:
                 for key in curve.keyframe_points:
                     key.interpolation = "LINEAR"
-    bpy.context.scene.frame_start = min(spec["keyframes"])
-    bpy.context.scene.frame_end = max(spec["keyframes"])
-    bpy.context.scene.frame_set(spec["keyframes"][1])
-    bpy.context.view_layer.update()
-
+    scene = bpy.context.scene
+    previous_frame = scene.frame_current
+    previous_start, previous_end = scene.frame_start, scene.frame_end
+    previous_selection = tuple(bpy.context.selected_objects)
+    previous_active = bpy.context.view_layer.objects.active
     output_dir.mkdir(parents=True, exist_ok=True)
-    bpy.ops.wm.save_as_mainfile(filepath=str(output_dir / "M05-002.blend"))
-    # Export animated GLB. glTF exporter converts Blender Z-up to glTF Y-up.
-    bpy.ops.export_scene.gltf(
-        filepath=str(output_dir / "M05-002_animated.glb"),
-        export_format="GLB",
-        export_animations=True,
-        export_apply=False,
-    )
+    try:
+        scene.frame_start = min(spec["keyframes"])
+        scene.frame_end = max(spec["keyframes"])
+        scene.frame_set(spec["keyframes"][1])
+        bpy.context.view_layer.update()
+        assert len(owned.objects) == len(spec["parts"]) + 2
+        assert all(obj.name.startswith("M05-002_") for obj in owned.objects)
+        # Write ONLY our collection into an appendable Blender .blend library,
+        # instead of saving unrelated scene content to the asset file.
+        bpy.data.libraries.write(
+            str(output_dir / "M05-002.blend"), {owned}, compress=True)
+        # Export ONLY the owned objects, not other scene geometry.
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in owned.objects:
+            obj.select_set(True)
+        bpy.context.view_layer.objects.active = root
+        bpy.ops.export_scene.gltf(
+            filepath=str(output_dir / "M05-002_animated.glb"),
+            export_format="GLB",
+            use_selection=True,
+            export_animations=True,
+            export_apply=False,
+        )
+    finally:
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in previous_selection:
+            if obj.name in bpy.data.objects:
+                obj.select_set(True)
+        if previous_active is not None and previous_active.name in bpy.data.objects:
+            bpy.context.view_layer.objects.active = previous_active
+        scene.frame_start, scene.frame_end = previous_start, previous_end
+        scene.frame_set(previous_frame)
     return ["M05-002.blend", "M05-002_animated.glb"]
 
 
