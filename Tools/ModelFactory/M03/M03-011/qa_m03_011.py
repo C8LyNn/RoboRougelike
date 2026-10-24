@@ -108,7 +108,9 @@ def main():
     with tempfile.TemporaryDirectory(prefix="rrl-m03-011-") as folder:
         out=Path(folder)
         proc=subprocess.run([sys.executable,str(GEN),"--out",str(out)],
-            capture_output=True,text=True,check=True)
+            capture_output=True,text=True)
+        if proc.returncode:
+            raise RuntimeError("Generator failed:\\n"+proc.stdout+"\\n"+proc.stderr)
         assert '"status": "PASS"' in proc.stdout
         obj=out/"M03-011_impact_corner.obj"
         mtl=out/"M03-011_impact_corner.mtl"
