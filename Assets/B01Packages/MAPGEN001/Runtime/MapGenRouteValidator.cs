@@ -54,7 +54,10 @@ namespace B01.MAPGEN001
             var spine = new List<Vector3> { plan.Start };
             if (plan.Recipe == MapRecipe.ObstacleCourse)
                 spine.AddRange(plan.Checkpoints);
-            spine.Add(plan.Finish);
+            // The last course checkpoint is allowed to coincide with Finish.
+            // Do not manufacture a zero-length terminal segment.
+            if (Vector3.Distance(spine[spine.Count - 1], plan.Finish) > .001f)
+                spine.Add(plan.Finish);
             float minRadius = float.PositiveInfinity;
             for (int i = 1; i + 1 < spine.Count; i++)
             {
