@@ -344,7 +344,8 @@ def qa(rotor):
     assert len(MATERIALS) >= 3
     assert len([o for o in meshes if o.name.startswith("Radiator_Fin_")]) == 21
     assert len([o for o in meshes if o.name.startswith("Fan_Swept_Blade_")]) == FAN_BLADES
-    assert rotor.parent is None and tuple(rotor.location) == FAN_CENTER
+    assert rotor.parent is None
+    assert max(abs(rotor.location[i] - FAN_CENTER[i]) for i in range(3)) < 1e-6
     assert bpy.data.objects.get("MOUNT_SIDE_SOCKET") is not None
     # Conservative analytic collision checks over the continuous fan sweep:
     # rotor outer envelope < inner duct radius, axial gap to rear fins and
