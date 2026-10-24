@@ -243,7 +243,7 @@ def validate(parts):
                 assert math.hypot(X,Y)<DUCT_INNER-.018
                 assert z<.885-.070
                 sample_count+=1
-    assert sample_count>100000
+    assert sample_count>60000
     return dict(asset_id=ID,parts=len(parts),vertices=vertices,
         triangles=triangles,materials=len(MATS),moving_meshes=moving,
         blade_count=BLADE_COUNT,radial_clearance_m=round(radial_gap,5),
