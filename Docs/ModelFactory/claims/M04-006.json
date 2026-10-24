@@ -20,12 +20,16 @@
     "swept_angles": 27,
     "swept_aabb_pairs": 17820,
     "unity_import": "NOT_RUN",
-    "unity_editmode": "NOT_RUN",
-    "unity_playmode": "NOT_RUN",
-    "visual_review": "NOT_RUN"
+    "unity_editmode": "NOT_RUN_BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT_RUN_BLOCKED_ACTIVATION",
+    "visual_review": "NOT_RUN",
+    "unity_ci_activation": "BLOCKED_ACTIVATION",
+    "unity_editmode_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108581996",
+    "unity_playmode_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108581994"
   },
   "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108536193",
   "blender_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108536193/artifacts/12565658004",
   "static_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108536193/artifacts/12565144582",
-  "updated_at_utc": "2026-10-24T15:48:07.797Z"
+  "updated_at_utc": "2026-10-24T15:49:07.160Z",
+  "static_asset_commit": "f156226ae9ca8414616f08cd761b5c6eed213007"
 }
