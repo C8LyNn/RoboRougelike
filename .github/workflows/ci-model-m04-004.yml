@@ -1,0 +1,104 @@
+name: M04-004 Vectoring Jet Nozzle QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-004-vectoring-jet-nozzle
+    paths:
+      - "Tools/ModelFactory/M04/M04-004/**"
+      - ".github/workflows/ci-model-m04-004.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M04/M04-004/**"
+      - ".github/workflows/ci-model-m04-004.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Compile and run full conservative sweep QA
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/ModelFactory/M04/M04-004/generate_m04_004.py
+          mkdir -p /tmp/m04a /tmp/m04b
+          python3 Tools/ModelFactory/M04/M04-004/generate_m04_004.py --self-test --output-dir /tmp/m04a
+          python3 Tools/ModelFactory/M04/M04-004/generate_m04_004.py --self-test --output-dir /tmp/m04b
+          cmp /tmp/m04a/M04-004.obj /tmp/m04b/M04-004.obj
+          cmp /tmp/m04a/M04-004.mtl /tmp/m04b/M04-004.mtl
+          cmp /tmp/m04a/M04-004.static-qa.json /tmp/m04b/M04-004.static-qa.json
+      - name: Assert exact geometry QA
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("/tmp/m04a")
+          q=json.loads((root/"M04-004.static-qa.json").read_text())
+          assert q["status"]=="STATIC_QA_PASS"
+          assert q["pose_samples"]==110
+          assert q["moving_fixed_aabb_checks"]>1000
+          assert q["minimum_y_separation_m"]>0.0
+          assert len(q["materials"])>=3
+          assert "ion_cyan" in q["materials"]
+          obj=(root/"M04-004.obj").read_text()
+          assert sum(line.startswith("o ") for line in obj.splitlines())==q["parts"]
+          assert sum(line.startswith("v ") for line in obj.splitlines())==q["vertices"]
+          print("M04-004 source/OBJ deterministic QA PASS",q)
+          PY
+      - name: Persist validated static OBJ/MTL/QA on exclusive branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m04-004-vectoring-jet-nozzle'
+        run: |
+          set -euo pipefail
+          dst=Tools/ModelFactory/M04/M04-004
+          cp /tmp/m04a/M04-004.obj "$dst/"
+          cp /tmp/m04a/M04-004.mtl "$dst/"
+          cp /tmp/m04a/M04-004.static-qa.json "$dst/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dst/M04-004.obj" "$dst/M04-004.mtl" "$dst/M04-004.static-qa.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "asset(M04-004): generated static OBJ MTL and 110-pose QA"
+            git push origin HEAD:feature/rrl-model-m04-004-vectoring-jet-nozzle
+          fi
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Install Blender for actual bpy runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Execute Blender bpy and animated GLB export
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/m04-blender
+          blender --background --factory-startup --python Tools/ModelFactory/M04/M04-004/generate_m04_004.py -- --output-dir /tmp/m04-blender --require-blender
+          test -s /tmp/m04-blender/M04-004.blend
+          test -s /tmp/m04-blender/M04-004_animated.glb
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          p=Path("/tmp/m04-blender/M04-004_animated.glb")
+          header=p.read_bytes()[:12]
+          magic,version,length=struct.unpack("<4sII",header)
+          assert magic==b"glTF" and version==2 and length==p.stat().st_size
+          q=json.loads(Path("/tmp/m04-blender/M04-004.static-qa.json").read_text())
+          assert q["blender"]=="EXECUTED"
+          print("Real Blender GLB export PASS, bytes",p.stat().st_size)
+          PY
+      - name: Upload animated GLB and editable blend
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M04-004-animated-blender
+          path: |
+            /tmp/m04-blender/M04-004.blend
+            /tmp/m04-blender/M04-004_animated.glb
+            /tmp/m04-blender/M04-004.static-qa.json
+          retention-days: 30
