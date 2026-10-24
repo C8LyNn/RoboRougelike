@@ -266,7 +266,7 @@ def validate(parts):
         assert all(n==2 for n in edges.values()),(p["name"],"nonmanifold")
         assert signed_volume(v,f)>1e-10,(p["name"],"inward winding")
     by={p["name"]:p for p in parts}
-    assert bounds(by["Moving_U_Bumper"])[1]==[-.39,-.33]
+    assert all(abs(v-t)<1e-9 for v,t in zip(bounds(by["Moving_U_Bumper"])[1],(-.39,-.33)))
     assert abs(bounds(by["Frame_Crossmember"])[1][0]-.0115)<1e-8
     # Two real mounting bores with no crossmember obstruction.
     for side,label in ((-1,"L"),(1,"R")):
