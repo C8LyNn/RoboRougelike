@@ -1,0 +1,118 @@
+name: M03-007 Vertical T Bracket QA
+
+on:
+  push:
+    branches: [feature/rrl-model-m03-007-vertical-t-bracket]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-007/**'
+      - '.github/workflows/ci-m03-007.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-007/**'
+      - '.github/workflows/ci-m03-007.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: m03-007-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Compile and self-test procedural mesh
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-007/generate_m03_007.py Tools/ModelFactory/M03/M03-007/validate_m03_007.py
+          python3 Tools/ModelFactory/M03/M03-007/generate_m03_007.py --self-test
+      - name: Generate real OBJ and MTL twice; assert determinism
+        run: |
+          python3 Tools/ModelFactory/M03/M03-007/generate_m03_007.py --out /tmp/m03-007-a
+          python3 Tools/ModelFactory/M03/M03-007/generate_m03_007.py --out /tmp/m03-007-b
+          cmp /tmp/m03-007-a/M03-007_vertical_T_bracket.obj /tmp/m03-007-b/M03-007_vertical_T_bracket.obj
+          cmp /tmp/m03-007-a/M03-007_vertical_T_bracket.mtl /tmp/m03-007-b/M03-007_vertical_T_bracket.mtl
+          python3 Tools/ModelFactory/M03/M03-007/validate_m03_007.py /tmp/m03-007-a
+      - name: Check physical mount specifications and static QA
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/m03-007-a')
+          q=json.loads((p/'M03-007_static_qa.json').read_text())
+          assert q['parts']==27 and q['vertices']==1100 and q['triangles']==2108
+          assert q['materials']==5 and q['foot_bores']==2 and q['top_bores']==2
+          assert q['visible_bolt_heads']==4 and q['shaft_radial_clearance_m']>=.009-1e-9
+          assert q['pivot']==[0,0,0] and q['mount_normal']==[0,0,1]
+          assert q['animation']=='NOT_REQUIRED'
+          assert q['unity']=='NOT_RUN'
+          print('PASS M03-007 topology, four through bores, 5 materials, T bracket pivots')
+          PY
+      - name: Upload actual static geometry
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-007-OBJ-MTL
+          path: |
+            /tmp/m03-007-a/M03-007_vertical_T_bracket.obj
+            /tmp/m03-007-a/M03-007_vertical_T_bracket.mtl
+            /tmp/m03-007-a/M03-007_static_qa.json
+          if-no-files-found: error
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Actually generate and export GLB and BLEND
+        run: |
+          mkdir -p /tmp/m03-007-blender
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-007/generate_m03_007.py -- --out /tmp/m03-007-blender
+          test -s /tmp/m03-007-blender/M03-007_vertical_T_bracket.glb
+          test -s /tmp/m03-007-blender/M03-007_vertical_T_bracket.blend
+      - name: Test bpy repeatability in one process
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import bpy,sys; from pathlib import Path; sys.path.insert(0,'Tools/ModelFactory/M03/M03-007'); import generate_m03_007 as m; p=m.build(); out=Path('/tmp/m03-007-repeat'); out.mkdir(exist_ok=True); m.export_blender(p,out); m.export_blender(p,out); assert len([o for o in bpy.data.objects if o.name.startswith('M03_007_') ])==32; assert len([x for x in bpy.data.meshes if x.name.startswith('M03_007_')])==27; print('PASS: no duplicated owned objects or meshes after repeat')"
+      - name: Inspect Blender-generated GLB
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path('/tmp/m03-007-blender')
+          glb=(root/'M03-007_vertical_T_bracket.glb').read_bytes()
+          assert (root/'M03-007_vertical_T_bracket.blend').stat().st_size>4096
+          magic,version,length=struct.unpack_from('<4sII',glb)
+          assert (magic,version,length)==(b'glTF',2,len(glb))
+          chunk_size,chunk_type=struct.unpack_from('<I4s',glb,12)
+          assert chunk_type==b'JSON'
+          doc=json.loads(glb[20:20+chunk_size])
+          assert len(doc['materials'])==5
+          assert len([n for n in doc['nodes'] if 'mesh' in n])==27
+          assert any(n.get('name')=='M03_007_TOP_MOUNT_PIVOT' for n in doc['nodes'])
+          assert len([n for n in doc['nodes'] if n.get('name','').startswith('M03_007_SNAP_')])==4
+          assert not doc.get('animations')
+          print('PASS real Blender GLB: 27 mesh nodes, 5 PBR materials, top pivot, static')
+          PY
+      - name: Upload actual Blender GLB and BLEND
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-007-Blender-GLB
+          path: |
+            /tmp/m03-007-blender/M03-007_vertical_T_bracket.glb
+            /tmp/m03-007-blender/M03-007_vertical_T_bracket.blend
+          if-no-files-found: error
