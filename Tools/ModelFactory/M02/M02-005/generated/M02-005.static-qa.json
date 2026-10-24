@@ -1,0 +1,40 @@
+{
+  "id": "M02-005",
+  "result": "STATIC_GEOMETRY_PASS",
+  "model": "Koło z rozkładanymi łopatkami",
+  "units": "metres",
+  "mount_pivot": [
+    0,
+    0,
+    0
+  ],
+  "wheel_axis": "Blender +X / glTF Y-up conversion",
+  "wheel_max_radius_folded_m": 0.46068,
+  "tire_radius_m": 0.355,
+  "paddles": 8,
+  "paddle_fold_deg": 80.0,
+  "paddle_deploy_deg": 0.0,
+  "paddle_sweep_samples": 81,
+  "rotor_rotation_samples": 25,
+  "paddle_to_tire_min_radial_clearance_m": 0.02044,
+  "adjacent_paddle_sector_min_gap_deg": 23.792,
+  "shaft_to_bore_clearance_m": 0.028,
+  "seal_to_bore_clearance_m": 0.007,
+  "mesh_count": 70,
+  "obj_vertices": 3216,
+  "obj_polygons": 3736,
+  "materials_used": [
+    "amber_signal",
+    "ceramic",
+    "copper",
+    "gunmetal",
+    "tire_rubber"
+  ],
+  "closed_manifold_meshes": 70,
+  "intentional_joints": "hinge anchors welded into tire; paddle roots overlap hinge barrel",
+  "blender": "NOT RUN",
+  "unity": "NOT RUN",
+  "visual_review": "NOT RUN",
+  "obj": "M02-005.obj",
+  "mtl": "M02-005.mtl"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "M02-005",
+  "status": "PASS",
+  "blender_executed": true,
+  "glb_version": 2,
+  "meshes": 70,
+  "nodes": 80,
+  "animations": 9,
+  "animation_channels": 9,
+  "hinges": 8,
+  "glb_bytes": 170880,
+  "blend_bytes": 114045,
+  "unity_import": "NOT RUN"
+}

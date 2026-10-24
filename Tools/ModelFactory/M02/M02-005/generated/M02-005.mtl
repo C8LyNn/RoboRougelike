@@ -1,0 +1,41 @@
+# M02-005 deterministic five-material palette
+newmtl gunmetal
+Ka .03 .03 .03
+Kd 0.095000 0.132000 0.170000
+Ks .30 .30 .30
+Ns 100
+d 1.0
+illum 2
+
+newmtl tire_rubber
+Ka .03 .03 .03
+Kd 0.026000 0.034000 0.043000
+Ks .30 .30 .30
+Ns 100
+d 1.0
+illum 2
+
+newmtl copper
+Ka .03 .03 .03
+Kd 0.650000 0.320000 0.105000
+Ks .30 .30 .30
+Ns 100
+d 1.0
+illum 2
+
+newmtl ceramic
+Ka .03 .03 .03
+Kd 0.710000 0.770000 0.730000
+Ks .30 .30 .30
+Ns 100
+d 1.0
+illum 2
+
+newmtl amber_signal
+Ka .03 .03 .03
+Kd 0.950000 0.400000 0.050000
+Ks .30 .30 .30
+Ns 100
+d 1.0
+illum 2
+
