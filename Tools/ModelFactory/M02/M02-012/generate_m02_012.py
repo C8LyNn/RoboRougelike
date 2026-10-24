@@ -59,7 +59,8 @@ def track(obj, material, bevel=0.0):
         mod = obj.modifiers.new("Machined_edge_bevel", "BEVEL")
         mod.width = bevel
         mod.segments = 2
-        mod.affect = "EDGES" if hasattr(mod, "affect") else None
+        if hasattr(mod, "affect"):
+            mod.affect = "EDGES"
         normal = obj.modifiers.new("Weighted_face_normals", "WEIGHTED_NORMAL")
         normal.keep_sharp = True
     return obj
