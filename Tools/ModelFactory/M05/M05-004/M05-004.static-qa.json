@@ -1,0 +1,67 @@
+{
+  "id": "M05-004",
+  "status": "STATIC_QA_PASS",
+  "claim_commit": "b3fc5ff7e8fe73bf3a72254b4ece8568b90b68f9",
+  "claim_branch": "feature/rrl-model-factory-queue-v1",
+  "parts": 42,
+  "fixed_parts": 18,
+  "rotating_parts": 24,
+  "materials_used": [
+    "amber",
+    "ceramic",
+    "graphite",
+    "scan_cyan",
+    "smoke_glass",
+    "titanium"
+  ],
+  "vertices": 3956,
+  "polygons": 4368,
+  "triangles": 7776,
+  "manifold_edges_checked": 8256,
+  "bounds_m": {
+    "min": [
+      -0.49,
+      -0.49,
+      0
+    ],
+    "max": [
+      0.49,
+      0.49,
+      0.77
+    ]
+  },
+  "mount_m": [
+    0,
+    0,
+    0
+  ],
+  "rotor_pivot_m": [
+    0,
+    0,
+    0.43
+  ],
+  "rotor_axis": "Blender +Z; glTF/Unity +Y after export_yup",
+  "animation_keyframes": [
+    1,
+    31,
+    61,
+    91,
+    121
+  ],
+  "rotation_degrees": [
+    0,
+    90,
+    180,
+    270,
+    360
+  ],
+  "rotor_to_dome_ceiling_clearance_m": 0.028998,
+  "rotor_to_lower_guard_clearance_m": 0.053,
+  "collision_method": "analytic radial/vertical envelopes + closed-manifold mesh; NOT Unity physics",
+  "blender": "NOT RUN",
+  "glb": "NOT RUN",
+  "unity": "NOT RUN",
+  "visual": "NOT RUN",
+  "static_qa_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40099673115",
+  "note": "This is a recorded result of GitHub Actions static checks and deterministic OBJ/MTL comparison; it does not assert Blender execution or Unity import."
+}
