@@ -279,28 +279,36 @@ def validate(parts):
         radial[group]=(min(r),max(r))
     assert radial["OUTER"][0]-radial["MIDDLE"][1]>.004,radial
     assert radial["MIDDLE"][0]-radial["INNER"][1]>.004,radial
-    # Static cage clearance is sampled per moving vertex against the
-    # actual axis-aligned solid boxes; this is not a polygon-polygon CCD.
+    # Conservative ALL-ANGLE cage certification: every moving vertex is
+    # inside the same bounding sphere for all orthogonal rotations. The
+    # minimum centre-to-AABB distance minus that sphere's outer radius
+    # lower-bounds clearance for every frame, including unsampled poses.
     static_boxes=[p for p in parts if p["group"]=="STATIC"]
     fixed_bounds=[]
     for p in static_boxes:
         fixed_bounds.append([(min(v[k] for v in p["vertices"]),
                               max(v[k] for v in p["vertices"]))
                              for k in range(3)])
-    clearance=1e9;checks=0
+    centre=(0,0,CENTRE_Z)
+    moving=[p for p in parts if p["group"]!="STATIC"]
+    max_radius=max(math.sqrt(dot(v,v)) for p in moving for v in p["vertices"])
+    clearance=min(
+        math.sqrt(sum(max(b[k][0]-centre[k],0,
+                          centre[k]-b[k][1])**2 for k in range(3)))-
+        max_radius for b in fixed_bounds)
+    assert clearance>.008,("cage swept-sphere clearance",clearance)
+    # Independently sweep all 121 animated poses and check every moving
+    # vertex retains its local radius under the complete nested hierarchy.
+    checks=0
     for frame in range(FRAMES):
         t=frame/(FRAMES-1)
-        for p in parts:
-            if p["group"]=="STATIC":continue
+        for p in moving:
             for v in p["vertices"]:
                 xyz=pose_vertex(p,v,t)
-                for b in fixed_bounds:
-                    dist=math.sqrt(sum(max(b[k][0]-xyz[k],0,
-                                           xyz[k]-b[k][1])**2
-                                       for k in range(3)))
-                    clearance=min(clearance,dist)
-                    assert dist>.008,("cage collision",p["name"],frame,dist)
-                    checks+=1
+                dist=math.dist(xyz,centre)
+                assert abs(dist-math.sqrt(dot(v,v)))<1e-8, (
+                    "bad nested rotation",p["name"],frame,dist)
+                checks+=1
     return dict(asset=MODEL,status="PASS",parts=len(parts),vertices=vertices,
                 triangles=triangles,materials=len(MATERIALS),
                 moving_groups={"OUTER":10,"MIDDLE":8,"INNER":13},
@@ -312,9 +320,10 @@ def validate(parts):
                 radial_shells_m={k:[round(x,6) for x in v]
                                  for k,v in radial.items()},
                 bounds_rest_m=bounds,
-                sampled_cage_clearance_checks=checks,
+                sampled_moving_vertex_checks=checks,
+                certified_fixed_cage_boxes=len(fixed_bounds),
                 min_cage_clearance_m=round(clearance,6),
-                qa_scope="watertight winding + all-angle radial-shell separation + sampled moving vertices versus fixed box cage",
+                qa_scope="watertight winding + all-angle radial-shell separation + conservative swept sphere versus every fixed cage box + 121-frame vertex rotation check",
                 blender="NOT RUN",unity="NOT RUN")
 
 def export_obj(parts,folder):
