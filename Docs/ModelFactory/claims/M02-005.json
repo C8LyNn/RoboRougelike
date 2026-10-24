@@ -1,8 +1,22 @@
 {
   "id": "M02-005",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_QA_PASS",
   "claimed_at_utc": "2026-10-24T14:44:55.059Z",
   "model": "Koło z rozkładanymi łopatkami",
-  "run": "2026-10-24T14:00:00Z"
+  "run": "2026-10-24T14:00:00Z",
+  "model_branch": "feature/rrl-model-m02-005-folding-paddle-wheel",
+  "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/74",
+  "model_commit": "77146eab9314ef1d9b9eb4225ce0dca556b8b769",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104074271",
+  "outputs": [
+    "M02-005.obj",
+    "M02-005.mtl",
+    "M02-005.blend",
+    "M02-005_animated.glb",
+    "M02-005.static-qa.json",
+    "M02-005.blender-qa.json"
+  ],
+  "unity_import": "NOT_RUN",
+  "qa_result": "STATIC_AND_REAL_BLENDER_GLB_PASS"
 }
