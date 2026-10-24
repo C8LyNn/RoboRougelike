@@ -1,8 +1,21 @@
 {
   "id": "M04-004",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "ASSET_DRAFT_STATIC_QA_PASS",
   "claimed_at_utc": "2026-10-24T13:51:44Z",
   "model": "Dysza odrzutowa z wektorowaniem",
-  "run": "2026-10-24T13:48:36Z"
+  "run": "2026-10-24T13:48:36Z",
+  "asset_branch": "feature/rrl-model-m04-004-vectoring-jet-nozzle",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/64",
+  "generator_commit": "df01b1b7c23ac3f94d42c2a73ea488dc639cbbe9",
+  "static_qa": {
+    "result": "PASS",
+    "samples": 110,
+    "aabb_pairs": 47520,
+    "minimum_separation_m": 0.01859,
+    "vertices": 1760,
+    "triangles": 3376
+  },
+  "blender_qa": "PENDING_CI",
+  "unity_qa": "NOT_RUN"
 }
