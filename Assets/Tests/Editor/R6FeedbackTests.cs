@@ -26,11 +26,11 @@ public class R6FeedbackTests
         Assert.That(Vector4.Distance(original,props.GetColor("_BaseColor")),Is.GreaterThan(.05f),"Damage must remain visible after the hit flash.");
         Assert.That(part.Damageable.CurrentHp,Is.EqualTo(70).Within(.01f));
         for(int i=0;i<100;i++)part.Damageable.ApplyDamage(.001f,part.transform.position,Vector3.forward);
-        var feedback=GameObject.Find("Combat feedback R6");Assert.That(feedback,Is.Not.Null);
-        Assert.That(feedback.GetComponentsInChildren<Renderer>().Count(r=>r.gameObject.activeInHierarchy),Is.InRange(1,48));
-        Assert.That(feedback.GetComponentsInChildren<Collider>().Any(c=>c.enabled),Is.False);
+        var feedback=run.GetComponentInChildren<RoboRougelike.VFX001.VfxPoolManager>();Assert.That(feedback,Is.Not.Null);
+        Assert.That(feedback.ActiveCount,Is.InRange(1,48));
+        Assert.That(feedback.GetComponentsInChildren<Collider>(true),Is.Empty);
         until=Time.time+1;while(Time.time<until)yield return null;
-        Assert.That(feedback.GetComponentsInChildren<Renderer>().Length,Is.Zero,"Short lived effects must be cleaned up.");
+        Assert.That(feedback.ActiveCount,Is.Zero,"Short lived effects must return to the bounded pool.");
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

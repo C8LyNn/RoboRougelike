@@ -7,6 +7,7 @@ namespace RoboRougelike.PackageIntegration
     [DisallowMultipleComponent]
     public sealed class RRLCoverAdapter : MonoBehaviour,IRRLHitReceiver
     {
+        public static event System.Action<RRLCoverAdapter,Vector3,Vector3,bool> ResolvedHit;
         DestructibleArenaCover cover;
         Renderer visual;
         Color intactColor;
@@ -23,7 +24,11 @@ namespace RoboRougelike.PackageIntegration
             RefreshVisual(cover.Stage);
         }
         public bool ReceiveHit(float damage,Vector3 point,Vector3 direction,Transform source)
-            =>cover!=null&&cover.isActiveAndEnabled&&cover.ApplyDamage(damage);
+        {
+            if(cover==null||!cover.isActiveAndEnabled||!cover.ApplyDamage(damage))return false;
+            try{ResolvedHit?.Invoke(this,point,direction,cover.Broken);}catch(System.Exception error){Debug.LogException(error);}
+            return true;
+        }
         void RefreshVisual(CoverDamageStage stage)
         {
             if(visual==null)return;

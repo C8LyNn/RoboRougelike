@@ -1,0 +1,21 @@
+{
+  "name": "RoboRougelike.VFX001.EditModeTests",
+  "rootNamespace": "RoboRougelike.VFX001.Tests",
+  "references": [
+    "RoboRougelike.VFX001.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
