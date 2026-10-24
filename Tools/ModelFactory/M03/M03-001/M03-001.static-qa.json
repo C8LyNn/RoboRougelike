@@ -71,5 +71,7 @@
   "snap_physical_contact": "six face-centre plates outer surface at +/- 0.5 m",
   "top_bottom_mounting": "each Z port has four radial stiffening ribs linking plate to perimeter beams",
   "geometry_revision": "M03-001_PHYSICAL_SNAP_PADS_V2",
-  "validation_status": "SOURCE_GEOMETRY_STATIC_CHECKS_PENDING_CI"
+  "validation_status": "PASS_GITHUB_ACTIONS_STATIC",
+  "qa_evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40096135238",
+  "validation_scope": "OBJ 66 closed mesh components; 6 outward flush pads; 8 top/bottom ribs; exact 1m bounds; source AST; manifest parity"
 }
