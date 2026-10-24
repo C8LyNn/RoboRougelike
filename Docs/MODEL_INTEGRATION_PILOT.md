@@ -39,3 +39,16 @@ Target Unity: 6000.3.14f1, URP 17.3.0. Base: `develop`.
 - Unity EditMode, PlayMode and Windows Player QA are required; do NOT mark PASS without actual logs.
 
 This branch is a foundation for Codex local integration, not a completed full-asset rollout.
+
+## Repeatable Unity setup command (new)
+After copying the original GLBs to the exact paths:
+- `Assets/RRLImportedModels/W01/W01_R2_Game_L.glb`
+- `Assets/RRLImportedModels/W01/W01_R2_Game_R.glb`
+- `Assets/RRLImportedModels/H01/H01_V4_SideDrive_Animated.glb`
+
+Run menu: `Tools > RoboRougelike > Visual Models > Configure W01 + H01 Pilot`.
+The command validates the imported prefabs BEFORE changing the catalog, preserves
+unrelated catalog entries and writes Resources/RRLPartVisualCatalog.asset.
+Review scale, axis and pivot on Windows Unity — the provided numbers are
+starting estimates, not verified by runtime tests. Do not track Unity-generated
+model .meta files until import and visual QA are satisfactory.
