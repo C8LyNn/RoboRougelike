@@ -14,10 +14,16 @@ True physical RED1/1 at629e9372 demonstrated missing actual garage module; adapt
 
 Initial test-harness attempts failed during domain reload because a captured local enum closure in UnitySetUp was lost; moving it to the fixture field produced the actual feature RED. These setup failures are not counted as mechanic failures. The existing COV control1/1 passed unchanged. The recovery fixture uses an explicit Time.time loop in Editor mode; original EMP runtime was not changed.
 
-These are Editor API/physics/input fixtures, not native Windows gameplay. Windows/native mounting/scanning/repair and full regression execute once with SEN/MOV011 at W8 closure. The verified W7 RC1 ZIP remains independent.
+The targeted results above are Editor API/physics/input fixtures. Native and full-wave closure is recorded below; the verified W7 RC1 ZIP remains independent.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W8 native Windows and full-wave closure.**
+**Decision: READY in the tested W8 RC1 aggregate, with the unresolved automation-attached C0000005 shutdown limitation.**
 
 [Machine-readable cases](COM-001_test_summary.json). API fixtures are distinct from native input gameplay.
 
 Integration [Draft PR #32](https://github.com/C8LyNn/RoboRougelike/pull/32); no shared-branch merge.
+
+## Final W8 aggregate closure
+
+Final gameplay/build source `40173ee60a481c07ccc005fe94c517c524aef0fa` passes full976/976 EditMode and398/398 PlayMode, native exits0. The final Windows API/physics fixture passes47/47 with actual process0 and no Sky attached. Native UI verifies physical purchases/mounts, K/L/M controls and pause; the separate ordinary combat-input pilot completes all6 stages/15 foes, actual rewards/paid repair/garage assembly/final victory and restart. Actual extracted retail launches at720p and the input campaign runs at1080p. These methods are distinct, not a claim of six human-driven fights. Earlier frozen per-ID PRs rely on final Draft34 for the shared COM reactivation fix and aggregate closure.
+
+The complete203-file W8 RC1 ZIP is38,482,493bytes with SHA256 `2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b`; CRC/all extracted hashes and actual extracted launch verified. Sky-attached shutdown still returnsC0000005; no game-code fix or fresh human W8 close PASS is claimed. W7 RC1 is unchanged. [Full W8 wave report, performance, limits and evidence](W8_WAVE_QA.md). No main/develop/W5 merge.

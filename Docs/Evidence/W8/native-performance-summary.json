@@ -1,0 +1,23 @@
+{
+  "source": "40173ee60a481c07ccc005fe94c517c524aef0fa",
+  "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+  "cpu": "AMD Ryzen 9 9950X 16-Core Processor ",
+  "width": 1920,
+  "height": 1080,
+  "targetFrameRate": 60,
+  "noEditorActive": true,
+  "metrics": {
+    "combatSeconds": 116.59422302246094,
+    "physicalRounds": 1227,
+    "peakShells": 21,
+    "peakDebris": 12,
+    "worstP95Ms": 16.671506881713867,
+    "worstP99Ms": 16.8539981842041,
+    "maxFrameMs": 17.142396926879883,
+    "peakParts": 269,
+    "peakEnemies": 4,
+    "peakAllocatedMiB": 171.21763801574707,
+    "maxTransitionMs": 70.1904296875
+  },
+  "limits": "Single RTX5080/9950X native QA observer run; prior W7 outliers are not proven fixed; no weaker hardware guarantee"
+}

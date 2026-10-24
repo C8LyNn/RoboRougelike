@@ -1,0 +1,24 @@
+{
+  "source": "40173ee60a481c07ccc005fe94c517c524aef0fa",
+  "method": "Native Windows UI operator using actual window clicks/key events; no garage/damage/state APIs for these observations",
+  "graphics": "1920x1080 player window, logical capture1284x751",
+  "checks": [
+    "Menu Light selection -> real sandbox garage",
+    "Catalog page5 MOV011 and page4 COM/SEN selectable",
+    "Three actual surface clicks mounted MOV011/COM/SEN; funds600->555->515->485; fields20->24->28->32",
+    "Range shows one234kg Light/4wheels/80HP and allthree device HUDs",
+    "Four actual M key events cycle FrontOnly->RearOnly->CounterPhase->Crab->FrontOnly",
+    "K yields10 structural contacts and visible HP100% snapshot",
+    "L yields one Enemy signal8m/front and no structural HP",
+    "M during actual pause does not change Crab mode after resume",
+    "UI enables actual training AI rocket fire; observed Core80->52HP, surviving-parts81%, visible impact sparks",
+    "UI reset restores80HP/100% parts and disables training fire",
+    "UI return to workshop retains485scrap/32fields/three modules; bulk repair0",
+    "UI main menu transition succeeds"
+  ],
+  "limitations": [
+    "No native part-detachment claim from this range observation; destruction/repair covered separately by native API and full tests",
+    "Combat input pilot remains inactive in TestDrive and only drives Combat; upcoming campaign is a distinct method",
+    "Menu retains historical W6 cosmetic title; RC identity is in archive manifest"
+  ]
+}

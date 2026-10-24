@@ -18,10 +18,16 @@ One fresh whole-W8 read-only review found no Critical issue. Its HUD/evidence fi
 
 Windows x64 retail and QA build206a18fe both Succeeded/0errors/4existingwarnings, actual process0. Final1280×720 D3D11/RTX5080 controlled native fixture6ef87d4e passed47/47/error[]/actual process0. It separately verifies default-planar R6 and a real four-support MOV009/gravity/unconstrained-body rig; supported crab moves(.76,0,1.78)m with.0001819°yaw and2766.4N lift. Real garage purchases, scanner LOS/pulse, EMP, retained COM deadline, destruction/paid repair/remove/remount and workshop isolation pass. These are native API/physics fixtures, not manual gameplay. The first36-check fixture's "normal suspension" wording was inaccurate; it established default-planar behavior only and is superseded by the explicit separate final checks.
 
-Complete EditMode/PlayMode is running on the final built source. Native UI/ordinary-input gameplay, final packaging/extraction/launch remain W8 closure gates; no release READY claim yet. Stable W7 RC1 ZIP remains38,447,241bytes/hash41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5. No develop/main/W5 merge.
+Complete EditMode976/976 and PlayMode398/398 pass on the final built source, native exits0. Native UI/ordinary-input gameplay, packaging/extraction and actual extracted retail launch are verified in the final closure below. Stable W7 RC1 ZIP remains38,447,241bytes/hash41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5. No develop/main/W5 merge.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W8 native Windows and full-wave closure.**
+**Decision: READY in the tested W8 RC1 aggregate, with the unresolved automation-attached C0000005 shutdown limitation.**
 
 [Machine-readable cases](MOV-011_test_summary.json). API fixtures are distinct from native input gameplay.
 
 Integration [Draft PR #34](https://github.com/C8LyNn/RoboRougelike/pull/34); no shared-branch merge.
+
+## Final W8 aggregate closure
+
+Final gameplay/build source `40173ee60a481c07ccc005fe94c517c524aef0fa` passes full976/976 EditMode and398/398 PlayMode, native exits0. The final Windows API/physics fixture passes47/47 with actual process0 and no Sky attached. Native UI verifies physical purchases/mounts, K/L/M controls and pause; the separate ordinary combat-input pilot completes all6 stages/15 foes, actual rewards/paid repair/garage assembly/final victory and restart. Actual extracted retail launches at720p and the input campaign runs at1080p. These methods are distinct, not a claim of six human-driven fights. Earlier frozen per-ID PRs rely on final Draft34 for the shared COM reactivation fix and aggregate closure.
+
+The complete203-file W8 RC1 ZIP is38,482,493bytes with SHA256 `2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b`; CRC/all extracted hashes and actual extracted launch verified. Sky-attached shutdown still returnsC0000005; no game-code fix or fresh human W8 close PASS is claimed. W7 RC1 is unchanged. [Full W8 wave report, performance, limits and evidence](W8_WAVE_QA.md). No main/develop/W5 merge.
