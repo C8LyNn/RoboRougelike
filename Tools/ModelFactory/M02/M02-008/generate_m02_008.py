@@ -467,6 +467,8 @@ def blender_export(parts,out):
             mod.segments=3
             if hasattr(mod,"affect"):
                 mod.affect="EDGES"
+            if hasattr(mesh,"use_auto_smooth"):
+                mesh.use_auto_smooth=True
             ob.modifiers.new("Weighted normals","WEIGHTED_NORMAL")
         else:
             for face in mesh.polygons:
