@@ -9,6 +9,28 @@ from pathlib import Path
 import sys
 
 SPEC = json.loads(r'''{"id":"M03-002","name":"Belka teleskopowa 1x2x1","version":1,"units":"meters","axes":"Blender X width, Y longitudinal, Z up; rear mounting origin=(0,0,0)","extension_m":0.55,"sleeve_front_y":1.36,"slider_rear_y":0.52,"minimum_overlap_m":0.29,"palette":{"graphite":{"rgb":[0.064,0.077,0.098],"metallic":0.62,"roughness":0.42},"titanium":{"rgb":[0.32,0.38,0.43],"metallic":0.82,"roughness":0.3},"ceramic":{"rgb":[0.72,0.75,0.72],"metallic":0.16,"roughness":0.28},"safety_yellow":{"rgb":[0.98,0.69,0.045],"metallic":0.12,"roughness":0.36},"rubber":{"rgb":[0.035,0.038,0.044],"metallic":0.02,"roughness":0.79},"signal_cyan":{"rgb":[0.06,0.47,0.88],"metallic":0.25,"roughness":0.22,"emission":1.5}},"parts":[{"name":"Rear_mount_flange","center":[0,0.05,0],"size":[1,0.1,1],"material":"titanium","group":"rear"},{"name":"Sleeve_side_-1","center":[-0.3775,0.73,0],"size":[0.085,1.26,0.64],"material":"graphite","group":"sleeve"},{"name":"Sleeve_lateral_rail_top_-1","center":[-0.435,0.73,0.24],"size":[0.03,0.93,0.05],"material":"titanium","group":"sleeve"},{"name":"Sleeve_lateral_rail_bottom_-1","center":[-0.435,0.73,-0.24],"size":[0.03,0.93,0.05],"material":"titanium","group":"sleeve"},{"name":"Safety_stripe_-1_0","center":[-0.428,0.22,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_1","center":[-0.428,0.312,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_2","center":[-0.428,0.404,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_3","center":[-0.428,0.496,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_4","center":[-0.428,0.588,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_5","center":[-0.428,0.6799999999999999,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_6","center":[-0.428,0.772,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_7","center":[-0.428,0.864,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_8","center":[-0.428,0.956,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_-1_9","center":[-0.428,1.048,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Slider_side_-1","center":[-0.2575,1.11,0],"size":[0.055,1.18,0.38],"material":"titanium","group":"slide"},{"name":"Slider_guide_-1_-0.11","center":[-0.292,1.15,-0.11],"size":[0.014,1,0.026],"material":"ceramic","group":"slide"},{"name":"Slider_guide_-1_0.11","center":[-0.292,1.15,0.11],"size":[0.014,1,0.026],"material":"ceramic","group":"slide"},{"name":"Slider_measure_-1_0","center":[-0.293,1.38,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_1","center":[-0.293,1.422,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_2","center":[-0.293,1.464,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_3","center":[-0.293,1.5059999999999998,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_4","center":[-0.293,1.5479999999999998,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_5","center":[-0.293,1.5899999999999999,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_6","center":[-0.293,1.632,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_-1_7","center":[-0.293,1.674,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Rear_bolt_-1_-0.44","center":[-0.46,0.11,-0.44],"size":[0.04,0.02,0.04],"material":"ceramic","group":"rear"},{"name":"Rear_bolt_-1_0.44","center":[-0.46,0.11,0.44],"size":[0.04,0.02,0.04],"material":"ceramic","group":"rear"},{"name":"Front_side_accent_-1","center":[-0.458,1.91,0.24],"size":[0.016,0.12,0.07],"material":"safety_yellow","group":"slide"},{"name":"Sleeve_side_1","center":[0.3775,0.73,0],"size":[0.085,1.26,0.64],"material":"graphite","group":"sleeve"},{"name":"Sleeve_lateral_rail_top_1","center":[0.435,0.73,0.24],"size":[0.03,0.93,0.05],"material":"titanium","group":"sleeve"},{"name":"Sleeve_lateral_rail_bottom_1","center":[0.435,0.73,-0.24],"size":[0.03,0.93,0.05],"material":"titanium","group":"sleeve"},{"name":"Safety_stripe_1_0","center":[0.428,0.22,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_1","center":[0.428,0.312,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_2","center":[0.428,0.404,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_3","center":[0.428,0.496,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_4","center":[0.428,0.588,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_5","center":[0.428,0.6799999999999999,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_6","center":[0.428,0.772,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_7","center":[0.428,0.864,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_8","center":[0.428,0.956,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Safety_stripe_1_9","center":[0.428,1.048,0],"size":[0.016,0.042,0.18],"material":"safety_yellow","group":"sleeve"},{"name":"Slider_side_1","center":[0.2575,1.11,0],"size":[0.055,1.18,0.38],"material":"titanium","group":"slide"},{"name":"Slider_guide_1_-0.11","center":[0.292,1.15,-0.11],"size":[0.014,1,0.026],"material":"ceramic","group":"slide"},{"name":"Slider_guide_1_0.11","center":[0.292,1.15,0.11],"size":[0.014,1,0.026],"material":"ceramic","group":"slide"},{"name":"Slider_measure_1_0","center":[0.293,1.38,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_1","center":[0.293,1.422,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_2","center":[0.293,1.464,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_3","center":[0.293,1.5059999999999998,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_4","center":[0.293,1.5479999999999998,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_5","center":[0.293,1.5899999999999999,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_6","center":[0.293,1.632,0],"size":[0.016,0.012,0.09],"material":"safety_yellow","group":"slide"},{"name":"Slider_measure_1_7","center":[0.293,1.674,0],"size":[0.016,0.012,0.055],"material":"safety_yellow","group":"slide"},{"name":"Rear_bolt_1_-0.44","center":[0.46,0.11,-0.44],"size":[0.04,0.02,0.04],"material":"ceramic","group":"rear"},{"name":"Rear_bolt_1_0.44","center":[0.46,0.11,0.44],"size":[0.04,0.02,0.04],"material":"ceramic","group":"rear"},{"name":"Front_side_accent_1","center":[0.458,1.91,0.24],"size":[0.016,0.12,0.07],"material":"safety_yellow","group":"slide"},{"name":"Sleeve_bottom","center":[0,0.73,-0.2775],"size":[0.67,1.26,0.085],"material":"graphite","group":"sleeve"},{"name":"Sleeve_top_rail_-1_-0.24","center":[-0.24,0.73,-0.335],"size":[0.055,0.93,0.03],"material":"titanium","group":"sleeve"},{"name":"Sleeve_top_rail_-1_0.24","center":[0.24,0.73,-0.335],"size":[0.055,0.93,0.03],"material":"titanium","group":"sleeve"},{"name":"Slider_bottom","center":[0,1.11,-0.1625],"size":[0.46,1.18,0.055],"material":"titanium","group":"slide"},{"name":"Front_top_accent_-1_-0.3","center":[-0.3,1.91,-0.408],"size":[0.04,0.1,0.016],"material":"safety_yellow","group":"slide"},{"name":"Front_top_accent_-1_0.3","center":[0.3,1.91,-0.408],"size":[0.04,0.1,0.016],"material":"safety_yellow","group":"slide"},{"name":"Sleeve_top","center":[0,0.73,0.2775],"size":[0.67,1.26,0.085],"material":"graphite","group":"sleeve"},{"name":"Sleeve_top_rail_1_-0.24","center":[-0.24,0.73,0.335],"size":[0.055,0.93,0.03],"material":"titanium","group":"sleeve"},{"name":"Sleeve_top_rail_1_0.24","center":[0.24,0.73,0.335],"size":[0.055,0.93,0.03],"material":"titanium","group":"sleeve"},{"name":"Slider_top","center":[0,1.11,0.1625],"size":[0.46,1.18,0.055],"material":"titanium","group":"slide"},{"name":"Front_top_accent_1_-0.3","center":[-0.3,1.91,0.408],"size":[0.04,0.1,0.016],"material":"safety_yellow","group":"slide"},{"name":"Front_top_accent_1_0.3","center":[0.3,1.91,0.408],"size":[0.04,0.1,0.016],"material":"safety_yellow","group":"slide"},{"name":"Slider_nose_cap","center":[0,1.76,0],"size":[0.76,0.12,0.56],"material":"ceramic","group":"slide"},{"name":"Front_mount_flange","center":[0,1.91,0],"size":[0.9,0.18,0.8],"material":"titanium","group":"slide"}]}''')
+# V2: 8 removable low-friction guide liners inside the stationary sleeve.
+# x inner face = 0.312 m; moving guide maximum x = 0.299 m.
+# A 13 mm static design clearance remains over the full 550 mm stroke.
+# Each liner is seated 3 mm into the stationary wall (wall starts x=0.335).
+LINER_INNER_X = 0.312
+LINER_OUTER_X = 0.338
+SLIDING_GUIDE_OUTER_X = 0.299
+LINER_CLEARANCE_M = LINER_INNER_X - SLIDING_GUIDE_OUTER_X
+LINER_ANCHOR_OVERLAP_M = LINER_OUTER_X - 0.335
+LINER_SPECS = []
+for side in (-1, 1):
+    for z in (-0.11, 0.11):
+        for y in (0.48, 1.06):
+            suffix = ("N" if side < 0 else "P") + ("N" if z < 0 else "P") + ("REAR" if y < .75 else "FRONT")
+            LINER_SPECS.append({
+                "name": "Sleeve_WearLiner_" + suffix,
+                "center": [side * 0.325, y, z],
+                "size": [0.026, 0.30, 0.060],
+                "material": "rubber",
+                "group": "sleeve",
+            })
+SPEC["parts"].extend(LINER_SPECS)
 ID = SPEC["id"]
 
 def bounds(part, extension=0.0):
@@ -35,6 +57,17 @@ def validate():
             assert b[1][i] <= limits[1] + 1e-8, (p["name"], i, b)
     fixed = [p for p in parts if p["group"] != "slide"]
     sliding = [p for p in parts if p["group"] == "slide"]
+    assert len(LINER_SPECS) == 8
+    assert LINER_CLEARANCE_M >= 0.012, LINER_CLEARANCE_M
+    assert LINER_ANCHOR_OVERLAP_M >= .002, LINER_ANCHOR_OVERLAP_M
+    for liner in LINER_SPECS:
+        assert liner in fixed
+        # Check the liner's actual face relative to both moving guide strips.
+        lo, hi = bounds(liner)
+        side = 1 if liner["center"][0] > 0 else -1
+        nearest_x = lo[0] if side > 0 else hi[0]
+        assert abs(nearest_x - side * LINER_INNER_X) < 1e-8
+        assert liner["material"] == "rubber"
     count = 0
     for sample in range(21):
         ext = SPEC["extension_m"] * sample / 20.0
@@ -53,6 +86,10 @@ def validate():
         "minimum_overlap_m": SPEC["minimum_overlap_m"],
         "collision_samples": 21, "moving_fixed_aabb_checks": count,
         "moving_fixed_collision": "PASS (conservative AABB; not a Unity physics test)",
+        "fixed_wear_liners": len(LINER_SPECS),
+        "liner_slider_nominal_clearance_m": round(LINER_CLEARANCE_M, 3),
+        "liner_wall_anchor_overlap_m": round(LINER_ANCHOR_OVERLAP_M, 3),
+        "moving_slide_sample_envelope": [0, SPEC["extension_m"]],
         "blender": "NOT RUN", "unity": "NOT RUN", "visual": "NOT RUN"
     }
 
@@ -173,12 +210,31 @@ def blender_build(out_dir):
     scene.frame_end = 60
     scene.frame_set(1)
     bpy.ops.wm.save_as_mainfile(filepath=str(out_dir / (ID + ".blend")))
-    bpy.ops.export_scene.gltf(
-        filepath=str(out_dir / (ID + "_animated.glb")),
-        export_format="GLB",
-        export_animations=True,
-        export_yup=True
-    )
+    # CRITICAL: default glTF export exports the entire open Blender scene
+    # (camera, lights, unrelated vehicle parts, other model collections).
+    # Restrict export to this asset's root, slider, sockets and own meshes.
+    # Do not mutate another artist's scene or selection on return.
+    prior_selection = tuple(bpy.context.selected_objects)
+    prior_active = bpy.context.view_layer.objects.active
+    try:
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in col.objects:
+            obj.select_set(True)
+        bpy.context.view_layer.objects.active = mount
+        bpy.ops.export_scene.gltf(
+            filepath=str(out_dir / (ID + "_animated.glb")),
+            export_format="GLB",
+            use_selection=True,
+            export_animations=True,
+            export_yup=True,
+        )
+    finally:
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in prior_selection:
+            if obj.name in bpy.data.objects:
+                obj.select_set(True)
+        if prior_active is not None and prior_active.name in bpy.data.objects:
+            bpy.context.view_layer.objects.active = prior_active
     return {"blend": str(out_dir / (ID + ".blend")),
             "animated_glb": str(out_dir / (ID + "_animated.glb"))}
 
