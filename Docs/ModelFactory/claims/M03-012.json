@@ -9,5 +9,9 @@
   "branch": "feature/rrl-model-m03-012-u-spring-bumper",
   "model_commit": "c3d3db02ced1f0a1ea7a9c164f784ff18323e515",
   "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/workflows/ci-m03-012.yml",
-  "unity": "NOT RUN"
+  "unity": "NOT RUN",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136361762",
+  "qa_static": "PASS",
+  "qa_blender": "PASS",
+  "qa_unity": "BLOCKED_UNITY_ACTIVATION"
 }
