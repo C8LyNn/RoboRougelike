@@ -7,7 +7,7 @@
 - BASE_BRANCH: `feature/rrl-mov011-integration`
 - BASE_SHA: `865932fd78ef936493bdc51ea9ca612fe9ec31eb` (W8 PR34 documentation head; gameplay/build source40173ee).
 - WORK_BRANCH: `codex/b01-phy-grounding-core-r1`, existing isolated worktree reused.
-- FINAL_SHA (gameplay, build and native QA): `523046f5bf6ddab0caf62253615c962e808c3053`. Final Editor-fixture checkpoint: `54f0192b89ffac9f6989da36e8f5d893e631d600`; its five changed files are Editor tests only. Later commits contain release tooling, evidence and documentation. Draft PR: pending publication.
+- FINAL_SHA (gameplay, build and native QA): `523046f5bf6ddab0caf62253615c962e808c3053`. Final Editor-fixture checkpoint: `54f0192b89ffac9f6989da36e8f5d893e631d600`; its five changed files are Editor tests only. Later commits contain release tooling, evidence and documentation. Draft PR: [#125](https://github.com/C8LyNn/RoboRougelike/pull/125), OPEN/DRAFT, base `feature/rrl-mov011-integration`. Published implementation/evidence snapshot: `a22352d00398fb3a3d8bafae1455d179b93f5886`; subsequent commit only closes report/PR metadata.
 - Initial worktree: clean, no unpublished tracked changes. Latest refs fetched before changes. No later PHY001/PHY002 implementation found in local/remote history or issue search at that snapshot. Newer model/pilot branches are independent proposals, not a newer verified gameplay base.
 - INBOX #79 and central #71 read. INBOX had no comments or this iteration's approval; the owner supplied approval directly here. No foreign task was started or message posted on the basis of issue content.
 - codex_scope_status: CONFIRMED; active_task: B01-CODEX-PHY-R1.
@@ -143,6 +143,6 @@ Product: `R6VehicleDrive.cs`, new `R6WheelContacts.cs` and `R6CoreRecovery.cs`; 
 | Native UI smoke, repairs/bonus/next fight/camera |DONE by operator/input pilot; human full gameplay NOT_RUN |
 | ZIP/extraction/actual launch/human close |DONE |
 | C0000005 root-cause fix |PARTIAL: reproduced with UI automation, normal human exit0, not fixed |
-| Draft PR/final evidence |Evidence DONE; Draft publication pending |
+| Draft PR/final evidence |DONE: [Draft PR125](https://github.com/C8LyNn/RoboRougelike/pull/125), evidence committed |
 
 Decision: **READY FOR DRAFT REVIEW** with known automation shutdown failure, explicit fixture-only follow-up method and deferred geometry coverage. Submit to Queen/B01-60 for acceptance; a stricter fresh full CI can be required before merge. No merge, deployment or next iteration is performed.
