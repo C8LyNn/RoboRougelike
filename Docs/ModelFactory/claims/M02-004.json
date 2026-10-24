@@ -11,7 +11,7 @@
   "static_artifact_commit": "820b605c4d731036984432f5a49e8a07d8ac76e5",
   "static_qa": "PASS (actual GitHub Actions 40100348344)",
   "blender_qa": "PASS (actual Blender 5.0.1 GLB 2.0, 37 meshes, 1 animation, 167704 bytes)",
-  "unity_qa": "NOT RUN",
+  "unity_qa": "BLOCKED_UNITY_ACTIVATION (CI-02 40100352252 and CI-03 40100352253 fail credential gate before Unity)",
   "blender_artifact_commit": "e225d9937614c9d6a9fc5ebe2c4041632c91eec4",
   "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40100348344"
 }
