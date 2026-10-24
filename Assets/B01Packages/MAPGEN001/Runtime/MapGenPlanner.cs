@@ -40,7 +40,7 @@ namespace B01.MAPGEN001
                 if (config.Segments < 3 || config.Segments > 5
                     || !Finite(config.LaneWidth) || config.LaneWidth < 10f || config.LaneWidth > 30f)
                     throw new ArgumentException("Course requires 3..5 segments and lane width 10..30m");
-                if (vehicle.Width + .5f > config.LaneWidth * .62f)
+                if (vehicle.Width + .5f > config.LaneWidth * .60f - 3f)
                     throw new ArgumentException("IMPOSSIBLE_COURSE_PROFILE: reserved centre clearance cannot fit vehicle");
                 if (vehicle.MinTurnRadius > 15f)
                     throw new ArgumentException("IMPOSSIBLE_COURSE_TURN_RADIUS");
@@ -96,7 +96,7 @@ namespace B01.MAPGEN001
                 new Vector3(2 * (maxX + width * .5f + 3), 8, config.Segments * 16f + 5));
             p.Start = new Vector3(cx[0], 1.25f, 2);
             p.Finish = new Vector3(cx[cx.Length - 1], 1.25f, config.Segments * 16f - 3);
-            p.GuaranteedClearanceWidth = width * .62f; // conservative unobstructed centre lane
+            p.GuaranteedClearanceWidth = width * .60f - 3f; // full free width between side ramps
             for (int i = 0; i < cx.Length; i++)
             {
                 float z = 8f + 16f * i;
