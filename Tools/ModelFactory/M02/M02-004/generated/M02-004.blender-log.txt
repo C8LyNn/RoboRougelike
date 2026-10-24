@@ -1,0 +1,64 @@
+/home/runner/work/RoboRougelike/RoboRougelike/Tools/ModelFactory/M02/M02-004/generate_m02_004.py:273: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes=True
+Traceback (most recent call last):
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/__init__.py", line 1090, in execute
+    from .blender.exp import export as gltf2_blender_export
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/export.py", line 17, in <module>
+    from . import gather as gltf2_blender_gather
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/gather.py", line 11, in <module>
+    from . import nodes as gltf2_blender_gather_nodes
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/nodes.py", line 15, in <module>
+    from . import tree as gltf2_blender_gather_tree
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/tree.py", line 7, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+00:00.455  bpy.rna          | ERROR Python script error in EXPORT_SCENE_OT_gltf.execute
+Traceback (most recent call last):
+  File "/home/runner/work/RoboRougelike/RoboRougelike/Tools/ModelFactory/M02/M02-004/generate_m02_004.py", line 363, in <module>
+    main()
+    ~~~~^^
+  File "/home/runner/work/RoboRougelike/RoboRougelike/Tools/ModelFactory/M02/M02-004/generate_m02_004.py", line 357, in main
+    q["blender_outputs"]=blender_export(out)
+                         ~~~~~~~~~~~~~~^^^^^
+  File "/home/runner/work/RoboRougelike/RoboRougelike/Tools/ModelFactory/M02/M02-004/generate_m02_004.py", line 327, in blender_export
+    bpy.ops.export_scene.gltf(filepath=str(out/(ID+"_animated.glb")),
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                              export_format="GLB",export_animations=True,
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                              use_selection=True,export_yup=True)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/blender/scripts/modules/bpy/ops.py", line 109, in __call__
+    ret = _op_call(self.idname_py(), kw)
+RuntimeError: Error: Python: Traceback (most recent call last):
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/__init__.py", line 1090, in execute
+    from .blender.exp import export as gltf2_blender_export
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/export.py", line 17, in <module>
+    from . import gather as gltf2_blender_gather
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/gather.py", line 11, in <module>
+    from . import nodes as gltf2_blender_gather_nodes
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/nodes.py", line 15, in <module>
+    from . import tree as gltf2_blender_gather_tree
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/tree.py", line 7, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+Location: /usr/lib/blender/scripts/modules/bpy/ops.py:109
+
+Info: Saved as "M02-004.blend"
+Error: Python: Traceback (most recent call last):
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/__init__.py", line 1090, in execute
+    from .blender.exp import export as gltf2_blender_export
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/export.py", line 17, in <module>
+    from . import gather as gltf2_blender_gather
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/gather.py", line 11, in <module>
+    from . import nodes as gltf2_blender_gather_nodes
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/nodes.py", line 15, in <module>
+    from . import tree as gltf2_blender_gather_tree
+  File "/usr/lib/blender/scripts/addons_core/io_scene_gltf2/blender/exp/tree.py", line 7, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+Location: /usr/lib/blender/scripts/modules/bpy/ops.py:109
+
+Error: script failed, file: 'Tools/ModelFactory/M02/M02-004/generate_m02_004.py', exiting.
+Blender 5.0.1
+
+Blender quit
