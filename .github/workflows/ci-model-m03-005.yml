@@ -1,0 +1,117 @@
+name: Model Factory M03-005 — Octagonal Adapter QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m03-005-octagonal-universal-adapter
+    paths:
+      - "Tools/ModelFactory/M03/M03-005/**"
+      - ".github/workflows/ci-model-m03-005.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M03/M03-005/**"
+      - ".github/workflows/ci-model-m03-005.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Compile Blender generator and independent OBJ validator
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-005/generate_m03_005.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-005/validate_m03_005.py
+      - name: Generate real 3D OBJ/MTL and manifest
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/m03-005-geometry
+          python3 Tools/ModelFactory/M03/M03-005/generate_m03_005.py --self-test --output-dir /tmp/m03-005-geometry
+          test -s /tmp/m03-005-geometry/M03-005.obj
+          test -s /tmp/m03-005-geometry/M03-005.mtl
+      - name: Independently validate committed OBJ and full 360-degree clearance
+        run: |
+          python3 Tools/ModelFactory/M03/M03-005/validate_m03_005.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path("Tools/ModelFactory/M03/M03-005")
+          committed=json.loads((d/"M03-005.static-qa.json").read_text())
+          fresh=json.loads(Path("/tmp/m03-005-geometry/M03-005.static-qa.json").read_text())
+          assert committed==fresh
+          assert committed["parts"]==32 and committed["vertices"]==3498
+          assert committed["triangles"]==6944 and committed["poses_checked"]==73
+          print("PASS manifest and source-generated OBJ geometry")
+          PY
+      - name: Upload actual generated OBJ and QA report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M03-005-OBJ-MTL-QA
+          path: |
+            /tmp/m03-005-geometry/M03-005.obj
+            /tmp/m03-005-geometry/M03-005.mtl
+            /tmp/m03-005-geometry/M03-005.static-qa.json
+          if-no-files-found: error
+
+  blender-export:
+    needs: deterministic-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install actual Blender and NumPy
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import numpy; print('numpy',numpy.__version__)"
+      - name: Run bpy, export animated GLB and collection-only blend
+        run: |
+          mkdir -p /tmp/m03-005-blender
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-005/generate_m03_005.py -- --output-dir /tmp/m03-005-blender --require-blender
+      - name: Test rerun without multiplying meshes, objects or actions
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import sys,bpy; from pathlib import Path; sys.path.insert(0,'Tools/ModelFactory/M03/M03-005'); import generate_m03_005 as m; spec=m.read_spec(); parts=m.build_parts(spec); out=Path('/tmp/m03-005-rerun'); m.export_blender(spec,parts,out); m.export_blender(spec,parts,out); objects=[o for o in bpy.data.objects if o.name.startswith('M03-005_')]; meshes=[x for x in bpy.data.meshes if x.name.startswith('M03-005_')]; actions=[a for a in bpy.data.actions if a.name.startswith('M03-005_')]; assert len(objects)==42,len(objects); assert len(meshes)==32,len(meshes); assert len(actions)==1,len(actions); print('PASS idempotence',len(objects),len(meshes),len(actions))"
+      - name: Inspect binary GLB meshes, materials, eight ports and real animation
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path("/tmp/m03-005-blender")
+          glb=root/"M03-005.glb"
+          blend=root/"M03-005.blend"
+          assert glb.exists() and glb.stat().st_size>4096
+          assert blend.exists() and blend.stat().st_size>4096
+          raw=glb.read_bytes()
+          magic,version,size=struct.unpack_from("<4sII",raw)
+          assert (magic,version,size)==(b"glTF",2,len(raw))
+          size,kind=struct.unpack_from("<I4s",raw,12)
+          assert kind==b"JSON"
+          doc=json.loads(raw[20:20+size])
+          nodes=doc["nodes"]
+          assert len([n for n in nodes if "mesh" in n])==32
+          assert len(doc["materials"])==5
+          assert all(n.get("name","").startswith("M03-005_") for n in nodes)
+          assert len([n for n in nodes if n.get("name","").startswith("M03-005_PORT_OCT_")])==8
+          rotor=next(i for i,n in enumerate(nodes) if n.get("name")=="M03-005_ROTATING_FLANGE")
+          channels=[c for a in doc.get("animations",[]) for c in a.get("channels",[])]
+          assert any(c["target"]["node"]==rotor and c["target"]["path"]=="rotation" for c in channels),channels
+          print("PASS real GLB: 32 mesh nodes, 5 materials, 8 port nodes, animated rotor")
+          PY
+      - name: Upload real Blender source and animated GLB
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M03-005-Blender-GLB
+          path: |
+            /tmp/m03-005-blender/M03-005.blend
+            /tmp/m03-005-blender/M03-005.glb
+            /tmp/m03-005-blender/M03-005.static-qa.json
+          if-no-files-found: error
