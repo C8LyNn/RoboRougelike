@@ -195,9 +195,15 @@ def export_blender(parts, folder):
     collection_name = ID + "_ASSET"
     old = bpy.data.collections.get(collection_name)
     if old:
+        # Removing objects alone leaves orphaned bpy Mesh datablocks after
+        # repeated regeneration; clear those owned datablocks as well.
+        previous_meshes = [ob.data for ob in old.objects if ob.type == "MESH"]
         for ob in list(old.objects):
             bpy.data.objects.remove(ob, do_unlink=True)
         bpy.data.collections.remove(old)
+        for mesh in previous_meshes:
+            if mesh.users == 0:
+                bpy.data.meshes.remove(mesh)
     col = bpy.data.collections.new(collection_name)
     bpy.context.scene.collection.children.link(col)
     mats = {}
@@ -252,9 +258,12 @@ def export_blender(parts, folder):
         for ob in col.objects:
             ob.select_set(True)
         bpy.context.view_layer.objects.active = root
-        bpy.ops.export_scene.gltf(filepath=str(folder/(ID+".glb")),
-                                  export_format="GLB", use_selection=True,
-                                  export_yup=True, export_apply=True)
+        glb_path = folder / (ID + ".glb")
+        outcome = bpy.ops.export_scene.gltf(filepath=str(glb_path),
+                                            export_format="GLB", use_selection=True,
+                                            export_yup=True, export_apply=True)
+        if "FINISHED" not in outcome or not glb_path.exists() or glb_path.stat().st_size < 4096:
+            raise RuntimeError("Blender glTF export failed: missing or invalid GLB")
     finally:
         bpy.ops.object.select_all(action='DESELECT')
         for ob in previous:
