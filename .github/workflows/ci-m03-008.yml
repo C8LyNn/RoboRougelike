@@ -89,6 +89,8 @@ jobs:
           n,kind=struct.unpack_from('<I4s',blob,12)
           assert kind==b'JSON'
           doc=json.loads(blob[20:20+n])
+          print('GLB material count/names:',len(doc.get('materials',[])),[m.get('name') for m in doc.get('materials',[])],flush=True)
+          print('GLB mesh node count:',sum('mesh' in x for x in doc.get('nodes',[])),flush=True)
           assert len(doc['materials'])==5
           nodes=doc['nodes']
           assert len([x for x in nodes if 'mesh' in x])==19
