@@ -369,7 +369,7 @@ def static_obj(parts,out):
     for name,(rgba,metallic,roughness) in MATERIALS.items():
         mlines.extend(("newmtl "+name,
                        "Kd %.6f %.6f %.6f"%tuple(rgba[:3]),
-                       "Ks %.5f %.5f %.5f"%(metallic,)*3,
+                       "Ks %.5f %.5f %.5f"%(metallic,metallic,metallic),
                        "Ns %.2f"%max(1,(1-roughness)*800),"illum 2",""))
     (out/mtl).write_text("\n".join(mlines)+"\n",encoding="utf-8")
     lines=["# M02-008 real static OBJ (animation in GLB only)",
