@@ -83,38 +83,54 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender
           blender --version | head -n 2
-      - name: Run Blender scene and animated GLB export
+      - name: Run real Blender with error capture and nonzero Python exit
         run: |
-          set -euo pipefail
+          set -uo pipefail
           mkdir -p /tmp/m02-004-blender
-          blender --background --factory-startup --python Tools/ModelFactory/M02/M02-004/generate_m02_004.py -- --output-dir /tmp/m02-004-blender --require-blender
-      - name: Diagnose actual GLB, write durable JSON even when animation is missing
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-004/generate_m02_004.py -- --output-dir /tmp/m02-004-blender --require-blender > /tmp/m02-004-blender/M02-004.blender-log.txt 2>&1
+          status=$?
+          echo "$status" > /tmp/m02-004-blender/M02-004.blender-exit.txt
+          tail -n 40 /tmp/m02-004-blender/M02-004.blender-log.txt
+          exit 0
+      - name: Diagnose real Blender export even on missing GLB
         run: |
           python3 - <<'PY'
-          import json,struct
+          import json,struct,traceback
           from pathlib import Path
           root=Path("/tmp/m02-004-blender")
-          f=root/"M02-004_animated.glb"
-          raw=f.read_bytes()
-          report={"glb_bytes":len(raw),"blend_bytes":(root/"M02-004.blend").stat().st_size}
-          report["magic_ok"]=raw[:4]==b"glTF"
-          version,length=struct.unpack_from("<II",raw,4)
-          report["version"]=version
-          report["length_matches"]=length==len(raw)
-          chunk_len,chunk_type=struct.unpack_from("<II",raw,12)
-          report["json_chunk_ok"]=chunk_type==0x4E4F534A
-          data=json.loads(raw[20:20+chunk_len])
-          report["meshes"]=len(data.get("meshes",[]))
-          report["animations"]=len(data.get("animations",[]))
-          report["animation_names"]=[a.get("name","") for a in data.get("animations",[])]
-          report["nodes"]=len(data.get("nodes",[]))
-          report["node_names"]=[n.get("name","") for n in data.get("nodes",[])[:20]]
-          report["rotor_node_present"]=any("ROTOR" in n.get("name","") for n in data.get("nodes",[]))
-          report["status"]="PASS" if all((report["magic_ok"],report["version"]==2,report["length_matches"],
-             report["json_chunk_ok"],report["meshes"]>=1,report["animations"]>=1,
-             report["rotor_node_present"],report["blend_bytes"]>10000)) else "FAILED_DIAGNOSTIC"
+          glb=root/"M02-004_animated.glb"
+          blend=root/"M02-004.blend"
+          log=(root/"M02-004.blender-log.txt").read_text(errors="replace")
+          report={"blender_exit_code":int((root/"M02-004.blender-exit.txt").read_text().strip()),
+                  "blender_log_tail":log[-6500:],
+                  "glb_exists":glb.exists(),"blend_exists":blend.exists(),
+                  "glb_bytes":glb.stat().st_size if glb.exists() else 0,
+                  "blend_bytes":blend.stat().st_size if blend.exists() else 0}
+          if glb.exists():
+            try:
+              raw=glb.read_bytes()
+              report["magic_ok"]=raw[:4]==b"glTF"
+              version,length=struct.unpack_from("<II",raw,4)
+              report["version"]=version
+              report["length_matches"]=length==len(raw)
+              chunk_len,chunk_type=struct.unpack_from("<II",raw,12)
+              report["json_chunk_ok"]=chunk_type==0x4E4F534A
+              data=json.loads(raw[20:20+chunk_len])
+              report["meshes"]=len(data.get("meshes",[]))
+              report["animations"]=len(data.get("animations",[]))
+              report["animation_names"]=[a.get("name","") for a in data.get("animations",[])]
+              report["nodes"]=len(data.get("nodes",[]))
+              report["node_names"]=[n.get("name","") for n in data.get("nodes",[])[:20]]
+              report["rotor_node_present"]=any("ROTOR" in n.get("name","") for n in data.get("nodes",[]))
+            except Exception:
+              report["glb_inspection_error"]=traceback.format_exc()
+          report["status"]="PASS" if all((report["blender_exit_code"]==0,
+             report.get("magic_ok"),report.get("version")==2,
+             report.get("length_matches"),report.get("json_chunk_ok"),
+             report.get("meshes",0)>=1,report.get("animations",0)>=1,
+             report.get("rotor_node_present"),report["blend_bytes"]>10000)) else "FAILED_DIAGNOSTIC"
           (root/"M02-004.blender-qa.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
-          print(json.dumps(report,indent=2),flush=True)
+          print(json.dumps({k:v for k,v in report.items() if k!="blender_log_tail"},indent=2),flush=True)
           PY
       - name: Commit real Blender GLB, blend and diagnostic on model branch
         if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m02-004-perforated-steel-wheel'
@@ -129,8 +145,11 @@ jobs:
           fi
           git checkout -B "$branch" "origin/$branch"
           mkdir -p "$target"
-          cp /tmp/m02-004-blender/M02-004.blend /tmp/m02-004-blender/M02-004_animated.glb /tmp/m02-004-blender/M02-004.blender-qa.json "$target/"
-          git add "$target/M02-004.blend" "$target/M02-004_animated.glb" "$target/M02-004.blender-qa.json"
+          cp /tmp/m02-004-blender/M02-004.blender-qa.json /tmp/m02-004-blender/M02-004.blender-log.txt "$target/"
+          for name in M02-004.blend M02-004_animated.glb; do
+            if [ -f "/tmp/m02-004-blender/$name" ]; then cp "/tmp/m02-004-blender/$name" "$target/"; fi
+          done
+          git add "$target"
           if git diff --cached --quiet; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -153,4 +172,5 @@ jobs:
             /tmp/m02-004-blender/M02-004.blend
             /tmp/m02-004-blender/M02-004.static-qa.json
             /tmp/m02-004-blender/M02-004.blender-qa.json
+            /tmp/m02-004-blender/M02-004.blender-log.txt
           retention-days: 30
