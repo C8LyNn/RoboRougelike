@@ -27,11 +27,15 @@ jobs:
       - name: Install actual Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -n 2
       - name: Generate real BLEND and animated GLB, test reentrant scene and motion
         run: |
           blender --background --python Tools/ModelFactory/M02/M02-013/qa_m02_013_blender.py -- build/M02-013
+          # Blender 4.0 may exit 0 even after a Python exception: enforce files.
+          test -s build/M02-013/M02-013_qa.json
+          test -s build/M02-013/M02-013.blend
+          test -s build/M02-013/M02-013_animated.glb
       - name: Independently verify real Blender export, OBJ and glTF
         run: |
           python3 Tools/ModelFactory/M02/M02-013/qa_m02_013.py --check-blender --out build/M02-013
