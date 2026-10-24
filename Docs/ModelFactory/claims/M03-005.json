@@ -12,7 +12,8 @@
   "pr_number": 75,
   "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/75",
   "qa_status": "STATIC_QA_PASS; BLENDER_GLB_EXPORT_PASS",
-  "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104556873",
+  "qa_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104661264",
   "unity_status": "BLOCKED_UNITY_ACTIVATION; NOT RUN",
-  "updated_at_utc": "2026-10-24T14:55:44Z"
+  "updated_at_utc": "2026-10-24T14:57:14Z",
+  "qa_head_sha": "d82d84f182ce1fc69c3317ea42790458a8f9f1e8"
 }
