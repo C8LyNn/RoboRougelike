@@ -1,0 +1,88 @@
+name: MODEL-05 M05-006 directional barrier QA
+on:
+  push:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-006/**'
+      - '.github/workflows/ci-model-m05-006.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-006/**'
+      - '.github/workflows/ci-model-m05-006.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile and validate manifold topology, materials, and hinge sweep
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-006/generate_m05_006.py
+          python3 Tools/ModelFactory/M05/M05-006/generate_m05_006.py --self-test
+      - name: Regenerate OBJ and MTL and verify source parity
+        run: |
+          python3 Tools/ModelFactory/M05/M05-006/generate_m05_006.py --output-dir /tmp/m05-006
+          test -s /tmp/m05-006/M05-006.obj
+          test -s /tmp/m05-006/M05-006.mtl
+          cmp Tools/ModelFactory/M05/M05-006/M05-006.obj /tmp/m05-006/M05-006.obj
+          cmp Tools/ModelFactory/M05/M05-006/M05-006.mtl /tmp/m05-006/M05-006.mtl
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/m05-006')
+          data=json.loads((p/'M05-006.run-report.json').read_text())
+          spec=json.loads(Path('Tools/ModelFactory/M05/M05-006/geometry.json').read_text())
+          assert data['parts']==len(spec['parts'])==73
+          assert data['materials']==len(spec['materials'])==7
+          assert data['manifold_edges']=='PASS'
+          assert data['positive_winding']=='PASS'
+          assert data['swept_collision_qa']=='PASS'
+          assert data['sweep_samples']==31
+          assert data['minimum_bearing_radial_gap_m']>=.017
+          assert data['blender_execution']=='NOT_RUN'
+          assert data['unity_import']=='NOT_RUN'
+          print('M05-006 STATIC QA PASS',data)
+          PY
+      - name: Verify recorded QA manifest against live geometry output
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('Tools/ModelFactory/M05/M05-006')
+          manifest=json.loads((base/'M05-006.static-qa.json').read_text())
+          actual=json.loads(Path('/tmp/m05-006/M05-006.run-report.json').read_text())
+          for key in ('parts','vertices','polygons','triangles','materials','sweep_samples','swept_aabb_pair_checks','bearing_ring_axle_exemptions','minimum_bearing_radial_gap_m','manifold_edges','positive_winding','swept_collision_qa'):
+              assert manifest[key]==actual[key],(key,manifest[key],actual[key])
+          assert manifest['unity_import']=='NOT_RUN'
+          assert manifest['visual_review']=='NOT_RUN'
+          print('M05-006 QA manifest parity PASS')
+          PY
+  blender-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender from Ubuntu packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Execute isolated Blender generator twice, inspect motion and exported GLB
+        run: |
+          blender -b --python Tools/ModelFactory/M05/M05-006/blender_smoke.py -- /tmp/m05-006-blender
+      - name: Upload animated asset for visual inspection
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M05-006-Blender-animated-asset
+          path: |
+            /tmp/m05-006-blender/M05-006.blend
+            /tmp/m05-006-blender/M05-006_animated.glb
+          if-no-files-found: error
+          retention-days: 14
