@@ -281,12 +281,22 @@ def validate(parts):
                 spindle_max=max(math.hypot(x,y) for x,y,_ in fixed["vertices"])
                 sep=rmin-spindle_max
             else:
-                # AABB distance to the Z axis underestimates the true
-                # minimum radial distance of the fixed geometry.
-                (x0,x1),(y0,y1)=(interval(fixed,k) for k in (0,1))
-                nearest_x=max(x0,0.,-x1)
-                nearest_y=max(y0,0.,-y1)
-                sep=math.hypot(nearest_x,nearest_y)-rmax
+                # Use per-TRIANGLE XY AABBs rather than the entire
+                # object's AABB. A torus has a hollow centre even though
+                # its whole-object AABB includes the Z axis. Each face
+                # lies inside its own AABB, so the minimum of their
+                # axis-distances is a conservative radial lower bound.
+                nearest=float("inf")
+                for face in fixed["faces"]:
+                    xyz=[fixed["vertices"][i] for i in face]
+                    x0=min(v[0] for v in xyz)
+                    x1=max(v[0] for v in xyz)
+                    y0=min(v[1] for v in xyz)
+                    y1=max(v[1] for v in xyz)
+                    dx=max(x0,0.,-x1)
+                    dy=max(y0,0.,-y1)
+                    nearest=min(nearest,math.hypot(dx,dy))
+                sep=nearest-rmax
             assert sep>.003,(group,fixed["name"],sep)
             clearance=min(clearance,sep)
             fixed_tests+=1
