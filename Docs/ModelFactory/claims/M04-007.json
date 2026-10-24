@@ -1,0 +1,11 @@
+{
+  "id": "M04-007",
+  "agent": "M04",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T16:45:53Z",
+  "model": "Silnik hover z czterema emiterami",
+  "run": "2026-10-24T16:00:00Z",
+  "mount": "spód ramy",
+  "motion": "pulsacja emiterów",
+  "note": "Four symmetric disks; model visual only. Exclusive hourly MODEL-04 cycle."
+}
