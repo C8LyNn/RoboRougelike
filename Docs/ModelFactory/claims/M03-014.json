@@ -1,8 +1,14 @@
 {
   "id": "M03-014",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T23:48:34.667Z",
   "model": "Płoza podwozia ślizgowego",
-  "run": "2026-10-24T23Z"
+  "run": "2026-10-24T23Z",
+  "branch": "feature/rrl-model-m03-014-skid-chassis-runner",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/151",
+  "claim_create_commit": "53524b2e0d86079b8634f9fe50fcaa90ec050b70",
+  "static_qa": "PASS (local + CI-01 and dedicated static job)",
+  "blender_qa": "IN_PROGRESS",
+  "unity_qa": "NOT RUN"
 }
