@@ -21,9 +21,15 @@ namespace RoboRougelike.Mechanics.OBJ001
         [SerializeField] private UnityEvent onReset = new UnityEvent();
 
         public DefenseState State { get; private set; } = DefenseState.Idle;
-        public float Integrity { get; private set; }
+        private float localIntegrity, observedIntegrity;
+        private IReactorIntegritySource integritySource;
+        public float Integrity
+        {
+            get { float value=integritySource==null?localIntegrity:integritySource.CurrentIntegrity;return Finite(value)?Mathf.Max(0,value):0; }
+            private set { localIntegrity=value; }
+        }
         public float ElapsedSeconds { get; private set; }
-        public float MaximumIntegrity => maxIntegrity;
+        public float MaximumIntegrity => integritySource==null?maxIntegrity:integritySource.MaximumIntegrity;
         public float DefendSeconds => defendSeconds;
         public float RemainingSeconds => Mathf.Max(0f, defendSeconds - ElapsedSeconds);
         public float Progress01 => Mathf.Clamp01(ElapsedSeconds / defendSeconds);
@@ -54,10 +60,36 @@ namespace RoboRougelike.Mechanics.OBJ001
 
         public void SetAutomaticClock(bool enabled) => automaticClock = enabled;
 
+        public bool BindIntegritySource(IReactorIntegritySource source)
+        {
+            if(State==DefenseState.Defending||source==null||!Finite(source.MaximumIntegrity)||source.MaximumIntegrity<1||
+                !Finite(source.CurrentIntegrity)||source.CurrentIntegrity<0)return false;
+            integritySource=source;maxIntegrity=source.MaximumIntegrity;ResetObjective();return true;
+        }
+
+        // Observe damage arriving through the host's existing projectile/HP pipeline.
+        public void SynchronizeIntegrity()
+        {
+            if(integritySource==null||State!=DefenseState.Defending)return;
+            float current=Integrity,delta=observedIntegrity-current;observedIntegrity=current;
+            if(delta>0){DamageTaken?.Invoke(delta);onDamage?.Invoke();}
+            else if(delta<0){RepairApplied?.Invoke(-delta);onRepair?.Invoke();}
+            if(current<=0){ChangeState(DefenseState.Lost);onLost?.Invoke();}
+        }
+
+        public bool CompleteDefense()
+        {
+            SynchronizeIntegrity();
+            if(!isActiveAndEnabled||State!=DefenseState.Defending||Integrity<=0)return false;
+            ChangeState(DefenseState.Won);onWon?.Invoke();return true;
+        }
+
         public void ResetObjective()
         {
             Sanitize();
+            integritySource?.ResetIntegrity(maxIntegrity);
             Integrity = maxIntegrity;
+            observedIntegrity=Integrity;
             ElapsedSeconds = 0f;
             State = DefenseState.Idle;
             onReset?.Invoke();
@@ -66,7 +98,8 @@ namespace RoboRougelike.Mechanics.OBJ001
 
         public bool Begin()
         {
-            if (!isActiveAndEnabled || State != DefenseState.Idle) return false;
+            if (!isActiveAndEnabled || State != DefenseState.Idle || Integrity<=0) return false;
+            observedIntegrity=Integrity;
             ChangeState(DefenseState.Defending);
             onStarted?.Invoke();
             return true;
@@ -76,6 +109,7 @@ namespace RoboRougelike.Mechanics.OBJ001
         {
             if (!isActiveAndEnabled || State != DefenseState.Defending || !Finite(amount) || amount <= 0f)
                 return false;
+            if(integritySource!=null){float prior=Integrity;integritySource.Damage(amount);SynchronizeIntegrity();return Integrity<prior;}
             float before = Integrity;
             Integrity = Mathf.Max(0f, before - amount);
             float applied = before - Integrity;
@@ -90,6 +124,7 @@ namespace RoboRougelike.Mechanics.OBJ001
         {
             if (!isActiveAndEnabled || State != DefenseState.Defending || !Finite(amount) || amount <= 0f)
                 return false;
+            if(integritySource!=null){float prior=Integrity;integritySource.Repair(amount);SynchronizeIntegrity();return Integrity>prior;}
             float before = Integrity;
             Integrity = Mathf.Min(maxIntegrity, before + amount);
             float applied = Integrity - before;
@@ -109,7 +144,7 @@ namespace RoboRougelike.Mechanics.OBJ001
             return true;
         }
 
-        private void Update() { if (automaticClock) Tick(Time.deltaTime); }
+        private void Update() { SynchronizeIntegrity();if (automaticClock) Tick(Time.deltaTime); }
 
         private void ChangeState(DefenseState next)
         {

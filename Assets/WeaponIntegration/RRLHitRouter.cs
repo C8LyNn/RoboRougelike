@@ -8,6 +8,7 @@ namespace RoboRougelike.WeaponIntegration
     {
         bool ReceiveHit(float damage,Vector3 point,Vector3 direction,Transform source);
     }
+    public interface IRRLTeamMember { int TeamId { get; } }
     // One real collider is resolved to one physical owner. Arena/objective adapters
     // may own their original durability; vehicle HP always remains P12.
     public static class RRLHitRouter
@@ -15,6 +16,7 @@ namespace RoboRougelike.WeaponIntegration
         public static int Team(Transform root)
         {
             if(root==null)return 0;
+            var member=root.GetComponentInParent<IRRLTeamMember>();if(member!=null)return member.TeamId;
             if(root.GetComponentInParent<P12PipelineSafeEnemyTurret>()!=null)return 2;
             if(root.GetComponentInParent<R1VehicleState>()!=null)return 1;
             return 0;
