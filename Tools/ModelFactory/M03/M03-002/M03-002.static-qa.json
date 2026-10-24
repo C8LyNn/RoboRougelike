@@ -1,15 +1,16 @@
 {
   "id": "M03-002",
   "result": "STATIC_GEOMETRY_PASS",
-  "component_count": 69,
-  "vertices": 552,
-  "quads": 414,
-  "triangles": 828,
+  "component_count": 77,
+  "vertices": 616,
+  "quads": 462,
+  "triangles": 924,
   "materials_used": [
     "titanium",
     "graphite",
     "safety_yellow",
-    "ceramic"
+    "ceramic",
+    "rubber"
   ],
   "retracted_bounds_m": [
     [
@@ -26,9 +27,17 @@
   "extension_m": 0.55,
   "minimum_overlap_m": 0.29,
   "collision_samples": 21,
-  "slider_fixed_aabb_pair_tests": 24864,
+  "slider_fixed_aabb_pair_tests": 30240,
   "collision_result": "PASS: no positive-volume AABB overlap between moving and fixed components at 21 extension positions; conservative geometric check, not Blender or Unity physics",
   "blender": "NOT RUN",
   "unity": "NOT RUN",
-  "visual_qa": "NOT RUN"
+  "visual_qa": "NOT RUN",
+  "fixed_wear_liners": 8,
+  "liner_slider_nominal_clearance_m": 0.013,
+  "liner_wall_anchor_overlap_m": 0.003,
+  "export_scope": "only M03-002_ASSET collection (use_selection=True)",
+  "geometry_revision": "M03-002_V2_GUIDE_LINERS",
+  "note": "Eight anchored sleeve liners and fixed/moving AABB checks validated by actual GitHub Actions run 40099230544. GLB export code restricted to its own collection; Blender and Unity NOT RUN.",
+  "ci_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40099230544",
+  "qa_status": "CI_PASS_21_POSITION_AABB_NONPENETRATION_AND_DETERMINISTIC_OBJ"
 }

@@ -1,6 +1,12 @@
 name: Model Factory M03-002 Static Geometry QA
 
 on:
+  push:
+    branches:
+      - fix/rrl-m03-002-wear-liners-isolated-export
+    paths:
+      - 'Tools/ModelFactory/M03/M03-002/**'
+      - '.github/workflows/ci-model-m03-002.yml'
   pull_request:
     paths:
       - "Tools/ModelFactory/M03/M03-002/**"
@@ -36,5 +42,31 @@ jobs:
           assert q['minimum_overlap_m']>=0.29
           assert len(q['materials'])>=3
           assert q['moving_fixed_aabb_checks']>1000
-          print('M03-002 static QA PASS')
+          assert q['fixed_wear_liners']==8
+          assert abs(q['liner_slider_nominal_clearance_m'] - .013)<1e-8
+          assert abs(q['liner_wall_anchor_overlap_m'] - .003)<1e-8
+          assert q['parts']==77 and q['obj_vertices']==616 and q['obj_quads']==462
+          assert q['moving_fixed_aabb_checks']==30240
+          assert 'rubber' in q['materials']
+          print('M03-002 V2: 8 anchored guide pads, collision/clearance QA PASS')
+          PY
+      - name: Verify committed geometry and isolated Blender export source
+        run: |
+          python3 - <<'PY'
+          import ast, json
+          from pathlib import Path
+          root=Path("Tools/ModelFactory/M03/M03-002")
+          source=(root/"generate_m03_002.py").read_text("utf-8")
+          tree=ast.parse(source)
+          assert 'use_selection=True' in source, "glTF exporter must be selection-isolated"
+          assert 'prior_selection' in source and 'finally:' in source
+          spec=json.loads((root/"M03-002.static-qa.json").read_text("utf-8"))
+          obj=(root/"M03-002.obj").read_text("utf-8")
+          assert spec["component_count"]==77
+          assert spec["fixed_wear_liners"]==8
+          lines=obj.splitlines()
+          assert sum(line.startswith("o Sleeve_WearLiner_") for line in lines)==8
+          assert sum(line.startswith("v ") for line in lines)==616
+          assert sum(line.startswith("f ") for line in lines)==462
+          print("M03-002 static OBJ and selected export source QA PASS")
           PY
