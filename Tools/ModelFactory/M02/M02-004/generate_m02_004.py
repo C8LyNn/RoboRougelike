@@ -111,8 +111,11 @@ def lug_mesh(name, angle):
     x0, x1 = .164, .296
     vertices = [polar(x,r,angle+a) for x in (x0,x1)
                 for r in (r0,r1) for a in (-da,da)]
-    faces = ((0,2,3,1),(4,5,7,6),(0,1,5,4),
-             (2,6,7,3),(0,4,6,2),(1,3,7,5))
+    # Reverse the cube's initial face order: the angular vertex layout is
+    # opposite-handed to the usual XYZ box. Outward normals => positive volume.
+    raw_faces = ((0,2,3,1),(4,5,7,6),(0,1,5,4),
+                 (2,6,7,3),(0,4,6,2),(1,3,7,5))
+    faces = [tuple(reversed(face)) for face in raw_faces]
     part(name, vertices, faces, "dark_steel", "rotor")
 
 def build():
@@ -161,6 +164,7 @@ def build():
 def edges_and_volume(mesh):
     vertices, faces = mesh["vertices"], mesh["faces"]
     edges = Counter()
+    directed_edges = Counter()
     signed_volume = 0.0
     for face in faces:
         assert len(face) >= 3
@@ -168,6 +172,7 @@ def edges_and_volume(mesh):
         for i,a in enumerate(face):
             b = face[(i+1)%len(face)]
             edges[tuple(sorted((a,b)))] += 1
+            directed_edges[(a,b)] += 1
         # Signed volume via triangle fan (also tests face winding).
         p = vertices[face[0]]
         for j in range(1,len(face)-1):
@@ -177,7 +182,9 @@ def edges_and_volume(mesh):
                 +p[2]*(q[0]*r[1]-q[1]*r[0]))/6.0
     assert all(n == 2 for n in edges.values()), (mesh["name"], "nonmanifold edges",
                                                   Counter(edges.values()))
-    assert abs(signed_volume) > 1e-8, (mesh["name"], "zero volume")
+    assert all(directed_edges[(b,a)] == 1 and n == 1 for (a,b),n in directed_edges.items()), (
+        mesh["name"], "inconsistent edge winding")
+    assert signed_volume > 1e-8, (mesh["name"], "inverted normals or zero volume", signed_volume)
     return signed_volume
 
 def qa():
@@ -222,7 +229,7 @@ def qa():
         "shaft_to_bore_clearance_m":round(BORE_R-SHAFT_R,4),
         "seal_to_bore_clearance_m":round(BORE_R-SEAL_R,4),
         "rotation_clearance_samples":73,
-        "manifold_closed_meshes":"PASS (each mesh edge used twice)",
+        "manifold_closed_meshes":"PASS (each edge twice, opposite winding, positive signed volume)",
         "stationary_vs_rotor_clearance":"PASS (analytic radial, not Unity physics)",
         "traction_tooth_to_rim_overlap":"INTENTIONAL 4mm weld intersection",
         "blender":"NOT RUN","unity":"NOT RUN","visual":"NOT RUN"
