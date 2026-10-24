@@ -26,13 +26,22 @@ namespace B01.MAPGEN001
 
             if (result.Spawns != null)
                 for (int i = 0; i < result.Spawns.Length; i++)
+                {
+                    // Arena's centre enemy spawn coincides with Finish. One visible
+                    // marker is preferable to two coplanar, z-fighting disks.
+                    if (Vector3.Distance(result.Spawns[i], result.Finish) < .05f) continue;
                     AddGroundMarker(root, result.Spawns[i], "ENEMY_RED_" + i,
                         new Color(.90f, .26f, .31f), .55f);
+                }
 
             if (result.CheckpointDescriptors != null)
                 for (int i = 0; i < result.CheckpointDescriptors.Length; i++)
+                {
+                    // Course's final checkpoint and Finish are the same location.
+                    if (Vector3.Distance(result.CheckpointDescriptors[i], result.Finish) < .05f) continue;
                     AddGroundMarker(root, result.CheckpointDescriptors[i], "CHECKPOINT_YELLOW_" + i,
                         new Color(1f, .76f, .18f), .80f);
+                }
 
             SnapCamera();
         }
