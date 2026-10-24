@@ -31,6 +31,7 @@ def main():
     assert report["radial_clearance_m"]>=.0079
     assert report["materials"]>=8
     assert report["mesh_objects"]>40
+    assert report["animated_groups"]==7
     assert (d/"M02-012.blend").stat().st_size>10000
     gltf=load_glb(d/"M02-012_animated.glb")
     mats=gltf.get("materials",[])
@@ -39,7 +40,8 @@ def main():
     assert len(mats)>=8 and len(meshes)>40 and len(nodes)>50
     names={n.get("name",""):i for i,n in enumerate(nodes)}
     targets=("CRANKSHAFT_ROTOR","PISTON_RIG_L","PISTON_RIG_R",
-             "CONROD_RIG_L","CONROD_RIG_R")
+             "CONROD_RIG_L","CONROD_RIG_R",
+             "CRANK_EYE_RIG_L","CRANK_EYE_RIG_R")
     for name in targets:
         assert any(k.endswith(name) for k in names),name
     animated=set()
@@ -60,7 +62,7 @@ def main():
             animated.add(nodes[target["node"]].get("name",""))
     for target in targets:
         assert any(n.endswith(target) for n in animated),(target,animated)
-    assert channel_count>=5
+    assert channel_count>=7
     # Verify exported material identity, not only source JSON's count.
     required=("Graphite_Cast","Brushed_Steel","Aluminium_Radiator",
               "Copper_Pipes","Ceramic_Piston","Cyan_Status")
