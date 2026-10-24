@@ -1,0 +1,39 @@
+{
+  "id": "M02-004",
+  "result": "STATIC_GEOMETRY_PASS",
+  "model": "perforated steel wheel",
+  "unit": "metre",
+  "mount_pivot_blender": [
+    0,
+    0,
+    0
+  ],
+  "axle": "Blender +X (wheel rotation about X)",
+  "rotation_degrees": 360,
+  "perforation_count": 12,
+  "radial_through_holes": true,
+  "rotating_teeth": 24,
+  "part_count": 37,
+  "materials_used": [
+    "ceramic",
+    "copper",
+    "dark_steel",
+    "forged_steel",
+    "rubber"
+  ],
+  "obj_vertices": 2676,
+  "obj_faces": 2668,
+  "max_radius_m": 0.478,
+  "width_from_mount_m": 0.365,
+  "shaft_to_bore_clearance_m": 0.03,
+  "seal_to_bore_clearance_m": 0.007,
+  "rotation_clearance_samples": 73,
+  "manifold_closed_meshes": "PASS (each edge twice, opposite winding, positive signed volume)",
+  "stationary_vs_rotor_clearance": "PASS (analytic radial, not Unity physics)",
+  "traction_tooth_to_rim_overlap": "INTENTIONAL 4mm weld intersection",
+  "blender": "NOT RUN",
+  "unity": "NOT RUN",
+  "visual": "NOT RUN",
+  "obj": "M02-004.obj",
+  "mtl": "M02-004.mtl"
+}

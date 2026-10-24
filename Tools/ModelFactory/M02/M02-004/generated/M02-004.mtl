@@ -1,0 +1,31 @@
+# M02-004 deterministic material palette
+newmtl forged_steel
+Kd 0.185000 0.224000 0.258000
+Ka 0.03 0.03 0.03
+Ks 0.32 0.32 0.32
+Ns 100
+
+newmtl dark_steel
+Kd 0.061000 0.077000 0.092000
+Ka 0.03 0.03 0.03
+Ks 0.32 0.32 0.32
+Ns 100
+
+newmtl copper
+Kd 0.610000 0.285000 0.095000
+Ka 0.03 0.03 0.03
+Ks 0.32 0.32 0.32
+Ns 100
+
+newmtl ceramic
+Kd 0.760000 0.790000 0.720000
+Ka 0.03 0.03 0.03
+Ks 0.32 0.32 0.32
+Ns 100
+
+newmtl rubber
+Kd 0.025000 0.029000 0.033000
+Ka 0.03 0.03 0.03
+Ks 0.32 0.32 0.32
+Ns 100
+

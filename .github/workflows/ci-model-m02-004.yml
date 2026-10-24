@@ -1,0 +1,179 @@
+name: Model Factory M02-004 Perforated Steel Wheel
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-004-perforated-steel-wheel
+    paths:
+      - "Tools/ModelFactory/M02/M02-004/**"
+      - ".github/workflows/ci-model-m02-004.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M02/M02-004/**"
+      - ".github/workflows/ci-model-m02-004.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  static-mesh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Compile and build actual OBJ, MTL and QA JSON
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/ModelFactory/M02/M02-004/generate_m02_004.py
+          python3 Tools/ModelFactory/M02/M02-004/generate_m02_004.py --self-test --output-dir /tmp/m02-004
+      - name: Validate real through holes, mesh closure and clearances
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/m02-004")
+          q=json.loads((p/"M02-004.static-qa.json").read_text())
+          assert q["result"]=="STATIC_GEOMETRY_PASS"
+          assert q["perforation_count"]==12 and q["radial_through_holes"]
+          assert q["rotating_teeth"]==24 and q["part_count"]==37
+          assert q["manifold_closed_meshes"].startswith("PASS")
+          assert q["rotation_clearance_samples"]==73
+          assert q["shaft_to_bore_clearance_m"]>=.029
+          assert q["seal_to_bore_clearance_m"]>=.006
+          assert len(q["materials_used"])>=3
+          lines=(p/"M02-004.obj").read_text().splitlines()
+          assert sum(x.startswith("o ") for x in lines)==37
+          assert sum(x.startswith("v ") for x in lines)==q["obj_vertices"]
+          assert sum(x.startswith("f ") for x in lines)==q["obj_faces"]
+          assert (p/"M02-004.mtl").stat().st_size>200
+          print("M02-004 STATIC QA PASS",q["obj_vertices"],q["obj_faces"])
+          PY
+      - name: Commit verified static OBJ/MTL/QA to this model branch only
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m02-004-perforated-steel-wheel'
+        run: |
+          set -euo pipefail
+          target=Tools/ModelFactory/M02/M02-004/generated
+          mkdir -p "$target"
+          cp /tmp/m02-004/M02-004.obj /tmp/m02-004/M02-004.mtl /tmp/m02-004/M02-004.static-qa.json "$target/"
+          git fetch origin feature/rrl-model-m02-004-perforated-steel-wheel
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/feature/rrl-model-m02-004-perforated-steel-wheel)" ]; then
+            echo "Branch advanced since job checkout; avoid stale push."
+            exit 0
+          fi
+          git add "$target"
+          if git diff --cached --quiet; then
+            echo "Static assets already identical"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "asset(M02-004): verified generated OBJ MTL QA [skip ci]"
+          git push origin HEAD:feature/rrl-model-m02-004-perforated-steel-wheel
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M02-004-OBJ-MTL-QA
+          path: |
+            /tmp/m02-004/M02-004.obj
+            /tmp/m02-004/M02-004.mtl
+            /tmp/m02-004/M02-004.static-qa.json
+          retention-days: 30
+  blender-glb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Install actual Blender (not a simulated bpy stub)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+          blender --background --factory-startup --python-exit-code 1 --python-expr 'import numpy; print("GLTF_DEPENDENCY_NUMPY",numpy.__version__)'
+      - name: Run real Blender with error capture and nonzero Python exit
+        run: |
+          set +e
+          set -uo pipefail
+          mkdir -p /tmp/m02-004-blender
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-004/generate_m02_004.py -- --output-dir /tmp/m02-004-blender --require-blender > /tmp/m02-004-blender/M02-004.blender-log.txt 2>&1
+          status=$?
+          set -e
+          echo "$status" > /tmp/m02-004-blender/M02-004.blender-exit.txt
+          tail -n 40 /tmp/m02-004-blender/M02-004.blender-log.txt
+          exit 0
+      - name: Diagnose real Blender export even on missing GLB
+        run: |
+          python3 - <<'PY'
+          import json,struct,traceback
+          from pathlib import Path
+          root=Path("/tmp/m02-004-blender")
+          glb=root/"M02-004_animated.glb"
+          blend=root/"M02-004.blend"
+          log=(root/"M02-004.blender-log.txt").read_text(errors="replace")
+          report={"blender_exit_code":int((root/"M02-004.blender-exit.txt").read_text().strip()),
+                  "blender_log_tail":log[-6500:],
+                  "glb_exists":glb.exists(),"blend_exists":blend.exists(),
+                  "glb_bytes":glb.stat().st_size if glb.exists() else 0,
+                  "blend_bytes":blend.stat().st_size if blend.exists() else 0}
+          if glb.exists():
+            try:
+              raw=glb.read_bytes()
+              report["magic_ok"]=raw[:4]==b"glTF"
+              version,length=struct.unpack_from("<II",raw,4)
+              report["version"]=version
+              report["length_matches"]=length==len(raw)
+              chunk_len,chunk_type=struct.unpack_from("<II",raw,12)
+              report["json_chunk_ok"]=chunk_type==0x4E4F534A
+              data=json.loads(raw[20:20+chunk_len])
+              report["meshes"]=len(data.get("meshes",[]))
+              report["animations"]=len(data.get("animations",[]))
+              report["animation_names"]=[a.get("name","") for a in data.get("animations",[])]
+              report["nodes"]=len(data.get("nodes",[]))
+              report["node_names"]=[n.get("name","") for n in data.get("nodes",[])[:20]]
+              report["rotor_node_present"]=any("ROTOR" in n.get("name","") for n in data.get("nodes",[]))
+            except Exception:
+              report["glb_inspection_error"]=traceback.format_exc()
+          report["status"]="PASS" if all((report["blender_exit_code"]==0,
+             report.get("magic_ok"),report.get("version")==2,
+             report.get("length_matches"),report.get("json_chunk_ok"),
+             report.get("meshes",0)>=1,report.get("animations",0)>=1,
+             report.get("rotor_node_present"),report["blend_bytes"]>10000)) else "FAILED_DIAGNOSTIC"
+          (root/"M02-004.blender-qa.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
+          print(json.dumps({k:v for k,v in report.items() if k!="blender_log_tail"},indent=2),flush=True)
+          PY
+      - name: Commit real Blender GLB, blend and diagnostic on model branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m02-004-perforated-steel-wheel'
+        run: |
+          set -euo pipefail
+          branch=feature/rrl-model-m02-004-perforated-steel-wheel
+          target=Tools/ModelFactory/M02/M02-004/generated
+          git fetch origin "$branch"
+          if ! git diff --quiet HEAD "origin/$branch" -- Tools/ModelFactory/M02/M02-004/generate_m02_004.py .github/workflows/ci-model-m02-004.yml; then
+            echo "Source or workflow changed since checkout; skip publishing stale Blender output"
+            exit 0
+          fi
+          git checkout -B "$branch" "origin/$branch"
+          mkdir -p "$target"
+          cp /tmp/m02-004-blender/M02-004.blender-qa.json /tmp/m02-004-blender/M02-004.blender-log.txt "$target/"
+          for name in M02-004.blend M02-004_animated.glb; do
+            if [ -f "/tmp/m02-004-blender/$name" ]; then cp "/tmp/m02-004-blender/$name" "$target/"; fi
+          done
+          git add "$target"
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "asset(M02-004): actual Blender GLB blend and diagnostic [skip ci]"
+          git push origin HEAD:"$branch"
+      - name: Require valid animated glTF 2.0 with rotating node
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path("/tmp/m02-004-blender/M02-004.blender-qa.json").read_text())
+          assert q["status"]=="PASS",q
+          print("Real Blender GLB animation QA PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M02-004-Animated-GLB-Blend
+          path: |
+            /tmp/m02-004-blender/M02-004_animated.glb
+            /tmp/m02-004-blender/M02-004.blend
+            /tmp/m02-004-blender/M02-004.static-qa.json
+            /tmp/m02-004-blender/M02-004.blender-qa.json
+            /tmp/m02-004-blender/M02-004.blender-log.txt
+          retention-days: 30

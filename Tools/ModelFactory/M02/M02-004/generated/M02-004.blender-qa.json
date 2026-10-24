@@ -1,0 +1,42 @@
+{
+  "blender_exit_code": 0,
+  "blender_log_tail": "/home/runner/work/RoboRougelike/RoboRougelike/Tools/ModelFactory/M02/M02-004/generate_m02_004.py:273: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0\n  mat.use_nodes=True\nInfo: Saved as \"M02-004.blend\"\nERROR Draco mesh compression is not available because library could not be found at /usr/lib/blender/scripts/addons_core/io_scene_gltf2/libextern_draco.so\n13:57:56 | INFO: Starting glTF 2.0 export\n13:57:56 | INFO: Extracting primitive: M02-004_Rear_mount_flange_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Front_machined_rim_inlay_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_bolt_01_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_bolt_02_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_bolt_03_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_bolt_04_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_bolt_05_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_bolt_06_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Hub_forged_annulus_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Perforated_web_12_open_windows_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_01_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_02_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_03_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_04_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_05_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_06_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_07_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_08_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_09_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_10_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_11_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_12_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_13_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_14_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_15_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_16_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_17_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_18_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_19_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_20_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_21_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_22_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_23_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Replaceable_traction_tooth_24_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Rolling_hoop_machined_chamfers_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Stationary_axle_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Extracting primitive: M02-004_Stationary_dust_seal_mesh\n13:57:56 | INFO: Primitives created: 1\n13:57:56 | INFO: Finished glTF 2.0 export in 0.05361652374267578 s\n\n{\n  \"id\": \"M02-004\",\n  \"result\": \"STATIC_GEOMETRY_PASS\",\n  \"model\": \"perforated steel wheel\",\n  \"unit\": \"metre\",\n  \"mount_pivot_blender\": [\n    0,\n    0,\n    0\n  ],\n  \"axle\": \"Blender +X (wheel rotation about X)\",\n  \"rotation_degrees\": 360,\n  \"perforation_count\": 12,\n  \"radial_through_holes\": true,\n  \"rotating_teeth\": 24,\n  \"part_count\": 37,\n  \"materials_used\": [\n    \"ceramic\",\n    \"copper\",\n    \"dark_steel\",\n    \"forged_steel\",\n    \"rubber\"\n  ],\n  \"obj_vertices\": 2676,\n  \"obj_faces\": 2668,\n  \"max_radius_m\": 0.478,\n  \"width_from_mount_m\": 0.365,\n  \"shaft_to_bore_clearance_m\": 0.03,\n  \"seal_to_bore_clearance_m\": 0.007,\n  \"rotation_clearance_samples\": 73,\n  \"manifold_closed_meshes\": \"PASS (each edge twice, opposite winding, positive signed volume)\",\n  \"stationary_vs_rotor_clearance\": \"PASS (analytic radial, not Unity physics)\",\n  \"traction_tooth_to_rim_overlap\": \"INTENTIONAL 4mm weld intersection\",\n  \"blender\": \"EXECUTED\",\n  \"unity\": \"NOT RUN\",\n  \"visual\": \"NOT RUN\",\n  \"obj\": \"M02-004.obj\",\n  \"mtl\": \"M02-004.mtl\",\n  \"blender_outputs\": {\n    \"blend\": \"/tmp/m02-004-blender/M02-004.blend\",\n    \"glb\": \"/tmp/m02-004-blender/M02-004_animated.glb\"\n  }\n}\nBlender 5.0.1\n\nBlender quit\n",
+  "glb_exists": true,
+  "blend_exists": true,
+  "glb_bytes": 167704,
+  "blend_bytes": 161744,
+  "magic_ok": true,
+  "version": 2,
+  "length_matches": true,
+  "json_chunk_ok": true,
+  "meshes": 37,
+  "animations": 1,
+  "animation_names": [
+    "M02-004_ROTORAction"
+  ],
+  "nodes": 39,
+  "node_names": [
+    "M02-004_Rear_mount_flange",
+    "M02-004_Front_machined_rim_inlay",
+    "M02-004_Hub_bolt_01",
+    "M02-004_Hub_bolt_02",
+    "M02-004_Hub_bolt_03",
+    "M02-004_Hub_bolt_04",
+    "M02-004_Hub_bolt_05",
+    "M02-004_Hub_bolt_06",
+    "M02-004_Hub_forged_annulus",
+    "M02-004_Perforated_web_12_open_windows",
+    "M02-004_Replaceable_traction_tooth_01",
+    "M02-004_Replaceable_traction_tooth_02",
+    "M02-004_Replaceable_traction_tooth_03",
+    "M02-004_Replaceable_traction_tooth_04",
+    "M02-004_Replaceable_traction_tooth_05",
+    "M02-004_Replaceable_traction_tooth_06",
+    "M02-004_Replaceable_traction_tooth_07",
+    "M02-004_Replaceable_traction_tooth_08",
+    "M02-004_Replaceable_traction_tooth_09",
+    "M02-004_Replaceable_traction_tooth_10"
+  ],
+  "rotor_node_present": true,
+  "status": "PASS"
+}
