@@ -48,6 +48,8 @@ def reset_owned():
         owned_objects = list(old.objects)
         old_meshes = [o.data for o in owned_objects if o.type == "MESH"]
         old_curves = [o.data for o in owned_objects if o.type == "CURVE"]
+        old_actions = [o.animation_data.action for o in owned_objects
+                       if o.animation_data and o.animation_data.action]
         for obj in owned_objects:
             bpy.data.objects.remove(obj, do_unlink=True)
         bpy.data.collections.remove(old)
@@ -57,6 +59,9 @@ def reset_owned():
         for curve in old_curves:
             if curve.users == 0:
                 bpy.data.curves.remove(curve)
+        for action in old_actions:
+            if action.users == 0:
+                bpy.data.actions.remove(action)
     global OWNED, OBJECTS
     OWNED = bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(OWNED)
@@ -117,7 +122,8 @@ def box(name, pos, size, mat, bevel=0.008, parent=None):
         mod = obj.modifiers.new("manufactured_radius", "BEVEL")
         mod.width = bevel
         mod.segments = 2
-        mod.affect = "EDGES" if hasattr(mod, "affect") else None
+        if hasattr(mod, "affect"):
+            mod.affect = "EDGES"
         bpy.context.view_layer.objects.active = obj
         bpy.ops.object.modifier_apply(modifier=mod.name)
         weighted = obj.modifiers.new("weighted_normals", "WEIGHTED_NORMAL")
@@ -388,11 +394,28 @@ def main():
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default="//M05-009-export")
+    parser.add_argument("--repeat-check", action="store_true")
     opt = parser.parse_args(args)
     out = Path(bpy.path.abspath(opt.out)).resolve()
     out.mkdir(parents=True, exist_ok=True)
+    # Repeatability test is in-process, not two fresh Blender processes.
+    sentinel = None
+    if opt.repeat_check:
+        sentinel = bpy.data.objects.new("M05_009_FOREIGN_SENTINEL", None)
+        bpy.context.scene.collection.objects.link(sentinel)
     rotor = build()
     report = qa(rotor)
+    if opt.repeat_check:
+        before = (len(bpy.data.meshes), len(bpy.data.actions),
+                  len(bpy.data.curves), len(bpy.data.materials))
+        rotor = build()
+        report = qa(rotor)
+        after = (len(bpy.data.meshes), len(bpy.data.actions),
+                 len(bpy.data.curves), len(bpy.data.materials))
+        assert before == after, ("Blender data leak", before, after)
+        assert bpy.data.objects.get(sentinel.name) is sentinel
+        report["repeatability"] = "PASS (two builds, foreign object preserved)"
+        bpy.data.objects.remove(sentinel, do_unlink=True)
     (out / "M05-009_QA.json").write_text(json.dumps(report, indent=2) + "\n")
     # Only own objects are exported. Blender is run in a clean background
     # scene by CI, but generator itself preserves foreign scene objects.
