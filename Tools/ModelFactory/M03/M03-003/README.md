@@ -34,3 +34,11 @@ Generator zawiera `--self-test` sprawdzający unikalność nazw, materiały, dod
 **Blender export: NOT RUN** dopóki nie ma dowodu uruchomienia Blendera. **Unity import / Play Mode: NOT RUN.** Wszelkie kontrole wykonywane w CI będą raportowane oddzielnie i nie oznaczają testu w Unity. Ten model jest tylko wizualnym modułem konstrukcyjnym; nie zawiera mechaniki fizycznej.
 
 **Claim:** `Docs/ModelFactory/claims/M03-003.json` na gałęzi kontrolnej, utworzony przez CREATE przed rozpoczęciem produkcji; commit `7e33dadc07cb108d5ef0cf676ceae79041c81d21`. Nie należy ponownie przydzielać tego ID.
+
+### Wynik automatycznego QA — 2026-10-24
+
+- **M03-003 Bridge Frame Geometry QA: PASS** — rzeczywiście uruchomiono `qa_m03_003.py` i generator w trybie `--static-obj`. Wykonano kontrolę składni Pythona, manifold i orientacji trójkątów, wymiarów, liczby portów, materiałów oraz indeksów OBJ/MTL.
+- **Artefakt:** `M03-003-bridge-frame-static-OBJ` (OBJ, MTL, manifest), [GitHub Actions run #40095436696](https://github.com/C8LyNn/RoboRougelike/actions/runs/40095436696), artifact ID `12560821521`. Statyczny model jest rzeczywistym wynikiem generatora, nie ilustracją.
+- **CI-01 Repository Validation: PASS** — [run #40095436658](https://github.com/C8LyNn/RoboRougelike/actions/runs/40095436658).
+- **CI-02 Unity EditMode: BLOCKED**, **CI-03 Unity PlayMode: BLOCKED** — oba workflow zatrzymały się na kroku `Require valid Unity activation credentials`; nie są dowodem niepoprawności modelu ani przeprowadzonych testów Unity.
+- **Blender bpy FBX/GLB export: NOT RUN**, **Unity import / geometry preview: NOT RUN**. Przed integracją należy wykonać eksport w Blenderze, sprawdzić pivoty i materiały w Unity 6 oraz zweryfikować widoczne styki.
