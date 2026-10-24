@@ -300,7 +300,15 @@ def moving_clearance():
     min_wheel=1e9
     for frame in range(FRAMES+1):
         phase=PERIMETER*frame/FRAMES
-        poses=[path_pose(i*PITCH+phase) for i in range(N_LINKS)]
+        poses=[]
+        for i in range(N_LINKS):
+            loc,yaw=path_pose(i*PITCH+phase)
+            # The real link shell is radially asymmetric: -16mm steel
+            # inside and +37mm rubber/marker outside. A shifted 52mm
+            # OBB conservatively encloses both with no false wheel contact.
+            outward=(math.sin(yaw),0,math.cos(yaw))
+            shifted=tuple(loc[k]+.0105*outward[k] for k in range(3))
+            poses.append((shifted,yaw))
         for i in range(N_LINKS):
             a=poses[i]
             for j in range(i+1,N_LINKS):
@@ -444,7 +452,8 @@ def blender_export(parts,out):
             mod=ob.modifiers.new("Machined chamfer","BEVEL")
             mod.width=p["bevel"]
             mod.segments=3
-            mod.affect="EDGES" if hasattr(mod,"affect") else None
+            if hasattr(mod,"affect"):
+                mod.affect="EDGES"
             ob.modifiers.new("Weighted normals","WEIGHTED_NORMAL")
         else:
             for face in mesh.polygons:
