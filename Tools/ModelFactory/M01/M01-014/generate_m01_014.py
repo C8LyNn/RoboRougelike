@@ -346,7 +346,10 @@ def blender_export(parts,out):
         bake_anim=True,bake_anim_use_all_actions=False)
     bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",
         use_selection=True,export_animations=True)
+    bpy.context.preferences.filepaths.save_version=0  # no .blend1 backups on repeat
     bpy.ops.wm.save_as_mainfile(filepath=str(blend))
+    for backup in out.glob(STEM+".blend[0-9]*"):
+        backup.unlink()
     return {"blender_export":"PASS (files written, visual inspection pending)",
             "blender_version":".".join(str(x) for x in bpy.app.version),
             "animated_files":[fbx.name,glb.name,blend.name],
