@@ -303,6 +303,13 @@ def build():
     # Front guard is stationary, well forward of the blade's axial envelope.
     annulus("Fan_Front_Guard", (.550, 0, .025), .193, .237,
             .014, "ceramic")
+    # The front guard must not float 21 mm ahead of the duct. Four axial
+    # posts connect the stationary guard ring to the stationary shroud.
+    for k in range(4):
+        a = (k + .5) * math.pi / 2
+        box("Front_Guard_Post_%d" % k,
+            (.531, .220 * math.cos(a), .025 + .220 * math.sin(a)),
+            (.050, .020, .020), "titanium", .004)
     for k in range(8):
         a = k * math.pi / 4
         cy, cz = .122 * math.cos(a), .025 + .122 * math.sin(a)
@@ -373,6 +380,17 @@ def qa(rotor):
             invalid.append((obj.name, bad, zero))
         bm.free()
     assert not invalid, invalid[:10]
+    # Compute actual world-space dimensions (including rotor parenting),
+    # not merely expected procedural parameter values.
+    bpy.context.view_layer.update()
+    corners = [obj.matrix_world @ __import__("mathutils").Vector(v)
+               for obj in meshes for v in obj.bound_box]
+    xyz_bounds = [[min(v[i] for v in corners), max(v[i] for v in corners)]
+                  for i in range(3)]
+    dimensions = [round(b[1] - b[0], 4) for b in xyz_bounds]
+    assert .55 < dimensions[0] < .65, dimensions
+    assert .85 < dimensions[1] < 1.0, dimensions
+    assert .60 < dimensions[2] < .75, dimensions
     # No foreign objects removed: ownership is restricted to this collection.
     names = [o.name for o in OBJECTS]
     assert len(names) == len(set(names))
@@ -387,6 +405,9 @@ def qa(rotor):
         "front_axial_clearance_m": round(front_axial_gap, 5),
         "meshes": len(meshes),
         "materials": len(MATERIALS),
+        "dimensions_xyz_m": dimensions,
+        "bounds_xyz_m": [[round(x, 4) for x in b] for b in xyz_bounds],
+        "front_guard_structural_posts": 4,
         "vertices": sum(len(o.data.vertices) for o in meshes),
         "triangles": sum(sum(len(p.vertices) - 2 for p in o.data.polygons)
                          for o in meshes),
