@@ -31,5 +31,7 @@
     "Tools/ModelFactory/M02/M02-006/generated/M02-006_spiked_rubble_wheel.mtl"
   ],
   "blend": "Tools/ModelFactory/M02/M02-006/generated/M02-006.blend",
-  "glb": "Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.glb"
+  "glb": "Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.glb",
+  "fbx": null,
+  "unity_native_fbx": "BLOCKED_FBX_OPERATOR"
 }
