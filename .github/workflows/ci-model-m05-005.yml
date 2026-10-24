@@ -1,0 +1,77 @@
+name: MODEL-05 M05-005 asset QA
+on:
+  push:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-005/**'
+      - '.github/workflows/ci-model-m05-005.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-005/**'
+      - '.github/workflows/ci-model-m05-005.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Syntax, manifold, winding, dimensions and core clearance
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-005/generate_m05_005.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-005/blender_smoke.py
+          python3 Tools/ModelFactory/M05/M05-005/generate_m05_005.py --self-test
+      - name: Reproduce OBJ and MTL byte-for-byte
+        run: |
+          python3 Tools/ModelFactory/M05/M05-005/generate_m05_005.py --output-dir /tmp/m05-005
+          cmp Tools/ModelFactory/M05/M05-005/M05-005.obj /tmp/m05-005/M05-005.obj
+          cmp Tools/ModelFactory/M05/M05-005/M05-005.mtl /tmp/m05-005/M05-005.mtl
+      - name: Check checked-in QA metrics and OBJ integrity
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('Tools/ModelFactory/M05/M05-005')
+          manifest=json.loads((base/'M05-005.static-qa.json').read_text())
+          actual=json.loads(Path('/tmp/m05-005/M05-005.run-report.json').read_text())
+          for k in ('model','parts','vertices','polygons','triangles','materials','minimum_core_radial_gap_m','bounding_min_m','bounding_max_m'):
+              assert manifest[k]==actual[k],(k,manifest[k],actual[k])
+          assert manifest['parts']==47 and manifest['materials']==7
+          assert manifest['manifold_edges']=='PASS'
+          assert manifest['positive_winding']=='PASS'
+          assert manifest['blender_execution']=='NOT_RUN'
+          assert manifest['unity_import']=='NOT_RUN'
+          lines=(base/'M05-005.obj').read_text().splitlines()
+          assert sum(x.startswith('v ') for x in lines)==manifest['vertices']
+          assert sum(x.startswith('f ') for x in lines)==manifest['polygons']
+          assert sum(x.startswith('o ') for x in lines)==manifest['parts']
+          print('M05-005 STATIC QA PASS')
+          PY
+  blender-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender from Ubuntu packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate animated GLB and verify idempotence and isolation
+        run: |
+          blender -b --python Tools/ModelFactory/M05/M05-005/blender_smoke.py -- /tmp/m05-005-blender
+      - name: Upload generated animated asset for inspection
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M05-005-Blender-animated-asset
+          path: |
+            /tmp/m05-005-blender/M05-005.blend
+            /tmp/m05-005-blender/M05-005_animated.glb
+          if-no-files-found: error
+          retention-days: 14
