@@ -1,0 +1,34 @@
+{
+  "id": "M01-002",
+  "method": "JS mesh-construction assertions and deterministic OBJ generation",
+  "result": "STATIC_STRUCTURE_PASS",
+  "parts": 55,
+  "vertices": 2376,
+  "triangles": 4568,
+  "materials": 7,
+  "bounds_m": {
+    "min": [
+      -0.578,
+      -1.4175,
+      0
+    ],
+    "max": [
+      0.578,
+      0.72,
+      1.085
+    ]
+  },
+  "recoil_travel_m": 0.12,
+  "clearance_checks_m": {
+    "moving_receiver_to_rear_bulkhead_at_max_recoil": 0.055,
+    "moving_receiver_to_side_cheek_inner_face": 0.165,
+    "piston_housing_to_cheek_inner_face": 0.01
+  },
+  "notes": [
+    "Piston rods deliberately telescope inside housings (intentional internal overlap).",
+    "Other adjacent receiver/barrel and collar joints intentionally share interface volumes.",
+    "Geometric collision across full animated motion NOT tested in Blender.",
+    "OBJ has no animation; Blender GLB/FBX export NOT RUN.",
+    "Unity import and visual QA NOT RUN."
+  ]
+}
