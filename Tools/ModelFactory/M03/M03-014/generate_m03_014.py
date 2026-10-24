@@ -127,7 +127,11 @@ def write_blender(out):
     import bpy
     coll=bpy.data.collections.get('MODEL_M03_014')
     if coll:
-        for obj in list(coll.objects): bpy.data.objects.remove(obj,do_unlink=True)
+        for obj in list(coll.objects):
+            mesh = obj.data if obj.type == 'MESH' else None
+            bpy.data.objects.remove(obj, do_unlink=True)
+            if mesh is not None and mesh.users == 0:
+                bpy.data.meshes.remove(mesh)
         bpy.data.collections.remove(coll)
     coll=bpy.data.collections.new('MODEL_M03_014')
     bpy.context.scene.collection.children.link(coll)
