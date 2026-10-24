@@ -8,11 +8,14 @@ Initial original compilation failed because both test asmdefs declared runner re
 
 These are Editor API/physics fixtures. Actual Windows telegraph readability, driving avoidance and performance remain W7 closure gates with COV/VFX. Mounting, salvage and repairs are not applicable to an arena zone. Existing GUIDs, scenes, prefabs and packages were preserved.
 
-**Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W7 native Windows and full-wave closure.**
+**Current decision: READY in the W7 RC1 aggregate, with documented UIA shutdown/frame outlier limits.**
 
 [Machine-readable cases](HAZ-001_test_summary.json). API fixtures are distinct from native input gameplay.
 
 Integration [Draft PR #30](https://github.com/C8LyNn/RoboRougelike/pull/30); no shared-branch merge.
 
 
-W7 build source e2dd53bef859e819cc3896748b3fd92286c12f70: Windows builds succeeded0errors; native720 API/physics23/23 checks/errors[]/actualexit0. Full regression and ordinary-input campaign/visual/performance gates remain pending. See [current W7 wave QA](W7_WAVE_QA.md) for evidence, release status and API/gameplay distinction.
+W7 closure source e2dd53bef859e819cc3896748b3fd92286c12f70: Windows builds0errors; full841/359 PASS; native720 API23/23 exit0; six-stage native1080 input campaign/final screen/restart and extracted retail launch PASS. Known UIA shutdown/frame outliers remain documented. See [current W7 wave QA](W7_WAVE_QA.md) for evidence, release status and API/gameplay distinction.
+
+
+Historical pending statements above describe the package checkpoint. Current aggregate source `e2dd53bef859e819cc3896748b3fd92286c12f70`: [W7 wave release QA](W7_WAVE_QA.md) supplies the final native/full/ZIP gates and limits.
