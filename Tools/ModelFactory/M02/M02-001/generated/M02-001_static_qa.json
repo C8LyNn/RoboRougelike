@@ -1,0 +1,24 @@
+{
+  "id": "M02-001",
+  "generator": "matching Blender bpy procedural source",
+  "format": "OBJ/MTL static Unity Y-up",
+  "geometry_qa": "PASS",
+  "triangle_count": 6336,
+  "part_count": 100,
+  "vertex_count": 3360,
+  "material_count": 7,
+  "lug_count": 60,
+  "bolt_count": 16,
+  "radius_m": 0.5340000000000001,
+  "width_m": 0.384,
+  "axis": "+X",
+  "pivot": [
+    0,
+    0,
+    0
+  ],
+  "animation": "not included in static OBJ; Blender script creates animated FBX/GLB",
+  "unity_play_mode": "NOT RUN",
+  "blender_export": "NOT RUN",
+  "verified_at_utc": "2026-10-24T10:51:05.860Z"
+}
