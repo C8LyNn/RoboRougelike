@@ -59,3 +59,17 @@ model .meta files until import and visual QA are satisfactory.
 - A dead/detached wheel stops spinning; a garage ghost has no Rigidbody and stays static.
 - The visual radius baseline (0.39 m) matches the old wheel proxy and requires Unity on-screen calibration.
 - Added two EditMode tests for wheel rotation and preserving nested animation transforms. No test execution claimed.
+
+## Repeatable verified GLB package install (without Unity)
+
+Download the W01/H01 pilot ZIP from the ChatGPT attachment. Run from the
+Unity project checkout, replacing the ZIP path as needed:
+
+    python Tools/ModelIntegration/install_pilot_assets.py --archive C:\Downloads\RoboRoguelike_VisualPilot_W01_H01_Assets.zip --project .
+    python Tools/ModelIntegration/install_pilot_assets.py --archive C:\Downloads\RoboRoguelike_VisualPilot_W01_H01_Assets.zip --project . --install
+    python -m unittest discover -s Tools/ModelIntegration -p "test_*.py" -v
+
+The installer only writes the three specific SHA-256-verified GLBs under
+Assets/RRLImportedModels. It refuses to overwrite different models and does not
+modify Unity .meta or package dependencies. glTFast editor import, generated
+meta files, Unity compilation and PlayMode remain REQUIRED and NOT RUN here.
