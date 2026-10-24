@@ -1,0 +1,91 @@
+name: M05-013 Repair Manipulator Asset QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-013-repair-manipulator
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M05/M05-013/**"
+      - ".github/workflows/ci-model-m05-013.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: m05-013-static-and-blender
+  cancel-in-progress: true
+jobs:
+  static-obj:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independent mesh and 361-pose static QA
+        run: python3 Tools/ModelFactory/M05/M05-013/qa_m05_013.py
+      - name: Generate actual OBJ MTL JSON
+        run: python3 Tools/ModelFactory/M05/M05-013/generate_m05_013.py --out build/M05-013
+      - name: Publish real static mesh
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-013-repair-manipulator-OBJ-MTL-QA
+          path: build/M05-013/
+          if-no-files-found: error
+          retention-days: 14
+  blender-animated:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -2
+      - name: Generate actual animated FBX GLB BLEND and repeat-build QA
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M05/M05-013/generate_m05_013.py -- --out build/M05-013 --repeat-check
+      - name: Independently inspect binary GLB animation
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path("build/M05-013")
+          data=(root/"M05-013_repair_manipulator.glb").read_bytes()
+          magic,version,total=struct.unpack_from("<III",data,0)
+          assert magic==0x46546c67 and version==2 and total==len(data)
+          size,typ=struct.unpack_from("<II",data,12)
+          assert typ==0x4e4f534a
+          gltf=json.loads(data[20:20+size])
+          assert len(gltf["materials"])==8,len(gltf["materials"])
+          assert len(gltf["meshes"])>=40,len(gltf["meshes"])
+          assert len(gltf["animations"])>=1,len(gltf.get("animations",[]))
+          names={node.get("name") for node in gltf["nodes"]}
+          assert {"MOUNT_SIDE_SOCKET","M05_013_SHOULDER",
+                  "M05_013_ELBOW","M05_013_WRIST",
+                  "M05_013_SERVICE_TIP"}.issubset(names),names
+          for ext in ("fbx","blend"):
+              p=root/("M05-013_repair_manipulator."+ext)
+              assert p.exists() and p.stat().st_size>1000
+          report=json.loads((root/"M05-013_manifest.json").read_text())
+          assert report["blender_export"]=="PASS"
+          assert report["blender_repeat_build"]=="PASS"
+          assert report["blender_foreign_objects_preserved"]=="PASS"
+          assert report["blender_animated_frames_verified"]==36
+          assert report["unity_import"]=="NOT RUN"
+          print("PASS: Blender, GLB/FBX/BLEND, 8 materials, 3 joints, 36 frames")
+          PY
+      - name: Publish actual Blender exports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-013-repair-manipulator-GLB-FBX-BLEND-QA
+          path: |
+            build/M05-013/*.glb
+            build/M05-013/*.fbx
+            build/M05-013/*.blend
+            build/M05-013/*manifest.json
+          if-no-files-found: error
+          retention-days: 14
