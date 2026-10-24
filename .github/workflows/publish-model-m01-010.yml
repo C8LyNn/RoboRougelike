@@ -1,0 +1,47 @@
+name: M01-010 Publish Verified Blender Exports
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-010-energy-fork-projector
+    paths:
+      - '.github/workflows/publish-model-m01-010.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish-real-m01-010-exports:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout isolated M01-010 branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Retrieve successful real Blender export run
+        uses: actions/download-artifact@v4
+        with:
+          name: M01-010-energy-fork-projector-3D
+          run-id: 40127186868
+          github-token: ${{ github.token }}
+          path: /tmp/m01-010
+      - name: Independently verify actual exported binary files
+        run: python3 Tools/ModelFactory/M01/M01-010/validate_m01_010.py /tmp/m01-010
+      - name: Commit verified binary exports to isolated M01-010 branch
+        run: |
+          set -euo pipefail
+          dest=Tools/ModelFactory/M01/M01-010/generated
+          mkdir -p "$dest"
+          cp /tmp/m01-010/M01-010_energy_fork_projector.blend "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector_animated.glb "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector_animated.fbx "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector.obj "$dest/"
+          cp /tmp/m01-010/M01-010_energy_fork_projector.mtl "$dest/"
+          cp /tmp/m01-010/M01-010_qa.json "$dest/"
+          git add "$dest"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-010): verified Blender 3D outputs from successful run 40127186868"
+            git fetch origin +refs/heads/feature/rrl-model-m01-010-energy-fork-projector:refs/remotes/origin/feature/rrl-model-m01-010-energy-fork-projector
+            git rebase origin/feature/rrl-model-m01-010-energy-fork-projector
+            git push origin HEAD:feature/rrl-model-m01-010-energy-fork-projector
+          fi
