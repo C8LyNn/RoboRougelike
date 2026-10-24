@@ -1,0 +1,42 @@
+{
+  "id": "M05-003",
+  "qa_geometry": "PASS",
+  "closed_manifold_parts": 44,
+  "parts": 44,
+  "vertices": 2526,
+  "triangles": 4912,
+  "materials": 9,
+  "iris_petals": 10,
+  "lens_count": 2,
+  "rotor_clearance_qa": "PASS_5_ANGLES_EACH",
+  "rotor_housing_radial_clearance_min_m": 0.016,
+  "rotor_lens_axial_clearance_min_m": 0.007,
+  "rotor_bezel_axial_clearance_min_m": 0.006,
+  "bounds_m": [
+    [
+      -0.395,
+      -0.175,
+      -0.02
+    ],
+    [
+      0.395,
+      0.181,
+      0.669
+    ]
+  ],
+  "mount_pivot": [
+    0,
+    0,
+    0
+  ],
+  "optical_axis": "+Z",
+  "rotation_axis": "+Z",
+  "animation": "two counter-rotating 360deg irises, 61 frames at 60fps",
+  "obj": "Tools/ModelFactory/M05/M05-003/generated/M05-003_dual_optical_scanner.obj",
+  "mtl": "Tools/ModelFactory/M05/M05-003/generated/M05-003_dual_optical_scanner.mtl",
+  "backend": "Python stdlib static OBJ/MTL",
+  "blender_export": "NOT RUN",
+  "fbx": "NOT RUN",
+  "glb": "NOT RUN",
+  "unity_import": "NOT RUN"
+}
