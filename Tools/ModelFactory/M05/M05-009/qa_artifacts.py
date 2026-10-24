@@ -14,6 +14,9 @@ assert report["fan_rotation_frames"] == [1, 61]
 assert report["manifold"] == "PASS"
 assert report["materials"] >= 8
 assert report["meshes"] >= 70
+assert report["front_guard_structural_posts"] == 4
+dx, dy, dz = report["dimensions_xyz_m"]
+assert 0.55 < dx < 0.65 and 0.85 < dy < 1.0 and 0.60 < dz < 0.75
 assert report["radial_clearance_m"] >= 0.025
 assert report["rear_axial_clearance_m"] >= 0.09
 assert report["front_axial_clearance_m"] >= 0.055
