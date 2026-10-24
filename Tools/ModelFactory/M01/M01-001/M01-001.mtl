@@ -1,0 +1,38 @@
+# M01-001 material palette (OBJ static preview; Blender generator has PBR equivalents)
+newmtl Graphite
+Ka 0.06 0.07 0.09
+Kd 0.06 0.07 0.09
+Ks 0.25 0.25 0.25
+Ns 110
+illum 2
+newmtl Gunmetal
+Ka 0.15 0.18 0.20
+Kd 0.20 0.26 0.29
+Ks 0.65 0.65 0.65
+Ns 180
+illum 2
+newmtl Copper
+Ka 0.23 0.09 0.03
+Kd 0.62 0.25 0.085
+Ks 0.65 0.42 0.25
+Ns 160
+illum 2
+newmtl CeramicBlack
+Ka 0.02 0.03 0.04
+Kd 0.021 0.028 0.036
+Ks 0.12 0.12 0.12
+Ns 60
+illum 2
+newmtl AmberEmission
+Ka 0.70 0.18 0.01
+Kd 1.0 0.28 0.025
+Ke 1.0 0.28 0.025
+Ks 0.40 0.20 0.05
+Ns 120
+illum 2
+newmtl CeramicSilver
+Ka 0.40 0.45 0.45
+Kd 0.59 0.67 0.67
+Ks 0.65 0.65 0.65
+Ns 190
+illum 2
