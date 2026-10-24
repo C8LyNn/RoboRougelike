@@ -109,8 +109,7 @@ def validate(data):
     vertices=polygons=triangles=0
     min_xyz=[float("inf")]*3
     max_xyz=[float("-inf")]*3
-    core=data["parts"][-7] if False else next(
-        p for p in data["parts"] if p["name"]=="pulse_crystal")
+    core=next(p for p in data["parts"] if p["name"]=="pulse_crystal")
     assert core["parent"]=="core"
     core_max_radius=core["radius"]*1.04
     core_z_lo=data["core_pivot"][2]-core["half_height"]*1.04
@@ -262,7 +261,10 @@ def blender_scene(data,destination):
         obj.parent=core if part["parent"]=="core" else root
         mesh.materials.append(materials[part["material"]])
         for poly in mesh.polygons:
-            poly.use_smooth=part["shape"] in ("torus","cylinder")
+            # Smooth round sidewalls, but keep the cylinder caps and all
+            # planar hard-surface boundaries crisp (no shading bleed).
+            poly.use_smooth=(part["shape"]=="torus" or
+                             (part["shape"]=="cylinder" and len(poly.vertices)==4))
         obj["model_id"]="M05-005"
         obj["mount_type"]="internal_frame"
         obj["group"]=part["parent"]
