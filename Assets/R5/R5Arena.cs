@@ -42,6 +42,7 @@ namespace RoboRougelike.R5
                 Box("Łącznik zachodni",new Vector3(-31,1.5f,0),new Vector3(3,3,14),true);
                 Box("Łącznik wschodni",new Vector3(31,1.5f,0),new Vector3(3,3,14),true);
             }
+            Hazard(new Vector3(-6,0,-6));Hazard(new Vector3(6,0,8));
             // Floor tint is an instance property, never a modification to the scene asset.
             var floor=GameObject.Find("P12_Ground")?.GetComponent<Renderer>();
             if(floor!=null){var properties=new MaterialPropertyBlock();properties.SetColor("_BaseColor",color*.6f);floor.SetPropertyBlock(properties);}
@@ -52,6 +53,12 @@ namespace RoboRougelike.R5
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name;obj.transform.SetParent(Layout,false);
             obj.transform.localPosition=position;obj.transform.localScale=size;obj.GetComponent<Renderer>().sharedMaterial=material;
             if(destructible)obj.AddComponent<RoboRougelike.PackageIntegration.RRLCoverAdapter>();
+        }
+        private void Hazard(Vector3 position)
+        {
+            var obj=new GameObject("Strefa wyładowań • żółte ostrzeżenie / czerwone zagrożenie");
+            obj.transform.SetParent(Layout,false);obj.transform.localPosition=position;
+            obj.AddComponent<RoboRougelike.PackageIntegration.RRLHazardAdapter>();
         }
         private void OnDestroy(){if(material!=null)Destroy(material);}
     }

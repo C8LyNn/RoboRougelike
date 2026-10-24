@@ -1,0 +1,193 @@
+[
+  {
+    "directory": "W7-hazard-density-green-aea9d38576ce4e52b8b0be96f36ba921",
+    "summary": {
+      "id": "2",
+      "testcasecount": "11",
+      "result": "Passed",
+      "total": "11",
+      "passed": "11",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 19:44:48Z",
+      "end-time": "2026-10-23 19:44:50Z",
+      "duration": "1,9254113"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW7HazardTests.LiveQueryBudgetHandlesTwoPartDenseVehiclesWithoutTruncation",
+        "result": "Passed",
+        "duration": "3.160024"
+      },
+      {
+        "fullname": "RRLW7HazardTests.PauseAndLeavingCombatStopHazardDamageAndOwnedWarning",
+        "result": "Passed",
+        "duration": "3.082981"
+      },
+      {
+        "fullname": "RRLW7HazardTests.RealHazardTelegraphsBeforeDamagingOneInsidePhysicalPart",
+        "result": "Passed",
+        "duration": "4.611844"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.BeginOnlyFromIdle",
+        "result": "Passed",
+        "duration": "0.002534"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.ConfigureSanitizesInvalidValues",
+        "result": "Passed",
+        "duration": "0.000377"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.DisabledZoneCannotBegin",
+        "result": "Passed",
+        "duration": "0.000199"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.HugeStepCompletesExactlyOneCycle",
+        "result": "Passed",
+        "duration": "0.000247"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.InvalidTimeDoesNotAdvance",
+        "result": "Passed",
+        "duration": "0.000174"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.NeverRequestsDamageOutsideActive",
+        "result": "Passed",
+        "duration": "0.000177"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.ResetCancelsAndPermitsRestart",
+        "result": "Passed",
+        "duration": "0.000159"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZoneEditModeTests.TimelineCarriesOvershootAcrossPhases",
+        "result": "Passed",
+        "duration": "0.000518"
+      }
+    ],
+    "exit": {
+      "mode": "EditMode",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-23T19:44:51.5690559Z",
+      "filter": "RRLW7HazardTests;RoboRougelike.Mechanics.HAZ001.Tests"
+    }
+  },
+  {
+    "directory": "W7-hazard-original-play-b42bc7ad90e0468b914744a6184ceedd",
+    "summary": {
+      "id": "2",
+      "testcasecount": "4",
+      "result": "Passed",
+      "total": "4",
+      "passed": "4",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 19:31:48Z",
+      "end-time": "2026-10-23 19:31:48Z",
+      "duration": "0,0423265"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZonePlayModeTests.DamageRequestsAreRateLimitedAndNonMutating",
+        "result": "Passed",
+        "duration": "0.018468"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZonePlayModeTests.DisablingCancelsActiveHazard",
+        "result": "Passed",
+        "duration": "0.001559"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZonePlayModeTests.LayerMaskRejectsOtherObjects",
+        "result": "Passed",
+        "duration": "0.000794"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.HAZ001.Tests.HazardZonePlayModeTests.TwoCollidersOnSameRigidbodyEmitOnce",
+        "result": "Passed",
+        "duration": "0.001667"
+      }
+    ],
+    "exit": {
+      "filter": "RoboRougelike.Mechanics.HAZ001.Tests",
+      "exitCode": 0,
+      "mode": "PlayMode",
+      "finishedUtc": "2026-10-23T19:31:49.4174552Z"
+    }
+  },
+  {
+    "directory": "W7-hazard-arena-regression-5a584bb6edf54e6cae465d8430f7fcd6",
+    "summary": {
+      "id": "2",
+      "testcasecount": "7",
+      "result": "Passed",
+      "total": "7",
+      "passed": "7",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-23 19:32:33Z",
+      "end-time": "2026-10-23 19:32:34Z",
+      "duration": "0,4518659"
+    },
+    "cases": [
+      {
+        "fullname": "R5ArenaTests.SolidLayoutsHaveSafeSpawnsAndAiTraversesIndustrialCover",
+        "result": "Passed",
+        "duration": "21.192648"
+      },
+      {
+        "fullname": "R5RunTests.EconomySupportsModerateRepairsAndAnOptionalWeaponWithoutNewCurrency",
+        "result": "Passed",
+        "duration": "0.024886"
+      },
+      {
+        "fullname": "R5RunTests.NewExpeditionOffersRouteBeforeFirstCombat",
+        "result": "Passed",
+        "duration": "3.107901"
+      },
+      {
+        "fullname": "R5RunTests.SeedReplaysAllRoutesRewardsAndUpgradeRandomWithoutReroll",
+        "result": "Passed",
+        "duration": "0.006973"
+      },
+      {
+        "fullname": "R5RunTests.SixStageBranchPreservesModelAndEndsWithoutGarage",
+        "result": "Passed",
+        "duration": "3.593463"
+      },
+      {
+        "fullname": "RRLW7CoverTests.ActualPlayerProjectileDamagesOnlyContactedCover",
+        "result": "Passed",
+        "duration": "3.679811"
+      },
+      {
+        "fullname": "RRLW7CoverTests.RealArenaUsesOriginalCoverDurabilityWithoutVehicleHpAndRebuildsCleanly",
+        "result": "Passed",
+        "duration": "3.202657"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW7CoverTests;R5ArenaTests;R5RunTests",
+      "exitCode": 0,
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-23T19:32:35.1959949Z"
+    }
+  }
+]
