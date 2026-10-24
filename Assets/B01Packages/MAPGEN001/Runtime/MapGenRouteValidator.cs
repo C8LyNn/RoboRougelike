@@ -24,7 +24,7 @@ namespace B01.MAPGEN001
 
         private const float GridStep = 1f;
         private const float FootprintMargin = .25f;
-        private const float SpineStep = .5f;
+        private const float SpineStep = .25f;
         private static readonly int[] XStep = { 1, -1, 0, 0 };
         private static readonly int[] ZStep = { 0, 0, 1, -1 };
 
@@ -36,6 +36,22 @@ namespace B01.MAPGEN001
                 !Finite(vehicle.MinTurnRadius) || vehicle.MinTurnRadius < 0)
                 return Fail("INVALID_PROFILE", 0, 0);
             if (plan.Elements.Count == 0) return Fail("EMPTY_MAP", 0, 0);
+            if (plan.Recipe != MapRecipe.CombatArena && plan.Recipe != MapRecipe.ObstacleCourse)
+                return Fail("INVALID_RECIPE", 0, 0);
+            for (int i = 0; i < plan.EnemySpawns.Count; i++)
+            {
+                Vector3 spawn = plan.EnemySpawns[i];
+                if (!Finite(spawn.x) || !Finite(spawn.z) ||
+                    !IsFree(plan, vehicle, spawn.x, spawn.z))
+                    return Fail("ENEMY_SPAWN_BLOCKED", 0, 0);
+                for (int j = 0; j < i; j++)
+                {
+                    Vector3 other = plan.EnemySpawns[j];
+                    if (Mathf.Abs(spawn.x - other.x) < vehicle.Width + FootprintMargin * 2f &&
+                        Mathf.Abs(spawn.z - other.z) < vehicle.Length + FootprintMargin * 2f)
+                        return Fail("ENEMY_SPAWNS_OVERLAP", 0, 0);
+                }
+            }
 
             if (!Finite(vehicle.MaxSlopeDegrees) || vehicle.MaxSlopeDegrees < 0f || vehicle.MaxSlopeDegrees > 45f)
                 return Fail("INVALID_SLOPE_LIMIT", 0, 0);
@@ -66,16 +82,21 @@ namespace B01.MAPGEN001
                 Vector2 c = new Vector2(spine[i + 1].x, spine[i + 1].z);
                 float ab = Vector2.Distance(a, b);
                 float bc = Vector2.Distance(b, c);
-                float ac = Vector2.Distance(a, c);
                 if (ab < .01f || bc < .01f) return Fail("DEGENERATE_WAYPOINTS", 0, 0);
-                float cross = Mathf.Abs((b.x - a.x) * (c.y - b.y) -
-                                        (b.y - a.y) * (c.x - b.x));
-                if (cross > .0001f)
+                // Three-point circumradius does not prove an abrupt polyline
+                // corner can physically be rounded. Reserve half of the shorter
+                // neighbouring segment for a conservative tangent fillet.
+                Vector2 incoming = (b - a) / ab;
+                Vector2 outgoing = (c - b) / bc;
+                float angle = Mathf.Acos(Mathf.Clamp(Vector2.Dot(incoming, outgoing), -1f, 1f));
+                if (angle > .0001f)
                 {
-                    float radius = ab * bc * ac / (2f * cross);
-                    minRadius = Mathf.Min(minRadius, radius);
-                    if (radius + .001f < vehicle.MinTurnRadius)
-                        return Fail("TURN_RADIUS_TOO_SMALL", 0, radius);
+                    float tangent = Mathf.Tan(angle * .5f);
+                    float feasibleRadius = Mathf.Min(ab, bc) * .5f / tangent;
+                    minRadius = Mathf.Min(minRadius, feasibleRadius);
+                    if (!Finite(feasibleRadius) ||
+                        feasibleRadius + .001f < vehicle.MinTurnRadius)
+                        return Fail("TURN_RADIUS_TOO_SMALL", 0, feasibleRadius);
                 }
             }
 
@@ -164,11 +185,12 @@ namespace B01.MAPGEN001
         {
             float halfW = vehicle.Width * .5f + FootprintMargin;
             float halfL = vehicle.Length * .5f + FootprintMargin;
-            // Four-corner floor support rejects cliff edges and open floor seams.
-            if (!FloorAt(plan, x - halfW, z - halfL) ||
-                !FloorAt(plan, x - halfW, z + halfL) ||
-                !FloorAt(plan, x + halfW, z - halfL) ||
-                !FloorAt(plan, x + halfW, z + halfL)) return false;
+            // Corners alone would falsely accept a hole under the chassis.
+            // 3x3 is conservative for our flat primitive floors, not a PhysX proof.
+            for (int ix = -1; ix <= 1; ix++)
+                for (int iz = -1; iz <= 1; iz++)
+                    if (!FloorAt(plan, x + ix * halfW, z + iz * halfL))
+                        return false;
             foreach (MapElement e in plan.Elements)
             {
                 if (e.Kind == MapElementKind.Floor) continue;
