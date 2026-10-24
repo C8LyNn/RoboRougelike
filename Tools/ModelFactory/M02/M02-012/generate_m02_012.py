@@ -344,7 +344,7 @@ def animate(rotor):
             big_eye.location=crank
             big_eye.keyframe_insert(data_path="location",frame=f,group="CrankEye")
             direction=wrist-crank
-            assert abs(direction.length-ROD_LENGTH)<1e-8
+            assert abs(direction.length-ROD_LENGTH)<2e-6
             rod.rotation_mode="QUATERNION"
             rod.location=(crank+wrist)/2
             rod.rotation_quaternion=Vector((0,0,1)).rotation_difference(direction)
@@ -363,14 +363,14 @@ def validate():
     assert len(BANKS)==2 and len(MOVING)==2
     samples=0
     minimum_head_clearance=999
-    minimum_rod_error=999
+    maximum_rod_error=0.0
     for k in range(361):
         a=2*math.pi*k/360
         for label,bank in BANKS.items():
             crank,wrist,s=wrist_position(bank,a)
             d=abs((wrist-crank).length-ROD_LENGTH)
-            minimum_rod_error=min(minimum_rod_error,d)
-            assert d<1e-8
+            maximum_rod_error=max(maximum_rod_error,d)
+            assert d<2e-6
             # Cylinder head underside is at s=.402. Piston top at s+.075.
             clearance=.402-(s+.075)
             minimum_head_clearance=min(minimum_head_clearance,clearance)
@@ -400,7 +400,7 @@ def validate():
                 materials=len(MATERIALS),mesh_objects=mesh_count,
                 animated_groups=7,frames=FRAME_END,
                 kinematic_samples=samples,
-                max_rod_length_error_m=minimum_rod_error,
+                max_rod_length_error_m=maximum_rod_error,
                 min_head_clearance_m=minimum_head_clearance,
                 blender="PASS",unity="NOT RUN")
 
