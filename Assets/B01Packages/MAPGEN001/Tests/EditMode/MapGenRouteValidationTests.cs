@@ -71,11 +71,9 @@ namespace B01.MAPGEN001.Tests
         {
             var p = MapVehicleProfile.Light;
             p.MaxSlopeDegrees = float.NaN;
-            // NaN cannot bypass slope validation through the default-value rule.
-            var plan = MapGenPlanner.Plan(MapRecipe.ObstacleCourse, 9, MapGenConfig.Default, p);
-            var result = MapGenRouteValidator.Validate(plan, p);
-            Assert.IsFalse(result.Passed);
-            Assert.AreEqual("INVALID_SLOPE_LIMIT", result.Code);
+            // NaN cannot bypass validation through the optional default-value rule.
+            Assert.Throws<ArgumentException>(() =>
+                MapGenPlanner.Plan(MapRecipe.ObstacleCourse, 9, MapGenConfig.Default, p));
         }
     }
 }
