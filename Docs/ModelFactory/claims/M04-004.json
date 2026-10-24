@@ -1,7 +1,7 @@
 {
   "id": "M04-004",
   "agent": "M04",
-  "status": "ASSET_DRAFT_STATIC_QA_PASS",
+  "status": "ASSET_DRAFT_BLENDER_QA_PASS",
   "claimed_at_utc": "2026-10-24T13:51:44Z",
   "model": "Dysza odrzutowa z wektorowaniem",
   "run": "2026-10-24T13:48:36Z",
@@ -16,6 +16,17 @@
     "vertices": 1760,
     "triangles": 3376
   },
-  "blender_qa": "PENDING_CI",
-  "unity_qa": "NOT_RUN"
+  "blender_qa": "PASS_BLENDER_5_0_1_GLTF_2_0",
+  "unity_qa": "NOT_RUN",
+  "blender_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40100402785",
+  "blender_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40100402785/artifacts/12562308823",
+  "blender_artifact_expires_at_utc": "2026-11-23T13:58:57Z",
+  "glb_qa": {
+    "bytes": 90800,
+    "nodes": 46,
+    "meshes": 43,
+    "animations": 2,
+    "materials": 5
+  },
+  "mesh_topology_qa": "PASS_43_CLOSED_MANIFOLD_POSITIVE_VOLUME"
 }
