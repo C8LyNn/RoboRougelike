@@ -11,6 +11,7 @@ namespace B01.MAPGEN001
         private MapGenBuilder generator;
         private Rigidbody rover;
         private Camera view;
+        private MapGenDemoVisuals demoVisuals;
         private bool forward, reverse, left, right;
         private string notice = "";
 
@@ -54,6 +55,12 @@ namespace B01.MAPGEN001
                 }
                 view.transform.position = result.Start + new Vector3(0, 33, -27);
                 view.transform.LookAt(result.Start + new Vector3(0, 0, 18));
+                if (demoVisuals == null)
+                {
+                    demoVisuals = GetComponent<MapGenDemoVisuals>();
+                    if (demoVisuals == null) demoVisuals = gameObject.AddComponent<MapGenDemoVisuals>();
+                }
+                demoVisuals.Show(result, rover, view);
                 notice = result.Diagnostics + " / demo only (no challenge win state)";
             }
             catch (System.Exception ex) { notice = "MAPGEN001 FAILED: " + ex.Message; Debug.LogException(ex); }

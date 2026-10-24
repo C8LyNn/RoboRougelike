@@ -1,16 +1,16 @@
 {
   "id": "B01-MAPGEN-001",
-  "revision": "R2",
-  "status": "SOURCE_REWORK_G1_UNITY_BLOCKED",
+  "revision": "R2_VISUAL_SUPPORT_CANDIDATE",
+  "status": "ISOLATED_DEMO_VISUAL_SUPPORT_UNITY_NOT_RUN",
   "recipient": "GPT_OSS",
   "repo": "C8LyNn/RoboRougelike",
-  "branch": "feature/b01-mapgen001-r2-validation",
+  "branch": "feature/b01-mapgen001-r2-visualqa-b01-30",
   "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "code_scope": "Assets/B01Packages/MAPGEN001/**",
   "docs_scope": "Docs/B01/MAPGEN001/**",
   "source_dependency": "UnityEngine only; no MAP-R6/W8 runtime dependency",
   "g0": "PATH_AND_META_PAIRS_STATIC_CHECKED; SHA256_AND_SCOPE_ACK_PENDING",
-  "g1": "EDITMODE_PLAYMODE_PHYSICS_NOT_RUN",
+  "g1": "EDITMODE_PLAYMODE_PHYSICS_AND_DEMO_VISUALS_NOT_RUN",
   "g2": "INDEPENDENT_B01_60_QA_PENDING; GPT_OSS_HANDOFF_HOLD",
   "codex_target_sha": null,
   "gpt_oss_target_sha": null,
@@ -28,7 +28,7 @@
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs.meta": "a3e51bf47613c89eea6af8991abbccc92c1b1488",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs": "b586a5bfc697bc37edbf98bb936459aeebe694c6",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs.meta": "14ab0587f68ef52a891106cb7e45f33eaa56a52e",
-    "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemo.cs": "85469c462144f51c61426f8f42dff544b9c0056a",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemo.cs": "c38efc6a43e69db6422f36f4293a936c00435103",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemo.cs.meta": "3e5d0bab9acff46d99dfdcebfe0b9dbe398455ed",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs": "6174d04886fbe5225c7f51e8489a363495bf2d44",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs.meta": "c6866a0f50bb571983cc7fc560acc4c13fa11efc",
@@ -57,7 +57,10 @@
     "Docs/B01/MAPGEN001/README.md": "ffee083894ca9f834c888631682f7840481cb056",
     "Docs/B01/MAPGEN001/REUSE_DECISION.md": "1e4214f2344ce94f952c254fadce0b4ac716f512",
     "Docs/B01/MAPGEN001/TEST_EVIDENCE.md": "07d6f7b7bc4089b70c69e99bea0959c2c3d7db7c",
-    "Docs/B01/MAPGEN001/TEST_PLAN.md": "1748b8b9c38fb472dc19487d030c25b6f0af03a1"
+    "Docs/B01/MAPGEN001/TEST_PLAN.md": "1748b8b9c38fb472dc19487d030c25b6f0af03a1",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemoVisuals.cs": "827e5eb4087bd2149126c3de777a11048b26a16a",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemoVisuals.cs.meta": "badc2f6b3e060ea0854f13a051745b25bbe99ea8",
+    "Docs/B01/MAPGEN001/MAPGEN001_VISUAL_QA.md": "7def95c7de8e53f9f77d2c55c6f5514d69b0541c"
   },
   "git_blob_note": "Git blob hashes are SHA-1 CONTENT IDENTITIES, NOT SHA-256. Must add calculated SHA-256 for physical package before handoff.",
   "last_source_commit_before_manifest": "5ae8abe5be811dc4b11865988d1579141344aa16",
@@ -67,7 +70,8 @@
     "unity_compile": "NOT_RUN",
     "independent_qa": "NOT_RUN",
     "manual_rover": "NOT_RUN",
-    "unit_geometry": "NOT_RUN"
+    "unit_geometry": "NOT_RUN",
+    "visual_demo": "NOT_RUN"
   },
   "parent_package_r1_sha": "6dd21a72c6ec1590015042be6775a7bd0f57f3e1",
   "sha256_release_checksums": null,
@@ -82,11 +86,19 @@
     "CHANGELOG.md",
     "KNOWN_LIMITATIONS.md",
     "TEST_PLAN.md",
-    "INSTALL_FOR_GPT_OSS.md"
+    "INSTALL_FOR_GPT_OSS.md",
+    "B01-30 isolated MapGenDemo.cs visual hook",
+    "B01-30 MapGenDemoVisuals.cs + .meta, non-colliding markers/follow camera",
+    "B01-30 MAPGEN001_VISUAL_QA.md"
   ],
   "static_tree_audit": {
-    "checked_files": 42,
+    "checked_files": 45,
     "missing_cs_asmdef_unity_meta": [],
-    "same_repo_source": "stacked PR #103 based on #99"
-  }
+    "same_repo_source": "stacked PR #103 based on #99",
+    "visual_support_meta_pair_present": true
+  },
+  "visual_support_parent_sha": "a2993a4cb09275864a04c6eaf8bc7b9f4dfb9946",
+  "visual_support_owner": "B01-30",
+  "visual_support_note": "Stacked Draft PR only, NOT final GPT OSS release. Changes are demo-only overlay and report; physics geometry unchanged.",
+  "visual_support_moving_parent_note": "PR #103 advanced to e471d7b7... after immutable R2 visual branch anchored at a2993a4...; cherry-pick only after reconciled source/test and refreshed manifest."
 }
