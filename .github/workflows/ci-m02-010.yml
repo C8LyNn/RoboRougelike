@@ -1,0 +1,74 @@
+name: M02-010 Independent Wishbone Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-010-independent-control-arm
+    paths:
+      - "Tools/ModelFactory/M02/M02-010/**"
+      - ".github/workflows/ci-m02-010.yml"
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M02/M02-010/**"
+      - ".github/workflows/ci-m02-010.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  m02-010-static:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Source manifold and 97-pose suspension self-test
+        run: python3 Tools/ModelFactory/M02/M02-010/generate_m02_010.py --self-test
+      - name: Independently validate actual OBJ and deterministic regeneration
+        run: python3 Tools/ModelFactory/M02/M02-010/qa_m02_010.py
+      - name: Export actual static OBJ MTL and QA
+        run: |
+          python3 Tools/ModelFactory/M02/M02-010/generate_m02_010.py \
+            --static-obj --out build/M02-010-static
+          test -s build/M02-010-static/M02-010_independent_wishbone.obj
+          test -s build/M02-010-static/M02-010_independent_wishbone.mtl
+          test -s build/M02-010-static/M02-010_qa.json
+      - name: Publish static model
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M02-010-static-OBJ-MTL-QA
+          path: build/M02-010-static/
+          if-no-files-found: error
+          retention-days: 14
+  m02-010-blender:
+    needs: m02-010-static
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install real Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq blender python3-numpy
+          blender --version | head -3
+      - name: Generate editable BLEND and animated GLB
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M02/M02-010/generate_m02_010.py \
+            -- --out build/M02-010-blender
+          test -s build/M02-010-blender/M02-010.blend
+          test -s build/M02-010-blender/M02-010_animated.glb
+          test -s build/M02-010-blender/M02-010_qa.json
+      - name: Inspect actual glTF 2.0 animation targets
+        run: |
+          python3 Tools/ModelFactory/M02/M02-010/qa_m02_010.py \
+            build/M02-010-blender/M02-010_animated.glb
+      - name: Publish real Blender and animated model
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M02-010-animated-GLB-BLEND-QA
+          path: build/M02-010-blender/
+          if-no-files-found: error
+          retention-days: 14
