@@ -1,0 +1,46 @@
+name: MODEL-05 M05-009 Side Liquid Radiator QA
+on:
+  push:
+    branches: [feature/rrl-model-m05-009-side-liquid-radiator]
+    paths:
+      - "Tools/ModelFactory/M05/M05-009/**"
+      - ".github/workflows/ci-model-m05-009.yml"
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M05/M05-009/**"
+      - ".github/workflows/ci-model-m05-009.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  blender-radiator-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate source Python syntax
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-009/generate_m05_009.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-009/qa_artifacts.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Run real Blender twice in same scene and export animated FBX GLB BLEND
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M05/M05-009/generate_m05_009.py \
+            -- --out build/M05-009 --repeat-check
+      - name: Independently validate exported GLB animation and binary assets
+        run: python3 Tools/ModelFactory/M05/M05-009/qa_artifacts.py build/M05-009
+      - name: Upload Blender deliverables and QA evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M05-009-Blender-FBX-GLB-BLEND-QA
+          path: build/M05-009/
+          if-no-files-found: error
+          retention-days: 14
