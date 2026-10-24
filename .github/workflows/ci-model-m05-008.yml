@@ -52,6 +52,11 @@ jobs:
           blender -b --factory-startup \
             --python Tools/ModelFactory/M05/M05-008/qa_blender_m05_008.py \
             -- --out build/M05-008/blender
+      - name: Export clean production FBX, GLB and BLEND without QA sentinel
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M05/M05-008/generate_m05_008.py \
+            -- --out build/M05-008/blender
       - name: Upload actual FBX, GLB, BLEND and QA evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
