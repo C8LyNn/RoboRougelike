@@ -233,7 +233,7 @@ def export_blender(out):
         if p.animation_data and p.animation_data.action:
             action=p.animation_data.action
             curves=getattr(action,"fcurves",None)
-            if curves is None and hasattr(action,"layers") and len(action.layers):
+            if (curves is None or len(curves)==0) and hasattr(action,"layers") and len(action.layers):
                 strips=action.layers[0].strips
                 if len(strips) and hasattr(strips[0],"channelbags") and len(strips[0].channelbags):
                     curves=strips[0].channelbags[0].fcurves
@@ -241,8 +241,12 @@ def export_blender(out):
                 for fc in curves:
                     for kp in fc.keyframe_points:kp.interpolation="LINEAR"
     scene.frame_set(FRAMES[0])
+    bpy.ops.object.select_all(action="DESELECT")
+    for ob in col.objects:
+        ob.select_set(True)
+    bpy.context.view_layer.objects.active=next(ob for ob in col.objects if ob.type=="MESH")
     bpy.ops.export_scene.gltf(filepath=str(out/(MODEL+".glb")),export_format="GLB",
-                              export_animations=True)
+                              use_selection=True, export_animations=True)
     return str(out/(MODEL+".glb"))
 
 
