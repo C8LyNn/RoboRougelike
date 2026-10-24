@@ -1,8 +1,32 @@
 {
   "id": "M04-014",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "MODEL_COMPLETE",
   "claimed_at_utc": "2026-10-24T23:44:04.163Z",
   "model": "Napęd ślimakowy do błota",
-  "run": "2026-10-24T23:00Z"
+  "run": "2026-10-24T23:00Z",
+  "branch": "feature/rrl-model-m04-014-mud-screw-drive",
+  "commit": "e75ce22d19716bbcf3f1b851aa2faf9d441530c1",
+  "pr": 146,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/146",
+  "qa": {
+    "static_python": "PASS — local and GitHub Actions; 36 manifold meshes, 2788 vertices, 5472 triangles, 8 materials",
+    "deterministic_OBJ_MTL": "PASS — independently compared actual exports",
+    "motion": "PASS — 70180 sampled helical-flight vertex transforms, 33mm radial and 32.5mm axial guard clearances",
+    "blender": "PASS — actual Blender bpy, BLEND GLB FBX exported in Actions",
+    "glb": "PASS — independent structural/animation check in Actions",
+    "unity_import": "NOT RUN",
+    "unity_editmode": "NOT RUN",
+    "unity_playmode": "NOT RUN",
+    "visual_review": "NOT RUN",
+    "unity_physics": "NOT RUN"
+  },
+  "actions_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40144158612",
+  "artifacts": [
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40144158612/artifacts/12579009971",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40144158612/artifacts/12579189836"
+  ],
+  "blockers": [
+    "Unity 6 runtime/import and manual visual/physics QA not available in this environment; no Unity PASS claimed."
+  ]
 }
