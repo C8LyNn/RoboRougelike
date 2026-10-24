@@ -18,7 +18,7 @@ Two independent, gimballed cyan hover lenses are aligned along the vehicle's lon
 python3 Tools/ModelFactory/M04/M04-008/generate_m04_008.py --self-test
 python3 Tools/ModelFactory/M04/M04-008/qa_m04_008.py
 python3 Tools/ModelFactory/M04/M04-008/generate_m04_008.py --static-obj --out build/M04-008
-blender -b --factory-startup --python Tools/ModelFactory/M04/M04-008/generate_m04_008.py -- --out build/M04-008
+blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-008/generate_m04_008.py -- --out build/M04-008
 python3 Tools/ModelFactory/M04/M04-008/qa_m04_008.py --check-glb build/M04-008/M04-008_side_hover.glb
 ```
 
@@ -28,6 +28,6 @@ The generator removes only its own `RRL_M04_008_SIDE_HOVER` Blender collection a
 
 `validate()` verifies unique object names, seven materials, watertight components, consistent winding, positive volume, no degenerates, side mounting at X=0, rest envelope, two pivots and **65 sampled animation poses**. For every sampled pose it measures radial clearance of **every moving vertex** against the shroud bore, plus separation of the two complete emitter housings. The independent QA reads and checks the **actual exported OBJ** for topology, materials, geometry, bounds and rest clearance. It does **not** constitute arbitrary polygon–polygon collision detection, Blender viewport inspection or Unity playtesting. The generator reports the exact minimum sampled clearance.
 
-**Blender/GLB status:** only PASS when an actual CI run with Blender and independent GLB parsing completes. **Unity 6 import, EditMode, PlayMode, visual inspection:** NOT RUN until executed by an authorized Unity environment. Do not claim those from static geometry or Blender export.
+**CI dependency:** Ubuntu Blender 4.0's glTF exporter imports `numpy`; the workflow explicitly installs `python3-numpy` alongside Blender. `--python-exit-code 1` ensures bpy export failures do not silently succeed.\n\n**Blender/GLB status:** only PASS when an actual CI run with Blender and independent GLB parsing completes. **Unity 6 import, EditMode, PlayMode, visual inspection:** NOT RUN until executed by an authorized Unity environment. Do not claim those from static geometry or Blender export.
 
 **Isolation:** all source is under `Tools/ModelFactory/M04/M04-008/` plus a dedicated GitHub Actions workflow; no main scenes, ProjectSettings, existing gameplay or other model IDs are touched. This is a Draft PR against `develop`, never automatically merged.
