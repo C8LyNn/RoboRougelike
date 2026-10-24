@@ -1,5 +1,7 @@
 name: Model Factory Geometry QA
 on:
+  push:
+    branches: ["fix/rrl-m02-001-axle-bore-and-qa"]
   pull_request:
     branches: [develop]
     paths:
@@ -21,3 +23,31 @@ jobs:
           persist-credentials: false
       - name: Check Blender generator syntax and source geometry, OBJ and animated GLB
         run: python3 Tools/ModelFactory/qa_assets.py
+
+      - name: Regenerate revised hollow-axle GLB without Blender
+        run: |
+          python3 -m pip install "trimesh>=4,<5"
+          python3 Tools/ModelFactory/M02/M02-001/generate_m02_001.py --out build/M02-001
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          out = Path("build/M02-001")
+          manifest = json.loads((out / "M02-001_manifest.json").read_text())
+          assert manifest["hub_manifold_closed"] == "3/3 PASS", manifest
+          assert manifest["bore_diameter_m"] == 0.086, manifest
+          assert manifest["shaft_radial_clearance_m"] >= 0.009 - 1e-7, manifest
+          assert manifest["backend"] == "trimesh", manifest
+          assert manifest["animation"].startswith("NOT EXPORTED"), manifest
+          glb = out / "M02-001_segmented_offroad_wheel.glb"
+          assert glb.read_bytes()[:4] == b"glTF"
+          assert glb.stat().st_size > 1000
+          print("PASS: regenerated through-bore GLB, topology and source manifest")
+          PY
+      - name: Upload regenerated GLB for model review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M02-001-through-bore-GLB-static
+          path: |
+            build/M02-001/M02-001_segmented_offroad_wheel.glb
+            build/M02-001/M02-001_manifest.json
+          if-no-files-found: error

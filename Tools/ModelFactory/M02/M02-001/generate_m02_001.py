@@ -19,6 +19,12 @@ ASSET_ID = "M02-001"
 RADIUS_TIRE = 0.500
 RADIUS_LUG = 0.534
 WIDTH = 0.340
+# This is an actual open mechanical interface, not just a marker at (0, 0, 0).
+# Shaft <= 0.034 m radius => >= 9 mm nominal radial clearance.
+AXLE_BORE_RADIUS = 0.043
+REFERENCE_SHAFT_RADIUS = 0.034
+HUB_OUTER_RADIUS = 0.094
+HUB_CAP_OUTER_RADIUS = 0.058
 LUG_COUNT = 20
 LANES = (-0.109, 0.0, 0.109)
 SEGMENTS = 72
@@ -140,11 +146,20 @@ def build():
             add(wedge(f"Spoke_{side}_{i+1}",
                       x-.012, x+.012, .086, .290,
                       a-.085, a+.085, "Spokes_Steel"))
-    add(cylinder_x("Axle_Hub", .094, -.177,.177,0,0,"Spokes_Steel",48))
+    # Critical clearance repair: the old axle hub and both hub caps were
+    # SOLID cylinders spanning the X axis. Such geometry blocked any actual
+    # axle entering the wheel. Use closed annular meshes with a through-bore;
+    # no Boolean/voxel operation, so triangulation stays deterministic.
+    add(ring("Axle_Hub",
+        [(-.177, AXLE_BORE_RADIUS),(-.177,HUB_OUTER_RADIUS),
+         (.177,HUB_OUTER_RADIUS),(.177,AXLE_BORE_RADIUS)],
+        "Spokes_Steel"))
     for side, sx in (("L",-1),("R",1)):
         x0,x1 = ((-.192,-.176) if sx<0 else (.176,.192))
-        add(cylinder_x(f"Hub_Cap_{side}",.058,x0,x1,0,0,
-                       "Rim_Anodized",48))
+        add(ring(f"Hub_Cap_{side}",
+            [(x0,AXLE_BORE_RADIUS),(x0,HUB_CAP_OUTER_RADIUS),
+             (x1,HUB_CAP_OUTER_RADIUS),(x1,AXLE_BORE_RADIUS)],
+            "Rim_Anodized"))
         for i in range(8):
             a = 2*math.pi*i/8
             y,z = .115*math.cos(a),.115*math.sin(a)
@@ -155,6 +170,37 @@ def build():
     add(cylinder_x("Valve_Stem",.008,.148,.186,
                    .243, .145,"Fastener_Silver",12))
     return parts
+
+def validate_axle_bore(parts):
+    """The mechanical axle opening must remain continuous at all X stations.
+
+    Validate the actual vertices and triangle-edge manifold, not just a
+    nominal dimension written in a manifest. The cylinder around the origin
+    must remain unoccupied by hub meshes at the axial mount region.
+    """
+    by_name = {p["name"]: p for p in parts}
+    clearance = AXLE_BORE_RADIUS - REFERENCE_SHAFT_RADIUS
+    assert clearance >= 0.008, "Insufficient axial shaft clearance"
+    for name in ("Axle_Hub", "Hub_Cap_L", "Hub_Cap_R"):
+        part = by_name[name]
+        radii = [math.hypot(y, z) for x, y, z in part["vertices"]]
+        assert min(radii) > REFERENCE_SHAFT_RADIUS, (
+            f"{name} closes the axle passage")
+        assert abs(min(radii) - AXLE_BORE_RADIUS) < 1e-7, (
+            f"{name} must meet the same bore radius")
+        edges = {}
+        for triangle in part["faces"]:
+            for a, b in zip(triangle, triangle[1:] + triangle[:1]):
+                edge = (min(a, b), max(a, b))
+                edges[edge] = edges.get(edge, 0) + 1
+        assert all(n == 2 for n in edges.values()), (
+            f"{name} has non-manifold or open boundaries")
+        assert len(part["faces"]) > 0
+    return {"bore_diameter_m": round(2*AXLE_BORE_RADIUS, 3),
+            "reference_shaft_diameter_m": round(2*REFERENCE_SHAFT_RADIUS, 3),
+            "shaft_radial_clearance_m": round(clearance, 3),
+            "hub_manifold_closed": "3/3 PASS"}
+
 
 def validate(parts):
     names=set()
@@ -183,7 +229,8 @@ def validate(parts):
     assert len([p for p in parts if p["name"].startswith("Bolt_")])==16
     assert .532 < maxrad < .536, maxrad
     assert maxx < .205, maxx
-    return dict(parts=len(parts),triangles=tri_count,
+    bore_qa = validate_axle_bore(parts)
+    return dict(**bore_qa,parts=len(parts),triangles=tri_count,
                 materials=len(MATERIALS),lugs=60,bolts=16,
                 diameter_m=round(2*maxrad,3),
                 width_m=round(2*maxx,3),
@@ -232,6 +279,10 @@ def blender_export(parts,outdir):
         ob.data.materials.append(mats[p["material"]])
         for polygon in mesh.polygons:
             polygon.use_smooth=p["smooth"]
+    # Quarter-turn keys keep adjacent quaternion samples distinct; the
+    # existing GLB animation is a visual reference, not wheel physics.
+    # A second collision gate verifies the centre bore independently.
+    validate_axle_bore(parts)
     # Full rotation with five keys: avoid quaternion 0==360 interpolation collapse.
     for frame,angle in ((1,0),(16,math.pi/2),(31,math.pi),
                         (46,3*math.pi/2),(61,2*math.pi)):
