@@ -102,3 +102,49 @@ jobs:
             /tmp/m01-004-blender/M01-004.blend
             /tmp/m01-004-blender/M01-004.static-qa.json
           if-no-files-found: error
+
+  publish-generated-model:
+    if: github.event_name == 'push'
+    needs: [static-geometry, blender-export]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Download validated generated OBJ, GLB and Blender source
+        uses: actions/download-artifact@v4
+        with:
+          name: M01-004-animated-glb-blend
+          path: /tmp/m01-004-publish
+      - name: Download validated static OBJ and MTL
+        uses: actions/download-artifact@v4
+        with:
+          name: M01-004-static-obj
+          path: /tmp/m01-004-static
+      - name: Commit once to the dedicated M01-004 feature branch
+        env:
+          BRANCH: feature/rrl-model-m01-004-cassette-mortar
+        run: |
+          set -euo pipefail
+          DIR=Tools/ModelFactory/M01/M01-004
+          for file in M01-004.obj M01-004.mtl; do
+            if [ ! -e "$DIR/$file" ]; then
+              cp "/tmp/m01-004-static/$file" "$DIR/$file"
+            fi
+          done
+          for file in M01-004_animated.glb M01-004.blend M01-004.static-qa.json; do
+            if [ ! -e "$DIR/$file" ]; then
+              cp "/tmp/m01-004-publish/$file" "$DIR/$file"
+            fi
+          done
+          git add "$DIR/M01-004.obj" "$DIR/M01-004.mtl" \
+            "$DIR/M01-004_animated.glb" "$DIR/M01-004.blend" \
+            "$DIR/M01-004.static-qa.json"
+          if git diff --cached --quiet; then
+            echo "Generated assets already committed; no update needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "asset(M01-004): publish verified OBJ GLB BLEND and QA"
+          git push origin "HEAD:refs/heads/$BRANCH"
