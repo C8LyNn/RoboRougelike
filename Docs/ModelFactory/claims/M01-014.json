@@ -1,8 +1,26 @@
 {
   "id": "M01-014",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "GENERATED_QA_PASS",
   "claimed_at_utc": "2026-10-24T23:46:33.546Z",
   "model": "Elektromagnetyczny impulsator",
-  "run": "2026-10-24T23Z"
+  "run": "2026-10-24T23Z",
+  "branch": "feature/rrl-model-m01-014-electromagnetic-pulser",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/147",
+  "asset_commit": "de6f3d66a122264f57a8c902e8fa030a64f3c03f",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40144469172",
+  "qa": {
+    "blender": "PASS",
+    "mesh_parts": 54,
+    "materials": 7,
+    "triangles": 9248,
+    "animation_frames": 61,
+    "collision_aabb_pairs": 10614,
+    "detected_intersections": 0,
+    "radial_bore_clearance_m": 0.056,
+    "unity_import": "NOT RUN",
+    "unity_editmode": "NOT RUN",
+    "unity_playmode": "NOT RUN",
+    "manual_visual_review": "NOT RUN"
+  }
 }
