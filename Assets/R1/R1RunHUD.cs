@@ -97,6 +97,7 @@ namespace RoboRougelike.R1
             if (run.Paused)
             {
                 GUI.Label(new Rect(350, 210, 600, 80), "Pauza", title);
+                if(run.ReactorActive&&GUI.Button(new Rect(350,280,580,38),"Zakończ próbę obrony i wróć do menu",compactButton))run.RestartRun();
                 if (GUI.Button(new Rect(350, 330, 580, 64), "Wznów walkę  [Esc]", button)) run.TogglePause();
                 DrawMovementPause(run);DrawSuspensionPause(run);
                 return;

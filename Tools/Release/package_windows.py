@@ -36,7 +36,8 @@ def package(build, archive, extracted, source_sha, release_id='W5_RC1'):
             continue
         files[relative.as_posix()] = path
     product = 'RoboRoguelike '+release_id.replace('_', ' ')
-    report = ('Docs/Physics/B01-CODEX-PHY-R1-REPORT.md' if release_id == 'B01_PHY_R1'
+    report = ('Docs/OBJ001_INTEGRATION_QA.md' if release_id == 'OBJ001_RC1'
+              else 'Docs/Physics/B01-CODEX-PHY-R1-REPORT.md' if release_id == 'B01_PHY_R1'
               else 'Docs/RRL_W5_RELEASE_QA.md' if release_id == 'W5_RC1'
               else 'Docs/RRL_PACKAGE_INTEGRATION_STATUS.md')
     manifest = {'product': product, 'platform': 'Windows x64',
@@ -61,6 +62,14 @@ def package(build, archive, extracted, source_sha, release_id='W5_RC1'):
                    'obniż offset do 0 m, aby odzyskać kontakt i napęd.\n'
                    'Sprawny Core automatycznie podejmuje ograniczoną próbę powrotu\n'
                    'po utrzymującym się przewróceniu na podłożu; EMP blokuje zdolność.\n')
+    if release_id == 'OBJ001_RC1':
+        readme += ('\nObrona reaktora: wybierz pojazd, kliknij Obrona reaktora w menu,\n'
+                   'przygotuj pojazd w garażu i kliknij Broń reaktora. Reaktor ma 600 HP;\n'
+                   'przetrwaj trzy fale (2/2/3 przeciwników). Fale dzielą 3 sekundy.\n'
+                   'Po zwycięstwie wybierz bonus i łupy, następnie wróć do garażu.\n'
+                   'Obrona jest też dostępna w garażu wyprawy; finał pozostaje Oblężnikiem.\n'
+                   'Poligon swobodny nie przekazuje swojego darmowego budżetu do wyprawy.\n'
+                   'Esc: pauza i powrót do menu; po porażce Enter rozpoczyna nową próbę.\n')
     generated = {'README.txt': readme.encode('utf-8'),
                  'release-manifest.json': (json.dumps(manifest, ensure_ascii=False, indent=2)+'\n').encode('utf-8')}
     root = f'RoboRoguelike_{release_id}_Windows_x64'
