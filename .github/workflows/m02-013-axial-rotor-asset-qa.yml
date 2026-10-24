@@ -1,0 +1,53 @@
+name: M02-013 Axial Rotor Engine Blender and Asset QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-013-axial-rotor-engine
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M02/M02-013/**"
+      - ".github/workflows/m02-013-axial-rotor-asset-qa.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: m02-013-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  axial-rotor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independent static geometry, actual OBJ and deterministic rebuild
+        run: python3 Tools/ModelFactory/M02/M02-013/qa_m02_013.py
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Generate real BLEND and animated GLB, test reentrant scene and motion
+        run: |
+          blender --background --python Tools/ModelFactory/M02/M02-013/qa_m02_013_blender.py -- build/M02-013
+          # Blender 4.0 may exit 0 even after a Python exception: enforce files.
+          test -s build/M02-013/M02-013_qa.json
+          test -s build/M02-013/M02-013.blend
+          test -s build/M02-013/M02-013_animated.glb
+      - name: Independently verify real Blender export, OBJ and glTF
+        run: |
+          python3 Tools/ModelFactory/M02/M02-013/qa_m02_013.py --check-blender --out build/M02-013
+          sha256sum build/M02-013/*
+      - name: Publish actual 3D asset and QA artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M02-013-axial-rotor-engine-BLEND-GLB-OBJ-MTL-QA
+          path: |
+            build/M02-013/M02-013.blend
+            build/M02-013/M02-013_animated.glb
+            build/M02-013/M02-013_axial_rotor_engine.obj
+            build/M02-013/M02-013_axial_rotor_engine.mtl
+            build/M02-013/M02-013_qa.json
+          if-no-files-found: error
