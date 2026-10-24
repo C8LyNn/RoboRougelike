@@ -7,7 +7,6 @@
   "materials": 7,
   "degenerate_triangles": 0,
   "negative_signed_volume_parts": 0,
-  "analytical_mast_clearance_m": 0.11164,
   "tilt_extremes_degrees": [
     -22,
     22
@@ -15,5 +14,18 @@
   "static_obj": "GENERATED",
   "blender_execution": "NOT_RUN",
   "unity_import": "NOT_RUN",
-  "visual_review": "NOT_RUN"
+  "visual_review": "NOT_RUN",
+  "geometry_revision": "M05-002_V2_SAFE_HINGE_SWEEP",
+  "hinge_pivot_m": [
+    0,
+    0.235,
+    0.535
+  ],
+  "swept_animation_samples": 45,
+  "swept_checked_pairs": 66690,
+  "swept_base_tilt_aabb": "PASS",
+  "neutral_pose_preserved": true,
+  "blender_export_behavior": "M05-002_ASSET collection only; library .blend contains owned collection, GLB use_selection",
+  "validation_status": "PASS_GITHUB_ACTIONS_SOURCE_STATIC_ONLY",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40103852222"
 }
