@@ -277,8 +277,16 @@ def blender_scene(parts,out):
     old=bpy.data.collections.get(COLLECTION)
     if old:
         for ob in list(old.objects):
+            old_mesh=ob.data if ob.type=="MESH" else None
             bpy.data.objects.remove(ob,do_unlink=True)
+            if old_mesh and old_mesh.users==0:
+                bpy.data.meshes.remove(old_mesh)
         bpy.data.collections.remove(old)
+        # Old generated controller actions can otherwise accumulate
+        # across hourly Blender rebuilds despite a stable object count.
+        for action in list(bpy.data.actions):
+            if action.name.startswith(ID+"_") and action.users==0:
+                bpy.data.actions.remove(action)
     col=bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(col)
     materials={}
@@ -343,6 +351,7 @@ def blender_scene(parts,out):
         shocky.keyframe_insert(data_path="scale",frame=frame)
     for controller in (guard,shockx,shocky):
         if controller.animation_data and controller.animation_data.action:
+            controller.animation_data.action.name=ID+"_"+controller.name+"_Action"
             for fc in controller.animation_data.action.fcurves:
                 for kp in fc.keyframe_points:
                     kp.interpolation="LINEAR"
@@ -359,6 +368,8 @@ def blender_export(parts,out):
     first=len(col.objects)
     col=blender_scene(parts,out)
     assert len(col.objects)==first==len(parts)+7,(len(col.objects),first)
+    assert len([m for m in bpy.data.meshes if m.name.startswith(ID+"_")])==len(parts), (
+        "orphaned procedural mesh datablocks")
     bpy.ops.object.select_all(action="DESELECT")
     for ob in col.objects:
         ob.select_set(True)
@@ -397,6 +408,11 @@ def main():
         export=blender_export(parts,out)
         report["blender"]="PASS"
         report["blender_export"]=export
+        manifest["blender"]="EXPORTED"
+        manifest["blender_export"]=export
+        (out/"M03-011_manifest.json").write_text(
+            json.dumps(manifest,indent=2,ensure_ascii=False)+"\\n",
+            encoding="utf-8")
     (out/"M03-011_qa.json").write_text(
         json.dumps(report,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(report,indent=2))
