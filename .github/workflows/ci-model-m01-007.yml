@@ -1,0 +1,87 @@
+name: Model Factory M01-007 Impulse Ring Cannon QA
+on:
+  push:
+    branches: [feature/rrl-model-m01-007-impulse-ring-cannon]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-007/**'
+      - '.github/workflows/ci-model-m01-007.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-007/**'
+      - '.github/workflows/ci-model-m01-007.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: m01-007-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  geometry-and-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exclusive model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Python syntax and procedural QA (49 poses)
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-007/generate_m01_007.py Tools/ModelFactory/M01/M01-007/validate_m01_007.py
+          python3 Tools/ModelFactory/M01/M01-007/generate_m01_007.py --self-test
+      - name: Deterministic OBJ/MTL generation
+        run: |
+          python3 Tools/ModelFactory/M01/M01-007/generate_m01_007.py --out /tmp/m01-007-static
+          python3 Tools/ModelFactory/M01/M01-007/validate_m01_007.py /tmp/m01-007-static
+      - name: Install Blender for real FBX GLB BLEND export
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender --version | head -n 2
+      - name: Execute Blender exporter with three independently animated rings
+        run: |
+          blender -b --python Tools/ModelFactory/M01/M01-007/generate_m01_007.py -- --out /tmp/m01-007-blender
+          python3 Tools/ModelFactory/M01/M01-007/validate_m01_007.py /tmp/m01-007-blender
+          cmp /tmp/m01-007-static/M01-007_impulse_ring_cannon.obj /tmp/m01-007-blender/M01-007_impulse_ring_cannon.obj
+          cmp /tmp/m01-007-static/M01-007_impulse_ring_cannon.mtl /tmp/m01-007-blender/M01-007_impulse_ring_cannon.mtl
+      - name: Save generated models only on exclusive M01-007 branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m01-007-impulse-ring-cannon'
+        run: |
+          mkdir -p Tools/ModelFactory/M01/M01-007/generated
+          cp /tmp/m01-007-blender/M01-007_impulse_ring_cannon.obj Tools/ModelFactory/M01/M01-007/generated/
+          cp /tmp/m01-007-blender/M01-007_impulse_ring_cannon.mtl Tools/ModelFactory/M01/M01-007/generated/
+          cp /tmp/m01-007-blender/M01-007_impulse_ring_cannon_animated.glb Tools/ModelFactory/M01/M01-007/generated/
+          cp /tmp/m01-007-blender/M01-007_impulse_ring_cannon_animated.fbx Tools/ModelFactory/M01/M01-007/generated/
+          cp /tmp/m01-007-blender/M01-007_impulse_ring_cannon.blend Tools/ModelFactory/M01/M01-007/generated/
+          cp /tmp/m01-007-blender/M01-007_qa.json Tools/ModelFactory/M01/M01-007/generated/
+          git add Tools/ModelFactory/M01/M01-007/generated/
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-007): real Blender OBJ MTL animated GLB FBX BLEND and QA"
+            # Source commits may arrive while Blender is exporting. Rebase
+            # only this private model branch; never force-push or touch develop.
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-007-impulse-ring-cannon:refs/remotes/origin/feature/rrl-model-m01-007-impulse-ring-cannon
+              git rebase origin/feature/rrl-model-m01-007-impulse-ring-cannon
+              if git push origin HEAD:feature/rrl-model-m01-007-impulse-ring-cannon; then
+                echo "M01-007 generated assets committed to private model branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Could not publish generated assets after 3 safe retries"
+                exit 1
+              fi
+            done
+          fi
+      - name: Upload real Blender outputs for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-007-impulse-ring-cannon-3D
+          path: |
+            /tmp/m01-007-blender/M01-007_impulse_ring_cannon.obj
+            /tmp/m01-007-blender/M01-007_impulse_ring_cannon.mtl
+            /tmp/m01-007-blender/M01-007_impulse_ring_cannon_animated.glb
+            /tmp/m01-007-blender/M01-007_impulse_ring_cannon_animated.fbx
+            /tmp/m01-007-blender/M01-007_impulse_ring_cannon.blend
+            /tmp/m01-007-blender/M01-007_qa.json
+          if-no-files-found: error
+          retention-days: 30
