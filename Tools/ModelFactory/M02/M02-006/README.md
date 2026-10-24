@@ -12,7 +12,7 @@ Geometria jest zamknięta i składa się z osobnych, łatwych do wymiany częśc
 
 ## Źródło i eksport
 
-`generate_m02_006.py` tworzy deterministyczne OBJ i MTL przy użyciu standardowej biblioteki Python. W środowisku `bpy` dodatkowo tworzy animowany GLB (pełny obrót w 2 s, pięć kluczy z wymuszonym próbkowaniem) i bibliotekę kolekcji `M02-006.blend` do importu przez **Append**. Generator usuwa tylko własną kolekcję `M02-006_ASSET` i przywraca poprzedni stan sceny. Nie usuwa cudzych obiektów.
+`generate_m02_006.py` tworzy deterministyczne OBJ i MTL przy użyciu standardowej biblioteki Python. W środowisku `bpy` dodatkowo tworzy animowany GLB oraz FBX kompatybilny z natywnym importerem Unity (pełny obrót w 2 s, pięć kluczy z wymuszonym próbkowaniem GLB) i bibliotekę kolekcji `M02-006.blend` do importu przez **Append**. Generator usuwa tylko własną kolekcję `M02-006_ASSET` i przywraca poprzedni stan sceny. Nie usuwa cudzych obiektów.
 
 ```bash
 python3 Tools/ModelFactory/M02/M02-006/generate_m02_006.py --self-test
@@ -26,6 +26,8 @@ Pliki wynikowe CI, jeśli eksport się powiedzie, znajdują się w `Tools/ModelF
 
 Self-test kontroluje każdą bryłę pod względem niezerowych trójkątów, zamkniętej rozmaitości krawędzi, dodatniej objętości i materiału. Sprawdza też mechaniczne kontakty kolców i szprych oraz **72 próbki pełnego obrotu** z porównaniem części nieruchomych i ruchomych. Test wykorzystuje analityczną separację radialną i osiową, nie symulację sztywnych ciał. Statyczne testy nie zastępują przeglądu normalnych, kolizji z pojazdem i Unity PlayMode.
 
-**Status Blender/GLB i Unity** należy oceniać na podstawie rzeczywistych logów CI. Sam skrypt nie jest dowodem udanego eksportu. Unity 6 EditMode/PlayMode i wizualna kontrola w grze pozostają **NOT RUN** do czasu wykonania.
+**Status Blender/GLB/FBX i Unity** należy oceniać na podstawie rzeczywistych logów CI. Sam skrypt nie jest dowodem udanego eksportu. Unity 6 EditMode/PlayMode i wizualna kontrola w grze pozostają **NOT RUN** do czasu wykonania.
 
 **Claim:** `Docs/ModelFactory/claims/M02-006.json` na `feature/rrl-model-factory-queue-v1`; commit CREATE `45b7b0ecd9972fab008402ac87f73f512616bc3c`.
+
+**Import Unity:** `generated/M02-006_animated.fbx` jest przeznaczony do bezpośredniego importu do Unity 6. Po imporcie należy zweryfikować oś obrotu +X, pivot, skalę 1 m i zachowanie animacji w prefabie. Sam eksport FBX nie jest potwierdzeniem poprawnego importu w Unity.
