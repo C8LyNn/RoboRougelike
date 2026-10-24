@@ -86,7 +86,7 @@ def run():
             return [(min(v[i] for v in coords),max(v[i] for v in coords))
                     for i in range(3)]
         for port, side_axis, mate_axis, limit in (
-                ("End",1,0,1.0),("Side",0,1,0.5),("Vertical",0,2,0.5)):
+                ("End",2,0,1.0),("Side",0,1,0.5),("Vertical",0,2,0.5)):
             for side in (-1,1):
                 pad=bounds(f"{port}SocketPad_{side:+d}")
                 mark=bounds(f"{port}SocketMark_{side:+d}")
