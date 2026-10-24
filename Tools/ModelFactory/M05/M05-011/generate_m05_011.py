@@ -17,7 +17,8 @@ from pathlib import Path
 import sys
 
 import bpy
-from mathutils import Quaternion, Vector
+import bmesh
+from mathutils import Quaternion
 
 ID="M05-011"
 PREFIX="M05_011_"
@@ -292,9 +293,23 @@ def validate():
     assert len(MOUNT_NAMES)==5
     assert all(ob.parent is ROTOR for ob in MOVING)
     assert tuple(round(v,4) for v in ROTOR.location)==PIVOT
+    manifold_checked=0
     for ob in meshes:
         assert ob.data.materials and len(ob.data.vertices)>0
         assert all(math.isfinite(c) for v in ob.data.vertices for c in v.co)
+        ob.data.calc_loop_triangles()
+        bm=bmesh.new()
+        try:
+            bm.from_mesh(ob.data)
+            assert bm.faces and bm.edges
+            assert all(edge.is_manifold for edge in bm.edges), (
+                ob.name,"non-manifold geometry")
+            volume=bm.calc_volume(signed=True)
+            assert volume>1e-9,(ob.name,"inward normals or degenerate volume",volume)
+            manifold_checked+=1
+        finally:
+            bm.free()
+    assert manifold_checked==len(meshes)
     assert ROTOR.animation_data and ROTOR.animation_data.action
     # Explicit engineering envelope: full 360-degree sweep of every
     # moving vertex, not only ring centre positions. The core is static.
@@ -329,6 +344,7 @@ def validate():
         ring_pivot=list(PIVOT),axis="local +Z",
         ring_animation_frames=list(FRAMES),ring_rotation_degrees=360,
         mesh_objects=len(meshes),moving_meshes=len(MOVING),
+        manifold_meshes=manifold_checked,mesh_topology="PASS",
         vertices=vertices,triangles=triangles,materials=len(MATS),
         mounting_markers=len(MOUNT_NAMES),
         moving_vertex_samples=samples,
