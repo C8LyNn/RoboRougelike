@@ -118,3 +118,12 @@ All paths are relative to `Assets/B01Packages/MAPGEN001/`.
 **To B01-00:** retain **P0 / G1 BLOCKED / G2 HOLD / NO READY_FOR_GPT_OSS**. No claims of Unity PASS, playable vehicle routes or 12 manual attempts are justified by available evidence.
 
 **Formal B01-60 verdict: `BLOCKED`** (native Unity unavailable) **with an independently demonstrated manifest FAIL and reproducible source-derived P0 risk; no release approval.**
+
+
+## 6. Moving-HEAD addendum — documentation-only update
+
+During this same QA run the producer Draft PR HEAD moved again, from `e22906f9c973a632ca92815a964fadfbe1790665` to **`9a35fe149eb79e88ca0eabf4f410d05d88ab8e78`**. Verified Git comparison: **7 commits ahead, only seven documentation files changed** (`API.md`, `CHANGELOG.md`, `INSTALL_FOR_GPT_OSS.md`, `KNOWN_LIMITATIONS.md`, `README.md`, `TEST_EVIDENCE.md`, `TEST_PLAN.md`). Neither the planner, validator, builder nor the test source C# blobs changed. Therefore the source-derived geometry probe for `e22906f...` also describes **unchanged source at `9a35fe1...`**; this is not a new Unity execution.
+
+Independent Git tree vs manifest comparison at exact HEAD `9a35fe1...` now shows **13/42 stale blob identities (29/42 match)**: six C# paths from QAMAP-005 **plus** the seven documentation paths listed above. This aggravates QAMAP-005 until a manifest refresh and G2 package SHA-256 verification.
+
+**Newest observed candidate during this report:** `9a35fe149eb79e88ca0eabf4f410d05d88ab8e78`. If PR #103 advances again, any new C# must be re-audited and re-probed at its exact commit. Native Unity tests remain `NOT_RUN` at every revision examined.
