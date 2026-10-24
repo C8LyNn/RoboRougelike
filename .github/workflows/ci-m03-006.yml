@@ -1,0 +1,41 @@
+name: M03-006 Side L Bracket QA
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-006/**'
+      - '.github/workflows/ci-m03-006.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Syntax and procedural source validation
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-006/generate_m03_006.py
+          python3 Tools/ModelFactory/M03/M03-006/generate_m03_006.py --self-test
+      - name: Regenerate static mesh and compare byte-for-byte
+        run: |
+          python3 Tools/ModelFactory/M03/M03-006/generate_m03_006.py --out /tmp/m03-006
+          cmp /tmp/m03-006/M03-006_side_L_bracket.obj Tools/ModelFactory/M03/M03-006/generated/M03-006_side_L_bracket.obj
+          cmp /tmp/m03-006/M03-006_side_L_bracket.mtl Tools/ModelFactory/M03/M03-006/generated/M03-006_side_L_bracket.mtl
+      - name: Independent structural checks
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('Tools/ModelFactory/M03/M03-006')
+          s=json.loads((p/'geometry.json').read_text())
+          qa=json.loads((p/'generated/M03-006_static_qa.json').read_text())
+          assert s['id']=='M03-006' and len(s['parts'])==27
+          assert qa['triangles']==3452 and qa['vertices']==1764
+          assert qa['materials']==5 and qa['side_through_bores']==4 and qa['top_through_bores']==4
+          assert s['side_mount']['pivot']==[0,0,0]
+          assert s['top_socket']['pivot']==[.64,0,.58]
+          assert all('M03-006' not in x for x in ('Assets/Scenes','ProjectSettings'))
+          print('M03-006: 27 manifold components, 8 real holes, 5 materials PASS')
+          PY

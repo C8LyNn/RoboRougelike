@@ -1,0 +1,35 @@
+newmtl Chassis_Graphite
+Kd 0.11200 0.14300 0.18300
+Ks 0.35550 0.35550 0.35550
+Ns 252.00
+d 1.0
+illum 2
+
+newmtl Flange_Titanium
+Kd 0.47000 0.55000 0.61000
+Ks 0.36900 0.36900 0.36900
+Ns 276.00
+d 1.0
+illum 2
+
+newmtl Ceramic_Guard
+Kd 0.69000 0.73000 0.71000
+Ks 0.10800 0.10800 0.10800
+Ns 232.00
+d 1.0
+illum 2
+
+newmtl Copper_Fasteners
+Kd 0.68000 0.38000 0.19000
+Ks 0.36450 0.36450 0.36450
+Ns 280.00
+d 1.0
+illum 2
+
+newmtl Safety_Amber
+Kd 0.96000 0.53000 0.07000
+Ks 0.11250 0.11250 0.11250
+Ns 244.00
+d 1.0
+illum 2
+
