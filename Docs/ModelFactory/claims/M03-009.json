@@ -7,6 +7,8 @@
   "run": "2026-10-24T18Z",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/106",
   "branch": "feature/rrl-model-m03-009-perforated-armor-plate",
-  "model_commit": "57da8c1595f962f1fe83c1662b1cd3408d64a995",
-  "qa": "STATIC_PASS_BLENDER_PENDING_UNITY_NOT_RUN"
+  "model_commit": "0ade9ee364a48ad0ecb249b4eb1f99cf288419e0",
+  "qa": "BLENDER_QA_PASS_UNITY_BLOCKED_ACTIVATION",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122978995",
+  "unity": "NOT RUN"
 }
