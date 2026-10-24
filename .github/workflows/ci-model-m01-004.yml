@@ -91,7 +91,23 @@ jobs:
           header=(root/"M01-004.blend").read_bytes()[:16]
           print("BLEND header bytes:",repr(header))
           assert header.startswith(b"BLENDER") or header.startswith(bytes([0x1f,0x8b])),repr(header)
-          print("Blender generated nonempty GLB + BLEND signatures PASS")
+          import json, struct
+          data=(root/"M01-004_animated.glb").read_bytes()
+          assert struct.unpack_from("<I",data,4)[0]==2
+          assert struct.unpack_from("<I",data,8)[0]==len(data)
+          chunk_length,chunk_type=struct.unpack_from("<II",data,12)
+          assert chunk_type==0x4E4F534A
+          gltf=json.loads(data[20:20+chunk_length])
+          assert len(gltf.get("meshes",[]))>=40,len(gltf.get("meshes",[]))
+          assert len(gltf.get("materials",[]))>=5
+          tilt_ids={i for i,n in enumerate(gltf.get("nodes",[]))
+                    if "TILT_PIVOT" in n.get("name","")}
+          assert tilt_ids,"Missing animated tilt pivot in GLB"
+          assert gltf.get("animations"),"GLB missing tilt animation"
+          assert any(ch["target"].get("node") in tilt_ids
+                     for anim in gltf["animations"] for ch in anim.get("channels",[])), "Tilt pivot not animated"
+          print("GLB mesh count:",len(gltf["meshes"]),"materials:",len(gltf["materials"]),"animations:",len(gltf["animations"]))
+          print("Blender generated animated GLB + BLEND signatures and channels PASS")
           PY
       - name: Upload animated model and Blender source
         uses: actions/upload-artifact@v4
