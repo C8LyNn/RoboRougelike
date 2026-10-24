@@ -1,0 +1,101 @@
+name: Model Factory M01-004 Cassette Mortar QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-004-cassette-mortar
+    paths:
+      - "Tools/ModelFactory/M01/M01-004/**"
+      - ".github/workflows/ci-model-m01-004.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M01/M01-004/**"
+      - ".github/workflows/ci-model-m01-004.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Python syntax, geometry, deterministic OBJ and topology
+        run: |
+          set -euo pipefail
+          SOURCE=Tools/ModelFactory/M01/M01-004/generate_m01_004.py
+          python3 -m py_compile "$SOURCE"
+          mkdir -p /tmp/m01-004-a /tmp/m01-004-b
+          python3 "$SOURCE" --self-test --output-dir /tmp/m01-004-a
+          python3 "$SOURCE" --self-test --output-dir /tmp/m01-004-b
+          for ext in obj mtl static-qa.json; do
+            cmp "/tmp/m01-004-a/M01-004.$ext" "/tmp/m01-004-b/M01-004.$ext"
+          done
+          python3 - <<'PY'
+          import importlib.util, json
+          from collections import Counter
+          from pathlib import Path
+          p=Path("Tools/ModelFactory/M01/M01-004/generate_m01_004.py")
+          spec=importlib.util.spec_from_file_location("m01_004",p)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          parts=mod.build_parts()
+          q=json.loads(Path("/tmp/m01-004-a/M01-004.static-qa.json").read_text())
+          assert q["status"]=="STATIC_QA_PASS"
+          assert q["samples"]==21 and q["moving_fixed_aabb_checks"]>500
+          assert q["min_vertical_clearance_m"]>=.015
+          assert len(q["materials_used"])>=3
+          assert any("Cassette_Cell_2_3"==p["name"] for p in parts)
+          assert any("Barrel_Hollow"==p["name"] for p in parts)
+          assert q["elevation_degrees"]==[0,-18.0]
+          for part in parts:
+              edges=Counter()
+              for face in part["faces"]:
+                  for a,b in zip(face,face[1:]+face[:1]):
+                      edges[tuple(sorted((a,b)))]+=1
+              assert all(count==2 for count in edges.values()),part["name"]
+          print("M01-004 geometry, closed-manifold topology, 21-pose clearance PASS")
+          PY
+      - name: Upload generated OBJ/MTL and QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-004-static-obj
+          path: /tmp/m01-004-a/M01-004.*
+          if-no-files-found: error
+
+  blender-export:
+    runs-on: ubuntu-latest
+    needs: static-geometry
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate animated GLB and source blend
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/m01-004-blender
+          blender --background --factory-startup \
+            --python Tools/ModelFactory/M01/M01-004/generate_m01_004.py \
+            -- --output-dir /tmp/m01-004-blender --require-blender
+          test -s /tmp/m01-004-blender/M01-004_animated.glb
+          test -s /tmp/m01-004-blender/M01-004.blend
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path("/tmp/m01-004-blender")
+          assert (root/"M01-004_animated.glb").read_bytes()[:4]==b"glTF"
+          assert (root/"M01-004.blend").read_bytes()[:7]==b"BLENDER"
+          print("Blender generated nonempty GLB + BLEND signatures PASS")
+          PY
+      - name: Upload animated model and Blender source
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-004-animated-glb-blend
+          path: |
+            /tmp/m01-004-blender/M01-004_animated.glb
+            /tmp/m01-004-blender/M01-004.blend
+            /tmp/m01-004-blender/M01-004.static-qa.json
+          if-no-files-found: error
