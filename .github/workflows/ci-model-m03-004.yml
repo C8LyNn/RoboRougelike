@@ -62,12 +62,15 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender python3-numpy
           blender --version
-          blender --background --factory-startup --python-expr "import numpy; print('Blender numpy:', numpy.__version__)"
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import numpy; print('Blender numpy:', numpy.__version__)"
       - name: Execute actual bpy source and export GLB + editable blend
         run: |
           set -euo pipefail
           mkdir -p /tmp/m03-004-blender
-          blender --background --factory-startup --python Tools/ModelFactory/M03/M03-004/generate_m03_004.py -- --output-dir /tmp/m03-004-blender --require-blender
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-004/generate_m03_004.py -- --output-dir /tmp/m03-004-blender --require-blender
+      - name: Verify Blender rerun does not multiply objects or mesh datablocks
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python-expr "import sys; from pathlib import Path; sys.path.insert(0, 'Tools/ModelFactory/M03/M03-004'); import generate_m03_004 as m; import bpy; out=Path('/tmp/m03-004-rerun'); m.export_blender(m.build_parts(), out); m.export_blender(m.build_parts(), out); objects=[o for o in bpy.data.objects if o.name.startswith('M03-004_')]; meshes=[me for me in bpy.data.meshes if me.name.startswith('M03-004_')]; assert len(objects)==38, len(objects); assert len(meshes)==32, len(meshes); print('M03-004 rerun idempotence PASS:', len(objects), 'objects,', len(meshes), 'meshes')"
       - name: Inspect binary GLB header and selected asset nodes
         run: |
           python3 - <<'PY'
