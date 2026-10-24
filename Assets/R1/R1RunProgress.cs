@@ -127,6 +127,7 @@ namespace RoboRougelike.R1
             State = routes ? R1RunState.Route : R1RunState.Combat; return true;
         }
         public bool OpenWorkshop(){if(State!=R1RunState.Ready)return false;State=R1RunState.Garage;return true;}
+        public bool PrepareGarage(){if(State!=R1RunState.Route||EncounterIndex!=0||CompletedEncounters!=0)return false;State=R1RunState.Garage;return true;}
         public bool BeginTest(){if(State!=R1RunState.Garage)return false;State=R1RunState.TestDrive;return true;}
         public bool EndTest(){if(State!=R1RunState.TestDrive)return false;State=R1RunState.Garage;return true;}
         public bool ChooseRoute()

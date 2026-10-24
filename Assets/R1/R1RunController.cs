@@ -113,6 +113,7 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Route||index<0||index>=RouteOffers.Length)return false;
             var choice=RouteOffers[index];
+            reactorRequested=false;ReactorPrepared=false;LastActivityWasReactor=false;
             if(!Progress.ChooseRoute())return false;
             CurrentEncounter=choice;Definition.Encounters[Progress.EncounterIndex]=choice;
             StartCoroutine(BeginEncounter());return true;
@@ -220,7 +221,8 @@ namespace RoboRougelike.R1
             // Preserve only modifiers from currently mounted, operational bonus modules.
             Player.Apply(ActiveStats??Progress.Stats);
             Salvage=new R4SalvageLedger(3);
-            Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
+            if(reactorRequested)BeginReactorActivity();
+            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
             yield return null;
             Transitioning = false; SetSimulation(true);
             Debug.Log("[R1] Starcie " + (Progress.EncounterIndex + 1) + ": przeciwników=" + Encounter.AliveCount);
@@ -234,14 +236,17 @@ namespace RoboRougelike.R1
             // Menu actions can begin a coroutine before the new vehicle has run Start().
             if (Transitioning || Progress.State != R1RunState.Combat || Paused) return;
             string defeat = Player == null ? "Pojazd został zniszczony." : Player.DefeatReason;
+            if(defeat==null)defeat=ReactorDefeat();
             // Resolve player loss first when both sides die in the same physics step.
             if (defeat != null)
             {
                 DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
                 Player?.GetComponent<R3VehicleAssembly>().Capture();
                 Progress.Lose(defeat); SetSimulation(false);
+                ClearReactorActivity();
                 Debug.Log("[R1] Porażka: " + defeat);
             }
+            else if(ReactorActive&&!UpdateReactorDefense())return;
             else if (Encounter.Cleared)
             {
                 Player.GetComponent<R3VehicleAssembly>().Capture();
@@ -252,6 +257,7 @@ namespace RoboRougelike.R1
                 Progress.OpenSalvage();
                 SetSimulation(false);
                 Encounter.Clear();
+                ClearReactorActivity();
                 Debug.Log("[R3] Wygrano starcie " + Progress.CompletedEncounters + "; Złom +"+LastScrapReward+"; stan=" + Progress.State);
             }
         }
@@ -303,6 +309,7 @@ namespace RoboRougelike.R1
 
         private void OnDestroy()
         {
+            ClearReactorActivity();
             if (Definition != null) Destroy(Definition);
             if (Instance == this) { Instance = null; Time.timeScale = 1; }
         }
