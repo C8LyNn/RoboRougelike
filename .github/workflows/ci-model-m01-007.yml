@@ -13,6 +13,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: m01-007-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   geometry-and-export:
     runs-on: ubuntu-24.04
@@ -54,7 +57,20 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "asset(M01-007): real Blender OBJ MTL animated GLB FBX BLEND and QA"
-            git push origin HEAD:feature/rrl-model-m01-007-impulse-ring-cannon
+            # Source commits may arrive while Blender is exporting. Rebase
+            # only this private model branch; never force-push or touch develop.
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-007-impulse-ring-cannon:refs/remotes/origin/feature/rrl-model-m01-007-impulse-ring-cannon
+              git rebase origin/feature/rrl-model-m01-007-impulse-ring-cannon
+              if git push origin HEAD:feature/rrl-model-m01-007-impulse-ring-cannon; then
+                echo "M01-007 generated assets committed to private model branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Could not publish generated assets after 3 safe retries"
+                exit 1
+              fi
+            done
           fi
       - name: Upload real Blender outputs for review
         uses: actions/upload-artifact@v4
