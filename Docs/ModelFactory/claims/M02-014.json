@@ -1,8 +1,15 @@
 {
   "id": "M02-014",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_QA_PENDING",
   "claimed_at_utc": "2026-10-24T23:48:05.010Z",
   "model": "Jednostka napędu hybrydowego",
-  "run": "2026-10-24T23:00Z"
+  "run": "2026-10-24T23:00Z",
+  "claim_create_commit": "1a228d10c187edf1d36991e67d5c0a45db013537",
+  "model_branch": "feature/rrl-model-m02-014-hybrid-drive-unit",
+  "model_commit": "6baa37b38eac57cc63dfc66d781757ef81c564ce",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/148",
+  "pr_number": 148,
+  "qa_run_id": 40144373838,
+  "updated_at_utc": "2026-10-24T23:50:53.199Z"
 }
