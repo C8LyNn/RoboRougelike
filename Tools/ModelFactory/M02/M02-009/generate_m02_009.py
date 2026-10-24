@@ -224,13 +224,13 @@ def build():
     # Continuous track visualized with independently moving rigid shoes.
     for i in range(N_LINKS):
         parent="LINK_%02d"%i
-        add(box("SteelShoe_%02d"%i,(0,0,0),(.056,.198,.026),
+        add(box("SteelShoe_%02d"%i,(0,0,0),(.050,.198,.026),
                 "CeramicBlack",parent,.003))
         add(wedge("ChevronCleat_%02d"%i,(0,0,.020),
-                  .048,.035,.208,.014,"GraphiteRubber",parent))
+                  .043,.030,.208,.014,"GraphiteRubber",parent))
         for side in (-1,1):
             add(cylinder_y("HingePin_%02d_%+d"%(i,side),
-                           (.023,side*.103,0),.009,.010,
+                           (.018,side*.103,0),.007,.010,
                            "Copper",parent,12))
         if i%5==0:
             add(box("AmberIndex_%02d"%i,(0,0,.029),
@@ -281,7 +281,7 @@ def mesh_qa(parts):
         verts+=len(vertices)
     return tris,verts
 
-def obb_separation(pose_a,pose_b,half_length=.028,half_depth=.021):
+def obb_separation(pose_a,pose_b,half_length=.025,half_depth=.0225):
     # Conservative 2D separating-axis test of complete steel+rubber link.
     (a,theta_a),(b,theta_b)=pose_a,pose_b
     A=((math.cos(theta_a),-math.sin(theta_a)),
@@ -304,9 +304,9 @@ def swept_qa():
         poses=[]
         for i in range(N_LINKS):
             pos,yaw=path_pose(i*PITCH+phase)
-            # Real shell -13..+27mm; centre offset +7mm, half-depth 20mm.
+            # Real shell -13..+31.5mm incl. marker; exact shifted 45mm OBB.
             outward=(math.sin(yaw),math.cos(yaw))
-            loc=(pos[0]+.007*outward[0],pos[1],pos[2]+.007*outward[1])
+            loc=(pos[0]+.0095*outward[0],pos[1],pos[2]+.0095*outward[1])
             poses.append((loc,yaw))
         for i in range(N_LINKS):
             for j in range(i+1,N_LINKS):
@@ -321,8 +321,8 @@ def swept_qa():
                 dx=wx-pos[0];dz=wz-pos[2]
                 tx=dx*tangent[0]+dz*tangent[1]
                 tz=dx*normal[0]+dz*normal[1]
-                separation=math.hypot(max(abs(tx)-.028,0),
-                                      max(abs(tz)-.021,0))-WHEEL_OUTER
+                separation=math.hypot(max(abs(tx)-.025,0),
+                                      max(abs(tz)-.0225,0))-WHEEL_OUTER
                 min_wheel=min(min_wheel,separation)
                 assert separation>.0005,("wheel/tread collision",frame,i,wx,separation)
     return min_link,min_wheel,count
