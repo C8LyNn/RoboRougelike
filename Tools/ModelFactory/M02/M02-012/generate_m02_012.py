@@ -221,7 +221,8 @@ def build():
         bank=bank_info(sign)
         label=bank["label"]
         BANKS[label]=bank
-        for off in (-.046,.046):
+        # Webs overlap the 65mm crankpin by 10mm at both ends.
+        for off in (-.030,.030):
             web=cylinder("Crank_Web_"+label+("_A" if off<0 else "_B"),
                 (0,bank["base"].y+off,CRANK_Z),.083,.015,
                 "Brushed_Steel",axis=(0,1,0),vertices=40)
@@ -268,22 +269,41 @@ def build():
             band.location=(0,0,.025+k*.016)
             band.rotation_mode="QUATERNION"
             band.rotation_quaternion=Quaternion((1,0,0,0))
-        # Connecting rod is a fixed-length beam pivoting at both bearings.
+        # A real transverse wrist pin travels with the piston; the small
+        # end eye is an annulus around it, always aligned with crank +Y.
+        wrist_pin=cylinder("Wrist_Pin_"+label,(0,0,0),
+            .012,.094,"Brushed_Steel",axis=(0,1,0),vertices=32)
+        wrist_pin.parent=piston
+        wrist_pin.location=(0,0,-.025)
+        wrist_pin.rotation_mode="QUATERNION"
+        wrist_pin.rotation_quaternion=Vector((0,0,1)).rotation_difference(
+            Vector((0,1,0)))
+        small_eye=ring("Conrod_Small_End_Eye_"+label,
+            (0,0,0),(0,1,0),.0135,.029,.018,
+            "Brushed_Steel",segments=40)
+        small_eye.parent=piston
+        small_eye.location=(0,0,-.025)
+        small_eye.rotation_mode="QUATERNION"
+        small_eye.rotation_quaternion=Quaternion((1,0,0,0))
+        # A separate crank eye is kept coaxial with the Y-axis crank pin,
+        # rather than erroneously rotating its bore with the conrod beam.
+        big_eye=empty("CRANK_EYE_RIG_"+label,(0,0,0))
+        big_ring=ring("Conrod_Big_End_Eye_"+label,
+            (0,0,0),(0,1,0),.0255,.035,.018,
+            "Brushed_Steel",segments=40)
+        big_ring.parent=big_eye
+        big_ring.location=(0,0,0)
+        # Shortened beam physically joins the outer faces of the two
+        # annular eyes without blocking either transverse bearing bore.
         rod=empty("CONROD_RIG_"+label,(0,0,0))
         core=cylinder("Connecting_Rod_"+label,(0,0,0),
-            .017,ROD_LENGTH,"Copper_Pipes",vertices=20,bevel=.003)
+            .017,ROD_LENGTH-.034-.028,"Copper_Pipes",
+            vertices=20,bevel=.003)
         core.parent=rod
-        core.location=(0,0,0)
+        core.location=(0,0,(.034-.028)/2)
         core.rotation_mode="QUATERNION"
         core.rotation_quaternion=Quaternion((1,0,0,0))
-        for k,offset in enumerate((-ROD_LENGTH/2,ROD_LENGTH/2)):
-            bearing=cylinder("Conrod_Bearing_%s_%d"%(label,k),
-                (0,0,0),.026,.023,"Brushed_Steel",vertices=24)
-            bearing.parent=rod
-            bearing.location=(0,0,offset)
-            bearing.rotation_mode="QUATERNION"
-            bearing.rotation_quaternion=Quaternion((1,0,0,0))
-        MOVING[label]=(piston,rod)
+        MOVING[label]=(piston,rod,big_eye)
 
     flywheel=cylinder("Flywheel",(0,.377,CRANK_Z),.122,.025,
                       "Graphite_Cast",axis=(0,1,0),vertices=64)
@@ -315,12 +335,14 @@ def animate(rotor):
         rotor.keyframe_insert(data_path="rotation_euler",frame=f,group="Crankshaft")
         for label,bank in BANKS.items():
             crank,wrist,s=wrist_position(bank,angle)
-            piston,rod=MOVING[label]
+            piston,rod,big_eye=MOVING[label]
             piston.rotation_mode="QUATERNION"
             piston.location=wrist+bank["axis"]*.025
             piston.rotation_quaternion=Vector((0,0,1)).rotation_difference(bank["axis"])
             piston.keyframe_insert(data_path="location",frame=f,group="Pistons")
             piston.keyframe_insert(data_path="rotation_quaternion",frame=f,group="Pistons")
+            big_eye.location=crank
+            big_eye.keyframe_insert(data_path="location",frame=f,group="CrankEye")
             direction=wrist-crank
             assert abs(direction.length-ROD_LENGTH)<1e-8
             rod.rotation_mode="QUATERNION"
@@ -334,6 +356,10 @@ def validate():
     assert len(MATERIALS)>=3
     assert abs(STROKE-.09)<1e-12
     assert AXIAL_CLEARANCE>=.0079
+    assert CYL_INNER-.063>=.0059  # piston compression rings
+    assert .0325-(.030-.0075)>=.0099  # crankpin into each web
+    assert .0255-.024>=.0014  # crank bearing radial clearance
+    assert .0135-.012>=.0014  # wrist bearing radial clearance
     assert len(BANKS)==2 and len(MOVING)==2
     samples=0
     minimum_head_clearance=999
@@ -372,7 +398,7 @@ def validate():
                 connecting_rod_m=ROD_LENGTH,piston_radius_m=PISTON_RADIUS,
                 cylinder_bore_radius_m=CYL_INNER,radial_clearance_m=AXIAL_CLEARANCE,
                 materials=len(MATERIALS),mesh_objects=mesh_count,
-                animated_groups=5,frames=FRAME_END,
+                animated_groups=7,frames=FRAME_END,
                 kinematic_samples=samples,
                 max_rod_length_error_m=minimum_rod_error,
                 min_head_clearance_m=minimum_head_clearance,
