@@ -1,0 +1,46 @@
+name: Model Factory M05-002 QA
+on:
+  push:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-002/**'
+      - '.github/workflows/ci-model-m05-002.yml'
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-002/**'
+      - '.github/workflows/ci-model-m05-002.yml'
+  workflow_dispatch:
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate Python syntax and procedural geometry
+        run: |
+          python -m py_compile Tools/ModelFactory/M05/M05-002/generate_m05_002.py
+          python Tools/ModelFactory/M05/M05-002/generate_m05_002.py --self-test
+      - name: Regenerate OBJ and compare with checked-in mesh
+        run: |
+          python Tools/ModelFactory/M05/M05-002/generate_m05_002.py --output-dir /tmp/m05-002
+          cmp Tools/ModelFactory/M05/M05-002/M05-002.obj /tmp/m05-002/M05-002.obj
+          cmp Tools/ModelFactory/M05/M05-002/M05-002.mtl /tmp/m05-002/M05-002.mtl
+      - name: Verify mesh file integrity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('Tools/ModelFactory/M05/M05-002/M05-002.obj')
+          lines=p.read_text().splitlines()
+          v=[line for line in lines if line.startswith('v ')]
+          f=[line for line in lines if line.startswith('f ')]
+          m=[line for line in lines if line.startswith('usemtl ')]
+          assert len(v)==1160,(len(v),'vertices')
+          assert len(f)==834,(len(f),'faces')
+          assert len(m)==127,(len(m),'parts')
+          for line in f:
+              for idx in line.split()[1:]:
+                  assert 1 <= int(idx) <= len(v)
+          print('M05-002 OBJ integrity PASS:',len(v),'vertices,',len(f),'polygons,',len(m),'parts')
+          PY
