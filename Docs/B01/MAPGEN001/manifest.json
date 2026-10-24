@@ -1,7 +1,7 @@
 {
   "id": "B01-MAPGEN-001",
-  "revision": "R2",
-  "status": "SOURCE_REWORK_G1_UNITY_BLOCKED",
+  "revision": "R3",
+  "status": "R3_SOURCE_FROZEN_NATIVE_QA_BLOCKED",
   "recipient": "GPT_OSS",
   "repo": "C8LyNn/RoboRougelike",
   "branch": "feature/b01-mapgen001-r2-validation",
@@ -10,8 +10,8 @@
   "docs_scope": "Docs/B01/MAPGEN001/**",
   "source_dependency": "UnityEngine only; no MAP-R6/W8 runtime dependency",
   "g0": "PATH_AND_META_PAIRS_STATIC_CHECKED; SHA256_AND_SCOPE_ACK_PENDING",
-  "g1": "EDITMODE_PLAYMODE_PHYSICS_NOT_RUN",
-  "g2": "INDEPENDENT_B01_60_QA_PENDING; GPT_OSS_HANDOFF_HOLD",
+  "g1": "UNITY_COMPILE_EDIT_PLAY_PHYSICS_NOT_RUN",
+  "g2": "B01_60_INDEPENDENT_QA_PENDING; B01_40_ZIP_INSTALL_PENDING; GPT_OSS_HANDOFF_HOLD",
   "codex_target_sha": null,
   "gpt_oss_target_sha": null,
   "merged": false,
@@ -24,7 +24,7 @@
     "Assets/B01Packages/MAPGEN001/Runtime.meta": "6bb154c37cc638300def4fc136b3f3e428b9c5cb",
     "Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef": "d837bd1412363921c06865cb465e644ced6f50b3",
     "Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef.meta": "e8a50ecef419f85bf920f7d6cb5ab69537685e72",
-    "Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs": "04774de8e5bb9519fa2bef25d531a8866a92cd5c",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs": "ab5307ae189dd65f7e718f4138f4b10c80926ef5",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs.meta": "a3e51bf47613c89eea6af8991abbccc92c1b1488",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs": "b586a5bfc697bc37edbf98bb936459aeebe694c6",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs.meta": "14ab0587f68ef52a891106cb7e45f33eaa56a52e",
@@ -60,7 +60,7 @@
     "Docs/B01/MAPGEN001/TEST_PLAN.md": "1748b8b9c38fb472dc19487d030c25b6f0af03a1"
   },
   "git_blob_note": "Git blob hashes are SHA-1 CONTENT IDENTITIES, NOT SHA-256. Must add calculated SHA-256 for physical package before handoff.",
-  "last_source_commit_before_manifest": "5ae8abe5be811dc4b11865988d1579141344aa16",
+  "last_source_commit_before_manifest": "9a35fe149eb79e88ca0eabf4f410d05d88ab8e78",
   "expected_tests": {
     "edit_mode": "NOT_RUN",
     "play_mode": "NOT_RUN",
@@ -88,5 +88,19 @@
     "checked_files": 42,
     "missing_cs_asmdef_unity_meta": [],
     "same_repo_source": "stacked PR #103 based on #99"
-  }
+  },
+  "source_file_sha256_by_path": {
+    "Assets/B01Packages.meta": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed",
+    "Assets/B01Packages/MAPGEN001.meta": "484655486f37cbbc034f1bdb92fa64ed240db78ef7a331be1d0c5179f78a0469",
+    "Assets/B01Packages/MAPGEN001/Demo.meta": "2c1f59967ec7f14bd53d9bc8abc17e2976f0fea18e3e8af45ea65d33c8d7f71e",
+    "Assets/B01Packages/MAPGEN001/Demo/MAPGEN001_Demo.unity": "887f7705374556ac56bb455382e3f2fe6e422b228b2ebb56480d4fdbfe6cf064",
+    "Assets/B01Packages/MAPGEN001/Demo/MAPGEN001_Demo.unity.meta": "1e90da696397e1bfe9b47bd7af7baf31f8cc6e93bf7512fd1fd7a5b24b43fe15",
+    "Assets/B01Packages/MAPGEN001/Runtime.meta": "e4e251777ac1244103093215f40438cd8afc16ca8675942e56329ac22fe50a01",
+    "Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef": "0cdab3502d7f033a6ba7f13213babf821594b81d4c2e054c769cb91cfb834345",
+    "Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef.meta": "76ac5f68a274509a84acefdb7969e4437c9ff1ebda4fc5ef19ccdda27c50094e",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs": "d6f411db921247e2cb84340a6664ee6875b33e54573513a5f975a0ca5d2e6f26",
+    "Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs.meta": "0af403880361e9e56e004c24820cbb779eb12e41f60880e7fbfdb472e90ca024"
+  },
+  "parent_package_r2_sha": "a2993a4cb09275864a04c6eaf8bc7b9f4dfb9946",
+  "source_sha256_note": "Per-source SHA256 derived from exact UTF-8 GitHub file contents, excluding this self-referential manifest. Recheck after checkout; no physical ZIP/archive SHA256 is available."
 }
