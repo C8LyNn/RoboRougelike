@@ -95,6 +95,18 @@ namespace B01.BUILD001.Tests
             Assert.IsFalse(reachable.Contains("gun"));
         }
 
+        [Test] public void AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment()
+        {
+            var core = P("core",BuildFixtureCatalog.Core(),0);
+            var orphan = P("orphan",BuildFixtureCatalog.ArmorCube(),4);
+            var candidate = P("candidate",BuildFixtureCatalog.ArmorCube(),5);
+            var source = new[]{core,orphan};
+            Assert.IsFalse(BuildPlacementRules.Reachable(source).Contains("orphan"));
+            Assert.AreEqual(BuildPlacementResult.NoCompatibleSocket,
+                BuildPlacementRules.Check(source,candidate,out var supportingId));
+            Assert.IsNull(supportingId);
+        }
+
         [Test] public void InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed()
         {
             var bad=new BuildDefinition("bad",BuildRole.Wheel,new[]{Vector3Int.zero},
