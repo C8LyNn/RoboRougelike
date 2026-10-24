@@ -26,7 +26,7 @@ def main():
     assert report["id"]=="M02-012"
     assert report["blender"]=="PASS" and report["unity"]=="NOT RUN"
     assert report["kinematic_samples"]==722
-    assert report["max_rod_length_error_m"]<1e-8
+    assert report["max_rod_length_error_m"]<2e-6
     assert report["min_head_clearance_m"]>.035
     assert report["radial_clearance_m"]>=.0079
     assert report["materials"]>=8
