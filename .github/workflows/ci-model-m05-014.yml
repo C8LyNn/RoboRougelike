@@ -1,0 +1,54 @@
+name: M05-014 Dual-Arm Lift Asset QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-014-dual-arm-lift
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M05/M05-014/**"
+      - ".github/workflows/ci-model-m05-014.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: m05-014-dual-arm-lift
+  cancel-in-progress: true
+jobs:
+  source-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate Python source without Blender
+        run: python3 Tools/ModelFactory/M05/M05-014/validate_m05_014.py
+  blender-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -2
+      - name: Build twice, check geometry and export real files
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M05/M05-014/generate_m05_014.py -- --out build/M05-014 --repeat-check
+      - name: Independently verify GLB FBX BLEND and QA
+        run: python3 Tools/ModelFactory/M05/M05-014/validate_m05_014.py --exports build/M05-014
+      - name: Publish Blender exports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-014-dual-arm-lift-GLB-FBX-BLEND-QA
+          path: |
+            build/M05-014/*.glb
+            build/M05-014/*.fbx
+            build/M05-014/*.blend
+            build/M05-014/*_qa.json
+          if-no-files-found: error
+          retention-days: 14
