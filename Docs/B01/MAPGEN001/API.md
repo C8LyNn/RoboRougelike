@@ -10,6 +10,8 @@ builder.Clear();
 
 The pure `MapGenPlanner.Plan(recipe, seed, config, profile)` returns `MapBlueprint` without touching the scene. `Generate()` first validates/constructs a new level, then atomically disables the old root. `Clear()` immediately disables old physics before Unity deferred object destruction. Caller controls seed, density (0..100), difficulty (0..1), course segments (3..5), lane width (10..30m), reference vehicle width, length, min turn radius.
 
+The generated hierarchy is parented beneath the opt-in host Transform. All `Start`, `Finish`, `Spawns`, `CheckpointDescriptors` and `Bounds` are returned in **world space**; `GeometryHash` is based on canonical local geometry and therefore unaffected by host placement.
+
 `MapResult`: `GeneratedRoot` (all colliders owned by builder), `Start`, `Finish`, `Spawns[]` (combat enemy spawn descriptors), `CheckpointDescriptors[]` (course waypoints DATA only), `Bounds`, `GeometryHash` SHA-256 of canonical rounded geometry, `Diagnostics`, `GenerationVersion`, `Recipe`, `Seed`.
 
 `CheckConfig` rejects non-finite inputs, a vehicle wider than the actually ramp-limited free corridor (width*0.60 - 3 metres with 0.5m safety margin), or impossible turn radius with descriptive `ArgumentException`. No silent unsafe random rerolls. Seed same => same plan; different seeds are expected to vary cover/slalom/ramp placement. Generator owns no health/rewards/run progress.
