@@ -1,0 +1,32 @@
+{
+  "id": "M01-012",
+  "model": "Pneumatyczna wyrzutnia śrub",
+  "status": "BLENDER_EXPORTED",
+  "blender_version": "4.0.2",
+  "units": "metres",
+  "forward": "+Z",
+  "up": "+Y",
+  "mount": "MOUNT_TOP_SOCKET at world (0,0,0); top vehicle socket",
+  "animation_node": "PNEUMATIC_RAM",
+  "axis": "local -Z",
+  "stroke_m": 0.09,
+  "fps": 60,
+  "frames": [
+    1,
+    61
+  ],
+  "motion_samples": 61,
+  "moving_fixed_aabb_checks": 15616,
+  "minimum_noncontact_aabb_gap_m": 0.018062,
+  "mesh_objects": 68,
+  "vertices": 12344,
+  "triangles": 24476,
+  "materials": 7,
+  "manifold_and_positive_volume": "PASS",
+  "pneumatic_bore_clearance_m": 0.012,
+  "collision_qa": "PASS (AABB except analytically cleared annular bore)",
+  "unity_import": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "manual_visual_review": "NOT RUN",
+  "scope": "visual-only; no WPN or gameplay edits"
+}
