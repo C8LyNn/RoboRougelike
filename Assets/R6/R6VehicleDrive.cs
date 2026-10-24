@@ -15,6 +15,8 @@ namespace RoboRougelike.R6
         P12PipelineSafeDamageable[] parts;
         PhysicsMaterial material;
         float nextMassRefresh, traction, left, right, track;
+        RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding independentSteering;
+        public void BindSteering(RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding binding)=>independentSteering=binding;
         public int Wheels {get;private set;}
         public bool SuspensionPhysics {get;private set;}
         public void EnableSuspensionPhysics(float contactFriction)
@@ -95,11 +97,20 @@ namespace RoboRougelike.R6
         void Prepare(){if(Time.time>=nextMassRefresh)RefreshMass();}
         public void Step(float throttle,float steering,float forwardLimit,float reverseLimit,float turnLimit)
         {
-            if(body.isKinematic)return;Prepare();
+            if(body.isKinematic)return;Prepare();independentSteering?.RefreshAvailability();
             var movement=GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
             if(movement!=null&&movement.TryDrive(throttle,steering,forwardLimit,reverseLimit,turnLimit))return;
             if(Wheels==0){BareHullResistance();return;}
-            var tune=R6Tuning.Current;float speed=ForwardSpeed;
+            var forward=SuspensionPhysics?Vector3.ProjectOnPlane(transform.forward,Vector3.up).normalized:transform.forward;
+            var rightDirection=SuspensionPhysics?Vector3.ProjectOnPlane(transform.right,Vector3.up).normalized:transform.right;
+            var solution=default(RoboRougelike.Mechanics.IndependentSteering.SteeringSolution);
+            bool steered=independentSteering!=null&&independentSteering.TrySolve(steering,Time.fixedDeltaTime,out solution);
+            if(steered)
+            {
+                var heading=Quaternion.AngleAxis(solution.midpointSlipDegrees,Vector3.up);
+                forward=heading*forward;rightDirection=heading*rightDirection;
+            }
+            var tune=R6Tuning.Current;float speed=steered?Vector3.Dot(body.linearVelocity,forward):ForwardSpeed;
             float force=0;
             if(Mathf.Abs(throttle)>.01f)
             {
@@ -108,15 +119,14 @@ namespace RoboRougelike.R6
                 else if(Mathf.Abs(speed)<(throttle>0?forwardLimit:reverseLimit))force=throttle*AvailableForce;
             }
             else force=-Mathf.Sign(speed)*Mathf.Min(Mathf.Abs(speed)*body.mass/Time.fixedDeltaTime,AvailableForce*tune.CoastFraction+body.mass*.08f);
-            var forward=SuspensionPhysics?Vector3.ProjectOnPlane(transform.forward,Vector3.up).normalized:transform.forward;
-            var rightDirection=SuspensionPhysics?Vector3.ProjectOnPlane(transform.right,Vector3.up).normalized:transform.right;
             body.AddForce(forward*force,ForceMode.Force);
             float lateral=Vector3.Dot(body.linearVelocity,rightDirection);
             float grip=Mathf.Min(Mathf.Abs(lateral)*body.mass*5,AvailableForce*tune.LateralGrip+body.mass*.1f);
             body.AddForce(-rightDirection*Mathf.Sign(lateral)*grip,ForceMode.Force);
             float reverse=speed<-.2f?-1:1;
             float coverage=Wheels==0?0:Mathf.Clamp01(Mathf.Min(left,right)/Mathf.Max(1,Mathf.Max(left,right)));
-            float targetYaw=(steering*reverse*turnLimit*Mathf.Lerp(.2f,1,coverage)*Mathf.Deg2Rad)+WheelImbalance*throttle*.32f;
+            float targetYaw=steered?Mathf.Clamp(ForwardSpeed*solution.curvatureInverseMeters,-turnLimit*Mathf.Deg2Rad,turnLimit*Mathf.Deg2Rad):
+                (steering*reverse*turnLimit*Mathf.Lerp(.2f,1,coverage)*Mathf.Deg2Rad)+WheelImbalance*throttle*.32f;
             float requested=(targetYaw-body.angularVelocity.y)*body.inertiaTensor.y*tune.TurnResponse;
             float maxTorque=AvailableForce*track*tune.TurnLeverage+body.mass*.08f;
             body.AddTorque(Vector3.up*Mathf.Clamp(requested,-maxTorque,maxTorque),ForceMode.Force);
