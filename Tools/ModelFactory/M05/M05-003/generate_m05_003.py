@@ -184,7 +184,7 @@ def build():
     add(chamfer_box("Centre_Status_Bridge",0,-.122,.434,.462,
                     .104,.048,.011,"Graphite_Armor"))
     for i in range(3):
-        add(chamfer_box("Vent_Slit_%02d"%(i+1),0,-.134+i*.023,
+        add(chamfer_box("Vent_Slit_%02d"%(i+1),0,-.135+i*.012,
                         .462,.468,.058,.008,.002,"Rubber_Gasket"))
     add(chamfer_box("Central_Status_LED",0,.139,.434,.445,
                     .071,.017,.004,"Crimson_Emitter"))
