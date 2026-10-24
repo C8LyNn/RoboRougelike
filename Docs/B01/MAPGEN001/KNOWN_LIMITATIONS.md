@@ -20,3 +20,6 @@
 - Geometry changes (seed-dependent cover offsets, ramp pitch) may affect dynamics and collision restitution: **no manual traversal was run in this environment**. Re-test ALL 12 documented 3-seed x 2-recipe x 2-rig scenarios on the exact final SHA.
 - Release ZIP file and complete package archive SHA256 are **not supplied** by source commits. GitHub blob IDs are SHA-1, not archive SHA-256; scoped per-file SHA-256 can be audited via manifest, but does not replace ZIP or runtime tests.
 - No independently approved B01-60 QA, no recipient target worktree scope ACK, no GPT OSS handoff permission. G1/G2 remain HOLD.
+
+### R3.1 edge-case bound
+- LaneWidth=10m Light with Difficulty=1 required reduced centre wandering and side-aligned ramps. This is a conservative geometric accommodation; it was not independently proven by real collision-driving evidence. A 10m course is not a promised Heavy configuration (CheckConfig intentionally rejects it).
