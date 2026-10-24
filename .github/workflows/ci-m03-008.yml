@@ -1,0 +1,127 @@
+name: M03-008 Wedge Armor Mesh QA
+
+on:
+  push:
+    branches: [feature/rrl-model-m03-008-wedge-armor-plate]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-008/**'
+      - '.github/workflows/ci-m03-008.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-008/**'
+      - '.github/workflows/ci-m03-008.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-mesh-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independent geometry, topology and actual OBJ/MTL QA
+        run: |
+          python3 Tools/ModelFactory/M03/M03-008/qa_m03_008.py
+      - name: Export actual static 3D preview
+        run: |
+          python3 Tools/ModelFactory/M03/M03-008/generate_m03_008.py \
+            --static-obj --out /tmp/m03-008-static
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/m03-008-static/M03-008_wedge_armor_manifest.json')
+          j=json.loads(p.read_text())
+          assert j['result']=='PASS' and j['parts']==19
+          assert j['mount_bores']==4 and j['materials']==5
+          assert j['geometry_revision']=='M03-008_V1_THREE_LAYER_REAL_BORES'
+          assert j['blender']=='NOT RUN' and j['unity']=='NOT RUN'
+          print('PASS: actual OBJ/MTL, four real bored mounts, 3 layers')
+          PY
+      - name: Upload actual OBJ MTL and manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M03-008-static-OBJ-MTL
+          path: /tmp/m03-008-static/
+          if-no-files-found: error
+          retention-days: 14
+
+  blender-export:
+    needs: static-mesh-qa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Execute bpy generator and export real GLB FBX BLEND
+        run: |
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-008/generate_m03_008.py \
+            -- --out /tmp/m03-008-blender
+          test -s /tmp/m03-008-blender/M03-008_wedge_armor.glb
+          test -s /tmp/m03-008-blender/M03-008_wedge_armor.fbx
+          test -s /tmp/m03-008-blender/M03-008_wedge_armor.blend
+      - name: Repeat generation within same bpy process
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python-expr \
+            "import bpy,sys;from pathlib import Path;sys.path.insert(0,'Tools/ModelFactory/M03/M03-008');import generate_m03_008 as m;p=m.build_parts();out=Path('/tmp/m03-008-repeat');m.blender_export(p,out);m.blender_export(p,out);c=bpy.data.collections[m.COLLECTION];assert len([o for o in c.objects if o.type=='MESH'])==19;assert len([o for o in c.objects if o.type=='EMPTY'])==6;assert len([x for x in bpy.data.meshes if x.name.startswith(m.PREFIX)])==19;print('PASS: repeatable bpy export without duplicates')"
+      - name: Validate Blender-generated GLB nodes and materials
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path('/tmp/m03-008-blender')
+          blob=(root/'M03-008_wedge_armor.glb').read_bytes()
+          magic,version,length=struct.unpack_from('<4sII',blob)
+          assert (magic,version,length)==(b'glTF',2,len(blob))
+          n,kind=struct.unpack_from('<I4s',blob,12)
+          assert kind==b'JSON'
+          doc=json.loads(blob[20:20+n])
+          print('GLB material count/names:',len(doc.get('materials',[])),[m.get('name') for m in doc.get('materials',[])],flush=True)
+          print('GLB mesh node count:',sum('mesh' in x for x in doc.get('nodes',[])),flush=True)
+          # Blender 4.x glTF exporter may split one source material
+          # into two GLB entries for different mesh/shading attributes.
+          # Enforce exactly five DISTINCT authored PBR material identities.
+          materials=doc['materials']
+          expected={'RRL_M03_008_'+name for name in (
+              'StructuralSteel','Gunmetal','Ceramic','Elastomer','Amber')}
+          assert {m['name'] for m in materials}==expected
+          assert 5<=len(materials)<=6
+          for name in expected:
+              entries=[m for m in materials if m['name']==name]
+              pbr=[m.get('pbrMetallicRoughness') for m in entries]
+              assert all(x==pbr[0] for x in pbr), ('PBR mismatch',name)
+          nodes=doc['nodes']
+          assert len([x for x in nodes if 'mesh' in x])==19
+          assert any(x.get('name')=='RRL_M03_008_ROOT' for x in nodes)
+          assert any(x.get('name')=='RRL_M03_008_SNAP_FRAME_FRONT' for x in nodes)
+          assert len([x for x in nodes if x.get('name','').startswith('RRL_M03_008_BOLT_')])==4
+          assert not doc.get('animations')
+          manifest=json.loads((root/'M03-008_wedge_armor_manifest.json').read_text())
+          assert manifest['backend']=='blender-bpy' and manifest['blender']=='EXPORTED'
+          assert manifest['unity']=='NOT RUN'
+          print('PASS: real GLB 19 meshes, 5 distinct authored PBR materials, root and 5 sockets')
+          PY
+      - name: Upload actual Blender geometry
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M03-008-Blender-GLB-FBX-BLEND
+          path: |
+            /tmp/m03-008-blender/M03-008_wedge_armor.glb
+            /tmp/m03-008-blender/M03-008_wedge_armor.fbx
+            /tmp/m03-008-blender/M03-008_wedge_armor.blend
+            /tmp/m03-008-blender/M03-008_wedge_armor_manifest.json
+          if-no-files-found: error
+          retention-days: 14
