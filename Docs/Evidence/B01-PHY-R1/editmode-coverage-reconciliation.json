@@ -1,0 +1,58 @@
+{
+  "method": "Coverage reconciliation, NOT a second full green Unity run. Actual full992/999/native2 then all five affected classes28/28/native0. Only Editor fixtures changed; every prior failure has a green current counterpart.",
+  "fullXml": "Artifacts\\Local\\20261024T214745Z-a1e6bfabd95a4338a13cba177118b465\\EditMode.xml",
+  "fullXmlSha256": "826747d4f5f7b95722020364f0b21982136feb945aec94689a245b3dca1d37ee",
+  "fullCounts": {
+    "total": "999",
+    "passed": "992",
+    "failed": "7",
+    "skipped": "0"
+  },
+  "correctionXml": "Artifacts\\Local\\PHY-full-regression-corrections-6014d4ce57b44426b5b732f1e7e9b60e\\results.xml",
+  "correctionXmlSha256": "dfd824f430b9c5f52fec245c9d093c9f4691e41503ff3c09d0e78a104cb9f2fb",
+  "correctionCounts": {
+    "total": "28",
+    "passed": "28",
+    "failed": "0",
+    "skipped": "0"
+  },
+  "fullGameplaySource": "523046f5bf6ddab0caf62253615c962e808c3053",
+  "editorFixtureSource": "54f0192b89ffac9f6989da36e8f5d893e631d600",
+  "nonTestAssetsDiff": "",
+  "renamedCaseMapping": {
+    "MOV009IntegrationTests.VehicleWithoutModulesRetainsPlanarR6Physics": "MOV009IntegrationTests.VehicleWithoutModulesRetainsGroundedR6WithoutAddingSuspension"
+  },
+  "originalFailuresNowPassing": [
+    {
+      "before": "MOV009IntegrationTests.VehicleWithoutModulesRetainsPlanarR6Physics",
+      "after": "MOV009IntegrationTests.VehicleWithoutModulesRetainsGroundedR6WithoutAddingSuspension"
+    },
+    {
+      "before": "R5ArenaTests.SolidLayoutsHaveSafeSpawnsAndAiTraversesIndustrialCover",
+      "after": "R5ArenaTests.SolidLayoutsHaveSafeSpawnsAndAiTraversesIndustrialCover"
+    },
+    {
+      "before": "R6ReviewTests.InitiallyOverlappingDebrisIgnoresOnlyOwnerPairsAndRestoresThem",
+      "after": "R6ReviewTests.InitiallyOverlappingDebrisIgnoresOnlyOwnerPairsAndRestoresThem"
+    },
+    {
+      "before": "R6ReviewTests.LowAndHighSpeedBarrierContactsStayBounded",
+      "after": "R6ReviewTests.LowAndHighSpeedBarrierContactsStayBounded"
+    },
+    {
+      "before": "R6ReviewTests.WheelLessEnemyGraduallyStopsRatherThanSlidingForever",
+      "after": "R6ReviewTests.WheelLessEnemyGraduallyStopsRatherThanSlidingForever"
+    },
+    {
+      "before": "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp",
+      "after": "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp"
+    },
+    {
+      "before": "RRLW6SawPhysicalTests.ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat",
+      "after": "RRLW6SawPhysicalTests.ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat"
+    }
+  ],
+  "currentUniqueCasesCovered": 999,
+  "currentUnresolvedFailures": 0,
+  "freshFullAfterFixtureOnlyCorrection": "NOT_RUN; no runtime change, affected classes rerun in full; original failing XML retained"
+}

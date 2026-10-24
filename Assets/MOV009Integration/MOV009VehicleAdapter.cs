@@ -23,6 +23,11 @@ namespace RoboRougelike.MOV009Integration
         public float RideHeightMeters {get;private set;}
         public const float ChassisContactFriction=.15f;
         public string ProtectionReason {get;private set;}
+        public string GroundingNotice => assembly!=null&&suspension!=null&&drive!=null&&
+            assembly.Model.SelectedDrive==R3DriveKind.Wheels&&drive.Wheels>0&&drive.GroundedWheels==0&&
+            suspension.SuspensionEnabled&&suspension.SupportMode==ActiveSuspensionSupportMode.FullSupport&&
+            suspension.CurrentRideHeightOffsetMeters>0
+            ?"Koła bez kontaktu — obniż zawieszenie, aby odzyskać napęd.":null;
         public int OperationalSupports => GetComponentsInChildren<ActiveSuspensionModule>().Count(m=>m.IsAvailableFor(body));
 
         public void Configure(R3VehicleAssembly vehicle)
@@ -36,7 +41,9 @@ namespace RoboRougelike.MOV009Integration
             StiffnessPerModule=supportedMass*Physics.gravity.magnitude/.12f;
             DampingPerModule=.85f*2*Mathf.Sqrt(StiffnessPerModule*supportedMass);
             MaximumForcePerModule=2.4f*supportedMass*Physics.gravity.magnitude;
-            RideHeightMeters=.82f;
+            // Wheel tread reaches .65m below the root; add the nominal .12m spring compression.
+            // A higher default unloads the rigid wheel treads and loses real traction under roll.
+            RideHeightMeters=.77f;
             foreach(var part in parts)
             {
                 var module=part.GetComponent<ActiveSuspensionModule>();

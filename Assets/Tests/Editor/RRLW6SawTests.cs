@@ -27,6 +27,9 @@ public class RRLW6SawPhysicalTests
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=kind;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(100,4,100),Quaternion.identity);
+        // A static cutting target needs a supported rig; gravity must remain enabled.
+        var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
+        Physics.SyncTransforms();yield return MOV009IntegrationTests.Seconds(.7f);
         var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
         var module=gun.GetComponent<RotarySawModule>();Assert.That(module,Is.Not.Null);
         var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=gun.Muzzle.position+gun.Muzzle.forward*.45f;

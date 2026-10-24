@@ -84,9 +84,9 @@ namespace RoboRougelike.QA
             Require(Mathf.Abs(com.CooldownLeft-Mathf.Max(0,comReady-Time.time))<.05f&&!com.TryActivate(),"Retained COM view resumes canonical cooldown without free activation");
             current="MOV-011";run.Player.Controller.SetGameplayInputEnabled(true);run.Player.Controller.enabled=false;
             Require(steering.SetMode(SteeringMode.Crab),"Crab mode after EMP");Vector3 start=body.position;float yaw=body.rotation.eulerAngles.y;
-            Require(!body.useGravity&&(body.constraints&RigidbodyConstraints.FreezePositionY)!=0,"Default R6 planar physics retained without suspension parts");
+            Require(body.useGravity&&body.constraints==RigidbodyConstraints.None,"B01 grounded R6 uses gravity without suspension parts");
             deadline=Time.time+.8f;while(Time.time<deadline){run.Player.GetComponent<R6VehicleDrive>().Step(1,1,10,5,105);yield return new WaitForFixedUpdate();}
-            Require(body.position.x-start.x>.12f&&body.position.z-start.z>.2f&&Mathf.Abs(Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y))<8,"Actual default-planar R6 crab translation",$"delta={body.position-start}; yaw={Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y)}");
+            Require(body.position.x-start.x>.12f&&body.position.z-start.z>.2f&&Mathf.Abs(Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y))<8,"Actual grounded R6 crab translation",$"delta={body.position-start}; yaw={Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y)}");
             Capture("03-actual-r6-crab");yield return new WaitForSeconds(.15f);
             Require(steering.SetMode(SteeringMode.CounterPhase),"Counter-phase mode");deadline=Time.time+.5f;
             while(Time.time<deadline){run.Player.GetComponent<R6VehicleDrive>().Step(1,1,10,5,105);yield return new WaitForFixedUpdate();}

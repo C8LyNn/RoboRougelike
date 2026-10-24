@@ -71,7 +71,10 @@ public class MOV009PhysicsAcceptanceTests
                 Assert.That(c.LastTotalLiftNewtons,Is.LessThanOrEqualTo(body.mass*18+.1f));
                 if(mode==0)Assert.That(c.LastTotalLiftNewtons,Is.EqualTo(0));
             }
-            Assert.That(vehicles[2].transform.position.y,Is.GreaterThan(vehicles[0].transform.position.y+.02f));
+            // FullSupport must carry its load while the real wheel treads can still contact terrain.
+            var fullDrive=vehicles[2].GetComponent<RoboRougelike.R6.R6VehicleDrive>();fullDrive.RefreshMass();
+            Assert.That(vehicles[2].GetComponent<ActiveSuspensionController>().LastTotalLiftNewtons,Is.GreaterThan(0));
+            Assert.That(fullDrive.GroundedWheels,Is.GreaterThan(0));
             foreach(var v in vehicles){v.gameObject.SetActive(false);UnityEngine.Object.Destroy(v.gameObject);}
             foreach(Transform child in fixtures.transform)if(child!=null){child.gameObject.SetActive(false);UnityEngine.Object.Destroy(child.gameObject);}
             yield return null;
@@ -160,6 +163,22 @@ public class MOV009PhysicsAcceptanceTests
         }
         Debug.Log($"MOV009 CONTACT speed={peakSpeed:F2} maxY={peakY:F2} maxVy={peakVy:F2} targetZ={b.position.z:F2}");
         Assert.That(peakSpeed,Is.LessThanOrEqualTo(9.5f));Assert.That(peakY,Is.LessThan(1.6f));Assert.That(peakVy,Is.LessThan(3));Assert.That(b.position.z,Is.GreaterThan(.1f));
+    }
+    [UnityTest] public IEnumerator RaisedRigidWheelsExposeLostContactAndLoweringRestoresRealDriving()
+    {
+        Floor(100);var model=Model(R3VehicleKind.Light);model.SuspensionMode=ActiveSuspensionSupportMode.FullSupport;model.SuspensionHeightOffset=.2f;
+        var vehicle=Build(model,100);vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
+        var body=vehicle.GetComponent<Rigidbody>();var adapter=vehicle.GetComponent<MOV009VehicleAdapter>();var drive=vehicle.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        yield return Seconds(3);drive.RefreshMass();float raised=body.position.y;
+        Assert.That(raised,Is.GreaterThan(.77f));Assert.That(drive.GroundedWheels,Is.Zero);
+        float end=Time.time+.4f;while(Time.time<end){drive.Step(1,1,10,5,100);yield return new WaitForFixedUpdate();}
+        Assert.That(new Vector2(body.linearVelocity.x,body.linearVelocity.z).magnitude,Is.LessThan(.05f));
+        var notice=adapter.GetType().GetProperty("GroundingNotice");Assert.That(notice,Is.Not.Null,"Raised suspension must explain the real loss of wheel contact to the player");
+        Assert.That((string)notice.GetValue(adapter),Does.Contain("kontakt"));
+        model.SuspensionHeightOffset=0;adapter.ApplySettings();yield return Seconds(3);drive.RefreshMass();
+        Assert.That(drive.GroundedWheels,Is.GreaterThan(0));Assert.That((string)notice.GetValue(adapter),Is.Null);
+        var start=body.position;end=Time.time+.6f;while(Time.time<end){drive.Step(1,0,10,5,100);yield return new WaitForFixedUpdate();}
+        Assert.That(body.position.z-start.z,Is.GreaterThan(.15f));Assert.That(body.position.y,Is.LessThan(raised-.12f));
     }
     [UnityTest] public IEnumerator HeavyTraversesRampPlatformSeam()
     {

@@ -51,7 +51,7 @@ public class R6DrivingTests
         {
             maxSpeed=Mathf.Max(maxSpeed,body.linearVelocity.magnitude,other.linearVelocity.magnitude);
             maxSpin=Mathf.Max(maxSpin,body.angularVelocity.magnitude,other.angularVelocity.magnitude);
-            Assert.That(body.position.y,Is.EqualTo(.7f).Within(.01f));yield return null;
+            Assert.That(body.position.y,Is.InRange(.55f,.85f),"Real wheel contacts settle without locking vertical physics.");yield return null;
         }
         Debug.Log($"R6 physical push: displacement={other.position.z-start:0.00}, peak speed={maxSpeed:0.00}, spin={maxSpin:0.00}");
         Assert.That(other.position.z-start,Is.GreaterThan(.15f));Assert.That(maxSpeed,Is.LessThan(6));Assert.That(maxSpin,Is.LessThan(3.2f));
@@ -60,8 +60,9 @@ public class R6DrivingTests
     {
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var drive=run.Player.GetComponent<R6VehicleDrive>();var body=run.Player.GetComponent<Rigidbody>();
         drive.RefreshMass();float before=body.mass;
-        var wheel=assembly.Parts.First(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0);
-        wheel.Damageable.ApplyDamage(10000,wheel.transform.position,Vector3.left);run.Player.Structure.EvaluateStructure();drive.RefreshMass();
+        foreach(var wheel in assembly.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0))
+            wheel.Damageable.ApplyDamage(10000,wheel.transform.position,Vector3.left);
+        run.Player.Structure.EvaluateStructure();drive.RefreshMass();
         Assert.That(body.mass,Is.LessThan(before));Assert.That(Mathf.Abs(drive.WheelImbalance),Is.GreaterThan(.02f));
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));yield return Seconds(1);
         Assert.That(Mathf.Abs(Mathf.DeltaAngle(0,body.rotation.eulerAngles.y)),Is.GreaterThan(.1f));

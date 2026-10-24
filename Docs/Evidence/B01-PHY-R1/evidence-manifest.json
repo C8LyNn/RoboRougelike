@@ -1,0 +1,234 @@
+{
+  "gameplaySource": "523046f5bf6ddab0caf62253615c962e808c3053",
+  "editorFixtureSource": "54f0192b89ffac9f6989da36e8f5d893e631d600",
+  "files": {
+    "20261024T182053Z-000552f1d2ec4ec28440e841b3686616/build-excerpt.txt": {
+      "bytes": 438,
+      "sha256": "03c639029d03d3046a9790548a288889bea324a30bd0beb2c66f8cb6a80cd993"
+    },
+    "20261024T182053Z-000552f1d2ec4ec28440e841b3686616/Build-process.json": {
+      "bytes": 151,
+      "sha256": "c1e320881cd78684c5b6474595919c1ab870f1a18879952906b4d27ff4ecd216"
+    },
+    "20261024T182803Z-7df0687345a3471dbb6a7079ceb125d2/build-excerpt.txt": {
+      "bytes": 3966,
+      "sha256": "c1a0959595b33269780fd732d905d07097ac4820e34f6ea0f3b5acaa1c58522e"
+    },
+    "20261024T182803Z-7df0687345a3471dbb6a7079ceb125d2/Build-process.json": {
+      "bytes": 142,
+      "sha256": "f7bb3d315cd34d12b62892169011b7429187d67e4f09a76d45e4ffe8e74257b9"
+    },
+    "B01-extracted-human-close/log-excerpt.txt": {
+      "bytes": 59,
+      "sha256": "a51637fc66e16020c4d780839be2468fba421874a3d1cb84484272812616c7de"
+    },
+    "B01-extracted-human-close/process.json": {
+      "bytes": 627,
+      "sha256": "7a776ab4db95dc08f99de62be4c47923a729012dead8d9e2d07fb78b60b63118"
+    },
+    "B01-native-Physics-20261024T182326Z/log-excerpt.txt": {
+      "bytes": 121,
+      "sha256": "7730ec5bb8a6467aa452d4bc7202e1abe8b601fa93e28f19f573a3e97829c8d3"
+    },
+    "B01-native-Physics-20261024T182326Z/physics-native-result.json": {
+      "bytes": 59433,
+      "sha256": "8c9253ea71980773e50a0750712bb15b27d711a1da7a17037295d293cd827606"
+    },
+    "B01-native-Physics-20261024T182326Z/process.json": {
+      "bytes": 1103,
+      "sha256": "73fbc58024393af12e458f47072610feab960e7390bc67871ffb746e77e1ddd0"
+    },
+    "B01-native-Physics-20261024T182851Z/Heavy-01-flat.png": {
+      "bytes": 154610,
+      "sha256": "f1cf55ef47103f760ad6e0d91068404a0f83621278048ad412b09eaa62ee9f22"
+    },
+    "B01-native-Physics-20261024T182851Z/Heavy-01b-slope.png": {
+      "bytes": 147266,
+      "sha256": "84bfeda5ee14c782792ae182a0dbafc5bf2641001f73c8906f2dd9526ec80027"
+    },
+    "B01-native-Physics-20261024T182851Z/Heavy-02-roof.png": {
+      "bytes": 152672,
+      "sha256": "a8da738070f3d89e4a452d4fb8c1c5d27baecbaa0076a9de6e8a598475a50cd8"
+    },
+    "B01-native-Physics-20261024T182851Z/Heavy-03-physical-roll.png": {
+      "bytes": 159012,
+      "sha256": "533620d44d396ef2c27bec34bf487851f25bc1118f8c8e8e142e4ecf53b6513a"
+    },
+    "B01-native-Physics-20261024T182851Z/Heavy-04-recovered.png": {
+      "bytes": 154884,
+      "sha256": "8c7b8ac7737b1ee9b42067744cb38e0919fdfddcbf620c46ff6513e14b9e1bc3"
+    },
+    "B01-native-Physics-20261024T182851Z/Light-01-flat.png": {
+      "bytes": 150384,
+      "sha256": "f60a5abb40f76ba00dc05b0a4bd82c612346f439051167c878b711bd52270144"
+    },
+    "B01-native-Physics-20261024T182851Z/Light-01b-slope.png": {
+      "bytes": 133715,
+      "sha256": "326020b661d50ddf9f910cd5afe81a117a0feb8cedaf5dfbb21646b4af633df0"
+    },
+    "B01-native-Physics-20261024T182851Z/Light-02-roof.png": {
+      "bytes": 157565,
+      "sha256": "781415a19ef02dd8e12fc7f3feac12adee174efe0497d7b9c8d95f3839b59763"
+    },
+    "B01-native-Physics-20261024T182851Z/Light-03-physical-roll.png": {
+      "bytes": 152942,
+      "sha256": "c062ac1268135bf9ed5582c132e718fcbbe52e82cc1499d20924082862a605d1"
+    },
+    "B01-native-Physics-20261024T182851Z/Light-04-recovered.png": {
+      "bytes": 152430,
+      "sha256": "57dd054e4f389f41d5e42acbc62cf3420ac471f5058740e02695a11b8359d5d7"
+    },
+    "B01-native-Physics-20261024T182851Z/log-excerpt.txt": {
+      "bytes": 303,
+      "sha256": "f0c6f06e233ef4e0a67836de05c45b346b1aff271767e1132a8eacb191ece1cc"
+    },
+    "B01-native-Physics-20261024T182851Z/physics-native-result.json": {
+      "bytes": 117258,
+      "sha256": "9a0e2a8d951abbaac86746b097f3e866d349dd9645e14a6067ad75a31b214170"
+    },
+    "B01-native-Physics-20261024T182851Z/process.json": {
+      "bytes": 1102,
+      "sha256": "8bc2f91fc22602c3faa3333b745a16633ed1bc6a3c3410758196447ed6a85d1b"
+    },
+    "B01-native-Pilot-20261024T183009Z/002-Garage-stage0.png": {
+      "bytes": 386045,
+      "sha256": "5b67ba8593d5d7d5b0cb1fd68a233e79048de9bad25800d88266ad33f752c686"
+    },
+    "B01-native-Pilot-20261024T183009Z/003-TestDrive-stage0.png": {
+      "bytes": 248768,
+      "sha256": "ef1225f93b9ac419eefc6ccb35bb8b7ea174486044359fc8f35a4ef17d67da4f"
+    },
+    "B01-native-Pilot-20261024T183009Z/log-excerpt.txt": {
+      "bytes": 148,
+      "sha256": "06297a6e9c8201a83b53e3b97bc2e00ac3452e52a6852554bf7348730bac2c04"
+    },
+    "B01-native-Pilot-20261024T183009Z/operator-qa-result.json": {
+      "bytes": 10901,
+      "sha256": "260866e80237612beba843aa4ee8bb9c0247ba7e26f4aac6bdb3210fe694edca"
+    },
+    "B01-native-Pilot-20261024T183009Z/process.json": {
+      "bytes": 1336,
+      "sha256": "3eae84ff1b60d9488503079d4217cc874569a384ed111cfcf5e577177e3e4075"
+    },
+    "B01-native-Pilot-20261024T183009Z/w5-diagnostics.json": {
+      "bytes": 1159,
+      "sha256": "314f34812738e10fec363ea1882af93816c791638f292b44cae31cbb48e0a84d"
+    },
+    "B01-native-Pilot-20261024T214450Z/005-Salvage-stage1.png": {
+      "bytes": 326602,
+      "sha256": "1322ac978b8db5bf204c86f6f6a7dea0c49ac5bb7ef8cfbc34237cbefbd793cb"
+    },
+    "B01-native-Pilot-20261024T214450Z/006-Garage-stage1.png": {
+      "bytes": 380323,
+      "sha256": "8cb1d41b7a2005015cec82f915f888bd04a56394569428eaee9ed1e4be931ab7"
+    },
+    "B01-native-Pilot-20261024T214450Z/010-Garage-stage1.png": {
+      "bytes": 366199,
+      "sha256": "83e5cc06c1b9d869e37a6b1486125db934b6d0faa1e87aa6d1d6866b057296d4"
+    },
+    "B01-native-Pilot-20261024T214450Z/012-Combat-stage1.png": {
+      "bytes": 270143,
+      "sha256": "31d3caa111f84c9ba718239c6fcfecda4f13037e40a06d63fa0c9c5daa55cb1b"
+    },
+    "B01-native-Pilot-20261024T214450Z/015-Salvage-stage2.png": {
+      "bytes": 326587,
+      "sha256": "39b36e299f59b15596aae1fc57093038c8229db0472add2adfd334d41c19e5df"
+    },
+    "B01-native-Pilot-20261024T214450Z/016-Garage-stage2.png": {
+      "bytes": 402220,
+      "sha256": "fd2c12fc07e1d7937c3a6acba2abeb3dd095aeea5698bdd2b580de865ffb1f7a"
+    },
+    "B01-native-Pilot-20261024T214450Z/017-TestDrive-stage2.png": {
+      "bytes": 277888,
+      "sha256": "6708b74665000d4d8e7461c1b8a68b9e4bca188807461eb5586da6edb0136369"
+    },
+    "B01-native-Pilot-20261024T214450Z/debris-1-2.png": {
+      "bytes": 246219,
+      "sha256": "a5a667d948ee99a9cad9cb3404c91ca97d27748e573275d31d7f69ddf3dad7b6"
+    },
+    "B01-native-Pilot-20261024T214450Z/log-excerpt.txt": {
+      "bytes": 89,
+      "sha256": "6c8b6ac2c367fd3138ebf7640dde0983dfff07acd33a692f9f0ad2773e4e9fee"
+    },
+    "B01-native-Pilot-20261024T214450Z/operator-qa-result.json": {
+      "bytes": 24773,
+      "sha256": "4e8f4ee0d2cb2c05d60ed33896529aa075c7b07b36a1b11799360c7960af7ee4"
+    },
+    "B01-native-Pilot-20261024T214450Z/process.json": {
+      "bytes": 1315,
+      "sha256": "46f2deecc6502f7e85aacdebb3a4bc267c5e32570cad65954bfae53858187246"
+    },
+    "B01-native-Pilot-20261024T214450Z/w5-diagnostics.json": {
+      "bytes": 1652,
+      "sha256": "ad23c948798213ed28d10f7fd8fc78eb89a94a3d34a2d14fc5c18d75784850ea"
+    },
+    "B01-native-W8-20261024T182949Z/01-pulse-through-wall.png": {
+      "bytes": 214999,
+      "sha256": "3d46c2ed7fa32547ede7c3059c2d916b2d8bc807af6cfc8ff6479613e9d41b31"
+    },
+    "B01-native-W8-20261024T182949Z/02-distinct-scanner-results.png": {
+      "bytes": 295031,
+      "sha256": "e14afff154de3e1ef95d9ecc680b227c9da3fdab6b5a1ebdb305957af31dd6d9"
+    },
+    "B01-native-W8-20261024T182949Z/03-actual-r6-crab.png": {
+      "bytes": 274348,
+      "sha256": "f708fd018f1f24071aaf8e23aa52a0ecc7946d18333b00522fabfac97a9d9fd5"
+    },
+    "B01-native-W8-20261024T182949Z/04-restored-workshop.png": {
+      "bytes": 383813,
+      "sha256": "5bdf630bada614ddaa08e74c6d536b81a01fd8b54b3e56848c47c3af0c6f2063"
+    },
+    "B01-native-W8-20261024T182949Z/05-mov009-supported-crab.png": {
+      "bytes": 305859,
+      "sha256": "4bb0548bf97e6adc6332a3cb876e62bbfbf0d75b515bc043e2bf1504c1715a9d"
+    },
+    "B01-native-W8-20261024T182949Z/log-excerpt.txt": {
+      "bytes": 118,
+      "sha256": "f5f9a18c6f752e153c0f7b1e5b3e8ae4e48c27789c19a925f07e1597019eb2d1"
+    },
+    "B01-native-W8-20261024T182949Z/native-api-result.json": {
+      "bytes": 8999,
+      "sha256": "eb2c9257b14f0b53fc19694d9cc54f8527e1800095272dc6f624094f0a09a955"
+    },
+    "B01-native-W8-20261024T182949Z/process.json": {
+      "bytes": 1091,
+      "sha256": "f498cb70d458ec5a771fafa9aef92376364674bfaeb6d684ebe732dd13b9d7c5"
+    },
+    "editmode-coverage-reconciliation.json": {
+      "bytes": 2852,
+      "sha256": "214b28f11794727efc0d5984d2e340fd8c678c47351d6b34c61dd8a43931e7d0"
+    },
+    "human-close.json": {
+      "bytes": 203,
+      "sha256": "5df5cc597ce41d51f8d57220863782fae00efeea4930f57273ea24a1a74cd7d6"
+    },
+    "implementation-ledger.txt": {
+      "bytes": 26704,
+      "sha256": "06480e7bf6e03f40ce121b8f5142e0ab1778d386701a19f2c14ee607ebd6b2b1"
+    },
+    "index.json": {
+      "bytes": 17790,
+      "sha256": "dcc4dac9a1d09656edbb944d672340b6f0617a6e955275134650affac3850201"
+    },
+    "package.json": {
+      "bytes": 485,
+      "sha256": "50634d5191ea6f67d8ba4e07df1e8c232ff23881e176797c118d3b25a81d3309"
+    },
+    "README.md": {
+      "bytes": 3492,
+      "sha256": "517da50e8f77964ec81817c7a94b0858d3d8f20ae46d976d5339ed3d59ce8fff"
+    },
+    "retail-qa-exclusion.json": {
+      "bytes": 1418,
+      "sha256": "80c346b6e2e0c8628031f761a14437a5a7533e8e94b242b573d89471ab155ed3"
+    },
+    "shutdown-minidump-summary.json": {
+      "bytes": 741,
+      "sha256": "75e3a120110af1e9225f503b30350cc7524ac0fe01ba94b06cb7398e10b74c06"
+    },
+    "unity-results.zip": {
+      "bytes": 178819,
+      "sha256": "a28c6d988f59d0187cf5eaee864be50648fd1c757707b5b284413b98bed4dd6e"
+    }
+  }
+}

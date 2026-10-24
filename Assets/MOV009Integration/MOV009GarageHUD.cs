@@ -39,10 +39,11 @@ namespace RoboRougelike.R1
         void DrawSuspensionTelemetry(R1RunController run)
         {
             var adapter=run.Player?.GetComponent<MOV009VehicleAdapter>();if(adapter==null)return;
-            var controller=adapter.Controller;Panel(new Rect(925,355,335,125));
+            var controller=adapter.Controller;Panel(new Rect(925,355,335,160));
             GUI.Label(new Rect(940,360,305,28),"AKTYWNE ZAWIESZENIE",body);
             string mode=!controller.SuspensionEnabled?"OFF":controller.SupportMode.ToString();
             GUI.Label(new Rect(940,392,305,82),$"{mode} • sprawne podpory: {adapter.OperationalSupports}\nOffset: {controller.CurrentRideHeightOffsetMeters:+0.00;-0.00;0.00} m • siła: {controller.LastTotalLiftNewtons:0} N\nEsc na poligonie — regulacja",small);
+            if(adapter.GroundingNotice!=null)GUI.Label(new Rect(940,463,305,48),adapter.GroundingNotice,small);
         }
     }
 }

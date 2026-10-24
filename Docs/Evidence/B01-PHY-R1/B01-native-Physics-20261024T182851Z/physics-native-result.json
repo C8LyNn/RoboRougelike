@@ -1,0 +1,4034 @@
+{
+    "method": "Native controlled physics API fixture; real garage/body/collider/force/Core; fixture poses/damage and fixed inspection camera, NOT manual gameplay",
+    "status": "Passed",
+    "startedUtc": "2026-10-24T18:28:54.3504012Z",
+    "finishedUtc": "2026-10-24T18:29:21.2796357Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "width": 1280,
+    "height": 720,
+    "checks": [
+        {
+            "name": "Boot / Actual game initializes",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual garage entry",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(-1, 1, -1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(-1, 1, 0)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(-1, 1, 1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(0, 1, -1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(0, 1, 1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(1, 1, -1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(1, 1, 0)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(1, 1, 1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(-1, 2, -1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(-1, 2, 0)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(-1, 2, 1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(0, 2, -1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(0, 2, 0)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(0, 2, 1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(1, 2, -1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(1, 2, 0)",
+            "passed": true
+        },
+        {
+            "name": "Light / Broad roof armor installed through actual garage",
+            "detail": "(1, 2, 1)",
+            "passed": true
+        },
+        {
+            "name": "Light / Seventeen existing armor parts spend85 scrap",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual range entry",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / One real gravity body and owned Core capability",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / No extra solver body",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Real floor contacts create forward movement",
+            "detail": "delta=(0.00, -0.05, 0.55), contacts=4",
+            "passed": true
+        },
+        {
+            "name": "Light / Airborne player and AI wheel commands preserve horizontal inertia",
+            "detail": "(1.00, -0.16, 3.00)",
+            "passed": true
+        },
+        {
+            "name": "Light / Gravity remains active during loss of contact",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual10degree slope remains drivable and supported",
+            "detail": "delta=(0.00, 0.04, 0.20), contacts=4",
+            "passed": true
+        },
+        {
+            "name": "Light / Roof-facing wheels cannot create traction",
+            "detail": "(0.00, 0.00, 0.00)",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual body recovers to wheel-supported orientation",
+            "detail": "attempts=1, up=(0.00, 1.00, 0.00), contacts=4",
+            "passed": true
+        },
+        {
+            "name": "Light / Intermediate simulated orientation captured; no teleport",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Recovery restores no HP or parts",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual lift and torque obey configured default caps",
+            "detail": "mass=328, lift=459,2, torque=5884,441",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual destroyed wheel reduces available running gear",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / EMP blocks roof recovery even after cooldown naturally expires",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Destroyed Core cannot initiate another attempt",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual return to garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Disposable range loss does not leak into garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Light / Actual main menu return",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual garage entry",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(-1, 2, -1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(-1, 2, 0)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(-1, 2, 1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(0, 2, -1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(0, 2, 1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(1, 2, -1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(1, 2, 0)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(1, 2, 1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(-1, 3, -1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(-1, 3, 0)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(-1, 3, 1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(0, 3, -1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(0, 3, 0)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(0, 3, 1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(1, 3, -1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(1, 3, 0)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Broad roof armor installed through actual garage",
+            "detail": "(1, 3, 1)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Seventeen existing armor parts spend85 scrap",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual range entry",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / One real gravity body and owned Core capability",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / No extra solver body",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Real floor contacts create forward movement",
+            "detail": "delta=(0.00, -0.05, 0.38), contacts=12",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Airborne player and AI wheel commands preserve horizontal inertia",
+            "detail": "(1.00, -0.16, 3.00)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Gravity remains active during loss of contact",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual10degree slope remains drivable and supported",
+            "detail": "delta=(0.00, 0.01, 0.08), contacts=12",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Roof-facing wheels cannot create traction",
+            "detail": "(0.00, 0.00, 0.00)",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual body recovers to wheel-supported orientation",
+            "detail": "attempts=1, up=(0.00, 1.00, 0.00), contacts=12",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Intermediate simulated orientation captured; no teleport",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Recovery restores no HP or parts",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual lift and torque obey configured default caps",
+            "detail": "mass=1312, lift=1800, torque=30000",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual destroyed wheel reduces available running gear",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / EMP blocks roof recovery even after cooldown naturally expires",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Destroyed Core cannot initiate another attempt",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual return to garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Disposable range loss does not leak into garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Heavy / Actual main menu return",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "samples": [
+        {
+            "rig": "Light",
+            "time": 2.359999179840088,
+            "position": {
+                "x": -0.00004076842378708534,
+                "y": 1.3599998950958253,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.4425767125867426e-8,
+                "y": -1.0,
+                "z": -6.601352797730442e-9
+            },
+            "velocity": {
+                "x": -0.000001444947770323779,
+                "y": -0.000005111098289489746,
+                "z": 0.000009378397407999728
+            },
+            "spin": {
+                "x": 0.000009197500730806496,
+                "y": -4.017465471406467e-9,
+                "z": 0.0000014753408095202759
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 2.4599990844726564,
+            "position": {
+                "x": -0.00004082680607098155,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 7.680818470134909e-8,
+                "y": -1.0,
+                "z": -1.1391077947564554e-7
+            },
+            "velocity": {
+                "x": -0.0000012140764056312037,
+                "y": -0.0000027120113372802736,
+                "z": -6.624745196859294e-7
+            },
+            "spin": {
+                "x": -7.388411518149951e-7,
+                "y": 1.185348708077072e-8,
+                "z": 0.0000012509084399425774
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 2.5599989891052248,
+            "position": {
+                "x": -0.0000407836378144566,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 4.56092408285258e-8,
+                "y": -1.0,
+                "z": -1.3882674920751016e-7
+            },
+            "velocity": {
+                "x": -0.000001314351038672612,
+                "y": -0.000002682209014892578,
+                "z": -2.3344526312030212e-7
+            },
+            "spin": {
+                "x": -3.269080082191067e-7,
+                "y": 3.0083270985414859e-8,
+                "z": 0.000001347904117210419
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 2.659999132156372,
+            "position": {
+                "x": -0.000040796388930175453,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 5.496325528042689e-8,
+                "y": -1.0,
+                "z": -1.5189330326847995e-7
+            },
+            "velocity": {
+                "x": 3.151708369841799e-7,
+                "y": -0.0000023245811462402345,
+                "z": -2.5537693204569225e-7
+            },
+            "spin": {
+                "x": -4.003192657364707e-7,
+                "y": -1.5686983090290597e-7,
+                "z": -3.426346211199416e-7
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 2.7599990367889406,
+            "position": {
+                "x": -0.00004078234269400127,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 5.679868309016456e-8,
+                "y": -1.0,
+                "z": -1.5939735931169708e-7
+            },
+            "velocity": {
+                "x": 0.000001055294319485256,
+                "y": -0.0000023692846298217775,
+                "z": 3.327611466374947e-7
+            },
+            "spin": {
+                "x": 2.064693092052039e-7,
+                "y": -1.8744046315077868e-7,
+                "z": -0.0000010929072686849395
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 2.859998941421509,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 2.959998846054077,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.0599989891052248,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.159998893737793,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.2599987983703615,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.3599987030029299,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.459998846054077,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.5599987506866457,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.659998655319214,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.7599985599517824,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.8599987030029299,
+            "position": {
+                "x": -0.00004075687320437282,
+                "y": 1.3600000143051148,
+                "z": -25.999963760375978
+            },
+            "up": {
+                "x": 3.8181717343377389e-8,
+                "y": -1.0,
+                "z": -1.569998175909859e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 3.959998607635498,
+            "position": {
+                "x": -0.0007430168916471303,
+                "y": 1.4836426973342896,
+                "z": -26.074142456054689
+            },
+            "up": {
+                "x": 0.00010973354801535606,
+                "y": -0.9841165542602539,
+                "z": 0.1775253713130951
+            },
+            "velocity": {
+                "x": -0.008653828874230385,
+                "y": 1.5215317010879517,
+                "z": -0.12062854319810868
+            },
+            "spin": {
+                "x": -2.324775218963623,
+                "y": 0.01040896400809288,
+                "z": 0.00943104550242424
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.059998512268066,
+            "position": {
+                "x": -0.00030303664971143007,
+                "y": 1.5811147689819337,
+                "z": -26.19426155090332
+            },
+            "up": {
+                "x": 0.00019109589629806578,
+                "y": -0.8956551551818848,
+                "z": 0.44474920630455019
+            },
+            "velocity": {
+                "x": 0.0035969968885183336,
+                "y": 0.9998953342437744,
+                "z": -0.16927826404571534
+            },
+            "spin": {
+                "x": -2.999999761581421,
+                "y": -0.0010025282390415669,
+                "z": -0.0008697244338691235
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.159998416900635,
+            "position": {
+                "x": 0.00005575383693212643,
+                "y": 1.5555517673492432,
+                "z": -26.30643081665039
+            },
+            "up": {
+                "x": 0.0001934326719492674,
+                "y": -0.7242199182510376,
+                "z": 0.689569354057312
+            },
+            "velocity": {
+                "x": 0.0035969968885183336,
+                "y": 0.018895775079727174,
+                "z": -0.16927826404571534
+            },
+            "spin": {
+                "x": -2.999999761581421,
+                "y": -0.0002465111610945314,
+                "z": 0.0006950062233954668
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.259998321533203,
+            "position": {
+                "x": 0.0004004575894214213,
+                "y": 1.406721830368042,
+                "z": -26.394636154174806
+            },
+            "up": {
+                "x": 0.00023197974951472133,
+                "y": -0.4880922734737396,
+                "z": 0.8727923035621643
+            },
+            "velocity": {
+                "x": 0.0035969968885183336,
+                "y": -0.9621038436889648,
+                "z": -0.16927826404571534
+            },
+            "spin": {
+                "x": -3.0,
+                "y": -0.00006277774809859693,
+                "z": 0.0007959339418448508
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.3599982261657719,
+            "position": {
+                "x": 0.004635615739971399,
+                "y": 1.3563673496246338,
+                "z": -26.426877975463868
+            },
+            "up": {
+                "x": 0.0010267345933243633,
+                "y": -0.3803091049194336,
+                "z": 0.9248590469360352
+            },
+            "velocity": {
+                "x": 0.14110304415225984,
+                "y": 0.4237072467803955,
+                "z": -0.20451591908931733
+            },
+            "spin": {
+                "x": -0.7139438390731812,
+                "y": -0.04237283021211624,
+                "z": -0.026940571144223214
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.459998607635498,
+            "position": {
+                "x": 0.0131611917167902,
+                "y": 1.384415864944458,
+                "z": -26.478805541992189
+            },
+            "up": {
+                "x": 0.003910198342055082,
+                "y": -0.23706665635108949,
+                "z": 0.9714855551719666
+            },
+            "velocity": {
+                "x": 0.05533314496278763,
+                "y": 1.063305139541626,
+                "z": -0.4145761728286743
+            },
+            "spin": {
+                "x": -2.2026116847991945,
+                "y": 0.08475533127784729,
+                "z": 0.00857385154813528
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.559998512268066,
+            "position": {
+                "x": 0.011088239029049874,
+                "y": 1.3698225021362305,
+                "z": -26.535694122314454
+            },
+            "up": {
+                "x": 0.014024718664586544,
+                "y": 0.028611276298761369,
+                "z": 0.9994922876358032
+            },
+            "velocity": {
+                "x": -0.01961537078022957,
+                "y": 0.9020846486091614,
+                "z": -0.5029431581497192
+            },
+            "spin": {
+                "x": -1.9345269203186036,
+                "y": 0.11635477840900421,
+                "z": 0.028838854283094407
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.659998416900635,
+            "position": {
+                "x": 0.007172688841819763,
+                "y": 1.384756326675415,
+                "z": -26.581298828125
+            },
+            "up": {
+                "x": 0.023540088906884195,
+                "y": 0.24220652878284455,
+                "z": 0.9699391722679138
+            },
+            "velocity": {
+                "x": -0.007802904583513737,
+                "y": 0.8589569330215454,
+                "z": -0.5981663465499878
+            },
+            "spin": {
+                "x": -2.5080082416534426,
+                "y": 0.10742795467376709,
+                "z": 0.061974626034498218
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.759998321533203,
+            "position": {
+                "x": 0.003049558959901333,
+                "y": 1.3157092332839966,
+                "z": -26.600223541259767
+            },
+            "up": {
+                "x": 0.03069433942437172,
+                "y": 0.5035709142684937,
+                "z": 0.8634085059165955
+            },
+            "velocity": {
+                "x": -0.013472678139805794,
+                "y": -0.06517502665519715,
+                "z": -0.603776216506958
+            },
+            "spin": {
+                "x": -2.827681303024292,
+                "y": 0.10860880464315415,
+                "z": 0.0811283141374588
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.8599982261657719,
+            "position": {
+                "x": 0.00020168256014585495,
+                "y": 1.174006462097168,
+                "z": -26.602294921875
+            },
+            "up": {
+                "x": 0.0345517098903656,
+                "y": 0.6997680068016052,
+                "z": 0.7135341167449951
+            },
+            "velocity": {
+                "x": -0.013472678139805794,
+                "y": -1.0461746454238892,
+                "z": -0.603776216506958
+            },
+            "spin": {
+                "x": -2.246885061264038,
+                "y": 0.10752705484628678,
+                "z": 0.07493322342634201
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 4.95999813079834,
+            "position": {
+                "x": -0.0002460163086652756,
+                "y": 0.9701235890388489,
+                "z": -26.60093116760254
+            },
+            "up": {
+                "x": 0.02916841208934784,
+                "y": 0.8333637714385986,
+                "z": 0.5519547462463379
+            },
+            "velocity": {
+                "x": -0.049173545092344287,
+                "y": -1.6831080913543702,
+                "z": -0.6368311047554016
+            },
+            "spin": {
+                "x": -2.2133350372314455,
+                "y": 0.04330316558480263,
+                "z": 0.14390797913074494
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 5.059998035430908,
+            "position": {
+                "x": -0.001760371495038271,
+                "y": 0.8316198587417603,
+                "z": -26.60279083251953
+            },
+            "up": {
+                "x": 0.020954452455043794,
+                "y": 0.9326691031455994,
+                "z": 0.36012399196624758
+            },
+            "velocity": {
+                "x": -0.05733679234981537,
+                "y": -0.5212263464927673,
+                "z": -0.8517847061157227
+            },
+            "spin": {
+                "x": -1.982496976852417,
+                "y": 0.05001949891448021,
+                "z": 0.10846585035324097
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 5.159997940063477,
+            "position": {
+                "x": -0.0045564863830804829,
+                "y": 0.7517285346984863,
+                "z": -26.62778091430664
+            },
+            "up": {
+                "x": 0.01204502210021019,
+                "y": 0.9811987280845642,
+                "z": 0.19262400269508363
+            },
+            "velocity": {
+                "x": -0.06761574745178223,
+                "y": -0.6612087488174439,
+                "z": -0.9353780746459961
+            },
+            "spin": {
+                "x": -1.640284538269043,
+                "y": 0.044649697840213779,
+                "z": 0.10189566016197205
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 5.259998321533203,
+            "position": {
+                "x": -0.00835314579308033,
+                "y": 0.6703428030014038,
+                "z": -26.66562271118164
+            },
+            "up": {
+                "x": 0.0024335887283086778,
+                "y": 0.9993289113044739,
+                "z": 0.03654826804995537
+            },
+            "velocity": {
+                "x": -0.08020123094320297,
+                "y": -0.8000384569168091,
+                "z": -1.018888235092163
+            },
+            "spin": {
+                "x": -1.5503756999969483,
+                "y": 0.03919455036520958,
+                "z": 0.10256529599428177
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Light",
+            "time": 5.3599982261657719,
+            "position": {
+                "x": -0.014929930679500103,
+                "y": 0.6500333547592163,
+                "z": -26.744630813598634
+            },
+            "up": {
+                "x": -0.00005132003207108937,
+                "y": 1.0,
+                "z": -0.0001071588194463402
+            },
+            "velocity": {
+                "x": -0.0711597129702568,
+                "y": -0.0045769959688186649,
+                "z": -0.8740532994270325
+            },
+            "spin": {
+                "x": 0.005610303021967411,
+                "y": -0.0007627913728356361,
+                "z": -0.00011834228644147515
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 5.45999813079834,
+            "position": {
+                "x": -0.021474039182066919,
+                "y": 0.6500126123428345,
+                "z": -26.826141357421876
+            },
+            "up": {
+                "x": -0.00006515325367217883,
+                "y": 1.0,
+                "z": -0.00008727781096240506
+            },
+            "velocity": {
+                "x": -0.061352431774139407,
+                "y": -0.001306280493736267,
+                "z": -0.7760974168777466
+            },
+            "spin": {
+                "x": 0.0013738644775003195,
+                "y": -0.0012736471835523844,
+                "z": -0.0002072052302537486
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 5.559998035430908,
+            "position": {
+                "x": -0.026990795508027078,
+                "y": 0.6500126123428345,
+                "z": -26.89788246154785
+            },
+            "up": {
+                "x": -0.00006639699131483212,
+                "y": 1.0,
+                "z": -0.00008731886919122189
+            },
+            "velocity": {
+                "x": -0.05099264904856682,
+                "y": -0.0013428330421447754,
+                "z": -0.6785100102424622
+            },
+            "spin": {
+                "x": 0.0013864953070878983,
+                "y": -0.0013087802799418569,
+                "z": -0.00024021098215598613
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 5.659997940063477,
+            "position": {
+                "x": -0.03149113431572914,
+                "y": 0.6500124931335449,
+                "z": -26.959863662719728
+            },
+            "up": {
+                "x": -0.00006676719203824177,
+                "y": 1.0,
+                "z": -0.00008716498996363953
+            },
+            "velocity": {
+                "x": -0.04097367450594902,
+                "y": -0.0013463199138641358,
+                "z": -0.5808818936347961
+            },
+            "spin": {
+                "x": 0.0013879499165341259,
+                "y": -0.0013290827628225089,
+                "z": -0.0002339899365324527
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 5.759997844696045,
+            "position": {
+                "x": -0.035017091780900958,
+                "y": 0.6500123739242554,
+                "z": -27.01207733154297
+            },
+            "up": {
+                "x": -0.00006714834307786077,
+                "y": 1.0,
+                "z": -0.00008697715384187177
+            },
+            "velocity": {
+                "x": -0.0314168818295002,
+                "y": -0.0013526678085327149,
+                "z": -0.48320716619491579
+            },
+            "spin": {
+                "x": 0.00138707528822124,
+                "y": -0.0013419392053037882,
+                "z": -0.0002283361682202667
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 5.859997749328613,
+            "position": {
+                "x": -0.03762166202068329,
+                "y": 0.6500123739242554,
+                "z": -27.054521560668947
+            },
+            "up": {
+                "x": -0.0000676563722663559,
+                "y": 1.0,
+                "z": -0.00008682050975039601
+            },
+            "velocity": {
+                "x": -0.0224373247474432,
+                "y": -0.0013595223426818848,
+                "z": -0.38547763228416445
+            },
+            "spin": {
+                "x": 0.0013832035474479199,
+                "y": -0.0013658880488947034,
+                "z": -0.00022151548182591796
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 5.959997653961182,
+            "position": {
+                "x": -0.0393705852329731,
+                "y": 0.6500121355056763,
+                "z": -27.087186813354493
+            },
+            "up": {
+                "x": -0.00006825530726928264,
+                "y": 1.0,
+                "z": -0.00008651897951494902
+            },
+            "velocity": {
+                "x": -0.01417736429721117,
+                "y": -0.0013674795627593995,
+                "z": -0.2876843512058258
+            },
+            "spin": {
+                "x": 0.0013812115648761392,
+                "y": -0.0013991607120260597,
+                "z": -0.00020811021386180073
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.059998035430908,
+            "position": {
+                "x": -0.04035111889243126,
+                "y": 0.6500120162963867,
+                "z": -27.110069274902345
+            },
+            "up": {
+                "x": -0.00006911381206009537,
+                "y": 1.0,
+                "z": -0.00008613095997134224
+            },
+            "velocity": {
+                "x": -0.006905641872435808,
+                "y": -0.0013819485902786255,
+                "z": -0.18981310725212098
+            },
+            "spin": {
+                "x": 0.001376043539494276,
+                "y": -0.0014320728369057179,
+                "z": -0.00019812452956102788
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.159997940063477,
+            "position": {
+                "x": -0.0406925268471241,
+                "y": 0.6500116586685181,
+                "z": -27.12316131591797
+            },
+            "up": {
+                "x": -0.00007035443559288979,
+                "y": 1.0,
+                "z": -0.00008557180262869224
+            },
+            "velocity": {
+                "x": -0.0011979128466919065,
+                "y": -0.0013946592807769776,
+                "z": -0.09183897078037262
+            },
+            "spin": {
+                "x": 0.0013667922466993332,
+                "y": -0.0015005060704424978,
+                "z": -0.00016764437896199524
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.259997844696045,
+            "position": {
+                "x": -0.04064270108938217,
+                "y": 0.6500085592269898,
+                "z": -27.126514434814454
+            },
+            "up": {
+                "x": -0.00005272047201287933,
+                "y": 0.9999999403953552,
+                "z": -0.00032016937620937824
+            },
+            "velocity": {
+                "x": 0.0009795732330530882,
+                "y": -0.003449738025665283,
+                "z": 0.0012302771210670472
+            },
+            "spin": {
+                "x": 0.0014078142121434212,
+                "y": 0.0006316467188298702,
+                "z": -0.0009542825282551348
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.359997749328613,
+            "position": {
+                "x": -0.04060083255171776,
+                "y": 0.6499989032745361,
+                "z": -27.12626075744629
+            },
+            "up": {
+                "x": 0.000010102937267220113,
+                "y": 1.0,
+                "z": 0.00003882281089317985
+            },
+            "velocity": {
+                "x": -0.00018599594477564096,
+                "y": -0.0005263090133666992,
+                "z": -0.0009504107292741537
+            },
+            "spin": {
+                "x": -0.0009504507761448622,
+                "y": 0.00003457760612946004,
+                "z": 0.00018127777730114758
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.459997653961182,
+            "position": {
+                "x": -0.04061061516404152,
+                "y": 0.6500006318092346,
+                "z": -27.126293182373048
+            },
+            "up": {
+                "x": -0.000003954070507461438,
+                "y": 1.0,
+                "z": -0.000008556499778933357
+            },
+            "velocity": {
+                "x": 0.000053072853916091844,
+                "y": -0.0001482069492340088,
+                "z": 0.00022765115136280656
+            },
+            "spin": {
+                "x": 0.00021864575683139265,
+                "y": 0.0000066090974542021289,
+                "z": -0.00004960419028066099
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.55999755859375,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": -0.000006917601695022313,
+                "y": -0.000034749507904052734,
+                "z": -0.000005123109076521359
+            },
+            "spin": {
+                "x": -0.000001276483089895919,
+                "y": 0.000005447392140922602,
+                "z": 0.0000061154705690569248
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.659997463226318,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.759997367858887,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.859997749328613,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 6.959997653961182,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.05999755859375,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.159997463226318,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.259997367858887,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.359997272491455,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.459997177124023,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.55999755859375,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.659997463226318,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.759997367858887,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.859997272491455,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 7.959997177124023,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.05999755859375,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.179997444152832,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.299997329711914,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.419997215270996,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.539997100830079,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.65999698638916,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.759997367858887,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.879997253417969,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 8.99999713897705,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 9.119997024536133,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 9.239996910095215,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Light",
+            "time": 9.359996795654297,
+            "position": {
+                "x": -0.04060885310173035,
+                "y": 0.6500003933906555,
+                "z": -27.12628936767578
+            },
+            "up": {
+                "x": -0.0000018243903241454973,
+                "y": 1.0,
+                "z": -0.000003463414941506926
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 14.839994430541993,
+            "position": {
+                "x": 0.0000024940320599853296,
+                "y": 1.9100000858306885,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": 1.1057498028321788e-7,
+                "y": -1.0,
+                "z": -8.356207814586014e-8
+            },
+            "velocity": {
+                "x": 1.3521139408112504e-7,
+                "y": -0.00001315772533416748,
+                "z": -0.00002496903107385151
+            },
+            "spin": {
+                "x": -0.00001571179564052727,
+                "y": 6.411639787984313e-7,
+                "z": -1.0797242566695786e-7
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 14.939994812011719,
+            "position": {
+                "x": 0.000002410649358353112,
+                "y": 1.909999966621399,
+                "z": -26.00000762939453
+            },
+            "up": {
+                "x": -1.510596092657579e-8,
+                "y": -1.0,
+                "z": 3.988580772329442e-7
+            },
+            "velocity": {
+                "x": -0.0000037430972952279264,
+                "y": -0.00000998377799987793,
+                "z": 0.000014169389032758772
+            },
+            "spin": {
+                "x": 0.000008690411050338298,
+                "y": -0.0000016866943042259664,
+                "z": 0.0000016797022226455738
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.0599946975708,
+            "position": {
+                "x": 0.0000030257647267717404,
+                "y": 1.9100004434585572,
+                "z": -26.000001907348634
+            },
+            "up": {
+                "x": -1.754161331746218e-7,
+                "y": -1.0,
+                "z": -0.0000010188248324993766
+            },
+            "velocity": {
+                "x": -0.000027283997042104602,
+                "y": -0.000026479363441467285,
+                "z": -0.000043097592424601316
+            },
+            "spin": {
+                "x": -0.000026753834390547127,
+                "y": 0.000007343653578573139,
+                "z": 0.000019420032913330942
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.159995079040528,
+            "position": {
+                "x": 0.0000028141441816842418,
+                "y": 1.910000205039978,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": 6.41671107359798e-8,
+                "y": -1.0,
+                "z": -1.2053904185904686e-7
+            },
+            "velocity": {
+                "x": 0.00000853708479553461,
+                "y": -0.00002384185791015625,
+                "z": -0.00004027261456940323
+            },
+            "spin": {
+                "x": -0.000026638668714440428,
+                "y": -0.000001976868588826619,
+                "z": -0.0000061148812164901759
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.27999496459961,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.399994850158692,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.519994735717774,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.639994621276856,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.759994506835938,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.87999439239502,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 15.979994773864746,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.079994201660158,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.179994583129884,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.27999496459961,
+            "position": {
+                "x": 0.000003130281811536406,
+                "y": 1.9100004434585572,
+                "z": -26.000003814697267
+            },
+            "up": {
+                "x": -2.254949578173182e-7,
+                "y": -1.0,
+                "z": -0.000001090494379241136
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 0,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.399993896484376,
+            "position": {
+                "x": 0.0025961908977478744,
+                "y": 1.967545509338379,
+                "z": -25.987464904785158
+            },
+            "up": {
+                "x": -0.006913119461387396,
+                "y": -0.9994170665740967,
+                "z": -0.03343186527490616
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.7833515405654907,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.8353747129440308,
+                "y": 9.290651581395082e-11,
+                "z": -0.17274074256420136
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.4999942779541,
+            "position": {
+                "x": 0.005909319967031479,
+                "y": 2.031343460083008,
+                "z": -25.931076049804689
+            },
+            "up": {
+                "x": -0.012731685303151608,
+                "y": -0.9853026270866394,
+                "z": -0.1703435480594635
+            },
+            "velocity": {
+                "x": 0.003257516771554947,
+                "y": 0.890129804611206,
+                "z": 0.1166202574968338
+            },
+            "spin": {
+                "x": 1.639432430267334,
+                "y": -0.03127453476190567,
+                "z": 0.11045181751251221
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.599994659423829,
+            "position": {
+                "x": -0.000448419654276222,
+                "y": 2.079655170440674,
+                "z": -25.834196090698243
+            },
+            "up": {
+                "x": 0.003016360569745302,
+                "y": -0.9213474988937378,
+                "z": -0.3887292742729187
+            },
+            "velocity": {
+                "x": 0.0016024746000766755,
+                "y": 0.6818622350692749,
+                "z": 0.19815421104431153
+            },
+            "spin": {
+                "x": 2.7425389289855959,
+                "y": -0.027742130681872369,
+                "z": 0.06748833507299423
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.719993591308595,
+            "position": {
+                "x": 0.000963590806350112,
+                "y": 2.1224381923675539,
+                "z": -25.724163055419923
+            },
+            "up": {
+                "x": 0.0054368008859455589,
+                "y": -0.7960218191146851,
+                "z": -0.6052437424659729
+            },
+            "velocity": {
+                "x": 0.0867878720164299,
+                "y": 1.529931902885437,
+                "z": 0.40806713700294497
+            },
+            "spin": {
+                "x": 0.8546628952026367,
+                "y": 0.0735035091638565,
+                "z": -0.0645647943019867
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.81999397277832,
+            "position": {
+                "x": 0.005840801168233156,
+                "y": 2.2593235969543459,
+                "z": -25.65117835998535
+            },
+            "up": {
+                "x": 0.0006976390723139048,
+                "y": -0.7374703884124756,
+                "z": -0.6753795742988586
+            },
+            "velocity": {
+                "x": -0.006345335394144058,
+                "y": 1.6141093969345093,
+                "z": 0.5260816216468811
+            },
+            "spin": {
+                "x": 1.0295990705490113,
+                "y": -0.0019128639250993729,
+                "z": 0.00435556098818779
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 16.919994354248048,
+            "position": {
+                "x": 0.005911178421229124,
+                "y": 2.3934688568115236,
+                "z": -25.563562393188478
+            },
+            "up": {
+                "x": 0.0005840468220412731,
+                "y": -0.6526381969451904,
+                "z": -0.7576698660850525
+            },
+            "velocity": {
+                "x": 0.008481588214635849,
+                "y": 1.7322393655776978,
+                "z": 0.6373485922813416
+            },
+            "spin": {
+                "x": 1.3039302825927735,
+                "y": 0.006563726346939802,
+                "z": 0.005073755979537964
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.019994735717775,
+            "position": {
+                "x": 0.005539229605346918,
+                "y": 2.5206305980682375,
+                "z": -25.462196350097658
+            },
+            "up": {
+                "x": 0.0005410783342085779,
+                "y": -0.5252508521080017,
+                "z": -0.8509477972984314
+            },
+            "velocity": {
+                "x": -0.01112467423081398,
+                "y": 1.787655234336853,
+                "z": 0.7425051331520081
+            },
+            "spin": {
+                "x": 1.8103396892547608,
+                "y": -0.0021123364567756654,
+                "z": 0.00037663348484784365
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.13999366760254,
+            "position": {
+                "x": 0.005405109841376543,
+                "y": 2.5954508781433107,
+                "z": -25.332504272460939
+            },
+            "up": {
+                "x": 0.0003674842300824821,
+                "y": -0.25166288018226626,
+                "z": -0.9678149819374085
+            },
+            "velocity": {
+                "x": -0.0034260237589478494,
+                "y": 1.1119529008865357,
+                "z": 0.7931877970695496
+            },
+            "spin": {
+                "x": 2.9999992847442629,
+                "y": 0.00156163121573627,
+                "z": 0.001380858477205038
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.239994049072267,
+            "position": {
+                "x": 0.0051068635657429699,
+                "y": 2.535196542739868,
+                "z": -25.250459671020509
+            },
+            "up": {
+                "x": 0.00026020273799076676,
+                "y": 0.04558621719479561,
+                "z": -0.9989603757858276
+            },
+            "velocity": {
+                "x": -0.0034260237589478494,
+                "y": 0.1309533715248108,
+                "z": 0.7931877970695496
+            },
+            "spin": {
+                "x": 2.999999761581421,
+                "y": 0.0010509215062484146,
+                "z": 0.0011038380907848478
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.339994430541993,
+            "position": {
+                "x": 0.005899009294807911,
+                "y": 2.4155631065368654,
+                "z": -25.197542190551759
+            },
+            "up": {
+                "x": 0.000046035984269110486,
+                "y": 0.33246535062789919,
+                "z": -0.9431155323982239
+            },
+            "velocity": {
+                "x": 0.012337539345026017,
+                "y": -0.28232574462890627,
+                "z": 0.8503015637397766
+            },
+            "spin": {
+                "x": 2.9110004901885988,
+                "y": 0.002910675248131156,
+                "z": -0.003177128965035081
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.459993362426759,
+            "position": {
+                "x": 0.007439692970365286,
+                "y": 2.198133945465088,
+                "z": -25.161813735961915
+            },
+            "up": {
+                "x": -0.00014462824037764221,
+                "y": 0.6141182780265808,
+                "z": -0.7892139554023743
+            },
+            "velocity": {
+                "x": 0.012337539345026017,
+                "y": -1.459525227546692,
+                "z": 0.8503015637397766
+            },
+            "spin": {
+                "x": 2.43904709815979,
+                "y": 0.0028759220149368049,
+                "z": -0.0014203083701431752
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.559993743896486,
+            "position": {
+                "x": 0.008714028634130955,
+                "y": 1.9401334524154664,
+                "z": -25.137134552001954
+            },
+            "up": {
+                "x": -0.0002748744154814631,
+                "y": 0.7676419615745544,
+                "z": -0.6408789157867432
+            },
+            "velocity": {
+                "x": 0.012337539345026017,
+                "y": -2.4405248165130617,
+                "z": 0.8503015637397766
+            },
+            "spin": {
+                "x": 1.9475817680358887,
+                "y": 0.002847277792170644,
+                "z": -0.000913027732167393
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.65999412536621,
+            "position": {
+                "x": 0.009975217282772065,
+                "y": 1.6050199270248414,
+                "z": -25.1069393157959
+            },
+            "up": {
+                "x": -0.00037026553764007986,
+                "y": 0.8644787669181824,
+                "z": -0.5026692748069763
+            },
+            "velocity": {
+                "x": 0.012337539345026017,
+                "y": -3.4215242862701418,
+                "z": 0.8503015637397766
+            },
+            "spin": {
+                "x": 1.5275206565856934,
+                "y": 0.002818918786942959,
+                "z": -0.0007661909330636263
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.759994506835939,
+            "position": {
+                "x": 0.011221468448638916,
+                "y": 1.1856199502944947,
+                "z": -25.067840576171876
+            },
+            "up": {
+                "x": -0.000426395854447037,
+                "y": 0.9228823184967041,
+                "z": -0.38508182764053347
+            },
+            "velocity": {
+                "x": 0.012337539345026017,
+                "y": -4.402523994445801,
+                "z": 0.8503015637397766
+            },
+            "spin": {
+                "x": 1.180988073348999,
+                "y": 0.0027908424381166698,
+                "z": -0.0007592169567942619
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.879993438720704,
+            "position": {
+                "x": 0.011475001461803913,
+                "y": 0.7890515327453613,
+                "z": -25.04142951965332
+            },
+            "up": {
+                "x": -0.00029942276887595654,
+                "y": 0.9918602108955383,
+                "z": -0.12733139097690583
+            },
+            "velocity": {
+                "x": 0.0064464472234249119,
+                "y": -2.4502768516540529,
+                "z": 1.1638927459716797
+            },
+            "spin": {
+                "x": 2.4108726978302,
+                "y": 0.007237274665385485,
+                "z": -0.004880068823695183
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": true
+        },
+        {
+            "rig": "Heavy",
+            "time": 17.97999382019043,
+            "position": {
+                "x": 0.011387472972273827,
+                "y": 0.6538684964179993,
+                "z": -24.981983184814454
+            },
+            "up": {
+                "x": -0.00006395764648914337,
+                "y": 0.9999956488609314,
+                "z": 0.0029483644757419826
+            },
+            "velocity": {
+                "x": -0.00544451829046011,
+                "y": -0.005433425307273865,
+                "z": 0.935082197189331
+            },
+            "spin": {
+                "x": -0.020189616829156877,
+                "y": 0.0031036329455673696,
+                "z": -0.011635884642601014
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.079994201660158,
+            "position": {
+                "x": 0.01096944510936737,
+                "y": 0.6500047445297241,
+                "z": -24.89293098449707
+            },
+            "up": {
+                "x": 0.0000023846816930017669,
+                "y": 1.0,
+                "z": -0.000003396035708647105
+            },
+            "velocity": {
+                "x": -0.0031402071472257377,
+                "y": -0.0006349235773086548,
+                "z": 0.836514413356781
+            },
+            "spin": {
+                "x": 0.0006341882981359959,
+                "y": -0.00017439393559470773,
+                "z": -0.000011809280294983182
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.199993133544923,
+            "position": {
+                "x": 0.010695877484977246,
+                "y": 0.6500046253204346,
+                "z": -24.800800323486329
+            },
+            "up": {
+                "x": 0.000004964389518136159,
+                "y": 1.0,
+                "z": 0.000004419424840307329
+            },
+            "velocity": {
+                "x": -0.0018625492230057717,
+                "y": -0.00022323429584503174,
+                "z": 0.7187568545341492
+            },
+            "spin": {
+                "x": -0.00009699611109681427,
+                "y": -0.00013271607167553157,
+                "z": -0.000020683373804786243
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.29999351501465,
+            "position": {
+                "x": 0.010586575604975224,
+                "y": 0.6500046849250794,
+                "z": -24.734811782836915
+            },
+            "up": {
+                "x": 0.000004937917310599005,
+                "y": 1.0,
+                "z": 0.000004408947461342905
+            },
+            "velocity": {
+                "x": -0.0008812507148832083,
+                "y": -0.0002224445343017578,
+                "z": 0.6206586956977844
+            },
+            "spin": {
+                "x": -0.00009703703108243644,
+                "y": -0.0001320596202276647,
+                "z": -0.000019130466171191074
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.399993896484376,
+            "position": {
+                "x": 0.010569343343377114,
+                "y": 0.6500045657157898,
+                "z": -24.678634643554689
+            },
+            "up": {
+                "x": 0.000004906214144284604,
+                "y": 1.0,
+                "z": 0.000004406731477502035
+            },
+            "velocity": {
+                "x": -0.0000017369893612340093,
+                "y": -0.00021761655807495117,
+                "z": 0.5225589871406555
+            },
+            "spin": {
+                "x": -0.00009658098861109465,
+                "y": -0.00013152377505321056,
+                "z": -0.00002306474016222637
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.4999942779541,
+            "position": {
+                "x": 0.010631190612912178,
+                "y": 0.6500046253204346,
+                "z": -24.632266998291017
+            },
+            "up": {
+                "x": 0.000004859223281528102,
+                "y": 1.0,
+                "z": 0.000004363958851172356
+            },
+            "velocity": {
+                "x": 0.0007298148702830076,
+                "y": -0.0002205371856689453,
+                "z": 0.4244588017463684
+            },
+            "spin": {
+                "x": -0.00009746824798639864,
+                "y": -0.00014056728105060756,
+                "z": -0.000020679672161350027
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.619993209838868,
+            "position": {
+                "x": 0.010787318460643292,
+                "y": 0.650004506111145,
+                "z": -24.589574813842775
+            },
+            "up": {
+                "x": 0.0000047902985897962939,
+                "y": 1.0,
+                "z": 0.0000043773061406682249
+            },
+            "velocity": {
+                "x": 0.001376330154016614,
+                "y": -0.00021626055240631104,
+                "z": 0.30673620104789736
+            },
+            "spin": {
+                "x": -0.00009677478374214843,
+                "y": -0.00014304521027952433,
+                "z": -0.000021751337044406682
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.719993591308595,
+            "position": {
+                "x": 0.010959512554109097,
+                "y": 0.6500044465065002,
+                "z": -24.564790725708009
+            },
+            "up": {
+                "x": 0.000004698735665442655,
+                "y": 1.0,
+                "z": 0.000004302808974898653
+            },
+            "velocity": {
+                "x": 0.00163062266074121,
+                "y": -0.00021754205226898193,
+                "z": 0.20863334834575654
+            },
+            "spin": {
+                "x": -0.00009720241359900683,
+                "y": -0.0001420069020241499,
+                "z": -0.000021154000933165662
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.81999397277832,
+            "position": {
+                "x": 0.01113658957183361,
+                "y": 0.650004506111145,
+                "z": -24.549816131591798
+            },
+            "up": {
+                "x": 0.000004615495072357589,
+                "y": 1.0,
+                "z": 0.000004280816483515082
+            },
+            "velocity": {
+                "x": 0.001509026624262333,
+                "y": -0.00021475553512573242,
+                "z": 0.11052969098091126
+            },
+            "spin": {
+                "x": -0.00009649198182160035,
+                "y": -0.00014659286534879357,
+                "z": -0.00002192549072788097
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 18.939992904663087,
+            "position": {
+                "x": 0.011264079250395298,
+                "y": 0.6500051617622376,
+                "z": -24.544628143310548
+            },
+            "up": {
+                "x": 0.0000016826467117425637,
+                "y": 1.0,
+                "z": 0.000029152110073482618
+            },
+            "velocity": {
+                "x": 0.00010116421617567539,
+                "y": -0.0002674609422683716,
+                "z": 0.0007739095017313957
+            },
+            "spin": {
+                "x": 0.00042279926128685474,
+                "y": -0.00005316098395269364,
+                "z": 0.00003588251638575457
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.039993286132814,
+            "position": {
+                "x": 0.01125737838447094,
+                "y": 0.6500003337860107,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -1.2813025085378627e-9,
+                "y": 1.0,
+                "z": -1.753510900925903e-7
+            },
+            "velocity": {
+                "x": 0.000002229960955446586,
+                "y": -0.0000012069940567016602,
+                "z": 0.00003355377702973783
+            },
+            "spin": {
+                "x": 0.000020957926608389243,
+                "y": -9.116181445278926e-7,
+                "z": 0.000002125784476447734
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.13999366760254,
+            "position": {
+                "x": 0.011257579550147057,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -3.128671322016885e-9,
+                "y": 1.0,
+                "z": -5.7839127265424398e-8
+            },
+            "velocity": {
+                "x": 1.1627076901277178e-7,
+                "y": -0.000012278556823730469,
+                "z": 0.000005348641025193501
+            },
+            "spin": {
+                "x": 0.000005495818641065853,
+                "y": 4.870102543463872e-8,
+                "z": -2.396448337549373e-7
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.239994049072267,
+            "position": {
+                "x": 0.011257532052695752,
+                "y": 0.6500003337860107,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": 2.040867919106404e-8,
+                "y": 1.0,
+                "z": -2.1621262558113587e-9
+            },
+            "velocity": {
+                "x": 4.1122640936919199e-7,
+                "y": -2.682209014892578e-7,
+                "z": 0.0000014483343875326682
+            },
+            "spin": {
+                "x": 7.055027708702255e-7,
+                "y": -1.0423416085814097e-7,
+                "z": -1.459267195969005e-7
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.35999298095703,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.459993362426759,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.559993743896486,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.67999267578125,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.779993057250978,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.879993438720704,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 19.97999382019043,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.099992752075197,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.199993133544923,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.29999351501465,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.419992446899415,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.51999282836914,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.619993209838868,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.719993591308595,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.83999252319336,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 20.939992904663087,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.039993286132814,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.159992218017579,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.259992599487306,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.35999298095703,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.479991912841798,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.579992294311525,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.67999267578125,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        },
+        {
+            "rig": "Heavy",
+            "time": 21.779993057250978,
+            "position": {
+                "x": 0.011257467791438103,
+                "y": 0.6499998569488525,
+                "z": -24.544658660888673
+            },
+            "up": {
+                "x": -5.418557602610008e-9,
+                "y": 1.0,
+                "z": -1.5943413700370002e-7
+            },
+            "velocity": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "spin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "attempts": 1,
+            "contacts": 0,
+            "recovering": false
+        }
+    ],
+    "errors": []
+}

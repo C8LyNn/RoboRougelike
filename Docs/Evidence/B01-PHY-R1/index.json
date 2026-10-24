@@ -1,0 +1,421 @@
+{
+  "gameplayBuildSource": "523046f5bf6ddab0caf62253615c962e808c3053",
+  "finalEditorFixtureSource": "54f0192b89ffac9f6989da36e8f5d893e631d600",
+  "base": "865932fd78ef936493bdc51ea9ca612fe9ec31eb",
+  "runs": [
+    {
+      "run": "PHY-contact-green-363b33a3862e41b8947998fdc92c9212",
+      "file": "results.xml",
+      "result": "Passed",
+      "total": "8",
+      "passed": "8",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "010eed730cccc75768d279f1ed9fa791048c2b07a14d09689a063d1104312aa2",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "filter": "B01GroundedDriveTests",
+        "finishedUtc": "2026-10-24T16:59:13.6907529Z",
+        "exitCode": 0
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-contact-green-363b33a3862e41b8947998fdc92c9212\\Unity.log": "72eed16a85fe5c72aec06327f431d65af13d016343c0b8cda2ca1d8c9084ebb0"
+      }
+    },
+    {
+      "run": "PHY-contact-red-49689a49226946a0801e69b5671cbfd6",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "8",
+      "passed": "0",
+      "failed": "8",
+      "skipped": "0",
+      "xmlSha256": "699e8fce1594eb46fa46f26c6d5997de6a50b3646bf2ad0c68a143e89e3545ac",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "exitCode": 2,
+        "filter": "B01GroundedDriveTests",
+        "mode": "EditMode",
+        "finishedUtc": "2026-10-24T16:54:57.8708201Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-contact-red-49689a49226946a0801e69b5671cbfd6\\Unity.log": "6a4a5c901e7ab554a9a44a278a946b8764a029db42d41a6bb9ccd517f82fb035"
+      }
+    },
+    {
+      "run": "PHY-contact-regression-9992a7c1a5bf459cab9aed69cb0d569b",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "45",
+      "passed": "41",
+      "failed": "4",
+      "skipped": "0",
+      "xmlSha256": "08240d98856dd070be638348249b15abaf8c3dc11e58c2e0a9ef763a933ea252",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "filter": "B01GroundedDriveTests;R6DrivingTests;R6PhysicsTests;MOV009PhysicsAcceptanceTests;RRLW8SteeringTests;MOVSeriesDriveTests;MOVSeriesDeviceTests",
+        "exitCode": 2,
+        "mode": "EditMode",
+        "finishedUtc": "2026-10-24T17:07:00.4396550Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-contact-regression-9992a7c1a5bf459cab9aed69cb0d569b\\Unity.log": "5ef750fa9c6b0a1408f7c3fa8f69084f563567f5c277317b96cd77056f734383"
+      }
+    },
+    {
+      "run": "PHY-core-green-6e3f3df54572493ea4b74d22876a88f7",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "20",
+      "passed": "19",
+      "failed": "1",
+      "skipped": "0",
+      "xmlSha256": "6034b9d0590d47b542c1246ec0a1601df90539c5912daf5514578745610f2dbe",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "filter": "B01CoreRecoveryTests;B01GroundedDriveTests;R6DrivingTests",
+        "finishedUtc": "2026-10-24T17:20:02.3508028Z",
+        "mode": "EditMode",
+        "exitCode": 2
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-core-green-6e3f3df54572493ea4b74d22876a88f7\\Unity.log": "8367121c9770c5a8eab0e7f39d31fb317d622c17e1ef163ffdb7a52928981e32"
+      }
+    },
+    {
+      "run": "PHY-core-load-green-806308d054e24fa29472ee84cbce634a",
+      "file": "results.xml",
+      "result": "Passed",
+      "total": "20",
+      "passed": "20",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "e6853f7bb5083b0270ae23154c00c8fb44285d0e3e18a3bfeea8af8cd2425abc",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "exitCode": 0,
+        "filter": "B01CoreRecoveryTests;B01GroundedDriveTests;R6DrivingTests",
+        "finishedUtc": "2026-10-24T17:25:47.0271164Z",
+        "mode": "EditMode"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-core-load-green-806308d054e24fa29472ee84cbce634a\\Unity.log": "47e9560067548c7ffd0c2098a22d823178fc42d86dcc44b230874b96266a0eb5"
+      }
+    },
+    {
+      "run": "PHY-core-red-contact-retest-acb206e2d27c4e34b9169bed92dccc91",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "20",
+      "passed": "13",
+      "failed": "7",
+      "skipped": "0",
+      "xmlSha256": "2c4b884708f5492e3dc64b034828ccf221a65fdd3d0240f73c469e2e33657a00",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "finishedUtc": "2026-10-24T17:14:34.5429627Z",
+        "mode": "EditMode",
+        "exitCode": 2,
+        "filter": "B01CoreRecoveryTests;B01GroundedDriveTests;R6DrivingTests"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-core-red-contact-retest-acb206e2d27c4e34b9169bed92dccc91\\Unity.log": "855693ec2f8ec0f71fa9380c25eafeacdfe861a5412a39b6a7aeb7f21c003f9a"
+      }
+    },
+    {
+      "run": "PHY-emp-regression-0d406304fe3f43d4953e3fcdfe4ee9e8",
+      "file": "results.xml",
+      "result": "Passed",
+      "total": "12",
+      "passed": "12",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "f73389e097dec3ea183b86047e95b2b4de048e2209ca90c35c4a3fc97000be2f",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "exitCode": 0,
+        "filter": "RRLW6EmpPhysicalTests",
+        "finishedUtc": "2026-10-24T18:11:33.3103477Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-emp-regression-0d406304fe3f43d4953e3fcdfe4ee9e8\\Unity.log": "3e83ac08dbd793b707295379b2a0c168e50dc59f5299c95d7837fb0513f9248e"
+      }
+    },
+    {
+      "run": "PHY-final-physics-green-7918e9f6e5464c8abc746114a526ab95",
+      "file": "results.xml",
+      "result": "Passed",
+      "total": "35",
+      "passed": "35",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "b259e331c460dcd521d7f3402c5912d3d3fee8a49e984f1cf2be4b4aafdf52a3",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "finishedUtc": "2026-10-24T18:05:50.3760195Z",
+        "exitCode": 0,
+        "filter": "B01EnemyGroundingTests;B01GroundedDriveTests;B01CoreRecoveryTests;RRLW8SteeringTests;MOV009PhysicsAcceptanceTests"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-final-physics-green-7918e9f6e5464c8abc746114a526ab95\\Unity.log": "5203d2043947b2512b429fc11a7af05c64793771731e75a60ce9b281e58896ba"
+      }
+    },
+    {
+      "run": "PHY-final-targeted-fcb6fe90031243178c159bb728429764",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "71",
+      "passed": "70",
+      "failed": "1",
+      "skipped": "0",
+      "xmlSha256": "6cb5787856123863a8bbc9806ed61e5bc59b64228b68deb42ca6f26b239964d1",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "exitCode": 2,
+        "filter": "B01CoreRecoveryTests;B01GroundedDriveTests;R6DrivingTests;R6PhysicsTests;MOV009PhysicsAcceptanceTests;RRLW8SteeringTests;MOVSeriesDriveTests;MOVSeriesDeviceTests;RRLW34ReviewRegressionTests;RRLW6EmpTests;RRLW8StructuralScanTests;RRLW8PulseScannerTests",
+        "finishedUtc": "2026-10-24T17:54:22.1819558Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-final-targeted-fcb6fe90031243178c159bb728429764\\Unity.log": "32b4137f420d9575dbff3b2e2c44a59bf3bf7a42865a2384e62c7424c41c9a82"
+      }
+    },
+    {
+      "run": "PHY-full-regression-corrections-6014d4ce57b44426b5b732f1e7e9b60e",
+      "file": "results.xml",
+      "result": "Passed",
+      "total": "28",
+      "passed": "28",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "dfd824f430b9c5f52fec245c9d093c9f4691e41503ff3c09d0e78a104cb9f2fb",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "filter": "MOV009IntegrationTests;R5ArenaTests;R6ReviewTests;RRLW6PointDefenseTests;RRLW6SawPhysicalTests",
+        "exitCode": 0,
+        "finishedUtc": "2026-10-24T22:30:55.5224078Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-full-regression-corrections-6014d4ce57b44426b5b732f1e7e9b60e\\Unity.log": "861e44fa0b95d4d27032afc84a3b93d22b280e426b9a50fe6e2e36fc87ececfc"
+      }
+    },
+    {
+      "run": "PHY-heavy-suspension-diagnostic-588815e27479474981f2d5dc532d42a5",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "2",
+      "passed": "1",
+      "failed": "1",
+      "skipped": "0",
+      "xmlSha256": "bad6cbcfdfc9783d09bbecd73734502f3fd2efa9342c2824105aeef6e9aff7de",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "exitCode": 2,
+        "filter": "B01CoreRecoveryTests.PHY_CORE_03_HeavyAssembledRobotCanRecoverWithTheSameBoundedCapability;RRLW8SteeringTests.CrabWorksWithFourActualMov009SupportsAndUnconstrainedGravityBody",
+        "finishedUtc": "2026-10-24T17:39:53.8614398Z",
+        "mode": "EditMode"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-heavy-suspension-diagnostic-588815e27479474981f2d5dc532d42a5\\Unity.log": "3f0703a64f310496acd7fbcaac9bb8408d1589261432c238635b962b5cc5b203"
+      }
+    },
+    {
+      "run": "PHY-integration-regression-896ee274c4734987b5a2aadf547a90c6",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "71",
+      "passed": "69",
+      "failed": "2",
+      "skipped": "0",
+      "xmlSha256": "af105150f88c8755aaf5bc0765f2f382934ed10a8b99c5aa74364eb75376b5ea",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "filter": "B01CoreRecoveryTests;B01GroundedDriveTests;R6DrivingTests;R6PhysicsTests;MOV009PhysicsAcceptanceTests;RRLW8SteeringTests;MOVSeriesDriveTests;MOVSeriesDeviceTests;RRLW34ReviewRegressionTests;RRLW6EmpTests;RRLW8StructuralScanTests;RRLW8PulseScannerTests",
+        "exitCode": 2,
+        "finishedUtc": "2026-10-24T17:35:38.7255090Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-integration-regression-896ee274c4734987b5a2aadf547a90c6\\Unity.log": "6867545c9cf505af94927bb9bfa605748cfc1b4950219c711ad9d02ddbb9ffee"
+      }
+    },
+    {
+      "run": "PHY-probe-diagnostic-eb607877d39a4f11b39d287a615cd69b",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "2",
+      "passed": "0",
+      "failed": "2",
+      "skipped": "0",
+      "xmlSha256": "17b77a8c525ea4b4717129bffc267eea1096e1952f33704b2114cf4948c297bb",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "exitCode": 2,
+        "mode": "EditMode",
+        "filter": "B01GroundedDriveTests.PHY_GROUND_ActualTreadScaleChangesProbeReach;B01GroundedDriveTests.PHY_GROUND_RealSlopeSuppliesItsNormalWithoutFictionalLevelGround",
+        "finishedUtc": "2026-10-24T17:09:27.0998908Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-probe-diagnostic-eb607877d39a4f11b39d287a615cd69b\\Unity.log": "6c09787786dca89bf6e6c9c33a98ff8b4ccbfe779034444adcf732285485b6d8"
+      }
+    },
+    {
+      "run": "PHY-real-enemy-red-87c988fd12f24b678928278f0ed604cf",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "2",
+      "passed": "0",
+      "failed": "2",
+      "skipped": "0",
+      "xmlSha256": "c8cb31c00319b804bf17389f45a328655eb14a42bf9e871ed2579a19251e0b86",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "filter": "B01EnemyGroundingTests",
+        "exitCode": 2,
+        "mode": "EditMode",
+        "finishedUtc": "2026-10-24T17:57:09.2848487Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-real-enemy-red-87c988fd12f24b678928278f0ed604cf\\Unity.log": "d1413cd1cddbaa8fcaaf3113b62e6c4cbae19d6dc55420a236d6f5ac19ad0c6f"
+      }
+    },
+    {
+      "run": "PHY-review-green-0cddc75a5fcf4b9ca8b883e71ddc6725",
+      "file": "results.xml",
+      "result": "Passed",
+      "total": "2",
+      "passed": "2",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "ea0da7cd1b74ce637a6701bff26aac626936b49ad5170508628f68f565ffa325",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "exitCode": 0,
+        "finishedUtc": "2026-10-24T18:27:34.7507490Z",
+        "mode": "EditMode",
+        "filter": "PHY_CORE_05_DefaultTorqueOffsetPayload;RaisedRigidWheels"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-review-green-0cddc75a5fcf4b9ca8b883e71ddc6725\\Unity.log": "fc9089c240c3b370750ad07d00cde1308506eb0e2f4434c6b079799524d60b7c"
+      }
+    },
+    {
+      "run": "PHY-review-red-7d661d37641d48f88d24a641afccae7c",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "2",
+      "passed": "1",
+      "failed": "1",
+      "skipped": "0",
+      "xmlSha256": "887a3ecce45172589c83b5bc30ab96a14b174340efb6b8d796d805eb541406ab",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "exitCode": 2,
+        "finishedUtc": "2026-10-24T18:26:24.2229219Z",
+        "filter": "PHY_CORE_05_DefaultTorqueOffsetPayload;RaisedRigidWheels",
+        "mode": "EditMode"
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-review-red-7d661d37641d48f88d24a641afccae7c\\Unity.log": "3d6d1b3dde33f65bb0a7a236d8f5bad9266a99cf32888d2f4ee1c4853ab4b2f2"
+      }
+    },
+    {
+      "run": "PHY-suspension-grounded-default-14bdfced993c439e983e61754d64e2c9",
+      "file": "results.xml",
+      "result": "Failed(Child)",
+      "total": "10",
+      "passed": "9",
+      "failed": "1",
+      "skipped": "0",
+      "xmlSha256": "f8a4879ba56b9b7a0b666b5644620c649522180a4a356c409fd369237e62e5c8",
+      "sourceState": "Intermediate TDD snapshot, not immutable release",
+      "process": {
+        "mode": "EditMode",
+        "filter": "B01CoreRecoveryTests;RRLW8SteeringTests.CrabWorksWithFourActualMov009SupportsAndUnconstrainedGravityBody;MOV009PhysicsAcceptanceTests.OffAssistAndFullAreComparedOnAllThreeRealStarters",
+        "finishedUtc": "2026-10-24T17:45:19.5170129Z",
+        "exitCode": 2
+      },
+      "logs": {
+        "Artifacts\\Local\\PHY-suspension-grounded-default-14bdfced993c439e983e61754d64e2c9\\Unity.log": "c1f3374278afdd4c430034faa3fa4d121eba20224acd07490ec8c74cf23e0ce0"
+      }
+    },
+    {
+      "run": "20261024T214745Z-a1e6bfabd95a4338a13cba177118b465",
+      "file": "EditMode.xml",
+      "result": "Failed(Child)",
+      "total": "999",
+      "passed": "992",
+      "failed": "7",
+      "skipped": "0",
+      "xmlSha256": "826747d4f5f7b95722020364f0b21982136feb945aec94689a245b3dca1d37ee",
+      "sourceState": "523046f5bf6ddab0caf62253615c962e808c3053",
+      "process": {
+        "task": "EditMode",
+        "startedUtc": "2026-10-24T21:47:45.8280656Z",
+        "finishedUtc": "2026-10-24T22:24:35.9449242Z",
+        "exitCode": 2
+      },
+      "logs": {
+        "Artifacts\\Local\\20261024T214745Z-a1e6bfabd95a4338a13cba177118b465\\EditMode.log": "8b2eb924bc0554ec8e2bfa97aee3640adcccde54b02ee78f2b38f78c651263d3"
+      }
+    },
+    {
+      "run": "20261024T223139Z-70f45a0d5ec24dd09a9d8ad188b54215",
+      "file": "PlayMode.xml",
+      "result": "Passed",
+      "total": "398",
+      "passed": "398",
+      "failed": "0",
+      "skipped": "0",
+      "xmlSha256": "dc8afe7589036e43055bfe424ac47919369bb66d6206450d1842443b3a1e78d3",
+      "sourceState": "523046f5bf6ddab0caf62253615c962e808c3053",
+      "process": {
+        "exitCode": 0,
+        "task": "PlayMode",
+        "startedUtc": "2026-10-24T22:31:39.0529862Z",
+        "finishedUtc": "2026-10-24T22:32:35.4386963Z"
+      },
+      "logs": {
+        "Artifacts\\Local\\20261024T223139Z-70f45a0d5ec24dd09a9d8ad188b54215\\PlayMode.log": "2980175c8742ee3f386bab0cef37d5e72e781324d855654133fb24be2b948f11"
+      }
+    }
+  ],
+  "files": {
+    "Artifacts\\Local\\B01-native-Physics-20261024T182326Z\\Player.log": {
+      "bytes": 8360,
+      "sha256": "d92a55248d86675f545e48ac24ed3b9f13ddb5be4db44419f015ac09a87a98f3"
+    },
+    "Artifacts\\Local\\B01-native-Physics-20261024T182851Z\\Player.log": {
+      "bytes": 17284,
+      "sha256": "cf31321758305bd0ec95ce94b25af477259af426679c84e915b1c41c1b32e1eb"
+    },
+    "Artifacts\\Local\\B01-native-W8-20261024T182949Z\\Player.log": {
+      "bytes": 10169,
+      "sha256": "9cad8294ecad6820c59c8919741c77b1fbd2fa6c52b64f8cd5ab28f7a1ee9c8f"
+    },
+    "Artifacts\\Local\\B01-native-Pilot-20261024T183009Z\\Player.log": {
+      "bytes": 7380,
+      "sha256": "27723a2d0e663a48abc045f26ae23b2ed310111104823a13a3b6e2e2b22a0dc2"
+    },
+    "Artifacts\\Local\\B01-native-Pilot-20261024T214450Z\\Player.log": {
+      "bytes": 8260,
+      "sha256": "d83010b0b860cef35b5c8ac81301971bd3b38c675b7ecff79d60acac93416774"
+    },
+    "Artifacts\\Local\\B01-extracted-human-close\\Player.log": {
+      "bytes": 2492,
+      "sha256": "14155ad7c734eeeedc60c35bfe4fa8c0193f2fe870a8f733bd34738f0a12c4e8"
+    },
+    "Artifacts\\Local\\20261024T182053Z-000552f1d2ec4ec28440e841b3686616\\Build.log": {
+      "bytes": 30904,
+      "sha256": "177c1b050b3290e5d5c9be5eec837648d524f9e733072e274c2193a9141c272e"
+    },
+    "Artifacts\\Local\\20261024T182803Z-7df0687345a3471dbb6a7079ceb125d2\\Build.log": {
+      "bytes": 685731,
+      "sha256": "09aeba44faa2c0b380977cd7a15fcc0e23ded755d2dd4e8cfb4b9da2b4003a81"
+    }
+  }
+}

@@ -42,12 +42,14 @@ public class MOV009IntegrationTests
         Assert.That(controller.LastTotalLiftNewtons,Is.GreaterThan(body.mass*5));
         Assert.That(controller.LastTotalLiftNewtons,Is.LessThanOrEqualTo(body.mass*18+.1f));
     }
-    [UnityTest] public IEnumerator VehicleWithoutModulesRetainsPlanarR6Physics()
+    [UnityTest] public IEnumerator VehicleWithoutModulesRetainsGroundedR6WithoutAddingSuspension()
     {
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
-        var body=run.Player.GetComponent<Rigidbody>();Assert.That(body.useGravity,Is.False);
-        Assert.That((body.constraints&RigidbodyConstraints.FreezePositionY)!=0,Is.True);
+        var body=run.Player.GetComponent<Rigidbody>();Assert.That(body.useGravity,Is.True);
+        Assert.That(body.constraints,Is.EqualTo(RigidbodyConstraints.None));
         Assert.That(run.Player.GetComponent<ActiveSuspensionController>(),Is.Null);
+        yield return Seconds(.7f);var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();drive.RefreshMass();
+        Assert.That(body.position.y,Is.InRange(.55f,.85f));Assert.That(drive.GroundedWheels,Is.EqualTo(4));
     }
     [UnityTest] public IEnumerator DetachedFlagImmediatelyDisablesSupportBeforeReparenting()
     {

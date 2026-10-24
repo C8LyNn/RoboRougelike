@@ -1,0 +1,2 @@
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[PHY CORE] attempt=1 lift=459,2Ns mass=328,0kg cooldown=8,0s

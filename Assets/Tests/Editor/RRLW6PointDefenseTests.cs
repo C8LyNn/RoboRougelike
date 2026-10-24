@@ -29,6 +29,9 @@ public class RRLW6PointDefenseTests
         {var c=new Vector3Int(x,y,z);if(model.PlacementError(c,kind)==null)mount=c;}
         Assert.That(mount.HasValue,Is.True);Assert.That(model.Buy(mount.Value,kind),Is.True);
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
+        // Keep this interception fixture physically supported, rather than assuming the old frozen-Y body.
+        var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
+        Physics.SyncTransforms();yield return MOV009IntegrationTests.Seconds(.7f);
         var assembly=vehicle.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Kind==kind);
         var controller=part.GetComponent<PointDefenseController>();Assert.That(controller,Is.Not.Null);
         var enemy=run.Encounter.Enemies.First();enemy.SetCombatActive(true);Assert.That(enemy.EquipRocket(),Is.True);
