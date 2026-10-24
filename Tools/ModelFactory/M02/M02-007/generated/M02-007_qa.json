@@ -1,0 +1,53 @@
+{
+  "id": "M02-007",
+  "model": "Para rolek podporowych",
+  "mounting": "underside chassis",
+  "pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "forward_axis": "+X",
+  "roller_axle_axis": "+Y",
+  "roller_centres_m": [
+    [
+      -0.34,
+      0,
+      -0.405
+    ],
+    [
+      0.34,
+      0,
+      -0.405
+    ]
+  ],
+  "max_radius_m": 0.166,
+  "roll_width_m": 0.176,
+  "travel_m": 0.04,
+  "parts": 83,
+  "vertices": 7988,
+  "triangles": 15732,
+  "materials": 8,
+  "role_counts": {
+    "fixed": 15,
+    "carrier": 26,
+    "rotor": 42
+  },
+  "treads": 32,
+  "dampers": 4,
+  "closed_positive_volume_parts": 83,
+  "pose_pairs_checked": 5832,
+  "clearance_min_m": 0.007,
+  "shaft_bore_radial_clearance_m": 0.011,
+  "piston_housing_radial_clearance_m": 0.007,
+  "static_qa": "PASS",
+  "blender": "PASS_EXPORT",
+  "unity": "NOT_RUN",
+  "files": [
+    "Tools/ModelFactory/M02/M02-007/generated/M02-007_support_roller_pair.obj",
+    "Tools/ModelFactory/M02/M02-007/generated/M02-007_support_roller_pair.mtl"
+  ],
+  "blend": "Tools/ModelFactory/M02/M02-007/generated/M02-007.blend",
+  "glb": "Tools/ModelFactory/M02/M02-007/generated/M02-007_animated.glb",
+  "fbx": "NOT_RUN"
+}
