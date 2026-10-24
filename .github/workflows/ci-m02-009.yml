@@ -22,6 +22,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+      - name: Source generator manifold and swept SAT self-test
+        run: python3 Tools/ModelFactory/M02/M02-009/generate_m02_009.py --self-test
       - name: Independently validate real OBJ manifold, material and swept SAT
         run: python3 Tools/ModelFactory/M02/M02-009/qa_m02_009.py
       - name: Export actual static OBJ, MTL and QA
