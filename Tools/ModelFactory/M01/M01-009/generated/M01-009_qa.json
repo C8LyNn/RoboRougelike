@@ -1,0 +1,25 @@
+{
+  "model": "M01-009",
+  "status": "PASS",
+  "parts": 89,
+  "vertices": 1710,
+  "triangles": 3088,
+  "materials": 8,
+  "moving_hatches": 3,
+  "poses_checked": 129,
+  "aabb_pairs_checked": 64500,
+  "minimum_hatch_front_margin_m": 0.004,
+  "mount_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "muzzle_axis": "+Z",
+  "hinge_axis": "local X",
+  "max_open_degrees": -105.0,
+  "geometry": "MANIFOLD_POSITIVE_VOLUME",
+  "blender": "EXPORTED",
+  "unity": "NOT RUN",
+  "blender_version": "4.0.2",
+  "animation_frames": 72
+}
