@@ -67,6 +67,89 @@ namespace B01.MAPGEN001.Tests
                 r.ToString());
         }
 
+
+        [Test] public void CentralPitCannotPassOnlyFourCornerFootprintProbe()
+        {
+            var p = new MapBlueprint {
+                Recipe = MapRecipe.CombatArena, Start = new Vector3(0f, 1.25f, 0f),
+                Finish = new Vector3(0f, 1.25f, 0f),
+                Bounds = new Bounds(Vector3.zero, new Vector3(40f, 8f, 40f))
+            };
+            var profile = MapVehicleProfile.Light;
+            float hw = profile.Width * .5f + .25f, hl = profile.Length * .5f + .25f;
+            foreach (int x in new[] { -1, 1 })
+                foreach (int z in new[] { -1, 1 })
+                    p.Elements.Add(new MapElement(MapElementKind.Floor,
+                        new Vector3(x * hw, -.45f, z * hl),
+                        new Vector3(.5f, .9f, .5f), Quaternion.identity));
+            var r = MapGenRouteValidator.Validate(p, profile);
+            Assert.IsFalse(r.Passed, r.ToString());
+            Assert.AreEqual("SPINE_FOOTPRINT_BLOCKED", r.Code);
+        }
+
+        [Test] public void LongNinetyDegreePolylineNeedsRealisticFilletRoom()
+        {
+            var p = new MapBlueprint {
+                Recipe = MapRecipe.ObstacleCourse, Start = new Vector3(0f, 1.25f, 0f),
+                Finish = new Vector3(25f, 1.25f, 25f),
+                Bounds = new Bounds(new Vector3(12f, 0f, 12f), new Vector3(90f, 8f, 90f))
+            };
+            p.Elements.Add(new MapElement(MapElementKind.Floor, new Vector3(12f, -.45f, 12f),
+                new Vector3(90f, .9f, 90f), Quaternion.identity));
+            p.Checkpoints.Add(new Vector3(0f, 1.25f, 25f));
+            var profile = new MapVehicleProfile {
+                Width = 2.1f, Length = 3.2f, MinTurnRadius = 15f, MaxSlopeDegrees = 12f
+            };
+            var r = MapGenRouteValidator.Validate(p, profile);
+            Assert.IsFalse(r.Passed, r.ToString());
+            Assert.AreEqual("TURN_RADIUS_TOO_SMALL", r.Code);
+        }
+
+        [Test] public void BlockedAndOverlappingEnemySpawnsAreRejected()
+        {
+            var p = MapGenPlanner.Plan(MapRecipe.CombatArena, 23, MapGenConfig.Default, MapVehicleProfile.Heavy);
+            p.EnemySpawns[1] = p.EnemySpawns[0];
+            var overlap = MapGenRouteValidator.Validate(p, MapVehicleProfile.Heavy);
+            Assert.IsFalse(overlap.Passed, overlap.ToString());
+            Assert.AreEqual("ENEMY_SPAWNS_OVERLAP", overlap.Code);
+            p.EnemySpawns[1] = new Vector3(0f, 1.25f, 25f);
+            p.Elements.Add(new MapElement(MapElementKind.Obstacle, p.EnemySpawns[0],
+                new Vector3(2f, 2f, 2f), Quaternion.identity));
+            var blocked = MapGenRouteValidator.Validate(p, MapVehicleProfile.Heavy);
+            Assert.IsFalse(blocked.Passed, blocked.ToString());
+            Assert.AreEqual("ENEMY_SPAWN_BLOCKED", blocked.Code);
+        }
+
+        [Test] public void ArenaCoverPositionsVaryAndStayPlayableForBothProfiles()
+        {
+            var cfg = MapGenConfig.Default;
+            cfg.Difficulty = 1f;
+            cfg.ObstacleDensity = 100;
+            var positions = new System.Collections.Generic.HashSet<string>();
+            for (int seed = 0; seed < 100; seed++)
+            {
+                var p = MapGenPlanner.Plan(MapRecipe.CombatArena, seed, cfg, MapVehicleProfile.Heavy);
+                Assert.IsTrue(MapGenRouteValidator.Validate(p, MapVehicleProfile.Heavy).Passed, "Heavy " + seed);
+                Assert.IsTrue(MapGenRouteValidator.Validate(p, MapVehicleProfile.Light).Passed, "Light " + seed);
+                foreach (var e in p.Elements)
+                    if (e.Kind == MapElementKind.Cover)
+                        positions.Add(e.Position.x.ToString("F3", System.Globalization.CultureInfo.InvariantCulture) +
+                            ":" + e.Position.z.ToString("F3", System.Globalization.CultureInfo.InvariantCulture));
+            }
+            Assert.Greater(positions.Count, 30, "Cover grid should no longer be fixed at all seeds");
+        }
+
+        [Test] public void CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute()
+        {
+            var easy = MapGenConfig.Default; easy.Difficulty = 0f;
+            var hard = MapGenConfig.Default; hard.Difficulty = 1f;
+            var low = MapGenPlanner.Plan(MapRecipe.ObstacleCourse, 19, easy, MapVehicleProfile.Heavy);
+            var high = MapGenPlanner.Plan(MapRecipe.ObstacleCourse, 19, hard, MapVehicleProfile.Heavy);
+            var a = low.Elements.Find(e => e.Kind == MapElementKind.Ramp);
+            var b = high.Elements.Find(e => e.Kind == MapElementKind.Ramp);
+            Assert.Less(a.Rotation.eulerAngles.x, b.Rotation.eulerAngles.x);
+            Assert.IsTrue(MapGenRouteValidator.Validate(high, MapVehicleProfile.Heavy).Passed);
+        }
         [Test] public void PlannerRejectsNonFiniteSlopeConfiguration()
         {
             var p = MapVehicleProfile.Light;
