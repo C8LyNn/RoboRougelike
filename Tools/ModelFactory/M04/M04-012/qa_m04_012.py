@@ -91,7 +91,7 @@ def check_static():
                 a=(out/name).read_bytes();b=(Path(other)/name).read_bytes()
                 assert hashlib.sha256(a).digest()==hashlib.sha256(b).digest(),name
         saved=json.loads((out/"M04-012_static_qa.json").read_text())
-        assert saved==report
+        assert saved==json.loads(json.dumps(report))  # JSON converts tuple bounds to lists
     print(json.dumps({"id":"M04-012","static":"PASS",
         "parts":report["parts"],"vertices":report["vertices"],
         "triangles":report["triangles"],"materials":len(mats),
