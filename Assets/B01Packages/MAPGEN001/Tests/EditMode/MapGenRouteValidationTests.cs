@@ -150,6 +150,29 @@ namespace B01.MAPGEN001.Tests
             Assert.Less(a.Rotation.eulerAngles.x, b.Rotation.eulerAngles.x);
             Assert.IsTrue(MapGenRouteValidator.Validate(high, MapVehicleProfile.Heavy).Passed);
         }
+
+        [Test] public void ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds()
+        {
+            foreach (int segments in new[] { 3, 4, 5 })
+            {
+                foreach (bool heavy in new[] { false, true })
+                {
+                    var cfg = MapGenConfig.Default;
+                    cfg.Segments = segments;
+                    cfg.Difficulty = 1f;
+                    cfg.ObstacleDensity = 100;
+                    cfg.LaneWidth = heavy ? 16f : 10f;
+                    var profile = heavy ? MapVehicleProfile.Heavy : MapVehicleProfile.Light;
+                    for (int seed = 0; seed < 100; seed++)
+                    {
+                        var map = MapGenPlanner.Plan(MapRecipe.ObstacleCourse, seed, cfg, profile);
+                        var route = MapGenRouteValidator.Validate(map, profile);
+                        Assert.IsTrue(route.Passed,
+                            "segments=" + segments + " heavy=" + heavy + " seed=" + seed + " " + route);
+                    }
+                }
+            }
+        }
         [Test] public void PlannerRejectsNonFiniteSlopeConfiguration()
         {
             var p = MapVehicleProfile.Light;
