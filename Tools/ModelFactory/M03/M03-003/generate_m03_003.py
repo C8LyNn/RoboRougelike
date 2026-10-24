@@ -130,11 +130,11 @@ def build_parts():
                 (.100,.920,.120), "Gunmetal", .009))
         add(box(f"EndSocketPad_{xsign:+d}", (xsign*.975,0,0),
                 (.050,.260,.240), "Ceramic", .008))
-        # Side-facing amber tag: original tag was fully buried inside
-        # the ceramic pad and invisible. Two mm overlap, six mm exposure,
-        # without covering the actual outward-facing SNAP contact face.
-        add(box(f"EndSocketMark_{xsign:+d}", (xsign*.975,.132,0),
-                (.040,.008,.080), "Amber", .002, "accent"))
+        # Top-edge amber tag: original tag was buried inside ceramic.
+        # The end tie spans the pad's Y-side, so mount on the +Z edge
+        # instead. 2mm embedded / 6mm visible without covering SNAP face.
+        add(box(f"EndSocketMark_{xsign:+d}", (xsign*.975,0,.122),
+                (.040,.080,.008), "Amber", .002, "accent"))
     # Mid-side sockets with web-to-pad spacers (not floating plates).
     for ysign in (-1,1):
         add(box(f"SideSocketSpacer_{ysign:+d}", (0,ysign*.425,0),
@@ -191,7 +191,7 @@ def validate_visible_snap_markers(parts):
     by_name = {p["name"]: p for p in parts}
     checked = 0
     for port_type, label_axis, snap_axis, limit in (
-            ("End", 1, 0, 1.0),
+            ("End", 2, 0, 1.0),
             ("Side", 0, 1, 0.5),
             ("Vertical", 0, 2, 0.5)):
         for side in (-1, 1):
