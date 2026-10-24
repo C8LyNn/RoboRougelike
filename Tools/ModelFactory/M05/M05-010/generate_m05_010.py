@@ -241,7 +241,7 @@ def audit():
             assert all(math.isfinite(t) for t in v.co)
     rotor=bpy.data.objects[PREFIX+"ROTOR_PIVOT"]
     assert len([o for o in MOVING if o.parent==rotor])==12
-    assert abs(rotor.location[2]-ROTOR_CENTER[2])<1e-9
+    assert abs(rotor.location[2]-ROTOR_CENTER[2])<1e-6  # Blender float32 transform
     assert BLADE_MAX_RADIUS< RING_INNER_RADIUS-.009
     for f in (1,16,31,46,61):
         bpy.context.scene.frame_set(f)
