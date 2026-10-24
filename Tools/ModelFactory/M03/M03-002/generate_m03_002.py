@@ -72,7 +72,7 @@ def export_static_obj(out_dir):
     obj_path = out_dir / (ID + ".obj")
     mtl_path = out_dir / (ID + ".mtl")
     with mtl_path.open("w", encoding="utf-8") as f:
-        f.write("# M03-002 PBR material approximations for OBJ viewer\n")
+        f.write("# M03-002 material palette\n")
         for name, mat in SPEC["palette"].items():
             r, g, b = mat["rgb"]
             f.write("newmtl " + name + "\n")
@@ -82,7 +82,7 @@ def export_static_obj(out_dir):
                 f.write("Ke %.6f %.6f %.6f\n" % (r, g, b))
             f.write("\n")
     with obj_path.open("w", encoding="utf-8") as f:
-        f.write("# M03-002 retracted pose; Blender script exports animated GLB\n")
+        f.write("# M03-002 telescopic beam, retracted static pose\n")
         f.write("mtllib " + mtl_path.name + "\n")
         offset = 1
         for p in SPEC["parts"]:
