@@ -42,3 +42,15 @@ Generator zawiera `--self-test` sprawdzający unikalność nazw, materiały, dod
 - **CI-01 Repository Validation: PASS** — [run #40095436658](https://github.com/C8LyNn/RoboRougelike/actions/runs/40095436658).
 - **CI-02 Unity EditMode: BLOCKED**, **CI-03 Unity PlayMode: BLOCKED** — oba workflow zatrzymały się na kroku `Require valid Unity activation credentials`; nie są dowodem niepoprawności modelu ani przeprowadzonych testów Unity.
 - **Blender bpy FBX/GLB export: NOT RUN**, **Unity import / geometry preview: NOT RUN**. Przed integracją należy wykonać eksport w Blenderze, sprawdzić pivoty i materiały w Unity 6 oraz zweryfikować widoczne styki.
+
+## Iteracja poprawkowa V2 — widoczność znaczników SNAP (24.10.2026)
+
+**Wykryty problem:** we wcześniejszej wersji sześć bursztynowych `EndSocketMark`, `SideSocketMark` i `VerticalSocketMark` było **w całości schowanych w bryłach ceramicznych płyt**. Dotychczasowy test manifold raportował PASS, mimo że te oznaczenia były niewidoczne w renderze. Dodatkowo belka `EndTie` przesłaniała powierzchnię boczną płyt na końcach ramy.
+
+**Naprawa modelu:** bez zmiany rozmiaru, identyfikatora, portów ani liczby części przeniesiono znaczniki na niezasłonięte krawędzie ich własnych płyt montażowych. Znaczniki dwóch portów X znajdują się na **górnych (+Z) krawędziach** końcowych płyt, a czterech portów Y/Z — na **bocznych (+X) krawędziach**. Każdy znacznik nachodzi na płytę na 2 mm i wystaje poza jej krawędź o 6 mm, jednak **nie wystaje poza gabaryt modułu 2×1×1 m**. Wszystkie sześć właściwych powierzchni montażowych pozostaje dokładnie na `X=±1`, `Y=±0.5` oraz `Z=±0.5`.
+
+**Zmienione pliki:** `generate_m03_003.py` (geometria i asercje widoczności), `qa_m03_003.py` (niezależna kontrola rzeczywistego OBJ), dedykowany workflow CI i niniejszy README. Zachowano pięć materiałów, sześć portów i wszystkie elementy nośne. OBJ/MTL jest faktycznie ponownie generowany i archiwizowany przez CI jako `M03-003-V2-visible-SNAP-markers-static-OBJ`.
+
+**Weryfikacja:** [GitHub Actions run 40116679421 — PASS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40116679421). Niezależny skrypt sprawdza wysokość 6 mm i zakotwienie 2 mm **na wierzchołkach wygenerowanego OBJ**, dokładnie sześć miejsc stykowych, granice modułu, domknięcie geometryczne, materiały oraz poprawność statycznego eksportu. Test geometryczny nie stanowi renderu Blender.
+
+**Nadal NOT RUN:** wykonanie `bpy` w Blenderze, eksport FBX/GLB, kontrola wizualna i import/pivot/socket QA w Unity 6. Poprawka nie zmienia fizyki, systemu budowania, scen ani innych modeli. Pozostaje propozycją do macierzystego Draft PR #51.
