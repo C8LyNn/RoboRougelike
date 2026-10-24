@@ -1,0 +1,70 @@
+{
+  "id": "M05-006",
+  "model": "Projektor bariery kierunkowej",
+  "agent": "MODEL-05",
+  "claim_sha": "5163386e8403984aaffaf9ad40fc6eeb1a1caa89",
+  "claim_at_utc": "2026-10-24T15:47:33.890Z",
+  "parts": 73,
+  "vertices": 2768,
+  "polygons": 2162,
+  "triangles": 5260,
+  "materials": 7,
+  "mount_origin_m": [
+    0,
+    0,
+    0
+  ],
+  "mount_type": "front",
+  "front_axis": "-Y",
+  "left_hinge_pivot_m": [
+    -0.34,
+    -0.22,
+    0
+  ],
+  "right_hinge_pivot_m": [
+    0.34,
+    -0.22,
+    0
+  ],
+  "left_angles_deg": [
+    0,
+    -15,
+    -30,
+    -15,
+    0
+  ],
+  "right_angles_deg": [
+    0,
+    15,
+    30,
+    15,
+    0
+  ],
+  "animation_frames": [
+    1,
+    16,
+    31,
+    46,
+    61
+  ],
+  "manifold_edges": "PASS",
+  "positive_winding": "PASS",
+  "sweep_samples": 31,
+  "swept_aabb_pair_checks": 54808,
+  "bearing_ring_axle_exemptions": 124,
+  "minimum_bearing_radial_gap_m": 0.018,
+  "swept_collision_qa": "PASS",
+  "static_obj_mtl_byte_parity": "PASS",
+  "blender_execution": "PASS",
+  "blender_double_generation": "PASS",
+  "blender_scene_isolation": "PASS",
+  "blender_glb_animation_export": "PASS",
+  "blender_blend_library": "PASS",
+  "blender_artifact_id": 12565985514,
+  "blender_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108881718",
+  "unity_import": "NOT_RUN",
+  "unity_editmode": "NOT_RUN",
+  "unity_playmode": "NOT_RUN",
+  "visual_review": "NOT_RUN",
+  "qa_note": "Blender PASS from executed headless CI smoke; Unity 6 license/import not available in this run; GLB/BLEND attached to Actions artifact, not committed binary."
+}
