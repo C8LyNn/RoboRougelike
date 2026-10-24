@@ -231,7 +231,7 @@ def build():
         u_bar_xz(profile,-.39,-.33),"SLIDER")
     # Wear-facing trim is deliberately inset 1mm into the front of U.
     add("Ceramic_Front_Impact_Strip","Ceramic_Wear",
-        box(0.,-.395,-.075,.70,.012,.055,.004),"SLIDER")
+        box(0.,-.395,-.075,.70,.012,.055,.003),"SLIDER")
     for side,label in ((-1,"L"),(1,"R")):
         add("Horn_Rubber_Cap_"+label,"Rubber_Buffers",
             box(side*.41,-.360,.250,.112,.066,.035,.005),"SLIDER")
