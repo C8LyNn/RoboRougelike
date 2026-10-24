@@ -1,0 +1,27 @@
+{
+  "id": "M02-003",
+  "qa": "PASS",
+  "parts": 47,
+  "vertices": 5000,
+  "triangles": 9840,
+  "materials": 7,
+  "spokes": 20,
+  "bolts": 20,
+  "diameter_m": 1.024,
+  "width_m": 0.71,
+  "axle_bore_diameter_m": 0.09,
+  "shaft_radial_clearance_m": 0.011,
+  "pivot": [
+    0,
+    0,
+    0
+  ],
+  "axle_axis": "+X",
+  "spin_axis": "+X",
+  "rigid_rotation_clearance": "PASS (analytic; single rigid rotor)",
+  "blender": "NOT RUN (bpy unavailable)",
+  "unity": "NOT RUN",
+  "obj": "build/M02-003/M02-003_balloon_sand_wheel.obj",
+  "mtl": "build/M02-003/M02-003_balloon_sand_wheel.mtl",
+  "animation": "NOT EXPORTED; run inside Blender for FBX/GLB"
+}

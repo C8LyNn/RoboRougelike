@@ -1,0 +1,50 @@
+# M02-003 PBR approximation for Unity OBJ import
+newmtl Rubber_Sidewall
+Kd 0.052000 0.057000 0.062000
+Ks 0.000000 0.000000 0.000000
+Ns 6.00
+d 1.0
+illum 2
+
+newmtl Rubber_Tread
+Kd 0.091000 0.100000 0.105000
+Ks 0.000000 0.000000 0.000000
+Ns 8.00
+d 1.0
+illum 2
+
+newmtl Tread_Sipes
+Kd 0.037000 0.043000 0.048000
+Ks 0.000000 0.000000 0.000000
+Ns 2.00
+d 1.0
+illum 2
+
+newmtl Alloy_Titanium
+Kd 0.320000 0.380000 0.410000
+Ks 0.546000 0.546000 0.546000
+Ns 132.00
+d 1.0
+illum 2
+
+newmtl Hub_Graphite
+Kd 0.115000 0.140000 0.160000
+Ks 0.476000 0.476000 0.476000
+Ns 120.00
+d 1.0
+illum 2
+
+newmtl Accent_Amber
+Kd 0.950000 0.380000 0.045000
+Ks 0.238000 0.238000 0.238000
+Ns 114.00
+d 1.0
+illum 2
+
+newmtl Bolt_Steel
+Kd 0.600000 0.650000 0.670000
+Ks 0.581000 0.581000 0.581000
+Ns 144.00
+d 1.0
+illum 2
+
