@@ -1,0 +1,771 @@
+{
+  "id": "M05-005",
+  "name": "Generator tarczy pierścieniowej",
+  "units": "m",
+  "mount_type": "internal_frame",
+  "mount_origin": [
+    0,
+    0,
+    0
+  ],
+  "core_pivot": [
+    0,
+    0,
+    0.36
+  ],
+  "core_scale_keyframes": [
+    [
+      1,
+      0.9
+    ],
+    [
+      16,
+      1.04
+    ],
+    [
+      31,
+      0.9
+    ],
+    [
+      46,
+      1.04
+    ],
+    [
+      61,
+      0.9
+    ]
+  ],
+  "materials": {
+    "Graphite": {
+      "rgba": [
+        0.075,
+        0.095,
+        0.12,
+        1
+      ],
+      "metallic": 0.82,
+      "roughness": 0.36
+    },
+    "Titanium": {
+      "rgba": [
+        0.48,
+        0.55,
+        0.6,
+        1
+      ],
+      "metallic": 0.74,
+      "roughness": 0.3
+    },
+    "Copper": {
+      "rgba": [
+        0.68,
+        0.33,
+        0.12,
+        1
+      ],
+      "metallic": 0.77,
+      "roughness": 0.29
+    },
+    "Gasket": {
+      "rgba": [
+        0.022,
+        0.03,
+        0.042,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.86
+    },
+    "TealGlass": {
+      "rgba": [
+        0.06,
+        0.58,
+        0.7,
+        0.42
+      ],
+      "metallic": 0.15,
+      "roughness": 0.12,
+      "alpha": 0.42
+    },
+    "CyanEnergy": {
+      "rgba": [
+        0.045,
+        0.72,
+        0.95,
+        1
+      ],
+      "metallic": 0.05,
+      "roughness": 0.22,
+      "emission": [
+        0.015,
+        0.5,
+        1,
+        1
+      ],
+      "strength": 2.8
+    },
+    "AmberStatus": {
+      "rgba": [
+        1,
+        0.42,
+        0.065,
+        1
+      ],
+      "metallic": 0.05,
+      "roughness": 0.3,
+      "emission": [
+        0.95,
+        0.27,
+        0.02,
+        1
+      ],
+      "strength": 1.4
+    }
+  },
+  "parts": [
+    {
+      "name": "mount_gasket",
+      "shape": "box",
+      "center": [
+        0,
+        0,
+        0.006
+      ],
+      "size": [
+        0.87,
+        0.87,
+        0.012
+      ],
+      "material": "Gasket",
+      "parent": "root"
+    },
+    {
+      "name": "mount_plate",
+      "shape": "box",
+      "center": [
+        0,
+        0,
+        0.06
+      ],
+      "size": [
+        0.96,
+        0.96,
+        0.096
+      ],
+      "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "raised_inset",
+      "shape": "box",
+      "center": [
+        0,
+        0,
+        0.115
+      ],
+      "size": [
+        0.78,
+        0.78,
+        0.014
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "bolt_LF",
+      "shape": "cylinder",
+      "center": [
+        -0.325,
+        -0.325,
+        0.13
+      ],
+      "radius": 0.018,
+      "depth": 0.016,
+      "segments": 16,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "bolt_LB",
+      "shape": "cylinder",
+      "center": [
+        -0.325,
+        0.325,
+        0.13
+      ],
+      "radius": 0.018,
+      "depth": 0.016,
+      "segments": 16,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "bolt_RF",
+      "shape": "cylinder",
+      "center": [
+        0.325,
+        -0.325,
+        0.13
+      ],
+      "radius": 0.018,
+      "depth": 0.016,
+      "segments": 16,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "bolt_RB",
+      "shape": "cylinder",
+      "center": [
+        0.325,
+        0.325,
+        0.13
+      ],
+      "radius": 0.018,
+      "depth": 0.016,
+      "segments": 16,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "cage_post_XN",
+      "shape": "cylinder",
+      "center": [
+        -0.43,
+        0,
+        0.342
+      ],
+      "radius": 0.024,
+      "depth": 0.43,
+      "segments": 16,
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "post_cap_XN",
+      "shape": "cylinder",
+      "center": [
+        -0.43,
+        0,
+        0.569
+      ],
+      "radius": 0.032,
+      "depth": 0.024,
+      "segments": 16,
+      "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "post_led_XN",
+      "shape": "cylinder",
+      "center": [
+        -0.43,
+        0,
+        0.583
+      ],
+      "radius": 0.018,
+      "depth": 0.004,
+      "segments": 16,
+      "material": "AmberStatus",
+      "parent": "root"
+    },
+    {
+      "name": "cage_post_XP",
+      "shape": "cylinder",
+      "center": [
+        0.43,
+        0,
+        0.342
+      ],
+      "radius": 0.024,
+      "depth": 0.43,
+      "segments": 16,
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "post_cap_XP",
+      "shape": "cylinder",
+      "center": [
+        0.43,
+        0,
+        0.569
+      ],
+      "radius": 0.032,
+      "depth": 0.024,
+      "segments": 16,
+      "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "post_led_XP",
+      "shape": "cylinder",
+      "center": [
+        0.43,
+        0,
+        0.583
+      ],
+      "radius": 0.018,
+      "depth": 0.004,
+      "segments": 16,
+      "material": "AmberStatus",
+      "parent": "root"
+    },
+    {
+      "name": "cage_post_YN",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.43,
+        0.342
+      ],
+      "radius": 0.024,
+      "depth": 0.43,
+      "segments": 16,
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "post_cap_YN",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.43,
+        0.569
+      ],
+      "radius": 0.032,
+      "depth": 0.024,
+      "segments": 16,
+      "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "post_led_YN",
+      "shape": "cylinder",
+      "center": [
+        0,
+        -0.43,
+        0.583
+      ],
+      "radius": 0.018,
+      "depth": 0.004,
+      "segments": 16,
+      "material": "AmberStatus",
+      "parent": "root"
+    },
+    {
+      "name": "cage_post_YP",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0.43,
+        0.342
+      ],
+      "radius": 0.024,
+      "depth": 0.43,
+      "segments": 16,
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "post_cap_YP",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0.43,
+        0.569
+      ],
+      "radius": 0.032,
+      "depth": 0.024,
+      "segments": 16,
+      "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "post_led_YP",
+      "shape": "cylinder",
+      "center": [
+        0,
+        0.43,
+        0.583
+      ],
+      "radius": 0.018,
+      "depth": 0.004,
+      "segments": 16,
+      "material": "AmberStatus",
+      "parent": "root"
+    },
+    {
+      "name": "field_ring_1",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.25
+      ],
+      "major_radius": 0.26,
+      "tube_radius": 0.013,
+      "major_segments": 48,
+      "minor_segments": 10,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "transparent_slice_1",
+      "shape": "annulus",
+      "center": [
+        0,
+        0,
+        0.25
+      ],
+      "inner_radius": 0.145,
+      "outer_radius": 0.23,
+      "depth": 0.009,
+      "segments": 48,
+      "material": "TealGlass",
+      "parent": "root"
+    },
+    {
+      "name": "field_trace_1",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.265
+      ],
+      "major_radius": 0.225,
+      "tube_radius": 0.0045,
+      "major_segments": 48,
+      "minor_segments": 8,
+      "material": "CyanEnergy",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_1_XN",
+      "shape": "box",
+      "center": [
+        -0.351,
+        0,
+        0.25
+      ],
+      "size": [
+        0.15799999999999997,
+        0.018,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_1_XP",
+      "shape": "box",
+      "center": [
+        0.351,
+        0,
+        0.25
+      ],
+      "size": [
+        0.15799999999999997,
+        0.018,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_1_YN",
+      "shape": "box",
+      "center": [
+        0,
+        -0.351,
+        0.25
+      ],
+      "size": [
+        0.018,
+        0.15799999999999997,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_1_YP",
+      "shape": "box",
+      "center": [
+        0,
+        0.351,
+        0.25
+      ],
+      "size": [
+        0.018,
+        0.15799999999999997,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "field_ring_2",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.36
+      ],
+      "major_radius": 0.31,
+      "tube_radius": 0.013,
+      "major_segments": 48,
+      "minor_segments": 10,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "transparent_slice_2",
+      "shape": "annulus",
+      "center": [
+        0,
+        0,
+        0.36
+      ],
+      "inner_radius": 0.145,
+      "outer_radius": 0.28,
+      "depth": 0.009,
+      "segments": 48,
+      "material": "TealGlass",
+      "parent": "root"
+    },
+    {
+      "name": "field_trace_2",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.375
+      ],
+      "major_radius": 0.275,
+      "tube_radius": 0.0045,
+      "major_segments": 48,
+      "minor_segments": 8,
+      "material": "CyanEnergy",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_2_XN",
+      "shape": "box",
+      "center": [
+        -0.376,
+        0,
+        0.36
+      ],
+      "size": [
+        0.10799999999999998,
+        0.018,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_2_XP",
+      "shape": "box",
+      "center": [
+        0.376,
+        0,
+        0.36
+      ],
+      "size": [
+        0.10799999999999998,
+        0.018,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_2_YN",
+      "shape": "box",
+      "center": [
+        0,
+        -0.376,
+        0.36
+      ],
+      "size": [
+        0.018,
+        0.10799999999999998,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_2_YP",
+      "shape": "box",
+      "center": [
+        0,
+        0.376,
+        0.36
+      ],
+      "size": [
+        0.018,
+        0.10799999999999998,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "field_ring_3",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.47
+      ],
+      "major_radius": 0.36,
+      "tube_radius": 0.013,
+      "major_segments": 48,
+      "minor_segments": 10,
+      "material": "Copper",
+      "parent": "root"
+    },
+    {
+      "name": "transparent_slice_3",
+      "shape": "annulus",
+      "center": [
+        0,
+        0,
+        0.47
+      ],
+      "inner_radius": 0.145,
+      "outer_radius": 0.32999999999999996,
+      "depth": 0.009,
+      "segments": 48,
+      "material": "TealGlass",
+      "parent": "root"
+    },
+    {
+      "name": "field_trace_3",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.485
+      ],
+      "major_radius": 0.32499999999999996,
+      "tube_radius": 0.0045,
+      "major_segments": 48,
+      "minor_segments": 8,
+      "material": "CyanEnergy",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_3_XN",
+      "shape": "box",
+      "center": [
+        -0.401,
+        0,
+        0.47
+      ],
+      "size": [
+        0.057999999999999996,
+        0.018,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_3_XP",
+      "shape": "box",
+      "center": [
+        0.401,
+        0,
+        0.47
+      ],
+      "size": [
+        0.057999999999999996,
+        0.018,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_3_YN",
+      "shape": "box",
+      "center": [
+        0,
+        -0.401,
+        0.47
+      ],
+      "size": [
+        0.018,
+        0.057999999999999996,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "radial_brace_3_YP",
+      "shape": "box",
+      "center": [
+        0,
+        0.401,
+        0.47
+      ],
+      "size": [
+        0.018,
+        0.057999999999999996,
+        0.02
+      ],
+      "material": "Titanium",
+      "parent": "root"
+    },
+    {
+      "name": "pulse_crystal",
+      "shape": "crystal",
+      "center": [
+        0,
+        0,
+        0
+      ],
+      "radius": 0.094,
+      "half_height": 0.094,
+      "segments": 12,
+      "material": "CyanEnergy",
+      "parent": "core"
+    },
+    {
+      "name": "core_clamp_bottom",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.195
+      ],
+      "major_radius": 0.108,
+      "tube_radius": 0.013,
+      "major_segments": 32,
+      "minor_segments": 8,
+      "material": "Graphite",
+      "parent": "root"
+    },
+    {
+      "name": "core_clamp_top",
+      "shape": "torus",
+      "center": [
+        0,
+        0,
+        0.525
+      ],
+      "major_radius": 0.108,
+      "tube_radius": 0.013,
+      "major_segments": 32,
+      "minor_segments": 8,
+      "material": "Graphite",
+      "parent": "root"
+    }
+  ],
+  "notes": "Purely visual ring shield generator, not DEF-001 gameplay; no physics or damage logic."
+}
