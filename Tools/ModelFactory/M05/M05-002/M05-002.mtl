@@ -1,0 +1,57 @@
+# M05-002 materials
+newmtl Gunmetal
+Ka 0.05 0.05 0.05
+Kd 0.10000 0.13000 0.17000
+Ks 0.25 0.25 0.25
+Ns 108.0
+d 1.0
+illum 2
+
+newmtl Ceramic
+Ka 0.05 0.05 0.05
+Kd 0.51000 0.57000 0.60000
+Ks 0.25 0.25 0.25
+Ns 44.0
+d 1.0
+illum 2
+
+newmtl Copper
+Ka 0.05 0.05 0.05
+Kd 0.66000 0.34000 0.15000
+Ks 0.25 0.25 0.25
+Ns 105.0
+d 1.0
+illum 2
+
+newmtl Rubber
+Ka 0.05 0.05 0.05
+Kd 0.03500 0.04500 0.05500
+Ks 0.25 0.25 0.25
+Ns 30.0
+d 1.0
+illum 2
+
+newmtl Glass
+Ka 0.05 0.05 0.05
+Kd 0.01800 0.06200 0.09400
+Ks 0.25 0.25 0.25
+Ns 52.0
+d 1.0
+illum 2
+
+newmtl CyanLED
+Ka 0.05 0.05 0.05
+Kd 0.03500 0.52000 0.78000
+Ks 0.25 0.25 0.25
+Ns 35.0
+d 1.0
+illum 2
+
+newmtl AmberLED
+Ka 0.05 0.05 0.05
+Kd 0.95000 0.40000 0.06000
+Ks 0.25 0.25 0.25
+Ns 34.0
+d 1.0
+illum 2
+

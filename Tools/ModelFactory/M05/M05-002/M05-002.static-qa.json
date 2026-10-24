@@ -1,0 +1,19 @@
+{
+  "id": "M05-002",
+  "generator": "deterministic procedural mesh primitives",
+  "parts": 127,
+  "vertices": 1160,
+  "polygons": 834,
+  "materials": 7,
+  "degenerate_triangles": 0,
+  "negative_signed_volume_parts": 0,
+  "analytical_mast_clearance_m": 0.11164,
+  "tilt_extremes_degrees": [
+    -22,
+    22
+  ],
+  "static_obj": "GENERATED",
+  "blender_execution": "NOT_RUN",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN"
+}
