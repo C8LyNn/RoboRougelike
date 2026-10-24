@@ -51,3 +51,17 @@ Fallback tworzy rzeczywisty **statyczny GLB** (bez animacji i FBX), co jest jawn
 ## Rezerwacja
 
 `Docs/ModelFactory/claims/M02-001.json` na gałęzi kontrolnej; model wolno aktualizować tylko w ramach tego ID/PR. 
+
+## Iteracja poprawkowa M02-001 — przelotowa piasta i weryfikacja (24.10.2026)
+
+**Zidentyfikowany problem:** oryginalna piasta `Axle_Hub` i obie zaślepki `Hub_Cap_L` / `Hub_Cap_R` były pełnymi walcami. Zasłaniały rzeczywisty montażowy kanał osi pojazdu, mimo że logiczny znacznik `MOUNT_AXLE` był ustawiony prawidłowo.
+
+**Zmiana modelu:** wszystkie trzy pełne walce zastąpiono zamkniętymi pierścieniowymi siatkami. Promień otworu wynosi **0,043 m** (średnica **86 mm**), a dla przyjętej referencyjnej osi o średnicy 68 mm pozostaje **9 mm** luzu promieniowego. Otwory są współosiowe wokół lokalnej osi +X. Zachowano 60 klocków bieżnika, kolorystykę, 7 materiałów i hierarchię `MOUNT_AXLE → WHEEL_ROTATOR`.
+
+**Nowe QA w generatorze:** `validate_axle_bore()` sprawdza minimalny promień otworu, jego zgodność we wszystkich trzech częściach i to, czy każda krawędź trójkątów występuje dokładnie dwukrotnie (siatka zamknięta / manifold). Wywoływane także przez `--self-test`.
+
+**Zweryfikowane w GitHub Actions:** [run 40095210640](https://github.com/C8LyNn/RoboRougelike/actions/runs/40095210640) — PASS: walidacja oryginalnej paczki, źródłowe testy samokontroli, odtworzenie z poprawionego generatora oraz archiwizacja wygenerowanego statycznego GLB jako artefaktu `M02-001-through-bore-GLB-static`.
+
+**Ważne dla użytkownika:** pliki `generated/*.obj` i `generated/*.glb` dołączone we wcześniejszym PR #40 są nadal wersją **sprzed poprawki**, ponieważ nie zostały nadpisane. Poprawiony model pobierz z artefaktu powyższego przebiegu GitHub Actions albo wykonaj generator samodzielnie. Artefakt z CI to **statyczny** GLB; do uzyskania animowanego FBX/GLB z poprawioną piastą wymagany jest Blender. Blender, import/PlayMode Unity oraz kontrola wizualna: **NOT RUN**. Nie scalać na `develop` przed zatwierdzeniem importu i QA.
+
+**Integracja:** przed przyjęciem poprawki do bazowego PR #40 należy podmienić stare pliki `generated/` na odpowiadające poprawionemu generatorowi, ponownie wygenerować manifest, zaktualizować `qa_assets.py` do nowych liczebności siatek i sprawdzić tę samą geometrię w Unity. Tego etapu nie oznaczono jeszcze jako ukończony.
