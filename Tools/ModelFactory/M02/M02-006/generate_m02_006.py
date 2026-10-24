@@ -320,10 +320,22 @@ def export_blender(parts,out):
                                   export_force_sampling=True,
                                   export_frame_range=True)
         fbx=out/"M02-006_animated.fbx"
-        bpy.ops.export_scene.fbx(
-            filepath=str(fbx),use_selection=True,
-            axis_forward="-Z",axis_up="Y",add_leaf_bones=False,
-            bake_anim=True,bake_anim_use_all_actions=False)
+        # Blender 5 FBX operator parameter names can differ by exporter.
+        # Never silently export the entire user's unrelated scene.
+        props={p.identifier for p in bpy.ops.export_scene.fbx.get_rna_type().properties}
+        print("M02-006 FBX operator properties:",sorted(props))
+        kw={"filepath":str(fbx)}
+        if "use_selection" in props:
+            kw["use_selection"]=True
+        elif "collection" in props:
+            kw["collection"]=coll.name
+        else:
+            raise RuntimeError("FBX exporter lacks safe selection/collection isolation")
+        for key,value in {"axis_forward":"-Z","axis_up":"Y",
+                          "add_leaf_bones":False,"bake_anim":True,
+                          "bake_anim_use_all_actions":False}.items():
+            if key in props:kw[key]=value
+        bpy.ops.export_scene.fbx(**kw)
         assert blend.is_file() and glb.is_file() and fbx.is_file()
         return {"blender":"PASS_EXPORT","blend":str(blend),"glb":str(glb),
                 "fbx":str(fbx),"unity_native_fbx":"EXPORTED_NOT_IMPORTED"}
