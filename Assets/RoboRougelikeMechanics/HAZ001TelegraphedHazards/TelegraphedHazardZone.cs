@@ -31,7 +31,7 @@ namespace RoboRougelike.Mechanics.HAZ001
         [SerializeField] private UnityEvent onReady = new UnityEvent();
 
         // Reused buffers: no per-scan allocations from the overlap query.
-        private readonly Collider[] overlapBuffer = new Collider[64];
+        private Collider[] overlapBuffer = new Collider[64];
         private readonly HashSet<int> seenThisScan = new HashSet<int>();
         private readonly Dictionary<int, float> nextAllowedTime = new Dictionary<int, float>();
 
@@ -54,6 +54,15 @@ namespace RoboRougelike.Mechanics.HAZ001
             hitInterval = SafePositive(interval, 0.01f);
             requestedDamage = SafeNonnegative(damage);
             targetLayers = layers;
+        }
+
+        /// <summary>Opt-in live-game capacity; original default64 remains unchanged.</summary>
+        public bool ConfigureQueryCapacity(int capacity)
+        {
+            if(Phase!=HazardPhase.Idle)return false;
+            int count=Mathf.Clamp(capacity,64,2048);
+            if(overlapBuffer.Length!=count)overlapBuffer=new Collider[count];
+            LastScanTruncated=false;return true;
         }
 
         public bool Begin()

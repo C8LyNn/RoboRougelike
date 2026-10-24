@@ -5,6 +5,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
 using RoboRougelike.Mechanics.HAZ001;
 using RogueMachine.P12PipelineSafe;
 
@@ -53,6 +54,22 @@ public class RRLW7HazardTests
         Assert.That(zone.enabled,Is.False);Assert.That(zone.Phase,Is.EqualTo(HazardPhase.Idle));
         Assert.That(zone.GetComponentInChildren<LineRenderer>().enabled,Is.False);
         before=parts.Sum(p=>p.CurrentHp);Assert.That(zone.ScanAtTime(Time.time+20),Is.Zero);Assert.That(parts.Sum(p=>p.CurrentHp),Is.EqualTo(before));
+    }
+    [UnityTest] public IEnumerator LiveQueryBudgetHandlesTwoPartDenseVehiclesWithoutTruncation()
+    {
+        var zone=Zone();var groups=new P12PipelineSafeDamageable[2][];
+        for(int i=0;i<2;i++)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),
+                zone.transform.position+new Vector3(i*.15f,.7f,0),Quaternion.identity);
+            vehicle.GetComponent<Rigidbody>().isKinematic=true;groups[i]=vehicle.GetComponentsInChildren<P12PipelineSafeDamageable>();
+        }
+        Physics.SyncTransforms();float settle=Time.time+.04f;while(Time.time<settle)yield return null;
+        zone.ResetCycle();Assert.That(zone.Begin(),Is.True);zone.ManualTick(1.5f);
+        float[] before=groups.Select(parts=>parts.Sum(p=>p.CurrentHp)).ToArray();zone.ScanAtTime(Time.time);
+        Assert.That(zone.LastScanTruncated,Is.False,"Live hazard query must fit real physical-part density, not silently truncate the original64-collider buffer");
+        for(int i=0;i<2;i++)Assert.That(before[i]-groups[i].Sum(p=>p.CurrentHp),Is.EqualTo(5).Within(.001),"Both real vehicles receive one part hit, not one per collider");
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

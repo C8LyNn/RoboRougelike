@@ -18,6 +18,7 @@ namespace RoboRougelike.PackageIntegration
         {
             zone=gameObject.AddComponent<TelegraphedHazardZone>();
             zone.Configure(1.5f,2,3,3,.5f,5,~0);
+            zone.ConfigureQueryCapacity(1024);
             indicator=gameObject.AddComponent<HazardRingIndicator>();
             zone.DamageRequested+=Damage;
         }
