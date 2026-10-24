@@ -1,0 +1,97 @@
+name: M03-013 Lower Sill Guard Model QA
+on:
+  push:
+    branches: [feature/rrl-model-m03-013-lower-sill-guard]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-013/**'
+      - '.github/workflows/ci-m03-013.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-013/**'
+      - '.github/workflows/ci-m03-013.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-obj-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independently validate real OBJ topology and contact
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-013/generate_m03_013.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-013/qa_m03_013.py
+          python3 Tools/ModelFactory/M03/M03-013/qa_m03_013.py
+      - name: Generate actual static OBJ MTL manifest
+        run: |
+          python3 Tools/ModelFactory/M03/M03-013/generate_m03_013.py --out /tmp/m03-013-static
+          test -s /tmp/m03-013-static/M03-013_lower_sill_guard.obj
+          test -s /tmp/m03-013-static/M03-013_lower_sill_guard.mtl
+          test -s /tmp/m03-013-static/M03-013_manifest.json
+      - name: Upload static model
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-013-static-OBJ-MTL
+          path: /tmp/m03-013-static/
+          if-no-files-found: error
+          retention-days: 14
+
+  blender-bpy-export:
+    needs: static-obj-qa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Execute Blender bpy and real exports
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-013/generate_m03_013.py \
+            -- --out /tmp/m03-013-blender
+          test -s /tmp/m03-013-blender/M03-013_lower_sill_guard.glb
+          test -s /tmp/m03-013-blender/M03-013_lower_sill_guard.fbx
+          test -s /tmp/m03-013-blender/M03-013_lower_sill_guard.blend
+      - name: Validate real GLB nodes and manifest
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path("/tmp/m03-013-blender")
+          blob=(root/"M03-013_lower_sill_guard.glb").read_bytes()
+          magic,version,size=struct.unpack_from("<4sII",blob)
+          assert (magic,version,size)==(b"glTF",2,len(blob))
+          n,kind=struct.unpack_from("<I4s",blob,12)
+          assert kind==b"JSON"
+          data=json.loads(blob[20:20+n])
+          assert len([x for x in data["nodes"] if "mesh" in x])==38
+          assert len(data["materials"])==5
+          names={x.get("name") for x in data["nodes"]}
+          assert "MOUNT_BOTTOM_FRAME" in names
+          for side in ("L","R"):
+              for end in ("Aft","Fore"):
+                  assert "SNAP_BOTTOM_"+side+"_"+end in names
+          assert not data.get("animations"),"static model should not animate"
+          report=json.loads((root/"M03-013_manifest.json").read_text())
+          assert report["backend"]=="bpy"
+          assert report["blender_meshes"]==38
+          assert report["blender_snaps"]==4
+          assert report["unity_import"]=="NOT RUN"
+          print("PASS real GLB: 38 meshes, 5 materials, 4 SNAP ports, no animation")
+          PY
+      - name: Upload Blender GLB FBX BLEND
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-013-Blender-GLB-FBX-BLEND
+          path: /tmp/m03-013-blender/
+          if-no-files-found: error
+          retention-days: 14
