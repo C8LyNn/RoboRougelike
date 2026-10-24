@@ -1,0 +1,69 @@
+name: M02-008 Single Track Module Geometry and Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-008-single-track-module
+    paths:
+      - "Tools/ModelFactory/M02/M02-008/**"
+      - ".github/workflows/ci-m02-008.yml"
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M02/M02-008/**"
+      - ".github/workflows/ci-m02-008.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  m02-008-static:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Run independent manifold and swept collision tests
+        run: python3 Tools/ModelFactory/M02/M02-008/qa_m02_008.py
+      - name: Export real static OBJ and MTL
+        run: |
+          python3 Tools/ModelFactory/M02/M02-008/generate_m02_008.py \
+            --static-obj --out build/M02-008-static
+      - name: Archive static geometry
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M02-008-static-OBJ-MTL-QA
+          path: build/M02-008-static/
+          if-no-files-found: error
+          retention-days: 14
+  m02-008-blender:
+    needs: m02-008-static
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq blender
+          blender --version | head -3
+      - name: Generate animated GLB and Blender project
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M02/M02-008/generate_m02_008.py \
+            -- --out build/M02-008-blender
+          test -s build/M02-008-blender/M02-008_animated.glb
+          test -s build/M02-008-blender/M02-008.blend
+          test -s build/M02-008-blender/M02-008_qa.json
+      - name: Independently inspect generated animated GLB
+        run: |
+          python3 Tools/ModelFactory/M02/M02-008/qa_m02_008.py \
+            build/M02-008-blender/M02-008_animated.glb
+      - name: Archive actual Blender and GLB outputs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M02-008-animated-GLB-BLEND-QA
+          path: build/M02-008-blender/
+          if-no-files-found: error
+          retention-days: 14
