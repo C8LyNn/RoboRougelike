@@ -44,11 +44,22 @@ namespace B01.MAPGEN001
                 Release(root);
                 throw;
             }
+            // Public points are WORLD coordinates, even if the opt-in host is offset or rotated.
+            Physics.SyncTransforms();
+            var spawns = new Vector3[p.EnemySpawns.Count];
+            var checkpoints = new Vector3[p.Checkpoints.Count];
+            for (int i = 0; i < spawns.Length; i++) spawns[i] = root.transform.TransformPoint(p.EnemySpawns[i]);
+            for (int i = 0; i < checkpoints.Length; i++) checkpoints[i] = root.transform.TransformPoint(p.Checkpoints[i]);
+            var colliders = root.GetComponentsInChildren<Collider>();
+            Bounds worldBounds = colliders[0].bounds;
+            for (int i = 1; i < colliders.Length; i++) worldBounds.Encapsulate(colliders[i].bounds);
             var next = new MapResult {
                 GeneratedRoot = root, Recipe = p.Recipe, Seed = p.Seed,
-                GenerationVersion = p.GenerationVersion, Start = p.Start, Finish = p.Finish,
-                Spawns = p.EnemySpawns.ToArray(), CheckpointDescriptors = p.Checkpoints.ToArray(),
-                Bounds = p.Bounds, GeometryHash = p.GeometryHash, Diagnostics = p.Diagnostics
+                GenerationVersion = p.GenerationVersion,
+                Start = root.transform.TransformPoint(p.Start),
+                Finish = root.transform.TransformPoint(p.Finish),
+                Spawns = spawns, CheckpointDescriptors = checkpoints,
+                Bounds = worldBounds, GeometryHash = p.GeometryHash, Diagnostics = p.Diagnostics
             };
             // Fully deactivate old collision geometry before postponing Destroy until end of frame.
             Clear();
