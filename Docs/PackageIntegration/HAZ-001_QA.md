@@ -11,3 +11,5 @@ These are Editor API/physics fixtures. Actual Windows telegraph readability, dri
 **Decision: INTEGRATED, targeted tests PASS; BLOCKED pending W7 native Windows and full-wave closure.**
 
 [Machine-readable cases](HAZ-001_test_summary.json). API fixtures are distinct from native input gameplay.
+
+Integration [Draft PR #30](https://github.com/C8LyNn/RoboRougelike/pull/30); no shared-branch merge.
