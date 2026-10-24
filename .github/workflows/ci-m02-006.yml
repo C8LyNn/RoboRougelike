@@ -33,11 +33,11 @@ jobs:
       - name: Install Blender (real bpy runtime)
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq blender
+          sudo apt-get install -y -qq blender python3-numpy
           blender --version | head -3
       - name: Run Blender and export animated GLB and collection BLEND
         run: |
-          blender --background --factory-startup --python Tools/ModelFactory/M02/M02-006/generate_m02_006.py -- --out Tools/ModelFactory/M02/M02-006/generated
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-006/generate_m02_006.py -- --out Tools/ModelFactory/M02/M02-006/generated
           test -s Tools/ModelFactory/M02/M02-006/generated/M02-006_animated.glb
           test -s Tools/ModelFactory/M02/M02-006/generated/M02-006.blend
       - name: Independently inspect GLB binary structure and animation
