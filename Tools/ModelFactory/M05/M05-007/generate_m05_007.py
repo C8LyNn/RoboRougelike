@@ -254,6 +254,9 @@ def blender_export(out):
     for mat in tuple(bpy.data.materials):
         if mat.name.startswith("M05-007_") and mat.users==0:
             bpy.data.materials.remove(mat)
+    for action in tuple(bpy.data.actions):
+        if action.name.startswith("M05-007_") and action.users==0:
+            bpy.data.actions.remove(action)
     collection=bpy.data.collections.new(name)
     bpy.context.scene.collection.children.link(collection)
     def empty(label,parent=None,loc=(0,0,0)):
@@ -290,8 +293,18 @@ def blender_export(out):
         ob.data.materials.append(mats[p["material"]])
         ob["asset_id"]=ID
         ob["group"]=p["group"]
-        for poly in mesh.polygons:
-            poly.use_smooth=p["shape"] in ("cylinder","torus")
+        for i,poly in enumerate(mesh.polygons):
+            # Keep cylinder end caps planar, while smoothing only curved walls.
+            poly.use_smooth=(p["shape"]=="torus" or
+                             (p["shape"]=="cylinder" and i>=2))
+        if p["shape"]=="box":
+            # Small inward edge rounds improve specular readability without
+            # changing the mount envelope or generating jagged hard edges.
+            bevel=ob.modifiers.new("M05-007_MachinedEdge","BEVEL")
+            bevel.width=min(.005,.15*min(p["size"]))
+            bevel.segments=2
+            bevel.limit_method="ANGLE"
+            bevel.angle_limit=math.radians(35)
     for key,keys in (("drawer_L",((1,0),(16,.21),(31,.21),(46,0),(61,0))),
                      ("drawer_R",((1,0),(16,0),(31,.21),(46,.21),(61,0)))):
         ob=drawers[key]
