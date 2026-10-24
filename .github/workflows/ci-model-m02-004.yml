@@ -113,7 +113,7 @@ jobs:
           report["status"]="PASS" if all((report["magic_ok"],report["version"]==2,report["length_matches"],
              report["json_chunk_ok"],report["meshes"]>=1,report["animations"]>=1,
              report["rotor_node_present"],report["blend_bytes"]>10000)) else "FAILED_DIAGNOSTIC"
-          (root/"M02-004.blender-qa.json").write_text(json.dumps(report,indent=2)+"\\n",encoding="utf-8")
+          (root/"M02-004.blender-qa.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
           print(json.dumps(report,indent=2),flush=True)
           PY
       - name: Commit real Blender GLB, blend and diagnostic on model branch
