@@ -28,7 +28,7 @@
   "shaft_to_bore_clearance_m": 0.03,
   "seal_to_bore_clearance_m": 0.007,
   "rotation_clearance_samples": 73,
-  "manifold_closed_meshes": "PASS (each mesh edge used twice)",
+  "manifold_closed_meshes": "PASS (each edge twice, opposite winding, positive signed volume)",
   "stationary_vs_rotor_clearance": "PASS (analytic radial, not Unity physics)",
   "traction_tooth_to_rim_overlap": "INTENTIONAL 4mm weld intersection",
   "blender": "NOT RUN",
