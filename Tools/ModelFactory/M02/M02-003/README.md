@@ -34,3 +34,15 @@ Workflow `.github/workflows/model-m02-003-qa.yml` testuje topologię i otwór os
 - **Unity import / Play Mode / render review / Blender export:** NOT RUN, dopóki istnieją niezależne dowody wykonania.
 - Collider gameplayowy: sugerowana prosta bryła koła, nie collider każdego detalu. Fizyka jazdy na piasku i parametry przyczepności są poza zakresem M02.
 - Nie zmieniać `main`, `develop`, wspólnych scen, prefabów, `ProjectSettings` ani cudzych paczek. PR ma pozostać Draft do zatwierdzenia wizualnego i Unity QA.
+
+## Korekta V2 — połączenie pierścieni z obręczą (24.10.2026)
+
+**Problem:** `Bead_Trim_L` i `Bead_Trim_R` były dekoracyjnymi pierścieniami na bokach koła, ale ich położenia przy X=±0,307 m i półszerokości 3 mm oznaczały początek pierścienia już poza skrajną powierzchnią obręczy przy X=±0,301 m. Powstawał **3 mm prześwit osiowy** pomiędzy pełnym pierścieniem a zasadniczą obręczą; kontakt występował tylko miejscami, na niektórych szprychach. Oryginalny test nie sprawdzał tego styku.
+
+**Naprawa:** środki obu pierścieni przesunięto do X=±**0,300 m**, pozostawiając radialne położenie i wymiary. Ich zakres osiowy wynosi teraz X=0,297–0,303 m (oraz symetrycznie po stronie ujemnej): **4 mm osadzenia w obręczy** i **2 mm odsłoniętego materiału** na zewnątrz. Promienie ozdób pozostają 231–242 mm; guma boku koła rozpoczyna się przy promieniu 245 mm. Prześwit 3 mm między zewnętrzną krawędzią pierścienia a wewnętrzną krawędzią gumy zachowano jako wymóg analityczny. Średnica opony 1,024 m i rozmiar osi pozostały bez zmian.
+
+**Rzeczywiście zmienione assety:** `generate_m02_003.py` (generator źródłowy + kontrola geometrii + przywracanie zaznaczenia i stanu sceny po eksportach `bpy`), `generated/M02-003_balloon_sand_wheel.obj` (768 zaktualizowanych wierzchołków obu zamkniętych pierścieni), `generated/M02-003_manifest.json`, nowy niezależny `qa_m02_003_contacts.py` oraz izolowany, tylko-do-odczytu workflow `qa-m02-003-bead-fix.yml`. Nie zmieniono `MTL`, liczby 47 elementów, 5000 wierzchołków, 9840 trójkątów ani siedmiu materiałów.
+
+**Dowód wykonania:** [GitHub Actions 40119912217 — PASS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40119912217): realny self-test generatora, niezależna analiza zamknięcia każdej siatki OBJ, dodatnich objętości i braku degeneratów, pomiar obu styków/ekspozycji, ponowne wygenerowanie i porównanie SHA-256 bajt w bajt z zapisanymi OBJ i MTL. Artefakt: `M02-003-V2-seated-bead-trims-OBJ-MTL`.
+
+**Nie przeprowadzono:** Blender `bpy`, animowany FBX/GLB, PlayMode/Unity import oraz oględziny wizualne (wszystko **NOT RUN**). Ochrona stanu sceny przy Blenderze została zweryfikowana statycznie w CI; jej działanie musi być potwierdzone w rzeczywistym Blenderze. Zmiana dotyczy jedynie wizualnego modelu i nie ingeruje w gameplay, inne wątki, sceny, prefabrykaty ani ProjectSettings. Zachowano istniejącą rezerwację ID `M02-003`; review poprawki w gałęzi oryginalnego Draft PR #54.

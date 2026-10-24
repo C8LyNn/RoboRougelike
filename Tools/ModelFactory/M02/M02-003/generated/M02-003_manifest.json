@@ -23,5 +23,10 @@
   "unity": "NOT RUN",
   "obj": "build/M02-003/M02-003_balloon_sand_wheel.obj",
   "mtl": "build/M02-003/M02-003_balloon_sand_wheel.mtl",
-  "animation": "NOT EXPORTED; run inside Blender for FBX/GLB"
+  "animation": "NOT EXPORTED; run inside Blender for FBX/GLB",
+  "bead_trim_seated_count": 2,
+  "bead_trim_axial_seat_m": 0.004,
+  "bead_trim_visible_axial_m": 0.002,
+  "bead_trim_tire_bead_radial_clearance_m": 0.003,
+  "geometry_revision": "M02-003_V2_SEATED_BEAD_TRIMS"
 }

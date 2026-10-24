@@ -136,7 +136,9 @@ def build():
                 x-.013,x+.013,.076,.237,a-.065,a+.065,
                 "Alloy_Titanium"))
         # Decorative outer-side trim sits on the rim, not in the bore.
-        xtrim=sign*.307
+        # Seat the ornamental ring 4 mm into the rim instead of the
+        # original 3 mm axial air gap. Leave 2 mm visibly proud.
+        xtrim=sign*.300
         parts.append(ring("Bead_Trim_"+side,[
             (xtrim-.003,.231),(xtrim-.003,.242),
             (xtrim+.003,.242),(xtrim+.003,.231)],
@@ -196,6 +198,26 @@ def validate(parts):
         assert abs(min(radii)-AXLE_BORE_RADIUS)<1e-7
         assert min(radii)>REFERENCE_SHAFT_RADIUS
     assert AXLE_BORE_RADIUS-REFERENCE_SHAFT_RADIUS>=.010
+    # Original bead trims stood 3mm away from the continuous alloy rim.
+    # All-around mechanical seat must exist, not only 10 discrete spokes.
+    by_name={p["name"]:p for p in parts}
+    def axial_bounds(part):
+        xs=[v[0] for v in part["vertices"]]
+        return min(xs),max(xs)
+    rim_x=axial_bounds(by_name["Alloy_Bead_Rim"])
+    trim_contacts=0
+    for side in ("L","R"):
+        mark=by_name["Bead_Trim_"+side]
+        low,high=axial_bounds(mark)
+        seat=min(high,rim_x[1])-max(low,rim_x[0])
+        exposed=(rim_x[0]-low) if side=="L" else (high-rim_x[1])
+        assert abs(seat-.004)<1e-8,(side,seat,"axial gap")
+        assert abs(exposed-.002)<1e-8,(side,exposed,"buried trim")
+        radii=[math.hypot(y,z) for x,y,z in mark["vertices"]]
+        assert abs(min(radii)-.231)<1e-8
+        assert abs(max(radii)-.242)<1e-8
+        assert .245-max(radii)>=.003-1e-8
+        trim_contacts+=1
     assert .5119<=max(all_radii)<=.5121
     assert max(all_x)<.360
     # One rigid rotor: every visible component has the same transform.
@@ -211,6 +233,11 @@ def validate(parts):
             AXLE_BORE_RADIUS-REFERENCE_SHAFT_RADIUS,3),
         pivot=[0,0,0],axle_axis="+X",spin_axis="+X",
         rigid_rotation_clearance="PASS (analytic; single rigid rotor)",
+        bead_trim_seated_count=trim_contacts,
+        bead_trim_axial_seat_m=.004,
+        bead_trim_visible_axial_m=.002,
+        bead_trim_tire_bead_radial_clearance_m=.003,
+        geometry_revision="M02-003_V2_SEATED_BEAD_TRIMS",
         blender="NOT RUN",unity="NOT RUN")
 
 def export_obj(parts,outdir):
@@ -305,21 +332,37 @@ def export_blender(parts,outdir):
                     kp.interpolation="LINEAR"
         except AttributeError:
             pass  # Blender 4.4+ layered action API
-    bpy.context.scene.frame_start=1
-    bpy.context.scene.frame_end=61
-    bpy.context.scene.render.fps=60
-    bpy.context.scene.frame_set(1)
-    bpy.ops.object.select_all(action="DESELECT")
-    for ob in collection.objects:
-        ob.select_set(True)
-    bpy.context.view_layer.objects.active=rotor
+    scene=bpy.context.scene
+    prev=(scene.frame_current,scene.frame_start,scene.frame_end,
+          scene.render.fps)
+    previously_selected=tuple(bpy.context.selected_objects)
+    previously_active=bpy.context.view_layer.objects.active
     fbx=outdir/"M02-003_balloon_sand_wheel.fbx"
     glb=outdir/"M02-003_balloon_sand_wheel.glb"
-    bpy.ops.export_scene.fbx(filepath=str(fbx),use_selection=True,
-        axis_forward="-Z",axis_up="Y",add_leaf_bones=False,
-        bake_anim=True,bake_anim_use_all_actions=False)
-    bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",
-        use_selection=True,export_animations=True)
+    try:
+        scene.frame_start=1
+        scene.frame_end=61
+        scene.render.fps=60
+        scene.frame_set(1)
+        bpy.ops.object.select_all(action="DESELECT")
+        for ob in collection.objects:
+            ob.select_set(True)
+        bpy.context.view_layer.objects.active=rotor
+        bpy.ops.export_scene.fbx(filepath=str(fbx),use_selection=True,
+            axis_forward="-Z",axis_up="Y",add_leaf_bones=False,
+            bake_anim=True,bake_anim_use_all_actions=False)
+        bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",
+            use_selection=True,export_animations=True)
+        assert fbx.exists() and glb.exists()
+    finally:
+        bpy.ops.object.select_all(action="DESELECT")
+        for ob in previously_selected:
+            if bpy.data.objects.get(ob.name) is ob:
+                ob.select_set(True)
+        if previously_active and bpy.data.objects.get(previously_active.name) is previously_active:
+            bpy.context.view_layer.objects.active=previously_active
+        scene.frame_start,scene.frame_end,scene.render.fps=prev[1:]
+        scene.frame_set(prev[0])
     return {"fbx":str(fbx),"glb":str(glb),"blender":"EXPORTED (bpy)",
             "animation":"full +X turn, 5 Euler keys, 61 frames @60fps"}
 

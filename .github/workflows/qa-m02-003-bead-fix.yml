@@ -1,0 +1,46 @@
+name: M02-003 bead trim contact V2 QA
+on:
+  push:
+    branches: [fix/rrl-m02-003-bead-trim-contact]
+    paths:
+      - 'Tools/ModelFactory/M02/M02-003/**'
+      - '.github/workflows/qa-m02-003-bead-fix.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-balloon-wheel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile Blender generator and independent validator
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-003/generate_m02_003.py
+          python3 -m py_compile Tools/ModelFactory/M02/M02-003/qa_m02_003_contacts.py
+      - name: Run source manifold and seated ring geometry self-test
+        run: python3 Tools/ModelFactory/M02/M02-003/generate_m02_003.py --self-test
+      - name: Verify real OBJ and exact regeneration
+        run: python3 Tools/ModelFactory/M02/M02-003/qa_m02_003_contacts.py
+      - name: Check Blender export cleanup source contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path("Tools/ModelFactory/M02/M02-003/generate_m02_003.py").read_text()
+          assert "use_selection=True" in s
+          assert "finally:" in s
+          assert "previously_selected" in s
+          assert "scene.frame_set(prev[0])" in s
+          print("Blender state restoration code present; bpy NOT RUN")
+          PY
+      - name: Publish corrected static model for inspection
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M02-003-V2-seated-bead-trims-OBJ-MTL
+          path: |
+            Tools/ModelFactory/M02/M02-003/generated/M02-003_balloon_sand_wheel.obj
+            Tools/ModelFactory/M02/M02-003/generated/M02-003_balloon_sand_wheel.mtl
+            Tools/ModelFactory/M02/M02-003/generated/M02-003_manifest.json
+          if-no-files-found: error
