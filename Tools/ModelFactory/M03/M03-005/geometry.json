@@ -1,0 +1,630 @@
+{
+  "id": "M03-005",
+  "name": "Adapter ośmiokątny uniwersalny",
+  "units": "metres",
+  "axes": "X right, Y forward, Z up",
+  "root_pivot": [
+    0,
+    0,
+    0
+  ],
+  "rotation_axis": "+Y",
+  "rotation_keyframes": [
+    [
+      1,
+      0
+    ],
+    [
+      61,
+      120
+    ],
+    [
+      121,
+      240
+    ],
+    [
+      181,
+      360
+    ]
+  ],
+  "ports": [
+    {
+      "name": "OCT_00",
+      "position": [
+        0.35,
+        0.266,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_01",
+      "position": [
+        0.247487373,
+        0.266,
+        0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_02",
+      "position": [
+        0,
+        0.266,
+        0.35
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_03",
+      "position": [
+        -0.247487373,
+        0.266,
+        0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_04",
+      "position": [
+        -0.35,
+        0.266,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_05",
+      "position": [
+        -0.247487373,
+        0.266,
+        -0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_06",
+      "position": [
+        0,
+        0.266,
+        -0.35
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_07",
+      "position": [
+        0.247487373,
+        0.266,
+        -0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    }
+  ],
+  "palette": {
+    "graphite_steel": [
+      [
+        0.065,
+        0.082,
+        0.105
+      ],
+      0.82,
+      0.37
+    ],
+    "satin_titanium": [
+      [
+        0.43,
+        0.51,
+        0.55
+      ],
+      0.88,
+      0.27
+    ],
+    "orange_index": [
+      [
+        0.96,
+        0.34,
+        0.055
+      ],
+      0.48,
+      0.32
+    ],
+    "ceramic_slate": [
+      [
+        0.69,
+        0.73,
+        0.69
+      ],
+      0.12,
+      0.34
+    ],
+    "copper_fastener": [
+      [
+        0.59,
+        0.28,
+        0.11
+      ],
+      0.76,
+      0.28
+    ]
+  },
+  "parts": [
+    {
+      "name": "Rear_solid_mount_hub",
+      "material": "graphite_steel",
+      "group": "fixed",
+      "shape": "cylinder",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0,
+      "y1": 0.192,
+      "r": 0.104,
+      "segments": 48
+    },
+    {
+      "name": "Rear_octagonal_frame_plate",
+      "material": "graphite_steel",
+      "group": "fixed",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.02,
+      "y1": 0.09,
+      "inner": 0.085,
+      "outer": 0.26,
+      "segments": 64,
+      "octagonal": true
+    },
+    {
+      "name": "Stationary_precision_bearing",
+      "material": "satin_titanium",
+      "group": "fixed",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.093,
+      "y1": 0.197,
+      "inner": 0.104,
+      "outer": 0.116,
+      "segments": 64
+    },
+    {
+      "name": "Rotating_octagonal_flange",
+      "material": "satin_titanium",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.165,
+      "y1": 0.245,
+      "inner": 0.13,
+      "outer": 0.3,
+      "segments": 64,
+      "octagonal": true
+    },
+    {
+      "name": "Socket_00_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0.35,
+      "cz": 0,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_00_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0.35,
+      "cz": 0,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_00_arc",
+      "material": "orange_index",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": -0.17453292519943295,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_01_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0.24748737341545,
+      "cz": 0.24748737341545,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_01_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0.24748737341545,
+      "cz": 0.24748737341545,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_01_arc",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 0.6108652381980153,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_02_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0.35,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_02_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0.35,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_02_arc",
+      "material": "orange_index",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 1.3962634015954636,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_03_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": -0.24748737341545,
+      "cz": 0.24748737341545,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_03_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": -0.24748737341545,
+      "cz": 0.24748737341545,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_03_arc",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 2.181661564992912,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_04_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": -0.35,
+      "cz": 0,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_04_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": -0.35,
+      "cz": 0,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_04_arc",
+      "material": "orange_index",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 2.9670597283903604,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_05_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": -0.24748737341545,
+      "cz": -0.24748737341545,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_05_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": -0.24748737341545,
+      "cz": -0.24748737341545,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_05_arc",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 3.7524578917878086,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_06_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": -0.35,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_06_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": -0.35,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_06_arc",
+      "material": "orange_index",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 4.537856055185257,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Socket_07_through_bore",
+      "material": "graphite_steel",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0.24748737341545,
+      "cz": -0.24748737341545,
+      "y0": 0.17,
+      "y1": 0.258,
+      "inner": 0.027,
+      "outer": 0.063,
+      "segments": 32
+    },
+    {
+      "name": "Socket_07_front_lip",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0.24748737341545,
+      "cz": -0.24748737341545,
+      "y0": 0.258,
+      "y1": 0.266,
+      "inner": 0.032,
+      "outer": 0.056,
+      "segments": 32
+    },
+    {
+      "name": "Index_07_arc",
+      "material": "ceramic_slate",
+      "group": "rotor",
+      "shape": "annulus",
+      "cx": 0,
+      "cz": 0,
+      "y0": 0.245,
+      "y1": 0.253,
+      "inner": 0.217,
+      "outer": 0.256,
+      "segments": 12,
+      "start": 5.323254218582705,
+      "sweep": 0.3490658503988659
+    },
+    {
+      "name": "Rear_mount_bolt_00",
+      "material": "copper_fastener",
+      "group": "fixed",
+      "shape": "cylinder",
+      "cx": 0.134350288425,
+      "cz": 0.134350288425,
+      "y0": 0.004,
+      "y1": 0.02,
+      "r": 0.02,
+      "segments": 20
+    },
+    {
+      "name": "Rear_mount_bolt_01",
+      "material": "copper_fastener",
+      "group": "fixed",
+      "shape": "cylinder",
+      "cx": -0.134350288425,
+      "cz": 0.134350288425,
+      "y0": 0.004,
+      "y1": 0.02,
+      "r": 0.02,
+      "segments": 20
+    },
+    {
+      "name": "Rear_mount_bolt_02",
+      "material": "copper_fastener",
+      "group": "fixed",
+      "shape": "cylinder",
+      "cx": -0.134350288425,
+      "cz": -0.134350288425,
+      "y0": 0.004,
+      "y1": 0.02,
+      "r": 0.02,
+      "segments": 20
+    },
+    {
+      "name": "Rear_mount_bolt_03",
+      "material": "copper_fastener",
+      "group": "fixed",
+      "shape": "cylinder",
+      "cx": 0.134350288425,
+      "cz": -0.134350288425,
+      "y0": 0.004,
+      "y1": 0.02,
+      "r": 0.02,
+      "segments": 20
+    }
+  ]
+}

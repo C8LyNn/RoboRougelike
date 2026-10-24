@@ -1,0 +1,172 @@
+{
+  "id": "M03-005",
+  "status": "STATIC_GEOMETRY_PASS",
+  "parts": 32,
+  "fixed_parts": 7,
+  "rotating_parts": 25,
+  "vertices": 3498,
+  "polygon_faces": 3600,
+  "triangles": 6944,
+  "closed_manifold_parts": 32,
+  "positive_volumes": 32,
+  "materials": [
+    "graphite_steel",
+    "satin_titanium",
+    "orange_index",
+    "ceramic_slate",
+    "copper_fastener"
+  ],
+  "ports": [
+    {
+      "name": "OCT_00",
+      "position": [
+        0.35,
+        0.266,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_01",
+      "position": [
+        0.247487373,
+        0.266,
+        0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_02",
+      "position": [
+        0,
+        0.266,
+        0.35
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_03",
+      "position": [
+        -0.247487373,
+        0.266,
+        0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_04",
+      "position": [
+        -0.35,
+        0.266,
+        0
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_05",
+      "position": [
+        -0.247487373,
+        0.266,
+        -0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_06",
+      "position": [
+        0,
+        0.266,
+        -0.35
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    },
+    {
+      "name": "OCT_07",
+      "position": [
+        0.247487373,
+        0.266,
+        -0.247487373
+      ],
+      "normal": [
+        0,
+        1,
+        0
+      ],
+      "bore_radius": 0.027,
+      "parent": "rotor"
+    }
+  ],
+  "bounds_xyz_m": [
+    [
+      -0.413,
+      0.413
+    ],
+    [
+      0,
+      0.266
+    ],
+    [
+      -0.413,
+      0.413
+    ]
+  ],
+  "rear_mount_pivot": [
+    0,
+    0,
+    0
+  ],
+  "rotation_axis": "+Y",
+  "rotation_range_deg": [
+    0,
+    360
+  ],
+  "poses_checked": 73,
+  "base_rotor_pair_checks": 12775,
+  "minimum_conservative_clearance_m": 0.014,
+  "collision_result": "PASS_ALL_ANGLES_BY_RADIAL_AXIAL_SEPARATION",
+  "same_group_welds": "INTENTIONAL: socket-to-flange, hub-to-plate, trim-to-socket",
+  "blender": "NOT RUN",
+  "unity": "NOT RUN"
+}
