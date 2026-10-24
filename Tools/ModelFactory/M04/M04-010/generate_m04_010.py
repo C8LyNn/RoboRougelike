@@ -255,8 +255,8 @@ def validate(parts):
         vertex_count+=len(p["vertices"])
         triangle_count+=len(p["faces"])
     assert len(MATERIALS)>=3
-    assert sum(p["group"]=="LOW" for p in parts)==21
-    assert sum(p["group"]=="HIGH" for p in parts)==21
+    assert sum(p["group"]=="LOW" for p in parts)==23
+    assert sum(p["group"]=="HIGH" for p in parts)==23
     statics=[p for p in parts if p["group"]=="STATIC"]
     clearance=float("inf");fixed_tests=0;rotation_checks=0
     swept={}
@@ -304,7 +304,7 @@ def validate(parts):
     assert abs(mount)<1e-9
     return dict(asset=ID,status="PASS",parts=len(parts),
                 vertices=vertex_count,triangles=triangle_count,
-                materials=len(MATERIALS),moving_groups={"LOW":21,"HIGH":21},
+                materials=len(MATERIALS),moving_groups={"LOW":23,"HIGH":23},
                 pivot_m=[0,0,0],mount="TOP_SOCKET, bottom face Z=0",
                 axis="two counter-rotating local Z pivots",
                 rotor_centres_m={"LOW":[0,0,LOW_Z],"HIGH":[0,0,HIGH_Z]},
