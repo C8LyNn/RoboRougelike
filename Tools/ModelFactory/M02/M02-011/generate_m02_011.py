@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""M02-010 independent wishbone with externally sprung telescopic damper.
+"""M02-011 independent wishbone with externally sprung telescopic damper.
 
 Blender: X fore/aft, Y outboard, Z up; 1 unit = 1 metre.
 Mount ROOT at (0,0,0); two inboard pivot bearings rotate about +X.
@@ -185,13 +185,18 @@ def build():
         put(beam("ChassisUpright_"+tag,(x,.056,-.225),(x,.056,.235),
                  .027,"SatinTitanium"))
         for level,pivot in (("LOWER",LOWER_PIVOT),("UPPER",UPPER_PIVOT)):
-            put(beam("ChassisHingePost_"+tag,(x,.055,pivot[2]),
-                     (x,.120,pivot[2]),.028,"GraphiteArmor"))
+            # Upper wishbone pivots are 50mm inboard of the lower ones.
+            # Mount the fixed bearing coaxially with the matching moving
+            # bushing; a diagonal gusset ties it to the main upright.
+            px=x if level=="LOWER" else x*.165/.215
+            put(beam("ChassisHingePost_"+level+"_"+tag,
+                     (x,.055,pivot[2]),(px,.120,pivot[2]),
+                     .028,"GraphiteArmor"))
             put(cylinder("FixedPivotBearing_"+level+"_"+tag,
-                         (x,.120,pivot[2]),(1,0,0),.028,.048,
+                         (px,.120,pivot[2]),(1,0,0),.028,.048,
                          "CopperHardware"))
             put(cylinder("HingePin_"+level+"_"+tag,
-                         (x,.120,pivot[2]),(1,0,0),.014,.088,
+                         (px,.120,pivot[2]),(1,0,0),.014,.088,
                          "ChromedRod"))
         for z in (-.210,.210):
             put(cylinder("MountBolt_%s_%s"%(tag,"T" if z>0 else "B"),
