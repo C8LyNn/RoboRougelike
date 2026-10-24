@@ -1,6 +1,12 @@
 name: M02-002 Narrow Speed Wheel QA
 
 on:
+  push:
+    branches:
+      - fix/rrl-m02-002-contact-continuity
+    paths:
+      - 'Tools/ModelFactory/M02/M02-002/**'
+      - '.github/workflows/ci-m02-002.yml'
   pull_request:
     branches: [develop]
     paths:
@@ -40,3 +46,31 @@ jobs:
           assert sum(x.startswith('o ') for x in lines)==30
           print('PASS: regenerated 30 parts, 6016 vertices, 11952 triangles')
           PY
+      - name: Verify fresh OBJ equals fixed checked-in static geometry
+        run: |
+          cmp Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel.obj /tmp/m02-002/M02-002_narrow_speed_wheel.obj
+          cmp Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel.mtl /tmp/m02-002/M02-002_narrow_speed_wheel.mtl
+      - name: Verify source, static OBJ and embedded animated glTF agree
+        run: |
+          python3 Tools/ModelFactory/M02/M02-002/validate_m02_002.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('Tools/ModelFactory/M02/M02-002/generated/M02-002_static_qa.json').read_text())
+          assert report['geometry_revision']=='M02-002_V2_CONNECTED_ASSEMBLY'
+          assert report['structural_contacts_verified']==15
+          assert report['obj_gltf_parity_vertices']==6016
+          assert report['blender']=='NOT_RUN'
+          assert report['unity']=='NOT_RUN'
+          print('M02-002 V2 source/OBJ/MTL/animated glTF parity PASS')
+          PY
+      - name: Upload consistent model files for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M02-002-V2-connected-narrow-speed-wheel
+          path: |
+            Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel.obj
+            Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel.mtl
+            Tools/ModelFactory/M02/M02-002/generated/M02-002_narrow_speed_wheel_animated.gltf
+            Tools/ModelFactory/M02/M02-002/generated/M02-002_static_qa.json
+          if-no-files-found: error
