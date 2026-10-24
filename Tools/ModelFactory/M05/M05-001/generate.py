@@ -86,7 +86,8 @@ def box(name, size, center, parent, mat, bevel=0.0):
         modifier = obj.modifiers.new("Rounded_edges", "BEVEL")
         modifier.width = bevel
         modifier.segments = 2
-        modifier.affect = "EDGES" if hasattr(modifier, "affect") else None
+        if hasattr(modifier, "affect"):
+            modifier.affect = "EDGES"
         obj.modifiers.new("Weighted_normals", "WEIGHTED_NORMAL")
     return obj
 
