@@ -38,10 +38,10 @@ jobs:
           assert q["shaft_to_bore_clearance_m"]>=.029
           assert q["seal_to_bore_clearance_m"]>=.006
           assert len(q["materials_used"])>=3
-          obj=(p/"M02-004.obj").read_text()
-          assert obj.count("\\no ")==37
-          assert obj.count("\\nv ")==q["obj_vertices"]
-          assert obj.count("\\nf ")==q["obj_faces"]
+          lines=(p/"M02-004.obj").read_text().splitlines()
+          assert sum(x.startswith("o ") for x in lines)==37
+          assert sum(x.startswith("v ") for x in lines)==q["obj_vertices"]
+          assert sum(x.startswith("f ") for x in lines)==q["obj_faces"]
           assert (p/"M02-004.mtl").stat().st_size>200
           print("M02-004 STATIC QA PASS",q["obj_vertices"],q["obj_faces"])
           PY
