@@ -1,0 +1,99 @@
+name: M03-012 U Spring Bumper Model QA
+on:
+  push:
+    branches: [feature/rrl-model-m03-012-u-spring-bumper]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-012/**'
+      - '.github/workflows/ci-m03-012.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-012/**'
+      - '.github/workflows/ci-m03-012.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-obj-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile scripts and independently validate real OBJ topology
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-012/generate_m03_012.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-012/qa_m03_012.py
+          python3 Tools/ModelFactory/M03/M03-012/qa_m03_012.py
+      - name: Produce reproducible static model
+        run: |
+          python3 Tools/ModelFactory/M03/M03-012/generate_m03_012.py --out /tmp/m03-012-static
+          test -s /tmp/m03-012-static/M03-012_u_spring_bumper.obj
+          test -s /tmp/m03-012-static/M03-012_u_spring_bumper.mtl
+          test -s /tmp/m03-012-static/M03-012_manifest.json
+      - name: Upload actual OBJ MTL manifest and QA
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-012-static-OBJ-MTL
+          path: /tmp/m03-012-static/
+          if-no-files-found: error
+          retention-days: 14
+
+  blender-bpy-export:
+    needs: static-obj-qa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Execute Blender bpy generator and animated export
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-012/generate_m03_012.py \
+            -- --blender --out /tmp/m03-012-blender
+          test -s /tmp/m03-012-blender/M03-012_u_spring_bumper.glb
+          test -s /tmp/m03-012-blender/M03-012_u_spring_bumper.fbx
+          test -s /tmp/m03-012-blender/M03-012_u_spring_bumper.blend
+      - name: Validate actual GLB contents and animation
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path("/tmp/m03-012-blender")
+          blob=(root/"M03-012_u_spring_bumper.glb").read_bytes()
+          magic,version,size=struct.unpack_from("<4sII",blob)
+          assert (magic,version,size)==(b"glTF",2,len(blob))
+          chunk_size,kind=struct.unpack_from("<I4s",blob,12)
+          assert kind==b"JSON"
+          gltf=json.loads(blob[20:20+chunk_size])
+          meshes=[n for n in gltf["nodes"] if "mesh" in n]
+          assert len(meshes)==21,len(meshes)
+          assert len(gltf["materials"])==5
+          assert len(gltf.get("animations",[]))>=1,"no sliding bumper animation"
+          names={n.get("name") for n in gltf["nodes"]}
+          for name in ("M03-012_ROOT","M03-012_U_SLIDER",
+                       "M03-012_SPRING_SCALE_L","M03-012_SPRING_SCALE_R",
+                       "M03-012_SNAP_FRAME_ORIGIN",
+                       "M03-012_SNAP_FRAME_LEFT","M03-012_SNAP_FRAME_RIGHT"):
+              assert name in names,name
+          report=json.loads((root/"M03-012_qa.json").read_text())
+          assert report["blender"]=="PASS"
+          assert report["blender_export"]["idempotent_second_build"]
+          assert report["blender_export"]["scene_objects"]==28
+          assert report["unity"]=="NOT RUN"
+          print("PASS actual GLB 21 meshes, 5 materials, two compressed springs, 3 SNAP locators")
+          PY
+      - name: Upload actual Blender GLB FBX BLEND
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-012-Blender-GLB-FBX-BLEND
+          path: /tmp/m03-012-blender/
+          if-no-files-found: error
+          retention-days: 14
