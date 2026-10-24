@@ -72,8 +72,9 @@ jobs:
       - name: Install Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy python3-pil
           blender --version
+          blender --background --factory-startup --python-expr 'import numpy; print("NumPy:", numpy.__version__)'
       - name: Generate animated GLB and source blend
         run: |
           set -euo pipefail
