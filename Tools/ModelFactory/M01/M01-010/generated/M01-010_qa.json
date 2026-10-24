@@ -1,0 +1,32 @@
+{
+  "id": "M01-010",
+  "model": "Energetyczny widełkowy projektor",
+  "status": "BLENDER_EXPORTED",
+  "units": "metres",
+  "front_axis": "+Z",
+  "up_axis": "+Y",
+  "mount": "MOUNT_FRONT_SOCKET at origin",
+  "fork_hinges": [
+    "FORK_HINGE_L",
+    "FORK_HINGE_R"
+  ],
+  "fork_yaw_degrees": 21.0,
+  "frame_range": [
+    1,
+    64
+  ],
+  "fps": 60,
+  "materials": 7,
+  "mesh_objects": 65,
+  "vertices": 8248,
+  "triangles": 16260,
+  "aabb_checks": 78848,
+  "sampled_frames": 64,
+  "minimum_aabb_separation_m": 0.020353,
+  "mesh_closed_positive_volume": "PASS",
+  "fork_vs_fixed_and_opposite_fork_aabb": "PASS",
+  "blender_version": "4.0.2",
+  "unity_import": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "note": "AABB is a conservative broad-phase; physical runtime collision not tested."
+}
