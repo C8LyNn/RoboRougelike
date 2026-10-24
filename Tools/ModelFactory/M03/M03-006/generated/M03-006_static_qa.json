@@ -1,0 +1,32 @@
+{
+  "id": "M03-006",
+  "status": "STATIC_QA_LOCAL_JS_PASS",
+  "parts": 27,
+  "vertices": 1764,
+  "triangles": 3452,
+  "materials": 5,
+  "side_through_bores": 4,
+  "top_through_bores": 4,
+  "fastener_shafts": 8,
+  "closed_manifold_components": 27,
+  "positive_signed_volume_components": 27,
+  "min_volume_m3": 0.0000244,
+  "mount_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "mount_normal": "+X",
+  "top_socket_center_m": [
+    0.64,
+    0,
+    0.58
+  ],
+  "top_normal": "+Z",
+  "shaft_clearance_m": 0.008,
+  "chamfer_m": 0.025,
+  "animation": "NOT_REQUIRED",
+  "blender": "NOT_RUN",
+  "unity": "NOT_RUN",
+  "note": "Structural overlay intersections are intentional: flange/core, gussets/core, guards/core, bolt heads/plates. Bolt shafts are centered in actual bores."
+}
