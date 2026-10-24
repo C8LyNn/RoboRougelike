@@ -11,7 +11,7 @@ Nowy, wyłącznie **wizualny** moduł czteroogniwowego akumulatora kasetowego z 
 Otwarta rama grafitowa z ceramicznymi belkami, miedzianymi stopami montażowymi i szynami, dwa wysuwane kasetowe podajniki, cztery turkusowe cylindry ogniw, miedziane zaciski, pierścienie izolatorów, cyjanowe świetlne obręcze i pomarańczowe oznaczenia polaryzacji. Emisja jest dodatkiem do rzeczywistej geometrii, a nie jedyną formą.
 
 - **79 zamkniętych części**, **5464 wierzchołki**, **4786 poligonów**, **10660 trójkątów**, **7 materiałów**.
-- **Wymiary neutralne:** X 1,105 m, Y 0,795 m, Z 0,576 m. Przy wysunięciu kaset Y zwiększa się do 0,8675 m od tylnej krawędzi do wysuniętego frontu; pełną przestrzeń roboczą sprawdzać z animacją.
+- **Wymiary neutralne:** X 1,105 m, Y 0,795 m, Z 0,576 m. Przy maksymalnym wysunięciu kaset skrajny uchwyt sięga do Y=+0,514 m, a tylna krawędź pozostaje na Y=-0,3975 m: **całkowita długość robocza Y = 0,9115 m**; pełną przestrzeń roboczą sprawdzać z animacją.
 - **Mocowanie:** wewnątrz ramy pojazdu, `M05-007_MOUNT_ROOT` = **(0,0,0)** na dolnej płaszczyźnie modułu. **1 unit = 1 m**, Z-up.
 - **Ruch:** `M05-007_DRAWER_L` i `M05-007_DRAWER_R` przesuwają się wyłącznie w lokalnym kierunku **+Y**, zakres **0–0,21 m**, bez obrotu. Pivots odpowiednio **(-0,255,0,0)** i **(0,255,0,0)**. Klatki **1, 16, 31, 46, 61**: lewa kaseta wysuwa się jako pierwsza, prawa z opóźnieniem; obie wracają do położenia spoczynkowego.
 - Cztery cylindry pozostają osadzone we własnych szufladach. Brak animacji samych ogniw.
