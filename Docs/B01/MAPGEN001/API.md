@@ -12,6 +12,6 @@ The pure `MapGenPlanner.Plan(recipe, seed, config, profile)` returns `MapBluepri
 
 `MapResult`: `GeneratedRoot` (all colliders owned by builder), `Start`, `Finish`, `Spawns[]` (combat enemy spawn descriptors), `CheckpointDescriptors[]` (course waypoints DATA only), `Bounds`, `GeometryHash` SHA-256 of canonical rounded geometry, `Diagnostics`, `GenerationVersion`, `Recipe`, `Seed`.
 
-`CheckConfig` rejects non-finite inputs, profile too wide for guaranteed corridor or impossible turn radius with descriptive `ArgumentException`. No silent unsafe random rerolls. Seed same => same plan; different seeds are expected to vary cover/slalom/ramp placement. Generator owns no health/rewards/run progress.
+`CheckConfig` rejects non-finite inputs, a vehicle wider than the actually ramp-limited free corridor (width*0.60 - 3 metres with 0.5m safety margin), or impossible turn radius with descriptive `ArgumentException`. No silent unsafe random rerolls. Seed same => same plan; different seeds are expected to vary cover/slalom/ramp placement. Generator owns no health/rewards/run progress.
 
 **Limits:** geometric clearance is a conservative protected-lane rule, not swept-body real PhysX proof; very large/odd robots and aggressive mobility modules require downstream vehicle profile calibration and PlayMode tests. `Generate` must be called on Unity main thread.
