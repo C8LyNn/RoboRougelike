@@ -1,0 +1,39 @@
+name: MODEL-04 M04-003 Geometry QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-003-lower-ducted-fan
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M04/M04-003/**"
+      - ".github/workflows/qa-model-m04-003.yml"
+permissions:
+  contents: read
+concurrency:
+  group: m04-003-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  static-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install static GLB exporter
+        run: python3 -m pip install "trimesh>=4,<5"
+      - name: Run independent source and artifact QA
+        run: python3 Tools/ModelFactory/M04/M04-003/qa_m04_003.py
+      - name: Export real OBJ MTL GLB and manifest
+        run: python3 Tools/ModelFactory/M04/M04-003/generate_m04_003.py --out build/M04-003
+      - name: Publish reviewable model artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-003-lower-ducted-fan-static
+          path: |
+            build/M04-003/M04-003_lower_ducted_fan.obj
+            build/M04-003/M04-003_lower_ducted_fan.mtl
+            build/M04-003/M04-003_lower_ducted_fan_static.glb
+            build/M04-003/M04-003_manifest.json
+          if-no-files-found: error
