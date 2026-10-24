@@ -1,0 +1,50 @@
+# M05-007 material library
+newmtl Frame_Graphite
+Kd 0.11000 0.15000 0.20000
+Ks 0.30000 0.30000 0.30000
+Ns 248.0
+d 1.0
+illum 2
+
+newmtl Armor_Ceramic
+Kd 0.80000 0.83000 0.79000
+Ks 0.10000 0.10000 0.10000
+Ns 264.0
+d 1.0
+illum 2
+
+newmtl Contacts_Copper
+Kd 0.72000 0.38000 0.17000
+Ks 0.32800 0.32800 0.32800
+Ns 284.0
+d 1.0
+illum 2
+
+newmtl Cell_Petrol
+Kd 0.05500 0.31000 0.32000
+Ks 0.14400 0.14400 0.14400
+Ns 296.0
+d 1.0
+illum 2
+
+newmtl Gasket_Rubber
+Kd 0.08000 0.09000 0.10000
+Ks 0.00000 0.00000 0.00000
+Ns 56.0
+d 1.0
+illum 2
+
+newmtl Status_Cyan
+Kd 0.03500 0.64000 0.83000
+Ks 0.07200 0.07200 0.07200
+Ns 312.0
+d 1.0
+illum 2
+
+newmtl Warning_Amber
+Kd 0.91000 0.51000 0.08000
+Ks 0.11200 0.11200 0.11200
+Ns 264.0
+d 1.0
+illum 2
+
