@@ -35,6 +35,11 @@
     "shaft_bearing_clearance_m": 0.006
   },
   "ci_static": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40135948657",
-  "ci_blender": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40135910895",
-  "notes": "Draft PR only; no merge; independent static job PASS on latest asset SHA, Blender animation PASS on same generator SHA before QA tuple normalization; Unity activation unavailable."
+  "ci_blender": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40135948657",
+  "notes": "Both asset CI jobs PASS on current commit; Unity import/EditMode/PlayMode and visual inspection NOT RUN; no merge.",
+  "ci_result": "PASS — both static-geometry and blender-animation jobs on asset commit 8c9492d8d04e57c6bfe8f5d9342340e55f1e5608",
+  "artifacts": {
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40135948657/artifacts/12576419017",
+    "blend_animated_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40135948657/artifacts/12576244147"
+  }
 }
