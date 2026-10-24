@@ -368,7 +368,7 @@ def blender_export(parts,out):
         empty.empty_display_type="ARROWS"
         empty.empty_display_size=.045
         empty["mount_axis"]="-Y"
-        empty["bore_radius_m"]=LUG_BORE
+        empty["bore_radius_m"]=MOUNT_BORE
     selected_before=tuple(bpy.context.selected_objects)
     active_before=bpy.context.view_layer.objects.active
     try:
