@@ -185,8 +185,8 @@ def build():
     for sx in (-1,1):
         for sy in (-1,1):
             code=("P" if sx>0 else "N")+("P" if sy>0 else "N")
-            box("Cage_Post_"+code,(sx*.453,sy*.335,.448),
-                (.034,.034,.637),"Titanium",.006)
+            box("Cage_Post_"+code,(sx*.453,sy*.335,.441),
+                (.034,.034,.645),"Titanium",.006)
             box("Cage_Corner_Brace_"+code,(sx*.453,sy*.335,.766),
                 (.084,.080,.026),"Graphite",.007)
     for sy in (-1,1):
@@ -210,6 +210,11 @@ def build():
               (sign*.290,0,PIVOT[2]),.271,.016,"Graphite")
         torus("Shaft_Bearing_"+code,
               (sign*.267,0,PIVOT[2]),.068,.023,"Titanium")
+        # Load-bearing pedestal: foot seats on ceramic deck, upper end
+        # enters the fixed bearing's lower metal annulus by 31mm.
+        # The shaft stays 22mm clear of the pedestal at its closest.
+        box("Bearing_Pedestal_"+code,(sign*.267,0,.250),
+            (.090,.080,.240),"Graphite",.010)
         cyl("Bearing_Housing_Bolt_"+code,
             (sign*.267,.310,PIVOT[2]),.019,.029,
             "ServiceYellow",vertices=12,axis="X")
@@ -278,10 +283,13 @@ def build():
         (.063,.022,.030),"Gasket",.004)
     for sign in (-1,1):
         code="L" if sign<0 else "R"
-        box("Coolant_Pipe_"+code,(sign*.390,.300,.315),
-            (.040,.033,.255),"CoolantBlue",.009)
-        cyl("Pipe_End_Collar_"+code,(sign*.390,.300,.443),
+        box("Coolant_Pipe_"+code,(sign*.390,.300,.275),
+            (.040,.033,.285),"CoolantBlue",.009)
+        cyl("Pipe_End_Collar_"+code,(sign*.390,.300,.413),
             .032,.022,"Copper",vertices=16)
+    # Service label is bolted to a side support that meets the base.
+    box("Warning_Side_Mast",(0,.335,.352),
+        (.064,.030,.464),"Graphite",.009)
     box("Warning_Cap",(0,.332,.576),
         (.140,.023,.067),"ServiceYellow",.010)
     box("Service_Latch",(0,.346,.579),
