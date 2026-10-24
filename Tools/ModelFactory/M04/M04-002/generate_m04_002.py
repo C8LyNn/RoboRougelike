@@ -126,6 +126,7 @@ def blade(name,rotor_index,angle,mat):
 
 
 def build():
+    PARTS.clear()  # Re-entrant in Blender's persistent Python interpreter.
     assert ROTOR_RADIAL_MAX < RING_INNER-0.03
     assert ROTOR_AXIAL[1]-ROTOR_AXIAL[0] > 2*AXIAL_BLADE_HALF_EXTENT+0.10
     box("SideMount_160mm",(.027,0,0),(.054,.232,.232),"graphite")
