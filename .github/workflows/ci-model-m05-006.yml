@@ -48,3 +48,27 @@ jobs:
           assert data['unity_import']=='NOT_RUN'
           print('M05-006 STATIC QA PASS',data)
           PY
+  blender-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender from Ubuntu packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Execute isolated Blender generator twice, inspect motion and exported GLB
+        run: |
+          blender -b --python Tools/ModelFactory/M05/M05-006/blender_smoke.py -- /tmp/m05-006-blender
+      - name: Upload animated asset for visual inspection
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M05-006-Blender-animated-asset
+          path: |
+            /tmp/m05-006-blender/M05-006.blend
+            /tmp/m05-006-blender/M05-006_animated.glb
+          if-no-files-found: error
+          retention-days: 14
