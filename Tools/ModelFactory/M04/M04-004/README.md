@@ -37,8 +37,10 @@ Generator jest powtarzalny: usuwa wyłącznie własną kolekcję `M04-004_ASSET`
 ## Stan QA
 
 - Claim CREATE: **PASS**, commit `271bd43f9516bc0f416e2470e5a9ee7a2337c593`.
-- Python static sweep / deterministic OBJ: **PENDING CI**, nie deklarować PASS przed rzeczywistym uruchomieniem.
-- Blender bpy, animowany GLB: **PENDING CI** (workflow próbuje zainstalować Blender i wykonać prawdziwy eksport).
+- Python static sweep / deterministic OBJ: **PASS**, 110 próbek pozy i 47 520 testów par AABB; minimalna separacja wzdłuż Y: 0,01859 m. Regeneracja OBJ/MTL/JSON dwukrotnie daje identyczne bajty.
+- Geometria OBJ: **PASS**, 43 zamknięte manifold bryły, wszystkie o dodatniej zorientowanej objętości, 1760 wierzchołków i 3376 trójkątów; pięć materiałów.
+- Blender bpy 5.0.1, animowany GLB: **PASS**, rzeczywisty eksport 90 800 B; parsowanie GLB potwierdziło 46 węzłów, 43 meshe, pięć materiałów, dwa zestawy animacji i wymagane pivoty yaw/pitch. [GitHub Actions #40100402785](https://github.com/C8LyNn/RoboRougelike/actions/runs/40100402785).
+- [Pobierz artefakt .blend + animowany GLB](https://github.com/C8LyNn/RoboRougelike/actions/runs/40100402785/artifacts/12562308823) — archiwum CI przechowywane 30 dni (do 23.11.2026), nie plik trwale w repo.
 - Import Unity 6, EditMode, PlayMode, test wizualny: **NOT RUN**.
 - Zmiany nie obejmują `Assets/Scenes`, `ProjectSettings` ani kodu rozgrywki.
 
