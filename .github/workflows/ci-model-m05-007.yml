@@ -65,11 +65,25 @@ jobs:
       - name: Install actual Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
       - name: Generate and verify real Blender animated GLB and BLEND
         run: |
           blender -b --python Tools/ModelFactory/M05/M05-007/blender_smoke.py -- /tmp/m05-007-blender
+          test -s /tmp/m05-007-blender/M05-007.blender-qa.json
+          test -s /tmp/m05-007-blender/M05-007_animated.glb
+          test -s /tmp/m05-007-blender/M05-007.blend
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/m05-007-blender')
+          qa=json.loads((p/'M05-007.blender-qa.json').read_text())
+          assert qa['status']=='BLENDER_PASS'
+          assert qa['iterations']==2
+          assert qa['no_leaked_datablocks'] and qa['unrelated_object_preserved']
+          assert len(qa['animated_nodes'])>=2
+          print('M05-007 BLENDER PASS verified by workflow',qa)
+          PY
       - name: Upload real Blender exports
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -77,6 +91,6 @@ jobs:
           path: |
             /tmp/m05-007-blender/M05-007.blend
             /tmp/m05-007-blender/M05-007_animated.glb
-            /tmp/m05-007-blender/M05-007.report.json
+            /tmp/m05-007-blender/M05-007.blender-qa.json
           if-no-files-found: error
           retention-days: 14
