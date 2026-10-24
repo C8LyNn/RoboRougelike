@@ -1,0 +1,51 @@
+{
+  "model": "M05-005",
+  "parts": 47,
+  "vertices": 4358,
+  "polygons": 4106,
+  "triangles": 8572,
+  "materials": 7,
+  "manifold_edges": "PASS",
+  "positive_winding": "PASS",
+  "degenerate_triangles": 0,
+  "mount_origin_m": [
+    0,
+    0,
+    0
+  ],
+  "core_pivot_m": [
+    0,
+    0,
+    0.36
+  ],
+  "pulse_frames": [
+    1,
+    16,
+    31,
+    46,
+    61
+  ],
+  "core_scale_range": [
+    0.9,
+    1.04
+  ],
+  "minimum_core_radial_gap_m": 0.04724,
+  "bounding_min_m": [
+    -0.48,
+    -0.48,
+    0
+  ],
+  "bounding_max_m": [
+    0.48,
+    0.48,
+    0.584
+  ],
+  "blender_execution": "NOT_RUN",
+  "animated_glb": "NOT_RUN",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN",
+  "asset_scope": "visual_only_no_DEF_001_gameplay",
+  "source": "geometry.json",
+  "method": "signed_volume + manifold_edge_count + triangulation + core_radial_clearance",
+  "notes": "Metrics calculated from actual checked-in OBJ; Blender and Unity must be separately executed."
+}
