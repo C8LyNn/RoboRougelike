@@ -1,8 +1,31 @@
 {
   "id": "M04-002",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "DRAFT_QA_HOLD",
   "claimed_at_utc": "2026-10-24T11:45:11Z",
   "model": "Wirnik podwójny przeciwsobny",
-  "run": "2026-10-24T11Z"
+  "run": "2026-10-24T11Z",
+  "production_branch": "feature/rrl-model-m04-002-contra-rotor",
+  "production_head_sha": "57e332eb746573e510d000755dc5559af238bd67",
+  "draft_pr": 42,
+  "files": [
+    "Tools/ModelFactory/M04/M04-002/generate_m04_002.py",
+    "Tools/ModelFactory/M04/M04-002/test_m04_002.py",
+    "Tools/ModelFactory/M04/M04-002/README.md",
+    ".github/workflows/ci-m04-002.yml"
+  ],
+  "qa": {
+    "cpython_generator": "PASS_LOCAL",
+    "static_obj_topology": "PASS_LOCAL",
+    "parts": 62,
+    "vertices": 7952,
+    "faces": 7158,
+    "materials_used": 6,
+    "radial_clearance_nominal_m": 0.041,
+    "axial_clearance_nominal_m": 0.19,
+    "blender": "NOT_RUN",
+    "glb_export": "NOT_RUN",
+    "unity": "NOT_RUN",
+    "github_actions": "PENDING_OR_NOT_VISIBLE"
+  }
 }
