@@ -1,0 +1,31 @@
+{
+  "id": "M01-006",
+  "status": "PASS_STATIC",
+  "parts": 63,
+  "static_parts": 43,
+  "moving_parts": 20,
+  "vertices": 994,
+  "triangles": 1736,
+  "materials": 7,
+  "needles": 5,
+  "unit": "meter",
+  "mount_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "forward_axis": "+Y",
+  "up_axis": "+Z",
+  "rail_translation_axis": "+Y",
+  "rail_extension_m": 0.18,
+  "animation_pose_samples": 37,
+  "aabb_pair_checks": 31820,
+  "static_moving_collision_count": 0,
+  "manifold_components": 63,
+  "positive_signed_volume_parts": 63,
+  "blender_export": "NOT_RUN",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN",
+  "obj": "generated/M01-006_ceramic_needle_launcher.obj",
+  "mtl": "generated/M01-006_ceramic_needle_launcher.mtl"
+}
