@@ -1,5 +1,29 @@
 # MAPGEN001_PACKAGE_GATE.md — B01-40 P0 independent package gate
 
+
+## Update 2026-10-24 — subsequently published R3 snapshot, NOT the original R2 audit
+
+**Second immutable snapshot:** [PR #103 at 9b52f60aac7e28315b1e3aa1251f3f1cd7b26098](https://github.com/C8LyNn/RoboRougelike/commit/9b52f60aac7e28315b1e3aa1251f3f1cd7b26098) advanced **10 more commits** beyond audited e22906f, with only **8 documentation/manifest files changed**. Therefore the 35 other checksums listed in the R2 table below remain valid for R3. The following 8 SHA-256 checksums supersede their R2 table rows **only for this exact R3 snapshot**:
+
+| Path (all under Docs/B01/MAPGEN001/) | Bytes | R3 SHA-256 |
+|---|---:|---|
+| API.md | 3641 | 293ea715a0c82f38fb71f4f836259d44a54c508050245f8704e3891541466fa8 |
+| CHANGELOG.md | 2784 | ee657437c695e397ca6942ec0cc4ad0aa5ab7eb2499b8058967dca08559d8d6e |
+| INSTALL_FOR_GPT_OSS.md | 5338 | 3906645e9a650ff94cee88547f55ced0ffeea55ec5bea984f6b1d1a89c0c6bc5 |
+| KNOWN_LIMITATIONS.md | 3331 | b476d1d9b1810611741e425b5015f3a4281d5e0f067e93ac2f69a5c2b992ecca |
+| README.md | 1794 | de049f84894380ef1a663500c5a52407ef9bc704ae402a65e96af37561b69414 |
+| TEST_EVIDENCE.md | 1962 | 4f2d48c5a59feb1128fe48df95e5849c25fe1dc54ed85fb51b973028fea1ecd5 |
+| TEST_PLAN.md | 5395 | 9debbf54be95eac31f89895077264c53ef156d4e5688ef376d9c939f6bcd0f67 |
+| manifest.json | 10614 | 29ad8e9cf5742998c74383c5b7e553b9ce7228cc0df5511b30853115af27dc33 |
+
+**Concrete R3 integrity failures:** manifest contains 42 Git SHA-1 identities, but **8 differ from the R3 actual blob IDs**: one Tests/PlayMode/MapGenPlayModeTests.cs and seven edited documentation files (API.md, CHANGELOG.md, INSTALL_FOR_GPT_OSS.md, KNOWN_LIMITATIONS.md, README.md, TEST_EVIDENCE.md, TEST_PLAN.md). It also includes a new source_file_sha256_by_path map, but contains only **30 of the 42** non-self package paths, with 12 missing hashes (including 3 PlayMode .cs/.meta entries and 9 docs). The R3 manifest reports R3_SOURCE_FROZEN_NATIVE_QA_BLOCKED, but the exact manifest is not yet internally consistent. It cannot pass G0 until those path hashes and byte counts are complete and coherent.
+
+**R3 gates: G0=FAIL / G1=BLOCKED (Unity and independent B01-60 NOT_RUN) / G2=BLOCKED / READY_FOR_GPT_OSS=NO.** The new SHA-256 values above are per-file evidence only. The earlier R2 per-file table is not to be misrepresented as the R3 SHA manifest without applying these exact 8 updates. No physical ZIP and no ZIP SHA-256 were established. Do not treat either snapshot as installed or shipped.
+
+---
+
+
+
 **Audit snapshot:** 2026-10-24; **source under audit:** [Draft PR #103](https://github.com/C8LyNn/RoboRougelike/pull/103), immutable commit **e22906f9c973a632ca92815a964fadfbe1790665**. The original requested checkpoint was a2993a4cb09275864a04c6eaf8bc7b9f4dfb9946; PR #103 advanced **seven commits** and changed six C# source/test files. This audit pins e22906f exactly; it is not approval for later moving HEAD.
 
 **Repository:** https://github.com/C8LyNn/RoboRougelike; **Issue:** https://github.com/C8LyNn/RoboRougelike/issues/93; **R1 PR #99:** https://github.com/C8LyNn/RoboRougelike/pull/99 at 6dd21a72c6ec1590015042be6775a7bd0f57f3e1; **R2 PR #103 base:** R1 HEAD; **main/develop baseline observed:** 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1. **Recipient:** GPT OSS only after B01-00 G2; not Codex. No merge, build release, host integration or receiver ACK performed.
