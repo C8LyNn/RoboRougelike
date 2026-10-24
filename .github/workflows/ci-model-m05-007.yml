@@ -32,6 +32,8 @@ jobs:
           python3 Tools/ModelFactory/M05/M05-007/generate_m05_007.py --out /tmp/m05-007-b
           cmp /tmp/m05-007-a/M05-007.obj /tmp/m05-007-b/M05-007.obj
           cmp /tmp/m05-007-a/M05-007.mtl /tmp/m05-007-b/M05-007.mtl
+          cmp Tools/ModelFactory/M05/M05-007/M05-007.obj /tmp/m05-007-a/M05-007.obj
+          cmp Tools/ModelFactory/M05/M05-007/M05-007.mtl /tmp/m05-007-a/M05-007.mtl
           python3 - <<'PY'
           import json
           from pathlib import Path
