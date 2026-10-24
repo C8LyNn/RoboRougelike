@@ -59,9 +59,10 @@ namespace B01.MAPGEN001
                 Bounds = worldBounds, GeometryHash = p.GeometryHash, Diagnostics = p.Diagnostics
             };
             // Fully deactivate old collision geometry before postponing Destroy until end of frame.
+            // Finalize only after all geometry, bounds and metadata succeeded.
+            // No engine calls after publishing Current: avoid a partial commit.
             Clear();
             Current = next;
-            Physics.SyncTransforms();
             return Current;
             }
             catch
