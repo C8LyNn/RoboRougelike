@@ -31,6 +31,10 @@ jobs:
           cmp /tmp/m04a/M04-004.obj /tmp/m04b/M04-004.obj
           cmp /tmp/m04a/M04-004.mtl /tmp/m04b/M04-004.mtl
           cmp /tmp/m04a/M04-004.static-qa.json /tmp/m04b/M04-004.static-qa.json
+      - name: Independent closed-manifold and outward normals QA
+        run: |
+          set -euo pipefail
+          python3 Tools/ModelFactory/M04/M04-004/qa_mesh_m04_004.py --asset-dir /tmp/m04a
       - name: Assert exact geometry QA
         run: |
           python3 - <<'PY'
