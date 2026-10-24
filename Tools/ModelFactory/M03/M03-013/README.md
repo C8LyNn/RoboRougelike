@@ -13,7 +13,7 @@ A 1.8 m long, 0.63 m wide underbody sill guard with a central graphite armor spi
 ## Files
 
 - `generate_m03_013.py` — dependency-free procedural watertight OBJ/MTL/JSON export, plus Blender `bpy` GLB/FBX/BLEND export.
-- `qa_m03_013.py` — independent verification of actual OBJ face winding, positive mesh volume, watertightness, four real bores, rivets, materials and byte-for-byte deterministic regeneration.
+- `qa_m03_013.py` — independent verification of actual OBJ face winding, positive mesh volume, watertightness, four real bores, rivets, materials and byte-for-byte deterministic regeneration.\n- `qa_blender_m03_013.py` — Blender-only same-session double build: checks that all 38 meshes, 4 SNAP locators, root and 5 materials are reused without duplicate objects or orphaned meshes.
 - `.github/workflows/ci-m03-013.yml` — static QA and real Blender exporter workflow; publishes downloadable artifacts if successful.
 
 ## Commands
@@ -28,4 +28,4 @@ blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M0
 
 ## Verification boundaries
 
-Do not treat source assertions as evidence of a Unity import. The CI workflow executes the actual generator and independent OBJ parser, then installs Blender and checks the exported GLB structure. Blender success is established **only by a completed green workflow run**. Unity EditMode, PlayMode, visual inspection of the complete assembly, material tuning and real vehicle attachment: **NOT RUN** until explicitly executed. The 32-segment rivets and real bore edges are generated geometry, not texture illusions.
+Do not treat source assertions as evidence of a Unity import. [GitHub Actions run 40140600772](https://github.com/C8LyNn/RoboRougelike/actions/runs/40140600772) **PASS**: actual OBJ/MTL, 38 oriented watertight meshes, 2844 vertices, 5568 triangles, five materials, four real mounting bores, eight heavy rivet heads, four SNAP locators, byte-for-byte deterministic OBJ; Blender 4.0.2 generated real GLB/FBX/BLEND, and GLB structural QA passed. A separate follow-up workflow also verifies Blender same-session regeneration without duplicates; its result must be inspected independently. Unity EditMode, PlayMode, visual inspection of the complete assembly, material tuning and real vehicle attachment: **NOT RUN** until explicitly executed. The 32-segment rivets and real bore edges are generated geometry, not texture illusions.
