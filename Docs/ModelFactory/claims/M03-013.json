@@ -1,8 +1,14 @@
 {
   "id": "M03-013",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T22:53:13.453Z",
   "model": "Osłona progu dolnego",
-  "run": "2026-10-24T22Z"
+  "run": "2026-10-24T22Z",
+  "branch": "feature/rrl-model-m03-013-lower-sill-guard",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/129",
+  "claim_create_commit": "32226480d40515a42ec9276ee807e7370ce6de30",
+  "static_qa": "PASS",
+  "blender_qa": "PENDING",
+  "unity_qa": "NOT RUN"
 }
