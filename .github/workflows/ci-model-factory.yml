@@ -1,0 +1,23 @@
+name: Model Factory Geometry QA
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/**"
+      - ".github/workflows/ci-model-factory.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  procedural-assets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check Blender generator syntax and source geometry, OBJ and animated GLB
+        run: python3 Tools/ModelFactory/qa_assets.py
