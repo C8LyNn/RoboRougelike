@@ -40,7 +40,7 @@
     "Assets/B01Packages/MAPGEN001/Tests/EditMode/B01.MAPGEN001.EditModeTests.asmdef.meta": "1dbbf5d8de4085831429a193316eb4e3d56782e6",
     "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenEditModeTests.cs": "0ca0ab2d97a63373c15a8bd28a4d338c83ca265c",
     "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenEditModeTests.cs.meta": "f3f48f8a6d5159ca4128a4fe9f3f36ef3667463e",
-    "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs": "4b9bbe4a6bc7cb56fd7cf0b7863d11453f92e185",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs": "ad921b55a1708d3d50b3555f21a075f1d603af04",
     "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs.meta": "0fe9b864ea142b0b4d13a79cf1657fb7bc5736cf",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode.meta": "d663aabeccb24bf96540966b7c1e77af00c028cb",
     "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef": "be4f265471cf849e878f9a5bfb4c243ed6f3bf2d",
@@ -109,7 +109,17 @@
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs": "4d87aa6a100f18a101c8b4be0e58fe72286111999fa5e96634348051a771ffc2",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs.meta": "445a7533968b2db691bc74d92ff55f885dedd95296c347c8140aaa5e72d65ade",
     "Assets/B01Packages/MAPGEN001/Tests.meta": "3fb31cd84598accecf46915d4135c85629f87c5612c5013f08510d0ea3af5e95",
-    "Assets/B01Packages/MAPGEN001/Tests/EditMode.meta": "9d6a85757f7c171d6381c695afcfcf11dfd34b25f25bb0d1cd98c2f02a3eb077"
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode.meta": "9d6a85757f7c171d6381c695afcfcf11dfd34b25f25bb0d1cd98c2f02a3eb077",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/B01.MAPGEN001.EditModeTests.asmdef": "2adf3d0c513e3751386a0b48c15ce55f2a51ab5db2a9ef20155e31410dbb8ac4",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/B01.MAPGEN001.EditModeTests.asmdef.meta": "230069b38122383998b1fc477969b00fd511023565116b0709fca74c18b7ce36",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenEditModeTests.cs": "7cdb51d22a2c00507696e971518a0610c24269c3ea58fc07ce4169919879021e",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenEditModeTests.cs.meta": "8e2ac20991ad14295039005bd8c5b0c54a756b83c454cc266f0a819700589080",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs": "55abe8434d22426558cab92d1478c3cce95967258cb153b017d4f419f1f80068",
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs.meta": "876b520913e6549d6494ac9c14af213ec88d9e7992320fac559361bf9a66a6fb",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode.meta": "88dd9cbd0f7b007ab143ea359213e1696e591361e040470d8180995353ff7c46",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef": "c59e2b273efd1d7d5519402fb20ab2cee7d79170fca66fda93102f107111e244",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef.meta": "326d450ea88bd6f9984e4ce178cf1e122cf6d08c95bd8a3ec4c45db014c9afd2",
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs": "c03e0658f40488459b3e8b8511191581e91fa99002aeca7708ed41d558bcd4ab"
   },
   "parent_package_r2_sha": "a2993a4cb09275864a04c6eaf8bc7b9f4dfb9946",
   "source_sha256_note": "Per-source SHA256 derived from exact UTF-8 GitHub file contents, excluding this self-referential manifest. Recheck after checkout; no physical ZIP/archive SHA256 is available."
