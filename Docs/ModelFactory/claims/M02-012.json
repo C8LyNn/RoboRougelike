@@ -1,8 +1,15 @@
 {
   "id": "M02-012",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_QA_PENDING",
   "claimed_at_utc": "2026-10-24T21:46:51.808Z",
   "model": "Kompaktowy silnik V2",
-  "run": "2026-10-24T21Z"
+  "run": "2026-10-24T21Z",
+  "pr": 121,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/121",
+  "branch": "feature/rrl-model-m02-012-compact-v2-engine",
+  "claim_create_commit": "70f903816ff42877f500b0254c6fd388f25a45ad",
+  "qa_status": "IN_PROGRESS",
+  "blender": "IN_PROGRESS",
+  "unity": "NOT RUN"
 }
