@@ -1,0 +1,90 @@
+name: M01-011 Long Precision Rifle Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-011-long-precision-rifle
+    paths:
+      - 'Tools/ModelFactory/M01/M01-011/generate_m01_011.py'
+      - 'Tools/ModelFactory/M01/M01-011/validate_m01_011.py'
+      - 'Tools/ModelFactory/M01/M01-011/README.md'
+      - '.github/workflows/ci-model-m01-011.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-011/**'
+      - '.github/workflows/ci-model-m01-011.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: model-m01-011-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  real-blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Compile generator and independent validator
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-011/generate_m01_011.py
+          python3 -m py_compile Tools/ModelFactory/M01/M01-011/validate_m01_011.py
+      - name: Install Blender 4.x
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Execute real Blender geometry, swept bolt and export QA
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M01/M01-011/generate_m01_011.py \
+            -- --out /tmp/m01-011
+      - name: Independently inspect generated BLEND FBX GLB OBJ MTL
+        run: |
+          python3 Tools/ModelFactory/M01/M01-011/validate_m01_011.py /tmp/m01-011
+      - name: Publish actual exports ONLY to own M01-011 branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m01-011-long-precision-rifle'
+        run: |
+          set -euo pipefail
+          dest=Tools/ModelFactory/M01/M01-011/generated
+          mkdir -p "$dest"
+          cp /tmp/m01-011/M01-011_long_precision_rifle.blend "$dest/"
+          cp /tmp/m01-011/M01-011_long_precision_rifle_animated.glb "$dest/"
+          cp /tmp/m01-011/M01-011_long_precision_rifle_animated.fbx "$dest/"
+          cp /tmp/m01-011/M01-011_long_precision_rifle.obj "$dest/"
+          cp /tmp/m01-011/M01-011_long_precision_rifle.mtl "$dest/"
+          cp /tmp/m01-011/M01-011_qa.json "$dest/"
+          git add "$dest"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-011): actual Blender 3D exports and bolt QA"
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-011-long-precision-rifle:refs/remotes/origin/feature/rrl-model-m01-011-long-precision-rifle
+              git rebase origin/feature/rrl-model-m01-011-long-precision-rifle
+              if git push origin HEAD:feature/rrl-model-m01-011-long-precision-rifle; then
+                echo "Real M01-011 assets published to own branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Cannot publish real M01-011 exports"
+                exit 1
+              fi
+            done
+          fi
+      - name: Upload actual 3D asset pack
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M01-011-long-precision-rifle-3D
+          path: |
+            /tmp/m01-011/M01-011_long_precision_rifle.blend
+            /tmp/m01-011/M01-011_long_precision_rifle_animated.glb
+            /tmp/m01-011/M01-011_long_precision_rifle_animated.fbx
+            /tmp/m01-011/M01-011_long_precision_rifle.obj
+            /tmp/m01-011/M01-011_long_precision_rifle.mtl
+            /tmp/m01-011/M01-011_qa.json
+          if-no-files-found: error
+          retention-days: 30
