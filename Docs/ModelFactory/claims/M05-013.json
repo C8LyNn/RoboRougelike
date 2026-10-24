@@ -4,5 +4,16 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-24T22:53:10.150Z",
   "model": "Moduł naprawczy z manipulatorem",
-  "run": "2026-10-24T22Z"
+  "run": "2026-10-24T22Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/130",
+  "asset_branch": "feature/rrl-model-m05-013-repair-manipulator",
+  "asset_path": "Tools/ModelFactory/M05/M05-013/",
+  "claim_commit_sha": "8a7aa354f5b90d9551064d20baee588bfda7bf83",
+  "asset_commit_sha": "c65cb57777f5d124adfd1470f7a7194536accfce",
+  "qa": {
+    "static": "PASS (GitHub Actions run 40140621600, 361 sampled poses, 52 watertight meshes)",
+    "blender": "PENDING_RETEST (missing numpy dependency fixed)",
+    "unity": "NOT RUN",
+    "visual_review": "NOT RUN"
+  }
 }
