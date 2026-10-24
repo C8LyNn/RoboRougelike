@@ -122,7 +122,7 @@ def build():
                      chamfer_rect(sign*.169,.655,.076,.042,.011),
                      -.124,-.104,"Ceramic_Ivory","cladding"))
         add(prism_xz(f"Amber_Tip_Marker_{i}",
-                     chamfer_rect(sign*.265,.662,.014,.025,.006),
+                     chamfer_rect(sign*.225,.662,.014,.025,.006),
                      -.130,-.121,"Amber_Indicator","accent"))
     add(prism_xz("Amber_Stem_Indicator",
                  chamfer_rect(0,.362,.013,.048,.004),
