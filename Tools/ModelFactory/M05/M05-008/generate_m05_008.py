@@ -36,7 +36,7 @@ MATERIALS = {
     "AmberLED": ((0.96, 0.43, 0.06, 1.0), 0.12, 0.30, 1.8),
 }
 SOCKETS = {
-    "MOUNT_BOTTOM": ((0.0, 0.0, 0.0), (0.0, 0.0, math.pi)),
+    "MOUNT_BOTTOM": ((0.0, 0.0, 0.0), (math.pi, 0.0, 0.0)),
     "SERVICE_FRONT": ((0.0, -0.345, 0.43), (math.pi / 2, 0.0, 0.0)),
     "POWER_REAR": ((0.0, 0.355, 0.25), (-math.pi / 2, 0.0, 0.0)),
 }
