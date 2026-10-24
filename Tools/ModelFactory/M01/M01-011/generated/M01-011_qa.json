@@ -1,0 +1,32 @@
+{
+  "id": "M01-011",
+  "name": "Długi karabin precyzyjny",
+  "status": "BLENDER_EXPORTED",
+  "blender_version": "4.0.2",
+  "metres_per_unit": 1.0,
+  "forward": "+Z",
+  "up": "+Y",
+  "mount": "MOUNT_TOP_SOCKET at (0,0,0), top vehicle socket",
+  "animation_node": "BOLT_CARRIER_R",
+  "bolt_axis": "local -Z / rearward",
+  "bolt_stroke_m": 0.12,
+  "frames": [
+    1,
+    48
+  ],
+  "fps": 60,
+  "motion_samples": 48,
+  "aabb_comparisons": 21888,
+  "minimum_noncontact_aabb_gap_m": 0.028,
+  "mesh_objects": 82,
+  "vertices": 10704,
+  "triangles": 21128,
+  "materials": 7,
+  "closed_manifold_positive_volume": "PASS",
+  "bolt_track_engagement_and_moving_fixed_aabb": "PASS",
+  "bored_barrel": "TRUE ANNULAR MESH",
+  "unity_import": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "manual_visual_inspection": "NOT RUN",
+  "note": "AABB checks only; physical Unity collision and visual render require separate QA."
+}
