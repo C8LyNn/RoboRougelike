@@ -1,0 +1,39 @@
+{
+  "id": "M01-007",
+  "status": "PASS_STATIC",
+  "parts": 83,
+  "static_parts": 38,
+  "moving_parts": 45,
+  "vertices": 3450,
+  "triangles": 6624,
+  "materials": 7,
+  "unit": "meter",
+  "mount_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "forward_axis": "+Y",
+  "up_axis": "+Z",
+  "animation_axis": "+Y",
+  "ring_centers_y_m": [
+    0.68,
+    0.98,
+    1.28
+  ],
+  "ring_translation_amplitude_m": 0.04,
+  "ring_count": 3,
+  "animation_pose_samples": 49,
+  "aabb_or_radial_pair_checks": 83790,
+  "moving_static_collisions": 0,
+  "min_ring_axial_clearance_m": 0.122718,
+  "closed_positive_volume_components": 83,
+  "blender_export": "PASS",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN",
+  "obj": "/tmp/m01-007-blender/M01-007_impulse_ring_cannon.obj",
+  "mtl": "/tmp/m01-007-blender/M01-007_impulse_ring_cannon.mtl",
+  "glb": "/tmp/m01-007-blender/M01-007_impulse_ring_cannon_animated.glb",
+  "fbx": "/tmp/m01-007-blender/M01-007_impulse_ring_cannon_animated.fbx",
+  "blend": "/tmp/m01-007-blender/M01-007_impulse_ring_cannon.blend"
+}
