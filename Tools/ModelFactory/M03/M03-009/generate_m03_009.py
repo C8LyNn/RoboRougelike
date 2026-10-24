@@ -326,6 +326,11 @@ def blender_export(parts,out):
         for ob in tuple(old.objects):
             bpy.data.objects.remove(ob,do_unlink=True)
         bpy.data.collections.remove(old)
+    # Removing objects does not delete their now-orphaned Mesh datablocks.
+    # Clean ONLY this model's unused datablocks, never other scene assets.
+    for mesh in tuple(bpy.data.meshes):
+        if mesh.name.startswith(PREFIX) and mesh.users==0:
+            bpy.data.meshes.remove(mesh)
     collection=bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(collection)
     root=bpy.data.objects.new(PREFIX+"ROOT_PIVOT",None)
