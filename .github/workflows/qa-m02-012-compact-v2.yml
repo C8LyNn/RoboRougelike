@@ -19,7 +19,7 @@ jobs:
       - name: Install actual Blender from Ubuntu repositories
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends blender
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
           blender --version | head -n 2
       - name: Compile scripts
         run: |
