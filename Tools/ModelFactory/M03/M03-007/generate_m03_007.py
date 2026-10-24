@@ -239,6 +239,20 @@ def export_blender(parts,out):
     scene.collection.children.link(collection)
     root=bpy.data.objects.new("M03_007_TOP_MOUNT_PIVOT",None)
     collection.objects.link(root);root.empty_display_size=.06
+    root["snap_grid_m"]=1.0
+    # Explicit child sockets: these are locators, not additional mesh geometry.
+    for label,x,z,axis in (
+        ("FOOT_LEFT",-.34,0,"+Z"),
+        ("FOOT_RIGHT",.34,0,"+Z"),
+        ("TOP_LEFT",-.34,.657,"+Y"),
+        ("TOP_RIGHT",.34,.657,"+Y"),
+    ):
+        socket=bpy.data.objects.new("M03_007_SNAP_"+label,None)
+        socket.empty_display_size=.025
+        socket.location=(x,0,z)
+        socket.parent=root
+        socket["mount_axis"]=axis
+        collection.objects.link(socket)
     mats={}
     for name,(rgba,metal,rough) in MATERIALS.items():
         key="M03_007_"+name
