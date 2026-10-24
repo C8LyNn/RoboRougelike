@@ -27,6 +27,8 @@ jobs:
       - name: Generate static OBJ and verify all faces and materials
         run: |
           python3 Tools/ModelFactory/M01/M01-005/generate_m01_005.py --output-dir /tmp/m01-005-static
+          cmp Tools/ModelFactory/M01/M01-005/M01-005.obj /tmp/m01-005-static/M01-005.obj
+          cmp Tools/ModelFactory/M01/M01-005/M01-005.mtl /tmp/m01-005-static/M01-005.mtl
           python3 - <<'PY'
           import json
           from pathlib import Path
