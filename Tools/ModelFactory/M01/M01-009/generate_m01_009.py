@@ -157,6 +157,10 @@ def build():
                  .081,.037,20)
         cone("Rocket_Ceramic_Nose_"+tag,"Ivory_Ceramic",x,.346,.620,
              .079,.180,20)
+        # Red warning tip is mechanically seated inside the ceramic nose,
+        # rather than floating in front of the launch tube.
+        cone("Rocket_Warhead_Tip_"+tag,"Warhead_Red",x,.346,.708,
+             .034,.065,20)
         for side in (-1,1):
             prism("Rocket_Fin_"+tag+str(side),"Safety_Amber",
                   x+side*.084,.344,.289,.045,.028,.104,.006)
