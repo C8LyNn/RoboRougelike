@@ -73,6 +73,31 @@ namespace B01.MAPGEN001.Tests
             finally { Object.Destroy(host); }
         }
 
+
+        [UnityTest] public IEnumerator RegenerateCyclesRemoveOldColliderRoots()
+        {
+            var host = new GameObject("MAPGEN001_RegenCycleHost");
+            var generator = host.AddComponent<MapGenBuilder>();
+            try
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    var recipe = i % 2 == 0 ? MapRecipe.CombatArena : MapRecipe.ObstacleCourse;
+                    var original = generator.Regenerate(recipe, 100 + i, MapGenConfig.Default, MapVehicleProfile.Heavy);
+                    Assert.Greater(original.GeneratedRoot.GetComponentsInChildren<Collider>().Length, 0);
+                    var replaced = generator.Regenerate(recipe, 200 + i, MapGenConfig.Default, MapVehicleProfile.Heavy);
+                    Assert.AreNotSame(original.GeneratedRoot, replaced.GeneratedRoot);
+                    Assert.IsFalse(original.GeneratedRoot.activeSelf, "Prior root must disable synchronously");
+                    yield return null;
+                    Assert.IsTrue(original.GeneratedRoot == null, "Old collider root not destroyed");
+                    Assert.Greater(replaced.GeneratedRoot.GetComponentsInChildren<Collider>().Length, 0);
+                    generator.Clear();
+                    yield return null;
+                    Assert.IsTrue(replaced.GeneratedRoot == null, "Clear left colliders alive");
+                }
+            }
+            finally { Object.Destroy(host); }
+        }
         [UnityTest] public IEnumerator RejectedInputPreservesPreviousLiveLevel()
         {
             var host = new GameObject("MapGenAtomicityTest");
