@@ -64,8 +64,9 @@ jobs:
           obj=(root/"M03-002.obj").read_text("utf-8")
           assert spec["component_count"]==77
           assert spec["fixed_wear_liners"]==8
-          assert obj.count("\\no Sleeve_WearLiner_")==8
-          assert obj.count("\\nv ")==616
-          assert obj.count("\\nf ")==462
+          lines=obj.splitlines()
+          assert sum(line.startswith("o Sleeve_WearLiner_") for line in lines)==8
+          assert sum(line.startswith("v ") for line in lines)==616
+          assert sum(line.startswith("f ") for line in lines)==462
           print("M03-002 static OBJ and selected export source QA PASS")
           PY
