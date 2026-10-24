@@ -28,6 +28,9 @@ namespace B01.BUILD001.Tests
             wheel.transform.position = core.transform.position +
                 Vector3.right * BuildSocketGeometry.GridMetres;
             wheel.transform.localScale = new Vector3(.3f, .26f, .3f);
+            // Hide the nearby wheel for this isolated core hit; otherwise the
+            // deliberately adjacent tire collider intercepts the ray first.
+            wheel.SetActive(false);
             Physics.SyncTransforms();
 
             var forwardRay = new Ray(core.transform.position +
@@ -40,6 +43,8 @@ namespace B01.BUILD001.Tests
             Assert.AreEqual(BuildHitResult.Valid,response);
             Assert.AreEqual(Vector3Int.right,face);
 
+            wheel.SetActive(true);
+            Physics.SyncTransforms();
             var tireRay = new Ray(wheel.transform.position + Vector3.up,
                 Vector3.down);
             Assert.IsTrue(Physics.Raycast(tireRay,out var tireHit,2f));
