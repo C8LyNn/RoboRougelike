@@ -20,3 +20,9 @@ Verification boundaries:
 - B01-60 independent QA: PENDING.
 - B01-40 SHA256/GUID target compatibility: PENDING.
 - G1 BLOCKED; G2 HOLD. The existing game's reported wheel attachment issue is NOT YET FIXED in the game; only the new isolated proof-of-concept rules have been written.
+
+## R1.1 producer static rework — 2026-10-25
+- Source review found `BuildPlacementRules.Check` could treat a living but **Core-disconnected orphan** as valid structural support. This is a genuine source-level FAIL relative to #140 acceptance.
+- Producer changed `Check` to consult `Reachable(installed)`, requiring the supporting part be connected to a living Core. Commit `0c147128a06b3dafc64fe4117cac3effa7914cb4`.
+- Added `AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment` EditMode regression source, commit `f49e5a8159fd973bb4253db044dc1b8f74df2a98`.
+- **No native RED/ GREEN test was executed.** B01-60 must run this test and all prior ones independently on the FINAL exact SHA; reported statuses stay G1 NOT_RUN and G2 HOLD.
