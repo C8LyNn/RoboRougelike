@@ -1,6 +1,6 @@
 {
   "id": "M03-002",
-  "result": "STATIC_GEOMETRY_SOURCE_UPDATED_PENDING_CI",
+  "result": "STATIC_GEOMETRY_PASS",
   "component_count": 77,
   "vertices": 616,
   "quads": 462,
@@ -37,5 +37,7 @@
   "liner_wall_anchor_overlap_m": 0.003,
   "export_scope": "only M03-002_ASSET collection (use_selection=True)",
   "geometry_revision": "M03-002_V2_GUIDE_LINERS",
-  "note": "Static OBJ committed with eight fixed liners, generator collision tests pending CI confirmation. Blender exporter now selects only its own collection; Blender/Unity NOT RUN."
+  "note": "Eight anchored sleeve liners and fixed/moving AABB checks validated by actual GitHub Actions run 40099230544. GLB export code restricted to its own collection; Blender and Unity NOT RUN.",
+  "ci_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40099230544",
+  "qa_status": "CI_PASS_21_POSITION_AABB_NONPENETRATION_AND_DETERMINISTIC_OBJ"
 }
