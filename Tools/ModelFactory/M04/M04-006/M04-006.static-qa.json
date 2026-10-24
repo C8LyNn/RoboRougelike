@@ -1,0 +1,24 @@
+{
+  "id": "M04-006",
+  "mount": "rear_frame",
+  "units": "metres",
+  "parts": 72,
+  "fixed_parts": 62,
+  "animated_parts": 10,
+  "vertices": 1024,
+  "triangles": 1760,
+  "materials": 7,
+  "closed_manifold_meshes": "PASS",
+  "outward_winding": "PASS",
+  "sweep_angles_deg": [
+    -8,
+    18
+  ],
+  "sweep_samples": 27,
+  "aabb_pairs_checked": 17820,
+  "moving_vs_static_and_other_vanes": "PASS",
+  "blender": "NOT_RUN",
+  "animated_glb": "NOT_RUN",
+  "unity_import": "NOT_RUN",
+  "visual_review": "NOT_RUN"
+}

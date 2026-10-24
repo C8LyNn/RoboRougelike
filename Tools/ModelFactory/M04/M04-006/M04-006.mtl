@@ -1,0 +1,57 @@
+# M04-006 seven visual materials
+newmtl graphite
+Ka 0.04 0.04 0.04
+Kd 0.05500 0.07000 0.09000
+Ks 0.30 0.30 0.30
+Ns 112.0
+d 1.0
+illum 2
+
+newmtl titanium
+Ka 0.04 0.04 0.04
+Kd 0.43000 0.49000 0.55000
+Ks 0.30 0.30 0.30
+Ns 122.0
+d 1.0
+illum 2
+
+newmtl ceramic
+Ka 0.04 0.04 0.04
+Kd 0.78000 0.80000 0.77000
+Ks 0.30 0.30 0.30
+Ns 55.0
+d 1.0
+illum 2
+
+newmtl copper
+Ka 0.04 0.04 0.04
+Kd 0.56000 0.29000 0.11000
+Ks 0.30 0.30 0.30
+Ns 116.0
+d 1.0
+illum 2
+
+newmtl rubber
+Ka 0.04 0.04 0.04
+Kd 0.02500 0.03000 0.03500
+Ks 0.30 0.30 0.30
+Ns 40.0
+d 1.0
+illum 2
+
+newmtl ion_cyan
+Ka 0.04 0.04 0.04
+Kd 0.02000 0.44000 0.74000
+Ks 0.30 0.30 0.30
+Ns 52.0
+d 1.0
+illum 2
+
+newmtl amber
+Ka 0.04 0.04 0.04
+Kd 0.90000 0.33000 0.04000
+Ks 0.30 0.30 0.30
+Ns 50.0
+d 1.0
+illum 2
+
