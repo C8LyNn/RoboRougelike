@@ -85,10 +85,12 @@ jobs:
           blender --version | head -n 2
       - name: Run real Blender with error capture and nonzero Python exit
         run: |
+          set +e
           set -uo pipefail
           mkdir -p /tmp/m02-004-blender
           blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-004/generate_m02_004.py -- --output-dir /tmp/m02-004-blender --require-blender > /tmp/m02-004-blender/M02-004.blender-log.txt 2>&1
           status=$?
+          set -e
           echo "$status" > /tmp/m02-004-blender/M02-004.blender-exit.txt
           tail -n 40 /tmp/m02-004-blender/M02-004.blender-log.txt
           exit 0
