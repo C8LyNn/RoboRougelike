@@ -8,7 +8,13 @@
   "branch": "feature/rrl-model-m03-007-vertical-t-bracket",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/86",
   "source_path": "Tools/ModelFactory/M03/M03-007",
-  "last_commit": "51bae7e0bfadd896c116660cd5166bc4a01b8915",
-  "blender": "PASS_CI_PREVIOUS_REVISION",
-  "unity": "BLOCKED_UNITY_ACTIVATION"
+  "last_commit": "73a4fbda76bc79075039d239c6f913fddf9a91bf",
+  "blender": "PASS_BLENDER_4_0_2",
+  "unity": "BLOCKED_UNITY_ACTIVATION",
+  "static_qa": "PASS_27_MANIFOLD_PARTS_22_CONTACTS",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113367139",
+  "artifact_names": [
+    "M03-007-OBJ-MTL",
+    "M03-007-Blender-GLB"
+  ]
 }
