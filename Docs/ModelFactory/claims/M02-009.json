@@ -4,5 +4,13 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-24T18:50:39.279Z",
   "model": "Trójkołowy wózek gąsienicowy",
-  "run": "2026-10-24T18:00Z-MODEL-02"
+  "run": "2026-10-24T18:00Z-MODEL-02",
+  "production_branch": "feature/rrl-model-m02-009-triwheel-track-bogie",
+  "pr_number": 107,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/107",
+  "head_commit": "1ad5713d1367e8e2ef962d4593281e80da5d6a05",
+  "qa_static": "PASS",
+  "qa_blender": "PENDING",
+  "qa_unity": "NOT RUN",
+  "claim_create_commit": "4da962900ca0ebca81a5ab36dddc4eb20ae9670d"
 }
