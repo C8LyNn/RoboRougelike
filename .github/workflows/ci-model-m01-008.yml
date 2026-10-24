@@ -1,0 +1,90 @@
+name: M01-008 Liquid-Cooled Rifle Geometry and Blender Export
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-008-liquid-cooled-rifle
+    paths:
+      - 'Tools/ModelFactory/M01/M01-008/**'
+      - '.github/workflows/ci-model-m01-008.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-008/**'
+      - '.github/workflows/ci-model-m01-008.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: m01-008-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  model-generation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout isolated M01-008 candidate
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Source syntax and 61-pose geometry QA
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M01/M01-008/generate_m01_008.py Tools/ModelFactory/M01/M01-008/validate_m01_008.py
+          python3 Tools/ModelFactory/M01/M01-008/generate_m01_008.py --self-test
+      - name: Generate and independently verify real OBJ MTL
+        run: |
+          python3 Tools/ModelFactory/M01/M01-008/generate_m01_008.py --out /tmp/m01-008-static
+          python3 Tools/ModelFactory/M01/M01-008/validate_m01_008.py /tmp/m01-008-static
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Export animated Blender GLB FBX and BLEND
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M01/M01-008/generate_m01_008.py \
+            -- --out /tmp/m01-008-blender
+          python3 Tools/ModelFactory/M01/M01-008/validate_m01_008.py /tmp/m01-008-blender
+          cmp /tmp/m01-008-static/M01-008_liquid_cooled_rifle.obj /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.obj
+          cmp /tmp/m01-008-static/M01-008_liquid_cooled_rifle.mtl /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.mtl
+      - name: Commit only generated M01-008 files to exclusive branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m01-008-liquid-cooled-rifle'
+        run: |
+          set -euo pipefail
+          dest=Tools/ModelFactory/M01/M01-008/generated
+          mkdir -p "$dest"
+          cp /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.obj "$dest/"
+          cp /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.mtl "$dest/"
+          cp /tmp/m01-008-blender/M01-008_liquid_cooled_rifle_animated.glb "$dest/"
+          cp /tmp/m01-008-blender/M01-008_liquid_cooled_rifle_animated.fbx "$dest/"
+          cp /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.blend "$dest/"
+          cp /tmp/m01-008-blender/M01-008_qa.json "$dest/"
+          git add "$dest/"
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "asset(M01-008): real Blender OBJ MTL GLB FBX BLEND and QA"
+            for attempt in 1 2 3; do
+              git fetch origin +refs/heads/feature/rrl-model-m01-008-liquid-cooled-rifle:refs/remotes/origin/feature/rrl-model-m01-008-liquid-cooled-rifle
+              git rebase origin/feature/rrl-model-m01-008-liquid-cooled-rifle
+              if git push origin HEAD:feature/rrl-model-m01-008-liquid-cooled-rifle; then
+                echo "Committed actual M01-008 asset exports to isolated branch"
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "::error::Could not publish Blender exports safely"
+                exit 1
+              fi
+            done
+          fi
+      - name: Upload actual Blender assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-008-liquid-cooled-rifle-3D
+          path: |
+            /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.obj
+            /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.mtl
+            /tmp/m01-008-blender/M01-008_liquid_cooled_rifle_animated.glb
+            /tmp/m01-008-blender/M01-008_liquid_cooled_rifle_animated.fbx
+            /tmp/m01-008-blender/M01-008_liquid_cooled_rifle.blend
+            /tmp/m01-008-blender/M01-008_qa.json
+          if-no-files-found: error
+          retention-days: 30
