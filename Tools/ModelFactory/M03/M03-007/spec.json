@@ -1,0 +1,82 @@
+{
+  "id": "M03-007",
+  "model": "Uchwyt pionowy T",
+  "queue": "M03",
+  "source": "Docs/ModelFactory/CATALOG_V1.md @ feature/rrl-model-factory-queue-v1",
+  "units": "metres",
+  "axis_convention": "Z up, front -Y, crossbar along X",
+  "pivot": {
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "normal": [
+      0,
+      0,
+      1
+    ],
+    "kind": "upper chassis socket / vertical mount"
+  },
+  "dimensions": {
+    "total_width_m": 0.842,
+    "total_height_m": 0.74,
+    "max_depth_m": 0.276,
+    "stem_width_m": 0.18
+  },
+  "foot_mounts": {
+    "axis": "+Z",
+    "centers": [
+      [
+        -0.34,
+        0,
+        0
+      ],
+      [
+        0.34,
+        0,
+        0
+      ]
+    ],
+    "through_bore_radius_m": 0.028,
+    "shaft_radius_m": 0.019,
+    "clearance_m": 0.009
+  },
+  "upper_crossbar_mounts": {
+    "axis": "+Y/-Y",
+    "centers": [
+      [
+        -0.34,
+        0,
+        0.657
+      ],
+      [
+        0.34,
+        0,
+        0.657
+      ]
+    ],
+    "through_bore_radius_m": 0.028,
+    "shaft_radius_m": 0.019,
+    "clearance_m": 0.009
+  },
+  "materials": [
+    "Frame_Graphite",
+    "Brushed_Titanium",
+    "Ceramic_Ivory",
+    "Copper_Fasteners",
+    "Amber_Indicator"
+  ],
+  "static": true,
+  "animation": "NOT_REQUIRED",
+  "authored_colliders": false,
+  "mechanical_contacts": "Structural bosses overlap crossbars outside bores; shafts stay within 9mm clearance; bolt heads seat 3mm into bosses; ceramic cladding overlaps substrate 4mm; T gussets bridge stem and crossbar.",
+  "limitations": "No Unity scene, prefab, collider or gameplay modifications. Visual self-intersection QA and Unity runtime require independent integration testing.",
+  "claim": {
+    "branch": "feature/rrl-model-factory-queue-v1",
+    "path": "Docs/ModelFactory/claims/M03-007.json",
+    "create_commit": "6ac0597f1cd83ddc8c50324f5800d772ad677109",
+    "blob_sha": "e411a0f62d66f8d10ace3ab062570279fe9ea756",
+    "claimed_at_utc": "2026-10-24T16:43:46.153Z"
+  }
+}
