@@ -1,7 +1,7 @@
 {
   "id": "M01-009",
   "agent": "M01",
-  "status": "IN_PROGRESS",
+  "status": "MODEL_GENERATED_QA_PASS",
   "claimed_at_utc": "2026-10-24T18:49:33.950Z",
   "model": "Trójsegmentowa wyrzutnia rakiet",
   "run": "2026-10-24T18:00Z",
@@ -11,8 +11,25 @@
   "qa": {
     "source_geometry": "PASS",
     "static_obj": "PASS",
-    "blender": "RUNNING",
-    "unity": "NOT RUN",
-    "run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122809440"
-  }
+    "manifold": "PASS",
+    "blender": "PASS",
+    "blender_version": "4.0.2",
+    "glb_animation": "PASS (3 hinge rotation channels)",
+    "fbx": "EXPORTED",
+    "blend": "EXPORTED",
+    "poses_checked": 129,
+    "aabb_pairs_checked": 64500,
+    "parts": 89,
+    "vertices": 1710,
+    "triangles": 3088,
+    "materials": 8,
+    "unity_editmode": "BLOCKED (CI Unity activation)",
+    "unity_playmode": "BLOCKED (CI Unity activation)",
+    "visual_review": "NOT RUN",
+    "run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122825844",
+    "publish_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40123122726",
+    "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122825844/artifacts/12572410746"
+  },
+  "asset_commit": "e7c9957b5493ea8a5f808fff3d50b1034ea81b9c",
+  "asset_directory": "Tools/ModelFactory/M01/M01-009/generated/"
 }
