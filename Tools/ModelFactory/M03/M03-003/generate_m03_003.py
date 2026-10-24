@@ -130,24 +130,29 @@ def build_parts():
                 (.100,.920,.120), "Gunmetal", .009))
         add(box(f"EndSocketPad_{xsign:+d}", (xsign*.975,0,0),
                 (.050,.260,.240), "Ceramic", .008))
-        add(box(f"EndSocketMark_{xsign:+d}", (xsign*.990,0,0),
-                (.016,.110,.110), "Amber", .004, "accent"))
+        # Side-facing amber tag: original tag was fully buried inside
+        # the ceramic pad and invisible. Two mm overlap, six mm exposure,
+        # without covering the actual outward-facing SNAP contact face.
+        add(box(f"EndSocketMark_{xsign:+d}", (xsign*.975,.132,0),
+                (.040,.008,.080), "Amber", .002, "accent"))
     # Mid-side sockets with web-to-pad spacers (not floating plates).
     for ysign in (-1,1):
         add(box(f"SideSocketSpacer_{ysign:+d}", (0,ysign*.425,0),
                 (.220,.110,.180), "Gunmetal", .006))
         add(box(f"SideSocketPad_{ysign:+d}", (0,ysign*.475,0),
                 (.260,.050,.240), "Ceramic", .008))
-        add(box(f"SideSocketMark_{ysign:+d}", (0,ysign*.495,0),
-                (.090,.009,.080), "Amber", .003, "accent"))
+        # Visible on +X side of the Y-facing pad; Y contact face stays flush.
+        add(box(f"SideSocketMark_{ysign:+d}", (.132,ysign*.475,0),
+                (.008,.040,.080), "Amber", .002, "accent"))
     # Vertical socket stubs connect to the centre transverse members.
     for zsign in (-1,1):
         add(box(f"VerticalSocketStub_{zsign:+d}", (0,0,zsign*.385),
                 (.200,.200,.160), "Gunmetal", .008))
         add(box(f"VerticalSocketPad_{zsign:+d}", (0,0,zsign*.470),
                 (.260,.260,.060), "Ceramic", .008))
-        add(box(f"VerticalSocketMark_{zsign:+d}", (0,0,zsign*.494),
-                (.110,.110,.009), "Amber", .003, "accent"))
+        # Visible on +X side of the Z-facing pad; Z contact face stays flush.
+        add(box(f"VerticalSocketMark_{zsign:+d}", (.132,0,zsign*.470),
+                (.008,.080,.040), "Amber", .002, "accent"))
     # Exposed fasteners on both I-girder top flanges, within module envelope.
     for side in (-1,1):
         for x in (-.78,-.39,.39,.78):
@@ -168,6 +173,56 @@ def _cross(a,b):
 
 def _dot(a,b):
     return sum(x*y for x,y in zip(a,b))
+
+
+def part_bounds(part):
+    return [(min(v[axis] for v in part["vertices"]),
+             max(v[axis] for v in part["vertices"])) for axis in range(3)]
+
+
+def validate_visible_snap_markers(parts):
+    """Six visible tags, with a positive mounting seat and zero lost SNAP faces.
+
+    Original tags were wholly *inside* ceramic plates: manifold QA passed,
+    but amber geometry rendered invisibly. Every tag now intersects its pad
+    by 2 mm while extending 6 mm out of its side-facing surface. No tag may
+    exceed the nominal module envelope or cover the mating face.
+    """
+    by_name = {p["name"]: p for p in parts}
+    checked = 0
+    for port_type, label_axis, snap_axis, limit in (
+            ("End", 1, 0, 1.0),
+            ("Side", 0, 1, 0.5),
+            ("Vertical", 0, 2, 0.5)):
+        for side in (-1, 1):
+            pad = by_name[f"{port_type}SocketPad_{side:+d}"]
+            mark = by_name[f"{port_type}SocketMark_{side:+d}"]
+            pb = part_bounds(pad)
+            mb = part_bounds(mark)
+            assert mark["material"] == "Amber"
+            # The marker is clearly visible yet anchored to the actual pad.
+            exposed = mb[label_axis][1] - pb[label_axis][1]
+            embedded = pb[label_axis][1] - mb[label_axis][0]
+            assert abs(exposed - .006) < 1e-8, (mark["name"], exposed)
+            assert abs(embedded - .002) < 1e-8, (mark["name"], embedded)
+            assert all(min(pb[i][1],mb[i][1]) -
+                       max(pb[i][0],mb[i][0]) > .001
+                       for i in range(3)), "Floating label: " + mark["name"]
+            # Preserve physical SNAP mating planes at the true grid boundary.
+            outer = pb[snap_axis][1] if side > 0 else pb[snap_axis][0]
+            assert abs(outer - side*limit) < 1e-8, (pad["name"], outer)
+            # Labels must not protrude across any physical module border.
+            assert all(mb[i][0] >= -bound-1e-8 and
+                       mb[i][1] <= bound+1e-8
+                       for i,bound in enumerate((1.0,.5,.5)))
+            checked += 1
+    assert checked == len(SOCKETS) == 6
+    return {
+        "exposed_snap_markers": checked,
+        "marker_side_exposure_m": .006,
+        "marker_pad_engagement_m": .002,
+        "physical_snap_contact_faces_flush": 6,
+    }
 
 
 def validate(parts):
@@ -206,11 +261,14 @@ def validate(parts):
     assert len([n for n in names if n.startswith("MainGirder_")]) == 6
     assert len([n for n in names if n.startswith("CornerPost_")]) == 4
     assert len(SOCKETS) == 6
+    label_qa = validate_visible_snap_markers(parts)
     for axis, extent in enumerate((1.0,.5,.5)):
         assert abs(mins[axis]+extent) < 1e-8
         assert abs(maxs[axis]-extent) < 1e-8
     return {
         "asset": ASSET_ID, "result": "PASS", "parts": len(parts),
+        "structural_revision": "M03-003_V2_VISIBLE_SNAP_MARKERS",
+        **label_qa,
         "triangles": triangles, "materials": len(MATERIALS),
         "size_m": [2.0,1.0,1.0], "pivot_m": [0,0,0],
         "snap_points": {key:list(value[0]) for key,value in SOCKETS.items()},
