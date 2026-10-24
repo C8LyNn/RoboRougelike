@@ -54,8 +54,13 @@ def validate(out=None):
     assert qa["parts"]==len(groups) and qa["vertices"]==len(vertices)
     assert qa["triangles"]==2108 and qa["animation"]=="NOT_REQUIRED"
     assert qa["pivot"]==[0,0,0] and qa["mount_normal"]==[0,0,1]
-    assert max(math.hypot(v[0]-x,v[1]) for x in m.BOLT_X for v in
-               next(p for p in source if p["name"]=="Foot_Boss_Bored_0")["vertices"])>.08
+    for i,x in enumerate(m.BOLT_X):
+        foot=next(p for p in source if p["name"]==f"Foot_Boss_Bored_{i}")
+        top=next(p for p in source if p["name"]==f"Top_Boss_Bored_{i}")
+        fr=[math.hypot(v[0]-x,v[1]) for v in foot["vertices"]]
+        tr=[math.hypot(v[0]-x,v[2]-.657) for v in top["vertices"]]
+        assert abs(min(fr)-m.BORE_R)<1e-8 and abs(max(fr)-.081)<1e-8
+        assert abs(min(tr)-m.BORE_R)<1e-8 and abs(max(tr)-.082)<1e-8
     return dict(status="PASS",parts=len(groups),vertices=len(vertices),
                 triangles=sum(map(len,groups.values())),materials=len(materials),
                 genuine_bores=4,bolt_heads=4,clearance_m=.009,
