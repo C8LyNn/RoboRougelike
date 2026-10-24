@@ -1,0 +1,56 @@
+newmtl Chassis_Gunmetal
+Kd 0.16000 0.20000 0.25000
+Ks 0.35550 0.35550 0.35550
+Ns 220.0
+d 1.0
+illum 2
+
+newmtl Rim_Brushed_Steel
+Kd 0.52000 0.59000 0.64000
+Ks 0.34650 0.34650 0.34650
+Ns 268.0
+d 1.0
+illum 2
+
+newmtl Hub_Bronze
+Kd 0.68000 0.39000 0.21000
+Ks 0.33750 0.33750 0.33750
+Ns 252.0
+d 1.0
+illum 2
+
+newmtl Rubber_Graphite
+Kd 0.08500 0.10000 0.11500
+Ks 0.00900 0.00900 0.00900
+Ns 44.0
+d 1.0
+illum 2
+
+newmtl Tread_Slate
+Kd 0.16000 0.19000 0.21000
+Ks 0.00900 0.00900 0.00900
+Ns 60.0
+d 1.0
+illum 2
+
+newmtl Shock_Cyan
+Kd 0.06000 0.54000 0.66000
+Ks 0.19800 0.19800 0.19800
+Ns 272.0
+d 1.0
+illum 2
+
+newmtl Shock_Amber
+Kd 0.95000 0.56000 0.10000
+Ks 0.15750 0.15750 0.15750
+Ns 260.0
+d 1.0
+illum 2
+
+newmtl Piston_Chrome
+Kd 0.78000 0.83000 0.86000
+Ks 0.39150 0.39150 0.39150
+Ns 312.0
+d 1.0
+illum 2
+
