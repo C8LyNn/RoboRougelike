@@ -1,0 +1,98 @@
+name: Model Factory M02-004 Perforated Steel Wheel
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-004-perforated-steel-wheel
+    paths:
+      - "Tools/ModelFactory/M02/M02-004/**"
+      - ".github/workflows/ci-model-m02-004.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelFactory/M02/M02-004/**"
+      - ".github/workflows/ci-model-m02-004.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-mesh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Compile and build actual OBJ, MTL and QA JSON
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/ModelFactory/M02/M02-004/generate_m02_004.py
+          python3 Tools/ModelFactory/M02/M02-004/generate_m02_004.py --self-test --output-dir /tmp/m02-004
+      - name: Validate real through holes, mesh closure and clearances
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/m02-004")
+          q=json.loads((p/"M02-004.static-qa.json").read_text())
+          assert q["result"]=="STATIC_GEOMETRY_PASS"
+          assert q["perforation_count"]==12 and q["radial_through_holes"]
+          assert q["rotating_teeth"]==24 and q["part_count"]==37
+          assert q["manifold_closed_meshes"].startswith("PASS")
+          assert q["rotation_clearance_samples"]==73
+          assert q["shaft_to_bore_clearance_m"]>=.029
+          assert q["seal_to_bore_clearance_m"]>=.006
+          assert len(q["materials_used"])>=3
+          obj=(p/"M02-004.obj").read_text()
+          assert obj.count("\\no ")==37
+          assert obj.count("\\nv ")==q["obj_vertices"]
+          assert obj.count("\\nf ")==q["obj_faces"]
+          assert (p/"M02-004.mtl").stat().st_size>200
+          print("M02-004 STATIC QA PASS",q["obj_vertices"],q["obj_faces"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M02-004-OBJ-MTL-QA
+          path: |
+            /tmp/m02-004/M02-004.obj
+            /tmp/m02-004/M02-004.mtl
+            /tmp/m02-004/M02-004.static-qa.json
+          retention-days: 30
+  blender-glb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Install actual Blender (not a simulated bpy stub)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Run Blender scene and animated GLB export
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/m02-004-blender
+          blender --background --factory-startup --python Tools/ModelFactory/M02/M02-004/generate_m02_004.py -- --output-dir /tmp/m02-004-blender --require-blender
+      - name: Inspect actual exported GLB container and animation data
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path("/tmp/m02-004-blender")
+          f=root/"M02-004_animated.glb"
+          raw=f.read_bytes()
+          assert len(raw)>20000
+          assert raw[:4]==b"glTF"
+          version,length=struct.unpack_from("<II",raw,4)
+          assert version==2 and length==len(raw)
+          chunk_len,chunk_type=struct.unpack_from("<II",raw,12)
+          assert chunk_type==0x4E4F534A
+          data=json.loads(raw[20:20+chunk_len])
+          assert len(data.get("meshes",[]))>=35
+          assert len(data.get("animations",[]))>=1
+          assert any("M02-004_ROTOR" in n.get("name","") for n in data["nodes"])
+          assert (root/"M02-004.blend").stat().st_size>10000
+          print("M02-004 real Blender GLB PASS",len(raw),"bytes",len(data["meshes"]),"meshes",len(data["animations"]),"animations")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M02-004-Animated-GLB-Blend
+          path: |
+            /tmp/m02-004-blender/M02-004_animated.glb
+            /tmp/m02-004-blender/M02-004.blend
+            /tmp/m02-004-blender/M02-004.static-qa.json
+          retention-days: 30
