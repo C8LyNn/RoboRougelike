@@ -13,6 +13,8 @@
   "qa_static": "PASS",
   "qa_blender_glb": "PASS",
   "qa_fbx": "BLOCKED_FBX_OPERATOR",
-  "qa_unity": "NOT_RUN",
-  "artifacts_path": "Tools/ModelFactory/M02/M02-006/generated/"
+  "qa_unity": "BLOCKED_UNITY_ACTIVATION",
+  "artifacts_path": "Tools/ModelFactory/M02/M02-006/generated/",
+  "unity_editmode_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109811860",
+  "unity_playmode_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109811980"
 }
