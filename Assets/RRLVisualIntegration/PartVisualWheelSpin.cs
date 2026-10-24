@@ -14,14 +14,25 @@ namespace RoboRougelike.VisualIntegration
         Quaternion initialRotation;
         float degrees;
         float radiusMeters = 0.39f;
+        public Transform RotationTarget => visual;
 
         public void Configure(Transform modelRoot, R3MountedPart mountedPart, float wheelRadiusMeters)
         {
-            visual = modelRoot;
+            // W01 GLB nests the actual moving geometry under WheelRotationPivot.
+            // Rotating the imported root may incorrectly rotate fixed attachments.
+            visual = FindNamed(modelRoot, "WheelRotationPivot") ?? modelRoot;
             part = mountedPart;
             radiusMeters = Mathf.Max(0.05f, wheelRadiusMeters);
             initialRotation = visual != null ? visual.localRotation : Quaternion.identity;
             chassis = GetComponentInParent<Rigidbody>();
+        }
+
+        static Transform FindNamed(Transform root, string name)
+        {
+            if (root == null) return null;
+            foreach (var child in root.GetComponentsInChildren<Transform>(true))
+                if (child.name == name) return child;
+            return null;
         }
 
         public static float SpinDegrees(float forwardSpeedMetersPerSecond,
@@ -42,7 +53,7 @@ namespace RoboRougelike.VisualIntegration
 
             float speed = Vector3.Dot(chassis.linearVelocity, chassis.transform.forward);
             degrees = Mathf.Repeat(degrees + SpinDegrees(speed, radiusMeters, Time.deltaTime), 360f);
-            // GLB W01 axle is local +X. Rotating the child does NOT fight the follower.
+            // GLB W01 axle is local +X. Rotate the actual model pivot (not root).
             visual.localRotation = initialRotation * Quaternion.AngleAxis(degrees, Vector3.right);
         }
     }
