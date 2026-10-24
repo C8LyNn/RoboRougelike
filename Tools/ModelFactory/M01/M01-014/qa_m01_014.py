@@ -33,7 +33,7 @@ def validate(out: Path, require_blender=False):
     fbx=(out/(STEM+".fbx")).read_bytes()
     glb=(out/(STEM+".glb")).read_bytes()
     assert blend[:7]==b"BLENDER"
-    assert fbx[:21]==b"Kaydara FBX Binary  "
+    assert fbx.startswith(b"Kaydara FBX Binary")
     assert glb[:4]==b"glTF"
     magic,version,total=struct.unpack_from("<III",glb,0)
     assert magic==0x46546C67 and version==2 and total==len(glb)
