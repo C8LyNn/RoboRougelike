@@ -1,0 +1,116 @@
+name: M04-005 Dual Chamber Afterburner QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-005-dual-chamber-afterburner
+    paths:
+      - 'Tools/ModelFactory/M04/M04-005/**'
+      - '.github/workflows/ci-model-m04-005.yml'
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-005/**'
+      - '.github/workflows/ci-model-m04-005.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: true
+      - name: Python syntax, deterministic geometry, 21-pose sweep
+        run: |
+          set -euo pipefail
+          root=Tools/ModelFactory/M04/M04-005
+          python3 -m py_compile "$root/generate_m04_005.py" "$root/qa_mesh_m04_005.py"
+          mkdir -p /tmp/m04a /tmp/m04b
+          python3 "$root/generate_m04_005.py" --self-test --output-dir /tmp/m04a
+          python3 "$root/generate_m04_005.py" --self-test --output-dir /tmp/m04b
+          for f in M04-005.obj M04-005.mtl M04-005.static-qa.json; do
+            cmp "/tmp/m04a/$f" "/tmp/m04b/$f"
+            if test -f "$root/$f"; then cmp "$root/$f" "/tmp/m04a/$f"; fi
+          done
+          python3 "$root/qa_mesh_m04_005.py" --asset-dir /tmp/m04a
+      - name: Check no destructive scene deletion in bpy generator
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('Tools/ModelFactory/M04/M04-005/generate_m04_005.py').read_text()
+          assert "bpy.ops.object.delete(" not in s
+          assert "bpy.data.libraries.write(" in s
+          assert "use_selection=True" in s
+          assert "obj.rotation_mode='QUATERNION'" in s
+          print('Safe Blender collection export source PASS')
+          PY
+      - name: Persist validated static OBJ MTL and QA on exclusive branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/rrl-model-m04-005-dual-chamber-afterburner'
+        run: |
+          set -euo pipefail
+          dst=Tools/ModelFactory/M04/M04-005
+          cp /tmp/m04a/M04-005.obj "$dst/"
+          cp /tmp/m04a/M04-005.mtl "$dst/"
+          cp /tmp/m04a/M04-005.static-qa.json "$dst/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dst/M04-005.obj" "$dst/M04-005.mtl" "$dst/M04-005.static-qa.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "asset(M04-005): persist deterministic OBJ MTL and swept QA"
+            git push origin HEAD:feature/rrl-model-m04-005-dual-chamber-afterburner
+          fi
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install real Blender bpy and glTF exporter
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -n 2
+      - name: Execute animated bpy and validate GLB structure
+        run: |
+          set -euo pipefail
+          root=Tools/ModelFactory/M04/M04-005
+          mkdir -p /tmp/m04-005-blender
+          blender --background --factory-startup --python "$root/generate_m04_005.py" -- --output-dir /tmp/m04-005-blender --require-blender
+          test -s /tmp/m04-005-blender/M04-005.blend
+          test -s /tmp/m04-005-blender/M04-005_animated.glb
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          p=Path('/tmp/m04-005-blender/M04-005_animated.glb')
+          data=p.read_bytes()
+          magic,version,length=struct.unpack('<4sII',data[:12])
+          assert magic==b'glTF' and version==2 and length==len(data)
+          size,kind=struct.unpack('<I4s',data[12:20])
+          assert kind==b'JSON'
+          gltf=json.loads(data[20:20+size].decode('utf-8'))
+          names=[n.get('name','') for n in gltf.get('nodes',[])]
+          assert names and all(n.startswith('M04-005_') for n in names),names
+          assert len(gltf.get('meshes',[]))==62,len(gltf.get('meshes',[]))
+          assert len(gltf.get('materials',[]))>=8
+          animations=gltf.get('animations',[])
+          assert animations and sum(len(a.get('channels',[])) for a in animations)>=8
+          q=json.loads(Path('/tmp/m04-005-blender/M04-005.static-qa.json').read_text())
+          assert q['blender']=='EXECUTED' and q['animated_glb'].startswith('GENERATED')
+          print('M04-005 real Blender GLB PASS:',len(names),'nodes',len(gltf['meshes']),'meshes',len(animations),'animations')
+          PY
+      - name: Upload Blender and animated GLB artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-005-dual-chamber-animated
+          path: |
+            /tmp/m04-005-blender/M04-005.blend
+            /tmp/m04-005-blender/M04-005_animated.glb
+            /tmp/m04-005-blender/M04-005.static-qa.json
+          retention-days: 30
