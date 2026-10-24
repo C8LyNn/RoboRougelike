@@ -1,0 +1,70 @@
+name: MODEL-05 M05-012 Emergency Generator Blender QA
+on:
+  push:
+    branches: [feature/rrl-model-m05-012-emergency-generator]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-012/**'
+      - '.github/workflows/ci-model-m05-012.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  blender-emergency-generator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Compile Blender Python scripts
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-012/generate_m05_012.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-012/qa_blender_m05_012.py
+      - name: Install Blender and glTF Python dependencies
+        run: |
+          if ! command -v blender >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq blender
+          fi
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq python3-numpy python3-pil
+          blender --version | head -n 2
+      - name: Real bpy two-build QA, 61 frame sweep and GLB binary inspection
+        run: |
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-012/qa_blender_m05_012.py 2>&1 | tee /tmp/m05-012-qa.log
+          grep -q 'M05-012 QA PASS' /tmp/m05-012-qa.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-012-qa.log
+      - name: Produce real Blender FBX GLB and BLEND
+        run: |
+          set -o pipefail
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-012/generate_m05_012.py -- --out build/M05-012 2>&1 | tee /tmp/m05-012-build.log
+          grep -q 'M05-012 EXPORT PASS' /tmp/m05-012-build.log
+          ! grep -q 'Traceback (most recent call last)' /tmp/m05-012-build.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("build/M05-012")
+          j=json.loads((p/"M05-012_qa.json").read_text())
+          assert j["id"]=="M05-012"
+          assert j["geometry_revision"]=="M05-012_V1_EMERGENCY_GENERATOR"
+          assert j["materials"]==9
+          assert j["moving_meshes"]==22
+          assert j["mounting_markers"]==5
+          assert j["manifold_meshes"]==j["mesh_objects"]
+          assert j["stator_radial_clearance_m"]>.015
+          assert j["moving_vertex_samples"]>60000
+          assert j["export_glb"]==j["export_fbx"]==j["save_blend"]=="PASS"
+          assert j["unity"]==j["unity_editmode"]==j["unity_playmode"]=="NOT RUN"
+          for ext in ("glb","fbx","blend"):
+              f=p/("M05-012_emergency_generator."+ext)
+              assert f.exists() and f.stat().st_size>1024,(ext,f)
+          print("M05-012 production QA PASS",j)
+          PY
+      - name: Publish animated model and QA report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M05-012-emergency-generator-GLB-FBX-BLEND-QA
+          path: build/M05-012/
+          retention-days: 14
+          if-no-files-found: error
