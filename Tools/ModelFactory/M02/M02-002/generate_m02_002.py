@@ -173,7 +173,7 @@ def validate(parts):
     def overlap(interval1,interval2):
         return min(interval1[1],interval2[1])-max(interval1[0],interval2[0])
     contact_pairs=[
-        ("Narrow_Rubber_Tire","Forged_Rim",.004,.02),
+        ("Narrow_Rubber_Tire","Forged_Rim",.004,.004),
         ("Forged_Rim","Amber_Front_Ring",.003,.005),
         ("Hub_Carrier","Hub_Front",.002,.04),
         ("Hub_Carrier","Brake_Rotor",.004,.003),
