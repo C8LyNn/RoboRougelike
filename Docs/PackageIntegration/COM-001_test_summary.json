@@ -1,0 +1,553 @@
+[
+  {
+    "directory": "W8-com-green-3204284f938a4d22a1a6cc2cb3eb0ecc",
+    "summary": {
+      "id": "2",
+      "testcasecount": "62",
+      "result": "Passed",
+      "total": "62",
+      "passed": "62",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 03:40:02Z",
+      "end-time": "2026-10-24 03:40:02Z",
+      "duration": "0,5312174"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8ScanAdapterTests.PartInReleasedBodyCannotRemainAnAttachedScanTargetUnderOldHierarchy",
+        "result": "Passed",
+        "duration": "0.010192"
+      },
+      {
+        "fullname": "RRLW8ScanAdapterTests.PartScanReadsExistingEmpStateWithoutChangingItsHp",
+        "result": "Passed",
+        "duration": "0.003775"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.ActualRangeModuleScansForeignVisiblePartsWithoutChangingHpOrPhysics",
+        "result": "Passed",
+        "duration": "3.324003"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.DestroyedPhysicalScannerKeepsIdentityAndCooldownThroughPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.292455"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PausedSnapshotFreezesButEmpClearsResultsWithoutResettingCooldown",
+        "result": "Passed",
+        "duration": "4.598005"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PlayerGuiActivationHonorsPauseCooldownAndPhysicalLoss",
+        "result": "Passed",
+        "duration": "3.184281"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.SolidOccluderBlocksStructuralHpAndFailedScanDoesNotConsumeCooldown",
+        "result": "Passed",
+        "duration": "3.168236"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.BackPointIsNotVisible",
+        "result": "Passed",
+        "duration": "0.001052"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.ConeUsesDirectionNotWorldZ",
+        "result": "Passed",
+        "duration": "0.000153"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.ConeUsesOriginOffset",
+        "result": "Passed",
+        "duration": "0.000093"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.CoreScoresAboveArmor",
+        "result": "Passed",
+        "duration": "0.002124"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.DamagedPartScoresHigher",
+        "result": "Passed",
+        "duration": "0.000080"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.ForwardMagnitudeDoesNotMatter",
+        "result": "Passed",
+        "duration": "0.000117"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.ForwardPointIsVisible",
+        "result": "Passed",
+        "duration": "0.000105"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.ImportantPartScoresHigher",
+        "result": "Passed",
+        "duration": "0.000060"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.InfiniteHealthIsSafe",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.MobilityDevicesHavePositivePriority(Wheel)",
+        "result": "Passed",
+        "duration": "0.000190"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.MobilityDevicesHavePositivePriority(Track)",
+        "result": "Passed",
+        "duration": "0.000036"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.MobilityDevicesHavePositivePriority(Propulsion)",
+        "result": "Passed",
+        "duration": "0.000028"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.NanHealthIsSafe",
+        "result": "Passed",
+        "duration": "0.000077"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.NanImportanceIsSafe",
+        "result": "Passed",
+        "duration": "0.000055"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.NarrowConeRejectsThirtyDegrees",
+        "result": "Passed",
+        "duration": "0.000427"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.NonFunctionalPartScoresLower",
+        "result": "Passed",
+        "duration": "0.000171"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.OffAxisOutsideConeIsNotVisible",
+        "result": "Passed",
+        "duration": "0.000089"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.OffAxisWithinConeIsVisible",
+        "result": "Passed",
+        "duration": "0.000067"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.OriginIsNotTarget",
+        "result": "Passed",
+        "duration": "0.000057"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.PointBeyondRangeIsNotVisible",
+        "result": "Passed",
+        "duration": "0.000073"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.PointExactlyAtRangeIsVisible",
+        "result": "Passed",
+        "duration": "0.000071"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.PriorityClampsHealth",
+        "result": "Passed",
+        "duration": "0.000119"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.PriorityClampsImportance",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.PriorityWithinBounds",
+        "result": "Passed",
+        "duration": "0.000237"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.SupportScoresAboveUtility",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.VerticalAngleCounts",
+        "result": "Passed",
+        "duration": "0.000070"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.WeaponScoresAboveArmor",
+        "result": "Passed",
+        "duration": "0.000050"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.WideConeAcceptsThirtyDegrees",
+        "result": "Passed",
+        "duration": "0.000072"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanMathTests.ZeroForwardVectorCannotScan",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ClearVisibilityPreservesCooldown",
+        "result": "Passed",
+        "duration": "0.000190"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ClockReadyAfterCooldown",
+        "result": "Passed",
+        "duration": "0.000088"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ClockStartLocksCooldown",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ClockStartShowsResults",
+        "result": "Passed",
+        "duration": "0.000060"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ClockStartsInvisible",
+        "result": "Passed",
+        "duration": "0.000049"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ClockStartsReady",
+        "result": "Passed",
+        "duration": "0.000075"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.CooldownDecreases",
+        "result": "Passed",
+        "duration": "0.000587"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.CooldownDoesNotGoNegative",
+        "result": "Passed",
+        "duration": "0.000084"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.EnergyCapacityClamped",
+        "result": "Passed",
+        "duration": "0.000411"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.EnergyDeductsExactlyOnce",
+        "result": "Passed",
+        "duration": "0.000449"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.EnergyIsNotOverdrawn",
+        "result": "Passed",
+        "duration": "0.000193"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.InfinityDeltaIgnored",
+        "result": "Passed",
+        "duration": "0.000081"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.NaNDeltaIgnored",
+        "result": "Passed",
+        "duration": "0.000061"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.NegativeDeltaIgnored",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.NegativeEnergyChargeRejected",
+        "result": "Passed",
+        "duration": "0.000167"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.RegistryRejectsDuplicateIdentity",
+        "result": "Passed",
+        "duration": "0.000622"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.RegistryUnregisters",
+        "result": "Passed",
+        "duration": "0.000903"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.ResetClearsBoth",
+        "result": "Passed",
+        "duration": "0.000144"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.SettingsClampsNegativeCooldown",
+        "result": "Passed",
+        "duration": "0.000075"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.SettingsClampsNegativeEnergy",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.SettingsClampsRegisteredCount",
+        "result": "Passed",
+        "duration": "0.000054"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.SettingsClampsResultsCount",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.SettingsRepairsInfinityTime",
+        "result": "Passed",
+        "duration": "0.000050"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.SettingsRepairsNaNRange",
+        "result": "Passed",
+        "duration": "0.000101"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.VisibilityDecreases",
+        "result": "Passed",
+        "duration": "0.000066"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.EditMode.StructuralScanStateTests.VisibilityEndsBeforeCooldown",
+        "result": "Passed",
+        "duration": "0.000076"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-24T03:40:04.5891920Z",
+      "filter": "RRLW8StructuralScanTests;RRLW8ScanAdapterTests;RoboRougelike.Mechanics.StructuralScan.Tests",
+      "exitCode": 0,
+      "mode": "EditMode"
+    }
+  },
+  {
+    "directory": "W8-com-original-play-a9bcb3bc8be94a588b47a5a98ff91840",
+    "summary": {
+      "id": "2",
+      "testcasecount": "22",
+      "result": "Passed",
+      "total": "22",
+      "passed": "22",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 03:40:16Z",
+      "end-time": "2026-10-24 03:40:16Z",
+      "duration": "0,0901228"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.BlockingWallHidesTarget",
+        "result": "Passed",
+        "duration": "0.020610"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.CooldownBlocksSecondScan",
+        "result": "Passed",
+        "duration": "0.002540"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.DetachedPartIsNotDetected",
+        "result": "Passed",
+        "duration": "0.001117"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.FailedScanDoesNotSpendEnergy",
+        "result": "Passed",
+        "duration": "0.006347"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.FriendlyTargetIsNotDetected",
+        "result": "Passed",
+        "duration": "0.002608"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.LostSensorOrPartInvalidatesActivation",
+        "result": "Passed",
+        "duration": "0.001646"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.MostRelevantVisibleContactFirst",
+        "result": "Passed",
+        "duration": "0.003719"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.MultipleCollidersOnOnePartReturnOneContact",
+        "result": "Passed",
+        "duration": "0.002138"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.NoEnergyDoesNotSpendOrCooldown",
+        "result": "Passed",
+        "duration": "0.001665"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.OneTargetChosenWhenTwoEnemyVehiclesExist",
+        "result": "Passed",
+        "duration": "0.001524"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.OperationalOffClearsResults",
+        "result": "Passed",
+        "duration": "0.001474"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.OwnColliderBetweenSensorAndTargetIgnored",
+        "result": "Passed",
+        "duration": "0.001528"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.OwnTargetIsNotDetected",
+        "result": "Passed",
+        "duration": "0.001134"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.PhysicsStepDoesNotDestroyScanState",
+        "result": "Passed",
+        "duration": "0.001337"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.ResultsExpireWithoutRemovingCooldown",
+        "result": "Passed",
+        "duration": "0.001240"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.ResultsLimitApplies",
+        "result": "Passed",
+        "duration": "0.001372"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.ScanDoesNotRevealOccludedSibling",
+        "result": "Passed",
+        "duration": "0.001452"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.ScanSpendsEnergyExactlyOnce",
+        "result": "Passed",
+        "duration": "0.001260"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.SolidColliderInsideSensorBlocksScanning",
+        "result": "Passed",
+        "duration": "0.001207"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.TargetBehindScannerIsNotDetected",
+        "result": "Passed",
+        "duration": "0.001146"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.TargetOutsideRangeIsNotDetected",
+        "result": "Passed",
+        "duration": "0.001023"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.StructuralScan.Tests.PlayMode.StructuralScanPhysicsTests.VisibleEnemyScanSucceeds",
+        "result": "Passed",
+        "duration": "0.001224"
+      }
+    ],
+    "exit": {
+      "finishedUtc": "2026-10-24T03:40:18.0315028Z",
+      "filter": "RoboRougelike.Mechanics.StructuralScan.Tests",
+      "exitCode": 0,
+      "mode": "PlayMode"
+    }
+  },
+  {
+    "directory": "W8-com-shared-regression-0c7137e227e24c0da2bf1f313bff108d",
+    "summary": {
+      "id": "2",
+      "testcasecount": "10",
+      "result": "Passed",
+      "total": "10",
+      "passed": "10",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 03:45:44Z",
+      "end-time": "2026-10-24 03:45:46Z",
+      "duration": "2,0138532"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW34GarageTests.BothRequiredResolutionsKeepPanelsOutsidePlacement(1280,720)",
+        "result": "Passed",
+        "duration": "3.257293"
+      },
+      {
+        "fullname": "RRLW34GarageTests.BothRequiredResolutionsKeepPanelsOutsidePlacement(1920,1080)",
+        "result": "Passed",
+        "duration": "3.220661"
+      },
+      {
+        "fullname": "RRLW34GarageTests.ControllerRemountPreservesStoredOrientationIdPortsAndHp",
+        "result": "Passed",
+        "duration": "3.247050"
+      },
+      {
+        "fullname": "RRLW34GarageTests.RotatedGreenFootprintPortsAndActualMountAgreeAfterVehicleYaw",
+        "result": "Passed",
+        "duration": "3.160936"
+      },
+      {
+        "fullname": "RRLW34GarageTests.SixShortcutsRotateOnlyTheirAxisAndInverseUndoesWithoutSpending",
+        "result": "Passed",
+        "duration": "3.062700"
+      },
+      {
+        "fullname": "RRLW34GarageTests.SwitchingIdenticalShapesRefreshesTheirDifferentContactMarkers",
+        "result": "Passed",
+        "duration": "3.120006"
+      },
+      {
+        "fullname": "RRLW34GarageTests.ZeroHpBoundsAndMismatchedPortsNeverShowGreenOrSpend",
+        "result": "Passed",
+        "duration": "3.161451"
+      },
+      {
+        "fullname": "RRLW6EmpPhysicalTests.EveryIntegratedWeaponUsesTemporaryDeviceGateWithoutLosingPhysicalPower",
+        "result": "Passed",
+        "duration": "3.165520"
+      },
+      {
+        "fullname": "RRLW6ReloadInputTests.GuiKeyboardTUsesSameReloadWithPauseAndOwnerGates",
+        "result": "Passed",
+        "duration": "6.307634"
+      },
+      {
+        "fullname": "RRLW6ReloadInputTests.KeyboardBufferTReachesActualRangeReloadController",
+        "result": "Passed",
+        "duration": "4.711517"
+      }
+    ],
+    "exit": {
+      "filter": "RRLW6EmpPhysicalTests.EveryIntegratedWeaponUsesTemporaryDeviceGateWithoutLosingPhysicalPower;RRLW6ReloadInputTests;RRLW34GarageTests",
+      "exitCode": 0,
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-24T03:45:47.7923417Z"
+    }
+  }
+]
