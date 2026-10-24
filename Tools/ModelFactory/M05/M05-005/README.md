@@ -48,8 +48,8 @@ OBJ/MTL można importować jako statyczną wizualizację. Dla pulsacji należy u
 
 **Statyczna geometria:** zamknięte manifoldy, orientacja ścian, 0 zdegenerowanych trójkątów, obwiednia, materiał i konserwatywny odstęp pulsującego rdzenia — weryfikowane w `validate()` oraz w GitHub Actions. Deterministyczny OBJ/MTL porównywany byte-for-byte.
 
-**Blender smoke:** testuje rzeczywistą animację, idempotencję, brak kasowania obcych obiektów, poprawną bibliotekę kolekcji i obecność animacji w GLB. Wyniki należy potwierdzić na bieżącym commicie w GitHub Actions.
+**Blender smoke — PASS:** rzeczywista instalacja i uruchomienie Blendera, dwa uruchomienia generatora w jednej scenie, zachowanie obcego obiektu, klatki 0.90/1.04, poprawna biblioteka kolekcji, animacja i 7 materiałów w GLB oraz upload artefaktów. [Pełny przebieg GitHub Actions — PASS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40104695863). Statyczny generator uruchomiony bez bpy nadal raportuje `blender_execution: NOT_RUN` wyłącznie dla swojego przebiegu, a niezależny test CI raportuje PASS.
 
-**NOT RUN:** Unity 6 import, URP material visual inspection, Unity EditMode/PlayMode, ocena estetyki z renderów i integracja z systemem budowania. Model nie jest zintegrowany z mechaniką DEF-001.
+**BLOCKED_ACTIVATION:** globalne workflow Unity EditMode i PlayMode zatrzymują się na kroku `Require valid Unity activation credentials`; nie wykonano testów Unity. **NOT RUN:** Unity 6 import, URP material visual inspection, ocena estetyki z renderów i integracja z systemem budowania. Model nie jest zintegrowany z mechaniką DEF-001.
 
 **Granice zakresu:** nowa własna gałąź od develop, Draft PR do develop; bez merge, bez zmian w scenach, ProjectSettings, Assets istniejących mechanik, main/develop i cudzych modelach.
