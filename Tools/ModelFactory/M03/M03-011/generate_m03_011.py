@@ -209,10 +209,13 @@ def validate(parts):
            ((-.07,.07),(-.07,1.)))
     samples=0
     for frame in range(1,66):
-        segment=(frame-1)//16
-        start=KEYS[segment][1]
-        end=KEYS[segment+1][1]
-        d=start+(end-start)*((frame-1)%16)/16 if frame<65 else 0.
+        if frame==65:
+            d=0.
+        else:
+            segment=(frame-1)//16
+            start=KEYS[segment][1]
+            end=KEYS[segment+1][1]
+            d=start+(end-start)*((frame-1)%16)/16
         moving=(((-.26+d,.42+d),(-.26+d,-.12+d)),
                 ((-.26+d,-.12+d),(-.26+d,.42+d)))
         for aa in fixed:
