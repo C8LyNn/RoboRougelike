@@ -11,8 +11,10 @@
   "pr": 83,
   "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/83",
   "branch": "feature/rrl-model-m03-006-side-l-bracket",
-  "commit_sha": "dbdaff2713f566a42a0dfdbc5b9af40162671bf9",
+  "commit_sha": "05fbd90347268895146ce284acd2a65c2db786a5",
   "qa_static": "PASS",
-  "blender": "PENDING_CI",
-  "unity": "NOT_RUN"
+  "blender": "PASS_CI",
+  "unity": "BLOCKED_UNITY_ACTIVATION",
+  "blender_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40109422640",
+  "glb_artifact_id": 12565997069
 }
