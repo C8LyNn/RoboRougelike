@@ -70,6 +70,9 @@ def cylinder_y(name,centre,radius,width,material,parent="STATIC",sides=24):
         j=(i+1)%sides
         faces.extend(((i,j,sides+j),(i,sides+j,sides+i),
                       (2*sides,j,i),(2*sides+1,sides+i,sides+j)))
+    # Parametric XZ circle with +Y width has reversed winding under
+    # this coordinate convention; flip all faces to point outward.
+    faces=[(a,c,b) for a,b,c in faces]
     return dict(name=name,vertices=vertices,faces=faces,
                 material=material,parent=parent,bevel=0)
 
