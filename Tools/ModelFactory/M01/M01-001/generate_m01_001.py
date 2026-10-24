@@ -161,12 +161,22 @@ def build():
     for o in moving:
         parent_keep_world(o,rotor)
 
-    # Continuous 360-degree rotation, constant speed, exactly 48 frames.
+    # Parent static geometry to the existing mount root, so Unity receives one
+    # coherent vehicle-mountable hierarchy rather than dozens of root siblings.
+    # Moving parts remain children of the rotating pivot, itself under mount.
+    for part in list(bpy.data.objects):
+        if (part.name.startswith(PREFIX) and part != mount and
+                part != rotor and part.parent is None):
+            parent_keep_world(part, mount)
+    parent_keep_world(rotor, mount)
+
+    # FULL 360-degree turn across 48 frames. Intermediate keys are required:
+    # an exporter converting only endpoints to quaternions would see two
+    # identical orientations and eliminate the visible rotation.
     rotor.rotation_mode = 'XYZ'
-    rotor.rotation_euler = (0,0,0)
-    rotor.keyframe_insert(data_path="rotation_euler",index=1,frame=1)
-    rotor.rotation_euler[1] = -2*math.pi
-    rotor.keyframe_insert(data_path="rotation_euler",index=1,frame=49)
+    for frame in range(1, 50, 3):
+        rotor.rotation_euler[1] = -2*math.pi*(frame-1)/48.0
+        rotor.keyframe_insert(data_path="rotation_euler", index=1, frame=frame)
     if rotor.animation_data and rotor.animation_data.action:
         action = rotor.animation_data.action
         # Works for both classic fcurves and Blender 4.4+ layered actions.
@@ -181,6 +191,11 @@ def build():
     bpy.context.scene.frame_end = 49
     bpy.context.scene.render.fps = 24
     bpy.context.scene.frame_set(1)
+
+    # Hierarchy regression check: every model object is attached to mount.
+    assert rotor.parent == mount, "Rotor missing mount-parent link"
+    assert all(o.parent is not None for o in bpy.data.objects
+               if o.name.startswith(PREFIX) and o != mount), "Orphan visual part"
 
     # Bounding-circle analytical clearance: moving radius 0.24+0.107=0.347.
     assert BARREL_RADIUS + .107 < .455-.042, "Barrels intersect fixed shroud"
