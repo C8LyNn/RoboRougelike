@@ -98,8 +98,12 @@ namespace B01.MAPGEN001
         {
             float width = config.LaneWidth;
             float[] cx = new float[config.Segments];
+            // Narrow 10m lanes cannot absorb the same lateral wander as 30m
+            // lanes. Bound each segment's shift by lateral free-space.
+            float lateralStep = Mathf.Min(.35f + config.Difficulty * .8f,
+                .8f + (width - 10f) * .05f);
             for (int i = 1; i < cx.Length; i++)
-                cx[i] = cx[i - 1] + (rng.Next(-2, 3) * (.35f + config.Difficulty * .8f));
+                cx[i] = cx[i - 1] + rng.Next(-2, 3) * lateralStep;
             float maxX = cx.Max(x => Mathf.Abs(x));
             p.Bounds = new Bounds(new Vector3(0, 0, config.Segments * 8),
                 new Vector3(2 * (maxX + width * .5f + 3), 8, config.Segments * 16f + 5));
@@ -125,7 +129,11 @@ namespace B01.MAPGEN001
                 {
                     // Optional physical ramp in the opposite side lane; centre stays passable.
                     float pitch = 4f + config.Difficulty * 4f;
-                    Add(p, MapElementKind.Ramp, cx[i] - side * width * .30f,
+                    // Put ramp in the outer side lane, with a small gap to
+                    // boundary. This protects the Light 10m-lane route even
+                    // when its centreline changes between segments.
+                    float rampLateral = width * .5f - 1.55f;
+                    Add(p, MapElementKind.Ramp, cx[i] - side * rampLateral,
                         .32f, z - 1f, 3f, .45f, 7f, pitch);
                 }
             }
