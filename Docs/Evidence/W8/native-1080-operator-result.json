@@ -1,0 +1,2480 @@
+{
+    "runId": "W8-Native-Input",
+    "startedUtc": "2026-10-24T15:55:49.6967640Z",
+    "finishedUtc": "2026-10-24T16:11:13.7074319Z",
+    "status": "ClosedAfterVictory",
+    "method": "Native UI operator + combat input pilot; no direct damage/reward/currency APIs",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "width": 1920,
+    "height": 1080,
+    "physicalRounds": 1227,
+    "peakShells": 21,
+    "peakDebris": 12,
+    "won": true,
+    "combatSeconds": 116.59422302246094,
+    "combatFrames": 6995,
+    "observations": [
+        {
+            "realtime": 2.6389822959899904,
+            "state": "Ready",
+            "completed": 0,
+            "alive": 0,
+            "scrap": 0,
+            "inventory": 0,
+            "recovered": 0,
+            "bonuses": 0,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 0.0,
+            "playerMaxHp": 0.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 328.8045349121094,
+            "state": "Route",
+            "completed": 0,
+            "alive": 0,
+            "scrap": 0,
+            "inventory": 0,
+            "recovered": 0,
+            "bonuses": 0,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 0.0,
+            "playerMaxHp": 0.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 333.2917785644531,
+            "state": "Combat",
+            "completed": 0,
+            "alive": 2,
+            "scrap": 0,
+            "inventory": 0,
+            "recovered": 0,
+            "bonuses": 0,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 180.0,
+            "playerMaxHp": 180.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 339.3101501464844,
+            "state": "Combat",
+            "completed": 0,
+            "alive": 1,
+            "scrap": 0,
+            "inventory": 0,
+            "recovered": 0,
+            "bonuses": 0,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 180.0,
+            "playerMaxHp": 180.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 344.2108154296875,
+            "state": "Salvage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 80,
+            "inventory": 0,
+            "recovered": 0,
+            "bonuses": 0,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 180.0,
+            "playerMaxHp": 180.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 368.89227294921877,
+            "state": "Garage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 105,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 180.0,
+            "playerMaxHp": 180.0,
+            "inventoryConditions": "Gun:0.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 386.31866455078127,
+            "state": "Garage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 105,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "Gun:0.000"
+        },
+        {
+            "realtime": 397.62933349609377,
+            "state": "Garage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 69,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "Gun:1.000"
+        },
+        {
+            "realtime": 403.0870361328125,
+            "state": "Garage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 69,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 412.2688293457031,
+            "state": "Garage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 56,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 436.4454345703125,
+            "state": "Garage",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 26,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 442.1556701660156,
+            "state": "Route",
+            "completed": 1,
+            "alive": 0,
+            "scrap": 26,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 448.15631103515627,
+            "state": "Combat",
+            "completed": 1,
+            "alive": 3,
+            "scrap": 26,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 453.4898681640625,
+            "state": "Combat",
+            "completed": 1,
+            "alive": 2,
+            "scrap": 26,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 458.79010009765627,
+            "state": "Combat",
+            "completed": 1,
+            "alive": 1,
+            "scrap": 26,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 464.9569091796875,
+            "state": "Salvage",
+            "completed": 2,
+            "alive": 0,
+            "scrap": 118,
+            "inventory": 0,
+            "recovered": 1,
+            "bonuses": 1,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": ""
+        },
+        {
+            "realtime": 494.8927917480469,
+            "state": "Garage",
+            "completed": 2,
+            "alive": 0,
+            "scrap": 178,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 506.5743713378906,
+            "state": "Garage",
+            "completed": 2,
+            "alive": 0,
+            "scrap": 138,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 511.7001037597656,
+            "state": "Garage",
+            "completed": 2,
+            "alive": 0,
+            "scrap": 132,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 517.58642578125,
+            "state": "Route",
+            "completed": 2,
+            "alive": 0,
+            "scrap": 132,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 524.186767578125,
+            "state": "Combat",
+            "completed": 2,
+            "alive": 4,
+            "scrap": 132,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 530.3702392578125,
+            "state": "Combat",
+            "completed": 2,
+            "alive": 3,
+            "scrap": 132,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 533.4038696289063,
+            "state": "Combat",
+            "completed": 2,
+            "alive": 2,
+            "scrap": 132,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 538.9208984375,
+            "state": "Combat",
+            "completed": 2,
+            "alive": 1,
+            "scrap": 132,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 544.3211059570313,
+            "state": "Salvage",
+            "completed": 3,
+            "alive": 0,
+            "scrap": 214,
+            "inventory": 1,
+            "recovered": 1,
+            "bonuses": 2,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000"
+        },
+        {
+            "realtime": 560.1224365234375,
+            "state": "Garage",
+            "completed": 3,
+            "alive": 0,
+            "scrap": 298,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 3,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 565.56591796875,
+            "state": "Garage",
+            "completed": 3,
+            "alive": 0,
+            "scrap": 284,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 3,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 571.6824340820313,
+            "state": "Route",
+            "completed": 3,
+            "alive": 0,
+            "scrap": 284,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 3,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 577.599609375,
+            "state": "Combat",
+            "completed": 3,
+            "alive": 2,
+            "scrap": 284,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 3,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 590.9335327148438,
+            "state": "Combat",
+            "completed": 3,
+            "alive": 1,
+            "scrap": 284,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 3,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 594.9005126953125,
+            "state": "Salvage",
+            "completed": 4,
+            "alive": 0,
+            "scrap": 380,
+            "inventory": 2,
+            "recovered": 1,
+            "bonuses": 3,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 617.6514892578125,
+            "state": "Garage",
+            "completed": 4,
+            "alive": 0,
+            "scrap": 419,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 632.3760986328125,
+            "state": "Garage",
+            "completed": 4,
+            "alive": 0,
+            "scrap": 403,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 638.3812255859375,
+            "state": "Route",
+            "completed": 4,
+            "alive": 0,
+            "scrap": 403,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 644.4314575195313,
+            "state": "Combat",
+            "completed": 4,
+            "alive": 3,
+            "scrap": 403,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 656.5989990234375,
+            "state": "Combat",
+            "completed": 4,
+            "alive": 2,
+            "scrap": 403,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 661.6663818359375,
+            "state": "Combat",
+            "completed": 4,
+            "alive": 1,
+            "scrap": 403,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 666.6000366210938,
+            "state": "Salvage",
+            "completed": 5,
+            "alive": 0,
+            "scrap": 531,
+            "inventory": 3,
+            "recovered": 1,
+            "bonuses": 4,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 800.6087646484375,
+            "state": "Garage",
+            "completed": 5,
+            "alive": 0,
+            "scrap": 583,
+            "inventory": 4,
+            "recovered": 1,
+            "bonuses": 5,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 805.85302734375,
+            "state": "Garage",
+            "completed": 5,
+            "alive": 0,
+            "scrap": 544,
+            "inventory": 4,
+            "recovered": 1,
+            "bonuses": 5,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 813.1090698242188,
+            "state": "Route",
+            "completed": 5,
+            "alive": 0,
+            "scrap": 544,
+            "inventory": 4,
+            "recovered": 1,
+            "bonuses": 5,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 819.24267578125,
+            "state": "Combat",
+            "completed": 5,
+            "alive": 1,
+            "scrap": 544,
+            "inventory": 4,
+            "recovered": 1,
+            "bonuses": 5,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 848.5127563476563,
+            "state": "Salvage",
+            "completed": 6,
+            "alive": 0,
+            "scrap": 678,
+            "inventory": 4,
+            "recovered": 1,
+            "bonuses": 5,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 889.199951171875,
+            "state": "Won",
+            "completed": 6,
+            "alive": 0,
+            "scrap": 704,
+            "inventory": 5,
+            "recovered": 1,
+            "bonuses": 6,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 270.0,
+            "playerMaxHp": 270.0,
+            "inventoryConditions": "BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000;BonusModule:1.000"
+        },
+        {
+            "realtime": 909.1845092773438,
+            "state": "Ready",
+            "completed": 0,
+            "alive": 0,
+            "scrap": 0,
+            "inventory": 0,
+            "recovered": 0,
+            "bonuses": 0,
+            "damage": 1.0,
+            "hull": 1.0,
+            "core": 1.0,
+            "playerHp": 0.0,
+            "playerMaxHp": 0.0,
+            "inventoryConditions": ""
+        }
+    ],
+    "debris": [
+        {
+            "id": -6660,
+            "mass": 8.0,
+            "firstTime": 1.834015965461731,
+            "maxDistance": 10.81425666809082,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -1.9285919666290284,
+                "y": 0.8249997496604919,
+                "z": 14.627106666564942
+            }
+        },
+        {
+            "id": -6782,
+            "mass": 8.0,
+            "firstTime": 2.4673573970794679,
+            "maxDistance": 9.213393211364746,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -1.152090311050415,
+                "y": 0.8249950408935547,
+                "z": 14.50883674621582
+            }
+        },
+        {
+            "id": -7136,
+            "mass": 8.0,
+            "firstTime": 3.701063394546509,
+            "maxDistance": 9.099820137023926,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.2716454267501831,
+                "y": 0.8251563906669617,
+                "z": 12.544058799743653
+            }
+        },
+        {
+            "id": -7306,
+            "mass": 8.0,
+            "firstTime": 4.334743976593018,
+            "maxDistance": 11.53828239440918,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.2069104015827179,
+                "y": 1.1550006866455079,
+                "z": 11.797901153564454
+            }
+        },
+        {
+            "id": -7312,
+            "mass": 8.0,
+            "firstTime": 4.334743976593018,
+            "maxDistance": 7.923381328582764,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.3396076560020447,
+                "y": 1.1550006866455079,
+                "z": 12.390082359313965
+            }
+        },
+        {
+            "id": -7472,
+            "mass": 8.0,
+            "firstTime": 4.984757900238037,
+            "maxDistance": 7.096602916717529,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.8272937536239624,
+                "y": 0.8244666457176209,
+                "z": 12.574054718017579
+            }
+        },
+        {
+            "id": -7594,
+            "mass": 8.0,
+            "firstTime": 5.651425838470459,
+            "maxDistance": 6.742076873779297,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.8592640161514282,
+                "y": 0.8257811069488525,
+                "z": 12.10696792602539
+            }
+        },
+        {
+            "id": -7630,
+            "mass": 8.0,
+            "firstTime": 6.035055637359619,
+            "maxDistance": 10.140954971313477,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.6542191505432129,
+                "y": 0.8250203132629395,
+                "z": 13.353371620178223
+            }
+        },
+        {
+            "id": -7640,
+            "mass": 144.0,
+            "firstTime": 6.068390369415283,
+            "maxDistance": 9.9642333984375,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.7486156225204468,
+                "y": 0.3780794143676758,
+                "z": 13.469225883483887
+            }
+        },
+        {
+            "id": -7962,
+            "mass": 8.0,
+            "firstTime": 7.968490123748779,
+            "maxDistance": 9.23110580444336,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 10.112902641296387,
+                "y": 1.154999017715454,
+                "z": 16.214876174926759
+            }
+        },
+        {
+            "id": -7956,
+            "mass": 8.0,
+            "firstTime": 7.968490123748779,
+            "maxDistance": 11.597315788269043,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 9.570791244506836,
+                "y": 1.154999017715454,
+                "z": 15.94312858581543
+            }
+        },
+        {
+            "id": -8058,
+            "mass": 8.0,
+            "firstTime": 9.152266502380371,
+            "maxDistance": 8.327584266662598,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 7.803680419921875,
+                "y": 0.8251769542694092,
+                "z": 16.408151626586915
+            }
+        },
+        {
+            "id": -8094,
+            "mass": 8.0,
+            "firstTime": 9.535598754882813,
+            "maxDistance": 9.090279579162598,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 7.275027751922607,
+                "y": 0.8253984451293945,
+                "z": 17.206249237060548
+            }
+        },
+        {
+            "id": -8160,
+            "mass": 8.0,
+            "firstTime": 10.235684394836426,
+            "maxDistance": 3.2105422019958498,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 7.325732707977295,
+                "y": 0.8250101804733276,
+                "z": 17.434982299804689
+            }
+        },
+        {
+            "id": -28868,
+            "mass": 8.0,
+            "firstTime": 13.102457046508789,
+            "maxDistance": 4.253098964691162,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 10.588221549987793,
+                "y": 0.8250811696052551,
+                "z": 13.221927642822266
+            }
+        },
+        {
+            "id": -29262,
+            "mass": 8.0,
+            "firstTime": 14.285883903503418,
+            "maxDistance": 17.940275192260743,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 11.574056625366211,
+                "y": 0.825359046459198,
+                "z": 9.472814559936524
+            }
+        },
+        {
+            "id": -29574,
+            "mass": 8.0,
+            "firstTime": 15.202563285827637,
+            "maxDistance": 10.208247184753418,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 12.943190574645996,
+                "y": 1.1549311876296998,
+                "z": 8.062707901000977
+            }
+        },
+        {
+            "id": -29568,
+            "mass": 28.0,
+            "firstTime": 15.202563285827637,
+            "maxDistance": 12.832123756408692,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 12.727007865905762,
+                "y": 1.154931902885437,
+                "z": 7.492408275604248
+            }
+        },
+        {
+            "id": -29670,
+            "mass": 8.0,
+            "firstTime": 15.55259895324707,
+            "maxDistance": 7.924355983734131,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 12.993515014648438,
+                "y": 0.8254404067993164,
+                "z": 7.057067394256592
+            }
+        },
+        {
+            "id": -30100,
+            "mass": 8.0,
+            "firstTime": 16.052610397338868,
+            "maxDistance": 4.931558132171631,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 13.338761329650879,
+                "y": 0.8255243301391602,
+                "z": 7.220959663391113
+            }
+        },
+        {
+            "id": -30136,
+            "mass": 8.0,
+            "firstTime": 16.28594970703125,
+            "maxDistance": 11.411273002624512,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 13.172898292541504,
+                "y": 0.8249504566192627,
+                "z": 8.482528686523438
+            }
+        },
+        {
+            "id": -30224,
+            "mass": 152.0,
+            "firstTime": 16.33595085144043,
+            "maxDistance": 10.042373657226563,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 13.243133544921875,
+                "y": 0.40425747632980349,
+                "z": 8.614044189453125
+            }
+        },
+        {
+            "id": -30976,
+            "mass": 8.0,
+            "firstTime": 18.58605194091797,
+            "maxDistance": 8.354832649230957,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.050576210021973,
+                "y": 1.154999852180481,
+                "z": 8.477374076843262
+            }
+        },
+        {
+            "id": -30982,
+            "mass": 8.0,
+            "firstTime": 18.58605194091797,
+            "maxDistance": 7.536540508270264,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.29855489730835,
+                "y": 1.154999852180481,
+                "z": 9.0272855758667
+            }
+        },
+        {
+            "id": -31198,
+            "mass": 8.0,
+            "firstTime": 19.269397735595704,
+            "maxDistance": 8.895864486694336,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.067527770996094,
+                "y": 0.8250569701194763,
+                "z": 7.370190143585205
+            }
+        },
+        {
+            "id": -31384,
+            "mass": 8.0,
+            "firstTime": 19.836063385009767,
+            "maxDistance": 9.497518539428711,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.583066463470459,
+                "y": 0.825044572353363,
+                "z": 6.735993385314941
+            }
+        },
+        {
+            "id": -31570,
+            "mass": 8.0,
+            "firstTime": 20.48614501953125,
+            "maxDistance": 8.80609130859375,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.466236114501953,
+                "y": 0.8250386714935303,
+                "z": 6.543725490570068
+            }
+        },
+        {
+            "id": -31934,
+            "mass": 8.0,
+            "firstTime": 21.586193084716798,
+            "maxDistance": 9.847341537475586,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.376783847808838,
+                "y": 0.8250125646591187,
+                "z": 5.8389787673950199
+            }
+        },
+        {
+            "id": -31944,
+            "mass": 440.0,
+            "firstTime": 21.602859497070314,
+            "maxDistance": 14.618358612060547,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.385193824768066,
+                "y": 0.4971274435520172,
+                "z": 5.888671875
+            }
+        },
+        {
+            "id": -32676,
+            "mass": 8.0,
+            "firstTime": 23.936246871948243,
+            "maxDistance": 5.78354549407959,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -1.0615825653076172,
+                "y": 1.7499998807907105,
+                "z": 14.219176292419434
+            }
+        },
+        {
+            "id": -32670,
+            "mass": 8.0,
+            "firstTime": 23.936246871948243,
+            "maxDistance": 5.794177055358887,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -1.4308629035949708,
+                "y": 1.7499998807907105,
+                "z": 13.740320205688477
+            }
+        },
+        {
+            "id": -32922,
+            "mass": 8.0,
+            "firstTime": 24.736249923706056,
+            "maxDistance": 5.690403938293457,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.8343021869659424,
+                "y": 0.8254131078720093,
+                "z": 13.765013694763184
+            }
+        },
+        {
+            "id": -33018,
+            "mass": 8.0,
+            "firstTime": 25.102920532226564,
+            "maxDistance": 6.011481761932373,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.010955903679132462,
+                "y": 0.8252666592597961,
+                "z": 14.215648651123047
+            }
+        },
+        {
+            "id": -33444,
+            "mass": 8.0,
+            "firstTime": 26.402957916259767,
+            "maxDistance": 4.873913288116455,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.23702049255371095,
+                "y": 0.8253220915794373,
+                "z": 16.276437759399415
+            }
+        },
+        {
+            "id": -33600,
+            "mass": 8.0,
+            "firstTime": 26.936294555664064,
+            "maxDistance": 4.232334136962891,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 1.1780787706375123,
+                "y": 0.8251779675483704,
+                "z": 16.888925552368165
+            }
+        },
+        {
+            "id": -45694,
+            "mass": 8.0,
+            "firstTime": 30.803068161010743,
+            "maxDistance": 8.66455364227295,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 6.694011688232422,
+                "y": 0.8249996900558472,
+                "z": 10.746259689331055
+            }
+        },
+        {
+            "id": -45848,
+            "mass": 8.0,
+            "firstTime": 31.20306968688965,
+            "maxDistance": 22.224973678588868,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.897678852081299,
+                "y": 0.8250963091850281,
+                "z": 10.279291152954102
+            }
+        },
+        {
+            "id": -46152,
+            "mass": 8.0,
+            "firstTime": 32.03649139404297,
+            "maxDistance": 19.95244598388672,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.553494453430176,
+                "y": 0.8251277208328247,
+                "z": 9.675360679626465
+            }
+        },
+        {
+            "id": -46342,
+            "mass": 8.0,
+            "firstTime": 32.58649826049805,
+            "maxDistance": 10.20521068572998,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.343038082122803,
+                "y": 1.1549993753433228,
+                "z": 9.3242826461792
+            }
+        },
+        {
+            "id": -46336,
+            "mass": 30.0,
+            "firstTime": 32.58649826049805,
+            "maxDistance": 9.93552303314209,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.1930251121521,
+                "y": 1.1549992561340333,
+                "z": 8.735936164855957
+            }
+        },
+        {
+            "id": -46406,
+            "mass": 8.0,
+            "firstTime": 32.66983413696289,
+            "maxDistance": 10.535374641418457,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.417891979217529,
+                "y": 0.8254751563072205,
+                "z": 8.065176010131836
+            }
+        },
+        {
+            "id": -47706,
+            "mass": 8.0,
+            "firstTime": 33.28650665283203,
+            "maxDistance": 9.49194622039795,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 5.178036212921143,
+                "y": 0.825347900390625,
+                "z": 7.507761001586914
+            }
+        },
+        {
+            "id": -48216,
+            "mass": 8.0,
+            "firstTime": 33.95317840576172,
+            "maxDistance": 5.747201442718506,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 5.837904930114746,
+                "y": 0.8250485062599182,
+                "z": 6.808760643005371
+            }
+        },
+        {
+            "id": -48226,
+            "mass": 264.0,
+            "firstTime": 33.95317840576172,
+            "maxDistance": 5.72757625579834,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 5.967673301696777,
+                "y": 0.487845778465271,
+                "z": 6.95414400100708
+            }
+        },
+        {
+            "id": -49000,
+            "mass": 8.0,
+            "firstTime": 35.75333786010742,
+            "maxDistance": 5.101109027862549,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.648263931274414,
+                "y": 1.1549996137619019,
+                "z": 11.781875610351563
+            }
+        },
+        {
+            "id": -49006,
+            "mass": 8.0,
+            "firstTime": 35.75333786010742,
+            "maxDistance": 4.82570743560791,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.6390380859375,
+                "y": 1.1549996137619019,
+                "z": 12.385685920715332
+            }
+        },
+        {
+            "id": -49192,
+            "mass": 8.0,
+            "firstTime": 36.25333786010742,
+            "maxDistance": 3.909083127975464,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.882120132446289,
+                "y": 0.8250529766082764,
+                "z": 13.046619415283204
+            }
+        },
+        {
+            "id": -49378,
+            "mass": 8.0,
+            "firstTime": 36.98676681518555,
+            "maxDistance": 4.299635887145996,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.921002388000489,
+                "y": 0.8250148296356201,
+                "z": 15.633687973022461
+            }
+        },
+        {
+            "id": -49448,
+            "mass": 176.0,
+            "firstTime": 37.02009963989258,
+            "maxDistance": 9.448548316955567,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.918566703796387,
+                "y": 0.46753448247909548,
+                "z": 15.722577095031739
+            }
+        },
+        {
+            "id": -49984,
+            "mass": 30.0,
+            "firstTime": 38.27012634277344,
+            "maxDistance": 7.26999044418335,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.7294230461120609,
+                "y": 1.749832272529602,
+                "z": 16.64514923095703
+            }
+        },
+        {
+            "id": -49990,
+            "mass": 8.0,
+            "firstTime": 38.27012634277344,
+            "maxDistance": 7.291660308837891,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.575039386749268,
+                "y": 1.749833106994629,
+                "z": 17.22824478149414
+            }
+        },
+        {
+            "id": -50446,
+            "mass": 8.0,
+            "firstTime": 39.70355987548828,
+            "maxDistance": 5.509729862213135,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.568176746368408,
+                "y": 0.8315688371658325,
+                "z": 17.20068359375
+            }
+        },
+        {
+            "id": -50692,
+            "mass": 8.0,
+            "firstTime": 40.55379867553711,
+            "maxDistance": 8.814366340637207,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.441042423248291,
+                "y": 0.8292290568351746,
+                "z": 17.56303596496582
+            }
+        },
+        {
+            "id": -50818,
+            "mass": 8.0,
+            "firstTime": 40.98713684082031,
+            "maxDistance": 8.549320220947266,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.912999153137207,
+                "y": 0.8267896771430969,
+                "z": 17.578805923461915
+            }
+        },
+        {
+            "id": -51354,
+            "mass": 8.0,
+            "firstTime": 42.103816986083987,
+            "maxDistance": 8.011276245117188,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.602224826812744,
+                "y": 0.8277384638786316,
+                "z": 16.470956802368165
+            }
+        },
+        {
+            "id": -51480,
+            "mass": 8.0,
+            "firstTime": 42.50381851196289,
+            "maxDistance": 7.584771156311035,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.195761680603027,
+                "y": 0.8247619867324829,
+                "z": 16.90796661376953
+            }
+        },
+        {
+            "id": -51490,
+            "mass": 256.0,
+            "firstTime": 42.5538215637207,
+            "maxDistance": 7.430220127105713,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.185591697692871,
+                "y": 0.4943120777606964,
+                "z": 17.012542724609376
+            }
+        },
+        {
+            "id": -52096,
+            "mass": 8.0,
+            "firstTime": 44.503849029541019,
+            "maxDistance": 14.241201400756836,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 8.422514915466309,
+                "y": 0.8249996900558472,
+                "z": 12.981815338134766
+            }
+        },
+        {
+            "id": -52162,
+            "mass": 8.0,
+            "firstTime": 44.67051696777344,
+            "maxDistance": 10.223402976989746,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 8.148052215576172,
+                "y": 0.8250260353088379,
+                "z": 13.533601760864258
+            }
+        },
+        {
+            "id": -52998,
+            "mass": 28.0,
+            "firstTime": 46.920616149902347,
+            "maxDistance": 5.14585018157959,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 7.024500846862793,
+                "y": 1.1549618244171143,
+                "z": 16.994003295898439
+            }
+        },
+        {
+            "id": -53004,
+            "mass": 8.0,
+            "firstTime": 46.920616149902347,
+            "maxDistance": 4.919039249420166,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 7.574023246765137,
+                "y": 1.1549620628356934,
+                "z": 17.210294723510743
+            }
+        },
+        {
+            "id": -53100,
+            "mass": 8.0,
+            "firstTime": 47.15394973754883,
+            "maxDistance": 2.6030778884887697,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 7.508878231048584,
+                "y": 0.8253820538520813,
+                "z": 17.258817672729493
+            }
+        },
+        {
+            "id": -60354,
+            "mass": 32.0,
+            "firstTime": 50.67091369628906,
+            "maxDistance": 7.523064136505127,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.290014743804932,
+                "y": 0.8249891996383667,
+                "z": 15.317893981933594
+            }
+        },
+        {
+            "id": -61132,
+            "mass": 32.0,
+            "firstTime": 52.9210205078125,
+            "maxDistance": 8.201096534729004,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -1.6464840173721314,
+                "y": 0.8251897096633911,
+                "z": 13.32056713104248
+            }
+        },
+        {
+            "id": -62100,
+            "mass": 8.0,
+            "firstTime": 55.22114944458008,
+            "maxDistance": 7.991300582885742,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.403176784515381,
+                "y": 0.8253097534179688,
+                "z": 13.011970520019532
+            }
+        },
+        {
+            "id": -62402,
+            "mass": 8.0,
+            "firstTime": 55.97116470336914,
+            "maxDistance": 7.983824253082275,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.284467697143555,
+                "y": 0.8253652453422546,
+                "z": 12.629898071289063
+            }
+        },
+        {
+            "id": -62736,
+            "mass": 8.0,
+            "firstTime": 56.97117233276367,
+            "maxDistance": 8.551039695739746,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.545515060424805,
+                "y": 0.8253790736198425,
+                "z": 12.64406967163086
+            }
+        },
+        {
+            "id": -62860,
+            "mass": 8.0,
+            "firstTime": 57.15454864501953,
+            "maxDistance": 8.385016441345215,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.1272807121276859,
+                "y": 0.825420618057251,
+                "z": 12.509954452514649
+            }
+        },
+        {
+            "id": -63104,
+            "mass": 8.0,
+            "firstTime": 57.92121887207031,
+            "maxDistance": 8.352322578430176,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -7.077063083648682,
+                "y": 0.8253273963928223,
+                "z": 12.970402717590332
+            }
+        },
+        {
+            "id": -63466,
+            "mass": 8.0,
+            "firstTime": 58.97126388549805,
+            "maxDistance": 8.415759086608887,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.921710968017578,
+                "y": 0.825322151184082,
+                "z": 12.494197845458985
+            }
+        },
+        {
+            "id": -63770,
+            "mass": 8.0,
+            "firstTime": 59.821285247802737,
+            "maxDistance": 8.022089004516602,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.252047061920166,
+                "y": 0.8252700567245483,
+                "z": 11.860440254211426
+            }
+        },
+        {
+            "id": -63984,
+            "mass": 8.0,
+            "firstTime": 60.42129135131836,
+            "maxDistance": 5.995720863342285,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.417684555053711,
+                "y": 0.8251912593841553,
+                "z": 12.336504936218262
+            }
+        },
+        {
+            "id": -64286,
+            "mass": 8.0,
+            "firstTime": 61.25463104248047,
+            "maxDistance": 7.416088104248047,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.162392616271973,
+                "y": 0.8250922560691834,
+                "z": 12.286833763122559
+            }
+        },
+        {
+            "id": -64326,
+            "mass": 520.0,
+            "firstTime": 61.30463409423828,
+            "maxDistance": 7.804397106170654,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.030776500701904,
+                "y": 0.48230838775634768,
+                "z": 12.68655776977539
+            }
+        },
+        {
+            "id": -64754,
+            "mass": 8.0,
+            "firstTime": 62.504642486572269,
+            "maxDistance": 7.5661163330078129,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.736631393432617,
+                "y": 1.1549997329711915,
+                "z": 7.656156063079834
+            }
+        },
+        {
+            "id": -64748,
+            "mass": 8.0,
+            "firstTime": 62.504642486572269,
+            "maxDistance": 9.300907135009766,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -6.336219787597656,
+                "y": 1.1549997329711915,
+                "z": 7.745548725128174
+            }
+        },
+        {
+            "id": -65030,
+            "mass": 8.0,
+            "firstTime": 63.388065338134769,
+            "maxDistance": 5.476935863494873,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.309284210205078,
+                "y": 0.8251914381980896,
+                "z": 6.812887668609619
+            }
+        },
+        {
+            "id": -65186,
+            "mass": 8.0,
+            "firstTime": 63.90480041503906,
+            "maxDistance": 5.996174335479736,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.010770797729492,
+                "y": 0.825294554233551,
+                "z": 6.237860202789307
+            }
+        },
+        {
+            "id": -65282,
+            "mass": 8.0,
+            "firstTime": 64.088134765625,
+            "maxDistance": 5.055464267730713,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -4.542417049407959,
+                "y": 0.8248789310455322,
+                "z": 6.450017929077148
+            }
+        },
+        {
+            "id": -73596,
+            "mass": 32.0,
+            "firstTime": 68.57186889648438,
+            "maxDistance": 7.21656608581543,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -10.097224235534668,
+                "y": 0.8249994516372681,
+                "z": 14.177377700805664
+            }
+        },
+        {
+            "id": -74642,
+            "mass": 32.0,
+            "firstTime": 70.85526275634766,
+            "maxDistance": 7.116902828216553,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -5.369406223297119,
+                "y": 0.8250447511672974,
+                "z": 11.137604713439942
+            }
+        },
+        {
+            "id": -75182,
+            "mass": 8.0,
+            "firstTime": 72.25544738769531,
+            "maxDistance": 5.0476298332214359,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -7.9767608642578129,
+                "y": 0.8250494599342346,
+                "z": 11.607704162597657
+            }
+        },
+        {
+            "id": -75872,
+            "mass": 8.0,
+            "firstTime": 74.28887176513672,
+            "maxDistance": 5.838664531707764,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -8.970264434814454,
+                "y": 0.8250930905342102,
+                "z": 12.700916290283204
+            }
+        },
+        {
+            "id": -76208,
+            "mass": 8.0,
+            "firstTime": 75.07230377197266,
+            "maxDistance": 6.965404987335205,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.285999298095704,
+                "y": 0.8250828385353088,
+                "z": 12.96436595916748
+            }
+        },
+        {
+            "id": -76630,
+            "mass": 8.0,
+            "firstTime": 76.20568084716797,
+            "maxDistance": 6.613097190856934,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.884263038635254,
+                "y": 0.8250554800033569,
+                "z": 12.533524513244629
+            }
+        },
+        {
+            "id": -77052,
+            "mass": 8.0,
+            "firstTime": 77.40579986572266,
+            "maxDistance": 6.04203987121582,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.443116188049317,
+                "y": 0.8252517580986023,
+                "z": 14.262605667114258
+            }
+        },
+        {
+            "id": -77062,
+            "mass": 552.0,
+            "firstTime": 77.42247009277344,
+            "maxDistance": 9.192401885986329,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -9.323457717895508,
+                "y": 0.5034290552139282,
+                "z": 14.583735466003418
+            }
+        },
+        {
+            "id": -77490,
+            "mass": 8.0,
+            "firstTime": 78.6058120727539,
+            "maxDistance": 9.087087631225586,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.18587589263916,
+                "y": 1.1549997329711915,
+                "z": 9.959729194641114
+            }
+        },
+        {
+            "id": -77484,
+            "mass": 8.0,
+            "firstTime": 78.6058120727539,
+            "maxDistance": 11.031505584716797,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.711076259613037,
+                "y": 1.1549997329711915,
+                "z": 9.584465026855469
+            }
+        },
+        {
+            "id": -77826,
+            "mass": 8.0,
+            "firstTime": 79.72274017333985,
+            "maxDistance": 6.319445610046387,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.6788790225982668,
+                "y": 0.8252476453781128,
+                "z": 9.739457130432129
+            }
+        },
+        {
+            "id": -78192,
+            "mass": 8.0,
+            "firstTime": 80.9063949584961,
+            "maxDistance": 4.314161777496338,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 2.672319173812866,
+                "y": 0.8250545263290405,
+                "z": 12.398602485656739
+            }
+        },
+        {
+            "id": -78318,
+            "mass": 8.0,
+            "firstTime": 81.28973388671875,
+            "maxDistance": 9.941402435302735,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 1.2779209613800049,
+                "y": 0.8255188465118408,
+                "z": 13.476822853088379
+            }
+        },
+        {
+            "id": -78718,
+            "mass": 8.0,
+            "firstTime": 82.47319793701172,
+            "maxDistance": 8.791229248046875,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.7001197338104248,
+                "y": 0.8250370025634766,
+                "z": 15.3357572555542
+            }
+        },
+        {
+            "id": -78728,
+            "mass": 160.0,
+            "firstTime": 82.4898681640625,
+            "maxDistance": 8.716046333312989,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.6898754239082336,
+                "y": 0.42772558331489565,
+                "z": 15.427831649780274
+            }
+        },
+        {
+            "id": -79490,
+            "mass": 8.0,
+            "firstTime": 84.98997497558594,
+            "maxDistance": 8.313797950744629,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.402952194213867,
+                "y": 1.1549996137619019,
+                "z": 10.802619934082032
+            }
+        },
+        {
+            "id": -79484,
+            "mass": 38.0,
+            "firstTime": 84.98997497558594,
+            "maxDistance": 10.351688385009766,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.872718095779419,
+                "y": 1.1549996137619019,
+                "z": 10.512951850891114
+            }
+        },
+        {
+            "id": -79556,
+            "mass": 8.0,
+            "firstTime": 85.13996887207031,
+            "maxDistance": 8.272342681884766,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.037738800048828,
+                "y": 0.8252726197242737,
+                "z": 9.937434196472168
+            }
+        },
+        {
+            "id": -79892,
+            "mass": 8.0,
+            "firstTime": 86.27340698242188,
+            "maxDistance": 5.604736328125,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 5.451976776123047,
+                "y": 0.8252668976783752,
+                "z": 7.7253737449646
+            }
+        },
+        {
+            "id": -80018,
+            "mass": 8.0,
+            "firstTime": 86.70682525634766,
+            "maxDistance": 5.8713507652282719,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 6.174971580505371,
+                "y": 0.8253991603851318,
+                "z": 5.981476783752441
+            }
+        },
+        {
+            "id": -86768,
+            "mass": 8.0,
+            "firstTime": 88.9068832397461,
+            "maxDistance": 7.485113620758057,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -2.7034895420074465,
+                "y": 0.8249996900558472,
+                "z": 15.98572063446045
+            }
+        },
+        {
+            "id": -87374,
+            "mass": 32.0,
+            "firstTime": 90.59046936035156,
+            "maxDistance": 7.528061389923096,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -2.6239511966705324,
+                "y": 0.824989914894104,
+                "z": 16.159439086914064
+            }
+        },
+        {
+            "id": -87384,
+            "mass": 8.0,
+            "firstTime": 90.60713195800781,
+            "maxDistance": 10.163905143737793,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -2.584747552871704,
+                "y": 0.8249795436859131,
+                "z": 16.707035064697267
+            }
+        },
+        {
+            "id": -88020,
+            "mass": 8.0,
+            "firstTime": 92.72431182861328,
+            "maxDistance": 7.218294620513916,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 2.8719584941864015,
+                "y": 0.8250323534011841,
+                "z": 14.852851867675782
+            }
+        },
+        {
+            "id": -88476,
+            "mass": 32.0,
+            "firstTime": 94.22437286376953,
+            "maxDistance": 7.565290927886963,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 2.9964711666107179,
+                "y": 0.8249952793121338,
+                "z": 16.11451530456543
+            }
+        },
+        {
+            "id": -88516,
+            "mass": 8.0,
+            "firstTime": 94.27437591552735,
+            "maxDistance": 10.28097915649414,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.06487774848938,
+                "y": 0.8249289989471436,
+                "z": 16.68012809753418
+            }
+        },
+        {
+            "id": -89152,
+            "mass": 8.0,
+            "firstTime": 96.29127502441406,
+            "maxDistance": 7.009050369262695,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.4041539430618286,
+                "y": 0.825075089931488,
+                "z": 15.580293655395508
+            }
+        },
+        {
+            "id": -89278,
+            "mass": 8.0,
+            "firstTime": 96.67463684082031,
+            "maxDistance": 7.1184797286987309,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.8231509327888489,
+                "y": 0.8249296545982361,
+                "z": 15.687149047851563
+            }
+        },
+        {
+            "id": -89554,
+            "mass": 8.0,
+            "firstTime": 97.70809936523438,
+            "maxDistance": 6.951768398284912,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": -0.3554043769836426,
+                "y": 0.8249674439430237,
+                "z": 16.160234451293947
+            }
+        },
+        {
+            "id": -91270,
+            "mass": 8.0,
+            "firstTime": 103.20872497558594,
+            "maxDistance": 6.9326324462890629,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 2.6128134727478029,
+                "y": 0.8244653344154358,
+                "z": 17.694320678710939
+            }
+        },
+        {
+            "id": -91786,
+            "mass": 8.0,
+            "firstTime": 105.00889587402344,
+            "maxDistance": 6.809140682220459,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.393369197845459,
+                "y": 0.8246335387229919,
+                "z": 17.086210250854493
+            }
+        },
+        {
+            "id": -92242,
+            "mass": 8.0,
+            "firstTime": 106.44225311279297,
+            "maxDistance": 7.501127243041992,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.22283411026001,
+                "y": 1.3752620220184327,
+                "z": 14.989282608032227
+            }
+        },
+        {
+            "id": -93028,
+            "mass": 8.0,
+            "firstTime": 108.9259262084961,
+            "maxDistance": 6.832846641540527,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.889118194580078,
+                "y": 0.825887143611908,
+                "z": 14.919222831726075
+            }
+        },
+        {
+            "id": -93394,
+            "mass": 8.0,
+            "firstTime": 110.24285888671875,
+            "maxDistance": 16.19940757751465,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 4.021568298339844,
+                "y": 0.8257944583892822,
+                "z": 14.390312194824219
+            }
+        },
+        {
+            "id": -93670,
+            "mass": 8.0,
+            "firstTime": 111.17620086669922,
+            "maxDistance": 16.690872192382814,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 3.798767566680908,
+                "y": 0.8257811665534973,
+                "z": 13.778838157653809
+            }
+        },
+        {
+            "id": -93886,
+            "mass": 8.0,
+            "firstTime": 111.84286499023438,
+            "maxDistance": 14.128937721252442,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 2.966116428375244,
+                "y": 0.8255951404571533,
+                "z": 13.57571792602539
+            }
+        },
+        {
+            "id": -94132,
+            "mass": 8.0,
+            "firstTime": 112.52657318115235,
+            "maxDistance": 5.551042556762695,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 2.132608413696289,
+                "y": 0.8253881931304932,
+                "z": 13.397041320800782
+            }
+        },
+        {
+            "id": -94468,
+            "mass": 8.0,
+            "firstTime": 113.7099838256836,
+            "maxDistance": 5.88815975189209,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 1.7951197624206544,
+                "y": 0.8254727125167847,
+                "z": 13.037508964538575
+            }
+        },
+        {
+            "id": -94744,
+            "mass": 8.0,
+            "firstTime": 114.61002349853516,
+            "maxDistance": 6.967990875244141,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.9697691202163696,
+                "y": 0.8252409100532532,
+                "z": 13.168371200561524
+            }
+        },
+        {
+            "id": -94930,
+            "mass": 8.0,
+            "firstTime": 115.0600357055664,
+            "maxDistance": 5.330625534057617,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.7379436492919922,
+                "y": 0.8251696825027466,
+                "z": 13.89185905456543
+            }
+        },
+        {
+            "id": -95176,
+            "mass": 8.0,
+            "firstTime": 115.91004180908203,
+            "maxDistance": 4.237442493438721,
+            "initialNonblocking": true,
+            "restoredColliders": true,
+            "restoredGravity": true,
+            "origin": {
+                "x": 0.5814149379730225,
+                "y": 0.8250852823257446,
+                "z": 14.82740306854248
+            }
+        }
+    ],
+    "screenshots": [
+        "001-Ready-stage0.png",
+        "002-Route-stage0.png",
+        "003-Combat-stage0.png",
+        "debris-1-0.png",
+        "debris-1-1.png",
+        "debris-1-2.png",
+        "debris-1-3.png",
+        "debris-2-0.png",
+        "debris-2-1.png",
+        "debris-2-2.png",
+        "debris-2-3.png",
+        "debris-3-0.png",
+        "debris-3-1.png",
+        "debris-3-2.png",
+        "debris-3-3.png",
+        "004-Combat-stage0.png",
+        "005-Salvage-stage1.png",
+        "006-Garage-stage1.png",
+        "007-Garage-stage1.png",
+        "008-Garage-stage1.png",
+        "009-Garage-stage1.png",
+        "010-Garage-stage1.png",
+        "011-Garage-stage1.png",
+        "012-Route-stage1.png",
+        "013-Combat-stage1.png",
+        "014-Combat-stage1.png",
+        "015-Combat-stage1.png",
+        "016-Salvage-stage2.png",
+        "017-Garage-stage2.png",
+        "018-Garage-stage2.png",
+        "019-Garage-stage2.png",
+        "020-Route-stage2.png",
+        "021-Combat-stage2.png",
+        "022-Combat-stage2.png",
+        "023-Combat-stage2.png",
+        "024-Combat-stage2.png",
+        "025-Salvage-stage3.png",
+        "026-Garage-stage3.png",
+        "027-Garage-stage3.png",
+        "028-Route-stage3.png",
+        "029-Combat-stage3.png",
+        "030-Combat-stage3.png",
+        "031-Salvage-stage4.png",
+        "032-Garage-stage4.png",
+        "033-Garage-stage4.png",
+        "034-Route-stage4.png",
+        "035-Combat-stage4.png",
+        "036-Combat-stage4.png",
+        "037-Combat-stage4.png",
+        "038-Salvage-stage5.png",
+        "039-Garage-stage5.png",
+        "040-Garage-stage5.png",
+        "041-Route-stage5.png",
+        "042-Combat-stage5.png",
+        "043-Salvage-stage6.png",
+        "044-Won-stage6.png",
+        "045-Ready-stage0.png"
+    ],
+    "errors": []
+}

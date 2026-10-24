@@ -1,0 +1,39 @@
+{
+  "source": "40173ee60a481c07ccc005fe94c517c524aef0fa",
+  "method": "Native Windows UI clicks and actual K/L keys; combat ordinary virtual aim/fire/drive pilot, active AI and physical shots; no HP/currency/reward/victory APIs",
+  "nativeDirectory": "W8-Native-Input-c6cbba340d744db48a00cb143a6de3b3",
+  "vehicle": "Heavy",
+  "seed": 2026,
+  "routes": [
+    "FirstScrap",
+    "OpenConvoy",
+    "IndustrialCrossfire",
+    "EliteBastion",
+    "RelicRaiders",
+    "SiegeBoss"
+  ],
+  "victories": 6,
+  "enemiesDefeated": 15,
+  "bonuses": 6,
+  "recovered": 1,
+  "finalScrap": 704,
+  "finalLogicalParts": 143,
+  "finalOccupiedCells": 152,
+  "checks": [
+    "Destroyed automatic gun recovered at0HP, paid36scrap rebuild restores100%, physically mounted on core bonus",
+    "Actual core bonus mount139->143cells, recovered gun->144cells; next fight core180->270HP and two weapons",
+    "Paid bulk repairs13,6,14,16,39scrap; canonical condition persists between encounters",
+    "SEN30scrap actual mount144->148cells afterfight1; actual L duringfight2 shows9signals including two Hazards and a Salvage wreck",
+    "COM40scrap actual mount148->152cells afterfight2, both scanners persist through remaining battles",
+    "COM K attempts with no visible cone target leave0contacts and ready state; successful fight5 K yields9structural parts including armor93%HP and cooldown6.6s",
+    "Native rendered sparks/smoke/physical fragments and yellow/red hazard rings observed while active foes fire",
+    "Actual final victory screen6/6,15foes,6bonuses,1recovered,704scrap,143parts",
+    "Actual restart button returns menu; observer records0scrap/0inventory/0bonuses and one controller/one camera"
+  ],
+  "limitations": [
+    "Combat is input-pilot gameplay, not six human-driven fights; controlled API47 fixture is separate",
+    "Heavy twelve-wheel layout keeps legacy R6; MOV011 four modes/crab verified separately on supported Light and MOV009 fixture",
+    "Sky-attached Alt+F4 actual exitC0000005 remains unresolved; no W8 human-close PASS",
+    "An unnecessary second identical menu process was closed before the campaign began; only one game process ran during all combat measurements"
+  ]
+}

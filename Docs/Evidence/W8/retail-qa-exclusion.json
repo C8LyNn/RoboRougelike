@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "40173ee60a481c07ccc005fe94c517c524aef0fa",
+  "retailAssembly": "RoboRougelike_Data/Managed/Assembly-CSharp.dll",
+  "excludedQaClasses": [
+    "RRLW8RuntimeQA",
+    "RRLW7RuntimeQA",
+    "RRLW6RuntimeQA",
+    "RRLW2RuntimeQA",
+    "RRLW5RuntimeDiagnostics",
+    "RRLW6InputDiagnostics"
+  ],
+  "allNamesAbsent": true,
+  "method": "ASCII metadata-name presence check of the actual extracted retail managed assembly; all six absent"
+}

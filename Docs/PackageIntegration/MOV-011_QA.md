@@ -1,0 +1,33 @@
+# MOV-011 — independent steering integrated with R6
+
+Original selected kit ZIP SHA256 `5de4ef944023395f42cd239d3d6a466e45bcabad71049d6c90416aba589e5fa6`; the requested outer kit hash and verify-all18/18 were already verified. Original package importer verified21 inner hashes/22files and copied16 Assets files once, without overwriting existing files. The package supplied no Unity metadata; new metadata was generated and checked, with no GUID collision. Final targeted gameplay/build source `40173ee60a481c07ccc005fe94c517c524aef0fa` follows initial integration `f0ab1bd11f4474ede0250b344f7e2fef716c58f9`, based on SEN head `83b188071f3a692144aa40a266f93403f8ab6bf7`. Index1556 files/0errors. Unity6000.3.14f1, packages, old GUIDs/scenes/prefabs unchanged.
+
+The owned garage controller uses existing four-cell1×2×2 XYZ/contact geometry, one P12 HP, R3 identity/resources/repair/loot/copy and R6 mass. Integration tuning45scrap/14kg/100HP/one per rig is distinct from package-defined steering parameters. Original default30° center/.70rear/135°persecond/12mps half-angle/.35minimum factor remains. Original runtime geometry code is unchanged.
+
+Exactly four unique, rectangular, unrotated nominal wheel cells define roles, including lost wheels so destruction cannot remap surviving roles. The Light derives actual1.1m wheelbase/2.2m track; Standard/Heavy12-wheel, rotated or irregular layouts visibly retain standard R6 steering. Other drive modes disable this adapter. Wider layout support is not silently simulated.
+
+The physical part owns original IndependentSteeringController with automatic FixedUpdate disabled. Original per-wheel modules read existing P12 structural/HP/EMP/body availability; the original Step computes angles once per R6 step. R6 consumes original midpoint slip and curvature in its existing thrust/lateral-resistance/yaw path. There is no second force solver, extra wheel Rigidbody, new WheelCollider or second HP. Existing fallback speed/forces remain unchanged. Dedicated visual yaw children reuse existing wheel meshes; original physical payload colliders and attachment blocks stay fixed.
+
+M cycles FrontOnly/RearOnly/CounterPhase/Crab through guarded ordinary InputSystem and GUI fallback with same-frame deduplication. Mode belongs to R3PartState.Copy and survives actual destruction/Capture/paid repair/rebuild. The HUD now shows mode/fallback without requiring unrelated older MOV devices. COM/SEN remain distinct, operational on the same physical rig.
+
+Observed physical RED1bf3d068 demonstrated the absent owned module. Original source also had a wrong rear-angle test assertion: Solve(0,+22) must retain positive rear wheel angles, while RearOnly reverses driver input in CenterTargets. Corrected the assertion, leaving mathematics unchanged. Original Play13/14 then reproduced56.4489° crab yaw in a colliderless250kg demo fixture with yaw inertia1 (diagnostic146e4438). Added the supplied demo hull1.5×.4×2.2 to that fixture and reset inertia; standalone demo force code stayed unchanged, Play14/14 passed. Standalone demo tests do not establish production R6 motion.
+
+Initial Edit55/55 =48 original+7 integration; shared34/34 covers R6 driving, older MOV drives, MOV009 physics and physical W8 devices. Added actual MOV009 composition case, now8/8 steering cases. Final all-W8 physical suite21/21 =6 COM+7 SEN+8 MOV011, native Editor exits0. Includes real crab displacement/counter-phase/rear-only yaw, lost front axle, EMP without momentum erasure, mode identity/paid repair/copy, unsupported layouts, original colliders/no extra solver, and guarded M cycling.
+
+One fresh whole-W8 read-only review found no Critical issue. Its HUD/evidence findings are corrected; the functional COM reactivation mismatch was reproduced RED(expected7.69969s/actual7.99975s), then corrected by canonical OnEnable restoration and included in the final21/21. [Review and rulings](W8_REVIEW.md).
+
+Windows x64 retail and QA build206a18fe both Succeeded/0errors/4existingwarnings, actual process0. Final1280×720 D3D11/RTX5080 controlled native fixture6ef87d4e passed47/47/error[]/actual process0. It separately verifies default-planar R6 and a real four-support MOV009/gravity/unconstrained-body rig; supported crab moves(.76,0,1.78)m with.0001819°yaw and2766.4N lift. Real garage purchases, scanner LOS/pulse, EMP, retained COM deadline, destruction/paid repair/remove/remount and workshop isolation pass. These are native API/physics fixtures, not manual gameplay. The first36-check fixture's "normal suspension" wording was inaccurate; it established default-planar behavior only and is superseded by the explicit separate final checks.
+
+Complete EditMode976/976 and PlayMode398/398 pass on the final built source, native exits0. Native UI/ordinary-input gameplay, packaging/extraction and actual extracted retail launch are verified in the final closure below. Stable W7 RC1 ZIP remains38,447,241bytes/hash41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5. No develop/main/W5 merge.
+
+**Decision: READY in the tested W8 RC1 aggregate, with the unresolved automation-attached C0000005 shutdown limitation.**
+
+[Machine-readable cases](MOV-011_test_summary.json). API fixtures are distinct from native input gameplay.
+
+Integration [Draft PR #34](https://github.com/C8LyNn/RoboRougelike/pull/34); no shared-branch merge.
+
+## Final W8 aggregate closure
+
+Final gameplay/build source `40173ee60a481c07ccc005fe94c517c524aef0fa` passes full976/976 EditMode and398/398 PlayMode, native exits0. The final Windows API/physics fixture passes47/47 with actual process0 and no Sky attached. Native UI verifies physical purchases/mounts, K/L/M controls and pause; the separate ordinary combat-input pilot completes all6 stages/15 foes, actual rewards/paid repair/garage assembly/final victory and restart. Actual extracted retail launches at720p and the input campaign runs at1080p. These methods are distinct, not a claim of six human-driven fights. Earlier frozen per-ID PRs rely on final Draft34 for the shared COM reactivation fix and aggregate closure.
+
+The complete203-file W8 RC1 ZIP is38,482,493bytes with SHA256 `2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b`; CRC/all extracted hashes and actual extracted launch verified. Sky-attached shutdown still returnsC0000005; no game-code fix or fresh human W8 close PASS is claimed. W7 RC1 is unchanged. [Full W8 wave report, performance, limits and evidence](W8_WAVE_QA.md). No main/develop/W5 merge.

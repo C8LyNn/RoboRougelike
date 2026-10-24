@@ -1,0 +1,797 @@
+[
+  {
+    "directory": "W8-mov011-green-d732dd7487cb4659b83f175b44b1fe48",
+    "summary": {
+      "id": "2",
+      "testcasecount": "55",
+      "result": "Passed",
+      "total": "55",
+      "passed": "55",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:22:03Z",
+      "end-time": "2026-10-24 04:22:04Z",
+      "duration": "0,8013336"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8SteeringTests.ActualLostFrontAxleAndEmpCannotRemainSteeringPowerOrEraseMomentum",
+        "result": "Passed",
+        "duration": "3.854878"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath",
+        "result": "Passed",
+        "duration": "5.011104"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.DestroyedControllerKeepsModeIdentityAndRotationThroughPaidRepairAndCopy",
+        "result": "Passed",
+        "duration": "3.223814"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.OwnedLightModuleBindsFourActualCornersWithoutDemoDriveOrExtraBody",
+        "result": "Passed",
+        "duration": "3.137998"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.PlayerGuiMCyclesOwnedModesAndRejectsPauseAndControllerLoss",
+        "result": "Passed",
+        "duration": "3.304782"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.RotatedOrNonrectangularWheelLayoutCannotSilentlyChooseVirtualCorners",
+        "result": "Passed",
+        "duration": "3.322853"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.TwelveWheelLayoutAndAlternateDriveKeepFallbackWithoutCompetingSolver",
+        "result": "Passed",
+        "duration": "3.568071"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.DestroyedWheelUnavailableNextStep",
+        "result": "Passed",
+        "duration": "0.004500"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.DetachedWheelZeroAngle",
+        "result": "Passed",
+        "duration": "0.000861"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.DuplicatePositionRejected",
+        "result": "Passed",
+        "duration": "0.000475"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.FrontOnlyTurnsFrontWheels",
+        "result": "Passed",
+        "duration": "0.000379"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.MissingLeftWheelReducesFrontAuthority",
+        "result": "Passed",
+        "duration": "0.000339"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.ModeSwitchChangesRearAngle",
+        "result": "Passed",
+        "duration": "0.000410"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.PivotRestoredOnDamage",
+        "result": "Passed",
+        "duration": "0.000533"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.ResetClearsInputAndAngles",
+        "result": "Passed",
+        "duration": "0.000313"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.UnregisterRemovesWheel",
+        "result": "Passed",
+        "duration": "0.000303"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringComponentEditModeTests.WithNoWheel_NoSteering",
+        "result": "Passed",
+        "duration": "0.000280"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.CounterPhase_IncreasesCurvature",
+        "result": "Passed",
+        "duration": "0.000112"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.Crab_AllWheelsEqualSameAngle",
+        "result": "Passed",
+        "duration": "0.000092"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.Crab_HasZeroCurvature",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.ExcessiveInput_WheelAngleIsCapped",
+        "result": "Passed",
+        "duration": "0.000192"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.FrontLeftTurn_LeftInsideWheelSteersMoreMagnitude",
+        "result": "Passed",
+        "duration": "0.000091"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.FrontRightTurn_RightInsideWheelSteersMore",
+        "result": "Passed",
+        "duration": "0.000058"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.FrontSteering_RearWheelsStraight",
+        "result": "Passed",
+        "duration": "0.000072"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.InvalidPositionReturnsZero",
+        "result": "Passed",
+        "duration": "0.000059"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.LeftAndRight_AreAntisymmetric",
+        "result": "Passed",
+        "duration": "0.000074"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.NanAndInfinityInputs_Sanitized",
+        "result": "Passed",
+        "duration": "0.000052"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.PositionLookupMatchesFields",
+        "result": "Passed",
+        "duration": "0.000075"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.PositiveRearAngle_FrontWheelsStraight",
+        "result": "Passed",
+        "duration": "0.000063"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.RearSteering_PositiveAngle_NegativeCurvature",
+        "result": "Passed",
+        "duration": "0.000047"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.SmallWheelbase_DoesNotProduceNan",
+        "result": "Passed",
+        "duration": "0.000094"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.WheelbaseIncrease_ReducesCurvature",
+        "result": "Passed",
+        "duration": "0.000070"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.WideningTrack_IncreasesInsideOutsideDifference",
+        "result": "Passed",
+        "duration": "0.000074"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringKinematicsTests.ZeroInput_ZeroAllAnglesAndCurvature",
+        "result": "Passed",
+        "duration": "0.000080"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.ApproachLimitedByDegreesPerSecond",
+        "result": "Passed",
+        "duration": "0.000077"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.ApproachNeverOvershoots",
+        "result": "Passed",
+        "duration": "0.000057"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.ApproachWithNanDeltaDoesNothing",
+        "result": "Passed",
+        "duration": "0.000043"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.ApproachWithNegativeDeltaDoesNothing",
+        "result": "Passed",
+        "duration": "0.000040"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.CounterPhaseRearOpposite",
+        "result": "Passed",
+        "duration": "0.000131"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.CrabSameSteerFrontRear",
+        "result": "Passed",
+        "duration": "0.000068"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.DefaultProfilePositiveAndFinite",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.FrontModeCommandsOnlyFront",
+        "result": "Passed",
+        "duration": "0.000063"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.InputClamped",
+        "result": "Passed",
+        "duration": "0.000068"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.InvalidModeFallsBackToFront",
+        "result": "Passed",
+        "duration": "0.000059"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.NanSpeedNeverPoisonsSolution",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.NegativeSpeedEquivalentToPositive",
+        "result": "Passed",
+        "duration": "0.000057"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.RearModeCommandsOnlyRear",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SanitizationFixesBadGeometry",
+        "result": "Passed",
+        "duration": "0.000067"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SanitizationFixesZeroProfileFields",
+        "result": "Passed",
+        "duration": "0.000064"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SpeedHalfAngleAtConfiguredSpeed",
+        "result": "Passed",
+        "duration": "0.000060"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SpeedLowerLimitRespected",
+        "result": "Passed",
+        "duration": "0.000053"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SteeringHealthHalfFrontHalvesAngle",
+        "result": "Passed",
+        "duration": "0.000065"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SteeringHealthMissingFrontDisablesFront",
+        "result": "Passed",
+        "duration": "0.000056"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SteeringHealthMissingRearDisablesRear",
+        "result": "Passed",
+        "duration": "0.000059"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringProfileTests.SteeringInputNanIsNeutral",
+        "result": "Passed",
+        "duration": "0.000064"
+      }
+    ],
+    "exit": {
+      "exitCode": 0,
+      "mode": "EditMode",
+      "filter": "RRLW8SteeringTests;RoboRougelike.Mechanics.IndependentSteering.Tests",
+      "finishedUtc": "2026-10-24T04:22:05.7354169Z"
+    }
+  },
+  {
+    "directory": "W8-mov011-play-green-a2e41ce8ead443a3ad18db9bc03bbace",
+    "summary": {
+      "id": "2",
+      "testcasecount": "14",
+      "result": "Passed",
+      "total": "14",
+      "passed": "14",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:26:48Z",
+      "end-time": "2026-10-24 04:26:52Z",
+      "duration": "4,5799895"
+    },
+    "cases": [
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.CounterPhase_BothAxlesHaveOppositeAngles",
+        "result": "Passed",
+        "duration": "0.106452"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.Crab_ProducesSidewaysTranslation",
+        "result": "Passed",
+        "duration": "0.491368"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.Crab_ShouldNotCauseStrongYawFromSymmetricWheels",
+        "result": "Passed",
+        "duration": "0.500269"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.DamagedAllWheels_NoDrive",
+        "result": "Passed",
+        "duration": "0.239335"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.DestroyedWheel_NoNullReferenceInSimulation",
+        "result": "Passed",
+        "duration": "0.161549"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.DetachingFrontLeft_StopsItsSteering",
+        "result": "Passed",
+        "duration": "0.201174"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.ExternalBoostVelocity_IsNotActivelyBrakedByThrottleLimiter",
+        "result": "Passed",
+        "duration": "0.096984"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.ForwardThrottle_MovesVehicleForward",
+        "result": "Passed",
+        "duration": "0.399817"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.FrontSteering_DrivesAndTurns",
+        "result": "Passed",
+        "duration": "0.799667"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.InputRelease_DoesNotForceStopExistingMomentum",
+        "result": "Passed",
+        "duration": "0.380194"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.MassInfluencesDemoAcceleration",
+        "result": "Passed",
+        "duration": "0.479440"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.NeutralThrottle_NoPropulsionFromRest",
+        "result": "Passed",
+        "duration": "0.200026"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.ReverseThrottle_MovesVehicleBackward",
+        "result": "Passed",
+        "duration": "0.399714"
+      },
+      {
+        "fullname": "RoboRougelike.Mechanics.IndependentSteering.Tests.SteeringPlayModeTests.WheelColliderSteerAngleGetsUpdated",
+        "result": "Passed",
+        "duration": "0.100074"
+      }
+    ],
+    "exit": {
+      "filter": "RoboRougelike.Mechanics.IndependentSteering.Tests",
+      "mode": "PlayMode",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-24T04:26:54.3884920Z"
+    }
+  },
+  {
+    "directory": "W8-mov011-shared-regression-3d30d0dbbdca41b7bbe2ed50df3884aa",
+    "summary": {
+      "id": "2",
+      "testcasecount": "34",
+      "result": "Passed",
+      "total": "34",
+      "passed": "34",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 04:32:45Z",
+      "end-time": "2026-10-24 04:32:46Z",
+      "duration": "0,5329919"
+    },
+    "cases": [
+      {
+        "fullname": "MOV009PhysicsAcceptanceTests.ActualWasdDrivesEveryStarterAcrossSixBlockTerrainCases",
+        "result": "Passed",
+        "duration": "51.190544"
+      },
+      {
+        "fullname": "MOV009PhysicsAcceptanceTests.FullSupportVehicleContactDoesNotCreateExplosiveRepulsion",
+        "result": "Passed",
+        "duration": "6.159440"
+      },
+      {
+        "fullname": "MOV009PhysicsAcceptanceTests.HeavyTraversesRampPlatformSeam",
+        "result": "Passed",
+        "duration": "16.208074"
+      },
+      {
+        "fullname": "MOV009PhysicsAcceptanceTests.IncreasedRealConstructionMassSettlesAndLosesOneThenTwoSupports",
+        "result": "Passed",
+        "duration": "7.754651"
+      },
+      {
+        "fullname": "MOV009PhysicsAcceptanceTests.OffAssistAndFullAreComparedOnAllThreeRealStarters",
+        "result": "Passed",
+        "duration": "10.742048"
+      },
+      {
+        "fullname": "MOV009PhysicsAcceptanceTests.TunedPackageSupportsDemonstratorMasses50To1000Kg",
+        "result": "Passed",
+        "duration": "5.707060"
+      },
+      {
+        "fullname": "MOVSeriesDriveTests.DriveProbesRejectActorsAndSameTickDetachedFlags",
+        "result": "Passed",
+        "duration": "3.628446"
+      },
+      {
+        "fullname": "MOVSeriesDriveTests.HoverLiftsAndStrafesOnAllClassesWithoutSuspensionDoubleLift",
+        "result": "Passed",
+        "duration": "16.149309"
+      },
+      {
+        "fullname": "MOVSeriesDriveTests.LostSelectedOmniNeverFallsBackToWheelsThroughEitherR6Entry",
+        "result": "Passed",
+        "duration": "4.131404"
+      },
+      {
+        "fullname": "MOVSeriesDriveTests.OmniStrafesWithIndependentYawAndGyroOnAllClasses",
+        "result": "Passed",
+        "duration": "10.624455"
+      },
+      {
+        "fullname": "MOVSeriesDriveTests.TracksDriveForwardReverseTurnAndShowMassResponseOnAllClasses",
+        "result": "Passed",
+        "duration": "16.736003"
+      },
+      {
+        "fullname": "MOVSeriesDriveTests.TrackSidesAndHoverCapacityRespondToActualPartLoss",
+        "result": "Passed",
+        "duration": "7.382711"
+      },
+      {
+        "fullname": "R6DrivingTests.HeavyWeaponAndAsymmetricWheelLossChangeMassBalanceAndSteering",
+        "result": "Passed",
+        "duration": "4.202534"
+      },
+      {
+        "fullname": "R6DrivingTests.PhysicalMassSetsAccelerationAndBrakingWhileReverseRemainsUsable",
+        "result": "Passed",
+        "duration": "5.357022"
+      },
+      {
+        "fullname": "R6DrivingTests.RealVehicleContactTransfersMomentumWithoutExplosiveBounce",
+        "result": "Passed",
+        "duration": "4.317635"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.ActualGauntletHazardsAndDestroyedEnemyDebrisHaveTypedWorldSignals",
+        "result": "Passed",
+        "duration": "3.050886"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.DensePhysicalVehiclesDoNotTruncateSignalsOrAlterOwnerPhysics",
+        "result": "Passed",
+        "duration": "3.198257"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PauseFreezesRevealButEmpClearsItWithoutGrantingFreeCooldown",
+        "result": "Passed",
+        "duration": "4.578527"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PlayerGuiLUsesOwnModuleAndRejectsPausedOrDestroyedActivation",
+        "result": "Passed",
+        "duration": "3.123066"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PulseCooldownAndIdentitySurviveDestructionPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.175094"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PulseRevealsRealEnemyThroughWallWhileStructuralScanCannotSeeHp",
+        "result": "Passed",
+        "duration": "3.269596"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.ValidEmptyPulseCommitsCooldownAndRetryCannotSpendAgain",
+        "result": "Passed",
+        "duration": "3.201712"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.ActualLostFrontAxleAndEmpCannotRemainSteeringPowerOrEraseMomentum",
+        "result": "Passed",
+        "duration": "3.770934"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath",
+        "result": "Passed",
+        "duration": "4.963641"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.DestroyedControllerKeepsModeIdentityAndRotationThroughPaidRepairAndCopy",
+        "result": "Passed",
+        "duration": "3.225371"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.OwnedLightModuleBindsFourActualCornersWithoutDemoDriveOrExtraBody",
+        "result": "Passed",
+        "duration": "3.266871"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.PlayerGuiMCyclesOwnedModesAndRejectsPauseAndControllerLoss",
+        "result": "Passed",
+        "duration": "3.175890"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.RotatedOrNonrectangularWheelLayoutCannotSilentlyChooseVirtualCorners",
+        "result": "Passed",
+        "duration": "3.249341"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.TwelveWheelLayoutAndAlternateDriveKeepFallbackWithoutCompetingSolver",
+        "result": "Passed",
+        "duration": "3.614630"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.ActualRangeModuleScansForeignVisiblePartsWithoutChangingHpOrPhysics",
+        "result": "Passed",
+        "duration": "3.218156"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.DestroyedPhysicalScannerKeepsIdentityAndCooldownThroughPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.269957"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PausedSnapshotFreezesButEmpClearsResultsWithoutResettingCooldown",
+        "result": "Passed",
+        "duration": "4.503841"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PlayerGuiActivationHonorsPauseCooldownAndPhysicalLoss",
+        "result": "Passed",
+        "duration": "3.264467"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.SolidOccluderBlocksStructuralHpAndFailedScanDoesNotConsumeCooldown",
+        "result": "Passed",
+        "duration": "3.344837"
+      }
+    ],
+    "exit": {
+      "filter": "R6DrivingTests;MOVSeriesDriveTests;MOV009PhysicsAcceptanceTests;RRLW8StructuralScanTests;RRLW8PulseScannerTests;RRLW8SteeringTests",
+      "mode": "EditMode",
+      "finishedUtc": "2026-10-24T04:32:48.5472214Z",
+      "exitCode": 0
+    }
+  },
+  {
+    "directory": "W8-final-composition-9255313f9e644e1d83aa75be278ad759",
+    "summary": {
+      "id": "2",
+      "testcasecount": "8",
+      "result": "Passed",
+      "total": "8",
+      "passed": "8",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 09:31:30Z",
+      "end-time": "2026-10-24 09:31:31Z",
+      "duration": "0,7712272"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8SteeringTests.ActualLostFrontAxleAndEmpCannotRemainSteeringPowerOrEraseMomentum",
+        "result": "Passed",
+        "duration": "3.993515"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath",
+        "result": "Passed",
+        "duration": "5.152354"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.CrabWorksWithFourActualMov009SupportsAndUnconstrainedGravityBody",
+        "result": "Passed",
+        "duration": "4.905537"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.DestroyedControllerKeepsModeIdentityAndRotationThroughPaidRepairAndCopy",
+        "result": "Passed",
+        "duration": "3.198813"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.OwnedLightModuleBindsFourActualCornersWithoutDemoDriveOrExtraBody",
+        "result": "Passed",
+        "duration": "3.221635"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.PlayerGuiMCyclesOwnedModesAndRejectsPauseAndControllerLoss",
+        "result": "Passed",
+        "duration": "3.282654"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.RotatedOrNonrectangularWheelLayoutCannotSilentlyChooseVirtualCorners",
+        "result": "Passed",
+        "duration": "3.393739"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.TwelveWheelLayoutAndAlternateDriveKeepFallbackWithoutCompetingSolver",
+        "result": "Passed",
+        "duration": "3.665145"
+      }
+    ],
+    "exit": {
+      "mode": "EditMode",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-24T09:31:32.7268418Z",
+      "filter": "RRLW8SteeringTests"
+    }
+  },
+  {
+    "directory": "W8-final-fixes-green-d86e2f6d98014029bef1ea862476e850",
+    "summary": {
+      "id": "2",
+      "testcasecount": "21",
+      "result": "Passed",
+      "total": "21",
+      "passed": "21",
+      "failed": "0",
+      "inconclusive": "0",
+      "skipped": "0",
+      "asserts": "0",
+      "engine-version": "3.5.0.0",
+      "clr-version": "4.0.30319.42000",
+      "start-time": "2026-10-24 09:36:35Z",
+      "end-time": "2026-10-24 09:36:36Z",
+      "duration": "0,4988149"
+    },
+    "cases": [
+      {
+        "fullname": "RRLW8PulseScannerTests.ActualGauntletHazardsAndDestroyedEnemyDebrisHaveTypedWorldSignals",
+        "result": "Passed",
+        "duration": "3.426638"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.DensePhysicalVehiclesDoNotTruncateSignalsOrAlterOwnerPhysics",
+        "result": "Passed",
+        "duration": "3.809573"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PauseFreezesRevealButEmpClearsItWithoutGrantingFreeCooldown",
+        "result": "Passed",
+        "duration": "5.144337"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PlayerGuiLUsesOwnModuleAndRejectsPausedOrDestroyedActivation",
+        "result": "Passed",
+        "duration": "3.562391"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PulseCooldownAndIdentitySurviveDestructionPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.483722"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.PulseRevealsRealEnemyThroughWallWhileStructuralScanCannotSeeHp",
+        "result": "Passed",
+        "duration": "3.485272"
+      },
+      {
+        "fullname": "RRLW8PulseScannerTests.ValidEmptyPulseCommitsCooldownAndRetryCannotSpendAgain",
+        "result": "Passed",
+        "duration": "3.556081"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.ActualLostFrontAxleAndEmpCannotRemainSteeringPowerOrEraseMomentum",
+        "result": "Passed",
+        "duration": "4.380818"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath",
+        "result": "Passed",
+        "duration": "5.082587"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.CrabWorksWithFourActualMov009SupportsAndUnconstrainedGravityBody",
+        "result": "Passed",
+        "duration": "4.932106"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.DestroyedControllerKeepsModeIdentityAndRotationThroughPaidRepairAndCopy",
+        "result": "Passed",
+        "duration": "3.487416"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.OwnedLightModuleBindsFourActualCornersWithoutDemoDriveOrExtraBody",
+        "result": "Passed",
+        "duration": "3.685796"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.PlayerGuiMCyclesOwnedModesAndRejectsPauseAndControllerLoss",
+        "result": "Passed",
+        "duration": "3.503960"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.RotatedOrNonrectangularWheelLayoutCannotSilentlyChooseVirtualCorners",
+        "result": "Passed",
+        "duration": "3.438213"
+      },
+      {
+        "fullname": "RRLW8SteeringTests.TwelveWheelLayoutAndAlternateDriveKeepFallbackWithoutCompetingSolver",
+        "result": "Passed",
+        "duration": "3.886761"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.ActualRangeModuleScansForeignVisiblePartsWithoutChangingHpOrPhysics",
+        "result": "Passed",
+        "duration": "3.423272"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.DestroyedPhysicalScannerKeepsIdentityAndCooldownThroughPaidRepairAndRebuild",
+        "result": "Passed",
+        "duration": "3.830132"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PausedSnapshotFreezesButEmpClearsResultsWithoutResettingCooldown",
+        "result": "Passed",
+        "duration": "4.697361"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.PlayerGuiActivationHonorsPauseCooldownAndPhysicalLoss",
+        "result": "Passed",
+        "duration": "3.471177"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.ReenabledPhysicalViewRestoresCanonicalCooldownWithoutFreeActivation",
+        "result": "Passed",
+        "duration": "3.885714"
+      },
+      {
+        "fullname": "RRLW8StructuralScanTests.SolidOccluderBlocksStructuralHpAndFailedScanDoesNotConsumeCooldown",
+        "result": "Passed",
+        "duration": "3.399275"
+      }
+    ],
+    "exit": {
+      "mode": "EditMode",
+      "filter": "RRLW8StructuralScanTests;RRLW8PulseScannerTests;RRLW8SteeringTests",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-24T09:36:37.5656512Z"
+    }
+  }
+]

@@ -11,8 +11,8 @@ namespace RoboRougelike.R1
         int partsPage,settingsTab;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
-            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera"};
+            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         void DrawMovementCatalog(R1RunController run)
         {
@@ -80,6 +80,8 @@ namespace RoboRougelike.R1
             {
                 GUI.Label(new Rect(30,355,280,100),"Tarcza 1×2×2 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
             }
+            else if(selected==R3PartKind.IndependentSteering)
+                GUI.Label(new Rect(30,355,280,100),"M — zmień tryb podczas jazdy\nPrzód / tył / przeciwnie / krab.\nWymaga 4 prostych kół narożnych.\nInny układ: standardowy skręt R6.",small);
             else if(selected==R3PartKind.Gyroscope)
             {
                 GUI.Label(new Rect(30,355,280,55),"Żyroskop prostuje przechył.\nG przełącza go podczas jazdy.",small);
@@ -103,14 +105,22 @@ namespace RoboRougelike.R1
         }
         void DrawMovementTelemetry(R1RunController run)
         {
-            var a=run.Player?.GetComponent<MOVSeriesVehicleAdapter>();if(a==null||run.Paused||run.Transitioning)return;
+            if(run.Paused||run.Transitioning)return;
+            var a=run.Player?.GetComponent<MOVSeriesVehicleAdapter>();
+            var steering=run.Player?.GetComponentInChildren<RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding>();
+            if(a==null)
+            {
+                if(steering!=null)
+                {Panel(new Rect(18,565,610,50));GUI.Label(new Rect(33,577,580,28),steering.Status,small);}
+                return;
+            }
             Panel(new Rect(18,490,610,125));var m=run.VehicleModel;
             GUI.Label(new Rect(33,495,580,23),$"NAPĘD: {driveNames[(int)m.SelectedDrive]} • WASD ruch • Z/C obrót Omni/Hover",small);
             GUI.Label(new Rect(33,519,580,23),$"Shift Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))} • Spacja skok: {AbilityStatus(a,R3PartKind.JumpDrive)}",small);
             string grapple=a.OperationalCount(R3PartKind.MagneticGrapple)==0?"brak":a.GrappleAttached?"E zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy";
             GUI.Label(new Rect(33,543,580,23),$"Q Blink: {AbilityStatus(a,R3PartKind.Blink)} • E zaczep: {grapple}",small);
             GUI.Label(new Rect(33,567,580,23),$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"brak":m.GyroEnabled?"ON":"OFF")} • Hover: {m.HoverHeightMeters:0.0} m • {(a.HasActiveDrive?"napęd sprawny":"utrata napędu")}",small);
-            GUI.Label(new Rect(33,590,580,23),a.Feedback??"Regulacja w garażu • Esc — pauza / zmiana napędu",small);
+            GUI.Label(new Rect(33,590,580,23),steering!=null?steering.Status:a.Feedback??"Regulacja w garażu • Esc — pauza / zmiana napędu",small);
         }
     }
 }

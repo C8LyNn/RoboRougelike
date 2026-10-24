@@ -35,6 +35,7 @@ namespace RoboRougelike.PackageIntegration
             if(!Scanner.TryScan())return false;
             Device.State.DeviceReadyAt=Time.time+Scanner.CooldownLeft;return true;
         }
+        void OnEnable(){if(Scanner!=null&&Device?.State!=null)Scanner.RestoreCooldown(Device.State.DeviceReadyAt-Time.time);RefreshAvailability();}
         void Update()=>RefreshAvailability();
         void OnTransformParentChanged()=>RefreshAvailability();
         void OnDisable(){if(Scanner!=null)Scanner.SetOperational(false);}

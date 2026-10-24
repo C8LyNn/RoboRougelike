@@ -1,0 +1,23 @@
+{
+  "source": "40173ee60a481c07ccc005fe94c517c524aef0fa",
+  "method": "Actual extracted retail Windows executable; native window clicks and M key, no QA flags/classes/pilot",
+  "width": 1280,
+  "height": 720,
+  "checks": [
+    "Exact extracted EXE window opened",
+    "Menu -> Light -> actual sandbox garage",
+    "Catalog MOV011 selected, actual surface click spends45scrap:600->555; fields20->24",
+    "Range launches one206kg Light,4wheels,80HP",
+    "Native M changes FrontOnly to RearOnly and HUD is visible"
+  ],
+  "shutdown": {
+    "method": "Sky-attached Alt+F4",
+    "exitCode": -1073741819,
+    "status": "Known unresolved C0000005 on automation-attached shutdown, not claimed fixed"
+  },
+  "limits": [
+    "Normal human W8 Alt+F4 not independently verified",
+    "Separate no-Sky native API47 process exits0",
+    "Historical W6 menu label remains cosmetic; release manifest identifies W8 RC1"
+  ]
+}

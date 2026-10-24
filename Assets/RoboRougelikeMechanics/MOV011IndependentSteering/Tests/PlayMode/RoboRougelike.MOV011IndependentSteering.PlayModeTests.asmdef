@@ -1,0 +1,22 @@
+{
+  "name": "RoboRougelike.MOV011IndependentSteering.PlayModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.IndependentSteering",
+  "references": [
+    "RoboRougelike.MOV011IndependentSteering",
+    "RoboRougelike.MOV011IndependentSteering.Demo"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

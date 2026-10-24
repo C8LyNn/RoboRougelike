@@ -205,6 +205,10 @@ namespace RoboRougelike.R3
                     part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLPulseScannerBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             if(assembly.Parts.Any(p=>p.Kind==R3PartKind.StructuralScanner||p.Kind==R3PartKind.ScannerPulse))root.AddComponent<RoboRougelike.PackageIntegration.RRLScannerControls>();
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.IndependentSteering)
+                    part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
             RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(root.transform);
             return vehicle;
         }

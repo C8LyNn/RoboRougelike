@@ -1,0 +1,16 @@
+{
+  "name": "RoboRougelike.MOV011IndependentSteering.Demo",
+  "rootNamespace": "RoboRougelike.Mechanics.IndependentSteering",
+  "references": [
+    "RoboRougelike.MOV011IndependentSteering"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

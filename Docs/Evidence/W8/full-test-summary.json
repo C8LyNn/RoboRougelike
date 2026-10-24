@@ -1,0 +1,61 @@
+{
+  "gameplayBuildSource": "40173ee60a481c07ccc005fe94c517c524aef0fa",
+  "unity": "6000.3.14f1",
+  "method": "Full local licensed Unity EditMode and PlayMode, independent native process exits",
+  "runs": [
+    {
+      "mode": "EditMode",
+      "directory": "20261024T094131Z-0da4d1c3c0724002a092708735efc426",
+      "xmlSha256": "4de862a6ef677f55479053bd31e068294b328a1758f96901e5e151de3b83200e",
+      "summary": {
+        "id": "2",
+        "testcasecount": "976",
+        "result": "Passed",
+        "total": "976",
+        "passed": "976",
+        "failed": "0",
+        "inconclusive": "0",
+        "skipped": "0",
+        "asserts": "0",
+        "engine-version": "3.5.0.0",
+        "clr-version": "4.0.30319.42000",
+        "start-time": "2026-10-24 10:10:53Z",
+        "end-time": "2026-10-24 10:10:54Z",
+        "duration": "1,1219226"
+      },
+      "process": {
+        "startedUtc": "2026-10-24T09:41:31.0971058Z",
+        "exitCode": 0,
+        "finishedUtc": "2026-10-24T10:10:56.4270355Z",
+        "task": "EditMode"
+      }
+    },
+    {
+      "mode": "PlayMode",
+      "directory": "20261024T101056Z-9f8f054a53eb48a1a1d8734aec1dbec9",
+      "xmlSha256": "690c83bd75002fdcd13ac11f90b7ba21f1e2821f97219a87f1cd955b4b60c254",
+      "summary": {
+        "id": "2",
+        "testcasecount": "398",
+        "result": "Passed",
+        "total": "398",
+        "passed": "398",
+        "failed": "0",
+        "inconclusive": "0",
+        "skipped": "0",
+        "asserts": "0",
+        "engine-version": "3.5.0.0",
+        "clr-version": "4.0.30319.42000",
+        "start-time": "2026-10-24 10:11:09Z",
+        "end-time": "2026-10-24 10:11:52Z",
+        "duration": "43,6290563"
+      },
+      "process": {
+        "startedUtc": "2026-10-24T10:10:56.5988813Z",
+        "exitCode": 0,
+        "finishedUtc": "2026-10-24T10:11:54.4280435Z",
+        "task": "PlayMode"
+      }
+    }
+  ]
+}

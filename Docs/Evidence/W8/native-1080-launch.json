@@ -1,0 +1,9 @@
+{
+  "assetsMatchBuiltSource": true,
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9\\Builds\\MOVSeries-QA-Windows\\RoboRougelike.exe",
+  "pid": 88200,
+  "checkoutHead": "5f7c8095ddd38797aa1b60e2fa83f5dd3ee5d09f",
+  "startedUtc": "2026-10-24T15:55:44.6704697Z",
+  "method": "Native UI operator; optional ordinary combat input pilot, active AI/physical shots, no HP/reward/currency shortcuts",
+  "source": "40173ee60a481c07ccc005fe94c517c524aef0fa"
+}
