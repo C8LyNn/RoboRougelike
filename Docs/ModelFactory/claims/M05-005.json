@@ -8,10 +8,11 @@
   "branch": "feature/rrl-model-m05-005-ring-shield-generator",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/77",
   "pr_number": 77,
-  "model_commit_sha": "f4bc9d726609440b9f83946f7125ef9097e0e003",
+  "model_commit_sha": "d5507715fb579cd3d712fd5898998465dedde657",
   "qa_static": "PASS",
   "qa_blender_smoke": "PASS",
-  "qa_unity": "NOT_RUN",
-  "qa_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104670325",
-  "note": "Visual asset only, no DEF-001 gameplay; pending Unity import and visual review."
+  "qa_unity": "BLOCKED_ACTIVATION",
+  "qa_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104695863",
+  "note": "Visual asset only, no DEF-001 gameplay; pending Unity import and visual review.",
+  "qa_unity_note": "CI-02 EditMode and CI-03 PlayMode require Unity activation credentials; actual Unity tests NOT RUN."
 }
