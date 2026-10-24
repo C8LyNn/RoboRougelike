@@ -126,8 +126,12 @@ def box(name, pos, size, mat, bevel=0.008, parent=None):
             mod.affect = "EDGES"
         bpy.context.view_layer.objects.active = obj
         bpy.ops.object.modifier_apply(modifier=mod.name)
-        weighted = obj.modifiers.new("weighted_normals", "WEIGHTED_NORMAL")
-        weighted.keep_sharp = True
+        # Blender 4.0 weighted normals require Auto Smooth; do not leave
+        # silently broken modifiers on dozens of beveled radiator fins.
+        if hasattr(obj.data, "use_auto_smooth"):
+            obj.data.use_auto_smooth = True
+            weighted = obj.modifiers.new("weighted_normals", "WEIGHTED_NORMAL")
+            weighted.keep_sharp = True
     return finish_mesh(obj, mat)
 
 
