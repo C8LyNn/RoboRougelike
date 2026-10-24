@@ -1,0 +1,34 @@
+{
+  "id": "M03-002",
+  "result": "STATIC_GEOMETRY_PASS",
+  "component_count": 69,
+  "vertices": 552,
+  "quads": 414,
+  "triangles": 828,
+  "materials_used": [
+    "titanium",
+    "graphite",
+    "safety_yellow",
+    "ceramic"
+  ],
+  "retracted_bounds_m": [
+    [
+      -0.5,
+      0,
+      -0.5
+    ],
+    [
+      0.5,
+      2,
+      0.5
+    ]
+  ],
+  "extension_m": 0.55,
+  "minimum_overlap_m": 0.29,
+  "collision_samples": 21,
+  "slider_fixed_aabb_pair_tests": 24864,
+  "collision_result": "PASS: no positive-volume AABB overlap between moving and fixed components at 21 extension positions; conservative geometric check, not Blender or Unity physics",
+  "blender": "NOT RUN",
+  "unity": "NOT RUN",
+  "visual_qa": "NOT RUN"
+}
