@@ -59,3 +59,11 @@ For visual inspection without exporting, add `--no-export` and run in Blender's 
 ## Follow-up validation gate
 
 Before merge, run the command above twice in Blender, compare generated object counts, inspect the rotor at frames 1, 7, 13, 25 and 49, check the minimum blade/duct clearance, validate the exported GLB in an independent viewer and import into Unity 6 URP. Keep the PR in draft until those checks pass.
+
+## Poprawka łożysk i niezależne QA — 2026-10-24
+
+W pierwszym generatorze łożysko `Bearing_Collar` i obrzeże `Bearing_Rim` były pełnymi walcami. Wał wirnika o promieniu 0,038 m przechodził przez bryłę pełnego walca — była to niezamierzona kolizja brył niezależna od deklarowanego prześwitu łopatek względem kanału.
+
+Poprawiony generator `generate_m04_001.py` tworzy dwa **zamknięte, pierścieniowe** elementy `bearing_ring` z otworem 0,050 m. Prześwit pomiędzy wałem i wewnętrzną ścianką łożyska wynosi 0,012 m promieniowo. Zachowano mocowanie po stronie +X, pięć materiałów i animację wokół lokalnej osi X.
+
+Niezależny prototyp bez Blendera można zweryfikować narzędziem Python/trimesh: 32/32 domknięte siatki, pięć materiałów PBR i animacja glTF z 17 kwaternionowymi klatkami kluczowymi (2 obroty / 2 sekundy); wykonano sprawdzanie geometrii oraz struktury GLB. **Nie jest to test Blendera ani Unity.** Aby mieć weryfikowalny eksport z generatora `bpy`, nadal wymagane jest uruchomienie Blendera i import do Unity. Modyfikacji nie należy scalać do `develop` przed tą kontrolą.

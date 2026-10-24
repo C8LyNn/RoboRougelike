@@ -121,6 +121,46 @@ def cylinder(collection, name, center, radius, depth, mat, vertices=48):
     return apply_material(smooth_curves(obj), mat)
 
 
+def bearing_ring(collection, name, center, outer_radius, bore_radius, depth, mat, steps=64):
+    """Make one watertight ANNULAR bearing with a real shaft passage.
+
+    Unlike a solid Blender cylinder, this mesh has an inner wall; it does not
+    intersect the rotating shaft as long as bore_radius > shaft_radius.
+    All faces are quad strips, with outer, front, inner, back walls.
+    """
+    if not (0.0 < bore_radius < outer_radius and depth > 0):
+        raise ValueError("Invalid bearing ring geometry")
+    x0 = center[0] - depth / 2
+    x1 = center[0] + depth / 2
+    rings = ((x0, outer_radius), (x1, outer_radius),
+             (x0, bore_radius), (x1, bore_radius))
+    vertices = []
+    for x, radius in rings:
+        for i in range(steps):
+            angle = math.tau * i / steps
+            vertices.append((x, center[1] + radius * math.cos(angle),
+                             center[2] + radius * math.sin(angle)))
+    faces = []
+    # The four strips form one closed shell, including the inner bore.
+    for i in range(steps):
+        j = (i + 1) % steps
+        for a, b, c, d in ((0, 1, 1, 0), (1, 3, 3, 1),
+                           (3, 2, 2, 3), (2, 0, 0, 2)):
+            faces.append((a * steps + i, b * steps + i,
+                          c * steps + j, d * steps + j))
+    mesh = bpy.data.meshes.new(name + "_annulus")
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    bm = bmesh.new()
+    bm.from_mesh(mesh)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    bm.to_mesh(mesh)
+    bm.free()
+    obj = bpy.data.objects.new(name, mesh)
+    collection.objects.link(obj)
+    return apply_material(obj, mat)
+
+
 def torus(collection, name, center, major, minor, mat):
     bpy.ops.mesh.primitive_torus_add(
         major_segments=96, minor_segments=16,
@@ -211,6 +251,10 @@ def blade(collection, index, angle, mat):
 def build():
     if not BLADE_TIP_RADIUS < DUCT_INNER_RADIUS - 0.03:
         raise ValueError("Rotor blade/duct radial clearance too small")
+    # Bore radius = 0.050 m, rotor shaft radius = 0.038 m.
+    # The shaft intersects the bearing axially, but has >=12 mm radial air gap.
+    if not 0.050 - 0.038 >= 0.012 - 1e-7:
+        raise ValueError("Rotor shaft/bearing bore clearance too small")
     scene = bpy.context.scene
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 1.0
@@ -250,10 +294,12 @@ def build():
                 (0.068, yi, zi), 0.016, 0.014, copper, 16
             ))
 
-    static.append(cylinder(collection, "Bearing_Collar",
-                           (0.145, 0, 0), 0.110, 0.090, ceramic))
-    static.append(cylinder(collection, "Bearing_Rim",
-                           (0.195, 0, 0), 0.123, 0.016, copper))
+    # Both bearing shells are HOLLOW. A solid cylinder would intersect the
+    # rotating shaft and turn a nominally valid radial check into bad geometry.
+    static.append(bearing_ring(collection, "Bearing_Collar",
+                               (0.145, 0, 0), 0.110, 0.050, 0.090, ceramic))
+    static.append(bearing_ring(collection, "Bearing_Rim",
+                               (0.195, 0, 0), 0.123, 0.050, 0.016, copper))
     for side in (-1, 1):
         static.append(strut(
             collection, "Frame_Arm_%s" % side,
@@ -346,6 +392,9 @@ def export_asset(collection, outdir):
         "animation": "ROTOR_PIVOT_X, 2 turns / 48 frames @ 24 fps",
         "materials": 5,
         "clearance_radial_m_min": round(DUCT_INNER_RADIUS - BLADE_TIP_RADIUS, 3),
+        "shaft_radius_m": 0.038,
+        "bearing_bore_radius_m": 0.050,
+        "shaft_bearing_radial_clearance_m": 0.012,
         "visual_only": True,
         "unity_import": "Enable animation import and loop the rotor clip."
     }
