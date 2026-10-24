@@ -200,7 +200,11 @@ namespace RoboRougelike.R3
                 if(part.Kind==R3PartKind.StructuralScanner)
                     part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLStructuralScannerBinding>()
                         .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
-            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.StructuralScanner))root.AddComponent<RoboRougelike.PackageIntegration.RRLScannerControls>();
+            foreach(var part in assembly.Parts)
+                if(part.Kind==R3PartKind.ScannerPulse)
+                    part.gameObject.AddComponent<RoboRougelike.PackageIntegration.RRLPulseScannerBinding>()
+                        .Bind(model.Parts.First(p=>p.Id==part.Id),root.transform);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.StructuralScanner||p.Kind==R3PartKind.ScannerPulse))root.AddComponent<RoboRougelike.PackageIntegration.RRLScannerControls>();
             RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(root.transform);
             return vehicle;
         }
