@@ -1,8 +1,12 @@
 {
   "id": "M03-009",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-24T18:51:41.238Z",
   "model": "Płyta pancerza perforowanego",
-  "run": "2026-10-24T18Z"
+  "run": "2026-10-24T18Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/106",
+  "branch": "feature/rrl-model-m03-009-perforated-armor-plate",
+  "model_commit": "57da8c1595f962f1fe83c1662b1cd3408d64a995",
+  "qa": "STATIC_PASS_BLENDER_PENDING_UNITY_NOT_RUN"
 }
