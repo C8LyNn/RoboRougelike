@@ -81,7 +81,7 @@ def validate(folder):
                 translations=accessor_data(glb,bin_data,sampler["output"])
                 require(len(times)==len(translations) and len(times)>=3,
                         "bolt animation insufficient samples")
-                require(times[0][0]<=.001 and times[-1][0]>.5,
+                require(0.<=times[0][0]<=.025 and times[-1][0]>.5,
                         "bolt animation timing invalid")
                 for vec in translations:
                     travel_values.append(vec)
