@@ -177,6 +177,12 @@ def build():
         old=bpy.data.collections[COLLECTION]
         for ob in list(old.objects): bpy.data.objects.remove(ob,do_unlink=True)
         bpy.data.collections.remove(old)
+    # Re-running inside an artist's current Blender session must not
+    # accumulate orphaned M02-012 mesh/material/action datablocks.
+    for datablocks in (bpy.data.meshes,bpy.data.materials,bpy.data.actions):
+        for block in list(datablocks):
+            if block.name.startswith(MODEL_ID+"_") and block.users==0:
+                datablocks.remove(block)
     coll=bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(coll)
     MATERIALS.clear()
