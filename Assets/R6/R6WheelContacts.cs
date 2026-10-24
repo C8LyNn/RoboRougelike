@@ -47,9 +47,11 @@ namespace RoboRougelike.R6
         bool FindSupport(Rigidbody body,P12PipelineSafeDamageable part,out Vector3 normal,out Vector3 point)
         {
             normal=Vector3.up;point=Vector3.zero;
-            // Interpolated Transform poses may lag Rigidbody/Collider physics poses.
-            var down=-(body.rotation*Quaternion.Inverse(body.transform.rotation)*part.transform.up);
-            if(Vector3.Dot(-down,Vector3.up)<.35f)return false; // sideways/inverted contact face
+            // Gravity-facing side of the chassis; legacy enemy HP lives on an axle-rotated
+            // cylinder, so part.up is its axle, not the tread direction. Actual shape pose
+            // below still determines reach for every mounted XYZ orientation.
+            var down=-(body.rotation*Vector3.up);
+            if(Vector3.Dot(-down,Vector3.up)<.35f)return false;
             if(!wheelColliders.TryGetValue(part,out var colliders))wheelColliders.Add(part,colliders=part.GetComponentsInChildren<Collider>());
             bool hasTread=false;
             foreach(var c in colliders)if(c.transform!=part.transform&&Eligible(c,body))hasTread=true;

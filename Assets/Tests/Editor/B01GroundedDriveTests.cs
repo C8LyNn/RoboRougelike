@@ -38,15 +38,6 @@ public class B01GroundedDriveTests
         foreach(var b in vehicle.GetComponents<MonoBehaviour>())if(b.GetType().Name=="R6CoreRecovery")b.enabled=false;
     }
     int Contacts {get{var p=drive.GetType().GetProperty("GroundedWheels");Assert.That(p,Is.Not.Null,"Expose actual grounded wheels separately from installed wheels");return (int)p.GetValue(drive);}}
-    void GeometryDiagnostic()
-    {
-        foreach(var p in assembly.Parts.Where(p=>p.Kind==R3PartKind.Wheel))
-        {
-            var c=p.GetComponentsInChildren<Collider>().First(t=>t.transform!=p.transform);
-            var down=-p.transform.up;var center=c.bounds.center;
-            Debug.Log($"PHY geometry body={body.position} transform={body.transform.position} rotation={body.rotation.eulerAngles}/{body.transform.eulerAngles} center={center} bounds={c.bounds.size} tread={c.ClosestPoint(center+down*10)} partUp={p.transform.up} floor={floor.bounds}");
-        }
-    }
     IEnumerator Motor(float seconds,bool ai=false)
     {
         float end=Time.time+seconds;while(Time.time<end)
@@ -116,7 +107,6 @@ public class B01GroundedDriveTests
     [UnityTest] public IEnumerator PHY_GROUND_ActualTreadScaleChangesProbeReach()
     {
         vehicle.transform.localScale=Vector3.one*2;Pose(new Vector3(0,1.3f,1000),Quaternion.identity);
-        GeometryDiagnostic();
         drive.Step(0,0,10,5,90);Assert.That(Contacts,Is.EqualTo(4));
         Pose(new Vector3(0,1.6f,1000),Quaternion.identity);drive.Step(0,0,10,5,90);Assert.That(Contacts,Is.Zero);yield return null;
     }
@@ -125,7 +115,6 @@ public class B01GroundedDriveTests
         floor.transform.rotation=Quaternion.Euler(20,0,0);
         var p=floor.transform.TransformPoint(new Vector3(0,.5f,0))+floor.transform.up*.65f;
         Pose(p,floor.transform.rotation);drive.Step(0,0,10,5,90);
-        GeometryDiagnostic();
         Assert.That(Contacts,Is.EqualTo(4));Assert.That(Vector3.Angle(drive.GroundNormal,floor.transform.up),Is.LessThan(1));
         Pose(p+floor.transform.up*.3f,floor.transform.rotation);drive.Step(0,0,10,5,90);Assert.That(Contacts,Is.Zero);yield return null;
     }

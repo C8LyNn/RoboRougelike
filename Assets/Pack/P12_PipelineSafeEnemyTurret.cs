@@ -247,10 +247,11 @@ namespace RogueMachine.P12PipelineSafe
             movementBody = GetComponent<Rigidbody>();
             if (movementBody == null) movementBody = gameObject.AddComponent<Rigidbody>();
             movementBody.isKinematic = false;
-            movementBody.useGravity = false;
             movementBody.interpolation = RigidbodyInterpolation.Interpolate;
             ConfigureVariantMovement();
-            if(GetComponent<RoboRougelike.R6.R6VehicleDrive>()==null)gameObject.AddComponent<RoboRougelike.R6.R6VehicleDrive>();
+            var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+            if(drive==null)drive=gameObject.AddComponent<RoboRougelike.R6.R6VehicleDrive>();
+            drive.EnableSuspensionPhysics(.05f);drive.RefreshParts();
 
             // The existing 18-block base uses the same connectivity/destruction graph as the player.
             var baseRoot = transform.Find("Base");

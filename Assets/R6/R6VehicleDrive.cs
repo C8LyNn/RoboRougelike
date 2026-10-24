@@ -137,6 +137,11 @@ namespace RoboRougelike.R6
             float contactFraction=Mathf.Clamp01((float)GroundedWheels/Mathf.Max(4,Wheels));
             targetYaw=Mathf.Clamp(targetYaw,-turnLimit*Mathf.Deg2Rad*contactFraction,turnLimit*Mathf.Deg2Rad*contactFraction);
             float requested=(targetYaw-Vector3.Dot(body.angularVelocity,contacts.Normal))*body.inertiaTensor.y*tune.TurnResponse;
+            // A fully supported steering controller can compensate the known motor yaw
+            // moment within this same traction-limited servo. Partial/damaged support keeps
+            // its physical asymmetry; roll/pitch and external impulses are not cancelled.
+            if(steered&&GroundedWheels==Wheels&&coverage>.99f)
+                requested-=Vector3.Dot(Vector3.Cross(contacts.CenterOfTraction-body.worldCenterOfMass,forward*force),contacts.Normal);
             float maxTorque=AvailableForce*track*tune.TurnLeverage+body.mass*.08f;
             body.AddTorque(contacts.Normal*Mathf.Clamp(requested,-maxTorque,maxTorque),ForceMode.Force);
         }

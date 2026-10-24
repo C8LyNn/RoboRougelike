@@ -36,7 +36,9 @@ namespace RoboRougelike.MOV009Integration
             StiffnessPerModule=supportedMass*Physics.gravity.magnitude/.12f;
             DampingPerModule=.85f*2*Mathf.Sqrt(StiffnessPerModule*supportedMass);
             MaximumForcePerModule=2.4f*supportedMass*Physics.gravity.magnitude;
-            RideHeightMeters=.82f;
+            // Wheel tread reaches .65m below the root; add the nominal .12m spring compression.
+            // A higher default unloads the rigid wheel treads and loses real traction under roll.
+            RideHeightMeters=.77f;
             foreach(var part in parts)
             {
                 var module=part.GetComponent<ActiveSuspensionModule>();

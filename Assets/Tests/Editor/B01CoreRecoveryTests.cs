@@ -38,7 +38,8 @@ public class B01CoreRecoveryTests
     float Telemetry(string name)=>Convert.ToSingle(recovery.GetType().GetProperty(name).GetValue(recovery));
     void PoseRoof()
     {
-        body.useGravity=true;body.constraints=RigidbodyConstraints.None;body.position=new Vector3(1000,1.55f,1000);
+        body.useGravity=true;body.constraints=RigidbodyConstraints.None;body.interpolation=RigidbodyInterpolation.None;
+        body.transform.SetPositionAndRotation(new Vector3(1000,1.55f,1000),Quaternion.Euler(0,0,180));body.position=new Vector3(1000,1.55f,1000);
         body.rotation=Quaternion.Euler(0,0,180);body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
     }
     [UnityTest] public IEnumerator PHY_CORE_01_SustainedPhysicalInversionRequiresConfirmationBeforeOneAttempt()
@@ -48,10 +49,16 @@ public class B01CoreRecoveryTests
     }
     [UnityTest] public IEnumerator PHY_CORE_02_NormalSlopeAndAirborneTumbleCannotTriggerRecovery()
     {
-        Require();body.useGravity=false;body.position=new Vector3(1000,6,1000);body.rotation=Quaternion.Euler(0,0,40);Physics.SyncTransforms();
+        Require();var ramp=Solid(new Vector3(1000,1,1000),new Vector3(12,1,20));ramp.transform.rotation=Quaternion.Euler(-10,0,0);
+        var p=ramp.transform.TransformPoint(new Vector3(0,.5f,0))+ramp.transform.up*.65f;
+        body.interpolation=RigidbodyInterpolation.None;body.useGravity=true;body.constraints=RigidbodyConstraints.None;
+        body.transform.SetPositionAndRotation(p,ramp.transform.rotation);body.position=p;body.rotation=ramp.transform.rotation;Physics.SyncTransforms();
         yield return MOVSeriesDeviceTests.Seconds(2);Assert.That(Attempts,Is.Zero);
-        body.rotation=Quaternion.Euler(0,0,180);Physics.SyncTransforms();yield return MOVSeriesDeviceTests.Seconds(2.5f);Assert.That(Attempts,Is.Zero);
-        Assert.That(body.position.y,Is.EqualTo(6).Within(.01f));Assert.That(body.angularVelocity.magnitude,Is.LessThan(.01f));
+        // Freeze height only to isolate terrain detection from the slow-motion gate in an airborne body.
+        body.constraints=RigidbodyConstraints.FreezePositionY;body.transform.SetPositionAndRotation(new Vector3(1000,100,1000),Quaternion.Euler(0,0,180));
+        body.position=new Vector3(1000,100,1000);body.rotation=Quaternion.Euler(0,0,180);body.linearVelocity=body.angularVelocity=Vector3.zero;
+        Physics.SyncTransforms();yield return MOVSeriesDeviceTests.Seconds(2.5f);Assert.That(Attempts,Is.Zero);
+        Assert.That(body.position.y,Is.EqualTo(100).Within(.01f));Assert.That(body.angularVelocity.magnitude,Is.LessThan(.01f));
     }
     [UnityTest] public IEnumerator PHY_CORE_03_LivingCoreReturnsActualBodyToWheelsWithoutHealingOrRestoringParts()
     {
@@ -87,7 +94,8 @@ public class B01CoreRecoveryTests
         Assert.That(Attempts,Is.EqualTo(1));Assert.That(maxY,Is.LessThan(2.3f));Assert.That(maxSpeed,Is.LessThan(6));
         Assert.That(Telemetry("LastLiftImpulse"),Is.InRange(0,1800));Assert.That(Telemetry("LastPeakTorque"),Is.InRange(0,200.1f));
         Assert.That(Telemetry("CooldownLeft"),Is.GreaterThan(0));
-        body.position=new Vector3(1000,10,1000);body.useGravity=false;body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
+        body.constraints=RigidbodyConstraints.FreezePositionY;body.transform.SetPositionAndRotation(new Vector3(1000,10,1000),Quaternion.Euler(0,0,180));
+        body.position=new Vector3(1000,10,1000);body.rotation=Quaternion.Euler(0,0,180);body.useGravity=true;body.linearVelocity=body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
         yield return MOVSeriesDeviceTests.Seconds(9);Assert.That(Attempts,Is.EqualTo(1),"Expired cooldown alone cannot permit an airborne retry");
     }
     [UnityTest] public IEnumerator PHY_CORE_03_HeavyAssembledRobotCanRecoverWithTheSameBoundedCapability()
@@ -98,7 +106,9 @@ public class B01CoreRecoveryTests
         vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(1008,.7f,1000),Quaternion.identity);
         vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
         body=vehicle.GetComponent<Rigidbody>();recovery=vehicle.GetComponents<MonoBehaviour>().Single(c=>c.GetType().Name=="R6CoreRecovery");
+        body.interpolation=RigidbodyInterpolation.None;body.transform.SetPositionAndRotation(new Vector3(1008,2.1f,1000),Quaternion.Euler(0,0,180));
         body.position=new Vector3(1008,2.1f,1000);body.rotation=Quaternion.Euler(0,0,180);Physics.SyncTransforms();
+        Debug.Log($"PHY Heavy initial pose={body.position} rotation={body.rotation.eulerAngles}/{body.transform.eulerAngles}");
         yield return MOVSeriesDeviceTests.Seconds(7);vehicle.GetComponent<R6VehicleDrive>().RefreshMass();
         Debug.Log($"PHY Heavy Core attempts={Attempts} mass={body.mass} up={body.transform.up} pos={body.position} peakTorque={Telemetry("LastPeakTorque")}");
         Assert.That(Attempts,Is.EqualTo(1));Assert.That(Vector3.Dot(body.transform.up,Vector3.up),Is.GreaterThan(.75f));

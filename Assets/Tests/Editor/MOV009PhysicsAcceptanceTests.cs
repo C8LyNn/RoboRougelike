@@ -71,7 +71,10 @@ public class MOV009PhysicsAcceptanceTests
                 Assert.That(c.LastTotalLiftNewtons,Is.LessThanOrEqualTo(body.mass*18+.1f));
                 if(mode==0)Assert.That(c.LastTotalLiftNewtons,Is.EqualTo(0));
             }
-            Assert.That(vehicles[2].transform.position.y,Is.GreaterThan(vehicles[0].transform.position.y+.02f));
+            // FullSupport must carry its load while the real wheel treads can still contact terrain.
+            var fullDrive=vehicles[2].GetComponent<RoboRougelike.R6.R6VehicleDrive>();fullDrive.RefreshMass();
+            Assert.That(vehicles[2].GetComponent<ActiveSuspensionController>().LastTotalLiftNewtons,Is.GreaterThan(0));
+            Assert.That(fullDrive.GroundedWheels,Is.GreaterThan(0));
             foreach(var v in vehicles){v.gameObject.SetActive(false);UnityEngine.Object.Destroy(v.gameObject);}
             foreach(Transform child in fixtures.transform)if(child!=null){child.gameObject.SetActive(false);UnityEngine.Object.Destroy(child.gameObject);}
             yield return null;
