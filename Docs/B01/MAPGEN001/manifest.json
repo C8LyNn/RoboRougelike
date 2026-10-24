@@ -60,7 +60,7 @@
     "Docs/B01/MAPGEN001/TEST_PLAN.md": "1748b8b9c38fb472dc19487d030c25b6f0af03a1",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemoVisuals.cs": "827e5eb4087bd2149126c3de777a11048b26a16a",
     "Assets/B01Packages/MAPGEN001/Runtime/MapGenDemoVisuals.cs.meta": "badc2f6b3e060ea0854f13a051745b25bbe99ea8",
-    "Docs/B01/MAPGEN001/MAPGEN001_VISUAL_QA.md": "b18b4355b30ff327ce3b2c42eb94be4e574555b2"
+    "Docs/B01/MAPGEN001/MAPGEN001_VISUAL_QA.md": "7def95c7de8e53f9f77d2c55c6f5514d69b0541c"
   },
   "git_blob_note": "Git blob hashes are SHA-1 CONTENT IDENTITIES, NOT SHA-256. Must add calculated SHA-256 for physical package before handoff.",
   "last_source_commit_before_manifest": "5ae8abe5be811dc4b11865988d1579141344aa16",
@@ -99,5 +99,6 @@
   },
   "visual_support_parent_sha": "a2993a4cb09275864a04c6eaf8bc7b9f4dfb9946",
   "visual_support_owner": "B01-30",
-  "visual_support_note": "Stacked Draft PR only, NOT final GPT OSS release. Changes are demo-only overlay and report; physics geometry unchanged."
+  "visual_support_note": "Stacked Draft PR only, NOT final GPT OSS release. Changes are demo-only overlay and report; physics geometry unchanged.",
+  "visual_support_moving_parent_note": "PR #103 advanced to e471d7b7... after immutable R2 visual branch anchored at a2993a4...; cherry-pick only after reconciled source/test and refreshed manifest."
 }
