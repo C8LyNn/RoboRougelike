@@ -34,8 +34,8 @@ jobs:
           python3 -m py_compile Tools/ModelFactory/M01/M01-010/validate_m01_010.py
       - name: Install Blender
         run: |
-          # Ubuntu runners already have apt indexes; avoid indefinite update hangs.
-          sudo timeout 300s env DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
           blender --version | head -n 2
       - name: Generate real 3D files and run swept-volume mesh QA
         run: |
