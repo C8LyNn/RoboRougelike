@@ -20,10 +20,11 @@ public class RRLW8SteeringTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;
     }
-    IEnumerator Build(R3VehicleKind chassis=R3VehicleKind.Light)
+    IEnumerator Build(R3VehicleKind chassis=R3VehicleKind.Light,bool withSuspension=false)
     {
         Assert.That(run.SelectVehicle(chassis),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
         Assert.That(run.GarageBuy(new Vector3Int(0,chassis==R3VehicleKind.Light?1:2,-2),kind),Is.True);
+        if(withSuspension)foreach(var cell in MOV009ModelTests.Cells(chassis))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==kind);
         binding=module.GetComponents<MonoBehaviour>().SingleOrDefault(c=>c.GetType().Name=="RRLIndependentSteeringBinding");Assert.That(binding,Is.Not.Null);
@@ -31,7 +32,7 @@ public class RRLW8SteeringTests
         body=run.Player.GetComponent<Rigidbody>();drive=run.Player.GetComponent<R6VehicleDrive>();
         run.Player.Controller.SetGameplayInputEnabled(true);run.Player.Controller.enabled=false;
         // Planar force fixture isolates existing R6 thrust/yaw from practice terrain. Native tests use normal suspension.
-        body.useGravity=false;body.constraints=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;
+        if(!withSuspension){body.useGravity=false;body.constraints=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;}
     }
     bool SetMode(SteeringMode mode)=>(bool)binding.GetType().GetMethod("SetMode").Invoke(binding,new object[]{mode});
     bool Gui(Event key)=>(bool)binding.GetType().GetMethod("HandleGuiInput").Invoke(binding,new object[]{key});
@@ -80,6 +81,18 @@ public class RRLW8SteeringTests
         Assert.That(body.linearVelocity,Is.EqualTo(velocity));Assert.That(body.angularVelocity,Is.EqualTo(spin));
         drive.Step(1,1,10,5,105);Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.Zero.Within(.001));
         Assert.That(source.GetWheel(SteeringWheelPosition.RearLeft).CurrentAngleDegrees,Is.Zero.Within(.001));
+    }
+    [UnityTest] public IEnumerator CrabWorksWithFourActualMov009SupportsAndUnconstrainedGravityBody()
+    {
+        Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build(R3VehicleKind.Light,true);
+        var suspension=run.Player.GetComponent<RoboRougelike.Mechanics.MOV009.ActiveSuspensionController>();
+        Assert.That(suspension,Is.Not.Null);Assert.That(suspension.RegisteredModuleCount,Is.EqualTo(4));
+        Assert.That(body.useGravity,Is.True);Assert.That(body.constraints,Is.EqualTo(RigidbodyConstraints.None));Assert.That(drive.SuspensionPhysics,Is.True);
+        float until=Time.time+.8f;while(Time.time<until)yield return null;
+        Assert.That(SetMode(SteeringMode.Crab),Is.True);var start=body.position;float yaw=body.rotation.eulerAngles.y;yield return Drive(.8f);
+        Assert.That(body.position.x-start.x,Is.GreaterThan(.1f));Assert.That(body.position.z-start.z,Is.GreaterThan(.2f));
+        Assert.That(Mathf.Abs(Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y)),Is.LessThan(8));Assert.That(suspension.LastTotalLiftNewtons,Is.GreaterThan(0));
+        Assert.That(Vector3.Angle(run.Player.transform.up,Vector3.up),Is.LessThan(15));
     }
     [UnityTest] public IEnumerator DestroyedControllerKeepsModeIdentityAndRotationThroughPaidRepairAndCopy()
     {

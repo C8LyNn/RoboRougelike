@@ -105,14 +105,21 @@ namespace RoboRougelike.R1
         }
         void DrawMovementTelemetry(R1RunController run)
         {
-            var a=run.Player?.GetComponent<MOVSeriesVehicleAdapter>();if(a==null||run.Paused||run.Transitioning)return;
+            if(run.Paused||run.Transitioning)return;
+            var a=run.Player?.GetComponent<MOVSeriesVehicleAdapter>();
+            var steering=run.Player?.GetComponentInChildren<RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding>();
+            if(a==null)
+            {
+                if(steering!=null)
+                {Panel(new Rect(18,565,610,50));GUI.Label(new Rect(33,577,580,28),steering.Status,small);}
+                return;
+            }
             Panel(new Rect(18,490,610,125));var m=run.VehicleModel;
             GUI.Label(new Rect(33,495,580,23),$"NAPĘD: {driveNames[(int)m.SelectedDrive]} • WASD ruch • Z/C obrót Omni/Hover",small);
             GUI.Label(new Rect(33,519,580,23),$"Shift Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))} • Spacja skok: {AbilityStatus(a,R3PartKind.JumpDrive)}",small);
             string grapple=a.OperationalCount(R3PartKind.MagneticGrapple)==0?"brak":a.GrappleAttached?"E zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy";
             GUI.Label(new Rect(33,543,580,23),$"Q Blink: {AbilityStatus(a,R3PartKind.Blink)} • E zaczep: {grapple}",small);
             GUI.Label(new Rect(33,567,580,23),$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"brak":m.GyroEnabled?"ON":"OFF")} • Hover: {m.HoverHeightMeters:0.0} m • {(a.HasActiveDrive?"napęd sprawny":"utrata napędu")}",small);
-            var steering=run.Player.GetComponentInChildren<RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding>();
             GUI.Label(new Rect(33,590,580,23),steering!=null?steering.Status:a.Feedback??"Regulacja w garażu • Esc — pauza / zmiana napędu",small);
         }
     }

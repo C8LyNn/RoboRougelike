@@ -93,5 +93,13 @@ public class RRLW8StructuralScanTests
         float cooldown=scanner.CooldownLeft;Assert.That((bool)method.Invoke(controls,new object[]{key}),Is.False);Assert.That(scanner.CooldownLeft,Is.EqualTo(cooldown));
         module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);Assert.That((bool)method.Invoke(controls,new object[]{key}),Is.False);yield return null;
     }
+    [UnityTest] public IEnumerator ReenabledPhysicalViewRestoresCanonicalCooldownWithoutFreeActivation()
+    {
+        Assert.That(Activate(),Is.True);float ready=run.VehicleModel.Parts.Single(p=>p.Id==module.Id).DeviceReadyAt;
+        module.gameObject.SetActive(false);float until=Time.time+.3f;while(Time.time<until)yield return null;
+        module.gameObject.SetActive(true);yield return null;
+        Assert.That(scanner.CooldownLeft,Is.EqualTo(Mathf.Max(0,ready-Time.time)).Within(.03f),"Retained view must follow the same owned deadline as a rebuilt view");
+        Assert.That(scanner.Contacts,Is.Empty);Assert.That(Activate(),Is.False);Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==module.Id).DeviceReadyAt,Is.EqualTo(ready));
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

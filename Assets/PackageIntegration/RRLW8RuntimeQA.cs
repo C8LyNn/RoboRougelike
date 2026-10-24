@@ -80,10 +80,13 @@ namespace RoboRougelike.QA
             Require(!com.TryActivate()&&!sen.TryActivate()&&!steering.SetMode(SteeringMode.FrontOnly),"EMP blocks all three device actions");
             deadline=Time.time+.7f;while(Time.time<deadline)yield return null;
             Require(devices.All(d=>d.HardwareAvailable)&&com.Device.State.DeviceReadyAt==comReady&&sen.Device.State.DeviceReadyAt==senReady,"Automatic EMP recovery preserves committed cooldowns");
+            com.gameObject.SetActive(false);yield return new WaitForSeconds(.2f);com.gameObject.SetActive(true);yield return null;
+            Require(Mathf.Abs(com.CooldownLeft-Mathf.Max(0,comReady-Time.time))<.05f&&!com.TryActivate(),"Retained COM view resumes canonical cooldown without free activation");
             current="MOV-011";run.Player.Controller.SetGameplayInputEnabled(true);run.Player.Controller.enabled=false;
             Require(steering.SetMode(SteeringMode.Crab),"Crab mode after EMP");Vector3 start=body.position;float yaw=body.rotation.eulerAngles.y;
+            Require(!body.useGravity&&(body.constraints&RigidbodyConstraints.FreezePositionY)!=0,"Default R6 planar physics retained without suspension parts");
             deadline=Time.time+.8f;while(Time.time<deadline){run.Player.GetComponent<R6VehicleDrive>().Step(1,1,10,5,105);yield return new WaitForFixedUpdate();}
-            Require(body.position.x-start.x>.12f&&body.position.z-start.z>.2f&&Mathf.Abs(Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y))<8,"Actual R6 crab translation with normal suspension",$"delta={body.position-start}; yaw={Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y)}");
+            Require(body.position.x-start.x>.12f&&body.position.z-start.z>.2f&&Mathf.Abs(Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y))<8,"Actual default-planar R6 crab translation",$"delta={body.position-start}; yaw={Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y)}");
             Capture("03-actual-r6-crab");yield return new WaitForSeconds(.15f);
             Require(steering.SetMode(SteeringMode.CounterPhase),"Counter-phase mode");deadline=Time.time+.5f;
             while(Time.time<deadline){run.Player.GetComponent<R6VehicleDrive>().Step(1,1,10,5,105);yield return new WaitForFixedUpdate();}
@@ -104,6 +107,18 @@ namespace RoboRougelike.QA
             Destroy(restored.gameObject);Require(run.ReturnFromTestRange(),"Actual return to workshop");while(run.Transitioning)yield return null;
             Require(run.Progress.State==R1RunState.Garage&&run.VehicleModel.Scrap==485&&run.VehicleModel.Parts.Where(p=>states.Any(s=>s.Id==p.Id)).All(p=>p.Health==1),"Disposable range damage does not leak into workshop");
             Capture("04-restored-workshop");yield return new WaitForSecondsRealtime(.2f);
+            current="MOV-011 + MOV-009";
+            foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})Require(run.GarageBuy(new Vector3Int(x,0,z),R3PartKind.Suspension),"Actual MOV009 support purchased",$"{x},0,{z}");
+            Require(run.EnterTestRange(),"Range with original four-point active suspension");while(run.Transitioning)yield return null;
+            body=run.Player.GetComponent<Rigidbody>();steering=run.Player.GetComponentInChildren<RRLIndependentSteeringBinding>();
+            var suspension=run.Player.GetComponent<RoboRougelike.Mechanics.MOV009.ActiveSuspensionController>();
+            Require(suspension!=null&&suspension.RegisteredModuleCount==4&&body.useGravity&&body.constraints==RigidbodyConstraints.None&&run.Player.GetComponent<R6VehicleDrive>().SuspensionPhysics,"Actual MOV009 four supports, gravity and unconstrained body");
+            yield return new WaitForSeconds(.8f);run.Player.Controller.SetGameplayInputEnabled(true);run.Player.Controller.enabled=false;
+            Require(steering.SetMode(SteeringMode.Crab),"Crab with active suspension");start=body.position;yaw=body.rotation.eulerAngles.y;
+            deadline=Time.time+.8f;while(Time.time<deadline){run.Player.GetComponent<R6VehicleDrive>().Step(1,1,10,5,105);yield return new WaitForFixedUpdate();}
+            Require(body.position.x-start.x>.1f&&body.position.z-start.z>.2f&&Mathf.Abs(Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y))<8&&suspension.LastTotalLiftNewtons>0&&Vector3.Angle(run.Player.transform.up,Vector3.up)<15,"Actual MOV009-supported R6 crab translation without competing solver",$"delta={body.position-start}; yaw={Mathf.DeltaAngle(yaw,body.rotation.eulerAngles.y)}; lift={suspension.LastTotalLiftNewtons}");
+            Capture("05-mov009-supported-crab");yield return new WaitForSeconds(.15f);
+            Require(run.ReturnFromTestRange(),"Supported rig returns to workshop");while(run.Transitioning)yield return null;
             run.RestartRun();yield return null;while(R1RunController.Instance?.Progress==null)yield return null;
             Require(UnityEngine.Object.FindObjectsByType<R1RunController>(FindObjectsSortMode.None).Length==1&&UnityEngine.Object.FindObjectsByType<RRLScannerControls>(FindObjectsSortMode.None).Length==0,"Restart removes old owned sensor/input views");
         }
