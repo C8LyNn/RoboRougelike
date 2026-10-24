@@ -113,7 +113,7 @@ namespace RoboRougelike.QA
                 Pose(roof,Quaternion.Euler(0,0,180));core.GetComponent<EmpReceiver>().ApplyEmp(8);int attempts=recovery.AttemptsStarted;
                 yield return new WaitForSeconds(recovery.CooldownLeft+.6f);
                 Require(recovery.CooldownLeft==0&&recovery.AttemptsStarted==attempts,"EMP blocks roof recovery even after cooldown naturally expires");
-                core.ApplyDamage(100000,core.transform.position,Vector3.zero);vehicle.Structure.EvaluateStructure();yield return new WaitForSeconds(2);
+                core.ApplyDamage(100000,core.transform.position,Vector3.zero);vehicle.Structure.EvaluateStructure();yield return new WaitForSecondsRealtime(.25f);
                 Require(recovery.AttemptsStarted==attempts&&!recovery.IsRecovering,"Destroyed Core cannot initiate another attempt");
                 vehicle.Controller.enabled=true;Require(run.ReturnFromTestRange(),"Actual return to garage");while(run.Transitioning)yield return null;
                 Require(run.VehicleModel.Scrap==515&&run.VehicleModel.Parts.All(p=>p.Health==1),"Disposable range loss does not leak into garage");

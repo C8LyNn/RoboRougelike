@@ -115,6 +115,36 @@ public class B01CoreRecoveryTests
         Assert.That(vehicle.GetComponent<R6VehicleDrive>().GroundedWheels,Is.GreaterThan(0));
         Assert.That(Telemetry("LastLiftImpulse"),Is.LessThanOrEqualTo(1800.1f));Assert.That(Telemetry("LastPeakTorque"),Is.LessThanOrEqualTo(30000.1f));
     }
+    [UnityTest] public IEnumerator PHY_CORE_05_DefaultTorqueOffsetPayloadRemainsInsideActualCeilingAndWalls()
+    {
+        Require();var model=vehicle.GetComponent<R3VehicleAssembly>().Model.DeepCopy();
+        model.Parts.Add(new R3PartState(new Vector3Int(2,1,0),R3PartKind.Armor));
+        model.Parts.Add(new R3PartState(new Vector3Int(2,2,0),R3PartKind.Armor));
+        vehicle.gameObject.SetActive(false);Object.Destroy(vehicle.gameObject);
+        vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(1000,.7f,1000),Quaternion.identity);
+        vehicle.transform.SetParent(fixtures.transform,true);vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
+        body=vehicle.GetComponent<Rigidbody>();recovery=vehicle.GetComponents<MonoBehaviour>().Single(c=>c.GetType().Name=="R6CoreRecovery");PoseRoof();
+        var solids=vehicle.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.attachedRigidbody==body).ToArray();
+        var bounds=solids[0].bounds;foreach(var c in solids)bounds.Encapsulate(c.bounds);
+        float left=bounds.min.x-.12f,right=bounds.max.x+.12f,front=bounds.min.z-.12f,back=bounds.max.z+.12f,top=bounds.max.y+.12f;
+        Solid(new Vector3((left+right)/2,top+.15f,(front+back)/2),new Vector3(right-left+.6f,.3f,back-front+.6f));
+        Solid(new Vector3(left-.15f,top/2,(front+back)/2),new Vector3(.3f,top,back-front+.6f));
+        Solid(new Vector3(right+.15f,top/2,(front+back)/2),new Vector3(.3f,top,back-front+.6f));
+        Solid(new Vector3((left+right)/2,top/2,front-.15f),new Vector3(right-left+.6f,top,.3f));
+        Solid(new Vector3((left+right)/2,top/2,back+.15f),new Vector3(right-left+.6f,top,.3f));Physics.SyncTransforms();
+        float health=vehicle.Core.CurrentHp;int count=model.Parts.Count;float end=Time.time+5,maxOverlap=0,maxStep=0;var previous=body.rotation;
+        while(Time.time<end)
+        {
+            yield return new WaitForFixedUpdate();maxStep=Mathf.Max(maxStep,Quaternion.Angle(previous,body.rotation));previous=body.rotation;
+            foreach(var c in solids)if(c!=null){var b=c.bounds;maxOverlap=Mathf.Max(maxOverlap,left-b.min.x,b.max.x-right,front-b.min.z,b.max.z-back,b.max.y-top,-b.min.y);}
+        }
+        Debug.Log($"PHY default cage mass={body.mass} attempts={Attempts} overlap={maxOverlap} step={maxStep} torque={Telemetry("LastPeakTorque")}");
+        Assert.That(Attempts,Is.EqualTo(1));Assert.That((bool)recovery.GetType().GetProperty("IsRecovering").GetValue(recovery),Is.False);
+        Assert.That(Telemetry("CooldownLeft"),Is.GreaterThan(0));Assert.That(Telemetry("LastPeakTorque"),Is.InRange(0,30000.1f));
+        Assert.That(maxOverlap,Is.LessThan(.07f),"Actual compound geometry must remain on the permitted side of each cage surface");
+        Assert.That(maxStep,Is.LessThan(15),"No instantaneous rotation step");Assert.That(vehicle.Core.CurrentHp,Is.EqualTo(health));
+        Assert.That(vehicle.GetComponent<R3VehicleAssembly>().Parts.Count,Is.EqualTo(count));
+    }
     [UnityTest] public IEnumerator PHY_CORE_05_RebuiltCoreKeepsCooldownAndCannotRestoreDestroyedWheel()
     {
         Require();PoseRoof();yield return MOVSeriesDeviceTests.Seconds(2.5f);Assert.That(Attempts,Is.EqualTo(1));

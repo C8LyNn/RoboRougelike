@@ -23,6 +23,11 @@ namespace RoboRougelike.MOV009Integration
         public float RideHeightMeters {get;private set;}
         public const float ChassisContactFriction=.15f;
         public string ProtectionReason {get;private set;}
+        public string GroundingNotice => assembly!=null&&suspension!=null&&drive!=null&&
+            assembly.Model.SelectedDrive==R3DriveKind.Wheels&&drive.Wheels>0&&drive.GroundedWheels==0&&
+            suspension.SuspensionEnabled&&suspension.SupportMode==ActiveSuspensionSupportMode.FullSupport&&
+            suspension.CurrentRideHeightOffsetMeters>0
+            ?"Koła bez kontaktu — obniż zawieszenie, aby odzyskać napęd.":null;
         public int OperationalSupports => GetComponentsInChildren<ActiveSuspensionModule>().Count(m=>m.IsAvailableFor(body));
 
         public void Configure(R3VehicleAssembly vehicle)
