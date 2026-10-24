@@ -1,0 +1,100 @@
+name: MODEL-02 M02-007 Twin Support Rollers QA
+
+on:
+  push:
+    branches: [feature/rrl-model-m02-007-support-roller-pair]
+    paths:
+      - 'Tools/ModelFactory/M02/M02-007/generate_m02_007.py'
+      - 'Tools/ModelFactory/M02/M02-007/README.md'
+      - '.github/workflows/ci-m02-007.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m02-007-isolated-model
+  cancel-in-progress: true
+
+jobs:
+  twin-rollers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout isolated model branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: true
+      - name: Python syntax and mechanical kinematic QA
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-007/generate_m02_007.py
+          python3 Tools/ModelFactory/M02/M02-007/generate_m02_007.py --self-test
+      - name: Generate OBJ MTL from Python
+        run: |
+          python3 Tools/ModelFactory/M02/M02-007/generate_m02_007.py --out Tools/ModelFactory/M02/M02-007/generated
+          test -s Tools/ModelFactory/M02/M02-007/generated/M02-007_support_roller_pair.obj
+          test -s Tools/ModelFactory/M02/M02-007/generated/M02-007_support_roller_pair.mtl
+      - name: Install real Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq blender python3-numpy
+          blender --version | head -3
+      - name: Export real animated GLB and appendable BLEND
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M02/M02-007/generate_m02_007.py -- --out Tools/ModelFactory/M02/M02-007/generated
+          test -s Tools/ModelFactory/M02/M02-007/generated/M02-007_animated.glb
+          test -s Tools/ModelFactory/M02/M02-007/generated/M02-007.blend
+      - name: Independent glTF 2.0 structure and animation verification
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, struct
+          out=Path('Tools/ModelFactory/M02/M02-007/generated')
+          manifest=json.loads((out/'M02-007_qa.json').read_text())
+          assert manifest['static_qa']=='PASS'
+          assert manifest['blender']=='PASS_EXPORT'
+          assert manifest['pose_pairs_checked']==5832
+          assert manifest['treads']==32 and manifest['dampers']==4
+          assert manifest['materials']==8
+          assert manifest['closed_positive_volume_parts']==manifest['parts']
+          assert manifest['shaft_bore_radial_clearance_m']>=.011
+          assert manifest['piston_housing_radial_clearance_m']>=.007
+          data=(out/'M02-007_animated.glb').read_bytes()
+          magic,version,total=struct.unpack_from('<III',data,0)
+          assert (magic,version,total)==(0x46546c67,2,len(data))
+          size,kind=struct.unpack_from('<II',data,12)
+          assert kind==0x4e4f534a
+          g=json.loads(data[20:20+size].decode('utf-8'))
+          assert g['asset']['version']=='2.0'
+          assert len(g['materials'])>=8
+          assert len(g['meshes'])>=80
+          assert len(g.get('animations',[]))>=1
+          targets={node['name']:i for i,node in enumerate(g['nodes']) if 'name' in node}
+          for label in ('L','R'):
+              rotor=targets['M02-007_ROLLER_'+label+'_ROTATE_Y']
+              susp=targets['M02-007_SUSP_'+label]
+              assert any(c['target']['node']==rotor and c['target']['path']=='rotation'
+                         for anim in g['animations'] for c in anim['channels'])
+              assert any(c['target']['node']==susp and c['target']['path']=='translation'
+                         for anim in g['animations'] for c in anim['channels'])
+          print('PASS: actual Blender GLB with 2 rotor channels and 2 suspension channels')
+          PY
+      - name: Upload 3D deliverables for review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: M02-007-twin-support-rollers
+          path: Tools/ModelFactory/M02/M02-007/generated/
+          if-no-files-found: error
+      - name: Commit generated assets ONLY to isolated feature branch
+        env:
+          BRANCH: feature/rrl-model-m02-007-support-roller-pair
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Tools/ModelFactory/M02/M02-007/generated/
+          if git diff --cached --quiet; then
+            echo 'No new generated model artifacts'
+          else
+            git commit -m 'asset(M02-007): Blender BLEND and animated GLB, OBJ MTL and QA'
+            git push origin "HEAD:refs/heads/$BRANCH"
+          fi
