@@ -329,7 +329,7 @@ def blender_export(parts,out):
         rotor.rotation_mode="XYZ"
         for frame,angle in ((1,0),(16,math.pi/2),(31,math.pi),
                             (46,3*math.pi/2),(61,2*math.pi)):
-            rotor.rotation_euler[1]=angle*(1 if i==0 else -1)
+            rotor.rotation_euler[1]=angle  # both +Y axles spin together for +X travel
             rotor.keyframe_insert(data_path="rotation_euler",index=1,frame=frame)
     for i,carrier in enumerate(carriers):
         for frame,lift in ((1,0),(16,.040 if i==0 else .018),
