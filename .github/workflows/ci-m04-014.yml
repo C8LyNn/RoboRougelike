@@ -1,0 +1,77 @@
+name: M04-014 Mud Screw Drive Asset QA
+on:
+  push:
+    branches: [feature/rrl-model-m04-014-mud-screw-drive]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-014/**'
+      - '.github/workflows/ci-m04-014.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M04/M04-014/**'
+      - '.github/workflows/ci-m04-014.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: m04-014-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  static-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate geometry and repeatable OBJ MTL
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M04/M04-014/generate_m04_014.py
+          python3 Tools/ModelFactory/M04/M04-014/generate_m04_014.py --self-test
+          python3 Tools/ModelFactory/M04/M04-014/qa_m04_014.py
+          python3 Tools/ModelFactory/M04/M04-014/generate_m04_014.py --out build/M04-014
+      - name: Publish static OBJ MTL manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-014-static-OBJ-MTL-manifest
+          path: build/M04-014/
+          if-no-files-found: error
+          retention-days: 30
+  blender-animation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -2
+      - name: Generate Blender file and animated GLB FBX
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python \
+            Tools/ModelFactory/M04/M04-014/generate_m04_014.py -- \
+            --out build/M04-014
+      - name: Independent animated GLB structural QA
+        run: |
+          python3 Tools/ModelFactory/M04/M04-014/qa_m04_014.py \
+            --glb build/M04-014/M04-014_mud_screw_drive.glb
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/M04-014')
+          report=json.loads((p/'M04-014_manifest.json').read_text())
+          assert report['blender'].startswith('PASS')
+          assert report['unity']=='NOT RUN'
+          assert all((p/name).stat().st_size>1000 for name in report['blender_files'])
+          print('PASS Blender exports; Unity NOT RUN')
+          PY
+      - name: Publish Blender GLB FBX and manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M04-014-Blender-animated-GLB-FBX
+          path: build/M04-014/
+          if-no-files-found: error
+          retention-days: 30
