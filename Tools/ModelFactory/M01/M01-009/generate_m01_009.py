@@ -119,8 +119,8 @@ def build():
     # Physically continuous top socket: underside at y=0.005, upper face
     # at y=0.070 touches the lower chassis rail. Origin is mount pivot.
     prism("MOUNT_TOP_SOCKET_PLATE","Titanium",0,.0375,.295,
-          .56,.065,.42,.035)
-    prism("MOUNT_GASKET","Rubber",0,.009,.295,.48,.008,.34,.016)
+          .56,.065,.42,.024)
+    prism("MOUNT_GASKET","Rubber",0,.009,.295,.48,.008,.34,.002)
     for i,x in enumerate((-.23,.23)):
         for j,z in enumerate((.145,.445)):
             cylinder("Mount_Bolt_%d_%d"%(i,j),"Oxidized_Copper",
