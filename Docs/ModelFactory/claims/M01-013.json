@@ -1,8 +1,14 @@
 {
   "id": "M01-013",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "QA_PASS",
   "claimed_at_utc": "2026-10-24T22:49:04Z",
   "model": "Wyrzutnia siatki zakłócającej",
-  "run": "2026-10-24T22:00:00Z"
+  "run": "2026-10-24T22:00:00Z",
+  "pull_request": 128,
+  "branch": "feature/rrl-model-m01-013-disruption-net-launcher",
+  "asset_commit": "fd155b23c0513a3e45ca61e4a6b017c05f2f4b84",
+  "qa_run_id": 40140714547,
+  "qa_result": "BLENDER_EXPORT_AND_STATIC_QA_PASS",
+  "unity": "BLOCKED_ACTIVATION"
 }
