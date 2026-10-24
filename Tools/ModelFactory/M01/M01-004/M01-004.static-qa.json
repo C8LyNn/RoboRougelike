@@ -1,0 +1,42 @@
+{
+  "id": "M01-004",
+  "status": "STATIC_QA_PASS",
+  "visual_only": true,
+  "parts": 43,
+  "vertices": 1672,
+  "faces": 1458,
+  "materials_used": [
+    "ceramic",
+    "copper",
+    "graphite",
+    "gunmetal",
+    "rubber",
+    "signal_teal"
+  ],
+  "pivot_blender_m": [
+    0,
+    0,
+    0
+  ],
+  "pivot_tilt_blender_m": [
+    0,
+    0,
+    0.7
+  ],
+  "axis_blender": "Z up, -Y muzzle forward, +X right",
+  "elevation_degrees": [
+    0,
+    -18.0
+  ],
+  "samples": 21,
+  "moving_fixed_aabb_checks": 7812,
+  "min_vertical_clearance_m": 0.049069,
+  "collision_test": "PASS (conservative AABB, not Unity physics)",
+  "blender": "EXECUTED",
+  "unity": "NOT RUN",
+  "visual_review": "NOT RUN",
+  "blender_outputs": {
+    "glb": "M01-004_animated.glb",
+    "blend": "M01-004.blend"
+  }
+}
