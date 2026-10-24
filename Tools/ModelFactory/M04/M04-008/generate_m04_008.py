@@ -307,6 +307,12 @@ def blender_export(parts,outdir):
         else:obj.parent=root
         mesh.materials.append(mats[p['material']])
         if p['bevel']:
+            # Blender 4.0 requires Auto Smooth for Weighted Normal; newer
+            # Blender versions removed this property, so guard it.
+            if hasattr(mesh,'use_auto_smooth'):
+                mesh.use_auto_smooth=True
+            for polygon in mesh.polygons:
+                polygon.use_smooth=True
             mod=obj.modifiers.new('Machined_chamfer','BEVEL')
             mod.width=p['bevel'];mod.segments=2
             obj.modifiers.new('Weighted_normals','WEIGHTED_NORMAL')
