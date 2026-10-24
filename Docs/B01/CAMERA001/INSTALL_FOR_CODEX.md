@@ -1,6 +1,6 @@
 # CAMERA001 gated installation plan for Codex
 STATUS: QA_PENDING / DO NOT INTEGRATE YET.
-Source PR: to be filled by B01-00 after Draft creation (see #66). Branch feature/b01-camera001-s02-r1-isolated. Immutable source_sha: to be pinned in #66 after manifest. Recipient must separately ACK exact target branch/SHA and current reserved camera paths. Published PHY #125 SHA 916654634d1bfdc2bbc14e64b9eeac856ede1fa8 is REFERENCE ONLY, NOT an integration baseline.
+Source PR: https://github.com/C8LyNn/RoboRougelike/pull/134 (DRAFT, not approved). Branch feature/b01-camera001-s02-r1-isolated. Immutable source_sha: to be pinned in #66 after manifest. Recipient must separately ACK exact target branch/SHA and current reserved camera paths. Published PHY #125 SHA 916654634d1bfdc2bbc14e64b9eeac856ede1fa8 is REFERENCE ONLY, NOT an integration baseline.
 
 Deps: Unity 6000.3.14f1, URP project, com.unity.test-framework 1.6.0 for tests; Runtime assembly B01.CAMERA001.Runtime only UnityEngine. Demo supports ENABLE_INPUT_SYSTEM or legacy input.
 Target allowed import: entire Assets/B01Packages/CAMERA001/ with original .meta, and parent folder .meta if absent; no copying only PR delta. Verify GUID uniqueness against the TARGET and do not overwrite an existing Assets/B01Packages.meta UUID.
