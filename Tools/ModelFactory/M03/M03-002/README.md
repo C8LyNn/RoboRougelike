@@ -20,6 +20,8 @@ In Blender, use `M03-002_MOUNT_REAR` as rear port and `M03-002_MOUNT_FRONT` as m
 ## QA status
 
 - Static component dimensions, overall retracted 1×2×1 envelope, 21 sampled extension positions, conservative AABB moving-vs-fixed collision checks: PASS (see JSON).
-- Python generator syntax/runtime: NOT RUN in CI at PR creation; run locally or in CI for confirmation.
+- Python generator syntax/runtime, deterministic regeneration of OBJ/MTL and 21-step clearance validation: **PASS**, GitHub Actions [Model Factory M03-002 Static Geometry QA](https://github.com/C8LyNn/RoboRougelike/actions/runs/40091466179).
+- CI-01 Repository Validation: **PASS** ([run](https://github.com/C8LyNn/RoboRougelike/actions/runs/40091466119)).
+- Unity EditMode and PlayMode GitHub Actions: **BLOCKED_UNITY_ACTIVATION** (credential check failed before Unity started; [EditMode](https://github.com/C8LyNn/RoboRougelike/actions/runs/40091466188), [PlayMode](https://github.com/C8LyNn/RoboRougelike/actions/runs/40091466128)).
 - Blender geometry/animation/GLB export, Unity import, EditMode/PlayMode and visual QA: NOT RUN.
 - Unity GLB importer axis conversion should be checked: Blender Z-up, +Y longitudinal. No gameplay code, scenes, or ProjectSettings were modified.
