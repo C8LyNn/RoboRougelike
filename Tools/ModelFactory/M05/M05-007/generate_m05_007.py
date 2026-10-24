@@ -236,7 +236,7 @@ def static_export(out):
     mtl=["# M05-007 material library"]
     for name,(color,metal,rough,emissive) in MATERIALS.items():
         mtl.extend(["newmtl "+name,"Kd %.5f %.5f %.5f"%color[:3],
-                    "Ks %.5f %.5f %.5f"%(metal*.4,)*3,
+                    "Ks %.5f %.5f %.5f"%((metal*.4,)*3),
                     "Ns %.1f"%((1-rough)*400),"d 1.0","illum 2",""])
     (out/"M05-007.mtl").write_text("\n".join(mtl)+"\n",encoding="utf-8")
 
@@ -275,7 +275,7 @@ def blender_export(out):
         bsdf.inputs["Metallic"].default_value=metal
         bsdf.inputs["Roughness"].default_value=rough
         if emission:
-            bsdf.inputs["Emission Color"].default_value=(*emission[:3],1)
+            bsdf.inputs["Emission Color" if "Emission Color" in bsdf.inputs else "Emission"].default_value=(*emission[:3],1)
             bsdf.inputs["Emission Strength"].default_value=emission[3]
         mat.diffuse_color=rgba
         mats[name]=mat
