@@ -1,0 +1,66 @@
+name: MODEL-05 M05-008 Cylindrical Battery QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-008-cylindrical-battery
+    paths:
+      - "Tools/ModelFactory/M05/M05-008/**"
+      - ".github/workflows/ci-model-m05-008.yml"
+  pull_request:
+    branches: [develop]
+    paths:
+      - "Tools/ModelFactory/M05/M05-008/**"
+      - ".github/workflows/ci-model-m05-008.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  m05-008-static-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Independent geometry, sweep and OBJ/MTL QA
+        run: python3 Tools/ModelFactory/M05/M05-008/qa_m05_008.py
+      - name: Export deterministic OBJ/MTL preview
+        run: |
+          python3 Tools/ModelFactory/M05/M05-008/generate_m05_008.py \
+            --static-obj --out build/M05-008/static
+      - name: Upload actual OBJ, MTL and manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M05-008-static-OBJ-MTL
+          path: build/M05-008/static/
+          if-no-files-found: error
+          retention-days: 14
+  m05-008-blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install real Blender from Ubuntu repository
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Blender scene rebuild, animation and export QA
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M05/M05-008/qa_blender_m05_008.py \
+            -- --out build/M05-008/blender
+      - name: Export clean production FBX, GLB and BLEND without QA sentinel
+        run: |
+          blender -b --factory-startup \
+            --python Tools/ModelFactory/M05/M05-008/generate_m05_008.py \
+            -- --out build/M05-008/blender
+      - name: Upload actual FBX, GLB, BLEND and QA evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: M05-008-Blender-FBX-GLB-BLEND
+          path: build/M05-008/blender/
+          if-no-files-found: error
+          retention-days: 14
