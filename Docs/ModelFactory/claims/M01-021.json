@@ -13,7 +13,7 @@
   "blender_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174489965",
   "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174489965/artifacts/12591482433",
   "unity_import": "NOT_RUN",
-  "unity_editmode": "NOT_RUN",
-  "unity_playmode": "NOT_RUN",
+  "unity_editmode": "BLOCKED_ACTIVATION",
+  "unity_playmode": "BLOCKED_ACTIVATION",
   "visual_inspection": "NOT_RUN"
 }
