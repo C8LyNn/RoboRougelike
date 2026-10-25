@@ -5,6 +5,7 @@ Origin (0,0,0) is the rear vehicle mounting plane.
 Run: blender -b --python generate_m05_015.py -- --out /tmp/m05-015
 """
 import bpy
+import bmesh
 import math
 import json
 import sys
@@ -214,6 +215,13 @@ def qa():
     meshes = [o for o in PARTS if o.type == "MESH"]
     assert len(M) >= 3 and len(FINGERS) == 3
     assert all(len(o.data.vertices) >= 8 for o in meshes)
+    for obj in meshes:
+        bm = bmesh.new()
+        bm.from_mesh(obj.data)
+        bm.normal_update()
+        assert all(e.is_manifold for e in bm.edges), ("non-manifold mesh",obj.name)
+        assert bm.calc_volume(signed=True) > 0, ("inverted normals",obj.name)
+        bm.free()
     # Fingertip clearance (three radial fingers). Evaluate all keyframes and
     # intermediate poses. The pad has .035 m radial depth, .092 m tangential width.
     # Conservative radial tip bound uses the full arm's 0.49 m reach.
