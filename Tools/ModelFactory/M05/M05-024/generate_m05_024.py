@@ -142,27 +142,49 @@ def annulus(col, mats, name, x, y, z0, z1, outer, inner, key, n=40):
     return o
 
 def pipe(col, mats, name, points, radius, key):
-    curve=bpy.data.curves.new(PREFIX+name+"_curve",'CURVE')
-    curve.dimensions='3D'
-    curve.resolution_u=16
-    curve.bevel_depth=radius
-    curve.bevel_resolution=4
-    curve.use_fill_caps=True
-    spl=curve.splines.new('BEZIER')
-    spl.bezier_points.add(len(points)-1)
-    for bp, xyz in zip(spl.bezier_points,points):
-        bp.co=xyz
-        bp.handle_left_type='AUTO'
-        bp.handle_right_type='AUTO'
-    o=bpy.data.objects.new(PREFIX+name,curve)
-    col.objects.link(o)
-    bpy.context.view_layer.objects.active=o
-    o.select_set(True)
-    bpy.ops.object.convert(target='MESH')
-    o=bpy.context.view_layer.objects.active
-    o.select_set(False)
-    o.data.materials.append(mats[key])
-    return o
+    """Build a sealed manifold coolant tube from Catmull-Rom samples (not an open bevel curve)."""
+    control=[Vector(p) for p in points]
+    samples=[]
+    for segment in range(len(control)-1):
+        p0=control[max(0,segment-1)]
+        p1=control[segment]
+        p2=control[segment+1]
+        p3=control[min(len(control)-1,segment+2)]
+        for k in range(10):
+            t=k/10.0
+            pos=0.5*((2*p1)+(-p0+p2)*t+
+                     (2*p0-5*p1+4*p2-p3)*t*t+
+                     (-p0+3*p1-3*p2+p3)*t*t*t)
+            samples.append(pos)
+    samples.append(control[-1])
+    radial=16
+    verts=[]
+    for i,pt in enumerate(samples):
+        tangent=(samples[min(i+1,len(samples)-1)]-
+                 samples[max(i-1,0)]).normalized()
+        ref=Vector((1,0,0)) if abs(tangent.z)>0.9 else Vector((0,0,1))
+        u=tangent.cross(ref).normalized()
+        v=tangent.cross(u).normalized()
+        for j in range(radial):
+            a=2*math.pi*j/radial
+            q=pt+radius*(math.cos(a)*u+math.sin(a)*v)
+            verts.append(tuple(q))
+    faces=[tuple(reversed(range(radial)))]
+    for i in range(len(samples)-1):
+        for j in range(radial):
+            nxt=(j+1)%radial
+            faces.append((i*radial+j,i*radial+nxt,
+                          (i+1)*radial+nxt,(i+1)*radial+j))
+    faces.append(tuple((len(samples)-1)*radial+j for j in range(radial)))
+    mesh=bpy.data.meshes.new(PREFIX+name+"_mesh")
+    mesh.from_pydata(verts,[],faces)
+    mesh.update()
+    obj=bpy.data.objects.new(PREFIX+name,mesh)
+    col.objects.link(obj)
+    mesh.materials.append(mats[key])
+    for face in mesh.polygons:
+        face.use_smooth=len(face.vertices)==4
+    return obj
 
 def validate_manifold(col):
     failures=[]
