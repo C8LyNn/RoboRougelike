@@ -27,7 +27,7 @@ jobs:
       - name: Generate and test twice in Blender
         run: |
           mkdir -p /tmp/m05-016
-          blender -b -t 2 --python Tools/ModelFactory/M05/M05-016/generate_m05_016.py -- --out /tmp/m05-016
+          blender -b -t 2 --python-exit-code 1 --python Tools/ModelFactory/M05/M05-016/generate_m05_016.py -- --out /tmp/m05-016
       - name: Independently validate GLB structure
         run: |
           python3 - <<'PY'
