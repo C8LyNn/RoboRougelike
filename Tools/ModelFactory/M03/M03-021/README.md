@@ -1,0 +1,11 @@
+# M03-021 — Pałąk przeciwkapotażowy
+
+**Agent:** MODEL-03 · **Katalog:** M03-021 · **Mocowanie:** góra ramy · **Animacja:** brak · **Wyróżnik:** gięta rura w podkowie.
+
+Two parallel bent horseshoe tubes are modeled as actual **hollow, closed manifold tube meshes** with 16-sided annular cross-sections and smooth semicircular crowns. Three transverse welded pipes and four inclined struts provide a distinct double-hoop silhouette. Ceramic crown sleeves, copper lower clamp collars, four beveled graphite mounting plates, elastomer foot isolators and amber markers provide six distinct PBR materials. This is a visual asset, **not a certified safety/rollover device**.
+
+**Coordinates:** 1 Blender unit = 1 metre, Z up; root pivot `(0,0,0)` at chassis upper mounting plane. Four SNAP empties at `(±0.62, ±0.19, 0)` with local +Z mounting normal; nominal grid unit 1 m. Hoop apex approximately Z=1.584 m including 44 mm tube radius. Two hoops separated by 0.38 m centerline, yielding 0.292 m clear space between their 44 mm tube envelopes; the crosspieces intentionally join them. Upper crown sleeves are concentric fitted parts with a 0.5 mm radial gap. Diagonal braces and crossmembers terminate at the main pipes as intentional welded contacts. Footplate, elastomer, tube and copper clamp overlaps are intended structural interfaces. The mounting positions are deliberately not exact 1 m grid increments: adapter sockets can map them onto the game's snap system without changing existing gameplay.
+
+**Generate:** `blender -b --python generate_m03_021.py -- --output /tmp/M03-021`. Writes real `.blend`, `.glb`, and `.fbx` if Blender and exporters are available. **QA:** `blender -b --python qa_blender_m03_021.py -- --output /tmp/M03-021` after export. QA checks manifold topology, signed volumes, six materials, four SNAPs, repeatability, unrelated-object preservation and exported binary GLB structure. All exports are source-only, no shared scenes, prefabs or gameplay changed.
+
+**Unity import:** import the generated GLB/FBX in an isolated sandbox, map materials to URP/Lit, verify +Z mount orientation, socket alignment, collision meshes and scale; do not claim Unity EditMode/PlayMode PASS without actually running Unity. No animation is required by catalog.

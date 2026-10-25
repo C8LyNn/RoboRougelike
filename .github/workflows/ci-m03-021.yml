@@ -1,0 +1,37 @@
+name: CI M03-021 Rollover Hoop
+on:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-021/**'
+      - '.github/workflows/ci-m03-021.yml'
+  workflow_dispatch:
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Python syntax check
+        run: python3 -m py_compile Tools/ModelFactory/M03/M03-021/*.py
+      - name: Actual Blender bpy generation and export
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-021/generate_m03_021.py -- --output /tmp/M03-021
+          test -s /tmp/M03-021/M03-021.blend
+          test -s /tmp/M03-021/M03-021.glb
+          test -s /tmp/M03-021/M03-021.fbx
+      - name: Independent Blender geometry, repeatability and GLB QA
+        run: blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-021/qa_blender_m03_021.py -- --output /tmp/M03-021
+      - name: SHA-256 manifest
+        run: cd /tmp/M03-021 && sha256sum M03-021.blend M03-021.glb M03-021.fbx > SHA256SUMS
+      - name: Upload actual model artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-021-Blender-GLB-FBX-BLEND
+          path: /tmp/M03-021/
+          if-no-files-found: error
+          retention-days: 14
