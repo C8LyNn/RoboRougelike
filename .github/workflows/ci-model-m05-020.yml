@@ -1,0 +1,58 @@
+name: M05-020 Navigation Lattice Antenna QA
+on:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-020/**'
+      - '.github/workflows/ci-model-m05-020.yml'
+  workflow_dispatch:
+jobs:
+  blender-asset:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Compile Python source
+        run: python3 -m py_compile Tools/ModelFactory/M05/M05-020/*.py
+      - name: Execute Blender geometry and animation QA twice
+        run: |
+          blender -b --factory-startup --python Tools/ModelFactory/M05/M05-020/qa_blender_m05_020.py
+      - name: Export production assets without QA sentinel
+        run: |
+          blender -b --factory-startup --python Tools/ModelFactory/M05/M05-020/generate_m05_020.py -- "$PWD/generated/M05-020"
+      - name: Independently inspect GLB and saved BLEND
+        run: |
+          python3 - <<'PY'
+          import json, struct
+          from pathlib import Path
+          folder = Path("generated/M05-020")
+          assert (folder/"M05-020.blend").stat().st_size > 1000
+          blob = (folder/"M05-020.glb").read_bytes()
+          magic, version, length = struct.unpack_from("<III", blob)
+          assert magic == 0x46546C67 and version == 2 and length == len(blob)
+          chunk_len, chunk_type = struct.unpack_from("<II", blob, 12)
+          assert chunk_type == 0x4E4F534A
+          doc = json.loads(blob[20:20+chunk_len])
+          assert len(doc.get("meshes", [])) >= 45
+          assert len(doc.get("materials", [])) >= 8
+          assert len(doc.get("animations", [])) >= 1
+          names = [n.get("name","") for n in doc["nodes"]]
+          assert any("MOUNT_TOP_ORIGIN" in n for n in names)
+          assert any("HINGE_L_Z" in n for n in names)
+          assert any("HINGE_R_Z" in n for n in names)
+          print("M05-020_GLB_QA_PASS", len(doc["meshes"]), len(doc["materials"]), len(doc["animations"]))
+          PY
+      - name: Upload actual binaries and QA source
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-020-navigation-lattice-GLB-BLEND-FBX-if-supported
+          path: |
+            generated/M05-020/*
+            Tools/ModelFactory/M05/M05-020/*.py
+          if-no-files-found: error
+          retention-days: 14
