@@ -1,0 +1,58 @@
+{
+  "source_checks": {
+    "MAPGEN001": {
+      "source_sha": "0024731e1de0c0814968bd91d860a6ac9bb45385",
+      "zip_sha256": "57365e4f4f6f453f0d09366a53c6927ccf87e53df54b4d12bb086b7616f699cb",
+      "zip_bytes": 83928,
+      "zip_entries": 62,
+      "sha256_entries": 61,
+      "unity_guid_count": 22,
+      "manifest_sha256": "b3ca5f075760a2707f77d79e756b14caafa7ef853247bb5a9b4921f2268f9314",
+      "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
+    },
+    "CAMERA001": {
+      "source_sha": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+      "zip_sha256": "ed562c20435a4dfdc3e2ec94cab90965c93c27b3155f52e5d4e1c247de8e5b48",
+      "zip_bytes": 29786,
+      "zip_entries": 37,
+      "sha256_entries": 36,
+      "unity_guid_count": 16,
+      "manifest_sha256": "9c22159043039ffc8894a58e595059d974535056505d605cd3af8ff219e26b4e",
+      "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
+    },
+    "BUILD001": {
+      "source_sha": "489676414a3eb45fe70124098e3778a81d0aaff2",
+      "zip_sha256": "49f26653139808f4e070125d09b8605a3a736941bc8134299bafa0804b9dfecc",
+      "zip_bytes": 31650,
+      "zip_entries": 37,
+      "sha256_entries": 36,
+      "unity_guid_count": 17,
+      "manifest_sha256": "76c8e55dbef6ba4984ce003cc13d5f5041deb3c007e10ac7413203b3d6cac1fb",
+      "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
+    },
+    "RAC001": {
+      "source_sha": "fd9a3f4dda08eaba56d9f74007bc35dc0809b67e",
+      "zip_sha256": "78ec4592ee4144504d6fb259addbba8cc5fd68685d9fc057f603d6a9cfec1a7a",
+      "zip_bytes": 30977,
+      "zip_entries": 37,
+      "sha256_entries": 36,
+      "unity_guid_count": 17,
+      "manifest_sha256": "e2bfe7fcd24dfbf7bbd39e456436ffcefad48332c06648814a2df754b3e0f576",
+      "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
+    },
+    "MAPGEN001_R341": {
+      "source_sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+      "zip_sha256": "2337cb85c090f194a7e10474e73bf3b6aa69f86eeabc74b3204a59d3a60bc623",
+      "zip_bytes": 89258,
+      "zip_entries": 63,
+      "sha256_entries": 62,
+      "unity_guid_count": 22,
+      "manifest_sha256": "28eb9239a0d17d175a37ee607164e08d179fb61a936bf7019d3d13fb0d277d1f",
+      "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
+    }
+  },
+  "g0_target": "PENDING_LIVE_ACK",
+  "g1_native_mapgen_R34": "FAIL_OLD_SHADER_GETTAG_CS1061_QA_PR236",
+  "g2": "HOLD",
+  "g1_native_mapgen_R341": "NOT_RUN"
+}

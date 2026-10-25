@@ -1,0 +1,28 @@
+{
+  "config_schema": 1,
+  "id": "MAPGEN001",
+  "kind": "unity",
+  "revision": "R3.4",
+  "source_sha": "0024731e1de0c0814968bd91d860a6ac9bb45385",
+  "zip_sha256": "57365e4f4f6f453f0d09366a53c6927ccf87e53df54b4d12bb086b7616f699cb",
+  "zip_bytes": 83928,
+  "zip_entries": 62,
+  "manifest_path": "Docs/B01/MAPGEN001/manifest.json",
+  "owned_prefixes": [
+    "Assets/B01Packages/MAPGEN001/"
+  ],
+  "owned_root_metas": [
+    "Assets/B01Packages/MAPGEN001.meta"
+  ],
+  "preserve_parent_meta": [
+    "Assets/B01Packages.meta"
+  ],
+  "required_shader": "Assets/B01Packages/MAPGEN001/Resources/MAPGEN001_BlocksURP.shader",
+  "native_g1": "NOT_RUN_R34",
+  "G2_HANDOFF": "HOLD",
+  "unity_editor_version": "6000.3.14f1",
+  "required_packages": [
+    "com.unity.test-framework",
+    "com.unity.render-pipelines.universal"
+  ]
+}

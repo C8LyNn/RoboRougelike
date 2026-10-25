@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "id": "B01-PACKAGE-AUTO-001",
+  "revision": "W12-R1",
+  "native_unity": "NOT_RUN",
+  "G2_HANDOFF": "HOLD",
+  "files": {
+    ".github/workflows/b01-package-auto-001.yml": "04403224db65ece44301cb0841cbbfb90d600d2a8b844189b9ba446bafa830a5",
+    "Tools/B01/PACKAGE-AUTO-001/.gitignore": "65c449a9610b8dd8255e76529e5ec9bd335bad7b743b30650a626c55b7b280d1",
+    "Tools/B01/PACKAGE-AUTO-001/PROMPT_FOR_CODEX.md": "2e3ed1f7a839f83e67d6d18f6d0ca123728c7efbf051fcc7d13ee2896463a739",
+    "Tools/B01/PACKAGE-AUTO-001/README.md": "4251b52339c781fe831e6dbbb04364d98cdc92aba0b53b0dac0da5abb9fd69ae",
+    "Tools/B01/PACKAGE-AUTO-001/configs/BUILD001.json": "28174e9cfefb4d4624caf36541ffea67357ad8002e2d81741accbf0d42bd9d2b",
+    "Tools/B01/PACKAGE-AUTO-001/configs/CAMERA001.json": "93bc0d4ba85500b818c6d7916fe6ff7affc984dcca540bda3c43ff538b4b40e8",
+    "Tools/B01/PACKAGE-AUTO-001/configs/LEGENDARY001.json": "f622194e687f9814ed7ab7a940964106955a1d98c48a6013b3edc9188da2a306",
+    "Tools/B01/PACKAGE-AUTO-001/configs/MAPGEN001.json": "7e6a524cceadeddc03200d1578537e122868d63bdb419b36eaf4510c87554838",
+    "Tools/B01/PACKAGE-AUTO-001/configs/MAPGEN001_R341.json": "4449a5c70152e2abeb701118517b816a97b215bda7b3372448c702a8f27365b6",
+    "Tools/B01/PACKAGE-AUTO-001/configs/RAC001.json": "e39db745d4ac5f0834e23d17fbc79d5f0d5f21df67a41ab48353291a3f8c3c89",
+    "Tools/B01/PACKAGE-AUTO-001/evidence/source-receipt.json": "a3a5788e41cd598899705a59b6979a340cfe89b57061659313cdff6fa4932b92",
+    "Tools/B01/PACKAGE-AUTO-001/evidence/test-results.json": "417ed2a3083f320938d8b92028f0a3157788f4d114cf57fa905981c4ccbf2da8",
+    "Tools/B01/PACKAGE-AUTO-001/package_auto.py": "62017c188010bec24e199121d87f52cceaa8474dc851fc1b267de5c34aca78a3",
+    "Tools/B01/PACKAGE-AUTO-001/run-package-auto.ps1": "a9f1beb191bc8d9d91a47fc809b7a5d07196b5895b55fc611d5ea5e0b0a26311",
+    "Tools/B01/PACKAGE-AUTO-001/tests/test_package_auto.py": "375a3dadf7a3e78f8f993dbdf90230d6d401ce6d9f1d8d3163a9deb3d57bf38d"
+  }
+}
