@@ -271,7 +271,7 @@ def build():
                     checks+=1
                     # Each claw must remain within its own 90-degree sector.
                     az=math.atan2(p.z,p.x)
-                    centre=-i*math.pi/2
+                    centre=i*math.pi/2
                     delta=abs(math.atan2(math.sin(az-centre),math.cos(az-centre)))
                     min_angular=min(min_angular,math.pi/4-delta)
     assert min_radial>.198,("claw enters housing radial envelope",min_radial)
