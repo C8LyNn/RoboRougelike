@@ -260,12 +260,20 @@ def export_all(out):
     bpy.context.view_layer.objects.active = PARTS[0]
     bpy.ops.export_scene.gltf(filepath=str(out/"M05-015.glb"),
         export_format="GLB",use_selection=True,export_animations=True)
-    # The distro Blender 5 factory startup does not enable FBX by default.
-    import addon_utils
-    addon_utils.enable("io_scene_fbx", default_set=False, persistent=False)
-    bpy.ops.export_scene.fbx(filepath=str(out/"M05-015.fbx"),
-        use_selection=True,add_leaf_bones=False,apply_unit_scale=True)
+    # Blender 5.0.1 distro FBX exporter has broken operator properties.
+    # GLB + BLEND are authoritative; FBX is optional on supported versions.
+    fbx_status = "BLOCKED_BLENDER_5_0_1"
+    if bpy.app.version[:3] != (5,0,1):
+        try:
+            import addon_utils
+            addon_utils.enable("io_scene_fbx", default_set=False, persistent=False)
+            bpy.ops.export_scene.fbx(filepath=str(out/"M05-015.fbx"),
+                use_selection=True,add_leaf_bones=False,apply_unit_scale=True)
+            fbx_status = "PASS"
+        except Exception as exc:
+            fbx_status = "BLOCKED_EXPORTER: " + str(exc)
     bpy.ops.wm.save_as_mainfile(filepath=str(out/"M05-015.blend"))
+    return fbx_status
 
 def main():
     global OUT
@@ -281,7 +289,7 @@ def main():
     assert before == after, ("non-repeatable build",before,after)
     result["repeat_build"] = "PASS"
     if OUT:
-        export_all(OUT)
+        result["fbx_export"] = export_all(OUT)
         (OUT/"qa.json").write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
     print("M05_015_QA " + json.dumps(result,sort_keys=True))
 
