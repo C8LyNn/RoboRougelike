@@ -1,0 +1,84 @@
+{
+  "package": "CAMERA001",
+  "source_sha": "30c0419cb9c103303a9b4e301a241a7a3684ebd9",
+  "part": 2,
+  "rows": [
+    {
+      "path": "Docs/B01/CAMERA001/CHANGELOG.md",
+      "bytes": 440,
+      "sha256": "55895cd65b91c4b18e11d2a1bfa56e25eb71afed0ebc68f25ddafd5f81eccf62",
+      "git_sha1": "d4dfdfacffed07f6e5c0d019fde1a2765ad98996",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md",
+      "bytes": 1947,
+      "sha256": "8ac6a5c5bcadc64f2cb6fd8f9501286394e6aa3c88e74eadc18046104f8f3d48",
+      "git_sha1": "2b1a2261c41ad8709c1a169e0e84fbf839a2a966",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/KNOWN_LIMITATIONS.md",
+      "bytes": 1025,
+      "sha256": "5519ba19d2e0bdf1642608fca1a9a0b54bb20dbfaea8dd3ef0c00fedbd92c0a8",
+      "git_sha1": "e99c29b8905a0c62260017b6810d0921ab1d02a5",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md",
+      "bytes": 3373,
+      "sha256": "7604275a854416b01bf7b7cfaf8bc6cb2ae50bb4af29694a2e851422be0b3ace",
+      "git_sha1": "ef232ede0bfaa7f82d5e78055b6200f697c6a543",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/README.md",
+      "bytes": 667,
+      "sha256": "5ca6c2e1cca2699d8cdffa37b3eea1cfc8f173674de81bbd399603ff1409fa14",
+      "git_sha1": "35defc7776c131872bf066138876b345e56be260",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/RECEIVER_HANDOFF.md",
+      "bytes": 707,
+      "sha256": "9793d296f293dfa12f01187a6c37096b0af0bd560e988c706077194b83702d3c",
+      "git_sha1": "ef2401817c41187ba0b3a7fc9a794f18f9395987",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_EVIDENCE.md",
+      "bytes": 1378,
+      "sha256": "0b8a6b457c95dbff36ff441f905e0f91e24be6e65f31ff2b99edc46a63f4a699",
+      "git_sha1": "fd6a8b9af549816a4c4f694029f75cee1f732d3e",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_PLAN.md",
+      "bytes": 1149,
+      "sha256": "0c31b827a2dbda4cbca912ed72d002140d1f6af2bc74080b5842e74bb2d509f6",
+      "git_sha1": "ad2a791e752e788f65d7fa07ac984e6e43a4d693",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/W9_SOURCE_REPAIR_R11.md",
+      "bytes": 1371,
+      "sha256": "fd030d5dc4386aa601f32083cfb4707cadf8f9e373b44455e150cf0eefe76482",
+      "git_sha1": "7533af8905e28833bf10ea5808b98c21a616e9cd",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/manifest.json",
+      "bytes": 8164,
+      "sha256": "feea174a4dc2f43adc09b4fdf53148577050cd35ed413cad7b9d5ca5edd72d5b",
+      "git_sha1": "988eecfbf96971bca601544cda0bba372ff4061a",
+      "guid": null
+    },
+    {
+      "path": "Tools/B01/CAMERA001/geometry_probe.js",
+      "bytes": 2907,
+      "sha256": "77427601467da9934addeed5d18414b13e46ddf7031ea51e7c5fe103e93192d8",
+      "git_sha1": "2483516fc934427ec698d2b1fbf96c6420e80dbb",
+      "guid": null
+    }
+  ]
+}
