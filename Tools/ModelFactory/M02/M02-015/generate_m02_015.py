@@ -339,10 +339,22 @@ def build_scene(bpy):
         if (FRAMES-1)%3:
             root.rotation_euler=(0,4*math.pi if name=="INPUT" else RATIO*4*math.pi,0)
             root.keyframe_insert(data_path="rotation_euler",frame=FRAMES)
-        if root.animation_data and root.animation_data.action:
-            for fcurve in root.animation_data.action.fcurves:
+        # Blender 5 uses layered Action channels instead of Action.fcurves.
+        # Keyframe samples every 3 frames preserve continuous revolutions.
+        action = root.animation_data.action if root.animation_data else None
+        if action and hasattr(action, "fcurves"):
+            for fcurve in action.fcurves:
                 for key in fcurve.keyframe_points:
-                    key.interpolation="LINEAR"
+                    key.interpolation = "LINEAR"
+        elif action and hasattr(action, "layers"):
+            for layer in action.layers:
+                for strip in layer.strips:
+                    for slot in action.slots:
+                        bag = strip.channelbag(slot)
+                        if bag is not None:
+                            for fcurve in bag.fcurves:
+                                for key in fcurve.keyframe_points:
+                                    key.interpolation = "LINEAR"
 
     # Unobstructed stationary service and safety details.
     block(bpy,"service_tag_plate",(FRAME_MAX_X,.14,.355),
