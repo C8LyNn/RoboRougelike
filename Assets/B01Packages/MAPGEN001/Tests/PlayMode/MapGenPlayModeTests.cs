@@ -34,7 +34,7 @@ namespace B01.MAPGEN001.Tests
                     Assert.AreEqual("B01/MAPGEN001/BlocksURP", shader,
                         "Unexpected non-retained MAPGEN shader");
                     Assert.AreEqual("UniversalPipeline",
-                        renderer.sharedMaterial.shader.GetTag("RenderPipeline", false),
+                        renderer.sharedMaterial.GetTag("RenderPipeline", false),
                         "Shader lacks URP pipeline tag");
                     Assert.AreNotEqual("Hidden/InternalErrorShader", shader);
                 }
