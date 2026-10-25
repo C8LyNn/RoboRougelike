@@ -1,0 +1,98 @@
+{
+  "package": "BUILD001",
+  "source_sha": "0788d0a8f4a40535e0c84e9ea9d7f2a6b5e8b267",
+  "part": 1,
+  "rows": [
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs.meta",
+      "bytes": 240,
+      "sha256": "c8d7a0bc123746a467ef40cbc9ee55662298f963d42c1a772d69a37686c099d9",
+      "git_sha1": "c9d21f223d54698dac10fec56ee27241f3ce2917",
+      "guid": "b01d0000000000000000000000000008"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs",
+      "bytes": 2729,
+      "sha256": "a3383b864c65635911c8662484b8ae65fbad8d86304e184a5941e0e370036a59",
+      "git_sha1": "92afc425ae11b24a1ff70267aec34eb483802a1f",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs.meta",
+      "bytes": 240,
+      "sha256": "63a0d7ac3c8ec0ed38b4b478b202f8fd9f50597875c4742480864501b21c3fb5",
+      "git_sha1": "89f1b6ed2cbc778098c001c546ca7f27df1c3629",
+      "guid": "b01d000000000000000000000000000b"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests.meta",
+      "bytes": 169,
+      "sha256": "c2e5a06f6da52f3005a65995c93f02e297ed511d28612a8ff9cb98d2cfddcd3d",
+      "git_sha1": "dfaead4b1811ad7318cd00181be691e45b7e4c47",
+      "guid": "b01d0000000000000000000000000005"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode.meta",
+      "bytes": 169,
+      "sha256": "02a875154c301b5017ea77bf7338c90d92e56e96d5dc83320c55ddd03d9f1844",
+      "git_sha1": "17046385b4df059466f326c6ef1dce3301e6c547",
+      "guid": "b01d0000000000000000000000000006"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef",
+      "bytes": 260,
+      "sha256": "52241836f31149296796d935ba625692ff8539a0dc0217fcfedb9d086d13f905",
+      "git_sha1": "218943679274afe75d67441449e49e1b60b174e5",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef.meta",
+      "bytes": 163,
+      "sha256": "516de5f08d9932a1810be7120cd371d6697289490bd9fd806daf20c702b4502a",
+      "git_sha1": "ae071b9f5d2a3d014581ba3c8ca41d8d69a895b8",
+      "guid": "b01d000000000000000000000000000f"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs",
+      "bytes": 9254,
+      "sha256": "89e57990f043369489d120ec300470f372789713e1aa5cb3ca449afe067521f2",
+      "git_sha1": "e09711df15891199d891068c04117fccd5719d9a",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs.meta",
+      "bytes": 240,
+      "sha256": "f94398a6cb6a37517df53d38bf11ba0d2ab3dac02413fa46c0d38bad26956bc7",
+      "git_sha1": "6ee9063b6a497d11a4fb75736038226145bc2469",
+      "guid": "b01d000000000000000000000000000c"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode.meta",
+      "bytes": 169,
+      "sha256": "87d8ffb98edb67dd651cdcea21184e9d251950d2d1d4c758af19d341a8fa06e0",
+      "git_sha1": "67be5775f0216c7a46ccc14c67ccef6c0bf1a463",
+      "guid": "b01d0000000000000000000000000007"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef",
+      "bytes": 244,
+      "sha256": "ddc2c9599957a5c4e03402a64b6765bf5f6a46588adb284e5aeabcdb793ac0b8",
+      "git_sha1": "09dbb18d4077cd275f8d44812d6bbdb49785e89d",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef.meta",
+      "bytes": 163,
+      "sha256": "07e9ddfeee7b76aadb9f898efc8937ccb90c95ce387f3a2d5c3feb1bf7950715",
+      "git_sha1": "301ec235121b28d544ed7c2edfae1fab3de9c975",
+      "guid": "b01d0000000000000000000000000010"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs",
+      "bytes": 3505,
+      "sha256": "d52a0d575583b650313042df71e2a90d0c0e4f1094fa0cf184865d258ca0f370",
+      "git_sha1": "5ce9d14809baed0cedaf86d6423e27fedd75e6f2",
+      "guid": null
+    }
+  ]
+}
