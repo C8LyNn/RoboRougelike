@@ -16,7 +16,7 @@ NAME = "M03-021"
 COLLECTION = "MODEL_FACTORY_M03_021"
 R = 0.62
 Y_OFF = 0.19
-BOTTOM = 0.105
+BOTTOM = 0.078
 SHOULDER = 0.92
 TUBE_R = 0.044
 TUBE_BORE = 0.031
@@ -174,8 +174,7 @@ def horseshoe(y):
         theta=math.pi*(1-i/48)
         pts.append((R*math.cos(theta),y,
                     SHOULDER+R*math.sin(theta)))
-    pts += [(R,y,1.12),(R,y,0.84),(R,y,0.56),
-            (R,y,0.28),(R,y,BOTTOM)]
+    pts += [(R,y,0.65),(R,y,0.35),(R,y,BOTTOM)]
     return pts
 
 
@@ -223,15 +222,15 @@ def build():
             x2=x+(0.15 if x<0 else -0.15)
             segment("Brace_"+side+face,(x2,y,0.115),
                     (x,y,0.57),0.022,0.014,mats["graphite"],coll,root)
-            cube("FootPlate_"+side+face,(x,y,0.044),
+            cube("FootPlate_"+side+face,(x,y,0.034),
                  (0.22,0.18,0.068),mats["graphite"],coll,root,0.012)
-            cube("FootRubber_"+side+face,(x,y,0.084),
-                 (0.16,0.13,0.013),mats["rubber"],coll,root,0.004)
+            cube("FootRubber_"+side+face,(x,y,0.0765),
+                 (0.16,0.13,0.017),mats["rubber"],coll,root,0.004)
             swept_tube("Clamp_"+side+face,
-                       [(x,y,0.135),(x,y,0.178)],
+                       [(x,y,0.108),(x,y,0.151)],
                        0.053,0.0445,mats["copper"],coll,root)
             cube("StatusMarker_"+side+face,
-                 (x+(-0.078 if x<0 else 0.078),y,0.082),
+                 (x+(-0.078 if x<0 else 0.078),y,0.071),
                  (0.031,0.074,0.009),mats["amber"],coll,root,0.003)
     for i,(x,y,z) in enumerate(SNAPS):
         snap=bpy.data.objects.new(NAME+"_SNAP_%02d"%(i+1),None)
