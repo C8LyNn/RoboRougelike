@@ -60,12 +60,12 @@ C:/Users/kubap/Desktop/Prototypy/RoboRougelike-RAC001-Validation
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
     "memorysetup-temp-allocator-size-cloud-worker=32768"
-Player connection [44936]  Target information:
+[Player connection identifier omitted from public QA log]
 
-Player connection [44936]  * "[IP] 192.168.1.3 [Port] 55504 [Flags] 2 [Guid] 1799667599 [EditorId] 1799667599 [Version] 1048832 [Id] WindowsEditor(7,C8LyNn) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+[Player connection identifier omitted from public QA log]
 
-Player connection [44936] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [44936] Host joined alternative multi-casting on [225.0.0.222:34997]...
+[Player connection identifier omitted from public QA log]
+[Player connection identifier omitted from public QA log]
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
