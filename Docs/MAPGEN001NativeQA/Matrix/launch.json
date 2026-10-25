@@ -1,0 +1,9 @@
+{
+  "producerSource": "003bced54480d509ffc0d49d26daf87160a8d609",
+  "startedUtc": "2026-10-25T10:14:55.6117621Z",
+  "assemblySha256": "9CCACA5F092B988504E981A5C7F9E740983730DF7D725386A573D1442A89CE8E",
+  "pid": 47948,
+  "caseLimit": 99,
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-MAPGEN-R32-QA\\Builds\\MAPGEN-R32-QA\\MapgenNativeQA.exe",
+  "source": "ebcdf7252b24a00add76e61796c6593191389292"
+}

@@ -1,0 +1,196 @@
+{
+    "source": "003bced54480d509ffc0d49d26daf87160a8d609",
+    "vehicleSource": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+    "method": "Supplemental real R3/R6 optional ramp probe, API controlled. Destination is RAMP EXIT, not complete course finish. Test-only URP material override does not change colliders.",
+    "status": "FAIL",
+    "startedUtc": "2026-10-25T10:26:59.9050410Z",
+    "finishedUtc": "2026-10-25T10:27:07.3536208Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "renderPipeline": "UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset",
+    "diagnosticMaterialOverride": true,
+    "rampProbe": true,
+    "trials": [
+        {
+            "id": "RAMP_PROBE-ObstacleCourse-Light-7",
+            "group": "RAMP_PROBE",
+            "recipe": "ObstacleCourse",
+            "vehicle": "Light",
+            "status": "PASS",
+            "detail": "Optional ramp exit reached using R6 force drive",
+            "geometryHash": "fb953ed6e59966c7a6d5dd91fc27b81f11813eca776ec0063d3360c1083a513c",
+            "sourceShader": "Hidden/InternalErrorShader",
+            "destinationKind": "RampExit",
+            "seed": 7,
+            "segments": 4,
+            "density": 50,
+            "startingWheels": 4,
+            "remainingWheels": 4,
+            "partsBefore": 20,
+            "partsAfter": 20,
+            "goal": 1,
+            "totalGoals": 1,
+            "samples": 148,
+            "groundedSamples": 139,
+            "minimumContacts": 0,
+            "maximumContacts": 4,
+            "seamTransitions": 1,
+            "nonFloorCollisionEvents": 8,
+            "rampCollisionEvents": 8,
+            "recoveryAttempts": 0,
+            "difficulty": 0.5,
+            "laneWidth": 16.0,
+            "mass": 192.0,
+            "distance": 10.564053535461426,
+            "netTravel": 9.769505500793457,
+            "seconds": 4.223320960998535,
+            "maxSpeed": 5.692886829376221,
+            "maxTilt": 16.297075271606447,
+            "longestNoContact": 0.15999984741210938,
+            "longestStall": 1.2833218574523926,
+            "centerOfMass": {
+                "x": -9.934107758624578e-9,
+                "y": 0.06874999403953552,
+                "z": 0.0
+            },
+            "colliderEnvelope": {
+                "x": 2.9800100326538088,
+                "y": 1.564000129699707,
+                "z": 2.720001220703125
+            },
+            "spawn": {
+                "x": 4.899999141693115,
+                "y": 1.249999761581421,
+                "z": 29.100000381469728
+            },
+            "settledSpawn": {
+                "x": 4.89996337890625,
+                "y": 0.6500193476676941,
+                "z": 29.09708595275879
+            },
+            "lastPosition": {
+                "x": 4.788885116577148,
+                "y": 1.497660517692566,
+                "z": 19.257949829101564
+            },
+            "nominalWidth": 2.0999999046325685,
+            "nominalLength": 3.200000047683716,
+            "usedWidth": 2.9800100326538088,
+            "usedLength": 3.200000047683716,
+            "spawnDrop": 0.5999804139137268,
+            "width": 1280,
+            "height": 720,
+            "reachedFinish": false,
+            "probeEndReached": true,
+            "fallen": false,
+            "spawnBlocked": false,
+            "flipped": false,
+            "renderOverride": true,
+            "destination": {
+                "x": 4.900000095367432,
+                "y": 1.25,
+                "z": 16.899999618530275
+            },
+            "selectedRampWidth": 3.0,
+            "selectedRampPitch": 6.0,
+            "collisions": [
+                "Ramp_6"
+            ],
+            "screenshots": [
+                "RAMP_PROBE-ObstacleCourse-Light-7-spawn.png",
+                "RAMP_PROBE-ObstacleCourse-Light-7-driving.png",
+                "RAMP_PROBE-ObstacleCourse-Light-7-end.png"
+            ]
+        },
+        {
+            "id": "RAMP_PROBE-ObstacleCourse-Heavy-7",
+            "group": "RAMP_PROBE",
+            "recipe": "ObstacleCourse",
+            "vehicle": "Heavy",
+            "status": "FAIL_PROBE_SPAWN",
+            "detail": "Real collider overlap with side boundary at optional ramp approach",
+            "geometryHash": "fb953ed6e59966c7a6d5dd91fc27b81f11813eca776ec0063d3360c1083a513c",
+            "sourceShader": "Hidden/InternalErrorShader",
+            "destinationKind": "RampExit",
+            "seed": 7,
+            "segments": 4,
+            "density": 50,
+            "startingWheels": 12,
+            "remainingWheels": 12,
+            "partsBefore": 139,
+            "partsAfter": 139,
+            "goal": 0,
+            "totalGoals": 1,
+            "samples": 0,
+            "groundedSamples": 0,
+            "minimumContacts": 999,
+            "maximumContacts": 0,
+            "seamTransitions": 0,
+            "nonFloorCollisionEvents": 103,
+            "rampCollisionEvents": 0,
+            "recoveryAttempts": 0,
+            "difficulty": 0.5,
+            "laneWidth": 16.0,
+            "mass": 1176.0,
+            "distance": 0.0,
+            "netTravel": 0.0,
+            "seconds": 1.2241973876953126,
+            "maxSpeed": 0.0,
+            "maxTilt": 0.0,
+            "longestNoContact": 0.0,
+            "longestStall": 0.0,
+            "centerOfMass": {
+                "x": -1.9462740752373976e-8,
+                "y": 0.25816312432289126,
+                "z": -0.033673301339149478
+            },
+            "colliderEnvelope": {
+                "x": 5.180010795593262,
+                "y": 2.1140005588531496,
+                "z": 4.9199981689453129
+            },
+            "spawn": {
+                "x": 4.899993419647217,
+                "y": 1.25,
+                "z": 30.399995803833009
+            },
+            "settledSpawn": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "lastPosition": {
+                "x": 5.232440948486328,
+                "y": 1.6358546018600464,
+                "z": 30.686180114746095
+            },
+            "nominalWidth": 4.5,
+            "nominalLength": 5.800000190734863,
+            "usedWidth": 5.180010795593262,
+            "usedLength": 5.800000190734863,
+            "spawnDrop": 0.0,
+            "width": 0,
+            "height": 0,
+            "reachedFinish": false,
+            "probeEndReached": false,
+            "fallen": false,
+            "spawnBlocked": true,
+            "flipped": false,
+            "renderOverride": true,
+            "destination": {
+                "x": 4.900000095367432,
+                "y": 1.25,
+                "z": 15.600000381469727
+            },
+            "selectedRampWidth": 3.0,
+            "selectedRampPitch": 6.0,
+            "collisions": [
+                "Boundary_5",
+                "Boundary_9"
+            ],
+            "screenshots": [
+                "RAMP_PROBE-ObstacleCourse-Heavy-7-end.png"
+            ]
+        }
+    ],
+    "errors": []
+}
