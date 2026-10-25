@@ -1,3 +1,12 @@
+## W12 R3.4 SOURCE-CHANGE-SPECIFIC TEST EXTENSION
+Read TEST_EVIDENCE_R34.md for actual prior native R3.3 FAIL, and RECEIVER_HANDOFF_R34.md.
+(1) Source static: `python Tools/B01/MAPGEN001/check_w12_contract.py` checks 12 distinct trial declarations, Rigidbody AddForce/torque preserved, controlled low-friction test-only contact, flat-floor motor discriminator, package-owned Resources URP shader + paired .meta. No unity compile credited.
+(2) Headless real C# planner+validator with surrogate UnityEngine vectors remains 1015 cases, geometry SHA unchanged; verify no MapGenPlanner/RouteValidator changes.
+(3) Native Unity6000.3.14f1 PlayMode: verify retained package shader and URP tag, flat control >4m real AddForce, all12 cube independent reach checkpoints; trace floor-ray samples, max speed, heading, best goal distance and actual mass/force. Do not increase 900 steps or teleport.
+(4) Bare Player both recipes independently without any scene shader material references / override and no change to Always Included shaders; verify render and screenshot 720/1080, old failure `MAPGEN001_URP_SHADER_NOT_AVAILABLE` absent, shader actually included, three regenerate/clear cycles and material cache cleanup.
+(5) Independent 12 PR125 R6WheelContacts+OBJ210 functioning-wheel Light/Heavy physical trials; cube not a substitute. Actual source SHA, target SHA, raw Editor logs, process exit, NUnit XML, screenshots and per-case verdicts; FAIL triggers another source rework, B01-60 G1+G2 HOLD until green.
+
+---
 # R1 test and acceptance matrix
 
 **Unity version:** 6000.3.14f1, URP. Open package through the repository's Unity project; use Unity Test Runner filters `B01.MAPGEN001.EditModeTests` and `B01.MAPGEN001.PlayModeTests`. See repository `Tools/CI/Run-Unity.ps1` for local Unity execution wrapper. Native logs, XML, command, exit code and commit SHA are mandatory. **No current author claims of passing Unity tests**.
