@@ -230,113 +230,113 @@
       "id": "M03-001",
       "original_pr": 39,
       "fix_pr": 57,
-      "original_sha": null,
-      "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "original_sha": "bc1fd37c3a1692f92de0c5604634f3bf8c6a2d9c",
+      "fix_sha": "60982dfaa4376009c18c023f5c7e7bae3c3e7a12",
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-002",
       "original_pr": 44,
       "fix_pr": 59,
-      "original_sha": null,
-      "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "original_sha": "702bb79f96eb4c2e28f9872b5d13135e662ea125",
+      "fix_sha": "853b2d54b570d6798d518ae2389f94307363b920",
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-003",
       "original_pr": 51,
       "fix_pr": 92,
-      "original_sha": null,
-      "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "original_sha": "941ccac5d8faa9c02f0807ee53ed6400204b3df3",
+      "fix_sha": "0f77b202012992c31a81ed614b959993c77e8a45",
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-004",
       "original_pr": 61,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "34616380aabcc34fb8b22b21ca52ef4e713fe266",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-005",
       "original_pr": 75,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "d82d84f182ce1fc69c3317ea42790458a8f9f1e8",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-006",
       "original_pr": 83,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "05fbd90347268895146ce284acd2a65c2db786a5",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-007",
       "original_pr": 86,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "73a4fbda76bc79075039d239c6f913fddf9a91bf",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-008",
       "original_pr": 98,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "4b0faf16b580f6fc921a8570020d7843f30d0e74",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-009",
       "original_pr": 106,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "0ade9ee364a48ad0ecb249b4eb1f99cf288419e0",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-010",
       "original_pr": 110,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "5b0278f45d0e066bdc758d74d1d4a06ae45a3bb6",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-011",
       "original_pr": 119,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "f4d639e404c24cec0b7cc7bf3d5b7ab27bcda6b9",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-012",
       "original_pr": 124,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "c3d3db02ced1f0a1ea7a9c164f784ff18323e515",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-013",
       "original_pr": 129,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "8f0e96e218f1f6b8b942b366b67deb654f47a15c",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M03-014",
       "original_pr": 151,
       "fix_pr": null,
-      "original_sha": null,
+      "original_sha": "a66449ee06022d452a5ced52deae5166bc763f31",
       "fix_sha": null,
-      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+      "inspection_status": "PR_HEAD_PINNED_BINARY_NOT_AUDITED"
     },
     {
       "id": "M04-001",
