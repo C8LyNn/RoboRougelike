@@ -1,0 +1,281 @@
+{
+  "schema": "b01-w9-independent-byte-manifest-v1",
+  "package_id": "RAC001",
+  "original_native_red_source_sha": "6c1aa7c2351a29695e4288dddad2565cdec3682a",
+  "first_corrected_source_sha": "129e867f25805075c48f2be52ec1cc5336b4075c",
+  "verified_source_sha": "fd9a3f4dda08eaba56d9f74007bc35dc0809b67e",
+  "source_url": "https://github.com/C8LyNn/RoboRougelike/commit/fd9a3f4dda08eaba56d9f74007bc35dc0809b67e",
+  "method": "Immutable GitHub file base64 bytes independently SHA256 hashed; Git tree SHA1 and byte length crosschecked",
+  "file_count": 37,
+  "manifest_producer_entries": 36,
+  "total_bytes": 58146,
+  "meta_count": 17,
+  "unique_guids": 17,
+  "static_manifest_validation": "PASS",
+  "shared_parent_meta": "Assets/RoboRougelikeMechanics.meta matches exactly target published OBJ210 blob; PRESERVE, do not overwrite",
+  "producer_sha256_manifest_fields": "NULL; this independent sidecar covers full source",
+  "target_live_ack": "PENDING",
+  "G0_SOURCE": "STATIC_COMPLETE",
+  "G0_TARGET": "PENDING_LIVE_TARGET_ACK",
+  "G1_NATIVE": "BLOCKED_NOT_RUN",
+  "G2_HANDOFF": "HOLD",
+  "zip_sha256": null,
+  "files": [
+    {
+      "path": "Assets/RoboRougelikeMechanics.meta",
+      "bytes": 172,
+      "sha256": "46dc35fdf74e7dc208461adcdb443b6e68ff275224efa82e753c435a48040279",
+      "git_sha1": "6b6fc339c5fb6cf034d9885a555eb927390515fd",
+      "guid": "dfc91bc2496752b41b301b7920ceddd5"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta",
+      "bytes": 169,
+      "sha256": "8c402948e34b233df0867d0fa9693b30cfef83935f5feaeda8083c4750eb5267",
+      "git_sha1": "1787f8d3c2c1af9910c63afdfb6b2438b39336d2",
+      "guid": "2aa1d728fa824957b24a2f2509100002"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs",
+      "bytes": 3587,
+      "sha256": "a3d3e5cdf4fc9fd9d122bb77706d3bc79d8725f39856350aae1f5196da895049",
+      "git_sha1": "4080a61306bdf519b4aa185008e60d55f4e371bc",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs.meta",
+      "bytes": 240,
+      "sha256": "064163b2609b21fe08030f77458a9a753e631eae28bc74c569a830193d788e25",
+      "git_sha1": "8bef1186fd26ace7f9eb58f3db4248899309cb8f",
+      "guid": "8aa0cbe1873241819520410900100002"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs",
+      "bytes": 3619,
+      "sha256": "8797dd9f7f5bd231de8f85f61aba5355de2f2e90611255ca02f60baf99cf5d13",
+      "git_sha1": "857edad1323788fdb33df12f9c450c3e6a790844",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs.meta",
+      "bytes": 241,
+      "sha256": "c160f9cbbcd4258dece1c05c219a6806e075e1d80e88e49250334ae1606360a5",
+      "git_sha1": "5208ee1025706124d0f6e4eac3417f6888c347f6",
+      "guid": "9f8a0101c0714a82a7d004a15b991002"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceState.cs",
+      "bytes": 5095,
+      "sha256": "b517bdcf50a7fdc78efdbd46ffb2938e8d50c080c23e9feed1a7b81bfa34d442",
+      "git_sha1": "24c79723cbd45dd11ef29550ac6383d9e302b7b1",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceState.cs.meta",
+      "bytes": 241,
+      "sha256": "576a2e3c0d71b92366f81435d2d09ce4b22af1444e8b5bcd6fcf2989b886c8d0",
+      "git_sha1": "aeffd39a48e542c625563190eccf86d398e834e8",
+      "guid": "9f8a0101c0714a82a7d004a15b991001"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor.meta",
+      "bytes": 170,
+      "sha256": "e0041ede1aeef6c6eb8ce8982c3c0d776863c37f66cb7fe9591383d7c3477920",
+      "git_sha1": "ee4d5d34d70e2b9048b6d4e3a7dc5623ef869f7c",
+      "guid": "9f8a0101c0714a82a7d004a15b991004"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs",
+      "bytes": 3301,
+      "sha256": "a4b82d5de6a1716725f159ba6ef3e297073444147310320f1696e0e84c65c803",
+      "git_sha1": "59c65e81c58d580ea7fad9e807b66835fdadb988",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs.meta",
+      "bytes": 241,
+      "sha256": "042351655cd7e45855043518a132c834687f7cd3cef588c162059eba8ec74ac4",
+      "git_sha1": "5aab455fc890c131cb2c813d564a05152972dc5d",
+      "guid": "9f8a0101c0714a82a7d004a15b991005"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RoboRougelike.RAC001.Editor.asmdef",
+      "bytes": 421,
+      "sha256": "31c1c8e61bbcd17347dd9e73df175391671cb1348d63c1fcb800931198966f99",
+      "git_sha1": "17194849df377d21532e57a7c00b4f7f4859000c",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RoboRougelike.RAC001.Editor.asmdef.meta",
+      "bytes": 153,
+      "sha256": "16beb9db978c8109bcd1c90b3ee9ca2391b179dfcdf67323c2ff7194245fae24",
+      "git_sha1": "32d0bf32fb39024af1170c4d2b53c8029ff74929",
+      "guid": "9f8a0101c0714a82a7d004a15b991006"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/RoboRougelike.RAC001.asmdef",
+      "bytes": 360,
+      "sha256": "0d9af89e387e8fbbd0b6e64481fbc7b47150dc5c28a41ccb4e560e742dd5cf24",
+      "git_sha1": "5876cc23db0f271e6c023e1186ba3abd11e8cb41",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/RoboRougelike.RAC001.asmdef.meta",
+      "bytes": 153,
+      "sha256": "cb2c382b6f53d582fcc81c6ab74aed697276b3f680fda0c03d94c55d5b9063a9",
+      "git_sha1": "c38a5c5ca01b16e67bf86131dc889572908c5e3a",
+      "guid": "9f8a0101c0714a82a7d004a15b991003"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests.meta",
+      "bytes": 170,
+      "sha256": "8708e6a52a99c5221527ad571bd5eab92718b57c6d9398defc061543113291c0",
+      "git_sha1": "3940816e05a9bcad19e4801a98a91412448bfd9b",
+      "guid": "9f8a0101c0714a82a7d004a15b991007"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode.meta",
+      "bytes": 170,
+      "sha256": "943ae7660e1d11af903c4097a4b103502e27f57b7f3f9e01312fc20bf73ff8b9",
+      "git_sha1": "ecf09eed89dd7d0758aed7b56a33972a6a25739e",
+      "guid": "9f8a0101c0714a82a7d004a15b991008"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/CheckpointRaceStateTests.cs",
+      "bytes": 5699,
+      "sha256": "b63c88c870dcb4369e573771490ad287c54074d098773850007d3607855d8255",
+      "git_sha1": "c5c516139a2cbc50b2c366e6a72673341e50c5e8",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/CheckpointRaceStateTests.cs.meta",
+      "bytes": 241,
+      "sha256": "2eb65d8ead4c731a9f2a7db617ab1381f9828d92fcc5c7e31295629e04117bb4",
+      "git_sha1": "43dd7f41b05a4273840d4a0e6304ab574936c17e",
+      "guid": "9f8a0101c0714a82a7d004a15b991009"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/RoboRougelike.RAC001.EditModeTests.asmdef",
+      "bytes": 541,
+      "sha256": "0921ff0039698704632e86e87b1fb72e47e453484165134ecec8c6ebd4c13294",
+      "git_sha1": "15199de315c39c7d7eb323afe26ada6feeca2de2",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/RoboRougelike.RAC001.EditModeTests.asmdef.meta",
+      "bytes": 153,
+      "sha256": "b81b221f4c277e1acf5d231c1a5942f14971c7b86624fee376aa7d0edfa8a488",
+      "git_sha1": "97a9fdefd04a732b898c943f56f403a6f7cf3f2f",
+      "guid": "9f8a0101c0714a82a7d004a15b99100a"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode.meta",
+      "bytes": 170,
+      "sha256": "98a1a3b84ef2be0b23e573e3b5d3c2add1aafbafa2f814991250bb6ec8fda049",
+      "git_sha1": "5e0d8a4e9563f4637d6df42bc0fffea0e796e29e",
+      "guid": "9f8a0101c0714a82a7d004a15b99100b"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/CheckpointRacePlayModeTests.cs",
+      "bytes": 3452,
+      "sha256": "598bb36c5af722b30f2a37041f16f51f52be9270f5e217d59bf2776b68d8f99c",
+      "git_sha1": "0ec7dac2fe723d39c0892a62f6154c93b3c26f28",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/CheckpointRacePlayModeTests.cs.meta",
+      "bytes": 241,
+      "sha256": "6c83d69a453f4ee6080b836663f63e2ab2bd3cb10441b7ebc43fe47b0424a02d",
+      "git_sha1": "6f753a3a74b71696e08c8eba5fbb04f9a0aad2c0",
+      "guid": "9f8a0101c0714a82a7d004a15b99100c"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs",
+      "bytes": 2594,
+      "sha256": "8850a6e4c87f6b134759140af047d043343f0530ffefb824618b9e3799174832",
+      "git_sha1": "301bbe10027f7586a273e2e12fde734490dab720",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs.meta",
+      "bytes": 240,
+      "sha256": "81a9c22235b9a718fade4afe723cf8dd4b08e05b9a62e0d9dedb494370a4c262",
+      "git_sha1": "9f8d91f8c07299458f4ee76ee853e8c03e88ed2c",
+      "guid": "b01e0000000000000000000000000001"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RoboRougelike.RAC001.PlayModeTests.asmdef",
+      "bytes": 525,
+      "sha256": "301e17577adf3974c3fb20e329fc205a93a62194a10d557b6f15bf27e93bfcd9",
+      "git_sha1": "710e7abec18bf05ddf16d59b97c6132e724311a1",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RoboRougelike.RAC001.PlayModeTests.asmdef.meta",
+      "bytes": 153,
+      "sha256": "03e4bfc7ff9c2c6abcb03165ff4fc09b8e3c943d22915ef4c6816cf3cff4ef1c",
+      "git_sha1": "e490bcbe3a835a658b20e6bd4a09ab3405484c8b",
+      "guid": "9f8a0101c0714a82a7d004a15b99100d"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2423,
+      "sha256": "a60ecacac379d44c0d63045081e85f3234fea8cf06327db2627ef4fb5a2e620c",
+      "git_sha1": "ad4df87dab0c476d412e96177533246251b87da7"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/manifest.r3.json",
+      "bytes": 8730,
+      "sha256": "e2bfe7fcd24dfbf7bbd39e456436ffcefad48332c06648814a2df754b3e0f576",
+      "git_sha1": "27dbccac24d710d7afcd6670f7c1fb0e1b726cdc"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md",
+      "bytes": 2622,
+      "sha256": "c91086c9b709bed501fbd1b27e93b5ca8762e59f5397aa649f837c38775a55ec",
+      "git_sha1": "fc5163d418a4d869b5eaefa6286152cb9e2a6a4c"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/QA_R1.md",
+      "bytes": 2529,
+      "sha256": "f54e9e049eb452be9c078a8f5675e8bda6c0cab1dcb1597af204a8762986659b",
+      "git_sha1": "b53a7ad596c4e5537edb22a23918751cda1b3652",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/QA_R2.md",
+      "bytes": 2246,
+      "sha256": "68a64c2603bb525637e062fd13cbeffe3534a5c04d9e0d08495829ee17d80ccc",
+      "git_sha1": "098eed58f55c7697e3b8ef0477ea23e12389a0e9",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/QA_R3.md",
+      "bytes": 1491,
+      "sha256": "8a755c8d7daed9c244258545db32d797998b17e15263fdd128b8a9658343c3e0",
+      "git_sha1": "79f62def7c7607048d4758a061384565a1661aba",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/README.md",
+      "bytes": 3415,
+      "sha256": "184398a3b8f83c50bce74f3675c45257d2812d064c1e4bb37a4b5e3322fc0ec3",
+      "git_sha1": "375505112117459afd1271e99fc23dc97c1e415b",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/RECEIVER_HANDOFF.md",
+      "bytes": 726,
+      "sha256": "791bd441cdfbced53d0dae724b92e1c0893e78a132ca2c0c2fa3b24609ae5e76",
+      "git_sha1": "f26bd3d0074e4499b01b1a1e944f96efe6ac0e8c",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/W9_SOURCE_REPAIR_R31.md",
+      "bytes": 1452,
+      "sha256": "461653830e038784456651389f0a93d329d8292501173abe46b1ad50142bdf4a",
+      "git_sha1": "9ed8154dfb18cccec4bb79c4e6c824001edc36ad",
+      "guid": null
+    }
+  ]
+}
