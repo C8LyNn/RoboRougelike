@@ -1,0 +1,43 @@
+{
+  "asset_id": "M01-024",
+  "model": "Mechaniczny harpun kotwiczący",
+  "mount": "MOUNT_FRONT_SOCKET (0,0,0), Y-up, +Z-forward, 1 unit = 1 m",
+  "motion": "HARPOON_TIP_EXTEND_Z at (0,0,0); linear +Z stroke 0.24m",
+  "gameplay": "NOT IMPLEMENTED",
+  "parts": 51,
+  "vertices": 3322,
+  "triangles": 6508,
+  "materials": 7,
+  "watertight_oriented_positive_volume": "PASS",
+  "sampled_animation_frames": 73,
+  "aabb_pair_checks": 32120,
+  "moving_parts": 11,
+  "moving_vs_fixed_collisions": 0,
+  "minimum_separation_aabb_m": 0.065,
+  "harpoon_extension_m": 0.24,
+  "clearance": "PASS (sampled conservative AABB; not continuous triangle CCD)",
+  "blender_export": "PASS (files written; Unity visual inspection NOT RUN)",
+  "unity_import": "NOT RUN",
+  "unity_editmode": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "visual_inspection": "NOT RUN",
+  "static_files": [
+    "M01-024_mechanical_anchor_harpoon.obj",
+    "M01-024_mechanical_anchor_harpoon.mtl"
+  ],
+  "backend": "blender-bpy",
+  "blender_version": "4.0.2",
+  "animated_files": [
+    "M01-024_mechanical_anchor_harpoon.fbx",
+    "M01-024_mechanical_anchor_harpoon.glb",
+    "M01-024_mechanical_anchor_harpoon.blend"
+  ],
+  "animation_node": "HARPOON_TIP_EXTEND_Z",
+  "animation_keyframes": 5,
+  "blender_repeatability": "PASS (two builds in one Blender process)",
+  "blender_scene_counts": [
+    56,
+    9,
+    1
+  ]
+}
