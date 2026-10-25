@@ -1,0 +1,16 @@
+name: B01 W10 LEGENDARY-CORE contract source tests (design only)
+on:
+  push:
+    branches: [design/b01-w10-legendary-core-r0-contract]
+    paths: ["Docs/B01/LEGENDARY001/**", "Tools/B01/LEGENDARY001/**", ".github/workflows/b01-legendary-contract.yml"]
+  pull_request:
+    paths: ["Docs/B01/LEGENDARY001/**", "Tools/B01/LEGENDARY001/**", ".github/workflows/b01-legendary-contract.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-design-not-unity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python Tools/B01/LEGENDARY001/validate_contract.py

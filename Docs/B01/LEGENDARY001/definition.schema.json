@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LEGENDARY-CORE / definition-only R0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "legendaryDefinitionId",
+    "basePartKind",
+    "partFamily",
+    "mountFootprintCells",
+    "massKg",
+    "hitPoints",
+    "socketCategory",
+    "ability",
+    "tradeoffs",
+    "rarityTier",
+    "maxEquippedSameDefinitionPerVehicle"
+  ],
+  "properties": {
+    "legendaryDefinitionId": {
+      "type": "string",
+      "pattern": "^LEG-(WPN|MOV|DEF|SUP|DEP|ECO)-[0-9]{3}$"
+    },
+    "basePartKind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "partFamily": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mountFootprintCells": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "properties": {
+        "x": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "y": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "z": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "massKg": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "hitPoints": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "socketCategory": {
+      "type": "string",
+      "enum": [
+        "WeaponBase",
+        "Structural",
+        "Axle",
+        "MobilityHub"
+      ]
+    },
+    "ability": {
+      "type": "object",
+      "required": [
+        "mechanic",
+        "trigger",
+        "cooldownSeconds"
+      ],
+      "properties": {
+        "mechanic": {
+          "type": "string",
+          "minLength": 8
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cooldownSeconds": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "tradeoffs": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      },
+      "uniqueItems": true
+    },
+    "rarityTier": {
+      "const": "Legendary"
+    },
+    "maxEquippedSameDefinitionPerVehicle": {
+      "const": 1
+    },
+    "optionalFutureSystems": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "heat",
+          "energy",
+          "EMP"
+        ]
+      },
+      "uniqueItems": true
+    }
+  }
+}
