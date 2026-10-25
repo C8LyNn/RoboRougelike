@@ -198,7 +198,9 @@ namespace B01.RUNSAFETY001.Tests
             Assert.Throws<ArgumentException>(()=>new SafetyOwnedPart(
                 "bad",SafetyPartRole.Weapon,0,10,10,false));
             Assert.Throws<ArgumentException>(()=>new SafetyOwnedPart(
-                "bad",SafetyPartRole.Weapon,0,1,0,false));
+                "bad",SafetyPartRole.Weapon,0,0,0,false));
+            Assert.AreEqual(0,new SafetyOwnedPart(
+                "cheap",SafetyPartRole.Weapon,0,1,0,false).RebuildQuote);
         }
 
         [Test] public void StaleEncounterCannotFinishAndLoanerIsTransient()
