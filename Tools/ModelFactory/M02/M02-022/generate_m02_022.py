@@ -224,7 +224,7 @@ def build():
         knuckles[side]=root
         # Rotating fork has a 13 mm minimum radial clearance from the kingpin.
         for z in (-.115,.115):
-            cube(tag+"_rotating_fork_arm",(side*.091,0,z),
+            cube(tag+"_rotating_fork_arm",(side*.13,0,z),
                 (.10,.083,.032),alloy,root,bevel=.006)
             cyl(tag+"_fork_outer_fastener",
                 (side*.133,0,z-.018),(side*.133,0,z+.018),
@@ -268,11 +268,10 @@ def build():
         actuators[side]=(rig,rod,initial_length)
         torus(tag+"_barrel_service_ring",(0,0,.063),.045,.006,orange,rig)
         # Cylinder end remains inside outer steering ball socket.
-        ball(tag+"_piston_tip",b,.020,ceramic,root) if False else None
         # Fixed visual sensor does not participate in steering.
-        cube(tag+"_actuator_sensor",(side*.34,-.315,-.31),
+        cube(tag+"_actuator_sensor",(side*.34,-.38,-.26),
             (.062,.028,.035),ceramic,bevel=.004)
-        cube(tag+"_actuator_status_led",(side*.34,-.332,-.31),
+        cube(tag+"_actuator_status_led",(side*.34,-.397,-.26),
             (.024,.007,.014),cyan)
 
     # Keyframe full kinematic solution; no straight-line approximation of cylinder aim.
