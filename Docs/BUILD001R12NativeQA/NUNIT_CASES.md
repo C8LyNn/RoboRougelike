@@ -1,0 +1,42 @@
+# All actual NUnit results
+
+| Mode | Origin | Case | Result |
+|---|---|---|---|
+| EditMode | Producer | AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment | Passed |
+| EditMode | Producer | GunHasBaseOnlyAndLateralBarrelContactIsRejected | Passed |
+| EditMode | Producer | InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed | Passed |
+| EditMode | Producer | MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces | Passed |
+| EditMode | Producer | NoCorePlacementAndNoCellOrOwnershipDuplication | Passed |
+| EditMode | Producer | OneQuarterRotationAlwaysRemainsIntegralAndReversible | Passed |
+| EditMode | Producer | StructuralGraphDisconnectsAfterSupportDies | Passed |
+| EditMode | Producer | SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor | Passed |
+| EditMode | Producer | TwoTinyEdgePatchesMustHaveGenuineContactArea | Passed |
+| EditMode | Producer | WheelCanBeMirroredByYawAndMountOppositeSide | Passed |
+| EditMode | Producer | WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel | Passed |
+| EditMode | Receiver | ArmorUsesStructuralFace | Passed |
+| EditMode | Receiver | BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland | Failed |
+| EditMode | Receiver | FourCellModuleKeepsSingleOwnerAndMounts | Passed |
+| EditMode | Receiver | RemovingAndRebuildingBridgeRestoresReachability | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",1,0,0,1,0,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",2,0,0,1,0,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",3,0,0,1,0,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",0,1,0,0,0,-1) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",0,2,0,-1,0,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",0,3,0,0,0,1) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",0,0,1,0,1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",0,0,2,-1,0,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("wheel",0,0,3,0,-1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",1,0,0,0,0,1) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",2,0,0,0,-1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",3,0,0,0,0,-1) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",0,1,0,0,1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",0,2,0,0,1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",0,3,0,0,1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",0,0,1,-1,0,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",0,0,2,0,-1,0) | Passed |
+| EditMode | Receiver | TypedMountAtQuarterTurns("gun",0,0,3,1,0,0) | Passed |
+| PlayMode | Producer | RealCubeColliderFaceIsSelectedButWheelTreadIsNot | Passed |
+| PlayMode | Producer | TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts | Passed |
+| PlayMode | Receiver | BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace | Failed |
+| PlayMode | Receiver | BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace | Failed |
+| PlayMode | Receiver | BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume | Failed |

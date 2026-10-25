@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Failed(Child)" total="5" passed="2" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0,072262">
+  <test-suite type="TestSuite" id="1586" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="406" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.072262" total="5" passed="2" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1004" name="B01.BUILD001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-BUILD-R12-QA/Library/ScriptAssemblies/B01.BUILD001.PlayModeTests.dll" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.043545" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="39176" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1005" name="B01" fullname="B01" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.042997" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1006" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.042764" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1007" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.042592" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="Build001PhysicalHitTests" fullname="B01.BUILD001.Tests.Build001PhysicalHitTests" classname="B01.BUILD001.Tests.Build001PhysicalHitTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.041837" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1002" name="RealCubeColliderFaceIsSelectedButWheelTreadIsNot" fullname="B01.BUILD001.Tests.Build001PhysicalHitTests.RealCubeColliderFaceIsSelectedButWheelTreadIsNot" methodname="RealCubeColliderFaceIsSelectedButWheelTreadIsNot" classname="B01.BUILD001.Tests.Build001PhysicalHitTests" runstate="Runnable" seed="530924171" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.030525" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts" fullname="B01.BUILD001.Tests.Build001PhysicalHitTests.TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts" methodname="TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts" classname="B01.BUILD001.Tests.Build001PhysicalHitTests" runstate="Runnable" seed="1225206014" result="Passed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.001525" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1012" name="B01.BUILD001.ReceiverPlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-BUILD-R12-QA/Library/ScriptAssemblies/B01.BUILD001.ReceiverPlayModeTests.dll" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.018790" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="39176" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1013" name="B01" fullname="B01" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.018482" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1014" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.018308" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1015" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.018178" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1016" name="ReceiverQA" fullname="B01.BUILD001.Tests.ReceiverQA" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.018041" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1008" name="ReceiverBuildPhysicalTests" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.017865" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1009" name="BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests.BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace" methodname="BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests" runstate="Runnable" seed="1787059551" result="Failed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.007780" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  BUILD-W9-01: a child collider near a socket plane is not itself an authorized mount collider
+  Expected: 2
+  But was:  0
+]]></message>
+                    <stack-trace><![CDATA[at B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests+<BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace>d__4.MoveNext () [0x002ad] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-BUILD-R12-QA\Assets\BuildNativeQA\Tests\PlayMode\ReceiverBuildPhysicalTests.cs:38
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[BUILD-W9-01 attempt=1 hit=Decorative child collider point=(0.31, 1.00, 0.00) normal=(1.00, 0.00, 0.00) result=Valid face=(1, 0, 0) expected=reject decorative child
+BUILD-W9-01 attempt=2 hit=Decorative child collider point=(0.31, 1.00, 0.00) normal=(1.00, 0.00, 0.00) result=Valid face=(1, 0, 0) expected=reject decorative child
+]]></output>
+                </test-case>
+                <test-case id="1010" name="BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests.BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace" methodname="BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests" runstate="Runnable" seed="2087343224" result="Failed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.005310" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  BUILD-W9-03: a single owner ID cannot turn disconnected physical islands into a coherent support bridge
+  Expected: 2
+  But was:  0
+]]></message>
+                    <stack-trace><![CDATA[at B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests+<BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace>d__5.MoveNext () [0x00300] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-BUILD-R12-QA\Assets\BuildNativeQA\Tests\PlayMode\ReceiverBuildPhysicalTests.cs:64
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[BUILD-W9-03 attempt=1 emptyPhysicalGap=True definitionValid=True reason= bridge=Valid downstream=Valid owner=islands expected=no unsupported relay across empty cell
+BUILD-W9-03 attempt=2 emptyPhysicalGap=True definitionValid=True reason= bridge=Valid downstream=Valid owner=islands expected=no unsupported relay across empty cell
+]]></output>
+                </test-case>
+                <test-case id="1011" name="BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests.BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume" methodname="BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests" runstate="Runnable" seed="1419164971" result="Failed" start-time="2026-10-25 16:52:32Z" end-time="2026-10-25 16:52:32Z" duration="0.003891" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  BUILD-W9-04: logical non-overlap alone cannot authorize colliding physical envelopes; boundary ownership needs a design ruling
+  Expected: 2
+  But was:  0
+]]></message>
+                    <stack-trace><![CDATA[at B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests+<BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume>d__6.MoveNext () [0x00222] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-BUILD-R12-QA\Assets\BuildNativeQA\Tests\PlayMode\ReceiverBuildPhysicalTests.cs:83
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[BUILD-W9-04 attempt=1 result=Valid support=core physicalOverlap=True depth=0,3100 direction=(-1.00, 0.00, 0.00) declaredCells=1 actualSize=(1.2,.52,.52) expected=reject physical collision
+BUILD-W9-04 attempt=2 result=Valid support=core physicalOverlap=True depth=0,3100 direction=(-1.00, 0.00, 0.00) declaredCells=1 actualSize=(1.2,.52,.52) expected=reject physical collision
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

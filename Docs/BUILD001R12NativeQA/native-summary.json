@@ -1,0 +1,486 @@
+{
+  "producerSource": "489676414a3eb45fe70124098e3778a81d0aaff2",
+  "target": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "compile": {
+    "startedUtc": "2026-10-25T16:44:14.8857981Z",
+    "source": "3bd52637ff3e9b47cdf3e480073a932d44736864",
+    "exitCode": 0,
+    "finishedUtc": "2026-10-25T16:46:06.7660053Z",
+    "producer": "489676414a3eb45fe70124098e3778a81d0aaff2"
+  },
+  "native": {
+    "EditMode": {
+      "total": 33,
+      "passed": 32,
+      "failed": 1,
+      "skipped": 0,
+      "process": {
+        "exitCode": 2,
+        "finishedUtc": "2026-10-25T16:52:19.7992182Z",
+        "filter": "B01.BUILD001.Tests",
+        "source": "079e462d98a38d1dfb2e23dda487dc4d58470de4",
+        "startedUtc": "2026-10-25T16:52:04.9051610Z",
+        "mode": "EditMode"
+      }
+    },
+    "PlayMode": {
+      "total": 5,
+      "passed": 2,
+      "failed": 3,
+      "skipped": 0,
+      "process": {
+        "exitCode": 2,
+        "finishedUtc": "2026-10-25T16:52:33.5103680Z",
+        "filter": "B01.BUILD001.Tests",
+        "source": "079e462d98a38d1dfb2e23dda487dc4d58470de4",
+        "startedUtc": "2026-10-25T16:52:19.9321566Z",
+        "mode": "PlayMode"
+      }
+    }
+  },
+  "NUnit": {
+    "executed": 38,
+    "passed": 34,
+    "failed": 4,
+    "skipped": 0,
+    "producer": {
+      "executed": 13,
+      "passed": 13
+    },
+    "receiver": {
+      "executed": 25,
+      "passed": 21,
+      "failed": 4
+    }
+  },
+  "cases": [
+    {
+      "mode": "EditMode",
+      "name": "AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "GunHasBaseOnlyAndLateralBarrelContactIsRejected",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.GunHasBaseOnlyAndLateralBarrelContactIsRejected",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "NoCorePlacementAndNoCellOrOwnershipDuplication",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.NoCorePlacementAndNoCellOrOwnershipDuplication",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "OneQuarterRotationAlwaysRemainsIntegralAndReversible",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.OneQuarterRotationAlwaysRemainsIntegralAndReversible",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "StructuralGraphDisconnectsAfterSupportDies",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.StructuralGraphDisconnectsAfterSupportDies",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TwoTinyEdgePatchesMustHaveGenuineContactArea",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.TwoTinyEdgePatchesMustHaveGenuineContactArea",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "WheelCanBeMirroredByYawAndMountOppositeSide",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.WheelCanBeMirroredByYawAndMountOppositeSide",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel",
+      "fullname": "B01.BUILD001.Tests.Build001SocketTests.WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "ArmorUsesStructuralFace",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.ArmorUsesStructuralFace",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland",
+      "owner": "Receiver",
+      "result": "Failed",
+      "output": "BUILD-W9-02 attempt=1 result=Valid support=untrustedLoadedCore secondRootReachable=True expected=reject untrusted second root\nBUILD-W9-02 attempt=2 result=Valid support=untrustedLoadedCore secondRootReachable=True expected=reject untrusted second root\n",
+      "failure": "  BUILD-W9-02: every loaded island must be rooted in the one authorized Core; direct-placement rejection alone is insufficient\n  Expected: 2\n  But was:  0\n"
+    },
+    {
+      "mode": "EditMode",
+      "name": "FourCellModuleKeepsSingleOwnerAndMounts",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.FourCellModuleKeepsSingleOwnerAndMounts",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "RemovingAndRebuildingBridgeRestoresReachability",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.RemovingAndRebuildingBridgeRestoresReachability",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",1,0,0,1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",1,0,0,1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=1,0,0 anchor=(1, 2, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",2,0,0,1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",2,0,0,1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=2,0,0 anchor=(1, 2, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",3,0,0,1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",3,0,0,1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=3,0,0 anchor=(1, 2, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",0,1,0,0,0,-1)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",0,1,0,0,0,-1)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=0,1,0 anchor=(0, 2, -1) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",0,2,0,-1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",0,2,0,-1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=0,2,0 anchor=(-1, 2, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",0,3,0,0,0,1)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",0,3,0,0,0,1)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=0,3,0 anchor=(0, 2, 1) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",0,0,1,0,1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",0,0,1,0,1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=0,0,1 anchor=(0, 3, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",0,0,2,-1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",0,0,2,-1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=0,0,2 anchor=(-1, 2, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"wheel\",0,0,3,0,-1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"wheel\",0,0,3,0,-1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=wheel turns=0,0,3 anchor=(0, 1, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",1,0,0,0,0,1)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",1,0,0,0,0,1)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=1,0,0 anchor=(0, 2, 1) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",2,0,0,0,-1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",2,0,0,0,-1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=2,0,0 anchor=(0, 1, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",3,0,0,0,0,-1)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",3,0,0,0,0,-1)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=3,0,0 anchor=(0, 2, -1) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",0,1,0,0,1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",0,1,0,0,1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=0,1,0 anchor=(0, 3, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",0,2,0,0,1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",0,2,0,0,1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=0,2,0 anchor=(0, 3, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",0,3,0,0,1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",0,3,0,0,1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=0,3,0 anchor=(0, 3, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",0,0,1,-1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",0,0,1,-1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=0,0,1 anchor=(-1, 2, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",0,0,2,0,-1,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",0,0,2,0,-1,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=0,0,2 anchor=(0, 1, 0) result=Valid support=authorizedCore\n",
+      "failure": ""
+    },
+    {
+      "mode": "EditMode",
+      "name": "TypedMountAtQuarterTurns(\"gun\",0,0,3,1,0,0)",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(\"gun\",0,0,3,1,0,0)",
+      "owner": "Receiver",
+      "result": "Passed",
+      "output": "POSITIVE typed=gun turns=0,0,3 anchor=(1, 2, 0) result=Valid support=authorizedCore\nSaving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\\TestResults.xml\n",
+      "failure": ""
+    },
+    {
+      "mode": "PlayMode",
+      "name": "RealCubeColliderFaceIsSelectedButWheelTreadIsNot",
+      "fullname": "B01.BUILD001.Tests.Build001PhysicalHitTests.RealCubeColliderFaceIsSelectedButWheelTreadIsNot",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "PlayMode",
+      "name": "TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts",
+      "fullname": "B01.BUILD001.Tests.Build001PhysicalHitTests.TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts",
+      "owner": "Producer",
+      "result": "Passed",
+      "output": "",
+      "failure": ""
+    },
+    {
+      "mode": "PlayMode",
+      "name": "BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests.BUILD_W9_01_DecorativeChildCannotAuthorizeAContactFace",
+      "owner": "Receiver",
+      "result": "Failed",
+      "output": "BUILD-W9-01 attempt=1 hit=Decorative child collider point=(0.31, 1.00, 0.00) normal=(1.00, 0.00, 0.00) result=Valid face=(1, 0, 0) expected=reject decorative child\nBUILD-W9-01 attempt=2 hit=Decorative child collider point=(0.31, 1.00, 0.00) normal=(1.00, 0.00, 0.00) result=Valid face=(1, 0, 0) expected=reject decorative child\n",
+      "failure": "  BUILD-W9-01: a child collider near a socket plane is not itself an authorized mount collider\n  Expected: 2\n  But was:  0\n"
+    },
+    {
+      "mode": "PlayMode",
+      "name": "BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests.BUILD_W9_03_DisconnectedCellsCannotRelaySupportAcrossEmptySpace",
+      "owner": "Receiver",
+      "result": "Failed",
+      "output": "BUILD-W9-03 attempt=1 emptyPhysicalGap=True definitionValid=True reason= bridge=Valid downstream=Valid owner=islands expected=no unsupported relay across empty cell\nBUILD-W9-03 attempt=2 emptyPhysicalGap=True definitionValid=True reason= bridge=Valid downstream=Valid owner=islands expected=no unsupported relay across empty cell\n",
+      "failure": "  BUILD-W9-03: a single owner ID cannot turn disconnected physical islands into a coherent support bridge\n  Expected: 2\n  But was:  0\n"
+    },
+    {
+      "mode": "PlayMode",
+      "name": "BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume",
+      "fullname": "B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPhysicalTests.BUILD_W9_04_OversizedColliderMustNotPassPlacementIntoAnOccupiedVolume",
+      "owner": "Receiver",
+      "result": "Failed",
+      "output": "BUILD-W9-04 attempt=1 result=Valid support=core physicalOverlap=True depth=0,3100 direction=(-1.00, 0.00, 0.00) declaredCells=1 actualSize=(1.2,.52,.52) expected=reject physical collision\nBUILD-W9-04 attempt=2 result=Valid support=core physicalOverlap=True depth=0,3100 direction=(-1.00, 0.00, 0.00) declaredCells=1 actualSize=(1.2,.52,.52) expected=reject physical collision\nSaving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\\TestResults.xml\n",
+      "failure": "  BUILD-W9-04: logical non-overlap alone cannot authorize colliding physical envelopes; boundary ownership needs a design ruling\n  Expected: 2\n  But was:  0\n"
+    }
+  ],
+  "demoBuild": {
+    "exitCode": 0,
+    "startedUtc": "2026-10-25T16:58:10.1568615Z",
+    "finishedUtc": "2026-10-25T16:59:04.7742467Z",
+    "source": "2786f61b3ea3abcf43d3b3dbbdd73e586f675284"
+  },
+  "demoPlayerProcess": {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-25T17:01:03.8149424Z"
+  },
+  "demoLaunch": {
+    "materialOverride": false,
+    "producer": "489676414a3eb45fe70124098e3778a81d0aaff2",
+    "source": "b2fff3fcf49d2a89037a9689481550df2f4df87b",
+    "assemblySha256": "5490A28F9C6DF9275DFD31D5658C0A6E5A3E78B3D1AF20537528CE4B987478DA",
+    "startedUtc": "2026-10-25T17:00:52.6996398Z"
+  },
+  "demoObservations": {
+    "count": 10,
+    "logicPassed": 10,
+    "errorShader": 10
+  },
+  "screenshots": [
+    {
+      "path": "DemoPlayer/Demo-1280-choice0.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "9e509cb4cc222445f476dfd6226033d8d96035a45b9317fa1b512b88ad975e10"
+    },
+    {
+      "path": "DemoPlayer/Demo-1280-choice1.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "e532f5d7e2188cad65800c8098512ab3291b68524ee7fba92a753b7bb415460b"
+    },
+    {
+      "path": "DemoPlayer/Demo-1280-choice2.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "bd02d36c53dae798ef68afe1076acb9b695369e7f7028d3e2689e93af1b42e5f"
+    },
+    {
+      "path": "DemoPlayer/Demo-1280-choice3.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "cbefbaf9eeefb443f59a50364f7cfad217f25169cb0be6e1ed72a70caad4b56c"
+    },
+    {
+      "path": "DemoPlayer/Demo-1280-choice4.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "884e1cf3a5b2ed71a7f6cbdb947cd5053913b082cee8f21d40acf80f1f50955f"
+    },
+    {
+      "path": "DemoPlayer/Demo-1920-choice0.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "5b2bb55bab2c888a677f5fa82aaafa1d6de028a074fe15dbba37940faef822c9"
+    },
+    {
+      "path": "DemoPlayer/Demo-1920-choice1.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "962b6c42885e2dccd0adc2dcfd9406bf779ee7010a78a5d7040a87bf2f45751d"
+    },
+    {
+      "path": "DemoPlayer/Demo-1920-choice2.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "401dc5e5536d9fea52ea331899b8e5e76ac520874f7952b538dbdbc38cb556c0"
+    },
+    {
+      "path": "DemoPlayer/Demo-1920-choice3.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "6b4cf20d521ab5225df81697b16a4afee8d497095a4144bf24203d1b3fd2a7c3"
+    },
+    {
+      "path": "DemoPlayer/Demo-1920-choice4.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "8c018b3e675f25310fb729354c69d3088028a8709c580708585bedea193d8334"
+    }
+  ],
+  "realR3R6": "NOT_RUN: four required placement invariants fail; no integration adapter installed",
+  "overall": "FAIL / integration HOLD"
+}

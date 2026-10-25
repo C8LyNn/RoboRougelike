@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="33" result="Failed(Child)" total="33" passed="32" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0,053091">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1054" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.053091" total="33" passed="32" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1461" name="B01.BUILD001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-BUILD-R12-QA/Library/ScriptAssemblies/B01.BUILD001.EditModeTests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.030015" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="63624" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1462" name="B01" fullname="B01" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.029662" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1463" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.029481" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1464" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.029335" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1449" name="Build001SocketTests" fullname="B01.BUILD001.Tests.Build001SocketTests" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.028563" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1456" name="AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" fullname="B01.BUILD001.Tests.Build001SocketTests.AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" methodname="AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1823138656" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.013867" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1452" name="GunHasBaseOnlyAndLateralBarrelContactIsRejected" fullname="B01.BUILD001.Tests.Build001SocketTests.GunHasBaseOnlyAndLateralBarrelContactIsRejected" methodname="GunHasBaseOnlyAndLateralBarrelContactIsRejected" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="323062440" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000480" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1457" name="InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" fullname="B01.BUILD001.Tests.Build001SocketTests.InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" methodname="InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1378731728" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000256" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1454" name="MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" fullname="B01.BUILD001.Tests.Build001SocketTests.MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" methodname="MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1700289256" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.001755" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1459" name="NoCorePlacementAndNoCellOrOwnershipDuplication" fullname="B01.BUILD001.Tests.Build001SocketTests.NoCorePlacementAndNoCellOrOwnershipDuplication" methodname="NoCorePlacementAndNoCellOrOwnershipDuplication" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="932532437" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000209" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1460" name="OneQuarterRotationAlwaysRemainsIntegralAndReversible" fullname="B01.BUILD001.Tests.Build001SocketTests.OneQuarterRotationAlwaysRemainsIntegralAndReversible" methodname="OneQuarterRotationAlwaysRemainsIntegralAndReversible" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="578922585" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000190" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1455" name="StructuralGraphDisconnectsAfterSupportDies" fullname="B01.BUILD001.Tests.Build001SocketTests.StructuralGraphDisconnectsAfterSupportDies" methodname="StructuralGraphDisconnectsAfterSupportDies" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="589290137" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000188" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1453" name="SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" fullname="B01.BUILD001.Tests.Build001SocketTests.SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" methodname="SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1568596197" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000283" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1458" name="TwoTinyEdgePatchesMustHaveGenuineContactArea" fullname="B01.BUILD001.Tests.Build001SocketTests.TwoTinyEdgePatchesMustHaveGenuineContactArea" methodname="TwoTinyEdgePatchesMustHaveGenuineContactArea" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="763210704" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000254" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1451" name="WheelCanBeMirroredByYawAndMountOppositeSide" fullname="B01.BUILD001.Tests.Build001SocketTests.WheelCanBeMirroredByYawAndMountOppositeSide" methodname="WheelCanBeMirroredByYawAndMountOppositeSide" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="102103802" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000147" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1450" name="WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" fullname="B01.BUILD001.Tests.Build001SocketTests.WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" methodname="WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="351761477" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000197" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1489" name="B01.BUILD001.ReceiverEditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-BUILD-R12-QA/Library/ScriptAssemblies/B01.BUILD001.ReceiverEditModeTests.dll" runstate="Runnable" testcasecount="22" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.010731" total="22" passed="21" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="63624" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1490" name="B01" fullname="B01" runstate="Runnable" testcasecount="22" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.010067" total="22" passed="21" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1491" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="22" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.009827" total="22" passed="21" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1492" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="22" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.009628" total="22" passed="21" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1493" name="ReceiverQA" fullname="B01.BUILD001.Tests.ReceiverQA" runstate="Runnable" testcasecount="22" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.009421" total="22" passed="21" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1465" name="ReceiverBuildPolicyTests" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" testcasecount="22" result="Failed" site="Child" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.009199" total="22" passed="21" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1485" name="ArmorUsesStructuralFace" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.ArmorUsesStructuralFace" methodname="ArmorUsesStructuralFace" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="611220566" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000365" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1488" name="BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland" methodname="BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1205506998" result="Failed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.004017" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  BUILD-W9-02: every loaded island must be rooted in the one authorized Core; direct-placement rejection alone is insufficient
+  Expected: 2
+  But was:  0
+]]></message>
+                    <stack-trace><![CDATA[at B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.BUILD_W9_02_UnauthorizedSecondCoreCannotSeedASeparateIsland () [0x00111] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-BUILD-R12-QA\Assets\BuildNativeQA\Tests\EditMode\ReceiverBuildPolicyTests.cs:82
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[BUILD-W9-02 attempt=1 result=Valid support=untrustedLoadedCore secondRootReachable=True expected=reject untrusted second root
+BUILD-W9-02 attempt=2 result=Valid support=untrustedLoadedCore secondRootReachable=True expected=reject untrusted second root
+]]></output>
+                </test-case>
+                <test-case id="1486" name="FourCellModuleKeepsSingleOwnerAndMounts" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.FourCellModuleKeepsSingleOwnerAndMounts" methodname="FourCellModuleKeepsSingleOwnerAndMounts" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="113436314" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000263" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1487" name="RemovingAndRebuildingBridgeRestoresReachability" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.RemovingAndRebuildingBridgeRestoresReachability" methodname="RemovingAndRebuildingBridgeRestoresReachability" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="778736795" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000575" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-suite type="ParameterizedMethod" id="1484" name="TypedMountAtQuarterTurns" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.002952" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1466" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,1,0,0,1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,1,0,0,1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="814332378" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000525" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=1,0,0 anchor=(1, 2, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1467" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,2,0,0,1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,2,0,0,1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1405826017" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000057" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=2,0,0 anchor=(1, 2, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1468" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,3,0,0,1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,3,0,0,1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1465666422" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000044" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=3,0,0 anchor=(1, 2, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1469" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,0,1,0,0,0,-1)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,0,1,0,0,0,-1)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1596101100" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000044" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=0,1,0 anchor=(0, 2, -1) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1470" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,0,2,0,-1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,0,2,0,-1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1985892700" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000042" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=0,2,0 anchor=(-1, 2, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1471" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,0,3,0,0,0,1)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,0,3,0,0,0,1)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="453650703" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000043" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=0,3,0 anchor=(0, 2, 1) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1472" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,0,0,1,0,1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,0,0,1,0,1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1874506690" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000041" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=0,0,1 anchor=(0, 3, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1473" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,0,0,2,-1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,0,0,2,-1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="943547091" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000043" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=0,0,2 anchor=(-1, 2, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1474" name="TypedMountAtQuarterTurns(&quot;wheel&quot;,0,0,3,0,-1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;wheel&quot;,0,0,3,0,-1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="2057456696" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000043" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=wheel turns=0,0,3 anchor=(0, 1, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1475" name="TypedMountAtQuarterTurns(&quot;gun&quot;,1,0,0,0,0,1)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,1,0,0,0,0,1)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1940504076" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000043" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=1,0,0 anchor=(0, 2, 1) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1476" name="TypedMountAtQuarterTurns(&quot;gun&quot;,2,0,0,0,-1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,2,0,0,0,-1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="2146299685" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000042" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=2,0,0 anchor=(0, 1, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1477" name="TypedMountAtQuarterTurns(&quot;gun&quot;,3,0,0,0,0,-1)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,3,0,0,0,0,-1)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1680472748" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000041" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=3,0,0 anchor=(0, 2, -1) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1478" name="TypedMountAtQuarterTurns(&quot;gun&quot;,0,1,0,0,1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,0,1,0,0,1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1404363384" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000045" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=0,1,0 anchor=(0, 3, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1479" name="TypedMountAtQuarterTurns(&quot;gun&quot;,0,2,0,0,1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,0,2,0,0,1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1627273474" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000043" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=0,2,0 anchor=(0, 3, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1480" name="TypedMountAtQuarterTurns(&quot;gun&quot;,0,3,0,0,1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,0,3,0,0,1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1105287479" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000270" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=0,3,0 anchor=(0, 3, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1481" name="TypedMountAtQuarterTurns(&quot;gun&quot;,0,0,1,-1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,0,0,1,-1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1005819876" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000082" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=0,0,1 anchor=(-1, 2, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1482" name="TypedMountAtQuarterTurns(&quot;gun&quot;,0,0,2,0,-1,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,0,0,2,0,-1,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="1045497080" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000049" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=0,0,2 anchor=(0, 1, 0) result=Valid support=authorizedCore
+]]></output>
+                  </test-case>
+                  <test-case id="1483" name="TypedMountAtQuarterTurns(&quot;gun&quot;,0,0,3,1,0,0)" fullname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests.TypedMountAtQuarterTurns(&quot;gun&quot;,0,0,3,1,0,0)" methodname="TypedMountAtQuarterTurns" classname="B01.BUILD001.Tests.ReceiverQA.ReceiverBuildPolicyTests" runstate="Runnable" seed="890845611" result="Passed" start-time="2026-10-25 16:52:18Z" end-time="2026-10-25 16:52:18Z" duration="0.000044" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                    <output><![CDATA[POSITIVE typed=gun turns=0,0,3 anchor=(1, 2, 0) result=Valid support=authorizedCore
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
