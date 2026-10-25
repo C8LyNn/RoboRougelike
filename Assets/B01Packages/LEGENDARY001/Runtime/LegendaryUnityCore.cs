@@ -133,6 +133,13 @@ namespace RoboRougelike.B01.Legendary
             catalog=definitions.ToDictionary(d=>d.Id,d=>d,StringComparer.Ordinal);
         }
 
+        private static bool ValidPhysicalId(string id)
+        {
+            Guid parsed;
+            return !string.IsNullOrEmpty(id) && Guid.TryParseExact(id,"N",out parsed) &&
+                   parsed!=Guid.Empty && string.Equals(id,parsed.ToString("N"),StringComparison.Ordinal);
+        }
+
         private bool Observe(out Dictionary<string,PartObservation> owned,out string reason)
         {
             owned=new Dictionary<string,PartObservation>(StringComparer.Ordinal);
@@ -141,7 +148,7 @@ namespace RoboRougelike.B01.Legendary
                 if(port.Mounted==null||port.Inventory==null){reason="INVALID_R3_VIEW";return false;}
                 foreach(var part in port.Mounted.Concat(port.Inventory))
                 {
-                    if(part==null||!Guid.TryParseExact(part.InstanceId,"N",out _)||
+                    if(part==null||!ValidPhysicalId(part.InstanceId)||
                        float.IsNaN(part.Health)||part.Health<0||part.Health>1||
                        string.IsNullOrEmpty(part.BasePartKind)||
                        (part.BasePartKind=="Gun"&&string.IsNullOrEmpty(part.WeaponFamily)))
@@ -212,7 +219,7 @@ namespace RoboRougelike.B01.Legendary
                 {error="INVALID_REWARD";return false;}
                 if(rewards.Contains(rewardEventId)){error="REWARD_ALREADY_APPLIED";return false;}
                 if(!EnsureWorld(out var world,out error))return false;
-                if(!Guid.TryParseExact(part.InstanceId,"N",out _)||world.ContainsKey(part.InstanceId)||
+                if(!ValidPhysicalId(part.InstanceId)||world.ContainsKey(part.InstanceId)||
                    bindings.ContainsKey(part.InstanceId))
                 {error="DUPLICATE_INSTANCE";return false;}
                 if(!Matches(part,def)||part.Health<=0||part.Health>1)
@@ -352,7 +359,7 @@ namespace RoboRougelike.B01.Legendary
                 var events=new HashSet<string>(StringComparer.Ordinal);
                 foreach(var item in data.Bindings)
                 {
-                    if(item==null||!Guid.TryParseExact(item.InstanceId,"N",out _)||
+                    if(item==null||!ValidPhysicalId(item.InstanceId)||
                        string.IsNullOrEmpty(item.DefinitionId)||
                        !next.TryAdd(item.InstanceId,item.DefinitionId))
                     {error="CORRUPT_OR_DUPLICATE_INSTANCE";return false;}
