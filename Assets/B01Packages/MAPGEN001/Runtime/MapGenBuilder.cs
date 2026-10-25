@@ -8,6 +8,25 @@ namespace B01.MAPGEN001
     {
         public MapResult Current { get; private set; }
 
+        // The default material of GameObject.CreatePrimitive may use the old
+        // Built-in Standard shader, yielding magenta in an URP renderer.
+        // Own one URP material per isolated builder, not one per block.
+        private Material _generatedBlockMaterial;
+        private Material GetGeneratedBlockMaterial()
+        {
+            if (_generatedBlockMaterial != null) return _generatedBlockMaterial;
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null)
+                shader = Shader.Find("Universal Render Pipeline/Simple Lit");
+            if (shader == null)
+                throw new InvalidOperationException(
+                    "MAPGEN001_URP_SHADER_NOT_AVAILABLE: provide URP Lit or Simple Lit shader");
+            _generatedBlockMaterial = new Material(shader) {
+                name = "MAPGEN001_Generated_URP_Blocks_Runtime"
+            };
+            return _generatedBlockMaterial;
+        }
+
         public MapResult Regenerate(MapRecipe recipe, int seed, MapGenConfig config, MapVehicleProfile vehicle) =>
             Generate(recipe, seed, config, vehicle);
 
@@ -31,6 +50,7 @@ namespace B01.MAPGEN001
                     var renderer = go.GetComponent<Renderer>();
                     if (renderer != null)
                     {
+                        renderer.sharedMaterial = GetGeneratedBlockMaterial();
                         var block = new MaterialPropertyBlock();
                         Color c = spec.Kind == MapElementKind.Floor ? new Color(.28f, .32f, .34f) :
                             spec.Kind == MapElementKind.Boundary ? new Color(.24f, .24f, .27f) :
@@ -91,6 +111,13 @@ namespace B01.MAPGEN001
             else DestroyImmediate(go);
         }
 
-        private void OnDestroy() { Clear(); }
+        private void OnDestroy()
+        {
+            Clear();
+            if (_generatedBlockMaterial == null) return;
+            if (Application.isPlaying) Destroy(_generatedBlockMaterial);
+            else DestroyImmediate(_generatedBlockMaterial);
+            _generatedBlockMaterial = null;
+        }
     }
 }
