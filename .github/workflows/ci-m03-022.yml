@@ -1,0 +1,37 @@
+name: CI M03-022 External Side Truss
+on:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-022/**'
+      - '.github/workflows/ci-m03-022.yml'
+  workflow_dispatch:
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Python syntax validation
+        run: python3 -m py_compile Tools/ModelFactory/M03/M03-022/*.py
+      - name: Actual Blender bpy generation and export
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-022/generate_m03_022.py -- --output /tmp/M03-022
+          test -s /tmp/M03-022/M03-022.blend
+          test -s /tmp/M03-022/M03-022.glb
+          test -s /tmp/M03-022/M03-022.fbx
+      - name: Independent manifold repeatability and exported GLB QA
+        run: blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-022/qa_blender_m03_022.py -- --output /tmp/M03-022
+      - name: SHA-256 manifest
+        run: cd /tmp/M03-022 && sha256sum M03-022.blend M03-022.glb M03-022.fbx > SHA256SUMS
+      - name: Upload verified model files
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-022-Blender-GLB-FBX-BLEND
+          path: /tmp/M03-022/
+          if-no-files-found: error
+          retention-days: 14
