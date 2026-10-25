@@ -7,6 +7,33 @@ namespace B01.MAPGEN001.Tests
 {
     public sealed class MapGenPlayModeTests
     {
+        [UnityTest] public IEnumerator GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial()
+        {
+            // Codex W10 actual Unity receiver QA: generated cubes appeared
+            // magenta with Hidden/InternalErrorShader in URP. Detect that at
+            // runtime, not just in a source-only headless planner test.
+            var host = new GameObject("MAPGEN001_URP_Material_Test");
+            var builder = host.AddComponent<MapGenBuilder>();
+            try
+            {
+                var layout = builder.Generate(MapRecipe.CombatArena, 7,
+                    MapGenConfig.Default, MapVehicleProfile.Light);
+                var renderers = layout.GeneratedRoot.GetComponentsInChildren<Renderer>();
+                Assert.Greater(renderers.Length, 5);
+                foreach (var renderer in renderers)
+                {
+                    Assert.NotNull(renderer.sharedMaterial);
+                    Assert.NotNull(renderer.sharedMaterial.shader);
+                    string shader = renderer.sharedMaterial.shader.name;
+                    Assert.IsTrue(shader.StartsWith("Universal Render Pipeline/"),
+                        "Magenta/incompatible block shader: " + shader);
+                    Assert.AreNotEqual("Hidden/InternalErrorShader", shader);
+                }
+                yield return null; // ensure render assignment survives a frame
+            }
+            finally { Object.Destroy(host); }
+        }
+
         [UnityTest] public IEnumerator GenerateAndClearRealPhysicsColliders()
         {
             var host = new GameObject("MapGenTestHost");
