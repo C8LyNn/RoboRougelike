@@ -48,9 +48,17 @@ def build(out: Path):
     out.mkdir(parents=True, exist_ok=True)
     previous = bpy.data.collections.get(ID)
     if previous:
+        old_meshes = [ob.data for ob in previous.objects if ob.type == "MESH"]
+        old_materials = [mat for ob in previous.objects if ob.type == "MESH"
+                         for mat in ob.data.materials if mat]
         for ob in list(previous.objects):
             bpy.data.objects.remove(ob, do_unlink=True)
         bpy.data.collections.remove(previous)
+        for mesh in old_meshes:
+            if mesh.users == 0: bpy.data.meshes.remove(mesh)
+        for mat in set(old_materials):
+            if mat.users == 0 and mat.name.startswith(ID+"_"):
+                bpy.data.materials.remove(mat)
     coll = bpy.data.collections.new(ID)
     bpy.context.scene.collection.children.link(coll)
     scene = bpy.context.scene
@@ -60,7 +68,7 @@ def build(out: Path):
     scene.render.fps = 30
 
     def material(name, rgb, metal, rough, emission=0.0):
-        m = bpy.data.materials.new(name)
+        m = bpy.data.materials.new(ID+"_"+name)
         m.diffuse_color = (*rgb, 1.)
         m.use_nodes = True
         p = m.node_tree.nodes.get("Principled BSDF")
@@ -308,4 +316,16 @@ if __name__=="__main__":
     else:
         parser=argparse.ArgumentParser()
         parser.add_argument("--out",required=True,type=Path)
-        build(parser.parse_args(sys.argv[sys.argv.index("--")+1:]).out)
+        parser.add_argument("--repeat",action="store_true")
+        args=parser.parse_args(sys.argv[sys.argv.index("--")+1:])
+        build(args.out)
+        if args.repeat:
+            def counts():
+                return (len(bpy.data.collections[ID].objects),
+                        len([m for m in bpy.data.materials if m.name.startswith(ID+"_")]),
+                        len([m for m in bpy.data.meshes if m.users==0]))
+            first=counts()
+            build(args.out)
+            second=counts()
+            assert first==second,("non-idempotent Blender resources",first,second)
+            print("M02-018 repeat generation PASS",second)
