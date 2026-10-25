@@ -1,0 +1,57 @@
+# static MTL; animated PBR emission via Blender FBX/GLB
+newmtl Armor_Graphite
+Kd 0.06600 0.08400 0.10500
+Ks 0.72000 0.72000 0.72000
+Ns 640.000
+Ke 0.00000 0.00000 0.00000
+d 1.0000
+illum 2
+
+newmtl Titanium_Frame
+Kd 0.35000 0.42000 0.48000
+Ks 0.83000 0.83000 0.83000
+Ns 710.000
+Ke 0.00000 0.00000 0.00000
+d 1.0000
+illum 2
+
+newmtl Ceramic_Ivory
+Kd 0.78000 0.82000 0.78000
+Ks 0.20000 0.20000 0.20000
+Ns 660.000
+Ke 0.00000 0.00000 0.00000
+d 1.0000
+illum 2
+
+newmtl Copper_Guides
+Kd 0.54000 0.24000 0.10500
+Ks 0.84000 0.84000 0.84000
+Ns 740.000
+Ke 0.00000 0.00000 0.00000
+d 1.0000
+illum 2
+
+newmtl Gasket_Dark
+Kd 0.02500 0.03200 0.04300
+Ks 0.07000 0.07000 0.07000
+Ns 180.000
+Ke 0.00000 0.00000 0.00000
+d 1.0000
+illum 2
+
+newmtl Signal_Cyan
+Kd 0.09000 0.62000 0.88000
+Ks 0.16000 0.16000 0.16000
+Ns 720.000
+Ke 0.10000 1.00000 1.00000
+d 1.0000
+illum 2
+
+newmtl Warning_Amber
+Kd 0.96000 0.38000 0.05000
+Ks 0.27000 0.27000 0.27000
+Ns 650.000
+Ke 0.33250 0.08050 0.01050
+d 1.0000
+illum 2
+

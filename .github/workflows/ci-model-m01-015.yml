@@ -1,0 +1,60 @@
+name: M01-015 Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-015-bidirectional-turret
+    paths:
+      - 'Tools/ModelFactory/M01/M01-015/**'
+      - '.github/workflows/ci-model-m01-015.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Static mesh, topology and yaw clearance
+        run: |
+          python Tools/ModelFactory/M01/M01-015/generate_m01_015.py --self-test
+          python Tools/ModelFactory/M01/M01-015/generate_m01_015.py --out Tools/ModelFactory/M01/M01-015/generated
+          python Tools/ModelFactory/M01/M01-015/qa_m01_015.py --out Tools/ModelFactory/M01/M01-015/generated
+          sha256sum Tools/ModelFactory/M01/M01-015/generated/*.obj Tools/ModelFactory/M01/M01-015/generated/*.mtl > /tmp/m01-015-static-sha
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender --version
+      - name: Blender actual exports, repeatability, binary QA
+        run: |
+          blender --background --python Tools/ModelFactory/M01/M01-015/generate_m01_015.py -- --out Tools/ModelFactory/M01/M01-015/generated --repeat-blender
+          sha256sum -c /tmp/m01-015-static-sha
+          python Tools/ModelFactory/M01/M01-015/qa_m01_015.py --out Tools/ModelFactory/M01/M01-015/generated --require-blender
+      - name: Upload 3D artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-015-bidirectional-turret-3D
+          path: Tools/ModelFactory/M01/M01-015/generated/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish exports on exclusive feature branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Tools/ModelFactory/M01/M01-015/generated/
+          if git diff --cached --quiet; then
+            echo "Generated files already committed."
+          else
+            git commit -m "MODEL-01 M01-015: verified Blender exports"
+            git push origin HEAD:feature/rrl-model-m01-015-bidirectional-turret || echo "::warning::Binary publication BLOCKED; workflow artifact remains available"
+          fi
