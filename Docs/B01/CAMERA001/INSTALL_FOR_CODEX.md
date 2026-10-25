@@ -1,3 +1,5 @@
+> **W9 source repair R1.1 supersedes earlier R1 receiver instructions** for this package. Source is the **FULL tree at Draft PR #214** (including original PR #134), not the PR #214 diff alone. HQ dispatch `HQ-B01-20261025-W9-SOURCE-REPAIR`. Original R1 Unity6000.3.14f1 compile FAILED native exit1 in QA PR #212 (duplicate TestRunner assembly references); R1.1 removes both duplicates but has **NO NEW NATIVE Unity compile or independent B01-60 PASS**. G1 BLOCKED, G2 HOLD; source/recipient SHA must be pinned from PR #214 and confirmed, no game import authorization. MAPGEN-001 #211 remains FIRST next Codex package. See `W9_SOURCE_REPAIR_R11.md` for real RED evidence and retest checklist.
+
 # CAMERA001 gated installation plan for Codex
 STATUS: QA_PENDING / DO NOT INTEGRATE YET.
 Source PR: https://github.com/C8LyNn/RoboRougelike/pull/134 (DRAFT, not approved). Branch feature/b01-camera001-s02-r1-isolated. Immutable source_sha: to be pinned in #66 after manifest. Recipient must separately ACK exact target branch/SHA and current reserved camera paths. Published PHY #125 SHA 916654634d1bfdc2bbc14e64b9eeac856ede1fa8 is REFERENCE ONLY, NOT an integration baseline.

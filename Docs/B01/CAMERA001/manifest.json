@@ -1,11 +1,11 @@
 {
   "package_id": "B01-CAMERA-001",
-  "revision": "R1",
+  "revision": "R1.1",
   "recipient": "Codex",
   "priority": "P1",
-  "status": "SOURCE_ONLY_QA_PENDING_G2_HOLD",
+  "status": "W9_NATIVE_RED_ORIGINAL_SOURCE_CORRECTED_STATIC_RETEST_PENDING_G1_G2_HOLD",
   "source_pr": "https://github.com/C8LyNn/RoboRougelike/pull/134",
-  "source_branch": "feature/b01-camera001-s02-r1-isolated",
+  "source_branch": "fix/b01-camera001-w9-r11-20261025",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_head_before_manifest": "021a9fab497d6c693816ea52ca470c5990922645",
   "unity_version": "6000.3.14f1",
@@ -13,8 +13,8 @@
     "UnityEngine Camera/Physics",
     "Unity Test Framework 1.6.0 for tests; ENABLE_INPUT_SYSTEM optional for demo"
   ],
-  "sources_files": 35,
-  "manifest_format": "Git blob SHA-1 content identities; SHA256 NOT COMPUTED, must be independently audited before G2.",
+  "sources_files": 36,
+  "manifest_format": "Git blob SHA1/bytes pinned at R1.1. SHA256 independent B01-40 or future CI still PENDING; no fake hash.",
   "files": {
     "Assets/B01Packages.meta": {
       "git_blob_sha1": "aafe73e81da1d22b85b25b2f62f4fc5ca0b06f1f",
@@ -97,8 +97,8 @@
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef": {
-      "git_blob_sha1": "3e89a64a8abde1ecee9d85251f21e32792b204ea",
-      "bytes": 521,
+      "git_blob_sha1": "2333e0777c962c85673c6523c5493db85dfa1461",
+      "bytes": 461,
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef.meta": {
@@ -122,8 +122,8 @@
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef": {
-      "git_blob_sha1": "35498cbb964b3a78f582ab3b7045dd2e5cf2e991",
-      "bytes": 505,
+      "git_blob_sha1": "e53feac920be7e17d7586310ddabaf9e597876df",
+      "bytes": 445,
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef.meta": {
@@ -152,8 +152,8 @@
       "sha256": null
     },
     "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md": {
-      "git_blob_sha1": "2b1a2261c41ad8709c1a169e0e84fbf839a2a966",
-      "bytes": 1947,
+      "git_blob_sha1": "383512dcc749225b4ce57fcd0427fd20927171a9",
+      "bytes": 2640,
       "sha256": null
     },
     "Docs/B01/CAMERA001/KNOWN_LIMITATIONS.md": {
@@ -162,8 +162,8 @@
       "sha256": null
     },
     "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md": {
-      "git_blob_sha1": "ef232ede0bfaa7f82d5e78055b6200f697c6a543",
-      "bytes": 3373,
+      "git_blob_sha1": "0ef2ce5b44e7fcd0786144993ffd48d8c2a85cee",
+      "bytes": 4066,
       "sha256": null
     },
     "Docs/B01/CAMERA001/README.md": {
@@ -190,6 +190,11 @@
       "git_blob_sha1": "2483516fc934427ec698d2b1fbf96c6420e80dbb",
       "bytes": 2907,
       "sha256": null
+    },
+    "Docs/B01/CAMERA001/W9_SOURCE_REPAIR_R11.md": {
+      "git_blob_sha1": "7533af8905e28833bf10ea5808b98c21a616e9cd",
+      "bytes": 1371,
+      "sha256": null
     }
   },
   "static_pairing": {
@@ -207,5 +212,23 @@
     "B01_60": "PENDING",
     "G2": "HOLD"
   },
-  "offline_probe": "Independent JS port: 840 evaluated, 5 aggregate checks PASS; not C# Unity."
+  "offline_probe": "Independent JS port: 840 evaluated, 5 aggregate checks PASS; not C# Unity.",
+  "w9": {
+    "dispatch_id": "HQ-B01-20261025-W9-SOURCE-REPAIR",
+    "native_red_source_sha": "894d3488dedb69e2b8d89683d750bbdbfedf4e55",
+    "native_red_pr": 212,
+    "native_exit": 1,
+    "native_nunit": "NOT_RUN",
+    "fix_scope": [
+      "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef",
+      "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef"
+    ],
+    "producer_static_qa": "PENDING",
+    "independent_unity_qa": "NOT_RUN",
+    "G2": "HOLD",
+    "superseded_docs": [
+      "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md",
+      "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md"
+    ]
+  }
 }

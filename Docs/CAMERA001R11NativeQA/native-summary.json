@@ -1,0 +1,415 @@
+{
+  "source": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+  "target": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "compile": {
+    "source": "494840deba798574fa950800de8764fd2ad9d2d9",
+    "exitCode": 0,
+    "finishedUtc": "2026-10-25T11:47:26.9424124Z",
+    "producer": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+    "startedUtc": "2026-10-25T11:46:38.3862344Z"
+  },
+  "native": {
+    "EditMode": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "process": {
+        "exitCode": 0,
+        "finishedUtc": "2026-10-25T11:47:38.2011913Z",
+        "filter": "B01.CAMERA001.Tests",
+        "source": "494840deba798574fa950800de8764fd2ad9d2d9",
+        "startedUtc": "2026-10-25T11:47:27.2138731Z",
+        "mode": "EditMode"
+      }
+    },
+    "PlayMode": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "process": {
+        "exitCode": 0,
+        "finishedUtc": "2026-10-25T11:47:51.2163286Z",
+        "filter": "B01.CAMERA001.Tests",
+        "source": "494840deba798574fa950800de8764fd2ad9d2d9",
+        "startedUtc": "2026-10-25T11:47:38.2523109Z",
+        "mode": "PlayMode"
+      }
+    }
+  },
+  "build": {
+    "finishedUtc": "2026-10-25T11:55:27.4257114Z",
+    "source": "6fd76d717240068a4713cc8db14387509cc858c1",
+    "exitCode": 0,
+    "startedUtc": "2026-10-25T11:53:50.1021748Z"
+  },
+  "player": {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-25T11:57:52.3608488Z"
+  },
+  "launch": {
+    "startedUtc": "2026-10-25T11:56:30.8997347Z",
+    "source": "244d6af11a53f86507438dc4874c51aae38259ae",
+    "producer": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+    "assemblySha256": "3DA2B15AA4AB54B73B25EAFFB3034DB6C3763DA04B99FA4F7098CE407E571805"
+  },
+  "phases": {
+    "corridor": {
+      "samples": 560,
+      "actualOwnIntersections": 0,
+      "maxPositionStep": 9.1732,
+      "peakSample": {
+        "case": "Tall-1280",
+        "phase": "corridor",
+        "seconds": "26.4793",
+        "x": "1.7566",
+        "y": "10.1600",
+        "z": "3.2091",
+        "step": "9.1732",
+        "rotationStep": "2.6086",
+        "idealOwnBlocked": "False",
+        "actualOwnBlocked": "False",
+        "enemyOwnBlocked": "False",
+        "enemyViewportX": "0.2230",
+        "enemyViewportY": "0.4458",
+        "clipped": "True",
+        "pivotBlocked": "True"
+      }
+    },
+    "damage": {
+      "samples": 360,
+      "actualOwnIntersections": 0,
+      "maxPositionStep": 0.0961,
+      "peakSample": {
+        "case": "Tall-1280",
+        "phase": "damage",
+        "seconds": "27.7793",
+        "x": "0.0000",
+        "y": "13.6407",
+        "z": "-7.7557",
+        "step": "0.0961",
+        "rotationStep": "0.0000",
+        "idealOwnBlocked": "False",
+        "actualOwnBlocked": "False",
+        "enemyOwnBlocked": "False",
+        "enemyViewportX": "0.5000",
+        "enemyViewportY": "0.5033",
+        "clipped": "False",
+        "pivotBlocked": "False"
+      }
+    },
+    "driveFire": {
+      "samples": 502,
+      "actualOwnIntersections": 0,
+      "maxPositionStep": 0.0818,
+      "peakSample": {
+        "case": "Light-1280",
+        "phase": "driveFire",
+        "seconds": "12.5200",
+        "x": "0.0701",
+        "y": "3.0535",
+        "z": "11.9480",
+        "step": "0.0818",
+        "rotationStep": "0.0000",
+        "idealOwnBlocked": "False",
+        "actualOwnBlocked": "False",
+        "enemyOwnBlocked": "False",
+        "enemyViewportX": "0.4982",
+        "enemyViewportY": "0.5040",
+        "clipped": "False",
+        "pivotBlocked": "False"
+      }
+    },
+    "framing": {
+      "samples": 160,
+      "actualOwnIntersections": 0,
+      "maxPositionStep": 0.0,
+      "peakSample": {
+        "case": "Light-1280",
+        "phase": "framing",
+        "seconds": "0.0780",
+        "x": "0.0000",
+        "y": "2.9894",
+        "z": "-4.8787",
+        "step": "0.0000",
+        "rotationStep": "0.0000",
+        "idealOwnBlocked": "False",
+        "actualOwnBlocked": "False",
+        "enemyOwnBlocked": "False",
+        "enemyViewportX": "0.5000",
+        "enemyViewportY": "0.5000",
+        "clipped": "False",
+        "pivotBlocked": "False"
+      }
+    },
+    "orbit360": {
+      "samples": 1774,
+      "actualOwnIntersections": 26,
+      "maxPositionStep": 1.6847,
+      "peakSample": {
+        "case": "Heavy-1920",
+        "phase": "orbit360",
+        "seconds": "53.0022",
+        "x": "-1.3425",
+        "y": "5.5861",
+        "z": "1.9752",
+        "step": "1.6847",
+        "rotationStep": "31.6667",
+        "idealOwnBlocked": "False",
+        "actualOwnBlocked": "False",
+        "enemyOwnBlocked": "False",
+        "enemyViewportX": "0.8404",
+        "enemyViewportY": "0.9559",
+        "clipped": "False",
+        "pivotBlocked": "False"
+      }
+    },
+    "wallEntry": {
+      "samples": 200,
+      "actualOwnIntersections": 0,
+      "maxPositionStep": 8.3261,
+      "peakSample": {
+        "case": "Tall-1280",
+        "phase": "wallEntry",
+        "seconds": "25.6126",
+        "x": "0.0000",
+        "y": "11.2173",
+        "z": "-0.0393",
+        "step": "8.3261",
+        "rotationStep": "0.0000",
+        "idealOwnBlocked": "False",
+        "actualOwnBlocked": "False",
+        "enemyOwnBlocked": "False",
+        "enemyViewportX": "0.5000",
+        "enemyViewportY": "0.5000",
+        "clipped": "True",
+        "pivotBlocked": "False"
+      }
+    }
+  },
+  "firstActualOwnIntersection": {
+    "case": "Light-1280",
+    "phase": "orbit360",
+    "seconds": "0.6780",
+    "x": "-0.0039",
+    "y": "3.0547",
+    "z": "-4.8652",
+    "step": "0.0667",
+    "rotationStep": "15.0347",
+    "idealOwnBlocked": "False",
+    "actualOwnBlocked": "True",
+    "enemyOwnBlocked": "False",
+    "enemyViewportX": "0.4867",
+    "enemyViewportY": "0.7205",
+    "clipped": "False",
+    "pivotBlocked": "False"
+  },
+  "screenshots": [
+    {
+      "path": "Functional/Heavy-1280-corridor.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "04f6a253ea396462c1d4fc5800fe7f65f5dfcecab55377162777242dfec0abf9"
+    },
+    {
+      "path": "Functional/Heavy-1280-damage.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "70d1c4e389ce507d803b3bf586b13e85d65c9edb0532276c72aa0ffc5866c5aa"
+    },
+    {
+      "path": "Functional/Heavy-1280-framing.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "1b16c65a5c956ac33fc28efa77831cf52407df41bb110820a2335cd9b476cc39"
+    },
+    {
+      "path": "Functional/Heavy-1280-wall.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "9062d0350ccdf1beb3127cb5e65638ded9f95719e7d6553e8eed32204983ae49"
+    },
+    {
+      "path": "Functional/Heavy-1920-corridor.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "36863efad1eea73a79e96f4e8d7d913ed4d9402769fc641c4ba353bc32b660bb"
+    },
+    {
+      "path": "Functional/Heavy-1920-damage.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "bb043cad493d9cad84e0d13c90cccc15cf6bd220ec6019c571084b683f2f192b"
+    },
+    {
+      "path": "Functional/Heavy-1920-framing.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "ccc8f092ed5c92dd8c8becaa2c9813bac5e142cef8dbca7539d6e5336c8cfdd7"
+    },
+    {
+      "path": "Functional/Heavy-1920-wall.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "9db16236ec080d848189fce132077f5df0b7cc86438576c911da58ad37e9a5fb"
+    },
+    {
+      "path": "Functional/Light-1280-corridor.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "70766eaaef25fe80315cf28c0e13a03613f420c502c4b95302be6ed806893649"
+    },
+    {
+      "path": "Functional/Light-1280-damage.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "b8fe2342527616e30a821dcc2d27bd22a505b43905f2e338bccab9f993510f6c"
+    },
+    {
+      "path": "Functional/Light-1280-driveFire.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "17d8e1695fb2bc3b7ac7dd6011f6389bcaf0ab8eceae5a34a4a99a8c8b04de6b"
+    },
+    {
+      "path": "Functional/Light-1280-framing.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "f3185c7d1dd9d6c70430c6ffbfdf715b643eaeadf2e84b4752cedd280754d53e"
+    },
+    {
+      "path": "Functional/Light-1280-wall.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "cde83c9bf3a7bcbe72858b8ee2a1575c396e3c8097abba5a17a0fe90baa4b847"
+    },
+    {
+      "path": "Functional/Light-1920-corridor.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "595b0c7b9eebc3d1289087b6f10fd22dff98a39510f60c694265dece299d1537"
+    },
+    {
+      "path": "Functional/Light-1920-damage.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "9cf7517ad478e52655181d60762d10091938494acd427aceaf731de67ce528d7"
+    },
+    {
+      "path": "Functional/Light-1920-driveFire.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "daa02b77b9c81fdb1549ecd226a32559afaac3ffa4b2402bcbef661f3282e1d4"
+    },
+    {
+      "path": "Functional/Light-1920-framing.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "30ddde434a894d63892ad260da207d16fc1c2efd925b91d67d342153e1663b4e"
+    },
+    {
+      "path": "Functional/Light-1920-wall.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "d2629a707e3b41b22c64724fe0d33a2ea5ee090c034457f04cf4ae83c2d2b775"
+    },
+    {
+      "path": "Functional/Tall-1280-corridor.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "4b1dbcd72c4968f5b65c869520d9be7ac28096f936cd13da229b2bc7dc14ebb4"
+    },
+    {
+      "path": "Functional/Tall-1280-damage.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "155146592acbbbb5288081b1587e78dd51fbb243b00eff92604f236042ff2260"
+    },
+    {
+      "path": "Functional/Tall-1280-framing.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "d85e9ea7ea449ca1bea1221cae811254d502fab0cbbdaf638ed59b7ef1ac134f"
+    },
+    {
+      "path": "Functional/Tall-1280-wall.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "bdd2550ba67c610eca309463bb549b77d3f536d8e0200d53fa5ccad8a5ab0c3c"
+    },
+    {
+      "path": "Functional/Tall-1920-corridor.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "47b461ec05157923984392ad652f67db3abc09a0d3c6ec8b2b4d2e68ef74ed6e"
+    },
+    {
+      "path": "Functional/Tall-1920-damage.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "99f13509d67423f2393ca716bacf7715a0f003545d9918cbd8138d0fb272abfb"
+    },
+    {
+      "path": "Functional/Tall-1920-framing.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a495440c0e8aeeffe28a599549cd3e5fe88c0d7bf1b74e2f5593fe626542898b"
+    },
+    {
+      "path": "Functional/Tall-1920-wall.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "d4b425ff8c2b4bb9aed66caada3ba509eed1d324fe7dc7fefd9bb6ef3c6e838a"
+    },
+    {
+      "path": "Functional/Wide-1280-corridor.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "b539d7e61d8a99e03c10c226068d20a6fc9b0d7d034b79ea85a34f3ff845ddf2"
+    },
+    {
+      "path": "Functional/Wide-1280-damage.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "2c3384e0a433302e87eb2a5f883e1186be0e9ed29962364ff964d45291949efa"
+    },
+    {
+      "path": "Functional/Wide-1280-framing.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "489f90feb2d0aa4e05ec7c288724c19cc35157d1b43ee23fbdc875a3df5de19c"
+    },
+    {
+      "path": "Functional/Wide-1280-wall.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "31b2419e58decd16335461f25c252b6321b59a76faefb657ce34225336c78adc"
+    },
+    {
+      "path": "Functional/Wide-1920-corridor.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "7769473e88cc5d2fd85adcbdf027dd4f886ebca5823dd2dbdbb9ec85a0466932"
+    },
+    {
+      "path": "Functional/Wide-1920-damage.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "0061404da795a5e08350f3dd82b7116fdfa6d8df6ed14943d9ef077dfa2cb5d4"
+    },
+    {
+      "path": "Functional/Wide-1920-framing.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "5f4642d769af1f57e4cdad333b11eae20a9599ebdf9426c33641101a1cf6b8a5"
+    },
+    {
+      "path": "Functional/Wide-1920-wall.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "d5da6228223a727e57a0439de007d7525a92ca4d50408ac170358e6eee866d86"
+    }
+  ],
+  "overall": "FAIL / source camera repair needed; no G2"
+}
