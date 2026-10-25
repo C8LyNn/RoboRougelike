@@ -1,0 +1,62 @@
+{
+  "schema": "b01-60-qa-native-manifest-v1",
+  "package_id": "B01-60-QA-NATIVE-001",
+  "producer": "B01-60",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "audited_repo_sha": "79245b3e244a7c640332deefd90b84144555f1d4",
+  "files": {
+    ".github/workflows/b01-w12-qa-native-tools.yml": {
+      "sha256": "351b9268ebcfe22c6cac362f6939a3d1a560d7958e2d325b25a2a412694b3e66",
+      "bytes": 749,
+      "git_blob_sha1": "5c94cbabb0d75cfa529eb7fddf06a83d33ef8765"
+    },
+    "Tools/B01/QA-NATIVE-001/KNOWN_LIMITATIONS.md": {
+      "sha256": "b6fe8fcd641027fa17a1f32f671d66818574ac21d0adb5148b0e420b14f3190f",
+      "bytes": 1168,
+      "git_blob_sha1": "97dd5586aa8b763f211f208df98ff5ccfae30494"
+    },
+    "Tools/B01/QA-NATIVE-001/README.md": {
+      "sha256": "e7c65af286aca8e25cc10029b1cbb3b6e00d79fa96b10b51026956cdaaf0e242",
+      "bytes": 3165,
+      "git_blob_sha1": "2ad7647f53222f2aecd15b9fac7a7235a0fc05bc"
+    },
+    "Tools/B01/QA-NATIVE-001/Run-NativeQA.ps1": {
+      "sha256": "a8c6140b5c150794e841985cb6388e9ade6c53a9ef0e75b8a0ad5ef108bb1da2",
+      "bytes": 4667,
+      "git_blob_sha1": "2d82149553ea13178d44b946f6c4a078e9cc7465"
+    },
+    "Tools/B01/QA-NATIVE-001/TEST_PLAN.md": {
+      "sha256": "b9b8b9041653eabc0784005b317d658952347456e21fabfc5622f23a4fbe0142",
+      "bytes": 1645,
+      "git_blob_sha1": "cd20228d60c4b2f6f16883135cfed60bd8b3e5b8"
+    },
+    "Tools/B01/QA-NATIVE-001/plan.example.json": {
+      "sha256": "14420c69b835b9f195d7a10f002eadf29f0d0eaf67c05369680cde844a4c7f7b",
+      "bytes": 1461,
+      "git_blob_sha1": "693cf965b1110b5bf67d093e911c2b8cbc6d5496"
+    },
+    "Tools/B01/QA-NATIVE-001/qa_native.py": {
+      "sha256": "66f88e65daac8d90770964fd3ab6209e8456c866b93c7391d6d198707e25bae6",
+      "bytes": 5583,
+      "git_blob_sha1": "f93be92299889eef14462a5e9131f072e69ed95a"
+    },
+    "Tools/B01/QA-NATIVE-001/test_qa_native.py": {
+      "sha256": "27f813f30b722d4319475f356725d91d874daad742dde019511016f990db1a0e",
+      "bytes": 4404,
+      "git_blob_sha1": "922429a7927b0ef99692c663a81cb844f1917f17"
+    }
+  },
+  "tests": {
+    "repo_ci": "40222146734",
+    "windows": "13/13 PASS synthetic",
+    "linux": "13/13 PASS synthetic",
+    "native_unity": "NOT_RUN",
+    "powershell_native_runner": "NOT_RUN"
+  },
+  "g2": "HOLD",
+  "local_separate_full_source_zip": {
+    "bytes": 18018,
+    "sha256": "cf3c7dc31f8089339984c09ce503898eb0273f433a784879d29ba972edfa6121",
+    "note": "Local ChatGPT archive is not byte-identical to tracked PR source; do not mix release hashes"
+  }
+}
