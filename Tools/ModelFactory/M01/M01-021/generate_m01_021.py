@@ -230,7 +230,7 @@ def blender_export(parts,out):
   if parent:o.parent=parent
   o.empty_display_size=.06
   return o
- mount=empty('MOUNT_FRONT_SOCKET')
+ mount=empty('MOUNT_SIDE_SOCKET')
  ring=empty('VALVE_WHEEL_ROTATE_Z', (VALVE_X,VALVE_Y,0.),mount)
  mats={}
  for name,(rgba,metal,rough,emission,strength) in MATS.items():
@@ -274,7 +274,7 @@ def main():
  parser.add_argument('--repeat',action='store_true');parser.add_argument('--self-test',action='store_true')
  args=parser.parse_args(argv);parts=build()
  report={'asset_id':ASSET_ID,'model':'Kanister plazmy z dyszą',
-         'mount':'MOUNT_FRONT_SOCKET (0,0,0), Y-up, +Z-forward',
+         'mount':'MOUNT_SIDE_SOCKET (0,0,0), Y-up, +Z-forward',
          'motion':'VALVE_WHEEL_ROTATE_Z, 0→115→0 degrees about local Z',
          **topology(parts),**clearance(parts),
          'blender_export':'NOT RUN','unity_import':'NOT RUN',
@@ -289,10 +289,10 @@ def main():
   report['backend']='blender-bpy';report.update(blender_export(parts,out))
   if args.repeat:
    first=(len(bpy.data.objects),len(bpy.data.materials),
-          len([c for c in bpy.data.collections if c.name.startswith('M01_021_RESONATOR')]))
+          len([c for c in bpy.data.collections if c.name.startswith('M01_021_PLASMA_CANISTER')]))
    report.update(blender_export(parts,out))
    second=(len(bpy.data.objects),len(bpy.data.materials),
-           len([c for c in bpy.data.collections if c.name.startswith('M01_021_RESONATOR')]))
+           len([c for c in bpy.data.collections if c.name.startswith('M01_021_PLASMA_CANISTER')]))
    assert first==second,('Blender rerun leaked objects/materials',first,second)
    report['blender_repeatability']='PASS (two builds in one process)'
    report['blender_scene_counts']=list(second)
