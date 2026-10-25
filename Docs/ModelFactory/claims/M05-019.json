@@ -7,13 +7,17 @@
   "run": "2026-10-25T01:00Z",
   "production_branch": "feature/rrl-model-m05-019-holographic-projector",
   "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/175",
-  "production_commit": "85171b6edd65ceda3e147efcbbacce340299d607",
+  "production_commit": "eb8d71286fff4ccaee62c72a883f0ada7da3e985",
   "qa": {
-    "blender": "NOT RUN",
-    "glb": "NOT RUN",
-    "fbx": "NOT RUN",
-    "unity": "NOT RUN",
-    "full_mesh_collision": "NOT RUN"
+    "blender": "PASS (4.0.2, 53 meshes, 8 materials, 2 runs, manifold)",
+    "glb": "PASS (8 materials, animation, mount and pivot markers)",
+    "fbx": "PASS (export generated)",
+    "blend": "PASS (saved)",
+    "analytic_motion": "PASS (121 samples; 0.122m core gap)",
+    "full_mesh_collision": "NOT RUN",
+    "unity": "NOT RUN (activation credentials missing)",
+    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150381008",
+    "artifact_id": 12581817848
   },
-  "notes": "Generator, README and CI committed; pending actual Blender workflow execution."
+  "notes": "Draft PR #175. Real Blender CI PASS; Unity EditMode/PlayMode blocked by missing activation credentials. No merge."
 }
