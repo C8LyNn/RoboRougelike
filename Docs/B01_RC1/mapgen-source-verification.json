@@ -1,0 +1,69 @@
+{
+  "asmdefs": {
+    "Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef": {
+      "allowUnsafeCode": false,
+      "autoReferenced": true,
+      "defineConstraints": [],
+      "excludePlatforms": [],
+      "includePlatforms": [],
+      "name": "B01.MAPGEN001.Runtime",
+      "noEngineReferences": false,
+      "overrideReferences": false,
+      "precompiledReferences": [],
+      "references": [],
+      "rootNamespace": "B01.MAPGEN001",
+      "versionDefines": []
+    },
+    "Assets/B01Packages/MAPGEN001/Tests/EditMode/B01.MAPGEN001.EditModeTests.asmdef": {
+      "allowUnsafeCode": false,
+      "autoReferenced": false,
+      "defineConstraints": [],
+      "excludePlatforms": [],
+      "includePlatforms": [
+        "Editor"
+      ],
+      "name": "B01.MAPGEN001.EditModeTests",
+      "noEngineReferences": false,
+      "optionalUnityReferences": [
+        "TestAssemblies"
+      ],
+      "overrideReferences": false,
+      "precompiledReferences": [],
+      "references": [
+        "B01.MAPGEN001.Runtime"
+      ],
+      "rootNamespace": "B01.MAPGEN001.Tests",
+      "versionDefines": []
+    },
+    "Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef": {
+      "allowUnsafeCode": false,
+      "autoReferenced": false,
+      "defineConstraints": [],
+      "excludePlatforms": [],
+      "includePlatforms": [],
+      "name": "B01.MAPGEN001.PlayModeTests",
+      "noEngineReferences": false,
+      "optionalUnityReferences": [
+        "TestAssemblies"
+      ],
+      "overrideReferences": false,
+      "precompiledReferences": [],
+      "references": [
+        "B01.MAPGEN001.Runtime"
+      ],
+      "rootNamespace": "B01.MAPGEN001.Tests",
+      "versionDefines": []
+    }
+  },
+  "external_assembly_refs": [],
+  "manifest_sha256": "28eb9239a0d17d175a37ee607164e08d179fb61a936bf7019d3d13fb0d277d1f",
+  "package": "MAPGEN001",
+  "revision": "R3.4.1",
+  "sha256_entries": 62,
+  "source_sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+  "status": "PASS_SOURCE_STATIC_NOT_NATIVE",
+  "unity_guid_count": 22,
+  "zip_bytes": 89258,
+  "zip_entries": 63,
+  "zip_sha256": "2337cb85c090f194a7e10474e73bf3b6aa69f86eeabc74b3204a59d3a60bc623"
+}

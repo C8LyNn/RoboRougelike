@@ -1,0 +1,13 @@
+{
+  "source": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+  "interactive": true,
+  "startedUtc": "2026-10-25T22:59:43.3594407Z",
+  "exeSha256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "additional": [
+    "-rc1-native-output",
+    "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-FINAL-MAPGEN-API1080"
+  ],
+  "width": 1920,
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Builds\\B01-RC1-QA\\RoboRougelike.exe",
+  "height": 1080
+}

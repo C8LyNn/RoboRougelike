@@ -1,0 +1,16 @@
+{
+  "exitCode": 0,
+  "startedUtc": "2026-10-25T21:54:45.4895475Z",
+  "phase": "EditMode",
+  "source": "bc46c8ad7a3ea32c7099b390bdde46b641e95588",
+  "finishedUtc": "2026-10-25T21:55:10.4485526Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-Targeted-20261025T215432Z\\EditMode.xml\"",
+    "-testFilter",
+    "MapgenRC1IntegrationTests;B01.MAPGENWORLD001.Tests"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "post-run binary audit; files were not rebuilt between runs",
+  "recordedUtc": "2026-10-25T23:06:07.109234+00:00",
+  "launchSource": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+  "exeSha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+  "managed": {
+    "Assembly-CSharp.dll": {
+      "sha256": "76961b9c948fafb220967a24233d56991b6968707bc85e84a37162968d634693",
+      "bytes": 340480,
+      "lastWriteUtc": "2026-10-25T22:57:47.451590+00:00"
+    },
+    "B01.MAPGEN001.Runtime.dll": {
+      "sha256": "a538730e027f53dbaa4a89cfbad8d28d411684176849c461c317e291b9c01dee",
+      "bytes": 24064,
+      "lastWriteUtc": "2026-10-25T22:57:47.452091+00:00"
+    },
+    "B01.MAPGENWORLD001.Runtime.dll": {
+      "sha256": "eab7ab08b5f641b488b2b8e2482805a5363a8a16cc4fd779821504b74a0237f5",
+      "bytes": 12288,
+      "lastWriteUtc": "2026-10-25T22:57:47.457099+00:00"
+    }
+  }
+}

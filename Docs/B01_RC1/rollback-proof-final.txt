@@ -1,0 +1,115 @@
+Preparing worktree (new branch 'rollback/b01-rc1-20261025T225554Z')
+Updating files:  81% (1493/1826)
+Updating files:  82% (1498/1826)
+Updating files:  83% (1516/1826)
+Updating files:  84% (1534/1826)
+Updating files:  85% (1553/1826)
+Updating files:  86% (1571/1826)
+Updating files:  87% (1589/1826)
+Updating files:  88% (1607/1826)
+Updating files:  89% (1626/1826)
+Updating files:  90% (1644/1826)
+Updating files:  91% (1662/1826)
+Updating files:  92% (1680/1826)
+Updating files:  93% (1699/1826)
+Updating files:  94% (1717/1826)
+Updating files:  95% (1735/1826)
+Updating files:  96% (1753/1826)
+Updating files:  97% (1772/1826)
+Updating files:  98% (1790/1826)
+Updating files:  99% (1808/1826)
+Updating files: 100% (1826/1826)
+Updating files: 100% (1826/1826), done.
+HEAD is now at 86eb7bb fix(rc1): require a prepared physical player before generated entry
+[rollback/b01-rc1-20261025T225554Z b3c6b8f] Revert "fix(rc1): require a prepared physical player before generated entry"
+ Date: Sun Oct 25 23:55:56 2026 +0100
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+[rollback/b01-rc1-20261025T225554Z b1db3c8] Revert "test(rc1): reject generated entry before a physical player exists"
+ Date: Sun Oct 25 23:55:56 2026 +0100
+ 1 file changed, 12 deletions(-)
+[rollback/b01-rc1-20261025T225554Z af6a921] Revert "feat(rc1): connect opt-in generated arena to existing R3 combat and garage flow"
+ Date: Sun Oct 25 23:55:56 2026 +0100
+ 9 files changed, 5 insertions(+), 344 deletions(-)
+ delete mode 100644 Assets/Editor/B01RC1Build.cs
+ delete mode 100644 Assets/Editor/B01RC1Build.cs.meta
+ delete mode 100644 Assets/R1/B01RC1RuntimeQA.cs
+ delete mode 100644 Assets/R1/B01RC1RuntimeQA.cs.meta
+ delete mode 100644 Assets/R1/R1GeneratedArena.cs
+ delete mode 100644 Assets/R1/R1GeneratedArena.cs.meta
+[rollback/b01-rc1-20261025T225554Z 28ea4da] Revert "test(rc1): specify generated arena entry and canonical reward cleanup before wiring"
+ Date: Sun Oct 25 23:55:57 2026 +0100
+ 2 files changed, 134 deletions(-)
+ delete mode 100644 Assets/Tests/Editor/MapgenRC1IntegrationTests.cs
+ delete mode 100644 Assets/Tests/Editor/MapgenRC1IntegrationTests.cs.meta
+[rollback/b01-rc1-20261025T225554Z 52e3af0] Revert "chore(rc1): stage frozen MAPGEN R3.4.1 and B01-21 world adapter after rollback checks"
+ Date: Sun Oct 25 23:55:57 2026 +0100
+ 60 files changed, 2310 deletions(-)
+ delete mode 100644 Assets/B01Packages.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Demo.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Demo/MAPGEN001_Demo.unity
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Demo/MAPGEN001_Demo.unity.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Resources.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Resources/MAPGEN001_BlocksURP.shader
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Resources/MAPGEN001_BlocksURP.shader.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/B01.MAPGEN001.Runtime.asmdef.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenDemo.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenDemo.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode/B01.MAPGEN001.EditModeTests.asmdef
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode/B01.MAPGEN001.EditModeTests.asmdef.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenEditModeTests.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenEditModeTests.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/EditMode/MapGenRouteValidationTests.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode/B01.MAPGEN001.PlayModeTests.asmdef.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs
+ delete mode 100644 Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/B01.MAPGENWORLD001.Runtime.asmdef
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/B01.MAPGENWORLD001.Runtime.asmdef.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapGenWorldAdapter.cs
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapGenWorldAdapter.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldDemo.cs
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldDemo.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/EditMode.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/B01.MAPGENWORLD001.EditModeTests.asmdef
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/B01.MAPGENWORLD001.EditModeTests.asmdef.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/MapWorldPolicyTests.cs
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/MapWorldPolicyTests.cs.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/B01.MAPGENWORLD001.PlayModeTests.asmdef
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/B01.MAPGENWORLD001.PlayModeTests.asmdef.meta
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/MapWorldLifecycleTests.cs
+ delete mode 100644 Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/MapWorldLifecycleTests.cs.meta
+{
+  "note": "Original integration checkout and BASE/experimental ZIPs untouched; no shared branch merge, reset, force-push or branch deletion",
+  "source": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+  "target": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1-RollbackProof-Final",
+  "rollbackHead": "52e3af002e9de2a1a95f4081df31e161704fab2b",
+  "branch": "rollback/b01-rc1-20261025T225554Z",
+  "status": "PASS_SOURCE_ROLLBACK_NOT_A_NEW_NATIVE_RUN",
+  "entireTreeIdenticalToBase": true,
+  "gameFilesByteIdenticalToBase": true
+}

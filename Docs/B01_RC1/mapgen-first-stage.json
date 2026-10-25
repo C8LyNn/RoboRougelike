@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "result": {
+    "installed": 36,
+    "preserved": 0,
+    "journal": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\.b01-package-auto\\373ddc1506d544edad20ceab5cacffe8.json",
+    "G0_TARGET": "DISPOSABLE_STAGED_ONLY_NO_LIVE_ACK",
+    "G2_HANDOFF": "HOLD"
+  }
+}

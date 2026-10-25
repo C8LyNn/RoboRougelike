@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="35" result="Passed" total="35" passed="35" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:31Z" duration="8,0477752">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1056" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:31Z" duration="8.047775" total="35" passed="35" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1454" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="372" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:23Z" duration="0.464159" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="6296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1123" name="MapgenRC1IntegrationTests" fullname="MapgenRC1IntegrationTests" classname="MapgenRC1IntegrationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:23Z" duration="0.455266" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1125" name="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" fullname="MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" methodname="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="2108327568" result="Passed" start-time="2026-10-25 22:52:07Z" end-time="2026-10-25 22:52:10Z" duration="3.177526" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Heavy
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1126" name="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" fullname="MapgenRC1IntegrationTests.OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" methodname="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1712443908" result="Passed" start-time="2026-10-25 22:52:10Z" end-time="2026-10-25 22:52:13Z" duration="3.048989" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1128" name="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" fullname="MapgenRC1IntegrationTests.PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" methodname="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1246607642" result="Passed" start-time="2026-10-25 22:52:13Z" end-time="2026-10-25 22:52:17Z" duration="3.532226" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 19 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+]]></output>
+        </test-case>
+        <test-case id="1124" name="UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" fullname="MapgenRC1IntegrationTests.UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" methodname="UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="927069914" result="Passed" start-time="2026-10-25 22:52:17Z" end-time="2026-10-25 22:52:20Z" duration="3.104291" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+]]></output>
+        </test-case>
+        <test-case id="1127" name="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" fullname="MapgenRC1IntegrationTests.VictoryUsesExistingRewardsRepairsAndFreshRegeneration" methodname="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="258857392" result="Passed" start-time="2026-10-25 22:52:20Z" end-time="2026-10-25 22:52:23Z" duration="3.182100" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=1; złom z demontażu=33
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 2: przeciwników=3
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1484" name="B01.MAPGEN001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/B01.MAPGEN001.EditModeTests.dll" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:31Z" duration="7.519418" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="6296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1485" name="B01" fullname="B01" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:31Z" duration="7.518804" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1486" name="MAPGEN001" fullname="B01.MAPGEN001" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:31Z" duration="7.518256" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1487" name="Tests" fullname="B01.MAPGEN001.Tests" runstate="Runnable" testcasecount="24" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:31Z" duration="7.517543" total="24" passed="24" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1455" name="MapGenEditModeTests" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:24Z" duration="1.228577" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1459" name="DifferentRecipesDoNotAliasEachOther" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.DifferentRecipesDoNotAliasEachOther" methodname="DifferentRecipesDoNotAliasEachOther" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="834962575" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:23Z" duration="0.010100" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1458" name="HundredSeedsGenerateDeterministicallyAndKeepClearance" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.HundredSeedsGenerateDeterministicallyAndKeepClearance" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:24Z" duration="1.066328" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1456" name="HundredSeedsGenerateDeterministicallyAndKeepClearance(CombatArena)" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.HundredSeedsGenerateDeterministicallyAndKeepClearance(CombatArena)" methodname="HundredSeedsGenerateDeterministicallyAndKeepClearance" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="650848408" result="Passed" start-time="2026-10-25 22:52:23Z" end-time="2026-10-25 22:52:24Z" duration="0.571160" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1457" name="HundredSeedsGenerateDeterministicallyAndKeepClearance(ObstacleCourse)" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.HundredSeedsGenerateDeterministicallyAndKeepClearance(ObstacleCourse)" methodname="HundredSeedsGenerateDeterministicallyAndKeepClearance" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="1797773575" result="Passed" start-time="2026-10-25 22:52:24Z" end-time="2026-10-25 22:52:24Z" duration="0.494145" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1461" name="ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles" methodname="ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="1254813104" result="Passed" start-time="2026-10-25 22:52:24Z" end-time="2026-10-25 22:52:24Z" duration="0.149035" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1460" name="OutOfRangeConfigAndImpossibleVehicleFailClosed" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.OutOfRangeConfigAndImpossibleVehicleFailClosed" methodname="OutOfRangeConfigAndImpossibleVehicleFailClosed" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="1040435524" result="Passed" start-time="2026-10-25 22:52:24Z" end-time="2026-10-25 22:52:24Z" duration="0.001207" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1462" name="MapGenRouteValidationTests" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-25 22:52:24Z" end-time="2026-10-25 22:52:31Z" duration="6.288181" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1466" name="AnArenaWallThroughTheWholeRouteFailsClosed" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.AnArenaWallThroughTheWholeRouteFailsClosed" methodname="AnArenaWallThroughTheWholeRouteFailsClosed" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="245362361" result="Passed" start-time="2026-10-25 22:52:24Z" end-time="2026-10-25 22:52:24Z" duration="0.003355" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1474" name="ArenaCoverPositionsVaryAndStayPlayableForBothProfiles" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.ArenaCoverPositionsVaryAndStayPlayableForBothProfiles" methodname="ArenaCoverPositionsVaryAndStayPlayableForBothProfiles" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1178475551" result="Passed" start-time="2026-10-25 22:52:24Z" end-time="2026-10-25 22:52:25Z" duration="0.981005" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1469" name="ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius" methodname="ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1237234502" result="Passed" start-time="2026-10-25 22:52:25Z" end-time="2026-10-25 22:52:25Z" duration="0.002932" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1473" name="BlockedAndOverlappingEnemySpawnsAreRejected" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.BlockedAndOverlappingEnemySpawnsAreRejected" methodname="BlockedAndOverlappingEnemySpawnsAreRejected" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1787557455" result="Passed" start-time="2026-10-25 22:52:25Z" end-time="2026-10-25 22:52:25Z" duration="0.003261" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1470" name="CentralPitCannotPassOnlyFourCornerFootprintProbe" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.CentralPitCannotPassOnlyFourCornerFootprintProbe" methodname="CentralPitCannotPassOnlyFourCornerFootprintProbe" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="2077724438" result="Passed" start-time="2026-10-25 22:52:25Z" end-time="2026-10-25 22:52:25Z" duration="0.000411" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1475" name="CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute" methodname="CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="715825504" result="Passed" start-time="2026-10-25 22:52:25Z" end-time="2026-10-25 22:52:25Z" duration="0.007794" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1476" name="ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds" methodname="ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="411208938" result="Passed" start-time="2026-10-25 22:52:25Z" end-time="2026-10-25 22:52:28Z" duration="2.989380" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1467" name="HeavyRoverCannotStartWithRearHangingPastFloor" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HeavyRoverCannotStartWithRearHangingPastFloor" methodname="HeavyRoverCannotStartWithRearHangingPastFloor" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="226549570" result="Passed" start-time="2026-10-25 22:52:28Z" end-time="2026-10-25 22:52:28Z" duration="0.002928" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1465" name="HundredSeedsPassReferenceVehicleSweepsAndConnectivity" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HundredSeedsPassReferenceVehicleSweepsAndConnectivity" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 22:52:28Z" end-time="2026-10-25 22:52:31Z" duration="2.275563" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1463" name="HundredSeedsPassReferenceVehicleSweepsAndConnectivity(CombatArena)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HundredSeedsPassReferenceVehicleSweepsAndConnectivity(CombatArena)" methodname="HundredSeedsPassReferenceVehicleSweepsAndConnectivity" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="2081918768" result="Passed" start-time="2026-10-25 22:52:28Z" end-time="2026-10-25 22:52:30Z" duration="1.200806" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1464" name="HundredSeedsPassReferenceVehicleSweepsAndConnectivity(ObstacleCourse)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HundredSeedsPassReferenceVehicleSweepsAndConnectivity(ObstacleCourse)" methodname="HundredSeedsPassReferenceVehicleSweepsAndConnectivity" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1452523486" result="Passed" start-time="2026-10-25 22:52:30Z" end-time="2026-10-25 22:52:31Z" duration="1.073794" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1472" name="LongNinetyDegreePolylineNeedsRealisticFilletRoom" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.LongNinetyDegreePolylineNeedsRealisticFilletRoom" methodname="LongNinetyDegreePolylineNeedsRealisticFilletRoom" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="2145910634" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000635" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1483" name="PlannerRejectsNonFiniteSlopeConfiguration" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.PlannerRejectsNonFiniteSlopeConfiguration" methodname="PlannerRejectsNonFiniteSlopeConfiguration" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1027924344" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000302" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1482" name="R32NarrowLightSideRampsNeverBlockReferenceSpine" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.013978" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1477" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(2)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(2)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1428898144" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.002959" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1478" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(12)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(12)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1173081528" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.002484" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1479" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(14)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(14)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="147953015" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.002466" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1480" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(22)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(22)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="740941768" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.002423" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1481" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(28)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(28)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="807337095" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.002407" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1468" name="RampBeyondVehicleSlopeCapabilityIsRejected" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.RampBeyondVehicleSlopeCapabilityIsRejected" methodname="RampBeyondVehicleSlopeCapabilityIsRejected" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="313739930" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.003132" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1471" name="UnsupportedStartReportsStartBlockedBeforeRouteSampling" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.UnsupportedStartReportsStartBlockedBeforeRouteSampling" methodname="UnsupportedStartReportsStartBlockedBeforeRouteSampling" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="240148470" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000360" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1495" name="B01.MAPGENWORLD001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/B01.MAPGENWORLD001.EditModeTests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.009548" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="6296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1496" name="B01" fullname="B01" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.009121" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1497" name="MAPGENWORLD001" fullname="B01.MAPGENWORLD001" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.008820" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1498" name="Tests" fullname="B01.MAPGENWORLD001.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.008566" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1488" name="MapWorldPolicyTests" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.008293" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1489" name="ArenaLight7PassesWithMeasuredEnvelope" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.ArenaLight7PassesWithMeasuredEnvelope" methodname="ArenaLight7PassesWithMeasuredEnvelope" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1715366592" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.003817" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1490" name="CourseHeavy31PassesWithMeasuredEnvelope" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.CourseHeavy31PassesWithMeasuredEnvelope" methodname="CourseHeavy31PassesWithMeasuredEnvelope" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="199393580" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.002702" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1493" name="MinimumClearanceCannotBeWeakened" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MinimumClearanceCannotBeWeakened" methodname="MinimumClearanceCannotBeWeakened" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="175686733" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000122" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1491" name="MissingMeasurementRejectedBeforeBuilder" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MissingMeasurementRejectedBeforeBuilder" methodname="MissingMeasurementRejectedBeforeBuilder" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1625971966" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000072" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1492" name="NarrowCourseWithRealLightRejects" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NarrowCourseWithRealLightRejects" methodname="NarrowCourseWithRealLightRejects" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="784404824" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000110" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1494" name="NullAndInvalidRigFailClosed" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NullAndInvalidRigFailClosed" methodname="NullAndInvalidRigFailClosed" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="495278354" result="Passed" start-time="2026-10-25 22:52:31Z" end-time="2026-10-25 22:52:31Z" duration="0.000090" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,16 @@
+{
+  "finishedUtc": "2026-10-25T19:17:26.1892085Z",
+  "exitCode": 0,
+  "phase": "EditMode",
+  "source": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "startedUtc": "2026-10-25T19:12:54.9306037Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-Base-20261025T191245Z\\EditMode.xml\"",
+    "-testFilter",
+    "OBJ001IntegrationTests;OBJ001GameplayTests;B01GroundedDriveTests;B01CoreRecoveryTests;B01EnemyGroundingTests;R3GaragePlayTests;R4CombatTests;RRLW34RewardTests"
+  ]
+}

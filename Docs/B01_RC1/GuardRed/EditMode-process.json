@@ -1,0 +1,16 @@
+{
+  "exitCode": 2,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-Targeted-20261025T224911Z\\EditMode.xml\"",
+    "-testFilter",
+    "MapgenRC1IntegrationTests.UnpreparedRouteRejectsGeneratedEntryWithoutPlayer"
+  ],
+  "finishedUtc": "2026-10-25T22:49:37.8385474Z",
+  "startedUtc": "2026-10-25T22:49:24.2603694Z",
+  "phase": "EditMode",
+  "source": "ebadd88320520dee6506839abd7f66a3f60ba66b"
+}
