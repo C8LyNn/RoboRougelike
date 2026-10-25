@@ -46,7 +46,7 @@ def retrofit(raw,model):
  e=d.setdefault("asset",{}).setdefault("extras",{})
  e["b01VisualRetrofit"]={"package_id":"B01-VIS-LEGENDARY-W12-R1","modelId":model,"legendaryDefinitionId":s["legend"],"referenceGlbSha256":src,
   "unapprovedMassKg":None,"massStatus":"UNRESOLVED_W12_CONTRACT","mountSocketKind":s["tag"],"socketAuthority":False,"weakSide":s["weak"],
-  "footprintCellsProposed":s["footprint"],"gridM":0.55,"noGameplayChanges":True,"unityImport":"NOT_RUN","triangleCollision":"NOT_RUN",
+  "footprintCellsProposed":s["footprint"],"gridM":0.55,"noGameplayChanges":True,"unityImport":"NOT_RUN","triangleCollision":"NOT_RUN","weaponOrMobilityBinding":"VISUAL_ONLY_RECEIVER_MUST_AUTHORIZE_TYPED_SOCKET","sourceCoordinateSystem":"GLB_2_Y_UP_FORWARD_PLUS_Z",
   "meshBuffersPreserved":True,"animationBuffersPreserved":True}
  index=len(d["nodes"])
  d["nodes"].append({"name":"VIS_LEG_"+s["legend"]+"_SOCKET_"+s["tag"].upper(),"translation":[0,0,0],"extras":{"visualOnly":True,"typeHint":s["tag"],"isAuthoritativeSocket":False,"canAuthorizeMount":False}})
