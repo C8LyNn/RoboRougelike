@@ -4,12 +4,12 @@ Claim: `Docs/ModelFactory/claims/M02-023.json` on `feature/rrl-model-factory-que
 
 ## Model and contract
 
-Visual, side-mounted roller-chain reduction drive with **24-tooth input sprocket**, **16-tooth output sprocket**, **48 rigid chain links**, paired side plates, bronze rollers, open eight-spoke sprockets, frame attachment and service details. The two sprockets rotate in the **same direction** with angular speed ratio **2:3** (input:output). No gameplay, force transmission, Rigidbody, or Unity scripts are added.
+Visual, side-mounted roller-chain speed-up drive with **24-tooth input sprocket**, **16-tooth output sprocket**, **48 rigid chain links**, paired side plates, bronze rollers, open eight-spoke sprockets, frame attachment and service details. The two sprockets rotate in the **same direction** with angular speed ratio **2:3** (input:output). No gameplay, force transmission, Rigidbody, or Unity scripts are added.
 
 - **Scale:** 1 Blender unit = 1 metre.
 - **Pivot:** `MOUNT_SIDE_SOCKET_UNITY_1M` at world origin `(0,0,0)`; side-mount face near Y=0.
 - **Coordinates:** Blender +X horizontal, +Y shaft axis, +Z vertical. Chain plane Y=-0.240 m. Sprocket centreline Z=-0.205 m.
-- **Kinematics:** 121 frames at 30 FPS. Chain travels one complete closed loop; the 24T wheel turns twice, 16T wheel three times. Each link has animated position and orientation along analytically computed tangents and pitch-circle arcs.
+- **Kinematics:** 121 frames at 30 FPS. Chain travels one complete closed loop; the 24T wheel turns twice, 16T wheel three times. Each link has animated position and orientation along analytically computed tangents and pitch-circle arcs. All 50 moving groups are assigned to a single named NLA track for a synchronized glTF cycle.
 - **Visual separation:** radial roller-to-tooth-tip envelope >=5 mm; plates sit outboard of the sprocket plane; chain plates have swept 2D oriented-box SAT collision checks.
 - **Materials:** eight PBR materials: forged graphite, alloy, bronze, safety orange, rubber, ceramic, hardened steel, emissive service indicator. Emission is a minor indicator, not the main appearance.
 
