@@ -1,8 +1,17 @@
 {
   "id": "M02-022",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DONE_DRAFT_PR",
   "claimed_at_utc": "2026-10-25T06:46:09.341Z",
   "model": "Moduł osi skrętnej",
-  "run": "2026-10-25T06:45Z"
+  "run": "2026-10-25T06:45Z",
+  "branch": "feature/rrl-model-m02-022-steerable-axle-module",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/201",
+  "model_commit": "0a029deeb01e48472957840d1a53fd63c58b2527",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40170566817",
+  "qa_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40170566817/artifacts/12589639933",
+  "blender": "PASS",
+  "glb": "PASS",
+  "unity": "BLOCKED_UNITY_ACTIVATION",
+  "updated_at_utc": "2026-10-25T06:52:05.074Z"
 }
