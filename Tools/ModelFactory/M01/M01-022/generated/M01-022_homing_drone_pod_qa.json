@@ -1,0 +1,52 @@
+{
+  "asset_id": "M01-022",
+  "model": "Samonaprowadzający zasobnik dronów",
+  "mount": "MOUNT_TOP_SOCKET (0,0,0), Y-up, +Z-forward",
+  "motion": "six DOOR_NN_HINGE_X; 0 to -68 to 0 degrees around local X",
+  "visual_drone_cells": "2x3",
+  "gameplay_ai": "NOT IMPLEMENTED",
+  "parts": 87,
+  "vertices": 2058,
+  "triangles": 3840,
+  "materials": 7,
+  "watertight_oriented_positive_volume": "PASS",
+  "sampled_animation_frames": 73,
+  "aabb_pair_checks": 127896,
+  "moving_parts": 24,
+  "moving_vs_fixed_collisions": 0,
+  "moving_vs_other_door_collisions": 0,
+  "minimum_separation_aabb_m": 0.048822,
+  "door_open_degrees": 68,
+  "clearance": "PASS (sampled conservative AABB, not continuous triangle CCD)",
+  "blender_export": "PASS (files written; visual review pending)",
+  "unity_import": "NOT RUN",
+  "unity_editmode": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "visual_inspection": "NOT RUN",
+  "static_files": [
+    "M01-022_homing_drone_pod.obj",
+    "M01-022_homing_drone_pod.mtl"
+  ],
+  "backend": "blender-bpy",
+  "blender_version": "4.0.2",
+  "animated_files": [
+    "M01-022_homing_drone_pod.fbx",
+    "M01-022_homing_drone_pod.glb",
+    "M01-022_homing_drone_pod.blend"
+  ],
+  "animation_nodes": [
+    "DOOR_01_HINGE_X",
+    "DOOR_02_HINGE_X",
+    "DOOR_03_HINGE_X",
+    "DOOR_04_HINGE_X",
+    "DOOR_05_HINGE_X",
+    "DOOR_06_HINGE_X"
+  ],
+  "animation_keyframes_per_hinge": 25,
+  "blender_repeatability": "PASS (two builds in one Blender process)",
+  "blender_scene_counts": [
+    97,
+    9,
+    1
+  ]
+}
