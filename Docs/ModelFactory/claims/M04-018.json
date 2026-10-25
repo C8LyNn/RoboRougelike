@@ -1,8 +1,40 @@
 {
   "id": "M04-018",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "MODEL_COMPLETE",
   "claimed_at_utc": "2026-10-25T01:22:25Z",
   "model": "Kotwica stabilizująca",
-  "run": "2026-10-25T01:00:00Z"
+  "run": "2026-10-25T01:00:00Z",
+  "model_branch": "feature/rrl-model-m04-018-deployable-stabilizer-anchor",
+  "model_commit": "83a2fd7da5351c3005a2dae8049b43cbe15d23ba",
+  "draft_pr": 176,
+  "draft_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/176",
+  "files": [
+    "Tools/ModelFactory/M04/M04-018/generate_m04_018.py",
+    "Tools/ModelFactory/M04/M04-018/qa_m04_018.py",
+    "Tools/ModelFactory/M04/M04-018/README.md",
+    ".github/workflows/ci-m04-018.yml"
+  ],
+  "qa": {
+    "blender": "PASS Blender 5.0.1",
+    "blend_reopen": "PASS",
+    "glb_export": "PASS",
+    "obj_export": "PASS",
+    "independent_glb_obj": "PASS",
+    "manifold": "PASS",
+    "sampled_vertex_clearance": "PASS (31 poses; 57784 transformed vertices; min radial clearance 0.07035 m; sector clearance 32.437 degrees)",
+    "unity_editmode": "NOT RUN",
+    "unity_playmode": "NOT RUN",
+    "unity_import": "NOT RUN",
+    "manual_visual": "NOT RUN",
+    "swept_triangle_collision": "NOT RUN"
+  },
+  "ci_run": 40150614062,
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150614062/artifacts/12582640059",
+  "artifact_sha256": "2db21e527b9979b4f38e1032b506be0550c3283f9d79ec3d2b4767645fb3d632",
+  "blockers": [
+    "Unity runtime/activation unavailable; import and EditMode/PlayMode not executed",
+    "Full swept triangle collision and manual visual review not executed"
+  ],
+  "updated_at_utc": "2026-10-25T01:27:20Z"
 }
