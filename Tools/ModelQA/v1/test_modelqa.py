@@ -24,6 +24,14 @@ class AuditorTests(unittest.TestCase):
         self.assertEqual(out["pairs_checked"],5)
         self.assertEqual(out["positive_aabb_pairs"],5)
         self.assertEqual(out["narrowphase"],"NOT_RUN")
+    def test_actual_m05_four_angle_key_format_including_return(self):
+        model={"hinge_pivot":[0,0,0],"tilt_degrees":[-22,0,22,0],
+               "parts":[self.box("static",[0,0,0],"base"),
+                        self.box("moving",[3,0,0],"tilt")]}
+        result=sweep_json(model,.5)
+        self.assertEqual(result["sample_count"],89)
+        self.assertEqual(result["pairs_checked"],89)
+
     def test_sampled_clear_separate_parts(self):
         m={"hinge_pivot":[0,0,0],"tilt_degrees":[-1,1],
            "parts":[self.box("static",[0,0,0],"base"),
