@@ -1,0 +1,61 @@
+name: B01 MODEL-QA-AUTO-001 (isolated read-only)
+
+on:
+  push:
+    branches:
+      - audit/b01-modelqa-auto001-r1-isolated
+    paths:
+      - "Tools/ModelQA/**"
+      - ".github/workflows/b01-modelqa-auto001-r1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  immutable-model-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Fetch only six existing model PR heads for immutable checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          for id in 40 50 46 73 52 102; do
+            git -c protocol.version=2 fetch --no-tags origin "refs/pull/$id/head:refs/remotes/origin/modelqa/pr$id"
+          done
+      - name: Verify every fetched pinned pilot commit exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,subprocess
+          c=json.load(open("Tools/ModelQA/v1/catalog.json",encoding="utf-8"))
+          for m in c["models"]:
+              if m["id"] not in ("M02-001","M05-002","M01-003"): continue
+              for field in ("original_sha","fix_sha"):
+                  sha=m[field]
+                  subprocess.run(["git","cat-file","-e",sha+"^{commit}"],check=True)
+                  print(m["id"],field,sha)
+          PY
+      - name: Run actual independent auditor unit tests
+        run: python Tools/ModelQA/v1/test_modelqa.py
+      - name: Run read-only source and geometry comparison on real PR history
+        run: |
+          python Tools/ModelQA/v1/modelqa.py --repo . --catalog Tools/ModelQA/v1/catalog.json --output modelqa_report
+      - name: Render six orthographic views and five intermediate hinge poses
+        shell: bash
+        run: |
+          set -euo pipefail
+          git show f7ab038346985a7d7d1437f7733bcf0257cf14bb:Tools/ModelFactory/M05/M05-002/geometry.json > modelqa_report/M05-002_fixed_geometry.json
+          python Tools/ModelQA/v1/render_diagnostic.py modelqa_report/M05-002_fixed_geometry.json --output modelqa_report/renders
+      - name: Archive QA evidence (NOT a production asset release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-modelqa-auto001-r1-evidence
+          path: modelqa_report/
+          retention-days: 21
