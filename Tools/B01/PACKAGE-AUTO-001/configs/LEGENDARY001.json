@@ -1,0 +1,17 @@
+{
+  "config_schema": 1,
+  "id": "LEGENDARY001",
+  "kind": "domain_only",
+  "revision": "R1_PROTO",
+  "source_sha": "7e9d9ca0a0ef6d4c9bf1ce39fdb187b0d960958d",
+  "zip_sha256": null,
+  "zip_bytes": null,
+  "zip_entries": null,
+  "manifest_path": null,
+  "owned_prefixes": [],
+  "owned_root_metas": [],
+  "preserve_parent_meta": [],
+  "required_shader": null,
+  "native_g1": "NOT_RUN",
+  "G2_HANDOFF": "HOLD"
+}
