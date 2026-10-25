@@ -1,8 +1,14 @@
 {
   "id": "M03-020",
   "agent": "M03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-25T06:51:49.153Z",
   "model": "Kosz modułowy cargo",
-  "run": "2026-10-25T06Z"
+  "run": "2026-10-25T06Z",
+  "claim_create_commit": "8b31caff2139ee67f092ca5b939fdf88b7dd3318",
+  "branch": "feature/rrl-model-m03-020-modular-cargo-basket",
+  "head_commit": "c0ed933fcc3ff809486c4fccdc4eee5818c1a9a4",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/203",
+  "blender_qa": "PENDING",
+  "unity_qa": "NOT_RUN"
 }
