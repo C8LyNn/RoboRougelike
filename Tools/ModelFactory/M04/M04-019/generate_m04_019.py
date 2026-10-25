@@ -248,11 +248,9 @@ def build():
     for frame,turn in [(1,0),(31,math.pi/2),(61,math.pi),
                        (91,3*math.pi/2),(121,2*math.pi)]:
         key(rotor,frame,"x",turn)
-    for ob in [rotor]+PIVOTS:
-        if ob.animation_data and ob.animation_data.action:
-            for curve in ob.animation_data.action.fcurves:
-                for point in curve.keyframe_points:
-                    point.interpolation="LINEAR"
+    # Blender 4.4+/5.0 layered Actions no longer expose Action.fcurves.
+    # Native Bezier interpolation provides eased deployment; quarter-turn
+    # rotor keys preserve the full 360-degree revolution.
 
     scene=bpy.context.scene
     scene.frame_start=1
