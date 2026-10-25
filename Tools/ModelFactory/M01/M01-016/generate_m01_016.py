@@ -162,7 +162,7 @@ def build():
               "Titanium", "ROTOR", rotor)
     cyl("rotor_front_hub", (0, -1.21, 0), .079, .09, "Copper",
         "ROTOR", rotor, axis="Y")
-    animate(rotor, 1, [(1,0), (73, 8*math.pi)])
+    animate(rotor, 1, [(1 + i*4.5, i*math.pi/2) for i in range(17)])
     # Two separate hinged arms; fold outward, never into the fixed hull.
     for side, label in ((-1,"LEFT"), (1,"RIGHT")):
         arm = pivot(label+"_FOLD_Z_AXIS", (side*.57, -.10, .60))
@@ -204,7 +204,7 @@ def validate():
     for o in meshes:
         bm = bmesh.new()
         bm.from_mesh(o.data)
-        assert len(bm.faces) and all(f.area > 1e-9 for f in bm.faces), o.name
+        assert len(bm.faces) and all(f.calc_area() > 1e-9 for f in bm.faces), o.name
         assert all(e.is_manifold for e in bm.edges), "Nonmanifold: "+o.name
         bm.free()
     # Conservative world AABBs for moving vs fixed and opposite arm.
