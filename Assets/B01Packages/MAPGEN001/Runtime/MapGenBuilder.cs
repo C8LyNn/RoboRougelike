@@ -8,19 +8,21 @@ namespace B01.MAPGEN001
     {
         public MapResult Current { get; private set; }
 
-        // The default material of GameObject.CreatePrimitive may use the old
-        // Built-in Standard shader, yielding magenta in an URP renderer.
-        // Own one URP material per isolated builder, not one per block.
+        // A runtime Shader.Find is Editor-only reliable: the URP Lit shader can
+        // be stripped from an otherwise minimal Windows Player. The package
+        // owns an URP-tagged shader under Resources so Unity includes it in
+        // both Player and Editor, without modifying GraphicsSettings or Codex.
+        // One material belongs to this builder; blocks share it.
+        private const string RetainedShaderPath = "MAPGEN001_BlocksURP";
         private Material _generatedBlockMaterial;
         private Material GetGeneratedBlockMaterial()
         {
             if (_generatedBlockMaterial != null) return _generatedBlockMaterial;
-            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader == null)
-                shader = Shader.Find("Universal Render Pipeline/Simple Lit");
-            if (shader == null)
+            Shader shader = Resources.Load<Shader>(RetainedShaderPath);
+            if (shader == null || !shader.isSupported)
                 throw new InvalidOperationException(
-                    "MAPGEN001_URP_SHADER_NOT_AVAILABLE: provide URP Lit or Simple Lit shader");
+                    "MAPGEN001_RETAINED_URP_SHADER_MISSING_OR_UNSUPPORTED: " +
+                    RetainedShaderPath + " (import the complete MAPGEN001/Resources folder)");
             _generatedBlockMaterial = new Material(shader) {
                 name = "MAPGEN001_Generated_URP_Blocks_Runtime"
             };
