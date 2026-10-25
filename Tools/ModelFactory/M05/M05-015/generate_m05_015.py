@@ -260,6 +260,9 @@ def export_all(out):
     bpy.context.view_layer.objects.active = PARTS[0]
     bpy.ops.export_scene.gltf(filepath=str(out/"M05-015.glb"),
         export_format="GLB",use_selection=True,export_animations=True)
+    # The distro Blender 5 factory startup does not enable FBX by default.
+    import addon_utils
+    addon_utils.enable("io_scene_fbx", default_set=False, persistent=False)
     bpy.ops.export_scene.fbx(filepath=str(out/"M05-015.fbx"),
         use_selection=True,add_leaf_bones=False,apply_unit_scale=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(out/"M05-015.blend"))
