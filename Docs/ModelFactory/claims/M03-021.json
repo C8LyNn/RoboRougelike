@@ -7,5 +7,8 @@
   "run": "2026-10-25T07:00Z",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/206",
   "branch": "feature/rrl-model-m03-021-rollover-hoop",
-  "head_sha": "d66120d0b42919733d4c8069158112480d0a0071"
+  "head_sha": "37b94d47bd77278d1a0038745789995302b8f012",
+  "qa": "BLENDER_QA_PASS",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174745808",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN"
 }
