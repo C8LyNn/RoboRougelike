@@ -344,7 +344,10 @@ def validate_motion():
 def export_scene(folder):
     folder.mkdir(parents=True,exist_ok=True)
     stem = folder/STEM
+    bpy.context.preferences.filepaths.save_version = 0  # no .blend1 backup on CI reruns
     bpy.ops.wm.save_as_mainfile(filepath=str(stem)+".blend")
+    for backup in folder.glob(STEM + ".blend[0-9]*"):
+        backup.unlink()
     bpy.ops.export_scene.gltf(filepath=str(stem)+".glb",export_format="GLB",
                               export_yup=True,export_animations=True)
     bpy.ops.export_scene.fbx(filepath=str(stem)+".fbx",axis_forward="-Z",
