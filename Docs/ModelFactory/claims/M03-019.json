@@ -7,6 +7,8 @@
   "run": "2026-10-25T05:00Z",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/198",
   "branch": "feature/rrl-model-m03-019-battery-shrapnel-guard",
-  "commit": "d3b186a8f2fcc4bc9f9f9d4ab4414f393d79384c",
-  "qa": "PENDING_BLENDER_CI; UNITY_NOT_RUN"
+  "commit": "875a1a6240d1aa16b19718e6ace581d96f9a40f3",
+  "qa": "BLENDER_QA_PASS; GLB_QA_PASS; UNITY_BLOCKED_ACTIVATION_NOT_RUN",
+  "blender_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40166819667",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40166819667/artifacts/12588587996"
 }
