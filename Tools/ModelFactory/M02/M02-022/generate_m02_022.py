@@ -60,7 +60,8 @@ def analytical_qa():
         steering_limit_deg=24, actuator_min_length_m=minimum_length,
         actuator_max_length_m=maximum_length, min_rod_exposure_m=min_rod,
         min_hub_to_beam_x_margin_m=min_hub_clearance,
-        piston_radial_clearance_m=0.007, kingpin_radial_clearance_m=0.013,\n        fork_to_bearing_radial_clearance_m=0.011,
+        piston_radial_clearance_m=0.007, kingpin_radial_clearance_m=0.013,
+        fork_to_bearing_radial_clearance_m=0.011,
         scope="Analytical motion envelopes only; not triangle-triangle collision or Unity physics")
 
 def reset():
