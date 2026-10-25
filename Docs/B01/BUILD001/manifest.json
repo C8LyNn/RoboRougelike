@@ -1,0 +1,225 @@
+{
+  "package_id": "B01-BUILD001",
+  "revision": "R1.2_W9_TEST_ASMDEF_REPAIR",
+  "recipient": "Codex",
+  "source_pr": "https://github.com/C8LyNn/RoboRougelike/pull/149",
+  "status": "STATIC_JSON_RETEST_PASS_UNITY_NOT_RUN",
+  "source_branch": "feature/b01-build001-s03-sockets-r1",
+  "source_parent_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit_before_manifest": "3ea526c215107fc8ffb5aba8ee1c43c5bcf586b5",
+  "unity": "6000.3.14f1",
+  "grid_m": 0.55,
+  "dependencies": [
+    "UnityEngine",
+    "Unity Test Framework 1.6.x for NUnit"
+  ],
+  "source_file_count_without_self": 36,
+  "blob_sha1_and_bytes": {
+    "Assets/B01Construction.meta": {
+      "git_blob_sha1": "240a388ede28ee981b5d1ceb89804cbb99738e6f",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001.meta": {
+      "git_blob_sha1": "1c7f2a7ad7ab14363bf2ca9a077640885d1f7283",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Demo.meta": {
+      "git_blob_sha1": "b837ac404f5436bf631f4adb66565352f2fdcbf4",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity": {
+      "git_blob_sha1": "344bb50cbe3aa639e6fb4c699bef9c59fd09c711",
+      "bytes": 1378,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity.meta": {
+      "git_blob_sha1": "b62ca306478d042f0c635c3d36beb6f9dca7174e",
+      "bytes": 152,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs": {
+      "git_blob_sha1": "09c4a65f4b7f1438e157720ccdb3a9b584403fa6",
+      "bytes": 3907,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs.meta": {
+      "git_blob_sha1": "83cd834a4b9619560b9fa338f872bf97d30573e5",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime.meta": {
+      "git_blob_sha1": "5404b107a1d94cafc5bf070a3e44a381f5c4d11d",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef": {
+      "git_blob_sha1": "ca38ac8ae4856475641117095b2f3b3a5e70b6a4",
+      "bytes": 201,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef.meta": {
+      "git_blob_sha1": "135b2d023dfc644c0a3d168ae36e9a56f88f29e4",
+      "bytes": 163,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs": {
+      "git_blob_sha1": "cc65c740d7fe815c47a44a96050832bc4e226bed",
+      "bytes": 7587,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs.meta": {
+      "git_blob_sha1": "43391bf0249a9943d8d9525892e85c2e6f03b2d6",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs": {
+      "git_blob_sha1": "2c65106556b39043435ad9fd4e0383c2b9d5690f",
+      "bytes": 9187,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs.meta": {
+      "git_blob_sha1": "c9d21f223d54698dac10fec56ee27241f3ce2917",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs": {
+      "git_blob_sha1": "92afc425ae11b24a1ff70267aec34eb483802a1f",
+      "bytes": 2729,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs.meta": {
+      "git_blob_sha1": "89f1b6ed2cbc778098c001c546ca7f27df1c3629",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests.meta": {
+      "git_blob_sha1": "dfaead4b1811ad7318cd00181be691e45b7e4c47",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/EditMode.meta": {
+      "git_blob_sha1": "17046385b4df059466f326c6ef1dce3301e6c547",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef": {
+      "git_blob_sha1": "218943679274afe75d67441449e49e1b60b174e5",
+      "bytes": 260,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef.meta": {
+      "git_blob_sha1": "ae071b9f5d2a3d014581ba3c8ca41d8d69a895b8",
+      "bytes": 163,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs": {
+      "git_blob_sha1": "e09711df15891199d891068c04117fccd5719d9a",
+      "bytes": 9254,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs.meta": {
+      "git_blob_sha1": "6ee9063b6a497d11a4fb75736038226145bc2469",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/PlayMode.meta": {
+      "git_blob_sha1": "67be5775f0216c7a46ccc14c67ccef6c0bf1a463",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef": {
+      "git_blob_sha1": "09dbb18d4077cd275f8d44812d6bbdb49785e89d",
+      "bytes": 244,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef.meta": {
+      "git_blob_sha1": "301ec235121b28d544ed7c2edfae1fab3de9c975",
+      "bytes": 163,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs": {
+      "git_blob_sha1": "5ce9d14809baed0cedaf86d6423e27fedd75e6f2",
+      "bytes": 3505,
+      "sha256": null
+    },
+    "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs.meta": {
+      "git_blob_sha1": "1b3941b6de357f7cd3e65b0b0679eddf864c2bc4",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/API.md": {
+      "git_blob_sha1": "4553223591b59166ccb8d53e8d49169a9b7eacad",
+      "bytes": 1679,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md": {
+      "git_blob_sha1": "68e9129b226d3118aa5f1c2ad4e52afad667cc9d",
+      "bytes": 2901,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/KNOWN_LIMITATIONS.md": {
+      "git_blob_sha1": "500b11b908c826ec72fca2853bcc55a7776dff36",
+      "bytes": 1221,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md": {
+      "git_blob_sha1": "65d61b08b08a24d098b454d30abbedad31de7cc8",
+      "bytes": 2432,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/README.md": {
+      "git_blob_sha1": "883c216a521bf256985860d8669e62dd3b2c6393",
+      "bytes": 1318,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/RECEIVER_HANDOFF.md": {
+      "git_blob_sha1": "d581a5d6c37838bccb919558f9621c526594e37e",
+      "bytes": 678,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/TEST_EVIDENCE.md": {
+      "git_blob_sha1": "9100f8fd0ce784b4a39fe201bba211e62ae46a92",
+      "bytes": 2982,
+      "sha256": null
+    },
+    "Docs/B01/BUILD001/TEST_PLAN.md": {
+      "git_blob_sha1": "2b29b432dacb28e4147a155418cc774640e611d0",
+      "bytes": 2025,
+      "sha256": null
+    },
+    "Tools/B01/BUILD001/verify_asmdefs.py": {
+      "git_blob_sha1": "471f24bc46e2ac188db74ebddc1c1cf84aeca2dd",
+      "bytes": 901,
+      "sha256": null
+    }
+  },
+  "metaMissing": [],
+  "sha256_recheck": "B01_40_PENDING",
+  "source_rework": {
+    "bug": "living Core-disconnected fragment accepted as valid support",
+    "fix": "require reachable from living Core",
+    "test": "AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment",
+    "native_red_green": "NOT_RUN"
+  },
+  "authored_tests": {
+    "EditMode": 11,
+    "PlayMode": 2
+  },
+  "native_compile": "NOT_RUN",
+  "native_editmode": "NOT_RUN",
+  "native_playmode": "NOT_RUN",
+  "manual_demo": "NOT_RUN",
+  "B01_60": "PENDING",
+  "G2": "HOLD",
+  "Codex_target_ack": "UNKNOWN",
+  "w9_fix": {
+    "baseline": "d575b79e262ec9b65702608d6b6e28972da0d21c",
+    "red": "2/2 test asmdefs had direct UnityEngine.TestRunner and UnityEditor.TestRunner",
+    "fix": "references now only B01.BUILD001.Runtime; TestAssemblies preserved",
+    "retest": "2/2 static JSON contract PASS; Unity test NOT_RUN",
+    "regression": "Tools/B01/BUILD001/verify_asmdefs.py"
+  }
+}
