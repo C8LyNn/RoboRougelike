@@ -236,7 +236,7 @@ def main():
     (out/"M04-015_manifest.json").write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     bpy.ops.wm.save_as_mainfile(filepath=str(out/"M04-015_pneumatic_jump_leg.blend"))
     bpy.ops.export_scene.gltf(filepath=str(out/"M04-015_pneumatic_jump_leg.glb"),export_format="GLB",export_animations=True)
-    bpy.ops.export_scene.fbx(filepath=str(out/"M04-015_pneumatic_jump_leg.fbx"),use_selection=False,add_leaf_bones=False)
+    bpy.ops.export_scene.fbx(filepath=str(out/"M04-015_pneumatic_jump_leg.fbx"))
     print("M04-015 EXPORT_COMPLETE",json.dumps(manifest,ensure_ascii=False))
 
 if __name__=="__main__":
