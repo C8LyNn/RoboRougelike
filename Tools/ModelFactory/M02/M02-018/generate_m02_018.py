@@ -322,6 +322,7 @@ if __name__=="__main__":
         args=parser.parse_args(sys.argv[sys.argv.index("--")+1:])
         build(args.out)
         if args.repeat:
+            import bpy
             def counts():
                 return (len(bpy.data.collections[ID].objects),
                         len([m for m in bpy.data.materials if m.name.startswith(ID+"_")]),
