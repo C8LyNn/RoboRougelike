@@ -95,7 +95,8 @@ def finalize(obj, name, col, mat, parent=None, pos=None, angle=0.0, bevel=0.0):
         mod = obj.modifiers.new("Machined edges", "BEVEL")
         mod.width = bevel
         mod.segments = 2
-        mod.affect = "EDGES" if hasattr(mod, "affect") else None
+        if hasattr(mod, "affect"):
+            mod.affect = "EDGES"
         obj.modifiers.new("Weighted normals", "WEIGHTED_NORMAL")
     return obj
 
