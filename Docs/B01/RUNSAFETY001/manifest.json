@@ -1,0 +1,200 @@
+{
+  "package_id": "B01-RUN-SAFETY-001",
+  "revision": "R1.1 source-price correction",
+  "dispatch": "HQ-B01-20261025-S04",
+  "source_issue": 152,
+  "recipient": "CODEX_AFTER_HQ_POLICY_AND_G0_G1_G2",
+  "source_branch": "feature/b01-s04-runsafety001-r1-isolated",
+  "source_parent": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_pre_manifest_head": "fcd29591299217a521c1a799e8c285bda017728e",
+  "unity": "6000.3.14f1",
+  "test_framework": "Unity Test Framework 1.6.x",
+  "source_files_without_manifest": 32,
+  "files": {
+    "Assets/B01Packages.meta": {
+      "git_blob_sha1": "edb676f52dc808f34dd24f8fb087d7e3bcd6a623",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001.meta": {
+      "git_blob_sha1": "dcf60cd0a445fb66437aa63ca750b5451317acfb",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Demo.meta": {
+      "git_blob_sha1": "3c4e8a1ef255c0fcc3c2af136c8f912d50916ea9",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Demo/RUNSAFETY001_Demo.unity": {
+      "git_blob_sha1": "f574aced6ba16be410c501a0dae90efa53464f37",
+      "bytes": 1378,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Demo/RUNSAFETY001_Demo.unity.meta": {
+      "git_blob_sha1": "3c847b236d5936fc3a861469bbb4e1d25c6333f3",
+      "bytes": 152,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Demo/RunSafetyDemo.cs": {
+      "git_blob_sha1": "782e42ad343d59631292daf03fdb29e0384b8c82",
+      "bytes": 4912,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Demo/RunSafetyDemo.cs.meta": {
+      "git_blob_sha1": "86c8d07fb9d99b861975afe2dd09a3d1584e484e",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Runtime.meta": {
+      "git_blob_sha1": "08bc0bf8d436dae81368b87f138e6789475d2420",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Runtime/B01.RUNSAFETY001.Runtime.asmdef": {
+      "git_blob_sha1": "a50624ceccba567fc8d22618ad70c41306440e82",
+      "bytes": 183,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Runtime/B01.RUNSAFETY001.Runtime.asmdef.meta": {
+      "git_blob_sha1": "d8601b01669b123f11f560fbb7648e3cbe74adfd",
+      "bytes": 163,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Runtime/RunSafetyState.cs": {
+      "git_blob_sha1": "6e7fe6bcf59210c2c934b932b501339c3899ffe6",
+      "bytes": 10481,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Runtime/RunSafetyState.cs.meta": {
+      "git_blob_sha1": "05270fe84bdd628bd217926f391472467566c385",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests.meta": {
+      "git_blob_sha1": "8f756f8aa74da1398ff9a2705c78624b2beb8a1d",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/EditMode.meta": {
+      "git_blob_sha1": "888d5271ba9773ab1b26a474b57785a9dcf9a6f1",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/EditMode/B01.RUNSAFETY001.EditModeTests.asmdef": {
+      "git_blob_sha1": "a1aa458b3bac0da857e29b290064312e8e53ff5f",
+      "bytes": 332,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/EditMode/B01.RUNSAFETY001.EditModeTests.asmdef.meta": {
+      "git_blob_sha1": "78b38dc6c206455cc4bf87e82d86de1d364ed5cd",
+      "bytes": 163,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/EditMode/RunSafetyStateTests.cs": {
+      "git_blob_sha1": "8d6e20fc3dc55ba13415e3e76291eb9ca9386430",
+      "bytes": 10994,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/EditMode/RunSafetyStateTests.cs.meta": {
+      "git_blob_sha1": "f6780e9ef83ad5174dc3792cf16423e33b93d39c",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/PlayMode.meta": {
+      "git_blob_sha1": "82c278c2d458eb6540dfbc59f4376c1d3d90ee7e",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/PlayMode/B01.RUNSAFETY001.PlayModeTests.asmdef": {
+      "git_blob_sha1": "08962441271d2ed0ac9742f9fca0cbb5014e6dcf",
+      "bytes": 316,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/PlayMode/B01.RUNSAFETY001.PlayModeTests.asmdef.meta": {
+      "git_blob_sha1": "ec3c29484f38493a1bbd7c7543d7e6e39850abf9",
+      "bytes": 163,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/PlayMode/RunSafetyPlayModeTests.cs": {
+      "git_blob_sha1": "ce2640e040c9685cf98d0314763caabc349166aa",
+      "bytes": 4665,
+      "sha256": null
+    },
+    "Assets/B01Packages/RUNSAFETY001/Tests/PlayMode/RunSafetyPlayModeTests.cs.meta": {
+      "git_blob_sha1": "007c2da71dd4934f426e32047ab7a622798077ed",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/API.md": {
+      "git_blob_sha1": "5b13eb824c084841ef5d863dfcda03ef98a68237",
+      "bytes": 1855,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/CURRENT_API_AUDIT.md": {
+      "git_blob_sha1": "d38437c5be5715989e89a53810262ad090e7773f",
+      "bytes": 2613,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/INSTALL_FOR_CODEX.md": {
+      "git_blob_sha1": "e5bbf8b342679970d89ff3d52353f555b4837b6b",
+      "bytes": 2134,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/POLICY_OPTIONS.md": {
+      "git_blob_sha1": "6eb285a904bc4605deb13baec6caffa8f9d6ed0c",
+      "bytes": 4088,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/PROMPT_FOR_CODEX.md": {
+      "git_blob_sha1": "19f942171cb7d679355516cfc94943ecc7d480ec",
+      "bytes": 3270,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/README.md": {
+      "git_blob_sha1": "a312479095392e57095de138efd5ffb795e96be6",
+      "bytes": 1276,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/RECEIVER_HANDOFF.md": {
+      "git_blob_sha1": "74edca8b9c00e524ca7c0871686de1d6e79d8ffc",
+      "bytes": 619,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/TEST_EVIDENCE.md": {
+      "git_blob_sha1": "16db121adbdbbd584b4389b3879144cf540a153e",
+      "bytes": 969,
+      "sha256": null
+    },
+    "Docs/B01/RUNSAFETY001/TEST_PLAN.md": {
+      "git_blob_sha1": "59e2a350e05cbaab722748539845911dc270642b",
+      "bytes": 2363,
+      "sha256": null
+    }
+  },
+  "source_meta_pairing": {
+    "missing": [],
+    "pass": true,
+    "demo_script_guid": "b01f000000000000000000000000000b",
+    "demo_script_ref_matches": true
+  },
+  "authored_tests": {
+    "EditMode": 16,
+    "PlayMode": 3
+  },
+  "evidence": {
+    "static_scope": "CHECKED_PRODUCER",
+    "native_unity_compile": "NOT_RUN",
+    "native_unity_editmode": "NOT_RUN",
+    "native_unity_playmode": "NOT_RUN",
+    "independent_B01_60": "PENDING",
+    "target_sha256_G0_B01_40": "PENDING",
+    "HQ_loaner_policy": "PROPOSED_NOT_APPROVED",
+    "G2": "HOLD"
+  },
+  "notes": [
+    "Per-file sha256 null intentionally until independent verification; Git blob SHA1 not sha256.",
+    "No native Unity compiler on producer environment.",
+    "Manifest self hash is excluded to prevent recursive hash."
+  ]
+}
