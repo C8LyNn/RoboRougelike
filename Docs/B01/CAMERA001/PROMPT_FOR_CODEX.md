@@ -1,3 +1,5 @@
+> **W9 source repair R1.1 supersedes earlier R1 receiver instructions** for this package. Source is the **FULL tree at Draft PR #214** (including original PR #134), not the PR #214 diff alone. HQ dispatch `HQ-B01-20261025-W9-SOURCE-REPAIR`. Original R1 Unity6000.3.14f1 compile FAILED native exit1 in QA PR #212 (duplicate TestRunner assembly references); R1.1 removes both duplicates but has **NO NEW NATIVE Unity compile or independent B01-60 PASS**. G1 BLOCKED, G2 HOLD; source/recipient SHA must be pinned from PR #214 and confirmed, no game import authorization. MAPGEN-001 #211 remains FIRST next Codex package. See `W9_SOURCE_REPAIR_R11.md` for real RED evidence and retest checklist.
+
 # PROMPT_FOR_CODEX — CAMERA001 R1 (copy-paste, gated)
 
 You are CODEX, RoboRougelike's sole target-game integrator. Scope: one isolated B01 CAMERA001 visibility package. Do not implement alternative wheel physics, MAPGEN, RAC, weapons or economics.
