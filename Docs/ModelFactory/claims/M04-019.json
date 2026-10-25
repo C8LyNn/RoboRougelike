@@ -1,12 +1,12 @@
 {
   "id": "M04-019",
   "agent": "M04",
-  "status": "DRAFT_PR_OPEN_QA_PENDING",
+  "status": "MODEL_COMPLETE",
   "claimed_at_utc": "2026-10-25T01:29:09.813Z",
   "model": "Turbina z rozkładanymi segmentami",
   "run": "2026-10-25T01:00:00Z",
   "model_branch": "feature/rrl-model-m04-019-deployable-segment-turbine",
-  "model_commit": "e04b9438ed1bef25d43032dbecf61f209c5b4d09",
+  "model_commit": "c5f29a3b5062c6605e6e7365315de301c8634c18",
   "draft_pr": 178,
   "draft_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/178",
   "files": [
@@ -16,15 +16,24 @@
     ".github/workflows/ci-m04-019.yml"
   ],
   "qa": {
-    "generator_source": "COMMITTED",
-    "blender": "NOT RUN — CI pending",
-    "glb_export": "NOT RUN — CI pending",
-    "sampled_clearance": "NOT RUN — CI pending",
+    "blender": "PASS Blender 5.0.1",
+    "blend_reopen": "PASS",
+    "glb_export": "PASS",
+    "independent_glb": "PASS 64 meshes, 8 materials, 7 animation clips, 6 shell + 1 rotor pivots",
+    "sampled_clearance": "PASS 41 sampled frames / 17384 transformed vertex checks; shell-stator 55 mm; rotor-bore 34 mm; angular petal gap 5.9128 deg",
+    "repository_ci": "PASS CI-01 on initial commit",
+    "unity_editmode": "NOT RUN — blocked at Unity activation credentials",
+    "unity_playmode": "NOT RUN — blocked at Unity activation credentials",
     "unity_import": "NOT RUN",
-    "unity_editmode": "NOT RUN",
-    "unity_playmode": "NOT RUN",
     "manual_visual": "NOT RUN",
     "exact_swept_triangle_collision": "NOT RUN"
   },
-  "updated_at_utc": "2026-10-25T01:31:43.956Z"
+  "updated_at_utc": "2026-10-25T01:34:45.941Z",
+  "ci_run": 40151099045,
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151099045/artifacts/12582273480",
+  "artifact_sha256": "eed27b8674dbe483395eb8336f065553e249dc4595dc072f77b29b94b8b750a8",
+  "blockers": [
+    "Unity 6000.3.14f1 EditMode/PlayMode workflows stopped before Unity launch due to missing activation credentials",
+    "Unity import, manual visual QA, physics and continuous swept triangle collision not run"
+  ]
 }
