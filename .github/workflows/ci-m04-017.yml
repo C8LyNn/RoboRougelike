@@ -1,0 +1,36 @@
+name: MODEL-04 M04-017 Blender export and independent QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-017-teleport-visual-ring
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-017/**'
+      - '.github/workflows/ci-m04-017.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate native BLEND, animated GLB and optional OBJ
+        run: blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-017/generate_m04_017.py -- --out build/M04-017
+      - name: Reopen native BLEND and check pivot hierarchy
+        run: |
+          blender -b build/M04-017/M04-017_teleport_visual_ring.blend --python-exit-code 1 --python-expr "import bpy; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 50; assert len([o for o in bpy.data.objects if o.name.startswith('SEGMENT_PIVOT_')]) == 8"
+      - name: Independent GLB and OBJ validation
+        run: python3 Tools/ModelFactory/M04/M04-017/qa_m04_017.py --out build/M04-017
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M04-017-blend-glb-obj-qa
+          path: build/M04-017/
+          if-no-files-found: warn
+          retention-days: 30
