@@ -1,0 +1,42 @@
+{
+  "asset_id": "M01-021",
+  "model": "Kanister plazmy z dyszą",
+  "mount": "MOUNT_SIDE_SOCKET (0,0,0), Y-up, +Z-forward",
+  "motion": "VALVE_WHEEL_ROTATE_Z, 0→115→0 degrees about local Z",
+  "parts": 56,
+  "vertices": 4374,
+  "triangles": 8576,
+  "materials": 7,
+  "watertight_oriented_positive_volume": "PASS",
+  "sampled_animation_frames": 73,
+  "aabb_pair_checks": 25039,
+  "moving_parts": 7,
+  "moving_vs_fixed_collisions": 0,
+  "minimum_separation_aabb_m": 0.035,
+  "valve_max_angle_degrees": 115,
+  "clearance": "PASS (sampled AABB; not continuous triangle CCD)",
+  "blender_export": "PASS (files written; visual inspection pending)",
+  "unity_import": "NOT RUN",
+  "unity_editmode": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "visual_inspection": "NOT RUN",
+  "static_files": [
+    "M01-021_plasma_canister_nozzle.obj",
+    "M01-021_plasma_canister_nozzle.mtl"
+  ],
+  "backend": "blender-bpy",
+  "blender_version": "4.0.2",
+  "animated_files": [
+    "M01-021_plasma_canister_nozzle.fbx",
+    "M01-021_plasma_canister_nozzle.glb",
+    "M01-021_plasma_canister_nozzle.blend"
+  ],
+  "animation_node": "VALVE_WHEEL_ROTATE_Z",
+  "animation_keyframes": 25,
+  "blender_repeatability": "PASS (two builds in one process)",
+  "blender_scene_counts": [
+    58,
+    9,
+    1
+  ]
+}
