@@ -52,7 +52,7 @@ jobs:
           nodes=[n.get("name","") for n in gltf["nodes"]]
           assert any("MOUNT_ORIGIN" in n for n in nodes)
           assert sum("FINGER_PIVOT_" in n for n in nodes) >= 3
-          print("M05-015 GLB, BLEND, animation and QA PASS; FBX: ${qa["fbx_export"]}")
+          print("M05-015 GLB, BLEND, animation and QA PASS; FBX:", qa["fbx_export"])
           PY
       - uses: actions/upload-artifact@v4
         if: always()
