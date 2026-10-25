@@ -48,11 +48,11 @@ expected_tests={
     "RegenerateCyclesRemoveOldColliderRoots",
     "RejectedInputPreservesPreviousLiveLevel",
 }
-actual_tests=set(re.findall(r'\\[UnityTest\\]\\s*public IEnumerator (\\w+)\\(',play_source))
+actual_tests=set(re.findall(r'\[UnityTest\]\s*public IEnumerator (\w+)\(',play_source))
 assert actual_tests==expected_tests,(actual_tests,expected_tests)
 assert play_source.count(correct)==1 and incorrect not in play_source
 assert 'Assert.AreEqual("UniversalPipeline",' in play_source
-assert re.search(r'\\.shader\\.GetTag\\s*\\(',play_source) is None
+assert re.search(r'\.shader\.GetTag\s*\(',play_source) is None
 # Deliberately reintroduce the original defect in a memory-only fixture;
 # the contract MUST mark it RED, and the committed source must be GREEN.
 synthetic_red=play_source.replace(correct,incorrect)
