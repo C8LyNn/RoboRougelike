@@ -4,5 +4,18 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-25T01:11:11Z",
   "model": "Przenośny reflektor roboczy",
-  "run": "2026-10-25T01:00Z"
+  "run": "2026-10-25T01:00Z",
+  "branch": "feature/rrl-model-m05-018-portable-worklight",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/173",
+  "pr_number": 173,
+  "source_commit": "eaa12a9439fb4c4b5d9f61e7ca3f63ba89512d08",
+  "qa": {
+    "static": "PENDING",
+    "blender": "NOT RUN",
+    "glb": "NOT RUN",
+    "unity": "NOT RUN",
+    "visual_review": "NOT RUN",
+    "full_collision": "NOT RUN"
+  },
+  "note": "Draft PR open; Blender CI pending. No gameplay changes."
 }
