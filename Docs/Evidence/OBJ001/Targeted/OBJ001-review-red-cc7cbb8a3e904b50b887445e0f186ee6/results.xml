@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-24 23:47:17Z" end-time="2026-10-24 23:47:17Z" duration="0,353893">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1021" result="Failed" site="Child" start-time="2026-10-24 23:47:17Z" end-time="2026-10-24 23:47:17Z" duration="0.353893" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1448" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-OBJ001/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="367" result="Failed" site="Child" start-time="2026-10-24 23:47:17Z" end-time="2026-10-24 23:47:17Z" duration="0.305710" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48428" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1131" name="OBJ001IntegrationTests" fullname="OBJ001IntegrationTests" classname="OBJ001IntegrationTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-24 23:47:17Z" end-time="2026-10-24 23:47:17Z" duration="0.301987" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1135" name="ExternalFatalIntegrityBeatsManualDeadlineWhileInvalidTicksRemainInert" fullname="OBJ001IntegrationTests.ExternalFatalIntegrityBeatsManualDeadlineWhileInvalidTicksRemainInert" methodname="ExternalFatalIntegrityBeatsManualDeadlineWhileInvalidTicksRemainInert" classname="OBJ001IntegrationTests" runstate="Runnable" seed="1010221881" result="Failed" start-time="2026-10-24 23:47:14Z" end-time="2026-10-24 23:47:17Z" duration="3.195334" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  External fatal HP must be observed before settling the timer
+  Expected: Lost
+  But was:  Won
+]]></message>
+            <stack-trace><![CDATA[at OBJ001IntegrationTests+<ExternalFatalIntegrityBeatsManualDeadlineWhileInvalidTicksRemainInert>d__7.MoveNext () [0x0015f] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-OBJ001\Assets\Tests\Editor\OBJ001IntegrationTests.cs:75
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,14 @@
+{
+  "hashes": {
+    "RoboRougelike_Data/Managed/Assembly-CSharp.dll": "A4A5F9DB15D8609EAF8FC73612E0DAD5C7EB3AEC8CAFB4F9059CBF37F009F33F",
+    "RoboRougelike.exe": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "RoboRougelike_Data/Managed/RoboRougelike.OBJ001.dll": "28EC48AC842F1B21BAA4A6D08D4C5B7CF6992BE15A177ACE03E1A2F38B3B5A39"
+  },
+  "source": "e0ea2d155fca2a6190b38c184d3399104373e4df",
+  "width": 1920,
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-OBJ001\\Builds\\MOVSeries-QA-Windows\\RoboRougelike.exe",
+  "startedUtc": "2026-10-24T23:54:02.9933348Z",
+  "mode": "Pilot",
+  "height": 1080,
+  "pid": 62676
+}

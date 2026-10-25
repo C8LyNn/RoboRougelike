@@ -1,0 +1,12 @@
+{
+  "number": 125,
+  "url": "https://github.com/C8LyNn/RoboRougelike/pull/125",
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "base": "feature/rrl-mov011-integration",
+  "base_sha": "865932fd78ef936493bdc51ea9ca612fe9ec31eb",
+  "head": "codex/b01-phy-grounding-core-r1",
+  "head_sha": "916654634d1bfdc2bbc14e64b9eeac856ede1fa8",
+  "updated_at": "2026-10-24T22:36:12Z"
+}

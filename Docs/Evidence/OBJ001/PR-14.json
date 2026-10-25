@@ -1,0 +1,12 @@
+{
+  "number": 14,
+  "url": "https://github.com/C8LyNn/RoboRougelike/pull/14",
+  "state": "open",
+  "merged": false,
+  "draft": true,
+  "base": "develop",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "head": "feature/rrl-obj001-isolated-pack",
+  "head_sha": "cdc36875efe4b5661a7c41c0b7b60d0010850e2b",
+  "updated_at": "2026-10-21T22:30:41Z"
+}

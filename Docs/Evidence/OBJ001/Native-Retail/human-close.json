@@ -1,0 +1,8 @@
+{
+  "candidate": "OBJ001_RC1",
+  "method": "Human Alt+F4; no UI automation attached to this process",
+  "userReported": "Zamknęła się poprawnie",
+  "actualProcessExitCode": 0,
+  "processRecord": "process.json",
+  "limitation": "Does not establish the cause or fix of automation-attached C0000005"
+}
