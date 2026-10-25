@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0,0534809">
+  <test-suite type="TestSuite" id="1578" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="404" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.053481" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1005" name="B01.CAMERA001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-W9-Validation/Library/ScriptAssemblies/B01.CAMERA001.PlayModeTests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.044121" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="58960" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1006" name="B01" fullname="B01" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.043643" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1007" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.043426" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1008" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.043263" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="Camera001WorldCollisionTests" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.042485" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1004" name="HeavyToLightSwitchClearsPreviousSmoothing" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.HeavyToLightSwitchClearsPreviousSmoothing" methodname="HeavyToLightSwitchClearsPreviousSmoothing" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="248026693" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.027938" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="IgnoresOwnCollidersWithoutDisablingThem" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.IgnoresOwnCollidersWithoutDisablingThem" methodname="IgnoresOwnCollidersWithoutDisablingThem" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="2082150413" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.001496" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="WorldObstacleShortensCameraSpringArm" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.WorldObstacleShortensCameraSpringArm" methodname="WorldObstacleShortensCameraSpringArm" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="163574085" result="Passed" start-time="2026-10-25 11:47:49Z" end-time="2026-10-25 11:47:49Z" duration="0.003228" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
