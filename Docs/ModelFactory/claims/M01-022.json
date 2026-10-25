@@ -1,8 +1,15 @@
 {
   "id": "M01-022",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT",
   "claimed_at_utc": "2026-10-25T08:43:20.112Z",
   "model": "Samonaprowadzający zasobnik dronów",
-  "run": "2026-10-25T08:00Z"
+  "run": "2026-10-25T08:00Z",
+  "branch": "feature/rrl-model-m01-022-homing-drone-pod",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/207",
+  "code_commit": "84ca77694ce0214e77be7d6dc26346075d0865fc",
+  "qa_static": "PASS",
+  "blender": "RUNNING",
+  "unity": "NOT RUN",
+  "claim_create_commit": "62a3b7e9b76577d62ca27445367fb34907415b46"
 }
