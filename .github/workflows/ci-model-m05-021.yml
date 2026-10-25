@@ -1,0 +1,53 @@
+name: M05-021 Signal Mast Blender QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-021-folding-signal-mast
+    paths:
+      - 'Tools/ModelFactory/M05/M05-021/**'
+      - '.github/workflows/ci-model-m05-021.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-021/**'
+      - '.github/workflows/ci-model-m05-021.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-asset-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static Python syntax
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-021/generate_m05_021.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-021/validate_m05_021.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender
+          blender --version
+      - name: Generate model and export
+        run: |
+          mkdir -p /tmp/m05-021
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-021/generate_m05_021.py -- --out /tmp/m05-021
+      - name: Independent GLB and Blender QA checks
+        run: |
+          python3 Tools/ModelFactory/M05/M05-021/validate_m05_021.py --out /tmp/m05-021 --require-export
+      - name: Upload model and QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-021-signal-mast-GLB-BLEND-QA
+          path: |
+            /tmp/m05-021/M05-021.glb
+            /tmp/m05-021/M05-021.blend
+            /tmp/m05-021/M05-021.fbx
+            /tmp/m05-021/M05-021_qa.json
+          if-no-files-found: warn
+          retention-days: 14
