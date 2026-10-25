@@ -1,8 +1,17 @@
 {
   "id": "M01-023",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT_QA_PENDING",
   "claimed_at_utc": "2026-10-25T09:46:49.902Z",
   "model": "Wieżyczka o profilu klinowym",
-  "run": "2026-10-25T09Z"
+  "run": "2026-10-25T09Z",
+  "branch": "feature/rrl-model-m01-023-wedge-profile-turret",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/213",
+  "pr_number": 213,
+  "source_commit": "06bf4382555eac1441f238bbf7085385521b7653",
+  "claim_create_commit": "fdec5158f4fe80a4dbb3f69fe33e7b3fd87064a6",
+  "local_qa": "PASS (46 parts, 2322 vertices, 4496 triangles, 7 materials, 73 frames, 33945 AABB checks, 0 collisions, min 0.099m)",
+  "blender_qa": "PENDING",
+  "unity_qa": "NOT RUN",
+  "updated_at_utc": "2026-10-25T09:50:46.115Z"
 }
