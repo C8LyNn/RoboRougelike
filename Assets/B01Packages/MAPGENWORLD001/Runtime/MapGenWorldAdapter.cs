@@ -49,6 +49,7 @@ namespace B01.MAPGENWORLD001
                 return false;
             }
             // Check a generated result without recalculating MAPGEN's geometry or mutating the vehicle.
+            var previous = Current;
             if (built == null || built.GeneratedRoot == null ||
                 !built.GeneratedRoot.activeInHierarchy ||
                 built.GeometryHash != plan.GeometryHash ||
@@ -57,10 +58,11 @@ namespace B01.MAPGENWORLD001
             {
                 builder.Clear(); // Reject unsafe/unknown live state; never return a false SUCCESS.
                 Current = null;
+                if (previous != null) Notify(previous, false);
                 failure = LastFailure = MapWorldFailure.InvalidWorldResult;
                 return false;
             }
-            var old = Current;
+            var old = previous;
             snapshot = new MapWorldSnapshot(built, ++revision);
             Current = snapshot;
             LastFailure = failure = MapWorldFailure.None;

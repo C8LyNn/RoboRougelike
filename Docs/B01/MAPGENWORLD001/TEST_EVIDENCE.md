@@ -1,9 +1,6 @@
-# MAPGENWORLD001 — evidence ledger
-- Dependency: actual B01-20 MAPGEN R3.4.1 commit `5be31039411f89f17654b1c332f8692883fa03cc` (native Unity acceptance pending, not inherited).
-- Contract B01-10 #240 `93f290acca26839792a5bec8ea42415ac83932f3`.
-- Source .NET with explicit synthetic Unity vector stub: **CI pending until an actual run is visible.**
-- Package SHA256 manifest, GUID count, deterministic ZIP and negative tests: **CI pending until actual run**.
-- Native Unity edit/play for adapter: **NOT_RUN** in Linux/no licensed Unity.
-- Native URP Player, R6 physical driving, 10m real rig negative: **NOT_RUN**.
-- B01-60 independent G1, B01-40 G0_TARGET, B01-00 G2: **PENDING/HOLD**.
-- Every CI result and artifact checksum must be populated only after checking completed logs, not inferred from file creation.
+# MAPGENWORLD001 — W12 evidence ledger
+- Upstream MAPGEN001 R3.4.1 exact `5be31039411f89f17654b1c332f8692883fa03cc` (native G1 pending); B01-10 PR #240 contract `93f290acca26839792a5bec8ea42415ac83932f3`.
+- First actual CI [run 40221753893](https://github.com/C8LyNn/RoboRougelike/actions/runs/40221753893) original adapter commit `8ee378fa3230da677b98f195218a606b1b726cdc`: 31/31 MapWorldPolicy C# against producer source using Unity math surrogate, 8/8 negative/deterministic package tests, full ZIP 49 files /14 GUID/96,953 B SHA256 `4584e65d93eb373e508ee5ce937d915ed96d7298da4dd7cb59d83efd57a8e976` ([artifact 12609651227](https://github.com/C8LyNn/RoboRougelike/actions/runs/40221753893/artifacts/12609651227)). Historical receipt, not evidence for a later source change.
+- After first CI: added actual MapGenWorldAdapter C# compile and lifecycle tests with **fake** MonoBehaviour + fake MapGenBuilder (not Unity); awaiting new CI receipt. Added fail-closed invalid built-result callback regression.
+- Native Unity EditMode/PlayMode adapter: **NOT_RUN**. Windows x64 URP Player and real R6 PhysX route: **NOT_RUN**. Independent B01-60 G1 PENDING; B01-40 G0_TARGET PENDING; B01-00 G2 HOLD.
+- Full ZIP includes every source and `.meta`, docs and QA tools plus generated embedded SHA256 manifest. Use latest successful artifact SHA256 and bytes after final commit; wrapper GitHub artifact ZIP has a different digest from inner source ZIP.
