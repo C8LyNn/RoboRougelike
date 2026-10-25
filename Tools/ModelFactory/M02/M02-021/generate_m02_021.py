@@ -333,7 +333,8 @@ def main():
     for name in (ID+".blend",ID+"_animated.glb"):
         assert (OUT/name).stat().st_size>10000,name
     report={"id":ID,"blender":bpy.app.version_string,
-        "reentrant":"PASS","manifold":"PASS","geometry":second,
+        "reentrant":"PASS","manifold":"PASS",
+        "geometry":{k:v for k,v in second.items() if k!="collection"},
         "topology_meshes_checked":second_count,"kinematics":math_result,
         "files":{name:(OUT/name).stat().st_size for name in (ID+".blend",ID+"_animated.glb")},
         "unity":"NOT RUN","full_triangle_collision":"NOT RUN"}
