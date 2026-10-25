@@ -234,6 +234,12 @@ def build():
                      0.026, 0.020, titanium, root, sides=12)
             empty("MOUNT_BOLT_%s_%s" % (x,y), (x,y,0), root)
 
+    # Four rubber vibration isolators remain clear of the moving rotor.
+    for x in (-0.26, 0.26):
+        for y in (-0.22, 0.22):
+            cube("vibration_isolator_%s_%s" % (x,y),
+                 (x,y,0.208), (0.085,0.072,0.028), rubber, root, 0.006)
+
     for side in (-1, 1):
         cube("side_pylon_%s" % side, (side*0.55,0,0.62),
              (0.072,0.42,0.78), steel, root, 0.015)
