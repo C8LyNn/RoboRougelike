@@ -4,5 +4,15 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-25T01:00:54.599Z",
   "model": "System lin holowniczych",
-  "run": "2026-10-25T01:00Z"
+  "run": "2026-10-25T01:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/171",
+  "branch": "feature/rrl-model-m05-016-tow-cable-winch",
+  "commit": "fd6e650e58d56ae43428773d41622f0770411471",
+  "qa": {
+    "blender": "PENDING",
+    "glb": "PENDING",
+    "fbx": "PENDING",
+    "unity": "NOT RUN",
+    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149100887"
+  }
 }
