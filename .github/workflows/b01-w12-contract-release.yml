@@ -1,0 +1,17 @@
+name: B01-W12-Design-Contract-R1
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/BALANCE-CONTRACT-001/**'
+      - '.github/workflows/b01-w12-contract-release.yml'
+  workflow_dispatch:
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate actual fixtures and negative mutation tests
+        run: node Tools/B01/BALANCE-CONTRACT-001/validate.mjs
