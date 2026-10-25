@@ -151,13 +151,13 @@
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md": {
-      "blob_sha1": "35b82d53581f7c4727f7ea065f98299fb17e940c",
-      "bytes": 1671,
+      "blob_sha1": "ad4df87dab0c476d412e96177533246251b87da7",
+      "bytes": 2423,
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md": {
-      "blob_sha1": "1d6687d8ab55fac9f37d1832b27e3b6095c16aa3",
-      "bytes": 1870,
+      "blob_sha1": "fc5163d418a4d869b5eaefa6286152cb9e2a6a4c",
+      "bytes": 2622,
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/QA_R1.md": {
@@ -207,6 +207,10 @@
     "native_exit": 1,
     "native_xml": "NOT_RUN",
     "fix_path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs",
-    "independent_native": "NOT_RUN"
+    "independent_native": "NOT_RUN",
+    "superseded_docs": [
+      "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md",
+      "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md"
+    ]
   }
 }
