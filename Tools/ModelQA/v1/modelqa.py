@@ -103,7 +103,13 @@ def sweep_json(spec, step=0.5):
     moving=[p for p in spec["parts"] if p["parent"]=="tilt"]
     static=[(p["name"],bounds(primitive_vertices(p),False,pivot,0)) for p in base]
     moving_verts=[(p["name"],primitive_vertices(p)) for p in moving]
-    lo,hi = spec["tilt_degrees"]
+    # Historical M05-002 stores full animation keys [-22, 0, 22, 0],
+    # not a 2-value [min,max] range. Preserve intermediate extrema.
+    keys=spec["tilt_degrees"]
+    if not isinstance(keys,list) or len(keys)<2 or not all(
+            isinstance(v,(float,int)) and math.isfinite(v) for v in keys):
+        raise ValueError("Invalid animation key angles")
+    lo,hi=min(keys),max(keys)
     count=int(round((hi-lo)/step))
     if abs(lo+count*step-hi)>1e-8:raise ValueError("step must divide tilt range")
     collisions=Counter(); first=[]; checked=0; positive=0
