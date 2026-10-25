@@ -153,6 +153,7 @@ def main():
         obj.rotation_euler = (b-a).to_track_quat('Z','Y').to_euler()
         return obj
 
+    mount_socket = root('CHASSIS_MOUNT_SOCKET', (0,0,0))
     # Stationary chassis bracket: the origin is the top face of the mounting datum.
     cube("MOUNTING_DATUM", (0,0,-.018), (.58,.25,.036), "graphite_frame")
     for x in (-.235,.235):
@@ -179,6 +180,9 @@ def main():
     right = root("RIGHT_OUTPUT_RIG", (0,0,AXLE_Z))
     spider = root("SPIDER_RIG", (0,0,0))
     spider.parent = carrier
+    for label, rig, x in (("LEFT",left,-.51),("RIGHT",right,.51)):
+        sock = root(label+"_OUTPUT_SOCKET", (x,0,0))
+        sock.parent = rig
 
     # Rotating carrier cage and visible crown ring.
     for x in (-.23,.23):
@@ -229,7 +233,7 @@ def main():
     scene.render.fps = FPS
     scene.frame_start = 1
     scene.frame_end = FRAMES
-    for frame in (1,FRAMES):
+    for frame in range(1,FRAMES+1,3):
         t=(frame-1)/(FRAMES-1)
         p=pose(t)
         for obj,angle,axis in ((carrier,p["carrier"],"X"),
@@ -247,6 +251,44 @@ def main():
                 for curve in action.fcurves:
                     for point in curve.keyframe_points:
                         point.interpolation='LINEAR'
+    # Independent evaluated-triangle BVH checks of high-risk inter-group pairs.
+    # These pairs are designed to have clearance, not intentional gear contact.
+    from mathutils.bvhtree import BVHTree
+    collision_pairs = [
+        ("LEFT_SIDE_GEAR","SPIDER_PINION"),
+        ("RIGHT_SIDE_GEAR","SPIDER_PINION"),
+        ("LEFT_SIDE_GEAR","CROWN_GEAR_CORE"),
+        ("RIGHT_SIDE_GEAR","CROWN_GEAR_CORE"),
+        ("CROWN_GEAR_CORE","OUTER_SAFETY_RAIL"),
+    ]
+    collision_checks = 0
+    for frame in (1,31,61,91,121):
+        scene.frame_set(frame)
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        cache = {}
+        def world_bvh(obj):
+            if obj.name in cache: return cache[obj.name]
+            evaluated = obj.evaluated_get(depsgraph)
+            mesh = evaluated.to_mesh()
+            try:
+                verts = [evaluated.matrix_world @ v.co for v in mesh.vertices]
+                faces = [tuple(p.vertices) for p in mesh.polygons]
+                bvh = BVHTree.FromPolygons(verts, faces, all_triangles=False) if faces else None
+            finally:
+                evaluated.to_mesh_clear()
+            cache[obj.name] = bvh
+            return bvh
+        for name_a,name_b in collision_pairs:
+            aa = [o for o in coll.objects if o.type=='MESH' and name_a in o.name]
+            bb = [o for o in coll.objects if o.type=='MESH' and name_b in o.name]
+            for a in aa:
+                for b in bb:
+                    collision_checks += 1
+                    ba,bbvh=world_bvh(a),world_bvh(b)
+                    if ba and bbvh and ba.overlap(bbvh):
+                        raise RuntimeError("Unexpected moving-part BVH collision: %s / %s at frame %d" % (a.name,b.name,frame))
+    qa["bvh_pair_checks"] = collision_checks
+    qa["bvh_sampled_frames"] = [1,31,61,91,121]
     scene.frame_set(1)
     # Never silently leave geometry in a non-unity scale.
     scene.unit_settings.system = 'METRIC'
