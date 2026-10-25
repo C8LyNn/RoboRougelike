@@ -141,7 +141,7 @@ public sealed class LegendaryGarage
     public bool TryEquip(string robotId, string id, out string error)
     {
         if (!CanEquip(robotId, id, out error)) return false;
-        parts[id] = parts[id] with { RobotId = robotId };
+        parts[id!] = parts[id!] with { RobotId = robotId };
         return true;
     }
 
@@ -149,7 +149,7 @@ public sealed class LegendaryGarage
     {
         if (!parts.TryGetValue(id ?? "", out var p) || p.RobotId != robotId)
         { error = "PART_NOT_EQUIPPED_HERE"; return false; }
-        parts[id] = p with { RobotId = null };
+        parts[id!] = p with { RobotId = null };
         error = ""; return true;
     }
 
@@ -158,7 +158,7 @@ public sealed class LegendaryGarage
         if (!parts.TryGetValue(id ?? "", out var p) || !double.IsFinite(health) ||
             health < 0 || health > 1)
         { error = "INVALID_PART_OR_HEALTH"; return false; }
-        parts[id] = p with { Health = health };
+        parts[id!] = p with { Health = health };
         error = ""; return true;
     }
 
@@ -167,7 +167,7 @@ public sealed class LegendaryGarage
         if (!parts.TryGetValue(id ?? "", out var p))
         { error = "PART_NOT_OWNED"; return false; }
         // State only: R3 RepairCost, affordability and rebuilding remain authoritative.
-        parts[id] = p with { Health = 1 };
+        parts[id!] = p with { Health = 1 };
         error = ""; return true;
     }
 
