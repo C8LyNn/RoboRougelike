@@ -1,19 +1,26 @@
 {
   "id": "M05-015",
   "agent": "M05",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_BLENDER_PASS_UNITY_BLOCKED",
   "claimed_at_utc": "2026-10-25T00:51:00.380Z",
   "model": "Mechaniczny chwytak cargo",
   "run": "2026-10-25T00Z",
   "asset_branch": "feature/rrl-model-m05-015-mechanical-cargo-gripper",
   "asset_path": "Tools/ModelFactory/M05/M05-015/",
-  "asset_commit_sha": "5e894b3ea113c789a479e029110acaa40490a04e",
+  "asset_commit_sha": "34cf68794442316492433f1f98d2adbcee2e522b",
   "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/169",
   "claim_commit_sha": "bb83e5b6d71b309e7069dd936c5978ed682c6208",
   "qa": {
-    "source": "PASS: committed generator, documentation and workflow",
-    "blender": "PENDING: GitHub Actions 40148460169",
-    "unity": "NOT RUN: Unity EditMode/PlayMode require activation",
-    "visual_review": "NOT RUN"
-  }
+    "source": "PASS: Python syntax and repository validation",
+    "blender": "PASS: Blender 5.0.1, 55 closed oriented meshes, 1864 vertices, 8 materials, repeated build PASS, 60 frames, approximate pad gap 0.0672 m",
+    "glb": "PASS: independent GLB check for meshes, materials, pivots and animation",
+    "blend": "PASS: real BLEND saved",
+    "fbx": "BLOCKED_BLENDER_5_0_1: broken distro exporter; no FBX file",
+    "unity": "BLOCKED_ACTIVATION: EditMode 40148768155 and PlayMode 40148768134 failed credentials check; tests skipped",
+    "visual_review": "NOT RUN",
+    "full_mesh_collision": "NOT RUN: only conservative pad-centre clearance proxy"
+  },
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148768172",
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148768172/artifacts/12581456832",
+  "artifact_id": 12581456832
 }
