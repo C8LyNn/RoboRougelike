@@ -39,6 +39,23 @@ jobs:
           PY
       - name: Compile and execute exact MAPGEN planner & route validator CSharp
         run: dotnet run --project Tools/B01/MAPGEN001/Headless/MapGen.Headless.csproj --configuration Release -- headless-mapgen-evidence
+      - name: Emit exact source bytes SHA256 and build full ZIP if manifest is R3.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          if python -c "import json; assert json.load(open('Docs/B01/MAPGEN001/manifest.json'))['revision']=='R3.2'"; then
+            python Tools/B01/MAPGEN001/package_gate.py --verify-zip
+          else
+            python Tools/B01/MAPGEN001/package_gate.py --emit
+          fi
+      - name: Archive signed-source ZIP and verified manifest receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-mapgen-r32-source-zip
+          path: mapgen-r32-evidence/
+          if-no-files-found: ignore
+          retention-days: 21
       - name: Archive all seed case outcomes (including failures)
         if: always()
         uses: actions/upload-artifact@v4
