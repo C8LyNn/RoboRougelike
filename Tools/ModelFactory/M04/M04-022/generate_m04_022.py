@@ -196,7 +196,7 @@ def build(out):
     for side in (-1,1):
         cylinder("Gimbal | moving journal", (side*.416,0,PIVOT_Z), .042,.060,
                  titanium,pivot,"tilting_disk",32,axis="X")
-    # Analytically safe envelope: moving radius <= 0.44m; fixed skid inner edge 0.4975m.
+    # Analytically safe envelope: moving |X| <= 0.45m; fixed skid inner edge 0.4975m.
     # Vertical moving bounds for +/-10deg are inside [-0.69,-0.41]m.
     keys=((1,0),(31,10),(61,0),(91,-10),(121,0))
     for frame,degrees in keys:
@@ -223,7 +223,7 @@ def build(out):
         "tilt_pivot_m":[0,0,PIVOT_Z],"tilt_axis":"local X",
         "tilt_range_deg":[-TILT_DEG,TILT_DEG],"frames":[k[0] for k in keys],
         "clearance_method":"conservative radial envelope, not continuous mesh collision",
-        "static_skid_inner_x_m":.4975,"moving_max_x_m":.44,
+        "static_skid_inner_x_m":.4975,"moving_max_x_m":.45,
         "unity_tests":"NOT RUN","manual_visual_review":"NOT RUN"
     }
     (out/"manifest.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
