@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "noSocketAuthority": true,
+  "upAxis": "Y",
+  "units": "meters",
+  "mounts": [
+    {
+      "id": "M01-018",
+      "legendaryId": "LEG-WPN-001",
+      "socketKind": "WeaponBase",
+      "visualNode": "VIS_LEG_LEG-WPN-001_SOCKET_WEAPONBASE",
+      "weakNode": "VIS_LEG_LEG-WPN-001_WEAK_REAR_BREECH",
+      "massKg": null,
+      "footprintNominal": [
+        3,
+        2,
+        2
+      ],
+      "restGeometryAabbMeters": [
+        1.172,
+        0.9125,
+        3.672
+      ],
+      "fit": "BLOCKED_VISUAL_DEPTH",
+      "aimAxis": [
+        0,
+        0,
+        1
+      ],
+      "pivot": "MOUNT_TOP_SOCKET",
+      "animation": "COUNTERWEIGHT_SLIDE_Y_AXIS",
+      "travelMeters": 0.22
+    },
+    {
+      "id": "M04-024",
+      "legendaryId": "LEG-MOV-001",
+      "socketKind": "MobilityHub",
+      "visualNode": "VIS_LEG_LEG-MOV-001_SOCKET_MOBILITYHUB",
+      "weakNode": "VIS_LEG_LEG-MOV-001_WEAK_UNDERSIDE_EMITTER",
+      "massKg": null,
+      "footprintNominal": [
+        3,
+        3,
+        2
+      ],
+      "restGeometryAabbMeters": [
+        1.5,
+        0.869,
+        1.5
+      ],
+      "fit": "REST_ONLY_PLAUSIBLE_SWEEP_NOT_RUN",
+      "exhaustAxis": [
+        0,
+        -1,
+        0
+      ],
+      "pivot": "ROOT_UNDERSIDE_MOUNT_Z0",
+      "gimbalNodes": [
+        "N01_GIMBAL_PIVOT",
+        "N02_GIMBAL_PIVOT",
+        "N03_GIMBAL_PIVOT",
+        "N04_GIMBAL_PIVOT"
+      ],
+      "maxAngleDeg": 12
+    }
+  ]
+}
