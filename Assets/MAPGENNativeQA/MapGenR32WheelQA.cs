@@ -34,7 +34,7 @@ public sealed class MapGenR32WheelQA : MonoBehaviour
     readonly List<Vector3> goals=new List<Vector3>();
     MapGenBuilder builder;R3VisualPalette palette;R1VehicleState actor;R3VehicleAssembly assembly;Rigidbody body;R6VehicleDrive drive;Camera view;
     Trial row;MapResult map;string output;StreamWriter trace;float readyAt,startedAt,lastSample,stillSince,noContactSince=-1,maxProgressAt;
-    float bestGoalDistance=float.PositiveInfinity;Vector3 previous,initial;string lastFloor;bool finishing;int limit=99;
+    float bestGoalDistance=float.PositiveInfinity;Vector3 previous,initial;string lastFloor;bool finishing,ending;float cleanupAt;int limit=99;
     static readonly CultureInfo Inv=CultureInfo.InvariantCulture;
     void Start()
     {
@@ -96,6 +96,7 @@ public sealed class MapGenR32WheelQA : MonoBehaviour
     void Update()
     {
         if(output==null||finishing)return;
+        if(ending){if(Time.realtimeSinceStartup>=cleanupAt)CleanupTrial();return;}
         if(row==null){if(Time.realtimeSinceStartup>=readyAt)Begin();return;}
         if(actor==null||body==null)return;
         // One dedicated view camera; neither production P12 follow nor a second driver is installed.
@@ -111,7 +112,7 @@ public sealed class MapGenR32WheelQA : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if(row==null||actor==null||body==null||finishing||Time.realtimeSinceStartup<readyAt)return;
+        if(row==null||actor==null||body==null||finishing||ending||Time.realtimeSinceStartup<readyAt)return;
         try
         {
             row.seconds=Time.time-startedAt;
@@ -133,6 +134,7 @@ public sealed class MapGenR32WheelQA : MonoBehaviour
             drive.Step(throttle,steer,limitSpeed,3,90);
             var position=body.position;float speed=body.linearVelocity.magnitude;
             row.distance+=Vector3.Distance(previous,position);previous=position;row.lastPosition=position;
+            if(row.distance>10&&row.screenshots.Count==1)Capture("driving");
             row.maxSpeed=Mathf.Max(row.maxSpeed,speed);row.netTravel=Vector3.Distance(initial,position);
             float tilt=Vector3.Angle(body.transform.up,Vector3.up);row.maxTilt=Mathf.Max(row.maxTilt,tilt);row.flipped|=tilt>90;
             row.samples++;if(drive.GroundedWheels>0)row.groundedSamples++;
@@ -169,16 +171,21 @@ public sealed class MapGenR32WheelQA : MonoBehaviour
     }
     void End(string status,string detail)
     {
-        if(row==null)return;
+        if(row==null||ending)return;
         if(actor!=null)
         {
             row.remainingWheels=drive.Wheels;row.partsAfter=assembly.Parts.Count(p=>p!=null&&p.Operational&&p.transform.IsChildOf(actor.transform));
             row.recoveryAttempts=actor.GetComponent<R6CoreRecovery>()?.AttemptsStarted??0;
+            row.lastPosition=body.position;row.seconds=Time.time-startedAt;
             if(status=="PASS"&&(row.partsAfter<row.partsBefore||row.flipped))status="FINISH_WITH_DAMAGE_OR_FLIP";
             Capture("end");
-            actor.gameObject.SetActive(false);Destroy(actor.gameObject);
         }
-        row.status=status;row.detail=detail;Save();row=null;actor=null;body=null;builder.Clear();map=null;readyAt=Time.realtimeSinceStartup+.5f;
+        row.status=status;row.detail=detail;Save();ending=true;cleanupAt=Time.realtimeSinceStartup+.2f;
+    }
+    void CleanupTrial()
+    {
+        if(actor!=null){actor.gameObject.SetActive(false);Destroy(actor.gameObject);}
+        row=null;actor=null;body=null;builder.Clear();map=null;ending=false;readyAt=Time.realtimeSinceStartup+.5f;
     }
     void Complete()
     {
