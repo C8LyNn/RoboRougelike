@@ -19,10 +19,15 @@ jobs:
       - name: Install actual Blender
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
+          blender -b -noaudio --python-expr "import numpy; print('Blender NumPy', numpy.__version__)"
       - name: Generate BLEND and animated GLB using bpy
-        run: blender -b -noaudio --python Tools/ModelFactory/M02/M02-020/generate_m02_020.py
+        run: |
+          blender -b -noaudio --python Tools/ModelFactory/M02/M02-020/generate_m02_020.py
+          test -s Tools/ModelFactory/M02/M02-020/generated/M02-020.blend
+          test -s Tools/ModelFactory/M02/M02-020/generated/M02-020_animated.glb
+          test -s Tools/ModelFactory/M02/M02-020/generated/M02-020_qa.json
       - name: Inspect actual BLEND, GLB and animation channels
         run: python3 Tools/ModelFactory/M02/M02-020/qa_m02_020.py
       - name: Upload binary artifacts and QA
