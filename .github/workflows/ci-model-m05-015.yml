@@ -1,0 +1,64 @@
+name: Model Factory M05-015 Cargo Gripper
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-015/**'
+      - '.github/workflows/ci-model-m05-015.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  blender-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M05/M05-015/generate_m05_015.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -3
+      - name: Build twice and export GLB FBX BLEND
+        run: |
+          mkdir -p model-output
+          blender --background --factory-startup --python Tools/ModelFactory/M05/M05-015/generate_m05_015.py -- --out "$PWD/model-output" | tee blender.log
+          grep 'M05_015_QA' blender.log
+      - name: Independently validate outputs
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, struct
+          out = pathlib.Path("model-output")
+          qa = json.loads((out/"qa.json").read_text())
+          assert qa["status"] == "PASS" and qa["repeat_build"] == "PASS"
+          assert qa["finger_count"] == 3 and qa["materials"] >= 3
+          assert qa["frames_checked"] == 60
+          assert qa["minimum_approximate_pad_clearance_m"] > 0.015
+          for ext in ("glb","fbx","blend"):
+              p=out/("M05-015."+ext)
+              assert p.is_file() and p.stat().st_size > 1024, str(p)
+          raw=(out/"M05-015.glb").read_bytes()
+          magic, version, size=struct.unpack_from("<4sII",raw,0)
+          assert magic==b"glTF" and version==2 and size==len(raw)
+          chunk_len, chunk_type=struct.unpack_from("<II",raw,12)
+          assert chunk_type==0x4e4f534a
+          gltf=json.loads(raw[20:20+chunk_len])
+          assert len(gltf.get("materials",[])) >= 3
+          assert len(gltf.get("meshes",[])) >= 10
+          assert len(gltf.get("animations",[])) >= 1
+          nodes=[n.get("name","") for n in gltf["nodes"]]
+          assert any("MOUNT_ORIGIN" in n for n in nodes)
+          assert sum("FINGER_PIVOT_" in n for n in nodes) >= 3
+          print("M05-015 GLB, FBX, BLEND, animation and QA PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M05-015-cargo-gripper-GLB-FBX-BLEND-QA
+          path: |
+            model-output/
+            blender.log
+          retention-days: 14
