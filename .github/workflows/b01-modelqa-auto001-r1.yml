@@ -7,6 +7,10 @@ on:
     paths:
       - "Tools/ModelQA/**"
       - ".github/workflows/b01-modelqa-auto001-r1.yml"
+  pull_request:
+    paths:
+      - "Tools/ModelQA/**"
+      - ".github/workflows/b01-modelqa-auto001-r1.yml"
   workflow_dispatch:
 
 permissions:
@@ -54,6 +58,7 @@ jobs:
           git show f7ab038346985a7d7d1437f7733bcf0257cf14bb:Tools/ModelFactory/M05/M05-002/geometry.json > modelqa_report/M05-002_fixed_geometry.json
           python Tools/ModelQA/v1/render_diagnostic.py modelqa_report/M05-002_fixed_geometry.json --output modelqa_report/renders
       - name: Archive QA evidence (NOT a production asset release)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: b01-modelqa-auto001-r1-evidence
