@@ -1,0 +1,48 @@
+name: M01-016 Blender model QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-016-foldout-rotary-cannon
+    paths:
+      - 'Tools/ModelFactory/M01/M01-016/**'
+      - '.github/workflows/ci-model-m01-016.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate, sample collision QA, repeatability, export
+        run: |
+          blender --background --python Tools/ModelFactory/M01/M01-016/generate_m01_016.py -- --repeat --out Tools/ModelFactory/M01/M01-016/generated
+      - name: Independent binary audit
+        run: |
+          python3 Tools/ModelFactory/M01/M01-016/qa_m01_016.py --out Tools/ModelFactory/M01/M01-016/generated
+      - name: Upload exported 3D
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-016-foldout-rotary-cannon-3D
+          path: Tools/ModelFactory/M01/M01-016/generated/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish verified exports to exclusive feature branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Tools/ModelFactory/M01/M01-016/generated/
+          if ! git diff --cached --quiet; then
+            git commit -m "MODEL-01 M01-016: verified Blender 3D exports"
+            git push origin HEAD:feature/rrl-model-m01-016-foldout-rotary-cannon || echo "::warning::Git push BLOCKED; workflow artifacts retained"
+          fi
