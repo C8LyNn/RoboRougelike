@@ -23,12 +23,13 @@ def main():
  mpath=repo/"Tools/B01/QA-NATIVE-001/manifest.json"
  paths.append(("Tools/B01/QA-NATIVE-001/manifest.json",mpath.read_bytes()))
  a.out.parent.mkdir(parents=True,exist_ok=True)
- with zipfile.ZipFile(a.out,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=9) as zipf:
+ with zipfile.ZipFile(a.out,"w",compression=zipfile.ZIP_STORED) as zipf:
   for name,data in sorted(paths):
    info=zipfile.ZipInfo(name,(2026,10,25,0,0,0))
-   info.compress_type=zipfile.ZIP_DEFLATED
+   info.compress_type=zipfile.ZIP_STORED
+   info.create_system=3
    info.external_attr=0o644<<16
-   zipf.writestr(info,data,compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+   zipf.writestr(info,data,compress_type=zipfile.ZIP_STORED)
  receipt={"schema":"b01-60-package-zip-receipt-v1","package_id":manifest["package_id"],"sha256":sha256(a.out.read_bytes()),"bytes":a.out.stat().st_size,"entries":len(paths),"unity_native":"NOT_RUN","g2":"HOLD"}
  a.report.parent.mkdir(parents=True,exist_ok=True)
  a.report.write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n",encoding="utf-8")
