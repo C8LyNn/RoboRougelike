@@ -1,0 +1,35 @@
+name: MODEL-04 M04-016 Blender export and independent QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-016-corner-microthrusters
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-016/**'
+      - '.github/workflows/ci-m04-016.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate BLEND, animated GLB, OBJ/MTL
+        run: blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-016/generate_m04_016.py -- --out build/M04-016
+      - name: Re-open saved BLEND
+        run: |
+          blender -b build/M04-016/M04-016_corner_microthrusters.blend --python-exit-code 1 --python-expr "import bpy; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 60; assert len([o for o in bpy.data.objects if o.name.startswith('NOZZLE_PIVOT_')]) == 4"
+      - name: Independent exported binary QA
+        run: python3 Tools/ModelFactory/M04/M04-016/qa_m04_016.py --out build/M04-016
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M04-016-blend-glb-obj-qa
+          path: build/M04-016/
+          if-no-files-found: error
+          retention-days: 30
