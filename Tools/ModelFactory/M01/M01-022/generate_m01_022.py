@@ -196,6 +196,9 @@ def blender_export(parts,out):
   if col.name=='M01_022_DRONE_POD':
    for obj in list(col.objects):bpy.data.objects.remove(obj,do_unlink=True)
    bpy.data.collections.remove(col)
+ # Unlink orphan mesh datablocks before materials: orphan meshes retain material users.
+ for mesh in list(bpy.data.meshes):
+  if mesh.name.startswith('M01_022_') and mesh.users==0:bpy.data.meshes.remove(mesh)
  for mat in list(bpy.data.materials):
   if mat.name.startswith('M01_022_') and mat.users==0:bpy.data.materials.remove(mat)
  col=bpy.data.collections.new('M01_022_DRONE_POD');scene.collection.children.link(col)
