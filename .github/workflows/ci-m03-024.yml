@@ -1,0 +1,37 @@
+name: CI M03-024 Telescoping Gap Bridge
+on:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-024/**'
+      - '.github/workflows/ci-m03-024.yml'
+  workflow_dispatch:
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender 4.x and NumPy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Validate Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M03/M03-024/*.py
+      - name: Generate real BLEND GLB FBX with bpy
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-024/generate_m03_024.py -- --output /tmp/M03-024
+          test -s /tmp/M03-024/M03-024.blend
+          test -s /tmp/M03-024/M03-024.glb
+          test -s /tmp/M03-024/M03-024.fbx
+      - name: Independent geometry animation repeatability and GLB QA
+        run: blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-024/qa_blender_m03_024.py -- --output /tmp/M03-024
+      - name: Export SHA-256 manifest
+        run: cd /tmp/M03-024 && sha256sum M03-024.blend M03-024.glb M03-024.fbx > SHA256SUMS
+      - name: Upload validated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-024-Blender-GLB-FBX-BLEND
+          path: /tmp/M03-024/
+          if-no-files-found: error
+          retention-days: 14
