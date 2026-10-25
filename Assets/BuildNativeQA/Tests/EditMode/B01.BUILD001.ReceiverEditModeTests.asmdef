@@ -1,0 +1,14 @@
+{
+  "name": "B01.BUILD001.ReceiverEditModeTests",
+  "rootNamespace": "B01.BUILD001.Tests",
+  "references": [
+    "B01.BUILD001.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
