@@ -4,9 +4,9 @@ import hashlib,json,re,subprocess
 from pathlib import Path
 
 CASES=[
-("CAMERA","894d3488dedb69e2b8d89683d750bbdbfedf4e55","30c0419cb9c103303a9b4e301a241a7a3684ebd9","Assets/B01Packages/CAMERA001/","Docs/B01/CAMERA001/manifest.json","files","git_blob_sha1"),
-("BUILD","d575b79e262ec9b65702608d6b6e28972da0d21c","0788d0a8f4a40535e0c84e9ea9d7f2a6b5e8b267","Assets/B01Construction/BUILD001/","Docs/B01/BUILD001/manifest.json","blob_sha1_and_bytes","git_blob_sha1"),
-("RAC","6c1aa7c2351a29695e4288dddad2565cdec3682a","129e867f25805075c48f2be52ec1cc5336b4075c","Assets/RoboRougelikeMechanics/RAC001CheckpointRace/","Docs/ParallelMechanics/RAC-001/manifest.r3.json","git_blob_sha1_and_bytes","blob_sha1")]
+("CAMERA","894d3488dedb69e2b8d89683d750bbdbfedf4e55","d48108f56d3fe0790ad715683e77b2de9219e4b1","Assets/B01Packages/CAMERA001/","Docs/B01/CAMERA001/manifest.json","files","git_blob_sha1"),
+("BUILD","d575b79e262ec9b65702608d6b6e28972da0d21c","489676414a3eb45fe70124098e3778a81d0aaff2","Assets/B01Construction/BUILD001/","Docs/B01/BUILD001/manifest.json","blob_sha1_and_bytes","git_blob_sha1"),
+("RAC","6c1aa7c2351a29695e4288dddad2565cdec3682a","fd9a3f4dda08eaba56d9f74007bc35dc0809b67e","Assets/RoboRougelikeMechanics/RAC001CheckpointRace/","Docs/ParallelMechanics/RAC-001/manifest.r3.json","git_blob_sha1_and_bytes","blob_sha1")]
 def git(*args,stdin=None):
     return subprocess.run(["git",*args],input=stdin,check=True,capture_output=True).stdout
 def blob(sha,path):return git("show",sha+":"+path)

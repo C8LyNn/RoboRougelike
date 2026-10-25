@@ -21,7 +21,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for sha in 894d3488dedb69e2b8d89683d750bbdbfedf4e55 30c0419cb9c103303a9b4e301a241a7a3684ebd9 d575b79e262ec9b65702608d6b6e28972da0d21c 0788d0a8f4a40535e0c84e9ea9d7f2a6b5e8b267 6c1aa7c2351a29695e4288dddad2565cdec3682a 129e867f25805075c48f2be52ec1cc5336b4075c; do
+          for sha in 894d3488dedb69e2b8d89683d750bbdbfedf4e55 d48108f56d3fe0790ad715683e77b2de9219e4b1 d575b79e262ec9b65702608d6b6e28972da0d21c 489676414a3eb45fe70124098e3778a81d0aaff2 6c1aa7c2351a29695e4288dddad2565cdec3682a fd9a3f4dda08eaba56d9f74007bc35dc0809b67e; do
             git fetch --no-tags --depth=20 origin "$sha"
             git cat-file -e "$sha^{commit}"
           done
@@ -29,6 +29,8 @@ jobs:
         run: python -m unittest discover -s Tools/B01/PackagePreflight -p 'test_*.py' -v
       - name: Execute on actual exact original and revised Git CSharp source trees
         run: python Tools/B01/PackagePreflight/w9_preflight.py
+      - name: Build three complete deterministic package ZIPs with per-file SHA256
+        run: python Tools/B01/PackagePreflight/pack_sources.py
       - name: Upload source inspection evidence on PASS or FAIL
         uses: actions/upload-artifact@v4
         if: always()
