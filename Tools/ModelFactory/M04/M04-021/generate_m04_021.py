@@ -245,7 +245,7 @@ def validate(hinge):
     assert len(meshes)>=28, ("missing detail",len(meshes))
     assert len(materials)>=7
     assert scene.unit_settings.scale_length==1.0
-    assert tuple(hinge.location)==(0,HINGE_Y,0)
+    assert all(abs(a-b)<1e-6 for a,b in zip(hinge.location,(0,HINGE_Y,0))), tuple(hinge.location)
     edges=0
     for o in meshes:
         assert len(o.data.polygons)>0 and len(o.data.vertices)>0,o.name
