@@ -1,0 +1,108 @@
+{
+  "source_issue": 220,
+  "status": "DESIGN_TEST_MATRIX_NOT_EXECUTED",
+  "source_sha": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+  "pr": 214,
+  "scenarios": [
+    {
+      "id": "15-wheel-steps-near-default-far-near",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "wall-temporary-clamp-restore-requested",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "low-ceiling-and-ramp-clamp",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "large-heavy-360-frames",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "tall-hull-bounds",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "wide-asymmetric-profile",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "0hp-detached-part-shrinks",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "reticle-los-near-far",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "shot-world-aim-preserved",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "LMB-groupA-preserved",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "RMB-groupB-preserved",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "garage-scroll-does-not-zoom",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "reward-scroll-does-not-zoom",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "pause-disables-zoom",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "mouse-focus-restore",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "InputSystem-host-path",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "720p-reticle-clarity",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "1080p-reticle-clarity",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "60s-wall-oscillation",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    },
+    {
+      "id": "3x-garage-mission-preference-recovery",
+      "native_result": "NOT_RUN",
+      "requires": "Unity6000.3.14f1 standalone QA"
+    }
+  ]
+}
