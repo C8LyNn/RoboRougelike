@@ -22,3 +22,18 @@ jobs:
       - name: Run B01-60 negative receipt fixtures (NOT Unity)
         working-directory: Tools/B01/QA-NATIVE-001
         run: python -m unittest -v test_qa_native.py
+      - name: Build SHA256-gated deterministic source ZIP twice
+        shell: bash
+        run: |
+          python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/QA-NATIVE-001.zip --report Artifacts/B01-60/SHA256_REPORT.json
+          python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/QA-NATIVE-001-repeat.zip --report Artifacts/B01-60/SECOND_SHA256_REPORT.json
+          python -c 'import json; from pathlib import Path; r=Path("Artifacts/B01-60"); a=json.loads((r/"SHA256_REPORT.json").read_text()); b=json.loads((r/"SECOND_SHA256_REPORT.json").read_text()); assert a["sha256"]==b["sha256"], "non-deterministic ZIP"'
+      - name: Upload real QA-only ZIP and SHA256 report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-60-QA-NATIVE-001-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            Artifacts/B01-60/QA-NATIVE-001.zip
+            Artifacts/B01-60/SHA256_REPORT.json
+          if-no-files-found: error
+          retention-days: 14
