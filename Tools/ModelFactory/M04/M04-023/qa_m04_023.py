@@ -80,12 +80,12 @@ def main():
             vectors = accessor_vec3(gltf, binary, sampler["output"])
             assert len(vectors) >= 3, "Shutter lacks keyframes"
             assert all(all(math.isfinite(v) for v in xyz) for xyz in vectors)
-            xs = [v[0] for v in vectors]
-            zs = [v[2] for v in vectors]
-            travel = math.hypot(max(xs) - min(xs), max(zs) - min(zs))
+            # glTF is Y-up; Blender Z translation is mapped to glTF Y.
+            # Measure Euclidean displacement in all three exported axes.
+            travel = max(math.dist(v, vectors[0]) for v in vectors)
             motion[name] = travel
     assert len(motion) == 6, "Expected six independently animated shutter translations"
-    assert all(.068 <= t <= .072 for t in motion.values()), "Shutter travel outside 70 mm"
+    assert all(.068 <= t <= .072 for t in motion.values()), "Shutter travel outside 70 mm: " + repr(motion)
     assert manifest["moving_shutters"] == 6
     assert manifest["materials"] == 8
     assert manifest["meshes"] == len(meshes), "GLB mesh count differs from Blender"
