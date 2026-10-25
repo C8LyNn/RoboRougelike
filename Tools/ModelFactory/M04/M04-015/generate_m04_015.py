@@ -236,7 +236,13 @@ def main():
     (out/"M04-015_manifest.json").write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     bpy.ops.wm.save_as_mainfile(filepath=str(out/"M04-015_pneumatic_jump_leg.blend"))
     bpy.ops.export_scene.gltf(filepath=str(out/"M04-015_pneumatic_jump_leg.glb"),export_format="GLB",export_animations=True)
-    bpy.ops.export_scene.fbx(filepath=str(out/"M04-015_pneumatic_jump_leg.fbx"))
+    # OBJ/MTL are a robust static Unity fallback. Ubuntu Blender 5.0.1 has
+    # an upstream FBX addon failure (missing ExportFBX.use_space_transform).
+    bpy.ops.wm.obj_export(filepath=str(out/"M04-015_pneumatic_jump_leg.obj"),export_materials=True)
+    try:
+        bpy.ops.export_scene.fbx(filepath=str(out/"M04-015_pneumatic_jump_leg.fbx"))
+    except Exception as exc:
+        print("M04-015 FBX_NOT_EXPORTED",repr(exc))
     print("M04-015 EXPORT_COMPLETE",json.dumps(manifest,ensure_ascii=False))
 
 if __name__=="__main__":
