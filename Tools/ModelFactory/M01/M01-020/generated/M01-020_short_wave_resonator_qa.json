@@ -1,0 +1,43 @@
+{
+  "asset_id": "M01-020",
+  "model": "Krótki emitujący falę rezonator",
+  "mount": "MOUNT_FRONT_SOCKET (0,0,0), Y-up, +Z-forward",
+  "motion": "WAVE_RING_VIBRATE_Z, 4 cycles, ±24 mm along local Z",
+  "parts": 49,
+  "vertices": 7006,
+  "triangles": 13872,
+  "materials": 7,
+  "watertight_oriented_positive_volume": "PASS",
+  "sampled_animation_frames": 73,
+  "aabb_pair_checks": 10074,
+  "moving_parts": 3,
+  "moving_vs_fixed_collisions": 0,
+  "minimum_separation_aabb_m": 0.121067,
+  "ring_vibration_amplitude_m": 0.024,
+  "ring_vibration_cycles": 4,
+  "clearance": "PASS (sampled conservative AABB, not CCD)",
+  "blender_export": "PASS (files written; visual inspection pending)",
+  "unity_import": "NOT RUN",
+  "unity_editmode": "NOT RUN",
+  "unity_playmode": "NOT RUN",
+  "visual_inspection": "NOT RUN",
+  "static_files": [
+    "M01-020_short_wave_resonator.obj",
+    "M01-020_short_wave_resonator.mtl"
+  ],
+  "backend": "blender-bpy",
+  "blender_version": "4.0.2",
+  "animated_files": [
+    "M01-020_short_wave_resonator.fbx",
+    "M01-020_short_wave_resonator.glb",
+    "M01-020_short_wave_resonator.blend"
+  ],
+  "animation_node": "WAVE_RING_VIBRATE_Z",
+  "animation_keyframes": 25,
+  "blender_repeatability": "PASS (two builds in one process)",
+  "blender_scene_counts": [
+    51,
+    9,
+    1
+  ]
+}
