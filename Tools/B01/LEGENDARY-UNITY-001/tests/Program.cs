@@ -267,6 +267,27 @@ static class Program
             a.I.Add(Part("Gun","Railgun",1,same));b.I.Add(Part("Gun","Railgun",1,same));
             var s=Service(a,b);Check(!s.CheckInvariants(out var e));Eq(e,"DUPLICATE_INSTANCE");
         });
+        Test("noncanonical_guid_case_alias_refused",()=>{
+            var a=new MemoryPort("A");var b=new MemoryPort("B");
+            var id="deadbeef1234567890abcdef12345678";
+            a.I.Add(Part("Gun","Railgun",1,id));
+            b.I.Add(Part("Gun","Railgun",1,id.ToUpperInvariant()));
+            var s=Service(a,b);
+            Check(!s.CheckInvariants(out var e));
+            Eq(e,"INVALID_R3_VIEW");
+            var fresh=new MemoryPort("C");var clean=Service(fresh);
+            Check(!clean.TryGrant("C","uppercase-event",
+                Part("Gun","Railgun",1,id.ToUpperInvariant()),"LEG-WPN-001",out e));
+            Eq(e,"DUPLICATE_INSTANCE");
+            Check(fresh.I.Count==0);
+        });
+        Test("empty_guid_disallowed_as_physical_part",()=>{
+            var a=new MemoryPort("A");var s=Service(a);
+            Check(!s.TryGrant("A","empty-guid",
+                Part("Gun","Railgun",1,Guid.Empty.ToString("N")),"LEG-WPN-001",out var e));
+            Eq(e,"DUPLICATE_INSTANCE");
+            Check(a.I.Count==0);
+        });
         Test("seeded_2500_state_transitions",()=>{
             var a=new MemoryPort("A");var b=new MemoryPort("B");var s=Service(a,b);
             var rnd=new Random(224012);var parts=new List<(PartObservation,MemoryPort)>();
