@@ -8,6 +8,8 @@
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/209",
   "branch": "feature/rrl-model-m03-022-external-side-truss",
   "head_sha": "c73dd54767cb737f08fbd7197c85054d0affa717",
-  "qa": "PENDING_CI",
-  "unity": "NOT_RUN"
+  "qa": "BLENDER_QA_PASS",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40178438153",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40178438153/artifacts/12592599891"
 }
