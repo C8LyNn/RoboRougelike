@@ -4,5 +4,17 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-25T01:42:31.895Z",
   "model": "Moduł odzysku energii kinetycznej",
-  "run": "2026-10-25T01:00:00Z"
+  "run": "2026-10-25T01:00:00Z",
+  "claim_create_commit": "7df14c478c2f81822f2ac2fb817b9643ffcfe3ac",
+  "branch": "feature/rrl-model-m05-022-kinetic-energy-recovery",
+  "source_commit": "8be560bed487a216853972fd8705f930381bffa1",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/181",
+  "qa": {
+    "blender": "PENDING",
+    "glb": "PENDING",
+    "fbx": "PENDING",
+    "unity": "NOT RUN",
+    "full_collision": "NOT RUN"
+  },
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151799833"
 }
