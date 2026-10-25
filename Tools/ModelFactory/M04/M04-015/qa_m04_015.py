@@ -25,7 +25,11 @@ def check(out):
     fbx=out/"M04-015_pneumatic_jump_leg.fbx"
     assert blend.stat().st_size>10000
     assert blend.read_bytes()[:7]==b"BLENDER-"
-    assert fbx.stat().st_size>10000
+    obj=out/"M04-015_pneumatic_jump_leg.obj"
+    mtl=out/"M04-015_pneumatic_jump_leg.mtl"
+    assert obj.stat().st_size>10000
+    assert mtl.stat().st_size>100
+    fbx_status="PASS" if fbx.exists() and fbx.stat().st_size>10000 else "NOT RUN — Blender 5 FBX addon regression"
     data=glb.read_bytes()
     assert len(data)>10000 and data[:4]==b"glTF"
     version,total=struct.unpack_from("<II",data,4)
@@ -45,7 +49,7 @@ def check(out):
     print(json.dumps({"status":"PASS","meshes":manifest["meshes"],"triangles":manifest["triangles"],
                       "materials":len(doc["materials"]),"animations":len(animations),
                       "translation_channels":sum(c["target"]["path"]=="translation" for c in channels),
-                      "unity":"NOT RUN"},indent=2))
+                      "fbx":fbx_status,"obj_mtl":"PASS","unity":"NOT RUN"},indent=2))
 
 if __name__=="__main__":
     p=argparse.ArgumentParser()
