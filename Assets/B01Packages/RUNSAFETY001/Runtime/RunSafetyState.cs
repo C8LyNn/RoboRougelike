@@ -174,13 +174,15 @@ namespace B01.RUNSAFETY001
             if (part.RebuildQuote >= part.PurchasePrice ||
                 part.RebuildQuote<0)
                 return RebuildOrderResult.InvalidPrice;
-            int cost=freeRebuildUsedThisCycle?part.RebuildQuote:0;
+            bool consumesFreeSlot=!freeRebuildUsedThisCycle;
+            int cost=consumesFreeSlot?0:part.RebuildQuote;
             if(Scrap<cost)return RebuildOrderResult.Unaffordable;
             Scrap-=cost;
             charged=cost;
-            if(!freeRebuildUsedThisCycle)freeRebuildUsedThisCycle=true;
+            if(consumesFreeSlot)freeRebuildUsedThisCycle=true;
             part.MarkPending(VictorySerial);
-            return cost==0?RebuildOrderResult.QueuedFree:
+            // A discounted 0-cost paid quote is NOT a second free-slot claim.
+            return consumesFreeSlot?RebuildOrderResult.QueuedFree:
                 RebuildOrderResult.QueuedPaid;
         }
 
