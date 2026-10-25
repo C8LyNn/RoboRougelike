@@ -2,6 +2,8 @@
 
 Dispatch `HQ-B01-CODEX-W9-20261025`. **Allowed native diagnostic phase executed; production integration remains on HOLD.** No new gameplay/Windows candidate is delivered by this QA-only branch. Six original Git-visible source states and the four published W7/W8/B01/OBJ001 archives match their initial HEAD/clean states and published hashes; see baseline-preservation.json. Ignored local caches are outside that assertion.
 
+Published [QA-only Draft PR212](https://github.com/C8LyNn/RoboRougelike/pull/212), branch `qa/rrl-w9-native-report`, report checkpoint `280da8b94f3b853f8dcab504f8628a2ead57ca09`; final commits add reporting only. [Final HQ/B01 inbox receipt](https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6396039578). This is not the conditional integration PR required after G2.
+
 ## Target and ownership
 Target PR210 `4c9236a4cdc27814ea2e7679872ec4a524150cc8`, including PHY125 `916654634d1bfdc2bbc14e64b9eeac856ede1fa8`. Target Assets tree `f419cfec0d65eb512c62213ce509265da0861319`; this report branch has **zero Assets/Packages/ProjectSettings diff**. Baseline results1021/1021 Edit,401/401 Play and Windows/input defense victory are inherited verified OBJ evidence, not rerun results for these new packages.
 

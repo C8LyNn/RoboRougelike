@@ -26,4 +26,4 @@
 
 ### Task3 — report/delivery
 - [x] One fresh evidence/scope review,0Critical/0Important/2Minor deferred; no B01-60 approval implied.
-- [ ] Publish QA-only Draft/report with exact source/target/test SHAs, test methods/results/limits and next gate action; no gameplay integration while HOLD.
+- [x] Published QA-only Draft212 and exact reports/reproductions to66/140/8 and final79#6396039578. Native assertion/visual/Windows scope remains NOT_RUN and integration is not started while HOLD.
