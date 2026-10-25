@@ -36,6 +36,9 @@ def clear_previous():
     for mesh in list(bpy.data.meshes):
         if mesh.name.startswith(PREFIX) and mesh.users == 0:
             bpy.data.meshes.remove(mesh)
+    for action in list(bpy.data.actions):
+        if action.name.startswith(PREFIX) and action.users == 0:
+            bpy.data.actions.remove(action)
     for material in list(bpy.data.materials):
         if material.name.startswith(PREFIX) and material.users == 0:
             bpy.data.materials.remove(material)
@@ -165,11 +168,11 @@ def create():
              0.029, 0.48, mats["titanium"], col, slider, "X")
     cylinder("copper_lock_tip", (0.146, 0, 0.202),
              0.027, 0.012, mats["copper"], col, slider, "X")
-    cylinder("operating_handle", (-0.175, 0, 0.295),
+    cylinder("operating_handle", (-0.315, 0, 0.295),
              0.018, 0.146, mats["copper"], col, slider, "Z")
     bpy.ops.mesh.primitive_uv_sphere_add(segments=20, ring_count=12,
                                          radius=0.042,
-                                         location=(-0.175, 0, 0.383))
+                                         location=(-0.315, 0, 0.383))
     knob = bpy.context.object
     knob.name = PREFIX + "grip_ball"
     knob.data.materials.append(mats["graphite"])
