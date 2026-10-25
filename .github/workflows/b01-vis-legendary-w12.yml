@@ -48,6 +48,8 @@ jobs:
           cp "$root/output/M04-024_LEG-MOV-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
           cp "$root/binaries/M01-018_LEG-WPN-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
           cp "$root/"*.md /tmp/B01-VIS-LEGENDARY-W12-R1/ 2>/dev/null || true
+          cp "$root/manifest.json" "$root/binding_spec.json" /tmp/B01-VIS-LEGENDARY-W12-R1/
+          (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
           zip -X -r B01-VIS-LEGENDARY-W12-R1.zip B01-VIS-LEGENDARY-W12-R1 >/dev/null
