@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="18" result="Failed(Child)" total="18" passed="6" failed="12" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:22Z" duration="218,0603727">
+  <test-suite type="TestSuite" id="1594" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="419" result="Failed" site="Child" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:22Z" duration="218.060373" total="18" passed="6" failed="12" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1021" name="B01.MAPGEN001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-MAPGEN-R32-QA/Library/ScriptAssemblies/B01.MAPGEN001.PlayModeTests.dll" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:22Z" duration="218.051261" total="18" passed="6" failed="12" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="41088" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1022" name="B01" fullname="B01" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:22Z" duration="218.050765" total="18" passed="6" failed="12" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1023" name="MAPGEN001" fullname="B01.MAPGEN001" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:22Z" duration="218.050476" total="18" passed="6" failed="12" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1024" name="Tests" fullname="B01.MAPGEN001.Tests" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:22Z" duration="218.050170" total="18" passed="6" failed="12" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="MapGenPhysicalTraversalTests" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:18:19Z" duration="215.990607" total="12" passed="0" failed="12" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1005" name="Arena_Seed31_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed31_Heavy_CubePhysics" methodname="Arena_Seed31_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="192266251" result="Failed" start-time="2026-10-25 11:14:43Z" end-time="2026-10-25 11:15:01Z" duration="17.992492" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL CombatArena/seed=31/rig=Heavy waypoint=0/1 steps=900 start=(0.00, 1.25, -25.00) end=(-0.12, 0.50, -24.46) maxHorizontalDisplacement=0,559 endSpeed=0,003 heading=1,57 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1004" name="Arena_Seed31_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed31_Light_CubePhysics" methodname="Arena_Seed31_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1191700760" result="Failed" start-time="2026-10-25 11:15:01Z" end-time="2026-10-25 11:15:19Z" duration="17.988122" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL CombatArena/seed=31/rig=Light waypoint=0/1 steps=900 start=(0.00, 1.25, -25.00) end=(-0.11, 0.50, -24.47) maxHorizontalDisplacement=0,559 endSpeed=0,003 heading=2,38 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1003" name="Arena_Seed7_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed7_Heavy_CubePhysics" methodname="Arena_Seed7_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="895664764" result="Failed" start-time="2026-10-25 11:15:19Z" end-time="2026-10-25 11:15:37Z" duration="17.999913" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL CombatArena/seed=7/rig=Heavy waypoint=0/1 steps=900 start=(0.00, 1.25, -25.00) end=(-0.12, 0.50, -24.46) maxHorizontalDisplacement=0,559 endSpeed=0,003 heading=1,57 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1002" name="Arena_Seed7_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed7_Light_CubePhysics" methodname="Arena_Seed7_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1874761317" result="Failed" start-time="2026-10-25 11:15:37Z" end-time="2026-10-25 11:15:55Z" duration="18.000020" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL CombatArena/seed=7/rig=Light waypoint=0/1 steps=900 start=(0.00, 1.25, -25.00) end=(-0.11, 0.50, -24.47) maxHorizontalDisplacement=0,559 endSpeed=0,003 heading=2,38 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1007" name="Arena_Seed83_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed83_Heavy_CubePhysics" methodname="Arena_Seed83_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1928671386" result="Failed" start-time="2026-10-25 11:15:55Z" end-time="2026-10-25 11:16:13Z" duration="17.999598" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL CombatArena/seed=83/rig=Heavy waypoint=0/1 steps=900 start=(0.00, 1.25, -25.00) end=(-0.12, 0.50, -24.46) maxHorizontalDisplacement=0,559 endSpeed=0,003 heading=1,57 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1006" name="Arena_Seed83_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed83_Light_CubePhysics" methodname="Arena_Seed83_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1761220786" result="Failed" start-time="2026-10-25 11:16:13Z" end-time="2026-10-25 11:16:31Z" duration="17.999807" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL CombatArena/seed=83/rig=Light waypoint=0/1 steps=900 start=(0.00, 1.25, -25.00) end=(-0.11, 0.50, -24.47) maxHorizontalDisplacement=0,559 endSpeed=0,003 heading=2,38 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1011" name="Course_Seed31_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed31_Heavy_CubePhysics" methodname="Course_Seed31_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1983246425" result="Failed" start-time="2026-10-25 11:16:31Z" end-time="2026-10-25 11:16:49Z" duration="17.999826" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL ObstacleCourse/seed=31/rig=Heavy waypoint=0/5 steps=900 start=(0.00, 1.25, 5.00) end=(-0.12, 0.50, 5.54) maxHorizontalDisplacement=0,555 endSpeed=0,003 heading=2,41 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1010" name="Course_Seed31_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed31_Light_CubePhysics" methodname="Course_Seed31_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1485080410" result="Failed" start-time="2026-10-25 11:16:49Z" end-time="2026-10-25 11:17:07Z" duration="18.000098" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL ObstacleCourse/seed=31/rig=Light waypoint=0/5 steps=900 start=(0.00, 1.25, 5.00) end=(-0.11, 0.50, 5.52) maxHorizontalDisplacement=0,555 endSpeed=0,003 heading=3,12 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1009" name="Course_Seed7_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed7_Heavy_CubePhysics" methodname="Course_Seed7_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="558112181" result="Failed" start-time="2026-10-25 11:17:07Z" end-time="2026-10-25 11:17:25Z" duration="17.999614" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL ObstacleCourse/seed=7/rig=Heavy waypoint=0/5 steps=900 start=(0.00, 1.25, 5.00) end=(-0.12, 0.50, 5.54) maxHorizontalDisplacement=0,555 endSpeed=0,003 heading=2,41 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1008" name="Course_Seed7_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed7_Light_CubePhysics" methodname="Course_Seed7_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="878920642" result="Failed" start-time="2026-10-25 11:17:25Z" end-time="2026-10-25 11:17:43Z" duration="17.999785" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL ObstacleCourse/seed=7/rig=Light waypoint=0/5 steps=900 start=(0.00, 1.25, 5.00) end=(-0.11, 0.50, 5.52) maxHorizontalDisplacement=0,555 endSpeed=0,003 heading=3,12 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1013" name="Course_Seed83_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed83_Heavy_CubePhysics" methodname="Course_Seed83_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1082479616" result="Failed" start-time="2026-10-25 11:17:43Z" end-time="2026-10-25 11:18:01Z" duration="17.999892" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL ObstacleCourse/seed=83/rig=Heavy waypoint=0/5 steps=900 start=(0.00, 1.25, 5.00) end=(-0.12, 0.50, 5.54) maxHorizontalDisplacement=0,555 endSpeed=0,003 heading=2,41 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1012" name="Course_Seed83_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed83_Light_CubePhysics" methodname="Course_Seed83_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="483807858" result="Failed" start-time="2026-10-25 11:18:01Z" end-time="2026-10-25 11:18:19Z" duration="17.999884" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  CUBE_PHYSICS_TRAVERSAL_FAIL ObstacleCourse/seed=83/rig=Light waypoint=0/5 steps=900 start=(0.00, 1.25, 5.00) end=(-0.11, 0.50, 5.52) maxHorizontalDisplacement=0,555 endSpeed=0,003 heading=3,12 reason= (CUBE ONLY: PR125/OBJ210 real R6 wheels still require separate QA)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<DriveOneCase>d__12.MoveNext () [0x004fc] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:127
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1014" name="MapGenPlayModeTests" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 11:18:19Z" end-time="2026-10-25 11:18:22Z" duration="2.058418" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1016" name="GenerateAndClearRealPhysicsColliders" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.GenerateAndClearRealPhysicsColliders" methodname="GenerateAndClearRealPhysicsColliders" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1355587424" result="Passed" start-time="2026-10-25 11:18:19Z" end-time="2026-10-25 11:18:19Z" duration="0.015598" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial" methodname="GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="502814937" result="Passed" start-time="2026-10-25 11:18:19Z" end-time="2026-10-25 11:18:19Z" duration="0.006233" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="OffsetAndRotatedHostReturnsWorldSpaceMetadata" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.OffsetAndRotatedHostReturnsWorldSpaceMetadata" methodname="OffsetAndRotatedHostReturnsWorldSpaceMetadata" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="949146894" result="Passed" start-time="2026-10-25 11:18:19Z" end-time="2026-10-25 11:18:19Z" duration="0.009289" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="RegenerateCyclesRemoveOldColliderRoots" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RegenerateCyclesRemoveOldColliderRoots" methodname="RegenerateCyclesRemoveOldColliderRoots" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="436872883" result="Passed" start-time="2026-10-25 11:18:19Z" end-time="2026-10-25 11:18:20Z" duration="0.023431" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="RejectedInputPreservesPreviousLiveLevel" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RejectedInputPreservesPreviousLiveLevel" methodname="RejectedInputPreservesPreviousLiveLevel" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1588252622" result="Passed" start-time="2026-10-25 11:18:20Z" end-time="2026-10-25 11:18:20Z" duration="0.005976" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="RigidbodyActuallyFallsAndLandsOnGeneratedFloor" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RigidbodyActuallyFallsAndLandsOnGeneratedFloor" methodname="RigidbodyActuallyFallsAndLandsOnGeneratedFloor" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="2034578659" result="Passed" start-time="2026-10-25 11:18:20Z" end-time="2026-10-25 11:18:22Z" duration="1.996129" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

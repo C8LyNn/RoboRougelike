@@ -1,0 +1,48 @@
+{
+    "producer": "7334f3b1d8cd3a976098faa4e683f4de3d9a592f",
+    "status": "FAIL",
+    "pipeline": "UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset",
+    "materialOverride": false,
+    "baselineMaterials": 0,
+    "afterClearMaterials": 0,
+    "afterDestroyMaterials": 0,
+    "cases": [
+        {
+            "recipe": "CombatArena",
+            "status": "FAIL",
+            "shader": "",
+            "materialName": "",
+            "screenshot": "",
+            "seed": 7,
+            "renderers": 0,
+            "uniqueMaterials": 0,
+            "materialCountAfterGenerate": 0,
+            "supportedShader": false,
+            "oldRootsRemoved": true,
+            "clearedRootsRemoved": true,
+            "sameMaterial": true,
+            "materialCountsAfterRegenerate": []
+        },
+        {
+            "recipe": "ObstacleCourse",
+            "status": "FAIL",
+            "shader": "",
+            "materialName": "",
+            "screenshot": "",
+            "seed": 7,
+            "renderers": 0,
+            "uniqueMaterials": 0,
+            "materialCountAfterGenerate": 0,
+            "supportedShader": false,
+            "oldRootsRemoved": true,
+            "clearedRootsRemoved": true,
+            "sameMaterial": true,
+            "materialCountsAfterRegenerate": []
+        }
+    ],
+    "errors": [
+        "CombatArena: System.InvalidOperationException: MAPGEN001_URP_SHADER_NOT_AVAILABLE: provide URP Lit or Simple Lit shader\r\n  at B01.MAPGEN001.MapGenBuilder.GetGeneratedBlockMaterial () [0x0003d] in <c57e8740bb6845079c14a1e55674bb00>:0 \r\n  at B01.MAPGEN001.MapGenBuilder.Generate (B01.MAPGEN001.MapRecipe recipe, System.Int32 seed, B01.MAPGEN001.MapGenConfig config, B01.MAPGEN001.MapVehicleProfile vehicle) [0x00326] in <c57e8740bb6845079c14a1e55674bb00>:0 \r\n  at MapGenR33MaterialQA.Generate (B01.MAPGEN001.MapRecipe recipe) [0x00012] in <7ba10df4ace44cf69f4bb82aea85b5a9>:0 ",
+        "ObstacleCourse: System.InvalidOperationException: MAPGEN001_URP_SHADER_NOT_AVAILABLE: provide URP Lit or Simple Lit shader\r\n  at B01.MAPGEN001.MapGenBuilder.GetGeneratedBlockMaterial () [0x0003d] in <c57e8740bb6845079c14a1e55674bb00>:0 \r\n  at B01.MAPGEN001.MapGenBuilder.Generate (B01.MAPGEN001.MapRecipe recipe, System.Int32 seed, B01.MAPGEN001.MapGenConfig config, B01.MAPGEN001.MapVehicleProfile vehicle) [0x00326] in <c57e8740bb6845079c14a1e55674bb00>:0 \r\n  at MapGenR33MaterialQA.Generate (B01.MAPGEN001.MapRecipe recipe) [0x00012] in <7ba10df4ace44cf69f4bb82aea85b5a9>:0 ",
+        "Unexpected builder cache count after Clear"
+    ]
+}
