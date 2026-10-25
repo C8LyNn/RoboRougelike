@@ -20,8 +20,8 @@ $Target = "C:\Temp\B01-MAPGEN-AUDIT-$(Get-Date -Format yyyyMMddHHmmss)"  # MUST 
 $Ref = "4c9236a4cdc27814ea2e7679872ec4a524150cc8"  # PUBLISHED OBJ210 COMPARISON ONLY, not current Codex ACK
 $Py = "python"
 $Tool = "Tools\B01\PACKAGE-AUTO-001\package_auto.py"
-$Config = "Tools\B01\PACKAGE-AUTO-001\configs\MAPGEN001.json"
-$Package = "C:\Downloads\MAPGEN001_R3_4_FULL_SOURCE_AND_QA.zip"
+$Config = "Tools\B01\PACKAGE-AUTO-001\configs\MAPGEN001_R341.json"
+$Package = "C:\Downloads\MAPGEN001_R3_4_1_FULL_SOURCE_AND_QA.zip"
 & $Py $Tool verify --config $Config --zip $Package
 & $Py $Tool sandbox --repo $Root --target $Target --source-ref $Ref
 & $Py $Tool preflight --config $Config --zip $Package --target $Target --expected-head $Ref --report C:\Temp\B01-MAPGEN-PREFLIGHT.json
