@@ -1,0 +1,24 @@
+{
+  "package": "BUILD001",
+  "source_sha": "489676414a3eb45fe70124098e3778a81d0aaff2",
+  "rows": [
+    {
+      "path": "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md",
+      "bytes": 2867,
+      "sha256": "e66f7e04bb409e1e239fc1ec3e2b973abf81ec7503f38f48c0f16d647d997fe4",
+      "git_sha1": "7f4921a4fd23e8cac9d9b18bc6c0252e624fa58e"
+    },
+    {
+      "path": "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md",
+      "bytes": 3172,
+      "sha256": "51fbb3d5b933dca8e8b54c530ca7992f5eef87f77181a2dbaeb838416279864d",
+      "git_sha1": "5fd5995640c9a882dc4a4144160b8df93e3d3aed"
+    },
+    {
+      "path": "Docs/B01/BUILD001/manifest.json",
+      "bytes": 8369,
+      "sha256": "76c8e55dbef6ba4984ce003cc13d5f5041deb3c007e10ac7413203b3d6cac1fb",
+      "git_sha1": "c98c31cad43c6bc78f1ac04d42fe2a07dc99c644"
+    }
+  ]
+}
