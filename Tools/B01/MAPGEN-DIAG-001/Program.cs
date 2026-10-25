@@ -213,7 +213,7 @@ static class Program
             cases = Rows
         };
         File.WriteAllText(Path.Combine(output, "results.json"), JsonSerializer.Serialize(receipt, JsonOptions));
-        var table = new StringBuilder("| ID | Result | Actual | Geometry hash |\\n|---|---|---|---|\\n");
+        var table = new StringBuilder("| ID | Result | Actual | Geometry hash |\n|---|---|---|---|\n");
         foreach (var row in Rows)
         {
             string compact = row.Actual.Replace("|", "/").Replace("\r", " ").Replace("\n", " ");
