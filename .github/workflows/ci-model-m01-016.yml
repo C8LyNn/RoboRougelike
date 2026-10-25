@@ -24,7 +24,7 @@ jobs:
           blender --version
       - name: Generate, sample collision QA, repeatability, export
         run: |
-          blender --background --python Tools/ModelFactory/M01/M01-016/generate_m01_016.py -- --repeat --out Tools/ModelFactory/M01/M01-016/generated
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M01/M01-016/generate_m01_016.py -- --repeat --out Tools/ModelFactory/M01/M01-016/generated
       - name: Independent binary audit
         run: |
           python3 Tools/ModelFactory/M01/M01-016/qa_m01_016.py --out Tools/ModelFactory/M01/M01-016/generated
