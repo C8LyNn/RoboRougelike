@@ -1,0 +1,9 @@
+# CAMERA001 gated installation plan for Codex
+STATUS: QA_PENDING / DO NOT INTEGRATE YET.
+Source PR: https://github.com/C8LyNn/RoboRougelike/pull/134 (DRAFT, not approved). Branch feature/b01-camera001-s02-r1-isolated. Immutable source_sha: to be pinned in #66 after manifest. Recipient must separately ACK exact target branch/SHA and current reserved camera paths. Published PHY #125 SHA 916654634d1bfdc2bbc14e64b9eeac856ede1fa8 is REFERENCE ONLY, NOT an integration baseline.
+
+Deps: Unity 6000.3.14f1, URP project, com.unity.test-framework 1.6.0 for tests; Runtime assembly B01.CAMERA001.Runtime only UnityEngine. Demo supports ENABLE_INPUT_SYSTEM or legacy input.
+Target allowed import: entire Assets/B01Packages/CAMERA001/ with original .meta, and parent folder .meta if absent; no copying only PR delta. Verify GUID uniqueness against the TARGET and do not overwrite an existing Assets/B01Packages.meta UUID.
+Procedure for TEST SANDBOX: 1) separate clean checkout/branch, copy directory. 2) check all .meta and asmdef GUID references, compile. 3) run EditMode+PlayMode capture XML/log/exits. 4) play CAMERA001_Demo at 720p/1080p Light/Heavy with walls and measure own hull reticle occlusion. 5) stop if dependencies or warnings conflict with target.
+Only after B01-60 G1 PASS, B01-40 gate, B01-00 READY and target scope ACK, Codex integrates on its OWN branch: either adapt geometry solver to current P12 (without breaking cursor/aim/projectile ray) OR replace camera Transform ownership explicitly, never both scripts controlling one Camera. Codex alone runs full game/Windows regressions and posts CODEX_INTEGRATION_REPORT (source_sha, target_sha, changes, Unity Edit/Play XML, screenshots, build SHA, faults).
+Rollback: revert only Codex feature branch commits; restore original P12 camera/scene and input, remove only this package's assets, preserve shared parent .meta, rerun aiming/range regression. No main/develop merge without owner.
