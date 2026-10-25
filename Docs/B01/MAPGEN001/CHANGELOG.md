@@ -28,3 +28,6 @@
 ### R3.1 narrow-lane correction
 - Tightened per-segment lateral wandering as a function of LaneWidth and moved optional ramps toward the side boundary (without overlapping the wall) to retain a larger safe corridor for 10m Light and 16m Heavy challenges at Difficulty=1. This follows a mathematical worst-case geometry review; native Unity runtime proof is still NOT_RUN.
 - Added 600 further authored extreme course cases: 100 seeds x 3 segment counts x Light@10m/Heavy@16m at density=100/difficulty=1.
+
+## W12 / R3.4 — retained URP shader + physically controlled cube harness (2026-10-25)
+Source-only producer repair after original R3.3 Codex native QA PR#232. Replace Shader.Find-only retained-host dependency with package-owned URP Resources shader and matched shader/.meta GUID; update shader PlayMode contract. Add isolated no-friction PhysicsMaterial for 12 **test cube fixtures only**, independent flat floor physics discriminator and per-case grounding/heading/speed telemetry; keep real Rigidbody AddForce/torque/contacts and same 900-step limit. Do not alter planner/route validator/geometry or R6/OBJ/game. Actual native Unity/Player PASS requires independent new runs and is NOT claimed. See TEST_EVIDENCE_R34.md / RECEIVER_HANDOFF_R34.md, PR#235.
