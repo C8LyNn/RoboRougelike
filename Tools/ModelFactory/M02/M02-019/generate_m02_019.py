@@ -155,7 +155,7 @@ annulus("DRUM_CYLINDRICAL_FRICTION_SHELL",.306,.343,-.052,.078,n=128,mat=iron,pa
 for k in range(8):
     start=radians(k*45+7.5)
     end=radians((k+1)*45-7.5)
-    annulus("OPEN_WINDOW_FACE_SPOKE_%02d"%k,.175,.343,.079,.097,start,end,n=12,mat=steel,parent=rotor)
+    annulus("OPEN_WINDOW_FACE_SPOKE_%02d"%k,.175,.343,.078,.097,start,end,n=12,mat=steel,parent=rotor)
 annulus("DRUM_HUB_RING",.080,.142,.077,.116,n=64,mat=bright,parent=rotor)
 cylinder("ROTATING_WHEEL_FLANGE",(0,.122,0),.079,.032,iron,rotor)
 for k in range(6):
@@ -250,6 +250,19 @@ assert len(bpy.data.materials)>=3
 assert scene.unit_settings.scale_length==1
 mesh_objects=[o for o in bpy.data.objects if o.type=="MESH"]
 assert len(mesh_objects)>=30
+# Topological QA of source meshes (before glTF triangulation).
+nonmanifold=[]
+degenerate=[]
+for obj in mesh_objects:
+    bm=bmesh.new()
+    bm.from_mesh(obj.data)
+    if any(not edge.is_manifold for edge in bm.edges):
+        nonmanifold.append(obj.name)
+    if any(face.calc_area()<1e-11 for face in bm.faces):
+        degenerate.append(obj.name)
+    bm.free()
+assert not nonmanifold, "Non-manifold source meshes: "+str(nonmanifold)
+assert not degenerate, "Degenerate source faces: "+str(degenerate)
 scene.frame_set(1)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT,ID+".blend"))
 bpy.ops.object.select_all(action="DESELECT")
@@ -265,6 +278,7 @@ report={
               "WHEEL_CYLINDER_PISTON_L","WHEEL_CYLINDER_PISTON_R",
               "RETURN_SPRING_TOP"],
     "mesh_count":len(mesh_objects),"material_count":len(bpy.data.materials),
+    "manifold_meshes_checked":len(mesh_objects),"degenerate_faces":0,
     "motion_samples":121,"minimum_radial_shoe_to_drum_clearance_m":round(minimum,6),
     "files":[ID+".blend",ID+"_animated.glb"],
     "limitations":["Analytic swept envelope, not full triangle-triangle CCD",
