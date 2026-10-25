@@ -41,7 +41,7 @@ def check_glb():
     expected|={"INPUT_BIG_24T_SPIN_Y","OUTPUT_SMALL_16T_SPIN_Y"}
     assert expected.issubset(names),sorted(expected-names)
     animations=root.get("animations",[])
-    assert animations,"no glTF animations"
+    assert len(animations)==1,("expected one synchronized NLA cycle",len(animations))
     channels=[]
     for anim in animations:
         channels.extend(anim.get("channels",[]))
@@ -57,6 +57,39 @@ def check_glb():
     assert all("translation" in targets[n] for n in expected if n.startswith("CHAIN_LINK_"))
     for animation in animations:
         assert animation.get("samplers"),"animation without sampler"
+    # Decode the actual glTF BIN accessors to verify nonzero animation motion.
+    binary_header=20+json_length
+    bin_size,bin_type=struct.unpack_from("<I4s",data,binary_header)
+    assert bin_type==b"BIN"+bytes([0])
+    bin_start=binary_header+8
+    assert bin_start+bin_size<=len(data)
+    def read_floats(accessor_index):
+        accessor=root["accessors"][accessor_index]
+        view=root["bufferViews"][accessor["bufferView"]]
+        assert accessor["componentType"]==5126
+        width={"SCALAR":1,"VEC3":3,"VEC4":4}[accessor["type"]]
+        stride=view.get("byteStride",width*4)
+        offset=bin_start+view.get("byteOffset",0)+accessor.get("byteOffset",0)
+        return [struct.unpack_from("<"+"f"*width,data,offset+i*stride)
+                for i in range(accessor["count"])]
+    def movement(name,path):
+        for animation in animations:
+            for channel in animation["channels"]:
+                target=channel.get("target",{})
+                idx=target.get("node")
+                if idx is None or nodes[idx].get("name")!=name or target.get("path")!=path:
+                    continue
+                sampler=animation["samplers"][channel["sampler"]]
+                times=read_floats(sampler["input"])
+                values=read_floats(sampler["output"])
+                assert len(times)>=60 and times[-1][0]-times[0][0]>=3.9
+                first=values[0]
+                return max(sum((v[k]-first[k])**2 for k in range(len(first)))**.5
+                           for v in values)
+        raise AssertionError(("missing channel",name,path))
+    assert movement("CHAIN_LINK_00_TRAVEL","translation")>.30
+    assert movement("INPUT_BIG_24T_SPIN_Y","rotation")>.7
+    assert movement("OUTPUT_SMALL_16T_SPIN_Y","rotation")>.7
     qa=json.loads(report.read_text(encoding="utf-8"))
     assert qa["id"]==ID
     assert qa["materials"]==8
