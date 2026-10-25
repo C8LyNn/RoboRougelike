@@ -1,0 +1,98 @@
+{
+  "package": "BUILD001",
+  "source_sha": "0788d0a8f4a40535e0c84e9ea9d7f2a6b5e8b267",
+  "part": 0,
+  "rows": [
+    {
+      "path": "Assets/B01Construction.meta",
+      "bytes": 169,
+      "sha256": "46781a32906e45a4a1152005716f1eaeef2a93bc673223bf4d0fda10cfac5f98",
+      "git_sha1": "240a388ede28ee981b5d1ceb89804cbb99738e6f",
+      "guid": "b01d0000000000000000000000000001"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001.meta",
+      "bytes": 169,
+      "sha256": "319b87e20e735a6c97e63f4190976ff6678275a99ea4793a4a5dcea1792d9d3f",
+      "git_sha1": "1c7f2a7ad7ab14363bf2ca9a077640885d1f7283",
+      "guid": "b01d0000000000000000000000000002"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo.meta",
+      "bytes": 169,
+      "sha256": "5a50874b891218060a034d0051d8622f0a52d068149f3268bdb089f7493efade",
+      "git_sha1": "b837ac404f5436bf631f4adb66565352f2fdcbf4",
+      "guid": "b01d0000000000000000000000000004"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity",
+      "bytes": 1378,
+      "sha256": "9b635fe9d14cdf0a628f6e515f533fb82969dbc73ef16fd71ac86bbeab3bbbf7",
+      "git_sha1": "344bb50cbe3aa639e6fb4c699bef9c59fd09c711",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity.meta",
+      "bytes": 152,
+      "sha256": "ec58c77941b2c6017fe1589b0aa63950d6a8e7461a001b64bd2e2e6d1358d837",
+      "git_sha1": "b62ca306478d042f0c635c3d36beb6f9dca7174e",
+      "guid": "b01d0000000000000000000000000011"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs",
+      "bytes": 3907,
+      "sha256": "9a3acc3573666423a7d38f6d7745c34b7307690c97c11415d808bae3b84b6f54",
+      "git_sha1": "09c4a65f4b7f1438e157720ccdb3a9b584403fa6",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs.meta",
+      "bytes": 240,
+      "sha256": "2ba4fb08c910c16f9650ba09a1192df47f04e8f2b2abccc6314b9dbec9eb9a35",
+      "git_sha1": "83cd834a4b9619560b9fa338f872bf97d30573e5",
+      "guid": "b01d000000000000000000000000000a"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime.meta",
+      "bytes": 169,
+      "sha256": "f0bfb365743b8d9717fa89308f1ff80bb2a9ad0466efae6600398ba079a6981f",
+      "git_sha1": "5404b107a1d94cafc5bf070a3e44a381f5c4d11d",
+      "guid": "b01d0000000000000000000000000003"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef",
+      "bytes": 201,
+      "sha256": "44ccd9d21d3dcb4334abdad1ff44a11814fc894482bc40b7b1ea006bc99b50df",
+      "git_sha1": "ca38ac8ae4856475641117095b2f3b3a5e70b6a4",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef.meta",
+      "bytes": 163,
+      "sha256": "62a4a6c2dd0c86b9fb29e35b24361ed879ae63ae46ab70ade83ca8bdc5280ae8",
+      "git_sha1": "135b2d023dfc644c0a3d168ae36e9a56f88f29e4",
+      "guid": "b01d000000000000000000000000000e"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs",
+      "bytes": 7587,
+      "sha256": "e177a5c6749d1b01e413235df2187e616f8d94e2d7ff513a3c0b2db4985e69e1",
+      "git_sha1": "cc65c740d7fe815c47a44a96050832bc4e226bed",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs.meta",
+      "bytes": 240,
+      "sha256": "38f0d4dbc64cf015de0283030d8702d057f0a4cd785efbd6330ffce00618e24a",
+      "git_sha1": "43391bf0249a9943d8d9525892e85c2e6f03b2d6",
+      "guid": "b01d0000000000000000000000000009"
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs",
+      "bytes": 9187,
+      "sha256": "bf4b93793a23a0b6c242702572c3f4db0d57201e9f2280233949cbddd4b12cb2",
+      "git_sha1": "2c65106556b39043435ad9fd4e0383c2b9d5690f",
+      "guid": null
+    }
+  ]
+}
