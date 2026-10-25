@@ -1,19 +1,19 @@
 {
   "package_id": "B01-BUILD001",
-  "revision": "R1.1",
+  "revision": "R1.2_W9_TEST_ASMDEF_REPAIR",
   "recipient": "Codex",
   "source_pr": "https://github.com/C8LyNn/RoboRougelike/pull/149",
-  "status": "SOURCE_REWORK_QA_PENDING_G2_HOLD",
+  "status": "STATIC_JSON_RETEST_PASS_UNITY_NOT_RUN",
   "source_branch": "feature/b01-build001-s03-sockets-r1",
   "source_parent_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "source_commit_before_manifest": "071ec1504b6a110c9b55eb2cc4d73768a2a26a26",
+  "source_commit_before_manifest": "3ea526c215107fc8ffb5aba8ee1c43c5bcf586b5",
   "unity": "6000.3.14f1",
   "grid_m": 0.55,
   "dependencies": [
     "UnityEngine",
     "Unity Test Framework 1.6.x for NUnit"
   ],
-  "source_file_count_without_self": 35,
+  "source_file_count_without_self": 36,
   "blob_sha1_and_bytes": {
     "Assets/B01Construction.meta": {
       "git_blob_sha1": "240a388ede28ee981b5d1ceb89804cbb99738e6f",
@@ -106,8 +106,8 @@
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef": {
-      "git_blob_sha1": "5525baae058cebe8f8350e2618ed737185b7145a",
-      "bytes": 320,
+      "git_blob_sha1": "218943679274afe75d67441449e49e1b60b174e5",
+      "bytes": 260,
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef.meta": {
@@ -131,8 +131,8 @@
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef": {
-      "git_blob_sha1": "3b478bbe8266a3b1c360967876afc5685bf6ba74",
-      "bytes": 304,
+      "git_blob_sha1": "09dbb18d4077cd275f8d44812d6bbdb49785e89d",
+      "bytes": 244,
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef.meta": {
@@ -156,8 +156,8 @@
       "sha256": null
     },
     "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md": {
-      "git_blob_sha1": "e9961291bd5b4bef6e19d8226717c3ced908475e",
-      "bytes": 2127,
+      "git_blob_sha1": "68e9129b226d3118aa5f1c2ad4e52afad667cc9d",
+      "bytes": 2901,
       "sha256": null
     },
     "Docs/B01/BUILD001/KNOWN_LIMITATIONS.md": {
@@ -181,13 +181,18 @@
       "sha256": null
     },
     "Docs/B01/BUILD001/TEST_EVIDENCE.md": {
-      "git_blob_sha1": "2fc59f9bb250121e983c71b3101ff9c60f60d900",
-      "bytes": 2167,
+      "git_blob_sha1": "9100f8fd0ce784b4a39fe201bba211e62ae46a92",
+      "bytes": 2982,
       "sha256": null
     },
     "Docs/B01/BUILD001/TEST_PLAN.md": {
-      "git_blob_sha1": "c4adc9c38dcd8232569e13ffb61a37841cf780c0",
-      "bytes": 1517,
+      "git_blob_sha1": "2b29b432dacb28e4147a155418cc774640e611d0",
+      "bytes": 2025,
+      "sha256": null
+    },
+    "Tools/B01/BUILD001/verify_asmdefs.py": {
+      "git_blob_sha1": "471f24bc46e2ac188db74ebddc1c1cf84aeca2dd",
+      "bytes": 901,
       "sha256": null
     }
   },
@@ -209,5 +214,12 @@
   "manual_demo": "NOT_RUN",
   "B01_60": "PENDING",
   "G2": "HOLD",
-  "Codex_target_ack": "UNKNOWN"
+  "Codex_target_ack": "UNKNOWN",
+  "w9_fix": {
+    "baseline": "d575b79e262ec9b65702608d6b6e28972da0d21c",
+    "red": "2/2 test asmdefs had direct UnityEngine.TestRunner and UnityEditor.TestRunner",
+    "fix": "references now only B01.BUILD001.Runtime; TestAssemblies preserved",
+    "retest": "2/2 static JSON contract PASS; Unity test NOT_RUN",
+    "regression": "Tools/B01/BUILD001/verify_asmdefs.py"
+  }
 }
