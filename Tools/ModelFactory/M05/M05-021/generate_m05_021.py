@@ -31,7 +31,10 @@ def clear_owned():
     if old:
         for obj in list(old.objects):
             if obj.get("model_factory_id") == ID:
+                mesh = obj.data if obj.type == "MESH" else None
                 bpy.data.objects.remove(obj, do_unlink=True)
+                if mesh is not None and mesh.users == 0:
+                    bpy.data.meshes.remove(mesh)
             else:
                 old.objects.unlink(obj)
                 bpy.context.scene.collection.objects.link(obj)
@@ -194,6 +197,7 @@ def verify(middle, inner):
 def build():
     global C
     clear_owned()
+    created.clear()
     C = bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(C)
     graphite = material("graphite", (0.075, 0.09, 0.12), 0.62)
