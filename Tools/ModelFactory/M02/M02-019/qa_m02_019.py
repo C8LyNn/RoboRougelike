@@ -32,8 +32,10 @@ channels=sum(len(a.get("channels",[])) for a in gltf["animations"])
 assert channels>=6, f"Too few animation channels: {channels}"
 report=json.loads(qa.read_text(encoding="utf-8"))
 assert report["id"]=="M02-019"
-assert report["material_count"]>=3
+assert report["material_count"]==len(gltf["materials"])==8, "Reentrant material duplication"
 assert report["motion_samples"]==121
+assert report["manifold_meshes_checked"]==62
+assert report["degenerate_faces"]==0
 assert report["minimum_radial_shoe_to_drum_clearance_m"]>.004
 assert report["mount_pivot"]==[0,0,0]
 print(json.dumps({
