@@ -20,6 +20,9 @@ OUT.mkdir(parents=True,exist_ok=True)
 def reset():
     for o in list(bpy.data.objects):
         bpy.data.objects.remove(o,do_unlink=True)
+    for col in list(bpy.data.collections):
+        if col.name.startswith(ID+"_SIDE_CHAIN_DRIVE"):
+            bpy.data.collections.remove(col)
     for datablocks in (bpy.data.meshes,bpy.data.materials,bpy.data.actions):
         for block in list(datablocks):
             if block.users == 0:
@@ -91,7 +94,6 @@ def build():
             mod=o.modifiers.new("machined_edge_bevel","BEVEL")
             mod.width=bevel
             mod.segments=2
-            mod.affect="EDGES" if hasattr(mod,"affect") else None
             o.modifiers.new("weighted_normals","WEIGHTED_NORMAL")
         return o
 
