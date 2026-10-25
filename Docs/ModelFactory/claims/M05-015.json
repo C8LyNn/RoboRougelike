@@ -4,5 +4,16 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-25T00:51:00.380Z",
   "model": "Mechaniczny chwytak cargo",
-  "run": "2026-10-25T00Z"
+  "run": "2026-10-25T00Z",
+  "asset_branch": "feature/rrl-model-m05-015-mechanical-cargo-gripper",
+  "asset_path": "Tools/ModelFactory/M05/M05-015/",
+  "asset_commit_sha": "5e894b3ea113c789a479e029110acaa40490a04e",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/169",
+  "claim_commit_sha": "bb83e5b6d71b309e7069dd936c5978ed682c6208",
+  "qa": {
+    "source": "PASS: committed generator, documentation and workflow",
+    "blender": "PENDING: GitHub Actions 40148460169",
+    "unity": "NOT RUN: Unity EditMode/PlayMode require activation",
+    "visual_review": "NOT RUN"
+  }
 }
