@@ -1,12 +1,12 @@
 {
   "id": "M04-016",
   "agent": "M04",
-  "status": "MODEL_SOURCE_COMMITTED_CI_PENDING",
+  "status": "MODEL_COMPLETE_BLENDER_QA_PASS_UNITY_NOT_RUN",
   "claimed_at_utc": "2026-10-25T01:07:54.650Z",
   "model": "Moduł mini-odrzutników narożnych",
   "run": "2026-10-25T01:00Z",
   "branch": "feature/rrl-model-m04-016-corner-microthrusters",
-  "commit": "53d65ce99e94d5dfa7d6ff868dee95e4861e0d19",
+  "commit": "2148e75aea6e5fb61fbac4d1ff973e26e11193aa",
   "pr": 172,
   "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/172",
   "files": [
@@ -16,14 +16,27 @@
     ".github/workflows/ci-m04-016.yml"
   ],
   "qa": {
-    "source": "AUTHORED",
-    "blender": "PENDING_ACTIONS",
-    "export_glb_obj": "NOT RUN",
-    "independent_binary_qa": "NOT RUN",
-    "unity_editmode": "NOT RUN",
-    "unity_playmode": "NOT RUN",
+    "source": "PASS — generator authored and executed Blender 5.0.1",
+    "blender": "PASS — actual Blender 5.0.1 generation, BLEND reopen",
+    "meshes": 83,
+    "vertices": 6760,
+    "triangles": 13252,
+    "materials": 7,
+    "animated_nozzles": 4,
+    "glb": "PASS — 83 meshes, 7 materials, 4 clips, 4 rotation channels",
+    "obj": "PASS — 6760 vertices, 6466 faces",
+    "independent_binary_qa": "PASS",
+    "analytical_min_inter_nozzle_clearance_m": 0.0185,
+    "analytical_min_pedestal_clearance_m": 0.11335,
+    "ci_repository": "PASS",
+    "unity_editmode": "NOT RUN — activation preflight failed",
+    "unity_playmode": "NOT RUN — activation preflight failed",
     "unity_import": "NOT RUN",
-    "visual_inspection": "NOT RUN"
+    "visual_inspection": "NOT RUN",
+    "collision_limitations": "Conservative envelopes; no full swept triangle or Unity physics validation"
   },
-  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149543997"
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149661628",
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149661628/artifacts/12582182806",
+  "artifact_sha256": "06be35a46f8715e06ae30aa9accf48ebaa93957d1ad16efd4d3c93dfcc4d5292",
+  "notes": "Draft PR #172; no merge, gameplay, scenes or ProjectSettings changes. Blender CI success; Unity activation missing."
 }
