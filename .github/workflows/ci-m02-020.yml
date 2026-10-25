@@ -1,0 +1,34 @@
+name: M02-020 Rack Pinion Steering Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-020-rack-pinion-steering
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M02/M02-020/**'
+      - '.github/workflows/ci-m02-020.yml'
+  workflow_dispatch:
+jobs:
+  model-m02-020:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent 121-pose linkage mathematics
+        run: python3 Tools/ModelFactory/M02/M02-020/qa_m02_020.py --math-only
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate BLEND and animated GLB using bpy
+        run: blender -b -noaudio --python Tools/ModelFactory/M02/M02-020/generate_m02_020.py
+      - name: Inspect actual BLEND, GLB and animation channels
+        run: python3 Tools/ModelFactory/M02/M02-020/qa_m02_020.py
+      - name: Upload binary artifacts and QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-020-blend-glb-qa
+          path: Tools/ModelFactory/M02/M02-020/generated/
+          if-no-files-found: warn
