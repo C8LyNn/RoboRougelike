@@ -6,7 +6,7 @@
   "model": "Moduł mini-odrzutników narożnych",
   "run": "2026-10-25T01:00Z",
   "branch": "feature/rrl-model-m04-016-corner-microthrusters",
-  "commit": "2148e75aea6e5fb61fbac4d1ff973e26e11193aa",
+  "commit": "6684890e56dc1e1a13c6294aca654d6468e603fe",
   "pr": 172,
   "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/172",
   "files": [
@@ -23,7 +23,7 @@
     "triangles": 13252,
     "materials": 7,
     "animated_nozzles": 4,
-    "glb": "PASS — 83 meshes, 7 materials, 4 clips, 4 rotation channels",
+    "glb": "PASS — 83 meshes, 7 materials, 4 animation clips, 4 nozzle rotation pivots, GLB 655800 bytes",
     "obj": "PASS — 6760 vertices, 6466 faces",
     "independent_binary_qa": "PASS",
     "analytical_min_inter_nozzle_clearance_m": 0.0185,
@@ -33,10 +33,11 @@
     "unity_playmode": "NOT RUN — activation preflight failed",
     "unity_import": "NOT RUN",
     "visual_inspection": "NOT RUN",
-    "collision_limitations": "Conservative envelopes; no full swept triangle or Unity physics validation"
+    "collision_limitations": "Conservative envelopes; no full swept triangle or Unity physics validation",
+    "normals": "PASS — curved duct and cylindrical wall smooth shading, planar caps hard (generator code; Blender execution PASS)"
   },
-  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149661628",
-  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149661628/artifacts/12582182806",
-  "artifact_sha256": "06be35a46f8715e06ae30aa9accf48ebaa93957d1ad16efd4d3c93dfcc4d5292",
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149793598",
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149793598/artifacts/12581843169",
+  "artifact_sha256": "4fedac4399e30ef7b373a8544857931a827d73fa58c90ef2ef79cb6d9a09c037",
   "notes": "Draft PR #172; no merge, gameplay, scenes or ProjectSettings changes. Blender CI success; Unity activation missing."
 }
