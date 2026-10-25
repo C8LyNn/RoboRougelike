@@ -1,4 +1,4 @@
-name: B01-21 MAPGEN-DIAG-001 independent source diagnostics
+name: B01-21 MAPGEN-DIAG-001 independent W11 differential
 on:
   push:
     branches:
@@ -16,7 +16,7 @@ on:
 permissions:
   contents: read
 jobs:
-  orthogonal-mapgen-diagnostics:
+  w11-pinned-source-differential:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -26,30 +26,29 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Confirm immutable MAPGEN R3.2 ancestor and exact unmodified source blobs
+      - name: Verify pinned R3.2 and fetch immutable R3.3 for read-only comparisons
         shell: bash
         run: |
           set -euo pipefail
           git merge-base --is-ancestor 003bced54480d509ffc0d49d26daf87160a8d609 HEAD
-          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs)" = 89ff64e12f278f2c9393ad542161a9387e1f4117
-          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs)" = 4e4bee443a60abb3b284e8c546203096095e12bd
-          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs)" = b586a5bfc697bc37edbf98bb936459aeebe694c6
-          test "$(git hash-object Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs)" = acebb46cccec91ed3da7e54074914ab91ad48104
-          git rev-parse HEAD > diag-head-sha.txt
-          echo "PINNED_MAPGEN_SOURCE_BLOB_IDENTITIES=PASS"
-      - name: Compile and execute orthogonal frozen-source diagnostic rows
+          git cat-file -e 003bced54480d509ffc0d49d26daf87160a8d609^{commit}
+          git cat-file -e 7334f3b1d8cd3a976098faa4e683f4de3d9a592f^{commit} || git fetch --no-tags origin 7334f3b1d8cd3a976098faa4e683f4de3d9a592f
+          git cat-file -e 7334f3b1d8cd3a976098faa4e683f4de3d9a592f^{commit}
+          git rev-parse HEAD > w11-source-branch-sha.txt
+          echo "W11_PINNED_REVISIONS=READY"
+      - name: Execute 2 real frozen CSharp source builds and per-case differential (NOT UNITY)
         shell: bash
         run: |
           set -o pipefail
-          dotnet run --project Tools/B01/MAPGEN-DIAG-001/MapGen.Diag.csproj --configuration Release -- "$PWD" "$PWD/mapgen-diag-001-evidence" | tee mapgen-diag-001-console.log
-      - name: Preserve every case JSON, readable table, run log, exact SHA even on failure
+          python Tools/B01/MAPGEN-DIAG-001/w11_compare.py "$PWD/w11-mapgen-diff-evidence" | tee w11-mapgen-diff-console.log
+      - name: Save full per-case differential, snapshots, logs and exact branch SHA
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: b01-21-mapgen-diag-001-case-evidence
+          name: b01-21-w11-mapgen-r32-vs-r33-source-evidence
           path: |
-            mapgen-diag-001-evidence/
-            mapgen-diag-001-console.log
-            diag-head-sha.txt
+            w11-mapgen-diff-evidence/
+            w11-mapgen-diff-console.log
+            w11-source-branch-sha.txt
           if-no-files-found: warn
           retention-days: 30
