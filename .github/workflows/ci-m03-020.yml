@@ -1,0 +1,51 @@
+name: CI MODEL-03 M03-020 modular cargo basket
+on:
+  push:
+    branches:
+      - feature/rrl-model-m03-020-modular-cargo-basket
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-020/**'
+      - '.github/workflows/ci-m03-020.yml'
+  workflow_dispatch:
+jobs:
+  blender-cargo-basket-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Export actual BLEND GLB FBX
+        env:
+          M03_020_OUT: ${{ github.workspace }}/m03-020-output
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-020/generate_m03_020.py
+          for ext in blend glb fbx; do test -s "m03-020-output/M03-020.$ext"; done
+      - name: Blender manifold, mounting and repeated-build QA
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-020/qa_blender_m03_020.py
+      - name: Independent GLB binary QA
+        run: |
+          python3 Tools/ModelFactory/M03/M03-020/qa_glb_m03_020.py m03-020-output/M03-020.glb
+      - name: Record SHA256
+        run: |
+          cd m03-020-output
+          sha256sum M03-020.blend M03-020.glb M03-020.fbx > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - name: Upload real Blender exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-020-Blender-GLB-FBX-BLEND
+          path: |
+            m03-020-output/M03-020.blend
+            m03-020-output/M03-020.glb
+            m03-020-output/M03-020.fbx
+            m03-020-output/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 14
