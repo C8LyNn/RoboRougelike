@@ -1,0 +1,133 @@
+{
+  "schema": "B01-MODELQA-AUTO001-INITIAL-INDEPENDENT-PROBE",
+  "timestamp_date": "2026-10-25",
+  "issue": 160,
+  "methods": [
+    "GitHub immutable PR head and blob tree inspection for 70 baselines+14 fixes",
+    "JS independently executed primitive-vertex world AABB sweep for two real M05-002 geometry.json blobs sampled every half-degree",
+    "Diff actual Git blob SHA1 for original vs fix model exports and scripts",
+    "Source code inspection for M02-001 ring-vs-solid, M05-002 destructive global deletion, M01-003 rail/shoe changes"
+  ],
+  "definitions": {
+    "COMMITTED_EXPORT": "filename .obj/.glb/.fbx/.blend exists as Git blob at exact original PR HEAD; file not necessarily decoded and never equals Unity PASS",
+    "AABB_OVERLAP": "positive three-axis volume intersection of actual primitive mesh vertex bounding boxes at sampled angles; may be false positive, not narrow-phase guaranteed collision",
+    "STALENESS": "generator blob differs but export blob sha1 identical; a provenance mismatch requiring deterministic regeneration proof, not necessarily output polygon error"
+  },
+  "inventory": {
+    "total_unique_models": 70,
+    "original_head_count": 70,
+    "additional_fix_pr_count": 14,
+    "per_series": [
+      {
+        "series": "M01",
+        "total": 14,
+        "committed_export": 13,
+        "none_in_base": 1
+      },
+      {
+        "series": "M02",
+        "total": 14,
+        "committed_export": 7,
+        "none_in_base": 7
+      },
+      {
+        "series": "M03",
+        "total": 14,
+        "committed_export": 5,
+        "none_in_base": 9
+      },
+      {
+        "series": "M04",
+        "total": 14,
+        "committed_export": 4,
+        "none_in_base": 10
+      },
+      {
+        "series": "M05",
+        "total": 14,
+        "committed_export": 8,
+        "none_in_base": 6
+      }
+    ],
+    "total_original_with_committed_export": 37,
+    "total_original_without_committed_export": 33,
+    "source_scripts_present_original": 70,
+    "materialized_mesh_bytes_examined_all_70": false
+  },
+  "pilot": [
+    {
+      "id": "M02-001",
+      "original_pr": 40,
+      "fix_pr": 50,
+      "original_sha": "5063e64f45ae396d99bb233b3b1d4fea98e28ecf",
+      "fix_sha": "ca4007606c67a9e0deadf43af8ad1bb59800bbb5",
+      "original_generator_sha1": "710f655c89db03efd8d48294d4c453716743a3f6",
+      "fix_generator_sha1": "7c2d75a717ea9fdd76ad7c3934cb3b0b85c073c3",
+      "observed_original_source": "cylinder_x solid Axle_Hub + Hub_Cap",
+      "observed_fixed_source": "ring Axle_Hub + Hub_Cap; through bore/clearance in code",
+      "export_obj_sha1_before_and_after": "6345f83ace7582ed5d3b38a6f573c8b709712ceb",
+      "export_glb_sha1_before_and_after": "a21a1f7d1494c2b7acd90bf7250481c78f1635a4",
+      "result": "FAIL_SOURCE_EXPORT_REVISION_NOT_SYNCHRONIZED",
+      "real_blender_rebuild": "NOT_RUN",
+      "real_obj_mesh_regeneration": "NOT_RUN",
+      "actual_binary_mesh_narrowphase": "NOT_RUN"
+    },
+    {
+      "id": "M05-002",
+      "original_pr": 46,
+      "fix_pr": 73,
+      "original_sha": "2ed96aad201bce1021859cbb0682f513c568655f",
+      "fix_sha": "f7ab038346985a7d7d1437f7733bcf0257cf14bb",
+      "geometry_json_blob_sha1_original": "b9a993299247a560355b67dddd1ac9ff26bc3cee",
+      "geometry_json_blob_sha1_fixed": "41d3c83d8db027e6a0e6eb1102b6fbc6b9815b11",
+      "parts": 127,
+      "stationary": 13,
+      "moving": 114,
+      "pivot_original": [
+        0,
+        0,
+        0.535
+      ],
+      "pivot_fixed": [
+        0,
+        0.235,
+        0.535
+      ],
+      "step_degrees": 0.5,
+      "angles_count": 89,
+      "all_cross_group_pairs_per_revision": 131898,
+      "positive_aabb_original": 755,
+      "positive_aabb_fixed": 0,
+      "overlap_distinct_pairs_original": 12,
+      "overlap_distinct_pairs_fixed": 0,
+      "original_obj_sha1": "3e39bc859dfc140dfce107919f7f9bb98f59c04e",
+      "fixed_obj_sha1": "79d126063353ff612e04d56cc9bad23fc2469549",
+      "source_destructive_delete_original": true,
+      "source_destructive_delete_fixed": false,
+      "result": "PASS_SAMPLE_GRID_BROADPHASE_IMPROVEMENT_ONLY",
+      "real_blender_depsgraph": "NOT_RUN",
+      "real_animated_glb": "NOT_VERIFIED",
+      "narrowphase_bvh": "NOT_RUN",
+      "subsample_between_frames": "NOT_PROVEN"
+    },
+    {
+      "id": "M01-003",
+      "original_pr": 52,
+      "fix_pr": 102,
+      "original_sha": "eb2efc3c7d8b5d0ecf491a4eb7c3492e5c6ddb51",
+      "fix_sha": "36730cc88441af9c0971cf298593b455460e4db3",
+      "original_generator_sha1": "bd4ffbd300fdb68a8481f1e27393a2a482b897d7",
+      "fixed_generator_sha1": "2ad1889b6ac4bb02871ad5027e2e10cd80454066",
+      "observed_original": "Shield_Guide axes misaligned; 46mm along movement, shoe absent",
+      "observed_fixed": "Guide span 230mm X, two Shield_Slider_Shoe objects, source checks for contact at travel",
+      "source_committed_mesh_original": false,
+      "source_committed_mesh_fixed": false,
+      "ci_artifact_claim": "PR #102 reports Actions run 40120310833, external artifact needs separate download+byte audit",
+      "result": "SOURCE_REWORK_PRESENT_BINARY_NOT_COMMITTED",
+      "physical_rail_mesh": "NOT_VERIFIED_BINARY",
+      "real_anim_glb": "NOT_RUN"
+    }
+  ],
+  "overall_status": "EVIDENCE_PARTIAL_INDEPENDENT_STATIC_QA_COMPLETED; BINARY_FULL_70_NOT_DONE; BLENDER_NOT_RUN; UNITY_NOT_RUN; NO_LIBRARY_READY",
+  "provenance_warning": "Output is prior GH connector-run analysis of immutable source, not a successful new GitHub Actions or Blender test run. RUNNER authored separately; its Actions results must be checked."
+}
