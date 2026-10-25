@@ -16,6 +16,12 @@ namespace B01.MAPGEN001.Tests
             var builder = host.AddComponent<MapGenBuilder>();
             try
             {
+                // Resources path must resolve in Player too; mere Editor
+                // Shader.Find success is insufficient for a stripped build.
+                var retained = Resources.Load<Shader>("MAPGEN001_BlocksURP");
+                Assert.NotNull(retained, "Package-owned URP shader absent from Resources");
+                Assert.AreEqual("B01/MAPGEN001/BlocksURP", retained.name);
+                Assert.IsTrue(retained.isSupported);
                 var layout = builder.Generate(MapRecipe.CombatArena, 7,
                     MapGenConfig.Default, MapVehicleProfile.Light);
                 var renderers = layout.GeneratedRoot.GetComponentsInChildren<Renderer>();
@@ -25,8 +31,11 @@ namespace B01.MAPGEN001.Tests
                     Assert.NotNull(renderer.sharedMaterial);
                     Assert.NotNull(renderer.sharedMaterial.shader);
                     string shader = renderer.sharedMaterial.shader.name;
-                    Assert.IsTrue(shader.StartsWith("Universal Render Pipeline/"),
-                        "Magenta/incompatible block shader: " + shader);
+                    Assert.AreEqual("B01/MAPGEN001/BlocksURP", shader,
+                        "Unexpected non-retained MAPGEN shader");
+                    Assert.AreEqual("UniversalPipeline",
+                        renderer.sharedMaterial.shader.GetTag("RenderPipeline", false),
+                        "Shader lacks URP pipeline tag");
                     Assert.AreNotEqual("Hidden/InternalErrorShader", shader);
                 }
                 yield return null; // ensure render assignment survives a frame
