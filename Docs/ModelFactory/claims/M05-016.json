@@ -7,12 +7,18 @@
   "run": "2026-10-25T01:00Z",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/171",
   "branch": "feature/rrl-model-m05-016-tow-cable-winch",
-  "commit": "fd6e650e58d56ae43428773d41622f0770411471",
+  "commit": "4630460cc7a8e82947872035db4e9c88b4f8d006",
   "qa": {
-    "blender": "PENDING",
-    "glb": "PENDING",
-    "fbx": "PENDING",
+    "blender": "PASS",
+    "python_syntax": "PASS",
+    "repeat_build": "PASS",
+    "mesh_manifold": "PASS",
+    "glb": "PASS",
+    "fbx": "PASS",
+    "blend": "PASS",
     "unity": "NOT RUN",
-    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149100887"
+    "collision": "ENVELOPE_ONLY; full mesh collision NOT RUN",
+    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149298033",
+    "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149298033/artifacts/12581551561"
   }
 }
