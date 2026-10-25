@@ -138,6 +138,9 @@ def make_materials():
 
 
 def create():
+    PARTS.clear()
+    MARKERS.clear()
+    MATS.clear()
     col = collection_reset()
     make_materials()
     root = empty(col, "MOUNT_TOP", None, (0.0, 0.0, 0.0))
