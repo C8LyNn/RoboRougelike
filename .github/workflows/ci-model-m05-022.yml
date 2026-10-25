@@ -1,0 +1,55 @@
+name: M05-022 Kinetic Flywheel Blender QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-022-kinetic-energy-recovery
+    paths:
+      - 'Tools/ModelFactory/M05/M05-022/**'
+      - '.github/workflows/ci-model-m05-022.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-022/**'
+      - '.github/workflows/ci-model-m05-022.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-asset-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static Python syntax
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-022/generate_m05_022.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-022/test_repeatability_m05_022.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-022/validate_m05_022.py
+      - name: Install Blender and NumPy
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
+          blender --version
+      - name: Repeated generation and isolation
+        run: blender -b -t 2 --python Tools/ModelFactory/M05/M05-022/test_repeatability_m05_022.py
+      - name: Generate model and export
+        run: |
+          mkdir -p /tmp/m05-022
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-022/generate_m05_022.py -- --out /tmp/m05-022
+      - name: Independent binary and report QA
+        run: python3 Tools/ModelFactory/M05/M05-022/validate_m05_022.py --out /tmp/m05-022 --require-export
+      - name: Upload Blender binaries and QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-022-kinetic-flywheel-GLB-FBX-BLEND-QA
+          path: |
+            /tmp/m05-022/M05-022.glb
+            /tmp/m05-022/M05-022.fbx
+            /tmp/m05-022/M05-022.blend
+            /tmp/m05-022/M05-022_qa.json
+          if-no-files-found: warn
+          retention-days: 14
