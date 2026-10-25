@@ -17,11 +17,11 @@ blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M0
 python3 Tools/ModelFactory/M04/M04-015/qa_m04_015.py --out build/M04-015
 ```
 
-Output: `.blend`, animated `.glb`, `.fbx`, JSON manifest. The generator clears its Blender scene on each invocation, so repeated runs do not multiply objects. GLB has animated `PNEUMATIC_STROKE_Y`; FBX is available for Unity import. No scripts are imported into the gameplay project automatically.
+Output: `.blend`, animated `.glb`, static `.obj`/`.mtl`, JSON manifest. `.fbx` is attempted but optional: the Ubuntu Blender 5.0.1 FBX addon fails with `ExportFBX.use_space_transform` missing; this is reported as **NOT RUN / export failed**, not PASS. The generator clears its Blender scene on each invocation, so repeated runs do not multiply objects. GLB has animated `PNEUMATIC_STROKE_Y`; OBJ/MTL is a static Unity import fallback. An FBX may be available from a compatible Blender version, but is not guaranteed. No scripts are imported into the gameplay project automatically.
 
 ## QA / limitations
 
-The generator validates geometry presence, positive polygon areas, material count and analytical piston/guard clearances. Independent artifact QA validates real BLEND, GLB, FBX output, glTF animation translation channel, hierarchy, mesh/material counts and manifest. The GitHub workflow is responsible for executing both; **a committed workflow is not itself a PASS**.
+The generator validates geometry presence, positive polygon areas, material count and analytical piston/guard clearances. Independent artifact QA validates real BLEND, GLB, OBJ/MTL output and optionally FBX, glTF animation translation channel, hierarchy, mesh/material counts and manifest. The GitHub workflow is responsible for executing both; **a committed workflow is not itself a PASS**.
 
 **NOT RUN until proven:** Unity 6 EditMode/PlayMode, FBX/GLB import, shaded manual review, physics collisions and gameplay integration. Analytical clearance bounds are not a continuous triangle-level collision solver. Confirm animation, shading and physical interaction in Unity before production acceptance.
 
