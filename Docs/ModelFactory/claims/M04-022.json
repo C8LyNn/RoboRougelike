@@ -1,8 +1,35 @@
 {
   "id": "M04-022",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "MODEL_COMPLETE",
   "claimed_at_utc": "2026-10-25T02:46:44.983Z",
   "model": "Mikrohover ślizgowy",
-  "run": "2026-10-25T02Z"
+  "run": "2026-10-25T02Z",
+  "branch": "feature/rrl-model-m04-022-glide-microhover",
+  "head_commit": "279ebd560d180a905c11e8cf07d0780823ea3d4e",
+  "pr": 184,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/184",
+  "claim_commit": "9e323fc01b2c04d357c3bf68b64c49b406f63d49",
+  "files": [
+    "Tools/ModelFactory/M04/M04-022/generate_m04_022.py",
+    "Tools/ModelFactory/M04/M04-022/qa_m04_022.py",
+    "Tools/ModelFactory/M04/M04-022/README.md",
+    ".github/workflows/ci-m04-022.yml"
+  ],
+  "qa": {
+    "blender": "PASS — actual Blender generation, native BLEND saved/reopened",
+    "glb": "PASS — 71 meshes, 8 materials, 1 animation, tilt extremes -10 to +10 degrees",
+    "triangles": 16368,
+    "clearance": "PASS conservative envelope 47.5 mm; not full continuous triangle collision",
+    "repo_validation": "PASS",
+    "unity_editmode": "NOT RUN — Unity activation credentials gate failed",
+    "unity_playmode": "NOT RUN — Unity activation credentials gate failed",
+    "unity_import": "NOT RUN",
+    "manual_visual": "NOT RUN",
+    "physics": "NOT RUN",
+    "run_id": 40155883182,
+    "run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40155883182",
+    "artifact_id": 12583749670,
+    "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40155883182/artifacts/12583749670"
+  }
 }
