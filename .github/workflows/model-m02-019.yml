@@ -1,0 +1,32 @@
+name: MODEL-02 M02-019 Hydraulic Drum Brake
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-019-hydraulic-drum-brake
+  workflow_dispatch:
+jobs:
+  generate-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version
+      - name: Syntax validation
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-019/generate_m02_019.py
+          python3 -m py_compile Tools/ModelFactory/M02/M02-019/qa_m02_019.py
+      - name: Generate BLEND and animated GLB
+        run: blender -b -noaudio --python Tools/ModelFactory/M02/M02-019/generate_m02_019.py
+      - name: Independent GLB validation
+        run: python3 Tools/ModelFactory/M02/M02-019/qa_m02_019.py
+      - name: Upload model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-019-hydraulic-drum-brake
+          path: Tools/ModelFactory/M02/M02-019/generated/
+          if-no-files-found: warn
