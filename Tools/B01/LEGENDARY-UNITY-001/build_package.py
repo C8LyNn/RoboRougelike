@@ -6,8 +6,8 @@ out=(root/(sys.argv[1] if len(sys.argv)>1 else "artifacts/legendary-unity")).res
 out.mkdir(parents=True,exist_ok=True)
 head=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
 paths=sorted(p.decode() for p in subprocess.check_output(["git","ls-files","-z"],cwd=root).split(b"\0")
- if p and (p.startswith(b"Assets/B01Packages/LEGENDARY001") or p.startswith(b"Tools/B01/LEGENDARY-UNITY-001/") or p==b".github/workflows/b01-legendary-unity.yml"))
-unity=[p for p in paths if p.startswith("Assets/B01Packages/LEGENDARY001")]
+ if p and (p.startswith(b"Assets/B01Packages/LEGENDARY001") or p==b"Assets/B01Packages.meta" or p.startswith(b"Tools/B01/LEGENDARY-UNITY-001/") or p==b".github/workflows/b01-legendary-unity.yml"))
+unity=[p for p in paths if p.startswith("Assets/B01Packages/LEGENDARY001") or p=="Assets/B01Packages.meta"]
 assert len(unity)>10
 guids=[]
 for p in unity:
