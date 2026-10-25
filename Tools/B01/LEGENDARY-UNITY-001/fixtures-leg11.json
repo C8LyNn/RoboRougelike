@@ -1,0 +1,294 @@
+{
+  "upstreamSha": "93f290acca26839792a5bec8ea42415ac83932f3",
+  "upstreamBlobSha": "32cb4835bbbe1c4cc43083f7cc81272e59479cd9",
+  "contractId": "W12-B01-10-CONTRACT-RELEASE-R1",
+  "fixtures": [
+    {
+      "id": "LEG-01",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "LEGEND_ALREADY_EQUIPPED"
+      }
+    },
+    {
+      "id": "LEG-02",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "B",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-03",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "mov-b",
+          "robot": "A",
+          "definition": "LEG-MOV-001",
+          "kind": "HoverEngine",
+          "family": null,
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-04",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "unit-a",
+          "robot": "B",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DUPLICATE_INSTANCE"
+      }
+    },
+    {
+      "id": "LEG-05",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 0
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DESTROYED_ITEM"
+      }
+    },
+    {
+      "id": "LEG-06",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "a",
+            "robot": "A",
+            "kind": "Gun",
+            "family": "Rocket",
+            "definition": null
+          },
+          {
+            "id": "b",
+            "robot": "A",
+            "kind": "Gun",
+            "family": "Shotgun",
+            "definition": null
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WEAPON_FAMILY_3"
+      }
+    },
+    {
+      "id": "LEG-07",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "a",
+            "robot": "A",
+            "kind": "Gun",
+            "family": "Railgun",
+            "definition": null
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-08",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "acquire",
+        "owned": [
+          {
+            "id": "a",
+            "definition": "LEG-MOV-001"
+          }
+        ],
+        "newPart": {
+          "id": "b",
+          "definition": "LEG-MOV-001"
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-09",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "acquire",
+        "owned": [
+          {
+            "id": "a",
+            "definition": "LEG-MOV-001"
+          }
+        ],
+        "newPart": {
+          "id": "a",
+          "definition": "LEG-MOV-001"
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DUPLICATE_INSTANCE"
+      }
+    },
+    {
+      "id": "LEG-10",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "m",
+            "robot": "A",
+            "definition": "LEG-MOV-001",
+            "kind": "HoverEngine",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "n",
+          "robot": "A",
+          "definition": "LEG-MOV-001",
+          "kind": "HoverEngine",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "LEGEND_ALREADY_EQUIPPED"
+      }
+    },
+    {
+      "id": "LEG-11",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [],
+        "newPart": {
+          "id": "m",
+          "robot": "A",
+          "definition": "LEG-MOV-001",
+          "kind": "HoverEngine",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    }
+  ]
+}
