@@ -8,8 +8,8 @@
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/190",
   "feature_branch": "feature/rrl-model-m01-017-rapid-ball-thrower",
   "source_commit": "dbe02857cbd468ea45c7d4c61646f9fd3a706d03",
-  "qa_status": "BLENDER_PASS_UNITY_NOT_RUN",
-  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40159516276",
+  "qa_status": "BLENDER_PASS_BINARY_AUDIT_PASS_UNITY_NOT_RUN",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40159616034",
   "asset_path": "Tools/ModelFactory/M01/M01-017/generated/",
   "qa_summary": {
     "meshes": 73,
