@@ -43,7 +43,7 @@ Interfaces: PrepareReactorRun(), ChooseReactorDefense(), ReactorActive/ReactorHp
 
 ### Task4: Native QA / whole-branch review / final regression / delivery
 Files: QA-only OBJ001RuntimeQA.cs if necessary, Docs/OBJ001_INTEGRATION_QA.md and evidence; release package helper only if report label needs extension.
-- [ ] One fresh whole-branch read-only reviewer per executing-plans, then one RED/GREEN fix pass for important findings; record rulings/minors.
-- [ ] Full EditMode/PlayMode after final targeted GREEN, inspect raw XML/native exits; build both Windows variants, original package tests included.
-- [ ] Native actual AI/projectiles, three-wave win, reactor loss, restart/cleanup and garage/reward/next standard state; operator/pilot distinct from API/human. Verify retail launch and full ZIP extraction/hashes; preserve old RCs.
-- [ ] Report source/final SHA, exact original code reused, actual tests/errors/limits/instructions/build; push own branch, create and attach Draft PR to PR125 branch. Stop without shared merge.
+- [x] One fresh whole-branch read-only reviewer per executing-plans, then one RED/GREEN fix pass for important findings; record rulings/minors.
+- [x] Full EditMode/PlayMode after final targeted GREEN, inspect raw XML/native exits; build both Windows variants, original package tests included.
+- [x] Native actual AI/projectiles, three-wave win, reactor loss, restart/cleanup and garage/reward/next standard state; operator/pilot distinct from API/human. Verify retail launch and full ZIP extraction/hashes; preserve old RCs.
+- [x] Report source/final SHA, exact original code reused, actual tests/errors/limits/instructions/build; push own branch, create and attach Draft PR to PR125 branch. Stop without shared merge.

@@ -62,7 +62,7 @@ At60FPS cap on Ryzen9950X/RTX5080, defense42.47s/2548 sampled frames, peak3NPC/2
 - Repository validator:0errors; final file count retained in evidence. Final Python CI unit suite16/16PASS, actual normal-user exit0, after the release-helper change; the separate initial16-test baseline is not added to this count.
 - Fresh archive: `C:\Users\kubap\Desktop\Prototypy\Releases\RoboRoguelike_OBJ001_RC1_Windows_x64.zip`,38496536bytes; SHA256`a44718196aa3b4eeb4d57274fd910d45b538f21b6735a0ef2453ae4f5cde13ba`. EXE/data/Mono/runtime dependencies included. [Manifest/extraction result](Evidence/OBJ001/release-package.json).
 - Extracted EXE: `C:\Users\kubap\Desktop\Prototypy\Releases\OBJ001-RC1-extracted\RoboRoguelike_OBJ001_RC1_Windows_x64\RoboRougelike.exe`.
-- Final Draft PR: PENDING, targeting `codex/b01-phy-grounding-core-r1`; no shared merge.
+- Final [Draft PR #210](https://github.com/C8LyNn/RoboRougelike/pull/210), targeting `codex/b01-phy-grounding-core-r1`; no shared merge.
 - Fresh human six-stage expedition, exhaustive vehicle/build/balance matrix, other GPUs and independent PHY acceptance: NOT_RUN in this iteration. Existing targeted/whole suites establish only their actual covered cases.
 
 ## Integration decisions
