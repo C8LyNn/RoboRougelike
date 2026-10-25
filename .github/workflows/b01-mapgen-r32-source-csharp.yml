@@ -1,0 +1,48 @@
+name: B01 MAPGEN R3.2 isolated source CSharp QA
+on:
+  push:
+    branches:
+      - feature/b01-mapgen001-r32-codeX-preflight-20261025
+    paths:
+      - "Assets/B01Packages/MAPGEN001/**"
+      - "Tools/B01/MAPGEN001/**"
+      - ".github/workflows/b01-mapgen-r32-source-csharp.yml"
+  pull_request:
+    paths:
+      - "Assets/B01Packages/MAPGEN001/**"
+      - "Tools/B01/MAPGEN001/**"
+      - ".github/workflows/b01-mapgen-r32-source-csharp.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dotnet-real-planner-not-unity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Prevent duplicate TestRunner references in both Unity asmdefs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for kind in ["EditMode","PlayMode"]:
+              p=Path("Assets/B01Packages/MAPGEN001/Tests")/kind/("B01.MAPGEN001."+kind+"Tests.asmdef")
+              a=json.loads(p.read_text(encoding="utf8"))
+              refs=a["references"]
+              assert refs==["B01.MAPGEN001.Runtime"], (p,refs)
+              assert a["optionalUnityReferences"]==["TestAssemblies"], (p,a)
+          print("MAPGEN_ASMDEF_DUPLICATE_REFS_STATIC=PASS")
+          PY
+      - name: Compile and execute exact MAPGEN planner & route validator CSharp
+        run: dotnet run --project Tools/B01/MAPGEN001/Headless/MapGen.Headless.csproj --configuration Release -- headless-mapgen-evidence
+      - name: Archive all seed case outcomes (including failures)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-mapgen-r32-source-csharp-cases
+          path: headless-mapgen-evidence/
+          retention-days: 21
