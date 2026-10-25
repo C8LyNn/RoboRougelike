@@ -223,6 +223,14 @@ def build():
             root.rotation_euler.y=-angle
             root.keyframe_insert(data_path="location",frame=frame)
             root.keyframe_insert(data_path="rotation_euler",frame=frame)
+    # Synchronise all moving parts in one named NLA animation clip.
+    # glTF groups NLA strips sharing a track name across separate objects.
+    for moving in [*gears,*links]:
+        action=moving.animation_data.action
+        track=moving.animation_data.nla_tracks.new()
+        track.name="M02_023_CHAIN_CYCLE"
+        track.strips.new("M02_023_CHAIN_CYCLE",1,action)
+        moving.animation_data.action=None
     scene.frame_set(1)
     return {"collection":collection,"materials":len(mats),
         "mesh_objects":sum(o.type=="MESH" for o in collection.objects),
@@ -259,9 +267,15 @@ def main():
     bpy.ops.object.select_all(action="DESELECT")
     for o in second["collection"].objects:
         o.select_set(True)
-    bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",
+    export_kwargs=dict(filepath=str(glb),export_format="GLB",
         use_selection=True,export_animations=True,
         export_frame_range=True,export_force_sampling=True)
+    properties=bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
+    if "export_animation_mode" in properties:
+        export_kwargs["export_animation_mode"]="NLA_TRACKS"
+    elif "export_nla_strips" in properties:
+        export_kwargs["export_nla_strips"]=True
+    bpy.ops.export_scene.gltf(**export_kwargs)
     assert blend.stat().st_size>10000 and glb.stat().st_size>10000
     report={"id":ID,"blender":bpy.app.version_string,
         "scale_m_per_unit":1.0,"pivot":"MOUNT_SIDE_SOCKET_UNITY_1M",
