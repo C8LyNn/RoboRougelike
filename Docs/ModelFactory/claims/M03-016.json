@@ -8,9 +8,13 @@
   "branch": "feature/rrl-model-m03-016-inverted-trapezoid-bracket",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/188",
   "claim_create_commit": "0fc903aa3702e5bd12907714afe06ec4a1467521",
-  "asset_commit": "c42587d44e7c18c2f77381dfb360aa4289dc999f",
-  "static_qa": "PASS (real GitHub Actions stdlib manifold, slots, AABB and deterministic OBJ)",
-  "blender_qa": "PENDING (CI Blender install/export)",
-  "unity_qa": "NOT RUN (Unity runtime unavailable)",
-  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40156325624"
+  "asset_commit": "5475e080a7c8217a281766c597292d6a626077bb",
+  "static_qa": "PASS (24 watertight oriented meshes, 5 materials, 4 real slots, 4 SNAP, 276 AABB pairs, 496 triangles, 288 vertices, deterministic OBJ SHA256 64ee45bac5acc5cf2f7154013f1ee30704a0e9e1597dbf77f57f06518cf12ae9)",
+  "blender_qa": "PASS (actual Blender 4.0.2 GLB/FBX/BLEND exports, GLB 24 meshes/5 materials/4 SNAP, two builds without object or orphan-mesh growth)",
+  "unity_qa": "BLOCKED_UNITY_ACTIVATION / NOT RUN (EditMode and PlayMode activation gate failed)",
+  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40156407046",
+  "artifacts": [
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40156407046/artifacts/12584429450",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40156407046/artifacts/12584034972"
+  ]
 }
