@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="19" result="Passed" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:13Z" duration="105,5818299">
+  <test-suite type="TestSuite" id="1595" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="420" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:13Z" duration="105.581830" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1022" name="B01.MAPGEN001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-MAPGEN-R341-QA/Library/ScriptAssemblies/B01.MAPGEN001.PlayModeTests.dll" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:13Z" duration="105.571361" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="45532" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1023" name="B01" fullname="B01" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:13Z" duration="105.570627" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1024" name="MAPGEN001" fullname="B01.MAPGEN001" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:13Z" duration="105.570235" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1025" name="Tests" fullname="B01.MAPGEN001.Tests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:13Z" duration="105.569944" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="MapGenPhysicalTraversalTests" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:49:11Z" duration="103.508187" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1005" name="Arena_Seed31_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed31_Heavy_CubePhysics" methodname="Arena_Seed31_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="707038522" result="Passed" start-time="2026-10-25 17:47:28Z" end-time="2026-10-25 17:47:33Z" duration="5.744310" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1004" name="Arena_Seed31_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed31_Light_CubePhysics" methodname="Arena_Seed31_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="40209106" result="Passed" start-time="2026-10-25 17:47:33Z" end-time="2026-10-25 17:47:39Z" duration="5.730820" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="Arena_Seed7_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed7_Heavy_CubePhysics" methodname="Arena_Seed7_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1988757053" result="Passed" start-time="2026-10-25 17:47:39Z" end-time="2026-10-25 17:47:45Z" duration="5.739807" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="Arena_Seed7_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed7_Light_CubePhysics" methodname="Arena_Seed7_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="950858638" result="Passed" start-time="2026-10-25 17:47:45Z" end-time="2026-10-25 17:47:51Z" duration="5.739841" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="Arena_Seed83_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed83_Heavy_CubePhysics" methodname="Arena_Seed83_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1381892572" result="Passed" start-time="2026-10-25 17:47:51Z" end-time="2026-10-25 17:47:56Z" duration="5.739827" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="Arena_Seed83_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Arena_Seed83_Light_CubePhysics" methodname="Arena_Seed83_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1057386008" result="Passed" start-time="2026-10-25 17:47:56Z" end-time="2026-10-25 17:48:02Z" duration="5.739932" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1011" name="Course_Seed31_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed31_Heavy_CubePhysics" methodname="Course_Seed31_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1750346318" result="Passed" start-time="2026-10-25 17:48:02Z" end-time="2026-10-25 17:48:13Z" duration="10.879868" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="Course_Seed31_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed31_Light_CubePhysics" methodname="Course_Seed31_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="2050446646" result="Passed" start-time="2026-10-25 17:48:13Z" end-time="2026-10-25 17:48:24Z" duration="10.939782" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="Course_Seed7_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed7_Heavy_CubePhysics" methodname="Course_Seed7_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1885770123" result="Passed" start-time="2026-10-25 17:48:24Z" end-time="2026-10-25 17:48:35Z" duration="11.639795" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="Course_Seed7_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed7_Light_CubePhysics" methodname="Course_Seed7_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1003894610" result="Passed" start-time="2026-10-25 17:48:35Z" end-time="2026-10-25 17:48:46Z" duration="10.519831" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1013" name="Course_Seed83_Heavy_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed83_Heavy_CubePhysics" methodname="Course_Seed83_Heavy_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1431012448" result="Passed" start-time="2026-10-25 17:48:46Z" end-time="2026-10-25 17:48:58Z" duration="11.599909" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1012" name="Course_Seed83_Light_CubePhysics" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.Course_Seed83_Light_CubePhysics" methodname="Course_Seed83_Light_CubePhysics" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="2086698083" result="Passed" start-time="2026-10-25 17:48:58Z" end-time="2026-10-25 17:49:08Z" duration="10.479842" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1014" name="CubeForceActuatorMovesOnFlatControlSurface" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.CubeForceActuatorMovesOnFlatControlSurface" methodname="CubeForceActuatorMovesOnFlatControlSurface" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="1448671378" result="Passed" start-time="2026-10-25 17:49:08Z" end-time="2026-10-25 17:49:11Z" duration="3.002245" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1015" name="MapGenPlayModeTests" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:13Z" duration="2.060278" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1017" name="GenerateAndClearRealPhysicsColliders" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.GenerateAndClearRealPhysicsColliders" methodname="GenerateAndClearRealPhysicsColliders" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1413128818" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:11Z" duration="0.015145" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial" methodname="GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1078496843" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:11Z" duration="0.007089" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="OffsetAndRotatedHostReturnsWorldSpaceMetadata" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.OffsetAndRotatedHostReturnsWorldSpaceMetadata" methodname="OffsetAndRotatedHostReturnsWorldSpaceMetadata" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="292062646" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:11Z" duration="0.011729" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1020" name="RegenerateCyclesRemoveOldColliderRoots" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RegenerateCyclesRemoveOldColliderRoots" methodname="RegenerateCyclesRemoveOldColliderRoots" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1619925118" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:11Z" duration="0.025607" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="RejectedInputPreservesPreviousLiveLevel" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RejectedInputPreservesPreviousLiveLevel" methodname="RejectedInputPreservesPreviousLiveLevel" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1171707971" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:11Z" duration="0.006361" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="RigidbodyActuallyFallsAndLandsOnGeneratedFloor" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RigidbodyActuallyFallsAndLandsOnGeneratedFloor" methodname="RigidbodyActuallyFallsAndLandsOnGeneratedFloor" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="350174469" result="Passed" start-time="2026-10-25 17:49:11Z" end-time="2026-10-25 17:49:13Z" duration="1.992685" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
