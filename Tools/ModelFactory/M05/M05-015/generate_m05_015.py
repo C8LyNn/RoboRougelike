@@ -17,7 +17,7 @@ OUT = None
 M = {}
 PARTS = []
 FINGERS = []
-ANIM = {"open_deg": -12.0, "closed_deg": 21.0, "frames": [1, 20, 40, 60]}
+ANIM = {"open_deg": -12.0, "closed_deg": 16.0, "frames": [1, 20, 40, 60]}
 
 def reset_ours():
     col = bpy.data.collections.get(COLLECTION)
@@ -190,7 +190,7 @@ def build():
             "copper",16,"Y",hinge)
         cyl("piston_rod_%d" % k, (.039,.308,-.028), .008,.085,
             "titanium",16,"Y",hinge)
-        for frame,deg in ((1,-12),(20,3),(40,21),(60,-12)):
+        for frame,deg in ((1,-12),(20,3),(40,16),(60,-12)):
             hinge.rotation_euler[2] = math.radians(deg)
             hinge.keyframe_insert(data_path="rotation_euler",frame=frame)
         for fc in hinge.animation_data.action.fcurves:
@@ -238,7 +238,7 @@ def qa():
             "minimum_approximate_pad_clearance_m":round(min_gap,5),
             "mount_origin_m":[0,0,0],"forward_axis":"+Y",
             "hinge_axis":"+local Z","finger_open_deg":-12,
-            "finger_closed_deg":21,
+            "finger_closed_deg":16,
             "note":"Pad-centre clearance is a conservative proxy, not full mesh collision detection."}
 
 def export_all(out):
