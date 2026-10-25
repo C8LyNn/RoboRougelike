@@ -1,0 +1,16 @@
+{
+  "id": "M01-017",
+  "model": "Szybkostrzelny miotacz kul",
+  "status": "BLENDER_QA_PASS",
+  "meshes": 73,
+  "materials": 8,
+  "vertices": 9618,
+  "triangles": 19024,
+  "frames_tested": 73,
+  "aabb_checks": 90666,
+  "aabb_intersections": 0,
+  "min_aabb_clearance_m": 0.094105,
+  "rotor_axis": "Blender local X; 6 turns / 73 frames / 60 FPS",
+  "mount": "MOUNT_TOP_SOCKET at origin (0,0,0)",
+  "limitations": "AABB sampled at frames, not continuous mesh collision or Unity QA"
+}
