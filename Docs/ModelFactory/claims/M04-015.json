@@ -1,8 +1,34 @@
 {
   "id": "M04-015",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT_QA_PENDING",
   "claimed_at_utc": "2026-10-25T00:53:31.672Z",
   "model": "Nóżka skokowa pneumatyczna",
-  "run": "2026-10-25T00:00Z"
+  "run": "2026-10-25T00:00Z",
+  "branch": "feature/rrl-model-m04-015-pneumatic-jump-leg",
+  "commit": "23db93ebc5f517b1e7c370e5ea48f0bc18f932a0",
+  "pr": 170,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/170",
+  "files": [
+    "Tools/ModelFactory/M04/M04-015/generate_m04_015.py",
+    "Tools/ModelFactory/M04/M04-015/qa_m04_015.py",
+    "Tools/ModelFactory/M04/M04-015/README.md",
+    ".github/workflows/ci-m04-015.yml"
+  ],
+  "qa": {
+    "source_committed": "PASS",
+    "blender_execution": "NOT RUN — CI result not yet verified",
+    "blender_export": "NOT RUN — CI result not yet verified",
+    "static_geometry": "NOT RUN — Blender required",
+    "glb_fbx_artifact": "NOT RUN — CI result not yet verified",
+    "unity_import": "NOT RUN",
+    "unity_editmode": "NOT RUN",
+    "unity_playmode": "NOT RUN",
+    "manual_visual": "NOT RUN",
+    "physics": "NOT RUN"
+  },
+  "blockers": [
+    "Blender is not installed in the local execution environment; GitHub Actions workflow authored but no completed run verified.",
+    "Unity 6 unavailable for import and runtime validation."
+  ]
 }
