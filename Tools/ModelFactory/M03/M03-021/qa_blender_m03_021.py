@@ -52,6 +52,7 @@ def verify():
     assert 2*mod.Y_OFF-2*mod.TUBE_R>=0.29
     return (len(coll.objects),len(mesh_objs),len(mats),len(snaps))
 
+mod.build()
 first=verify()
 # Repeat build in the same Blender session, checking no duplicated assets.
 mod.build()
