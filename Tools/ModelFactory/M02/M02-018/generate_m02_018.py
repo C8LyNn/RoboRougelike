@@ -161,7 +161,9 @@ def build(out: Path):
     if hasattr(boolean, "solver"): boolean.solver = "EXACT"
     bpy.context.view_layer.objects.active = disc
     bpy.ops.object.modifier_apply(modifier=boolean.name)
+    drill_mesh = cutter.data
     bpy.data.objects.remove(cutter, do_unlink=True)
+    if drill_mesh.users == 0: bpy.data.meshes.remove(drill_mesh)
 
     cylinder("ROTOR_HAT", .139, .038, (0,0,0), "graphite_chassis", rotor, 64)
     cylinder("AXLE_SPLINE", .069, .16, (0,0,0), "titanium_caliper", rotor, 48)
