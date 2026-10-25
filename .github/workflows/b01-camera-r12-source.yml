@@ -1,0 +1,48 @@
+name: B01 CAMERA R1.2 isolated source QA (NOT Unity)
+on:
+  push:
+    branches:
+      - fix/b01-camera001-w12-r12-finalpose-corridor-20261025
+    paths:
+      - "Assets/B01Packages/CAMERA001/**"
+      - "Docs/B01/CAMERA001/**"
+      - "Tools/B01/CAMERA001/**"
+      - ".github/workflows/b01-camera-r12-source.yml"
+  pull_request:
+    paths:
+      - "Assets/B01Packages/CAMERA001/**"
+      - "Docs/B01/CAMERA001/**"
+      - "Tools/B01/CAMERA001/**"
+      - ".github/workflows/b01-camera-r12-source.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  camera-source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: CAMERA R1.2 static regressions and mutation sentinel
+        run: python Tools/B01/CAMERA001/check_r12_contract.py
+      - name: Existing 840-case geometry analytic surrogate
+        run: node Tools/B01/CAMERA001/geometry_probe.js
+      - name: Compute real source SHA256; verify manifest and make deterministic ZIP when ready
+        shell: bash
+        run: |
+          if python -c "import json; m=json.load(open('Docs/B01/CAMERA001/manifest.json')); assert m['revision']=='R1.2' and 'r12_source_sha256_by_path' in m"; then
+            python Tools/B01/CAMERA001/package_gate.py --verify-zip
+          else
+            python Tools/B01/CAMERA001/package_gate.py --emit
+          fi
+      - name: Archive full verified source ZIP and inner SHA256 report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: camera-r12-source-zip
+          path: camera-r12-evidence/
+          if-no-files-found: ignore
+          retention-days: 21
