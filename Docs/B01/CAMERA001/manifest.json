@@ -152,8 +152,8 @@
       "sha256": null
     },
     "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md": {
-      "git_blob_sha1": "2b1a2261c41ad8709c1a169e0e84fbf839a2a966",
-      "bytes": 1947,
+      "git_blob_sha1": "383512dcc749225b4ce57fcd0427fd20927171a9",
+      "bytes": 2640,
       "sha256": null
     },
     "Docs/B01/CAMERA001/KNOWN_LIMITATIONS.md": {
@@ -162,8 +162,8 @@
       "sha256": null
     },
     "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md": {
-      "git_blob_sha1": "ef232ede0bfaa7f82d5e78055b6200f697c6a543",
-      "bytes": 3373,
+      "git_blob_sha1": "0ef2ce5b44e7fcd0786144993ffd48d8c2a85cee",
+      "bytes": 4066,
       "sha256": null
     },
     "Docs/B01/CAMERA001/README.md": {
@@ -225,6 +225,10 @@
     ],
     "producer_static_qa": "PENDING",
     "independent_unity_qa": "NOT_RUN",
-    "G2": "HOLD"
+    "G2": "HOLD",
+    "superseded_docs": [
+      "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md",
+      "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md"
+    ]
   }
 }
