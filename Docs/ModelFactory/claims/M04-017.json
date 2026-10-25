@@ -1,8 +1,40 @@
 {
   "id": "M04-017",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "MODEL_COMPLETE",
   "claimed_at_utc": "2026-10-25T01:16:15.210Z",
   "model": "Pierścień teleportacyjny wizualny",
-  "run": "2026-10-25T01Z"
+  "run": "2026-10-25T01Z",
+  "model_branch": "feature/rrl-model-m04-017-teleport-visual-ring",
+  "model_commit": "197c5dfa2c1ad9a4b57a464b672234e9fcb9f88e",
+  "draft_pr": 174,
+  "draft_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/174",
+  "files": [
+    "Tools/ModelFactory/M04/M04-017/generate_m04_017.py",
+    "Tools/ModelFactory/M04/M04-017/qa_m04_017.py",
+    "Tools/ModelFactory/M04/M04-017/README.md",
+    ".github/workflows/ci-m04-017.yml"
+  ],
+  "qa": {
+    "blender": "PASS Blender 5.0.1",
+    "blend_reopen": "PASS",
+    "glb_export": "PASS",
+    "obj_export": "PASS",
+    "independent_glb_obj": "PASS",
+    "manifold": "PASS",
+    "ci01": "PASS",
+    "unity_editmode": "NOT RUN — BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT RUN — BLOCKED_ACTIVATION",
+    "unity_import": "NOT RUN",
+    "manual_visual": "NOT RUN",
+    "swept_triangle_collision": "NOT RUN"
+  },
+  "ci_run": 40150205504,
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150205504/artifacts/12581507781",
+  "artifact_sha256": "2371cfa9dfd47e0448f74e5ddbc231d2e74483e99f57bfa4437ddc572687572b",
+  "blockers": [
+    "Unity activation credentials unavailable",
+    "Unity visual/physics review not executed"
+  ],
+  "updated_at_utc": "2026-10-25T01:21:16.078Z"
 }
