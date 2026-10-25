@@ -1,0 +1,51 @@
+name: CI MODEL-03 M03-019 battery shrapnel guard
+on:
+  push:
+    branches:
+      - feature/rrl-model-m03-019-battery-shrapnel-guard
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-019/**'
+      - '.github/workflows/ci-m03-019.yml'
+  workflow_dispatch:
+jobs:
+  blender-battery-shield-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate actual BLEND GLB FBX
+        env:
+          M03_019_OUT: ${{ github.workspace }}/m03-019-output
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-019/generate_m03_019.py
+          for ext in blend glb fbx; do test -s "m03-019-output/M03-019.$ext"; done
+      - name: Independent Blender manifold, repeated build and 145-frame checks
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-019/qa_blender_m03_019.py
+      - name: Independent actual GLB validation
+        run: |
+          python3 Tools/ModelFactory/M03/M03-019/qa_glb_m03_019.py m03-019-output/M03-019.glb
+      - name: Hash exported files
+        run: |
+          cd m03-019-output
+          sha256sum M03-019.blend M03-019.glb M03-019.fbx > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - name: Upload actual Blender exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-019-Blender-GLB-FBX-BLEND
+          path: |
+            m03-019-output/M03-019.blend
+            m03-019-output/M03-019.glb
+            m03-019-output/M03-019.fbx
+            m03-019-output/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 14
