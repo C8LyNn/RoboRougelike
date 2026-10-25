@@ -67,10 +67,10 @@ def cube(name, center, dimensions, mat_name, parent=None, bevel=0.003):
     return finish(obj, mat_name, parent)
 
 
-def cylinder(name, center, radius, depth, mat_name, parent=None, vertices=48):
+def cylinder(name, center, radius, depth, mat_name, parent=None, vertices=48, axis="Y"):
     bpy.ops.mesh.primitive_cylinder_add(
         vertices=vertices, radius=radius, depth=depth,
-        location=center, rotation=(math.pi / 2, 0, 0))
+        location=center, rotation=((math.pi / 2, 0, 0) if axis == "Y" else (0,0,0)))
     obj = bpy.context.object
     obj.name = name
     for face in obj.data.polygons:
@@ -167,14 +167,14 @@ def build():
              (side*.37,1.03,.30), (.12,.18,.09),
              "07_Dark_Steel", mount, .01)
     # Fixed optical projector is recessed behind ring, safely inside the aperture.
-    cylinder("Rear_projector_core", (0,CENTER_Y,.23), .22,.085, "07_Dark_Steel", mount)
-    cylinder("Projector_cyan_lens", (0,CENTER_Y,.165), .15,.025, "05_Cyan_Arc_Emission", mount)
-    cylinder("Projector_ceramic_retainer", (0,CENTER_Y,.185), .175,.016, "04_Ivory_Insulator", mount)
+    cylinder("Rear_projector_core", (0,CENTER_Y,.23), .22,.085, "07_Dark_Steel", mount, axis="Z")
+    cylinder("Projector_cyan_lens", (0,CENTER_Y,.165), .15,.025, "05_Cyan_Arc_Emission", mount, axis="Z")
+    cylinder("Projector_ceramic_retainer", (0,CENTER_Y,.185), .175,.016, "04_Ivory_Insulator", mount, axis="Z")
     for k in range(8):
         a = k * 2*math.pi/8
         cylinder("Projector_copper_pin_%02d" % k,
                  (.27*math.cos(a), CENTER_Y+.27*math.sin(a), .23),
-                 .020,.04,"03_Burnished_Copper",mount,16)
+                 .020,.04,"03_Burnished_Copper",mount,16,"Z")
     spinner = empty("SPIN_PIVOT_Z_RING_CENTER", (0,CENTER_Y,0), mount)
     for i in range(SEGMENTS):
         midpoint = (i + .5) * 2*math.pi/SEGMENTS
@@ -217,7 +217,6 @@ def build():
     for obj in PARTS:
         assert obj.type=="MESH" and len(obj.data.vertices)>0
         assert all(len(p.vertices)>=3 and p.area>1e-10 for p in obj.data.polygons),obj.name
-        assert all(len(edge.link_faces)==2 for edge in [])  # manifold checked below
         counts={}
         for polygon in obj.data.polygons:
             for edge_key in polygon.edge_keys:
