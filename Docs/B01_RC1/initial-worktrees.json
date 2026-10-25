@@ -1,0 +1,74 @@
+[
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-GitHub",
+    "sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1",
+    "sha": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+    "status": [
+      "?? .b01-package-auto-sandbox.json"
+    ]
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-BUILD-R12-QA",
+    "sha": "1b515154f5fadf56dabbd21977f5359c88208b23",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-BUILD001-Validation",
+    "sha": "4d4465b3bc2775f7e5a7912af74044bdbf4df9d0",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-MAPGEN-R32-QA",
+    "sha": "5d410e11b5d4f330a52096fdab63e4a26a8a5610",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-MAPGEN-R341-QA",
+    "sha": "e4d67cb286499b9ac4aceec9818017cd110b14aa",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-OBJ001",
+    "sha": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-RAC001-Validation",
+    "sha": "52222a7e3c9f1c25c00df3cb768757773c979eb4",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-RRL-W2",
+    "sha": "a0f0a6590b07ed2f5007361a7e761f133e52ff99",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-W3-W4",
+    "sha": "916bf6d195bb7647f159a4dc50a4d6b2ab18b063",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-W5-RC1",
+    "sha": "2154b4341dd6b6fefb135187dc07b4b12d44f908",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-W6-W9",
+    "sha": "916654634d1bfdc2bbc14e64b9eeac856ede1fa8",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-W9-QA-Report",
+    "sha": "d54411c1173066e8259950238f3b1d60b2a224f9",
+    "status": []
+  },
+  {
+    "path": "C:/Users/kubap/Desktop/Prototypy/RoboRougelike-W9-Validation",
+    "sha": "17a2399f74b7562be19c2b429dc0b1312957c66a",
+    "status": []
+  }
+]

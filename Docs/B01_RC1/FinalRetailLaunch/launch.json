@@ -1,0 +1,12 @@
+{
+  "managedSha256": "76961B9C948FAFB220967A24233D56991B6968707BC85E84A37162968D634693",
+  "width": 1280,
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01_RC1_20261025\\Final\\RoboRougelike_B01_RC1_MAPGEN_EXPERIMENTAL_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+  "state": "LAUNCHED_RUNNING; ready marker checked separately; no shutdown PASS claim",
+  "pid": 46264,
+  "source": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+  "startedUtc": "2026-10-25T23:05:58.8598785Z",
+  "nativeExit": "NOT_RUN; left open for user",
+  "height": 720,
+  "exeSha256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8"
+}

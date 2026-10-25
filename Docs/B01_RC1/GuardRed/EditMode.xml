@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 22:49:36Z" end-time="2026-10-25 22:49:36Z" duration="0,3549404">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1056" result="Failed" site="Child" start-time="2026-10-25 22:49:36Z" end-time="2026-10-25 22:49:36Z" duration="0.354940" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1454" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="372" result="Failed" site="Child" start-time="2026-10-25 22:49:36Z" end-time="2026-10-25 22:49:36Z" duration="0.309452" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="60220" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1123" name="MapgenRC1IntegrationTests" fullname="MapgenRC1IntegrationTests" classname="MapgenRC1IntegrationTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-25 22:49:36Z" end-time="2026-10-25 22:49:36Z" duration="0.305480" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1124" name="UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" fullname="MapgenRC1IntegrationTests.UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" methodname="UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1031048810" result="Failed" start-time="2026-10-25 22:49:33Z" end-time="2026-10-25 22:49:36Z" duration="3.071356" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at MapgenRC1IntegrationTests+<UnpreparedRouteRejectsGeneratedEntryWithoutPlayer>d__8.MoveNext () [0x00077] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:57
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

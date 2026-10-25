@@ -1,0 +1,1832 @@
+{
+    "method": "Native controlled API/physics: real AI fire, canonical HP, explicit core-damage wave completion, actual reward/garage/restart; NOT human gameplay",
+    "status": "Passed",
+    "startedUtc": "2026-10-25T22:59:59.1752662Z",
+    "finishedUtc": "2026-10-25T23:00:13.2524374Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "width": 1280,
+    "height": 720,
+    "checks": [
+        {
+            "name": "Actual game boot",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual preparation garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No sandbox budget in defense",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Player-reachable defense entry",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual600HP reactor and first of3 waves",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Real enemy projectiles damage both targets",
+            "detail": "reactor=571,4399, player=13780->13751,44",
+            "passed": true
+        },
+        {
+            "name": "Actual AI target policy",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Next real wave2",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Next real wave3",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Three-wave win settles authored reward once",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Winning objective cleans up",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Existing1bonus/loot settlement",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Rewards reach actual garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Return to standard route",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Ordinary fight has no stale objective",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Scene restart clears activity",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Fresh defense after restart",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "New attempt restores only new objective state",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Canonical reactor death loses without reward",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Loss restart removes objective and shots",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "errors": []
+}

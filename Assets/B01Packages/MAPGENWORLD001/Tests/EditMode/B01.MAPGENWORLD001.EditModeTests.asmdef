@@ -1,0 +1,9 @@
+{
+  "name": "B01.MAPGENWORLD001.EditModeTests",
+  "rootNamespace": "B01.MAPGENWORLD001.Tests",
+  "references": ["B01.MAPGENWORLD001.Runtime", "B01.MAPGEN001.Runtime"],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "autoReferenced": false,
+  "optionalUnityReferences": ["TestAssemblies"]
+}

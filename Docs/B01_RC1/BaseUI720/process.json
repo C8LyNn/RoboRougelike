@@ -1,0 +1,7 @@
+{
+  "finishedUtc": "2026-10-25T21:52:50.4823048Z",
+  "note": "Original monitor canceled at user pause; this observes same PID after resume",
+  "observerAttachedUtc": "2026-10-25T21:52:06.3987667Z",
+  "exitCode": -1073741819,
+  "pid": 56888
+}

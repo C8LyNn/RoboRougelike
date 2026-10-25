@@ -1,0 +1,10 @@
+{
+  "arguments": [
+    "-quit"
+  ],
+  "finishedUtc": "2026-10-25T18:48:34.2725473Z",
+  "exitCode": 0,
+  "startedUtc": "2026-10-25T18:46:51.4395363Z",
+  "phase": "Compile",
+  "source": "4c9236a4cdc27814ea2e7679872ec4a524150cc8"
+}

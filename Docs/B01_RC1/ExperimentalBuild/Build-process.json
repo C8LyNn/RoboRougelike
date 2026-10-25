@@ -1,0 +1,12 @@
+{
+  "startedUtc": "2026-10-25T22:06:18.3508171Z",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "B01RC1Build.BuildAll"
+  ],
+  "exitCode": 0,
+  "phase": "Build",
+  "source": "8ac3a814b692a380033323b188747fe106314054",
+  "finishedUtc": "2026-10-25T22:07:05.0118232Z"
+}

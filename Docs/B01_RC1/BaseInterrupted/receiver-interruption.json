@@ -1,0 +1,8 @@
+{
+  "pid": 48748,
+  "status": "INTERRUPTED_NOT_PASS",
+  "reason": "Receiver process deadline 30min below prior actual 34.5min full suite; preserve log, prioritize targeted BASE and full final snapshot with repository CI 90min deadline",
+  "timeUtc": "2026-10-25T19:12:12.3426659Z",
+  "phase": "EditMode",
+  "source": "4c9236a4cdc27814ea2e7679872ec4a524150cc8"
+}

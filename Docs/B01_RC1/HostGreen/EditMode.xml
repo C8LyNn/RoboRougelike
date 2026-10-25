@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="10" result="Passed" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 21:55:08Z" end-time="2026-10-25 21:55:09Z" duration="0,5500746">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1055" result="Passed" start-time="2026-10-25 21:55:08Z" end-time="2026-10-25 21:55:09Z" duration="0.550075" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1453" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="371" result="Passed" start-time="2026-10-25 21:55:08Z" end-time="2026-10-25 21:55:09Z" duration="0.486135" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="62228" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1123" name="MapgenRC1IntegrationTests" fullname="MapgenRC1IntegrationTests" classname="MapgenRC1IntegrationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-25 21:55:08Z" end-time="2026-10-25 21:55:09Z" duration="0.479458" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1124" name="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" fullname="MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" methodname="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="78728789" result="Passed" start-time="2026-10-25 21:54:55Z" end-time="2026-10-25 21:54:59Z" duration="3.477133" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Heavy
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1125" name="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" fullname="MapgenRC1IntegrationTests.OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" methodname="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="717880750" result="Passed" start-time="2026-10-25 21:54:59Z" end-time="2026-10-25 21:55:02Z" duration="3.197406" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1127" name="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" fullname="MapgenRC1IntegrationTests.PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" methodname="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1742227469" result="Passed" start-time="2026-10-25 21:55:02Z" end-time="2026-10-25 21:55:05Z" duration="3.677649" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 19 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+]]></output>
+        </test-case>
+        <test-case id="1126" name="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" fullname="MapgenRC1IntegrationTests.VictoryUsesExistingRewardsRepairsAndFreshRegeneration" methodname="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1314297934" result="Passed" start-time="2026-10-25 21:55:05Z" end-time="2026-10-25 21:55:09Z" duration="3.353203" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=1; złom z demontażu=33
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 2: przeciwników=3
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1494" name="B01.MAPGENWORLD001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/B01.MAPGENWORLD001.EditModeTests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.012770" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="62228" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1495" name="B01" fullname="B01" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.012374" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1496" name="MAPGENWORLD001" fullname="B01.MAPGENWORLD001" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.012169" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1497" name="Tests" fullname="B01.MAPGENWORLD001.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.011982" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1487" name="MapWorldPolicyTests" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.011706" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1488" name="ArenaLight7PassesWithMeasuredEnvelope" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.ArenaLight7PassesWithMeasuredEnvelope" methodname="ArenaLight7PassesWithMeasuredEnvelope" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1319266272" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.004930" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1489" name="CourseHeavy31PassesWithMeasuredEnvelope" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.CourseHeavy31PassesWithMeasuredEnvelope" methodname="CourseHeavy31PassesWithMeasuredEnvelope" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="909685987" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.004013" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1492" name="MinimumClearanceCannotBeWeakened" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MinimumClearanceCannotBeWeakened" methodname="MinimumClearanceCannotBeWeakened" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="176276791" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.000143" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1490" name="MissingMeasurementRejectedBeforeBuilder" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MissingMeasurementRejectedBeforeBuilder" methodname="MissingMeasurementRejectedBeforeBuilder" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1965964369" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.000083" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1491" name="NarrowCourseWithRealLightRejects" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NarrowCourseWithRealLightRejects" methodname="NarrowCourseWithRealLightRejects" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="110656299" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.000138" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1493" name="NullAndInvalidRigFailClosed" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NullAndInvalidRigFailClosed" methodname="NullAndInvalidRigFailClosed" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="823166526" result="Passed" start-time="2026-10-25 21:55:09Z" end-time="2026-10-25 21:55:09Z" duration="0.000094" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

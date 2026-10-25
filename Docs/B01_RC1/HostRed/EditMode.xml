@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 21:52:37Z" end-time="2026-10-25 21:52:37Z" duration="0,446936">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1055" result="Failed" site="Child" start-time="2026-10-25 21:52:37Z" end-time="2026-10-25 21:52:37Z" duration="0.446936" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1453" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-RC1/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="371" result="Failed" site="Child" start-time="2026-10-25 21:52:37Z" end-time="2026-10-25 21:52:37Z" duration="0.382573" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="54740" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1123" name="MapgenRC1IntegrationTests" fullname="MapgenRC1IntegrationTests" classname="MapgenRC1IntegrationTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-25 21:52:37Z" end-time="2026-10-25 21:52:37Z" duration="0.376832" total="4" passed="0" failed="4" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1124" name="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" fullname="MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" methodname="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="280089837" result="Failed" start-time="2026-10-25 21:52:21Z" end-time="2026-10-25 21:52:25Z" duration="3.941579" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Missing RC1 player entry: PrepareMapgenRun
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at MapgenRC1IntegrationTests.Call (System.Object obj, System.String name, System.Object[] args) [0x0000e] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:31
+at MapgenRC1IntegrationTests+<Prepare>d__6.MoveNext () [0x00048] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:39
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1125" name="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" fullname="MapgenRC1IntegrationTests.OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" methodname="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="416900057" result="Failed" label="Error" start-time="2026-10-25 21:52:25Z" end-time="2026-10-25 21:52:29Z" duration="4.046756" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+            <stack-trace><![CDATA[  at MapgenRC1IntegrationTests+<OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor>d__9.MoveNext () [0x0003b] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:73 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44 ]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1127" name="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" fullname="MapgenRC1IntegrationTests.PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" methodname="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1981077895" result="Failed" start-time="2026-10-25 21:52:29Z" end-time="2026-10-25 21:52:33Z" duration="3.901975" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Missing RC1 player entry: PrepareMapgenRun
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at MapgenRC1IntegrationTests.Call (System.Object obj, System.String name, System.Object[] args) [0x0000e] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:31
+at MapgenRC1IntegrationTests+<Prepare>d__6.MoveNext () [0x00048] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:39
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1126" name="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" fullname="MapgenRC1IntegrationTests.VictoryUsesExistingRewardsRepairsAndFreshRegeneration" methodname="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1324350337" result="Failed" start-time="2026-10-25 21:52:33Z" end-time="2026-10-25 21:52:37Z" duration="3.886576" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Missing RC1 player entry: ChooseGeneratedArena
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at MapgenRC1IntegrationTests.Call (System.Object obj, System.String name, System.Object[] args) [0x0000e] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:31
+at MapgenRC1IntegrationTests+<Deploy>d__7.MoveNext () [0x0001e] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-RC1\Assets\Tests\Editor\MapgenRC1IntegrationTests.cs:46
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

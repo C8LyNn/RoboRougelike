@@ -1,0 +1,14 @@
+{
+  "phase": "PlayMode",
+  "finishedUtc": "2026-10-25T22:55:14.9767618Z",
+  "exitCode": 0,
+  "startedUtc": "2026-10-25T22:52:32.4362594Z",
+  "source": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-Experimental-20261025T225108Z\\PlayMode.xml\""
+  ]
+}

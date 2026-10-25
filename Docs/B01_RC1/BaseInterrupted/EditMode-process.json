@@ -1,0 +1,14 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-Base-20261025T184651Z\\EditMode.xml\""
+  ],
+  "finishedUtc": "2026-10-25T19:12:12.5762917Z",
+  "exitCode": -1,
+  "startedUtc": "2026-10-25T18:48:34.3012351Z",
+  "phase": "EditMode",
+  "source": "4c9236a4cdc27814ea2e7679872ec4a524150cc8"
+}

@@ -1,0 +1,13 @@
+{
+  "width": 1280,
+  "interactive": true,
+  "exeSha256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "additional": [
+    "-obj001-native-output",
+    "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Artifacts\\Local\\RC1-OBJ-API720-Visible"
+  ],
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1\\Builds\\B01-RC1-QA\\RoboRougelike.exe",
+  "height": 720,
+  "source": "8ac3a814b692a380033323b188747fe106314054",
+  "startedUtc": "2026-10-25T22:22:40.4354483Z"
+}

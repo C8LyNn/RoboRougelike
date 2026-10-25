@@ -1,0 +1,12 @@
+{
+  "finishedUtc": "2026-10-25T19:19:20.5940128Z",
+  "exitCode": 0,
+  "phase": "Build",
+  "source": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "startedUtc": "2026-10-25T19:18:23.0771495Z",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "R6Build.BuildRelease"
+  ]
+}

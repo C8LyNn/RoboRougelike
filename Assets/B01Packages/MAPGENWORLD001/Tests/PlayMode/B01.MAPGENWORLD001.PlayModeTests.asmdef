@@ -1,0 +1,9 @@
+{
+  "name": "B01.MAPGENWORLD001.PlayModeTests",
+  "rootNamespace": "B01.MAPGENWORLD001.Tests",
+  "references": ["B01.MAPGENWORLD001.Runtime", "B01.MAPGEN001.Runtime"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "autoReferenced": false,
+  "optionalUnityReferences": ["TestAssemblies"]
+}
