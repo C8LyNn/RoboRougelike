@@ -6,11 +6,13 @@ on:
     paths:
       - "Assets/B01Packages/MAPGEN001/**"
       - "Tools/B01/MAPGEN001/**"
+      - "Docs/B01/MAPGEN001/**"
       - ".github/workflows/b01-mapgen-r32-source-csharp.yml"
   pull_request:
     paths:
       - "Assets/B01Packages/MAPGEN001/**"
       - "Tools/B01/MAPGEN001/**"
+      - "Docs/B01/MAPGEN001/**"
       - ".github/workflows/b01-mapgen-r32-source-csharp.yml"
   workflow_dispatch:
 permissions:
