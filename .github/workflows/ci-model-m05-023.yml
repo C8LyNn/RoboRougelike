@@ -1,0 +1,40 @@
+name: M05-023 Spare Parts Container Blender QA
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-023/**'
+      - '.github/workflows/ci-model-m05-023.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-asset-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+      - name: Python syntax
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-023/generate.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-023/validate_glb.py
+      - name: Generate and test Blender asset
+        env:
+          M05_OUTPUT_DIR: ${{ github.workspace }}/model-output
+        run: |
+          blender --background --factory-startup --python Tools/ModelFactory/M05/M05-023/generate.py
+      - name: Independent GLB validation
+        run: |
+          python3 Tools/ModelFactory/M05/M05-023/validate_glb.py model-output
+      - name: Publish generated exports and QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-023-spare-parts-container-exports
+          path: model-output/
+          if-no-files-found: warn
+          retention-days: 14
