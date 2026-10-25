@@ -1,0 +1,70 @@
+{
+  "event_id": "MODELQA-20261025-R1-CI-RECEIPT",
+  "hq_dispatch_id": "HQ-B01-MODELQA-AUTO001",
+  "timestamp_date": "2026-10-25",
+  "source_issue": 160,
+  "source_pr": 161,
+  "source_sha_tested": "504884406e3dd972929be571de16cfe8282cd666",
+  "workflow_name": "B01 MODEL-QA-AUTO-001 (isolated read-only)",
+  "workflow_run_id": 40148137859,
+  "workflow_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148137859",
+  "job_id": 121033795748,
+  "actual_job_conclusion": "success",
+  "actual_steps": {
+    "fetch_six_pinned_pr_heads": "success",
+    "unit_tests": "success",
+    "actual_historical_git_comparison": "success",
+    "sampled_geometry_sweep": "success",
+    "svg_projection_generation": "success",
+    "artifact_upload": "success"
+  },
+  "python_unittest": {
+    "executed": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "pilot": [
+    {
+      "model": "M01-003",
+      "status": "SOURCE_REPAIR_EXPORT_NOT_COMMITTED"
+    },
+    {
+      "model": "M02-001",
+      "status": "FAIL_STALE_COMMITTED_EXPORTS"
+    },
+    {
+      "model": "M05-002",
+      "status": "SAMPLED_REPAIR_CLEAR_BLENDER_PENDING",
+      "AABB_positives_before": 755,
+      "AABB_positives_after": 0,
+      "angles": 89,
+      "pair_checks_per_revision": 131898
+    }
+  ],
+  "rendered_diagnostics": {
+    "count": 11,
+    "method": "orthographic SVG from actual JSON primitive vertices",
+    "blender_shading": false
+  },
+  "archive": {
+    "artifact_id": 12581343405,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148137859/artifacts/12581343405",
+    "bytes": 67258,
+    "sha256": "199e9b9c4f70c966e61c9b8e923f728c4b9fb4d6918b738bd9e041a65b896bc4",
+    "temporary": true
+  },
+  "separate_unity_ci": {
+    "CI02": "BLOCKED_LICENSE_NOT_RUN",
+    "CI03": "BLOCKED_LICENSE_NOT_RUN",
+    "not_relevant_to_modelqa_source_result": true
+  },
+  "not_executed": {
+    "blender_depsgraph": true,
+    "actual_animated_glb_collision": true,
+    "fbx_import": true,
+    "unity_import": true,
+    "mesh_QA_all_70": true,
+    "independent_human_visual_review": true
+  },
+  "status": "ACTUAL_AUTOMATED_SOURCE_AND_SAMPLED_GEOMETRY_QA_PASS_WITH_MODEL_SPECIFIC_FAILURES_NO_LIBRARY_RELEASE"
+}
