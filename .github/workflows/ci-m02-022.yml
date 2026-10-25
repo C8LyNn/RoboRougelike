@@ -1,0 +1,38 @@
+name: M02-022 Steerable Axle Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-022-steerable-axle-module
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M02/M02-022/**'
+      - '.github/workflows/ci-m02-022.yml'
+  workflow_dispatch:
+jobs:
+  m02-022-blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent geometry and kinematic tests
+        run: python3 Tools/ModelFactory/M02/M02-022/qa_m02_022.py --math-only
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate real BLEND and animated GLB
+        run: |
+          blender -b -noaudio --python Tools/ModelFactory/M02/M02-022/generate_m02_022.py
+          test -s Tools/ModelFactory/M02/M02-022/generated/M02-022.blend
+          test -s Tools/ModelFactory/M02/M02-022/generated/M02-022_animated.glb
+          test -s Tools/ModelFactory/M02/M02-022/generated/M02-022_qa.json
+      - name: Independently inspect actual glTF animation and topology report
+        run: python3 Tools/ModelFactory/M02/M02-022/qa_m02_022.py
+      - name: Upload actual Blender artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-022-steerable-axle-blend-glb-qa
+          path: Tools/ModelFactory/M02/M02-022/generated/
+          if-no-files-found: warn
