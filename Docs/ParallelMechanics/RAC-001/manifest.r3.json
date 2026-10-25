@@ -1,0 +1,211 @@
+{
+  "package_id": "B01-RAC-001",
+  "revision": "R3.1_W9_EDITOR_DIRECTIVE_FIX",
+  "recipient": "Codex",
+  "status": "STATIC_DIRECTIVES_RETEST_PASS_UNITY_NOT_RUN",
+  "source_parent_pr": "https://github.com/C8LyNn/RoboRougelike/pull/13",
+  "source_parent_sha": "7884f2737197e26769842c087dcd2a1ead75ac95",
+  "source_branch": "feature/b01-rac001-s02-r3-physics-demo",
+  "source_sha_before_manifest": "86d0837d0e9994cc0d271c0d7633cbcee33f98fa",
+  "unity_version": "6000.3.14f1",
+  "dependencies": [
+    "RAC001 prior R2 package full source",
+    "UnityEngine Rigidbody/Physics",
+    "Unity Test Framework 1.6.0"
+  ],
+  "total_files_without_self": 35,
+  "git_blob_sha1_and_bytes": {
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta": {
+      "blob_sha1": "1787f8d3c2c1af9910c63afdfb6b2438b39336d2",
+      "bytes": 169,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs": {
+      "blob_sha1": "4080a61306bdf519b4aa185008e60d55f4e371bc",
+      "bytes": 3587,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs.meta": {
+      "blob_sha1": "8bef1186fd26ace7f9eb58f3db4248899309cb8f",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs": {
+      "blob_sha1": "857edad1323788fdb33df12f9c450c3e6a790844",
+      "bytes": 3619,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs.meta": {
+      "blob_sha1": "5208ee1025706124d0f6e4eac3417f6888c347f6",
+      "bytes": 241,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceState.cs": {
+      "blob_sha1": "24c79723cbd45dd11ef29550ac6383d9e302b7b1",
+      "bytes": 5095,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceState.cs.meta": {
+      "blob_sha1": "aeffd39a48e542c625563190eccf86d398e834e8",
+      "bytes": 241,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor.meta": {
+      "blob_sha1": "ee4d5d34d70e2b9048b6d4e3a7dc5623ef869f7c",
+      "bytes": 170,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs": {
+      "blob_sha1": "09e98326495330348cfc225fb90122088d97a5a9",
+      "bytes": 3300,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs.meta": {
+      "blob_sha1": "5aab455fc890c131cb2c813d564a05152972dc5d",
+      "bytes": 241,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RoboRougelike.RAC001.Editor.asmdef": {
+      "blob_sha1": "17194849df377d21532e57a7c00b4f7f4859000c",
+      "bytes": 421,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RoboRougelike.RAC001.Editor.asmdef.meta": {
+      "blob_sha1": "32d0bf32fb39024af1170c4d2b53c8029ff74929",
+      "bytes": 153,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/RoboRougelike.RAC001.asmdef": {
+      "blob_sha1": "5876cc23db0f271e6c023e1186ba3abd11e8cb41",
+      "bytes": 360,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/RoboRougelike.RAC001.asmdef.meta": {
+      "blob_sha1": "c38a5c5ca01b16e67bf86131dc889572908c5e3a",
+      "bytes": 153,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests.meta": {
+      "blob_sha1": "3940816e05a9bcad19e4801a98a91412448bfd9b",
+      "bytes": 170,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode.meta": {
+      "blob_sha1": "ecf09eed89dd7d0758aed7b56a33972a6a25739e",
+      "bytes": 170,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/CheckpointRaceStateTests.cs": {
+      "blob_sha1": "c5c516139a2cbc50b2c366e6a72673341e50c5e8",
+      "bytes": 5699,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/CheckpointRaceStateTests.cs.meta": {
+      "blob_sha1": "43dd7f41b05a4273840d4a0e6304ab574936c17e",
+      "bytes": 241,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/RoboRougelike.RAC001.EditModeTests.asmdef": {
+      "blob_sha1": "15199de315c39c7d7eb323afe26ada6feeca2de2",
+      "bytes": 541,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/RoboRougelike.RAC001.EditModeTests.asmdef.meta": {
+      "blob_sha1": "97a9fdefd04a732b898c943f56f403a6f7cf3f2f",
+      "bytes": 153,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode.meta": {
+      "blob_sha1": "5e0d8a4e9563f4637d6df42bc0fffea0e796e29e",
+      "bytes": 170,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/CheckpointRacePlayModeTests.cs": {
+      "blob_sha1": "0ec7dac2fe723d39c0892a62f6154c93b3c26f28",
+      "bytes": 3452,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/CheckpointRacePlayModeTests.cs.meta": {
+      "blob_sha1": "6f753a3a74b71696e08c8eba5fbb04f9a0aad2c0",
+      "bytes": 241,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs": {
+      "blob_sha1": "301bbe10027f7586a273e2e12fde734490dab720",
+      "bytes": 2594,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs.meta": {
+      "blob_sha1": "9f8d91f8c07299458f4ee76ee853e8c03e88ed2c",
+      "bytes": 240,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RoboRougelike.RAC001.PlayModeTests.asmdef": {
+      "blob_sha1": "710e7abec18bf05ddf16d59b97c6132e724311a1",
+      "bytes": 525,
+      "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RoboRougelike.RAC001.PlayModeTests.asmdef.meta": {
+      "blob_sha1": "e490bcbe3a835a658b20e6bd4a09ab3405484c8b",
+      "bytes": 153,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md": {
+      "blob_sha1": "c2b8e9a2f8962df04b9170d8cd701ff432983c95",
+      "bytes": 2403,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md": {
+      "blob_sha1": "1d6687d8ab55fac9f37d1832b27e3b6095c16aa3",
+      "bytes": 1870,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/QA_R1.md": {
+      "blob_sha1": "b53a7ad596c4e5537edb22a23918751cda1b3652",
+      "bytes": 2529,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/QA_R2.md": {
+      "blob_sha1": "098eed58f55c7697e3b8ef0477ea23e12389a0e9",
+      "bytes": 2246,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/QA_R3.md": {
+      "blob_sha1": "48020b15ecafc18326a3d2f3bb9dfeabbf153f97",
+      "bytes": 2206,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/README.md": {
+      "blob_sha1": "375505112117459afd1271e99fc23dc97c1e415b",
+      "bytes": 3415,
+      "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/RECEIVER_HANDOFF.md": {
+      "blob_sha1": "f26bd3d0074e4499b01b1a1e944f96efe6ac0e8c",
+      "bytes": 726,
+      "sha256": null
+    },
+    "Tools/B01/RAC001/verify_editor_guards.py": {
+      "blob_sha1": "9f3f645200441257fea668f3456d32ed00a0070f",
+      "bytes": 1645,
+      "sha256": null
+    }
+  },
+  "meta_required_missing": [],
+  "source_sha256": "NOT_VERIFIED_PENDING_B01_40",
+  "unity_compile": "NOT_RUN",
+  "editmode": "NOT_RUN",
+  "playmode": "NOT_RUN",
+  "manual_driving": "NOT_RUN",
+  "independent_B01_60": "PENDING",
+  "G2": "HOLD",
+  "w9_repair": {
+    "baseline": "6c1aa7c2351a29695e4288dddad2565cdec3682a",
+    "parent_pr13": "7884f2737197e26769842c087dcd2a1ead75ac95",
+    "red": "#if UNITY_EDITOR lacked #endif",
+    "fix": "terminal #endif // UNITY_EDITOR; source only",
+    "static_retest": "1/1 balanced and missing endif negative rejected",
+    "script": "Tools/B01/RAC001/verify_editor_guards.py",
+    "unity": "NOT_RUN"
+  }
+}

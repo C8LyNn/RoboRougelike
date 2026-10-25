@@ -16,10 +16,22 @@ namespace RoboRougelike.Mechanics.RAC001.Editor
             SceneManager.SetActiveScene(scene);
 
             var root = new GameObject("RAC-001 Demo (unsaved)");
+            var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            floor.name = "RAC-001 physical floor";
+            floor.transform.SetParent(root.transform);
+            floor.transform.position = new Vector3(4f, -.5f, 4f);
+            floor.transform.localScale = new Vector3(32f, 1f, 32f);
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.name = "Sample runner (NOT the player vehicle)";
+            cube.name = "Sample dynamic Rigidbody (NOT the player vehicle)";
             cube.transform.SetParent(root.transform);
-            cube.transform.position = Vector3.zero;
+            cube.transform.position = new Vector3(0f, .65f, 0f);
+            var rb = cube.AddComponent<Rigidbody>();
+            rb.useGravity = true;
+            rb.mass = 150f;
+            rb.linearDamping = .8f;
+            rb.angularDamping = 2f;
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
             Vector3[] positions = { new Vector3(8f, 0f, 0f), new Vector3(8f, 0f, 8f), new Vector3(0f, 0f, 8f) };
             Transform[] checkpoints = new Transform[positions.Length];
@@ -30,6 +42,9 @@ namespace RoboRougelike.Mechanics.RAC001.Editor
                 marker.transform.SetParent(root.transform);
                 marker.transform.position = positions[i];
                 marker.transform.localScale = new Vector3(1.5f, 0.05f, 1.5f);
+                // Scoring is a state/sphere crossing, not a physical trigger;
+                // markers must not block the real Rigidbody course.
+                marker.GetComponent<Collider>().enabled = false;
                 checkpoints[i] = marker.transform;
             }
 
@@ -48,4 +63,4 @@ namespace RoboRougelike.Mechanics.RAC001.Editor
         }
     }
 }
-
+#endif // UNITY_EDITOR
