@@ -67,6 +67,9 @@ def verify(out):
     assert not qa["non_manifold_meshes"]
     assert qa["glb_status"]=="EXPORTED_NOT_UNITY_IMPORTED"
     result={"blend_bytes":blend.stat().st_size,**inspect_glb(glb)}
+    assert qa["glb_export_scope"]=="MODEL_COLLECTION_ONLY"
+    assert result["meshes"]==qa["mesh_objects"], "foreign or missing mesh in GLB"
+    assert result["materials"]==qa["material_count"], "foreign or missing material in GLB"
     fbx=out/(ID+"_animated.fbx")
     if fbx.is_file():
         assert fbx.stat().st_size>20000
