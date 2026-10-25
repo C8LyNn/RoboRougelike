@@ -1,19 +1,19 @@
 {
   "package_id": "B01-RAC-001",
-  "revision": "R3",
+  "revision": "R3.1_W9_EDITOR_DIRECTIVE_FIX",
   "recipient": "Codex",
-  "status": "SOURCE_WRITTEN_UNITY_NOT_RUN_G2_HOLD",
+  "status": "STATIC_DIRECTIVES_RETEST_PASS_UNITY_NOT_RUN",
   "source_parent_pr": "https://github.com/C8LyNn/RoboRougelike/pull/13",
   "source_parent_sha": "7884f2737197e26769842c087dcd2a1ead75ac95",
   "source_branch": "feature/b01-rac001-s02-r3-physics-demo",
-  "source_sha_before_manifest": "a20f71f47c6df81bdff5698f0c7d1b07aaf2b6cb",
+  "source_sha_before_manifest": "86d0837d0e9994cc0d271c0d7633cbcee33f98fa",
   "unity_version": "6000.3.14f1",
   "dependencies": [
     "RAC001 prior R2 package full source",
     "UnityEngine Rigidbody/Physics",
     "Unity Test Framework 1.6.0"
   ],
-  "total_files_without_self": 34,
+  "total_files_without_self": 35,
   "git_blob_sha1_and_bytes": {
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta": {
       "blob_sha1": "1787f8d3c2c1af9910c63afdfb6b2438b39336d2",
@@ -56,8 +56,8 @@
       "sha256": null
     },
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs": {
-      "blob_sha1": "588133a5bc64981be398f9756baa0a371ecd60a4",
-      "bytes": 3278,
+      "blob_sha1": "09e98326495330348cfc225fb90122088d97a5a9",
+      "bytes": 3300,
       "sha256": null
     },
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs.meta": {
@@ -151,8 +151,8 @@
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md": {
-      "blob_sha1": "35b82d53581f7c4727f7ea065f98299fb17e940c",
-      "bytes": 1671,
+      "blob_sha1": "c2b8e9a2f8962df04b9170d8cd701ff432983c95",
+      "bytes": 2403,
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md": {
@@ -171,8 +171,8 @@
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/QA_R3.md": {
-      "blob_sha1": "79f62def7c7607048d4758a061384565a1661aba",
-      "bytes": 1491,
+      "blob_sha1": "48020b15ecafc18326a3d2f3bb9dfeabbf153f97",
+      "bytes": 2206,
       "sha256": null
     },
     "Docs/ParallelMechanics/RAC-001/README.md": {
@@ -184,6 +184,11 @@
       "blob_sha1": "f26bd3d0074e4499b01b1a1e944f96efe6ac0e8c",
       "bytes": 726,
       "sha256": null
+    },
+    "Tools/B01/RAC001/verify_editor_guards.py": {
+      "blob_sha1": "9f3f645200441257fea668f3456d32ed00a0070f",
+      "bytes": 1645,
+      "sha256": null
     }
   },
   "meta_required_missing": [],
@@ -193,5 +198,14 @@
   "playmode": "NOT_RUN",
   "manual_driving": "NOT_RUN",
   "independent_B01_60": "PENDING",
-  "G2": "HOLD"
+  "G2": "HOLD",
+  "w9_repair": {
+    "baseline": "6c1aa7c2351a29695e4288dddad2565cdec3682a",
+    "parent_pr13": "7884f2737197e26769842c087dcd2a1ead75ac95",
+    "red": "#if UNITY_EDITOR lacked #endif",
+    "fix": "terminal #endif // UNITY_EDITOR; source only",
+    "static_retest": "1/1 balanced and missing endif negative rejected",
+    "script": "Tools/B01/RAC001/verify_editor_guards.py",
+    "unity": "NOT_RUN"
+  }
 }
