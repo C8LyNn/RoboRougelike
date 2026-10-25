@@ -1,3 +1,7 @@
+# W10 / R3.3 OVERRIDE — NOT READY FOR CODEX
+SOURCE: complete #99 + #103 + #211 plus corrective Draft #225, parent exact R3.2 003bced54480d509ffc0d49d26daf87160a8d609. Do not use only #225 diff. READ TEST_EVIDENCE_R33.md and RECEIVER_HANDOFF_R33.md. Include parent Assets/B01Packages.meta AND owned Assets/B01Packages/MAPGEN001.meta without rewriting original GUID. Unity6000.3.14f1 original R3.2 compile PASS but EditMode22/23 and PlayMode5/6; first cube stopped, rest 11 not run. New R3.3 contains two diagnostic pit tests and twelve independent cube case definitions (NOT yet executed native). True 12 PR125/OBJ210 wheeled trials separate and still require independent B01-60. NO host integration/merge until B01-40+60 G0/G1, HQ G2 GO and Codex current task completed+target scope ACK. No dual GPT OSS handoff. Old instructions below are historical and subject to this override.
+
+---
 # MAPGEN-001 R3.2 / gated installation for Codex
 Dispatch: HQ-B01-20261025-MAPGEN-NEXT-CODEX. Codex is the NEXT receiver AFTER its already assigned W9 work. Historic GPT OSS routing is superseded only for this package. Do not send to both.
 Source: full stacked tree PR #99 + #103 + #211. Source HEAD must be pinned to final R3.2 exact SHA (issue #93 / PR #211). Never take only the PR #211 delta. Game integration is NOT authorized now.

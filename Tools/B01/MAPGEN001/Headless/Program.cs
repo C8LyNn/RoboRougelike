@@ -44,6 +44,35 @@ static class Program
         }catch(ArgumentException ex){All.Add(new CaseResult{Id=id,Result="EXPECTED_REJECTION",Detail=ex.Message});}
         catch(Exception ex){All.Add(new CaseResult{Id=id,Result="FAIL_WRONG_EXCEPTION",Detail=ex.ToString()});}
     }
+    static void NativeDiagnosticReproduction()
+    {
+        var p=new MapBlueprint{Recipe=MapRecipe.CombatArena,
+            Start=new Vector3(0f,1.25f,-10f),
+            Finish=new Vector3(0f,1.25f,10f),
+            Bounds=new Bounds(Vector3.zero,new Vector3(40f,8f,40f))};
+        p.Elements.Add(new MapElement(MapElementKind.Floor,
+            new Vector3(0f,-.45f,-8.5f),new Vector3(20f,.9f,15f),Quaternion.identity));
+        p.Elements.Add(new MapElement(MapElementKind.Floor,
+            new Vector3(0f,-.45f,8.5f),new Vector3(20f,.9f,15f),Quaternion.identity));
+        var blocked=MapGenRouteValidator.Validate(p,MapVehicleProfile.Light);
+        All.Add(new CaseResult{Id="W10_REPRO/SupportedEndpointsCentralPit",
+            Result=blocked.Code=="SPINE_FOOTPRINT_BLOCKED"?"EXPECTED_REJECTION":"FAIL_WRONG_DIAGNOSIS",
+            Detail=blocked.Code});
+        var old=new MapBlueprint{Recipe=MapRecipe.CombatArena,
+            Start=new Vector3(0f,1.25f,0f),
+            Finish=new Vector3(0f,1.25f,0f),
+            Bounds=new Bounds(Vector3.zero,new Vector3(40f,8f,40f))};
+        var v=MapVehicleProfile.Light;
+        float hw=v.Width*.5f+.25f,hl=v.Length*.5f+.25f;
+        foreach(int x in new[]{-1,1})
+        foreach(int z in new[]{-1,1})
+            old.Elements.Add(new MapElement(MapElementKind.Floor,
+                new Vector3(x*hw,-.45f,z*hl),new Vector3(.5f,.9f,.5f),Quaternion.identity));
+        var start=MapGenRouteValidator.Validate(old,v);
+        All.Add(new CaseResult{Id="W10_REPRO/OriginalUnsupportedStart",
+            Result=start.Code=="START_BLOCKED"?"EXPECTED_REJECTION":"FAIL_WRONG_DIAGNOSIS",
+            Detail=start.Code});
+    }
     static int Main(string[] args)
     {
         string outDir=args.Length>0?args[0]:"headless-mapgen-evidence";
@@ -80,6 +109,7 @@ static class Program
         Negative("NEGATIVE/TooFewSegments",MapRecipe.ObstacleCourse,bad,MapVehicleProfile.Light);
         var broken=MapVehicleProfile.Light;broken.MaxSlopeDegrees=float.NaN;
         Negative("NEGATIVE/NaNSlope",MapRecipe.ObstacleCourse,MapGenConfig.Default,broken);
+        NativeDiagnosticReproduction();
         var fails=All.Where(c=>c.Result.StartsWith("FAIL_",StringComparison.Ordinal)).ToArray();
         var snapshots=All.Where(x=>x.Result=="PLAN_VALIDATED_SOURCE_CSHARP").ToArray();
         var summary=new {
