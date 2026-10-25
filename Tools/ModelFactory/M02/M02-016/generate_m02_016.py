@@ -262,9 +262,13 @@ def build(out):
                               export_format='GLB',export_animations=True)
     qa["glb_status"]="EXPORTED_NOT_UNITY_IMPORTED"
     try:
-        bpy.ops.export_scene.fbx(filepath=str(out/(ID+"_animated.fbx")),
-                                 use_selection=False,bake_anim=True,
-                                 add_leaf_bones=False)
+        fbx=str(out/(ID+"_animated.fbx"))
+        try:
+            bpy.ops.export_scene.fbx(filepath=fbx,use_selection=False,
+                                     bake_anim=True,add_leaf_bones=False)
+        except TypeError:
+            # Blender 5 FBX operator differs from Blender 4.
+            bpy.ops.export_scene.fbx(filepath=fbx)
         qa["fbx_status"]="EXPORTED_NOT_UNITY_IMPORTED"
     except Exception as e:
         qa["fbx_status"]="BLOCKED_FBX_OPERATOR: "+str(e)
