@@ -1,0 +1,30 @@
+{
+  "id": "M01-016",
+  "meshes": 61,
+  "materials": 7,
+  "vertices": 4856,
+  "triangles": 9500,
+  "frames_tested": 73,
+  "aabb_pair_checks": 99864,
+  "aabb_intersections": 0,
+  "minimum_axis_separation_m": 0.035,
+  "mount": "MOUNT_TOP_SOCKET",
+  "mount_xyz_m": [
+    0,
+    0,
+    0
+  ],
+  "axis_blender": "Z up, -Y forward",
+  "axis_gltf_unity": "Y up, +Z forward",
+  "fold_degrees_each": 30,
+  "rotor_revolutions": 4,
+  "note": "Conservative AABB sampling, not continuous mesh collision detection",
+  "repeatability": "PASS",
+  "exports": [
+    "Tools/ModelFactory/M01/M01-016/generated/M01-016_foldout_rotary_cannon.blend",
+    "Tools/ModelFactory/M01/M01-016/generated/M01-016_foldout_rotary_cannon.glb",
+    "Tools/ModelFactory/M01/M01-016/generated/M01-016_foldout_rotary_cannon.fbx",
+    "Tools/ModelFactory/M01/M01-016/generated/M01-016_foldout_rotary_cannon.obj",
+    "Tools/ModelFactory/M01/M01-016/generated/M01-016_foldout_rotary_cannon.mtl"
+  ]
+}
