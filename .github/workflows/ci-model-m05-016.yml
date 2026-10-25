@@ -1,0 +1,63 @@
+name: M05-016 Tow Cable Winch Asset QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-016-tow-cable-winch
+    paths:
+      - 'Tools/ModelFactory/M05/M05-016/**'
+      - '.github/workflows/ci-model-m05-016.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-asset:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M05/M05-016/generate_m05_016.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Generate and test twice in Blender
+        run: |
+          mkdir -p /tmp/m05-016
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-016/generate_m05_016.py -- --out /tmp/m05-016
+      - name: Independently validate GLB structure
+        run: |
+          python3 - <<'PY'
+          import json, struct, pathlib
+          p=pathlib.Path('/tmp/m05-016/M05-016.glb')
+          raw=p.read_bytes()
+          assert raw[:4] == b'glTF'
+          assert struct.unpack_from('<I',raw,4)[0] == 2
+          assert struct.unpack_from('<I',raw,8)[0] == len(raw)
+          n,kind=struct.unpack_from('<II',raw,12)
+          assert kind == 0x4E4F534A
+          gltf=json.loads(raw[20:20+n].decode('utf8'))
+          assert len(gltf.get('meshes',[])) >= 40
+          assert len(gltf.get('materials',[])) >= 3
+          assert len(gltf.get('animations',[])) >= 1
+          assert any('PIVOT_REEL_AXIS_X' in x.get('name','') for x in gltf['nodes'])
+          report=json.loads(pathlib.Path('/tmp/m05-016/qa.json').read_text())
+          assert report['repeat_build']=='PASS'
+          assert report['mesh_manifold']=='PASS'
+          print('GLB STRUCTURE PASS',len(gltf['meshes']),len(gltf['materials']),len(gltf['animations']))
+          PY
+      - name: Upload generated assets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-016-tow-cable-GLB-BLEND-FBX-QA
+          path: |
+            /tmp/m05-016/M05-016.blend
+            /tmp/m05-016/M05-016.glb
+            /tmp/m05-016/M05-016.fbx
+            /tmp/m05-016/qa.json
+          if-no-files-found: warn
+          retention-days: 14
