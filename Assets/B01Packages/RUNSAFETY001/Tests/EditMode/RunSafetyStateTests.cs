@@ -203,6 +203,22 @@ namespace B01.RUNSAFETY001.Tests
                 "cheap",SafetyPartRole.Weapon,0,1,0,false).RebuildQuote);
         }
 
+        [Test] public void ZeroPricePaidRebuildDoesNotDoubleClaimFreeSlot()
+        {
+            var m=new RunSafetyState(new[]{
+                new SafetyOwnedPart("a",SafetyPartRole.Weapon,0,10,7,false),
+                new SafetyOwnedPart("cheap",SafetyPartRole.Drive,0,1,0,false)
+            },0);
+            Assert.AreEqual(RebuildOrderResult.QueuedFree,m.TryQueueRebuild("a",out int first));
+            Assert.AreEqual(0,first);
+            Assert.AreEqual(RebuildOrderResult.QueuedPaid,m.TryQueueRebuild("cheap",out int second));
+            Assert.AreEqual(0,second);
+            Assert.IsTrue(m.FreeRebuildAlreadyClaimed);
+            Assert.AreEqual(0,m.Scrap);
+            Assert.AreEqual(2,m.PartCount);
+            Assert.IsTrue(m.FindPart("cheap").IsRebuilding);
+        }
+
         [Test] public void StaleEncounterCannotFinishAndLoanerIsTransient()
         {
             var m=Machine(0,Part("gun",SafetyPartRole.Weapon));
