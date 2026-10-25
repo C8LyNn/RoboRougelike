@@ -1,0 +1,16 @@
+{
+  "id": "M01-019",
+  "status": "BLENDER_QA_PASS",
+  "meshes": 59,
+  "materials": 7,
+  "vertices": 7576,
+  "triangles": 15024,
+  "frames_tested": 73,
+  "aabb_checks": 55480,
+  "aabb_intersections": 0,
+  "min_aabb_clearance_m": 0.026,
+  "cassette_rotation_radians": 6.283185,
+  "mount": "MOUNT_SIDE_SOCKET",
+  "moving_pivot": "CASSETTE_INDEX_Y",
+  "repeat_determinism": "PASS"
+}
