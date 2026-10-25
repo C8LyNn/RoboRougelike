@@ -1,0 +1,53 @@
+name: CI MODEL-03 M03-018 dual-axis gimbal
+on:
+  push:
+    branches:
+      - feature/rrl-model-m03-018-dual-axis-gimbal-mount
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-018/**'
+      - '.github/workflows/ci-m03-018.yml'
+  workflow_dispatch:
+jobs:
+  blender-gimbal-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install real Blender and NumPy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Blender generator and actual exports
+        env:
+          M03_018_OUT: ${{ github.workspace }}/m03-018-output
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-018/generate_m03_018.py
+          for ext in blend glb fbx; do
+            test -s "m03-018-output/M03-018.$ext"
+          done
+      - name: Actual Blender repeated-build and 121-frame QA
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-018/qa_blender_m03_018.py
+      - name: Independent GLB binary, materials and dual-animation QA
+        run: |
+          python3 Tools/ModelFactory/M03/M03-018/qa_glb_m03_018.py m03-018-output/M03-018.glb
+      - name: Export checksums
+        run: |
+          cd m03-018-output
+          sha256sum M03-018.blend M03-018.glb M03-018.fbx > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - name: Upload actual exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-018-Blender-GLB-FBX-BLEND
+          path: |
+            m03-018-output/M03-018.blend
+            m03-018-output/M03-018.glb
+            m03-018-output/M03-018.fbx
+            m03-018-output/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14
