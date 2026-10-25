@@ -19,12 +19,14 @@ def clean():
             bpy.data.objects.remove(obj, do_unlink=True)
         bpy.data.collections.remove(col)
     # Remove only assets created by this generator; preserve unrelated scenes.
-    for mat in list(bpy.data.materials):
-        if mat.name.startswith(TAG + "_") and mat.users == 0:
-            bpy.data.materials.remove(mat)
+    # Free orphan meshes BEFORE their materials; otherwise old materials
+    # remain referenced by orphaned mesh datablocks and duplicate on rebuild.
     for mesh in list(bpy.data.meshes):
         if mesh.name.startswith(TAG + "_") and mesh.users == 0:
             bpy.data.meshes.remove(mesh)
+    for mat in list(bpy.data.materials):
+        if mat.name.startswith(TAG + "_") and mat.users == 0:
+            bpy.data.materials.remove(mat)
 
 def material(name, rgba, metallic=0.0, roughness=0.42, emission=None):
     mat = bpy.data.materials.new(TAG + "_" + name)
