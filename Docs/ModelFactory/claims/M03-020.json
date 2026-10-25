@@ -9,6 +9,9 @@
   "branch": "feature/rrl-model-m03-020-modular-cargo-basket",
   "head_commit": "c0ed933fcc3ff809486c4fccdc4eee5818c1a9a4",
   "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/203",
-  "blender_qa": "PENDING",
-  "unity_qa": "NOT_RUN"
+  "blender_qa": "PASS",
+  "blender_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40170754453",
+  "artifact_id": 12589103996,
+  "glb_sha256": "cb9ce0983db27ed4f87426f43ca6eb164849f585212eb150b8ff3d1d9542c9a8",
+  "unity_qa": "BLOCKED_UNITY_ACTIVATION_NOT_RUN"
 }
