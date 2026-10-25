@@ -1,0 +1,35 @@
+name: MODEL-04 M04-015 Blender export and QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-015-pneumatic-jump-leg
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-015/**'
+      - '.github/workflows/ci-m04-015.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate BLEND GLB FBX
+        run: blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-015/generate_m04_015.py -- --out build/M04-015
+      - name: Re-open saved BLEND and verify scene hierarchy
+        run: |
+          blender -b build/M04-015/M04-015_pneumatic_jump_leg.blend --python-exit-code 1 --python-expr "import bpy; assert 'PNEUMATIC_STROKE_Y' in bpy.data.objects; assert 'MOUNT_UNDERSIDE_Y0' in bpy.data.objects; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 20"
+      - name: Independent artifact QA
+        run: python3 Tools/ModelFactory/M04/M04-015/qa_m04_015.py --out build/M04-015
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M04-015-blender-glb-fbx-qa
+          path: build/M04-015/
+          if-no-files-found: error
+          retention-days: 30
