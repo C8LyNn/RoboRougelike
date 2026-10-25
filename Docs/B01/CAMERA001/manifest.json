@@ -1,20 +1,20 @@
 {
   "package_id": "B01-CAMERA-001",
-  "revision": "R1",
+  "revision": "R1.1_W9_ASMDEF_REPAIR",
   "recipient": "Codex",
   "priority": "P1",
-  "status": "SOURCE_ONLY_QA_PENDING_G2_HOLD",
+  "status": "STATIC_RETEST_PASS_UNITY_NOT_RUN",
   "source_pr": "https://github.com/C8LyNn/RoboRougelike/pull/134",
   "source_branch": "feature/b01-camera001-s02-r1-isolated",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "source_head_before_manifest": "021a9fab497d6c693816ea52ca470c5990922645",
+  "source_head_before_manifest": "ccca882f52ea620617459ff35f510fa8a63df964",
   "unity_version": "6000.3.14f1",
   "dependencies": [
     "UnityEngine Camera/Physics",
     "Unity Test Framework 1.6.0 for tests; ENABLE_INPUT_SYSTEM optional for demo"
   ],
-  "sources_files": 35,
-  "manifest_format": "Git blob SHA-1 content identities; SHA256 NOT COMPUTED, must be independently audited before G2.",
+  "sources_files": 36,
+  "manifest_format": "Git blob SHA-1 content identity + byte count of source. Physical package SHA-256 pending independent B01-40 G2.",
   "files": {
     "Assets/B01Packages.meta": {
       "git_blob_sha1": "aafe73e81da1d22b85b25b2f62f4fc5ca0b06f1f",
@@ -97,8 +97,8 @@
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef": {
-      "git_blob_sha1": "3e89a64a8abde1ecee9d85251f21e32792b204ea",
-      "bytes": 521,
+      "git_blob_sha1": "2333e0777c962c85673c6523c5493db85dfa1461",
+      "bytes": 461,
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef.meta": {
@@ -122,8 +122,8 @@
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef": {
-      "git_blob_sha1": "35498cbb964b3a78f582ab3b7045dd2e5cf2e991",
-      "bytes": 505,
+      "git_blob_sha1": "e53feac920be7e17d7586310ddabaf9e597876df",
+      "bytes": 445,
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef.meta": {
@@ -147,13 +147,13 @@
       "sha256": null
     },
     "Docs/B01/CAMERA001/CHANGELOG.md": {
-      "git_blob_sha1": "d4dfdfacffed07f6e5c0d019fde1a2765ad98996",
-      "bytes": 440,
+      "git_blob_sha1": "b4704e8ef7be9dca3a897458df0a66826ae1d783",
+      "bytes": 967,
       "sha256": null
     },
     "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md": {
-      "git_blob_sha1": "2b1a2261c41ad8709c1a169e0e84fbf839a2a966",
-      "bytes": 1947,
+      "git_blob_sha1": "046aceaedbbc8fc3a75f6e8d41ebcdf1e98c5c99",
+      "bytes": 2875,
       "sha256": null
     },
     "Docs/B01/CAMERA001/KNOWN_LIMITATIONS.md": {
@@ -177,8 +177,8 @@
       "sha256": null
     },
     "Docs/B01/CAMERA001/TEST_EVIDENCE.md": {
-      "git_blob_sha1": "fd6a8b9af549816a4c4f694029f75cee1f732d3e",
-      "bytes": 1378,
+      "git_blob_sha1": "547cbb4a2aba0c2a38b3ba3317cd35b296116a2e",
+      "bytes": 2164,
       "sha256": null
     },
     "Docs/B01/CAMERA001/TEST_PLAN.md": {
@@ -189,6 +189,11 @@
     "Tools/B01/CAMERA001/geometry_probe.js": {
       "git_blob_sha1": "2483516fc934427ec698d2b1fbf96c6420e80dbb",
       "bytes": 2907,
+      "sha256": null
+    },
+    "Tools/B01/CAMERA001/verify_asmdefs.py": {
+      "git_blob_sha1": "07c23d20f2f4d572a7e2b75f366ea7a75cd31a7e",
+      "bytes": 958,
       "sha256": null
     }
   },
@@ -207,5 +212,13 @@
     "B01_60": "PENDING",
     "G2": "HOLD"
   },
-  "offline_probe": "Independent JS port: 840 evaluated, 5 aggregate checks PASS; not C# Unity."
+  "offline_probe": "Independent JS port: 840 evaluated, 5 aggregate checks PASS; not C# Unity.",
+  "w9_repair": {
+    "source_baseline": "894d3488dedb69e2b8d89683d750bbdbfedf4e55",
+    "red": "2/2 had both direct UnityEngine.TestRunner and UnityEditor.TestRunner refs",
+    "fix": "remove direct runner references only; keep TestAssemblies",
+    "retest": "2/2 parsed JSON static config PASS; persistent script authored",
+    "regression_script": "Tools/B01/CAMERA001/verify_asmdefs.py",
+    "unity_compilation": "NOT_RUN"
+  }
 }
