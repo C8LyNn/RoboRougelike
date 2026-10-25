@@ -1,0 +1,74 @@
+{
+  "contractVersion": "0.1.0-design-only",
+  "ownerDecisionIssue": 222,
+  "semantics": {
+    "definitionId": "Stable legendary kind / same-item mounted uniqueness applies within only one vehicle",
+    "instanceId": "Distinct owned physical copy GUID; never use for same-kind cap",
+    "inventoryDuplicatesAllowed": true,
+    "globallyUnique": false,
+    "differentLegendaryTypesCanCoexist": true,
+    "zeroHpMountedCountsAsEquipped": true,
+    "worldwideLegendaryLimit": null,
+    "receiverReady": false
+  },
+  "definitions": [
+    {
+      "legendaryDefinitionId": "LEG-WPN-001",
+      "basePartKind": "Weapon",
+      "partFamily": "Railgun",
+      "mountFootprintCells": {
+        "x": 3,
+        "y": 2,
+        "z": 2
+      },
+      "massKg": 650,
+      "hitPoints": 230,
+      "socketCategory": "WeaponBase",
+      "ability": {
+        "mechanic": "Charged finite-through-armor penetration with physical recoil and damage falloff",
+        "trigger": "WeaponFamily_Railgun",
+        "cooldownSeconds": 5
+      },
+      "tradeoffs": [
+        "Wide weapon clearance blocks adjacent turrets",
+        "Heavy recoil changes aim and stability",
+        "Large carried weight pushes center of mass forward"
+      ],
+      "rarityTier": "Legendary",
+      "maxEquippedSameDefinitionPerVehicle": 1,
+      "optionalFutureSystems": [
+        "heat",
+        "energy"
+      ]
+    },
+    {
+      "legendaryDefinitionId": "LEG-MOV-001",
+      "basePartKind": "HoverEngine",
+      "partFamily": "Hover",
+      "mountFootprintCells": {
+        "x": 3,
+        "y": 3,
+        "z": 2
+      },
+      "massKg": 780,
+      "hitPoints": 320,
+      "socketCategory": "MobilityHub",
+      "ability": {
+        "mechanic": "Short sideways hover burst that keeps Rigidbody acceleration and bounded clearance",
+        "trigger": "MobilityAbility",
+        "cooldownSeconds": 12
+      },
+      "tradeoffs": [
+        "Large exposed hub requires solid socket support",
+        "High center of mass makes turning and roll more hazardous",
+        "Burst disabled at zero HP or under EMP effect"
+      ],
+      "rarityTier": "Legendary",
+      "maxEquippedSameDefinitionPerVehicle": 1,
+      "optionalFutureSystems": [
+        "energy",
+        "EMP"
+      ]
+    }
+  ]
+}

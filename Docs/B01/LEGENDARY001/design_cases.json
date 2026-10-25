@@ -1,0 +1,92 @@
+[
+  {
+    "id": "equip_one_kind_once",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "equip_second_same_type_on_same_vehicle",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "equip_second_same_type_elsewhere",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "inventory_two_owned_copies",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "equip_legendary_weapon_and_distinct_drive",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "equip_weapon_at_zero_hp_then_same_type",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "unmount_first_then_mount_other_same_type",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "ordinary_railgun_does_not_use_legendary_slot",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "ordinary_railgun_same_weapon_family",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "same_instance_guid_in_two_live_owners",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "reentrant_reward_same_instance_guid",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "save_load_preserves_definition_and_instance",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "no_global_cap_on_different_legendary_types",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "enemy_own_robot_has_independent_equipped_cap",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "invalid_negative_mass_definition",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "invalid_zero_size_footprint",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "reward_copy_different_guid_same_definition_allowed",
+    "expected_allowed": true,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  },
+  {
+    "id": "not_possible_third_weapon_family_from_legend",
+    "expected_allowed": false,
+    "status": "DESIGN_TEST_ONLY_NOT_GAME_EXECUTED"
+  }
+]
