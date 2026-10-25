@@ -20,7 +20,7 @@ jobs:
         run: python3 -m py_compile Tools/ModelFactory/M05/M05-024/*.py
       - name: Generate and test actual Blender scene
         run: |
-          blender -b -t 2 --python Tools/ModelFactory/M05/M05-024/generate_m05_024.py -- --out "$GITHUB_WORKSPACE/m05-024-artifacts" --self-test
+          blender -b -t 2 --python-exit-code 1 --python Tools/ModelFactory/M05/M05-024/generate_m05_024.py -- --out "$GITHUB_WORKSPACE/m05-024-artifacts" --self-test
       - name: Independent GLB validation
         run: python3 Tools/ModelFactory/M05/M05-024/validate_m05_024.py "$GITHUB_WORKSPACE/m05-024-artifacts"
       - name: Upload Blender outputs and QA report
