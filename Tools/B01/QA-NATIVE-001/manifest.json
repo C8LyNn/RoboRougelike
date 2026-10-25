@@ -45,9 +45,9 @@
       "git_blob_sha1": "922429a7927b0ef99692c663a81cb844f1917f17"
     },
     "Tools/B01/QA-NATIVE-001/package.py": {
-      "sha256": "bdd969c0a6a7451c3d74b3a990ee0b426a821cf88dee3f92b6bc926d487e86fc",
-      "bytes": 2263,
-      "git_blob_sha1": "5c80c7b7612e35f93b36a477fc733b68d2296d2d"
+      "sha256": "203cd83b0bc37691f4a956299e7ce7862ae8dfc1a003c9c73c84d7c81b692415",
+      "bytes": 2249,
+      "git_blob_sha1": "6454f5f6515a16ad0ca36a2d789827e8309d1c61"
     }
   },
   "tests": {
@@ -56,7 +56,7 @@
     "linux": "13/13 PASS synthetic on initial tracked runner",
     "native_unity": "NOT_RUN",
     "powershell_native_runner": "NOT_RUN",
-    "new_deterministic_package_ci": "PENDING"
+    "new_deterministic_package_ci": "RETEST_CROSS_PLATFORM_PENDING"
   },
   "g2": "HOLD",
   "local_separate_full_source_zip": {
@@ -64,6 +64,6 @@
     "sha256": "cf3c7dc31f8089339984c09ce503898eb0273f433a784879d29ba972edfa6121",
     "note": "Local ChatGPT archive is not byte-identical to tracked PR source; do not mix release hashes"
   },
-  "manifest_basis_sha": "8c814f80e3d3842a3a05d8d888b23e746a05a692",
+  "manifest_basis_sha": "75954d32f6d2f50ce4771b74898a93efd4b8a33d",
   "package_zip_source": "GitHub Actions generated deterministic archive of exact paths above; SHA256 emitted by CI."
 }
