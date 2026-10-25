@@ -75,6 +75,8 @@ def cube(label, loc, dims, mat, coll, root, bevel=0):
         mod.segments = 2
         bpy.context.view_layer.objects.active = ob
         bpy.ops.object.modifier_apply(modifier=mod.name)
+        if hasattr(ob.data, "use_auto_smooth"):
+            ob.data.use_auto_smooth = True
         mod2 = ob.modifiers.new("Weighted face normals", "WEIGHTED_NORMAL")
         bpy.ops.object.modifier_apply(modifier=mod2.name)
     ob.data.materials.append(mat)
