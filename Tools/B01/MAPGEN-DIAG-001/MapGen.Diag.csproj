@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs"/>
+    <!-- Reuse actual frozen MapGen C#, NOT a rewritten model. Unity types are surrogates. -->
+    <Compile Include="../MAPGEN001/Headless/UnitySurrogate.cs" Link="UnitySurrogate.cs"/>
+    <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs" Link="MapGenData.cs"/>
+    <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs" Link="MapGenPlanner.cs"/>
+    <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs" Link="MapGenRouteValidator.cs"/>
+  </ItemGroup>
+</Project>

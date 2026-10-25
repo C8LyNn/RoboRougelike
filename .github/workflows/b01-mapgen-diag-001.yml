@@ -1,0 +1,55 @@
+name: B01-21 MAPGEN-DIAG-001 independent source diagnostics
+on:
+  push:
+    branches:
+      - "diag/b01-21-mapgen-diag-001-20261025"
+    paths:
+      - "Tools/B01/MAPGEN-DIAG-001/**"
+      - "Docs/B01/MAPGEN-DIAG-001/**"
+      - ".github/workflows/b01-mapgen-diag-001.yml"
+  pull_request:
+    paths:
+      - "Tools/B01/MAPGEN-DIAG-001/**"
+      - "Docs/B01/MAPGEN-DIAG-001/**"
+      - ".github/workflows/b01-mapgen-diag-001.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  orthogonal-mapgen-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Confirm immutable MAPGEN R3.2 ancestor and exact unmodified source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 003bced54480d509ffc0d49d26daf87160a8d609 HEAD
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs)" = 89ff64e12f278f2c9393ad542161a9387e1f4117
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs)" = 4e4bee443a60abb3b284e8c546203096095e12bd
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs)" = b586a5bfc697bc37edbf98bb936459aeebe694c6
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs)" = acebb46cccec91ed3da7e54074914ab91ad48104
+          git rev-parse HEAD > diag-head-sha.txt
+          echo "PINNED_MAPGEN_SOURCE_BLOB_IDENTITIES=PASS"
+      - name: Compile and execute orthogonal frozen-source diagnostic rows
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/MAPGEN-DIAG-001/MapGen.Diag.csproj --configuration Release -- "$PWD" "$PWD/mapgen-diag-001-evidence" | tee mapgen-diag-001-console.log
+      - name: Preserve every case JSON, readable table, run log, exact SHA even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-mapgen-diag-001-case-evidence
+          path: |
+            mapgen-diag-001-evidence/
+            mapgen-diag-001-console.log
+            diag-head-sha.txt
+          if-no-files-found: warn
+          retention-days: 30
