@@ -1,0 +1,24 @@
+{
+  "package": "CAMERA001",
+  "source_sha": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+  "rows": [
+    {
+      "path": "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md",
+      "bytes": 2640,
+      "sha256": "b64e5ea3a0702d1d783c3bd4bb1b9b5520a88a7e2c0573f06c50346d47c0c553",
+      "git_sha1": "383512dcc749225b4ce57fcd0427fd20927171a9"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md",
+      "bytes": 4066,
+      "sha256": "fae68b0ff3f9e7824ca2ab00d8c20a4e180d8c3276010397116bc875317b4ee3",
+      "git_sha1": "0ef2ce5b44e7fcd0786144993ffd48d8c2a85cee"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/manifest.json",
+      "bytes": 8292,
+      "sha256": "9c22159043039ffc8894a58e595059d974535056505d605cd3af8ff219e26b4e",
+      "git_sha1": "5780976b58200f472a2d8416c8924f24662d5a67"
+    }
+  ]
+}
