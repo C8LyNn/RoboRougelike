@@ -182,8 +182,8 @@ def build_model():
              (dx + (-side * .15), -.15, .041), (.033, .012, .009), amber, .002)
 
         # 1..20 unlock; 26..65 open; 90..125 close; 140 relock.
-        for frame, degrees in ((1, 0), (26, 0), (65, -side * 105),
-                               (90, -side * 105), (125, 0), (145, 0)):
+        for frame, degrees in ((1, 0), (26, 0), (65, side * 105),
+                               (90, side * 105), (125, 0), (145, 0)):
             hinge.rotation_euler[1] = math.radians(degrees)
             hinge.keyframe_insert(data_path="rotation_euler", frame=frame)
         for frame, degrees in ((1, 0), (20, -side * 75), (125, -side * 75),
