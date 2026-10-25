@@ -1,0 +1,60 @@
+name: M01-023 Blender wedge-turret QA
+on:
+  push:
+    branches: [feature/rrl-model-m01-023-wedge-profile-turret]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-023/*.py'
+      - 'Tools/ModelFactory/M01/M01-023/README.md'
+      - '.github/workflows/ci-m01-023.yml'
+  pull_request:
+    types: [opened, synchronize]
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-023/*.py'
+      - 'Tools/ModelFactory/M01/M01-023/README.md'
+      - '.github/workflows/ci-m01-023.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate real animated turret twice in Blender
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M01/M01-023/generate_m01_023.py -- --repeat --out Tools/ModelFactory/M01/M01-023/generated
+      - name: Independently validate mesh and Blender exports
+        run: |
+          python3 Tools/ModelFactory/M01/M01-023/qa_m01_023.py --out Tools/ModelFactory/M01/M01-023/generated --require-blender
+      - name: Record digests
+        run: |
+          cd Tools/ModelFactory/M01/M01-023/generated
+          rm -f *.blend1
+          sha256sum M01-023_wedge_profile_turret.* > SHA256SUMS
+      - name: Upload actual 3D artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-023-wedge-profile-turret-3D
+          path: Tools/ModelFactory/M01/M01-023/generated/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish verified exports to exclusive feature branch
+        if: success() && github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f Tools/ModelFactory/M01/M01-023/generated/*
+          if ! git diff --cached --quiet; then
+            git commit -m 'MODEL-01 M01-023: verified Blender 3D exports'
+            git fetch origin feature/rrl-model-m01-023-wedge-profile-turret
+            git rebase origin/feature/rrl-model-m01-023-wedge-profile-turret
+            git push origin HEAD:feature/rrl-model-m01-023-wedge-profile-turret || echo '::warning::Push blocked; workflow artifacts retained'
+          fi
