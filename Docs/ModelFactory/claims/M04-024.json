@@ -1,8 +1,42 @@
 {
   "id": "M04-024",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "MODEL_COMPLETE",
   "claimed_at_utc": "2026-10-25T04:53:10.923Z",
   "model": "Układ czterech dysz wektorowych",
-  "run": "2026-10-25T04:00:00Z"
+  "run": "2026-10-25T04:00:00Z",
+  "claim_commit": "7ea2bd672c19b9db03532b291197164227a3960c",
+  "feature_branch": "feature/rrl-model-m04-024-quad-vector-nozzles",
+  "feature_commit": "eef02864b106546b200011a2f0286fe7d9a83a1f",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/196",
+  "files": [
+    "Tools/ModelFactory/M04/M04-024/generate_m04_024.py",
+    "Tools/ModelFactory/M04/M04-024/qa_m04_024.py",
+    "Tools/ModelFactory/M04/M04-024/README.md",
+    ".github/workflows/ci-m04-024.yml"
+  ],
+  "qa": {
+    "blender": "PASS",
+    "blender_version": "Ubuntu apt Blender (workflow verified)",
+    "blend_saved_reopened": "PASS",
+    "glb_export": "PASS",
+    "glb_independent_validation": "PASS",
+    "meshes": 105,
+    "materials": 8,
+    "animations": 4,
+    "animated_gimbal_nodes": 4,
+    "manifold_edges_checked": 27948,
+    "frames_sampled": 61,
+    "min_nozzle_aabb_gap_m": 0.3911,
+    "min_mount_plate_gap_m": 0.249,
+    "unity_editmode": "NOT RUN",
+    "unity_playmode": "NOT RUN",
+    "unity_import": "NOT RUN",
+    "manual_visual_review": "NOT RUN",
+    "continuous_triangle_collision": "NOT RUN"
+  },
+  "workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163614919",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163614919/artifacts/12586794828",
+  "artifact_expires_at": "2026-11-24T04:55:38Z",
+  "limitations": "AABB sampled every 2 frames; bearing contacts intentional. Unity not executed."
 }
