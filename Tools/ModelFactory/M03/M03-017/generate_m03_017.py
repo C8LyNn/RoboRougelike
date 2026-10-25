@@ -123,6 +123,7 @@ def key_location(ob, frames_and_xyz):
         ob.location = xyz
         ob.keyframe_insert(data_path="location", frame=frame, group="QuickRelease")
     if ob.animation_data and ob.animation_data.action:
+        ob.animation_data.action.name = PREFIX + "ACTION_" + ob.name[len(PREFIX):]
         for curve in ob.animation_data.action.fcurves:
             for point in curve.keyframe_points:
                 point.interpolation = "LINEAR"
