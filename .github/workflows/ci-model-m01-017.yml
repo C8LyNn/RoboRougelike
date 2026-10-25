@@ -50,5 +50,7 @@ jobs:
           git add -f Tools/ModelFactory/M01/M01-017/generated/*
           if ! git diff --cached --quiet; then
             git commit -m "MODEL-01 M01-017: verified Blender 3D exports"
+            git fetch origin feature/rrl-model-m01-017-rapid-ball-thrower
+            git rebase origin/feature/rrl-model-m01-017-rapid-ball-thrower
             git push origin HEAD:feature/rrl-model-m01-017-rapid-ball-thrower || echo "::warning::Git push BLOCKED; workflow artifacts retained"
           fi
