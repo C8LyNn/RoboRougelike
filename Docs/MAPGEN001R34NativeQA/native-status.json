@@ -1,0 +1,188 @@
+{
+  "producer": "0024731e1de0c0814968bd91d860a6ac9bb45385",
+  "target": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "compile": {
+    "result": "FAIL",
+    "process": {
+      "startedUtc": "2026-10-25T16:08:23.8852811Z",
+      "exitCode": 1,
+      "source": "3e157af2ed6cd7c20145303fcf7dda0d1e52d0ec",
+      "finishedUtc": "2026-10-25T16:08:33.8962256Z",
+      "producer": "0024731e1de0c0814968bd91d860a6ac9bb45385"
+    },
+    "error": "CS1061",
+    "file": "Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs",
+    "line": 37,
+    "column": 56
+  },
+  "EditMode": "NOT_RUN",
+  "PlayMode": "NOT_RUN",
+  "cubeCases": [
+    {
+      "name": "Arena_Seed7_Light_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Arena_Seed7_Heavy_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Arena_Seed31_Light_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Arena_Seed31_Heavy_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Arena_Seed83_Light_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Arena_Seed83_Heavy_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Course_Seed7_Light_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Course_Seed7_Heavy_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Course_Seed31_Light_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Course_Seed31_Heavy_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Course_Seed83_Light_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    },
+    {
+      "name": "Course_Seed83_Heavy_CubePhysics",
+      "status": "NOT_RUN",
+      "reason": "Project compilation failed before NUnit execution"
+    }
+  ],
+  "flatControl": "NOT_RUN",
+  "WindowsBuild": "NOT_RUN",
+  "URPPlayer": "NOT_RUN",
+  "materialLifecycle": "NOT_RUN",
+  "screenshots": "NOT_RUN: no compiled R3.4 Player",
+  "realR6": [
+    {
+      "recipe": "CombatArena",
+      "seed": 7,
+      "rig": "Light",
+      "status": "NOT_RUN",
+      "initialFour": true,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "CombatArena",
+      "seed": 7,
+      "rig": "Heavy",
+      "status": "NOT_RUN",
+      "initialFour": true,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "ObstacleCourse",
+      "seed": 7,
+      "rig": "Light",
+      "status": "NOT_RUN",
+      "initialFour": true,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "ObstacleCourse",
+      "seed": 7,
+      "rig": "Heavy",
+      "status": "NOT_RUN",
+      "initialFour": true,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "CombatArena",
+      "seed": 31,
+      "rig": "Light",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "CombatArena",
+      "seed": 31,
+      "rig": "Heavy",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "ObstacleCourse",
+      "seed": 31,
+      "rig": "Light",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "ObstacleCourse",
+      "seed": 31,
+      "rig": "Heavy",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "CombatArena",
+      "seed": 83,
+      "rig": "Light",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "CombatArena",
+      "seed": 83,
+      "rig": "Heavy",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "ObstacleCourse",
+      "seed": 83,
+      "rig": "Light",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    },
+    {
+      "recipe": "ObstacleCourse",
+      "seed": 83,
+      "rig": "Heavy",
+      "status": "NOT_RUN",
+      "initialFour": false,
+      "reason": "Phase A compilation blocker"
+    }
+  ],
+  "nunitXmlProduced": false,
+  "scope": "One original compilation attempt; no source repair, exclusion, runtime-only bypass or later native tests",
+  "overall": "FAIL / BLOCKED pending producer API repair"
+}
