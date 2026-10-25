@@ -1,0 +1,77 @@
+{
+  "package": "RAC001",
+  "source_sha": "129e867f25805075c48f2be52ec1cc5336b4075c",
+  "part": 2,
+  "rows": [
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RoboRougelike.RAC001.PlayModeTests.asmdef.meta",
+      "bytes": 153,
+      "sha256": "03e4bfc7ff9c2c6abcb03165ff4fc09b8e3c943d22915ef4c6816cf3cff4ef1c",
+      "git_sha1": "e490bcbe3a835a658b20e6bd4a09ab3405484c8b",
+      "guid": "9f8a0101c0714a82a7d004a15b99100d"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md",
+      "bytes": 1671,
+      "sha256": "818df5ae5c0434d14e4af9e750d6db1043672b33e6bed2d65766df1b3b030fd1",
+      "git_sha1": "35b82d53581f7c4727f7ea065f98299fb17e940c",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md",
+      "bytes": 1870,
+      "sha256": "4f19982c0c5f7a98592ce7c96971970207411d0abbdb8379df54f2edb296546e",
+      "git_sha1": "1d6687d8ab55fac9f37d1832b27e3b6095c16aa3",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/QA_R1.md",
+      "bytes": 2529,
+      "sha256": "f54e9e049eb452be9c078a8f5675e8bda6c0cab1dcb1597af204a8762986659b",
+      "git_sha1": "b53a7ad596c4e5537edb22a23918751cda1b3652",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/QA_R2.md",
+      "bytes": 2246,
+      "sha256": "68a64c2603bb525637e062fd13cbeffe3534a5c04d9e0d08495829ee17d80ccc",
+      "git_sha1": "098eed58f55c7697e3b8ef0477ea23e12389a0e9",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/QA_R3.md",
+      "bytes": 1491,
+      "sha256": "8a755c8d7daed9c244258545db32d797998b17e15263fdd128b8a9658343c3e0",
+      "git_sha1": "79f62def7c7607048d4758a061384565a1661aba",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/README.md",
+      "bytes": 3415,
+      "sha256": "184398a3b8f83c50bce74f3675c45257d2812d064c1e4bb37a4b5e3322fc0ec3",
+      "git_sha1": "375505112117459afd1271e99fc23dc97c1e415b",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/RECEIVER_HANDOFF.md",
+      "bytes": 726,
+      "sha256": "791bd441cdfbced53d0dae724b92e1c0893e78a132ca2c0c2fa3b24609ae5e76",
+      "git_sha1": "f26bd3d0074e4499b01b1a1e944f96efe6ac0e8c",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/W9_SOURCE_REPAIR_R31.md",
+      "bytes": 1452,
+      "sha256": "461653830e038784456651389f0a93d329d8292501173abe46b1ad50142bdf4a",
+      "git_sha1": "9ed8154dfb18cccec4bb79c4e6c824001edc36ad",
+      "guid": null
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/manifest.r3.json",
+      "bytes": 8285,
+      "sha256": "79c76b02db57da3822c6a7e9a2067bb12db700492e6a80b2194a02c0b221b744",
+      "git_sha1": "b8996ba367d5e6b929c0c8bcc9e18d7da3bc1c04",
+      "guid": null
+    }
+  ]
+}
