@@ -1,8 +1,14 @@
 {
   "id": "M01-020",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT_QA_PENDING",
   "claimed_at_utc": "2026-10-25T06:48:02Z",
   "model": "Krótki emitujący falę rezonator",
-  "run": "2026-10-25T06:47:45Z"
+  "run": "2026-10-25T06:47:45Z",
+  "branch": "feature/rrl-model-m01-020-short-wave-resonator",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/202",
+  "commit": "b9320687a42ed7676796cfde8c27861749b92ff0",
+  "claim_commit": "188402cdd032b3664ccf9c67101f6300883cd29b",
+  "local_static_qa": "PASS",
+  "blender_qa": "PENDING"
 }
