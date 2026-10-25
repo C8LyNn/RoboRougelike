@@ -3,12 +3,11 @@
   "package_id": "B01-60-QA-NATIVE-001",
   "producer": "B01-60",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "audited_repo_sha": "79245b3e244a7c640332deefd90b84144555f1d4",
   "files": {
     ".github/workflows/b01-w12-qa-native-tools.yml": {
-      "sha256": "351b9268ebcfe22c6cac362f6939a3d1a560d7958e2d325b25a2a412694b3e66",
-      "bytes": 749,
-      "git_blob_sha1": "5c94cbabb0d75cfa529eb7fddf06a83d33ef8765"
+      "sha256": "50473174f786b051e7219997403ee43cd7cc1f22ea192843ea4cc68ba06ef32a",
+      "bytes": 1819,
+      "git_blob_sha1": "3f8566f018b59a0d4090c13db1558e23bd7ed55c"
     },
     "Tools/B01/QA-NATIVE-001/KNOWN_LIMITATIONS.md": {
       "sha256": "b6fe8fcd641027fa17a1f32f671d66818574ac21d0adb5148b0e420b14f3190f",
@@ -16,9 +15,9 @@
       "git_blob_sha1": "97dd5586aa8b763f211f208df98ff5ccfae30494"
     },
     "Tools/B01/QA-NATIVE-001/README.md": {
-      "sha256": "e7c65af286aca8e25cc10029b1cbb3b6e00d79fa96b10b51026956cdaaf0e242",
-      "bytes": 3165,
-      "git_blob_sha1": "2ad7647f53222f2aecd15b9fac7a7235a0fc05bc"
+      "sha256": "713a07b4a776fb4e3fe26558c0410e42a0e3b5842dc0a9a6800372ea9ca1db29",
+      "bytes": 3760,
+      "git_blob_sha1": "96dff74c9bf79c3e64f6c52bee73e2b09398355d"
     },
     "Tools/B01/QA-NATIVE-001/Run-NativeQA.ps1": {
       "sha256": "a8c6140b5c150794e841985cb6388e9ade6c53a9ef0e75b8a0ad5ef108bb1da2",
@@ -44,19 +43,27 @@
       "sha256": "27f813f30b722d4319475f356725d91d874daad742dde019511016f990db1a0e",
       "bytes": 4404,
       "git_blob_sha1": "922429a7927b0ef99692c663a81cb844f1917f17"
+    },
+    "Tools/B01/QA-NATIVE-001/package.py": {
+      "sha256": "bdd969c0a6a7451c3d74b3a990ee0b426a821cf88dee3f92b6bc926d487e86fc",
+      "bytes": 2263,
+      "git_blob_sha1": "5c80c7b7612e35f93b36a477fc733b68d2296d2d"
     }
   },
   "tests": {
-    "repo_ci": "40222146734",
-    "windows": "13/13 PASS synthetic",
-    "linux": "13/13 PASS synthetic",
+    "repo_ci_initial": 40222146734,
+    "windows": "13/13 PASS synthetic on initial tracked runner",
+    "linux": "13/13 PASS synthetic on initial tracked runner",
     "native_unity": "NOT_RUN",
-    "powershell_native_runner": "NOT_RUN"
+    "powershell_native_runner": "NOT_RUN",
+    "new_deterministic_package_ci": "PENDING"
   },
   "g2": "HOLD",
   "local_separate_full_source_zip": {
     "bytes": 18018,
     "sha256": "cf3c7dc31f8089339984c09ce503898eb0273f433a784879d29ba972edfa6121",
     "note": "Local ChatGPT archive is not byte-identical to tracked PR source; do not mix release hashes"
-  }
+  },
+  "manifest_basis_sha": "8c814f80e3d3842a3a05d8d888b23e746a05a692",
+  "package_zip_source": "GitHub Actions generated deterministic archive of exact paths above; SHA256 emitted by CI."
 }
