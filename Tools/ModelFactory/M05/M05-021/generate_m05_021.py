@@ -104,6 +104,8 @@ def cube(name, location, scale, mat, parent=None, bevel=0.015):
         mod = ob.modifiers.new("machined_edge", "BEVEL")
         mod.width = bevel
         mod.segments = 2
+        if hasattr(ob.data, "use_auto_smooth"):
+            ob.data.use_auto_smooth = True  # Blender 4.0 weighted-normal prerequisite
         ob.modifiers.new("weighted_normals", "WEIGHTED_NORMAL")
     return ob
 
