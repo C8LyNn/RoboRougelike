@@ -1,8 +1,12 @@
 {
   "id": "M01-016",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "IN_PROGRESS",
   "claimed_at_utc": "2026-10-25T02:49:37.530Z",
   "model": "Rozkładane działo obrotowe",
-  "run": "2026-10-25T02:00Z"
+  "run": "2026-10-25T02:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/186",
+  "feature_branch": "feature/rrl-model-m01-016-foldout-rotary-cannon",
+  "source_commit": "a4e07bcaa9825dd034ec85107e00c72f3a5e7aa9",
+  "qa_status": "PENDING_CI"
 }
