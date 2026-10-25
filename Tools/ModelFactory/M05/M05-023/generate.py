@@ -44,9 +44,11 @@ def attach(obj):
     return obj
 
 def parent_keep_world(obj, parent):
+    bpy.context.view_layer.update()
     world = obj.matrix_world.copy()
     obj.parent = parent
     obj.matrix_world = world
+    bpy.context.view_layer.update()
 
 def empty(name, pos, parent=None, size=0.10):
     obj = bpy.data.objects.new(PREFIX + name, None)
@@ -277,7 +279,8 @@ def validate(doors):
     assert min_frame_clearance >= 0.02, "Door collides with front rail"
     assert min_leaf_gap >= 0.04, "Door leaves collide"
     assert ROOT.location.length < 1e-7, "Mount pivot must be at origin"
-    assert all(abs(p.location.z - 0.60) < 1e-6 for p, _ in doors)
+    bpy.context.view_layer.update()
+    assert all(abs(p.matrix_world.translation.z - 0.60) < 1e-6 for p, _ in doors)
     return {
         "id": "M05-023",
         "status": "BLENDER_QA_PASS",
