@@ -1,8 +1,31 @@
 {
   "id": "M04-020",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "PR_DRAFT_QA_PENDING",
   "claimed_at_utc": "2026-10-25T01:36:12Z",
   "model": "Wysuwany booster manewrowy",
-  "run": "2026-10-25T01:00:00Z"
+  "run": "2026-10-25T01:00:00Z",
+  "claim_commit": "6957a722048585a6630cf81eda5e5c19f1331485",
+  "branch": "feature/rrl-model-m04-020-telescopic-maneuver-booster",
+  "model_commit": "68433de10f08e6e3fdcf271d9f9ee86a20c93535",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/180",
+  "files": [
+    "Tools/ModelFactory/M04/M04-020/generate_m04_020.py",
+    "Tools/ModelFactory/M04/M04-020/qa_m04_020.py",
+    "Tools/ModelFactory/M04/M04-020/README.md",
+    ".github/workflows/ci-m04-020.yml"
+  ],
+  "qa": {
+    "ci_01": "PASS",
+    "blender": "IN_PROGRESS",
+    "glb": "NOT RUN",
+    "unity_editmode": "NOT RUN (workflow failed)",
+    "unity_playmode": "NOT RUN (workflow failed)",
+    "visual": "NOT RUN"
+  },
+  "blender_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151436932",
+  "limitations": [
+    "Unity workflow failures; execution stage must be checked",
+    "Discrete AABB sampling, not continuous collision detection"
+  ]
 }
