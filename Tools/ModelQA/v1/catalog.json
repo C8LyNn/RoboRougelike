@@ -1,0 +1,566 @@
+{
+  "schema": "MODEL-QA-AUTO-001-CATALOG-R1",
+  "source_issue": 160,
+  "models": [
+    {
+      "id": "M01-001",
+      "original_pr": 36,
+      "fix_pr": 48,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-002",
+      "original_pr": 43,
+      "fix_pr": 72,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-003",
+      "original_pr": 52,
+      "fix_pr": 102,
+      "original_sha": "eb2efc3c7d8b5d0ecf491a4eb7c3492e5c6ddb51",
+      "fix_sha": "36730cc88441af9c0971cf298593b455460e4db3",
+      "inspection_status": "PILOT_PINNED_ACTUAL_SOURCE_AUDITED"
+    },
+    {
+      "id": "M01-004",
+      "original_pr": 62,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-005",
+      "original_pr": 76,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-006",
+      "original_pr": 84,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-007",
+      "original_pr": 90,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-008",
+      "original_pr": 97,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-009",
+      "original_pr": 105,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-010",
+      "original_pr": 111,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-011",
+      "original_pr": 115,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-012",
+      "original_pr": 122,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-013",
+      "original_pr": 128,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M01-014",
+      "original_pr": 147,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-001",
+      "original_pr": 40,
+      "fix_pr": 50,
+      "original_sha": "5063e64f45ae396d99bb233b3b1d4fea98e28ecf",
+      "fix_sha": "ca4007606c67a9e0deadf43af8ad1bb59800bbb5",
+      "inspection_status": "PILOT_PINNED_ACTUAL_SOURCE_AUDITED"
+    },
+    {
+      "id": "M02-002",
+      "original_pr": 45,
+      "fix_pr": 85,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-003",
+      "original_pr": 54,
+      "fix_pr": 101,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-004",
+      "original_pr": 63,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-005",
+      "original_pr": 74,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-006",
+      "original_pr": 82,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-007",
+      "original_pr": 89,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-008",
+      "original_pr": 94,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-009",
+      "original_pr": 107,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-010",
+      "original_pr": 113,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-011",
+      "original_pr": 117,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-012",
+      "original_pr": 121,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-013",
+      "original_pr": 126,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M02-014",
+      "original_pr": 148,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-001",
+      "original_pr": 39,
+      "fix_pr": 57,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-002",
+      "original_pr": 44,
+      "fix_pr": 59,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-003",
+      "original_pr": 51,
+      "fix_pr": 92,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-004",
+      "original_pr": 61,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-005",
+      "original_pr": 75,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-006",
+      "original_pr": 83,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-007",
+      "original_pr": 86,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-008",
+      "original_pr": 98,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-009",
+      "original_pr": 106,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-010",
+      "original_pr": 110,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-011",
+      "original_pr": 119,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-012",
+      "original_pr": 124,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-013",
+      "original_pr": 129,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M03-014",
+      "original_pr": 151,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-001",
+      "original_pr": 37,
+      "fix_pr": 47,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-002",
+      "original_pr": 42,
+      "fix_pr": 58,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-003",
+      "original_pr": 56,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-004",
+      "original_pr": 64,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-005",
+      "original_pr": 78,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-006",
+      "original_pr": 80,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-007",
+      "original_pr": 88,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-008",
+      "original_pr": 95,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-009",
+      "original_pr": 104,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-010",
+      "original_pr": 114,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-011",
+      "original_pr": 118,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-012",
+      "original_pr": 120,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-013",
+      "original_pr": 127,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M04-014",
+      "original_pr": 146,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-001",
+      "original_pr": 38,
+      "fix_pr": 49,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-002",
+      "original_pr": 46,
+      "fix_pr": 73,
+      "original_sha": "2ed96aad201bce1021859cbb0682f513c568655f",
+      "fix_sha": "f7ab038346985a7d7d1437f7733bcf0257cf14bb",
+      "inspection_status": "PILOT_PINNED_ACTUAL_SOURCE_AUDITED"
+    },
+    {
+      "id": "M05-003",
+      "original_pr": 53,
+      "fix_pr": 100,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-004",
+      "original_pr": 60,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-005",
+      "original_pr": 77,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-006",
+      "original_pr": 81,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-007",
+      "original_pr": 87,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-008",
+      "original_pr": 96,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-009",
+      "original_pr": 108,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-010",
+      "original_pr": 112,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-011",
+      "original_pr": 116,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-012",
+      "original_pr": 123,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-013",
+      "original_pr": 130,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    },
+    {
+      "id": "M05-014",
+      "original_pr": 145,
+      "fix_pr": null,
+      "original_sha": null,
+      "fix_sha": null,
+      "inspection_status": "CATALOG_ONLY_HEAD_NOT_PINNED"
+    }
+  ]
+}
