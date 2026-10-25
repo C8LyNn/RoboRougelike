@@ -1,0 +1,24 @@
+{
+  "package": "RAC001",
+  "source_sha": "fd9a3f4dda08eaba56d9f74007bc35dc0809b67e",
+  "rows": [
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2423,
+      "sha256": "a60ecacac379d44c0d63045081e85f3234fea8cf06327db2627ef4fb5a2e620c",
+      "git_sha1": "ad4df87dab0c476d412e96177533246251b87da7"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md",
+      "bytes": 2622,
+      "sha256": "c91086c9b709bed501fbd1b27e93b5ca8762e59f5397aa649f837c38775a55ec",
+      "git_sha1": "fc5163d418a4d869b5eaefa6286152cb9e2a6a4c"
+    },
+    {
+      "path": "Docs/ParallelMechanics/RAC-001/manifest.r3.json",
+      "bytes": 8730,
+      "sha256": "e2bfe7fcd24dfbf7bbd39e456436ffcefad48332c06648814a2df754b3e0f576",
+      "git_sha1": "27dbccac24d710d7afcd6670f7c1fb0e1b726cdc"
+    }
+  ]
+}
