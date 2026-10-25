@@ -35,7 +35,7 @@ jobs:
         run: |
           blender --background --factory-startup --python-exit-code 1 \
             --python Tools/ModelFactory/M02/M02-018/generate_m02_018.py \
-            -- --out "$RUNNER_TEMP/M02-018"
+            -- --out "$RUNNER_TEMP/M02-018" --repeat
       - name: Verify exported GLB, BLEND, optional FBX
         run: |
           python3 Tools/ModelFactory/M02/M02-018/qa_m02_018.py \
