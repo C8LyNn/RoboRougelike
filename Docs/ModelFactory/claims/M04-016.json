@@ -1,8 +1,29 @@
 {
   "id": "M04-016",
   "agent": "M04",
-  "status": "CLAIMED",
+  "status": "MODEL_SOURCE_COMMITTED_CI_PENDING",
   "claimed_at_utc": "2026-10-25T01:07:54.650Z",
   "model": "Moduł mini-odrzutników narożnych",
-  "run": "2026-10-25T01:00Z"
+  "run": "2026-10-25T01:00Z",
+  "branch": "feature/rrl-model-m04-016-corner-microthrusters",
+  "commit": "53d65ce99e94d5dfa7d6ff868dee95e4861e0d19",
+  "pr": 172,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/172",
+  "files": [
+    "Tools/ModelFactory/M04/M04-016/generate_m04_016.py",
+    "Tools/ModelFactory/M04/M04-016/qa_m04_016.py",
+    "Tools/ModelFactory/M04/M04-016/README.md",
+    ".github/workflows/ci-m04-016.yml"
+  ],
+  "qa": {
+    "source": "AUTHORED",
+    "blender": "PENDING_ACTIONS",
+    "export_glb_obj": "NOT RUN",
+    "independent_binary_qa": "NOT RUN",
+    "unity_editmode": "NOT RUN",
+    "unity_playmode": "NOT RUN",
+    "unity_import": "NOT RUN",
+    "visual_inspection": "NOT RUN"
+  },
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149543997"
 }
