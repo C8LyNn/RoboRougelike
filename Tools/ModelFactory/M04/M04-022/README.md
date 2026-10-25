@@ -8,7 +8,7 @@ Visual-only single-disk microhover with a reinforced low-profile lift pancake, c
 
 **Coordinate contract:** Blender +Z up, 1 unit = 1 metre. Main attachment root `(0,0,0)` lies at the underside chassis plane `Z=0`. All geometry is below that plane. Disk tilt pivot `(0,0,-0.55)` m, rotation about local X. The 121-frame / 30 FPS animation follows 0° → +10° → 0° → −10° → 0°. It is an illustrative loop, not a hover gameplay implementation.
 
-**Collision envelope:** Moving disc and rim occupy a conservative `|X| <= 0.44 m` at every tilt pose; the skid runner's inner face begins at `|X| = 0.4975 m`, leaving at least 57.5 mm lateral clearance. The tilted disc occupies approximately `-0.69 <= Z <= -0.41 m`; skids sit near Z=-0.83 m and the chassis cassette stays above the disc. Intentional contact exists at gimbal bearings and mount interfaces. These analytical envelopes are not a continuous swept triangle-triangle collision proof.
+**Collision envelope:** Moving disc and rim occupy a conservative `|X| <= 0.45 m` at every tilt pose; the skid runner's inner face begins at `|X| = 0.4975 m`, leaving at least 47.5 mm lateral clearance. The tilted disc occupies approximately `-0.69 <= Z <= -0.41 m`; skids sit near Z=-0.83 m and the chassis cassette stays above the disc. Intentional contact exists at gimbal bearings and mount interfaces. These analytical envelopes are not a continuous swept triangle-triangle collision proof.
 
 ## Reproduce
 
