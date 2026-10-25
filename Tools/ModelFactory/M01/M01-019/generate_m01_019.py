@@ -193,7 +193,7 @@ def build():
              parent=mount,rotation=(math.pi/2,0,0),vertices=32)
     cylinder("Bearing_shaft",(.66,.105,.48),.072,.11,"Titanium",
              parent=mount,rotation=(math.pi/2,0,0),vertices=32)
-    torus("Fixed_guard_hoop",(.66,.205,.48),.365,.020,"Titanium",parent=mount)
+    torus("Fixed_guard_hoop",(.66,.205,.48),.365,.020,"Titanium",parent=mount,rotation=(math.pi/2,0,0))
     for side in (-1,1):
         rod("Guard_spoke_%s"%side,(.66+side*.37,.205,.48),
             (.66+side*.14,.205,.48),.020,"Graphite",parent=mount)
@@ -207,7 +207,7 @@ def build():
     cylinder("Drum_front_star",(0,-.37,0),.09,.055,"Copper","MOVING",
              slider,rotation=(math.pi/2,0,0),vertices=32)
     for tag,y,mat in (("Rear",-.005,"Titanium"),("Front",-.29,"Graphite")):
-        ring=torus("Drum_%s_retainer"%tag,(0,y,0),.317,.019,mat,parent=slider)
+        ring=torus("Drum_%s_retainer"%tag,(0,y,0),.317,.019,mat,parent=slider,rotation=(math.pi/2,0,0))
         ring["qa_group"]="MOVING"
     lengths=(.46,.54,.49,.57,.51,.44)
     radii=(.067,.075,.066,.072,.070,.064)
@@ -227,7 +227,7 @@ def build():
             ("Rear",-.055,radius+.010,.011,
              "SafetyOrange" if i in (0,3) else "Graphite")):
             ring=torus("%s_clamp_%02d"%(suffix,i),(x,y,z),major,minor,
-                       mat,parent=slider)
+                       mat,parent=slider,rotation=(math.pi/2,0,0))
             ring["qa_group"]="MOVING"
         rod("Radial_spoke_%02d"%i,(x*.40,-.075,z*.40),
             (x*.82,-.075,z*.82),.025,"Copper",parent=slider,group="MOVING")
