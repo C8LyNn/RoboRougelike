@@ -9,8 +9,14 @@
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/163",
   "claim_create_commit": "b6846bcd85e89a2677c585ee9048954a5f80a8cf",
   "asset_commit": "1f3e687487332d5b70922da9de4ae60f86c9c85e",
-  "static_qa": "PENDING_CI",
-  "blender_qa": "PENDING_CI",
-  "unity_qa": "NOT RUN",
-  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148099539"
+  "static_qa": "PASS (63 closed oriented meshes, 6 materials, 4 SNAP, 101 door positions, deterministic OBJ/MTL)",
+  "blender_qa": "PASS (real Blender GLB/FBX/BLEND export, GLB animations and mounts, same-session idempotence)",
+  "unity_qa": "NOT RUN (no Unity runtime test)",
+  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148099539",
+  "asset_meshes": 63,
+  "asset_materials": 6,
+  "artifacts": [
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148099539/artifacts/12581415209",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148099539/artifacts/12580574653"
+  ]
 }
