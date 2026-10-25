@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only MAPGEN R3.4 SHA256 gate and reproducible full-source package ZIP.
+"""Read-only MAPGEN R3.4.1 SHA256 gate and reproducible full-source package ZIP.
 Runs only on a clean source checkout; never imports into Unity or edits gameplay.
 """
 import argparse
@@ -13,7 +13,7 @@ import zipfile
 MANIFEST="Docs/B01/MAPGEN001/manifest.json"
 PARENT_METAS=["Assets/B01Packages.meta","Assets/B01Packages/MAPGEN001.meta"]
 ROOTS=["Assets/B01Packages/MAPGEN001/","Docs/B01/MAPGEN001/","Tools/B01/MAPGEN001/"]
-OUTPUT="mapgen-r34-evidence"
+OUTPUT="mapgen-r341-evidence"
 
 def sha(data): return hashlib.sha256(data).hexdigest()
 def tracked():
@@ -40,7 +40,7 @@ def expected_lists(full):
 
 def verify(manifest,full):
     source,qa=expected_lists(full)
-    if manifest.get("revision")!="R3.4":raise RuntimeError("wrong revision")
+    if manifest.get("revision")!="R3.4.1":raise RuntimeError("wrong revision")
     if manifest.get("source_file_sha256_by_path")!=source:raise RuntimeError("source sha256 mismatch / missing")
     if manifest.get("qa_tool_sha256_by_path")!=qa:raise RuntimeError("qa tool sha256 mismatch / missing")
     bysize=manifest.get("source_file_size_by_path")
@@ -51,7 +51,7 @@ def verify(manifest,full):
 
 def zip_package(full,output):
     output.mkdir(parents=True,exist_ok=True)
-    file_path=output/"MAPGEN001_R3_4_FULL_SOURCE_AND_QA.zip"
+    file_path=output/"MAPGEN001_R3_4_1_FULL_SOURCE_AND_QA.zip"
     files=sorted(list(full)+[MANIFEST])
     with zipfile.ZipFile(file_path,"w") as z:
         for path in files:

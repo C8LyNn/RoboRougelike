@@ -1,8 +1,8 @@
-name: B01 MAPGEN R3.4 isolated source CSharp QA
+name: B01 MAPGEN R3.4.1 isolated source CSharp QA
 on:
   push:
     branches:
-      - fix/b01-mapgen001-w12-r34-cube-urp-20261025
+      - fix/b01-mapgen001-w12-r341-material-gettag-20261025
     paths:
       - "Assets/B01Packages/MAPGEN001/**"
       - "Tools/B01/MAPGEN001/**"
@@ -51,15 +51,15 @@ jobs:
           assert "LightAndHeavyRigidbodyDriveThreeSeedsForBothRecipes" not in src
           print("12/12 SOURCE-DEFINED independently executable UnityTest cases verified; Unity execution NOT_RUN")
           PY
-      - name: Verify R3.4 source-only URP and cube regression contracts
+      - name: Verify R3.4.1 Unity API regression and R3.4 URP/cube contracts
         run: python Tools/B01/MAPGEN001/check_w12_contract.py
       - name: Compile and execute exact MAPGEN planner & route validator CSharp
         run: dotnet run --project Tools/B01/MAPGEN001/Headless/MapGen.Headless.csproj --configuration Release -- headless-mapgen-evidence
-      - name: Verify manifest and build full R3.4 ZIP
+      - name: Verify manifest and build full R3.4.1 ZIP
         shell: bash
         run: |
           set -euo pipefail
-          if python -c "import json; assert json.load(open('Docs/B01/MAPGEN001/manifest.json'))['revision']=='R3.4'"; then
+          if python -c "import json; assert json.load(open('Docs/B01/MAPGEN001/manifest.json'))['revision']=='R3.4.1'"; then
             python Tools/B01/MAPGEN001/package_gate.py --verify-zip
           else
             python Tools/B01/MAPGEN001/package_gate.py --emit
@@ -68,14 +68,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: b01-mapgen-r34-source-zip
-          path: mapgen-r34-evidence/
+          name: b01-mapgen-r341-source-zip
+          path: mapgen-r341-evidence/
           if-no-files-found: ignore
           retention-days: 21
       - name: Archive all seed case outcomes (including failures)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: b01-mapgen-r34-source-csharp-cases
+          name: b01-mapgen-r341-source-csharp-cases
           path: headless-mapgen-evidence/
           retention-days: 21
