@@ -391,10 +391,10 @@ def export_blender(out_dir):
     bpy.ops.export_scene.gltf(filepath=str(out_dir/"M02-015_animated.glb"),
                               export_format="GLB",export_animations=True)
     try:
+        # Blender 5 exporter removed several Blender 4 FBX bake_anim options.
+        # Use the current operator defaults; verify the actual file separately.
         bpy.ops.export_scene.fbx(filepath=str(out_dir/"M02-015_animated.fbx"),
-                                 axis_forward="-Z",axis_up="Y",
-                                 bake_anim=True,bake_anim_step=1.0,
-                                 bake_anim_simplify_factor=0.0)
+                                 axis_forward="-Z",axis_up="Y")
         qa["fbx_export"]="EXPORTED_NOT_IMPORTED"
     except Exception as exc:
         qa["fbx_export"]="BLOCKED_FBX_EXPORT: "+str(exc)
