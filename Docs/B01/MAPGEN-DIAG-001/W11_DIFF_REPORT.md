@@ -1,0 +1,31 @@
+# B01-21 W11 — actual R3.2 → R3.3 source differential / FAIL→triage
+**Role:** B01-21 independent diagnostic; **producer B01-20 solely owns R3.3** #225.
+**Pinned inputs:** R3.2 `003bced54480d509ffc0d49d26daf87160a8d609`, R3.3 `7334f3b1d8cd3a976098faa4e683f4de3d9a592f`. Codex native R3.2 QA #226 / `d799878ce8f814b74bd47f8c664c86a954a1a1bb`. Diagnostic Draft #228.
+**First W11 executed run:** [Actions 40189810280](https://github.com/C8LyNn/RoboRougelike/actions/runs/40189810280) SUCCESS for test-code HEAD `b33a4933ec07778006cbff1db1f307e9b4204af0`. [PR event 40189814330](https://github.com/C8LyNn/RoboRougelike/actions/runs/40189814330) SUCCESS. [First artifact 12597454227](https://github.com/C8LyNn/RoboRougelike/actions/runs/40189810280/artifacts/12597454227), 40,735 bytes, Actions-reported ZIP SHA256 `38f99b579e472cfc48d896c49df4a25c58f9f1f81072a83f38b82b0cff64e7f3` (not independently downloaded/rehashed).
+**Execution scope:** each immutable MapGenPlanner+MapGenData+MapGenRouteValidator C# version separately compiled/executed in .NET8 with the same explicitly synthetic Unity math types. 33 *paired IDs* (66 source case executions) PASS comparison, **28/28 populated geometry hashes equal, 5/5 expected measured-Light10m rejections equal, 0 unexpected differences**. Every row has R3.2 JSON, R3.3 JSON, differential JSON and console log. Original 1013 source test suite and W10 27 diagnostic suite were **not rerun**. No native Unity, no PhysX and no actual pixels rendered by this tool.
+
+## Exact diff classification
+Git compare R3.2→R3.3: 13 changed tracked files, including R3.3 `MapGenBuilder.cs` and Unity test suites, packaging, workflow and docs. Runtime `MapGenPlanner.cs`, `MapGenRouteValidator.cs`, `MapGenData.cs` are byte-identical Git blobs (also SHA256-checked in script). Seed/state+physics-independent source geometry not modified. Builder's primitive position/size/rotation assignments unchanged; changes are URP material choice and lifetime. No demonstrated source-level geometry regression.
+
+| ID / seeds / environment | Classification | Observed source result | Required next action |
+|---|---|---|---|
+| BASE Arena/Course 7,31,83 × real Light2.980/Heavy5.180 | CONFIRMED | 12/12 both versions same geometry hash, route accepted | B01-60 real Unity native R3.3 physics and render |
+| Heavy Course normal2/7/31, hard0/2/7/19 | CONFIRMED | 7/7 both versions same geometry hash, route accepted | B01-60 perform physical subset on exact new producer SHA |
+| Light narrow10 nominal2.100 seeds2/12/14/22/28 | CONFIRMED | 5/5 accepted with same hashes | Not a real 2.980m Light envelope acceptance |
+| Light narrow10 measured2.980 seeds2/12/14/22/28 | **CONFIRMED_PROFILE_CONSTRAINT** | 5/5 fail-closed `IMPOSSIBLE_COURSE_PROFILE`, no geometry produced | B01-10/HQ decide 10m map supported rig or minimum lane width; B01-20 must never bypass clearance silently |
+| Nominal profile controls seed7 × both recipes × both rigs | CONFIRMED | 4/4 accepted, no hash drift versus real-envelope equivalents for same recipe+seed | Ensure receiver adapter supplies measured profiles at runtime |
+| Course floors 17m Z boxes with 16m centre spacing | CONFIRMED geometric overlap, **NEEDS_NATIVE** collision-quality | Adjacent floor sections overlap **1m axially** and X overlap positive; no plan-level gap; same both versions | R3.3 PhysX wheels over each of 3 seams; record zero-contact queries, ground contact manifold, bounce |
+| Ramps penetrating floor by tilted cube AABB (6° normal; 8° hard) | CONFIRMED geometric AABB overlap, **NEEDS_NATIVE** defect decision | Bottom of ramp extends below floor top by approximately **0.27m at 6°** / **0.39m at 8°**; unchanged geometry | Do not treat deliberate anchoring as bug absent actual wheel collision/visible artifacts; physically inspect ramp transitions |
+| Optional side ramps versus measured hulls | **SUSPECTED access restriction / NEEDS_NATIVE** | 16m lane ramp width3m, Heavy hull5.180m (−2.180m full-width margin). At 10m ramp width1.8m, real Light2.980m (−1.180m). Full-route central bypass stays valid, and an optional ramp need not accommodate all rigs unless specified. | B01-10 define optional ramp access policy; B01-60 test Light16 seed7 ramp separately; Heavy optional ramp must have valid spawn first |
+| R3.3 explicit URP Shader.Find(Lit), fallback Simple Lit, shared Material, cleanup | **CONFIRMED static structure; NEEDS_NATIVE render** | Static assertions PASS; R3.2 lacked explicit URP shader assignment; R3.3 authored Unity shader-name test | B01-60 real Unity + Windows Player tests, 720p/1080p screenshots, shader stripping and material lifetime; shader string checks are not rendered pixels |
+
+**Profile constraint proof:** `MapGenPlanner.CheckConfig` reserves centre clearance `LaneWidth * .60 - 3`. At LaneWidth10, threshold3.0m; nominal Light requires2.1+0.5=2.6m PASS, real Light requires2.98+0.5=3.48m FAIL. At default LaneWidth16 threshold6.6m, real Heavy5.18+0.5=5.68m PASS. No geometry defect proven in this intentionally rejected case.
+
+**Other physical evidence (external Codex R3.2 only):** full R6 real-wheel protected routes 19/19 actual drives PASS across 17 unique configurations (12 baseline +7 Heavy). Three Light course runs recorded a single zero-wheel-contact query each. Optional ramp Light exit PASS, Heavy chosen side approach FAIL_PROBE_SPAWN; these are neither R3.3 native test results nor independent B01-60 G1. Direct original R3.2 suite Edit22/23, Play5/6 FAIL, but R3.3 authored fixes have not been executed natively.
+
+## Gate and owner
+- **B01-21:** G0 diagnostics PASS, new W11 source CI PASS, 0 geometry regression among tested accepted layouts.
+- **B01-20:** producer owns any required R3.3/R3.4 changes in #225; no shared source edit in B01-21.
+- **B01-60:** genuine Unity6000.3.14f1 compile, corrected NUnit Edit/12 separate cube Play, actual R3/R6 reference wheels+optional ramp and URP capture, logs/XML/exits at exact R3.3 SHA; failure → isolated new producer revision.
+- **B01-40/B01-00:** independent manifest/root meta GUID and target SHA/scope; G2 HOLD.
+- **Status:** `CONFIRMED_SOURCE_GEOMETRY_UNCHANGED / CONFIRMED_LIGHT10_REJECT / RAMP_AND_SEAM_PHYSX_NEEDS_NATIVE / URP_VISUAL_NEEDS_NATIVE / NO_MERGE`.
