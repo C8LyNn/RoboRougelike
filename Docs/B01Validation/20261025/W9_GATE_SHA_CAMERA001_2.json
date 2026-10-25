@@ -1,0 +1,98 @@
+{
+  "package": "CAMERA001",
+  "source_sha": "30c0419cb9c103303a9b4e301a241a7a3684ebd9",
+  "part": 1,
+  "rows": [
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs.meta",
+      "bytes": 240,
+      "sha256": "1a8efba9706475d7631a60fb186b8fa7ab1a865f2343ea805444a2625162b3be",
+      "git_sha1": "4803e8bdfcc653734d1062cf2abfdbe0e915313e",
+      "guid": "b01c000000000000000000000000000a"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests.meta",
+      "bytes": 169,
+      "sha256": "fe6783953e093a46d951bd7e6f3343a8b833893078876aab72fdca625da09a6e",
+      "git_sha1": "c9b47f2f95238c2189dac44115a206b1604a1bd3",
+      "guid": "b01c0000000000000000000000000005"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode.meta",
+      "bytes": 169,
+      "sha256": "8e3bb8c0aeda91b14e88a3f428536a6460ce988ff902111a4261234004f99ea0",
+      "git_sha1": "614ee583f64ec99584bab41ac0090dd83d413e7c",
+      "guid": "b01c0000000000000000000000000006"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef",
+      "bytes": 461,
+      "sha256": "42e63b870180e11c42b51297ce54c261154a1725bdfb07b34b118d5d8d39ee86",
+      "git_sha1": "2333e0777c962c85673c6523c5493db85dfa1461",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef.meta",
+      "bytes": 163,
+      "sha256": "02d46e39cd0e99239f8007ba42a8deb6f3f431d71a51bec38693be57abfb11ca",
+      "git_sha1": "753abc888d30697c25d0ebf88c97118453aad9b6",
+      "guid": "b01c000000000000000000000000000e"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001FramingTests.cs",
+      "bytes": 3811,
+      "sha256": "535909184be4dca3c82bc9a88a733ec4feeb1e231859d4481993f21b04d0ec6c",
+      "git_sha1": "617c7f8dc1194aab55b56e19329be4eefb8d858c",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001FramingTests.cs.meta",
+      "bytes": 240,
+      "sha256": "25a63de79cf900ffd2854c0d1ac45195f3920ec308ff07015d7f0f69c76cec8e",
+      "git_sha1": "a0afbc44ca3e2bba65cf8201f34c086531efb964",
+      "guid": "b01c000000000000000000000000000b"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode.meta",
+      "bytes": 169,
+      "sha256": "637685018239577c36f336b9130f529c7f48beb1c4787a7c11826e1355870fef",
+      "git_sha1": "8a68532a5f3495502f8e62eed2b452d98e8fd1fe",
+      "guid": "b01c0000000000000000000000000007"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef",
+      "bytes": 445,
+      "sha256": "5b9a09cc44eeb37281cc2b1010b98cbb3486245e88ffc6caf0f426c40e4e1bf3",
+      "git_sha1": "e53feac920be7e17d7586310ddabaf9e597876df",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef.meta",
+      "bytes": 163,
+      "sha256": "c0c1a3e7df7b85cc73259dfe719558e242a32fc206c3a9544ed3a0a9862327e6",
+      "git_sha1": "c481c67d8da1995f2fce6cebd4128386780a9ec5",
+      "guid": "b01c000000000000000000000000000f"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/Camera001WorldCollisionTests.cs",
+      "bytes": 3286,
+      "sha256": "c3d729743e98af8d7f5ddc788a6bb438cd9eae7364fdec30561f4ae9d576d62c",
+      "git_sha1": "ca218ed8cfc1faf6fa2939981beb50668bd57280",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/Camera001WorldCollisionTests.cs.meta",
+      "bytes": 240,
+      "sha256": "6cbefcab4cfd2ae8cf57091366cc9db0a6e92e00db77103fa49313d05ab27abe",
+      "git_sha1": "ce28d087aae49969cb6f83aa9c72d86a4ab5788e",
+      "guid": "b01c000000000000000000000000000c"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/API.md",
+      "bytes": 884,
+      "sha256": "339c1c9ca692fd64cfa4c5e59a1a25a8eed587ba6caabb475a3504440d6978cb",
+      "git_sha1": "97133f618303f84987a4ebd1fcd909b966778070",
+      "guid": null
+    }
+  ]
+}
