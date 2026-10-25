@@ -180,8 +180,8 @@ def build(out):
     for i in range(N2):
         tooth("OUTPUT_TOOTH_%02d"%i,output_rot,y,x,-z,D2,
               math.pi/N2+2*math.pi*i/N2,2*math.pi/N2)
-    tube("INPUT_SHAFT",(0,0,.46),(.74,0,.46),.0225,"hardened_steel",input_rot)
-    tube("OUTPUT_SHAFT",(0,0,.46),(0,.74,.46),.0225,"hardened_steel",output_rot)
+    tube("INPUT_SHAFT",(.19,0,.46),(.74,0,.46),.0225,"hardened_steel",input_rot)
+    tube("OUTPUT_SHAFT",(0,.14,.46),(0,.74,.46),.0225,"hardened_steel",output_rot)
     for label,parent,axis,u,v,delta in (
         ("INPUT",input_rot,x,y,z,D1),("OUTPUT",output_rot,y,x,-z,D2)):
         c=apex+axis*(S1*math.cos(delta)+.014)
