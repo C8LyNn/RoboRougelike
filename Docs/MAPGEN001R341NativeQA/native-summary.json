@@ -1,0 +1,1892 @@
+{
+  "producerSource": "5be31039411f89f17654b1c332f8692883fa03cc",
+  "target": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "compile": {
+    "source": "9a45352dbf857a9ee4293af57b6f59ca1b17ec90",
+    "producer": "5be31039411f89f17654b1c332f8692883fa03cc",
+    "startedUtc": "2026-10-25T17:45:08.9933586Z",
+    "finishedUtc": "2026-10-25T17:46:55.0292055Z",
+    "exitCode": 0
+  },
+  "native": {
+    "EditMode": {
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "process": {
+        "exitCode": 0,
+        "finishedUtc": "2026-10-25T17:47:15.6511820Z",
+        "filter": "B01.MAPGEN001.Tests",
+        "source": "9a45352dbf857a9ee4293af57b6f59ca1b17ec90",
+        "startedUtc": "2026-10-25T17:46:55.3285242Z",
+        "mode": "EditMode"
+      }
+    },
+    "PlayMode": {
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "process": {
+        "exitCode": 0,
+        "finishedUtc": "2026-10-25T17:49:15.0261795Z",
+        "filter": "B01.MAPGEN001.Tests",
+        "source": "9a45352dbf857a9ee4293af57b6f59ca1b17ec90",
+        "startedUtc": "2026-10-25T17:47:15.7886630Z",
+        "mode": "PlayMode"
+      }
+    }
+  },
+  "NUnitCases": [
+    {
+      "name": "DifferentRecipesDoNotAliasEachOther",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "HundredSeedsGenerateDeterministicallyAndKeepClearance(CombatArena)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "HundredSeedsGenerateDeterministicallyAndKeepClearance(ObstacleCourse)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "OutOfRangeConfigAndImpossibleVehicleFailClosed",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "AnArenaWallThroughTheWholeRouteFailsClosed",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "ArenaCoverPositionsVaryAndStayPlayableForBothProfiles",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "BlockedAndOverlappingEnemySpawnsAreRejected",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "CentralPitCannotPassOnlyFourCornerFootprintProbe",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "HeavyRoverCannotStartWithRearHangingPastFloor",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "HundredSeedsPassReferenceVehicleSweepsAndConnectivity(CombatArena)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "HundredSeedsPassReferenceVehicleSweepsAndConnectivity(ObstacleCourse)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "LongNinetyDegreePolylineNeedsRealisticFilletRoom",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "PlannerRejectsNonFiniteSlopeConfiguration",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "R32NarrowLightSideRampsNeverBlockReferenceSpine(2)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "R32NarrowLightSideRampsNeverBlockReferenceSpine(12)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "R32NarrowLightSideRampsNeverBlockReferenceSpine(14)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "R32NarrowLightSideRampsNeverBlockReferenceSpine(22)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "R32NarrowLightSideRampsNeverBlockReferenceSpine(28)",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "RampBeyondVehicleSlopeCapabilityIsRejected",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "UnsupportedStartReportsStartBlockedBeforeRouteSampling",
+      "mode": "EditMode",
+      "result": "Passed",
+      "output": "Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\\TestResults.xml\n"
+    },
+    {
+      "name": "Arena_Seed31_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed31_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed7_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed7_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed83_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed83_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed31_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed31_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed7_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed7_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed83_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed83_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "CubeForceActuatorMovesOnFlatControlSurface",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "GenerateAndClearRealPhysicsColliders",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "GeneratedBlocksUseUrpShaderInsteadOfErrorMaterial",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "OffsetAndRotatedHostReturnsWorldSpaceMetadata",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "RegenerateCyclesRemoveOldColliderRoots",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "RejectedInputPreservesPreviousLiveLevel",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "RigidbodyActuallyFallsAndLandsOnGeneratedFloor",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": "Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\\TestResults.xml\n"
+    }
+  ],
+  "cubeCases": [
+    {
+      "name": "Arena_Seed31_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed31_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed7_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed7_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed83_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Arena_Seed83_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed31_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed31_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed7_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed7_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed83_Heavy_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    },
+    {
+      "name": "Course_Seed83_Light_CubePhysics",
+      "mode": "PlayMode",
+      "result": "Passed",
+      "output": ""
+    }
+  ],
+  "flatControl": {
+    "name": "CubeForceActuatorMovesOnFlatControlSurface",
+    "mode": "PlayMode",
+    "result": "Passed",
+    "output": ""
+  },
+  "materialBuild": {
+    "startedUtc": "2026-10-25T17:53:29.2263876Z",
+    "exitCode": 0,
+    "source": "28a75b9af3611bd2c2d29062860e4232bc8acbae",
+    "finishedUtc": "2026-10-25T17:54:20.7668439Z"
+  },
+  "materialPlayer": {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-25T17:57:12.4250312Z"
+  },
+  "materialLaunch": {
+    "runtimeAssemblySha256": "DBD8EB416D111C3412F9797F36210A8FFE19072D98A7CF69F4C25F7457FEB499",
+    "materialOverride": false,
+    "vehicleTemplatePresent": false,
+    "startedUtc": "2026-10-25T17:57:02.9837388Z",
+    "assemblySha256": "03ACF502EB11C351514B954E4BAF1E63EE7F3CA03CB39987BEC2D3BBEC548B41",
+    "source": "4fd9c35d8b19559474b8c0d302b23d38c1d85a05",
+    "producer": "5be31039411f89f17654b1c332f8692883fa03cc"
+  },
+  "materialResult": {
+    "source": "5be31039411f89f17654b1c332f8692883fa03cc",
+    "target": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+    "status": "PASS",
+    "resourceName": "B01/MAPGEN001/BlocksURP",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "pipeline": "UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset",
+    "resourceLoaded": true,
+    "resourceSupported": true,
+    "materialOverride": false,
+    "baselineMaterials": 0,
+    "afterClearMaterials": 1,
+    "afterDestroyMaterials": 0,
+    "rows": [
+      {
+        "recipe": "CombatArena",
+        "status": "PASS",
+        "shader": "B01/MAPGEN001/BlocksURP",
+        "materialName": "MAPGEN001_Generated_URP_Blocks_Runtime",
+        "pipelineTag": "UniversalPipeline",
+        "screenshot": "CombatArena-1280-original-resource.png",
+        "seed": 7,
+        "requestedWidth": 1280,
+        "width": 1280,
+        "height": 720,
+        "renderers": 11,
+        "uniqueMaterials": 1,
+        "generated": true,
+        "lifecycleRan": true,
+        "resourceMatches": true,
+        "shaderSupported": true,
+        "oldRootsRemoved": true,
+        "clearRemoved": true,
+        "sameMaterial": true,
+        "materialCounts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "recipe": "ObstacleCourse",
+        "status": "PASS",
+        "shader": "B01/MAPGEN001/BlocksURP",
+        "materialName": "MAPGEN001_Generated_URP_Blocks_Runtime",
+        "pipelineTag": "UniversalPipeline",
+        "screenshot": "ObstacleCourse-1280-original-resource.png",
+        "seed": 7,
+        "requestedWidth": 1280,
+        "width": 1280,
+        "height": 720,
+        "renderers": 15,
+        "uniqueMaterials": 1,
+        "generated": true,
+        "lifecycleRan": true,
+        "resourceMatches": true,
+        "shaderSupported": true,
+        "oldRootsRemoved": true,
+        "clearRemoved": true,
+        "sameMaterial": true,
+        "materialCounts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "recipe": "CombatArena",
+        "status": "PASS",
+        "shader": "B01/MAPGEN001/BlocksURP",
+        "materialName": "MAPGEN001_Generated_URP_Blocks_Runtime",
+        "pipelineTag": "UniversalPipeline",
+        "screenshot": "CombatArena-1920-original-resource.png",
+        "seed": 7,
+        "requestedWidth": 1920,
+        "width": 1920,
+        "height": 1080,
+        "renderers": 11,
+        "uniqueMaterials": 1,
+        "generated": true,
+        "lifecycleRan": true,
+        "resourceMatches": true,
+        "shaderSupported": true,
+        "oldRootsRemoved": true,
+        "clearRemoved": true,
+        "sameMaterial": true,
+        "materialCounts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "recipe": "ObstacleCourse",
+        "status": "PASS",
+        "shader": "B01/MAPGEN001/BlocksURP",
+        "materialName": "MAPGEN001_Generated_URP_Blocks_Runtime",
+        "pipelineTag": "UniversalPipeline",
+        "screenshot": "ObstacleCourse-1920-original-resource.png",
+        "seed": 7,
+        "requestedWidth": 1920,
+        "width": 1920,
+        "height": 1080,
+        "renderers": 15,
+        "uniqueMaterials": 1,
+        "generated": true,
+        "lifecycleRan": true,
+        "resourceMatches": true,
+        "shaderSupported": true,
+        "oldRootsRemoved": true,
+        "clearRemoved": true,
+        "sameMaterial": true,
+        "materialCounts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "errors": []
+  },
+  "wheelBuild": {
+    "startedUtc": "2026-10-25T17:59:16.4696502Z",
+    "finishedUtc": "2026-10-25T17:59:38.9199019Z",
+    "exitCode": 0,
+    "source": "4fd9c35d8b19559474b8c0d302b23d38c1d85a05"
+  },
+  "wheelRuns": {
+    "WheelsFirst4": {
+      "nativeExit": 0,
+      "rows": 4,
+      "passed": 4,
+      "errors": [],
+      "launch": {
+        "producer": "5be31039411f89f17654b1c332f8692883fa03cc",
+        "source": "dd20d641621ae2bb816d1d97423a814feb67ec7d",
+        "assemblySha256": "03ACF502EB11C351514B954E4BAF1E63EE7F3CA03CB39987BEC2D3BBEC548B41",
+        "startedUtc": "2026-10-25T18:02:18.7312313Z",
+        "remainingOnly": false,
+        "runtimeAssemblySha256": "DBD8EB416D111C3412F9797F36210A8FFE19072D98A7CF69F4C25F7457FEB499",
+        "caseLimit": 4
+      }
+    },
+    "WheelsRemaining8": {
+      "nativeExit": 0,
+      "rows": 8,
+      "passed": 8,
+      "errors": [],
+      "launch": {
+        "producer": "5be31039411f89f17654b1c332f8692883fa03cc",
+        "source": "dd20d641621ae2bb816d1d97423a814feb67ec7d",
+        "assemblySha256": "03ACF502EB11C351514B954E4BAF1E63EE7F3CA03CB39987BEC2D3BBEC548B41",
+        "startedUtc": "2026-10-25T18:06:37.8825669Z",
+        "remainingOnly": true,
+        "runtimeAssemblySha256": "DBD8EB416D111C3412F9797F36210A8FFE19072D98A7CF69F4C25F7457FEB499",
+        "caseLimit": 8
+      }
+    }
+  },
+  "wheelTrials": [
+    {
+      "id": "BASE-CombatArena-Light-7",
+      "group": "BASE",
+      "recipe": "CombatArena",
+      "vehicle": "Light",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 7,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 4,
+      "remainingWheels": 4,
+      "partsBefore": 20,
+      "partsAfter": 20,
+      "goal": 1,
+      "totalGoals": 1,
+      "samples": 274,
+      "groundedSamples": 274,
+      "minimumContacts": 4,
+      "maximumContacts": 4,
+      "seamTransitions": 0,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 192.0,
+      "distance": 48.160438537597656,
+      "netTravel": 47.56418991088867,
+      "seconds": 6.75999641418457,
+      "maxSpeed": 10.146392822265625,
+      "maxTilt": 0.0,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2999980449676514,
+      "centerOfMass": {
+        "x": 0.0,
+        "y": 0.06874999403953552,
+        "z": 0.0
+      },
+      "colliderEnvelope": {
+        "x": 2.9800102710723877,
+        "y": 1.564000129699707,
+        "z": 2.720001220703125
+      },
+      "spawn": {
+        "x": 1.4156104555240745e-07,
+        "y": 1.25,
+        "z": -25.0
+      },
+      "settledSpawn": {
+        "x": 3.5379962355364114e-05,
+        "y": 0.6500193476676941,
+        "z": -24.997085571289062
+      },
+      "lastPosition": {
+        "x": -0.10587961226701736,
+        "y": 0.6500616073608398,
+        "z": 22.73943328857422
+      },
+      "nominalWidth": 2.0999999046325684,
+      "nominalLength": 3.200000047683716,
+      "usedWidth": 2.9800102710723877,
+      "usedLength": 3.200000047683716,
+      "spawnDrop": 0.5999806523323059,
+      "width": 1280,
+      "height": 720,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 0.0,
+        "y": 1.25,
+        "z": 25.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-CombatArena-Light-7-spawn.png",
+        "BASE-CombatArena-Light-7-driving.png",
+        "BASE-CombatArena-Light-7-end.png"
+      ]
+    },
+    {
+      "id": "BASE-CombatArena-Heavy-7",
+      "group": "BASE",
+      "recipe": "CombatArena",
+      "vehicle": "Heavy",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 7,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 12,
+      "remainingWheels": 12,
+      "partsBefore": 139,
+      "partsAfter": 139,
+      "goal": 1,
+      "totalGoals": 1,
+      "samples": 479,
+      "groundedSamples": 479,
+      "minimumContacts": 12,
+      "maximumContacts": 12,
+      "seamTransitions": 0,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 1176.0,
+      "distance": 48.13778305053711,
+      "netTravel": 47.5414924621582,
+      "seconds": 10.801525115966797,
+      "maxSpeed": 5.561820030212402,
+      "maxTilt": 0.0,
+      "longestNoContact": 0.0,
+      "longestStall": 1.261528491973877,
+      "centerOfMass": {
+        "x": 6.487580250791325e-09,
+        "y": 0.25816312432289124,
+        "z": -0.03367346152663231
+      },
+      "colliderEnvelope": {
+        "x": 5.180010795593262,
+        "y": 2.1140003204345703,
+        "z": 4.920005798339844
+      },
+      "spawn": {
+        "x": 1.141056782216765e-05,
+        "y": 1.25,
+        "z": -24.999996185302734
+      },
+      "settledSpawn": {
+        "x": 3.25753353536129e-05,
+        "y": 0.6499475240707397,
+        "z": -24.998743057250977
+      },
+      "lastPosition": {
+        "x": 0.07961093634366989,
+        "y": 0.6499358415603638,
+        "z": 22.6304988861084
+      },
+      "nominalWidth": 4.5,
+      "nominalLength": 5.800000190734863,
+      "usedWidth": 5.180010795593262,
+      "usedLength": 5.800000190734863,
+      "spawnDrop": 0.6000524759292603,
+      "width": 1920,
+      "height": 1080,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 0.0,
+        "y": 1.25,
+        "z": 25.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-CombatArena-Heavy-7-spawn.png",
+        "BASE-CombatArena-Heavy-7-driving.png",
+        "BASE-CombatArena-Heavy-7-end.png"
+      ]
+    },
+    {
+      "id": "BASE-ObstacleCourse-Light-7",
+      "group": "BASE",
+      "recipe": "ObstacleCourse",
+      "vehicle": "Light",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "fb953ed6e59966c7a6d5dd91fc27b81f11813eca776ec0063d3360c1083a513c",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 7,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 4,
+      "remainingWheels": 4,
+      "partsBefore": 20,
+      "partsAfter": 20,
+      "goal": 5,
+      "totalGoals": 5,
+      "samples": 337,
+      "groundedSamples": 336,
+      "minimumContacts": 0,
+      "maximumContacts": 4,
+      "seamTransitions": 3,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 192.0,
+      "distance": 54.474002838134766,
+      "netTravel": 53.769920349121094,
+      "seconds": 7.959268569946289,
+      "maxSpeed": 10.147506713867188,
+      "maxTilt": 10.553050994873047,
+      "longestNoContact": 0.019999992102384567,
+      "longestStall": 1.2392711639404297,
+      "centerOfMass": {
+        "x": 0.0,
+        "y": 0.06874999403953552,
+        "z": 0.0
+      },
+      "colliderEnvelope": {
+        "x": 2.9800102710723877,
+        "y": 1.564000129699707,
+        "z": 2.7200002670288086
+      },
+      "spawn": {
+        "x": 3.054737760521675e-07,
+        "y": 1.25,
+        "z": 5.0
+      },
+      "settledSpawn": {
+        "x": -1.3205924915382639e-05,
+        "y": 0.6499831676483154,
+        "z": 5.00002384185791
+      },
+      "lastPosition": {
+        "x": -2.870328426361084,
+        "y": 0.6500721573829651,
+        "z": 58.868133544921875
+      },
+      "nominalWidth": 2.0999999046325684,
+      "nominalLength": 3.200000047683716,
+      "usedWidth": 2.9800102710723877,
+      "usedLength": 3.200000047683716,
+      "spawnDrop": 0.6000168323516846,
+      "width": 1280,
+      "height": 720,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": -2.25,
+        "y": 1.25,
+        "z": 61.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-ObstacleCourse-Light-7-spawn.png",
+        "BASE-ObstacleCourse-Light-7-driving.png",
+        "BASE-ObstacleCourse-Light-7-end.png"
+      ]
+    },
+    {
+      "id": "BASE-ObstacleCourse-Heavy-7",
+      "group": "BASE",
+      "recipe": "ObstacleCourse",
+      "vehicle": "Heavy",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "fb953ed6e59966c7a6d5dd91fc27b81f11813eca776ec0063d3360c1083a513c",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 7,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 12,
+      "remainingWheels": 12,
+      "partsBefore": 139,
+      "partsAfter": 139,
+      "goal": 5,
+      "totalGoals": 5,
+      "samples": 560,
+      "groundedSamples": 560,
+      "minimumContacts": 12,
+      "maximumContacts": 12,
+      "seamTransitions": 3,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 1176.0,
+      "distance": 54.45400619506836,
+      "netTravel": 53.76401901245117,
+      "seconds": 12.418275833129883,
+      "maxSpeed": 5.576817035675049,
+      "maxTilt": 0.47063812613487244,
+      "longestNoContact": 0.0,
+      "longestStall": 1.258279800415039,
+      "centerOfMass": {
+        "x": 6.487580250791325e-09,
+        "y": 0.25816312432289124,
+        "z": -0.0336734764277935
+      },
+      "colliderEnvelope": {
+        "x": 5.180010795593262,
+        "y": 2.1140003204345703,
+        "z": 4.920000076293945
+      },
+      "spawn": {
+        "x": 1.1172143786097877e-05,
+        "y": 1.25,
+        "z": 4.999996185302734
+      },
+      "settledSpawn": {
+        "x": 2.5703564460854977e-05,
+        "y": 0.6500122547149658,
+        "z": 5.001223087310791
+      },
+      "lastPosition": {
+        "x": -2.577852725982666,
+        "y": 0.6499979496002197,
+        "z": 58.79130554199219
+      },
+      "nominalWidth": 4.5,
+      "nominalLength": 5.800000190734863,
+      "usedWidth": 5.180010795593262,
+      "usedLength": 5.800000190734863,
+      "spawnDrop": 0.5999877452850342,
+      "width": 1920,
+      "height": 1080,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": -2.25,
+        "y": 1.25,
+        "z": 61.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-ObstacleCourse-Heavy-7-spawn.png",
+        "BASE-ObstacleCourse-Heavy-7-driving.png",
+        "BASE-ObstacleCourse-Heavy-7-end.png"
+      ]
+    },
+    {
+      "id": "BASE-CombatArena-Light-31",
+      "group": "BASE",
+      "recipe": "CombatArena",
+      "vehicle": "Light",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "d1eae2baa61a18e2afd0b671d9d8e1434646134f245e912b992710b952532835",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 31,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 4,
+      "remainingWheels": 4,
+      "partsBefore": 20,
+      "partsAfter": 20,
+      "goal": 1,
+      "totalGoals": 1,
+      "samples": 274,
+      "groundedSamples": 274,
+      "minimumContacts": 4,
+      "maximumContacts": 4,
+      "seamTransitions": 0,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 192.0,
+      "distance": 48.160438537597656,
+      "netTravel": 47.56418991088867,
+      "seconds": 6.743330955505371,
+      "maxSpeed": 10.146392822265625,
+      "maxTilt": 0.0,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2833327054977417,
+      "centerOfMass": {
+        "x": 0.0,
+        "y": 0.06874999403953552,
+        "z": 0.0
+      },
+      "colliderEnvelope": {
+        "x": 2.9800102710723877,
+        "y": 1.564000129699707,
+        "z": 2.720001220703125
+      },
+      "spawn": {
+        "x": 1.4156104555240745e-07,
+        "y": 1.25,
+        "z": -25.0
+      },
+      "settledSpawn": {
+        "x": 3.5379962355364114e-05,
+        "y": 0.6500193476676941,
+        "z": -24.997085571289062
+      },
+      "lastPosition": {
+        "x": -0.10587961226701736,
+        "y": 0.6500616073608398,
+        "z": 22.73943328857422
+      },
+      "nominalWidth": 2.0999999046325684,
+      "nominalLength": 3.200000047683716,
+      "usedWidth": 2.9800102710723877,
+      "usedLength": 3.200000047683716,
+      "spawnDrop": 0.5999806523323059,
+      "width": 1280,
+      "height": 720,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 0.0,
+        "y": 1.25,
+        "z": 25.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-CombatArena-Light-31-spawn.png",
+        "BASE-CombatArena-Light-31-driving.png",
+        "BASE-CombatArena-Light-31-end.png"
+      ]
+    },
+    {
+      "id": "BASE-CombatArena-Heavy-31",
+      "group": "BASE",
+      "recipe": "CombatArena",
+      "vehicle": "Heavy",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "d1eae2baa61a18e2afd0b671d9d8e1434646134f245e912b992710b952532835",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 31,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 12,
+      "remainingWheels": 12,
+      "partsBefore": 139,
+      "partsAfter": 139,
+      "goal": 1,
+      "totalGoals": 1,
+      "samples": 479,
+      "groundedSamples": 479,
+      "minimumContacts": 12,
+      "maximumContacts": 12,
+      "seamTransitions": 0,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 1176.0,
+      "distance": 48.13778305053711,
+      "netTravel": 47.5414924621582,
+      "seconds": 10.791337966918945,
+      "maxSpeed": 5.561820030212402,
+      "maxTilt": 0.0,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2513418197631836,
+      "centerOfMass": {
+        "x": 6.487580250791325e-09,
+        "y": 0.25816312432289124,
+        "z": -0.03367346152663231
+      },
+      "colliderEnvelope": {
+        "x": 5.180010795593262,
+        "y": 2.1140003204345703,
+        "z": 4.920005798339844
+      },
+      "spawn": {
+        "x": 1.141056782216765e-05,
+        "y": 1.25,
+        "z": -24.999996185302734
+      },
+      "settledSpawn": {
+        "x": 3.25753353536129e-05,
+        "y": 0.6499475240707397,
+        "z": -24.998743057250977
+      },
+      "lastPosition": {
+        "x": 0.07961093634366989,
+        "y": 0.6499358415603638,
+        "z": 22.6304988861084
+      },
+      "nominalWidth": 4.5,
+      "nominalLength": 5.800000190734863,
+      "usedWidth": 5.180010795593262,
+      "usedLength": 5.800000190734863,
+      "spawnDrop": 0.6000524759292603,
+      "width": 1920,
+      "height": 1080,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 0.0,
+        "y": 1.25,
+        "z": 25.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-CombatArena-Heavy-31-spawn.png",
+        "BASE-CombatArena-Heavy-31-driving.png",
+        "BASE-CombatArena-Heavy-31-end.png"
+      ]
+    },
+    {
+      "id": "BASE-ObstacleCourse-Light-31",
+      "group": "BASE",
+      "recipe": "ObstacleCourse",
+      "vehicle": "Light",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "3521ff61e49ceb4ba8cfa393c2feadcef0e469fe7486f630b2730c17442a0db1",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 31,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 4,
+      "remainingWheels": 4,
+      "partsBefore": 20,
+      "partsAfter": 20,
+      "goal": 5,
+      "totalGoals": 5,
+      "samples": 336,
+      "groundedSamples": 336,
+      "minimumContacts": 2,
+      "maximumContacts": 4,
+      "seamTransitions": 3,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 192.0,
+      "distance": 54.38907241821289,
+      "netTravel": 53.6953010559082,
+      "seconds": 7.923870086669922,
+      "maxSpeed": 10.155425071716309,
+      "maxTilt": 10.578678131103516,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2238712310791016,
+      "centerOfMass": {
+        "x": 0.0,
+        "y": 0.06874999403953552,
+        "z": 0.0
+      },
+      "colliderEnvelope": {
+        "x": 2.9800102710723877,
+        "y": 1.564000129699707,
+        "z": 2.7200002670288086
+      },
+      "spawn": {
+        "x": 3.054737760521675e-07,
+        "y": 1.25,
+        "z": 5.0
+      },
+      "settledSpawn": {
+        "x": -2.5284851290052757e-05,
+        "y": 0.6499555110931396,
+        "z": 5.002965450286865
+      },
+      "lastPosition": {
+        "x": 1.3330069780349731,
+        "y": 0.6500101685523987,
+        "z": 58.85545349121094
+      },
+      "nominalWidth": 2.0999999046325684,
+      "nominalLength": 3.200000047683716,
+      "usedWidth": 2.9800102710723877,
+      "usedLength": 3.200000047683716,
+      "spawnDrop": 0.6000444889068604,
+      "width": 1280,
+      "height": 720,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 1.5,
+        "y": 1.25,
+        "z": 61.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-ObstacleCourse-Light-31-spawn.png",
+        "BASE-ObstacleCourse-Light-31-driving.png",
+        "BASE-ObstacleCourse-Light-31-end.png"
+      ]
+    },
+    {
+      "id": "BASE-ObstacleCourse-Heavy-31",
+      "group": "BASE",
+      "recipe": "ObstacleCourse",
+      "vehicle": "Heavy",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "3521ff61e49ceb4ba8cfa393c2feadcef0e469fe7486f630b2730c17442a0db1",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 31,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 12,
+      "remainingWheels": 12,
+      "partsBefore": 139,
+      "partsAfter": 139,
+      "goal": 5,
+      "totalGoals": 5,
+      "samples": 559,
+      "groundedSamples": 559,
+      "minimumContacts": 12,
+      "maximumContacts": 12,
+      "seamTransitions": 3,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 1176.0,
+      "distance": 54.27800750732422,
+      "netTravel": 53.62757873535156,
+      "seconds": 12.393369674682617,
+      "maxSpeed": 5.5744853019714355,
+      "maxTilt": 0.612297534942627,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2533740997314453,
+      "centerOfMass": {
+        "x": 6.487580250791325e-09,
+        "y": 0.25816312432289124,
+        "z": -0.0336734764277935
+      },
+      "colliderEnvelope": {
+        "x": 5.180010795593262,
+        "y": 2.1140003204345703,
+        "z": 4.920000076293945
+      },
+      "spawn": {
+        "x": 1.1172143786097877e-05,
+        "y": 1.25,
+        "z": 4.999996185302734
+      },
+      "settledSpawn": {
+        "x": 1.7337126337224618e-05,
+        "y": 0.6499983072280884,
+        "z": 5.0012359619140625
+      },
+      "lastPosition": {
+        "x": 1.485092282295227,
+        "y": 0.6499899625778198,
+        "z": 58.696537017822266
+      },
+      "nominalWidth": 4.5,
+      "nominalLength": 5.800000190734863,
+      "usedWidth": 5.180010795593262,
+      "usedLength": 5.800000190734863,
+      "spawnDrop": 0.6000016927719116,
+      "width": 1920,
+      "height": 1080,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 1.5,
+        "y": 1.25,
+        "z": 61.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-ObstacleCourse-Heavy-31-spawn.png",
+        "BASE-ObstacleCourse-Heavy-31-driving.png",
+        "BASE-ObstacleCourse-Heavy-31-end.png"
+      ]
+    },
+    {
+      "id": "BASE-CombatArena-Light-83",
+      "group": "BASE",
+      "recipe": "CombatArena",
+      "vehicle": "Light",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "9a2f673deae0fc381c9ab0e721da3b2b1735e221410b37490f05f58caace43c7",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 83,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 4,
+      "remainingWheels": 4,
+      "partsBefore": 20,
+      "partsAfter": 20,
+      "goal": 1,
+      "totalGoals": 1,
+      "samples": 274,
+      "groundedSamples": 274,
+      "minimumContacts": 4,
+      "maximumContacts": 4,
+      "seamTransitions": 0,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 192.0,
+      "distance": 48.16007995605469,
+      "netTravel": 47.56385803222656,
+      "seconds": 6.685695648193359,
+      "maxSpeed": 10.146276473999023,
+      "maxTilt": 0.0,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2256965637207031,
+      "centerOfMass": {
+        "x": 0.0,
+        "y": 0.06874999403953552,
+        "z": 0.0
+      },
+      "colliderEnvelope": {
+        "x": 2.9800102710723877,
+        "y": 1.564000129699707,
+        "z": 2.720001220703125
+      },
+      "spawn": {
+        "x": 1.4156104555240745e-07,
+        "y": 1.25,
+        "z": -25.0
+      },
+      "settledSpawn": {
+        "x": 3.9263381040655077e-05,
+        "y": 0.6499902606010437,
+        "z": -24.99704360961914
+      },
+      "lastPosition": {
+        "x": 0.09618016332387924,
+        "y": 0.649933934211731,
+        "z": 22.73912239074707
+      },
+      "nominalWidth": 2.0999999046325684,
+      "nominalLength": 3.200000047683716,
+      "usedWidth": 2.9800102710723877,
+      "usedLength": 3.200000047683716,
+      "spawnDrop": 0.6000097393989563,
+      "width": 1280,
+      "height": 720,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 0.0,
+        "y": 1.25,
+        "z": 25.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-CombatArena-Light-83-spawn.png",
+        "BASE-CombatArena-Light-83-driving.png",
+        "BASE-CombatArena-Light-83-end.png"
+      ]
+    },
+    {
+      "id": "BASE-CombatArena-Heavy-83",
+      "group": "BASE",
+      "recipe": "CombatArena",
+      "vehicle": "Heavy",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "9a2f673deae0fc381c9ab0e721da3b2b1735e221410b37490f05f58caace43c7",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 83,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 12,
+      "remainingWheels": 12,
+      "partsBefore": 139,
+      "partsAfter": 139,
+      "goal": 1,
+      "totalGoals": 1,
+      "samples": 479,
+      "groundedSamples": 479,
+      "minimumContacts": 12,
+      "maximumContacts": 12,
+      "seamTransitions": 0,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 1176.0,
+      "distance": 48.138099670410156,
+      "netTravel": 47.54180908203125,
+      "seconds": 10.792091369628906,
+      "maxSpeed": 5.561887741088867,
+      "maxTilt": 0.0,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2520942687988281,
+      "centerOfMass": {
+        "x": 6.487580250791325e-09,
+        "y": 0.25816312432289124,
+        "z": -0.03367346152663231
+      },
+      "colliderEnvelope": {
+        "x": 5.180010795593262,
+        "y": 2.1140003204345703,
+        "z": 4.920005798339844
+      },
+      "spawn": {
+        "x": 1.141056782216765e-05,
+        "y": 1.25,
+        "z": -24.999996185302734
+      },
+      "settledSpawn": {
+        "x": 4.249378889653599e-06,
+        "y": 0.6499983072280884,
+        "z": -24.99875831604004
+      },
+      "lastPosition": {
+        "x": -0.06781617552042007,
+        "y": 0.6499996781349182,
+        "z": 22.630836486816406
+      },
+      "nominalWidth": 4.5,
+      "nominalLength": 5.800000190734863,
+      "usedWidth": 5.180010795593262,
+      "usedLength": 5.800000190734863,
+      "spawnDrop": 0.6000016927719116,
+      "width": 1920,
+      "height": 1080,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": 0.0,
+        "y": 1.25,
+        "z": 25.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-CombatArena-Heavy-83-spawn.png",
+        "BASE-CombatArena-Heavy-83-driving.png",
+        "BASE-CombatArena-Heavy-83-end.png"
+      ]
+    },
+    {
+      "id": "BASE-ObstacleCourse-Light-83",
+      "group": "BASE",
+      "recipe": "ObstacleCourse",
+      "vehicle": "Light",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "1f0bf9acf5a013e15351c3f58bfd4b6816132eda2f1496513ead6d4ac81b3e0a",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 83,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 4,
+      "remainingWheels": 4,
+      "partsBefore": 20,
+      "partsAfter": 20,
+      "goal": 5,
+      "totalGoals": 5,
+      "samples": 337,
+      "groundedSamples": 336,
+      "minimumContacts": 0,
+      "maximumContacts": 4,
+      "seamTransitions": 3,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 192.0,
+      "distance": 54.544044494628906,
+      "netTravel": 53.88301467895508,
+      "seconds": 7.946189880371094,
+      "maxSpeed": 10.146729469299316,
+      "maxTilt": 10.565779685974121,
+      "longestNoContact": 0.019999992102384567,
+      "longestStall": 1.2261924743652344,
+      "centerOfMass": {
+        "x": 0.0,
+        "y": 0.06874999403953552,
+        "z": 0.0
+      },
+      "colliderEnvelope": {
+        "x": 2.9800102710723877,
+        "y": 1.564000129699707,
+        "z": 2.7200002670288086
+      },
+      "spawn": {
+        "x": 3.054737760521675e-07,
+        "y": 1.25,
+        "z": 5.0
+      },
+      "settledSpawn": {
+        "x": 1.1715129403455649e-05,
+        "y": 0.6500225067138672,
+        "z": 5.002923011779785
+      },
+      "lastPosition": {
+        "x": -3.962451934814453,
+        "y": 0.6499865651130676,
+        "z": 58.91508865356445
+      },
+      "nominalWidth": 2.0999999046325684,
+      "nominalLength": 3.200000047683716,
+      "usedWidth": 2.9800102710723877,
+      "usedLength": 3.200000047683716,
+      "spawnDrop": 0.5999774932861328,
+      "width": 1280,
+      "height": 720,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": -3.75,
+        "y": 1.25,
+        "z": 61.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-ObstacleCourse-Light-83-spawn.png",
+        "BASE-ObstacleCourse-Light-83-driving.png",
+        "BASE-ObstacleCourse-Light-83-end.png"
+      ]
+    },
+    {
+      "id": "BASE-ObstacleCourse-Heavy-83",
+      "group": "BASE",
+      "recipe": "ObstacleCourse",
+      "vehicle": "Heavy",
+      "status": "PASS",
+      "detail": "Finish reached using R6 contact-limited force drive",
+      "geometryHash": "1f0bf9acf5a013e15351c3f58bfd4b6816132eda2f1496513ead6d4ac81b3e0a",
+      "sourceShader": "B01/MAPGEN001/BlocksURP",
+      "destinationKind": "GeneratedFinish",
+      "seed": 83,
+      "segments": 4,
+      "density": 50,
+      "startingWheels": 12,
+      "remainingWheels": 12,
+      "partsBefore": 139,
+      "partsAfter": 139,
+      "goal": 5,
+      "totalGoals": 5,
+      "samples": 560,
+      "groundedSamples": 560,
+      "minimumContacts": 12,
+      "maximumContacts": 12,
+      "seamTransitions": 3,
+      "nonFloorCollisionEvents": 0,
+      "rampCollisionEvents": 0,
+      "recoveryAttempts": 0,
+      "difficulty": 0.5,
+      "laneWidth": 16.0,
+      "mass": 1176.0,
+      "distance": 54.40141677856445,
+      "netTravel": 53.762393951416016,
+      "seconds": 12.421485900878906,
+      "maxSpeed": 5.574202537536621,
+      "maxTilt": 0.741513192653656,
+      "longestNoContact": 0.0,
+      "longestStall": 1.2614898681640625,
+      "centerOfMass": {
+        "x": 6.487580250791325e-09,
+        "y": 0.25816312432289124,
+        "z": -0.0336734764277935
+      },
+      "colliderEnvelope": {
+        "x": 5.180010795593262,
+        "y": 2.1140003204345703,
+        "z": 4.920000076293945
+      },
+      "spawn": {
+        "x": 1.1172143786097877e-05,
+        "y": 1.25,
+        "z": 4.999996185302734
+      },
+      "settledSpawn": {
+        "x": 1.5459056157851592e-05,
+        "y": 0.6499725580215454,
+        "z": 5.001240253448486
+      },
+      "lastPosition": {
+        "x": -3.8324856758117676,
+        "y": 0.6499969959259033,
+        "z": 58.714942932128906
+      },
+      "nominalWidth": 4.5,
+      "nominalLength": 5.800000190734863,
+      "usedWidth": 5.180010795593262,
+      "usedLength": 5.800000190734863,
+      "spawnDrop": 0.6000274419784546,
+      "width": 1920,
+      "height": 1080,
+      "reachedFinish": true,
+      "probeEndReached": false,
+      "fallen": false,
+      "spawnBlocked": false,
+      "flipped": false,
+      "renderOverride": false,
+      "destination": {
+        "x": -3.75,
+        "y": 1.25,
+        "z": 61.0
+      },
+      "selectedRampWidth": 0.0,
+      "selectedRampPitch": 0.0,
+      "collisions": [],
+      "screenshots": [
+        "BASE-ObstacleCourse-Heavy-83-spawn.png",
+        "BASE-ObstacleCourse-Heavy-83-driving.png",
+        "BASE-ObstacleCourse-Heavy-83-end.png"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "Materials/CombatArena-1280-original-resource.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "ca7b50e1f024e6fb1d5c9f55d7785b7d5f84655786a99e331520f729ceada84b",
+      "diagnosticMagentaPixels": 0
+    },
+    {
+      "path": "Materials/CombatArena-1920-original-resource.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a7ff17d9ebc3b4de597feb52e2ae7fdd77b2ea81e1a7fd1525f901ed865cdecb",
+      "diagnosticMagentaPixels": 0
+    },
+    {
+      "path": "Materials/ObstacleCourse-1280-original-resource.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "cdcdebf525b359527ef82817987463745d9117d19204afa7f41c92b1de85d1f3",
+      "diagnosticMagentaPixels": 0
+    },
+    {
+      "path": "Materials/ObstacleCourse-1920-original-resource.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "f1426760c2ff8f1a8fe47af0f806f7c99c3b26c96bcfcd5ada575fa4f611c475",
+      "diagnosticMagentaPixels": 0
+    },
+    {
+      "path": "WheelsFirst4/BASE-CombatArena-Heavy-7-driving.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "347459ae49c6052a413e85e775432f81f950ec0ae69236d6817097f8fec017bd"
+    },
+    {
+      "path": "WheelsFirst4/BASE-CombatArena-Heavy-7-end.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "83db78bd1f1e3aa7a6d5fb13400d62d076395770d841b86c973a56e7ca82104b"
+    },
+    {
+      "path": "WheelsFirst4/BASE-CombatArena-Heavy-7-spawn.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "5750f97d1826ce213a675b86a8f23aaec0a58ffdc2dac8818a1dc5713c7bfd2b"
+    },
+    {
+      "path": "WheelsFirst4/BASE-CombatArena-Light-7-driving.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "46494bf8024866e0e5f478a6113a2ce0ee8b1bded1039a3987be932eb61ac6ee"
+    },
+    {
+      "path": "WheelsFirst4/BASE-CombatArena-Light-7-end.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "2de4326ba17825a3453dc0011159c2286cc29e3cdb84b9cdf9b5c163ae03157b"
+    },
+    {
+      "path": "WheelsFirst4/BASE-CombatArena-Light-7-spawn.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "56e81c288d6507cf184e5b18e98c823f32c79f323a02b176c6cf8345f6cfc122"
+    },
+    {
+      "path": "WheelsFirst4/BASE-ObstacleCourse-Heavy-7-driving.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a24db8b98bd3d45f1218cfde4f819412e2b116aa940a48a5088f17b8dc60c630"
+    },
+    {
+      "path": "WheelsFirst4/BASE-ObstacleCourse-Heavy-7-end.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "9805d3c1ee2817b0aff5927ab6f961d962b96ece640db583bf115c63d5a38d47"
+    },
+    {
+      "path": "WheelsFirst4/BASE-ObstacleCourse-Heavy-7-spawn.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a3f6d38d1195abe24d51bee483f77427c9559f9ebec080253dbd0636524f7779"
+    },
+    {
+      "path": "WheelsFirst4/BASE-ObstacleCourse-Light-7-driving.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "7c6c68ba03dedfa16d09d4e3e947fcb91e745c326dd940d48bb9dd478bc452f7"
+    },
+    {
+      "path": "WheelsFirst4/BASE-ObstacleCourse-Light-7-end.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "494811a02edfce23c10044e0d3fa97fd29ae72ec51f32403db1f4f44ad80ec4a"
+    },
+    {
+      "path": "WheelsFirst4/BASE-ObstacleCourse-Light-7-spawn.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "0e2e9d810ac8e97c2f53c2617c7b5466f9f200f10e208335f9ecae1344cdb0ca"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Heavy-31-driving.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a93a65f99293b4975810e93660aba5c344595ce274d903df490a68a7e3d1a541"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Heavy-31-end.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "e9abd3adfdd682699d1588e862856ec34a6aaab358993015aed2b4f59dbb6a60"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Heavy-31-spawn.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "543b5fe036e1cdd3d0aad25322d8315ef61622e8e91126de88ee98ffec0d695e"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Heavy-83-driving.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "775fd63c40a28118723bd8e5fe7273935add37b35598d2789768c0a0565d2cf9"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Heavy-83-end.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "27d1c73d4340a13c8b154376c5d21af799945348ad644af01f6b5baad9836d02"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Heavy-83-spawn.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "45ec79533e514a05c5654fd9a38fb9c23313c2015c88888e6d8a351094aa95d4"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Light-31-driving.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "7c431045739a42f6933579fe293dcd18c9a65f0adc9f2d3b34fa16c269e3abc8"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Light-31-end.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "083f35cfc34b4a50955d437953a4c627c46213a66f2b9eb363160d904a9c5d6f"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Light-31-spawn.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "f632644b481dde0c2de4dbd4f046c62ff77c1009189760c6f68bb8a1310382f1"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Light-83-driving.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "fd8d65c028944f92dc06a0d9be682b94d0c9521f25d060442e095fb27c17b42c"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Light-83-end.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "aba78c9056765539a34c4efba7feb4228ceba684c6956d027dae106ef65f29a3"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-CombatArena-Light-83-spawn.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "ddc05ee679e45f19ba493720b3cd6316d063e5ce537f10efa6e6b78e9b6662ad"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Heavy-31-driving.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "ab1f0b8d582dc3db530763dd214b50dfaac0c0529a92b042d35d336973a5447b"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Heavy-31-end.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "733dd5a3d447264c6c250d645e5516f5b1df9e8c3cdd7c1ace5eb87eca239b15"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Heavy-31-spawn.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "4b3f00e7afb6c53f9b6f99d8e4256b3316c9ff8c72657225e037e7841ea3ec2a"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Heavy-83-driving.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "9c7f8921de41f14c5d806309f7c5c251c09ac6f1db5c4d12588e2e950b09b62c"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Heavy-83-end.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "d7ce5238cfc3a80d59d96186e85c6ba8f9f84891ac5ef0759337e9bad5049520"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Heavy-83-spawn.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "40f21f059c51780f63c7020084ff50ff89d37762a804001387b996a1a197d228"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Light-31-driving.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "afb3d0244c3af55ac6407f54dd73c0165ef1adfb9798d98f4b8d8cd2f39fac3f"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Light-31-end.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "8f7f742f491cb586ec3348cefbab8d9f0f9b2c4579b21521e73be0c81dd56cd7"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Light-31-spawn.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "19a8b1978923fd213c1479e11f459a640424bc782482a30398b51e5df3da45e7"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Light-83-driving.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "a66654d0148daab9c2eac3122d2a11b1bfd03d1e91159bfbd306d2e4fca6d88a"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Light-83-end.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "f1dd8f99f28cf883391c8ce9cc03acfb4b8c4618d3e4653d731e51a57a21ada5"
+    },
+    {
+      "path": "WheelsRemaining8/BASE-ObstacleCourse-Light-83-spawn.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "3d81903a0d529c449a4847f906f34f31eb7cf0a549bd963886e36525efe681ad"
+    }
+  ],
+  "note": "Separate actual native NUnit counts and standalone physical/graphics observations; no G2 approval"
+}
