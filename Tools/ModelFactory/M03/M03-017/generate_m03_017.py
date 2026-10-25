@@ -126,7 +126,17 @@ def key_location(ob, frames_and_xyz):
         ob.keyframe_insert(data_path="location", frame=frame, group="QuickRelease")
     if ob.animation_data and ob.animation_data.action:
         ob.animation_data.action.name = PREFIX + "ACTION_" + ob.name[len(PREFIX):]
-        for curve in ob.animation_data.action.fcurves:
+        action = ob.animation_data.action
+        if hasattr(action, "fcurves"):
+            curves = list(action.fcurves)  # Blender 4.x
+        else:
+            # Blender 5.x layered/slotted actions moved fcurves to channelbags.
+            curves = []
+            for layer in action.layers:
+                for strip in layer.strips:
+                    for bag in strip.channelbags:
+                        curves.extend(list(bag.fcurves))
+        for curve in curves:
             for point in curve.keyframe_points:
                 point.interpolation = "LINEAR"
 
