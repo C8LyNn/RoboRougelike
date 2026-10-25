@@ -390,6 +390,12 @@ def export_blender(out_dir):
     bpy.ops.wm.save_as_mainfile(filepath=str(out_dir/"M02-015.blend"))
     bpy.ops.export_scene.gltf(filepath=str(out_dir/"M02-015_animated.glb"),
                               export_format="GLB",export_animations=True)
+    # Native Unity static mesh fallback (animations stay in GLB/BLEND).
+    try:
+        bpy.ops.wm.obj_export(filepath=str(out_dir/"M02-015_static.obj"))
+        qa["obj_export"]="EXPORTED_STATIC_ONLY"
+    except Exception as exc:
+        qa["obj_export"]="BLOCKED_OBJ_EXPORT: "+str(exc)
     try:
         # Blender 5 exporter removed several Blender 4 FBX bake_anim options.
         # Use the current operator defaults; verify the actual file separately.
