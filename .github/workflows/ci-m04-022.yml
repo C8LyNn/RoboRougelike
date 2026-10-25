@@ -1,0 +1,39 @@
+name: ModelFactory M04-022 Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-022-glide-microhover
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-022/**'
+      - '.github/workflows/ci-m04-022.yml'
+  workflow_dispatch:
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy for glTF
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -3
+      - name: Static Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M04/M04-022/*.py
+      - name: Generate native BLEND and animated GLB
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-022/generate_m04_022.py -- --out build/M04-022
+      - name: Reopen native Blender project
+        run: |
+          blender -b build/M04-022/M04-022.blend --python-exit-code 1 --python-expr "import bpy; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 25"
+      - name: Independent GLB structure, animation and clearance QA
+        run: |
+          python3 Tools/ModelFactory/M04/M04-022/qa_m04_022.py --glb build/M04-022/M04-022.glb --report build/M04-022/qa.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M04-022-blend-glb-qa
+          path: build/M04-022/
+          if-no-files-found: warn
+          retention-days: 30
