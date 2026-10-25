@@ -1,0 +1,40 @@
+name: M02-024 Mecanum Roller Wheel Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-024-mecanum-roller-wheel
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M02/M02-024/**'
+      - '.github/workflows/ci-m02-024.yml'
+  workflow_dispatch:
+jobs:
+  m02-024-blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax and analytical roller sweep
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-024/*.py
+          python3 Tools/ModelFactory/M02/M02-024/qa_m02_024.py --math-only
+      - name: Install Blender and numpy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate actual BLEND and animated GLB
+        run: |
+          blender -b -noaudio --python Tools/ModelFactory/M02/M02-024/generate_m02_024.py
+          test -s Tools/ModelFactory/M02/M02-024/generated/M02-024.blend
+          test -s Tools/ModelFactory/M02/M02-024/generated/M02-024_animated.glb
+          test -s Tools/ModelFactory/M02/M02-024/generated/M02-024_qa.json
+      - name: Validate actual glTF animation binary and model geometry
+        run: python3 Tools/ModelFactory/M02/M02-024/qa_m02_024.py
+      - name: Upload generated 3D files and QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-024-mecanum-wheel-blend-glb-qa
+          path: Tools/ModelFactory/M02/M02-024/generated/
+          if-no-files-found: warn
