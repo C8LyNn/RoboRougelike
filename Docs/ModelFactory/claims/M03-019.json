@@ -1,8 +1,12 @@
 {
   "id": "M03-019",
   "agent": "MODEL-03",
-  "status": "CLAIMED",
+  "status": "DRAFT_PR_OPEN",
   "claimed_at_utc": "2026-10-25T05:44:38.421Z",
   "model": "Osłona akumulatora przeciwodłamkowa",
-  "run": "2026-10-25T05:00Z"
+  "run": "2026-10-25T05:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/198",
+  "branch": "feature/rrl-model-m03-019-battery-shrapnel-guard",
+  "commit": "d3b186a8f2fcc4bc9f9f9d4ab4414f393d79384c",
+  "qa": "PENDING_BLENDER_CI; UNITY_NOT_RUN"
 }
