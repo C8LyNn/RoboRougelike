@@ -1,0 +1,71 @@
+name: B01-21 MAPGENWORLD001 W12 source package
+on:
+  push:
+    branches:
+      - "pkg/b01-21-mapgenworld001-w12-20261025"
+    paths:
+      - "Assets/B01Packages/MAPGENWORLD001/**"
+      - "Assets/B01Packages/MAPGENWORLD001.meta"
+      - "Docs/B01/MAPGENWORLD001/**"
+      - "Tools/B01/MAPGENWORLD001/**"
+      - ".github/workflows/b01-mapgenworld001-w12.yml"
+  pull_request:
+    paths:
+      - "Assets/B01Packages/MAPGENWORLD001/**"
+      - "Assets/B01Packages/MAPGENWORLD001.meta"
+      - "Docs/B01/MAPGENWORLD001/**"
+      - "Tools/B01/MAPGENWORLD001/**"
+      - ".github/workflows/b01-mapgenworld001-w12.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-and-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Pin full verified MAPGEN R3.4.1 producer API / no host edits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 5be31039411f89f17654b1c332f8692883fa03cc HEAD
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs)" = b586a5bfc697bc37edbf98bb936459aeebe694c6
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs)" = 89ff64e12f278f2c9393ad542161a9387e1f4117
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenBuilder.cs)" = 02ab7f5b093e107c19f57b649c564b6fcae37941
+          git rev-parse HEAD > mapgenworld-head-sha.txt
+          echo PINNED_MAPGEN341_SOURCE_OK
+      - name: Execute actual MapWorldPolicy CSharp + MAPGEN CSharp (explicit math surrogate)
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p mapgenworld-evidence
+          dotnet run --project Tools/B01/MAPGENWORLD001/MapWorld.SourceTests.csproj -c Release -- "$PWD/mapgenworld-evidence/source-cases.json" | tee mapgenworld-evidence/source-console.log
+      - name: Execute actual deterministic packaging and negative tamper tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s Tools/B01/MAPGENWORLD001 -p 'test_*.py' -v 2>&1 | tee mapgenworld-evidence/package-tests.log
+          python3 Tools/B01/MAPGENWORLD001/package_world.py build mapgenworld-evidence/package | tee mapgenworld-evidence/package-build.log
+          python3 Tools/B01/MAPGENWORLD001/package_world.py verify mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip | tee mapgenworld-evidence/package-verify.log
+          cp mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip mapgenworld-evidence/rebuild-proof.zip
+          python3 Tools/B01/MAPGENWORLD001/package_world.py build mapgenworld-evidence/package >/dev/null
+          cmp mapgenworld-evidence/rebuild-proof.zip mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip
+          rm mapgenworld-evidence/rebuild-proof.zip
+          sha256sum mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip
+          echo DETERMINISTIC_REBUILD_PASS
+      - name: Archive exact SHA source case results, negative tests, manifest, FULL ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-mapgenworld001-w12-source-full
+          path: |
+            mapgenworld-evidence/
+            mapgenworld-head-sha.txt
+          if-no-files-found: warn
+          retention-days: 30
