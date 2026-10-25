@@ -1,0 +1,16 @@
+{
+  "id": "M01-018",
+  "status": "BLENDER_QA_PASS",
+  "meshes": 53,
+  "materials": 7,
+  "vertices": 4064,
+  "triangles": 7944,
+  "frames_tested": 61,
+  "aabb_checks": 30012,
+  "aabb_intersections": 0,
+  "min_aabb_clearance_m": 0.121,
+  "counterweight_travel_m": 0.22,
+  "mount": "MOUNT_TOP_SOCKET",
+  "moving_pivot": "COUNTERWEIGHT_SLIDE_Y_AXIS",
+  "repeat_determinism": "PASS"
+}
