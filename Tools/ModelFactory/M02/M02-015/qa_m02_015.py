@@ -65,6 +65,18 @@ def export_check(out):
     assert metadata["materials"]>=7
     assert metadata["sampled_gear_phases"]==121
     result={"blend_bytes":blend.stat().st_size,**inspect_glb(glb)}
+    obj=out/"M02-015_static.obj"
+    if obj.exists():
+        source=obj.read_text(encoding="utf-8",errors="replace")
+        assert sum(line.startswith("v ") for line in source.splitlines())>500
+        assert sum(line.startswith("f ") for line in source.splitlines())>500
+        result["obj_bytes"]=obj.stat().st_size
+        result["obj_status"]="EXPORTED_STATIC_ONLY"
+        mtl=out/"M02-015_static.mtl"
+        if mtl.exists():
+            result["mtl_bytes"]=mtl.stat().st_size
+    else:
+        result["obj_status"]=metadata.get("obj_export","NOT RUN")
     fbx=out/"M02-015_animated.fbx"
     if fbx.exists():
         content=fbx.read_bytes()
