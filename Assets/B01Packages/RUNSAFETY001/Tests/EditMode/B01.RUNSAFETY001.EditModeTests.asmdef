@@ -1,0 +1,16 @@
+{
+  "name": "B01.RUNSAFETY001.EditModeTests",
+  "rootNamespace": "B01.RUNSAFETY001.Tests",
+  "references": [
+    "B01.RUNSAFETY001.Runtime",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "B01.RUNSAFETY001.PlayModeTests",
+  "rootNamespace": "B01.RUNSAFETY001.Tests",
+  "references": [
+    "B01.RUNSAFETY001.Runtime",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [],
+  "autoReferenced": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
