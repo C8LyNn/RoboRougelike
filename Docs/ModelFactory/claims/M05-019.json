@@ -4,5 +4,16 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-25T01:18:03.646Z",
   "model": "Projektor holograficzny wizualny",
-  "run": "2026-10-25T01:00Z"
+  "run": "2026-10-25T01:00Z",
+  "production_branch": "feature/rrl-model-m05-019-holographic-projector",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/175",
+  "production_commit": "85171b6edd65ceda3e147efcbbacce340299d607",
+  "qa": {
+    "blender": "NOT RUN",
+    "glb": "NOT RUN",
+    "fbx": "NOT RUN",
+    "unity": "NOT RUN",
+    "full_mesh_collision": "NOT RUN"
+  },
+  "notes": "Generator, README and CI committed; pending actual Blender workflow execution."
 }
