@@ -1,0 +1,98 @@
+{
+  "package": "RAC001",
+  "source_sha": "129e867f25805075c48f2be52ec1cc5336b4075c",
+  "part": 1,
+  "rows": [
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/RoboRougelike.RAC001.asmdef.meta",
+      "bytes": 153,
+      "sha256": "cb2c382b6f53d582fcc81c6ab74aed697276b3f680fda0c03d94c55d5b9063a9",
+      "git_sha1": "c38a5c5ca01b16e67bf86131dc889572908c5e3a",
+      "guid": "9f8a0101c0714a82a7d004a15b991003"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests.meta",
+      "bytes": 170,
+      "sha256": "8708e6a52a99c5221527ad571bd5eab92718b57c6d9398defc061543113291c0",
+      "git_sha1": "3940816e05a9bcad19e4801a98a91412448bfd9b",
+      "guid": "9f8a0101c0714a82a7d004a15b991007"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode.meta",
+      "bytes": 170,
+      "sha256": "943ae7660e1d11af903c4097a4b103502e27f57b7f3f9e01312fc20bf73ff8b9",
+      "git_sha1": "ecf09eed89dd7d0758aed7b56a33972a6a25739e",
+      "guid": "9f8a0101c0714a82a7d004a15b991008"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/CheckpointRaceStateTests.cs",
+      "bytes": 5699,
+      "sha256": "b63c88c870dcb4369e573771490ad287c54074d098773850007d3607855d8255",
+      "git_sha1": "c5c516139a2cbc50b2c366e6a72673341e50c5e8",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/CheckpointRaceStateTests.cs.meta",
+      "bytes": 241,
+      "sha256": "2eb65d8ead4c731a9f2a7db617ab1381f9828d92fcc5c7e31295629e04117bb4",
+      "git_sha1": "43dd7f41b05a4273840d4a0e6304ab574936c17e",
+      "guid": "9f8a0101c0714a82a7d004a15b991009"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/RoboRougelike.RAC001.EditModeTests.asmdef",
+      "bytes": 541,
+      "sha256": "0921ff0039698704632e86e87b1fb72e47e453484165134ecec8c6ebd4c13294",
+      "git_sha1": "15199de315c39c7d7eb323afe26ada6feeca2de2",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/EditMode/RoboRougelike.RAC001.EditModeTests.asmdef.meta",
+      "bytes": 153,
+      "sha256": "b81b221f4c277e1acf5d231c1a5942f14971c7b86624fee376aa7d0edfa8a488",
+      "git_sha1": "97a9fdefd04a732b898c943f56f403a6f7cf3f2f",
+      "guid": "9f8a0101c0714a82a7d004a15b99100a"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode.meta",
+      "bytes": 170,
+      "sha256": "98a1a3b84ef2be0b23e573e3b5d3c2add1aafbafa2f814991250bb6ec8fda049",
+      "git_sha1": "5e0d8a4e9563f4637d6df42bc0fffea0e796e29e",
+      "guid": "9f8a0101c0714a82a7d004a15b99100b"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/CheckpointRacePlayModeTests.cs",
+      "bytes": 3452,
+      "sha256": "598bb36c5af722b30f2a37041f16f51f52be9270f5e217d59bf2776b68d8f99c",
+      "git_sha1": "0ec7dac2fe723d39c0892a62f6154c93b3c26f28",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/CheckpointRacePlayModeTests.cs.meta",
+      "bytes": 241,
+      "sha256": "6c83d69a453f4ee6080b836663f63e2ab2bd3cb10441b7ebc43fe47b0424a02d",
+      "git_sha1": "6f753a3a74b71696e08c8eba5fbb04f9a0aad2c0",
+      "guid": "9f8a0101c0714a82a7d004a15b99100c"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs",
+      "bytes": 2594,
+      "sha256": "8850a6e4c87f6b134759140af047d043343f0530ffefb824618b9e3799174832",
+      "git_sha1": "301bbe10027f7586a273e2e12fde734490dab720",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs.meta",
+      "bytes": 240,
+      "sha256": "81a9c22235b9a718fade4afe723cf8dd4b08e05b9a62e0d9dedb494370a4c262",
+      "git_sha1": "9f8d91f8c07299458f4ee76ee853e8c03e88ed2c",
+      "guid": "b01e0000000000000000000000000001"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RoboRougelike.RAC001.PlayModeTests.asmdef",
+      "bytes": 525,
+      "sha256": "301e17577adf3974c3fb20e329fc205a93a62194a10d557b6f15bf27e93bfcd9",
+      "git_sha1": "710e7abec18bf05ddf16d59b97c6132e724311a1",
+      "guid": null
+    }
+  ]
+}
