@@ -1,0 +1,1417 @@
+{
+  "contractId": "W12-B01-10-CONTRACT-RELEASE-R1",
+  "version": "1.0.1",
+  "note": "PASS/REJECT is portable policy simulation; DOES NOT prove Unity runtime/PhysX",
+  "fixtures": [
+    {
+      "id": "HIT-01",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": true,
+        "hitToken": "struct-001",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.001,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "HIT-02",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "decorative",
+        "registered": true,
+        "hitToken": "deco-child",
+        "authToken": "deco-child",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.035,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DECORATIVE_COLLIDER"
+      }
+    },
+    {
+      "id": "HIT-03",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": false,
+        "hitToken": "struct-001",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.001,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "UNREGISTERED_COLLIDER"
+      }
+    },
+    {
+      "id": "HIT-04",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": true,
+        "hitToken": "spoof",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.001,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "UNREGISTERED_COLLIDER"
+      }
+    },
+    {
+      "id": "HIT-05",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": true,
+        "hitToken": "struct-001",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "untrusted-core",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.001,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "SOCKET_OWNER_MISMATCH"
+      }
+    },
+    {
+      "id": "HIT-06",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": true,
+        "hitToken": "struct-001",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "TOP",
+        "gapM": 0.001,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "SOCKET_MISMATCH"
+      }
+    },
+    {
+      "id": "HIT-07",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": true,
+        "hitToken": "struct-001",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.011,
+        "angleDeg": 0,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "OUTSIDE_SOCKET_PATCH"
+      }
+    },
+    {
+      "id": "HIT-08",
+      "domain": "BUILD",
+      "input": {
+        "case": "hit",
+        "role": "structural",
+        "registered": true,
+        "hitToken": "struct-001",
+        "authToken": "struct-001",
+        "hitOwner": "core-1",
+        "socketOwner": "core-1",
+        "socketId": "R",
+        "requestedSocket": "R",
+        "gapM": 0.001,
+        "angleDeg": 30,
+        "inPatch": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "OBLIQUE_HIT"
+      }
+    },
+    {
+      "id": "ROOT-01",
+      "domain": "BUILD",
+      "input": {
+        "case": "root",
+        "roots": [
+          "core-1"
+        ],
+        "trustedId": "core-1",
+        "supportRoot": "core-1",
+        "connected": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "ROOT-02",
+      "domain": "BUILD",
+      "input": {
+        "case": "root",
+        "roots": [
+          "core-1",
+          "loaded-core-2"
+        ],
+        "trustedId": "core-1",
+        "supportRoot": "loaded-core-2",
+        "connected": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MULTIPLE_CORE_ROOTS"
+      }
+    },
+    {
+      "id": "ROOT-03",
+      "domain": "BUILD",
+      "input": {
+        "case": "root",
+        "roots": [
+          "untrusted-core"
+        ],
+        "trustedId": "core-1",
+        "supportRoot": "core-1",
+        "connected": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "UNTRUSTED_CORE"
+      }
+    },
+    {
+      "id": "ROOT-04",
+      "domain": "BUILD",
+      "input": {
+        "case": "root",
+        "roots": [
+          "core-1"
+        ],
+        "trustedId": "core-1",
+        "supportRoot": "core-1",
+        "connected": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "CORE_DISCONNECTED"
+      }
+    },
+    {
+      "id": "ROOT-05",
+      "domain": "BUILD",
+      "input": {
+        "case": "root",
+        "roots": [
+          "core-1"
+        ],
+        "trustedId": "core-1",
+        "supportRoot": "orphan",
+        "connected": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "CORE_DISCONNECTED"
+      }
+    },
+    {
+      "id": "ROOT-06",
+      "domain": "BUILD",
+      "input": {
+        "case": "root",
+        "roots": [],
+        "trustedId": "core-1",
+        "supportRoot": "core-1",
+        "connected": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MULTIPLE_CORE_ROOTS"
+      }
+    },
+    {
+      "id": "FP-01",
+      "domain": "BUILD",
+      "input": {
+        "case": "footprint",
+        "cells": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ]
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "FP-02",
+      "domain": "BUILD",
+      "input": {
+        "case": "footprint",
+        "cells": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ],
+        "edges": []
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DISCONNECTED_FOOTPRINT"
+      }
+    },
+    {
+      "id": "FP-03",
+      "domain": "BUILD",
+      "input": {
+        "case": "footprint",
+        "cells": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DISCONNECTED_FOOTPRINT"
+      }
+    },
+    {
+      "id": "FP-04",
+      "domain": "BUILD",
+      "input": {
+        "case": "footprint",
+        "cells": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "edges": []
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "FP-05",
+      "domain": "BUILD",
+      "input": {
+        "case": "footprint",
+        "cells": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "FP-06",
+      "domain": "BUILD",
+      "input": {
+        "case": "footprint",
+        "cells": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        "edges": []
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DISCONNECTED_FOOTPRINT"
+      }
+    },
+    {
+      "id": "VOL-01",
+      "domain": "BUILD",
+      "input": {
+        "case": "volume",
+        "physicsChecked": true,
+        "depthM": 0
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "VOL-02",
+      "domain": "BUILD",
+      "input": {
+        "case": "volume",
+        "physicsChecked": true,
+        "depthM": 0.003
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "VOL-03",
+      "domain": "BUILD",
+      "input": {
+        "case": "volume",
+        "physicsChecked": true,
+        "depthM": 0.31
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "COLLIDER_PENETRATION"
+      }
+    },
+    {
+      "id": "VOL-04",
+      "domain": "BUILD",
+      "input": {
+        "case": "volume",
+        "physicsChecked": false,
+        "depthM": null
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "PHYSICS_UNVERIFIED"
+      }
+    },
+    {
+      "id": "VOL-05",
+      "domain": "BUILD",
+      "input": {
+        "case": "volume",
+        "physicsChecked": true,
+        "depthM": 0.006
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "COLLIDER_PENETRATION"
+      }
+    },
+    {
+      "id": "DEMO-01",
+      "domain": "BUILD",
+      "input": {
+        "case": "demo",
+        "shader": "Universal Render Pipeline/Lit",
+        "errorMagentaFraction": 0,
+        "visibleGreenRed": true,
+        "resolution": [
+          1280,
+          720
+        ]
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "DEMO-02",
+      "domain": "BUILD",
+      "input": {
+        "case": "demo",
+        "shader": "Universal Render Pipeline/Simple Lit",
+        "errorMagentaFraction": 0,
+        "visibleGreenRed": true,
+        "resolution": [
+          1920,
+          1080
+        ]
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "DEMO-03",
+      "domain": "BUILD",
+      "input": {
+        "case": "demo",
+        "shader": "Hidden/InternalErrorShader",
+        "errorMagentaFraction": 1,
+        "visibleGreenRed": false,
+        "resolution": [
+          1280,
+          720
+        ]
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "URP_SHADER_UNAVAILABLE"
+      }
+    },
+    {
+      "id": "DEMO-04",
+      "domain": "BUILD",
+      "input": {
+        "case": "demo",
+        "shader": "Universal Render Pipeline/Lit",
+        "errorMagentaFraction": 0.3,
+        "visibleGreenRed": true,
+        "resolution": [
+          1920,
+          1080
+        ]
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "URP_ERROR_MAGENTA"
+      }
+    },
+    {
+      "id": "DEMO-05",
+      "domain": "BUILD",
+      "input": {
+        "case": "demo",
+        "shader": "Universal Render Pipeline/Lit",
+        "errorMagentaFraction": 0,
+        "visibleGreenRed": false,
+        "resolution": [
+          1280,
+          720
+        ]
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "PREVIEW_NOT_DISTINCT"
+      }
+    },
+    {
+      "id": "LEG-01",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "LEGEND_ALREADY_EQUIPPED"
+      }
+    },
+    {
+      "id": "LEG-02",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "B",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-03",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "mov-b",
+          "robot": "A",
+          "definition": "LEG-MOV-001",
+          "kind": "HoverEngine",
+          "family": null,
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-04",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "unit-a",
+            "robot": "A",
+            "definition": "LEG-WPN-001",
+            "family": "Railgun",
+            "kind": "Gun",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "unit-a",
+          "robot": "B",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DUPLICATE_INSTANCE"
+      }
+    },
+    {
+      "id": "LEG-05",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 0
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DESTROYED_ITEM"
+      }
+    },
+    {
+      "id": "LEG-06",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "a",
+            "robot": "A",
+            "kind": "Gun",
+            "family": "Rocket",
+            "definition": null
+          },
+          {
+            "id": "b",
+            "robot": "A",
+            "kind": "Gun",
+            "family": "Shotgun",
+            "definition": null
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WEAPON_FAMILY_3"
+      }
+    },
+    {
+      "id": "LEG-07",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "a",
+            "robot": "A",
+            "kind": "Gun",
+            "family": "Railgun",
+            "definition": null
+          }
+        ],
+        "newPart": {
+          "id": "unit-b",
+          "robot": "A",
+          "definition": "LEG-WPN-001",
+          "kind": "Gun",
+          "family": "Railgun",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-08",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "acquire",
+        "owned": [
+          {
+            "id": "a",
+            "definition": "LEG-MOV-001"
+          }
+        ],
+        "newPart": {
+          "id": "b",
+          "definition": "LEG-MOV-001"
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "LEG-09",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "acquire",
+        "owned": [
+          {
+            "id": "a",
+            "definition": "LEG-MOV-001"
+          }
+        ],
+        "newPart": {
+          "id": "a",
+          "definition": "LEG-MOV-001"
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DUPLICATE_INSTANCE"
+      }
+    },
+    {
+      "id": "LEG-10",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [
+          {
+            "id": "m",
+            "robot": "A",
+            "definition": "LEG-MOV-001",
+            "kind": "HoverEngine",
+            "hp": 0
+          }
+        ],
+        "newPart": {
+          "id": "n",
+          "robot": "A",
+          "definition": "LEG-MOV-001",
+          "kind": "HoverEngine",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "LEGEND_ALREADY_EQUIPPED"
+      }
+    },
+    {
+      "id": "LEG-11",
+      "domain": "LEGENDARY",
+      "input": {
+        "event": "equip",
+        "owned": [],
+        "newPart": {
+          "id": "m",
+          "robot": "A",
+          "definition": "LEG-MOV-001",
+          "kind": "HoverEngine",
+          "hp": 1
+        }
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "MAP-01",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "main",
+        "rig": "Light",
+        "widthM": 2.98,
+        "clearanceM": 3.7,
+        "connected": true,
+        "advertised": false
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_PRECHECK_ONLY"
+      }
+    },
+    {
+      "id": "MAP-02",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "main",
+        "rig": "Light",
+        "widthM": 2.98,
+        "clearanceM": 2.8,
+        "connected": true,
+        "advertised": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MAIN_ROUTE_TOO_NARROW"
+      }
+    },
+    {
+      "id": "MAP-03",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "main",
+        "rig": "Heavy",
+        "widthM": 5.18,
+        "clearanceM": 5.8,
+        "connected": true,
+        "advertised": false
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_PRECHECK_ONLY"
+      }
+    },
+    {
+      "id": "MAP-04",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "main",
+        "rig": "Heavy",
+        "widthM": 5.18,
+        "clearanceM": 5,
+        "connected": true,
+        "advertised": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MAIN_ROUTE_TOO_NARROW"
+      }
+    },
+    {
+      "id": "MAP-05",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "main",
+        "rig": "Light",
+        "widthM": 2.98,
+        "clearanceM": 3.7,
+        "connected": false,
+        "advertised": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MAIN_ROUTE_DISCONNECTED"
+      }
+    },
+    {
+      "id": "MAP-06",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "ramp",
+        "rig": "Heavy",
+        "widthM": 5.18,
+        "clearanceM": 4.9,
+        "connected": true,
+        "advertised": false
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OPTIONAL_BYPASS_PERMITTED"
+      }
+    },
+    {
+      "id": "MAP-07",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "ramp",
+        "rig": "Heavy",
+        "widthM": 5.18,
+        "clearanceM": 4.9,
+        "connected": true,
+        "advertised": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "OPTIONAL_RAMP_MISADVERTISED"
+      }
+    },
+    {
+      "id": "MAP-08",
+      "domain": "MAPGEN",
+      "input": {
+        "kind": "ramp",
+        "rig": "Light",
+        "widthM": 2.98,
+        "clearanceM": 4,
+        "connected": true,
+        "advertised": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_PRECHECK_ONLY"
+      }
+    },
+    {
+      "id": "CAM-01",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 0,
+        "movementM": 0.05,
+        "dt": 0.016666666666666666,
+        "writers": 1,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "CAM-02",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 26,
+        "worldPenetrations": 0,
+        "movementM": 0.05,
+        "dt": 0.016666666666666666,
+        "writers": 1,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "OWN_RAY_COLLISION"
+      }
+    },
+    {
+      "id": "CAM-03",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 52,
+        "movementM": 0.05,
+        "dt": 0.016666666666666666,
+        "writers": 1,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WORLD_CLIPPING"
+      }
+    },
+    {
+      "id": "CAM-04",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 0,
+        "movementM": 9.1732,
+        "dt": 0.016666666666666666,
+        "writers": 1,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "CAMERA_DISCONTINUITY"
+      }
+    },
+    {
+      "id": "CAM-05",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 0,
+        "movementM": 0.05,
+        "dt": 0.016666666666666666,
+        "writers": 2,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MULTIPLE_CAMERA_WRITERS"
+      }
+    },
+    {
+      "id": "CAM-06",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 0,
+        "movementM": 0.05,
+        "dt": 0.016666666666666666,
+        "writers": 1,
+        "aimDeltaDeg": 0.3,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "ZOOM_CHANGED_AIM"
+      }
+    },
+    {
+      "id": "CAM-07",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 0,
+        "movementM": 0.05,
+        "dt": 0.016666666666666666,
+        "writers": 1,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "camera"
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WEAPON_INPUT_CHANGED"
+      }
+    },
+    {
+      "id": "CAM-08",
+      "domain": "CAMERA",
+      "input": {
+        "ownRayHits": 0,
+        "worldPenetrations": 0,
+        "movementM": 0.2,
+        "dt": 0.03333333333333333,
+        "writers": 1,
+        "aimDeltaDeg": 0,
+        "lmb": "familyA",
+        "rmb": "familyB"
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "RAC-01",
+      "domain": "RAC",
+      "input": {
+        "fps": 30,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "RAC-02",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "RAC-03",
+      "domain": "RAC",
+      "input": {
+        "fps": 144,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "OK"
+      }
+    },
+    {
+      "id": "RAC-04",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 2,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DOUBLE_TIMER"
+      }
+    },
+    {
+      "id": "RAC-05",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": false,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "CHECKPOINT_HEIGHT_INVALID"
+      }
+    },
+    {
+      "id": "RAC-06",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": false,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WRONG_CHECKPOINT_ORDER"
+      }
+    },
+    {
+      "id": "RAC-07",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "other",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WRONG_RUNNER"
+      }
+    },
+    {
+      "id": "RAC-08",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 45,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "TIMEOUT"
+      }
+    },
+    {
+      "id": "RAC-09",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "3D_SPHERE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "CHECKPOINT_SHAPE_UNFAIR"
+      }
+    },
+    {
+      "id": "RAC-10",
+      "domain": "RAC",
+      "input": {
+        "fps": 60,
+        "fixedHz": 50,
+        "timerWriter": "FixedUpdate",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "RESET_INCOMPLETE"
+      }
+    },
+    {
+      "id": "RAC-11",
+      "domain": "RAC",
+      "input": {
+        "fps": 144,
+        "fixedHz": 50,
+        "timerWriter": "Update",
+        "timeWriters": 1,
+        "runner": "robot-A",
+        "boundRunner": "robot-A",
+        "ordered": true,
+        "heightClear": true,
+        "checkpointShape": "XZ_GATE",
+        "arriveSec": 30,
+        "deadlineSec": 45,
+        "resetAtomic": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "TIMER_NOT_FIXED"
+      }
+    }
+  ]
+}

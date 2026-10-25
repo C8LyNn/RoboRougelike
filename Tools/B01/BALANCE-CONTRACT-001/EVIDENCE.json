@@ -1,0 +1,33 @@
+{
+  "taskId": "W12-B01-10-CONTRACT-RELEASE-R1",
+  "execution": {
+    "contractId": "W12-B01-10-CONTRACT-RELEASE-R1",
+    "testDateUTC": "2026-10-25",
+    "executedIn": "V8 JavaScript isolate (exact functions serialized to Node .mjs)",
+    "scenarios": 68,
+    "passed": 68,
+    "failed": 0,
+    "negativeMutationControls": 3,
+    "domains": {
+      "BUILD": 30,
+      "LEGENDARY": 11,
+      "MAPGEN": 8,
+      "CAMERA": 8,
+      "RAC": 11
+    },
+    "errors": [],
+    "verdict": "PASS",
+    "nativeUnity": "NOT_RUN",
+    "g2": "HOLD"
+  },
+  "producerUnityNativeFromQA239": {
+    "sourceSHA": "489676414a3eb45fe70124098e3778a81d0aaff2",
+    "qaSHA": "1b515154f5fadf56dabbd21977f5359c88208b23",
+    "nunit": "34 PASS / 4 FAIL",
+    "demoErrorShader": "10/10 actual captures",
+    "physicalR3R6": "NOT_RUN"
+  },
+  "newUnity": "NOT_RUN",
+  "result": "DESIGN CONTRACT TESTS PASS, source-only",
+  "noG2": true
+}

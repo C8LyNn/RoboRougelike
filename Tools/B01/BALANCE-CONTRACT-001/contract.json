@@ -1,0 +1,232 @@
+{
+  "id": "W12-B01-10-CONTRACT-RELEASE-R1",
+  "version": "1.0.1",
+  "owner": "B01-10",
+  "state": "DESIGN_CONTRACT_FOR_PRODUCER_IMPLEMENTATION",
+  "nativeUnity": "NOT_RUN",
+  "g2": "HOLD",
+  "evidence": {
+    "buildProducer": "489676414a3eb45fe70124098e3778a81d0aaff2",
+    "buildQA": "1b515154f5fadf56dabbd21977f5359c88208b23",
+    "legendR0": "d5f6bfb9e6c019aadcaec2ae70ca3390c3923f61",
+    "legendR1": "7e9d9ca0a0ef6d4c9bf1ce39fdb187b0d960958d",
+    "cameraQA": "17a2399f74b7562be19c2b429dc0b1312957c66a",
+    "nunit": {
+      "passed": 34,
+      "failed": 4,
+      "total": 38
+    },
+    "demoErrorShaderCaptures": 10
+  },
+  "build": {
+    "hit": {
+      "allowOnly": "explicit socketId+registered structural collider token+authoritative part instance owner",
+      "maxGapM": 0.01,
+      "maxFaceDeviationDeg": 25.8,
+      "decorationCanAuthorize": false
+    },
+    "root": {
+      "maxTrustedCoreCount": 1,
+      "additionalLoadedCore": "QUARANTINE_SAVE_AND_DISABLE_BUILD",
+      "untrustedIslandCanSeedBfs": false
+    },
+    "footprint": {
+      "topology": "six-neighbour cells AND verified contiguous physical edges",
+      "sameOwnerIdBridgesPhysicalGap": false
+    },
+    "volume": {
+      "narrowphase": "Unity Physics.ComputePenetration, including oversized and rotated enabled colliders",
+      "maxNumericalPenetrationM": 0.005,
+      "missingEvidence": "REJECT",
+      "originalNativeOverlapM": 0.31
+    },
+    "demo": {
+      "pipeline": "URP",
+      "allowedShaders": [
+        "Universal Render Pipeline/Lit",
+        "Universal Render Pipeline/Simple Lit"
+      ],
+      "maxErrorMagentaFraction": 0.01,
+      "captures": [
+        [
+          1280,
+          720
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "candidateStates": 5,
+      "requireVisibleGreenAndRed": true
+    }
+  },
+  "legendary": {
+    "policy": {
+      "oneOfEachDefinitionMountedPerRobot": true,
+      "zeroHpMountedCounts": true,
+      "noGlobalDifferentDefinitionCap": true,
+      "inventoryDuplicateTypeAllowed": true,
+      "uniqueInstanceIdAcrossSave": true,
+      "weaponFamiliesPerRobot": 2,
+      "ordinaryRailgunSharesLegendaryRailgunFamily": true,
+      "sourceOfTruth": "R3VehicleModel.Parts + existing inventory; physical InstanceId maps R3PartState.Id"
+    },
+    "definitions": [
+      {
+        "Id": "LEG-WPN-001",
+        "DisplayName": "Przebijacz",
+        "BasePartKind": "Gun",
+        "WeaponFamily": "Railgun",
+        "Footprint": {
+          "Width": 3,
+          "Height": 2,
+          "Depth": 2
+        },
+        "MountSocketKind": "WeaponBase",
+        "Ability": {
+          "id": "PENETRATING_RAIL_SHOT",
+          "trigger": "WeaponFamily_Railgun",
+          "cooldownPrototypeSeconds": 5,
+          "implemented": false
+        },
+        "WeakSide": "rear-breech",
+        "MassCalibration": {
+          "finalMassKg": null,
+          "status": "UNRESOLVED_NATIVE_TEST",
+          "r0Kg": 650,
+          "r1Kg": 220,
+          "testRangeKg": [
+            180,
+            700
+          ],
+          "testGridKg": [
+            220,
+            435,
+            650
+          ]
+        }
+      },
+      {
+        "Id": "LEG-MOV-001",
+        "DisplayName": "Serce Zawisu",
+        "BasePartKind": "HoverEngine",
+        "WeaponFamily": null,
+        "Footprint": {
+          "Width": 3,
+          "Height": 3,
+          "Depth": 2
+        },
+        "MountSocketKind": "MobilityHub",
+        "Ability": {
+          "id": "HOVER_LATERAL_BURST",
+          "trigger": "MobilityAbility",
+          "cooldownPrototypeSeconds": 12,
+          "implemented": false
+        },
+        "WeakSide": "underside-emitter",
+        "MassCalibration": {
+          "finalMassKg": null,
+          "status": "UNRESOLVED_NATIVE_TEST",
+          "r0Kg": 780,
+          "r1Kg": 150,
+          "testRangeKg": [
+            120,
+            850
+          ],
+          "testGridKg": [
+            150,
+            465,
+            780
+          ]
+        }
+      }
+    ],
+    "massTest": {
+      "sourceMassConflicts": "650/220 kg weapon; 780/150 kg hover; NONE approved",
+      "rigs": [
+        "Light 2.980m",
+        "Heavy 5.180m"
+      ],
+      "seedsPerRig": 100,
+      "loadoutLegendCounts": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "measure": [
+        "0-to-100 acceleration",
+        "turn radius",
+        "roll/tip rate",
+        "Rigidbody mass and CoM",
+        "recoil angle",
+        "effective DPS",
+        "ammo and repair expense",
+        "collision count"
+      ],
+      "dominanceRule": "At equal mass, cells and cost, 4-legends cannot strictly outperform baseline in every measured dimension; rework instead of global cap"
+    },
+    "gameplayBlockers": [
+      "MobilityHub typed adapter not yet certified by BUILD",
+      "R3 multi-cell attachment and footprint PhysX",
+      "zeroHP identity retained on repair/save/reward",
+      "2 weapon families LMB/RMB",
+      "no fabricated heat/energy authority"
+    ]
+  },
+  "mapgen": {
+    "rigWidthsM": {
+      "Light": 2.98,
+      "Heavy": 5.18
+    },
+    "clearancePerSideM": 0.25,
+    "mainRoute": "Validate actual assembled width+swept geometry and real R6 drives; reject/regenerate unsupported narrow 10m seed; nominal hull width is not a certificate",
+    "optionalRamp": "LIGHT_FIRST; Heavy optional inaccessible side ramp not whole-race fail if protected Heavy main route passes",
+    "seedsPerRecipeDifficultyRig": 100
+  },
+  "camera": {
+    "nativeOwnRayIntersectionsObserved": 26,
+    "observedCorridorJumpM": 9.1732,
+    "allowedOwnRayIntersections": 0,
+    "allowedWorldPenetrations": 0,
+    "proposedMaxContinuousCameraSpeedMps": 15,
+    "maxAimDeltaDeg": 0.05,
+    "oneLateUpdateWriter": true,
+    "zoomNewFeatureBlockedUntilCameraG1": true,
+    "lmb": "familyA",
+    "rmb": "familyB",
+    "resolutions": [
+      [
+        1280,
+        720
+      ],
+      [
+        1920,
+        1080
+      ]
+    ],
+    "rigs": [
+      "Light",
+      "Heavy",
+      "Tall",
+      "Wide"
+    ]
+  },
+  "rac": {
+    "timeOwner": "FixedUpdate",
+    "fixedHz": 50,
+    "renderFPS": [
+      30,
+      60,
+      144
+    ],
+    "updateRole": "render UI only",
+    "checkpoint": "nonblocking XZ gate with vertical extent including physical chassis",
+    "actor": "canonical vehicle owner",
+    "strictOrder": true,
+    "timeoutAtDeadline": true,
+    "resetAtomic": true,
+    "maxCrossFpsDiscrepancySec": 0.02
+  }
+}
