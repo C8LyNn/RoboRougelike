@@ -54,6 +54,8 @@ def material(name, rgba, metallic, roughness):
     return mat
 
 def place(ob, col, parent=None):
+    if ob.type == "MESH":
+        ob.data.name = ob.name + "_mesh"
     for old in list(ob.users_collection):
         old.objects.unlink(ob)
     col.objects.link(ob)
