@@ -1,0 +1,66 @@
+name: M05-018 Portable Worklight Asset QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-model-m05-018-portable-worklight
+    paths:
+      - 'Tools/ModelFactory/M05/M05-018/**'
+      - '.github/workflows/ci-model-m05-018.yml'
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M05/M05-018/**'
+      - '.github/workflows/ci-model-m05-018.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-asset:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax checks
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M05/M05-018/generate.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-018/qa_blender.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Generate and independently QA asset
+        run: |
+          mkdir -p /tmp/m05-018
+          blender -b -t 2 --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M05/M05-018/qa_blender.py \
+            -- --output /tmp/m05-018
+      - name: Validate generated report
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          out=Path('/tmp/m05-018')
+          report=json.loads((out/'M05-018-qa.json').read_text())
+          assert report['geometry']=='PASS'
+          assert report['repeat_build']=='PASS'
+          assert report['foreign_object_preserved']=='PASS'
+          assert report['glb_structure']=='PASS'
+          assert report['glb_animations']>=1
+          assert (out/'M05-018.glb').stat().st_size>1000
+          assert (out/'M05-018.blend').stat().st_size>1000
+          print('M05-018 Blender + GLB asset QA PASS')
+          PY
+      - name: Upload generated asset files and QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-018-portable-worklight-GLB-BLEND-QA
+          path: |
+            /tmp/m05-018/M05-018.glb
+            /tmp/m05-018/M05-018.blend
+            /tmp/m05-018/M05-018-qa.json
+          if-no-files-found: warn
+          retention-days: 14
