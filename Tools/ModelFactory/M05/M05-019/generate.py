@@ -97,6 +97,8 @@ def finalize(obj, name, col, mat, parent=None, pos=None, angle=0.0, bevel=0.0):
         mod.segments = 2
         if hasattr(mod, "affect"):
             mod.affect = "EDGES"
+        if hasattr(obj.data, "use_auto_smooth"):
+            obj.data.use_auto_smooth = True
         obj.modifiers.new("Weighted normals", "WEIGHTED_NORMAL")
     return obj
 
