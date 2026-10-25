@@ -40,6 +40,8 @@ def move_to_collection(obj):
     for old in tuple(obj.users_collection):
         old.objects.unlink(obj)
     collection.objects.link(obj)
+    if obj.type == "MESH":
+        obj.data.name = obj.name + "_Mesh"
     return obj
 
 def attach(obj, parent, position):
@@ -110,6 +112,9 @@ def clean():
         for obj in tuple(old.objects):
             bpy.data.objects.remove(obj, do_unlink=True)
         bpy.data.collections.remove(old)
+    for mesh in tuple(bpy.data.meshes):
+        if mesh.name.startswith(TAG + "_") and mesh.users == 0:
+            bpy.data.meshes.remove(mesh)
     for mat in tuple(bpy.data.materials):
         if mat.name.startswith(TAG + "_") and mat.users == 0:
             bpy.data.materials.remove(mat)
