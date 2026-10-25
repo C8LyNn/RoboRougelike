@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="14" result="Passed" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0,3919335">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1013" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.391934" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1439" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-OBJ001/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="359" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:26Z" duration="0.327382" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="20296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1123" name="OBJ001IntegrationTests" fullname="OBJ001IntegrationTests" classname="OBJ001IntegrationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:26Z" duration="0.321630" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1125" name="HostEntryUsesActualPreparationGarageAndCanonicalEncounter" fullname="OBJ001IntegrationTests.HostEntryUsesActualPreparationGarageAndCanonicalEncounter" methodname="HostEntryUsesActualPreparationGarageAndCanonicalEncounter" classname="OBJ001IntegrationTests" runstate="Runnable" seed="86700742" result="Passed" start-time="2026-10-24 23:25:16Z" end-time="2026-10-24 23:25:20Z" duration="3.451814" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1126" name="ImportedObjectiveUsesTheActualDamageableAsItsOnlyHealthAuthority" fullname="OBJ001IntegrationTests.ImportedObjectiveUsesTheActualDamageableAsItsOnlyHealthAuthority" methodname="ImportedObjectiveUsesTheActualDamageableAsItsOnlyHealthAuthority" classname="OBJ001IntegrationTests" runstate="Runnable" seed="469505060" result="Passed" start-time="2026-10-24 23:25:20Z" end-time="2026-10-24 23:25:23Z" duration="3.199613" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+        </test-case>
+        <test-case id="1124" name="OriginalObjectiveSupportsExplicitCompletionOnlyForLiveActiveDefense" fullname="OBJ001IntegrationTests.OriginalObjectiveSupportsExplicitCompletionOnlyForLiveActiveDefense" methodname="OriginalObjectiveSupportsExplicitCompletionOnlyForLiveActiveDefense" classname="OBJ001IntegrationTests" runstate="Runnable" seed="1143757714" result="Passed" start-time="2026-10-24 23:25:23Z" end-time="2026-10-24 23:25:26Z" duration="3.409644" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1922" name="RoboRougelike.OBJ001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-OBJ001/Library/ScriptAssemblies/RoboRougelike.OBJ001.EditModeTests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.010649" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="20296" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1923" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.010331" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1924" name="Mechanics" fullname="RoboRougelike.Mechanics" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.010155" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1925" name="OBJ001" fullname="RoboRougelike.Mechanics.OBJ001" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.009993" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1926" name="Tests" fullname="RoboRougelike.Mechanics.OBJ001.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.009800" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1910" name="ReactorDefenseEditModeTests" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.009098" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1919" name="ActiveConfigurationIsRejected" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.ActiveConfigurationIsRejected" methodname="ActiveConfigurationIsRejected" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="1910725045" result="Passed" start-time="2026-10-24 23:25:26Z" end-time="2026-10-24 23:25:27Z" duration="0.003392" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1912" name="BeginRequiresEnabledAndCanOnlyRunOnce" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.BeginRequiresEnabledAndCanOnlyRunOnce" methodname="BeginRequiresEnabledAndCanOnlyRunOnce" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="564142818" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000240" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1916" name="ClockWinsExactlyOnceAtDeadline" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.ClockWinsExactlyOnceAtDeadline" methodname="ClockWinsExactlyOnceAtDeadline" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="642277557" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000845" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1913" name="DamageReportsActualAmount" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.DamageReportsActualAmount" methodname="DamageReportsActualAmount" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="216319398" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000788" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1915" name="FatalDamageLosesOnlyOnce" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.FatalDamageLosesOnlyOnce" methodname="FatalDamageLosesOnlyOnce" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="307497222" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000403" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1921" name="FirstTerminalActionDeterminesOutcome" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.FirstTerminalActionDeterminesOutcome" methodname="FirstTerminalActionDeterminesOutcome" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="672158229" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000208" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1920" name="InvalidConfigurationIsRejected" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.InvalidConfigurationIsRejected" methodname="InvalidConfigurationIsRejected" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="1177679113" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000185" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1917" name="InvalidNumbersDoNotMutateState" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.InvalidNumbersDoNotMutateState" methodname="InvalidNumbersDoNotMutateState" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="2104887856" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000228" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1914" name="RepairClampsAndRejectsFullIntegrity" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.RepairClampsAndRejectsFullIntegrity" methodname="RepairClampsAndRejectsFullIntegrity" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="1838307006" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000304" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1918" name="ResetRestoresStateAndAllowsRestart" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.ResetRestoresStateAndAllowsRestart" methodname="ResetRestoresStateAndAllowsRestart" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="352532088" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000202" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1911" name="StartsIdleAndRejectsDamage" fullname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests.StartsIdleAndRejectsDamage" methodname="StartsIdleAndRejectsDamage" classname="RoboRougelike.Mechanics.OBJ001.Tests.ReactorDefenseEditModeTests" runstate="Runnable" seed="1000531553" result="Passed" start-time="2026-10-24 23:25:27Z" end-time="2026-10-24 23:25:27Z" duration="0.000169" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

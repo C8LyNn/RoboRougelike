@@ -65,7 +65,7 @@ namespace RoboRougelike.R1
                 if (player != null)
                 {
                     var core = player.Core;
-                    GUI.Label(new Rect(36, 58, 630, 28), $"RDZEŃ: {(core != null ? core.CurrentHp : 0):0}/{(core != null ? core.MaxHp : 0):0} HP   •   Zniszcz rdzeń przeciwnika", body);
+                    GUI.Label(new Rect(36, 58, 630, 28), $"RDZEŃ: {(core != null ? core.CurrentHp : 0):0}/{(core != null ? core.MaxHp : 0):0} HP   •   {(run.ReactorActive?"Chroń reaktor":"Zniszcz rdzeń przeciwnika")}", body);
                     int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
                     GUI.Label(new Rect(36, 93, 630, 26), $"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount}    Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount}    Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}", small);
                     var physicsBody=player.GetComponent<Rigidbody>();
@@ -74,11 +74,13 @@ namespace RoboRougelike.R1
                 if (!run.Paused)
                 {
                     Panel(new Rect(925,18,335,160));
+                    if(!DrawReactorCombatStatus(run)){
                     GUI.Label(new Rect(940,28,305,48),run.CurrentEncounter.Title,heading);
                     int row=0;foreach(var enemy in run.Encounter.Enemies)
                     {
                         if(enemy==null||enemy.IsDefeated)continue;
                         GUI.Label(new Rect(940,80+row*24,305,25),$"{enemy.name}: rdzeń {enemy.Core.CurrentHp:0} HP",small);row++;
+                    }
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
                     GUI.Label(new Rect(629, 341, 32, 38), "+", heading);
@@ -95,6 +97,7 @@ namespace RoboRougelike.R1
             if (run.Paused)
             {
                 GUI.Label(new Rect(350, 210, 600, 80), "Pauza", title);
+                if(run.ReactorActive&&GUI.Button(new Rect(350,280,580,38),"Zakończ próbę obrony i wróć do menu",compactButton))run.RestartRun();
                 if (GUI.Button(new Rect(350, 330, 580, 64), "Wznów walkę  [Esc]", button)) run.TogglePause();
                 DrawMovementPause(run);DrawSuspensionPause(run);
                 return;
@@ -120,6 +123,7 @@ namespace RoboRougelike.R1
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
                 if (GUI.Button(new Rect(90,600,500,65), "Rozpocznij Gauntlet  [Enter]", button)) run.StartRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
+                if(GUI.Button(new Rect(640,554,550,38),"Obrona reaktora • przygotuj pojazd",compactButton))run.PrepareReactorRun();
                 GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM — ogień • Esc — pauza",small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
@@ -229,6 +233,7 @@ namespace RoboRougelike.R1
                 $"{R4WeaponDefinition.PartName(selected)}\nDemontaż po zdjęciu: {model.DismantleValue(selected)} Z",small);
             }
             GUI.Label(new Rect(350,25,580,60),run.SandboxWorkshop?$"{model.Design.Name} • Warsztat poligonu":$"{model.Design.Name}  •  Następna walka {run.Progress.EncounterIndex+1}/{run.Progress.TotalEncounters}",heading);
+            DrawReactorGarageAction(run);
             if(GUI.Button(new Rect(355,538,125,44),"Obrót ←",compactButton))garage.Orbit(-25);
             if(GUI.Button(new Rect(485,538,125,44),"Obrót →",compactButton))garage.Orbit(25);
             if(GUI.Button(new Rect(615,538,125,44),"Widok ↑",compactButton))garage.Tilt(10);
@@ -238,8 +243,8 @@ namespace RoboRougelike.R1
             GUI.enabled=model.CanDeploy;
             if(GUI.Button(new Rect(360,654,270,40),"Testuj na poligonie",compactButton))run.EnterTestRange();
             GUI.enabled=run.SandboxWorkshop||model.CanDeploy;
-            if(GUI.Button(new Rect(645,654,270,40),run.SandboxWorkshop?"Menu główne":"Następna trasa",compactButton))
-            {if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
+            if(GUI.Button(new Rect(645,654,270,40),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?"Menu główne":"Następna trasa",compactButton))
+            {if(run.ReactorPrepared)run.ChooseReactorDefense();else if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
             GUI.enabled=true;
             if(!model.CanDeploy)GUI.Label(new Rect(970,650,280,55),model.DeployError,small);
         }

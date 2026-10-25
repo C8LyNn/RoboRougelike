@@ -1,0 +1,14 @@
+{
+  "hashes": {
+    "RoboRougelike_Data/Managed/Assembly-CSharp.dll": "6BDC63CFA30A7090E62E2D8A085EDEDC3C44666C4BEE0E5031DE48CBE5A813F6",
+    "RoboRougelike_Data/Managed/RoboRougelike.OBJ001.dll": "E4DD18205E09F0D67637C00B8A5DB690DC27C3BB4804AEE5C30203044A14F1F4",
+    "RoboRougelike.exe": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8"
+  },
+  "startedUtc": "2026-10-24T23:57:56.2117466Z",
+  "source": "e0ea2d155fca2a6190b38c184d3399104373e4df",
+  "pid": 75740,
+  "mode": "Retail",
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\OBJ001-RC1-extracted\\RoboRoguelike_OBJ001_RC1_Windows_x64\\RoboRougelike.exe",
+  "height": 720,
+  "width": 1280
+}

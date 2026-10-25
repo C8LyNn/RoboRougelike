@@ -265,6 +265,12 @@ namespace RogueMachine.P12PipelineSafe
         }
 
         public void SetCombatActive(bool active) { combatActive = active; }
+        public Transform EncounterTarget=>playerRoot;
+        public void RetargetEncounter(Transform target)
+        {
+            if(target==null||playerRoot==target)return;
+            playerRoot=target;currentTarget=null;nextTargetTime=0;
+        }
 
         public void ConfigureEncounter(Transform player, float healthMultiplier,
             float damageMultiplier, float intervalMultiplier, float speedMultiplier)
@@ -706,8 +712,13 @@ namespace RogueMachine.P12PipelineSafe
                 }
             }
 
-            if (blockTargets.Count == 0)
-                return null;
+            if(blockTargets.Count==0)
+                foreach(var hp in playerRoot.GetComponentsInChildren<P12PipelineSafeDamageable>())
+                {
+                    var collider=hp.GetComponent<Collider>();
+                    if(!hp.IsDead&&collider!=null&&collider.enabled)blockTargets.Add(collider);
+                }
+            if(blockTargets.Count==0)return null;
 
             return blockTargets[
                 Random.Range(0, blockTargets.Count)

@@ -1,0 +1,51 @@
+{
+    "method": "QA-only frame-time sampling; optional controlled Application.Quit and empty-scene isolation",
+    "startedUtc": "2026-10-24T23:54:05.8117306Z",
+    "finishedUtc": "2026-10-24T23:56:04.8164053Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "cpu": "AMD Ryzen 9 9950X 16-Core Processor ",
+    "width": 1920,
+    "height": 1080,
+    "targetFrameRate": 60,
+    "completedEncounters": 1,
+    "bonusAcquisitions": 1,
+    "emptyScene": false,
+    "quitRequested": false,
+    "applicationQuitReached": true,
+    "sawVictory": false,
+    "restartVerified": false,
+    "liveGameControllers": 1,
+    "liveCameras": 1,
+    "maxTransitionSeconds": 0.06435394287109375,
+    "combat": [
+        {
+            "stage": 1,
+            "frames": 2548,
+            "peakEnemies": 3,
+            "peakParts": 226,
+            "peakDebris": 11,
+            "encounter": "Obrona reaktora",
+            "seconds": 42.4722900390625,
+            "medianMs": 16.666702270507814,
+            "p95Ms": 16.67010498046875,
+            "p99Ms": 16.719196319580079,
+            "maxMs": 18.673702239990236,
+            "peakAllocatedBytes": 142216627
+        },
+        {
+            "stage": 2,
+            "frames": 820,
+            "peakEnemies": 3,
+            "peakParts": 259,
+            "peakDebris": 7,
+            "encounter": "Otwarty konwój",
+            "seconds": 13.66758918762207,
+            "medianMs": 16.666702270507814,
+            "p95Ms": 16.669601440429689,
+            "p99Ms": 16.693401336669923,
+            "maxMs": 16.898399353027345,
+            "peakAllocatedBytes": 149728828
+        }
+    ],
+    "errors": []
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "expected": "41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5",
+    "matches": true,
+    "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_W7_RC1_Windows_x64.zip",
+    "actual": "41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5"
+  },
+  {
+    "expected": "2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b",
+    "matches": true,
+    "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_W8_RC1_Windows_x64.zip",
+    "actual": "2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b"
+  },
+  {
+    "expected": "3b57f2b5e6a2130cbeb66eed6c299788e023fc61f0ee3dfb74002436a44143dd",
+    "matches": true,
+    "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_B01_PHY_R1_Windows_x64.zip",
+    "actual": "3b57f2b5e6a2130cbeb66eed6c299788e023fc61f0ee3dfb74002436a44143dd"
+  }
+]

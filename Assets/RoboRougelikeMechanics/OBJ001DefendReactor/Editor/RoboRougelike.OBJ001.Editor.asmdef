@@ -1,0 +1,18 @@
+{
+  "name": "RoboRougelike.OBJ001.Editor",
+  "rootNamespace": "RoboRougelike.Mechanics.OBJ001.Editor",
+  "references": [
+    "RoboRougelike.OBJ001"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -9,6 +9,8 @@ Roguelike z budowaniem modułowego pojazdu: garaż 3D, zniszczalne części, sal
 3. Otwórz projekt, poczekaj na pobranie zależności UPM i import. Nie zmieniaj wersji silnika.
 4. Otwórz **Assets/scene 1.unity**, włącz Play i rozpocznij przez interfejs gry. `SampleScene` pozostaje sceną szablonu.
 
+Na gałęzi integracji OBJ-001 wybierz pojazd i **Obrona reaktora • przygotuj pojazd**, a w garażu **Broń reaktora**. Obroń reaktor600HP przed trzema falami2/2/3 przeciwników; zwycięstwo prowadzi do zwykłych nagród i garażu. Obrona jest też dostępna w garażu wyprawy. [Raport integracji, instrukcja i rzeczywiste wyniki QA](Docs/OBJ001_INTEGRATION_QA.md).
+
 WASD — jazda; mysz — celowanie/strzał według interfejsu broni; Shift — booster; Space — jump; Q — blink; E — grapple/release; G — gyro; Z/C — obrót Omni/Hover. Urządzenia wymagają odpowiednich części zamontowanych w garażu. Można wybrać Wheels, Tracks, Omni lub Hover; Hover wyłącza siłę aktywnego zawieszenia i przywraca ustawienie po zmianie napędu.
 
 ## Testy i rozwój

@@ -1,0 +1,26 @@
+[
+  {
+    "actorPresent": true,
+    "originalObjectivePresent": true,
+    "folder": "MOV001-009-Windows",
+    "testAssemblies": [],
+    "qaTypes": [],
+    "assemblySha256": "6BDC63CFA30A7090E62E2D8A085EDEDC3C44666C4BEE0E5031DE48CBE5A813F6",
+    "objectiveSha256": "E4DD18205E09F0D67637C00B8A5DB690DC27C3BB4804AEE5C30203044A14F1F4"
+  },
+  {
+    "actorPresent": true,
+    "originalObjectivePresent": true,
+    "folder": "MOVSeries-QA-Windows",
+    "testAssemblies": [],
+    "qaTypes": [
+      "RoboRougelike.R4.RRLW2RuntimeQA",
+      "RoboRougelike.R4.RRLW5RuntimeDiagnostics",
+      "RoboRougelike.QA.RRLW8RuntimeQA",
+      "RoboRougelike.QA.B01PhysicsRuntimeQA",
+      "RoboRougelike.OBJ001Integration.OBJ001RuntimeQA"
+    ],
+    "assemblySha256": "A4A5F9DB15D8609EAF8FC73612E0DAD5C7EB3AEC8CAFB4F9059CBF37F009F33F",
+    "objectiveSha256": "28EC48AC842F1B21BAA4A6D08D4C5B7CF6992BE15A177ACE03E1A2F38B3B5A39"
+  }
+]

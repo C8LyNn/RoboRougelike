@@ -1,0 +1,19 @@
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+ 0.1 kb	 0.0% Packages/com.unity.burst/Runtime/CompilerServices/IgnoreWarningAttribute.cs
+[MOV SERIES BUILD] qa=False result=Succeeded bytes=103294717 errors=0 warnings=4
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV009ActiveSuspension\Runtime\ActiveSuspensionPrototypeInput.cs(10,53): warning CS0414: The field 'ActiveSuspensionPrototypeInput.offsetChangeMetersPerSecond' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV004GyroscopicStabilizer\Runtime\GyroPrototypeInput.cs(9,42): warning CS0414: The field 'GyroPrototypeInput.toggleKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(11,42): warning CS0414: The field 'PrototypeGrappleInput.releaseKey' is assigned but its value is never used
+Assets\RoboRougelikeMechanics\MOV006MagneticGrapple\Runtime\PrototypeGrappleInput.cs(10,42): warning CS0414: The field 'PrototypeGrappleInput.fireKey' is assigned but its value is never used
+[MOV SERIES BUILD] qa=True result=Succeeded bytes=103386406 errors=0 warnings=4

@@ -1,0 +1,137 @@
+{
+  "originalPR": 14,
+  "originalCommit": "cdc36875efe4b5661a7c41c0b7b60d0010850e2b",
+  "testedSource": "e0ea2d155fca2a6190b38c184d3399104373e4df",
+  "files": [
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Editor/OBJ001DemoSceneBuilder.cs",
+      "originalLines": 27,
+      "matchingOriginalLines": 27,
+      "byteIdentical": true,
+      "originalSha256": "b3ef4c5d7fe1b0ed8b08b9bdd6d5eb3b7a8416ce4a31496bc3cb4a514cad6609",
+      "currentSha256": "b3ef4c5d7fe1b0ed8b08b9bdd6d5eb3b7a8416ce4a31496bc3cb4a514cad6609"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Obj001Phase.cs",
+      "originalLines": 1,
+      "matchingOriginalLines": 1,
+      "byteIdentical": true,
+      "originalSha256": "b53f829f73cbdb8f94e98c790f0c683323bce834fb9a1f6ccb1c60cc12cd37ae",
+      "currentSha256": "b53f829f73cbdb8f94e98c790f0c683323bce834fb9a1f6ccb1c60cc12cd37ae"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/ReactorDefenseDemoUI.cs",
+      "originalLines": 31,
+      "matchingOriginalLines": 31,
+      "byteIdentical": true,
+      "originalSha256": "2137bd425e457ec279c72ccf5bdcea4fdbe4a83ab4f6ff91fa503a29248c690e",
+      "currentSha256": "2137bd425e457ec279c72ccf5bdcea4fdbe4a83ab4f6ff91fa503a29248c690e"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/ReactorDefenseObjective.cs",
+      "originalLines": 121,
+      "matchingOriginalLines": 117,
+      "byteIdentical": false,
+      "originalSha256": "a0d8665f381b75c866effba8ae95ffadbf97658a8cd75f56f7aee5239881a038",
+      "currentSha256": "d9bb240791bbebe9444b2440558b03d1317b51e43b996beaa396b1e8d50ea4d5"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/EditMode/ReactorDefenseEditModeTests.cs",
+      "originalLines": 159,
+      "matchingOriginalLines": 159,
+      "byteIdentical": true,
+      "originalSha256": "eea74dfa21056b3a4dabe89e2cc0af519f71a3467d0c92b41bff73a432e92229",
+      "currentSha256": "eea74dfa21056b3a4dabe89e2cc0af519f71a3467d0c92b41bff73a432e92229"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/PlayMode/ReactorDefensePlayModeTests.cs",
+      "originalLines": 62,
+      "matchingOriginalLines": 62,
+      "byteIdentical": true,
+      "originalSha256": "a9b8f05d6d5fb853eb802852ca2b1851b0c6d6fab67d8247ed31e7c209ad0537",
+      "currentSha256": "a9b8f05d6d5fb853eb802852ca2b1851b0c6d6fab67d8247ed31e7c209ad0537"
+    }
+  ],
+  "originalMetaFiles": [
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor.meta",
+      "byteIdentical": true,
+      "sha256": "ab504f127a95721867b20bacc7c44a4920fab2e73b8554d68b3fb883fd723b30"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Editor.meta",
+      "byteIdentical": true,
+      "sha256": "6e77415cc828cd3b0253a206aec531e2a3151f153add052376f28f423426e4e6"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Editor/OBJ001DemoSceneBuilder.cs.meta",
+      "byteIdentical": true,
+      "sha256": "0abb0d4ca595fdf744ece0048fa7931583925c6617233c0a3ccf0c891bd37ad2"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Editor/RoboRougelike.OBJ001.Editor.asmdef.meta",
+      "byteIdentical": true,
+      "sha256": "8347805ae503ce055f27780eca2e77a9656ba284b038aaee3929c86006e8c9be"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Obj001Phase.cs.meta",
+      "byteIdentical": true,
+      "sha256": "1907f6e6881755161b4e76e1a01df35277ef1a0db98bd94e63b64123eb2b6efe"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/README.md.meta",
+      "byteIdentical": true,
+      "sha256": "b506cd0af269d950f6c3e575fad1e87fccd0bbb207661fac9a03b8c3101febf2"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/ReactorDefenseDemoUI.cs.meta",
+      "byteIdentical": true,
+      "sha256": "2dff1c265d7dafb4b35cec523cd6743ce001a27c14415e13d7f76cb8f8afd370"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/ReactorDefenseObjective.cs.meta",
+      "byteIdentical": true,
+      "sha256": "f700cc2ca483c272ed7695130a8f7ea3d17e22b4a04c022235c309c92a01beb9"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/RoboRougelike.OBJ001.asmdef.meta",
+      "byteIdentical": true,
+      "sha256": "8b7c677af7c15eeffaacc670832657c12c1d4a2cb05b1a695d324aa972466fb6"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests.meta",
+      "byteIdentical": true,
+      "sha256": "0647aca6a5f61e197896cb0ba4a65b7ae69edf83850fcdb5e36623e5bbb41d96"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/EditMode.meta",
+      "byteIdentical": true,
+      "sha256": "6d07c24458d27398077708280822150442865ca744d61f2aa159a3f378ca696a"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/EditMode/ReactorDefenseEditModeTests.cs.meta",
+      "byteIdentical": true,
+      "sha256": "39d1463c58caa0fec8848880b77f93809065c3fe3076068bf8baf410fedcd879"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/EditMode/RoboRougelike.OBJ001.EditModeTests.asmdef.meta",
+      "byteIdentical": true,
+      "sha256": "e2e7b0de8430f4518b84588c50882706eb9b85aa0cd9061b3236c3385fe9343b"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/PlayMode.meta",
+      "byteIdentical": true,
+      "sha256": "205a8d829ff9d2bf1bfbce16446328b0ebb35ac64b2dc36f005025f3946e9fae"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/PlayMode/ReactorDefensePlayModeTests.cs.meta",
+      "byteIdentical": true,
+      "sha256": "65f8d92ab6ed56207c99dc02cb6bdbba127eca5b53bc0c464c6a15952496ea68"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/OBJ001DefendReactor/Tests/PlayMode/RoboRougelike.OBJ001.PlayModeTests.asmdef.meta",
+      "byteIdentical": true,
+      "sha256": "ace761c21f72c713ec4bd501acff2154894262a28f47f95751ba39fa4cbf3d38"
+    }
+  ]
+}

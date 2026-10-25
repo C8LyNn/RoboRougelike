@@ -48,7 +48,7 @@ namespace RoboRougelike.R1
             TrackRewardLedger(ledger);
             if(rewardInventoryOpen){DrawRewardInventory(run);return;}
             const int partsLimit=3;
-            GUI.Label(new Rect(45,30,1190,60),"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
+            GUI.Label(new Rect(45,30,1190,60),run.LastActivityWasReactor?"REAKTOR OBRONIONY • WYBÓR NAGRÓD":"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
                 $"DWA NIEZALEŻNE WYBORY: 1 z 3 modułów bonusowych + do 3 części z wraków. +{run.LastScrapReward} Z za walkę.",body);
             GUI.Label(new Rect(45,155,355,32),"MODUŁ BONUSOWY • 1 Z 3",heading);
