@@ -164,7 +164,10 @@ def blender_export(out, meshes):
     old = bpy.data.collections.get(COLLECTION)
     if old:
         for obj in list(old.objects):
+            data = obj.data
             bpy.data.objects.remove(obj,do_unlink=True)
+            if isinstance(data, bpy.types.Mesh) and data.users == 0:
+                bpy.data.meshes.remove(data)
         bpy.data.collections.remove(old)
     collection = bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(collection)
