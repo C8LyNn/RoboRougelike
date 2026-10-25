@@ -318,6 +318,9 @@ def main():
         assert first==counts(col), "Repeated generation changed resource counts"
         assert foreign.name in bpy.data.objects, "Generator removed foreign object"
     kinematics=assert_kinematics(col)
+    if foreign:
+        bpy.data.objects.remove(foreign,do_unlink=True)
+        foreign=None
     fbx=export(col,Path(args.out).resolve())
     result={"id":"M05-024","status":"BLENDER_PASS","counts":counts(col),
         "materials":list(MATERIALS),"animation_frames":FRAME_COUNT,
@@ -326,8 +329,6 @@ def main():
     path=Path(args.out).resolve()/"qa_m05_024.json"
     path.write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
     print("M05_024_QA "+json.dumps(result,sort_keys=True))
-    if foreign:
-        bpy.data.objects.remove(foreign,do_unlink=True)
 
 if __name__=="__main__":
     main()
