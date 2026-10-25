@@ -1,0 +1,70 @@
+{
+  "package_id": "B01-VIS-LEGENDARY-W12-R1",
+  "owner": "B01-30",
+  "recipient": "Codex",
+  "version": "1.0.0-R1",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "design_contract_sha": "93f290acca26839792a5bec8ea42415ac83932f3",
+  "mode": "ISOLATED_MODEL_GLTF_SOURCE_REWORK",
+  "noGameIntegration": true,
+  "noMerge": true,
+  "g2Approved": false,
+  "status": "PRODUCER_PARTIAL_BINARY_LOCAL_AND_GIT_VERIFIED;CI_ZIP_VERDICT_PENDING;G0_TARGET_PENDING",
+  "binaries": [
+    {
+      "modelId": "M01-018",
+      "legendaryDefinitionId": "LEG-WPN-001",
+      "originalSourceHead": "a8f93e9e1fb9cd31ff9e913f472f989b5d6d4f94",
+      "originalBlobSha1": "8776da637b22fb50361f0fff025b2dbdc586d16b",
+      "reworkedGitBlobSha1": "d1b551fbb1849f88b143e0c55fcc166ecfd19e1c",
+      "reworkedSha256": "795124613e26cf2f4d7d3d59990542d0d2f4b3a65fef911132318748bae589dd",
+      "bytes": 387832,
+      "path": "Tools/B01/VIS-LEGENDARY-W12-R1/binaries/M01-018_LEG-WPN-001_R1.glb",
+      "realGitBinary": true,
+      "unityImported": false,
+      "footprintApproved": false,
+      "massKg": null
+    },
+    {
+      "modelId": "M04-024",
+      "legendaryDefinitionId": "LEG-MOV-001",
+      "originalSourceHead": "eef02864b106546b200011a2f0286fe7d9a83a1f",
+      "originalActionsArtifact": 12586794828,
+      "originalGlbSha256": "280bb77e21995b7440fdda5c7551fc135b2b3b5ce6999322708fb670ff979414",
+      "reworkedSha256": "ab26d649e31a5ea4d21320480c52b3b9781bd7f3752a687f265c24bbf473df4b",
+      "reworkedBytes": 856744,
+      "ciOutputPath": "Tools/B01/VIS-LEGENDARY-W12-R1/output/M04-024_LEG-MOV-001_R1.glb",
+      "realLocalBinary": true,
+      "ciWorkflow": ".github/workflows/b01-vis-legendary-w12.yml",
+      "ciVerdict": "NOT_YET_VERIFIED",
+      "unityImported": false,
+      "massKg": null
+    }
+  ],
+  "localProducerTests": {
+    "result": "PASS",
+    "passed": 13,
+    "total": 13,
+    "source": "local M04 actual binary + synthetic M01",
+    "nativeUnity": "NOT_RUN"
+  },
+  "sourceOwnedPaths": [
+    "Tools/B01/VIS-LEGENDARY-W12-R1/.*",
+    ".github/workflows/b01-vis-legendary-w12.yml"
+  ],
+  "tests": "python3 -m unittest discover -s Tools/B01/VIS-LEGENDARY-W12-R1/tests -v",
+  "knownLimitations": [
+    "M01 depth visual exceeds nominal footprint",
+    "MobilityHub not registered in BUILD",
+    "No Unity/PhysX/narrowphase",
+    "No approved mass values",
+    "Need explicit saved URP material assets",
+    "Full CI ZIP is only ready after workflow success"
+  ],
+  "requiredGates": [
+    "B01-40 independent G0_SOURCE+TARGET",
+    "B01-60 G1_NATIVE",
+    "B01-00 explicit G2",
+    "Codex target integrator ACK"
+  ]
+}
