@@ -1,7 +1,8 @@
-# Evidence bounds / honest gates
-- The CI diagnostic suite is headless **real C# MapGen planner and route validator** compiled with an explicit Unity surrogate. This is not a licensed native Unity test, and does not execute physics. It must never claim to have tested R6 chassis or WheelContacts.
-- Existing Codex R3.2 original native report at `6358dde` has Edit 22/23, Play 5/6 (exit 2 each), with 11 out of 12 cube drive configurations **NOT_RUN** after first failure.
-- NEW diagnostic suite's 12 base cases and suspect seeds have physical drive status `NOT_RUN`, even when geometric source diagnostics pass.
-- First Light/CombatArena seed7 physical stop is factual, but neither a generator defect nor a specific PID/steering defect is proven. Requires independent instrumented Unity run, actual grounded wheel vehicle, and QA log/exit.
-- Workflow CI PASS/BLOCKED to be populated only after run exists; never infer workflow success from a committed workflow file.
-- Source baseline branch is stacked on R3.2, *not main*: draft diff against #211 only. Cannot merge independently into main or deploy.
+# MAPGEN-DIAG-001 bounds
+- Executed B01-21 suite uses the actual immutable C# MapGenData/Planner/Validator with existing synthetic UnityEngine types. It does **not** instantiate GameObject, BoxCollider, actual renderer, PhysX or grounded R6WheelContacts. The first Actions 40186564053 reports 27/27 independent diagnostic rows PASS; this is a source-geometric receipt, not vehicle certification.
+- Original Codex Unity native full suite on frozen R3.2: EditMode 22/23 FAIL, PlayMode 5/6 FAIL (exits2). The remaining 11 cube configurations did not execute because the original coroutine aborts.
+- **New external evidence:** Codex native QA [PR #226](https://github.com/C8LyNn/RoboRougelike/pull/226) provides 12/12 base + 7/7 additional true R3/R6 wheeled API-steered PhysX full-route PASS. This external **Codex** evidence is real, but *not* our .NET harness and not B01-60 independent acceptance. The 19 drives represent 17 unique configurations. Light Course single zero-contact sample caveat preserved.
+- Codex separate optional side-ramp Heavy approach FAIL_PROBE_SPAWN (side-only, no failed main route). Rendering original generated primitives magenta under URP, shader `Hidden/InternalErrorShader`. Neither issue can be verified with synthetic Unity type arithmetic.
+- Actual R3/OBJ measured Light width2.980m / Heavy width5.180m exceeds source nominal2.1m /4.5m. Adapter must measure envelope; source profile constants are not enough.
+- The 12 base per-case JSONs in B01-21 diagnostic suite use ID prefix `R6_PENDING/` to identify **headless scenarios awaiting B01-21 physical execution**, not to contradict separate Codex real vehicle PASS. They must not be counted as native tests.
+- No independent B01-60 Unity replay nor G2; latest B01-20 producer Draft #225 under active rework. No B01-21 source ownership transfer and no merged changes.
