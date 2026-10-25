@@ -21,7 +21,7 @@ jobs:
           python3 -m py_compile Tools/ModelFactory/M02/M02-019/qa_m02_019.py
       - name: Generate BLEND and animated GLB
         run: |
-          blender -b -noaudio --python Tools/ModelFactory/M02/M02-019/generate_m02_019.py
+          blender -b -noaudio --python-expr "import runpy; p='Tools/ModelFactory/M02/M02-019/generate_m02_019.py'; runpy.run_path(p); runpy.run_path(p)"
           test -s Tools/ModelFactory/M02/M02-019/generated/M02-019.blend
           test -s Tools/ModelFactory/M02/M02-019/generated/M02-019_animated.glb
           test -s Tools/ModelFactory/M02/M02-019/generated/M02-019_qa.json
