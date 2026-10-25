@@ -4,3 +4,6 @@
 **Target Codex-only later:** accept current R3MountingGrid/R3VehicleModel/R3GarageView and R41PartGeometry baselines and actual P12 graph. Test 2x2x1 owner+HP, teardown/recovery/save, destruction, W8 328/1312 kg wheel-ground physics and suspension, 90° XYZ.
 **Commands for local Windows operator:** `Unity.exe -batchmode -nographics -projectPath <ISOLATED_CHECKOUT> -runTests -testPlatform EditMode -testResults EditMode.xml -logFile EditMode.log -quit` and change to `-testPlatform PlayMode` for Play. Record actual exit, tests, XML path, version and module SHA.
 B01-60 independent exact SHA verdict PASS/FAIL/BLOCKED; on FAIL B01-20 R1.1 new SHA and B01-60 retest. If no licensed Unity, native status NOT_RUN, never PASS by assuming C# compiles.
+
+## W9 R1.2 regression
+S01: Python `Tools/B01/BUILD001/verify_asmdefs.py` verifies both test assemblies contain B01.BUILD001.Runtime only, TestAssemblies optional, correct Editor/Play filters, no direct test-runner names, autoReferenced false. Expected 2/2 STATIC_PASS; Unity compile remains NOT_RUN until actually executed. Then launch native Unity EditMode (including disconnected-core orphan) and PlayMode socket raycast tests with XML, log and exits on exact frozen SHA; B01-60 independent run required.
