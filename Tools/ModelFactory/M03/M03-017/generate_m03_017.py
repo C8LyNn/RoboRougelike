@@ -262,9 +262,12 @@ def export(out):
     report = verify(col)
     bpy.ops.export_scene.gltf(filepath=str(out / "M03-017.glb"),
                               export_format="GLB", export_animations=True)
-    bpy.ops.export_scene.fbx(filepath=str(out / "M03-017.fbx"),
-                             use_selection=False, bake_anim=True,
-                             apply_unit_scale=True)
+    fbx_options = {"filepath": str(out / "M03-017.fbx"),
+                   "use_selection": False, "bake_anim": True,
+                   "apply_unit_scale": True}
+    supported = set(bpy.ops.export_scene.fbx.get_rna_type().properties.keys())
+    bpy.ops.export_scene.fbx(**{k: v for k, v in fbx_options.items()
+                                if k in supported})
     bpy.ops.wm.save_as_mainfile(filepath=str(out / "M03-017.blend"))
     for ext in ("glb", "fbx", "blend"):
         path = out / ("M03-017." + ext)
