@@ -29,3 +29,8 @@ The optional Player must implement `-qa-output <dir>`, generate *actual* named P
 Stop all runner-owned test processes; archive evidence outside checkout; delete only the disposable QA checkout after confirmation. Restore no production scenes because this tool changes none. No merge/G2. New producer SHAs always require a new plan/evidence folder. Owned path: `Tools/B01/QA-NATIVE-001/**` and its QA-specific CI workflow.
 
 **Scope of native verification:** MAPGEN R3.4.1 #237 `5be31039411f89f17654b1c332f8692883fa03cc`, target example OBJ #210 `4c9236a4cdc27814ea2e7679872ec4a524150cc8` (must revalidate before run). CAMERA R1.2 requires a newly frozen source SHA; previous Codex #234 R1.1 reticle transition/corridor failures are *regression targets*, not independent B01-60 test execution.
+
+
+## Reproducible GitHub ZIP (exact tracked PR sources)
+
+`python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/QA-NATIVE-001.zip --report Artifacts/B01-60/SHA256_REPORT.json` validates every current committed source file against `manifest.json` before writing a deterministic ZIP, SHA256 report and status `nativeUnity=NOT_RUN`. GitHub Actions uploads both as a CI artifact. The offline 22/22 ZIP available from ChatGPT is a **distinct** fuller source revision and is not assumed identical to this PR's ZIP. Prefer the GitHub artifact for byte-identical PR-source delivery.
