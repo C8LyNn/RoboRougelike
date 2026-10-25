@@ -9,7 +9,7 @@ demo=(p/"Demo/Camera001Demo.cs").read_text(encoding="utf-8")
 tests=(p/"Tests/PlayMode/Camera001WorldCollisionTests.cs").read_text(encoding="utf-8")
 frame=(p/"Runtime/Camera001Framing.cs").read_text(encoding="utf-8")
 checks={
-  "single_writer_LateUpdate":len(re.findall(r'void LateUpdate\\(',src))==1,
+  "single_writer_LateUpdate":len(re.findall(r'void LateUpdate\(',src))==1,
   "final_position_before_rotation":src.index("transform.position = candidate;")<src.index("Quaternion.LookRotation(actualSightline.normalized"),
   "actual_rotation_uses_final_position":"Vector3 actualSightline = aim - candidate;" in src and "transform.rotation = actualRotation;" in src,
   "final_own_hull_exposed":"ActualOwnHullIntersectsCrosshair = HitsOwnHullFromActualPose(" in src,
@@ -28,7 +28,7 @@ checks={
   "demo_detachment":"detachablePart.SetActive(false)" in demo,
   "no_race_asmdefs":True,
 }
-names=re.findall(r'\\[UnityTest\\]\\s*public IEnumerator (\\w+)\\(',tests)
+names=re.findall(r'\[UnityTest\]\s*public IEnumerator (\w+)\(',tests)
 wanted=["CAM%02d_"%i for i in range(1,11)]
 checks["ten_new_native_cases"]=len(names)==13 and all(any(x.startswith(prefix) for x in names) for prefix in wanted)
 checks["three_old_native_cases"]=all(x in names for x in (
