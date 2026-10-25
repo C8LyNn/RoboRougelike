@@ -1,0 +1,67 @@
+{
+  "archives": [
+    {
+      "expectedSha256": "41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5",
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_W7_RC1_Windows_x64.zip",
+      "actualSha256": "41de715507c1493fc9ef5bbcce3fe3a772305641dd7935b6b84639650608d5d5",
+      "matches": true
+    },
+    {
+      "expectedSha256": "2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b",
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_W8_RC1_Windows_x64.zip",
+      "actualSha256": "2d40f42e223580b8dda84ffb5b57af6bdb53ab016b2915e01754b4624a83da6b",
+      "matches": true
+    },
+    {
+      "expectedSha256": "3b57f2b5e6a2130cbeb66eed6c299788e023fc61f0ee3dfb74002436a44143dd",
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_B01_PHY_R1_Windows_x64.zip",
+      "actualSha256": "3b57f2b5e6a2130cbeb66eed6c299788e023fc61f0ee3dfb74002436a44143dd",
+      "matches": true
+    },
+    {
+      "expectedSha256": "a44718196aa3b4eeb4d57274fd910d45b538f21b6735a0ef2453ae4f5cde13ba",
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\RoboRoguelike_OBJ001_RC1_Windows_x64.zip",
+      "actualSha256": "a44718196aa3b4eeb4d57274fd910d45b538f21b6735a0ef2453ae4f5cde13ba",
+      "matches": true
+    }
+  ],
+  "scope": "Git-visible source states and four published archives; ignored local state not certified",
+  "checkouts": [
+    {
+      "trackedAndUntrackedGitStatusClean": true,
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9",
+      "expectedHead": "916654634d1bfdc2bbc14e64b9eeac856ede1fa8",
+      "actualHead": "916654634d1bfdc2bbc14e64b9eeac856ede1fa8"
+    },
+    {
+      "trackedAndUntrackedGitStatusClean": true,
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-RRL-W2",
+      "expectedHead": "a0f0a6590b07ed2f5007361a7e761f133e52ff99",
+      "actualHead": "a0f0a6590b07ed2f5007361a7e761f133e52ff99"
+    },
+    {
+      "trackedAndUntrackedGitStatusClean": true,
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-GitHub",
+      "expectedHead": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+      "actualHead": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1"
+    },
+    {
+      "trackedAndUntrackedGitStatusClean": true,
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W5-RC1",
+      "expectedHead": "2154b4341dd6b6fefb135187dc07b4b12d44f908",
+      "actualHead": "2154b4341dd6b6fefb135187dc07b4b12d44f908"
+    },
+    {
+      "trackedAndUntrackedGitStatusClean": true,
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-OBJ001",
+      "expectedHead": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+      "actualHead": "4c9236a4cdc27814ea2e7679872ec4a524150cc8"
+    },
+    {
+      "trackedAndUntrackedGitStatusClean": true,
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W3-W4",
+      "expectedHead": "916bf6d195bb7647f159a4dc50a4d6b2ab18b063",
+      "actualHead": "916bf6d195bb7647f159a4dc50a4d6b2ab18b063"
+    }
+  ]
+}

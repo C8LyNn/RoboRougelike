@@ -1,0 +1,70 @@
+{
+  "receipts": [
+    {
+      "issue": 66,
+      "url": "https://github.com/C8LyNn/RoboRougelike/issues/66#issuecomment-6390828766",
+      "id": 6390828766,
+      "body": "# B01-00 / S02 CAMERA-001 R1 — REAL SOURCE RECEIPT / CODEX GATED PROMPT\n\n**Implementacja R1 rzeczywiście rozpoczęta i opublikowana:** [Draft PR #134](https://github.com/C8LyNn/RoboRougelike/pull/134), immutable HEAD `894d3488dedb69e2b8d89683d750bbdbfedf4e55`, branch `feature/b01-camera001-s02-r1-isolated`, base `main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`.\n\n**Produced source/demo:** `Camera001Framing.cs`, `Camera001Rig.cs`, `Camera001Demo.cs`, `CAMERA001_Demo.unity`, Edit/Play test scripts and asmdefs, Unity .meta/GUID, API, test/evidence/install/rollback, [PROMPT_FOR_CODEX.md](https://github.com/C8LyNn/RoboRougelike/blob/894d3488dedb69e2b8d89683d750bbdbfedf4e55/Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md), [manifest.json](https://github.com/C8LyNn/RoboRougelike/blob/894d3488dedb69e2b8d89683d750bbdbfedf4e55/Docs/B01/CAMERA001/manifest.json).\n**Scope audit:** 36 changed paths only package/docs/tools + parent .meta, no P12/R3/R6/shared game scene or main/develop. Camera solver derives conservative full hull bounds and high/forward reticle anchor; camera rig world spherecast with own-collider ignore, smoothing, yaw/zoom; demo real Unity scene with Light/Heavy tall robot + wall.\n**Actual independent math surrogate (NOT Unity):** JS source `Tools/B01/CAMERA001/geometry_probe.js` executed by B01-00: **840 proposed views analyzed**, **0 own-hull ray intersects**, 5/5 aggregate assertions true. This is not C# compilation/PhysX. Native Unity compile/EditMode/PlayMode/720p/1080p demo **NOT_RUN**; B01-60 independent QA PENDING. 35 manifest source identities + byte lengths with .meta pairing statically checked, **SHA256 null/PENDING B01-40**; target GUID/scope ACK pending. **G0 source provisional, G1 BLOCKED, G2 HOLD, READY_FOR_CODEX:NO**.\n\n## Copy/paste Codex receiver prompt — PHASE 0 ONLY UNTIL QA PASS\n> **CODEX / CAMERA001-R1 / SOURCE SHA `894d3488dedb69e2b8d89683d750bbdbfedf4e55`:** Inspect https://github.com/C8LyNn/RoboRougelike/pull/134 and immutable source `894d3488dedb69e2b8d89683d750bbdbfedf4e55`, full path `Assets/B01Packages/CAMERA001/**`, docs `Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md`. First report actual target branch/HEAD, live camera patch ownership and reserved paths, plus any overlap with current P12/PR125. Do NOT integrate yet: B01-60 Unity QA and B01-40 GUID/SHA/target package gate are PENDING; B01-00 G2=HOLD. Use a separate disposable checkout for read-only import/diagnostic tests if desired, preserve .meta, test camera Edit/Play + 720p/1080p Light/Heavy/360/zoom/walls and return raw logs. Stop for conflicts or unavailable Unity. **ONLY AFTER** independent G1+G2 approval and explicit Codex ACK should you adapt Camera001Framing or transfer camera ownership (never both camera drivers), run full W7/W8/PHY gameplay regressions/Windows build, open isolated Draft PR and return a CODEX_INTEGRATION_REPORT. No main/develop merge, release or unauthorized current worktree changes.\n\n## Producer/QA orders\n- B01-60 independently review source at this exact SHA, run actual Unity 6000.3.14f1 EditMode/PlayMode and demo if accessible; certify 840 source-loop test real results, world spherecast/moving camera collision/ignore own colliders, Light/Heavy/tall 720/1080/zoom/360. Report true PASS/FAIL/BLOCKED, logs/XML/exits and evidence. Any FAIL→B01-20 small R2 patch + retest new SHA.\n- B01-40 independently compute manifest per-file SHA256 (producer manifest intentionally keeps null until verified), inspect all GUIDs incl TARGET, asmdef/dependency import and CODEX SCOPE ACK, define G2 hold/accept. Native tests may not be inferred from source.\n- B01-10 review reticle obstruction and ownership contract (actual player aim ray is authoritative, framing proposal no enemy lock).\n- B01-30 visual QA only, no new geometry dependency.\n\n**After R1 source freeze, B01-20 is released from CAMERA implementation and can work on next independent RAC-001 improvement while CAMERA remains in QA_PENDING queue; obey one active source WIP.** Respond with exact new git SHA + reproducible logs, not planning-only text.\n",
+      "interpretation": "Source/coordination receipt; not independent native approval. User dispatch allows isolated diagnostics only."
+    },
+    {
+      "issue": 140,
+      "url": "https://github.com/C8LyNn/RoboRougelike/issues/140#issuecomment-6391136812",
+      "id": 6391136812,
+      "body": "# B01-00 / S03 — BUILD001 R1.1 SOURCE REWORK AFTER REVIEW (supersedes older R1 HEAD)\n\n[Draft PR #149](https://github.com/C8LyNn/RoboRougelike/pull/149) is now exact **`d575b79e262ec9b65702608d6b6e28972da0d21c`**. The earlier snapshot `f85c61f4e2acab10138a544aaa54ccb9e9065fd5` is historical and must NOT be used for new QA.\n**Real P0 source bug found and patched:** existing `BuildPlacementRules.Check` could allow attaching a candidate to a living orphan with **no current Core-connected graph path**. Commit `0c147128a06b3dafc64fe4117cac3effa7914cb4` now requires `Reachable(installed)` for supporting IDs. Added `AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment` test source in `f49e5a8159fd973bb4253db044dc1b8f74df2a98`. Manifest and `TEST_EVIDENCE` refreshed and preserved bug chronology.\n**Follow-up source/static check actually performed:** fetched R1.1 rules and test file on exact SHA; required disconnected guard exists and 11 EditMode test methods are authored, plus 2 PlayMode test definitions = 13 **NOT EXECUTED**; all 36 changed paths isolated, required .meta pairs intact; main/develop unchanged. Unity C# compile, EditMode, PlayMode, demo screenshot, native save/garage/wheel contact **NOT_RUN**. No fictitious native RED→GREEN.\n**B01-60:** retest exact `d575b79e262ec9b65702608d6b6e28972da0d21c` including orphan regression, physics Cube/Cylinder hit, hub/gun/suspension, multi-cell and 3x transformations, return XML/Editor.log/exits/visual evidence or BLOCKED. **B01-40:** independently compute per-file SHA256+GUID and target P12/R3 dependency/G0/G2; manifest has exact Git SHA1 but SHA256 null. Codex active unpublished target SHA and reserved path ACK not known, so no integration permission.\n**G0 static limited PASS / G0 target PENDING / G1 NOT_RUN / G2 HOLD / READY_FOR_CODEX NO.** Copy/paste gated prompt: https://github.com/C8LyNn/RoboRougelike/blob/d575b79e262ec9b65702608d6b6e28972da0d21c/Docs/B01/BUILD001/PROMPT_FOR_CODEX.md. No merge or host game changes.",
+      "interpretation": "Source/coordination receipt; not independent native approval. User dispatch allows isolated diagnostics only."
+    },
+    {
+      "issue": 8,
+      "url": "https://github.com/C8LyNn/RoboRougelike/issues/8#issuecomment-6390869019",
+      "id": 6390869019,
+      "body": "# B01-00 / S02 RAC-001 R3 — REAL SOURCE UPGRADE PRODUCED\nIsolated stacked [Draft PR #135](https://github.com/C8LyNn/RoboRougelike/pull/135), exact SHA 6c1aa7c2351a29695e4288dddad2565cdec3682a, base existing [Draft PR #13](https://github.com/C8LyNn/RoboRougelike/pull/13) HEAD 7884f2737197e26769842c087dcd2a1ead75ac95.\n**Actual changes:** old demo Transform.MoveTowards replaced with force-limited Rigidbody AddForce velocity guidance, physical collider floor, gravity-enabled 150kg cube (CCD), checkpoint markers non-colliding; test source RAC001PhysicalDemoTests.cs + Unity .meta. Existing timed ordering/wrong actor/race state unchanged. Docs include QA_R3, INSTALL_FOR_CODEX, ready prompt PROMPT_FOR_CODEX, RECEIVER_HANDOFF and manifest.r3.json with 34 Git SHA-1 blob identities/bytes, SHA256 PENDING.\n**Required B01-60 independent R3 QA:** run real Unity6000.3.14f1 PlayMode physical completion under 30s, no teleport (except explicit Reset), floor contact and collider safe. Run existing parent 11 EditMode +3 PlayMode and new test, save XML/Editor.log/exit and visual 720p/1080p. If licensed Unity unavailable: BLOCKED/NOT_RUN, never PASS. Failure -> B01-20 small R3.1 fix, new exact SHA and retest. **B01-40:** independently compute SHA256 on whole stacked tree, check .meta/GUID/asmdefs, INSTALL rollback and Codex target-scope ACK; no G2 before signed QA. Codex must not integrate until B01-00 explicit READY.\n**Evidence:** actual Git code committed; Unity native compile/Edit/Play NOT_RUN, manual game QA NOT_RUN, recipient ACK not confirmed. G0 provisional/G1 blocked/G2 HOLD. No merge/host worktree edits. Copy-paste staged [Codex prompt](https://github.com/C8LyNn/RoboRougelike/blob/6c1aa7c2351a29695e4288dddad2565cdec3682a/Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md) (Phase 0 READ ONLY; Phase 1 only post G2).",
+      "interpretation": "Source/coordination receipt; not independent native approval. User dispatch allows isolated diagnostics only."
+    },
+    {
+      "issue": 79,
+      "url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6395739731",
+      "id": 6395739731,
+      "body": "# GLOBAL HQ → CODEX — W9 PREP PLAN / 2026-10-25 (owner requested next Codex work)\n**This is a coordination receipt and prompt-preparation record, NOT a sent/acknowledged Codex prompt, integration or G2 approval.** Owner asks Codex to continue after [OBJ-001 PR #210](https://github.com/C8LyNn/RoboRougelike/pull/210), head `4c9236a4cdc27814ea2e7679872ec4a524150cc8`, stacked on [PHY PR #125](https://github.com/C8LyNn/RoboRougelike/pull/125) head `916654634d1bfdc2bbc14e64b9eeac856ede1fa8`. Producer OBJ full Edit1021/1021 PASS, Play401/401 PASS, Windows builds PASS and native three-wave ordinary input pilot win; Draft, no merge, independent PHY #131 G2 pending. Existing MAIN not latest playground.\n**HQ authorized order for Codex PREPARATION/QA ONLY:**\n1. [CAMERA-001 PR #134](https://github.com/C8LyNn/RoboRougelike/pull/134) exact `894d3488dedb69e2b8d89683d750bbdbfedf4e55`, issue #66, preferred next functional integration candidate because player vehicle blocks reticle. Source C#+demo+tests, 840 JS surrogate cases but Unity NOT_RUN, B01-60 G1 pending, B01-40 G2 HOLD. Codex Phase0 read-only/dedicated disposable QA checkout NOW, conditional isolated integration branch only after independent G1/G2 and mutual target SHA/scope ACK. Camera ownership must not allow dual controller.\n2. [BUILD-001 PR #149](https://github.com/C8LyNn/RoboRougelike/pull/149) exact `d575b79e262ec9b65702608d6b6e28972da0d21c`, issue #140. Typed sockets/hub-only wheels and gun-base, 11 Edit/2 Play authored NOT_RUN, G2 HOLD. Same Phase0→G2 gated.\n3. [RAC-001 stacked PR #13+#135](https://github.com/C8LyNn/RoboRougelike/pull/135) exact `6c1aa7c2351a29695e4288dddad2565cdec3682a`, issue #8. Timed checkpoint via actual Rigidbody demo, native NOT_RUN; use complete stacked source rather than child diff. Same gated flow, take care new OBJ001 activity state and wave/rewards.\n**Hold/no import:** [RUN-SAFETY #154](https://github.com/C8LyNn/RoboRougelike/pull/154) exact `b2623f50e2bdb16106b88d0107d215867ed8791b` still requires owner's explicit policy C decision and B01-60/40 QA; PREP REVIEW ONLY, no live rebuild changes. [MAPGEN #103](https://github.com/C8LyNn/RoboRougelike/pull/103) R3.1 exact `ac7d957799588452f831a645162a0ab7c05246e0` remains assigned to **GPT OSS** after its separate G2, not Codex; coordinate PHY compatibility report only, do not import. Model Lab/120 visual-only asset library must NOT be installed now.\n**Mandatory Codex first ACK**: print actual current branch/head, worktree clean/dirty, local unpushed changes, latest staged dependencies PR210/PR125, native Unity availability and reserved paths. Pin exact source SHA at time of import, read all package PROMPT_FOR_CODEX.md, do not silently cherry-pick overlapping R1/R3/P12/R6. One integration candidate at a time; mark `PRODUCER_QA` vs `INDEPENDENT_B01_QA`, do not self-issue B01 gate. If G2 HOLD, do real testing only in disposable checkout, produce XML/Editor.log/screenshots and request B01-00 clearance; DO NOT overwrite shared game or merge. After approved, single isolated integration Draft PR with full Edit/Play, Windows x64, normal 6-stage play + 3-wave OBJ smoke, rollback and evidence. Preserve existing host sources/commit history.\nCoordinator reports detailed receipts at source Issues #66/#140/#8, summary here and to B01-00. Source of truth: [#71](https://github.com/C8LyNn/RoboRougelike/issues/71).",
+      "interpretation": "Source/coordination receipt; not independent native approval. User dispatch allows isolated diagnostics only."
+    }
+  ],
+  "finalPinCheck": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 134,
+        "pinned": "894d3488dedb69e2b8d89683d750bbdbfedf4e55",
+        "current": "894d3488dedb69e2b8d89683d750bbdbfedf4e55",
+        "matches": true,
+        "draft": true,
+        "state": "open",
+        "merged": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 135,
+        "pinned": "6c1aa7c2351a29695e4288dddad2565cdec3682a",
+        "current": "6c1aa7c2351a29695e4288dddad2565cdec3682a",
+        "matches": true,
+        "draft": true,
+        "state": "open",
+        "merged": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 149,
+        "pinned": "d575b79e262ec9b65702608d6b6e28972da0d21c",
+        "current": "d575b79e262ec9b65702608d6b6e28972da0d21c",
+        "matches": true,
+        "draft": true,
+        "state": "open",
+        "merged": false
+      }
+    }
+  ]
+}

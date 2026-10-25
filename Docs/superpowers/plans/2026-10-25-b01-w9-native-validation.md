@@ -15,15 +15,15 @@
 - Never report authored or surrogate tests as native PASS; source defects need reproduction and producer handoff.
 
 ### Task1 — source/target ACK and CAMERA001 original native tests
-- [ ] Save all170 open-PR metadata plus path reservations, clean-worktree and pinned gate evidence. Publish exact target/scope ACK to66/79.
-- [ ] Import entire original camera package/docs/tool with preserved meta, run original5 EditMode (including840 C# proposals) and3 PlayMode PhysX tests. Record actual results/exits; source FAIL is not fixed in host.
-- [ ] Native demo/diagnostic orbit/zoom/wall and Light/Heavy/tall/wide/asymmetric coverage at720/1080, with honest input/API labels and minimal repro for failures. Test-only additions use observed failure before any source-fix recommendation.
+- [x] Saved170 open-PR metadata/path inventory, clean-worktree and pinned gate evidence; target/scope ACK posted66/79.
+- [x] Imported entire immutable camera source; actual native compilation failed exit1 before XML. Original5 Edit/3 Play NOT_RUN, minimal reproduction posted, no host source fix.
+- [x] Camera visual/physical matrix recorded NOT_RUN because source compilation failed; no synthetic substitute or source bypass.
 
 ### Task2 — next allowed package preparation
-- [ ] Read BUILD/RAC install/API/test/rollback on exact pins; audit all dependencies and G1/G2 status again.
-- [ ] Execute isolated original native tests serially; use complete RAC parent+R3. Add only diagnostic reproductions/grounded-host tests where allowed, no shared mechanics edits.
-- [ ] Send actual package results and reproduction links to140/8 and79; retain approval requirements and untested host-integration scope.
+- [x] Read BUILD/RAC install/API/test/rollback and audited exact full source manifests/dependencies; gates remain HOLD.
+- [x] Independent native BUILD/RAC compilation attempts both failed exit1, no XML; complete RAC parent/R3 used. Original assertions/actual wheel runs are NOT_RUN, no shared edits.
+- [x] Posted exact failure reproductions140/8; final inbox79 summary is part of publication closure. Approval and untested scope remain explicit.
 
 ### Task3 — report/delivery
-- [ ] Fresh read-only review of evidence/scope if implementation-test additions warrant it; local review is not independent B01-60 approval.
+- [x] One fresh evidence/scope review,0Critical/0Important/2Minor deferred; no B01-60 approval implied.
 - [ ] Publish QA-only Draft/report with exact source/target/test SHAs, test methods/results/limits and next gate action; no gameplay integration while HOLD.
