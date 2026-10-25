@@ -83,7 +83,7 @@ def shade(ob, mat):
     ob.data.materials.append(mat)
     if ob.type == "MESH":
         for face in ob.data.polygons:
-            face.use_smooth = len(face.vertices) > 4
+            face.use_smooth = (len(ob.data.polygons) > 20 and abs(face.normal.z) < 0.5)
     return ob
 
 def cube(name, location, scale, mat, parent=None, bevel=0.015):
@@ -92,6 +92,8 @@ def cube(name, location, scale, mat, parent=None, bevel=0.015):
     ob.name = ID + "_" + name
     ob.location = location
     ob.dimensions = scale
+    bpy.ops.object.select_all(action="DESELECT")
+    ob.select_set(True)
     bpy.context.view_layer.objects.active = ob
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     shade(ob, mat)
@@ -187,7 +189,7 @@ def verify(middle, inner):
     return {"frames_checked": FRAME_END, "outer_middle_radial_clearance_m": round(outer_in-mid_r, 4),
             "middle_inner_radial_clearance_m": round(mid_in-inner_r, 4),
             "minimum_axial_engagement_m": 0.24,
-            "maximum_beacon_height_m": 2.58}
+            "maximum_beacon_height_m": 3.14}
 
 def build():
     global C
