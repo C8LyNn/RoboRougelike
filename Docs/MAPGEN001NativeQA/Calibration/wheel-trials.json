@@ -1,0 +1,168 @@
+{
+    "source": "003bced54480d509ffc0d49d26daf87160a8d609",
+    "vehicleSource": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+    "method": "Windows PhysX real R3 catalog/assembly/R6WheelContacts/R6VehicleDrive.Step; bounded API steering, NOT human or keyboard play. No travel teleports or replacement physics.",
+    "status": "PASS",
+    "startedUtc": "2026-10-25T10:13:50.9349931Z",
+    "finishedUtc": "2026-10-25T10:14:10.4998866Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "trials": [
+        {
+            "id": "BASE-CombatArena-Light-7",
+            "group": "BASE",
+            "recipe": "CombatArena",
+            "vehicle": "Light",
+            "status": "PASS",
+            "detail": "Finish reached using R6 contact-limited force drive",
+            "geometryHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+            "seed": 7,
+            "segments": 4,
+            "density": 50,
+            "startingWheels": 4,
+            "remainingWheels": 4,
+            "partsBefore": 20,
+            "partsAfter": 20,
+            "goal": 1,
+            "totalGoals": 1,
+            "samples": 274,
+            "groundedSamples": 274,
+            "minimumContacts": 4,
+            "maximumContacts": 4,
+            "seamTransitions": 0,
+            "nonFloorCollisionEvents": 0,
+            "rampCollisionEvents": 0,
+            "recoveryAttempts": 0,
+            "difficulty": 0.5,
+            "laneWidth": 16.0,
+            "mass": 192.0,
+            "distance": 48.16044998168945,
+            "netTravel": 47.5641975402832,
+            "seconds": 6.756664276123047,
+            "maxSpeed": 10.146393775939942,
+            "maxTilt": 0.0,
+            "longestNoContact": 0.0,
+            "longestStall": 1.2966660261154175,
+            "centerOfMass": {
+                "x": 0.0,
+                "y": 0.06874999403953552,
+                "z": 0.0
+            },
+            "colliderEnvelope": {
+                "x": 2.9800102710723879,
+                "y": 1.564000129699707,
+                "z": 2.720001220703125
+            },
+            "spawn": {
+                "x": 1.4156104555240746e-7,
+                "y": 1.25,
+                "z": -25.0
+            },
+            "settledSpawn": {
+                "x": 0.000013487697287928313,
+                "y": 0.6499830484390259,
+                "z": -25.000024795532228
+            },
+            "lastPosition": {
+                "x": -0.10589119046926499,
+                "y": 0.6500616669654846,
+                "z": 22.739442825317384
+            },
+            "nominalWidth": 2.0999999046325685,
+            "nominalLength": 3.200000047683716,
+            "usedWidth": 2.9800102710723879,
+            "usedLength": 3.200000047683716,
+            "spawnDrop": 0.6000169515609741,
+            "width": 1280,
+            "height": 720,
+            "reachedFinish": true,
+            "fallen": false,
+            "spawnBlocked": false,
+            "flipped": false,
+            "collisions": [],
+            "screenshots": [
+                "BASE-CombatArena-Light-7-spawn.png",
+                "BASE-CombatArena-Light-7-driving.png",
+                "BASE-CombatArena-Light-7-end.png"
+            ]
+        },
+        {
+            "id": "BASE-CombatArena-Heavy-7",
+            "group": "BASE",
+            "recipe": "CombatArena",
+            "vehicle": "Heavy",
+            "status": "PASS",
+            "detail": "Finish reached using R6 contact-limited force drive",
+            "geometryHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+            "seed": 7,
+            "segments": 4,
+            "density": 50,
+            "startingWheels": 12,
+            "remainingWheels": 12,
+            "partsBefore": 139,
+            "partsAfter": 139,
+            "goal": 1,
+            "totalGoals": 1,
+            "samples": 479,
+            "groundedSamples": 479,
+            "minimumContacts": 12,
+            "maximumContacts": 12,
+            "seamTransitions": 0,
+            "nonFloorCollisionEvents": 0,
+            "rampCollisionEvents": 0,
+            "recoveryAttempts": 0,
+            "difficulty": 0.5,
+            "laneWidth": 16.0,
+            "mass": 1176.0,
+            "distance": 48.1378059387207,
+            "netTravel": 47.5415153503418,
+            "seconds": 10.80408763885498,
+            "maxSpeed": 5.5618205070495609,
+            "maxTilt": 0.0,
+            "longestNoContact": 0.0,
+            "longestStall": 1.2640905380249024,
+            "centerOfMass": {
+                "x": 6.487580250791325e-9,
+                "y": 0.25816312432289126,
+                "z": -0.03367346152663231
+            },
+            "colliderEnvelope": {
+                "x": 5.180010795593262,
+                "y": 2.1140003204345705,
+                "z": 4.920005798339844
+            },
+            "spawn": {
+                "x": 0.00001141056782216765,
+                "y": 1.25,
+                "z": -24.999996185302736
+            },
+            "settledSpawn": {
+                "x": 0.0000325753353536129,
+                "y": 0.6499475240707398,
+                "z": -24.998743057250978
+            },
+            "lastPosition": {
+                "x": 0.07958380877971649,
+                "y": 0.6499358415603638,
+                "z": 22.630521774291993
+            },
+            "nominalWidth": 4.5,
+            "nominalLength": 5.800000190734863,
+            "usedWidth": 5.180010795593262,
+            "usedLength": 5.800000190734863,
+            "spawnDrop": 0.6000524759292603,
+            "width": 1920,
+            "height": 1080,
+            "reachedFinish": true,
+            "fallen": false,
+            "spawnBlocked": false,
+            "flipped": false,
+            "collisions": [],
+            "screenshots": [
+                "BASE-CombatArena-Heavy-7-spawn.png",
+                "BASE-CombatArena-Heavy-7-driving.png",
+                "BASE-CombatArena-Heavy-7-end.png"
+            ]
+        }
+    ],
+    "errors": []
+}

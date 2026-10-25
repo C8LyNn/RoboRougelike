@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="5" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:26Z" duration="20,0664073">
+  <test-suite type="TestSuite" id="1582" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="407" result="Failed" site="Child" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:26Z" duration="20.066407" total="6" passed="5" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1009" name="B01.MAPGEN001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-MAPGEN-R32-QA/Library/ScriptAssemblies/B01.MAPGEN001.PlayModeTests.dll" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:26Z" duration="20.056779" total="6" passed="5" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="3736" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1010" name="B01" fullname="B01" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:26Z" duration="20.056291" total="6" passed="5" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1011" name="MAPGEN001" fullname="B01.MAPGEN001" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:26Z" duration="20.055925" total="6" passed="5" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1012" name="Tests" fullname="B01.MAPGEN001.Tests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:26Z" duration="20.055655" total="6" passed="5" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1001" name="MapGenPhysicalTraversalTests" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:24Z" duration="18.006485" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1002" name="LightAndHeavyRigidbodyDriveThreeSeedsForBothRecipes" fullname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests.LightAndHeavyRigidbodyDriveThreeSeedsForBothRecipes" methodname="LightAndHeavyRigidbodyDriveThreeSeedsForBothRecipes" classname="B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests" runstate="Runnable" seed="642715240" result="Failed" start-time="2026-10-25 09:57:06Z" end-time="2026-10-25 09:57:24Z" duration="17.997281" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  PHYSICS_TRAVERSAL_FAIL recipe=CombatArena seed=7 rig=Light waypoint=0/1 pos=(-0.11, 0.50, -24.47)
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenPhysicalTraversalTests+<LightAndHeavyRigidbodyDriveThreeSeedsForBothRecipes>d__0.MoveNext () [0x00441] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\PlayMode\MapGenPhysicalTraversalTests.cs:64
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1003" name="MapGenPlayModeTests" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-25 09:57:24Z" end-time="2026-10-25 09:57:26Z" duration="2.048174" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1004" name="GenerateAndClearRealPhysicsColliders" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.GenerateAndClearRealPhysicsColliders" methodname="GenerateAndClearRealPhysicsColliders" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1809377446" result="Passed" start-time="2026-10-25 09:57:24Z" end-time="2026-10-25 09:57:24Z" duration="0.015720" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="OffsetAndRotatedHostReturnsWorldSpaceMetadata" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.OffsetAndRotatedHostReturnsWorldSpaceMetadata" methodname="OffsetAndRotatedHostReturnsWorldSpaceMetadata" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1460805880" result="Passed" start-time="2026-10-25 09:57:24Z" end-time="2026-10-25 09:57:24Z" duration="0.009331" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="RegenerateCyclesRemoveOldColliderRoots" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RegenerateCyclesRemoveOldColliderRoots" methodname="RegenerateCyclesRemoveOldColliderRoots" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1742080066" result="Passed" start-time="2026-10-25 09:57:24Z" end-time="2026-10-25 09:57:24Z" duration="0.023431" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1008" name="RejectedInputPreservesPreviousLiveLevel" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RejectedInputPreservesPreviousLiveLevel" methodname="RejectedInputPreservesPreviousLiveLevel" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="1732168292" result="Passed" start-time="2026-10-25 09:57:24Z" end-time="2026-10-25 09:57:24Z" duration="0.005298" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="RigidbodyActuallyFallsAndLandsOnGeneratedFloor" fullname="B01.MAPGEN001.Tests.MapGenPlayModeTests.RigidbodyActuallyFallsAndLandsOnGeneratedFloor" methodname="RigidbodyActuallyFallsAndLandsOnGeneratedFloor" classname="B01.MAPGEN001.Tests.MapGenPlayModeTests" runstate="Runnable" seed="615387528" result="Passed" start-time="2026-10-25 09:57:24Z" end-time="2026-10-25 09:57:26Z" duration="1.992386" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

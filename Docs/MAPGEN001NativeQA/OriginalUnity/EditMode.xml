@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="23" result="Failed(Child)" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:53Z" duration="7,7529752">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1044" result="Failed" site="Child" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:53Z" duration="7.752975" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1477" name="B01.MAPGEN001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-MAPGEN-R32-QA/Library/ScriptAssemblies/B01.MAPGEN001.EditModeTests.dll" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:53Z" duration="7.739512" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="25484" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1478" name="B01" fullname="B01" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:53Z" duration="7.738947" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1479" name="MAPGEN001" fullname="B01.MAPGEN001" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:53Z" duration="7.738671" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1480" name="Tests" fullname="B01.MAPGEN001.Tests" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:53Z" duration="7.738423" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1449" name="MapGenEditModeTests" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:46Z" duration="1.281430" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1453" name="DifferentRecipesDoNotAliasEachOther" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.DifferentRecipesDoNotAliasEachOther" methodname="DifferentRecipesDoNotAliasEachOther" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="1011676694" result="Passed" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:45Z" duration="0.022764" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1452" name="HundredSeedsGenerateDeterministicallyAndKeepClearance" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.HundredSeedsGenerateDeterministicallyAndKeepClearance" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:46Z" duration="1.100288" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1450" name="HundredSeedsGenerateDeterministicallyAndKeepClearance(CombatArena)" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.HundredSeedsGenerateDeterministicallyAndKeepClearance(CombatArena)" methodname="HundredSeedsGenerateDeterministicallyAndKeepClearance" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="76108402" result="Passed" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:45Z" duration="0.585732" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1451" name="HundredSeedsGenerateDeterministicallyAndKeepClearance(ObstacleCourse)" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.HundredSeedsGenerateDeterministicallyAndKeepClearance(ObstacleCourse)" methodname="HundredSeedsGenerateDeterministicallyAndKeepClearance" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="1286916984" result="Passed" start-time="2026-10-25 09:56:45Z" end-time="2026-10-25 09:56:46Z" duration="0.512481" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1455" name="ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles" methodname="ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="908023999" result="Passed" start-time="2026-10-25 09:56:46Z" end-time="2026-10-25 09:56:46Z" duration="0.147768" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1454" name="OutOfRangeConfigAndImpossibleVehicleFailClosed" fullname="B01.MAPGEN001.Tests.MapGenEditModeTests.OutOfRangeConfigAndImpossibleVehicleFailClosed" methodname="OutOfRangeConfigAndImpossibleVehicleFailClosed" classname="B01.MAPGEN001.Tests.MapGenEditModeTests" runstate="Runnable" seed="1713774890" result="Passed" start-time="2026-10-25 09:56:46Z" end-time="2026-10-25 09:56:46Z" duration="0.001202" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1456" name="MapGenRouteValidationTests" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" testcasecount="18" result="Failed" site="Child" start-time="2026-10-25 09:56:46Z" end-time="2026-10-25 09:56:53Z" duration="6.456218" total="18" passed="17" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1460" name="AnArenaWallThroughTheWholeRouteFailsClosed" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.AnArenaWallThroughTheWholeRouteFailsClosed" methodname="AnArenaWallThroughTheWholeRouteFailsClosed" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1771790872" result="Passed" start-time="2026-10-25 09:56:46Z" end-time="2026-10-25 09:56:46Z" duration="0.003343" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1467" name="ArenaCoverPositionsVaryAndStayPlayableForBothProfiles" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.ArenaCoverPositionsVaryAndStayPlayableForBothProfiles" methodname="ArenaCoverPositionsVaryAndStayPlayableForBothProfiles" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1948827645" result="Passed" start-time="2026-10-25 09:56:46Z" end-time="2026-10-25 09:56:47Z" duration="1.011667" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1463" name="ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius" methodname="ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1406443353" result="Passed" start-time="2026-10-25 09:56:47Z" end-time="2026-10-25 09:56:47Z" duration="0.003322" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1466" name="BlockedAndOverlappingEnemySpawnsAreRejected" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.BlockedAndOverlappingEnemySpawnsAreRejected" methodname="BlockedAndOverlappingEnemySpawnsAreRejected" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="935613628" result="Passed" start-time="2026-10-25 09:56:47Z" end-time="2026-10-25 09:56:47Z" duration="0.003838" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1464" name="CentralPitCannotPassOnlyFourCornerFootprintProbe" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.CentralPitCannotPassOnlyFourCornerFootprintProbe" methodname="CentralPitCannotPassOnlyFourCornerFootprintProbe" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="69196537" result="Failed" start-time="2026-10-25 09:56:47Z" end-time="2026-10-25 09:56:47Z" duration="0.004418" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected string length 23 but was 13. Strings differ at index 1.
+  Expected: "SPINE_FOOTPRINT_BLOCKED"
+  But was:  "START_BLOCKED"
+  ------------^
+]]></message>
+                  <stack-trace><![CDATA[at B01.MAPGEN001.Tests.MapGenRouteValidationTests.CentralPitCannotPassOnlyFourCornerFootprintProbe () [0x0014a] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-MAPGEN-R32-QA\Assets\B01Packages\MAPGEN001\Tests\EditMode\MapGenRouteValidationTests.cs:87
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1468" name="CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute" methodname="CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1130142609" result="Passed" start-time="2026-10-25 09:56:47Z" end-time="2026-10-25 09:56:47Z" duration="0.008372" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1469" name="ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds" methodname="ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1847554772" result="Passed" start-time="2026-10-25 09:56:47Z" end-time="2026-10-25 09:56:50Z" duration="3.017549" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1461" name="HeavyRoverCannotStartWithRearHangingPastFloor" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HeavyRoverCannotStartWithRearHangingPastFloor" methodname="HeavyRoverCannotStartWithRearHangingPastFloor" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="227976654" result="Passed" start-time="2026-10-25 09:56:50Z" end-time="2026-10-25 09:56:50Z" duration="0.003057" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1459" name="HundredSeedsPassReferenceVehicleSweepsAndConnectivity" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HundredSeedsPassReferenceVehicleSweepsAndConnectivity" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-25 09:56:50Z" end-time="2026-10-25 09:56:53Z" duration="2.380683" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1457" name="HundredSeedsPassReferenceVehicleSweepsAndConnectivity(CombatArena)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HundredSeedsPassReferenceVehicleSweepsAndConnectivity(CombatArena)" methodname="HundredSeedsPassReferenceVehicleSweepsAndConnectivity" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="239315828" result="Passed" start-time="2026-10-25 09:56:50Z" end-time="2026-10-25 09:56:51Z" duration="1.283319" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1458" name="HundredSeedsPassReferenceVehicleSweepsAndConnectivity(ObstacleCourse)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.HundredSeedsPassReferenceVehicleSweepsAndConnectivity(ObstacleCourse)" methodname="HundredSeedsPassReferenceVehicleSweepsAndConnectivity" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="829684463" result="Passed" start-time="2026-10-25 09:56:51Z" end-time="2026-10-25 09:56:53Z" duration="1.095879" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1465" name="LongNinetyDegreePolylineNeedsRealisticFilletRoom" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.LongNinetyDegreePolylineNeedsRealisticFilletRoom" methodname="LongNinetyDegreePolylineNeedsRealisticFilletRoom" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="610475519" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.000620" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1476" name="PlannerRejectsNonFiniteSlopeConfiguration" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.PlannerRejectsNonFiniteSlopeConfiguration" methodname="PlannerRejectsNonFiniteSlopeConfiguration" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="386251783" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.000273" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1475" name="R32NarrowLightSideRampsNeverBlockReferenceSpine" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.013255" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1470" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(2)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(2)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1749001957" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.002788" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1471" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(12)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(12)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1280091220" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.002413" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1472" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(14)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(14)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="2073371113" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.002436" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1473" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(22)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(22)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1826778964" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.002404" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1474" name="R32NarrowLightSideRampsNeverBlockReferenceSpine(28)" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.R32NarrowLightSideRampsNeverBlockReferenceSpine(28)" methodname="R32NarrowLightSideRampsNeverBlockReferenceSpine" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="1497259369" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.002350" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1462" name="RampBeyondVehicleSlopeCapabilityIsRejected" fullname="B01.MAPGEN001.Tests.MapGenRouteValidationTests.RampBeyondVehicleSlopeCapabilityIsRejected" methodname="RampBeyondVehicleSlopeCapabilityIsRejected" classname="B01.MAPGEN001.Tests.MapGenRouteValidationTests" runstate="Runnable" seed="980066325" result="Passed" start-time="2026-10-25 09:56:53Z" end-time="2026-10-25 09:56:53Z" duration="0.002931" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
