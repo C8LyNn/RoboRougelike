@@ -26,7 +26,7 @@ jobs:
         env:
           M05_OUTPUT_DIR: ${{ github.workspace }}/model-output
         run: |
-          blender --background --factory-startup --python Tools/ModelFactory/M05/M05-023/generate.py
+          blender --background --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M05/M05-023/generate.py
       - name: Independent GLB validation
         run: |
           python3 Tools/ModelFactory/M05/M05-023/validate_glb.py model-output
