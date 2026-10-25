@@ -1,0 +1,78 @@
+name: B01 LEGENDARY-CORE R1
+on:
+  push:
+    branches: [b01-22/legendary-core-001-r1]
+    paths:
+      - 'Tools/B01/LEGENDARY-CORE-001/**'
+      - '.github/workflows/b01-legendary-core.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/LEGENDARY-CORE-001/**'
+      - '.github/workflows/b01-legendary-core.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dotnet8-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build pure C# projects
+        id: build
+        shell: bash
+        run: |
+          dotnet build Tools/B01/LEGENDARY-CORE-001/tests/LegendaryCore.Tests/LegendaryCore.Tests.csproj --configuration Release --nologo
+      - name: Execute real deterministic regression suite
+        id: tests
+        shell: bash
+        run: |
+          mkdir -p artifacts/legendary-core
+          dotnet run --project Tools/B01/LEGENDARY-CORE-001/tests/LegendaryCore.Tests/LegendaryCore.Tests.csproj --configuration Release --no-build -- --report artifacts/legendary-core/test-results.json | tee artifacts/legendary-core/test-console.log
+      - name: Source digest and machine-readable receipt
+        if: always()
+        shell: bash
+        env:
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          TEST_OUTCOME: ${{ steps.tests.outcome }}
+        run: |
+          mkdir -p artifacts/legendary-core
+          find Tools/B01/LEGENDARY-CORE-001 -type f \( -name '*.cs' -o -name '*.csproj' -o -name '*.json' -o -name '*.md' \) -print | LC_ALL=C sort | xargs -r sha256sum > artifacts/legendary-core/source-sha256.txt
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          root = Path("artifacts/legendary-core")
+          result_path = root / "test-results.json"
+          tests = json.loads(result_path.read_text()) if result_path.exists() else None
+          sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          receipt = {
+            "schema": "b01.legendary-core.ci-receipt.v1",
+            "head_sha": sha,
+            "build_outcome": os.environ.get("BUILD_OUTCOME", "unknown"),
+            "test_outcome": os.environ.get("TEST_OUTCOME", "unknown"),
+            "tests": tests and {"total": tests["Total"], "passed": tests["Passed"], "failed": tests["Failed"]},
+            "native_unity_tests": "NOT_RUN",
+            "source_hash_manifest": "source-sha256.txt",
+          }
+          (root / "ci-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+          summary = (
+            f"B01 LEGENDARY-CORE R1 | commit \`{sha}\` | build {receipt['build_outcome']} | tests {receipt['test_outcome']}\n"
+            f"Counts: {receipt['tests'] or 'NOT_RUN'} | Native Unity: NOT_RUN\n"
+          )
+          (root / "ci-summary.md").write_text(summary)
+          Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a").write(summary)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-legendary-core-r1-evidence
+          path: artifacts/legendary-core
+          if-no-files-found: warn
+          retention-days: 30
