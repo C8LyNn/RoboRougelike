@@ -1,0 +1,61 @@
+name: B01-30 W12 Legendary Visual Assets
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/VIS-LEGENDARY-W12-R1/**'
+      - '.github/workflows/b01-vis-legendary-w12.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  visual-asset-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate pinned actual M01 export and negative controls
+        shell: bash
+        run: |
+          python3 -m unittest discover -s Tools/B01/VIS-LEGENDARY-W12-R1/tests -v
+      - name: Download existing M04 Blender export artifact (NO regeneration)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          mkdir -p "$root/incoming" "$root/output"
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/12586794828/zip" -o /tmp/M04-024-ci.zip
+          unzip -oq /tmp/M04-024-ci.zip -d "$root/incoming"
+          echo '280bb77e21995b7440fdda5c7551fc135b2b3b5ce6999322708fb670ff979414  '"$root"'/incoming/M04-024.glb' | sha256sum --check --status
+      - name: Actual M04 binary retrofit and complete validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          python3 "$root/tools/rework_legendary_glb.py" \
+            --model M04-024 --input "$root/incoming/M04-024.glb" \
+            --output "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/m04-rework.json"
+          echo 'ab26d649e31a5ea4d21320480c52b3b9781bd7f3752a687f265c24bbf473df4b  '"$root"'/output/M04-024_LEG-MOV-001_R1.glb' | sha256sum --check --status
+          python3 -m unittest discover -s "$root/tests" -v
+      - name: Make actual full 2-asset Codex ZIP and SHA256 receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/models
+          cp "$root/output/M04-024_LEG-MOV-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
+          cp "$root/binaries/M01-018_LEG-WPN-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
+          cp "$root/"*.md /tmp/B01-VIS-LEGENDARY-W12-R1/ 2>/dev/null || true
+          find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
+          cd /tmp
+          zip -X -r B01-VIS-LEGENDARY-W12-R1.zip B01-VIS-LEGENDARY-W12-R1 >/dev/null
+          cp B01-VIS-LEGENDARY-W12-R1.zip "$GITHUB_WORKSPACE/$root/output/"
+          sha256sum "$GITHUB_WORKSPACE/$root/output/B01-VIS-LEGENDARY-W12-R1.zip" | tee "$GITHUB_WORKSPACE/$root/output/ZIP_SHA256.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-VIS-LEGENDARY-W12-R1-CODEX-INBOX
+          path: Tools/B01/VIS-LEGENDARY-W12-R1/output/
+          if-no-files-found: error
+          retention-days: 30
