@@ -7,22 +7,26 @@ on:
     paths:
       - 'Tools/ModelFactory/M04/M04-020/**'
       - '.github/workflows/ci-m04-020.yml'
+  workflow_dispatch:
 jobs:
   blender-export-qa:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Install Blender
+      - name: Install Blender and glTF NumPy dependency
         run: |
-          sudo apt-get update
-          sudo apt-get install -y blender
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -3
       - name: Validate Python syntax
         run: python3 -m py_compile Tools/ModelFactory/M04/M04-020/*.py
       - name: Generate BLEND and animated GLB, test clearance
         run: |
           blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-020/generate_m04_020.py -- --out build/M04-020
+      - name: Reopen saved BLEND and verify mesh count
+        run: |
+          blender -b build/M04-020/M04-020.blend --python-exit-code 1 --python-expr "import bpy; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 35"
       - name: Independently validate binary GLB and manifest
         run: python3 Tools/ModelFactory/M04/M04-020/qa_m04_020.py build/M04-020
       - uses: actions/upload-artifact@v4
