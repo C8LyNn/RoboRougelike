@@ -138,7 +138,7 @@ def build(out: Path):
     for i in range(18):
         a = 2*math.pi*i/18
         bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=.014, depth=.09,
-                                            location=(.265*math.cos(a),0,.265*math.sin(a)),
+                                            location=(.265*math.cos(a),0,ROTOR_CENTER_Z+.265*math.sin(a)),
                                             rotation=(math.pi/2,0,0))
         cutters.append(bpy.context.object)
     bpy.ops.object.select_all(action="DESELECT")
