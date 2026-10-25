@@ -30,6 +30,41 @@ assert len(gltf.get("meshes",[]))>=30
 assert gltf.get("animations"), "Missing animations"
 channels=sum(len(a.get("channels",[])) for a in gltf["animations"])
 assert channels>=6, f"Too few animation channels: {channels}"
+# Validate actual sampled glTF animation data, not merely channel metadata.
+bin_header_offset=20+json_len
+bin_length,bin_type=struct.unpack_from("<I4s",data,bin_header_offset)
+assert bin_type==b"BIN\\x00" or bin_type==b"BIN\x00"
+bin_start=bin_header_offset+8
+def samples(accessor_index):
+    a=gltf["accessors"][accessor_index]
+    assert a["componentType"]==5126, "Expected FLOAT animation"
+    comps={"SCALAR":1,"VEC3":3,"VEC4":4}[a["type"]]
+    view=gltf["bufferViews"][a["bufferView"]]
+    stride=view.get("byteStride",comps*4)
+    start=bin_start+view.get("byteOffset",0)+a.get("byteOffset",0)
+    assert start+(a["count"]-1)*stride+comps*4<=len(data)
+    return [struct.unpack_from("<"+"f"*comps,data,start+i*stride) for i in range(a["count"])]
+animated={}
+for animation in gltf["animations"]:
+    for channel in animation["channels"]:
+        target=channel["target"]
+        name=gltf["nodes"][target["node"]].get("name","")
+        path=target["path"]
+        sampler=animation["samplers"][channel["sampler"]]
+        values=samples(sampler["output"])
+        unique={tuple(round(v,4) for v in row) for row in values}
+        animated[(name,path)]=len(unique)
+for node,path,min_unique in (
+    ("DRUM_ROTOR__ROTATE_Y","rotation",12),
+    ("LEFT_SHOE__PIVOT_LOWER","rotation",2),
+    ("RIGHT_SHOE__PIVOT_LOWER","rotation",2),
+    ("WHEEL_CYLINDER_PISTON_L__SLIDE_X","translation",2),
+    ("WHEEL_CYLINDER_PISTON_R__SLIDE_X","translation",2),
+    ("RETURN_SPRING_TOP__STRETCH_X","scale",2),
+):
+    assert animated.get((node,path),0)>=min_unique, (
+        f"Animation {node}/{path} is missing or static: {animated.get((node,path),0)}"
+    )
 report=json.loads(qa.read_text(encoding="utf-8"))
 assert report["id"]=="M02-019"
 assert report["material_count"]==len(gltf["materials"])==8, "Reentrant material duplication"
@@ -43,5 +78,6 @@ print(json.dumps({
     "glb_bytes":glb.stat().st_size,
     "meshes":len(gltf["meshes"]),"materials":len(gltf["materials"]),
     "animations":len(gltf["animations"]),"channels":channels,
+    "animated_unique_samples":{name+" "+path:count for (name,path),count in animated.items()},
     "minimum_analytic_clearance_m":report["minimum_radial_shoe_to_drum_clearance_m"]
 },indent=2))
