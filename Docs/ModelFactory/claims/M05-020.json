@@ -4,5 +4,17 @@
   "status": "CLAIMED",
   "claimed_at_utc": "2026-10-25T01:25:16.371Z",
   "model": "Nawigacyjna antena kratowa",
-  "run": "2026-10-25T01:00Z"
+  "run": "2026-10-25T01:00Z",
+  "production_branch": "feature/rrl-model-m05-020-navigation-lattice-antenna",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/177",
+  "production_commit": "efb5c58106d7c07ebdbdb745abb2fdce3cd0cb13",
+  "qa": {
+    "blender": "PENDING (GitHub Actions 40150694144)",
+    "glb": "NOT RUN",
+    "fbx": "NOT RUN",
+    "blend": "NOT RUN",
+    "unity": "NOT RUN",
+    "full_mesh_collision": "NOT RUN",
+    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150694144"
+  }
 }
