@@ -31,9 +31,18 @@ MARKERS = []
 def collection_reset():
     old = bpy.data.collections.get(COLLECTION)
     if old:
+        meshes = [obj.data for obj in old.all_objects if obj.type == "MESH"]
+        actions = [obj.animation_data.action for obj in old.all_objects
+                   if obj.animation_data and obj.animation_data.action]
         for obj in list(old.all_objects):
             bpy.data.objects.remove(obj, do_unlink=True)
         bpy.data.collections.remove(old)
+        for mesh in meshes:
+            if mesh.users == 0:
+                bpy.data.meshes.remove(mesh)
+        for action in actions:
+            if action.users == 0:
+                bpy.data.actions.remove(action)
     col = bpy.data.collections.new(COLLECTION)
     bpy.context.scene.collection.children.link(col)
     return col
