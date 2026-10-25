@@ -228,7 +228,8 @@ def create_scene():
 def validate(slides):
     mesh_objects = [o for o in bpy.data.objects if o.type == "MESH"]
     assert len(mesh_objects) >= 50, "Unexpectedly few mesh objects"
-    assert len(bpy.data.materials) == 8
+    used_materials = {mat.name for obj in mesh_objects for mat in obj.data.materials if mat}
+    assert len(used_materials) == 8, "Expected eight assigned PBR materials"
     edge_total = 0
     for obj in mesh_objects:
         assert not obj.data.validate(clean_customdata=False), "Invalid mesh: " + obj.name
@@ -253,7 +254,7 @@ def validate(slides):
     assert 60 - 2 * 20 >= 20, "Angular sectors intersect"
     bpy.context.scene.frame_set(1)
     return {
-        "model": MODEL, "meshes": len(mesh_objects), "materials": len(bpy.data.materials),
+        "model": MODEL, "meshes": len(mesh_objects), "materials": len(used_materials),
         "manifold_edges_checked": edge_total, "frames_checked": FRAME_END,
         "moving_shutters": len(slides), "slide_travel_m": TRAVEL,
         "min_housing_radial_gap_m": round(min_outer_gap, 6),
