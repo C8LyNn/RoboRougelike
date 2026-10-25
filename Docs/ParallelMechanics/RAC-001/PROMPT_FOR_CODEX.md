@@ -1,3 +1,5 @@
+> **W9 RAC R3.1 source repair supersedes older R3 receiver instructions.** Source is the FULL parent PR #13 + R3 PR #135 + corrective Draft PR #216 tree, NOT only the newest diff. HQ dispatch `HQ-B01-20261025-W9-SOURCE-REPAIR`. Codex Unity6000.3.14f1 ORIGINAL compile FAILED native exit1 at R3 SHA 6c1aa7c2351a29695e4288dddad2565cdec3682a (EditorBuilder CS1027 missing #endif) [native proof PR #212](https://github.com/C8LyNn/RoboRougelike/pull/212). Corrected R3.1 adds closing #endif, **NEW NATIVE UNITY COMPILATION/EDIT/PLAY NOT_RUN**. G1 BLOCKED, G2 HOLD, exact R3.1 immutable SHA must be repinned from PR #216 before retest. No game integration; MAPGEN #211 first next Codex package. See `W9_SOURCE_REPAIR_R31.md` for source/fix and QA protocol.
+
 # PROMPT_FOR_CODEX / RAC001 R3 standalone packet
 
 You are Codex, sole integrator for RoboRougelike target game. Single package: RAC001 timed checkpoint race, source existing Draft PR #13 + stacked B01 R3 isolated improvements. Issue #8, factory #133; source immutable R3 HEAD must be read from latest Issue #8 B01-00 receipt before touching target. Never use a floating SHA.
