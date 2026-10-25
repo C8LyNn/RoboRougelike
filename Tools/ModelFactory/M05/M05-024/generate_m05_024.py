@@ -40,6 +40,9 @@ def clear_own():
         for obj in list(col.all_objects):
             bpy.data.objects.remove(obj, do_unlink=True)
         bpy.data.collections.remove(col)
+    for mesh in list(bpy.data.meshes):
+        if mesh.name.startswith(PREFIX) and mesh.users == 0:
+            bpy.data.meshes.remove(mesh)
     for mat in list(bpy.data.materials):
         if mat.name.startswith(PREFIX) and mat.users == 0:
             bpy.data.materials.remove(mat)
@@ -54,6 +57,8 @@ def make_collection():
 
 def own(obj, col, name, mat=None, parent=None):
     obj.name = PREFIX + name
+    if obj.type == "MESH":
+        obj.data.name = PREFIX + name + "_mesh"
     for c in list(obj.users_collection):
         c.objects.unlink(obj)
     col.objects.link(obj)
