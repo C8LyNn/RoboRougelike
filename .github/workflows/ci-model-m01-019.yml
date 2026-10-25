@@ -32,10 +32,10 @@ jobs:
           blender --version
       - name: Generate twice and validate topology and 73 animation samples
         run: |
-          blender --background --python-exit-code 1 --python Tools/ModelFactory/M01/M01-019/generate_m01_018.py -- --repeat --out Tools/ModelFactory/M01/M01-019/generated
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M01/M01-019/generate_m01_019.py -- --repeat --out Tools/ModelFactory/M01/M01-019/generated
       - name: Independently audit binary exports
         run: |
-          python3 Tools/ModelFactory/M01/M01-019/qa_m01_018.py --out Tools/ModelFactory/M01/M01-019/generated
+          python3 Tools/ModelFactory/M01/M01-019/qa_m01_019.py --out Tools/ModelFactory/M01/M01-019/generated
       - name: Upload generated 3D exports
         if: always()
         uses: actions/upload-artifact@v4
