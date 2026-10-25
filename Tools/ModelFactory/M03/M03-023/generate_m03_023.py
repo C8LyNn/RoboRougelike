@@ -196,7 +196,7 @@ def build():
                 hollow_beam("FaceBrace_"+tag+"_"+label,start,end,
                             0.037,0.022,mats["titanium"],coll,root)
         for i in range(4):
-            angle=i*math.pi/2
+            angle=math.pi/4+i*math.pi/2
             p=c+u*(0.33*math.cos(angle))+v*(0.33*math.sin(angle))+n*0.013
             hollow_beam("Indicator_"+tag+"_%02d"%(i+1),
                         p-n*0.035,p+n*0.035,0.030,0.016,
