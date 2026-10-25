@@ -103,6 +103,7 @@ namespace RoboRougelike.B01.Legendary
     [Serializable] public sealed class LegendaryBinding
     {
         public string InstanceId, DefinitionId;
+        public LegendaryBinding() {}
         public LegendaryBinding(string id,string definition) { InstanceId=id; DefinitionId=definition; }
     }
     [Serializable] public sealed class LegendaryPersistence
@@ -143,9 +144,10 @@ namespace RoboRougelike.B01.Legendary
                     if(part==null||!Guid.TryParseExact(part.InstanceId,"N",out _)||
                        float.IsNaN(part.Health)||part.Health<0||part.Health>1||
                        string.IsNullOrEmpty(part.BasePartKind)||
-                       (part.BasePartKind=="Gun"&&string.IsNullOrEmpty(part.WeaponFamily))||
-                       !owned.TryAdd(part.InstanceId,part))
-                    {reason="DUPLICATE_INSTANCE_OR_INVALID_R3_VIEW";return false;}
+                       (part.BasePartKind=="Gun"&&string.IsNullOrEmpty(part.WeaponFamily)))
+                    {reason="INVALID_R3_VIEW";return false;}
+                    if(!owned.TryAdd(part.InstanceId,part))
+                    {reason="DUPLICATE_INSTANCE";return false;}
                 }
             }
             reason="OK";return true;
