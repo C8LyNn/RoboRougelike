@@ -170,10 +170,10 @@ namespace B01.CAMERA001
             Quaternion actualRotation = actualSightline.sqrMagnitude > .0001f
                 ? Quaternion.LookRotation(actualSightline.normalized, Vector3.up)
                 : LastSolution.Rotation;
-            if (!WorldOverlapAtAim || reset)
-                transform.rotation = actualRotation; // atomic final-pose commit
-            // On an obstructed pivot keep the last readable rotation instead of
-            // abruptly looking into the obstacle.
+            // Even when the desired pivot intersects a wall, keep the
+            // crosshair aligned with the final actual position; only the
+            // translational orbit is held, not the sightline / weapon aim.
+            transform.rotation = actualRotation; // atomic final-pose commit
 
             initialized = true;
             LastCameraStepMeters = reset ? 0f : Vector3.Distance(previous, candidate);
