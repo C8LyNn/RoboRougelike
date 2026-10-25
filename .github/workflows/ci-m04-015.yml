@@ -22,6 +22,9 @@ jobs:
           blender --version
       - name: Generate BLEND GLB FBX
         run: blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-015/generate_m04_015.py -- --out build/M04-015
+      - name: Re-open saved BLEND and verify scene hierarchy
+        run: |
+          blender -b build/M04-015/M04-015_pneumatic_jump_leg.blend --python-exit-code 1 --python-expr "import bpy; assert 'PNEUMATIC_STROKE_Y' in bpy.data.objects; assert 'MOUNT_UNDERSIDE_Y0' in bpy.data.objects; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 20"
       - name: Independent artifact QA
         run: python3 Tools/ModelFactory/M04/M04-015/qa_m04_015.py --out build/M04-015
       - uses: actions/upload-artifact@v4
