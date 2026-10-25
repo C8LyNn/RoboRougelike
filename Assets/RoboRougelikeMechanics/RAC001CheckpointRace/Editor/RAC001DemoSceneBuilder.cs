@@ -64,3 +64,4 @@ namespace RoboRougelike.Mechanics.RAC001.Editor
     }
 }
 
+#endif // UNITY_EDITOR
