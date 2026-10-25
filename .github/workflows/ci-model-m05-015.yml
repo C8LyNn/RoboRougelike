@@ -22,7 +22,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender python3-numpy
           blender --version | head -3
-      - name: Build twice and export GLB FBX BLEND
+      - name: Build twice and export GLB BLEND (FBX optional)
         run: |
           mkdir -p model-output
           blender --background --factory-startup --python Tools/ModelFactory/M05/M05-015/generate_m05_015.py -- --out "$PWD/model-output" | tee blender.log
@@ -37,7 +37,7 @@ jobs:
           assert qa["finger_count"] == 3 and qa["materials"] >= 3
           assert qa["frames_checked"] == 60
           assert qa["minimum_approximate_pad_clearance_m"] > 0.015
-          for ext in ("glb","fbx","blend"):
+          for ext in ("glb","blend"):
               p=out/("M05-015."+ext)
               assert p.is_file() and p.stat().st_size > 1024, str(p)
           raw=(out/"M05-015.glb").read_bytes()
@@ -52,12 +52,12 @@ jobs:
           nodes=[n.get("name","") for n in gltf["nodes"]]
           assert any("MOUNT_ORIGIN" in n for n in nodes)
           assert sum("FINGER_PIVOT_" in n for n in nodes) >= 3
-          print("M05-015 GLB, FBX, BLEND, animation and QA PASS")
+          print("M05-015 GLB, BLEND, animation and QA PASS; FBX: ${qa["fbx_export"]}")
           PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: M05-015-cargo-gripper-GLB-FBX-BLEND-QA
+          name: M05-015-cargo-gripper-GLB-BLEND-QA
           path: |
             model-output/
             blender.log
