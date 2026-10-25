@@ -137,6 +137,7 @@ def empty(name, pos, parent=None):
     o = bpy.data.objects.new(PREFIX + name, None)
     COL.objects.link(o)
     o.location = pos
+    bpy.context.view_layer.update()  # evaluate matrix_world before reparenting
     o.empty_display_type = "ARROWS"
     o.empty_display_size = 0.065
     if parent:
@@ -248,6 +249,8 @@ def build():
         a=math.pi*.05 + math.pi*1.53*t
         hook.append((0,-1.17+.11*math.cos(a),.185+.11*math.sin(a)))
     tube("Forged_open_J_hook", hook, .022, "titanium", sides=12)
+    tube("Hook_neck", [(0,-1.125,.270),(0,-1.105,.236),hook[0]],
+         .021, "titanium", sides=12)
     cyl("Hook_latch_pivot", (0,-1.12,.245), .025,.048,
         "copper","X",vertices=16)
     box("Hazard_plate", (0,-.125,.60), (.30,.024,.045),
