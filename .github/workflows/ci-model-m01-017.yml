@@ -4,13 +4,15 @@ on:
     branches:
       - feature/rrl-model-m01-017-rapid-ball-thrower
     paths:
-      - 'Tools/ModelFactory/M01/M01-017/**'
+      - 'Tools/ModelFactory/M01/M01-017/*.py'
+      - 'Tools/ModelFactory/M01/M01-017/README.md'
       - '.github/workflows/ci-model-m01-017.yml'
   pull_request:
     types: [opened, synchronize]
     branches: [develop]
     paths:
-      - 'Tools/ModelFactory/M01/M01-017/**'
+      - 'Tools/ModelFactory/M01/M01-017/*.py'
+      - 'Tools/ModelFactory/M01/M01-017/README.md'
       - '.github/workflows/ci-model-m01-017.yml'
   workflow_dispatch:
 
