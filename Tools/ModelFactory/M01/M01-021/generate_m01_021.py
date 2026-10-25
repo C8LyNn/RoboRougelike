@@ -66,7 +66,7 @@ def sleeve(name,material,x,y,z0,z1,inner,outer,segments=36,moving=False):
    k=(j+1)%segments;a=i*segments+j;b=i*segments+k;c=nxt*segments+k;d=nxt*segments+j
    f.extend(((a,b,c),(a,c,d)))
  return part(name,material,v,f,moving)
-def wave_torus(name,material,major,minor,amp,z0=RING_Z,phase=0,segments=96,radial=14):
+def wave_torus(name,material,major,minor,amp,z0=.778,phase=0,segments=96,radial=14):
  """Closed watertight 6-lobe valve rim; oscillates as a rigid moving assembly."""
  assert major>minor>0 and segments%WAVE_LOBES==0
  v=[];f=[]
