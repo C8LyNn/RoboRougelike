@@ -39,9 +39,20 @@
       "unity_guid_count": 17,
       "manifest_sha256": "e2bfe7fcd24dfbf7bbd39e456436ffcefad48332c06648814a2df754b3e0f576",
       "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
+    },
+    "MAPGEN001_R341": {
+      "source_sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+      "zip_sha256": "2337cb85c090f194a7e10474e73bf3b6aa69f86eeabc74b3204a59d3a60bc623",
+      "zip_bytes": 89258,
+      "zip_entries": 63,
+      "sha256_entries": 62,
+      "unity_guid_count": 22,
+      "manifest_sha256": "28eb9239a0d17d175a37ee607164e08d179fb61a936bf7019d3d13fb0d277d1f",
+      "status": "PASS_SOURCE_STATIC_NOT_NATIVE"
     }
   },
   "g0_target": "PENDING_LIVE_ACK",
-  "g1_native_mapgen_R34": "NOT_RUN",
-  "g2": "HOLD"
+  "g1_native_mapgen_R34": "FAIL_OLD_SHADER_GETTAG_CS1061_QA_PR236",
+  "g2": "HOLD",
+  "g1_native_mapgen_R341": "NOT_RUN"
 }

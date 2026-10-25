@@ -189,6 +189,14 @@ class PackageAutoTests(unittest.TestCase):
         c,p=self.make_bad_zip(lambda d:d.__setitem__('../outside.txt',b'oops'))
         self.assert_gate('UNSAFE_ZIP_PATH',lambda:a.verify_package(c,p))
 
+    def test_21_latest_mapgen_r341_verified_separately(self):
+        new_zip=Path(os.environ.get('B01_REAL_MAPGEN_R341_ZIP',str(BASE/'tests/fixtures_real_producer_r341.zip')))
+        config=a.read_json(BASE/'configs/MAPGEN001_R341.json')
+        result,contents=a.verify_package(config,new_zip)
+        self.assertEqual((result['zip_entries'],result['zip_bytes'],result['sha256_entries'],result['unity_guid_count']),(63,89258,62,22))
+        self.assertIn(b'GetTag("RenderPipeline", false)',contents['Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs'])
+        self.assertNotIn(b'.shader.GetTag(',contents['Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPlayModeTests.cs'])
+
     def test_20_w9_three_unmodified_full_package_archives(self):
         root=Path(os.environ.get('B01_W9_PACKAGE_DIR',str(BASE/'tests')))
         for package,name in [('CAMERA001','CAMERA_W9_FIXED_FULL_SOURCE.zip'),('BUILD001','BUILD_W9_FIXED_FULL_SOURCE.zip'),('RAC001','RAC_W9_FIXED_FULL_SOURCE.zip')]:

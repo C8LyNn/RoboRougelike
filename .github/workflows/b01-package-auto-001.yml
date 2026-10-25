@@ -24,6 +24,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Verify package automation toolkit self-hashes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import pathlib,hashlib,json
+          d=json.loads(pathlib.Path('Tools/B01/PACKAGE-AUTO-001/toolkit-sha256.json').read_text())
+          for rel,expected in d['files'].items():
+              actual=hashlib.sha256(pathlib.Path(rel).read_bytes()).hexdigest()
+              if actual!=expected: raise SystemExit(f'TOOLKIT_HASH_MISMATCH: {rel}')
+          print('TOOLKIT SHA256 PASS',len(d['files']))
+          PY
       - uses: actions/download-artifact@v4
         with:
           name: b01-mapgen-r34-source-zip
@@ -31,6 +42,13 @@ jobs:
           run-id: 40197716466
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ runner.temp }}/b01-producer-artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-mapgen-r341-source-zip
+          repository: C8LyNn/RoboRougelike
+          run-id: 40213410197
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/b01-producer-r341
       - uses: actions/download-artifact@v4
         with:
           name: w9-three-source-repairs-static-evidence
@@ -47,6 +65,9 @@ jobs:
           m=tmp/'b01-producer-artifact'/'MAPGEN001_R3_4_FULL_SOURCE_AND_QA.zip'
           if not m.is_file(): raise SystemExit(f'No producer inner ZIP: {m}')
           shutil.copy2(m,tmp/'MAPGEN001_R3_4_FULL_SOURCE_AND_QA.zip')
+          mnew=tmp/'b01-producer-r341'/'MAPGEN001_R3_4_1_FULL_SOURCE_AND_QA.zip'
+          if not mnew.is_file(): raise SystemExit(f'No producer R3.4.1 ZIP: {mnew}')
+          shutil.copy2(mnew,tmp/'MAPGEN001_R3_4_1_FULL_SOURCE_AND_QA.zip')
           w9=tmp/'b01-w9-archive'
           for name in ('BUILD_W9_FIXED_FULL_SOURCE.zip','CAMERA_W9_FIXED_FULL_SOURCE.zip','RAC_W9_FIXED_FULL_SOURCE.zip'):
               f=w9/name
@@ -57,6 +78,8 @@ jobs:
         env:
           B01_REAL_MAPGEN_ZIP: ${{ runner.temp }}/MAPGEN001_R3_4_FULL_SOURCE_AND_QA.zip
           B01_W9_PACKAGE_DIR: ${{ runner.temp }}/b01-w9-archive
+          B01_REAL_MAPGEN_R341_ZIP: ${{ runner.temp }}/MAPGEN001_R3_4_1_FULL_SOURCE_AND_QA.zip
         run: |
           python Tools/B01/PACKAGE-AUTO-001/package_auto.py verify --config Tools/B01/PACKAGE-AUTO-001/configs/MAPGEN001.json --zip "$B01_REAL_MAPGEN_ZIP"
+          python Tools/B01/PACKAGE-AUTO-001/package_auto.py verify --config Tools/B01/PACKAGE-AUTO-001/configs/MAPGEN001_R341.json --zip "$B01_REAL_MAPGEN_R341_ZIP"
           python -m unittest discover -s Tools/B01/PACKAGE-AUTO-001/tests -v
