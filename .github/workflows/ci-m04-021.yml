@@ -1,0 +1,38 @@
+name: ModelFactory M04-021 Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-021-articulated-tail-rudder
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-021/**'
+      - '.github/workflows/ci-m04-021.yml'
+  workflow_dispatch:
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy for glTF
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -3
+      - name: Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M04/M04-021/*.py
+      - name: Generate and validate actual Blender geometry and GLB
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-021/generate_m04_021.py -- --out build/M04-021
+      - name: Reopen native Blender file
+        run: |
+          blender -b build/M04-021/M04-021.blend --python-exit-code 1 --python-expr "import bpy; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 28"
+      - name: Independent binary GLB and manifest checks
+        run: python3 Tools/ModelFactory/M04/M04-021/qa_m04_021.py build/M04-021
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M04-021-blend-glb-qa
+          path: build/M04-021/
+          if-no-files-found: warn
+          retention-days: 30
