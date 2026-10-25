@@ -48,7 +48,7 @@ def mat(name, rgb, metal=0.0, rough=0.38, glow=None):
 def finish(o, material, group=None):
     o.data.materials.append(MATS[material])
     for f in o.data.polygons:
-        f.use_smooth = len(f.vertices) > 4
+        f.use_smooth = False  # avoid smoothing planar caps across sharp edges
     if group is None:
         STATIC.append(o)
     else:
@@ -74,7 +74,10 @@ def cyl(name, pos, radius, length, material, group=None, vertices=32):
         depth=length, location=pos, rotation=(math.pi / 2, 0, 0))
     o = bpy.context.object
     o.name = name
-    return finish(o, material, group)
+    o = finish(o, material, group)
+    for face in o.data.polygons:
+        face.use_smooth = len(face.vertices) == 4  # cylindrical wall only
+    return o
 
 def ring(name, pos, ro, ri, depth, material, group=None, sides=48):
     """Closed four-wall annular tube; genuine open centre, manifold mesh."""
@@ -98,7 +101,10 @@ def ring(name, pos, ro, ri, depth, material, group=None, sides=48):
     bpy.context.collection.objects.link(o)
     o.location = pos
     o.rotation_euler = (math.pi/2, 0, 0)
-    return finish(o, material, group)
+    o = finish(o, material, group)
+    for face_idx, face in enumerate(o.data.polygons):
+        face.use_smooth = face_idx % 4 in (0, 2)  # curved walls, not annular end caps
+    return o
 
 def empty(name, location, parent=None):
     o = bpy.data.objects.new(name, None)
