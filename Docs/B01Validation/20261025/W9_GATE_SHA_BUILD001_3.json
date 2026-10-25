@@ -1,0 +1,84 @@
+{
+  "package": "BUILD001",
+  "source_sha": "0788d0a8f4a40535e0c84e9ea9d7f2a6b5e8b267",
+  "part": 2,
+  "rows": [
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs.meta",
+      "bytes": 240,
+      "sha256": "99d7daa6d1b20c78381aeb731381d8a933a56310d40a646cb71016384393229a",
+      "git_sha1": "1b3941b6de357f7cd3e65b0b0679eddf864c2bc4",
+      "guid": "b01d000000000000000000000000000d"
+    },
+    {
+      "path": "Docs/B01/BUILD001/API.md",
+      "bytes": 1679,
+      "sha256": "5664901b822f7c39b06fd47d87b7779991e353b913596127f91efcb54ee5da89",
+      "git_sha1": "4553223591b59166ccb8d53e8d49169a9b7eacad",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md",
+      "bytes": 2127,
+      "sha256": "22b846e46b4ead7085eaa9bd0f1425fa5d96b80c9e45c41c081ba50eda72b28a",
+      "git_sha1": "e9961291bd5b4bef6e19d8226717c3ced908475e",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/KNOWN_LIMITATIONS.md",
+      "bytes": 1221,
+      "sha256": "95e54c2a1645b64aca1e2ffa888f59b9ced2befcedb6600f6caebeb7d75b8909",
+      "git_sha1": "500b11b908c826ec72fca2853bcc55a7776dff36",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md",
+      "bytes": 2432,
+      "sha256": "408d35bccb8eb2356773561fb5112c817c8036d148954c9da25bf051216bb61b",
+      "git_sha1": "65d61b08b08a24d098b454d30abbedad31de7cc8",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/README.md",
+      "bytes": 1318,
+      "sha256": "e967661693ce077122bebaea5261fec0da45092f75ff7f5880053c13c35015e6",
+      "git_sha1": "883c216a521bf256985860d8669e62dd3b2c6393",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/RECEIVER_HANDOFF.md",
+      "bytes": 678,
+      "sha256": "4812c1b0ddfe76f5c8ad43708a52eb6a34326fbb50f0ab9e9fd394844d5f3fde",
+      "git_sha1": "d581a5d6c37838bccb919558f9621c526594e37e",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/TEST_EVIDENCE.md",
+      "bytes": 2167,
+      "sha256": "0ce865c31f5214dc83a25610adbc44bdc3ef6e23893b5849196d42f1b5fc18af",
+      "git_sha1": "2fc59f9bb250121e983c71b3101ff9c60f60d900",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/TEST_PLAN.md",
+      "bytes": 1517,
+      "sha256": "0604ff99dba81090b0fc4019e1a9e480f201a858d706efbcbdaefec2d17f7136",
+      "git_sha1": "c4adc9c38dcd8232569e13ffb61a37841cf780c0",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/W9_SOURCE_REPAIR_R12.md",
+      "bytes": 1355,
+      "sha256": "127354c7e2568a377bdcf9625fc882234eeeaac558514dcc29a8702f3f9937f6",
+      "git_sha1": "8b7933c7076d2abaf4fc85d54734c95ade18133a",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/BUILD001/manifest.json",
+      "bytes": 8243,
+      "sha256": "586d9fa38fe1544437661e716bc6d6e40f9902a0bbe5cd9c01d4df49ee7ea4a4",
+      "git_sha1": "18cc6151935188bc53e2d9a710900934de497948",
+      "guid": null
+    }
+  ]
+}
