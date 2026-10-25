@@ -22,6 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -44,7 +45,7 @@ jobs:
           TEST_OUTCOME: ${{ steps.tests.outcome }}
         run: |
           mkdir -p artifacts/legendary-core
-          find Tools/B01/LEGENDARY-CORE-001 -type f \( -name '*.cs' -o -name '*.csproj' -o -name '*.json' -o -name '*.md' \) -print | LC_ALL=C sort | xargs -r sha256sum > artifacts/legendary-core/source-sha256.txt
+          { find Tools/B01/LEGENDARY-CORE-001 -type f \( -name '*.cs' -o -name '*.csproj' -o -name '*.json' -o -name '*.md' \) ! -path '*/bin/*' ! -path '*/obj/*' -print; printf '%s\n' .github/workflows/b01-legendary-core.yml; } | LC_ALL=C sort | xargs -r sha256sum > artifacts/legendary-core/source-sha256.txt
           python3 - <<'PY'
           import json, os, subprocess
           from pathlib import Path
@@ -63,7 +64,7 @@ jobs:
           }
           (root / "ci-receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
           summary = (
-            f"B01 LEGENDARY-CORE R1 | commit \`{sha}\` | build {receipt['build_outcome']} | tests {receipt['test_outcome']}\n"
+            f"B01 LEGENDARY-CORE R1 | commit `{sha}` | build {receipt['build_outcome']} | tests {receipt['test_outcome']}\n"
             f"Counts: {receipt['tests'] or 'NOT_RUN'} | Native Unity: NOT_RUN\n"
           )
           (root / "ci-summary.md").write_text(summary)
