@@ -1,0 +1,72 @@
+name: B01 LEGENDARY-UNITY W12
+on:
+  push:
+    branches: [b01-22/w12-legendary-unity-001]
+    paths: ['Assets/B01Packages/LEGENDARY001/**', 'Tools/B01/LEGENDARY-UNITY-001/**', '.github/workflows/b01-legendary-unity.yml']
+  pull_request:
+    paths: ['Assets/B01Packages/LEGENDARY001/**', 'Tools/B01/LEGENDARY-UNITY-001/**', '.github/workflows/b01-legendary-unity.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-test-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile real Unity package source with isolated JSON surrogate
+        id: build
+        run: dotnet build Tools/B01/LEGENDARY-UNITY-001/tests/LegendaryUnity.SurrogateTests.csproj -c Release --nologo
+      - name: Execute original eleven fixtures and negative regression tests
+        id: tests
+        shell: bash
+        run: |
+          mkdir -p artifacts/legendary-unity
+          set -o pipefail
+          dotnet run --project Tools/B01/LEGENDARY-UNITY-001/tests/LegendaryUnity.SurrogateTests.csproj -c Release --no-build -- artifacts/legendary-unity/test-results.json | tee artifacts/legendary-unity/test-console.log
+      - name: Build deterministic Unity ZIP, full source SHA256 and GUID QA
+        id: package
+        if: always()
+        run: |
+          python3 Tools/B01/LEGENDARY-UNITY-001/build_package.py artifacts/legendary-unity
+          cp artifacts/legendary-unity/LEGENDARY-UNITY-001.zip artifacts/legendary-unity/package-check.zip
+          python3 Tools/B01/LEGENDARY-UNITY-001/build_package.py artifacts/legendary-unity
+          cmp artifacts/legendary-unity/package-check.zip artifacts/legendary-unity/LEGENDARY-UNITY-001.zip
+          rm artifacts/legendary-unity/package-check.zip
+      - name: CI JSON receipt and truthful native-test labels
+        if: always()
+        env:
+          BUILD_RESULT: ${{ steps.build.outcome }}
+          TEST_RESULT: ${{ steps.tests.outcome }}
+          PACKAGE_RESULT: ${{ steps.package.outcome }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          d=pathlib.Path("artifacts/legendary-unity");d.mkdir(parents=True,exist_ok=True)
+          p=d/"test-results.json"; t=json.loads(p.read_text()) if p.exists() else None
+          r={"schema":"b01.legendary.unity.ci-receipt.v1",
+            "head_sha":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+            "source_contract":"93f290acca26839792a5bec8ea42415ac83932f3",
+            "build":os.environ["BUILD_RESULT"],"tests":os.environ["TEST_RESULT"],
+            "package":os.environ["PACKAGE_RESULT"],
+            "test_counts":({k:t[k] for k in ("passed","failed","total")} if t else None),
+            "unity_native_editmode":"NOT_RUN","unity_native_playmode":"NOT_RUN",
+            "unity_physx":"NOT_RUN","g2":"HOLD"}
+          (d/"ci-receipt.json").write_text(json.dumps(r,indent=2)+"\n")
+          summary=f"LEGENDARY UNITY W12 | SHA {r['head_sha']} | Build {r['build']} | Surrogate {r['tests']} | Package {r['package']} | {r['test_counts']} | Unity native NOT_RUN | G2 HOLD\n"
+          (d/"ci-summary.md").write_text(summary)
+          pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a").write(summary)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-legendary-unity-w12-zip-evidence
+          path: artifacts/legendary-unity
+          retention-days: 30
+          if-no-files-found: warn
