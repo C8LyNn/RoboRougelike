@@ -13,8 +13,10 @@ namespace RoboRougelike.R1
         public bool Cleared => enemies.Count > 0 && AliveCount == 0;
 
         public void Spawn(P12PipelineSafeEnemyTurret template, Transform player,
-            R1EncounterDefinition definition,RoboRougelike.R4.R4SalvageLedger salvage=null,string encounterId="")
+            R1EncounterDefinition definition,RoboRougelike.R4.R4SalvageLedger salvage=null,string encounterId="",Vector3[] spawnPositions=null)
         {
+            if(spawnPositions!=null&&spawnPositions.Length<definition.SpawnCount)
+                throw new System.ArgumentException("Insufficient generated enemy spawn positions");
             Clear();
             // Add one regular escort per encounter without changing the boss finale.
             // The extra enemy uses an ordinary archetype, not an elite/boss variant.
@@ -23,7 +25,8 @@ namespace RoboRougelike.R1
             {
                 // Staggered positions leave an open central firing lane around the existing walls.
                 float x = count == 1 ? 0 : (i - (count - 1) * 0.5f) * 9f;
-                var enemy = Instantiate(template, new Vector3(x, 0, 17 + (i % 2) * 5), Quaternion.identity);
+                var spawn=spawnPositions!=null?spawnPositions[i]:new Vector3(x,0,17+(i%2)*5);
+                var enemy = Instantiate(template, spawn, Quaternion.identity);
                 var kind=definition.SpawnArchetype(i);
                 enemy.ConfigureArchetype(kind);
                 enemy.name = RoboRougelike.R3.R3EnemyProfiles.Name(kind)+" "+(i+1);

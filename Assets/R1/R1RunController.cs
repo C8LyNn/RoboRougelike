@@ -112,6 +112,7 @@ namespace RoboRougelike.R1
         public bool ChooseRoute(int index)
         {
             if(Transitioning||Progress?.State!=R1RunState.Route||index<0||index>=RouteOffers.Length)return false;
+            ClearGeneratedArena();
             var choice=RouteOffers[index];
             reactorRequested=false;ReactorPrepared=false;LastActivityWasReactor=false;
             if(!Progress.ChooseRoute())return false;
@@ -210,7 +211,8 @@ namespace RoboRougelike.R1
         {
             Transitioning = true; Paused = false; SetSimulation(false);
             Encounter.Clear();
-            Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;
+            if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
+            else {Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;}
             if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,playerRotation);
             else Player.MoveTo(playerSpawn,playerRotation);
             Player.Controller.SetGameplayInputEnabled(false);
@@ -222,7 +224,7 @@ namespace RoboRougelike.R1
             Player.Apply(ActiveStats??Progress.Stats);
             Salvage=new R4SalvageLedger(3);
             if(reactorRequested)BeginReactorActivity();
-            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex);
+            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,mapgenRequested?GeneratedWorld.EnemySpawns:null);
             yield return null;
             Transitioning = false; SetSimulation(true);
             Debug.Log("[R1] Starcie " + (Progress.EncounterIndex + 1) + ": przeciwników=" + Encounter.AliveCount);
@@ -244,6 +246,7 @@ namespace RoboRougelike.R1
                 Player?.GetComponent<R3VehicleAssembly>().Capture();
                 Progress.Lose(defeat); SetSimulation(false);
                 ClearReactorActivity();
+                ClearGeneratedArena();
                 Debug.Log("[R1] Porażka: " + defeat);
             }
             else if(ReactorActive&&!UpdateReactorDefense())return;
@@ -258,6 +261,7 @@ namespace RoboRougelike.R1
                 SetSimulation(false);
                 Encounter.Clear();
                 ClearReactorActivity();
+                ClearGeneratedArena();
                 Debug.Log("[R3] Wygrano starcie " + Progress.CompletedEncounters + "; Złom +"+LastScrapReward+"; stan=" + Progress.State);
             }
         }
@@ -310,6 +314,7 @@ namespace RoboRougelike.R1
         private void OnDestroy()
         {
             ClearReactorActivity();
+            ClearGeneratedArena();
             if (Definition != null) Destroy(Definition);
             if (Instance == this) { Instance = null; Time.timeScale = 1; }
         }

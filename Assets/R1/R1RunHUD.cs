@@ -106,8 +106,9 @@ namespace RoboRougelike.R1
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
-                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • W6", title);
+                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • B01 RC1 EXP", title);
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz pojazd do Gauntletu", heading);
+                if(GUI.Button(new Rect(90,173,1100,28),"RC1 EKSPERYMENT: przygotuj pojazd do wygenerowanej areny MAPGEN",compactButton))run.PrepareMapgenRun();
                 for(int i=0;i<3;i++)
                 {
                     var kind=(R3VehicleKind)i;var design=R3VehicleCatalog.Create(kind);float x=80+i*380;
@@ -234,6 +235,8 @@ namespace RoboRougelike.R1
             }
             GUI.Label(new Rect(350,25,580,60),run.SandboxWorkshop?$"{model.Design.Name} • Warsztat poligonu":$"{model.Design.Name}  •  Następna walka {run.Progress.EncounterIndex+1}/{run.Progress.TotalEncounters}",heading);
             DrawReactorGarageAction(run);
+            if(!run.ReactorPrepared&&!run.SandboxWorkshop){GUI.enabled=run.CanChooseGeneratedArena;
+                if(GUI.Button(new Rect(355,80,280,38),"MAPGEN: arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();GUI.enabled=true;}
             if(GUI.Button(new Rect(355,538,125,44),"Obrót ←",compactButton))garage.Orbit(-25);
             if(GUI.Button(new Rect(485,538,125,44),"Obrót →",compactButton))garage.Orbit(25);
             if(GUI.Button(new Rect(615,538,125,44),"Widok ↑",compactButton))garage.Tilt(10);
