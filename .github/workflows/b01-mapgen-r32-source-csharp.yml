@@ -1,8 +1,8 @@
-name: B01 MAPGEN R3.2 isolated source CSharp QA
+name: B01 MAPGEN R3.3 isolated source CSharp QA
 on:
   push:
     branches:
-      - feature/b01-mapgen001-r32-codeX-preflight-20261025
+      - fix/b01-mapgen001-w10-r33-native-recovery-20261025
     paths:
       - "Assets/B01Packages/MAPGEN001/**"
       - "Tools/B01/MAPGEN001/**"
@@ -37,13 +37,25 @@ jobs:
               assert a["optionalUnityReferences"]==["TestAssemblies"], (p,a)
           print("MAPGEN_ASMDEF_DUPLICATE_REFS_STATIC=PASS")
           PY
+      - name: Verify 12 distinct Unity cube case IDs (static source contract only)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          path=Path("Assets/B01Packages/MAPGEN001/Tests/PlayMode/MapGenPhysicalTraversalTests.cs")
+          src=path.read_text()
+          ids=re.findall(r'\[UnityTest\]\s*public IEnumerator (\w+)_CubePhysics\(\)',src)
+          assert len(ids)==12 and len(set(ids))==12,(len(ids),ids)
+          assert "LightAndHeavyRigidbodyDriveThreeSeedsForBothRecipes" not in src
+          print("12/12 SOURCE-DEFINED independently executable UnityTest cases verified; Unity execution NOT_RUN")
+          PY
       - name: Compile and execute exact MAPGEN planner & route validator CSharp
         run: dotnet run --project Tools/B01/MAPGEN001/Headless/MapGen.Headless.csproj --configuration Release -- headless-mapgen-evidence
-      - name: Emit exact source bytes SHA256 and build full ZIP if manifest is R3.2
+      - name: Emit exact source bytes SHA256 and build full ZIP if manifest is R3.3
         shell: bash
         run: |
           set -euo pipefail
-          if python -c "import json; assert json.load(open('Docs/B01/MAPGEN001/manifest.json'))['revision']=='R3.2'"; then
+          if python -c "import json; assert json.load(open('Docs/B01/MAPGEN001/manifest.json'))['revision']=='R3.3'"; then
             python Tools/B01/MAPGEN001/package_gate.py --verify-zip
           else
             python Tools/B01/MAPGEN001/package_gate.py --emit
@@ -52,14 +64,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: b01-mapgen-r32-source-zip
-          path: mapgen-r32-evidence/
+          name: b01-mapgen-r33-source-zip
+          path: mapgen-r33-evidence/
           if-no-files-found: ignore
           retention-days: 21
       - name: Archive all seed case outcomes (including failures)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: b01-mapgen-r32-source-csharp-cases
+          name: b01-mapgen-r33-source-csharp-cases
           path: headless-mapgen-evidence/
           retention-days: 21
