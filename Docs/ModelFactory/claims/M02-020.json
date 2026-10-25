@@ -8,7 +8,9 @@
   "branch": "feature/rrl-model-m02-020-rack-pinion-steering",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/197",
   "claim_create_commit": "9142e4e05571c7201a4dff8a4025962b55c3c5cc",
-  "model_commit": "308cef45706e15c072ba4d4efa905e3d00e42128",
-  "qa_status": "CPYTHON_MATH_PASS_BLENDER_NOT_RUN_UNITY_NOT_RUN",
-  "updated_at_utc": "2026-10-25T04:56:55.419Z"
+  "model_commit": "3c53d0a7d24ac48e4ff10849bacee611f2216f0b",
+  "qa_status": "BLENDER_4_0_2_REENTRANCY_MANIFOLD_GLB_PASS_UNITY_BLOCKED_ACTIVATION",
+  "updated_at_utc": "2026-10-25T04:59:09.286Z",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163791931",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163791931/artifacts/12587427797"
 }
