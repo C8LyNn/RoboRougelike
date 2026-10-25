@@ -18,7 +18,7 @@ jobs:
       - name: Install Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
       - name: Generate BLEND, animated GLB, OBJ and manifest
         run: blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-018/generate_m04_018.py -- --out build/M04-018
