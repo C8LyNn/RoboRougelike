@@ -1,0 +1,18 @@
+{
+  "id": "M05-006",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T15:47:33.890Z",
+  "model": "Projektor bariery kierunkowej",
+  "run": "2026-10-24T15Z",
+  "branch": "feature/rrl-model-m05-006-directional-barrier-projector",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/81",
+  "asset_path": "Tools/ModelFactory/M05/M05-006/",
+  "last_asset_commit": "1636a0c5b31db6eadd50acfc6300ae7fbb51a059",
+  "qa_static": "PASS",
+  "qa_blender": "PASS",
+  "qa_unity": "NOT_RUN",
+  "claim_commit_sha": "5163386e8403984aaffaf9ad40fc6eeb1a1caa89",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40108881718",
+  "blender_artifact_id": 12565985514
+}

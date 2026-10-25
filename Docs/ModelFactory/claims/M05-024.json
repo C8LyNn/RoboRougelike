@@ -1,0 +1,32 @@
+{
+  "id": "M05-024",
+  "agent": "M05",
+  "status": "DRAFT_PR_BLENDER_PASS_UNITY_BLOCKED",
+  "claimed_at_utc": "2026-10-25T02:53:33.272Z",
+  "model": "System chłodzenia kriogenicznego",
+  "run": "2026-10-25T02:00:00Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/187",
+  "branch": "feature/rrl-model-m05-024-cryogenic-cooling",
+  "source_commit": "c8c1abf6e432c900a6ae5919b2c75eaa23fffff5",
+  "qa": {
+    "blender": "PASS",
+    "repeatability": "PASS",
+    "manifold_meshes": 61,
+    "materials": 8,
+    "glb": "PASS",
+    "fbx": "PASS",
+    "blend": "PASS",
+    "animations": 2,
+    "glb_animation_channels": 2,
+    "analytic_samples": 122,
+    "minimum_analytic_gap_m": 0.032,
+    "full_mesh_collision": "NOT RUN",
+    "unity_editmode": "BLOCKED_ACTIVATION",
+    "unity_playmode": "BLOCKED_ACTIVATION",
+    "unity_import": "NOT RUN",
+    "urp_visual": "NOT RUN",
+    "run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40156475976",
+    "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40156475976/artifacts/12584855815"
+  },
+  "updated_at_utc": "2026-10-25T02:59:47.508Z"
+}

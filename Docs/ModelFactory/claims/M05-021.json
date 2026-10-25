@@ -1,0 +1,31 @@
+{
+  "id": "M05-021",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-25T01:31:29Z",
+  "model": "Sygnałowy maszt składany",
+  "run": "2026-10-25T01:30:00Z",
+  "branch": "feature/rrl-model-m05-021-folding-signal-mast",
+  "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/179",
+  "commit_sha": "6e8e28d7a561b3a5fa621a5ae3d2eb8bfb899e49",
+  "paths": [
+    "Tools/ModelFactory/M05/M05-021/generate_m05_021.py",
+    "Tools/ModelFactory/M05/M05-021/test_repeatability_m05_021.py",
+    "Tools/ModelFactory/M05/M05-021/validate_m05_021.py",
+    "Tools/ModelFactory/M05/M05-021/README.md",
+    ".github/workflows/ci-model-m05-021.yml"
+  ],
+  "qa": {
+    "static_python": "PASS",
+    "blender": "PASS (4.0.2; 35 meshes; 95 frames)",
+    "repeatability": "PASS (2 builds, no duplication, foreign scene preserved)",
+    "export_glb": "PASS",
+    "export_fbx": "PASS",
+    "export_blend": "PASS",
+    "independent_glb": "PASS (35 meshes, 8 materials, 2 animations, 42 nodes)",
+    "full_collision_sweep": "NOT_RUN",
+    "unity": "BLOCKED_ACTIVATION (EditMode/PlayMode NOT RUN)",
+    "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151480192",
+    "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151480192/artifacts/12583220714"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "M05-023",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-25T01:49:31.436Z",
+  "model": "Kontener części zamiennych",
+  "run": "2026-10-25T01:00:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/183",
+  "branch": "feature/rrl-model-m05-023-spare-parts-container",
+  "source_commit": "e39b76099602dbba0b19e4e1ec9abdf7fa742f19",
+  "qa": {
+    "repository_validation": "PASS",
+    "blender": "PASS_4_0_2",
+    "repeatability": "PASS",
+    "manifold": "PASS_85_MESHES",
+    "animation": "PASS_121_ANALYTIC_SAMPLES",
+    "glb": "PASS_85_MESHES_8_MATERIALS_2_ANIMATIONS",
+    "blend": "PASS",
+    "fbx": "EXPORTED",
+    "unity_editmode": "BLOCKED_ACTIVATION_NOT_RUN",
+    "unity_playmode": "BLOCKED_ACTIVATION_NOT_RUN",
+    "urp_visual": "NOT_RUN",
+    "full_mesh_collision": "NOT_RUN"
+  },
+  "notes": "Blender, GLB/FBX/BLEND and independent validation PASS; Unity activation blocks EditMode/PlayMode; Draft PR, not merged.",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40152382900",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40152382900/artifacts/12582653229",
+  "qa_details": {
+    "mesh_count": 85,
+    "material_count": 8,
+    "object_count": 93,
+    "glb_animations": 2,
+    "glb_bytes": 1069068,
+    "blend_bytes": 2320484,
+    "min_front_frame_clearance_m": 0.037,
+    "min_leaf_separation_m": 0.07897
+  }
+}

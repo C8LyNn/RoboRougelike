@@ -1,0 +1,20 @@
+{
+  "id": "M05-014",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T23:44:32.155Z",
+  "model": "Podnośnik dwuramienny",
+  "run": "2026-10-24T23Z",
+  "claim_commit_sha": "485918c4bf2a05a84d8cb09c152b35d441d91c8c",
+  "asset_branch": "feature/rrl-model-m05-014-dual-arm-lift",
+  "asset_path": "Tools/ModelFactory/M05/M05-014/",
+  "asset_commit_sha": "7584f6f1cabb11eb6b609222cb886d87f09f536e",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/145",
+  "qa": {
+    "source": "PASS: files committed and repository validation CI 40144097221",
+    "blender": "PENDING: GitHub Actions run 40144097273",
+    "export": "NOT RUN: awaiting Blender CI",
+    "unity": "BLOCKED_ACTIVATION: EditMode 40144097212 and PlayMode 40144097218 failed at Require valid Unity activation credentials; Unity tests skipped",
+    "visual_review": "NOT RUN"
+  }
+}

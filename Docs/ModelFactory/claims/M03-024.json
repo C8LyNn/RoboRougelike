@@ -1,0 +1,15 @@
+{
+  "id": "M03-024",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-25T10:18:29.272Z",
+  "model": "Moduł mostkujący przerwę",
+  "run": "2026-10-25T10:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/221",
+  "branch": "feature/rrl-model-m03-024-gap-bridge",
+  "head_sha": "699512d1c1521ed9130d7ec50f9f6c41f744efa6",
+  "qa": "BLENDER_QA_PASS",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40184379613",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40184379613/artifacts/12595511650"
+}

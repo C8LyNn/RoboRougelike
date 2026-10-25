@@ -1,0 +1,14 @@
+{
+  "id": "M03-021",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-25T07:52:45.890Z",
+  "model": "Pałąk przeciwkapotażowy",
+  "run": "2026-10-25T07:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/206",
+  "branch": "feature/rrl-model-m03-021-rollover-hoop",
+  "head_sha": "37b94d47bd77278d1a0038745789995302b8f012",
+  "qa": "BLENDER_QA_PASS",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174745808",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN"
+}

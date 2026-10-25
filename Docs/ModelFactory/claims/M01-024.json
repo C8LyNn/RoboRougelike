@@ -1,0 +1,21 @@
+{
+  "id": "M01-024",
+  "agent": "M01",
+  "status": "QA_PASS_DRAFT_PR",
+  "claimed_at_utc": "2026-10-25T10:49:32.828Z",
+  "model": "Mechaniczny harpun kotwiczący",
+  "run": "2026-10-25T10Z",
+  "claim_create_commit": "5ce358c99f35b48f9fa374811bf28678c7e686cc",
+  "branch": "feature/rrl-model-m01-024-mechanical-anchor-harpoon",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/227",
+  "pr_number": 227,
+  "source_commit": "d367129c80cbf04fa3119e42a181f4819ccc6dbd",
+  "asset_commit": "b27d210bb598e738c6dd979686706b5fc29b73ed",
+  "workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40186551711",
+  "workflow_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40186551711/artifacts/12595814394",
+  "repo_validation": "PASS (CI-01 #40186551684)",
+  "local_qa": "PASS (51 parts, 3322 vertices, 6508 triangles, 7 materials, 73 frames, 32120 AABB checks, 0 sampled overlaps, 0.065m minimum)",
+  "blender_qa": "PASS (Blender 4.0.2; actual BLEND, FBX, GLB, OBJ, MTL; GLB translation channel; repeatability)",
+  "unity_qa": "BLOCKED_ACTIVATION (CI-02/03 activation check failed; Unity EditMode/PlayMode NOT RUN)",
+  "updated_at_utc": "2026-10-25T10:53:53.831Z"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "M05-022",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-25T01:42:31.895Z",
+  "model": "Moduł odzysku energii kinetycznej",
+  "run": "2026-10-25T01:00:00Z",
+  "claim_create_commit": "7df14c478c2f81822f2ac2fb817b9643ffcfe3ac",
+  "branch": "feature/rrl-model-m05-022-kinetic-energy-recovery",
+  "source_commit": "9989595c2c07dcc2914b3715a58c5d4254f20c85",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/181",
+  "qa": {
+    "blender": "PASS",
+    "repeatability": "PASS",
+    "mesh_manifold": "PASS",
+    "rotor_guard_clearance": "PASS_61_FRAMES_0.040M",
+    "glb": "PASS",
+    "fbx": "PASS",
+    "blend": "PASS",
+    "independent_glb": "PASS",
+    "unity": "BLOCKED_ACTIVATION_NOT_RUN",
+    "full_triangle_collision": "NOT RUN",
+    "manual_urp_visual": "NOT RUN"
+  },
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151945280",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151945280/artifacts/12581769914"
+}

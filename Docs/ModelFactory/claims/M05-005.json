@@ -1,0 +1,18 @@
+{
+  "id": "M05-005",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T14:51:24.846Z",
+  "model": "Generator tarczy pierścieniowej",
+  "run": "2026-10-24T14:50:58Z",
+  "branch": "feature/rrl-model-m05-005-ring-shield-generator",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/77",
+  "pr_number": 77,
+  "model_commit_sha": "d5507715fb579cd3d712fd5898998465dedde657",
+  "qa_static": "PASS",
+  "qa_blender_smoke": "PASS",
+  "qa_unity": "BLOCKED_ACTIVATION",
+  "qa_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40104695863",
+  "note": "Visual asset only, no DEF-001 gameplay; pending Unity import and visual review.",
+  "qa_unity_note": "CI-02 EditMode and CI-03 PlayMode require Unity activation credentials; actual Unity tests NOT RUN."
+}

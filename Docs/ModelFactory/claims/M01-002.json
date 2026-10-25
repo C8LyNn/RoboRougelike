@@ -1,0 +1,30 @@
+{
+  "id": "M01-002",
+  "agent": "M01",
+  "status": "DRAFT_QA_HOLD",
+  "claimed_at_utc": "2026-10-24T11:45:54.250Z",
+  "model": "Krótka haubica tłokowa",
+  "run": "2026-10-24T11Z",
+  "production_branch": "feature/rrl-model-m01-002-short-piston-howitzer",
+  "production_head_sha": "a5f50a79db60b7d2c97cd11524ce7106c63ca0f6",
+  "draft_pr": 43,
+  "deliverables": [
+    "Tools/ModelFactory/M01/M01-002/generate_m01_002.py",
+    "Tools/ModelFactory/M01/M01-002/M01-002.obj",
+    "Tools/ModelFactory/M01/M01-002/M01-002.mtl",
+    "Tools/ModelFactory/M01/M01-002/validate_static.py",
+    "Tools/ModelFactory/M01/M01-002/M01-002.static-qa.json"
+  ],
+  "qa": {
+    "static_obj": "PASS",
+    "watertight_components": "55/55 PASS",
+    "winding": "PASS",
+    "nondegenerate_faces": "4568/4568 PASS",
+    "materials": 7,
+    "model_factory_ci": "PASS",
+    "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091463909",
+    "blender": "NOT RUN",
+    "animated_glb_fbx": "NOT RUN",
+    "unity": "BLOCKED_UNITY_ACTIVATION"
+  }
+}

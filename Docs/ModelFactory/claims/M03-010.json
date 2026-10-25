@@ -1,0 +1,14 @@
+{
+  "id": "M03-010",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-24T19:45:19.293Z",
+  "model": "Pancerz segmentowy schodkowy",
+  "run": "2026-10-24T19Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/110",
+  "branch": "feature/rrl-model-m03-010-stepped-segment-armor",
+  "model_commit": "5b0278f45d0e066bdc758d74d1d4a06ae45a3bb6",
+  "qa": "BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40126994419",
+  "unity": "NOT RUN"
+}

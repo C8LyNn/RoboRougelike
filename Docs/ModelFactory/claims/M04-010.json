@@ -1,0 +1,49 @@
+{
+  "id": "M04-010",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE",
+  "claimed_at_utc": "2026-10-24T19:53:15.481Z",
+  "model": "Stabilizator odśrodkowy",
+  "run": "2026-10-24T19:00Z",
+  "branch": "feature/rrl-model-m04-010-centrifugal-stabilizer",
+  "pr_number": 114,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/114",
+  "claim_commit": "4628aa215b8baad2480f9feb62289c49ceea1c56",
+  "model_commit": "0705b4447730325a03b7d24254dd22dc25a93653",
+  "qa": {
+    "static_geometry": "PASS",
+    "manifold_and_winding": "PASS",
+    "parts": 84,
+    "vertices": 9284,
+    "triangles": 18292,
+    "materials": 8,
+    "independent_obj_parity": "PASS",
+    "obj_mtl_determinism": "PASS",
+    "static_fixed_pair_checks": 76,
+    "sampled_rotating_vertex_checks": 466576,
+    "min_conservative_clearance_m": 0.012,
+    "blender_bpy": "PASS",
+    "blend_export": "PASS",
+    "glb_export": "PASS",
+    "glb_meshes": 84,
+    "glb_animations": 2,
+    "glb_rotation_channels": 2,
+    "glb_samples_per_channel": 121,
+    "unity_editmode": "NOT RUN - BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT RUN - BLOCKED_ACTIVATION",
+    "unity_import": "NOT RUN",
+    "visual_inspection": "NOT RUN"
+  },
+  "static_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127625685",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127625685",
+  "artifacts": {
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127625685/artifacts/12573619030",
+    "blender_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40127625685/artifacts/12572923997"
+  },
+  "files": [
+    "Tools/ModelFactory/M04/M04-010/generate_m04_010.py",
+    "Tools/ModelFactory/M04/M04-010/qa_m04_010.py",
+    "Tools/ModelFactory/M04/M04-010/README.md",
+    ".github/workflows/ci-m04-010.yml"
+  ]
+}

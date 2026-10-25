@@ -1,0 +1,49 @@
+{
+  "id": "M04-013",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE",
+  "claimed_at_utc": "2026-10-24T22:52:02.702Z",
+  "model": "Śruba wodna w pierścieniu",
+  "run": "2026-10-24T22Z",
+  "pr": 127,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/127",
+  "asset_branch": "feature/rrl-model-m04-013-ringed-water-propeller",
+  "asset_commit": "5e854ce5e5e708529971c6d4ef0671368017ccd3",
+  "claim_commit": "84feba40925d36c372ae9dc9d83cc8f7581628ae",
+  "files": [
+    "Tools/ModelFactory/M04/M04-013/generate_m04_013.py",
+    "Tools/ModelFactory/M04/M04-013/qa_m04_013.py",
+    "Tools/ModelFactory/M04/M04-013/README.md",
+    ".github/workflows/ci-m04-013.yml"
+  ],
+  "qa": {
+    "source_geometry": "PASS",
+    "obj_topology_and_deterministic_rebuild": "PASS",
+    "blender_bpy": "PASS — Blender 4.0.2",
+    "blend_fbx_glb_export": "PASS",
+    "animated_glb": "PASS — 47 meshes, 7 materials, 1 animation, ROTOR_Z rotation channel",
+    "unity_editmode": "NOT RUN — BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT RUN — BLOCKED_ACTIVATION",
+    "unity_import": "NOT RUN",
+    "visual_inspection": "NOT RUN",
+    "parts": 47,
+    "vertices": 3012,
+    "triangles": 5884,
+    "materials": 7,
+    "blades": 5,
+    "moving_meshes": 9,
+    "animation_frames": 121,
+    "motion_vertex_checks": 66308,
+    "radial_clearance_m": 0.03474,
+    "grille_axial_clearance_m": 0.09
+  },
+  "ci_result": "PASS — static-geometry and blender-animation on asset commit 5e854ce5e5e708529971c6d4ef0671368017ccd3",
+  "ci_static": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140570022",
+  "ci_blender": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140570022",
+  "ci_repository_validation": "PASS — CI-01",
+  "artifacts": {
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140570022/artifacts/12578786694",
+    "blend_animated_glb_fbx": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140570022/artifacts/12578457270"
+  },
+  "notes": "Model geometry and Blender exports complete, two asset CI jobs PASS. Unity EditMode/PlayMode blocked by activation credentials, no Unity import or visual inspection. Draft PR to develop, no merge."
+}

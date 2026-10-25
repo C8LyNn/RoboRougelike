@@ -1,0 +1,40 @@
+{
+  "id": "M04-002",
+  "agent": "M04",
+  "status": "DRAFT_QA_HOLD",
+  "claimed_at_utc": "2026-10-24T11:45:11Z",
+  "model": "Wirnik podwójny przeciwsobny",
+  "run": "2026-10-24T11Z",
+  "production_branch": "feature/rrl-model-m04-002-contra-rotor",
+  "production_head_sha": "b5272542fca5a7ade1a047a52e3cc0df689c7c90",
+  "draft_pr": 42,
+  "files": [
+    "Tools/ModelFactory/M04/M04-002/generate_m04_002.py",
+    "Tools/ModelFactory/M04/M04-002/test_m04_002.py",
+    "Tools/ModelFactory/M04/M04-002/README.md",
+    ".github/workflows/ci-m04-002.yml"
+  ],
+  "qa": {
+    "cpython_generator": "PASS_LOCAL",
+    "static_obj_topology": "PASS_LOCAL",
+    "parts": 62,
+    "vertices": 7952,
+    "faces": 7158,
+    "materials_used": 6,
+    "radial_clearance_nominal_m": 0.041,
+    "axial_clearance_nominal_m": 0.19,
+    "blender": "NOT_RUN",
+    "glb_export": "NOT_RUN",
+    "unity": "NOT_RUN",
+    "github_actions": "PASS",
+    "repository_ci": "PASS",
+    "unity_editmode": "BLOCKED_UNITY_ACTIVATION",
+    "unity_playmode": "BLOCKED_UNITY_ACTIVATION",
+    "evidence": {
+      "model_factory": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091437095",
+      "repository": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091436995",
+      "editmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091437006",
+      "playmode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091437122"
+    }
+  }
+}

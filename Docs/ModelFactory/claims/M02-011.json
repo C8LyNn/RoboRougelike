@@ -1,0 +1,21 @@
+{
+  "id": "M02-011",
+  "agent": "M02",
+  "status": "DONE_DRAFT_PR",
+  "claimed_at_utc": "2026-10-24T20:51:06Z",
+  "model": "Zawieszenie podwójnego wahacza",
+  "run": "2026-10-24T20:00:00Z",
+  "branch": "feature/rrl-model-m02-011-double-wishbone-suspension",
+  "draft_pr": 117,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/117",
+  "claim_create_commit": "af7093964cd3f2de1565c1f4c27bd16d87c106d6",
+  "static_ci": "PASS",
+  "blender_ci": "PASS",
+  "unity_ci": "BLOCKED_UNITY_ACTIVATION",
+  "model_commit": "fbc32cc06740f7080e01d9da0c0e33588231d84c",
+  "ci_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131944954",
+  "glb_ci": "PASS",
+  "blender_artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131944954/artifacts/12575152078",
+  "static_artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131944954/artifacts/12574894489",
+  "qa_summary": "86 meshes, 8128 vertices, 16032 triangles, 8 materials; 97 poses; Blender 4.0.2 real export; GLB 6 animations 9 channels"
+}

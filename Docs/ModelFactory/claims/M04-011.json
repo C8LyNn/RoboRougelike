@@ -1,0 +1,49 @@
+{
+  "id": "M04-011",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE",
+  "claimed_at_utc": "2026-10-24T20:49:12Z",
+  "model": "Rozkładana płetwa aerodynamiczna",
+  "run": "2026-10-24T20:00Z",
+  "branch": "feature/rrl-model-m04-011-deployable-aero-fin",
+  "pr_number": 118,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/118",
+  "claim_commit": "a224774439dc883c4cc84f006674583e5cac4a50",
+  "model_commit": "af35551feb7d6ec724ad8be524e900b4c7260387",
+  "qa": {
+    "static_geometry": "PASS",
+    "independent_obj_manifold_winding_volume": "PASS",
+    "parts": 51,
+    "vertices": 1642,
+    "triangles": 3104,
+    "materials": 7,
+    "sampled_poses": 81,
+    "moving_static_aabb_checks": 34992,
+    "min_conservative_aabb_clearance_m": 0.016,
+    "axle_bearing_radial_clearance_m": 0.005,
+    "obj_mtl_json_determinism": "PASS",
+    "blender_bpy": "PASS - Blender 4.0.2",
+    "blend_export": "PASS",
+    "glb_export": "PASS",
+    "glb_meshes": 51,
+    "glb_materials": 7,
+    "glb_animations": 3,
+    "glb_rotation_channels": 3,
+    "unity_editmode": "NOT RUN - BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT RUN - BLOCKED_ACTIVATION",
+    "unity_import": "NOT RUN",
+    "visual_inspection": "NOT RUN",
+    "collision_scope": "Conservative AABB moving-fin vs static non-bearing parts, disjoint Y fins, separate axle/bearing clearance; not Unity physics"
+  },
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131956228",
+  "artifacts": {
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131956228/artifacts/12575661597",
+    "blender_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131956228/artifacts/12574714454"
+  },
+  "files": [
+    "Tools/ModelFactory/M04/M04-011/generate_m04_011.py",
+    "Tools/ModelFactory/M04/M04-011/qa_m04_011.py",
+    "Tools/ModelFactory/M04/M04-011/README.md",
+    ".github/workflows/ci-m04-011.yml"
+  ]
+}

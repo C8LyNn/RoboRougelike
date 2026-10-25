@@ -1,0 +1,29 @@
+{
+  "id": "M01-019",
+  "agent": "M01",
+  "status": "BLENDER_QA_PASS",
+  "claimed_at_utc": "2026-10-25T05:47:15.186Z",
+  "model": "Wyrzutnia dymna sześciotubowa",
+  "run": "2026-10-25T05:00Z",
+  "branch": "feature/rrl-model-m01-019-six-tube-smoke-launcher",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/200",
+  "source_commit": "df0094c166ac5773775d29a45997dc5d4302f92a",
+  "claim_create_commit": "204db2e2298849faffa55336bd3630299699720f",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40167079732",
+  "asset_commit": "d79b1d6799131d414f78273857444c1e074d8729",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40167079732/artifacts/12587949244",
+  "qa": {
+    "meshes": 59,
+    "materials_blender": 7,
+    "materials_glb": 6,
+    "vertices": 7576,
+    "triangles": 15024,
+    "frames_tested": 73,
+    "aabb_checks": 55480,
+    "aabb_intersections": 0,
+    "min_aabb_clearance_m": 0.026,
+    "repeat_determinism": "PASS",
+    "unity": "BLOCKED_ACTIVATION",
+    "unity_import": "NOT_RUN"
+  }
+}

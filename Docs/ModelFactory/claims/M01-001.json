@@ -1,0 +1,20 @@
+{
+  "id": "M01-001",
+  "agent": "M01",
+  "status": "DRAFT_PR_STATIC_OBJ_READY",
+  "claimed_at_utc": "2026-10-24T10:45:59.340Z",
+  "model": "Czterolufowy blaster bębnowy",
+  "run": "2026-10-24T10Z",
+  "completed_at_utc": "2026-10-24T10:52:06.359Z",
+  "production_branch": "feature/rrl-model-m01-001-drum-blaster",
+  "production_head_sha": "7f2919eb47e97c955920596fac80b80f62348a0d",
+  "draft_pr": 36,
+  "qa": {
+    "obj_closed_groups": "61/61 PASS",
+    "obj_triangles": 7952,
+    "obj_vertices": 4076,
+    "materials": 6,
+    "blender": "NOT RUN",
+    "unity": "NOT RUN"
+  }
+}

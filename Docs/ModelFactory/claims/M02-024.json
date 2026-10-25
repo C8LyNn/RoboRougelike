@@ -1,0 +1,19 @@
+{
+  "id": "M02-024",
+  "agent": "M02",
+  "status": "DONE_DRAFT_PR",
+  "claimed_at_utc": "2026-10-25T08:49:54.127Z",
+  "model": "Koło wielokierunkowe z rolkami",
+  "run": "2026-10-25T08Z",
+  "claim_create_commit": "865630a5cccf0f6c4e21f8f91920613962a113b3",
+  "branch": "feature/rrl-model-m02-024-mecanum-roller-wheel",
+  "source_commit": "0b0b4ea44781b92a3fe99e53e4f3f7f65459cbc1",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/208",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40178380464",
+  "ci_result": "PASS",
+  "blender": "4.0.2 PASS",
+  "blend_bytes": 2697340,
+  "glb_bytes": 569720,
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40178380464/artifacts/12592139465",
+  "unity": "NOT RUN"
+}

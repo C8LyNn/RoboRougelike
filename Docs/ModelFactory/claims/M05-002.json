@@ -1,0 +1,31 @@
+{
+  "id": "M05-002",
+  "agent": "M05",
+  "status": "DRAFT_PR_STATIC_QA_PASS_BLENDER_HOLD",
+  "claimed_at_utc": "2026-10-24T11:46:57Z",
+  "model": "Radar panelowy płaski",
+  "run": "2026-10-24T11Z",
+  "production_branch": "feature/rrl-model-m05-002-flat-panel-radar",
+  "production_head_sha": "2ed96aad201bce1021859cbb0682f513c568655f",
+  "draft_pr": 46,
+  "updated_at_utc": "2026-10-24T11:50:40Z",
+  "deliverables": [
+    "Tools/ModelFactory/M05/M05-002/geometry.json",
+    "Tools/ModelFactory/M05/M05-002/generate_m05_002.py",
+    "Tools/ModelFactory/M05/M05-002/M05-002.obj",
+    "Tools/ModelFactory/M05/M05-002/M05-002.mtl",
+    "Tools/ModelFactory/M05/M05-002/M05-002.static-qa.json",
+    "Tools/ModelFactory/M05/M05-002/README.md"
+  ],
+  "qa": {
+    "python_syntax": "PASS_GITHUB_ACTIONS",
+    "static_geometry_selftest": "PASS_GITHUB_ACTIONS",
+    "obj_mtl_reproducibility": "PASS_GITHUB_ACTIONS",
+    "obj_integrity": "PASS_GITHUB_ACTIONS",
+    "workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40091499518",
+    "blender": "NOT_RUN",
+    "glb_export": "NOT_RUN",
+    "unity_import": "NOT_RUN",
+    "visual_qa": "NOT_RUN"
+  }
+}

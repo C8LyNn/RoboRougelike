@@ -1,0 +1,16 @@
+{
+  "id": "M03-018",
+  "agent": "MODEL-03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-25T04:45:18.739Z",
+  "model": "Kardanowy uchwyt ruchomego modułu",
+  "run": "2026-10-25T04:00Z",
+  "branch": "feature/rrl-model-m03-018-dual-axis-gimbal-mount",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/194",
+  "source_head": "07529c5889284edf276428e7def5ff70b8c58b62",
+  "qa_status": "BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163263665",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163263665/artifacts/12587491689",
+  "glb_sha256": "c4162b944e2d0ac78fa2184f5957baac81bfd5d452148308cbba5f4e42f951fa",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN"
+}

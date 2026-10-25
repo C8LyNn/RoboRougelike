@@ -1,0 +1,44 @@
+{
+  "id": "M04-015",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE_BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "claimed_at_utc": "2026-10-25T00:53:31.672Z",
+  "model": "Nóżka skokowa pneumatyczna",
+  "run": "2026-10-25T00:00Z",
+  "branch": "feature/rrl-model-m04-015-pneumatic-jump-leg",
+  "commit": "c5dc0427b49e819379fd95a4495eec486f1b19ae",
+  "pr": 170,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/170",
+  "files": [
+    "Tools/ModelFactory/M04/M04-015/generate_m04_015.py",
+    "Tools/ModelFactory/M04/M04-015/qa_m04_015.py",
+    "Tools/ModelFactory/M04/M04-015/README.md",
+    ".github/workflows/ci-m04-015.yml"
+  ],
+  "qa": {
+    "repository_validation": "PASS — CI-01 40149211035",
+    "blender_execution": "PASS — actual Blender 5.0.1 GitHub Actions 40149211105",
+    "blend_reopen": "PASS — scene reopened with Blender, hierarchy verified",
+    "geometry": "PASS — 44 meshes, 9664 triangles, 7 materials, positive polygon areas",
+    "animation": "PASS — GLB translation channel, 49 frames at 30 FPS, 250mm total travel",
+    "clearances": "PASS — analytical 50mm shaft-to-bore radial and 128mm collar-to-guard axial at full retraction",
+    "obj_mtl": "PASS — actual Blender export, independently verified",
+    "glb": "PASS — actual Blender export, independently verified",
+    "fbx": "NOT RUN — Blender 5.0.1 FBX exporter failed: missing use_space_transform",
+    "unity_import": "NOT RUN",
+    "unity_editmode": "NOT RUN — repository CI failure, activation preflight",
+    "unity_playmode": "NOT RUN — repository CI failure, activation preflight",
+    "manual_visual": "NOT RUN",
+    "physics": "NOT RUN"
+  },
+  "blockers": [
+    "Blender 5.0.1 FBX addon crashes on missing ExportFBX.use_space_transform; GLB and OBJ/MTL exported successfully.",
+    "Unity EditMode/PlayMode and import not executed; repository Unity workflows failed (activation preflight reported historically).",
+    "Manual visual QA and physics collision validation NOT RUN; analytic clearance is not a triangle-level collision solver."
+  ],
+  "actions_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149211105",
+  "artifacts": [
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149211105/artifacts/12582361852"
+  ],
+  "artifact_sha256": "2efcb052658ec0034147430847677227006bcccd6615fa7511e983c6b9316f94"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "M05-008",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T17:49:30.416Z",
+  "model": "Bateria cylindryczna",
+  "run": "2026-10-24T17:49Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/96",
+  "model_branch": "feature/rrl-model-m05-008-cylindrical-battery",
+  "model_commit_sha": "c702e8a131a8a881d25227d638c55f026102ebb1",
+  "production_status": "DRAFT_PR_QA_PASS_UNITY_NOT_RUN",
+  "qa": {
+    "static": "PASS",
+    "blender": "PASS",
+    "unity": "NOT RUN",
+    "run_id": 40118484237,
+    "static_artifact_id": 12569468310,
+    "blender_artifact_id": 12569773352
+  },
+  "updated_at_utc": "2026-10-24T17:59:38.190Z"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "M03-011",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-24T20:50:45.482Z",
+  "model": "Narożnik pochłaniający uderzenia",
+  "run": "2026-10-24T20Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/119",
+  "branch": "feature/rrl-model-m03-011-impact-corner-absorber",
+  "source_path": "Tools/ModelFactory/M03/M03-011/",
+  "claim_create_commit": "4a4a2759aebeefd25cb5e66e82a9c075c7b24319",
+  "qa_status": "STATIC_PASS_BLENDER_PASS_UNITY_NOT_RUN",
+  "updated_at_utc": "2026-10-24T20:57:30.842Z"
+}

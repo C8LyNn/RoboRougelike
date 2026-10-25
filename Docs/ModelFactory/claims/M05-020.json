@@ -1,0 +1,24 @@
+{
+  "id": "M05-020",
+  "agent": "M05",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-25T01:25:16.371Z",
+  "model": "Nawigacyjna antena kratowa",
+  "run": "2026-10-25T01:00Z",
+  "production_branch": "feature/rrl-model-m05-020-navigation-lattice-antenna",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/177",
+  "production_commit": "0b9d53c3c799b89ff6110a6643d1591de3a0f1af",
+  "qa": {
+    "blender": "PASS (4.0.2; 2 builds, 55 manifold meshes, 8 materials, foreign object preserved)",
+    "animation": "PASS (100 frames, min central clearance 0.031m)",
+    "glb": "PASS (55 meshes, 8 materials, 3 animations)",
+    "fbx": "PASS (actual file generated)",
+    "blend": "PASS (actual file saved)",
+    "full_mesh_collision": "NOT RUN",
+    "unity": "NOT RUN (EditMode/PlayMode BLOCKED_ACTIVATION)",
+    "repository_validation": "PASS",
+    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150758847",
+    "artifact_id": 12582049885,
+    "artifact_expires_at_utc": "2026-11-08T01:29:23Z"
+  }
+}

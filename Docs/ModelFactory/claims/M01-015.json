@@ -1,0 +1,15 @@
+{
+  "id": "M01-015",
+  "agent": "M01",
+  "status": "QA_PASS_BLENDER_UNITY_NOT_RUN",
+  "claimed_at_utc": "2026-10-25T00:50:15Z",
+  "model": "Dwukierunkowa wieżyczka strzelecka",
+  "run": "20261025T0049Z",
+  "branch": "feature/rrl-model-m01-015-bidirectional-turret",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/168",
+  "pr_number": 168,
+  "source_commit": "d83741637d1b603426cf0f279f017ecdd29f1805",
+  "asset_commit": "14301aed819ddc9df15e3c09b1eb95c59bceaab5",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148395702",
+  "qa_result": "Blender 4.0.2 PASS; 69 watertight parts; 7 materials; 73 poses; 80008 moving/fixed AABB; 35332 cross-arm AABB; 0 collisions; 0.017m radial gap; GLB/FBX/BLEND/OBJ/MTL exported and validated; Unity NOT RUN"
+}

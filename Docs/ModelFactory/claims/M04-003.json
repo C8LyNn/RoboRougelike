@@ -1,0 +1,18 @@
+{
+  "id": "M04-003",
+  "agent": "M04",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T12:52:54.936Z",
+  "model": "Wentylator kanałowy dolny",
+  "run": "2026-10-24T12Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/56",
+  "asset_branch": "feature/rrl-model-m04-003-lower-ducted-fan",
+  "asset_head_commit": "874fc86a9940b07832a20c3d4f54fec74449d051",
+  "ci_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40096258139",
+  "qa_status": "STATIC_PASS_BLENDER_UNITY_NOT_RUN",
+  "files": [
+    "Tools/ModelFactory/M04/M04-003/generate_m04_003.py",
+    "Tools/ModelFactory/M04/M04-003/generate_m04_003.source.zlib.b64",
+    "Tools/ModelFactory/M04/M04-003/qa_m04_003.py"
+  ]
+}

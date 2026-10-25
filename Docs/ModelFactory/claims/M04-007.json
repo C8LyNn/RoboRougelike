@@ -1,0 +1,39 @@
+{
+  "id": "M04-007",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE_BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "claimed_at_utc": "2026-10-24T16:45:53Z",
+  "model": "Silnik hover z czterema emiterami",
+  "run": "2026-10-24T16:00:00Z",
+  "mount": "spód ramy",
+  "motion": "pulsacja emiterów",
+  "note": "Four symmetric disks; model visual only. Exclusive hourly MODEL-04 cycle.",
+  "production_branch": "feature/rrl-model-m04-007-quad-hover-emitter",
+  "production_commit": "c95c5da8e0f2715318d73a73576bbb81876acff1",
+  "pull_request": 88,
+  "pull_request_url": "https://github.com/C8LyNn/RoboRougelike/pull/88",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113388296",
+  "qa": {
+    "static": "PASS",
+    "blender": "PASS_BLENDER_4_0_2",
+    "glb": "PASS_4_ANIMATIONS_8_CHANNELS",
+    "unity": "NOT_RUN",
+    "visual": "NOT_RUN",
+    "parts": 84,
+    "vertices": 5736,
+    "triangles": 11216,
+    "materials": 7,
+    "swept_frames": 81,
+    "aabb_checks": 74358,
+    "radial_checks": 1915,
+    "min_radial_clearance_m": 0.01654
+  },
+  "artifacts": {
+    "static": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113388296/artifacts/12567019565",
+    "animated": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113388296/artifacts/12567572065"
+  },
+  "blockers": [
+    "Unity 6 editor activation/import and PlayMode/EditMode not executed",
+    "Visual review in Unity/Blender UI not executed"
+  ]
+}

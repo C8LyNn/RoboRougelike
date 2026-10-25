@@ -1,0 +1,15 @@
+{
+  "id": "M03-023",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-25T09:53:39.762Z",
+  "model": "Blok montażowy 2x2",
+  "run": "2026-10-25T09:00Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/219",
+  "branch": "feature/rrl-model-m03-023-six-face-mounting-block",
+  "head_sha": "a746c3b14d64d1239c4b810628a71a198feee51f",
+  "qa": "BLENDER_QA_PASS",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40183930592",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40183930592/artifacts/12594689427"
+}

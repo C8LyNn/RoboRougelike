@@ -1,0 +1,15 @@
+{
+  "id": "M02-015",
+  "agent": "M02",
+  "status": "DONE_DRAFT_PR",
+  "claimed_at_utc": "2026-10-25T00:43:45.271Z",
+  "model": "Skrzynia biegów z odkrytą zębatką",
+  "run": "2026-10-25T00Z",
+  "branch": "feature/rrl-model-m02-015-exposed-gearbox",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/162",
+  "commit": "384f81f22578280882b3ced1783f21048d3b6d38",
+  "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148393611",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40148393611/artifacts/12582150451",
+  "qa": "STATIC_121_PASS_BLENDER5_GLB_OBJ_PASS_FBX_BLOCKED_UNITY_NOT_RUN",
+  "updated_at_utc": "2026-10-25T00:53:51.436Z"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "M01-012",
+  "agent": "M01",
+  "status": "GENERATED_QA_PASS",
+  "claimed_at_utc": "2026-10-24T21:50:35.217Z",
+  "model": "Pneumatyczna wyrzutnia śrub",
+  "run": "2026-10-24T21Z",
+  "pr": 122,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/122",
+  "branch": "feature/rrl-model-m01-012-pneumatic-bolt-launcher",
+  "head_sha": "f968afcd730fbb76658558c31a94c60e4a030f13",
+  "claim_create_commit": "3e3abfe715824830bcd8bde0b4baa461f2eb4032",
+  "blender_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40136140847",
+  "asset_artifact_id": 12576464493,
+  "actual_export": "BLEND/GLB/FBX/OBJ/MTL",
+  "qa": {
+    "blender": "4.0.2",
+    "mesh_objects": 68,
+    "vertices": 12344,
+    "triangles": 24476,
+    "materials": 7,
+    "animation_samples": 61,
+    "aabb_checks": 15616,
+    "minimum_noncontact_gap_m": 0.018062,
+    "manifold": "PASS",
+    "animated_glb": "PASS",
+    "unity": "NOT RUN",
+    "manual_visual_review": "NOT RUN"
+  }
+}

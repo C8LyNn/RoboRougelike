@@ -1,0 +1,25 @@
+{
+  "id": "M03-004",
+  "agent": "M03",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T13:44:35.329Z",
+  "model": "Wzmocniona rama X",
+  "run": "2026102413Z",
+  "asset_branch": "feature/rrl-model-m03-004-reinforced-x-frame",
+  "asset_head_sha": "34616380aabcc34fb8b22b21ca52ef4e713fe266",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/61",
+  "asset_dir": "Tools/ModelFactory/M03/M03-004/",
+  "asset_status": "DRAFT_PR_OPEN",
+  "qa": {
+    "static_obj_mtl": "PASS",
+    "outward_normals": "PASS",
+    "watertight_parts": "32/32 PASS (local trimesh)",
+    "blender_5_0_1_glb_blend": "PASS",
+    "blender_rerun_idempotence": "PASS",
+    "unity": "BLOCKED_UNITY_ACTIVATION",
+    "unity_import": "NOT RUN"
+  },
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40100085051",
+  "ci_artifact_id": 12561763653,
+  "updated_at_utc": "2026-10-24T13:54:59.608Z"
+}

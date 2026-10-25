@@ -1,0 +1,39 @@
+{
+  "id": "M04-020",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE_BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "claimed_at_utc": "2026-10-25T01:36:12Z",
+  "model": "Wysuwany booster manewrowy",
+  "run": "2026-10-25T01:00:00Z",
+  "claim_commit": "6957a722048585a6630cf81eda5e5c19f1331485",
+  "branch": "feature/rrl-model-m04-020-telescopic-maneuver-booster",
+  "model_commit": "0fc6a73b45511ae9df6f6cf17377481bf0663308",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/180",
+  "files": [
+    "Tools/ModelFactory/M04/M04-020/generate_m04_020.py",
+    "Tools/ModelFactory/M04/M04-020/qa_m04_020.py",
+    "Tools/ModelFactory/M04/M04-020/README.md",
+    ".github/workflows/ci-m04-020.yml"
+  ],
+  "qa": {
+    "ci_01": "PASS",
+    "blender": "PASS (Blender 5.0.1; 69 meshes)",
+    "topology": "PASS (20576 manifold edges, nonzero face areas)",
+    "glb": "PASS (69 meshes, 7 materials, 2 animations; translation and rotation channels)",
+    "blend_reopen": "PASS",
+    "sampled_clearance": "PASS (25 frames, 22950 static-vs-moving AABB checks)",
+    "unity_editmode": "NOT RUN (CI activation credentials missing)",
+    "unity_playmode": "NOT RUN (CI activation credentials missing)",
+    "unity_import": "NOT RUN",
+    "visual": "NOT RUN",
+    "triangle_ccd": "NOT RUN"
+  },
+  "blender_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151643903",
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40151643903/artifacts/12581864480",
+  "artifact_zip_sha256": "da9252b31d37916ee632103fd1cbfae11b3e56f0b6755ab13072ecbace3c7088",
+  "limitations": [
+    "No Unity activation credentials in EditMode/PlayMode workflows",
+    "Discrete AABB clearance samples, not continuous triangle collision detection",
+    "Manual Unity visual review not performed"
+  ]
+}

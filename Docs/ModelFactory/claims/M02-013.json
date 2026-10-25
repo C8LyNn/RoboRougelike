@@ -1,0 +1,15 @@
+{
+  "id": "M02-013",
+  "agent": "M02",
+  "status": "DONE_DRAFT_PR",
+  "claimed_at_utc": "2026-10-24T22:48:03Z",
+  "model": "Silnik osiowy z wirnikiem",
+  "run": "2026-10-24T22:00:00Z",
+  "branch": "feature/rrl-model-m02-013-axial-rotor-engine",
+  "pull_request": 126,
+  "pull_request_url": "https://github.com/C8LyNn/RoboRougelike/pull/126",
+  "asset_commit": "072ac4504a32d129071fcc0d0d473b78d33a0cb1",
+  "qa_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40140409024",
+  "qa_status": "PASS_STATIC_BLENDER_GLB",
+  "unity_status": "NOT_RUN_UNITY_ACTIVATION"
+}

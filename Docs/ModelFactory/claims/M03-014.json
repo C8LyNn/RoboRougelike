@@ -1,0 +1,21 @@
+{
+  "id": "M03-014",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-24T23:48:34.667Z",
+  "model": "Płoza podwozia ślizgowego",
+  "run": "2026-10-24T23Z",
+  "branch": "feature/rrl-model-m03-014-skid-chassis-runner",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/151",
+  "claim_create_commit": "53524b2e0d86079b8634f9fe50fcaa90ec050b70",
+  "static_qa": "PASS (18 watertight oriented meshes, 5 materials, 4 SNAP ports, 153 AABB pair checks, deterministic)",
+  "blender_qa": "PASS (Blender 4.0.2 real GLB/FBX/BLEND, GLB structure, same-session idempotence)",
+  "unity_qa": "BLOCKED_UNITY_ACTIVATION (EditMode/PlayMode NOT RUN)",
+  "qa_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40144979905",
+  "asset_commit": "a66449ee06022d452a5ced52deae5166bc763f31",
+  "static_obj_sha256": "a3602e4c4bdccbcafa6e244d2372e42735ef242f1cbc0cca9c7775ce8cdf1a05",
+  "asset_meshes": 18,
+  "asset_vertices": 510,
+  "asset_triangles": 964,
+  "asset_materials": 5
+}

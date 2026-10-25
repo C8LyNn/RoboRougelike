@@ -1,0 +1,15 @@
+{
+  "id": "M02-023",
+  "agent": "M02",
+  "status": "DONE_DRAFT_PR",
+  "claimed_at_utc": "2026-10-25T07:50:45.460Z",
+  "model": "Łańcuchowy napęd boczny",
+  "run": "2026-10-25T07:00:00Z",
+  "completed_at_utc": "2026-10-25T08:01:12.222Z",
+  "branch": "feature/rrl-model-m02-023-side-chain-drive",
+  "model_commit": "ec9b0280ffd54116ae600b063bef41365481d8d2",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/205",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174857853",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174857853/artifacts/12591089190",
+  "qa": "BLENDER_GLB_PASS_UNITY_NOT_RUN"
+}

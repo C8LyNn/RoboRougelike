@@ -1,0 +1,51 @@
+{
+  "id": "M05-009",
+  "agent": "M05",
+  "status": "DRAFT_PR_QA_PASS",
+  "claimed_at_utc": "2026-10-24T18:53:58.045Z",
+  "model": "Chłodnica cieczowa boczna",
+  "run": "2026-10-24T18:00Z",
+  "claim_create_commit": "b273126cf96c242ec32882e696d74887ff72d539",
+  "branch": "feature/rrl-model-m05-009-side-liquid-radiator",
+  "pr_number": 108,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/108",
+  "model_head_commit": "64542581d91655afdee498fe317ac882e4b7f05d",
+  "files": [
+    "Tools/ModelFactory/M05/M05-009/generate_m05_009.py",
+    "Tools/ModelFactory/M05/M05-009/qa_artifacts.py",
+    "Tools/ModelFactory/M05/M05-009/README.md",
+    ".github/workflows/ci-model-m05-009.yml"
+  ],
+  "qa": {
+    "blender": "PASS",
+    "repeatability": "PASS",
+    "geometry_manifold": "PASS",
+    "fan_continuous_sweep_clearance": "PASS",
+    "glb_animation": "PASS",
+    "fbx": "PASS",
+    "blend": "PASS",
+    "unity_import": "NOT RUN",
+    "unity_editmode": "BLOCKED_ACTIVATION",
+    "unity_playmode": "BLOCKED_ACTIVATION",
+    "visual_review": "NOT RUN",
+    "run_id": 40123340637,
+    "artifact_id": 12572031999,
+    "meshes": 81,
+    "vertices": 4808,
+    "triangles": 9304,
+    "materials": 8,
+    "dimensions_xyz_m": [
+      0.5605,
+      0.906,
+      0.67
+    ],
+    "binary_assets_committed": "PASS"
+  },
+  "merged": false,
+  "generated_assets": [
+    "Tools/ModelFactory/M05/M05-009/generated/M05-009_side_liquid_radiator.blend",
+    "Tools/ModelFactory/M05/M05-009/generated/M05-009_side_liquid_radiator.fbx",
+    "Tools/ModelFactory/M05/M05-009/generated/M05-009_side_liquid_radiator.glb",
+    "Tools/ModelFactory/M05/M05-009/generated/M05-009_QA.json"
+  ]
+}

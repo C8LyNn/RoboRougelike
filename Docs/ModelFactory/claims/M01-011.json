@@ -1,0 +1,18 @@
+{
+  "id": "M01-011",
+  "agent": "M01",
+  "status": "MODEL_GENERATED_QA_PASS",
+  "claimed_at_utc": "2026-10-24T20:49:24Z",
+  "model": "Długi karabin precyzyjny",
+  "run": "20261024T20Z-MODEL-01",
+  "claim_create_commit": "47f860d62d927fdbc2126df0a3ea0a130589de38",
+  "model_branch": "feature/rrl-model-m01-011-long-precision-rifle",
+  "draft_pr": 115,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/115",
+  "asset_commit": "e1369735cb2fa3a6c12864af87605a1fe49f4ebe",
+  "qa_run_id": 40131818770,
+  "qa_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40131818770",
+  "qa": "BLENDER_4.0.2_PASS_REAL_EXPORTS_AND_48_FRAME_BOLT_QA",
+  "unity": "NOT_RUN",
+  "files": "Tools/ModelFactory/M01/M01-011/generated/"
+}

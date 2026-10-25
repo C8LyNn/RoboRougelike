@@ -1,0 +1,24 @@
+{
+  "id": "M03-001",
+  "agent": "M03",
+  "status": "DELIVERED_DRAFT",
+  "claimed_at_utc": "2026-10-24T10:49:10Z",
+  "model": "Klatka bazowa 1x1x1",
+  "run": "2026-10-24T10:48Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/39",
+  "asset_branch": "feature/rrl-model-m03-001-base-cage",
+  "asset_commit_sha": "bc1fd37c3a1692f92de0c5604634f3bf8c6a2d9c",
+  "deliverables": [
+    "Tools/ModelFactory/M03/M03-001/generate_m03_001.py",
+    "Tools/ModelFactory/M03/M03-001/M03-001.obj",
+    "Tools/ModelFactory/M03/M03-001/M03-001.mtl",
+    "Tools/ModelFactory/M03/M03-001/M03-001.static-qa.json",
+    "Tools/ModelFactory/M03/M03-001/validate_static.py",
+    "Tools/ModelFactory/M03/M03-001/README.md"
+  ],
+  "qa": {
+    "static_obj_mesh": "PASS",
+    "blender": "NOT RUN",
+    "unity": "NOT RUN"
+  }
+}

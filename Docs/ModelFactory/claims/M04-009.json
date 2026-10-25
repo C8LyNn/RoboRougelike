@@ -1,0 +1,40 @@
+{
+  "id": "M04-009",
+  "agent": "M04",
+  "status": "MODEL_COMPLETE_BLENDER_QA_PASS_UNITY_NOT_RUN",
+  "claimed_at_utc": "2026-10-24T18:48:15Z",
+  "model": "Stabilizator żyroskopowy",
+  "run": "2026-10-24T18:00Z",
+  "claim_commit": "9bfeb66e858bc7e3288ad329dda7af27e4e28912",
+  "feature_branch": "feature/rrl-model-m04-009-three-axis-gyroscope",
+  "feature_commit": "03659e37023cd5a3ba03e44ccf1d6e941ceea5dd",
+  "pr": 104,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/104",
+  "qa": {
+    "static_geometry": "PASS",
+    "manifold_and_winding": "PASS",
+    "parts": 60,
+    "vertices": 4732,
+    "triangles": 9252,
+    "materials": 8,
+    "animation_frames": 121,
+    "animated_pivots": 3,
+    "glb_rotation_channels": 3,
+    "blender": "PASS (4.0.2)",
+    "glb": "PASS",
+    "moving_vertex_pose_checks": 544500,
+    "certified_fixed_cage_boxes": 29,
+    "min_conservative_cage_clearance_m": 0.045,
+    "obj_mtl_determinism": "PASS",
+    "unity_editmode": "NOT RUN — BLOCKED_ACTIVATION",
+    "unity_playmode": "NOT RUN — BLOCKED_ACTIVATION",
+    "unity_import": "NOT RUN",
+    "visual_review": "NOT RUN"
+  },
+  "github_actions_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122948214",
+  "artifacts": {
+    "static_obj_mtl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122948214/artifacts/12572240942",
+    "blender_glb": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122948214/artifacts/12572181098"
+  },
+  "notes": "Draft PR to develop, no merge; no main scenes, ProjectSettings, gameplay or other model IDs touched."
+}

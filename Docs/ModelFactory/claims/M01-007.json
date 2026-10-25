@@ -1,0 +1,21 @@
+{
+  "id": "M01-007",
+  "agent": "M01",
+  "status": "MODEL_GENERATED_DRAFT_PR",
+  "claimed_at_utc": "2026-10-24T16:49:44Z",
+  "model": "Impulsowa armata pierścieniowa",
+  "run": "2026-10-24T16:00Z",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/90",
+  "model_branch": "feature/rrl-model-m01-007-impulse-ring-cannon",
+  "source_commit": "ab85f43d872fe82e174f44d9536218c948d04ee9",
+  "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113624593",
+  "blender_qa": "PASS",
+  "unity_qa": "NOT_RUN",
+  "asset_commit": "50abffff9499a33bba9d6ffb1121e65f62575312",
+  "head_commit": "68ced386c74fd1683dcf5b23f841057270ff1e22",
+  "asset_path": "Tools/ModelFactory/M01/M01-007/generated/",
+  "static_qa": "PASS",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40113682487",
+  "asset_artifact": "M01-007-impulse-ring-cannon-3D",
+  "visual_review": "NOT_RUN"
+}

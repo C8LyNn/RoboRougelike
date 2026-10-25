@@ -1,0 +1,19 @@
+{
+  "id": "M02-009",
+  "agent": "M02",
+  "status": "PRODUCED_DRAFT",
+  "claimed_at_utc": "2026-10-24T18:50:39.279Z",
+  "model": "Trójkołowy wózek gąsienicowy",
+  "run": "2026-10-24T18:00Z-MODEL-02",
+  "production_branch": "feature/rrl-model-m02-009-triwheel-track-bogie",
+  "pr_number": 107,
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/107",
+  "head_commit": "1ad5713d1367e8e2ef962d4593281e80da5d6a05",
+  "qa_static": "PASS (302 closed manifold meshes, 75,660 SAT pair tests)",
+  "qa_blender": "PASS (Blender 4.0.2, GitHub Actions 40122933116)",
+  "qa_unity": "NOT RUN",
+  "claim_create_commit": "4da962900ca0ebca81a5ab36dddc4eb20ae9670d",
+  "qa_glb": "PASS (glTF 2.0; 43 animations)",
+  "artifact_animated": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122933116/artifacts/12572191054",
+  "artifact_static": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40122933116/artifacts/12571837793"
+}

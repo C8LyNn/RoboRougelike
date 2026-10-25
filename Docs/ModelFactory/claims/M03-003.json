@@ -1,0 +1,23 @@
+{
+  "id": "M03-003",
+  "agent": "M03",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-24T12:44:27.231Z",
+  "model": "Rama mostowa 2x1x1",
+  "run": "2026-10-24T12:00Z",
+  "claim_commit_sha": "7e33dadc07cb108d5ef0cf676ceae79041c81d21",
+  "asset_branch": "feature/rrl-model-m03-003-bridge-frame",
+  "asset_pr": "https://github.com/C8LyNn/RoboRougelike/pull/51",
+  "asset_commit_sha": "0a0381e9ce609a6b7c3c820d79370f756f9f0b60",
+  "qa": {
+    "static_geometry": "PASS",
+    "source_syntax": "PASS",
+    "obj_mtl_export": "PASS",
+    "artifact_id": 12560821521,
+    "github_actions_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40095436696",
+    "blender_export": "NOT RUN",
+    "unity_import": "NOT RUN",
+    "unity_editmode": "BLOCKED_CREDENTIALS",
+    "unity_playmode": "BLOCKED_CREDENTIALS"
+  }
+}

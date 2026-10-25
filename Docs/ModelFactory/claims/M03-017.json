@@ -1,0 +1,16 @@
+{
+  "id": "M03-017",
+  "agent": "M03",
+  "status": "DRAFT_PR_OPEN",
+  "claimed_at_utc": "2026-10-25T03:45:12.386Z",
+  "model": "Złącze szybkomocujące",
+  "run": "2026-10-25T03Z",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/191",
+  "branch": "feature/rrl-model-m03-017-quick-release-coupler",
+  "head_commit": "3a5dcaef01d4434328a5731d169b4fe6cd2b8bff",
+  "qa": "BLENDER_QA_PASS",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40159824021",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40159824021/artifacts/12586445135",
+  "glb_sha256": "396bdbc99daef788bd31cc33019c71be7c3d0673cbe2610df10b1e49b7275c80"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "M01-018",
+  "agent": "M01",
+  "status": "PR_DRAFT_QA_PASS",
+  "claimed_at_utc": "2026-10-25T04:49:28.829Z",
+  "model": "Armata kinetyczna z przeciwwagą",
+  "run": "2026102504Z",
+  "claim_commit": "44f05dcc8e4f751094fedfc3df70c6a632567ecf",
+  "branch": "feature/rrl-model-m01-018-kinetic-counterweight-cannon",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/195",
+  "asset_commit": "a8f93e9e1fb9cd31ff9e913f472f989b5d6d4f94",
+  "qa_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40163398964",
+  "qa_status": "BLENDER_QA_PASS",
+  "unity_status": "BLOCKED_ACTIVATION"
+}
