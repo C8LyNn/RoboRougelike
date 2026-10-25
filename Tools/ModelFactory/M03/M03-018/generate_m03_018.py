@@ -188,8 +188,14 @@ def export():
     glb=os.path.join(OUT,"M03-018.glb")
     fbx=os.path.join(OUT,"M03-018.fbx")
     bpy.ops.wm.save_as_mainfile(filepath=blend)
-    bpy.ops.export_scene.gltf(filepath=glb, export_format="GLB", export_animations=True)
-    bpy.ops.export_scene.fbx(filepath=fbx, use_selection=False, bake_anim=True,
+    # Export only our tagged collection, never foreign default-scene objects.
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in col.objects:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = next(o for o in col.objects if o.type=="MESH")
+    bpy.ops.export_scene.gltf(filepath=glb, export_format="GLB",
+                              use_selection=True, export_animations=True)
+    bpy.ops.export_scene.fbx(filepath=fbx, use_selection=True, bake_anim=True,
                              add_leaf_bones=False)
     for path in (blend,glb,fbx):
         if not os.path.isfile(path) or os.path.getsize(path)<512:
