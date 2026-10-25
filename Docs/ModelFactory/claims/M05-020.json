@@ -17,8 +17,8 @@
     "full_mesh_collision": "NOT RUN",
     "unity": "NOT RUN (EditMode/PlayMode BLOCKED_ACTIVATION)",
     "repository_validation": "PASS",
-    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150694144",
-    "artifact_id": 12581679984,
-    "artifact_expires_at_utc": "2026-11-08T01:28:03Z"
+    "workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40150758847",
+    "artifact_id": 12582049885,
+    "artifact_expires_at_utc": "2026-11-08T01:29:23Z"
   }
 }
