@@ -22,11 +22,14 @@ jobs:
       - name: Install Blender
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version
       - name: Generate actual Blender GLB FBX BLEND and validate repeated builds
         run: |
-          blender -b --factory-startup --python Tools/ModelFactory/M03/M03-016/qa_blender_m03_016.py -- --output "${{ runner.temp }}/m03-016"
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-016/qa_blender_m03_016.py -- --output "${{ runner.temp }}/m03-016"
+          test -s "${{ runner.temp }}/m03-016/M03-016.glb"
+          test -s "${{ runner.temp }}/m03-016/M03-016.fbx"
+          test -s "${{ runner.temp }}/m03-016/M03-016.blend"
       - name: Upload real static OBJ MTL manifest
         if: always()
         uses: actions/upload-artifact@v4
@@ -36,7 +39,7 @@ jobs:
             ${{ runner.temp }}/m03-016/M03-016.obj
             ${{ runner.temp }}/m03-016/M03-016.mtl
             ${{ runner.temp }}/m03-016/M03-016.manifest.json
-          if-no-files-found: warn
+          if-no-files-found: error
       - name: Upload Blender exports
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,4 +49,4 @@ jobs:
             ${{ runner.temp }}/m03-016/M03-016.glb
             ${{ runner.temp }}/m03-016/M03-016.fbx
             ${{ runner.temp }}/m03-016/M03-016.blend
-          if-no-files-found: warn
+          if-no-files-found: error
