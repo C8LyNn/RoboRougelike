@@ -1,0 +1,95 @@
+name: M03-014 Skid Chassis Runner QA
+on:
+  push:
+    branches: [feature/rrl-model-m03-014-skid-chassis-runner]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-014/**'
+      - '.github/workflows/ci-m03-014.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-014/**'
+      - '.github/workflows/ci-m03-014.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate Python and real OBJ/MTL
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-014/generate_m03_014.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-014/qa_m03_014.py
+          python3 Tools/ModelFactory/M03/M03-014/qa_m03_014.py
+          python3 Tools/ModelFactory/M03/M03-014/generate_m03_014.py --out /tmp/m03-014-static
+          test -s /tmp/m03-014-static/M03-014_skid_chassis_runner.obj
+          test -s /tmp/m03-014-static/M03-014_skid_chassis_runner.mtl
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-014-static-OBJ-MTL
+          path: /tmp/m03-014-static/
+          if-no-files-found: error
+          retention-days: 14
+
+  blender-export:
+    needs: static-qa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Run bpy and export actual GLB FBX BLEND
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-014/generate_m03_014.py \
+            -- --out /tmp/m03-014-blender
+          test -s /tmp/m03-014-blender/M03-014_skid_chassis_runner.glb
+          test -s /tmp/m03-014-blender/M03-014_skid_chassis_runner.fbx
+          test -s /tmp/m03-014-blender/M03-014_skid_chassis_runner.blend
+      - name: Independently validate real GLB structure
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          root=Path('/tmp/m03-014-blender')
+          blob=(root/'M03-014_skid_chassis_runner.glb').read_bytes()
+          magic,version,size=struct.unpack_from('<4sII',blob)
+          assert (magic,version,size)==(b'glTF',2,len(blob))
+          n,kind=struct.unpack_from('<I4s',blob,12)
+          assert kind==b'JSON'
+          data=json.loads(blob[20:20+n])
+          nodes=data['nodes']
+          assert len([x for x in nodes if 'mesh' in x])==18
+          assert len(data['materials'])==5
+          names={x.get('name') for x in nodes}
+          assert 'MOUNT_BOTTOM_FRAME' in names
+          for side in ('L','R'):
+              for end in ('Aft','Fore'):
+                  assert 'SNAP_BOTTOM_'+side+'_'+end in names
+          assert not data.get('animations')
+          report=json.loads((root/'M03-014_manifest.json').read_text())
+          assert report['backend']=='bpy'
+          assert report['mesh_count']==18
+          assert report['unity_import']=='NOT RUN'
+          print('PASS actual GLB: 18 meshes, 5 materials, root and 4 SNAP nodes')
+          PY
+      - name: Verify bpy repeatability in one session
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M03/M03-014/qa_blender_m03_014.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-014-Blender-GLB-FBX-BLEND
+          path: /tmp/m03-014-blender/
+          if-no-files-found: error
+          retention-days: 14
