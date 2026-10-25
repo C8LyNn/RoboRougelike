@@ -1,0 +1,21 @@
+test_complete_project_passes (test_repository.RepositoryTests.test_complete_project_passes) ... ok
+test_duplicate_guid_fails (test_repository.RepositoryTests.test_duplicate_guid_fails) ... ok
+test_generated_tracked_files_fail (test_repository.RepositoryTests.test_generated_tracked_files_fail) ... ok
+test_lock_mismatch_fails (test_repository.RepositoryTests.test_lock_mismatch_fails) ... ok
+test_missing_folder_meta_fails (test_repository.RepositoryTests.test_missing_folder_meta_fails) ... ok
+test_missing_meta_fails (test_repository.RepositoryTests.test_missing_meta_fails) ... ok
+test_missing_scene_fails (test_repository.RepositoryTests.test_missing_scene_fails) ... ok
+test_orphan_meta_fails (test_repository.RepositoryTests.test_orphan_meta_fails) ... ok
+test_untracked_meta_cannot_mask_missing_meta (test_repository.RepositoryTests.test_untracked_meta_cannot_mask_missing_meta) ... ok
+test_wrong_unity_version_fails (test_repository.RepositoryTests.test_wrong_unity_version_fails) ... ok
+test_count_mismatch_rejected (test_results.ResultsTests.test_count_mismatch_rejected) ... ok
+test_empty_suite_rejected (test_results.ResultsTests.test_empty_suite_rejected) ... ok
+test_executed_pass (test_results.ResultsTests.test_executed_pass) ... ok
+test_failure_cannot_hide_in_aggregate (test_results.ResultsTests.test_failure_cannot_hide_in_aggregate) ... ok
+test_nonzero_native_exit_rejected (test_results.ResultsTests.test_nonzero_native_exit_rejected) ... ok
+test_skipped_is_not_pass (test_results.ResultsTests.test_skipped_is_not_pass) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.253s
+
+OK

@@ -1,0 +1,255 @@
+{
+  "package": "BUILD001",
+  "source": "d575b79e262ec9b65702608d6b6e28972da0d21c",
+  "target": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "files": [
+    {
+      "path": "Assets/B01Construction.meta",
+      "bytes": 169,
+      "gitBlobSha1": "240a388ede28ee981b5d1ceb89804cbb99738e6f",
+      "sha256": "46781a32906e45a4a1152005716f1eaeef2a93bc673223bf4d0fda10cfac5f98",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001.meta",
+      "bytes": 169,
+      "gitBlobSha1": "1c7f2a7ad7ab14363bf2ca9a077640885d1f7283",
+      "sha256": "319b87e20e735a6c97e63f4190976ff6678275a99ea4793a4a5dcea1792d9d3f",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo.meta",
+      "bytes": 169,
+      "gitBlobSha1": "b837ac404f5436bf631f4adb66565352f2fdcbf4",
+      "sha256": "5a50874b891218060a034d0051d8622f0a52d068149f3268bdb089f7493efade",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity",
+      "bytes": 1378,
+      "gitBlobSha1": "344bb50cbe3aa639e6fb4c699bef9c59fd09c711",
+      "sha256": "9b635fe9d14cdf0a628f6e515f533fb82969dbc73ef16fd71ac86bbeab3bbbf7",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity.meta",
+      "bytes": 152,
+      "gitBlobSha1": "b62ca306478d042f0c635c3d36beb6f9dca7174e",
+      "sha256": "ec58c77941b2c6017fe1589b0aa63950d6a8e7461a001b64bd2e2e6d1358d837",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs",
+      "bytes": 3907,
+      "gitBlobSha1": "09c4a65f4b7f1438e157720ccdb3a9b584403fa6",
+      "sha256": "9a3acc3573666423a7d38f6d7745c34b7307690c97c11415d808bae3b84b6f54",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs.meta",
+      "bytes": 240,
+      "gitBlobSha1": "83cd834a4b9619560b9fa338f872bf97d30573e5",
+      "sha256": "2ba4fb08c910c16f9650ba09a1192df47f04e8f2b2abccc6314b9dbec9eb9a35",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime.meta",
+      "bytes": 169,
+      "gitBlobSha1": "5404b107a1d94cafc5bf070a3e44a381f5c4d11d",
+      "sha256": "f0bfb365743b8d9717fa89308f1ff80bb2a9ad0466efae6600398ba079a6981f",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef",
+      "bytes": 201,
+      "gitBlobSha1": "ca38ac8ae4856475641117095b2f3b3a5e70b6a4",
+      "sha256": "44ccd9d21d3dcb4334abdad1ff44a11814fc894482bc40b7b1ea006bc99b50df",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef.meta",
+      "bytes": 163,
+      "gitBlobSha1": "135b2d023dfc644c0a3d168ae36e9a56f88f29e4",
+      "sha256": "62a4a6c2dd0c86b9fb29e35b24361ed879ae63ae46ab70ade83ca8bdc5280ae8",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs",
+      "bytes": 7587,
+      "gitBlobSha1": "cc65c740d7fe815c47a44a96050832bc4e226bed",
+      "sha256": "e177a5c6749d1b01e413235df2187e616f8d94e2d7ff513a3c0b2db4985e69e1",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs.meta",
+      "bytes": 240,
+      "gitBlobSha1": "43391bf0249a9943d8d9525892e85c2e6f03b2d6",
+      "sha256": "38f0d4dbc64cf015de0283030d8702d057f0a4cd785efbd6330ffce00618e24a",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs",
+      "bytes": 9187,
+      "gitBlobSha1": "2c65106556b39043435ad9fd4e0383c2b9d5690f",
+      "sha256": "bf4b93793a23a0b6c242702572c3f4db0d57201e9f2280233949cbddd4b12cb2",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs.meta",
+      "bytes": 240,
+      "gitBlobSha1": "c9d21f223d54698dac10fec56ee27241f3ce2917",
+      "sha256": "c8d7a0bc123746a467ef40cbc9ee55662298f963d42c1a772d69a37686c099d9",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs",
+      "bytes": 2729,
+      "gitBlobSha1": "92afc425ae11b24a1ff70267aec34eb483802a1f",
+      "sha256": "a3383b864c65635911c8662484b8ae65fbad8d86304e184a5941e0e370036a59",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs.meta",
+      "bytes": 240,
+      "gitBlobSha1": "89f1b6ed2cbc778098c001c546ca7f27df1c3629",
+      "sha256": "63a0d7ac3c8ec0ed38b4b478b202f8fd9f50597875c4742480864501b21c3fb5",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests.meta",
+      "bytes": 169,
+      "gitBlobSha1": "dfaead4b1811ad7318cd00181be691e45b7e4c47",
+      "sha256": "c2e5a06f6da52f3005a65995c93f02e297ed511d28612a8ff9cb98d2cfddcd3d",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode.meta",
+      "bytes": 169,
+      "gitBlobSha1": "17046385b4df059466f326c6ef1dce3301e6c547",
+      "sha256": "02a875154c301b5017ea77bf7338c90d92e56e96d5dc83320c55ddd03d9f1844",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef",
+      "bytes": 320,
+      "gitBlobSha1": "5525baae058cebe8f8350e2618ed737185b7145a",
+      "sha256": "c6c88bfe72d937fffaeb79fd7581ca760255ddaae0d674edf599d24660026df9",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef.meta",
+      "bytes": 163,
+      "gitBlobSha1": "ae071b9f5d2a3d014581ba3c8ca41d8d69a895b8",
+      "sha256": "516de5f08d9932a1810be7120cd371d6697289490bd9fd806daf20c702b4502a",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs",
+      "bytes": 9254,
+      "gitBlobSha1": "e09711df15891199d891068c04117fccd5719d9a",
+      "sha256": "89e57990f043369489d120ec300470f372789713e1aa5cb3ca449afe067521f2",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs.meta",
+      "bytes": 240,
+      "gitBlobSha1": "6ee9063b6a497d11a4fb75736038226145bc2469",
+      "sha256": "f94398a6cb6a37517df53d38bf11ba0d2ab3dac02413fa46c0d38bad26956bc7",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode.meta",
+      "bytes": 169,
+      "gitBlobSha1": "67be5775f0216c7a46ccc14c67ccef6c0bf1a463",
+      "sha256": "87d8ffb98edb67dd651cdcea21184e9d251950d2d1d4c758af19d341a8fa06e0",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef",
+      "bytes": 304,
+      "gitBlobSha1": "3b478bbe8266a3b1c360967876afc5685bf6ba74",
+      "sha256": "d7a2a5aa52bad320560cb62d03543426c7aa47c513d556096e09b5a95c96e256",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef.meta",
+      "bytes": 163,
+      "gitBlobSha1": "301ec235121b28d544ed7c2edfae1fab3de9c975",
+      "sha256": "07e9ddfeee7b76aadb9f898efc8937ccb90c95ce387f3a2d5c3feb1bf7950715",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs",
+      "bytes": 3505,
+      "gitBlobSha1": "5ce9d14809baed0cedaf86d6423e27fedd75e6f2",
+      "sha256": "d52a0d575583b650313042df71e2a90d0c0e4f1094fa0cf184865d258ca0f370",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs.meta",
+      "bytes": 240,
+      "gitBlobSha1": "1b3941b6de357f7cd3e65b0b0679eddf864c2bc4",
+      "sha256": "99d7daa6d1b20c78381aeb731381d8a933a56310d40a646cb71016384393229a",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/API.md",
+      "bytes": 1679,
+      "gitBlobSha1": "4553223591b59166ccb8d53e8d49169a9b7eacad",
+      "sha256": "5664901b822f7c39b06fd47d87b7779991e353b913596127f91efcb54ee5da89",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md",
+      "bytes": 2127,
+      "gitBlobSha1": "e9961291bd5b4bef6e19d8226717c3ced908475e",
+      "sha256": "22b846e46b4ead7085eaa9bd0f1425fa5d96b80c9e45c41c081ba50eda72b28a",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/KNOWN_LIMITATIONS.md",
+      "bytes": 1221,
+      "gitBlobSha1": "500b11b908c826ec72fca2853bcc55a7776dff36",
+      "sha256": "95e54c2a1645b64aca1e2ffa888f59b9ced2befcedb6600f6caebeb7d75b8909",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md",
+      "bytes": 2432,
+      "gitBlobSha1": "65d61b08b08a24d098b454d30abbedad31de7cc8",
+      "sha256": "408d35bccb8eb2356773561fb5112c817c8036d148954c9da25bf051216bb61b",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/README.md",
+      "bytes": 1318,
+      "gitBlobSha1": "883c216a521bf256985860d8669e62dd3b2c6393",
+      "sha256": "e967661693ce077122bebaea5261fec0da45092f75ff7f5880053c13c35015e6",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/RECEIVER_HANDOFF.md",
+      "bytes": 678,
+      "gitBlobSha1": "d581a5d6c37838bccb919558f9621c526594e37e",
+      "sha256": "4812c1b0ddfe76f5c8ad43708a52eb6a34326fbb50f0ab9e9fd394844d5f3fde",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/TEST_EVIDENCE.md",
+      "bytes": 2167,
+      "gitBlobSha1": "2fc59f9bb250121e983c71b3101ff9c60f60d900",
+      "sha256": "0ce865c31f5214dc83a25610adbc44bdc3ef6e23893b5849196d42f1b5fc18af",
+      "sourceAndCheckoutIdentical": true
+    },
+    {
+      "path": "Docs/B01/BUILD001/TEST_PLAN.md",
+      "bytes": 1517,
+      "gitBlobSha1": "c4adc9c38dcd8232569e13ffb61a37841cf780c0",
+      "sha256": "0604ff99dba81090b0fc4019e1a9e480f201a858d706efbcbdaefec2d17f7136",
+      "sourceAndCheckoutIdentical": true
+    }
+  ],
+  "guidCount": 809,
+  "guidCollisions": [],
+  "gate": "Receiver integrity only; not independent G1/G2 approval"
+}
