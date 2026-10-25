@@ -27,11 +27,15 @@ jobs:
         run: |
           python3 -m py_compile Tools/ModelFactory/M05/M05-021/generate_m05_021.py
           python3 -m py_compile Tools/ModelFactory/M05/M05-021/validate_m05_021.py
+          python3 -m py_compile Tools/ModelFactory/M05/M05-021/test_repeatability_m05_021.py
       - name: Install Blender
         run: |
           sudo apt-get update -qq
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y blender python3-numpy
           blender --version
+      - name: Rerun isolation and no resource duplication
+        run: |
+          blender -b -t 2 --python Tools/ModelFactory/M05/M05-021/test_repeatability_m05_021.py
       - name: Generate model and export
         run: |
           mkdir -p /tmp/m05-021
