@@ -1,13 +1,13 @@
 {
   "package_id": "B01-CAMERA-001",
-  "revision": "R1.2-SOURCE-RECHECK",
+  "revision": "R1.2",
   "recipient": "Codex",
   "priority": "P0",
-  "status": "RUNNING_NEW_SOURCE_SHA256_BEFORE_FINAL_FREEZE",
+  "status": "SOURCE_FROZEN_SHA256_CI_PENDING_NATIVE_UNITY_NOT_RUN_G2_HOLD",
   "source_pr": "https://github.com/C8LyNn/RoboRougelike/pull/247",
   "source_branch": "fix/b01-camera001-w12-r12-finalpose-corridor-20261025",
   "source_base_sha": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
-  "source_head_before_manifest": "189a1a5253ed9cacf932b3192302b91619a7a06a",
+  "source_head_before_manifest": "31ea3a5a42bd241deda1b50a5407f9ae9e543c5f",
   "unity_version": "6000.3.14f1",
   "dependencies": [
     "UnityEngine Camera/Physics",
@@ -77,9 +77,9 @@
       "sha256": null
     },
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs": {
-      "git_blob_sha1": "886491a85b66d2d1383b530825bb23290b7b090e",
-      "bytes": 12285,
-      "sha256": "80058c7bb241c44e66b5ca28f091809255a94850fcf3c87152a42ab3635cb4a8"
+      "git_blob_sha1": "fce0f0266ac4f415d90d7825e6019e902cf89260",
+      "bytes": 12325,
+      "sha256": "d6cd37a9c2ebdefbe7b8002c060ffcb852a0eb60b787427e264c1e41e4835d3b"
     },
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs.meta": {
       "git_blob_sha1": "4803e8bdfcc653734d1062cf2abfdbe0e915313e",
@@ -264,7 +264,7 @@
     "Assets/B01Packages/CAMERA001/Runtime/B01.CAMERA001.Runtime.asmdef.meta": "64d12c51beaf68d5c0e72f9536463a904d57f0f7a5568aaae1127ff19f950079",
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs": "2c3997e1a885394e9a9143f1d93eccb0ed3b93bcb2e5109dcd5ee532be0a4051",
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs.meta": "46ea01462d658e8cf3719f2db28bb4f0151d7f56c22efac69ff6557d355895f2",
-    "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs": "80058c7bb241c44e66b5ca28f091809255a94850fcf3c87152a42ab3635cb4a8",
+    "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs": "d6cd37a9c2ebdefbe7b8002c060ffcb852a0eb60b787427e264c1e41e4835d3b",
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs.meta": "1a8efba9706475d7631a60fb186b8fa7ab1a865f2343ea805444a2625162b3be",
     "Assets/B01Packages/CAMERA001/Tests.meta": "fe6783953e093a46d951bd7e6f3343a8b833893078876aab72fdca625da09a6e",
     "Assets/B01Packages/CAMERA001/Tests/EditMode.meta": "8e3bb8c0aeda91b14e88a3f428536a6460ce988ff902111a4261234004f99ea0",
@@ -306,7 +306,7 @@
     "Assets/B01Packages/CAMERA001/Runtime/B01.CAMERA001.Runtime.asmdef.meta": 163,
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs": 4528,
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs.meta": 240,
-    "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs": 12285,
+    "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs": 12325,
     "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs.meta": 240,
     "Assets/B01Packages/CAMERA001/Tests.meta": 169,
     "Assets/B01Packages/CAMERA001/Tests/EditMode.meta": 169,
@@ -339,7 +339,7 @@
     "previousR11": "FAIL:26 actual own ray intersections+9.1732m Tall corridor jump",
     "previousNativeQA_PR": 234,
     "previousNativeQA_SHA": "17a2399f74b7562be19c2b429dc0b1312957c66a",
-    "sourceOfflineCI": 40225960039,
+    "sourceOfflineCI": 40226164921,
     "newUnityCompile": "NOT_RUN",
     "newUnityEditMode": "NOT_RUN",
     "newUnityPlayMode": "NOT_RUN",
@@ -370,8 +370,8 @@
       214,
       247
     ],
-    "CI_run": 40225960039,
-    "zipSHA256": "PENDING_CI_VERIFIED_FINAL",
-    "why": "Actual runtime refinement requires new SHA256 receipt. Prior R1.2 ZIP hash is invalid for this new HEAD."
+    "CI_run": 40226164921,
+    "zipSHA256": "PENDING_VERIFIED_FINAL_CI_REBUILD",
+    "why": "Source final blocked-pivot sightline fix included in this exact SHA256 manifest."
   }
 }
