@@ -1,0 +1,8 @@
+{
+  "name": "B01.RUNSAFETY001.Runtime",
+  "rootNamespace": "B01.RUNSAFETY001",
+  "references": [],
+  "includePlatforms": [],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}
