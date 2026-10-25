@@ -1,8 +1,13 @@
 {
   "id": "M01-019",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "SOURCE_COMMITTED_CI_PENDING",
   "claimed_at_utc": "2026-10-25T05:47:15.186Z",
   "model": "Wyrzutnia dymna sześciotubowa",
-  "run": "2026-10-25T05:00Z"
+  "run": "2026-10-25T05:00Z",
+  "branch": "feature/rrl-model-m01-019-six-tube-smoke-launcher",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/200",
+  "source_commit": "df0094c166ac5773775d29a45997dc5d4302f92a",
+  "claim_create_commit": "204db2e2298849faffa55336bd3630299699720f",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40166937184"
 }
