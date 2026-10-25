@@ -1,0 +1,282 @@
+{
+  "schema": "b01-w9-independent-byte-manifest-v1",
+  "package_id": "CAMERA001",
+  "original_native_red_source_sha": "894d3488dedb69e2b8d89683d750bbdbfedf4e55",
+  "first_corrected_source_sha": "30c0419cb9c103303a9b4e301a241a7a3684ebd9",
+  "verified_source_sha": "d48108f56d3fe0790ad715683e77b2de9219e4b1",
+  "source_url": "https://github.com/C8LyNn/RoboRougelike/commit/d48108f56d3fe0790ad715683e77b2de9219e4b1",
+  "method": "GitHub fetch_file by immutable ref -> base64 decode original bytes -> independent SHA256 (known-vector verified); Git tree SHA1 and size independently compared",
+  "file_count": 37,
+  "manifest_producer_entries": 36,
+  "total_bytes": 56753,
+  "meta_count": 16,
+  "unique_guids": 16,
+  "static_manifest_validation": "PASS",
+  "current_producer_sha256_manifest_fields": "NULL; this separate B01-40 audit sidecar supplies exact source digests",
+  "target_current_ack": "PENDING",
+  "unity_native_new_sha": "NOT_RUN",
+  "B01_60_independent_native": "PENDING",
+  "G0_SOURCE": "STATIC_COMPLETE; producer SHA256 manifest requires consolidation",
+  "G0_TARGET": "BLOCKED_PENDING_ACTUAL_CODEX_SCOPE",
+  "G1_NATIVE": "BLOCKED_NOT_RUN",
+  "G2_HANDOFF": "HOLD",
+  "sha256_zip": null,
+  "files": [
+    {
+      "path": "Assets/B01Packages.meta",
+      "bytes": 169,
+      "sha256": "fe9f4f7fb9310d2d20cf1434b1c337d40afb12b8365461c2982cc0397ab40f33",
+      "git_sha1": "aafe73e81da1d22b85b25b2f62f4fc5ca0b06f1f",
+      "guid": "b01c0000000000000000000000000001"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001.meta",
+      "bytes": 169,
+      "sha256": "99ecdb838a1a75e8cd917e320427ca86f1e6e67aee0e4ca44f0a28bc392dd2d5",
+      "git_sha1": "59dee22c4a84714e70df49f6b54f1c36335fc85c",
+      "guid": "b01c0000000000000000000000000002"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo.meta",
+      "bytes": 169,
+      "sha256": "0abf6e14bc2ed1d5b27634d22a1d4ab0487bddb9827c6bbc87ddb7ec942784e3",
+      "git_sha1": "ab70dfc475b9d87fa29de85607ea8095cba3019c",
+      "guid": "b01c0000000000000000000000000004"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/CAMERA001_Demo.unity",
+      "bytes": 1379,
+      "sha256": "0c55df5b9ceeb9b76a5e09abda887027fe5ff74f4a44b865fa1aae44055db4e4",
+      "git_sha1": "bc4f6651b6e9d9e137d29510a5d73ddec620b6ba",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/CAMERA001_Demo.unity.meta",
+      "bytes": 152,
+      "sha256": "817c29fbc3d6caeea768f6182e331200e1c90a7ae1d9bc2ca0c63970c5e4bd05",
+      "git_sha1": "dac9187d78280f13a64df275a65a8b126135fc60",
+      "guid": "b01c0000000000000000000000000010"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/Camera001Demo.cs",
+      "bytes": 5385,
+      "sha256": "204056e0f03d59f08cc717472109f25489b6dfce3556c1a6952f09417b1bc50d",
+      "git_sha1": "a9b05ee75f6d4bee1af3bee3f8fcb8a06ecc9197",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/Camera001Demo.cs.meta",
+      "bytes": 240,
+      "sha256": "989aa62e79fc744ab553dca1ddff08600eb65aa4062793c4d1863b961df8eb19",
+      "git_sha1": "47788844077f3fe022bcc3f727d544734d03b405",
+      "guid": "b01c0000000000000000000000000009"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime.meta",
+      "bytes": 169,
+      "sha256": "64c51192521e878c0aafde84fd00cf6c18baec9001911bf02816f3d22074a136",
+      "git_sha1": "0749adb40078378af920e19d7888188786b44077",
+      "guid": "b01c0000000000000000000000000003"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/B01.CAMERA001.Runtime.asmdef",
+      "bytes": 344,
+      "sha256": "a8d8297f40c1232bd12e03e192303c50b401bbfad7f4b49f80b7e069ec90079c",
+      "git_sha1": "a4d05f58dd119eb8fe2aa02d8eb66bac52c5bea4",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/B01.CAMERA001.Runtime.asmdef.meta",
+      "bytes": 163,
+      "sha256": "64d12c51beaf68d5c0e72f9536463a904d57f0f7a5568aaae1127ff19f950079",
+      "git_sha1": "15d5c36ffb7ddba1c10b30434f90a8589a3f6c1a",
+      "guid": "b01c000000000000000000000000000d"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs",
+      "bytes": 4528,
+      "sha256": "2c3997e1a885394e9a9143f1d93eccb0ed3b93bcb2e5109dcd5ee532be0a4051",
+      "git_sha1": "b2b04ea4a744aa068a34500280c29eb81c9f8792",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs.meta",
+      "bytes": 240,
+      "sha256": "46ea01462d658e8cf3719f2db28bb4f0151d7f56c22efac69ff6557d355895f2",
+      "git_sha1": "667f224b82f55ed0b3d3b4fa331e2184c43b961a",
+      "guid": "b01c0000000000000000000000000008"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs",
+      "bytes": 8564,
+      "sha256": "c6415dfefd5246985da779824b806e82830839569a1bf49173193590d1906934",
+      "git_sha1": "687a8c32682a02b08e0e7f30422ebd665d3840ed",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs.meta",
+      "bytes": 240,
+      "sha256": "1a8efba9706475d7631a60fb186b8fa7ab1a865f2343ea805444a2625162b3be",
+      "git_sha1": "4803e8bdfcc653734d1062cf2abfdbe0e915313e",
+      "guid": "b01c000000000000000000000000000a"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests.meta",
+      "bytes": 169,
+      "sha256": "fe6783953e093a46d951bd7e6f3343a8b833893078876aab72fdca625da09a6e",
+      "git_sha1": "c9b47f2f95238c2189dac44115a206b1604a1bd3",
+      "guid": "b01c0000000000000000000000000005"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode.meta",
+      "bytes": 169,
+      "sha256": "8e3bb8c0aeda91b14e88a3f428536a6460ce988ff902111a4261234004f99ea0",
+      "git_sha1": "614ee583f64ec99584bab41ac0090dd83d413e7c",
+      "guid": "b01c0000000000000000000000000006"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef",
+      "bytes": 461,
+      "sha256": "42e63b870180e11c42b51297ce54c261154a1725bdfb07b34b118d5d8d39ee86",
+      "git_sha1": "2333e0777c962c85673c6523c5493db85dfa1461",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef.meta",
+      "bytes": 163,
+      "sha256": "02d46e39cd0e99239f8007ba42a8deb6f3f431d71a51bec38693be57abfb11ca",
+      "git_sha1": "753abc888d30697c25d0ebf88c97118453aad9b6",
+      "guid": "b01c000000000000000000000000000e"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001FramingTests.cs",
+      "bytes": 3811,
+      "sha256": "535909184be4dca3c82bc9a88a733ec4feeb1e231859d4481993f21b04d0ec6c",
+      "git_sha1": "617c7f8dc1194aab55b56e19329be4eefb8d858c",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001FramingTests.cs.meta",
+      "bytes": 240,
+      "sha256": "25a63de79cf900ffd2854c0d1ac45195f3920ec308ff07015d7f0f69c76cec8e",
+      "git_sha1": "a0afbc44ca3e2bba65cf8201f34c086531efb964",
+      "guid": "b01c000000000000000000000000000b"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode.meta",
+      "bytes": 169,
+      "sha256": "637685018239577c36f336b9130f529c7f48beb1c4787a7c11826e1355870fef",
+      "git_sha1": "8a68532a5f3495502f8e62eed2b452d98e8fd1fe",
+      "guid": "b01c0000000000000000000000000007"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef",
+      "bytes": 445,
+      "sha256": "5b9a09cc44eeb37281cc2b1010b98cbb3486245e88ffc6caf0f426c40e4e1bf3",
+      "git_sha1": "e53feac920be7e17d7586310ddabaf9e597876df",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef.meta",
+      "bytes": 163,
+      "sha256": "c0c1a3e7df7b85cc73259dfe719558e242a32fc206c3a9544ed3a0a9862327e6",
+      "git_sha1": "c481c67d8da1995f2fce6cebd4128386780a9ec5",
+      "guid": "b01c000000000000000000000000000f"
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/Camera001WorldCollisionTests.cs",
+      "bytes": 3286,
+      "sha256": "c3d729743e98af8d7f5ddc788a6bb438cd9eae7364fdec30561f4ae9d576d62c",
+      "git_sha1": "ca218ed8cfc1faf6fa2939981beb50668bd57280",
+      "guid": null
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/Camera001WorldCollisionTests.cs.meta",
+      "bytes": 240,
+      "sha256": "6cbefcab4cfd2ae8cf57091366cc9db0a6e92e00db77103fa49313d05ab27abe",
+      "git_sha1": "ce28d087aae49969cb6f83aa9c72d86a4ab5788e",
+      "guid": "b01c000000000000000000000000000c"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/API.md",
+      "bytes": 884,
+      "sha256": "339c1c9ca692fd64cfa4c5e59a1a25a8eed587ba6caabb475a3504440d6978cb",
+      "git_sha1": "97133f618303f84987a4ebd1fcd909b966778070",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/CHANGELOG.md",
+      "bytes": 440,
+      "sha256": "55895cd65b91c4b18e11d2a1bfa56e25eb71afed0ebc68f25ddafd5f81eccf62",
+      "git_sha1": "d4dfdfacffed07f6e5c0d019fde1a2765ad98996",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md",
+      "bytes": 2640,
+      "sha256": "b64e5ea3a0702d1d783c3bd4bb1b9b5520a88a7e2c0573f06c50346d47c0c553",
+      "git_sha1": "383512dcc749225b4ce57fcd0427fd20927171a9"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/KNOWN_LIMITATIONS.md",
+      "bytes": 1025,
+      "sha256": "5519ba19d2e0bdf1642608fca1a9a0b54bb20dbfaea8dd3ef0c00fedbd92c0a8",
+      "git_sha1": "e99c29b8905a0c62260017b6810d0921ab1d02a5",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/manifest.json",
+      "bytes": 8292,
+      "sha256": "9c22159043039ffc8894a58e595059d974535056505d605cd3af8ff219e26b4e",
+      "git_sha1": "5780976b58200f472a2d8416c8924f24662d5a67"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md",
+      "bytes": 4066,
+      "sha256": "fae68b0ff3f9e7824ca2ab00d8c20a4e180d8c3276010397116bc875317b4ee3",
+      "git_sha1": "0ef2ce5b44e7fcd0786144993ffd48d8c2a85cee"
+    },
+    {
+      "path": "Docs/B01/CAMERA001/README.md",
+      "bytes": 667,
+      "sha256": "5ca6c2e1cca2699d8cdffa37b3eea1cfc8f173674de81bbd399603ff1409fa14",
+      "git_sha1": "35defc7776c131872bf066138876b345e56be260",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/RECEIVER_HANDOFF.md",
+      "bytes": 707,
+      "sha256": "9793d296f293dfa12f01187a6c37096b0af0bd560e988c706077194b83702d3c",
+      "git_sha1": "ef2401817c41187ba0b3a7fc9a794f18f9395987",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_EVIDENCE.md",
+      "bytes": 1378,
+      "sha256": "0b8a6b457c95dbff36ff441f905e0f91e24be6e65f31ff2b99edc46a63f4a699",
+      "git_sha1": "fd6a8b9af549816a4c4f694029f75cee1f732d3e",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_PLAN.md",
+      "bytes": 1149,
+      "sha256": "0c31b827a2dbda4cbca912ed72d002140d1f6af2bc74080b5842e74bb2d509f6",
+      "git_sha1": "ad2a791e752e788f65d7fa07ac984e6e43a4d693",
+      "guid": null
+    },
+    {
+      "path": "Docs/B01/CAMERA001/W9_SOURCE_REPAIR_R11.md",
+      "bytes": 1371,
+      "sha256": "fd030d5dc4386aa601f32083cfb4707cadf8f9e373b44455e150cf0eefe76482",
+      "git_sha1": "7533af8905e28833bf10ea5808b98c21a616e9cd",
+      "guid": null
+    },
+    {
+      "path": "Tools/B01/CAMERA001/geometry_probe.js",
+      "bytes": 2907,
+      "sha256": "77427601467da9934addeed5d18414b13e46ddf7031ea51e7c5fe103e93192d8",
+      "git_sha1": "2483516fc934427ec698d2b1fbf96c6420e80dbb",
+      "guid": null
+    }
+  ]
+}
