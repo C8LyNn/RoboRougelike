@@ -20,6 +20,9 @@ FINGERS = []
 ANIM = {"open_deg": -12.0, "closed_deg": 16.0, "frames": [1, 20, 40, 60]}
 
 def reset_ours():
+    PARTS.clear()
+    FINGERS.clear()
+    M.clear()
     col = bpy.data.collections.get(COLLECTION)
     if col:
         for obj in list(col.objects):
