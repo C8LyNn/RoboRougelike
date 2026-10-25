@@ -1,0 +1,56 @@
+name: M05-019 Holographic Projector Blender QA
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M05/M05-019/**'
+      - '.github/workflows/ci-model-m05-019.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-m05-019:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check generator syntax
+        run: python3 -m py_compile Tools/ModelFactory/M05/M05-019/generate.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version | head -n 2
+      - name: Generate and validate asset in real Blender
+        run: blender -b -noaudio --python Tools/ModelFactory/M05/M05-019/generate.py -- --output /tmp/m05-019
+      - name: Validate GLB header, materials, nodes and animation
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, struct
+          folder = pathlib.Path('/tmp/m05-019')
+          report = json.loads((folder / 'M05-019-qa.json').read_text())
+          assert report['status'] == 'PASS', report
+          assert report['material_count'] >= 3, report
+          assert report['idempotence'].startswith('PASS'), report
+          assert report['analytic_motion_samples'] == 121
+          assert (folder / 'M05-019-holographic-projector.blend').stat().st_size > 1000
+          raw = (folder / 'M05-019-holographic-projector.glb').read_bytes()
+          magic, version, total = struct.unpack_from('<4sII', raw)
+          assert (magic, version, total) == (b'glTF', 2, len(raw))
+          chunk_len, chunk_type = struct.unpack_from('<I4s', raw, 12)
+          assert chunk_type == b'JSON'
+          doc = json.loads(raw[20:20+chunk_len])
+          assert len(doc.get('materials', [])) >= 8
+          assert len(doc.get('animations', [])) >= 1
+          names = {node.get('name') for node in doc.get('nodes', [])}
+          assert any('MOUNT_TOP' in str(name) for name in names)
+          assert any('PANEL_PIVOT' in str(name) for name in names)
+          print('M05-019 Blender+GLB QA PASS', report)
+          PY
+      - name: Upload generated files and QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M05-019-holographic-projector-GLB-BLEND-FBX-QA
+          path: /tmp/m05-019/
+          if-no-files-found: warn
+          retention-days: 14
