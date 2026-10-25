@@ -8,9 +8,9 @@
   "branch": "feature/rrl-model-m02-019-hydraulic-drum-brake",
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/192",
   "claim_create_commit": "d80648f2c29355c77855dcce8f85a164644b3e83",
-  "model_commit": "685acf7dec3f2a06a552843552af7691060b3e79",
-  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40159945236",
-  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40159945236/artifacts/12586445296",
-  "qa_status": "BLENDER_GLB_QA_PASS_UNITY_NOT_RUN",
-  "updated_at_utc": "2026-10-25T03:55:55.882Z"
+  "model_commit": "aa5c9d89c3fbe8c6fc9317e007aeafa8fd144585",
+  "qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40160055404",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40160055404/artifacts/12586091465",
+  "qa_status": "BLENDER_REENTRANCY_MANIFOLD_ANIMATION_GLB_PASS_UNITY_NOT_RUN",
+  "updated_at_utc": "2026-10-25T03:58:10.410Z"
 }
