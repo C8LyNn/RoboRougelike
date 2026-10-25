@@ -22,7 +22,7 @@ grafit i tytan; akcenty: miedź, ostrzegawczy pomarańcz, cyjanowa emisja.
 ```bash
 blender --background --factory-startup --python Tools/ModelFactory/M05/M05-015/generate_m05_015.py -- --out /tmp/m05-015
 ```
-Tworzy `M05-015.glb`, `M05-015.fbx`, `M05-015.blend`, `qa.json`.
+Tworzy `M05-015.glb`, `M05-015.blend`, `qa.json`; FBX jest opcjonalny.\nBlender 5.0.1 z pakietu Ubuntu ma wadliwy eksporter FBX, więc w tej wersji\nraport `qa.json` zawiera `fbx_export=BLOCKED_BLENDER_5_0_1` i nie powstaje FBX.\nW innych wersjach skrypt podejmuje próbę eksportu FBX i raportuje wynik.
 Bez `--out` tworzy model i wykonuje kontrolę wewnątrz Blendera,
 ale nie zapisuje plików. Generator usuwa wyłącznie własną kolekcję,
 odtwarza ją dwukrotnie i sprawdza stabilność liczby siatek, wierzchołków
