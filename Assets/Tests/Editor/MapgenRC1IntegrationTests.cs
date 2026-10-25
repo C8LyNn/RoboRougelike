@@ -48,6 +48,18 @@ public sealed class MapgenRC1IntegrationTests
         Assert.That(run.Transitioning,Is.False);
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
+    [UnityTest] public IEnumerator UnpreparedRouteRejectsGeneratedEntryWithoutPlayer()
+    {
+        run.RequestedSeed=7;
+        Assert.That(run.StartRun(),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Route));
+        Assert.That(run.Player,Is.Null);
+        Assert.That((bool)run.GetType().GetProperty("CanChooseGeneratedArena").GetValue(run),Is.False);
+        Assert.That((bool)Call(run,"ChooseGeneratedArena"),Is.False);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Route));
+        Assert.That(World,Is.Null);
+        yield return null;
+    }
     [UnityTest] public IEnumerator MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies()
     {
         yield return Prepare(R3VehicleKind.Heavy);
