@@ -1,0 +1,49 @@
+name: M02-016 Right Angle Bevel Gearbox QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-016-right-angle-bevel-gearbox
+    paths:
+      - 'Tools/ModelFactory/M02/M02-016/**'
+      - '.github/workflows/ci-m02-016.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax and 121 analytic gear phases
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-016/generate_m02_016.py
+          python3 -m py_compile Tools/ModelFactory/M02/M02-016/qa_m02_016.py
+          python3 Tools/ModelFactory/M02/M02-016/qa_m02_016.py
+  blender-export:
+    needs: source-qa
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy for glTF exporter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate real BLEND GLB FBX and triangle-BVH collision audit
+        run: |
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M02/M02-016/generate_m02_016.py \
+            -- --out "$RUNNER_TEMP/M02-016"
+      - name: Independently validate Blender exports
+        run: |
+          python3 Tools/ModelFactory/M02/M02-016/qa_m02_016.py \
+            --verify --out "$RUNNER_TEMP/M02-016"
+      - name: Archive actual exports and QA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-016-Bevel-Gearbox-BLEND-GLB-FBX-QA
+          path: ${{ runner.temp }}/M02-016/*
+          if-no-files-found: error
+          retention-days: 30
