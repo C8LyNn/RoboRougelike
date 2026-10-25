@@ -1,8 +1,19 @@
 {
   "id": "M01-021",
   "agent": "M01",
-  "status": "CLAIMED",
+  "status": "MODEL_GENERATED_BLENDER_QA_PASS_DRAFT_PR",
   "claimed_at_utc": "2026-10-25T07:50:52.272Z",
   "model": "Kanister plazmy z dyszą",
-  "run": "2026-10-25T07:47:45Z"
+  "run": "2026-10-25T07:47:45Z",
+  "branch": "feature/rrl-model-m01-021-plasma-canister-nozzle",
+  "pr": "https://github.com/C8LyNn/RoboRougelike/pull/204",
+  "commit": "831698e72ef437a54d41cb702fc4cf17aa458952",
+  "claim_commit": "61c9204a267890d65ba77b67b9c08e86830107f1",
+  "blender_qa": "PASS",
+  "blender_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174489965",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40174489965/artifacts/12591482433",
+  "unity_import": "NOT_RUN",
+  "unity_editmode": "NOT_RUN",
+  "unity_playmode": "NOT_RUN",
+  "visual_inspection": "NOT_RUN"
 }
