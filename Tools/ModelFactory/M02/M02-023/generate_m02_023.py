@@ -143,6 +143,8 @@ def build():
             cylinder("MOUNT_FASTENER",(x,-.034,z),.012,.009,alloy,mount,12)
     cube("BACKBONE_LOWER_RAIL",(0,-.077,Z_CENTER-.13),
          (CENTRES+.32,.065,.068),graphite,mount,.009)
+    cube("BACKBONE_RUBBER_VIBRATION_ISOLATOR",(0,-.051,Z_CENTER-.084),
+         (.18,.025,.016),rubber,mount,.003)
     for x in (-.095,.095):
         cube("BACKBONE_VERTICAL_BRACE",(x,-.064,-.165),
              (.043,.053,.27),steel,mount,.005)
