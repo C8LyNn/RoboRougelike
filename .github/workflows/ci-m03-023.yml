@@ -1,0 +1,37 @@
+name: CI M03-023 Six-Face Mounting Block
+on:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-023/**'
+      - '.github/workflows/ci-m03-023.yml'
+  workflow_dispatch:
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Python syntax validation
+        run: python3 -m py_compile Tools/ModelFactory/M03/M03-023/*.py
+      - name: Actual Blender bpy generation and export
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-023/generate_m03_023.py -- --output /tmp/M03-023
+          test -s /tmp/M03-023/M03-023.blend
+          test -s /tmp/M03-023/M03-023.glb
+          test -s /tmp/M03-023/M03-023.fbx
+      - name: Independent manifold repeatability and exported GLB QA
+        run: blender --background --python-exit-code 1 --python Tools/ModelFactory/M03/M03-023/qa_blender_m03_023.py -- --output /tmp/M03-023
+      - name: SHA-256 manifest
+        run: cd /tmp/M03-023 && sha256sum M03-023.blend M03-023.glb M03-023.fbx > SHA256SUMS
+      - name: Upload verified model files
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-023-Blender-GLB-FBX-BLEND
+          path: /tmp/M03-023/
+          if-no-files-found: error
+          retention-days: 14
