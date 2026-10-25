@@ -70,13 +70,40 @@ namespace B01.MAPGEN001.Tests
 
         [Test] public void CentralPitCannotPassOnlyFourCornerFootprintProbe()
         {
+            // W10: original Codex native RED was START_BLOCKED, because Start==Finish
+            // were placed directly over the unsupported central pit.
+            // This regression instead supports BOTH endpoints, leaving a true
+            // 2m unsupported transverse gap between them to test spine probing.
             var p = new MapBlueprint {
-                Recipe = MapRecipe.CombatArena, Start = new Vector3(0f, 1.25f, 0f),
+                Recipe = MapRecipe.CombatArena,
+                Start = new Vector3(0f, 1.25f, -10f),
+                Finish = new Vector3(0f, 1.25f, 10f),
+                Bounds = new Bounds(Vector3.zero, new Vector3(40f, 8f, 40f))
+            };
+            p.Elements.Add(new MapElement(MapElementKind.Floor,
+                new Vector3(0f, -.45f, -8.5f),
+                new Vector3(20f, .9f, 15f), Quaternion.identity));
+            p.Elements.Add(new MapElement(MapElementKind.Floor,
+                new Vector3(0f, -.45f, 8.5f),
+                new Vector3(20f, .9f, 15f), Quaternion.identity));
+            var r = MapGenRouteValidator.Validate(p, MapVehicleProfile.Light);
+            Assert.IsFalse(r.Passed, r.ToString());
+            Assert.AreEqual("SPINE_FOOTPRINT_BLOCKED", r.Code);
+        }
+
+        [Test] public void UnsupportedStartReportsStartBlockedBeforeRouteSampling()
+        {
+            // Explicit diagnostic priority to preserve true W10 RED evidence.
+            // No sampled spine is necessary when the initial footprint has no floor.
+            var p = new MapBlueprint {
+                Recipe = MapRecipe.CombatArena,
+                Start = new Vector3(0f, 1.25f, 0f),
                 Finish = new Vector3(0f, 1.25f, 0f),
                 Bounds = new Bounds(Vector3.zero, new Vector3(40f, 8f, 40f))
             };
             var profile = MapVehicleProfile.Light;
-            float hw = profile.Width * .5f + .25f, hl = profile.Length * .5f + .25f;
+            float hw = profile.Width * .5f + .25f;
+            float hl = profile.Length * .5f + .25f;
             foreach (int x in new[] { -1, 1 })
                 foreach (int z in new[] { -1, 1 })
                     p.Elements.Add(new MapElement(MapElementKind.Floor,
@@ -84,7 +111,7 @@ namespace B01.MAPGEN001.Tests
                         new Vector3(.5f, .9f, .5f), Quaternion.identity));
             var r = MapGenRouteValidator.Validate(p, profile);
             Assert.IsFalse(r.Passed, r.ToString());
-            Assert.AreEqual("SPINE_FOOTPRINT_BLOCKED", r.Code);
+            Assert.AreEqual("START_BLOCKED", r.Code);
         }
 
         [Test] public void LongNinetyDegreePolylineNeedsRealisticFilletRoom()

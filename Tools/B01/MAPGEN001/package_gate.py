@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only MAPGEN R3.2 SHA256 gate and reproducible full-source package ZIP.
+"""Read-only MAPGEN R3.3 SHA256 gate and reproducible full-source package ZIP.
 Runs only on a clean source checkout; never imports into Unity or edits gameplay.
 """
 import argparse
@@ -11,16 +11,16 @@ import subprocess
 import zipfile
 
 MANIFEST="Docs/B01/MAPGEN001/manifest.json"
-EXACT_ASSET="Assets/B01Packages.meta"
+PARENT_METAS=["Assets/B01Packages.meta","Assets/B01Packages/MAPGEN001.meta"]
 ROOTS=["Assets/B01Packages/MAPGEN001/","Docs/B01/MAPGEN001/","Tools/B01/MAPGEN001/"]
-OUTPUT="mapgen-r32-evidence"
+OUTPUT="mapgen-r33-evidence"
 
 def sha(data): return hashlib.sha256(data).hexdigest()
 def tracked():
-    raw=subprocess.check_output(["git","ls-files","-z","--",EXACT_ASSET]+[x.rstrip("/") for x in ROOTS])
+    raw=subprocess.check_output(["git","ls-files","-z","--"]+PARENT_METAS+[x.rstrip("/") for x in ROOTS])
     files=[a.decode("utf8") for a in raw.split(b"\0") if a]
     return sorted(p for p in files if p!=MANIFEST
-                  and (p==EXACT_ASSET or any(p.startswith(root) for root in ROOTS))
+                  and (p in PARENT_METAS or any(p.startswith(root) for root in ROOTS))
                   and "/bin/" not in p and "/obj/" not in p)
 
 def snap():
@@ -34,13 +34,13 @@ def snap():
 
 def expected_lists(full):
     source={p:v["sha256"] for p,v in full.items()
-            if p==EXACT_ASSET or p.startswith(ROOTS[0]) or p.startswith(ROOTS[1])}
+            if p in PARENT_METAS or p.startswith(ROOTS[0]) or p.startswith(ROOTS[1])}
     qa={p:v["sha256"] for p,v in full.items() if p.startswith(ROOTS[2])}
     return source,qa
 
 def verify(manifest,full):
     source,qa=expected_lists(full)
-    if manifest.get("revision")!="R3.2":raise RuntimeError("wrong revision")
+    if manifest.get("revision")!="R3.3":raise RuntimeError("wrong revision")
     if manifest.get("source_file_sha256_by_path")!=source:raise RuntimeError("source sha256 mismatch / missing")
     if manifest.get("qa_tool_sha256_by_path")!=qa:raise RuntimeError("qa tool sha256 mismatch / missing")
     bysize=manifest.get("source_file_size_by_path")
@@ -51,7 +51,7 @@ def verify(manifest,full):
 
 def zip_package(full,output):
     output.mkdir(parents=True,exist_ok=True)
-    file_path=output/"MAPGEN001_R3_2_FULL_SOURCE_AND_QA.zip"
+    file_path=output/"MAPGEN001_R3_3_FULL_SOURCE_AND_QA.zip"
     files=sorted(list(full)+[MANIFEST])
     with zipfile.ZipFile(file_path,"w") as z:
         for path in files:
