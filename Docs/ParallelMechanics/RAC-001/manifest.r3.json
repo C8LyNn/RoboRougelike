@@ -1,11 +1,11 @@
 {
   "package_id": "B01-RAC-001",
-  "revision": "R3",
+  "revision": "R3.1",
   "recipient": "Codex",
-  "status": "SOURCE_WRITTEN_UNITY_NOT_RUN_G2_HOLD",
+  "status": "W9_NATIVE_RED_ORIGINAL_SOURCE_CORRECTED_STATIC_RETEST_PENDING_G1_G2_HOLD",
   "source_parent_pr": "https://github.com/C8LyNn/RoboRougelike/pull/13",
   "source_parent_sha": "7884f2737197e26769842c087dcd2a1ead75ac95",
-  "source_branch": "feature/b01-rac001-s02-r3-physics-demo",
+  "source_branch": "fix/b01-rac001-w9-r31-20261025",
   "source_sha_before_manifest": "a20f71f47c6df81bdff5698f0c7d1b07aaf2b6cb",
   "unity_version": "6000.3.14f1",
   "dependencies": [
@@ -13,7 +13,7 @@
     "UnityEngine Rigidbody/Physics",
     "Unity Test Framework 1.6.0"
   ],
-  "total_files_without_self": 34,
+  "total_files_without_self": 35,
   "git_blob_sha1_and_bytes": {
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta": {
       "blob_sha1": "1787f8d3c2c1af9910c63afdfb6b2438b39336d2",
@@ -56,8 +56,8 @@
       "sha256": null
     },
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs": {
-      "blob_sha1": "588133a5bc64981be398f9756baa0a371ecd60a4",
-      "bytes": 3278,
+      "blob_sha1": "59c65e81c58d580ea7fad9e807b66835fdadb988",
+      "bytes": 3301,
       "sha256": null
     },
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs.meta": {
@@ -184,14 +184,29 @@
       "blob_sha1": "f26bd3d0074e4499b01b1a1e944f96efe6ac0e8c",
       "bytes": 726,
       "sha256": null
+    },
+    "Docs/ParallelMechanics/RAC-001/W9_SOURCE_REPAIR_R31.md": {
+      "blob_sha1": "9ed8154dfb18cccec4bb79c4e6c824001edc36ad",
+      "bytes": 1452,
+      "sha256": null
     }
   },
   "meta_required_missing": [],
-  "source_sha256": "NOT_VERIFIED_PENDING_B01_40",
-  "unity_compile": "NOT_RUN",
+  "source_sha256": "B01_40_PENDING_NOT_COMPUTED_ON_R3_1",
+  "unity_compile": "NOT_RUN_ON_R3_1",
   "editmode": "NOT_RUN",
   "playmode": "NOT_RUN",
   "manual_driving": "NOT_RUN",
   "independent_B01_60": "PENDING",
-  "G2": "HOLD"
+  "G2": "HOLD",
+  "w9": {
+    "dispatch_id": "HQ-B01-20261025-W9-SOURCE-REPAIR",
+    "native_red_source_sha": "6c1aa7c2351a29695e4288dddad2565cdec3682a",
+    "native_red_pr": 212,
+    "native_error": "CS1027 missing #endif",
+    "native_exit": 1,
+    "native_xml": "NOT_RUN",
+    "fix_path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs",
+    "independent_native": "NOT_RUN"
+  }
 }
