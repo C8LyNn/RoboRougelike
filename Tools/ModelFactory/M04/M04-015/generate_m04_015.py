@@ -170,7 +170,21 @@ def build():
     for frame,y in ANIMATION:
         mover.location.y=y
         mover.keyframe_insert(data_path="location",index=1,frame=frame)
-    for curve in mover.animation_data.action.fcurves:
+    # Blender 4.x exposes Action.fcurves; Blender 5.x stores curves in
+    # layered action channelbags. Support both without silently losing keys.
+    action=mover.animation_data.action
+    curves=[]
+    if hasattr(action,"fcurves"):
+        curves=list(action.fcurves)
+    else:
+        for layer in action.layers:
+            for strip in layer.strips:
+                for slot in action.slots:
+                    bag=strip.channelbag(slot)
+                    if bag:
+                        curves.extend(list(bag.fcurves))
+    assert curves,"Missing animation curves"
+    for curve in curves:
         for point in curve.keyframe_points:
             point.interpolation="LINEAR"
     bpy.context.scene.frame_start=1
