@@ -3,6 +3,6 @@
 <ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable>
 <TreatWarningsAsErrors>true</TreatWarningsAsErrors><Deterministic>true</Deterministic></PropertyGroup>
 <ItemGroup>
-<Compile Include="../../../Assets/B01Packages/LEGENDARY001/Runtime/LegendaryUnityCore.cs" Link="LegendaryUnityCore.cs" />
+<Compile Include="../../../../Assets/B01Packages/LEGENDARY001/Runtime/LegendaryUnityCore.cs" Link="LegendaryUnityCore.cs" />
 <None Include="../fixtures-leg11.json" Link="fixtures-leg11.json" CopyToOutputDirectory="Always"/>
 </ItemGroup></Project>
