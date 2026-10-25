@@ -1,8 +1,22 @@
 {
   "id": "M02-021",
   "agent": "M02",
-  "status": "CLAIMED",
+  "status": "DONE_DRAFT_PR",
   "claimed_at_utc": "2026-10-25T05:46:54Z",
   "model": "Zwijana stopa podporowa",
-  "run": "2026-10-25T05:46Z"
+  "run": "2026-10-25T05:46Z",
+  "branch": "feature/rrl-model-m02-021-retractable-support-foot",
+  "head_commit": "9b65e63baba4decafebfa128c3bbe9e7c68c9407",
+  "claim_create_commit": "361aafaa3542faba2b11df4d71beaeda28aac90b",
+  "pull_request": "https://github.com/C8LyNn/RoboRougelike/pull/199",
+  "ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40167035076",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40167035076/artifacts/12588458725",
+  "qa": {
+    "blender": "PASS",
+    "glb": "PASS",
+    "manifold": "PASS",
+    "analytical_clearance": "PASS",
+    "unity": "BLOCKED_UNITY_ACTIVATION",
+    "triangle_collision": "NOT RUN"
+  }
 }
