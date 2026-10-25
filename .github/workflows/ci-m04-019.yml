@@ -1,0 +1,38 @@
+name: MODEL-04 M04-019 Blender export and QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-019-deployable-segment-turbine
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-019/**'
+      - '.github/workflows/ci-m04-019.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M04/M04-019/generate_m04_019.py Tools/ModelFactory/M04/M04-019/qa_m04_019.py
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate animated BLEND and GLB
+        run: blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-019/generate_m04_019.py -- --out build/M04-019
+      - name: Reopen BLEND and verify rig
+        run: |
+          blender -b build/M04-019/M04-019_segment_turbine.blend --python-exit-code 1 --python-expr "import bpy; n=[o.name for o in bpy.data.objects]; assert len([x for x in n if 'PETAL_TANGENT_Z_PIVOT_' in x])==6; assert any('ROTOR_PIVOT_AXIS_X' in x for x in n)"
+      - name: Independent GLB and envelope QA
+        run: python3 Tools/ModelFactory/M04/M04-019/qa_m04_019.py --out build/M04-019
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M04-019-blend-animated-glb-qa
+          path: build/M04-019/
+          if-no-files-found: warn
+          retention-days: 30
