@@ -8,14 +8,27 @@
   "branch": "feature/rrl-model-m05-018-portable-worklight",
   "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/173",
   "pr_number": 173,
-  "source_commit": "eaa12a9439fb4c4b5d9f61e7ca3f63ba89512d08",
+  "source_commit": "470f30f4f983fde1294afc5a214aec3cf99107de",
   "qa": {
-    "static": "PENDING",
-    "blender": "NOT RUN",
-    "glb": "NOT RUN",
-    "unity": "NOT RUN",
-    "visual_review": "NOT RUN",
-    "full_collision": "NOT RUN"
+    "repository_validation": "PASS",
+    "python_syntax": "PASS",
+    "blender": "PASS (4.0.2)",
+    "repeat_build": "PASS",
+    "mesh_manifold": "PASS (58/58)",
+    "animation": "PASS (tilt -25 to +35 degrees)",
+    "glb_export": "PASS",
+    "blend_export": "PASS",
+    "glb_structure": "PASS",
+    "analytic_clearance": "PASS (41.22 mm base, 55 mm side)",
+    "full_collision": "NOT RUN",
+    "fbx": "NOT RUN",
+    "unity_import": "NOT RUN",
+    "unity_editmode": "BLOCKED_ACTIVATION",
+    "unity_playmode": "BLOCKED_ACTIVATION",
+    "visual_urp": "NOT RUN"
   },
-  "note": "Draft PR open; Blender CI pending. No gameplay changes."
+  "note": "CI PASS after adding python3-numpy to Blender exporter environment; Unity credential gates block actual Unity tests. PR remains draft.",
+  "ci_run_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149899067",
+  "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40149899067/artifacts/12582248002",
+  "artifact_expires_at_utc": "2026-11-08T01:16:10Z"
 }
