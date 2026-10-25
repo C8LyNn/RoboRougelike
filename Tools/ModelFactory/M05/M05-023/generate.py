@@ -86,7 +86,8 @@ def finish(obj, name, mat, bevel=0.0):
         mod = obj.modifiers.new("Machined edge radii", 'BEVEL')
         mod.width = bevel
         mod.segments = 3
-        mod.affect = 'EDGES' if hasattr(mod, "affect") else None
+        if hasattr(mod, 'affect'):
+            mod.affect = 'EDGES'
         mod.use_clamp_overlap = True
         bpy.context.view_layer.objects.active = obj
         obj.select_set(True)
