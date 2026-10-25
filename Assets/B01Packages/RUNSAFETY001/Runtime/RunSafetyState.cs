@@ -78,7 +78,7 @@ namespace B01.RUNSAFETY001
             int purchasePrice, int rebuildQuote, bool mounted)
         {
             if (string.IsNullOrWhiteSpace(id) || hpPercent < 0 || hpPercent > 100 ||
-                purchasePrice < 2 || rebuildQuote < 0 || rebuildQuote >= purchasePrice)
+                purchasePrice < 1 || rebuildQuote < 0 || rebuildQuote >= purchasePrice)
                 throw new ArgumentException("RUNSAFETY_INVALID_PART_OR_QUOTE");
             Id=id; Role=role; HealthPercent=hpPercent;
             PurchasePrice=purchasePrice; RebuildQuote=rebuildQuote; IsMounted=mounted;
