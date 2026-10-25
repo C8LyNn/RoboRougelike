@@ -156,8 +156,8 @@
       "sha256": null
     },
     "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md": {
-      "git_blob_sha1": "e9961291bd5b4bef6e19d8226717c3ced908475e",
-      "bytes": 2127,
+      "git_blob_sha1": "7f4921a4fd23e8cac9d9b18bc6c0252e624fa58e",
+      "bytes": 2867,
       "sha256": null
     },
     "Docs/B01/BUILD001/KNOWN_LIMITATIONS.md": {
@@ -166,8 +166,8 @@
       "sha256": null
     },
     "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md": {
-      "git_blob_sha1": "65d61b08b08a24d098b454d30abbedad31de7cc8",
-      "bytes": 2432,
+      "git_blob_sha1": "5fd5995640c9a882dc4a4144160b8df93e3d3aed",
+      "bytes": 3172,
       "sha256": null
     },
     "Docs/B01/BUILD001/README.md": {
@@ -226,6 +226,10 @@
       "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef"
     ],
     "producer_static_qa": "PENDING",
-    "independent_unity_qa": "NOT_RUN"
+    "independent_unity_qa": "NOT_RUN",
+    "superseded_docs": [
+      "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md",
+      "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md"
+    ]
   }
 }
