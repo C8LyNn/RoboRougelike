@@ -169,7 +169,7 @@ internal static class Program
         });
         Test("two_weapon_families_allow_second_block_third", () =>
         {
-            var g = Garage("A"); var a = Legend(Weapon), b = Gun("Automatic"), c = Gun("Heavy");
+            var g = Garage("A"); PhysicalPart a = Legend(Weapon), b = Gun("Automatic"), c = Gun("Heavy");
             Grant(g, a); Grant(g, b); Grant(g, c);
             Equip(g, "A", a); Equip(g, "A", b);
             var before = g.SaveJson();
@@ -178,7 +178,7 @@ internal static class Program
         });
         Test("weapon_family_release_on_unmount", () =>
         {
-            var g = Garage("A"); var a = Legend(Weapon), b = Gun("Automatic"), c = Gun("Heavy");
+            var g = Garage("A"); PhysicalPart a = Legend(Weapon), b = Gun("Automatic"), c = Gun("Heavy");
             Grant(g, a); Grant(g, b); Grant(g, c); Equip(g, "A", a); Equip(g, "A", b);
             Require(g.TryUnequip("A", b.InstanceId, out _)); Equip(g, "A", c); Safe(g);
         });
