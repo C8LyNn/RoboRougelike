@@ -173,6 +173,33 @@ namespace B01.MAPGEN001.Tests
                 }
             }
         }
+        [TestCase(2)]
+        [TestCase(12)]
+        [TestCase(14)]
+        [TestCase(22)]
+        [TestCase(28)]
+        public void R32NarrowLightSideRampsNeverBlockReferenceSpine(int seed)
+        {
+            // Recorded RED against R3.1 via actual compiled planner/validator
+            // in GitHub Actions 40180566091, 95/1013 failures overall.
+            // This EditMode case is SOURCE ONLY until native Unity actually runs.
+            var cfg = MapGenConfig.Default;
+            cfg.Segments = 3;
+            cfg.Difficulty = 1f;
+            cfg.ObstacleDensity = 100;
+            cfg.LaneWidth = 10f;
+            var blueprint = MapGenPlanner.Plan(MapRecipe.ObstacleCourse,
+                seed, cfg, MapVehicleProfile.Light);
+            var route = MapGenRouteValidator.Validate(blueprint, MapVehicleProfile.Light);
+            Assert.IsTrue(route.Passed, "narrow-light seed=" + seed + " " + route);
+            foreach (var e in blueprint.Elements)
+            {
+                if (e.Kind != MapElementKind.Ramp) continue;
+                Assert.LessOrEqual(e.Size.x, 1.8f + .001f,
+                    "10m side ramp must retain the Light centre lane");
+            }
+        }
+
         [Test] public void PlannerRejectsNonFiniteSlopeConfiguration()
         {
             var p = MapVehicleProfile.Light;

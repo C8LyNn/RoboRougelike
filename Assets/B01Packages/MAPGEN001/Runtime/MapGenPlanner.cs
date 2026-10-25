@@ -132,9 +132,15 @@ namespace B01.MAPGEN001
                     // Put ramp in the outer side lane, with a small gap to
                     // boundary. This protects the Light 10m-lane route even
                     // when its centreline changes between segments.
-                    float rampLateral = width * .5f - 1.55f;
+                    // A narrow 10m lane cannot host the old 3m wide side
+                    // ramp plus a drifting centreline and a complete Light
+                    // footprint. Keep the ramp fully in the outside shoulder,
+                    // leaving a continuous route for the actual 3x3 probe.
+                    // Wide-lane geometry remains backward-compatible.
+                    float rampWidth = width <= 12f ? 1.8f : 3f;
+                    float rampLateral = width * .5f - rampWidth * .5f - .1f;
                     Add(p, MapElementKind.Ramp, cx[i] - side * rampLateral,
-                        .32f, z - 1f, 3f, .45f, 7f, pitch);
+                        .32f, z - 1f, rampWidth, .45f, 7f, pitch);
                 }
             }
         }
