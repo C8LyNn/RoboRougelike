@@ -2,7 +2,7 @@
 """Executable contract shape QA, NOT Unity code and NOT ownership policy implementation."""
 import json,re,sys
 from pathlib import Path
-root=Path(__file__).parent
+root=Path(__file__).resolve().parents[3]/"Docs/B01/LEGENDARY001"
 schema=json.loads((root/"definition.schema.json").read_text())
 data=json.loads((root/"examples.json").read_text())
 cases=json.loads((root/"design_cases.json").read_text())
