@@ -197,9 +197,8 @@ def build():
         for frame,deg in ((1,-12),(20,3),(40,16),(60,-12)):
             hinge.rotation_euler[2] = math.radians(deg)
             hinge.keyframe_insert(data_path="rotation_euler",frame=frame)
-        for fc in hinge.animation_data.action.fcurves:
-            for kp in fc.keyframe_points:
-                kp.interpolation = "BEZIER"
+        # Blender 5 uses layered/slotted Actions without Action.fcurves.
+        # The default BEZIER interpolation works in Blender 4 and 5.
     # Real mounting and optional cargo target markers are empties, not gameplay.
     for i,(x,z) in enumerate(((-.165,-.165),(-.165,.165),(.165,-.165),(.165,.165))):
         p = empty("MOUNT_BOLT_%d" % i,(x,0,z),root)
