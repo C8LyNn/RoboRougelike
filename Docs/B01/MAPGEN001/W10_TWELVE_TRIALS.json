@@ -130,5 +130,24 @@
       "log_url": null
     }
   ],
-  "g2": "HOLD"
+  "g2": "HOLD",
+  "codex_R32_real_R6_wheel_trials": {
+    "qa_pr": 226,
+    "qa_sha": "d799878ce8f814b74bd47f8c664c86a954a1a1bb",
+    "mapgen_sha": "003bced54480d509ffc0d49d26daf87160a8d609",
+    "obj_target_sha": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+    "unity": "6000.3.14f1",
+    "base_12": "12/12 PASS",
+    "extra_heavy": "7/7 PASS",
+    "trial_count": 19,
+    "distinct_configurations": 17,
+    "control": "API-guided native R3/R6 PhysX, NOT human input",
+    "optional_ramp_light": "PASS",
+    "optional_ramp_heavy": "FAIL_PROBE_SPAWN",
+    "source_report": "https://github.com/C8LyNn/RoboRougelike/pull/226",
+    "data_quality_caveat": "3 Light course rows had isolated zero-ground-contact queries; duration metric undercounts; no continuous-grounding claim",
+    "independent_B01_60": "PENDING"
+  },
+  "R33_real_R6_wheel_trials": "NOT_RUN",
+  "R33_unity_shader_test": "AUTHORED_NOT_RUN"
 }
