@@ -68,7 +68,7 @@ def clean():
     for obj in list(bpy.data.objects):
         bpy.data.objects.remove(obj, do_unlink=True)
     for col in list(bpy.data.collections):
-        if col.users == 0:
+        if col.users == 0 or col.name.startswith(ID + "_ASSEMBLY"):
             bpy.data.collections.remove(col)
     for datablocks in (bpy.data.meshes, bpy.data.curves, bpy.data.materials, bpy.data.actions):
         for block in list(datablocks):
@@ -135,6 +135,7 @@ def build():
         if bevel:
             mod = obj.modifiers.new("Soft_machined_edges", "BEVEL")
             mod.width, mod.segments = bevel, 2
+            obj.data.use_auto_smooth = True
             obj.modifiers.new("Corner_normals", "WEIGHTED_NORMAL")
         return obj
     def cyl(name, center, radius, depth, material, parent=mount, axis="Z", sides=32):
