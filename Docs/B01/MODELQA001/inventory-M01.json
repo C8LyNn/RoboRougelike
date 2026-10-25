@@ -1,0 +1,627 @@
+{
+  "scope": "M01",
+  "meaning": "Actual Git tree file inventory, not downloaded/parsed full binaries or CI artifact guarantee",
+  "models": [
+    {
+      "id": "M01-001",
+      "base_pr": 36,
+      "fix_pr": 48,
+      "original": {
+        "sha": "7f2919eb47e97c955920596fac80b80f62348a0d",
+        "files": 4,
+        "source_files": [
+          {
+            "name": "generate_m01_001.py",
+            "sha1": "cc862333cca40fe44d4bffd9bc923bd62f3b8f45",
+            "bytes": 9132
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M01-001.obj",
+            "sha1": "9268d2bd7d17531c25524fc82473d54d2f674fc8",
+            "bytes": 255472
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "096e79725f9105e8279083e0425731aa9987461b",
+        "files": 4,
+        "source_files": [
+          {
+            "name": "generate_m01_001.py",
+            "sha1": "4c0f7081104fb535dfcb2d3c3febbd19ff247c5a",
+            "bytes": 9995
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M01-001.obj",
+            "sha1": "9268d2bd7d17531c25524fc82473d54d2f674fc8",
+            "bytes": 255472
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M01-002",
+      "base_pr": 43,
+      "fix_pr": 72,
+      "original": {
+        "sha": "a5f50a79db60b7d2c97cd11524ce7106c63ca0f6",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m01_002.py",
+            "sha1": "50dbbbad5383ad29dea113d97c84555e01054e62",
+            "bytes": 13635
+          },
+          {
+            "name": "validate_static.py",
+            "sha1": "f15a01eb121aaff924089a7b3f3f40f78b5cfe24",
+            "bytes": 2719
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M01-002.obj",
+            "sha1": "bb70f988711107887782e902d8eef812e3e89c2f",
+            "bytes": 145927
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "b4f6860bacb33d67aea95c39a70c95d2ca7b746c",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m01_002.py",
+            "sha1": "a8eb139e53a3ab4745c8f057b3d929676e6e1390",
+            "bytes": 17156
+          },
+          {
+            "name": "validate_static.py",
+            "sha1": "ba7e318bcfc2217298e78d3be17712218fc3e79d",
+            "bytes": 5347
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M01-002.obj",
+            "sha1": "d5b9fa5462cb30eacd46c72de6605c63cf5930c3",
+            "bytes": 162560
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M01-003",
+      "base_pr": 52,
+      "fix_pr": 102,
+      "original": {
+        "sha": "eb2efc3c7d8b5d0ecf491a4eb7c3492e5c6ddb51",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m01_003.py",
+            "sha1": "bd4ffbd300fdb68a8481f1e27393a2a482b897d7",
+            "bytes": 14957
+          },
+          {
+            "name": "qa_m01_003.py",
+            "sha1": "28a92d4521ca9f2fde95787aba025d0add4ce2a9",
+            "bytes": 2345
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": {
+        "sha": "36730cc88441af9c0971cf298593b455460e4db3",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m01_003.py",
+            "sha1": "2ad1889b6ac4bb02871ad5027e2e10cd80454066",
+            "bytes": 17747
+          },
+          {
+            "name": "qa_m01_003.py",
+            "sha1": "0e7a4af88c3ad52376cc3294188f17dfa2ab410e",
+            "bytes": 5005
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      }
+    },
+    {
+      "id": "M01-004",
+      "base_pr": 62,
+      "fix_pr": null,
+      "original": {
+        "sha": "a51b1e0363b799656efa932a0a2b97b262fcaa17",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m01_004.py",
+            "sha1": "79ddbdc96f72466e9d9e8fe99003d801eb011354",
+            "bytes": 15559
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M01-004.blend",
+            "sha1": "b2f8550ec4b3066c5998096b108dbf761e204750",
+            "bytes": 130605
+          },
+          {
+            "name": "M01-004.obj",
+            "sha1": "ef87de3b797ac3434074207ada4ca3a7bd363c68",
+            "bytes": 81540
+          },
+          {
+            "name": "M01-004_animated.glb",
+            "sha1": "88b8f62c5b80b76ce3a9fb0b76cb8fa38d5986ab",
+            "bytes": 117284
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 3,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-005",
+      "base_pr": 76,
+      "fix_pr": null,
+      "original": {
+        "sha": "9327ea3c2596509320a5f3764d8e2e4f94dfc2c8",
+        "files": 5,
+        "source_files": [
+          {
+            "name": "generate_m01_005.py",
+            "sha1": "dc1080be3677d9e41409a45ab3dd61866d2dbd29",
+            "bytes": 14332
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M01-005.obj",
+            "sha1": "4b9dae70599ceda72947f685a3b7fe51f8e838f8",
+            "bytes": 135156
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-006",
+      "base_pr": 84,
+      "fix_pr": null,
+      "original": {
+        "sha": "fa7ee7e1f687e52a4d9d022313cae3f392f1409e",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m01_006.py",
+            "sha1": "54cdae1fd686ba8a7d0d1d3e898890f3c4b777ae",
+            "bytes": 14745
+          },
+          {
+            "name": "validate_m01_006.py",
+            "sha1": "e14030b682f8a25d00ff51519f4fa2e52b29412f",
+            "bytes": 3748
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-006_ceramic_needle_launcher.obj",
+            "sha1": "20cc3d4a29e79ee7652c1c35147cc609ac41ec26",
+            "bytes": 58746
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-007",
+      "base_pr": 90,
+      "fix_pr": null,
+      "original": {
+        "sha": "8d761ab22519e1509641e5231a1b89e07f26b1e9",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_007.py",
+            "sha1": "2baaf6c11172ce140186ad953229aa3627aacc71",
+            "bytes": 16583
+          },
+          {
+            "name": "validate_m01_007.py",
+            "sha1": "6edb4185e44e1df35ab4f89e44abfa0c442815bc",
+            "bytes": 4289
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-007_impulse_ring_cannon.blend",
+            "sha1": "42cd22b487c6880c63ebfd521d6f3a12453c9395",
+            "bytes": 102618
+          },
+          {
+            "name": "generated/M01-007_impulse_ring_cannon.obj",
+            "sha1": "2a9fc1dbb7999383f1f6e7212115f7769ee4e0e2",
+            "bytes": 221931
+          },
+          {
+            "name": "generated/M01-007_impulse_ring_cannon_animated.fbx",
+            "sha1": "26dc56c9d0719c6d61b6e1c144d243f742213115",
+            "bytes": 288284
+          },
+          {
+            "name": "generated/M01-007_impulse_ring_cannon_animated.glb",
+            "sha1": "81c05e20fdd2f9c67eaf783ffe8d2ea4627878fb",
+            "bytes": 163384
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-008",
+      "base_pr": 97,
+      "fix_pr": null,
+      "original": {
+        "sha": "a9332875553ee6fd5f8b8031fb8baa695a869111",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_008.py",
+            "sha1": "7eaecb34a2464fef9162dead1a8b4b44e6ac71d3",
+            "bytes": 20378
+          },
+          {
+            "name": "validate_m01_008.py",
+            "sha1": "0b6f2635ca4320b9af902eabc9ec9f454fb69804",
+            "bytes": 5011
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-008_liquid_cooled_rifle.blend",
+            "sha1": "8a8a5759cccb60691400e43ea67c251f021c0aaa",
+            "bytes": 113218
+          },
+          {
+            "name": "generated/M01-008_liquid_cooled_rifle.obj",
+            "sha1": "4b6910d65a0aa2bc133051201082699b8b6a312d",
+            "bytes": 140761
+          },
+          {
+            "name": "generated/M01-008_liquid_cooled_rifle_animated.fbx",
+            "sha1": "1f8fb6e83cb7d391b2da2784a2e6e5dccee5a140",
+            "bytes": 383180
+          },
+          {
+            "name": "generated/M01-008_liquid_cooled_rifle_animated.glb",
+            "sha1": "9f0a900b63017c0e8392e0d1dd1972d02d818947",
+            "bytes": 145608
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-009",
+      "base_pr": 105,
+      "fix_pr": null,
+      "original": {
+        "sha": "e7c9957b5493ea8a5f808fff3d50b1034ea81b9c",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_009.py",
+            "sha1": "484a3ad8c4df825a583f38c5c6d1193dc62cabc7",
+            "bytes": 18410
+          },
+          {
+            "name": "validate_m01_009.py",
+            "sha1": "6733fc48df3bdd4ebd4082d22f50979f75233bcf",
+            "bytes": 5390
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-009_tri_segment_rocket_launcher.blend",
+            "sha1": "8fc422d66b784c154ce795d85de2d20a0ca7ac93",
+            "bytes": 1613388
+          },
+          {
+            "name": "generated/M01-009_tri_segment_rocket_launcher.obj",
+            "sha1": "bdfaa85d427d33061041fa23c5f292d9ddaaea09",
+            "bytes": 110678
+          },
+          {
+            "name": "generated/M01-009_tri_segment_rocket_launcher_animated.fbx",
+            "sha1": "39b72e067bdf85454475160a3c5e16d13a4b4772",
+            "bytes": 265788
+          },
+          {
+            "name": "generated/M01-009_tri_segment_rocket_launcher_animated.glb",
+            "sha1": "99c2a1701e70977b437d6713442b11f1478afd68",
+            "bytes": 182936
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-010",
+      "base_pr": 111,
+      "fix_pr": null,
+      "original": {
+        "sha": "8c6e28f308e59fde3e9b012a903f405925596b31",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_010.py",
+            "sha1": "9d6c55a696a97989bbc6c65920213c498827772a",
+            "bytes": 14046
+          },
+          {
+            "name": "validate_m01_010.py",
+            "sha1": "1816b67a7899488594df703dfa02022f6854faeb",
+            "bytes": 3653
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-010_energy_fork_projector.blend",
+            "sha1": "391a542d8f8d1c230dda767345be383d49e5a6c2",
+            "bytes": 2090848
+          },
+          {
+            "name": "generated/M01-010_energy_fork_projector.obj",
+            "sha1": "53fcd206441078be24a7dc36d43206dec42b04eb",
+            "bytes": 1163283
+          },
+          {
+            "name": "generated/M01-010_energy_fork_projector_animated.fbx",
+            "sha1": "2f659276b7425e7306bf69b1806d74aac036ca0f",
+            "bytes": 583836
+          },
+          {
+            "name": "generated/M01-010_energy_fork_projector_animated.glb",
+            "sha1": "9c0bff8e87f1f1d4a1db03fa0ec5cd2e66ee6e5a",
+            "bytes": 795272
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-011",
+      "base_pr": 115,
+      "fix_pr": null,
+      "original": {
+        "sha": "e1369735cb2fa3a6c12864af87605a1fe49f4ebe",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_011.py",
+            "sha1": "464b6cbc6d098bcbf67dabd424d68cdd7e5eb8cc",
+            "bytes": 19931
+          },
+          {
+            "name": "validate_m01_011.py",
+            "sha1": "a43bf8902e5f455d60e84bd337bd634f2d18d156",
+            "bytes": 5982
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-011_long_precision_rifle.blend",
+            "sha1": "2e25c6bb0dd5f581a4c1afaea6079c0a769db8d2",
+            "bytes": 2397796
+          },
+          {
+            "name": "generated/M01-011_long_precision_rifle.obj",
+            "sha1": "60ba663242c5c05b3d6a8dd33ad72ba5b94868e0",
+            "bytes": 1466036
+          },
+          {
+            "name": "generated/M01-011_long_precision_rifle_animated.fbx",
+            "sha1": "81c46866da0a65f7ed24c76eae826a22b09d3d18",
+            "bytes": 624076
+          },
+          {
+            "name": "generated/M01-011_long_precision_rifle_animated.glb",
+            "sha1": "ab3f028e45a5990615d5a565eb6e77dd97505e8b",
+            "bytes": 975012
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-012",
+      "base_pr": 122,
+      "fix_pr": null,
+      "original": {
+        "sha": "f968afcd730fbb76658558c31a94c60e4a030f13",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_012.py",
+            "sha1": "e2375d9f8d4869e229fd16404e48f4556b29c2b4",
+            "bytes": 17436
+          },
+          {
+            "name": "validate_m01_012.py",
+            "sha1": "938ad62d453fdf3c4e337fa3b99549f145e53273",
+            "bytes": 4127
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-012_pneumatic_bolt_launcher.blend",
+            "sha1": "2a80a0170d742562defcc1c7ad5284e054bf1096",
+            "bytes": 2494744
+          },
+          {
+            "name": "generated/M01-012_pneumatic_bolt_launcher.obj",
+            "sha1": "79811a92868d2619ada29db1ad89e964752fad4b",
+            "bytes": 1678294
+          },
+          {
+            "name": "generated/M01-012_pneumatic_bolt_launcher_animated.fbx",
+            "sha1": "2598649babc669a899142c43c57aa03b46ee5ca0",
+            "bytes": 636844
+          },
+          {
+            "name": "generated/M01-012_pneumatic_bolt_launcher_animated.glb",
+            "sha1": "933d5332289d72fd527062b84633cf5ed717db74",
+            "bytes": 1293340
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-013",
+      "base_pr": 128,
+      "fix_pr": null,
+      "original": {
+        "sha": "fd155b23c0513a3e45ca61e4a6b017c05f2f4b84",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_013.py",
+            "sha1": "0df5fcd4af30929dbe7be170a223e9a958f9c11c",
+            "bytes": 20301
+          },
+          {
+            "name": "qa_m01_013.py",
+            "sha1": "c716703b45f48a979d4ffc34bc8842bdf952a781",
+            "bytes": 6829
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-013_disruption_net_launcher.blend",
+            "sha1": "4d7bbac408a602a85616fedf3202b83f70bf9791",
+            "bytes": 1640648
+          },
+          {
+            "name": "generated/M01-013_disruption_net_launcher.fbx",
+            "sha1": "c5e6fe0c90807a5b12a1d6459a4759aaad85963a",
+            "bytes": 230908
+          },
+          {
+            "name": "generated/M01-013_disruption_net_launcher.glb",
+            "sha1": "5e19865119c1778a270eb594405f024526a9854f",
+            "bytes": 227228
+          },
+          {
+            "name": "generated/M01-013_disruption_net_launcher.obj",
+            "sha1": "bc66899b1a28e9458153dafcd44b01a4f7158e6f",
+            "bytes": 156080
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M01-014",
+      "base_pr": 147,
+      "fix_pr": null,
+      "original": {
+        "sha": "de6f3d66a122264f57a8c902e8fa030a64f3c03f",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m01_014.py",
+            "sha1": "4ab903a15ef4077fe9ac3fd59f4270f6711c9957",
+            "bytes": 19013
+          },
+          {
+            "name": "qa_m01_014.py",
+            "sha1": "40ba13fd0d475b5ef34fbf964e239439b2b55ac7",
+            "bytes": 2895
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M01-014_electromagnetic_pulser.blend",
+            "sha1": "7f50161174a23c84a2e32f6481bcc375d7d5d620",
+            "bytes": 1769424
+          },
+          {
+            "name": "generated/M01-014_electromagnetic_pulser.fbx",
+            "sha1": "9326c9eeab7e83e0d4d24f6a6b89936fa7b19394",
+            "bytes": 255388
+          },
+          {
+            "name": "generated/M01-014_electromagnetic_pulser.glb",
+            "sha1": "46e0d0f5294e4683d6f3437ff04c16d860c93c41",
+            "bytes": 377276
+          },
+          {
+            "name": "generated/M01-014_electromagnetic_pulser.obj",
+            "sha1": "e69b8c98c17d34b4feb122d2f51d8854dd8d16e8",
+            "bytes": 319616
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 4,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    }
+  ]
+}

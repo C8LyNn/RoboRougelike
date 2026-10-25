@@ -1,0 +1,483 @@
+{
+  "scope": "M05",
+  "meaning": "Actual Git tree file inventory, not downloaded/parsed full binaries or CI artifact guarantee",
+  "models": [
+    {
+      "id": "M05-001",
+      "base_pr": 38,
+      "fix_pr": 49,
+      "original": {
+        "sha": "0645d3287f7c4e6186934010bf1a40f41a57a38f",
+        "files": 5,
+        "source_files": [
+          {
+            "name": "generate.py",
+            "sha1": "d5e3f397ea67cc132fe53f0f93950400ba36e1db",
+            "bytes": 12812
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-001.obj",
+            "sha1": "c1c67badd2d5fb563233947949181df656cc7182",
+            "bytes": 172470
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "57feae5c944b0409fb47da3d0f733149316c63e2",
+        "files": 5,
+        "source_files": [
+          {
+            "name": "generate.py",
+            "sha1": "db87f230ffee79bbdd5c296ea13ec1b971dbc756",
+            "bytes": 13531
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-001.obj",
+            "sha1": "c1c67badd2d5fb563233947949181df656cc7182",
+            "bytes": 172470
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M05-002",
+      "base_pr": 46,
+      "fix_pr": 73,
+      "original": {
+        "sha": "2ed96aad201bce1021859cbb0682f513c568655f",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m05_002.py",
+            "sha1": "8d2af90a5d995a1aee967cba79d46e6e339bc25d",
+            "bytes": 10156
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-002.obj",
+            "sha1": "3e39bc859dfc140dfce107919f7f9bb98f59c04e",
+            "bytes": 54846
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "f7ab038346985a7d7d1437f7733bcf0257cf14bb",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m05_002.py",
+            "sha1": "36f3e942232e8b361cfcb622cbcc8007066be5f8",
+            "bytes": 14046
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-002.obj",
+            "sha1": "79d126063353ff612e04d56cc9bad23fc2469549",
+            "bytes": 54846
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M05-003",
+      "base_pr": 53,
+      "fix_pr": 100,
+      "original": {
+        "sha": "340ec047961b1815a12428b53e8088ea3429d9ce",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m05_003.py",
+            "sha1": "7f269302d6e3d736772c98f5836a06912b8b200d",
+            "bytes": 18226
+          },
+          {
+            "name": "qa_static.py",
+            "sha1": "3bc040a4518ab6a76efe97923495c74600203274",
+            "bytes": 5055
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M05-003_dual_optical_scanner.obj",
+            "sha1": "86123a1c517dc17ec63073bd936cba3823454558",
+            "bytes": 162427
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "e41fab65a2b7bccdd00fc1da4134a79c26466663",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m05_003.py",
+            "sha1": "2a89af3f173b5a0523d07719e8565d60ad4da928",
+            "bytes": 19868
+          },
+          {
+            "name": "qa_static.py",
+            "sha1": "f5bb87164b5baedc42a68282cd4a00df3ddf4698",
+            "bytes": 6562
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M05-003_dual_optical_scanner.obj",
+            "sha1": "11f185062135b98200f7ac4dde8993e762de2789",
+            "bytes": 162419
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M05-004",
+      "base_pr": 60,
+      "fix_pr": null,
+      "original": {
+        "sha": "15f4eca5f9ea47ab4b4b451267c1d0c299aa7c76",
+        "files": 5,
+        "source_files": [
+          {
+            "name": "generate_m05_004.py",
+            "sha1": "6a5273daba38154ff0b1a2395dd1d380b308aedf",
+            "bytes": 17244
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-004.obj",
+            "sha1": "b8cdf34328351237b792280a473895257c0934df",
+            "bytes": 206635
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-005",
+      "base_pr": 77,
+      "fix_pr": null,
+      "original": {
+        "sha": "d5507715fb579cd3d712fd5898998465dedde657",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "blender_smoke.py",
+            "sha1": "68dc4c3cdeaa5fd893e01bbbd078811d983feee9",
+            "bytes": 2326
+          },
+          {
+            "name": "generate_m05_005.py",
+            "sha1": "f1f686431a32c50139a192c24086f876bb22f7ae",
+            "bytes": 14013
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-005.obj",
+            "sha1": "7b31a81887a1cb9071bac93e787ab236642776c9",
+            "bytes": 220643
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-006",
+      "base_pr": 81,
+      "fix_pr": null,
+      "original": {
+        "sha": "1636a0c5b31db6eadd50acfc6300ae7fbb51a059",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "blender_smoke.py",
+            "sha1": "f248297943eca0c626412c842e3cad9029df21de",
+            "bytes": 4204
+          },
+          {
+            "name": "generate_m05_006.py",
+            "sha1": "3a3007eb97ef8788f3e1e8e35575ea62dce61fb0",
+            "bytes": 14960
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-006.obj",
+            "sha1": "c7ab97df04b4f9ab8921b6764f4779844b890288",
+            "bytes": 135640
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-007",
+      "base_pr": 87,
+      "fix_pr": null,
+      "original": {
+        "sha": "d4928561bc6e1dfa39fd3e214dd753bb2acbcd00",
+        "files": 5,
+        "source_files": [
+          {
+            "name": "blender_smoke.py",
+            "sha1": "ca9a3b8050db6376eea3289f3e61f35bc2621e77",
+            "bytes": 3279
+          },
+          {
+            "name": "generate_m05_007.py",
+            "sha1": "9b0094e44ff09a71430639df0c318f29b71814f2",
+            "bytes": 16246
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M05-007.obj",
+            "sha1": "2042423fe96cb16fe60f875d81e1114fdc94bcdc",
+            "bytes": 274091
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-008",
+      "base_pr": 96,
+      "fix_pr": null,
+      "original": {
+        "sha": "c702e8a131a8a881d25227d638c55f026102ebb1",
+        "files": 4,
+        "source_files": [
+          {
+            "name": "generate_m05_008.py",
+            "sha1": "687ef409052e66ae7f7477951e9acf672b45e9cd",
+            "bytes": 18348
+          },
+          {
+            "name": "qa_blender_m05_008.py",
+            "sha1": "8ac74b282580f94d09210f17e71ef5c84d9bb4a8",
+            "bytes": 3811
+          },
+          {
+            "name": "qa_m05_008.py",
+            "sha1": "dfae7865e68eaabe8a5b37e617127ab2457566e6",
+            "bytes": 3931
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-009",
+      "base_pr": 108,
+      "fix_pr": null,
+      "original": {
+        "sha": "64542581d91655afdee498fe317ac882e4b7f05d",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m05_009.py",
+            "sha1": "cff9cb2a04e98d9b0c9430836bb0c07133651f65",
+            "bytes": 19463
+          },
+          {
+            "name": "qa_artifacts.py",
+            "sha1": "dcbcb0c5c580289a5eae084894644de68d9f4ff7",
+            "bytes": 2527
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M05-009_side_liquid_radiator.blend",
+            "sha1": "58c58954c7a27fccade673f96aaa6a151849fc25",
+            "bytes": 1966244
+          },
+          {
+            "name": "generated/M05-009_side_liquid_radiator.fbx",
+            "sha1": "c5bff0f1e30b2ca8e178a1caae1a810de5f192f0",
+            "bytes": 449628
+          },
+          {
+            "name": "generated/M05-009_side_liquid_radiator.glb",
+            "sha1": "7d7377aeb27d4b15dc21e934e9611155c6d54b3f",
+            "bytes": 322720
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 3,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-010",
+      "base_pr": 112,
+      "fix_pr": null,
+      "original": {
+        "sha": "80a4475e094c9d4666c63dc8c748e1814c415cf1",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m05_010.py",
+            "sha1": "b066e6e67398615067978b5f084fcae4291874d6",
+            "bytes": 12527
+          },
+          {
+            "name": "qa_blender_m05_010.py",
+            "sha1": "42a0a1ad967b1e9941e57f031145d890b54c4499",
+            "bytes": 4171
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-011",
+      "base_pr": 116,
+      "fix_pr": null,
+      "original": {
+        "sha": "398f2989159c3e61b2b87be641520f0514c3d638",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m05_011.py",
+            "sha1": "654b82880d9346ea5c6776af1a7f1384ab034171",
+            "bytes": 15717
+          },
+          {
+            "name": "qa_blender_m05_011.py",
+            "sha1": "e3b54b121c7bd040c64f965aceb68827946cee8d",
+            "bytes": 3668
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-012",
+      "base_pr": 123,
+      "fix_pr": null,
+      "original": {
+        "sha": "9a37bcce60f731387c9f891085085d01b810fc7c",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m05_012.py",
+            "sha1": "dfd2a1c3bf2378b825f705c9fb3d33c215d932b7",
+            "bytes": 16394
+          },
+          {
+            "name": "qa_blender_m05_012.py",
+            "sha1": "fd2615fca8b16e3e1558b4b7611d4e3faae786a1",
+            "bytes": 3888
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-013",
+      "base_pr": 130,
+      "fix_pr": null,
+      "original": {
+        "sha": "c65cb57777f5d124adfd1470f7a7194536accfce",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m05_013.py",
+            "sha1": "3fafeeb3540ddca6c62331485f6e48169cf03950",
+            "bytes": 22284
+          },
+          {
+            "name": "qa_m05_013.py",
+            "sha1": "c64f5dc04588648a2a6e8189411e5a76d55b0c75",
+            "bytes": 3992
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M05-014",
+      "base_pr": 145,
+      "fix_pr": null,
+      "original": {
+        "sha": "7584f6f1cabb11eb6b609222cb886d87f09f536e",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m05_014.py",
+            "sha1": "ceb5168c94fcf76fb9082617cac66a2ab887c36e",
+            "bytes": 13104
+          },
+          {
+            "name": "validate_m05_014.py",
+            "sha1": "d1514c9e230bc5aff8cb8be2c8633fc5956e0bb3",
+            "bytes": 2971
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    }
+  ]
+}

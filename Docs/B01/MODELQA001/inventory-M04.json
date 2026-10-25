@@ -1,0 +1,422 @@
+{
+  "scope": "M04",
+  "meaning": "Actual Git tree file inventory, not downloaded/parsed full binaries or CI artifact guarantee",
+  "models": [
+    {
+      "id": "M04-001",
+      "base_pr": 37,
+      "fix_pr": 47,
+      "original": {
+        "sha": "0a2a9851a492e20c4a40d3e0eca1da5260712b6d",
+        "files": 2,
+        "source_files": [
+          {
+            "name": "generate_m04_001.py",
+            "sha1": "91cc84de76303a573750adf8d1c2212938e161ad",
+            "bytes": 12868
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": {
+        "sha": "19b7fab8f514585e4eb182741004140f3206809c",
+        "files": 2,
+        "source_files": [
+          {
+            "name": "generate_m04_001.py",
+            "sha1": "435236a7027200c73c29214c3afa929568c7e41d",
+            "bytes": 15085
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      }
+    },
+    {
+      "id": "M04-002",
+      "base_pr": 42,
+      "fix_pr": 58,
+      "original": {
+        "sha": "b5272542fca5a7ade1a047a52e3cc0df689c7c90",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_002.py",
+            "sha1": "d1279bc06afbb942dabe9bcea3a2a3d61a1f5c9f",
+            "bytes": 12208
+          },
+          {
+            "name": "test_m04_002.py",
+            "sha1": "48257329993654e75fff28e9ac9ef9b85342202f",
+            "bytes": 2580
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": {
+        "sha": "3c7e2591e6e5e9c879d54dcc68dc9477f450af2a",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_002.py",
+            "sha1": "4589f9c9f6151d17e3ff35ba528ba076b38d65a5",
+            "bytes": 16237
+          },
+          {
+            "name": "test_m04_002.py",
+            "sha1": "be4f1dcc4cc5af7d9fe1775364f0d56e22b81b63",
+            "bytes": 4446
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      }
+    },
+    {
+      "id": "M04-003",
+      "base_pr": 56,
+      "fix_pr": null,
+      "original": {
+        "sha": "874fc86a9940b07832a20c3d4f54fec74449d051",
+        "files": 4,
+        "source_files": [
+          {
+            "name": "generate_m04_003.py",
+            "sha1": "a6abc936bbb1a1f55841d21428fcda1661373dab",
+            "bytes": 1467
+          },
+          {
+            "name": "qa_m04_003.py",
+            "sha1": "189b07e2f10548189646969ec468918b4ba03dda",
+            "bytes": 2762
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-004",
+      "base_pr": 64,
+      "fix_pr": null,
+      "original": {
+        "sha": "31a2f659673b4348687f095e473bce4579fef747",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m04_004.py",
+            "sha1": "115d382cf814e96131740fdce047c466604cd97c",
+            "bytes": 15677
+          },
+          {
+            "name": "qa_mesh_m04_004.py",
+            "sha1": "f911148016876fc654911b9734c71f03ba27e7fc",
+            "bytes": 2676
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M04-004.obj",
+            "sha1": "5911d630edcbf867d2a9467c3ad321f6f4048328",
+            "bytes": 85932
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-005",
+      "base_pr": 78,
+      "fix_pr": null,
+      "original": {
+        "sha": "cfb5e88951a243a294cf1385b35b22a102e2b598",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m04_005.py",
+            "sha1": "20b9119db9879eb1617e019a0e99b25532ce53ba",
+            "bytes": 18460
+          },
+          {
+            "name": "qa_mesh_m04_005.py",
+            "sha1": "579d87d24100204ca8adaf8c876a61e80b2e3ea7",
+            "bytes": 1928
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M04-005.obj",
+            "sha1": "db61ef831104520e15c860f28c5e6e141279dbc7",
+            "bytes": 196835
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-006",
+      "base_pr": 80,
+      "fix_pr": null,
+      "original": {
+        "sha": "8e2c3f0260beb3963b70312d79d6ea823da92098",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m04_006.py",
+            "sha1": "bc54b6f6cdb8f0220c3e60f4088dfb07adeac5c9",
+            "bytes": 16866
+          },
+          {
+            "name": "qa_mesh_m04_006.py",
+            "sha1": "79c3cad09865abd9d4c88e07db872c66f0aaa4f5",
+            "bytes": 3140
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M04-006.obj",
+            "sha1": "793414a2901a03f65e88938ba723d2ffad327b47",
+            "bytes": 47722
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-007",
+      "base_pr": 88,
+      "fix_pr": null,
+      "original": {
+        "sha": "c95c5da8e0f2715318d73a73576bbb81876acff1",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m04_007.py",
+            "sha1": "55a225e43a1b02d3bce3ef921b540f499789aae6",
+            "bytes": 18385
+          },
+          {
+            "name": "qa_mesh_m04_007.py",
+            "sha1": "2a219da0ba4b3de8e6bd87f742a355154445d92b",
+            "bytes": 4526
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "M04-007.obj",
+            "sha1": "8746144b0e1ab84584eb58d8d324e1f42e3dd876",
+            "bytes": 379513
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-008",
+      "base_pr": 95,
+      "fix_pr": null,
+      "original": {
+        "sha": "1f2f8d17c448924ca6fe9ddcf297e86ad6aca490",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_008.py",
+            "sha1": "f94710987792955223d5dcbfa197179026b81eec",
+            "bytes": 18388
+          },
+          {
+            "name": "qa_m04_008.py",
+            "sha1": "f88b811cb1d4dd7b1a83f9ede4264411cc8bc866",
+            "bytes": 6254
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-009",
+      "base_pr": 104,
+      "fix_pr": null,
+      "original": {
+        "sha": "03659e37023cd5a3ba03e44ccf1d6e941ceea5dd",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_009.py",
+            "sha1": "6697bf6ab8d240c9f83e2abd79735c326dcc079a",
+            "bytes": 20073
+          },
+          {
+            "name": "qa_m04_009.py",
+            "sha1": "e41326cc7b05169b1a49a830e7129ab5493f3138",
+            "bytes": 6877
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-010",
+      "base_pr": 114,
+      "fix_pr": null,
+      "original": {
+        "sha": "0705b4447730325a03b7d24254dd22dc25a93653",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_010.py",
+            "sha1": "d279a7506608663e81c191ca62f95544c264424c",
+            "bytes": 20626
+          },
+          {
+            "name": "qa_m04_010.py",
+            "sha1": "a0a0f6631945d20d8b21b688c4567379d1a2cd53",
+            "bytes": 8085
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-011",
+      "base_pr": 118,
+      "fix_pr": null,
+      "original": {
+        "sha": "af35551feb7d6ec724ad8be524e900b4c7260387",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_011.py",
+            "sha1": "f8e29b35b679a41f3cd6a6e018a94271b3b099b3",
+            "bytes": 17305
+          },
+          {
+            "name": "qa_m04_011.py",
+            "sha1": "3e6adb244070340d359465a9c31710dc6ba506c2",
+            "bytes": 6405
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-012",
+      "base_pr": 120,
+      "fix_pr": null,
+      "original": {
+        "sha": "8c9492d8d04e57c6bfe8f5d9342340e55f1e5608",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_012.py",
+            "sha1": "3ac5dcfeb1f48ce6285865182e20102d1729b459",
+            "bytes": 17129
+          },
+          {
+            "name": "qa_m04_012.py",
+            "sha1": "3199535ad65de337106e9e658f5b3c04945cbb70",
+            "bytes": 6019
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-013",
+      "base_pr": 127,
+      "fix_pr": null,
+      "original": {
+        "sha": "5e854ce5e5e708529971c6d4ef0671368017ccd3",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_013.py",
+            "sha1": "53f1df56dc46500d8fb574c6f66f98d6ffaffd72",
+            "bytes": 16036
+          },
+          {
+            "name": "qa_m04_013.py",
+            "sha1": "bdcdc80f480f4fbdcee786faf8813dcc04159095",
+            "bytes": 6603
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M04-014",
+      "base_pr": 146,
+      "fix_pr": null,
+      "original": {
+        "sha": "e75ce22d19716bbcf3f1b851aa2faf9d441530c1",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m04_014.py",
+            "sha1": "857a25c612b1c13967492c219a14f4aefc4c1135",
+            "bytes": 12582
+          },
+          {
+            "name": "qa_m04_014.py",
+            "sha1": "070b26dd154ae054bdf30dc6bc5cb5a36c1a896c",
+            "bytes": 4515
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    }
+  ]
+}

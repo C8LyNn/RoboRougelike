@@ -1,0 +1,507 @@
+{
+  "scope": "M02",
+  "meaning": "Actual Git tree file inventory, not downloaded/parsed full binaries or CI artifact guarantee",
+  "models": [
+    {
+      "id": "M02-001",
+      "base_pr": 40,
+      "fix_pr": 50,
+      "original": {
+        "sha": "5063e64f45ae396d99bb233b3b1d4fea98e28ecf",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m02_001.py",
+            "sha1": "710f655c89db03efd8d48294d4c453716743a3f6",
+            "bytes": 12877
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-001_segmented_offroad_wheel.glb",
+            "sha1": "a21a1f7d1494c2b7acd90bf7250481c78f1635a4",
+            "bytes": 160308
+          },
+          {
+            "name": "generated/M02-001_segmented_offroad_wheel.obj",
+            "sha1": "6345f83ace7582ed5d3b38a6f573c8b709712ceb",
+            "bytes": 207895
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 2,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "ca4007606c67a9e0deadf43af8ad1bb59800bbb5",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m02_001.py",
+            "sha1": "7c2d75a717ea9fdd76ad7c3934cb3b0b85c073c3",
+            "bytes": 15403
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-001_segmented_offroad_wheel.glb",
+            "sha1": "a21a1f7d1494c2b7acd90bf7250481c78f1635a4",
+            "bytes": 160308
+          },
+          {
+            "name": "generated/M02-001_segmented_offroad_wheel.obj",
+            "sha1": "6345f83ace7582ed5d3b38a6f573c8b709712ceb",
+            "bytes": 207895
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 2,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M02-002",
+      "base_pr": 45,
+      "fix_pr": 85,
+      "original": {
+        "sha": "1a480bf4df4bbac60215a40cbb2eb5e48a70100d",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m02_002.py",
+            "sha1": "b240d66ee58426d260d87c5c393ef02401109bf5",
+            "bytes": 12153
+          },
+          {
+            "name": "validate_m02_002.py",
+            "sha1": "4aaf4f6ebd92495e22053a4404c0a445749779c3",
+            "bytes": 3756
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-002_narrow_speed_wheel.obj",
+            "sha1": "89b8686801ed75cbaa3816e666c09fcb5656489a",
+            "bytes": 396410
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "8a62434b18af255b51fb0386323da34e2c4fd00e",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m02_002.py",
+            "sha1": "a29734b36dbb95149b3736d9ebb15f2400675abf",
+            "bytes": 14083
+          },
+          {
+            "name": "validate_m02_002.py",
+            "sha1": "233c51f7de11b3fa785af8a9dbcd397754355630",
+            "bytes": 6306
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-002_narrow_speed_wheel.obj",
+            "sha1": "569033478d24c1ddd543ce1d72779f26440a7136",
+            "bytes": 396410
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M02-003",
+      "base_pr": 54,
+      "fix_pr": 101,
+      "original": {
+        "sha": "bfb7aa6b6a71b4614bd9f7836cb380205554e123",
+        "files": 5,
+        "source_files": [
+          {
+            "name": "generate_m02_003.py",
+            "sha1": "2c08090247a5b829e668e3f52ce9ee3183fa7592",
+            "bytes": 14613
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-003_balloon_sand_wheel.obj",
+            "sha1": "93b0079928ee775a288e584248d59894d10e14ab",
+            "bytes": 346105
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": {
+        "sha": "a0bef7fa428b12c37334e2abff5c8e46bc60f04f",
+        "files": 6,
+        "source_files": [
+          {
+            "name": "generate_m02_003.py",
+            "sha1": "dff2aedd06a1197b5fb29c08cdb0eb20d0869912",
+            "bytes": 16656
+          },
+          {
+            "name": "qa_m02_003_contacts.py",
+            "sha1": "37e0536646b7a12fc769765ed55698cf76cba74d",
+            "bytes": 5553
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-003_balloon_sand_wheel.obj",
+            "sha1": "715149dee57bf6aa30b726262e3e9dc409098c96",
+            "bytes": 346105
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 1,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      }
+    },
+    {
+      "id": "M02-004",
+      "base_pr": 63,
+      "fix_pr": null,
+      "original": {
+        "sha": "e225d9937614c9d6a9fc5ebe2c4041632c91eec4",
+        "files": 9,
+        "source_files": [
+          {
+            "name": "generate_m02_004.py",
+            "sha1": "203f654d270fef3f74a3dba5b62c10f07defe9cc",
+            "bytes": 15650
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-004.blend",
+            "sha1": "de7c1c8963c8b23e89d556a339784fcd107b2db6",
+            "bytes": 161744
+          },
+          {
+            "name": "generated/M02-004.obj",
+            "sha1": "ca4c44d3d33e40560ba81f22964c6ded2d8c847b",
+            "bytes": 135823
+          },
+          {
+            "name": "generated/M02-004_animated.glb",
+            "sha1": "2227add051087b936b11d265e509bffce6e38e8b",
+            "bytes": 167704
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 3,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-005",
+      "base_pr": 74,
+      "fix_pr": null,
+      "original": {
+        "sha": "77146eab9314ef1d9b9eb4225ce0dca556b8b769",
+        "files": 8,
+        "source_files": [
+          {
+            "name": "generate_m02_005.py",
+            "sha1": "787fa7dfdc10d46c0c8f7e3e8a65778c38a9e3f4",
+            "bytes": 16715
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-005.blend",
+            "sha1": "e6e567f0b8a7b4e5528bfbb3505263745dadc610",
+            "bytes": 114045
+          },
+          {
+            "name": "generated/M02-005.obj",
+            "sha1": "4f29dbeca86cdd552386c180ed71c8241d3ab349",
+            "bytes": 170298
+          },
+          {
+            "name": "generated/M02-005_animated.glb",
+            "sha1": "c6d72f1137aa5d5156fc01bd76a814e9bb1b771d",
+            "bytes": 170880
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 3,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-006",
+      "base_pr": 82,
+      "fix_pr": null,
+      "original": {
+        "sha": "95b0743ad2037edb9e742c1ddd270502b0cf11cd",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m02_006.py",
+            "sha1": "6132ef745d9ef9920d7f8f25ece8d145b984a1cf",
+            "bytes": 17384
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-006.blend",
+            "sha1": "8a84a4bb24f58208dce1ef3152ff385556109069",
+            "bytes": 185837
+          },
+          {
+            "name": "generated/M02-006_animated.glb",
+            "sha1": "abf4f371e7adb7aca731e206356eb29d0e415972",
+            "bytes": 261300
+          },
+          {
+            "name": "generated/M02-006_spiked_rubble_wheel.obj",
+            "sha1": "0bc369e54e1a1a0a9fd58cb12a8ec12a8b054e99",
+            "bytes": 350389
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 3,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-007",
+      "base_pr": 89,
+      "fix_pr": null,
+      "original": {
+        "sha": "c86d4a9ac22eebea71946ed5571e639188ecc902",
+        "files": 7,
+        "source_files": [
+          {
+            "name": "generate_m02_007.py",
+            "sha1": "afb799db8408fd6ea4d55e82a68681a952cc8c2c",
+            "bytes": 16801
+          }
+        ],
+        "committed_exports": [
+          {
+            "name": "generated/M02-007.blend",
+            "sha1": "480ae95889799e9fbe880516534e22e0020f61b5",
+            "bytes": 177815
+          },
+          {
+            "name": "generated/M02-007_animated.glb",
+            "sha1": "d09e8551cb8899031efc43af9e6ba5e7e96cadc2",
+            "bytes": 322908
+          },
+          {
+            "name": "generated/M02-007_support_roller_pair.obj",
+            "sha1": "b97755d389b530271ec837e39a4b79b0b0c1c267",
+            "bytes": 536012
+          }
+        ],
+        "missing_source": false,
+        "committed_export_count": 3,
+        "export_evidence": "COMMITTED_FILES_EXIST_UNVERIFIED_GEOMETRY"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-008",
+      "base_pr": 94,
+      "fix_pr": null,
+      "original": {
+        "sha": "5a89dc82f02fb0647629059268e99ae14dfebdbb",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m02_008.py",
+            "sha1": "b2e70e54b6fd2c69ee64230cb63a87691d9ca99f",
+            "bytes": 20642
+          },
+          {
+            "name": "qa_m02_008.py",
+            "sha1": "bdababa4cdc0f133e4ec84b8e57d9d4ddc2f201b",
+            "bytes": 4229
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-009",
+      "base_pr": 107,
+      "fix_pr": null,
+      "original": {
+        "sha": "1ad5713d1367e8e2ef962d4593281e80da5d6a05",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m02_009.py",
+            "sha1": "dbfdc7ec0a220bcbd6252ed31e7cd2e419cb8da1",
+            "bytes": 21344
+          },
+          {
+            "name": "qa_m02_009.py",
+            "sha1": "387ea2590f3a2d44c4ee59067557bf84b060e0fd",
+            "bytes": 6459
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-010",
+      "base_pr": 113,
+      "fix_pr": null,
+      "original": {
+        "sha": "49e7e7bb138612c722c403313f315fde9e553a22",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m02_010.py",
+            "sha1": "8d7735bc36755dc9d8cc09bf0722501ea48a9dad",
+            "bytes": 23211
+          },
+          {
+            "name": "qa_m02_010.py",
+            "sha1": "432b03cdc5d4237d4f0bd793c4e1b5331e332672",
+            "bytes": 6034
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-011",
+      "base_pr": 117,
+      "fix_pr": null,
+      "original": {
+        "sha": "fbc32cc06740f7080e01d9da0c0e33588231d84c",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m02_011.py",
+            "sha1": "5cfafa874fabf7266279bfaa9aad9eed2261eefc",
+            "bytes": 26598
+          },
+          {
+            "name": "qa_m02_011.py",
+            "sha1": "40d17d9316c5ce5039d4fa50e6213c01b365d20f",
+            "bytes": 6458
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-012",
+      "base_pr": 121,
+      "fix_pr": null,
+      "original": {
+        "sha": "ffb48302ef2acd9a2228a48db475fdd8162c7cbd",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m02_012.py",
+            "sha1": "912ddecaabc0aee00520ef251058603561ec8a46",
+            "bytes": 18868
+          },
+          {
+            "name": "qa_m02_012.py",
+            "sha1": "9ddc6aa836f7f8c81f4785e2d363d5f1675745a5",
+            "bytes": 3388
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-013",
+      "base_pr": 126,
+      "fix_pr": null,
+      "original": {
+        "sha": "072ac4504a32d129071fcc0d0d473b78d33a0cb1",
+        "files": 4,
+        "source_files": [
+          {
+            "name": "generate_m02_013.py",
+            "sha1": "717ef6d0bfb2c171d717d9633fb39ff9c7be2d58",
+            "bytes": 17043
+          },
+          {
+            "name": "qa_m02_013.py",
+            "sha1": "3c7cc0988bd961dd3b1b783697fa89924f2a5758",
+            "bytes": 6184
+          },
+          {
+            "name": "qa_m02_013_blender.py",
+            "sha1": "d0fa21e96882b774317cab1d9991570cf7ff0ace",
+            "bytes": 3085
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    },
+    {
+      "id": "M02-014",
+      "base_pr": 148,
+      "fix_pr": null,
+      "original": {
+        "sha": "ab1a83b266e7857c78ac97b60ca83515e4e1f70d",
+        "files": 3,
+        "source_files": [
+          {
+            "name": "generate_m02_014.py",
+            "sha1": "f151a2a2bd8ee84bf782cce031080486f9989587",
+            "bytes": 11882
+          },
+          {
+            "name": "qa_m02_014.py",
+            "sha1": "1b56081150a1f51e84807cf269e1f2553111dc2b",
+            "bytes": 2718
+          }
+        ],
+        "committed_exports": [],
+        "missing_source": false,
+        "committed_export_count": 0,
+        "export_evidence": "NO_COMMITTED_MESH_EXPORT"
+      },
+      "fixed": null
+    }
+  ]
+}
