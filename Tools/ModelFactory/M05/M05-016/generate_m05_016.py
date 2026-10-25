@@ -78,7 +78,8 @@ def finish(obj, name, mat, parent=None, bevel=0.0):
         mod = obj.modifiers.new("Edge_softening", "BEVEL")
         mod.width = bevel
         mod.segments = 2
-        if hasattr(mod, "affect"):\n            mod.affect = "EDGES"
+        if hasattr(mod, "affect"):
+            mod.affect = "EDGES"
         obj.modifiers.new("Weighted_normals", "WEIGHTED_NORMAL")
     attach(obj, parent or ROOT)
     return obj
