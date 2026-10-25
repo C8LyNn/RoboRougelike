@@ -1,0 +1,59 @@
+name: M01-020 Blender model QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m01-020-short-wave-resonator
+    paths:
+      - 'Tools/ModelFactory/M01/M01-020/*.py'
+      - 'Tools/ModelFactory/M01/M01-020/README.md'
+      - '.github/workflows/ci-model-m01-020.yml'
+  pull_request:
+    types: [opened, synchronize]
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-020/*.py'
+      - 'Tools/ModelFactory/M01/M01-020/README.md'
+      - '.github/workflows/ci-model-m01-020.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender --version
+      - name: Generate twice, verify mesh topology and sample 73 animation frames
+        run: |
+          blender --background --python-exit-code 1 --python Tools/ModelFactory/M01/M01-020/generate_m01_020.py -- --repeat --out Tools/ModelFactory/M01/M01-020/generated
+      - name: Independently validate OBJ MTL and binary BLEND FBX GLB
+        run: |
+          python3 Tools/ModelFactory/M01/M01-020/qa_m01_020.py --out Tools/ModelFactory/M01/M01-020/generated --require-blender
+      - name: Upload generated 3D exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M01-020-short-wave-resonator-3D
+          path: Tools/ModelFactory/M01/M01-020/generated/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Publish verified exports to exclusive feature branch
+        if: success() && github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f Tools/ModelFactory/M01/M01-020/generated/*.blend1
+          git add -f Tools/ModelFactory/M01/M01-020/generated/*
+          if ! git diff --cached --quiet; then
+            git commit -m "MODEL-01 M01-020: verified Blender 3D exports"
+            git fetch origin feature/rrl-model-m01-020-short-wave-resonator
+            git rebase origin/feature/rrl-model-m01-020-short-wave-resonator
+            git push origin HEAD:feature/rrl-model-m01-020-short-wave-resonator || echo "::warning::Git push BLOCKED; workflow artifacts retained"
+          fi
