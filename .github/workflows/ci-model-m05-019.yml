@@ -18,10 +18,10 @@ jobs:
       - name: Install Blender
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -n 2
       - name: Generate and validate asset in real Blender
-        run: blender -b -noaudio --python Tools/ModelFactory/M05/M05-019/generate.py -- --output /tmp/m05-019
+        run: PYTHONPATH=/usr/lib/python3/dist-packages blender -b -noaudio --python Tools/ModelFactory/M05/M05-019/generate.py -- --output /tmp/m05-019
       - name: Validate GLB header, materials, nodes and animation
         run: |
           python3 - <<'PY'
