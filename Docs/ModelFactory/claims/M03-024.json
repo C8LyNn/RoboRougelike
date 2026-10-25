@@ -8,6 +8,8 @@
   "pr": "https://github.com/C8LyNn/RoboRougelike/pull/221",
   "branch": "feature/rrl-model-m03-024-gap-bridge",
   "head_sha": "699512d1c1521ed9130d7ec50f9f6c41f744efa6",
-  "qa": "BLENDER_NOT_RUN_PENDING_CI",
-  "unity": "NOT_RUN"
+  "qa": "BLENDER_QA_PASS",
+  "unity": "BLOCKED_UNITY_ACTIVATION_NOT_RUN",
+  "blender_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40184379613",
+  "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40184379613/artifacts/12595511650"
 }
