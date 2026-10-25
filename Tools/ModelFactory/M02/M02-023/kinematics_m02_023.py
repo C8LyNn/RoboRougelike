@@ -56,7 +56,7 @@ def sample(distance):
                 Z_CENTER + SMALL_R*math.sin(a), a - math.pi/2)
     s -= SMALL_ARC
     if s < TANGENT:
-        return (CENTRES/2 - SMALL_R*sn - s*cs,
+        return (CENTRES/2 + SMALL_R*sn - s*cs,
                 Z_CENTER - SMALL_R*cs - s*sn, -math.pi + THETA)
     s -= TANGENT
     a = -math.pi/2 + THETA - s/BIG_R
