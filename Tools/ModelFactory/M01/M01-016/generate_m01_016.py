@@ -82,7 +82,7 @@ def cube(name, loc, scale, material, group="STATIC", parent=None, bevel=.012):
     obj.name = name
     obj.dimensions = scale
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    return finish(obj, material, group, parent, bevel)
+    return finish(obj, material, group, parent, min(bevel, min(scale)*0.28))
 
 def cyl(name, loc, radius, depth, material, group="STATIC", parent=None,
         vertices=24, axis="Z"):
