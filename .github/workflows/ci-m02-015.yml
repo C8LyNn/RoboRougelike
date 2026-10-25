@@ -1,0 +1,52 @@
+name: M02-015 Exposed Gearbox Blender Asset QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-015-exposed-gearbox
+    paths:
+      - 'Tools/ModelFactory/M02/M02-015/**'
+      - '.github/workflows/ci-m02-015.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and validate source + 121 gear positions
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M02/M02-015/generate_m02_015.py
+          python3 -m py_compile Tools/ModelFactory/M02/M02-015/qa_m02_015.py
+          python3 Tools/ModelFactory/M02/M02-015/qa_m02_015.py
+
+  blender-export:
+    needs: static-geometry
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install real Blender and NumPy for glTF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate BLEND GLB and attempt FBX export in Blender
+        run: |
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M02/M02-015/generate_m02_015.py \
+            -- --out "$RUNNER_TEMP/M02-015"
+      - name: Independently inspect real exported files
+        run: |
+          python3 Tools/ModelFactory/M02/M02-015/qa_m02_015.py \
+            --verify --out "$RUNNER_TEMP/M02-015"
+      - name: Archive real 3D files and QA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-015-real-Blender-GLB-FBX-QA
+          path: ${{ runner.temp }}/M02-015/*
+          if-no-files-found: error
+          retention-days: 30
