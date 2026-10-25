@@ -77,7 +77,7 @@ Input System module state changed to: Initialized.
   Session Id:              a77320c5c6af4e17b228cf249bdce377
   Correlation Id:          19d2e6eff6842dd5fb049f9491190a1b
   External correlation Id: 3311875392518237495
-  Machine Id:              q9+Hq1JSdhr1meVMc2xmW5Mmq0s=
+  Machine Id: [omitted from public QA log]
 [Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-kubap" (connect: 0.56s, validation: 0.04s, handshake: 1.28s)
 [Licensing::IpcConnector] Successfully connected to: "LicenseClient-kubap-notifications" at "2026-10-25T09:14:07.2306801Z"
 [Licensing::Module] Connected to LicensingClient (PId: 13988, launch time: 0.01, total connection time: 1.89s)
