@@ -23,6 +23,9 @@ jobs:
       - name: Compile real Unity package source with isolated JSON surrogate
         id: build
         run: dotnet build Tools/B01/LEGENDARY-UNITY-001/tests/LegendaryUnity.SurrogateTests.csproj -c Release --nologo
+      - name: Compile receiver R3 bridge against OBJ public-signature stubs
+        id: bridge
+        run: dotnet build Tools/B01/LEGENDARY-UNITY-001/tests/BridgeCompile/BridgeCompile.csproj -c Release --nologo
       - name: Execute original eleven fixtures and negative regression tests
         id: tests
         shell: bash
@@ -45,6 +48,7 @@ jobs:
           BUILD_RESULT: ${{ steps.build.outcome }}
           TEST_RESULT: ${{ steps.tests.outcome }}
           PACKAGE_RESULT: ${{ steps.package.outcome }}
+          BRIDGE_RESULT: ${{ steps.bridge.outcome }}
         run: |
           python3 - <<'PY'
           import json,os,pathlib,subprocess
@@ -53,7 +57,7 @@ jobs:
           r={"schema":"b01.legendary.unity.ci-receipt.v1",
             "head_sha":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
             "source_contract":"93f290acca26839792a5bec8ea42415ac83932f3",
-            "build":os.environ["BUILD_RESULT"],"tests":os.environ["TEST_RESULT"],
+            "build":os.environ["BUILD_RESULT"],"bridge_signature_compile":os.environ["BRIDGE_RESULT"],"tests":os.environ["TEST_RESULT"],
             "package":os.environ["PACKAGE_RESULT"],
             "test_counts":({k:t[k] for k in ("passed","failed","total")} if t else None),
             "unity_native_editmode":"NOT_RUN","unity_native_playmode":"NOT_RUN",
