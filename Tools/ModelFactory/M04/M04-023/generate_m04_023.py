@@ -118,7 +118,9 @@ def wedge(name, theta, y, r0, r1, half_angle, thickness, mat, parent):
     mesh.update()
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.collection.objects.link(obj)
-    bevel(obj, 0.005)
+    # Keep bevel below one tenth of sheet thickness; thin ceramic inlays
+    # otherwise collapse into degenerate faces in Blender 5.
+    bevel(obj, min(0.003, thickness * 0.10))
     return finish(obj, mat, parent, "animated_shutter")
 
 def create_scene():
