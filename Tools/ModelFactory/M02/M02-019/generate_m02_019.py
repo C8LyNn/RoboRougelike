@@ -12,8 +12,7 @@ bpy.ops.object.select_all(action="SELECT")
 bpy.ops.object.delete(use_global=False)
 for datablocks in (bpy.data.meshes, bpy.data.materials, bpy.data.curves, bpy.data.actions):
     for datablock in list(datablocks):
-        if datablock.users == 0:
-            datablocks.remove(datablock)
+        datablocks.remove(datablock, do_unlink=True)
 scene = bpy.context.scene
 scene.render.engine = "CYCLES"
 scene.unit_settings.system = "METRIC"
@@ -246,7 +245,7 @@ for frame in range(121):
             Z=pz-sin(theta)*dx+cos(theta)*dz
             minimum=min(minimum,.306-math.hypot(X,Z))
 assert minimum>.004, "Shoe collides with drum: %.6f"%minimum
-assert len(bpy.data.materials)>=3
+assert len(bpy.data.materials)==8, "Unexpected material duplication"
 assert scene.unit_settings.scale_length==1
 mesh_objects=[o for o in bpy.data.objects if o.type=="MESH"]
 assert len(mesh_objects)>=30
