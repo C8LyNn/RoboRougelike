@@ -6,6 +6,12 @@ on:
     paths:
       - 'Tools/ModelFactory/M01/M01-017/**'
       - '.github/workflows/ci-model-m01-017.yml'
+  pull_request:
+    types: [opened, synchronize]
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M01/M01-017/**'
+      - '.github/workflows/ci-model-m01-017.yml'
   workflow_dispatch:
 
 permissions:
