@@ -149,6 +149,7 @@ def create():
     cylinder("UpperCollar", 0.224, 0.035, (0, 0, 0.325), mats["titanium"], col, bevel=0.006)
     cylinder("OpticTower", 0.078, 0.20, (0, 0, 0.433), mats["ceramic"], col, bevel=0.005)
     cylinder("ProjectorLens", 0.071, 0.020, (0, 0, 0.545), mats["cyan"], col)
+    cylinder("AmberReadyIndicator", 0.015, 0.012, (0.13, 0.13, 0.355), mats["amber"], col, vertices=16)
     ring("OpticHalo", 0.086, 0.010, (0, 0, 0.552), mats["copper"], col)
     for k in range(8):
         a = math.tau * k / 8
@@ -207,7 +208,7 @@ def create():
 def validate(col):
     meshes = [o for o in col.objects if o.type == "MESH"]
     materials = {m.name for obj in meshes for m in obj.data.materials if m}
-    assert len(materials) >= 3, "At least three distinct materials required"
+    assert len(materials) >= 8, "All eight designed materials must be used"
     assert len(meshes) >= 35, "Unexpectedly incomplete projector"
     assert bpy.data.objects.get(PREFIX + "MOUNT_TOP") is not None
     assert bpy.data.objects.get(PREFIX + "PROJECTION_ORIGIN") is not None
