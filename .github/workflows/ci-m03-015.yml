@@ -1,0 +1,89 @@
+name: M03-015 Generator Protection Cage QA
+on:
+  push:
+    branches: [feature/rrl-model-m03-015-generator-protection-cage]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-015/**'
+      - '.github/workflows/ci-m03-015.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-015/**'
+      - '.github/workflows/ci-m03-015.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate source, closed geometry, swept door, OBJ MTL
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-015/*.py
+          python3 Tools/ModelFactory/M03/M03-015/qa_m03_015.py
+          python3 Tools/ModelFactory/M03/M03-015/generate_m03_015.py --out /tmp/m03-015-static
+          test -s /tmp/m03-015-static/M03-015_generator_protection_cage.obj
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-015-static-OBJ-MTL
+          path: /tmp/m03-015-static/
+          if-no-files-found: error
+          retention-days: 14
+  blender-export:
+    needs: static-qa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate actual GLB FBX BLEND
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-015/generate_m03_015.py \
+            -- --out /tmp/m03-015-blender
+          test -s /tmp/m03-015-blender/M03-015_generator_protection_cage.glb
+          test -s /tmp/m03-015-blender/M03-015_generator_protection_cage.fbx
+          test -s /tmp/m03-015-blender/M03-015_generator_protection_cage.blend
+      - name: Independently validate GLB animation and mounts
+        run: |
+          python3 - <<'PY'
+          import json,struct
+          from pathlib import Path
+          p=Path('/tmp/m03-015-blender')
+          b=(p/'M03-015_generator_protection_cage.glb').read_bytes()
+          magic,version,size=struct.unpack_from('<4sII',b)
+          assert (magic,version,size)==(b'glTF',2,len(b))
+          n,kind=struct.unpack_from('<I4s',b,12)
+          assert kind==b'JSON'
+          data=json.loads(b[20:20+n])
+          nodes=data['nodes'];names={n.get('name') for n in nodes}
+          assert len(data['materials'])==6
+          assert len(data['animations'])>=1
+          assert {'MOUNT_INNER_FRAME','HINGE_DOOR_PIVOT_Z',
+                  'LATCH_00_PIVOT_X','LATCH_01_PIVOT_X'}.issubset(names)
+          assert all('SNAP_INNER_%02d'%i in names for i in range(4))
+          manifest=json.loads((p/'M03-015_manifest.json').read_text())
+          assert manifest['backend']=='bpy'
+          assert manifest['mesh_count']==len([n for n in nodes if 'mesh' in n])
+          print('PASS real GLB',manifest['mesh_count'],'meshes, 6 materials, animated door/latches, 4 SNAP')
+          PY
+      - name: Repeat bpy generation in one Blender session
+        run: |
+          blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/ModelFactory/M03/M03-015/qa_blender_m03_015.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: M03-015-Blender-GLB-FBX-BLEND
+          path: /tmp/m03-015-blender/
+          if-no-files-found: error
+          retention-days: 14
