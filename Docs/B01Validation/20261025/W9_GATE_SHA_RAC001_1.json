@@ -1,0 +1,98 @@
+{
+  "package": "RAC001",
+  "source_sha": "129e867f25805075c48f2be52ec1cc5336b4075c",
+  "part": 0,
+  "rows": [
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta",
+      "bytes": 169,
+      "sha256": "8c402948e34b233df0867d0fa9693b30cfef83935f5feaeda8083c4750eb5267",
+      "git_sha1": "1787f8d3c2c1af9910c63afdfb6b2438b39336d2",
+      "guid": "2aa1d728fa824957b24a2f2509100002"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs",
+      "bytes": 3587,
+      "sha256": "a3d3e5cdf4fc9fd9d122bb77706d3bc79d8725f39856350aae1f5196da895049",
+      "git_sha1": "4080a61306bdf519b4aa185008e60d55f4e371bc",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs.meta",
+      "bytes": 240,
+      "sha256": "064163b2609b21fe08030f77458a9a753e631eae28bc74c569a830193d788e25",
+      "git_sha1": "8bef1186fd26ace7f9eb58f3db4248899309cb8f",
+      "guid": "8aa0cbe1873241819520410900100002"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs",
+      "bytes": 3619,
+      "sha256": "8797dd9f7f5bd231de8f85f61aba5355de2f2e90611255ca02f60baf99cf5d13",
+      "git_sha1": "857edad1323788fdb33df12f9c450c3e6a790844",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs.meta",
+      "bytes": 241,
+      "sha256": "c160f9cbbcd4258dece1c05c219a6806e075e1d80e88e49250334ae1606360a5",
+      "git_sha1": "5208ee1025706124d0f6e4eac3417f6888c347f6",
+      "guid": "9f8a0101c0714a82a7d004a15b991002"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceState.cs",
+      "bytes": 5095,
+      "sha256": "b517bdcf50a7fdc78efdbd46ffb2938e8d50c080c23e9feed1a7b81bfa34d442",
+      "git_sha1": "24c79723cbd45dd11ef29550ac6383d9e302b7b1",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceState.cs.meta",
+      "bytes": 241,
+      "sha256": "576a2e3c0d71b92366f81435d2d09ce4b22af1444e8b5bcd6fcf2989b886c8d0",
+      "git_sha1": "aeffd39a48e542c625563190eccf86d398e834e8",
+      "guid": "9f8a0101c0714a82a7d004a15b991001"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor.meta",
+      "bytes": 170,
+      "sha256": "e0041ede1aeef6c6eb8ce8982c3c0d776863c37f66cb7fe9591383d7c3477920",
+      "git_sha1": "ee4d5d34d70e2b9048b6d4e3a7dc5623ef869f7c",
+      "guid": "9f8a0101c0714a82a7d004a15b991004"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs",
+      "bytes": 3301,
+      "sha256": "a4b82d5de6a1716725f159ba6ef3e297073444147310320f1696e0e84c65c803",
+      "git_sha1": "59c65e81c58d580ea7fad9e807b66835fdadb988",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RAC001DemoSceneBuilder.cs.meta",
+      "bytes": 241,
+      "sha256": "042351655cd7e45855043518a132c834687f7cd3cef588c162059eba8ec74ac4",
+      "git_sha1": "5aab455fc890c131cb2c813d564a05152972dc5d",
+      "guid": "9f8a0101c0714a82a7d004a15b991005"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RoboRougelike.RAC001.Editor.asmdef",
+      "bytes": 421,
+      "sha256": "31c1c8e61bbcd17347dd9e73df175391671cb1348d63c1fcb800931198966f99",
+      "git_sha1": "17194849df377d21532e57a7c00b4f7f4859000c",
+      "guid": null
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Editor/RoboRougelike.RAC001.Editor.asmdef.meta",
+      "bytes": 153,
+      "sha256": "16beb9db978c8109bcd1c90b3ee9ca2391b179dfcdf67323c2ff7194245fae24",
+      "git_sha1": "32d0bf32fb39024af1170c4d2b53c8029ff74929",
+      "guid": "9f8a0101c0714a82a7d004a15b991006"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/RoboRougelike.RAC001.asmdef",
+      "bytes": 360,
+      "sha256": "0d9af89e387e8fbbd0b6e64481fbc7b47150dc5c28a41ccb4e560e742dd5cf24",
+      "git_sha1": "5876cc23db0f271e6c023e1186ba3abd11e8cb41",
+      "guid": null
+    }
+  ]
+}
