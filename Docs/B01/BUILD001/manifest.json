@@ -1,10 +1,10 @@
 {
   "package_id": "B01-BUILD001",
-  "revision": "R1.1",
+  "revision": "R1.2",
   "recipient": "Codex",
   "source_pr": "https://github.com/C8LyNn/RoboRougelike/pull/149",
-  "status": "SOURCE_REWORK_QA_PENDING_G2_HOLD",
-  "source_branch": "feature/b01-build001-s03-sockets-r1",
+  "status": "W9_NATIVE_RED_ORIGINAL_SOURCE_CORRECTED_STATIC_RETEST_PENDING_G1_G2_HOLD",
+  "source_branch": "fix/b01-build001-w9-r12-20261025",
   "source_parent_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_commit_before_manifest": "071ec1504b6a110c9b55eb2cc4d73768a2a26a26",
   "unity": "6000.3.14f1",
@@ -13,7 +13,7 @@
     "UnityEngine",
     "Unity Test Framework 1.6.x for NUnit"
   ],
-  "source_file_count_without_self": 35,
+  "source_file_count_without_self": 36,
   "blob_sha1_and_bytes": {
     "Assets/B01Construction.meta": {
       "git_blob_sha1": "240a388ede28ee981b5d1ceb89804cbb99738e6f",
@@ -106,8 +106,8 @@
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef": {
-      "git_blob_sha1": "5525baae058cebe8f8350e2618ed737185b7145a",
-      "bytes": 320,
+      "git_blob_sha1": "218943679274afe75d67441449e49e1b60b174e5",
+      "bytes": 260,
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef.meta": {
@@ -131,8 +131,8 @@
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef": {
-      "git_blob_sha1": "3b478bbe8266a3b1c360967876afc5685bf6ba74",
-      "bytes": 304,
+      "git_blob_sha1": "09dbb18d4077cd275f8d44812d6bbdb49785e89d",
+      "bytes": 244,
       "sha256": null
     },
     "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef.meta": {
@@ -189,10 +189,15 @@
       "git_blob_sha1": "c4adc9c38dcd8232569e13ffb61a37841cf780c0",
       "bytes": 1517,
       "sha256": null
+    },
+    "Docs/B01/BUILD001/W9_SOURCE_REPAIR_R12.md": {
+      "git_blob_sha1": "8b7933c7076d2abaf4fc85d54734c95ade18133a",
+      "bytes": 1355,
+      "sha256": null
     }
   },
   "metaMissing": [],
-  "sha256_recheck": "B01_40_PENDING",
+  "sha256_recheck": "B01_40_PENDING_NOT_COMPUTED_ON_R1_2",
   "source_rework": {
     "bug": "living Core-disconnected fragment accepted as valid support",
     "fix": "require reachable from living Core",
@@ -203,11 +208,24 @@
     "EditMode": 11,
     "PlayMode": 2
   },
-  "native_compile": "NOT_RUN",
+  "native_compile": "NOT_RUN_ON_R1_2",
   "native_editmode": "NOT_RUN",
   "native_playmode": "NOT_RUN",
   "manual_demo": "NOT_RUN",
   "B01_60": "PENDING",
   "G2": "HOLD",
-  "Codex_target_ack": "UNKNOWN"
+  "Codex_target_ack": "UNKNOWN",
+  "w9": {
+    "dispatch_id": "HQ-B01-20261025-W9-SOURCE-REPAIR",
+    "native_red_source_sha": "d575b79e262ec9b65702608d6b6e28972da0d21c",
+    "native_red_pr": 212,
+    "native_exit": 1,
+    "native_nunit": "NOT_RUN",
+    "fixed_asmdef_paths": [
+      "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef",
+      "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef"
+    ],
+    "producer_static_qa": "PENDING",
+    "independent_unity_qa": "NOT_RUN"
+  }
 }
