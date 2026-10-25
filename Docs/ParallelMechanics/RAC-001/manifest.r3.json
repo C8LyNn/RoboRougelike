@@ -13,7 +13,7 @@
     "UnityEngine Rigidbody/Physics",
     "Unity Test Framework 1.6.0"
   ],
-  "total_files_without_self": 35,
+  "total_files_without_self": 36,
   "git_blob_sha1_and_bytes": {
     "Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta": {
       "blob_sha1": "1787f8d3c2c1af9910c63afdfb6b2438b39336d2",
@@ -189,6 +189,11 @@
       "blob_sha1": "9ed8154dfb18cccec4bb79c4e6c824001edc36ad",
       "bytes": 1452,
       "sha256": null
+    },
+    "Assets/RoboRougelikeMechanics.meta": {
+      "blob_sha1": "6b6fc339c5fb6cf034d9885a555eb927390515fd",
+      "bytes": 172,
+      "sha256": null
     }
   },
   "meta_required_missing": [],
@@ -211,6 +216,7 @@
     "superseded_docs": [
       "Docs/ParallelMechanics/RAC-001/INSTALL_FOR_CODEX.md",
       "Docs/ParallelMechanics/RAC-001/PROMPT_FOR_CODEX.md"
-    ]
+    ],
+    "full_source_parent_meta": "Assets/RoboRougelikeMechanics.meta included in install materialization; no rewrite to its original GUID"
   }
 }
