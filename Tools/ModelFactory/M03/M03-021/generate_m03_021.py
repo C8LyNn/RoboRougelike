@@ -67,6 +67,7 @@ def cube(label, loc, dims, mat, coll, root, bevel=0):
     bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
     ob = bpy.context.object
     ob.name = NAME + "_" + label
+    ob.data.name = NAME + "_" + label + "_Mesh"
     ob.dimensions = dims
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     if bevel:
