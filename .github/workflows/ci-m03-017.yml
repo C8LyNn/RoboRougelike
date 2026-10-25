@@ -1,0 +1,55 @@
+name: CI M03-017 Quick Release Coupler
+on:
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M03/M03-017/**'
+      - '.github/workflows/ci-m03-017.yml'
+  workflow_dispatch:
+
+jobs:
+  blender-model-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source syntax and contract QA
+        run: |
+          python3 -m py_compile Tools/ModelFactory/M03/M03-017/generate_m03_017.py
+          python3 -m py_compile Tools/ModelFactory/M03/M03-017/qa_blender_m03_017.py
+          python3 Tools/ModelFactory/M03/M03-017/qa_m03_017.py
+      - name: Install Blender and NumPy
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate real Blender GLB FBX BLEND
+        run: |
+          mkdir -p /tmp/m03-017
+          blender -b --python-exit-code 1 --python Tools/ModelFactory/M03/M03-017/generate_m03_017.py -- /tmp/m03-017
+      - name: Independent Blender QA and GLB inspection
+        run: |
+          blender -b --python-exit-code 1 --python Tools/ModelFactory/M03/M03-017/qa_blender_m03_017.py -- /tmp/m03-017
+      - name: Verify outputs and SHA-256
+        run: |
+          set -euo pipefail
+          for ext in glb fbx blend qa.json blender-qa.json; do
+            test -s "/tmp/m03-017/M03-017.$ext"
+          done
+          cd /tmp/m03-017
+          sha256sum M03-017.* | tee SHA256SUMS.txt
+      - name: Upload model artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-017-Blender-GLB-FBX-BLEND
+          path: |
+            /tmp/m03-017/M03-017.glb
+            /tmp/m03-017/M03-017.fbx
+            /tmp/m03-017/M03-017.blend
+            /tmp/m03-017/M03-017.qa.json
+            /tmp/m03-017/M03-017.blender-qa.json
+            /tmp/m03-017/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
