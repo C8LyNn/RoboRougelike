@@ -217,8 +217,10 @@ for frame, alpha in ((1,0),(30,1),(64,1),(94,0),(121,0)):
     for obj in (piston_l,piston_r):
         obj.keyframe_insert(data_path="location",frame=frame)
     spring_top.keyframe_insert(data_path="scale",frame=frame)
-for frame, turns in ((1,0),(121,2)):
-    rotor.rotation_euler[1]=2*pi*turns
+# Intermediate keyframes are essential: glTF quaternion interpolation between
+# 0 and 720 degrees alone would collapse to a stationary rotor.
+for frame in range(1,122,5):
+    rotor.rotation_euler[1]=4*pi*(frame-1)/120
     rotor.keyframe_insert(data_path="rotation_euler",frame=frame)
 if rotor.animation_data and rotor.animation_data.action:
     try:
