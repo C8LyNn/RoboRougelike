@@ -267,12 +267,35 @@ def build(out: Path):
           "glb_status":"NOT RUN","fbx_status":"NOT RUN",
           "unity_import":"NOT RUN"}
     bpy.ops.wm.save_as_mainfile(filepath=str(out/(ID+".blend")))
-    bpy.ops.export_scene.gltf(filepath=str(out/(ID+"_animated.glb")),
-                              export_format="GLB", export_animations=True)
+    # Export only the M02-018 collection; never leak startup Cube/Camera or foreign assets.
+    bpy.ops.object.select_all(action="DESELECT")
+    for ob in coll.objects:
+        ob.select_set(True)
+    bpy.context.view_layer.objects.active = disc
+    gltf_props = bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
+    gltf_args = {"filepath":str(out/(ID+"_animated.glb")),
+                 "export_format":"GLB", "export_animations":True}
+    if "use_selection" in gltf_props:
+        gltf_args["use_selection"] = True
+    elif "export_selected" in gltf_props:
+        gltf_args["export_selected"] = True
+    else:
+        raise RuntimeError("GLB exporter lacks a selected-objects filter")
+    bpy.ops.export_scene.gltf(**gltf_args)
     qa["glb_status"]="EXPORTED_NOT_UNITY_IMPORTED"
+    qa["glb_export_scope"]="MODEL_COLLECTION_ONLY"
     try:
-        bpy.ops.export_scene.fbx(filepath=str(out/(ID+"_animated.fbx")),
-                                 use_selection=False, bake_anim=True)
+        fbx_args={"filepath":str(out/(ID+"_animated.fbx"))}
+        fbx_props=bpy.ops.export_scene.fbx.get_rna_type().properties.keys()
+        if "use_selection" in fbx_props:
+            fbx_args["use_selection"]=True
+        elif "export_selected" in fbx_props:
+            fbx_args["export_selected"]=True
+        else:
+            raise RuntimeError("FBX exporter lacks selected-objects filter")
+        if "bake_anim" in fbx_props:
+            fbx_args["bake_anim"]=True
+        bpy.ops.export_scene.fbx(**fbx_args)
         qa["fbx_status"]="EXPORTED_NOT_UNITY_IMPORTED"
     except Exception as exc:
         qa["fbx_status"]="BLOCKED_FBX_OPERATOR: "+str(exc)
