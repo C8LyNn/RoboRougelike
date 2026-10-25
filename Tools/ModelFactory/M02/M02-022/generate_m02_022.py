@@ -55,11 +55,12 @@ def analytical_qa():
     assert min_hub_clearance > 0.12, min_hub_clearance
     assert 0.023 - 0.016 > 0.006 # Rod/tube running clearance, 7 mm.
     assert 0.041 - 0.028 > 0.012 # Kingpin/bushing running clearance, 13 mm.
+    assert (.13 - .10/2) - (.055 + .014) > .010 # Rotating fork vs stationary bearing, 11 mm.
     return dict(frames=FRAMES, actuator_samples=FRAMES*2,
         steering_limit_deg=24, actuator_min_length_m=minimum_length,
         actuator_max_length_m=maximum_length, min_rod_exposure_m=min_rod,
         min_hub_to_beam_x_margin_m=min_hub_clearance,
-        piston_radial_clearance_m=0.007, kingpin_radial_clearance_m=0.013,
+        piston_radial_clearance_m=0.007, kingpin_radial_clearance_m=0.013,\n        fork_to_bearing_radial_clearance_m=0.011,
         scope="Analytical motion envelopes only; not triangle-triangle collision or Unity physics")
 
 def reset():
