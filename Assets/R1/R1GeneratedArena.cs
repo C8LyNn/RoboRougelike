@@ -16,7 +16,7 @@ namespace RoboRougelike.R1
         public MapWorldSnapshot GeneratedWorld => generatedArena!=null?generatedArena.Current:null;
         public Vector3 MapgenMeasuredEnvelope {get;private set;}
         public string MapgenMessage {get;private set;}
-        public bool CanChooseGeneratedArena => CanChooseReactorDefense&&!ReactorPrepared&&
+        public bool CanChooseGeneratedArena => Player!=null&&CanChooseReactorDefense&&!ReactorPrepared&&
             VehicleModel.SelectedDrive==R3DriveKind.Wheels&&RouteOffers.Length>0&&RouteOffers[0].SpawnCount<=3;
 
         public bool PrepareMapgenRun()
