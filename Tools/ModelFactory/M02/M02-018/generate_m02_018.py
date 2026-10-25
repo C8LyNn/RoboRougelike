@@ -149,6 +149,7 @@ def build(out: Path):
                                             location=(.265*math.cos(a),0,ROTOR_CENTER_Z+.265*math.sin(a)),
                                             rotation=(math.pi/2,0,0))
         cutters.append(bpy.context.object)
+    drill_meshes = [cutter.data for cutter in cutters]
     bpy.ops.object.select_all(action="DESELECT")
     for cutter in cutters: cutter.select_set(True)
     bpy.context.view_layer.objects.active = cutters[0]
@@ -161,9 +162,9 @@ def build(out: Path):
     if hasattr(boolean, "solver"): boolean.solver = "EXACT"
     bpy.context.view_layer.objects.active = disc
     bpy.ops.object.modifier_apply(modifier=boolean.name)
-    drill_mesh = cutter.data
     bpy.data.objects.remove(cutter, do_unlink=True)
-    if drill_mesh.users == 0: bpy.data.meshes.remove(drill_mesh)
+    for drill_mesh in drill_meshes:
+        if drill_mesh.users == 0: bpy.data.meshes.remove(drill_mesh)
 
     cylinder("ROTOR_HAT", .139, .038, (0,0,0), "graphite_chassis", rotor, 64)
     cylinder("AXLE_SPLINE", .069, .16, (0,0,0), "titanium_caliper", rotor, 48)
