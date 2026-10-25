@@ -1,0 +1,14 @@
+{
+  "name": "B01.MAPGENWORLD001.Runtime",
+  "rootNamespace": "B01.MAPGENWORLD001",
+  "references": ["B01.MAPGEN001.Runtime"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

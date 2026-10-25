@@ -47,3 +47,5 @@ Thumbs.db
 # Crash dumps and local test reports
 *.dmp
 *.stacktrace
+/.b01-package-auto/
+/.b01-package-auto-sandbox.json
