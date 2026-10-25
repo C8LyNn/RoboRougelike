@@ -1,0 +1,39 @@
+name: M02-021 Retractable Support Foot Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m02-021-retractable-support-foot
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M02/M02-021/**'
+      - '.github/workflows/ci-m02-021.yml'
+  workflow_dispatch:
+jobs:
+  m02-021-blender-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent kinematic clearance checks
+        run: python3 Tools/ModelFactory/M02/M02-021/qa_m02_021.py --math-only
+      - name: Install real Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+          blender -b -noaudio --python-expr "import numpy; print('Blender NumPy', numpy.__version__)"
+      - name: Generate source BLEND and animated GLB with bpy
+        run: |
+          blender -b -noaudio --python Tools/ModelFactory/M02/M02-021/generate_m02_021.py
+          test -s Tools/ModelFactory/M02/M02-021/generated/M02-021.blend
+          test -s Tools/ModelFactory/M02/M02-021/generated/M02-021_animated.glb
+          test -s Tools/ModelFactory/M02/M02-021/generated/M02-021_qa.json
+      - name: Independent inspection of actual binary glTF and Blender QA
+        run: python3 Tools/ModelFactory/M02/M02-021/qa_m02_021.py
+      - name: Publish actual binary artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M02-021-blend-animated-glb-qa
+          path: Tools/ModelFactory/M02/M02-021/generated/
+          if-no-files-found: warn
