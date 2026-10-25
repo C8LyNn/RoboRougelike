@@ -1,0 +1,134 @@
+{
+  "dispatch_id": "HQ-B01-20261025-W10-RECOVERY-PRODUCTION",
+  "source_pr": 225,
+  "source_sha": "PENDING_FINAL_FREEZE",
+  "candidate_source_parent": "003bced54480d509ffc0d49d26daf87160a8d609",
+  "native_unity_compiler": "NOT_RUN_R33",
+  "native_editmode": "NOT_RUN_R33",
+  "native_playmode": "NOT_RUN_R33",
+  "independent_B01_60": "PENDING",
+  "cube_cases": "12 source UnityTests, 0/12 executed on R3.3",
+  "real_R6_cases": [
+    {
+      "id": "Arena-7-Light",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Arena-7-Heavy",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Arena-31-Light",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Arena-31-Heavy",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Arena-83-Light",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Arena-83-Heavy",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Course-7-Light",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Course-7-Heavy",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Course-31-Light",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Course-31-Heavy",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Course-83-Light",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    },
+    {
+      "id": "Course-83-Heavy",
+      "status": "NOT_RUN",
+      "source_sha": null,
+      "target_sha": null,
+      "grounded_wheels": null,
+      "meters_traveled": null,
+      "finish_reached": null,
+      "log_url": null
+    }
+  ],
+  "g2": "HOLD"
+}
