@@ -1,0 +1,44 @@
+{
+  "runtimeSource": "e0ea2d155fca2a6190b38c184d3399104373e4df",
+  "currentAssetsTree": "f419cfec0d65eb512c62213ce509265da0861319",
+  "runs": [
+    {
+      "mode": "EditMode",
+      "run": "20261024T235608Z-7f607d714df1449092cca7e1d59bb9b2",
+      "total": "1021",
+      "passed": "1021",
+      "failed": "0",
+      "skipped": "0",
+      "result": "Passed",
+      "xmlSha256": "5cadd5288a0efa21c71d1bf05fd551364c0952d0c4e5d83205c1c974d0831c98",
+      "process": {
+        "task": "EditMode",
+        "finishedUtc": "2026-10-25T00:30:38.9054358Z",
+        "startedUtc": "2026-10-24T23:56:08.8370581Z",
+        "exitCode": 0
+      },
+      "failures": [],
+      "xmlReportedDurationRaw": "1,2588691",
+      "processWallSeconds": 2070.0683777
+    },
+    {
+      "mode": "PlayMode",
+      "run": "20261025T003101Z-a29cce66a0f346a99176431bb323e04d",
+      "total": "401",
+      "passed": "401",
+      "failed": "0",
+      "skipped": "0",
+      "result": "Passed",
+      "xmlSha256": "818a5ea870cdff3c6d1f1272181071ff09538cd460b5aa7375d75a4bd64ac8a6",
+      "process": {
+        "startedUtc": "2026-10-25T00:31:01.7175108Z",
+        "task": "PlayMode",
+        "finishedUtc": "2026-10-25T00:31:59.4718815Z",
+        "exitCode": 0
+      },
+      "failures": [],
+      "xmlReportedDurationRaw": "44,0924797",
+      "processWallSeconds": 57.7543707
+    }
+  ]
+}

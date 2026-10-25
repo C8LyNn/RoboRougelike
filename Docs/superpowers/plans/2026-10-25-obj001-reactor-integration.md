@@ -22,24 +22,24 @@
 
 ### Task1: Import and characterize original package / missing host entry
 Files: existing PR14 OBJ001 folder/metas and Docs/ParallelMechanics/OBJ-001; new Assets/Tests/Editor/OBJ001IntegrationTests.cs.
-- [ ] Import exact original files, source/hash/GUID audit; baseline Python16 and package11 Edit/3 Play; actual runner evidence.
-- [ ] Add actual missing preparation/entry and explicit-completion contracts using existing real R1 scene; run RED before implementation.
-- [ ] Commit source attribution/design/plan/RED tests.
+- [x] Import exact original files, source/hash/GUID audit; baseline Python16 and package11 Edit/3 Play; actual runner evidence.
+- [x] Add actual missing preparation/entry and explicit-completion contracts using existing real R1 scene; run RED before implementation.
+- [x] Commit source attribution/design/plan/RED tests.
 
 ### Task2: Bind canonical damage and original objective lifecycle
 Files: package ReactorDefenseObjective.cs, new IReactorIntegritySource.cs, new Assets/OBJ001Integration/OBJ001ReactorActor.cs and metas; tests.
 Interfaces: IReactorIntegritySource exposes CurrentIntegrity/MaximumIntegrity, Damage/Repair/Reset; ReactorDefenseObjective.BindIntegritySource(source), SynchronizeIntegrity(), CompleteDefense(); OBJ001ReactorActor.Build(parent,material,position,health) returns actor with Damageable and Objective.
-- [ ] RED actual canonical HP/damage/repair/death and explicit live completion, original timed behavior preserved.
-- [ ] Implement external authority/read-only projection and safe finite/reset/terminal handling; build static reactor using existing damage/feedback and simple existing primitives.
-- [ ] GREEN original+new lifecycle and actual physical-hit cases; commit.
+- [x] RED actual canonical HP/damage/repair/death and explicit live completion, original timed behavior preserved.
+- [x] Implement external authority/read-only projection and safe finite/reset/terminal handling; build static reactor using existing damage/feedback and simple existing primitives.
+- [x] GREEN original+new lifecycle and actual physical-hit cases; commit.
 
 ### Task3: Real host activity / waves / target policy / HUD
 Files: new OBJ001RunController.cs and OBJ001RunHUD.cs partials in integration; small hooks R1RunController.cs, R1RunProgress.cs, R1RunHUD.cs; P12_PipelineSafeEnemyTurret.cs setter/fallback only; tests.
 Interfaces: PrepareReactorRun(), ChooseReactorDefense(), ReactorActive/ReactorHp/DefenseWave/DefenseWaveCount; Progress.PrepareGarage(); P12.RetargetEncounter(Transform), EncounterTarget read-only; same existing Spawn/Clear/Salvage APIs.
-- [ ] RED waves/reward-once, reactor/player defeat, real AI fire on both targets, garage entry/exit, pause, simultaneous last kill and reset cleanup.
-- [ ] Implement600HP,2/2/3 waves and3s intermission; use one salvage ledger with unique wave prefixes, canonical stage reward once, existing victory/loss settlement.
-- [ ] Expose menu/preparation and campaign garage activity; block sandbox, invalid/double calls and obsolete callbacks; HUD readable at720/1080.
-- [ ] GREEN targeted regression including ordinary fight and range; commit.
+- [x] Initial missing-host RED established the entry gap. Added seven waves/reward-once, defeat, real-AI, garage, pause and cleanup cases after implementation; actual GREEN is recorded, without a separate pre-implementation RED for these seven cases.
+- [x] Implement600HP,2/2/3 waves and3s intermission; use one salvage ledger with unique wave prefixes, canonical stage reward once, existing victory/loss settlement.
+- [x] Expose menu/preparation and campaign garage activity; block sandbox, invalid/double calls and obsolete callbacks; HUD readable at720/1080.
+- [x] GREEN targeted regression including ordinary fight and range; commit.
 
 ### Task4: Native QA / whole-branch review / final regression / delivery
 Files: QA-only OBJ001RuntimeQA.cs if necessary, Docs/OBJ001_INTEGRATION_QA.md and evidence; release package helper only if report label needs extension.

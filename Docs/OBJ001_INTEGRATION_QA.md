@@ -1,6 +1,6 @@
 # OBJ-001 — Reactor Defense Integration QA
 
-Status: playable Windows candidate verified; full regression IN PROGRESS. Draft integration only; PR125 dependency acceptance and automation-attached shutdown remain open.
+Decision: **READY for OBJ-001 gameplay review**, with current full Unity and native Windows evidence. Draft integration only; PR125 dependency acceptance and automation-attached shutdown remain open. This is not approval to merge a shared branch.
 
 ## Sources and isolation
 - BASE `codex/b01-phy-grounding-core-r1@916654634d1bfdc2bbc14e64b9eeac856ede1fa8`, Draft PR125; includes gameplay523046f and Editor fixture54f0192. Its independent PHY-QA-001 acceptance remains pending, not silently promoted to an approved release.
@@ -56,9 +56,10 @@ At60FPS cap on Ryzen9950X/RTX5080, defense42.47s/2548 sampled frames, peak3NPC/2
 - One fresh whole-branch reviewer:0Critical/1Important/0Minor. Important fixed with regression; no deferred minor findings. Native UI, binary/ZIP correspondence and full-suite questions were explicitly deferred to execution, with actual evidence above and full-suite status below. No second review cycle.
 
 ## Full regression and release
-- Full current EditMode: RUNNING (`20261024T235608Z-7f607d714df1449092cca7e1d59bb9b2`), no PASS claimed yet.
-- Full current PlayMode: NOT_RUN.
-- Repository validator:1701 tracked files/0errors before adding evidence; final recheck pending. Python CI unit suite16/16PASS, actual normal-user exit0.
+- **PASS — full current EditMode:1021/1021,0FAIL/0SKIP, actual native0**, `20261024T235608Z-7f607d714df1449092cca7e1d59bb9b2`,34min30s. Includes original package and corrected inherited physics fixtures; this is a fresh full green run, not reconciliation of previous partial results.
+- **PASS — full current PlayMode:401/401,0FAIL/0SKIP, actual native0**, `20261025T003101Z-a29cce66a0f346a99176431bb323e04d`.
+- Raw full-suite XML/process records are compressed in [unity-results.zip](Evidence/OBJ001/unity-results.zip); exact counts, hashes and process times: [full-unity-results.json](Evidence/OBJ001/full-unity-results.json). Assets remain identical to the tested runtime source, tree`f419cfec0d65eb512c62213ce509265da0861319`.
+- Repository validator:0errors; final file count retained in evidence. Final Python CI unit suite16/16PASS, actual normal-user exit0, after the release-helper change; the separate initial16-test baseline is not added to this count.
 - Fresh archive: `C:\Users\kubap\Desktop\Prototypy\Releases\RoboRoguelike_OBJ001_RC1_Windows_x64.zip`,38496536bytes; SHA256`a44718196aa3b4eeb4d57274fd910d45b538f21b6735a0ef2453ae4f5cde13ba`. EXE/data/Mono/runtime dependencies included. [Manifest/extraction result](Evidence/OBJ001/release-package.json).
 - Extracted EXE: `C:\Users\kubap\Desktop\Prototypy\Releases\OBJ001-RC1-extracted\RoboRoguelike_OBJ001_RC1_Windows_x64\RoboRougelike.exe`.
 - Final Draft PR: PENDING, targeting `codex/b01-phy-grounding-core-r1`; no shared merge.
