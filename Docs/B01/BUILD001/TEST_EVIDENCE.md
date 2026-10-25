@@ -26,3 +26,6 @@ Verification boundaries:
 - Producer changed `Check` to consult `Reachable(installed)`, requiring the supporting part be connected to a living Core. Commit `0c147128a06b3dafc64fe4117cac3effa7914cb4`.
 - Added `AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment` EditMode regression source, commit `f49e5a8159fd973bb4253db044dc1b8f74df2a98`.
 - **No native RED/ GREEN test was executed.** B01-60 must run this test and all prior ones independently on the FINAL exact SHA; reported statuses stay G1 NOT_RUN and G2 HOLD.
+
+## W9 source repair R1.2 / RED -> FIX -> RETEST
+Baseline PR #149 HEAD d575b79e262ec9b65702608d6b6e28972da0d21c. RED: both test asmdefs directly depended on UnityEngine.TestRunner and UnityEditor.TestRunner despite TestAssemblies optional reference. FIX: remove direct runner names only; preserve runtime B01.BUILD001.Runtime reference, TestAssemblies and Editor-only EditMode platform constraint. RETEST: 2/2 on-GitHub JSON configuration assertions PASS with exact new blob IDs. Source-controlled reproducible regression: `python Tools/B01/BUILD001/verify_asmdefs.py`; the checker was ADDED but not executed under Unity. Licensed Unity 6000.3.14f1 compile/EditMode/PlayMode still NOT_RUN, no XML/exits/screenshots. B01-60 independent verdict and B01-40 G2 pending. Earlier orphan-core bug fix and tests preserved.
