@@ -32,6 +32,7 @@ def math_checks():
     assert min_beam>.12
     assert .023-.016>.006
     assert .041-.028>.012
+    assert (.13-.10/2)-(.055+.014)>.010 # Moving fork clears fixed bearing.
     return {"samples":FRAMES*2,"min_actuator_m":min_d,
         "max_actuator_m":max_d,"min_rod_exposure_m":min_rod,
         "min_hub_beam_margin_m":min_beam}
