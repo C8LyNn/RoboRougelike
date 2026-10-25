@@ -1,0 +1,39 @@
+name: ModelFactory M04-024 Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-model-m04-024-quad-vector-nozzles
+  pull_request:
+    paths:
+      - 'Tools/ModelFactory/M04/M04-024/**'
+      - '.github/workflows/ci-m04-024.yml'
+  workflow_dispatch:
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender and NumPy for glTF
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -3
+      - name: Static Python syntax
+        run: python3 -m py_compile Tools/ModelFactory/M04/M04-024/*.py
+      - name: Generate BLEND and GLB with manifold and sampled swept-envelope QA
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/ModelFactory/M04/M04-024/generate_m04_024.py -- --out build/M04-024
+      - name: Reopen native BLEND
+        run: |
+          blender -b build/M04-024/M04-024.blend --python-exit-code 1 --python-expr "import bpy; assert len([o for o in bpy.data.objects if o.type == 'MESH']) >= 75"
+      - name: Independently validate GLB material and four animation channels
+        run: |
+          python3 Tools/ModelFactory/M04/M04-024/qa_m04_024.py --glb build/M04-024/M04-024.glb --manifest build/M04-024/manifest.json --report build/M04-024/qa.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: M04-024-blend-glb-qa
+          path: build/M04-024/
+          if-no-files-found: warn
+          retention-days: 30
