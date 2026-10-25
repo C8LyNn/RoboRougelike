@@ -5,6 +5,7 @@ Motion: carriage slides 0.28 m along -Y; rotor spins around its local Y.
 Run: blender -b --factory-startup --python generate_m04_020.py -- --out ./build
 """
 import bpy
+import bmesh
 import math
 import sys
 import json
@@ -233,9 +234,18 @@ def qa_scene():
     assert len(mats)>=3, "Insufficient distinct materials"
     assert scene.unit_settings.scale_length==1.0
     assert any(o.name.startswith("M04-020_ROOT_MOUNT_Y0") for o in scene.objects)
+    manifold_edges=0
     for ob in meshes:
         assert len(ob.data.polygons)>0 and len(ob.data.vertices)>0, ob.name
         assert all(math.isfinite(v) for p in ob.data.vertices for v in p.co), ob.name
+        bm=bmesh.new()
+        try:
+            bm.from_mesh(ob.data)
+            assert all(e.is_manifold for e in bm.edges), ("non-manifold edge", ob.name)
+            assert all(f.calc_area()>1e-12 for f in bm.faces), ("zero-area face", ob.name)
+            manifold_edges += len(bm.edges)
+        finally:
+            bm.free()
     checked=0
     for f in range(1,122,5):
         scene.frame_set(f)
@@ -251,6 +261,7 @@ def qa_scene():
     result={"id":ID,"mesh_count":len(meshes),"materials":sorted(mats),
             "moving_meshes":len(moving),"stationary_meshes":len(stationary),
             "sampled_frames":len(range(1,122,5)),"aabb_pair_checks":checked,
+            "manifold_edges_checked":manifold_edges,
             "mount":"rear plane Y=0; local metres","carriage_travel_m":MOTION,
             "rotor_axis":"local Y","qa":"PASS sampled static/moving AABB; NOT full triangle CCD",
             "unity":"NOT RUN"}
