@@ -220,13 +220,13 @@ def build():
     for s in (-1,1):
         z = .32+s*.115
         cyl("Fairlead_horizontal_%s" % s, (0,-.805,z),
-            .041,.40,"titanium","X",vertices=32)
+            .041,.43,"titanium","X",vertices=32)
     for s in (-1,1):
-        x = s*.165
+        x = s*.265
         cyl("Fairlead_vertical_%s" % s, (x,-.805,.32),
             .039,.29,"titanium","Z",vertices=24)
     for s in (-1,1):
-        box("Fairlead_bracket_%s" % s, (s*.236,-.805,.32),
+        box("Fairlead_bracket_%s" % s, (s*.335,-.805,.32),
             (.035,.10,.33),"graphite",bevel=.006)
     # Static free cable passes the fairlead. Reel animation is a showcase
     # rotation only: rope payout physics and synchronization are not modeled.
