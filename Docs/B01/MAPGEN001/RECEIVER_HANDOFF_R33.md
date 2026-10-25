@@ -1,0 +1,9 @@
+# MAPGEN-001 W10 receiver gate / R3.3
+HQ dispatch HQ-B01-20261025-W10-RECOVERY-PRODUCTION.
+Recipient CODEX FIRST NEXT UNASSIGNED integration candidate after current QA and HQ approval; GPT OSS historical prior routing superseded for this package, do not send to both.
+Full package: original Draft PR #99 + #103 + #211 + R3.3 stacked Draft #225, import FULL exact R3.3 source tree + parent `Assets/B01Packages.meta` and owned `Assets/B01Packages/MAPGEN001.meta`, NOT only PR225 diff.
+Actual Codex native original R3.2 SHA003bced Edit22/23 Play5/6 after Unity compiler PASS. R3.3 source fixture and distinct trials changed, resulting old native results DO NOT transfer; R3.3 native/physical independence still NOT_RUN. Follow TEST_EVIDENCE_R33.md and original TEST_EVIDENCE_R32.md chronology.
+Versioned source manifest and deterministic inner ZIP SHA256 in GitHub Actions after final freeze; physically compare full bytes on Codex's target and never overwrite existing GUID.
+On target Unity6000.3.14f1 disposable checkout: compile/EditMode/PlayMode raw exit, XML, Editor.log; 12 individual cube NUnit cases plus 12 real R6WheelContacts/OBJ210 wheel cases; 3x regen/clear, invalid input and 720/1080. B01-60 separate independent QA and B01-40 target/GUID/owner/scope gate required. If even one physical route genuinely fails, stop and return seed/repro to B01-20 for R3.4/independent retest.
+ACK target branch+exact SHA/current reserved paths FIRST; do not interrupt active Codex work. Integration Phase1 STOP unless signed G2 GO. Rollback: revert only Codex map adapter changes in isolated branch, preserve package parent folder metadata/other packs, remove only MAPGEN-owned GameObject root and restore previous map selection; rerun previous R6 smoke. No merge/release by B01.
+G0_SOURCE=REFRESHING, G0_TARGET=PENDING, G1_NATIVE_R33=NOT_RUN, G2=HOLD, READY_FOR_CODEX=NO, SENT=NO, CODEX_ACK=NO.
