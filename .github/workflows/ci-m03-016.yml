@@ -1,0 +1,49 @@
+name: CI M03-016 Inverted Trapezoid Bracket
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/ModelFactory/M03/M03-016/**'
+      - '.github/workflows/ci-m03-016.yml'
+  workflow_dispatch:
+
+jobs:
+  m03-016-geometry-blender:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Independent stdlib geometry and OBJ QA
+        run: python3 Tools/ModelFactory/M03/M03-016/qa_m03_016.py
+      - name: Generate real OBJ and MTL
+        run: python3 Tools/ModelFactory/M03/M03-016/generate_m03_016.py --output "${{ runner.temp }}/m03-016" --static-only
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version
+      - name: Generate actual Blender GLB FBX BLEND and validate repeated builds
+        run: |
+          blender -b --factory-startup --python Tools/ModelFactory/M03/M03-016/qa_blender_m03_016.py -- --output "${{ runner.temp }}/m03-016"
+      - name: Upload real static OBJ MTL manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-016-OBJ-MTL
+          path: |
+            ${{ runner.temp }}/m03-016/M03-016.obj
+            ${{ runner.temp }}/m03-016/M03-016.mtl
+            ${{ runner.temp }}/m03-016/M03-016.manifest.json
+          if-no-files-found: warn
+      - name: Upload Blender exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: M03-016-Blender-GLB-FBX-BLEND
+          path: |
+            ${{ runner.temp }}/m03-016/M03-016.glb
+            ${{ runner.temp }}/m03-016/M03-016.fbx
+            ${{ runner.temp }}/m03-016/M03-016.blend
+          if-no-files-found: warn
