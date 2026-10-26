@@ -113,6 +113,39 @@ class AcceptanceProfileTests(unittest.TestCase):
             self.assertEqual(r["status"],"FAIL")
             self.assertEqual(r["g2"],"HOLD")
 
+    def test_13_rc2_spoofed_original_18_method_names_rejected(self):
+        # Existing W14 checker counts R1.4(14) + receiver(3), but formerly
+        # accepted 18 plausible-looking PASS rows for methods not in source.
+        # This is synthetic *negative* receipt data, NOT native Unity PASS.
+        bad=make_cases()
+        with self.assertRaisesRegex(ValueError,"UNEXPECTED_METHOD_OR_CASE_DISTRIBUTION"):
+            v.parse_nunit(bad,35,
+                {"B01.BUILD001.Tests.Build001R14ContactAreaTests":14,
+                 "BuildRC2SafetyTests":3})
+
+    def test_14_duplicate_fullname_same_total_rejected(self):
+        root=ET.fromstring(make_cases())
+        cases=root.findall(".//test-case")
+        # Two fake independent native cases with exactly one fullname, even
+        # though total / passed / fixture class counts all claim green.
+        cases[18].set("fullname",cases[17].get("fullname"))
+        with self.assertRaisesRegex(ValueError,"DUPLICATE_OR_MISSING_TEST_ID"):
+            v.parse_nunit(ET.tostring(root,encoding="unicode"),35,
+                {"B01.BUILD001.Tests.Build001R14ContactAreaTests":14,
+                 "BuildRC2SafetyTests":3})
+
+    def test_15_foreign_test_substitution_cannot_satisfy_build_count(self):
+        root=ET.fromstring(make_cases())
+        cases=root.findall(".//test-case")
+        fake=cases[-1]
+        fake.set("classname","Outside.BuildUnknownTests")
+        fake.set("fullname","Outside.BuildUnknownTests.NotAuthorised")
+        fake.set("name","NotAuthorised")
+        with self.assertRaisesRegex(ValueError,"UNEXPECTED_METHOD_OR_CASE_DISTRIBUTION"):
+            v.parse_nunit(ET.tostring(root,encoding="unicode"),35,
+                {"B01.BUILD001.Tests.Build001R14ContactAreaTests":14,
+                 "BuildRC2SafetyTests":3})
+
     def test_12_source_hard_requirement(self):
         r=v.check_evidence({"source_sha":"b"*40,"target_sha":"a"*40},"no_such_dir")
         self.assertEqual(r["status"],"NOT_RUN")
