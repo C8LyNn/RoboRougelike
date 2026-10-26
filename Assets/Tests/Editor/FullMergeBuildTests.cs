@@ -87,5 +87,12 @@ public sealed class FullMergeBuildTests
         Physics.SyncTransforms();Assert.That(run.Garage.Point(ray),Is.True,"A successful edit must rebuild authorized hit surfaces too");
         Assert.That(run.Garage.Cell,Is.EqualTo(armor.Cell+Vector3Int.right));
     }
+    [UnityTest] public IEnumerator ActualWheelFitsFreeAxleBesideStructuralArmor()
+    {
+        var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
+        Debug.Log("[Full270 wheel geometry] "+string.Join(",",wheel.GetComponentsInChildren<Collider>().Select(c=>c.GetType().Name+":"+c.transform.localScale)));
+        Assert.That(run.GarageBuy(new Vector3Int(3,0,3),R3PartKind.Wheel),Is.True,run.VehicleModel.PlacementError(new Vector3Int(3,0,3),R3PartKind.Wheel));
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
