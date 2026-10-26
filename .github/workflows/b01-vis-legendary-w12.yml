@@ -37,6 +37,7 @@ jobs:
           python3 "$root/tools/rework_legendary_glb.py" \
             --model M04-024 --input "$root/incoming/M04-024.glb" \
             --output "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/m04-rework.json"
+          echo 'c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8  '"$root"'/output/M04-024_LEG-MOV-001_R1.glb' | sha256sum --check
           sha256sum "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/M04_R11_SHA256.txt"
           python3 -m unittest discover -s "$root/tests" -v
       - name: Sample actual animated mesh vertices and combined gimbal envelope
@@ -73,7 +74,12 @@ jobs:
           (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
-          zip -X -r B01-VIS-LEGENDARY-W12-R1.zip B01-VIS-LEGENDARY-W12-R1 >/dev/null
+          find B01-VIS-LEGENDARY-W12-R1 -type f -exec touch -t 198001010000.00 {} +
+          find B01-VIS-LEGENDARY-W12-R1 -type f | LC_ALL=C sort | zip -X -q B01-VIS-LEGENDARY-W12-R1.zip -@
+          cp B01-VIS-LEGENDARY-W12-R1.zip /tmp/B01-VIS-LEGENDARY-W12-R1-first.zip
+          rm B01-VIS-LEGENDARY-W12-R1.zip
+          find B01-VIS-LEGENDARY-W12-R1 -type f | LC_ALL=C sort | zip -X -q B01-VIS-LEGENDARY-W12-R1.zip -@
+          cmp /tmp/B01-VIS-LEGENDARY-W12-R1-first.zip B01-VIS-LEGENDARY-W12-R1.zip
           cp B01-VIS-LEGENDARY-W12-R1.zip "$GITHUB_WORKSPACE/$root/output/"
           sha256sum "$GITHUB_WORKSPACE/$root/output/B01-VIS-LEGENDARY-W12-R1.zip" | tee "$GITHUB_WORKSPACE/$root/output/ZIP_SHA256.txt"
       - uses: actions/upload-artifact@v4
