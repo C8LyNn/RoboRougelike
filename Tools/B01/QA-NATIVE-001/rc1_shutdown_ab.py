@@ -66,6 +66,20 @@ def archive_entries(zfile):
     if not infos or len(infos) > MAX_MEMBERS:
         raise ValueError("ZIP_MEMBER_LIMIT")
     for info in infos:
+        # On Windows Python's ZipInfo may normalize '\\' to '/' while parsing.
+        # Read the raw LOCAL header spelling too, so the gate remains OS-invariant.
+        position = zfile.fp.tell()
+        try:
+            zfile.fp.seek(info.header_offset)
+            header = zfile.fp.read(30)
+            if len(header) != 30 or header[:4] != b"PK\x03\x04":
+                raise ValueError("INVALID_LOCAL_ZIP_HEADER")
+            raw_length = int.from_bytes(header[26:28], "little")
+            raw_name = zfile.fp.read(raw_length)
+            if b"\\" in raw_name or b"\x00" in raw_name:
+                raise ValueError("UNSAFE_ZIP_PATH")
+        finally:
+            zfile.fp.seek(position)
         name = normname(info.filename)
         # ZIP unix symlink bits: mode type 0o120000
         if (info.external_attr >> 16) & 0o170000 == 0o120000:
