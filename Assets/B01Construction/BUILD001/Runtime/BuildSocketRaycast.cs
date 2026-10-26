@@ -104,7 +104,6 @@ namespace B01.BUILD001
             {
                 if (onlyIndex >= 0 && i != onlyIndex) continue;
                 var s = owner.Sockets[i];
-            {
                 if (s.Kind != BuildSocketKind.Structural &&
                     s.Kind != BuildSocketKind.Axle) continue;
                 var normal = BuildSocketGeometry.Rotate(s.Face, pose.QuarterTurns);
