@@ -74,7 +74,7 @@ namespace RoboRougelike.R1
                 if (!run.Paused)
                 {
                     Panel(new Rect(925,18,335,160));
-                    if(!DrawReactorCombatStatus(run)){
+                    if(!DrawReactorCombatStatus(run)&&!DrawFullActivityCombatStatus(run)){
                     GUI.Label(new Rect(940,28,305,48),run.CurrentEncounter.Title,heading);
                     int row=0;foreach(var enemy in run.Encounter.Enemies)
                     {
@@ -106,7 +106,7 @@ namespace RoboRougelike.R1
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
-                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • B01 RC2", title);
+                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • PEŁNA INTEGRACJA", title);
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz pojazd do Gauntletu", heading);
                 GUI.Label(new Rect(90,173,1100,28),"Jeden pojazd, wspólny garaż i nagrody. Aktywność wybierzesz po przygotowaniu.",small);
                 for(int i=0;i<3;i++)
@@ -237,6 +237,7 @@ namespace RoboRougelike.R1
             DrawReactorGarageAction(run);
             if(!run.ReactorPrepared&&!run.SandboxWorkshop){GUI.enabled=run.CanChooseGeneratedArena;
                 if(GUI.Button(new Rect(355,80,280,38),"Generowana arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();GUI.enabled=true;}
+            DrawFullActivityGarageActions(run);
             if(GUI.Button(new Rect(355,538,125,44),"Obrót ←",compactButton))garage.Orbit(-25);
             if(GUI.Button(new Rect(485,538,125,44),"Obrót →",compactButton))garage.Orbit(25);
             if(GUI.Button(new Rect(615,538,125,44),"Widok ↑",compactButton))garage.Tilt(10);

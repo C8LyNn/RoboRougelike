@@ -63,7 +63,7 @@ public sealed class FullMergeActivityTests
         Assert.That(Get("RoadWorld"),Is.Null);Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);
         Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(1));int scrap=run.VehicleModel.Scrap;
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
-        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(Choose("ChooseCheckpointRace"),Is.True);yield return Ready();
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(Choose("ChooseCheckpointRace"),Is.True,run.Garage.Message+" deploy="+run.VehicleModel.DeployError);yield return Ready();
         Assert.That(Get("CheckpointRace"),Is.Not.Null);Assert.That(Get("RoadWorld"),Is.Null);
     }
     [UnityTest] public IEnumerator RoadFailureDoesNotRewardAndRestartsWithoutActivityObjects()
