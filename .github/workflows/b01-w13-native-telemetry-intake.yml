@@ -21,7 +21,12 @@ jobs:
         run: node Tools/B01/RC1-TELEMETRY-INTAKE-001/test.mjs
       - name: Produce real-only provenance report (not gameplay PASS)
         run: node Tools/B01/RC1-TELEMETRY-INTAKE-001/ingest.mjs Tools/B01/RC1-TELEMETRY-INTAKE-001/manifest.json Tools/B01/RC1-TELEMETRY-INTAKE-001/samples/drive.csv Tools/B01/RC1-TELEMETRY-INTAKE-001/samples/rc1-native-result.json --output observed.json
+      - name: Build deterministic source ZIP twice and independently verify source hashes
+        run: python Tools/B01/RC1-TELEMETRY-INTAKE-001/package.py ./package-output
       - uses: actions/upload-artifact@v4
         with:
           name: B01-W13-RC1-NATIVE-RECEIPT
-          path: observed.json
+          path: |
+            observed.json
+            package-output/B01_RC1_TELEMETRY_INTAKE_R1.zip
+            package-output/PACKAGE_SHA256_REPORT.json
