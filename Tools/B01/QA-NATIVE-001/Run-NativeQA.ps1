@@ -17,6 +17,9 @@ if($editor -notmatch '6000[.]3[.]14f1'){throw 'WRONG_UNITY_EDITOR'}
 if(!(Test-Path (Join-Path $project '.b01-60-disposable-qa'))){throw 'ACTIVE_WORKTREE_PROTECTION: marker missing'}
 if(Test-Path (Join-Path $project 'Temp/UnityLockfile')){throw 'ACTIVE_UNITY_EDITOR'}
 if(!(Select-String -LiteralPath (Join-Path $project 'ProjectSettings/ProjectVersion.txt') -Pattern 'm_EditorVersion: 6000.3.14f1' -Quiet)){throw 'WRONG_PROJECT_UNITY_VERSION'}
+# Validate the plan before starting Unity.
+& $Python (Join-Path $PSScriptRoot 'qa_gate_v2.py') --plan $PlanPath --evidence $EvidencePath --validate-only
+if($LASTEXITCODE -ne 0){throw 'INVALID_OR_INCOMPLETE_QA_PLAN_V2'}
 $head=(& git -C $project rev-parse HEAD).Trim()
 if($head -ne $plan.target_sha){throw 'STALE_TARGET_GIT_HEAD'}
 $sourceFiles=@($plan.source_files.PSObject.Properties)
@@ -69,5 +72,5 @@ if($code -eq 0 -and $PlayerExe -ne ''){
   if($code -ne 0){break}
  }
 }
-& $Python (Join-Path $PSScriptRoot 'qa_native.py') --plan (Join-Path $evidence 'plan.json') --evidence $evidence --out (Join-Path $evidence 'verdict.json')
+& $Python (Join-Path $PSScriptRoot 'qa_gate_v2.py') --plan (Join-Path $evidence 'plan.json') --evidence $evidence --out (Join-Path $evidence 'verdict.json')
 exit $LASTEXITCODE
