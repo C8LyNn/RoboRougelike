@@ -117,6 +117,44 @@ class Program
         try{cap.Capture(third);}catch(InvalidOperationException){capReject=true;}
         Check("w13-bound-memory",capReject&&cap.Count==2);
 
+        // W14: demonstrate the historical wrong "monotonic-only" recorder
+        // accepted frame100 -> frame110 but tested a 10-frame target jump
+        // against one 1/60 second. New code rejects before state mutation.
+        var skippedTimeline=new Camera001AimTimeline();
+        var w14first=new Camera001AimTimeline.Frame{
+            FrameIndex=100,HitColliderInstanceId=101,HitKind="Enemy",
+            Sample=Sample(old,old,m,before,before)
+        };
+        skippedTimeline.Capture(w14first);
+        var w14late=new Camera001AimTimeline.Frame{
+            FrameIndex=110,HitColliderInstanceId=102,HitKind="Floor",
+            Sample=Sample(next,next,m,before,before)
+        };
+        var w14Before=skippedTimeline.ToCsv();
+        bool skipsRejected=false;
+        try{skippedTimeline.Capture(w14late);}
+        catch(ArgumentException e){skipsRejected=e.Message.Contains("SKIPPED_FRAME");}
+        Check("w14-skipped-frames-rejected",skipsRejected);
+        Check("w14-failed-capture-is-atomic",skippedTimeline.Count==1 &&
+            skippedTimeline.ChangedFirstHitCount==0 && skippedTimeline.ToCsv()==w14Before);
+        w14late.FrameIndex=101;
+        var validW14=skippedTimeline.Capture(w14late);
+        Check("w14-contiguous-frame-still-valid",validW14.FirstHitChanged &&
+            validW14.Observation.TargetChangeExceedsOneFrameTurretBudget);
+        var frameBounds=new Camera001AimTimeline();
+        var negativeFrame=w14first;negativeFrame.FrameIndex=-1;
+        bool negativeRejected=false;
+        try{frameBounds.Capture(negativeFrame);}
+        catch(ArgumentException e){negativeRejected=e.Message.Contains("NEGATIVE_FRAME");}
+        Check("w14-negative-frame-rejected",negativeRejected && frameBounds.Count==0);
+        var maxFrame=w14first;maxFrame.FrameIndex=int.MaxValue;
+        frameBounds.Capture(maxFrame);
+        var wrapped=w14late;wrapped.FrameIndex=int.MinValue;
+        bool overflowRejected=false;
+        try{frameBounds.Capture(wrapped);}
+        catch(ArgumentException){overflowRejected=true;}
+        Check("w14-frame-wrap-rejected",overflowRejected && frameBounds.Count==1);
+
         Console.WriteLine("CAMERA_DIAG_EXACT_SOURCE_CSHARP_PASS="+passed+
             " FAIL="+failed+" NATIVE_UNITY=NOT_RUN");
         return failed==0?0:2;
