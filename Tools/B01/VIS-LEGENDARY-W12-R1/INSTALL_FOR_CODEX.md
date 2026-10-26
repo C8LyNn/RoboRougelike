@@ -15,3 +15,11 @@ Use the SHA-verified **R1.1** GLB from the latest Actions archive (M04 `c40ce2c0
 ## W13 / RC1 mandatory footprint gate — STOP before mounting
 
 Read `qa/FOOTPRINT_FIT_W13.json` and verify both GLB SHA256; expected `approvedToMount=false` for **BOTH** models. For canonical GLB + W12 typed build local axes **X→Width, Y→Height, Z→Depth**: LEG-WPN-001 requires 3.672m Z vs proposed 1.10m, LEG-MOV-001 requires 1.57756m Z vs 1.10m. Do not copy the former R1.1 `sampledWithinProposedExtent=true` field; it was incorrect and is superseded. Do not rotate M04 to transpose Depth with Height (its physical exhaust is -Y) without authorizing a design rework. No fake visual BuildSocket or decorative collider fallback. Ask owners to approve revised geometric contract, then retest sampled vertex bounds, full continuous narrowphase and both Unity rigs. Use **preview-only isolated import**, NOT mounted gameplay prefab. Unity Player/PhysX still NOT_RUN.
+
+## W15 required evidence verification order
+
+1. Independently verify the full received ZIP SHA256 from the B01-30 PR exact-head receipt, and its inner `SHA256SUMS` for the two model GLBs.
+2. Before trusting `qa/M04-024_SWEEP.json`, `qa/M01-018_SWEEP.json`, `FOOTPRINT_FIT_W13.json` or `MOUNT_ENVELOPE_OPTIONS_W14.json`, run:
+   `python3 tools/verify_sweep_provenance.py --package . --output qa/RECHECK_W15.json`
+   from the unpacked B01-VIS-LEGENDARY-W12-R1 directory. Expected `BOTH_SOURCE_REPORTS_AUTHENTICATED`, with M01 1 clip and M04 5 clips. A forged JSON field must cause nonzero exit `SWEEP_RECEIPT_FORGED`; never override its failure or infer approval.
+3. Only then view geometric previews. Mounting both actual variants still prohibited; B01-10/B01-00 footprint and B01-23 socket/PhysX authority are missing. Licensed Unity (NOT_RUN here) must separately prove imported geometry/animator/sockets/materials.
