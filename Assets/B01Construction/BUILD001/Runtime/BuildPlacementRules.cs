@@ -63,7 +63,7 @@ namespace B01.BUILD001
                 return BuildPlacementResult.InvalidCore; // Existing one Core is not player-placeable.
             int livingRoots = 0;
             foreach (var previous in installed)
-                if (previous.Alive && previous.Definition.Role == BuildRole.Core) livingRoots++;
+                if (previous.Definition.Role == BuildRole.Core) livingRoots++;
             if (livingRoots > 1) return BuildPlacementResult.MultipleCoreRoots;
             if (installed.Count == 0)
                 return BuildPlacementResult.NoSupport;
@@ -100,7 +100,7 @@ namespace B01.BUILD001
             int roots = 0;
             if (installed != null)
                 foreach (var p in installed)
-                    if (p != null && p.Alive && p.Definition != null &&
+                    if (p != null && p.Definition != null &&
                         p.Definition.Role == BuildRole.Core) roots++;
             if (roots > 1) return BuildPlacementResult.MultipleCoreRoots;
             if (roots != 1) return BuildPlacementResult.CoreDisconnected;
@@ -136,12 +136,12 @@ namespace B01.BUILD001
             for (int i = 0; i < installed.Count; i++)
             {
                 var p = installed[i];
-                if (p == null || !p.Alive || p.Definition == null ||
+                if (p == null || p.Definition == null ||
                     p.Definition.Role != BuildRole.Core) continue;
-                if (rootIndex != -1) return result; // Quarantine ambiguous loaded robot.
+                if (rootIndex != -1) return result; // Even dead extra Core quarantines save.
                 rootIndex = i;
             }
-            if (rootIndex < 0) return result;
+            if (rootIndex < 0 || !installed[rootIndex].Alive) return result;
             result.Add(installed[rootIndex].PartId);
             queue.Enqueue(rootIndex);
             while (queue.Count != 0)
