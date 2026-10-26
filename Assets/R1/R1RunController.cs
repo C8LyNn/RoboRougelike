@@ -175,7 +175,7 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;
             var ids=selectedParts?.ToArray();var bonuses=selectedBonuses?.ToArray();
-            if(!R4RewardSettlement.TryClaim(Progress,Salvage,VehicleModel,ids,bonuses))return false;
+            if(!CommitRecovery(ids,bonuses))return false;
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
             if(Progress.State==R1RunState.Garage)
             {
@@ -222,7 +222,7 @@ namespace RoboRougelike.R1
             yield return null;
             // Preserve only modifiers from currently mounted, operational bonus modules.
             Player.Apply(ActiveStats??Progress.Stats);
-            Salvage=new R4SalvageLedger(3);
+            ResetRecoveryForEncounter();Salvage=new R4SalvageLedger(3);
             if(reactorRequested)BeginReactorActivity();
             else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,mapgenRequested?GeneratedWorld.EnemySpawns:null);
             yield return null;
@@ -258,6 +258,7 @@ namespace RoboRougelike.R1
                 EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count;
                 Progress.WinEncounter(Definition.Upgrades, Plan.UpgradeRandom(Progress.EncounterIndex));
                 Progress.OpenSalvage();
+                OpenRecoveryWindow();
                 SetSimulation(false);
                 Encounter.Clear();
                 ClearReactorActivity();

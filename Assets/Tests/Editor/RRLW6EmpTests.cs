@@ -116,8 +116,9 @@ public class RRLW6EmpPhysicalTests
         run.Encounter.SetCombatActive(false);yield return null;
         var enemy=run.Encounter.Enemies.First();var gun=enemy.VariantWeapons[0];
         var receiver=gun.Block.GetComponent<EmpReceiver>();Assert.That(receiver,Is.Not.Null);receiver.ApplyEmp(2);
+        string gunId=enemy.EquipmentInstanceId("gun/0");
         enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
-        var item=run.Salvage.Items.Single(p=>p.Id=="emp-elite-fixture/enemy/0/gun/0").ToPart();
+        var item=run.Salvage.Items.Single(p=>p.Id==gunId).ToPart();
         Assert.That(item.Health,Is.GreaterThan(0));
         var remaining=(float)typeof(R3PartState).GetField("DisruptionRemaining").GetValue(item);
         Assert.That(remaining,Is.EqualTo(2).Within(.001),"Elite battery must retain temporary electronic state through actual salvage");
@@ -134,6 +135,8 @@ public class RRLW6EmpPhysicalTests
             run.Encounter.SetCombatActive(false);
             int ready=Time.frameCount+3;while(Time.frameCount<ready)yield return null;
             var enemy=run.Encounter.Enemies.First();var gun=enemy.WeaponBlock;
+            string gunId=enemy.EquipmentInstanceId(variant==RoboRougelike.R5.R5EnemyVariant.Normal?"gun":"gun/0");
+            string wheelId=enemy.EquipmentInstanceId("wheel/0");
             var wheel=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>().First(R6VehicleDrive.IsWheel);
             gun.ApplyDamage(100000,gun.transform.position,Vector3.up);
             wheel.ApplyDamage(100000,wheel.transform.position,Vector3.up);
@@ -143,8 +146,7 @@ public class RRLW6EmpPhysicalTests
             Assert.That(gun==null&&wheel==null,Is.True);
             Assert.That(enemy.IsDefeated,Is.False);
             Assert.DoesNotThrow(()=>enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up));
-            string gunId=variant==RoboRougelike.R5.R5EnemyVariant.Normal?"expired-parts/enemy/0/gun":"expired-parts/enemy/0/gun/0";
-            string wheelId="expired-parts/enemy/0/wheel/0";
+
             Assert.That(ledger.Items.Single(p=>p.Id==gunId).Health,Is.Zero);
             Assert.That(ledger.Items.Single(p=>p.Id==wheelId).Health,Is.Zero);
             var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
