@@ -67,6 +67,56 @@ class Program
                 v.CurrentMuzzleToTargetErrorDegrees<.05f&&
                 v.TargetDirectionChangeDegrees<.05f);
         }
+        // W13: compile and exercise EXACT runtime Camera001AimTimeline.cs.
+        var timeline=new Camera001AimTimeline(512);
+        var first=new Camera001AimTimeline.Frame{
+           FrameIndex=10,HitColliderInstanceId=101,HitKind="Enemy, \"Armor\"",
+           Sample=Sample(old,old,m,before,before)
+        };
+        var v0=timeline.Capture(first);
+        Check("w13-first-frame-not-pretend-retarget",!v0.FirstHitChanged);
+        Check("w13-first-frame-recorded",timeline.Count==1);
+        var after=new Camera001AimTimeline.Frame{
+           FrameIndex=11,HitColliderInstanceId=102,HitKind="Floor",
+           Sample=Sample(next,next,m,before,before)
+        };
+        after.Sample.PreviousTargetWorld=next; // spoof must be ignored
+        var changed=timeline.Capture(after);
+        Check("w13-change-actual-collider-id",changed.FirstHitChanged);
+        Check("w13-target-step-from-real-prior",changed.Observation.TargetDirectionChangeDegrees>19f);
+        Check("w13-retarget-over-budget",timeline.RetargetOverBudgetCount==1);
+        Check("w13-peak-error",timeline.PeakTrackingErrorDegrees>15f);
+        var csv=timeline.ToCsv();
+        Check("w13-csv-escaped",csv.Contains("\"Enemy, \"\"Armor\"\"\""));
+        Check("w13-csv-column-header",csv.StartsWith("frame,phase,hitId,hitKind"));
+        Check("w13-records-copy",timeline.Snapshot().Length==2);
+        bool nonmonotonic=false;
+        try{timeline.Capture(after);}catch(ArgumentException){nonmonotonic=true;}
+        Check("w13-monotonic-reject",nonmonotonic&&timeline.Count==2);
+        var bad=after; bad.FrameIndex=12; bad.Sample.DeltaTimeSeconds=0f;
+        bool rejected=false;try{timeline.Capture(bad);}catch(ArgumentException){rejected=true;}
+        Check("w13-invalid-transactional",rejected&&timeline.Count==2&&timeline.ChangedFirstHitCount==1);
+        var stable=new Camera001AimTimeline(512);
+        for(int i=0;i<256;i++)
+        {
+            var target=new Vector3(i*.01f,1f,30f);
+            var gun=(target-m);
+            var record=stable.Capture(new Camera001AimTimeline.Frame{
+                FrameIndex=i,HitColliderInstanceId=101,HitKind="Enemy",
+                Sample=Sample(target,target,m,gun,gun)
+            });
+            Check("w13-256-stable-"+i,!record.FirstHitChanged&&
+                record.Observation.Classification=="ALIGNED");
+        }
+        Check("w13-stable-no-fake-switch",stable.ChangedFirstHitCount==0);
+        var cap=new Camera001AimTimeline(2);
+        cap.Capture(first);
+        cap.Capture(after);
+        bool capReject=false;
+        var third=after;third.FrameIndex=12;
+        try{cap.Capture(third);}catch(InvalidOperationException){capReject=true;}
+        Check("w13-bound-memory",capReject&&cap.Count==2);
+
         Console.WriteLine("CAMERA_DIAG_EXACT_SOURCE_CSHARP_PASS="+passed+
             " FAIL="+failed+" NATIVE_UNITY=NOT_RUN");
         return failed==0?0:2;
