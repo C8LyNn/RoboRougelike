@@ -1,0 +1,22 @@
+{
+  ".github/workflows/b01-40-w14-package-receiver.yml": {
+    "bytes": 3734,
+    "sha256": "bbb4f50977e253fb9b5264549c356255f826bba981d4584b65a32d42ca4f4e92"
+  },
+  "W14-RECEIVER-001/README.md": {
+    "bytes": 3779,
+    "sha256": "fd8d12adcc3e1332715e10539e828b51f06ddd5e2d4506a29ad16a20dd9aafcd"
+  },
+  "W14-RECEIVER-001/receiver_w14.py": {
+    "bytes": 9998,
+    "sha256": "ac168bf32954844cd7bd9970ba37d9e3b3792bcc1752e76bb646d2bce688193d"
+  },
+  "W14-RECEIVER-001/tests/test_w14_receiver.py": {
+    "bytes": 11406,
+    "sha256": "f75dae1eeaabf747618dff08b809dface38c381bda78adda07c19d596439ebc5"
+  },
+  "W14-RECEIVER-001/world_upgrade.py": {
+    "bytes": 8342,
+    "sha256": "122d67b12532089a540930e118bd00ff46c5226ee3d3aa4d2232079007cf5d97"
+  }
+}

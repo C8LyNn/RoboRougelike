@@ -1,0 +1,138 @@
+{
+  "packages": {
+    "BUILD_R14": {
+      "package": "BUILD_R14",
+      "source": "95707c68c8071a949b5d9fec7ff57926e92f8198",
+      "zip_sha256": "62321794e8f91f1660c32597632b40b9bccdbab1becd3c7e750632f06f8714aa",
+      "zip_bytes": 155320,
+      "zip_entries": 60,
+      "file_sha256_pass": 59,
+      "guid_count": 24,
+      "asmdefs": {
+        "B01.BUILD001.Runtime": [],
+        "B01.BUILD001.EditModeTests": [
+          "B01.BUILD001.Runtime"
+        ],
+        "B01.BUILD001.PlayModeTests": [
+          "B01.BUILD001.Runtime"
+        ]
+      },
+      "status": "G0_SOURCE_PASS_NOT_NATIVE"
+    },
+    "WORLD_R11": {
+      "package": "WORLD_R11",
+      "source": "5ce70920478043210edbd78713f746b8d8ff431d",
+      "zip_sha256": "a27891c3b9420a3060190c613104121154ef1385c6d15354d2d68aa22f22802a",
+      "zip_bytes": 46467,
+      "zip_entries": 40,
+      "file_sha256_pass": 39,
+      "guid_count": 15,
+      "asmdefs": {
+        "B01.MAPGENWORLD001.Runtime": [
+          "B01.MAPGEN001.Runtime"
+        ],
+        "B01.MAPGENWORLD001.EditModeTests": [
+          "B01.MAPGENWORLD001.Runtime",
+          "B01.MAPGEN001.Runtime"
+        ],
+        "B01.MAPGENWORLD001.PlayModeTests": [
+          "B01.MAPGENWORLD001.Runtime",
+          "B01.MAPGEN001.Runtime"
+        ]
+      },
+      "status": "G0_SOURCE_PASS_NOT_NATIVE"
+    },
+    "CAMERA_R122": {
+      "package": "CAMERA_R122",
+      "source": "063e755c50c9728f0a9627d25d3677280625a73d",
+      "zip_sha256": "ecf2211e317a35af7a726afe1b484e83e1b7a326faeb5aed3057fe6153b338ee",
+      "zip_bytes": 76032,
+      "zip_entries": 60,
+      "file_sha256_pass": 59,
+      "guid_count": 21,
+      "asmdefs": {
+        "B01.CAMERA001.Runtime": [],
+        "B01.CAMERA001.EditModeTests": [
+          "B01.CAMERA001.Runtime"
+        ],
+        "B01.CAMERA001.PlayModeTests": [
+          "B01.CAMERA001.Runtime"
+        ]
+      },
+      "status": "G0_SOURCE_PASS_NOT_NATIVE"
+    },
+    "ECONLEG_GUARD": {
+      "package": "ECONLEG_GUARD",
+      "source": "e6c152f0795f105a94743018093b650d453e26a1",
+      "zip_sha256": "ec250b8446d89b219eba332244a318e5768e7240c2f02088f7041fa0ca9ecd3b",
+      "zip_bytes": 7379,
+      "zip_entries": 13,
+      "file_sha256_pass": 13,
+      "guid_count": 9,
+      "asmdefs": {
+        "B01.EconLegendary.Guard": [
+          "B01.Legendary.Unity",
+          "B01.EconRebuild.Runtime"
+        ],
+        "B01.EconLegendary.Guard.EditMode": [
+          "B01.EconLegendary.Guard",
+          "B01.Legendary.Unity",
+          "B01.EconRebuild.Runtime"
+        ]
+      },
+      "status": "G0_SOURCE_PASS_NOT_NATIVE"
+    }
+  },
+  "cross": {
+    "source_collisions": 0,
+    "preserve_only_parent_meta": [
+      {
+        "path": "Assets/B01Packages.meta",
+        "resolution": "PRESERVE_TARGET_PARENT_META_ONLY"
+      }
+    ],
+    "external_assembly_refs": [
+      {
+        "package": "WORLD_R11",
+        "assembly": "B01.MAPGENWORLD001.Runtime",
+        "external": "B01.MAPGEN001.Runtime"
+      },
+      {
+        "package": "WORLD_R11",
+        "assembly": "B01.MAPGENWORLD001.EditModeTests",
+        "external": "B01.MAPGEN001.Runtime"
+      },
+      {
+        "package": "WORLD_R11",
+        "assembly": "B01.MAPGENWORLD001.PlayModeTests",
+        "external": "B01.MAPGEN001.Runtime"
+      },
+      {
+        "package": "ECONLEG_GUARD",
+        "assembly": "B01.EconLegendary.Guard",
+        "external": "B01.Legendary.Unity"
+      },
+      {
+        "package": "ECONLEG_GUARD",
+        "assembly": "B01.EconLegendary.Guard",
+        "external": "B01.EconRebuild.Runtime"
+      },
+      {
+        "package": "ECONLEG_GUARD",
+        "assembly": "B01.EconLegendary.Guard.EditMode",
+        "external": "B01.Legendary.Unity"
+      },
+      {
+        "package": "ECONLEG_GUARD",
+        "assembly": "B01.EconLegendary.Guard.EditMode",
+        "external": "B01.EconRebuild.Runtime"
+      }
+    ],
+    "asset_unique_paths": 112,
+    "unique_guids": 69,
+    "G0_TARGET": "NOT_RUN_LIVE",
+    "G2": "HOLD"
+  },
+  "G1_NATIVE": "NOT_RUN_BY_B01_40",
+  "G2": "HOLD"
+}
