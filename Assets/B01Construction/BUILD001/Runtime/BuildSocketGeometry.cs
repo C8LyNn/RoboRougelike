@@ -224,10 +224,15 @@ namespace B01.BUILD001
                            Mathf.Abs(Vector3.Dot(bwv,planeU))*b.HalfSize.y;
                 float bh = Mathf.Abs(Vector3.Dot(bwu,planeV))*b.HalfSize.x+
                            Mathf.Abs(Vector3.Dot(bwv,planeV))*b.HalfSize.y;
-                float du = Mathf.Abs(Vector3.Dot(bc-ac,planeU));
-                float dv = Mathf.Abs(Vector3.Dot(bc-ac,planeV));
-                float overlapU = Mathf.Max(0f,aw+bw-du);
-                float overlapV = Mathf.Max(0f,ah+bh-dv);
+                // True intersection of two finite intervals. A sum of radii
+                // (aw+bw-distance) overcounts fully nested/unequal patches.
+                // Origin = support patch centre; candidate centre is signed.
+                float buCentre = Vector3.Dot(bc-ac, planeU);
+                float bvCentre = Vector3.Dot(bc-ac, planeV);
+                float overlapU = Mathf.Max(0f,
+                    Mathf.Min(aw, buCentre+bw) - Mathf.Max(-aw, buCentre-bw));
+                float overlapV = Mathf.Max(0f,
+                    Mathf.Min(ah, bvCentre+bh) - Mathf.Max(-ah, bvCentre-bh));
                 float area = overlapU*overlapV*GridMetres*GridMetres;
                 if (area <= GridMetres*GridMetres*MinContactAreaCellsSquared)
                     continue;

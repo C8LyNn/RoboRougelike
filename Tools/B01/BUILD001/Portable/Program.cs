@@ -7,6 +7,15 @@ using UnityEngine;
 
 static class Program
 {
+    private static BuildDefinition Patch(string id,BuildRole role,
+        Vector3Int normal,float half,float offsetX=0)
+    {
+        return new BuildDefinition(id,role,new[]{Vector3Int.zero},
+            new[]{new BuildSocket(Vector3Int.zero,normal,
+                BuildSocketKind.Structural,new Vector2(half,half),
+                new Vector2(offsetX,0))},true);
+    }
+
     private static int completed;
     private static BuildInstalledPart Part(string id,BuildDefinition def,int x) =>
         new BuildInstalledPart(id,def,new BuildPose(new Vector3Int(x,0,0),Vector3Int.zero));
@@ -143,7 +152,61 @@ static class Program
                 "mobility typed socket may not silently become structural");
         });
 
+        Run("12_rc2_nested_tiny_denied",() => {
+            var support=Patch("s",BuildRole.Core,Vector3Int.up,.48f);
+            var candidate=Patch("c",BuildRole.Armor,Vector3Int.down,.02f);
+            Expect(!BuildSocketGeometry.Touches(support,
+                new BuildPose(Vector3Int.zero,Vector3Int.zero),candidate,
+                new BuildPose(Vector3Int.up,Vector3Int.zero),out var area) &&
+                area==0f, "tiny nested contact cannot borrow outer area");
+        });
+
+        Run("13_rc2_nested_medium_exact_area",() => {
+            var support=Patch("s",BuildRole.Core,Vector3Int.up,.48f);
+            var candidate=Patch("c",BuildRole.Armor,Vector3Int.down,.2f);
+            Expect(BuildSocketGeometry.Touches(support,
+                new BuildPose(Vector3Int.zero,Vector3Int.zero),candidate,
+                new BuildPose(Vector3Int.up,Vector3Int.zero),out var area) &&
+                MathF.Abs(area-.0484f)<.000001f,"nested physical area must be exact");
+        });
+
+        Run("14_rc2_nonoverlap_edge_denied",() => {
+            var support=Patch("s",BuildRole.Core,Vector3Int.up,.2f,-.2f);
+            var candidate=Patch("c",BuildRole.Armor,Vector3Int.down,.2f,.2f);
+            Expect(!BuildSocketGeometry.Touches(support,
+                new BuildPose(Vector3Int.zero,Vector3Int.zero),candidate,
+                new BuildPose(Vector3Int.up,Vector3Int.zero),out _),
+                "edge-only patch cannot attach");
+        });
+
+        Run("15_rc2_unequal_partial_area",() => {
+            var support=new BuildDefinition("s",BuildRole.Core,new[]{Vector3Int.zero},
+                new[]{new BuildSocket(Vector3Int.zero,Vector3Int.up,
+                BuildSocketKind.Structural,new Vector2(.3f,.2f))},true);
+            var candidate=new BuildDefinition("c",BuildRole.Armor,new[]{Vector3Int.zero},
+                new[]{new BuildSocket(Vector3Int.zero,Vector3Int.down,
+                BuildSocketKind.Structural,new Vector2(.25f,.15f),
+                new Vector2(.2f,0f))},true);
+            Expect(BuildSocketGeometry.Touches(support,
+                new BuildPose(Vector3Int.zero,Vector3Int.zero),candidate,
+                new BuildPose(Vector3Int.up,Vector3Int.zero),out var area) &&
+                MathF.Abs(area-(.35f*.3f*.55f*.55f))<.000001f,
+                "partial interval must intersect correctly");
+        });
+
+        Run("16_rc2_rotated_nesting",() => {
+            var support=Patch("s",BuildRole.Core,Vector3Int.up,.48f);
+            var candidate=Patch("c",BuildRole.Armor,Vector3Int.down,.2f);
+            var turns=new Vector3Int(1,2,3);
+            var anchor=BuildSocketGeometry.Rotate(Vector3Int.up,turns);
+            Expect(BuildSocketGeometry.Touches(support,
+                new BuildPose(Vector3Int.zero,turns),candidate,
+                new BuildPose(anchor,turns),out var area) &&
+                MathF.Abs(area-.0484f)<.000002f,
+                "XYZ rotation should conserve true area");
+        });
+
         Console.WriteLine("SURROGATE_CSHARP_PASS " + completed +
-            "/11; Unity native=NOT_RUN; synthetic Physics is NOT PhysX");
+            "/16; Unity native=NOT_RUN; synthetic Physics is NOT PhysX");
     }
 }
