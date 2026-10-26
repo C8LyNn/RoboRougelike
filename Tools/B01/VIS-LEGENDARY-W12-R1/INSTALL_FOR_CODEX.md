@@ -11,3 +11,7 @@
 ## R1.1 import delta
 
 Use the SHA-verified **R1.1** GLB from the latest Actions archive (M04 `c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8`, not older `ab26...`). For `LEG-MOV-001` select clip **`LEG-MOV-001_ALL_FOUR_GIMBALS`**; four older clips only drive each gimbal separately. Inspect raw `qa/M04-024_SWEEP.json` and verify all four animated nodes moved at 25%/75%, then check target Unity importer retention, real collider/clearances, 720p/1080p. Do not equate glTF pose bounds to a Unity physical mount approval.
+
+## W13 / RC1 mandatory footprint gate — STOP before mounting
+
+Read `qa/FOOTPRINT_FIT_W13.json` and verify both GLB SHA256; expected `approvedToMount=false` for **BOTH** models. For canonical GLB + W12 typed build local axes **X→Width, Y→Height, Z→Depth**: LEG-WPN-001 requires 3.672m Z vs proposed 1.10m, LEG-MOV-001 requires 1.57756m Z vs 1.10m. Do not copy the former R1.1 `sampledWithinProposedExtent=true` field; it was incorrect and is superseded. Do not rotate M04 to transpose Depth with Height (its physical exhaust is -Y) without authorizing a design rework. No fake visual BuildSocket or decorative collider fallback. Ask owners to approve revised geometric contract, then retest sampled vertex bounds, full continuous narrowphase and both Unity rigs. Use **preview-only isolated import**, NOT mounted gameplay prefab. Unity Player/PhysX still NOT_RUN.
