@@ -12,7 +12,7 @@ using RoboRougelike.R3;
 
 public sealed class UnifiedRC2IntegrationTests
 {
-    R1RunController run;Keyboard keyboard;InputSettings.UpdateMode oldInputMode;bool inputModeChanged;
+    R1RunController run;RC2EditorInputProbe probe;
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -44,20 +44,12 @@ public sealed class UnifiedRC2IntegrationTests
     }
     [UnityTest] public IEnumerator NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage()
     {
-        oldInputMode=InputSystem.settings.updateMode;inputModeChanged=true;
-        InputSystem.settings.updateMode=InputSettings.UpdateMode.ProcessEventsManually;
-        keyboard=InputSystem.AddDevice<Keyboard>();InputSystem.EnableDevice(keyboard);
-        // EditMode EnterPlayMode has no focused GameView input pump. Process the
-        // native event and invoke the unchanged production input consumer in the
-        // same input update; OS/manual input is a separate Windows check.
-        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
-        InputSystem.Update();Assert.That(Keyboard.current,Is.SameAs(keyboard));
-        Assert.That(keyboard.enterKey.wasPressedThisFrame,Is.True);
-        typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(run,null);
-        yield return null;yield return null;
+        probe=new GameObject("RC2 editor input-state probe").AddComponent<RC2EditorInputProbe>();
+        for(int i=0;i<6&&run.Progress.State!=R1RunState.Garage;i++)yield return null;
+        Assert.That(probe.Sent&&probe.PressObserved,Is.True,"Inject and observe input inside the real player Update");
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage),"The production Enter binding must follow the same menu entry as the button");
         Assert.That(run.Player,Is.Not.Null);Assert.That(run.Encounter.AliveCount,Is.Zero);
     }
     [UnityTearDown] public IEnumerator Cleanup()
-    {if(keyboard!=null)InputSystem.RemoveDevice(keyboard);if(inputModeChanged)InputSystem.settings.updateMode=oldInputMode;if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+    {if(probe!=null)Object.DestroyImmediate(probe.gameObject);if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
