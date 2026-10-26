@@ -91,7 +91,8 @@ public sealed class FullMergeBuildTests
     {
         var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
         Debug.Log("[Full270 wheel geometry] "+string.Join(",",wheel.GetComponentsInChildren<Collider>().Select(c=>c.GetType().Name+":"+c.transform.localScale)));
-        Assert.That(run.GarageBuy(new Vector3Int(3,0,3),R3PartKind.Wheel),Is.True,run.VehicleModel.PlacementError(new Vector3Int(3,0,3),R3PartKind.Wheel));
+        var cell=new Vector3Int(0,0,4);var rotation=new Vector3Int(0,1,0);
+        Assert.That(run.GarageBuy(cell,R3PartKind.Wheel,rotation),Is.True,run.VehicleModel.PlacementError(cell,R3PartKind.Wheel,false,default,rotation));
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}

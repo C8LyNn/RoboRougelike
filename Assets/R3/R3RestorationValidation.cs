@@ -24,13 +24,27 @@ namespace RoboRougelike.R3
                 var liveIds=new HashSet<string>(assembly.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).Select(p=>p.Id));
                 var prospective=dead.Concat(model.Parts.Where(p=>p.Health>0&&!liveIds.Contains(p.Id))).GroupBy(p=>p.Id).Select(g=>g.First()).ToArray();
                 var replacedIds=new HashSet<string>(prospective.Select(p=>p.Id));
+                bool FactoryWheel(R3PartState p)=>p.Kind==R3PartKind.Wheel&&model.Design.Parts.Any(d=>d.Id==p.Id&&d.Kind==p.Kind&&d.Cell==p.Cell&&d.RotationQuarterTurns==p.RotationQuarterTurns&&d.ContactMask==p.ContactMask);
+                // The shipped factory wheel rows have deliberately intersecting
+                // treads on one compound body. Restore that approved group as a
+                // compound shape; NEVER apply this exemption to new placement,
+                // moved wheels, chassis, foreign bodies or external obstacles.
+                var factoryGroup=new HashSet<Collider>();
+                foreach(var part in assembly.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform))){
+                    var state=model.Parts.FirstOrDefault(p=>p.Id==part.Id);
+                    if(state!=null&&FactoryWheel(state))foreach(var c in part.GetComponentsInChildren<Collider>())
+                        if(c.enabled&&!c.isTrigger&&c.attachedRigidbody==GetComponent<Rigidbody>())factoryGroup.Add(c);
+                }
                 foreach(var part in prospective)probes.Add(CreateProbe(part));
+                for(int i=0;i<probes.Count;i++)if(FactoryWheel(prospective[i]))foreach(var c in probes[i].GetComponentsInChildren<Collider>())factoryGroup.Add(c);
                 Physics.SyncTransforms();
-                foreach(var probe in probes){
+                for(int index=0;index<probes.Count;index++){
+                    var probe=probes[index];bool factoryCandidate=FactoryWheel(prospective[index]);
                     var colliders=probe.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger).ToArray();
                     var neighbors=new HashSet<Collider>();
                     foreach(var collider in colliders)foreach(var other in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents+Vector3.one*.001f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
                         if(!other.transform.IsChildOf(probe.transform)){
+                            if(factoryCandidate&&factoryGroup.Contains(other))continue;
                             var old=other.GetComponentInParent<R3MountedPart>();
                             if(old==null||!old.transform.IsChildOf(transform)||old.GetComponentInParent<Rigidbody>()!=GetComponent<Rigidbody>()||!replacedIds.Contains(old.Id))neighbors.Add(other);
                         }

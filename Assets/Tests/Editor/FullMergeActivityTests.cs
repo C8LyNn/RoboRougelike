@@ -25,14 +25,18 @@ public sealed class FullMergeActivityTests
     {var method=typeof(R1RunController).GetMethod(name);Assert.That(method,Is.Not.Null,"Missing player-reachable activity "+name);return (bool)method.Invoke(run,args);}
     IEnumerator Ready()
     {float end=Time.realtimeSinceStartup+8;while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;Assert.That(run.Transitioning,Is.False);}
+    static IEnumerator Seconds(float seconds,bool realtime=false){
+        float end=(realtime?Time.realtimeSinceStartup:Time.time)+seconds,watchdog=Time.realtimeSinceStartup+10;
+        while((realtime?Time.realtimeSinceStartup:Time.time)<end){Assert.That(Time.realtimeSinceStartup,Is.LessThan(watchdog),"Native activity clock stopped");yield return null;}
+    }
     [UnityTest] public IEnumerator RaceUsesSameRobotWithoutEmptyEnemyAutoVictoryAndPausesItsClock()
     {
         var model=run.VehicleModel;Assert.That(Choose("ChooseCheckpointRace"),Is.True);yield return Ready();
         var race=(CheckpointRaceChallenge)Get("CheckpointRace");Assert.That(race,Is.Not.Null);Assert.That(race.Running,Is.True);
         Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
         Assert.That(run.Encounter.AliveCount,Is.Zero);Assert.That(run.GeneratedWorld,Is.Not.Null);
-        yield return new WaitForSeconds(.1f);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
-        run.TogglePause();float elapsed=race.ElapsedSeconds;yield return new WaitForSecondsRealtime(.2f);
+        yield return Seconds(.1f);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
+        run.TogglePause();float elapsed=race.ElapsedSeconds;yield return Seconds(.2f,true);
         Assert.That(race.ElapsedSeconds,Is.EqualTo(elapsed).Within(.0001f));run.TogglePause();
     }
     [UnityTest] public IEnumerator RaceTimeoutUsesCanonicalLossAndCleansItsMap()
@@ -51,7 +55,7 @@ public sealed class FullMergeActivityTests
         Assert.That(world,Is.Not.Null);Assert.That(world.Edges.Count,Is.GreaterThan(4));
         Assert.That(world.Root.GetComponentsInChildren<MeshCollider>().Length,Is.GreaterThan(4));
         Assert.That(challenge.Mode,Is.EqualTo(MapR4Mode.TimeAttack));Assert.That(challenge.Status,Is.EqualTo(MapR4Status.Running));
-        yield return new WaitForSeconds(.1f);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
+        yield return Seconds(.1f);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
         Assert.That(run.Player.GetComponent<Rigidbody>(),Is.Not.Null);
     }
     [UnityTest] public IEnumerator RoadResultUsesOneCanonicalRewardAndAllowsNextActivity()
@@ -104,7 +108,7 @@ public sealed class FullMergeActivityTests
         Assert.That(run.ChooseRoadChallenge(MapR4Mode.Survival),Is.True);yield return Ready();
         var enemies=run.Encounter.Enemies.ToArray();Assert.That(enemies.Length,Is.GreaterThanOrEqualTo(2));
         foreach(var enemy in enemies)Assert.That(enemy.MovementBounds.center.x,Is.EqualTo(45).Within(.01f));
-        var positions=enemies.Select(e=>e.transform.position).ToArray();yield return new WaitForSeconds(2);
+        var positions=enemies.Select(e=>e.transform.position).ToArray();yield return Seconds(2);
         Assert.That(enemies.Select((e,i)=>Vector3.Distance(e.transform.position,positions[i])).Max(),Is.GreaterThan(.1f));
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
