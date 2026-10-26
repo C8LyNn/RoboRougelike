@@ -71,6 +71,10 @@ jobs:
           cp "$root/manifest.json" "$root/binding_spec.json" /tmp/B01-VIS-LEGENDARY-W12-R1/
           mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/qa
           cp "$root/output/M01-018_SWEEP.json" "$root/output/M04-024_SWEEP.json" /tmp/B01-VIS-LEGENDARY-W12-R1/qa/
+          # W15: re-evaluate every actual GLB vertex at 121 time samples/clip,
+          # not just trust a claimed JSON sweep whose GLB hash still matches.
+          python3 "$root/tools/verify_sweep_provenance.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/REAL_GLB_SWEEP_PROVENANCE_W15.json
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_sweep_provenance.py" -v
           python3 "$root/tools/footprint_fit_qa.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/FOOTPRINT_FIT_W13.json
           CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_footprint_fit.py" -v
           python3 - <<'PYGATE'
@@ -100,6 +104,7 @@ jobs:
           PYW14
           mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/tools
           cp "$root/tools/mount_envelope_candidates.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
+          cp "$root/tools/verify_sweep_provenance.py" "$root/tools/swept_geometry_qa.py" "$root/tools/rework_legendary_glb.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
                     (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
