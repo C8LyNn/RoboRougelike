@@ -183,10 +183,16 @@ def verify(plan, root):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--plan',required=True);ap.add_argument('--evidence',required=True);ap.add_argument('--out')
+    ap.add_argument('--validate-only',action='store_true',help='Reject invalid plans BEFORE launching Unity')
     args=ap.parse_args()
     try:
         plan=qa_native.js(args.plan)
-        verdict=verify(plan,args.evidence)
+        if args.validate_only:
+            bad=validate_plan(plan)
+            verdict={'schema':'b01-60-qa-plan-validation-v2', 'status':'BLOCKED' if bad else 'PASS',
+                     'problems':bad,'g2':'HOLD','attribution':'PLAN_ONLY_NOT_NATIVE_RUN'}
+        else:
+            verdict=verify(plan,args.evidence)
     except (OSError,ValueError) as exc:
         verdict={'schema':'b01-60-qa-verdict-v2','status':'BLOCKED','problems':['UNREADABLE_PLAN:'+type(exc).__name__],
                  'attribution':'EVIDENCE_STRUCTURE_ONLY','g2':'HOLD','manual':'NOT_RUN','stages':[]}
