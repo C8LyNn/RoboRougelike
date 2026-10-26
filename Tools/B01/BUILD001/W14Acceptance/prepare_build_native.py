@@ -114,7 +114,7 @@ def create_plan(project, archive, target_sha):
         "target_sha": target_sha,
         "source_files": hashes,
         "required_stages": ["Compile", "EditMode", "PlayMode"],
-        "test_filter": "Build",
+        "test_filter": "B01[.]BUILD001[.]Tests[.]|BuildRC2SafetyTests",
         "required_nunit": {
             "EditMode": [
                 "RC2_NestedAcceptedAreaEqualsActualPhysicalSquareMetres",
