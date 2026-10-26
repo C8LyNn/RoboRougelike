@@ -20,7 +20,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Run 12 BUILD-specific fail-closed intake and evidence-parser selftests
+      - name: Run 15 BUILD-specific fail-closed intake and evidence-parser selftests
         run: python Tools/B01/BUILD001/W14Acceptance/test_w14_acceptance.py
       - name: Download ACTUAL frozen R1.4 full SOURCE artifact (not a replacement build)
         shell: bash
@@ -32,7 +32,7 @@ jobs:
       - name: Verify immutable producer's ACTUAL inner archive and all original asset hashes
         shell: bash
         run: |
-          python -c "import sys;sys.path.insert(0,'Tools/B01/BUILD001/W14Acceptance');import prepare_build_native as p; assets=p.verify_archive('artifact/B01-BUILD001-R14.zip');print('W14_ACTUAL_R14_ARCHIVE_SOURCE_VERIFY_PASS',len(assets),'Assets/meta files; Unity native NOT_RUN; G2 HOLD')"
+          python -c "import sys;sys.path.insert(0,'Tools/B01/BUILD001/W14Acceptance');import prepare_build_native as p;import verify_build_native as v; assets=p.verify_archive('artifact/B01-BUILD001-R14.zip'); methods=v.verify_real_source_method_inventory(assets);print('W15_REAL_R14_SOURCE_INVENTORY_PASS',len(assets),'asset/meta',methods,'actual CSharp test methods; Unity native NOT_RUN; G2 HOLD')"
       - name: Explicit native limitation
         shell: bash
         run: |
