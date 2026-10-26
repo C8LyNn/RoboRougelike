@@ -105,6 +105,10 @@ jobs:
           mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/tools
           cp "$root/tools/mount_envelope_candidates.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
           cp "$root/tools/verify_sweep_provenance.py" "$root/tools/swept_geometry_qa.py" "$root/tools/rework_legendary_glb.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/tests
+          cp "$root/tests/test_sweep_provenance.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tests/
+          # Receiver has all scripts and a portable failing-forgery regression.
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 /tmp/B01-VIS-LEGENDARY-W12-R1/tests/test_sweep_provenance.py -v
                     (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
