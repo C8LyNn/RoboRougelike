@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><TargetFramework>net8.0</TargetFramework><Nullable>disable</Nullable><ImplicitUsings>enable</ImplicitUsings><TreatWarningsAsErrors>true</TreatWarningsAsErrors><Deterministic>true</Deterministic><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+ <ItemGroup>
+  <Compile Include="../../../../../Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs" Link="RebuildQueueService.cs"/>
+  <Compile Include="../../R3EconRebuildPort.install.cs" Link="R3EconRebuildPort.install.cs"/>
+  <Compile Include="../UnityJsonShim.cs" Link="UnityJsonShim.cs"/>
+  <Compile Include="VerifiedR3Surface.cs"/>
+ </ItemGroup>
+</Project>

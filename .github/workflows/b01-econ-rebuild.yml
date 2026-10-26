@@ -1,0 +1,82 @@
+name: B01 ECON REBUILD R1
+on:
+  push:
+    branches: [b01-22/econ-rebuild-001-r1]
+    paths:
+      - 'Assets/B01Packages/ECONREBUILD001/**'
+      - 'Assets/B01Packages/ECONREBUILD001.meta'
+      - 'Assets/B01Packages.meta'
+      - 'Tools/B01/ECONREBUILD001/**'
+      - '.github/workflows/b01-econ-rebuild.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/ECONREBUILD001/**'
+      - 'Assets/B01Packages/ECONREBUILD001.meta'
+      - 'Assets/B01Packages.meta'
+      - 'Tools/B01/ECONREBUILD001/**'
+      - '.github/workflows/b01-econ-rebuild.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-and-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile exact Unity C# runtime with labelled JsonUtility surrogate
+        id: build
+        run: dotnet build Tools/B01/ECONREBUILD001/tests/EconRebuild.SurrogateTests.csproj -c Release --nologo
+      - name: Compile install-only R3 bridge against verified OBJ API signatures
+        id: bridge
+        run: dotnet build Tools/B01/ECONREBUILD001/tests/BridgeCompile/BridgeCompile.csproj -c Release --nologo
+      - name: Execute actual bounded economy queue tests
+        id: tests
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/econ-rebuild
+          dotnet run --project Tools/B01/ECONREBUILD001/tests/EconRebuild.SurrogateTests.csproj -c Release --no-build -- artifacts/econ-rebuild/test-results.json | tee artifacts/econ-rebuild/tests.log
+      - name: Build deterministic package twice and compare bytes
+        if: always()
+        id: package
+        run: |
+          python3 Tools/B01/ECONREBUILD001/build_package.py artifacts/econ-rebuild
+          cp artifacts/econ-rebuild/ECONREBUILD001_Unity_Source.zip artifacts/econ-rebuild/repro-check.zip
+          python3 Tools/B01/ECONREBUILD001/build_package.py artifacts/econ-rebuild
+          cmp artifacts/econ-rebuild/repro-check.zip artifacts/econ-rebuild/ECONREBUILD001_Unity_Source.zip
+          rm artifacts/econ-rebuild/repro-check.zip
+      - name: Emit pinned machine CI receipt
+        if: always()
+        env:
+          BUILD: ${{ steps.build.outcome }}
+          BRIDGE: ${{ steps.bridge.outcome }}
+          TESTS: ${{ steps.tests.outcome }}
+          PACKAGE: ${{ steps.package.outcome }}
+        run: |
+          python3 - <<'PY'
+          import pathlib,json,os,subprocess
+          d=pathlib.Path("artifacts/econ-rebuild");d.mkdir(exist_ok=True,parents=True)
+          f=d/"test-results.json";t=json.loads(f.read_text()) if f.exists() else None
+          result={"schema":"b01.econ-rebuild.ci.v1",
+             "sha":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+             "dotnet_build":os.environ["BUILD"],"r3_signature_compile":os.environ["BRIDGE"],"surrogate_tests":os.environ["TESTS"],
+             "package":os.environ["PACKAGE"],"results":({k:t[k] for k in ["total","passed","failed"]} if t else None),
+             "unity_editor":"NOT_RUN","unity_playmode":"NOT_RUN","g0_independent":"PENDING","g2":"HOLD"}
+          (d/"ci-receipt.json").write_text(json.dumps(result,indent=2)+"\n")
+          summary=f"ECON rebuild source {result['sha']}: build {result['dotnet_build']} / tests {result['surrogate_tests']} {result['results']} / package {result['package']}; Unity native NOT_RUN, G2 HOLD\n"
+          (d/"ci-summary.txt").write_text(summary)
+          pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a").write(summary)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-econ-rebuild-001-source-and-test-evidence
+          path: artifacts/econ-rebuild/
+          retention-days: 30
