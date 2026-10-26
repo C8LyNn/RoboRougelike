@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from collections import Counter
+import re
 
 SOURCE_SHA = "95707c68c8071a949b5d9fec7ff57926e92f8198"
 EDIT_TOTAL = 35  # R1.3 original18 + R1.4 new14 + original RC2 external3
@@ -94,6 +95,39 @@ def require_exact_methods(cases, expected_total):
         seen[(cls, method)] += 1
     if seen != intended:
         raise ValueError("UNEXPECTED_METHOD_OR_CASE_DISTRIBUTION")
+
+# Source-code inventory is checked against the ACTUAL frozen R1.4 archive
+# in CI, not a mock zip. The independent RC2 fixture remains separately pinned
+# to its immutable Git blob by prepare_build_native.py.
+SOURCE_METHOD_FILES = {
+    "B01.BUILD001.Tests.Build001SocketTests":
+        "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs",
+    "B01.BUILD001.Tests.Build001R13SafetyTests":
+        "Assets/B01Construction/BUILD001/Tests/EditMode/Build001R13SafetyTests.cs",
+    "B01.BUILD001.Tests.Build001R14ContactAreaTests":
+        "Assets/B01Construction/BUILD001/Tests/EditMode/Build001R14ContactAreaTests.cs",
+    "B01.BUILD001.Tests.Build001PhysicalHitTests":
+        "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs",
+    "B01.BUILD001.Tests.Build001R13PhysicalTests":
+        "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001R13PhysicalTests.cs",
+}
+
+def verify_real_source_method_inventory(assets):
+    checked = 0
+    declared = {**EDIT_METHODS, **PLAY_METHODS}
+    for cls, filepath in SOURCE_METHOD_FILES.items():
+        if filepath not in assets:
+            raise ValueError("PINNED_PRODUCER_TEST_FILE_MISSING:" + filepath)
+        source = assets[filepath].decode("utf8")
+        for method in declared[cls]:
+            # Unity [UnityTest] and standard NUnit [Test] source methods.
+            pattern = r"\bpublic\s+(?:void|IEnumerator)\s+" + re.escape(method) + r"\s*\("
+            if len(re.findall(pattern, source)) != 1:
+                raise ValueError("AUTHENTIC_SOURCE_METHOD_MISSING_OR_DUPLICATED:" + method)
+            checked += 1
+    if checked != 35:
+        raise ValueError("INCORRECT_FROZEN_SOURCE_METHOD_INVENTORY")
+    return checked
 
 def parse_nunit(raw, expected_total, expected_counts):
     root = ET.fromstring(raw)
