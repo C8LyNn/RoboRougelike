@@ -24,10 +24,10 @@ has separate native G1; do not mix its unapproved sockets into this acceptance.
    import all corresponding `.meta` with target root GUID preserved;
    compile `Unity -batchmode -nographics -projectPath ... -quit -logFile ...`
    and retain original Editor.log and exit. Never execute on active game.
-2. Native EditMode: **6 authored tests**, including two NEW:
+2. Native EditMode: **8 authored tests**, including two NEW:
    `IdenticalGuidAcrossDifferentR3StoresMustReject` and
    `MissingRealR3OwnerProofRejects`. Require original NUnit XML
-   `6/6 PASS` with Unity process exit 0; if only 4 run, it's old source.
+   `8/8 PASS` with Unity process exit 0; if only 4 run, it's old source.
 3. Native R3-backed test (may need small receiver hook test, not authored
    in this isolated package): two independently constructed
    `R3VehicleModel` objects with SAME `R3PartState.Id`, kind, HP0.
@@ -53,7 +53,7 @@ has separate native G1; do not mix its unapproved sockets into this acceptance.
 - Portable producer gate: verified real immutable #252+#242 C# blobs, C# build,
   receiver install-only bridge C# build, original 20/20+ tests, unique GUID,
   deterministic ZIP and SHA256. **This is not native**.
-- Native G1 acceptance = real Unity engine compile + six original NUnit
+- Native G1 acceptance = real Unity engine compile + eight original NUnit
   + R3 object-backed ownership + 0HP victory/save results; otherwise
   `NOT_RUN` / `FAIL`, no fabricated PASS.
 - Anti-softlock loaner decision #154/#253 remains HQ-only, costs and
@@ -65,3 +65,12 @@ has separate native G1; do not mix its unapproved sockets into this acceptance.
 `R3VehicleModel` objects and one shared-object healthy control, using
 patched receiver examples from this exact CI artifact. Preserve XML,
 Editor.log, source and test run SHA, wallet and inventory snapshots.
+
+## W15 added native negatives — both must reject before any R3 mutation
+- Authored `NoncanonicalUppercasePhysicalGuidMustFailClosed`: same R3
+  authoritative object, uppercase physical GUID and matching ECON view;
+  `INVALID_PHYSICAL_INSTANCE`, repair count zero.
+- Authored `EmptyPhysicalGuidOrHpOverMaxMustFailClosed`: Guid.Empty and
+  nonfinite/out-of-range physical HP, reject without invoking R3 Repair.
+- Updated native authored total: **8**, actual licensed Unity result:
+  **NOT_RUN** until evidence exists. Do not call C# surrogate compilation native.
