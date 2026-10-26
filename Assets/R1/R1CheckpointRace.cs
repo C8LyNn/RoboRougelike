@@ -23,10 +23,15 @@ namespace RoboRougelike.R1
             if(!TryMeasureEnvelope(Player.GetComponent<Rigidbody>(),out var envelope))return false;
             var profile=SelectedVehicle==R3VehicleKind.Light?MapVehicleProfile.Light:MapVehicleProfile.Heavy;
             profile.Width=Mathf.Max(profile.Width,envelope.x);profile.Length=Mathf.Max(profile.Length,envelope.z);
+            var config=MapGenConfig.Default;
+            config.LaneWidth=Mathf.Max(config.LaneWidth,Mathf.Ceil((profile.Width+3.5f)/.6f));
             if(generatedArena==null){var host=new GameObject("MAPGEN activities");host.transform.SetParent(transform,false);generatedArena=host.AddComponent<MapGenWorldAdapter>();}
             if(!generatedArena.TryGenerate(new MapWorldRequest{Recipe=MapRecipe.ObstacleCourse,Seed=RequestedSeed,
-                Config=MapGenConfig.Default,Vehicle=profile,EnvelopeMeasured=true,ClearancePerSideMeters=.25f},out var world,out var failure))
-                return RejectGeneratedArena("Wyścig: "+failure);
+                Config=config,Vehicle=profile,EnvelopeMeasured=true,ClearancePerSideMeters=.25f},out var world,out var failure))
+            {
+                string detail="";try{MapGenPlanner.Plan(MapRecipe.ObstacleCourse,RequestedSeed,config,profile);}catch(ArgumentException e){detail=e.Message;}
+                return RejectGeneratedArena("Wyścig: "+failure+" "+detail+" obrys="+envelope);
+            }
             if(world.Checkpoints.Length==0){generatedArena.ClearWorld();return false;}
             if(Progress.State==R1RunState.Garage&&!StartNextEncounter()){generatedArena.ClearWorld();return false;}
             if(!Progress.ChooseRoute()){generatedArena.ClearWorld();return false;}

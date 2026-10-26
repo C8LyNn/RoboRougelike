@@ -37,6 +37,9 @@ namespace B01.CAMERA001
         public bool ActualOwnHullIntersectsCrosshair { get; private set; }
         public float LastCameraStepMeters { get; private set; }
         public float LastAimErrorDegrees { get; private set; }
+        // Receiver-only semantic filter (for transient projectiles/wreckage).
+        // Null preserves the standalone package policy and its original tests.
+        public Func<Collider,bool> WorldColliderFilter {get;set;}
 
         public void Configure(Transform root, Camera camera)
         {
@@ -248,6 +251,7 @@ namespace B01.CAMERA001
         {
             return c != null && c.enabled && !c.isTrigger &&
                 c.gameObject.activeInHierarchy &&
+                (WorldColliderFilter==null||WorldColliderFilter(c)) &&
                 (vehicleRoot == null || !c.transform.IsChildOf(vehicleRoot));
         }
 

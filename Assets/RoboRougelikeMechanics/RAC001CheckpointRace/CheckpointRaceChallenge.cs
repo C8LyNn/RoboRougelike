@@ -45,6 +45,7 @@ namespace RoboRougelike.Mechanics.RAC001
 
         public bool Begin()
         {
+            if(runner!=null)observedBody=runner.GetComponent<Rigidbody>();
             if (!isActiveAndEnabled || runner == null || checkpoints == null || checkpoints.Length == 0)
                 return false;
             Vector3[] points = new Vector3[checkpoints.Length];

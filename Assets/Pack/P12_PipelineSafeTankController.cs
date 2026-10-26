@@ -251,7 +251,7 @@ public float CurrentForwardSpeed =>
                 return;
 
             Vector3 aimPoint =
-                FindAimPoint();
+                FindAimPoint(true);
 
             RotateTurretToward(
                 aimPoint
@@ -376,7 +376,10 @@ public float CurrentForwardSpeed =>
             if(aimCamera==null)aimCamera=Camera.main;
             return aimCamera!=null?FindAimPoint():transform.position+transform.forward*24;
         }
-        private Vector3 FindAimPoint()
+        public Vector3 LastConsumedAimPoint {get;private set;}
+        public Collider LastConsumedAimCollider {get;private set;}
+        public int LastConsumedAimFrame {get;private set;}=-1;
+        private Vector3 FindAimPoint(bool consumed=false)
         {
             Ray ray =
                 aimCamera.ViewportPointToRay(
@@ -416,13 +419,18 @@ public float CurrentForwardSpeed =>
                     t.IsChildOf(transform))
                     continue;
 
+                var shell=hit.collider.GetComponentInParent<P17PhysicalShell>();
+                if(shell!=null&&shell.OwnerRoot==transform)continue;
+                var rocket=hit.collider.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+                if(rocket!=null&&rocket.OwnerRoot==transform)continue;
+
+                if(consumed){LastConsumedAimPoint=hit.point;LastConsumedAimCollider=hit.collider;LastConsumedAimFrame=Time.frameCount;}
                 return hit.point;
             }
 
-            return
-                ray.origin +
-                ray.direction *
-                aimRange;
+            var fallback=ray.origin+ray.direction*aimRange;
+            if(consumed){LastConsumedAimPoint=fallback;LastConsumedAimCollider=null;LastConsumedAimFrame=Time.frameCount;}
+            return fallback;
         }
 
         private void RotateTurretToward(

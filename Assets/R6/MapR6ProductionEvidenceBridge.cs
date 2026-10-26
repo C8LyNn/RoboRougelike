@@ -56,7 +56,7 @@ namespace RoboRougelike.R6
                 demand = hasExternalDemand ? externalDemand :
                     keyboardDemandFallback ? KeyboardThrottleDemand() : 0f;
                 recorder.SetMapState(run.Progress.State == R1RunState.Combat ?
-                    "gauntlet_existing_arena" : "practice_range");
+                    run.RoadState!=null?"MAP-R6/"+run.RoadState.StateId:run.CheckpointRace!=null?"RAC001/generated_course":"gauntlet_existing_arena" : "practice_range");
             }
             recorder.SetDriverDemand01(demand);
         }
