@@ -1,0 +1,34 @@
+{
+  "id": "B01-W14-RC2-GARAGE-WARNINGS-R1",
+  "version": 1,
+  "role": "B01-10",
+  "readonly": true,
+  "launchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED",
+  "canAuthorizeDeployment": false,
+  "normalGarageSuggestionsToggleAffectsCritical": false,
+  "canonicalSource": {
+    "repo": "C8LyNn/RoboRougelike",
+    "revision": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "pr": 258,
+    "model": "Assets/R3/R3VehicleModel.cs",
+    "garage": "Assets/R3/R3GarageView.cs",
+    "run": "Assets/R1/R1RunController.cs"
+  },
+  "reasonCodes": [
+    "SNAPSHOT_UNTRUSTWORTHY",
+    "CORE_NONFUNCTIONAL_OR_AMBIGUOUS",
+    "STRUCTURE_DISCONNECTED",
+    "MOBILITY_NONFUNCTIONAL",
+    "MOBILITY_AUTHORITY_UNVERIFIED",
+    "ACTIVITY_WEAPON_REQUIREMENT_UNKNOWN",
+    "WEAPON_NONFUNCTIONAL",
+    "WEAPON_AUTHORITY_UNVERIFIED"
+  ],
+  "activityDecision": "activityRequiresWeapon is authority supplied by actual selected activity, true for actual combat; false for truly weaponless race/escape; null if unresolved and must surface warning",
+  "operationalDefinition": "Host supplies ConnectedToTrustedCore and Operational computed from actual canonical alive connectivity and functional drive or weapon authority; present prefab or camera icon does not count. For weapon Operational means lasting ability to fire (ammo/emp/attachment/power), not per-frame cooldown. Physical ground contact must be verified separately in Unity, not faked by this source.",
+  "mobility": "SelectedDrive must be one of Wheels/Tracks/Omni/Hover; Wheel/CrawlerTrack require functional mounted contact modules on opposite signed X sides, OmniDrive/HoverEngine require at least one functioning matching selected type. An installed disabled or destroyed module is not functional.",
+  "impact": "Critical warnings ALWAYS shown regardless of suggestions enabled; lack of gun suppressed ONLY when selected activity authoritatively declares weapon not required. No changes to current R3 CanDeploy/StartNextEncounter; launch gate is owner-open and must not be inferred from warnings.",
+  "nativeVerification": "NOT_RUN",
+  "UnityGameplay": "NOT_RUN",
+  "G2": "HOLD"
+}

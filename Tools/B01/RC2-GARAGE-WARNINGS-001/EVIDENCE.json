@@ -1,0 +1,10 @@
+{
+  "id": "B01-W14-RC2-GARAGE-WARNINGS-R1",
+  "producer": "B01-10",
+  "sourcePin": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "fixtureCount": 33,
+  "tests": "C# .NET8 real execution PENDING_CI",
+  "realUnity": "NOT_RUN",
+  "humanQA": "NOT_RUN",
+  "g2": "HOLD"
+}

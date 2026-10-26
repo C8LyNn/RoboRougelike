@@ -1,0 +1,1520 @@
+{
+  "contract": "B01-W14-RC2-GARAGE-WARNINGS-R1",
+  "fixtureCount": 33,
+  "scenarios": [
+    {
+      "id": "W14-GW-01",
+      "description": "Healthy Core, mounted operational two-sided Wheels and gun",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-02",
+      "description": "Disabling advice cannot invent missing warning",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": false,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-03",
+      "description": "No gun in combat",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "WEAPON_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-04",
+      "description": "Gun exists physically but 0HP",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 0,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "WEAPON_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-05",
+      "description": "Gun exists but cannot fire, e.g. EMP",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": false
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "WEAPON_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-06",
+      "description": "Gun present, functional capability unknown",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": null
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "WEAPON_AUTHORITY_UNVERIFIED"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-07",
+      "description": "Only left wheel",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-08",
+      "description": "Two wheels left side are not a functioning right side",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left2",
+            "kind": "Wheel",
+            "cellX": -2,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-09",
+      "description": "Right wheel 0HP",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 0,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-10",
+      "description": "Right wheel disabled",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": false
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-11",
+      "description": "Wheel authority unknown, do not report functional",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": null
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_AUTHORITY_UNVERIFIED"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-12",
+      "description": "Mounted but detached from Core",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": false,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "STRUCTURE_DISCONNECTED",
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-13",
+      "description": "Missing Core",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "CORE_NONFUNCTIONAL_OR_AMBIGUOUS"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-14",
+      "description": "Two trusted active Cores fail closed",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "core2",
+            "kind": "Core",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "CORE_NONFUNCTIONAL_OR_AMBIGUOUS"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-15",
+      "description": "Core 0HP, no authority for starting",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 0,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "CORE_NONFUNCTIONAL_OR_AMBIGUOUS"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-16",
+      "description": "Weaponless race does not require gun",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": false,
+        "activityId": "Race",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-17",
+      "description": "Weaponless escape still warns absent mobility",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": false,
+        "activityId": "Escape",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-18",
+      "description": "Unknown activity requirements cannot be treated as weaponless",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": null,
+        "activityId": "Unknown",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "ACTIVITY_WEAPON_REQUIREMENT_UNKNOWN"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-19",
+      "description": "Critical warning persists even when suggestions disabled",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": false,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL",
+        "WEAPON_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-20",
+      "description": "Optimisation tip is advisory not critical",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": true,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-21",
+      "description": "Optimisation tips disable while critical remains",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": false,
+        "riskyCenterOfMass": true,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-22",
+      "description": "Working tracked both sides",
+      "input": {
+        "selectedDrive": "Tracks",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "l",
+            "kind": "CrawlerTrack",
+            "cellX": -2,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "r",
+            "kind": "CrawlerTrack",
+            "cellX": 2,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-23",
+      "description": "Only one functional track",
+      "input": {
+        "selectedDrive": "Tracks",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "l",
+            "kind": "CrawlerTrack",
+            "cellX": -2,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-24",
+      "description": "Working selected hover",
+      "input": {
+        "selectedDrive": "Hover",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "hover",
+            "kind": "HoverEngine",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-25",
+      "description": "Functional wheels do not substitute selected hover",
+      "input": {
+        "selectedDrive": "Hover",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-26",
+      "description": "Working selected omni",
+      "input": {
+        "selectedDrive": "Omni",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "omni",
+            "kind": "OmniDrive",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-27",
+      "description": "Mounted 0HP OmniDrive does not propel",
+      "input": {
+        "selectedDrive": "Omni",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "omni",
+            "kind": "OmniDrive",
+            "cellX": 0,
+            "health": 0,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-28",
+      "description": "Bad drive mapping fails closed",
+      "input": {
+        "selectedDrive": "Unknown",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "SNAPSHOT_UNTRUSTWORTHY"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-29",
+      "description": "Duplicate canonical instance ID",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "core",
+            "kind": "Armor",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "SNAPSHOT_UNTRUSTWORTHY"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-30",
+      "description": "Nonfinite HP fails closed",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": -1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "SNAPSHOT_UNTRUSTWORTHY"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-31",
+      "description": "Unknown Core connectivity is not mobility PASS",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": null,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "MOBILITY_AUTHORITY_UNVERIFIED"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-32",
+      "description": "0HP gun irrelevant for true weaponless activity",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": false,
+        "activityId": "Race",
+        "suggestionsEnabled": false,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 0,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W14-GW-33",
+      "description": "Detached operational-looking gun cannot count",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": false,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          }
+        ]
+      },
+      "expectedCritical": [
+        "STRUCTURE_DISCONNECTED",
+        "WEAPON_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    }
+  ]
+}

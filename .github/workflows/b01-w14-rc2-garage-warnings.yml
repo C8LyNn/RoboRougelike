@@ -1,0 +1,21 @@
+name: B01-W14-RC2-Garage-Warning-Contract
+on:
+  push:
+    paths:
+      - 'Tools/B01/RC2-GARAGE-WARNINGS-001/**'
+      - '.github/workflows/b01-w14-rc2-garage-warnings.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/RC2-GARAGE-WARNINGS-001/**'
+      - '.github/workflows/b01-w14-rc2-garage-warnings.yml'
+  workflow_dispatch:
+jobs:
+  actual-csharp-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Real source C# build and 33 negative/positive fixtures
+        run: dotnet run --project Tools/B01/RC2-GARAGE-WARNINGS-001/Tests/WarningTests.csproj -- Tools/B01/RC2-GARAGE-WARNINGS-001/fixtures.json
