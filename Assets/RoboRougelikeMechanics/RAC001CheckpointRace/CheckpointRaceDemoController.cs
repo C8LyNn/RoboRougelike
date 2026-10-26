@@ -14,18 +14,42 @@ namespace RoboRougelike.Mechanics.RAC001
         private Rigidbody sampleBody;
         private Transform[] points;
         private Vector3 start;
+        private PhysicsMaterial sliderMaterial;
+        private readonly System.Collections.Generic.Dictionary<Collider,PhysicsMaterial> originalMaterials =
+            new System.Collections.Generic.Dictionary<Collider,PhysicsMaterial>();
         [SerializeField, Min(0.1f)] private float sampleSpeed = 7f;
         [SerializeField, Min(.1f)] private float acceleration = 12f;
         [SerializeField, Min(.1f)] private float velocityResponse = 4f;
 
         public void Configure(CheckpointRaceChallenge challenge, Transform cube, Transform[] course)
         {
+            RestoreSliderMaterials();
             race = challenge;
             sampleCube = cube;
             sampleBody = cube != null ? cube.GetComponent<Rigidbody>() : null;
             points = course;
             start = cube != null ? cube.position : Vector3.zero;
+            if(sampleBody!=null)
+            {
+                // This standalone force-driven slider is not an R6 wheel vehicle.
+                // Give its actual contact an explicit profile: Unity's default box
+                // patch friction otherwise consumes nearly all of the12m/s² drive.
+                sliderMaterial=new PhysicsMaterial("RAC standalone slider contact") {
+                    dynamicFriction=.1f, staticFriction=.1f, frictionCombine=PhysicsMaterialCombine.Minimum
+                };
+                foreach(var collider in cube.GetComponentsInChildren<Collider>())
+                {originalMaterials[collider]=collider.sharedMaterial;collider.sharedMaterial=sliderMaterial;}
+            }
         }
+
+        private void RestoreSliderMaterials()
+        {
+            foreach(var entry in originalMaterials)if(entry.Key!=null)entry.Key.sharedMaterial=entry.Value;
+            originalMaterials.Clear();
+            if(sliderMaterial!=null){if(Application.isPlaying)Destroy(sliderMaterial);else DestroyImmediate(sliderMaterial);}
+            sliderMaterial=null;
+        }
+        private void OnDestroy()=>RestoreSliderMaterials();
 
         private void FixedUpdate()
         {
