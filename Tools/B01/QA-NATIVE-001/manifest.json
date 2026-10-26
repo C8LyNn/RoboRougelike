@@ -58,6 +58,31 @@
       "sha256": "046b75a42a57c1441fa0cbeed7c95317cfaf9bdfce9d54a89a20621969f2341c",
       "bytes": 9839,
       "git_blob_sha1": "4e229ad1f56d4f62e9915de2a97448a28d46547c"
+    },
+    "Tools/B01/QA-NATIVE-001/rc1_shutdown_ab.py": {
+      "sha256": "c30f84d74752957bccd941f1ce2eb946886dd5cfa6bdf7a0f9eab4ec135367db",
+      "bytes": 14795,
+      "git_blob_sha1": "a3c828ea2b6708981dc3d0a111bd59a4c0c5366d"
+    },
+    "Tools/B01/QA-NATIVE-001/test_rc1_shutdown_ab.py": {
+      "sha256": "11acab8950a71c5644ffb72ba0b4fc073b80c6707e144a85ca0f40cb7b0ff73f",
+      "bytes": 10945,
+      "git_blob_sha1": "1b73661d2834047018f6ccdd9171a545612c4cde"
+    },
+    "Tools/B01/QA-NATIVE-001/rc1_shutdown.example.json": {
+      "sha256": "b8b751fdebc8bc268a9a0d589565170fb74ded2a246992e8789178d3c0296de7",
+      "bytes": 1250,
+      "git_blob_sha1": "e1c0c8b7f942023888a63f5d1dfad8952ca62778"
+    },
+    "Tools/B01/QA-NATIVE-001/RC1_SHUTDOWN_AB_README.md": {
+      "sha256": "0c7723f620928eb1a58b4c1b0da886d149af138ed3a33f069a418cabec626dc6",
+      "bytes": 5632,
+      "git_blob_sha1": "c30c73f2cc789ece5da95cd454655afbed4ad9d5"
+    },
+    ".github/workflows/b01-w13-qa-rc1-shutdown.yml": {
+      "sha256": "f7132615522901f64d7d046ce6ed6122956088e98da2cd852c06663ed1ed9f46",
+      "bytes": 2059,
+      "git_blob_sha1": "a8ea17f8db3289715bcd8b3beeb785d1fe2b145d"
     }
   },
   "tests": {
@@ -65,9 +90,25 @@
     "windows_ci": "PENDING",
     "linux_ci": "PENDING",
     "native_unity": "NOT_RUN",
-    "powershell_native_runner": "NOT_RUN"
+    "powershell_native_runner": "NOT_RUN",
+    "w13_qa_crash_harness": "29/29 local synthetic PASS; native Windows player NOT_RUN",
+    "w13_watcher": "GitHub CI pending"
   },
   "g2": "HOLD",
   "package_zip_source": "GitHub Actions deterministic SHA256-gated archive of exact tracked files; final receipt published by CI.",
-  "version": "2.0.0"
+  "version": "2.0.0",
+  "w13_rc1": {
+    "schema": "b01-60-rc1-shutdown-ab-v1",
+    "scenarios": 6,
+    "order": [
+      "BASE",
+      "EXP",
+      "EXP",
+      "BASE",
+      "RC2",
+      "RC2"
+    ],
+    "native_ui": "NOT_RUN",
+    "decision": "G2_HOLD"
+  }
 }
