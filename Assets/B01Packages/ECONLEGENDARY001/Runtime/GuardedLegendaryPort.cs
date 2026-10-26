@@ -13,6 +13,14 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard
         bool TryIsPending(string physicalId, out bool pending);
     }
 
+    // Implement on BOTH concrete adapters, exposing the exact SAME authoritative
+    // R3VehicleModel reference. Never use a GUID/string/DeepCopy as authority proof.
+    // This detects two distinct R3 stores containing coincidentally identical physical IDs.
+    public interface ISharedR3PhysicalOwnerIdentity
+    {
+        object AuthoritativeR3Model { get; }
+    }
+
     // Receiver composition: pass THIS port, never the unguarded R3 port, to LegendaryUnityService.
     // All host mutations still run through the SAME existing R3VehicleModel and wallet.
     public sealed class GuardedLegendaryPort : IAuthoritativeR3Port
@@ -40,6 +48,13 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard
         public bool CheckSharedOwnership(out string reason)
         {
             if(rebuild.IsQuarantined){reason="REBUILD_QUARANTINED";return false;}
+            var legendOwner=inner as ISharedR3PhysicalOwnerIdentity;
+            var econOwner=economyHost as ISharedR3PhysicalOwnerIdentity;
+            if(legendOwner==null||econOwner==null||
+                legendOwner.AuthoritativeR3Model==null||econOwner.AuthoritativeR3Model==null)
+            {reason="OWNER_IDENTITY_UNAVAILABLE";return false;}
+            if(!object.ReferenceEquals(legendOwner.AuthoritativeR3Model,econOwner.AuthoritativeR3Model))
+            {reason="OWNER_IDENTITY_MISMATCH";return false;}
             var physical=economyHost.OwnedParts;
             var mounted=inner.Mounted;
             var inventory=inner.Inventory;
