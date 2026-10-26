@@ -69,7 +69,10 @@ public class RRLW34ReviewRegressionTests
     [UnityTest] public IEnumerator FullInventoryHasExplicitRecoveryForMandatoryRewardsIncludingFinalVictory()
     {
         Assert.That(run.StartRun(),Is.True);
-        var items=Enumerable.Range(0,200).Select(i=>new R3PartState(default,R3PartKind.Wheel){Id="full-inventory-"+i}).ToArray();
+        // Real owned parts keep their constructor-assigned canonical GUIDs.
+        var items=Enumerable.Range(0,200).Select(i=>new R3PartState(default,R3PartKind.Wheel)).ToArray();
+        Assert.That(items.All(part=>Guid.TryParseExact(part.Id,"N",out _)),Is.True);
+        Assert.That(items.Select(part=>part.Id).Distinct().Count(),Is.EqualTo(200));
         Assert.That(run.VehicleModel.ReceiveSalvage(items),Is.True);
         for(int stage=0;stage<6;stage++)
         {
