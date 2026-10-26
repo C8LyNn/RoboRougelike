@@ -90,5 +90,17 @@ public sealed class RewardRC2IntegrationTests
         Assert.That(run.DismantleRewardInventoryItem(ids[0]),Is.True);
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(200));
     }
+    [UnityTest] public IEnumerator RawServiceCannotBypassTheControllerSettlementBoundary()
+    {
+        yield return Win();
+        Assert.That(run.VehicleModel.ReceiveSalvage(Enumerable.Range(0,200).Select(_=>new R3PartState(default,R3PartKind.Wheel))),Is.True);
+        Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.False);
+        Assert.That(run.DismantleRewardInventoryItem(run.VehicleModel.Inventory[0].Id),Is.True);
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That(Window.TryCommit(out _),Is.False,"Policy API must not bypass controller accounting after a previous rejected UI attempt");
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Assert.That(run.Salvage.Closed,Is.False);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(199));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

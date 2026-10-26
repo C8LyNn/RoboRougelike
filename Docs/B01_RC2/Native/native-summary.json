@@ -199,6 +199,81 @@
     "evidence": "Docs\\B01_RC2\\Native\\RC2-Build13-UnifiedRED-20261026T105425Z"
   },
   {
+    "stage": "Keep3-SourceGate",
+    "arguments": [
+      "-quit"
+    ],
+    "phase": "Compile",
+    "exitCode": 1,
+    "source": "41eb0f9c63f5b27332c3d6723f5b6a19a5c75412",
+    "finishedUtc": "2026-10-26T11:07:07.0074721Z",
+    "startedUtc": "2026-10-26T11:06:59.4590838Z",
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-Keep3-SourceGate-20261026T110659Z"
+  },
+  {
+    "exitCode": 0,
+    "startedUtc": "2026-10-26T11:08:55.9992612Z",
+    "stage": "Keep3-SourceGate-NativeInput",
+    "finishedUtc": "2026-10-26T11:09:06.2436320Z",
+    "phase": "Compile",
+    "arguments": [
+      "-quit"
+    ],
+    "source": "7897fb78bf7aef70d1dab8a80e5f482027b67579",
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-Keep3-SourceGate-NativeInput-20261026T110855Z"
+  },
+  {
+    "exitCode": 2,
+    "startedUtc": "2026-10-26T11:09:06.2572038Z",
+    "stage": "Keep3-SourceGate-NativeInput",
+    "finishedUtc": "2026-10-26T11:09:26.1208018Z",
+    "phase": "EditMode",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Keep3-SourceGate-NativeInput-20261026T110855Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"B01.RewardKeep3|UnifiedRC2IntegrationTests\""
+    ],
+    "source": "7897fb78bf7aef70d1dab8a80e5f482027b67579",
+    "nunit": {
+      "total": 5,
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Rewards.Tests.Keep3EditModeTests.ArmorRejected",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Rewards.Tests.Keep3EditModeTests.ThreeOnly",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-Keep3-SourceGate-NativeInput-20261026T110855Z"
+  },
+  {
     "source": "c3629d86144ea07ea404c87709d86e598f035675",
     "exitCode": 0,
     "arguments": [
@@ -351,6 +426,482 @@
       }
     ],
     "evidence": "Docs\\B01_RC2\\Native\\RC2-RAC31-Unified-20261026T110114Z"
+  },
+  {
+    "phase": "Compile",
+    "finishedUtc": "2026-10-26T11:29:56.7330374Z",
+    "exitCode": 0,
+    "source": "f5cae0da5a85e25a0b6949463506f2579bf3439b",
+    "startedUtc": "2026-10-26T11:29:42.7531184Z",
+    "stage": "RewardHost-GREEN",
+    "arguments": [
+      "-quit"
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RewardHost-GREEN-20261026T112942Z"
+  },
+  {
+    "phase": "EditMode",
+    "finishedUtc": "2026-10-26T11:31:49.7864384Z",
+    "exitCode": 0,
+    "source": "f5cae0da5a85e25a0b6949463506f2579bf3439b",
+    "startedUtc": "2026-10-26T11:29:56.7510225Z",
+    "stage": "RewardHost-GREEN",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RewardHost-GREEN-20261026T112942Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"RewardRC2IntegrationTests|UnifiedRC2IntegrationTests|Keep3EditModeTests|RRLW6EmpTests|R5EncounterTests|RRLW2\""
+    ],
+    "nunit": {
+      "total": 57,
+      "passed": 57,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "R5EncounterTests.BossFiresTwoPhysicalBatteriesAndDestroyedBatteryStops",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "R5EncounterTests.BossHasTwoIndependentDestructibleWeaponsAndNormalSalvage",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "R5EncounterTests.BossSupportSeveranceDropsPhysicalWingAndLeavesOtherGunOperational",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "R5EncounterTests.BothEliteArchetypesHaveChangedGeometryAndBetterEquipment",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "R5EncounterTests.SummaryCountsInventoryDismantlingAsEarnedScrap",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "R5EncounterTests.SummaryIncludesEnemyDestroyedDuringLostEncounter",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "R5EncounterTests.VariantProjectileSpeedUsesEncounterConfiguration",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.FourthOrOwnedSelectionCannotMutateCanonicalRewardState",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.FullInventoryRefusalKeepsTheSameWindowAndCanRetry",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.KilledEnemyDropsUseCanonicalPhysicalIds",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.NoRecoveryWindowBeforeAuthenticatedVictory",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.SlotIdentityIsStableAcrossRepeatedSalvageBinding",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2GameplayTests.ConnectedIslandDetachesAsOneMovingBodyWithoutBreakingCoreGraph",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2GameplayTests.OnePhysicalBonusChangesLiveStatsOnlyAfterMountAndOpensGarageDirectly",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2GameplayTests.RealDestroyedEnemyGunIsStoredRebuiltForFullPriceAndMounted",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2GameplayTests.SixStagesUseActualDenseRosterSafeSpawnsNormalEscortAndCompleteLoot",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.BarelyDamagedPartStillCostsOneScrap",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.CoreNeverEntersLootAndArmorCanOnlyBeDismantled",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.DestroyedInventoryCannotMountUntilPaidRebuildAndCannotChargeTwice",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EmergencyAndBulkQuotesMatchActualDeduction",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EmergencyRebuildCannotBeFreeOrPartiallySpendWhenUnaffordable",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(0,0)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(0,1)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(0,2)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(0,3)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(1,0)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(1,1)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(1,2)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(2,0)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(2,1)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(3,0)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.EveryRewardCompositionSettlesOnceAndAdvancesDirectlyToGarage(1,3)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.FinalRewardsResolveToWonWithOnePhysicalBonusAndNoGarage",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.InvalidSelectionDoesNotPartiallyAward(\"four\")",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.InvalidSelectionDoesNotPartiallyAward(\"duplicate-part\")",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.InvalidSelectionDoesNotPartiallyAward(\"duplicate-bonus\")",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.InvalidSelectionDoesNotPartiallyAward(\"armor\")",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.InvalidSelectionDoesNotPartiallyAward(\"invalid\")",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.RepairQuotesUseRealPriceAndCondition(0.0f,30)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.RepairQuotesUseRealPriceAndCondition(0.01f,11)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.RepairQuotesUseRealPriceAndCondition(0.25f,8)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.RepairQuotesUseRealPriceAndCondition(0.5f,6)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.RepairQuotesUseRealPriceAndCondition(0.99f,1)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.RepairQuotesUseRealPriceAndCondition(1.0f,0)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2ModelTests.ThreatIncludesTheActuallySpawnedNormalEscort",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2PhysicsTests.HeavyWreckGetsMassIndependentVelocityAndAutomaticallyStartsGrace",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2PhysicsTests.PauseResumeRestoresGravityAndOnlyOriginallyEnabledColliders",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2PhysicsTests.RealProjectilePassesFreshlyReleasedWreckAndDamagesLivingPart",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2PhysicsTests.RestingWreckKeepsWorldCollisionsWithoutConsumingProjectiles",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2PhysicsTests.SeparationDisablesCollidersAndGravityBeforeFirstPhysicsTick",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RRLW2PhysicsTests.TwoSimultaneousShotsDestroyFrontBlockAndStillDamageThePartBehind",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Rewards.Tests.Keep3EditModeTests.ArmorRejected",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Rewards.Tests.Keep3EditModeTests.ThreeOnly",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RewardHost-GREEN-20261026T112942Z"
+  },
+  {
+    "finishedUtc": "2026-10-26T11:22:27.9935773Z",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RewardHost-RED-20261026T112123Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"RewardRC2IntegrationTests|UnifiedRC2IntegrationTests\""
+    ],
+    "startedUtc": "2026-10-26T11:21:23.1791532Z",
+    "stage": "RewardHost-RED",
+    "phase": "EditMode",
+    "exitCode": 2,
+    "source": "943bd12dff2d8bed1e65eb7c693a7a946dee152f",
+    "nunit": {
+      "total": 9,
+      "passed": 3,
+      "failed": 6,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "RewardRC2IntegrationTests.FourthOrOwnedSelectionCannotMutateCanonicalRewardState",
+        "result": "Failed",
+        "failure": "  The source policy must be connected to the actual winning encounter\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "RewardRC2IntegrationTests.FullInventoryRefusalKeepsTheSameWindowAndCanRetry",
+        "result": "Failed",
+        "failure": "  The source policy must be connected to the actual winning encounter\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "RewardRC2IntegrationTests.KilledEnemyDropsUseCanonicalPhysicalIds",
+        "result": "Failed",
+        "failure": "  ee6b9341059747ee9b4f46fe00f536fc/encounter/0/enemy/0/gun\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "RewardRC2IntegrationTests.LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement",
+        "result": "Failed",
+        "failure": "  The source policy must be connected to the actual winning encounter\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "RewardRC2IntegrationTests.NoRecoveryWindowBeforeAuthenticatedVictory",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.SlotIdentityIsStableAcrossRepeatedSalvageBinding",
+        "result": "Failed",
+        "failure": "  Physical identity must exist before reward DTO creation\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Player Update ran but native press was not observed\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RewardHost-RED-20261026T112123Z"
+  },
+  {
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-UnifiedEntry-InputState-20261026T110456Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"UnifiedRC2IntegrationTests\""
+    ],
+    "phase": "EditMode",
+    "stage": "UnifiedEntry-InputState",
+    "source": "85ba58f63e45a7038b1793bf3329d64a74b2e3d6",
+    "exitCode": 2,
+    "finishedUtc": "2026-10-26T11:05:20.0222388Z",
+    "startedUtc": "2026-10-26T11:04:56.2964626Z",
+    "nunit": {
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-UnifiedEntry-InputState-20261026T110456Z"
+  },
+  {
+    "phase": "EditMode",
+    "startedUtc": "2026-10-26T11:17:33.4744492Z",
+    "source": "df186cb1327d8a135944f1ff372fbb32d7f2ca55",
+    "finishedUtc": "2026-10-26T11:17:58.6042493Z",
+    "stage": "UnifiedEntry-PlayerUpdate",
+    "exitCode": 2,
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-UnifiedEntry-PlayerUpdate-20261026T111733Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"UnifiedRC2IntegrationTests\""
+    ],
+    "nunit": {
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Inject and observe input inside the real player Update\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-UnifiedEntry-PlayerUpdate-20261026T111733Z"
   },
   {
     "source": "702cb3b2eeba1661f8ca16f6ff75de76ba4ea5e4",

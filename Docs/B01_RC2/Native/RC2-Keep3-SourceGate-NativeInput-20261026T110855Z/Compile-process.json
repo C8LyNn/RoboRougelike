@@ -1,0 +1,11 @@
+{
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T11:08:55.9992612Z",
+  "stage": "Keep3-SourceGate-NativeInput",
+  "finishedUtc": "2026-10-26T11:09:06.2436320Z",
+  "phase": "Compile",
+  "arguments": [
+    "-quit"
+  ],
+  "source": "7897fb78bf7aef70d1dab8a80e5f482027b67579"
+}

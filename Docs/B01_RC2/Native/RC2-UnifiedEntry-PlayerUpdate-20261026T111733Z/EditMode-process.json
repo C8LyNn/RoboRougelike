@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "startedUtc": "2026-10-26T11:17:33.4744492Z",
+  "source": "df186cb1327d8a135944f1ff372fbb32d7f2ca55",
+  "finishedUtc": "2026-10-26T11:17:58.6042493Z",
+  "stage": "UnifiedEntry-PlayerUpdate",
+  "exitCode": 2,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-UnifiedEntry-PlayerUpdate-20261026T111733Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"UnifiedRC2IntegrationTests\""
+  ]
+}
