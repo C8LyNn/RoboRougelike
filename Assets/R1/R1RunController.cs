@@ -271,7 +271,7 @@ namespace RoboRougelike.R1
 #if ENABLE_INPUT_SYSTEM
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
-            if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) StartRun();
+            if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
             else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)
             {
