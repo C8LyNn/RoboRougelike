@@ -37,7 +37,7 @@ namespace UnityEngine
         public override bool Equals(object o) => o is Vector3Int b && Equals(b);
         public override int GetHashCode() => HashCode.Combine(x,y,z);
         public override string ToString() => $"({x},{y},{z})";
-        public static explicit operator Vector3(Vector3Int a) => new Vector3(a.x,a.y,a.z);
+        public static implicit operator Vector3(Vector3Int a) => new Vector3(a.x,a.y,a.z);
     }
 
     public struct Vector3
