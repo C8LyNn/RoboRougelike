@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0,0948855">
+  <test-suite type="TestSuite" id="1604" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="424" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.094886" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1031" name="B01.MAPGENWORLD001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/B01.MAPGENWORLD001.PlayModeTests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.083586" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="46220" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1032" name="B01" fullname="B01" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.083055" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1033" name="MAPGENWORLD001" fullname="B01.MAPGENWORLD001" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.082824" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1034" name="Tests" fullname="B01.MAPGENWORLD001.Tests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.082598" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1026" name="MapWorldLifecycleTests" fullname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests" classname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.081768" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1027" name="GenerateRegenerateClearAndNotifyOnce" fullname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.GenerateRegenerateClearAndNotifyOnce" methodname="GenerateRegenerateClearAndNotifyOnce" classname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests" runstate="Runnable" seed="1963022972" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.047938" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1028" name="InvalidInputPreservesOldSceneAndCallbacks" fullname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.InvalidInputPreservesOldSceneAndCallbacks" methodname="InvalidInputPreservesOldSceneAndCallbacks" classname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests" runstate="Runnable" seed="361954114" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.009280" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="MissingMeasuredProfileAndNarrowRealLightDoNotSpawn" fullname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.MissingMeasuredProfileAndNarrowRealLightDoNotSpawn" methodname="MissingMeasuredProfileAndNarrowRealLightDoNotSpawn" classname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests" runstate="Runnable" seed="1380888707" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.001158" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="RotatedAndOffsetHostAcceptsValidatedWorldMetadata" fullname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.RotatedAndOffsetHostAcceptsValidatedWorldMetadata" methodname="RotatedAndOffsetHostAcceptsValidatedWorldMetadata" classname="B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests" runstate="Runnable" seed="449922450" result="Passed" start-time="2026-10-26 10:53:04Z" end-time="2026-10-26 10:53:04Z" duration="0.012649" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

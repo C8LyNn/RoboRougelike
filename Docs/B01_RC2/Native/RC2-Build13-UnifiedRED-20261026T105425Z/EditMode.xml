@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="21" result="Failed(Child)" total="21" passed="18" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0,4114163">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1077" result="Failed" site="Child" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.411416" total="21" passed="18" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1458" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="375" result="Failed" site="Child" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.328740" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="45416" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1454" name="UnifiedRC2IntegrationTests" fullname="UnifiedRC2IntegrationTests" classname="UnifiedRC2IntegrationTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.323387" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1457" name="OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage" fullname="UnifiedRC2IntegrationTests.OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage" methodname="OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="57553194" result="Failed" start-time="2026-10-26 10:54:48Z" end-time="2026-10-26 10:54:51Z" duration="3.190528" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Normal keyboard control must follow the same menu entry as the button
+  Expected: Garage
+  But was:  Ready
+]]></message>
+            <stack-trace><![CDATA[at UnifiedRC2IntegrationTests+<OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage>d__6.MoveNext () [0x00086] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\UnifiedRC2IntegrationTests.cs:49
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1456" name="RepeatedPreparationDoesNotReplacePhysicalOwnership" fullname="UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership" methodname="RepeatedPreparationDoesNotReplacePhysicalOwnership" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="1685258481" result="Failed" start-time="2026-10-26 10:54:51Z" end-time="2026-10-26 10:54:54Z" duration="2.983330" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  The unified menu must prepare the canonical garage before choosing activities
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at UnifiedRC2IntegrationTests.Prepare () [0x00016] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\UnifiedRC2IntegrationTests.cs:25
+at UnifiedRC2IntegrationTests+<RepeatedPreparationDoesNotReplacePhysicalOwnership>d__5.MoveNext () [0x00021] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\UnifiedRC2IntegrationTests.cs:40
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1455" name="UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" fullname="UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" methodname="UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="305582977" result="Failed" start-time="2026-10-26 10:54:54Z" end-time="2026-10-26 10:54:57Z" duration="3.254393" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  The unified menu must prepare the canonical garage before choosing activities
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at UnifiedRC2IntegrationTests.Prepare () [0x00016] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\UnifiedRC2IntegrationTests.cs:25
+at UnifiedRC2IntegrationTests+<UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity>d__4.MoveNext () [0x00034] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\UnifiedRC2IntegrationTests.cs:30
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1479" name="B01.BUILD001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/B01.BUILD001.EditModeTests.dll" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.020566" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="45416" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1480" name="B01" fullname="B01" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.020216" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1481" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.020027" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1482" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.019821" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1459" name="Build001R13SafetyTests" fullname="B01.BUILD001.Tests.Build001R13SafetyTests" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.015123" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1466" name="TypedMobilityHubDoesNotWildcardIntoStructural" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.TypedMobilityHubDoesNotWildcardIntoStructural" methodname="TypedMobilityHubDoesNotWildcardIntoStructural" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="1980913146" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.008102" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1461" name="W9_02_StrictInstallReportsDisconnectedFragment" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_02_StrictInstallReportsDisconnectedFragment" methodname="W9_02_StrictInstallReportsDisconnectedFragment" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="2078210556" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000559" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1460" name="W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland" methodname="W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="724876241" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000845" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1463" name="W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay" methodname="W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="1921298501" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.001434" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1462" name="W9_03_DisjointCellsCannotShareOneOwner" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_DisjointCellsCannotShareOneOwner" methodname="W9_03_DisjointCellsCannotShareOneOwner" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="1316314886" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000598" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1464" name="W9_03_Joined2x2RotationStillWorks" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_Joined2x2RotationStillWorks" methodname="W9_03_Joined2x2RotationStillWorks" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="247192417" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.001271" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1465" name="W9_04_NullEvidenceMustNotBeCommitted" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_04_NullEvidenceMustNotBeCommitted" methodname="W9_04_NullEvidenceMustNotBeCommitted" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="1981032214" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000386" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1467" name="Build001SocketTests" fullname="B01.BUILD001.Tests.Build001SocketTests" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.004328" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1474" name="AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" fullname="B01.BUILD001.Tests.Build001SocketTests.AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" methodname="AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1618953579" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000270" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1470" name="GunHasBaseOnlyAndLateralBarrelContactIsRejected" fullname="B01.BUILD001.Tests.Build001SocketTests.GunHasBaseOnlyAndLateralBarrelContactIsRejected" methodname="GunHasBaseOnlyAndLateralBarrelContactIsRejected" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1396894329" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000187" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1475" name="InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" fullname="B01.BUILD001.Tests.Build001SocketTests.InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" methodname="InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1183563754" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000171" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1472" name="MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" fullname="B01.BUILD001.Tests.Build001SocketTests.MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" methodname="MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1699899358" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000598" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1477" name="NoCorePlacementAndNoCellOrOwnershipDuplication" fullname="B01.BUILD001.Tests.Build001SocketTests.NoCorePlacementAndNoCellOrOwnershipDuplication" methodname="NoCorePlacementAndNoCellOrOwnershipDuplication" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="103625930" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000182" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1478" name="OneQuarterRotationAlwaysRemainsIntegralAndReversible" fullname="B01.BUILD001.Tests.Build001SocketTests.OneQuarterRotationAlwaysRemainsIntegralAndReversible" methodname="OneQuarterRotationAlwaysRemainsIntegralAndReversible" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1244778646" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000181" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1473" name="StructuralGraphDisconnectsAfterSupportDies" fullname="B01.BUILD001.Tests.Build001SocketTests.StructuralGraphDisconnectsAfterSupportDies" methodname="StructuralGraphDisconnectsAfterSupportDies" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="942199526" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000175" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1471" name="SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" fullname="B01.BUILD001.Tests.Build001SocketTests.SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" methodname="SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1218691069" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000243" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1476" name="TwoTinyEdgePatchesMustHaveGenuineContactArea" fullname="B01.BUILD001.Tests.Build001SocketTests.TwoTinyEdgePatchesMustHaveGenuineContactArea" methodname="TwoTinyEdgePatchesMustHaveGenuineContactArea" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="40980926" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000221" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1469" name="WheelCanBeMirroredByYawAndMountOppositeSide" fullname="B01.BUILD001.Tests.Build001SocketTests.WheelCanBeMirroredByYawAndMountOppositeSide" methodname="WheelCanBeMirroredByYawAndMountOppositeSide" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="809192080" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000145" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1468" name="WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" fullname="B01.BUILD001.Tests.Build001SocketTests.WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" methodname="WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1853648818" result="Passed" start-time="2026-10-26 10:54:57Z" end-time="2026-10-26 10:54:57Z" duration="0.000184" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -1,0 +1,17 @@
+{
+  "source": "c3629d86144ea07ea404c87709d86e598f035675",
+  "exitCode": 2,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RAC31-Unified-20261026T110114Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"RoboRougelike.RAC001|UnifiedRC2IntegrationTests\""
+  ],
+  "stage": "RAC31-Unified",
+  "startedUtc": "2026-10-26T11:01:28.7916777Z",
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-26T11:01:48.8257476Z"
+}

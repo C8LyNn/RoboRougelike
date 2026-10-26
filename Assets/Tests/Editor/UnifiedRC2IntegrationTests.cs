@@ -44,11 +44,11 @@ public sealed class UnifiedRC2IntegrationTests
     }
     [UnityTest] public IEnumerator NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage()
     {
-        keyboard=InputSystem.AddDevice<Keyboard>();InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
+        keyboard=InputSystem.AddDevice<Keyboard>();
         // EditMode EnterPlayMode has no focused GameView input pump. Process the
         // native event and invoke the unchanged production input consumer in the
         // same input update; OS/manual input is a separate Windows check.
-        InputSystem.Update();Assert.That(Keyboard.current,Is.SameAs(keyboard));
+        InputState.Change(keyboard,new KeyboardState(Key.Enter));Assert.That(Keyboard.current,Is.SameAs(keyboard));
         Assert.That(keyboard.enterKey.wasPressedThisFrame,Is.True);
         typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(run,null);
         yield return null;yield return null;

@@ -1,0 +1,550 @@
+[
+  {
+    "phase": "Compile",
+    "exitCode": 0,
+    "source": "61b577226fe5d3b963dc16c9a3cd9f45806b5fea",
+    "startedUtc": "2026-10-26T10:54:25.1862862Z",
+    "finishedUtc": "2026-10-26T10:54:39.0702263Z",
+    "arguments": [
+      "-quit"
+    ],
+    "stage": "Build13-UnifiedRED",
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-Build13-UnifiedRED-20261026T105425Z"
+  },
+  {
+    "phase": "EditMode",
+    "exitCode": 2,
+    "source": "61b577226fe5d3b963dc16c9a3cd9f45806b5fea",
+    "startedUtc": "2026-10-26T10:54:39.0870595Z",
+    "finishedUtc": "2026-10-26T10:54:59.0923780Z",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Build13-UnifiedRED-20261026T105425Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"B01.BUILD001|UnifiedRC2IntegrationTests\""
+    ],
+    "stage": "Build13-UnifiedRED",
+    "nunit": {
+      "total": 21,
+      "passed": 18,
+      "failed": 3,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "UnifiedRC2IntegrationTests.OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Normal keyboard control must follow the same menu entry as the button\n  Expected: Garage\n  But was:  Ready\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Failed",
+        "failure": "  The unified menu must prepare the canonical garage before choosing activities\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Failed",
+        "failure": "  The unified menu must prepare the canonical garage before choosing activities\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.TypedMobilityHubDoesNotWildcardIntoStructural",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.W9_02_StrictInstallReportsDisconnectedFragment",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_DisjointCellsCannotShareOneOwner",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_Joined2x2RotationStillWorks",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13SafetyTests.W9_04_NullEvidenceMustNotBeCommitted",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.GunHasBaseOnlyAndLateralBarrelContactIsRejected",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.NoCorePlacementAndNoCellOrOwnershipDuplication",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.OneQuarterRotationAlwaysRemainsIntegralAndReversible",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.StructuralGraphDisconnectsAfterSupportDies",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.TwoTinyEdgePatchesMustHaveGenuineContactArea",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.WheelCanBeMirroredByYawAndMountOppositeSide",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001SocketTests.WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-Build13-UnifiedRED-20261026T105425Z"
+  },
+  {
+    "phase": "PlayMode",
+    "exitCode": 0,
+    "source": "61b577226fe5d3b963dc16c9a3cd9f45806b5fea",
+    "startedUtc": "2026-10-26T10:54:59.1105696Z",
+    "finishedUtc": "2026-10-26T10:55:12.1915581Z",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Build13-UnifiedRED-20261026T105425Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"B01.BUILD001|UnifiedRC2IntegrationTests\""
+    ],
+    "stage": "Build13-UnifiedRED",
+    "nunit": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "B01.BUILD001.Tests.Build001PhysicalHitTests.RealCubeColliderFaceIsSelectedButWheelTreadIsNot",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001PhysicalHitTests.TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13PhysicalTests.DemoURPShaderIsIncludedAndSupported",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13PhysicalTests.W9_01_DecorativeChildRayCannotBecomeStructuralSocket",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13PhysicalTests.W9_04_ActualPhysXPenetrationRejectsLargePhysicalPart",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.BUILD001.Tests.Build001R13PhysicalTests.W9_04_GenuineNonOverlappingBodiesCanCommit",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-Build13-UnifiedRED-20261026T105425Z"
+  },
+  {
+    "source": "c3629d86144ea07ea404c87709d86e598f035675",
+    "exitCode": 0,
+    "arguments": [
+      "-quit"
+    ],
+    "stage": "RAC31-Unified",
+    "startedUtc": "2026-10-26T11:01:15.0515752Z",
+    "phase": "Compile",
+    "finishedUtc": "2026-10-26T11:01:28.7715988Z",
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RAC31-Unified-20261026T110114Z"
+  },
+  {
+    "source": "c3629d86144ea07ea404c87709d86e598f035675",
+    "exitCode": 2,
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RAC31-Unified-20261026T110114Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"RoboRougelike.RAC001|UnifiedRC2IntegrationTests\""
+    ],
+    "stage": "RAC31-Unified",
+    "startedUtc": "2026-10-26T11:01:28.7916777Z",
+    "phase": "EditMode",
+    "finishedUtc": "2026-10-26T11:01:48.8257476Z",
+    "nunit": {
+      "total": 14,
+      "passed": 13,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ImplausibleTeleportCannotScoreCheckpoint",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.InvalidCourseAndNumbersCannotBegin",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.InvalidInputInvalidatesOnce",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.OutOfOrderCheckpointDoesNotAdvance",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.OverlappingCheckpointsRequireFreshExit",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ResetClearsRaceAndPermitsNewAttempt",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.StartInsideCheckpointRequiresExitAndReentry",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.SweptSegmentRegistersHighSpeedCrossing",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.TimeoutAtDeadlineBeatsCheckpoint",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.TinyPositiveTicksCannotExploitPerStepDistanceAllowance",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RAC31-Unified-20261026T110114Z"
+  },
+  {
+    "source": "c3629d86144ea07ea404c87709d86e598f035675",
+    "exitCode": 2,
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RAC31-Unified-20261026T110114Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"RoboRougelike.RAC001|UnifiedRC2IntegrationTests\""
+    ],
+    "stage": "RAC31-Unified",
+    "startedUtc": "2026-10-26T11:01:48.8423425Z",
+    "phase": "PlayMode",
+    "finishedUtc": "2026-10-26T11:02:06.5891021Z",
+    "nunit": {
+      "total": 4,
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests.EventFiresExactlyOnceForWinningCheckpoint",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests.MissingRunnerCannotStart",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests.TimeoutEventAndResetAreSafe",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.Mechanics.RAC001.Tests.RAC001PhysicalDemoTests.RigidbodyDemoUsesRealForcesToReachCheckpoint",
+        "result": "Failed",
+        "failure": "  Dynamic body did not cross the real floor\n  Expected: greater than 4.0f\n  But was:  1.18745446f\n"
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RAC31-Unified-20261026T110114Z"
+  },
+  {
+    "source": "702cb3b2eeba1661f8ca16f6ff75de76ba4ea5e4",
+    "exitCode": 2,
+    "phase": "EditMode",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-UnifiedGREEN-BuildSafety-20261026T105808Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"UnifiedRC2IntegrationTests|BuildRC2SafetyTests\""
+    ],
+    "finishedUtc": "2026-10-26T10:58:32.6736414Z",
+    "stage": "UnifiedGREEN-BuildSafety",
+    "startedUtc": "2026-10-26T10:58:08.5406632Z",
+    "nunit": {
+      "total": 6,
+      "passed": 3,
+      "failed": 3,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "BuildRC2SafetyTests.AcceptedNestedPatchReportsItsTrueGeometricArea",
+        "result": "Failed",
+        "failure": "  Overlap is the intersection of the two intervals, including nested intervals\n  Expected: 0.0484000035f +/- 9.99999997E-07f\n  But was:  0.139876008f\n"
+      },
+      {
+        "name": "BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea(0.02f,False)",
+        "result": "Failed",
+        "failure": "  A nested patch cannot obtain contact area from the larger surrounding socket\n  Expected: False\n  But was:  True\n"
+      },
+      {
+        "name": "BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea(0.2f,True)",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Failed",
+        "failure": "  Normal keyboard control must follow the same menu entry as the button\n  Expected: Garage\n  But was:  Ready\n"
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-UnifiedGREEN-BuildSafety-20261026T105808Z"
+  },
+  {
+    "exitCode": 0,
+    "startedUtc": "2026-10-26T10:50:30.4445170Z",
+    "finishedUtc": "2026-10-26T10:52:25.9776411Z",
+    "phase": "Compile",
+    "source": "328706d6665feb0796e9a50b83e06d562563d906",
+    "stage": "World101",
+    "arguments": [
+      "-quit"
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-World101-20261026T105030Z"
+  },
+  {
+    "exitCode": 0,
+    "startedUtc": "2026-10-26T10:52:26.0019961Z",
+    "finishedUtc": "2026-10-26T10:52:52.8778662Z",
+    "phase": "EditMode",
+    "source": "328706d6665feb0796e9a50b83e06d562563d906",
+    "stage": "World101",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-World101-20261026T105030Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"B01.MAPGENWORLD001|MapgenRC1IntegrationTests\""
+    ],
+    "nunit": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "MapgenRC1IntegrationTests.OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "MapgenRC1IntegrationTests.PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "MapgenRC1IntegrationTests.UnpreparedRouteRejectsGeneratedEntryWithoutPlayer",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "MapgenRC1IntegrationTests.VictoryUsesExistingRewardsRepairsAndFreshRegeneration",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.ArenaLight7PassesWithMeasuredEnvelope",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.CourseHeavy31PassesWithMeasuredEnvelope",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MinimumClearanceCannotBeWeakened",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MissingMeasurementRejectedBeforeBuilder",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NarrowCourseWithRealLightRejects",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NullAndInvalidRigFailClosed",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-World101-20261026T105030Z"
+  },
+  {
+    "exitCode": 0,
+    "startedUtc": "2026-10-26T10:52:52.8995541Z",
+    "finishedUtc": "2026-10-26T10:53:06.0348905Z",
+    "phase": "PlayMode",
+    "source": "328706d6665feb0796e9a50b83e06d562563d906",
+    "stage": "World101",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-World101-20261026T105030Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"B01.MAPGENWORLD001|MapgenRC1IntegrationTests\""
+    ],
+    "nunit": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.GenerateRegenerateClearAndNotifyOnce",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.InvalidInputPreservesOldSceneAndCallbacks",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.MissingMeasuredProfileAndNarrowRealLightDoNotSpawn",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.MAPGENWORLD001.Tests.MapWorldLifecycleTests.RotatedAndOffsetHostAcceptsValidatedWorldMetadata",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-World101-20261026T105030Z"
+  }
+]

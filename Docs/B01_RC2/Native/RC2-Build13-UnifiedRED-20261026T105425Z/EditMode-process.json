@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "exitCode": 2,
+  "source": "61b577226fe5d3b963dc16c9a3cd9f45806b5fea",
+  "startedUtc": "2026-10-26T10:54:39.0870595Z",
+  "finishedUtc": "2026-10-26T10:54:59.0923780Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Build13-UnifiedRED-20261026T105425Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"B01.BUILD001|UnifiedRC2IntegrationTests\""
+  ],
+  "stage": "Build13-UnifiedRED"
+}

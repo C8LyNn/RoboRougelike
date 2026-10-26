@@ -1,0 +1,11 @@
+{
+  "phase": "Compile",
+  "exitCode": 0,
+  "source": "61b577226fe5d3b963dc16c9a3cd9f45806b5fea",
+  "startedUtc": "2026-10-26T10:54:25.1862862Z",
+  "finishedUtc": "2026-10-26T10:54:39.0702263Z",
+  "arguments": [
+    "-quit"
+  ],
+  "stage": "Build13-UnifiedRED"
+}
