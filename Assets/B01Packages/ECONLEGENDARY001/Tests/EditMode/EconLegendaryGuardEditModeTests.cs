@@ -10,10 +10,13 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard.Tests
 {
     public class EconLegendaryGuardEditModeTests
     {
-        sealed class Host : IAuthoritativeR3Port, IAuthoritativeRebuildPort, IRebuildReservationProof
+        sealed class Host : IAuthoritativeR3Port, IAuthoritativeRebuildPort, IRebuildReservationProof, ISharedR3PhysicalOwnerIdentity
         {
             public string RobotId => "native-A";
-            public readonly string Id=Guid.NewGuid().ToString("N");
+            public readonly string Id;
+            public Host(string id=null) {Id=id??Guid.NewGuid().ToString("N");}
+            public bool HideOwnerProof;
+            public object AuthoritativeR3Model => HideOwnerProof ? null : this;
             public float Hp;
             public bool Pending,Proof=true,KindMismatch;
             public int Repairs;
@@ -48,6 +51,27 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard.Tests
         }
         static GuardedLegendaryPort Guard(Host h)=>
             new GuardedLegendaryPort(h,h,new RebuildQueueService(h),h);
+        [Test] public void IdenticalGuidAcrossDifferentR3StoresMustReject()
+        {
+            var same=Guid.NewGuid().ToString("N");
+            var legendStore=new Host(same){Hp=0};
+            var otherEconomyStore=new Host(same){Hp=0};
+            var guard=new GuardedLegendaryPort(legendStore,otherEconomyStore,
+                new RebuildQueueService(otherEconomyStore),otherEconomyStore);
+            Assert.IsFalse(guard.CheckSharedOwnership(out var error));
+            Assert.AreEqual("OWNER_IDENTITY_MISMATCH",error);
+            Assert.IsFalse(guard.RepairExisting(same,out error));
+            Assert.AreEqual(0,legendStore.Repairs);
+        }
+        [Test] public void MissingRealR3OwnerProofRejects()
+        {
+            var h=new Host{Hp=1,HideOwnerProof=true};
+            var guard=Guard(h);
+            Assert.IsFalse(guard.CheckSharedOwnership(out var error));
+            Assert.AreEqual("OWNER_IDENTITY_UNAVAILABLE",error);
+            Assert.IsFalse(guard.RepairExisting(h.Id,out error));
+            Assert.AreEqual(0,h.Repairs);
+        }
         [Test] public void DestroyedNeverInstantHeals()
         {
             var h=new Host{Hp=0};
