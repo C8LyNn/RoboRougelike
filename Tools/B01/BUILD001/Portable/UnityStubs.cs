@@ -86,6 +86,7 @@ namespace UnityEngine
         public static float Abs(float x) => MathF.Abs(x);
         public static int Abs(int x) => Math.Abs(x);
         public static float Max(float a,float b) => MathF.Max(a,b);
+        public static float Min(float a,float b) => MathF.Min(a,b);
         public static int RoundToInt(float x) => (int)MathF.Round(x);
     }
 
