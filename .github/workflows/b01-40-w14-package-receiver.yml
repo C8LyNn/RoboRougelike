@@ -1,0 +1,114 @@
+name: B01-40 W14 native-candidate source receiver
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/W14-RECEIVER-001/**'
+      - 'Docs/B01Validation/20261026/W14/**'
+      - '.github/workflows/b01-40-w14-package-receiver.yml'
+  push:
+    paths:
+      - 'Tools/B01/W14-RECEIVER-001/**'
+      - 'Docs/B01Validation/20261026/W14/**'
+      - '.github/workflows/b01-40-w14-package-receiver.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  actual-source-and-disposable-rollback:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-BUILD001-R14-contact-area-source
+          repository: C8LyNn/RoboRougelike
+          run-id: '40325389893'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-21-mapgenworld001-w12-source-full
+          repository: C8LyNn/RoboRougelike
+          run-id: '40325897193'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/world11
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-21-mapgenworld001-w12-source-full
+          repository: C8LyNn/RoboRougelike
+          run-id: '40292271476'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/world10
+      - uses: actions/download-artifact@v4
+        with:
+          name: camera-r122-source-zip
+          repository: C8LyNn/RoboRougelike
+          run-id: '40326329124'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/camera
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-w13-econlegendary-cross-source-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40329477269'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/guard
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-w13-econlegendary-cross-source-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40326093033'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/guardold
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-legendary-unity-w12-zip-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40221819197'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/legend
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-econ-rebuild-001-source-and-test-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40292923440'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/econ
+      - name: Reconstruct transport wrappers WITHOUT altering producer inner ZIPs
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          base=Path('artifacts'); dest=base/'pinned';dest.mkdir(exist_ok=True)
+          mapping={'build':'B01_BUILD_R14_actions.zip','world11':'B01_WORLD_R11_actions.zip','camera':'B01_CAMERA_R122_actions.zip','guard':'B01_ECONLEG_GUARD_actions.zip','world10':'MAPGENWORLD_R2_PRODUCER_ARTIFACT.zip','guardold':'B01_ECONLEG_GUARD_W14_actions.zip','legend':'W12_LEGUNITY_artifact.zip','econ':'B01_ECON_SOURCE_ARTIFACT.zip'}
+          for name,out in mapping.items():
+              folder=base/name
+              files=sorted(p for p in folder.rglob('*') if p.is_file())
+              assert files, f'NO_ACTUAL_ARTIFACT:{name}'
+              with zipfile.ZipFile(dest/out,'w',zipfile.ZIP_STORED) as z:
+                  for p in files:z.write(p,p.relative_to(folder).as_posix())
+          PY
+      - name: Verify frozen original complete ZIP bytes, GUIDs and dependencies
+        shell: bash
+        run: |
+          python Tools/B01/W14-RECEIVER-001/receiver_w14.py --artifacts-dir artifacts/pinned --report artifacts/w14-independent-g0.json
+      - name: Actually execute positive and adversarial disposable Git worktree tests
+        shell: bash
+        env:
+          B01_W14_ARTIFACTS: ${{ github.workspace }}/artifacts/pinned
+        run: |
+          python -m unittest discover -s Tools/B01/W14-RECEIVER-001/tests -v
+      - name: Preserve machine-readable audit (not Unity evidence)
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W14-${{ matrix.os }}-G0-receipt
+          path: artifacts/w14-independent-g0.json
