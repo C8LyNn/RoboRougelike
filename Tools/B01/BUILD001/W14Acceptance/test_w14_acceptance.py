@@ -28,7 +28,7 @@ def make_cases(edit=True, missing_receiver=False, fail=False, spoof_orig=False):
                 if spoof_orig and cls in (
                     "B01.BUILD001.Tests.Build001SocketTests",
                     "B01.BUILD001.Tests.Build001R13SafetyTests"):
-                    visible="UnverifiedGreenReplacement"+str(i)
+                    visible="UnverifiedGreenReplacement_"+method
                 name=visible+("("+str(i)+")" if multiplicity>1 else "")
                 ET.SubElement(root,"test-case",{
                     "classname":cls,"fullname":cls+"."+name,
