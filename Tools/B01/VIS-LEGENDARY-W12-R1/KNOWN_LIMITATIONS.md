@@ -7,3 +7,6 @@
 - Continuous moving triangle collisions/Physics.ComputePenetration and actual weak-side visibility under game camera NOT_RUN.
 - Asset preview attachment cannot be treated as BuildSocket registration; MobilityHub pending authoritative adapter.
 - ZIP and independent source target G0/G1/G2 must be verified; no merge, no live Codex game import.
+
+- R1.1 corrects synchrony with one extra glTF animation clip; importer may ignore simultaneous clip semantics unless importer exports named clip and receiver actively selects it. Inspect 4 gimbals in Unity at 0/25/50/75/100% manually.
+- New E2 121-sample vertex envelope is discrete time sampling, **not** continuous PhysX triangle collision; 3.622cm nominal per-side remainder on M04 requires actual rotation/scale/socket/mounted rig test.
