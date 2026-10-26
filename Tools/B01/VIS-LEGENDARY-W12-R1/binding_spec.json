@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "noSocketAuthority": true,
+  "upAxis": "Y",
+  "units": "meters",
+  "mounts": [
+    {
+      "id": "M01-018",
+      "legendaryId": "LEG-WPN-001",
+      "socketKind": "WeaponBase",
+      "visualNode": "VIS_LEG_LEG-WPN-001_SOCKET_WEAPONBASE",
+      "weakNode": "VIS_LEG_LEG-WPN-001_WEAK_REAR_BREECH",
+      "massKg": null,
+      "footprintNominal": [
+        3,
+        2,
+        2
+      ],
+      "restGeometryAabbMeters": [
+        1.172,
+        0.9125,
+        3.672
+      ],
+      "fit": "BLOCKED_TYPED_DEPTH_XYZ",
+      "aimAxis": [
+        0,
+        0,
+        1
+      ],
+      "pivot": "MOUNT_TOP_SOCKET",
+      "animation": "COUNTERWEIGHT_SLIDE_Y_AXIS",
+      "travelMeters": 0.22,
+      "typedFootprintDepthOverrunMeters": 2.572,
+      "status": "NOT_AUTHORIZED_TO_MOUNT"
+    },
+    {
+      "id": "M04-024",
+      "legendaryId": "LEG-MOV-001",
+      "socketKind": "MobilityHub",
+      "visualNode": "VIS_LEG_LEG-MOV-001_SOCKET_MOBILITYHUB",
+      "weakNode": "VIS_LEG_LEG-MOV-001_WEAK_UNDERSIDE_EMITTER",
+      "massKg": null,
+      "footprintNominal": [
+        3,
+        3,
+        2
+      ],
+      "restGeometryAabbMeters": [
+        1.5,
+        0.869,
+        1.5
+      ],
+      "fit": "BLOCKED_TYPED_DEPTH_XYZ",
+      "exhaustAxis": [
+        0,
+        -1,
+        0
+      ],
+      "pivot": "ROOT_UNDERSIDE_MOUNT_Z0",
+      "gimbalNodes": [
+        "N01_GIMBAL_PIVOT",
+        "N02_GIMBAL_PIVOT",
+        "N03_GIMBAL_PIVOT",
+        "N04_GIMBAL_PIVOT"
+      ],
+      "maxAngleDeg": 12,
+      "animationClipCombined": "LEG-MOV-001_ALL_FOUR_GIMBALS",
+      "originalIndividualClipsPreserved": 4,
+      "combinedChannels": 4,
+      "sampledGlbVertexEnvelopeMeters": [
+        1.57756,
+        0.884306,
+        1.57756
+      ],
+      "sampledFramesPerClip": 121,
+      "sampledWithinProposedExtent": false,
+      "limitations": "Actual combined 4-gimbal sampled GLB Z extent 1.57756m vs exact W12 Depth2x0.55=1.10m. Reassigning axis or changing 3x3x2 cells REQUIRES approved owner decision. AABB is not a triangle/PhysX certificate.",
+      "measuredAxisMapping": {
+        "X": "Width",
+        "Y": "Height",
+        "Z": "Depth"
+      },
+      "typedFootprintDepthOverrunMeters": 0.47756,
+      "animatedTotalFootprintToleranceMeters": 0,
+      "status": "NOT_AUTHORIZED_TO_MOUNT"
+    }
+  ],
+  "actualFootprintApproval": false,
+  "geometryVerification": "SAMPLED_VERTEX_AABB_E2; NATIVE_UNITY_NOT_RUN; PHYSX_NOT_RUN"
+}

@@ -1,0 +1,145 @@
+name: B01-30 W12 Legendary Visual Assets
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/VIS-LEGENDARY-W12-R1/**'
+      - '.github/workflows/b01-vis-legendary-w12.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  visual-asset-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate pinned actual M01 export and negative controls
+        shell: bash
+        run: |
+          python3 -m unittest discover -s Tools/B01/VIS-LEGENDARY-W12-R1/tests -v
+      - name: Download existing M04 Blender export artifact (NO regeneration)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          mkdir -p "$root/incoming" "$root/output"
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/12586794828/zip" -o /tmp/M04-024-ci.zip
+          unzip -oq /tmp/M04-024-ci.zip -d "$root/incoming"
+          echo '280bb77e21995b7440fdda5c7551fc135b2b3b5ce6999322708fb670ff979414  '"$root"'/incoming/M04-024.glb' | sha256sum --check --status
+      - name: Actual M04 binary retrofit and complete validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          python3 "$root/tools/rework_legendary_glb.py" \
+            --model M04-024 --input "$root/incoming/M04-024.glb" \
+            --output "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/m04-rework.json"
+          echo 'c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8  '"$root"'/output/M04-024_LEG-MOV-001_R1.glb' | sha256sum --check
+          sha256sum "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/M04_R11_SHA256.txt"
+          python3 -m unittest discover -s "$root/tests" -v
+      - name: Sample actual animated mesh vertices and combined gimbal envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          python3 "$root/tools/swept_geometry_qa.py" --glb "$root/binaries/M01-018_LEG-WPN-001_R1.glb" --output "$root/output/M01-018_SWEEP.json" --samples 121
+          python3 "$root/tools/swept_geometry_qa.py" --glb "$root/output/M04-024_LEG-MOV-001_R1.glb" --output "$root/output/M04-024_SWEEP.json" --samples 121
+          python3 - <<'PYCODE'
+          import json
+          from pathlib import Path
+          root=Path("Tools/B01/VIS-LEGENDARY-W12-R1/output")
+          m01=json.loads((root/"M01-018_SWEEP.json").read_text())
+          m04=json.loads((root/"M04-024_SWEEP.json").read_text())
+          assert len(m01["animations"])==1
+          assert len(m04["animations"])==5
+          assert [a["channels"] for a in m04["animations"]]==[1,1,1,1,4]
+          assert m04["animations"][-1]["clip"]=="LEG-MOV-001_ALL_FOUR_GIMBALS"
+          assert all(x>0 for a in m01["animations"]+m04["animations"] for x in a["sampledSweptSize"])
+          PYCODE
+      - name: Make actual full 2-asset Codex ZIP and SHA256 receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/models
+          cp "$root/output/M04-024_LEG-MOV-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
+          cp "$root/binaries/M01-018_LEG-WPN-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
+          cp "$root/"*.md /tmp/B01-VIS-LEGENDARY-W12-R1/ 2>/dev/null || true
+          cp "$root/manifest.json" "$root/binding_spec.json" /tmp/B01-VIS-LEGENDARY-W12-R1/
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/qa
+          cp "$root/output/M01-018_SWEEP.json" "$root/output/M04-024_SWEEP.json" /tmp/B01-VIS-LEGENDARY-W12-R1/qa/
+          # W15: re-evaluate every actual GLB vertex at 121 time samples/clip,
+          # not just trust a claimed JSON sweep whose GLB hash still matches.
+          python3 "$root/tools/verify_sweep_provenance.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/REAL_GLB_SWEEP_PROVENANCE_W15.json
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_sweep_provenance.py" -v
+          python3 "$root/tools/footprint_fit_qa.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/FOOTPRINT_FIT_W13.json
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_footprint_fit.py" -v
+          python3 - <<'PYGATE'
+          import json
+          from pathlib import Path
+          f=Path('/tmp/B01-VIS-LEGENDARY-W12-R1/qa/FOOTPRINT_FIT_W13.json')
+          d=json.loads(f.read_text())
+          assert d['status']=='BLOCKED_FOR_PHYSICAL_MOUNT'
+          assert all(r['status']=='BLOCKED' and not r['approvedToMount'] for r in d['reports'])
+          expected={'M01-018':-2.572,'M04-024':-0.47756}
+          assert all(abs(r['extentRemainderM'][2]-expected[r['modelId']])<0.00001 for r in d['reports'])
+          PYGATE
+          # W14: actual pinned GLB geometry, unchanged root axes + explicit mount planes.
+          python3 "$root/tools/mount_envelope_candidates.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/MOUNT_ENVELOPE_OPTIONS_W14.json
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_mount_envelope_candidates.py" -v
+          python3 - <<'PYW14'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/B01-VIS-LEGENDARY-W12-R1/qa/MOUNT_ENVELOPE_OPTIONS_W14.json")
+          d=json.loads(p.read_text())
+          assert not d['approvedToMount']
+          rows={m['modelId']:m for m in d['models']}
+          assert rows['M01-018']['minimumUnchangedRootDepthCenter']['cellsWHD']==[3,2,8]
+          assert rows['M01-018']['minimumConditionalDepthCenterShift']['cellsWHD']==[3,2,7]
+          assert rows['M04-024']['minimumUnchangedRootDepthCenter']['cellsWHD']==[4,2,4]
+          assert all(not m['minimumUnchangedRootDepthCenter']['approvedToMount'] for m in rows.values())
+          PYW14
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/tools
+          cp "$root/tools/mount_envelope_candidates.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
+          cp "$root/tools/verify_sweep_provenance.py" "$root/tools/swept_geometry_qa.py" "$root/tools/rework_legendary_glb.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/tests
+          cp "$root/tests/test_sweep_provenance.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tests/
+          # Receiver has all scripts and a portable failing-forgery regression.
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 /tmp/B01-VIS-LEGENDARY-W12-R1/tests/test_sweep_provenance.py -v
+                    (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
+          # W15: importer QA creates Python caches under the archived tools directory.
+          # Refuse stale/interpreter-specific bytecode in the Codex delivery.
+          find /tmp/B01-VIS-LEGENDARY-W12-R1 -type d -name '__pycache__' -prune -exec rm -rf {} +
+          if find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -name '*.pyc' | grep -q . || find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -name '*.pyo' | grep -q .; then
+            echo 'ERROR: interpreter bytecode slipped into source packet' >&2
+            exit 2
+          fi
+          find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
+          cd /tmp
+          find B01-VIS-LEGENDARY-W12-R1 -type f -exec touch -t 198001010000.00 {} +
+          find B01-VIS-LEGENDARY-W12-R1 -type f | LC_ALL=C sort | zip -X -q B01-VIS-LEGENDARY-W12-R1.zip -@
+          cp B01-VIS-LEGENDARY-W12-R1.zip /tmp/B01-VIS-LEGENDARY-W12-R1-first.zip
+          rm B01-VIS-LEGENDARY-W12-R1.zip
+          find B01-VIS-LEGENDARY-W12-R1 -type f | LC_ALL=C sort | zip -X -q B01-VIS-LEGENDARY-W12-R1.zip -@
+          cmp /tmp/B01-VIS-LEGENDARY-W12-R1-first.zip B01-VIS-LEGENDARY-W12-R1.zip
+          python3 - <<'PYZIP'
+          from zipfile import ZipFile
+          with ZipFile('B01-VIS-LEGENDARY-W12-R1.zip') as z:
+              names=z.namelist()
+              assert len(names)>=22
+              assert all('__pycache__' not in p and not p.endswith(('.pyc','.pyo')) for p in names)
+              assert any(p.endswith('/qa/REAL_GLB_SWEEP_PROVENANCE_W15.json') for p in names)
+              assert any(p.endswith('/tests/test_sweep_provenance.py') for p in names)
+              assert z.testzip() is None
+          PYZIP
+          cp B01-VIS-LEGENDARY-W12-R1.zip "$GITHUB_WORKSPACE/$root/output/"
+          sha256sum "$GITHUB_WORKSPACE/$root/output/B01-VIS-LEGENDARY-W12-R1.zip" | tee "$GITHUB_WORKSPACE/$root/output/ZIP_SHA256.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-VIS-LEGENDARY-W12-R1-CODEX-INBOX
+          path: Tools/B01/VIS-LEGENDARY-W12-R1/output/
+          if-no-files-found: error
+          retention-days: 30

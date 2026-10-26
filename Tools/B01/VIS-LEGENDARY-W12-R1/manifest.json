@@ -1,0 +1,122 @@
+{
+  "package_id": "B01-VIS-LEGENDARY-W12-R1",
+  "owner": "B01-30",
+  "recipient": "Codex",
+  "version": "1.0.0-R1",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "design_contract_sha": "93f290acca26839792a5bec8ea42415ac83932f3",
+  "mode": "ISOLATED_MODEL_GLTF_SOURCE_REWORK",
+  "noGameIntegration": true,
+  "noMerge": true,
+  "g2Approved": false,
+  "status": "PRODUCER_SOURCE_EVIDENCE_INTEGRITY_GATE; BOTH_PHYSICAL_MOUNTS_STILL_BLOCKED",
+  "binaries": [
+    {
+      "modelId": "M01-018",
+      "legendaryDefinitionId": "LEG-WPN-001",
+      "originalSourceHead": "a8f93e9e1fb9cd31ff9e913f472f989b5d6d4f94",
+      "originalBlobSha1": "8776da637b22fb50361f0fff025b2dbdc586d16b",
+      "reworkedGitBlobSha1": "d1b551fbb1849f88b143e0c55fcc166ecfd19e1c",
+      "reworkedSha256": "795124613e26cf2f4d7d3d59990542d0d2f4b3a65fef911132318748bae589dd",
+      "bytes": 387832,
+      "path": "Tools/B01/VIS-LEGENDARY-W12-R1/binaries/M01-018_LEG-WPN-001_R1.glb",
+      "realGitBinary": true,
+      "unityImported": false,
+      "footprintApproved": false,
+      "massKg": null,
+      "footprintStatus": "BLOCKED_TYPED_XYZ_DIMENSION"
+    },
+    {
+      "modelId": "M04-024",
+      "legendaryDefinitionId": "LEG-MOV-001",
+      "originalSourceHead": "eef02864b106546b200011a2f0286fe7d9a83a1f",
+      "originalActionsArtifact": 12586794828,
+      "originalGlbSha256": "280bb77e21995b7440fdda5c7551fc135b2b3b5ce6999322708fb670ff979414",
+      "reworkedSha256": "c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8",
+      "reworkedBytes": 857292,
+      "ciOutputPath": "Tools/B01/VIS-LEGENDARY-W12-R1/output/M04-024_LEG-MOV-001_R1.glb",
+      "realLocalBinary": true,
+      "ciWorkflow": ".github/workflows/b01-vis-legendary-w12.yml",
+      "ciVerdict": "PASS_ACTUAL_PINNED_ARTIFACT_AND_REWORK_HASH",
+      "unityImported": false,
+      "massKg": null,
+      "animationClips": 5,
+      "animationChannels": 8,
+      "simultaneousClip": "LEG-MOV-001_ALL_FOUR_GIMBALS",
+      "clipPolicy": "PRESERVE_4_ORIGINAL_CLIPS_AND_ADD_COMBINED_SYNC_CLIP",
+      "sampledSweptAabbMeters": [
+        1.57756,
+        0.884306,
+        1.57756
+      ],
+      "sampledFramesPerClip": 121,
+      "sampledBoundsStatus": "E2_MESH_VERTEX_POINTS_ONLY_NOT_COLLISION",
+      "footprintApproved": false,
+      "footprintStatus": "BLOCKED_TYPED_XYZ_DIMENSION",
+      "physicalFitClaimSuperseded": "Old W12 nominal fit claim used axis permutation: wrong for typed W/H/D canonical mapping."
+    }
+  ],
+  "localProducerTests": {
+    "result": "PASS_ON_CI_RUN_40292486059_RETEST_AT_FINAL_SHA_REQUIRED",
+    "ciRun": 40291905422,
+    "sourceSha": "e24dfd15f3526ea15a363b6699f8ca16a3f20808",
+    "realGlbTests": "10/10 M01 then 10/10 M01+M04",
+    "animationSweep": "M01 1 clip + M04 5 clips x 121 samples",
+    "nativeUnity": "NOT_RUN_CREDENTIAL_PREFLIGHT",
+    "mathAndRealAssetCases": "20/20 before M04 + 20/20 after M04",
+    "samplesPerClip": 121
+  },
+  "sourceOwnedPaths": [
+    "Tools/B01/VIS-LEGENDARY-W12-R1/.*",
+    ".github/workflows/b01-vis-legendary-w12.yml"
+  ],
+  "tests": "python3 -m unittest discover -s Tools/B01/VIS-LEGENDARY-W12-R1/tests -v",
+  "knownLimitations": [
+    "M01 depth visual exceeds nominal footprint",
+    "MobilityHub not registered in BUILD",
+    "No Unity/PhysX/narrowphase",
+    "No approved mass values",
+    "Need explicit saved URP material assets",
+    "Full CI ZIP is only ready after workflow success"
+  ],
+  "requiredGates": [
+    "B01-40 independent G0_SOURCE+TARGET",
+    "B01-60 G1_NATIVE",
+    "B01-00 explicit G2",
+    "Codex target integrator ACK",
+    "B01-10/B01-00 explicit geometry footprint approval before mounting"
+  ],
+  "packageRevision": "R1.3_W15_SOURCE_SWEEP_RECEIPT_AUTH",
+  "latestCiRun": 40291905422,
+  "independentG0R11": "PENDING_B01_40_RECHECK_SOURCE_AND_ZIP",
+  "g1Native": "NOT_RUN_UNITY_CREDENTIALS",
+  "w13FootprintGate": {
+    "source": "tools/footprint_fit_qa.py",
+    "tests": "tests/test_footprint_fit.py",
+    "ciPassedAt": "40325625953",
+    "newTestsPassed": 15,
+    "samplesPerClip": 121,
+    "axisMapping": {
+      "X": "Width",
+      "Y": "Height",
+      "Z": "Depth"
+    },
+    "sizeOnlyNotPhysics": true,
+    "m01DepthOverrunM": 2.572,
+    "m04DepthOverrunM": 0.47756,
+    "approvedForMount": false,
+    "shaIncludesBinaryAndSweep": true,
+    "originPivotAndPhysx": "NOT_RUN"
+  },
+  "w15SourceReceiptGate": {
+    "status": "SOURCE_RECOMPUTE_REQUIRED_BEFORE_FOOTPRINT",
+    "code": "tools/verify_sweep_provenance.py",
+    "tests": "tests/test_sweep_provenance.py",
+    "output": "qa/REAL_GLB_SWEEP_PROVENANCE_W15.json",
+    "authenticSamplesPerClip": 121,
+    "rejects": "forged min/max/size/intermediate frames and clip schema even if true GLB SHA256 is unchanged",
+    "vertexAlgorithm": "same owner glTF sampler, actual binary re-evaluation, not a second independent algorithm",
+    "unityNative": "NOT_RUN",
+    "mountApproved": false
+  }
+}
