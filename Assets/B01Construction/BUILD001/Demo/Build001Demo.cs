@@ -10,10 +10,22 @@ namespace B01.BUILD001
         private GameObject ghost;
         private BuildPlacementResult verdict;
         private string supporter, message;
-        private int choice;
+        private int choice = -1;
+        private Material good, bad, neutral;
+        private Shader previewShader;
 
         private void Start()
         {
+            previewShader = Resources.Load<Shader>("BUILD001_PreviewURP");
+            if (previewShader == null || !previewShader.isSupported)
+            {
+                Debug.LogError("[BUILD001] URP preview shader missing/unsupported; demo fail closed.");
+                enabled = false;
+                return;
+            }
+            good = MakeMaterial(new Color(.12f,.85f,.28f,1f));
+            bad = MakeMaterial(new Color(.95f,.12f,.12f,1f));
+            neutral = MakeMaterial(new Color(.30f,.42f,.62f,1f));
             var light = new GameObject("BUILD001_LIGHT").AddComponent<Light>();
             light.type = LightType.Directional;
             light.transform.rotation=Quaternion.Euler(50,30,0);
@@ -21,6 +33,7 @@ namespace B01.BUILD001
             floor.name="DemoFloor";
             floor.transform.position=new Vector3(0,-.4f,0);
             floor.transform.localScale=new Vector3(12,.5f,12);
+            floor.GetComponent<Renderer>().sharedMaterial = neutral;
             var cameraObject=new GameObject("BUILD001_DEMO_CAMERA");
             var cam=cameraObject.AddComponent<Camera>();
             cam.tag="MainCamera";
@@ -32,6 +45,7 @@ namespace B01.BUILD001
             cube.name="LogicalCore_OneOwner";
             cube.transform.position=Vector3.up;
             cube.transform.localScale=Vector3.one*.52f;
+            cube.GetComponent<Renderer>().sharedMaterial = neutral;
             Cycle();
         }
 
@@ -57,11 +71,25 @@ namespace B01.BUILD001
                 (Vector3)pose.Anchor*BuildSocketGeometry.GridMetres;
             ghost.transform.localScale=Vector3.one*.52f;
             var renderer=ghost.GetComponent<Renderer>();
-            renderer.material.color=verdict==BuildPlacementResult.Valid ?
-                new Color(.20f,.9f,.35f) : new Color(.9f,.25f,.2f);
+            renderer.sharedMaterial = verdict==BuildPlacementResult.Valid ? good : bad;
             message=definition.Id+" at "+pose.Anchor+": "+verdict+
                 (supporter==null?"":" / support="+supporter);
             Debug.Log("[BUILD001] "+message);
+        }
+
+        private Material MakeMaterial(Color color)
+        {
+            var material = new Material(previewShader);
+            material.name = "BUILD001_PREVIEW_RUNTIME_URP";
+            material.SetColor("_BaseColor", color);
+            return material;
+        }
+
+        private void OnDestroy()
+        {
+            if (good != null) Destroy(good);
+            if (bad != null) Destroy(bad);
+            if (neutral != null) Destroy(neutral);
         }
 
         private void OnGUI()
