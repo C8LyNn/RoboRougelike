@@ -26,10 +26,24 @@ for needle in ["Camera001AimTransitionDiagnostics.Measure(sample)", "records.Cou
  "previous.Sample.CurrentMuzzleForwardWorld", "CultureInfo.InvariantCulture",
  "targetStepDeg", "CurrentMuzzleToTargetErrorDegrees", "CameraFinalPoseUnsafe"]:
     assert needle in runtime,needle
+# W14 exact causal false-positive guard. Reject skipped native frames BEFORE
+# calculating a one-frame slew rate budget; fail-closed and atomic.
+assert 'frame.FrameIndex < 0' in runtime
+assert '(long)frame.FrameIndex - previous.FrameIndex != 1L' in runtime
+assert 'CAMERA001_AIM_TIMELINE_SKIPPED_FRAME' in runtime
+assert 'CAMERA001_AIM_TIMELINE_NEGATIVE_FRAME' in runtime
+assert runtime.index('CAMERA001_AIM_TIMELINE_SKIPPED_FRAME') < runtime.index(
+    'Camera001AimTransitionDiagnostics.Measure(sample)')
+assert 'SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew' in edit
+assert 'NegativeFrameRejectedAndMaxIntFrameCannotWrap' in edit
+# Negative mutation reproduces prior monotonic-only acceptance.
+mutated_guard=runtime.replace('(long)frame.FrameIndex - previous.FrameIndex != 1L','false')
+assert mutated_guard!=runtime and '(long)frame.FrameIndex - previous.FrameIndex != 1L' not in mutated_guard
+
 assert "transform.rotation = actualRotation;" in original
 edit_names=re.findall(r'\[Test\]\s+public void (\w+)\(',edit)
 play_names=re.findall(r'\[UnityTest\]\s+public IEnumerator (\w+)\(',play)
-assert len(set(edit_names))==6 and len(edit_names)==6,edit_names
+assert len(set(edit_names))==8 and len(edit_names)==8,edit_names
 assert len(set(play_names))==2 and len(play_names)==2,play_names
 assert "Physics.Raycast(ray" in play and "Vector3.RotateTowards(" in play
 assert "QueryTriggerInteraction.Ignore" in play
