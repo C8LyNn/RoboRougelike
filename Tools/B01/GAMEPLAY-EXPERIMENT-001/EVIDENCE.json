@@ -1,0 +1,72 @@
+{
+  "cases": 15,
+  "passed": 15,
+  "failed": 0,
+  "details": [
+    {
+      "label": "900 synthetic events schema passes",
+      "pass": true
+    },
+    {
+      "label": "100 seeds every build activity",
+      "pass": true
+    },
+    {
+      "label": "synthetic evidence never masquerades as native",
+      "pass": true
+    },
+    {
+      "label": "synthetic evidence never implies native G1",
+      "pass": true
+    },
+    {
+      "label": "diverse builds have no artificial universal winner",
+      "pass": true
+    },
+    {
+      "label": "double event rejected",
+      "pass": true
+    },
+    {
+      "label": "fourth non-armor loot rejected",
+      "pass": true
+    },
+    {
+      "label": "armor loot excluded",
+      "pass": true
+    },
+    {
+      "label": "invalid time-to-first-fun rejected",
+      "pass": true
+    },
+    {
+      "label": "same build+activity+seed rejected",
+      "pass": true
+    },
+    {
+      "label": "source checks flag artificial dominance",
+      "pass": true
+    },
+    {
+      "label": "requireReal rejects synthetic-only data",
+      "pass": true
+    },
+    {
+      "label": "empty input fails closed",
+      "pass": true
+    },
+    {
+      "label": "single mode not evidence completeness",
+      "pass": true
+    },
+    {
+      "label": "synthetic mixed with native refused under real gate",
+      "pass": true
+    }
+  ],
+  "syntheticEvents": 900,
+  "naturalDominance": 0,
+  "syntheticOnly": true,
+  "realPlaytest": "NOT_RUN",
+  "CIContractOnly": true
+}
