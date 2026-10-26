@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="3" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 10:58:31Z" end-time="2026-10-26 10:58:31Z" duration="0,412318">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1080" result="Failed" site="Child" start-time="2026-10-26 10:58:31Z" end-time="2026-10-26 10:58:31Z" duration="0.412318" total="6" passed="3" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1463" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="378" result="Failed" site="Child" start-time="2026-10-26 10:58:31Z" end-time="2026-10-26 10:58:31Z" duration="0.357563" total="6" passed="3" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="6844" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1026" name="BuildRC2SafetyTests" fullname="BuildRC2SafetyTests" classname="BuildRC2SafetyTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-26 10:58:22Z" end-time="2026-10-26 10:58:22Z" duration="0.026407" total="3" passed="1" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1030" name="AcceptedNestedPatchReportsItsTrueGeometricArea" fullname="BuildRC2SafetyTests.AcceptedNestedPatchReportsItsTrueGeometricArea" methodname="AcceptedNestedPatchReportsItsTrueGeometricArea" classname="BuildRC2SafetyTests" runstate="Runnable" seed="1519280962" result="Failed" start-time="2026-10-26 10:58:22Z" end-time="2026-10-26 10:58:22Z" duration="0.012540" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[  Overlap is the intersection of the two intervals, including nested intervals
+  Expected: 0.0484000035f +/- 9.99999997E-07f
+  But was:  0.139876008f
+]]></message>
+            <stack-trace><![CDATA[at BuildRC2SafetyTests.AcceptedNestedPatchReportsItsTrueGeometricArea () [0x00063] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\BuildRC2SafetyTests.cs:31
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1029" name="NestedPatchMustSatisfyActualMinimumContactArea" fullname="BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea" classname="BuildRC2SafetyTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-26 10:58:22Z" end-time="2026-10-26 10:58:22Z" duration="0.005648" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1027" name="NestedPatchMustSatisfyActualMinimumContactArea(0.02f,False)" fullname="BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea(0.02f,False)" methodname="NestedPatchMustSatisfyActualMinimumContactArea" classname="BuildRC2SafetyTests" runstate="Runnable" seed="423373806" result="Failed" start-time="2026-10-26 10:58:22Z" end-time="2026-10-26 10:58:22Z" duration="0.002903" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[  A nested patch cannot obtain contact area from the larger surrounding socket
+  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea (System.Single half, System.Boolean expected) [0x0006b] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\BuildRC2SafetyTests.cs:21
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1028" name="NestedPatchMustSatisfyActualMinimumContactArea(0.2f,True)" fullname="BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea(0.2f,True)" methodname="NestedPatchMustSatisfyActualMinimumContactArea" classname="BuildRC2SafetyTests" runstate="Runnable" seed="1454181975" result="Passed" start-time="2026-10-26 10:58:22Z" end-time="2026-10-26 10:58:22Z" duration="0.001409" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1459" name="UnifiedRC2IntegrationTests" fullname="UnifiedRC2IntegrationTests" classname="UnifiedRC2IntegrationTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-26 10:58:31Z" end-time="2026-10-26 10:58:31Z" duration="0.345799" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1462" name="OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage" fullname="UnifiedRC2IntegrationTests.OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage" methodname="OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="687341494" result="Failed" start-time="2026-10-26 10:58:22Z" end-time="2026-10-26 10:58:25Z" duration="3.164361" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Normal keyboard control must follow the same menu entry as the button
+  Expected: Garage
+  But was:  Ready
+]]></message>
+            <stack-trace><![CDATA[at UnifiedRC2IntegrationTests+<OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage>d__6.MoveNext () [0x00086] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\Tests\Editor\UnifiedRC2IntegrationTests.cs:49
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1461" name="RepeatedPreparationDoesNotReplacePhysicalOwnership" fullname="UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership" methodname="RepeatedPreparationDoesNotReplacePhysicalOwnership" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="1225028315" result="Passed" start-time="2026-10-26 10:58:25Z" end-time="2026-10-26 10:58:28Z" duration="2.967517" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1460" name="UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" fullname="UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" methodname="UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="628699726" result="Passed" start-time="2026-10-26 10:58:28Z" end-time="2026-10-26 10:58:31Z" duration="3.306327" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Heavy
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

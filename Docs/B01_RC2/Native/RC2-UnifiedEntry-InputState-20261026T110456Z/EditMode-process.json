@@ -1,0 +1,17 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-UnifiedEntry-InputState-20261026T110456Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"UnifiedRC2IntegrationTests\""
+  ],
+  "phase": "EditMode",
+  "stage": "UnifiedEntry-InputState",
+  "source": "85ba58f63e45a7038b1793bf3329d64a74b2e3d6",
+  "exitCode": 2,
+  "finishedUtc": "2026-10-26T11:05:20.0222388Z",
+  "startedUtc": "2026-10-26T11:04:56.2964626Z"
+}

@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-26",
+  "stage": "Final extracted RC2 retail, 1280x720, after seven successful finite Player runs",
+  "status": "NOT_RUN_TOOL_UNAVAILABLE",
+  "attempts": [
+    "mcp__node_repl__js: initialize @oai/sky",
+    "mcp__node_repl__js_reset: succeeded; retry initialization failed identically",
+    "mcp__cua_repl: getApp with exact extracted game EXE; failed identically before returning an app"
+  ],
+  "error": "failed to write kernel assets: System nie może odnaleźć określonej ścieżki. (os error 3)",
+  "UIActionsPerformed": 0,
+  "accessibilityClientAttached": false,
+  "note": "No app/window observation or input was obtained. This is an automation runtime failure, not a Unity compilation or game result. No custom SendInput/UIA workaround was used. Manual garage/Alt+F4 request was sent to the user separately. InputSystem-driven Player tests are reported separately and are not OS/human evidence."
+}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Passed" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0,0627801">
+  <test-suite type="TestSuite" id="1616" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="430" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.062780" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1009" name="B01.BUILD001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/B01.BUILD001.PlayModeTests.dll" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.052518" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="41864" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1010" name="B01" fullname="B01" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.051955" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1011" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.051708" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1012" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.051500" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="Build001PhysicalHitTests" fullname="B01.BUILD001.Tests.Build001PhysicalHitTests" classname="B01.BUILD001.Tests.Build001PhysicalHitTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.032449" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1002" name="RealCubeColliderFaceIsSelectedButWheelTreadIsNot" fullname="B01.BUILD001.Tests.Build001PhysicalHitTests.RealCubeColliderFaceIsSelectedButWheelTreadIsNot" methodname="RealCubeColliderFaceIsSelectedButWheelTreadIsNot" classname="B01.BUILD001.Tests.Build001PhysicalHitTests" runstate="Runnable" seed="2120192158" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.019966" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts" fullname="B01.BUILD001.Tests.Build001PhysicalHitTests.TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts" methodname="TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts" classname="B01.BUILD001.Tests.Build001PhysicalHitTests" runstate="Runnable" seed="1714397286" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.002481" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1004" name="Build001R13PhysicalTests" fullname="B01.BUILD001.Tests.Build001R13PhysicalTests" classname="B01.BUILD001.Tests.Build001R13PhysicalTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.018126" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1008" name="DemoURPShaderIsIncludedAndSupported" fullname="B01.BUILD001.Tests.Build001R13PhysicalTests.DemoURPShaderIsIncludedAndSupported" methodname="DemoURPShaderIsIncludedAndSupported" classname="B01.BUILD001.Tests.Build001R13PhysicalTests" runstate="Runnable" seed="718323870" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.006182" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="W9_01_DecorativeChildRayCannotBecomeStructuralSocket" fullname="B01.BUILD001.Tests.Build001R13PhysicalTests.W9_01_DecorativeChildRayCannotBecomeStructuralSocket" methodname="W9_01_DecorativeChildRayCannotBecomeStructuralSocket" classname="B01.BUILD001.Tests.Build001R13PhysicalTests" runstate="Runnable" seed="1521650958" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.004300" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1006" name="W9_04_ActualPhysXPenetrationRejectsLargePhysicalPart" fullname="B01.BUILD001.Tests.Build001R13PhysicalTests.W9_04_ActualPhysXPenetrationRejectsLargePhysicalPart" methodname="W9_04_ActualPhysXPenetrationRejectsLargePhysicalPart" classname="B01.BUILD001.Tests.Build001R13PhysicalTests" runstate="Runnable" seed="597313499" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.005267" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1007" name="W9_04_GenuineNonOverlappingBodiesCanCommit" fullname="B01.BUILD001.Tests.Build001R13PhysicalTests.W9_04_GenuineNonOverlappingBodiesCanCommit" methodname="W9_04_GenuineNonOverlappingBodiesCanCommit" classname="B01.BUILD001.Tests.Build001R13PhysicalTests" runstate="Runnable" seed="417432241" result="Passed" start-time="2026-10-26 10:55:10Z" end-time="2026-10-26 10:55:10Z" duration="0.001200" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

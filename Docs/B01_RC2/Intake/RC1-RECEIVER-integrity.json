@@ -1,0 +1,26 @@
+{
+  "source": "69095c56c9fe5c0e3d86ba1da1a5b8bf85831fee",
+  "files": [
+    {
+      "path": "Tools/B01/RC1-RECEIVER-001/.gitignore",
+      "sha256": "2b202317e80fe970148cada46a54f3355ae939043b142e5095c3906326f8e792"
+    },
+    {
+      "path": "Tools/B01/RC1-RECEIVER-001/CAMERA001_R12_PIN.json",
+      "sha256": "104f0c1a6f81ce007af3d85b6127438921227b39af303ee0f058ee065e5c042a"
+    },
+    {
+      "path": "Tools/B01/RC1-RECEIVER-001/README.md",
+      "sha256": "193cd0ad5ca7503ab85088419e17cd6e18345ee4f2548d15598829848bb2deea"
+    },
+    {
+      "path": "Tools/B01/RC1-RECEIVER-001/receiver_gate.py",
+      "sha256": "247671449222ebe6cbeb8aef03b99bfbcbaa41846a087182e25a733ea84903b5"
+    },
+    {
+      "path": "Tools/B01/RC1-RECEIVER-001/test_receiver_gate.py",
+      "sha256": "def6c7a704562ca40112c40209626115e53ed180fd6b8b1df9725c3842741dd0"
+    }
+  ],
+  "state": "TOOLS_ONLY_NO_GAMEPLAY_OR_INDEPENDENT_GATE_CLAIM"
+}

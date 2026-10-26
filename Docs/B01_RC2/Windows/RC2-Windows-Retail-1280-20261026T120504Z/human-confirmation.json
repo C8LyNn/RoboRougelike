@@ -1,0 +1,15 @@
+{
+  "recordedUtc": "2026-10-26T16:09:08.235127+00:00",
+  "source": "direct human reply to request_user_input_async call_3e1ee41e1eb54e38a1385939315f093b",
+  "gameSource": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "run": "RC2-Windows-Retail-1280-20261026T120504Z",
+  "status": "PASS_USER_CONFIRMED",
+  "userAnswer": "Gara\u017c dzia\u0142a, gra zamkn\u0119\u0142a si\u0119 poprawnie",
+  "checks": {
+    "preparationGarageEntry": "PASS_USER_CONFIRMED",
+    "manualAltF4Shutdown": "PASS_USER_CONFIRMED"
+  },
+  "nativeExitCode": null,
+  "nativeExitCodeStatus": "NOT_CAPTURED",
+  "scope": "Actual extracted retail already launched at1280x720; does not certify remaining UI/hardware scenarios or fix automated C0000005."
+}

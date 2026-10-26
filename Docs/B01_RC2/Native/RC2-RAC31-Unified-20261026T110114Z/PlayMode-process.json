@@ -1,0 +1,17 @@
+{
+  "source": "c3629d86144ea07ea404c87709d86e598f035675",
+  "exitCode": 2,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RAC31-Unified-20261026T110114Z\\PlayMode.xml\"",
+    "-testFilter",
+    "\"RoboRougelike.RAC001|UnifiedRC2IntegrationTests\""
+  ],
+  "stage": "RAC31-Unified",
+  "startedUtc": "2026-10-26T11:01:48.8423425Z",
+  "phase": "PlayMode",
+  "finishedUtc": "2026-10-26T11:02:06.5891021Z"
+}

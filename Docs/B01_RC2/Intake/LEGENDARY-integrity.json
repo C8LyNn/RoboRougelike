@@ -1,0 +1,151 @@
+{
+  "package": "LEGENDARY",
+  "source": "dffabbc6960304fdb33322b5a23c884feac804c6",
+  "targetBefore": "0663d3ac5da17786bdc3fa95de71cd169df91071",
+  "zip": {
+    "name": "LEGENDARY-UNITY-001.zip",
+    "sha256": "14eccb49f69b2e67ecb34008fe19689b1b66e629ed94491224fb327216fc1fb2",
+    "bytes": 10959,
+    "entries": 16,
+    "gitMatched": 16,
+    "generatedManifests": []
+  },
+  "preservedShared": [
+    {
+      "path": "Assets/B01Packages.meta",
+      "preservedSHA256": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed",
+      "sourceSHA256": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed"
+    }
+  ],
+  "sourceFiles": 25,
+  "GUIDCountAfter": 874,
+  "obsolete": [],
+  "files": [
+    {
+      "path": "Assets/B01Packages/LEGENDARY001.meta",
+      "sha256": "e93195e7db0fdafeccf084a66ca53670b094bb3bb1fee0511ed31174ba9cd956",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Examples.meta",
+      "sha256": "8676953f412040b15f6e89d9f44615bc20d25fe6b4189dcf86903b4868f8f19e",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Examples/LegendarySmokeExample.cs",
+      "sha256": "860cfb3e3e16b763bfafbfda9cda75954ddcbe469b2067a714e17fff4f44cdd2",
+      "bytes": 471
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Examples/LegendarySmokeExample.cs.meta",
+      "sha256": "d0adc852f8e550f1bc8de6288a7aa2c2230bdc1563943138ca3ea5e1d3d6ce6c",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Runtime.meta",
+      "sha256": "35fa1633b660b380a392649b18e49a26388a43bda4f4542de159ed0144c73bde",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Runtime/B01.Legendary.Unity.asmdef",
+      "sha256": "b835f81f345ef7ebc9ed31667ac6269e7624d72ccb0ba160b0347d0caa535d15",
+      "bytes": 356
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Runtime/B01.Legendary.Unity.asmdef.meta",
+      "sha256": "fa40ced5bf232cb2d61e39e5aee5a6fc52b70ad7c3a8086e889c5e5de496325e",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Runtime/LegendaryUnityCore.cs",
+      "sha256": "819add768590ecb04b635be1f3b42981e5f6e675218bf41a9427034d9e8fd5f4",
+      "bytes": 20169
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Runtime/LegendaryUnityCore.cs.meta",
+      "sha256": "60b189e32ab28783fcf77cc51e3ea78dfcdf5f578e04e68b1f73766170ceb68d",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Tests.meta",
+      "sha256": "d526fda2e6112a56eb7c477000c986d4a8c1b6e97137a353f9ba71dd375a449c",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Tests/EditMode.meta",
+      "sha256": "ad9423c50460f7cac880941952bfd2a7e7c517bc8985b882ef7c06593d696b1e",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Tests/EditMode/B01.Legendary.Unity.Tests.asmdef",
+      "sha256": "d551fb70a112845d8ead8ffb4411d6759a33aee56b0a1f2f39a270db8229b87e",
+      "bytes": 471
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Tests/EditMode/B01.Legendary.Unity.Tests.asmdef.meta",
+      "sha256": "82382fe7a78d609a1ed0257bbe4c2486c3f380b6faa8652f8a71c58b5e086b31",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Tests/EditMode/LegendaryEditModeTests.cs",
+      "sha256": "146624ab3900276b46d5ea634961d8a678976605e18dcacdbb286466a8397cc1",
+      "bytes": 3937
+    },
+    {
+      "path": "Assets/B01Packages/LEGENDARY001/Tests/EditMode/LegendaryEditModeTests.cs.meta",
+      "sha256": "82c93ae667adf1bdbdead4c5b1e3263064065bf6e5f8fdc8a1a1ebeadddb0806",
+      "bytes": 243
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/INSTALL_FOR_CODEX.md",
+      "sha256": "0f8497e1490f0e3983a14ff8eae3c136c4acfc4a287b8af5a125139dc9365fc3",
+      "bytes": 2151
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/R3LegendaryPort.install.cs",
+      "sha256": "d1ea529d2acc657bc51039d2022b4839ab6fb19a25ba799630030b08d2803981",
+      "bytes": 3872
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/README.md",
+      "sha256": "0b24957655b55b15fa8a2151b8c8ca87495f19f682983f9920315335a22b8d8c",
+      "bytes": 2591
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/build_package.py",
+      "sha256": "3635907396cde209a94567387a44432ed08776e517c097955d96b91a9ada4456",
+      "bytes": 2378
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/fixtures-leg11.json",
+      "sha256": "599e0767c260bd1557d52ae359607803538eb9f69bfec33eaebe02b3842f1f3d",
+      "bytes": 6230
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/tests/BridgeCompile/BridgeCompile.csproj",
+      "sha256": "a608f5905bb59ba0dffb630b1d99f99d3872df6eb8feeb7a0e741245ce98cd53",
+      "bytes": 707
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/tests/BridgeCompile/R3SignatureStub.cs",
+      "sha256": "780b6500d0b111d461d6551de1f3fb31a45b7f34d6922c14073664316efdd776",
+      "bytes": 1881
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/tests/LegendaryUnity.SurrogateTests.csproj",
+      "sha256": "4efc4a7688e26867367bc8badfef5f96fd8b051d358c0f6a15020043f1d1d8a8",
+      "bytes": 549
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/tests/Program.cs",
+      "sha256": "b9a228023c9e20affc5c32d55b17558048901dfa5a91ef1d4be114aa566f50a0",
+      "bytes": 18761
+    },
+    {
+      "path": "Tools/B01/LEGENDARY-UNITY-001/tests/UnityJsonShim.cs",
+      "sha256": "37aa0053b8c51f52705a6cba28a07d034790c74e413c3d4844877a0c4ceca760",
+      "bytes": 546
+    }
+  ],
+  "status": "STAGED_FULL_PINNED_SOURCE"
+}

@@ -1,0 +1,17 @@
+{
+  "stage": "RewardBoundary-RED",
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-26T11:34:21.1582936Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RewardBoundary-RED-20261026T113405Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"RawServiceCannotBypassTheControllerSettlementBoundary\""
+  ],
+  "startedUtc": "2026-10-26T11:34:05.7840915Z",
+  "source": "0663d3ac5da17786bdc3fa95de71cd169df91071",
+  "exitCode": 2
+}

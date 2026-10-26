@@ -1,0 +1,17 @@
+{
+  "source": "702cb3b2eeba1661f8ca16f6ff75de76ba4ea5e4",
+  "exitCode": 2,
+  "phase": "EditMode",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-UnifiedGREEN-BuildSafety-20261026T105808Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"UnifiedRC2IntegrationTests|BuildRC2SafetyTests\""
+  ],
+  "finishedUtc": "2026-10-26T10:58:32.6736414Z",
+  "stage": "UnifiedGREEN-BuildSafety",
+  "startedUtc": "2026-10-26T10:58:08.5406632Z"
+}

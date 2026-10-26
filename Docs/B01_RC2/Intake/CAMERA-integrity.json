@@ -1,0 +1,276 @@
+{
+  "package": "CAMERA",
+  "source": "52b5930a04a6e5d9f2fc28fa5b616036b61f0e44",
+  "targetBefore": "0663d3ac5da17786bdc3fa95de71cd169df91071",
+  "zip": {
+    "name": "CAMERA001_R1_2_1_FULL_SOURCE_QA.zip",
+    "sha256": "b5d74b724d4479a39c8dd8f19414c50b62ad3418782c6f7d67dfeedcbb1e1099",
+    "bytes": 61246,
+    "entries": 51,
+    "gitMatched": 51,
+    "generatedManifests": []
+  },
+  "preservedShared": [
+    {
+      "path": "Assets/B01Packages.meta",
+      "preservedSHA256": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed",
+      "sourceSHA256": "fe9f4f7fb9310d2d20cf1434b1c337d40afb12b8365461c2982cc0397ab40f33"
+    }
+  ],
+  "sourceFiles": 50,
+  "GUIDCountAfter": 864,
+  "obsolete": [],
+  "files": [
+    {
+      "path": "Assets/B01Packages/CAMERA001.meta",
+      "sha256": "99ecdb838a1a75e8cd917e320427ca86f1e6e67aee0e4ca44f0a28bc392dd2d5",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo.meta",
+      "sha256": "0abf6e14bc2ed1d5b27634d22a1d4ab0487bddb9827c6bbc87ddb7ec942784e3",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/CAMERA001_Demo.unity",
+      "sha256": "0c55df5b9ceeb9b76a5e09abda887027fe5ff74f4a44b865fa1aae44055db4e4",
+      "bytes": 1379
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/CAMERA001_Demo.unity.meta",
+      "sha256": "817c29fbc3d6caeea768f6182e331200e1c90a7ae1d9bc2ca0c63970c5e4bd05",
+      "bytes": 152
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/Camera001Demo.cs",
+      "sha256": "461107be883970f3da5a7101d464b0c6ff694e802a786839d9b439f3c7f4c10a",
+      "bytes": 8220
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Demo/Camera001Demo.cs.meta",
+      "sha256": "989aa62e79fc744ab553dca1ddff08600eb65aa4062793c4d1863b961df8eb19",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime.meta",
+      "sha256": "64c51192521e878c0aafde84fd00cf6c18baec9001911bf02816f3d22074a136",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/B01.CAMERA001.Runtime.asmdef",
+      "sha256": "a8d8297f40c1232bd12e03e192303c50b401bbfad7f4b49f80b7e069ec90079c",
+      "bytes": 344
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/B01.CAMERA001.Runtime.asmdef.meta",
+      "sha256": "64d12c51beaf68d5c0e72f9536463a904d57f0f7a5568aaae1127ff19f950079",
+      "bytes": 163
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001AimTransitionDiagnostics.cs",
+      "sha256": "1883c2e1190ce9f2f0821e085a6c2d7000c13f17a026cd9973e6934075607557",
+      "bytes": 5404
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001AimTransitionDiagnostics.cs.meta",
+      "sha256": "31aa9ecfc1fb5f0ff8bfb1466715bb8dd0045d9c6d3dcf7c2b48029c4266b331",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs",
+      "sha256": "2c3997e1a885394e9a9143f1d93eccb0ed3b93bcb2e5109dcd5ee532be0a4051",
+      "bytes": 4528
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Framing.cs.meta",
+      "sha256": "46ea01462d658e8cf3719f2db28bb4f0151d7f56c22efac69ff6557d355895f2",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs",
+      "sha256": "d6cd37a9c2ebdefbe7b8002c060ffcb852a0eb60b787427e264c1e41e4835d3b",
+      "bytes": 12325
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs.meta",
+      "sha256": "1a8efba9706475d7631a60fb186b8fa7ab1a865f2343ea805444a2625162b3be",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests.meta",
+      "sha256": "fe6783953e093a46d951bd7e6f3343a8b833893078876aab72fdca625da09a6e",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode.meta",
+      "sha256": "8e3bb8c0aeda91b14e88a3f428536a6460ce988ff902111a4261234004f99ea0",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef",
+      "sha256": "42e63b870180e11c42b51297ce54c261154a1725bdfb07b34b118d5d8d39ee86",
+      "bytes": 461
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/B01.CAMERA001.EditModeTests.asmdef.meta",
+      "sha256": "02d46e39cd0e99239f8007ba42a8deb6f3f431d71a51bec38693be57abfb11ca",
+      "bytes": 163
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001AimTransitionTests.cs",
+      "sha256": "2d40a4a57857c18f27110d5dd6a261682a03fe43d4ad21e0bc18061a36e45950",
+      "bytes": 4474
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001AimTransitionTests.cs.meta",
+      "sha256": "3e40e20f69f80984119ac96dbffc2f6ca5cae68f54abc844e7dd2bcafb7fabfc",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001FramingTests.cs",
+      "sha256": "535909184be4dca3c82bc9a88a733ec4feeb1e231859d4481993f21b04d0ec6c",
+      "bytes": 3811
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/EditMode/Camera001FramingTests.cs.meta",
+      "sha256": "25a63de79cf900ffd2854c0d1ac45195f3920ec308ff07015d7f0f69c76cec8e",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode.meta",
+      "sha256": "637685018239577c36f336b9130f529c7f48beb1c4787a7c11826e1355870fef",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef",
+      "sha256": "5b9a09cc44eeb37281cc2b1010b98cbb3486245e88ffc6caf0f426c40e4e1bf3",
+      "bytes": 445
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/B01.CAMERA001.PlayModeTests.asmdef.meta",
+      "sha256": "c0c1a3e7df7b85cc73259dfe719558e242a32fc206c3a9544ed3a0a9862327e6",
+      "bytes": 163
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/Camera001WorldCollisionTests.cs",
+      "sha256": "1f4bb3ea9d70fc4dca578f5505a675edf01b10d2264393ead62a5fe5375cb1c4",
+      "bytes": 9268
+    },
+    {
+      "path": "Assets/B01Packages/CAMERA001/Tests/PlayMode/Camera001WorldCollisionTests.cs.meta",
+      "sha256": "6cbefcab4cfd2ae8cf57091366cc9db0a6e92e00db77103fa49313d05ab27abe",
+      "bytes": 240
+    },
+    {
+      "path": "Docs/B01/CAMERA001/API.md",
+      "sha256": "339c1c9ca692fd64cfa4c5e59a1a25a8eed587ba6caabb475a3504440d6978cb",
+      "bytes": 884
+    },
+    {
+      "path": "Docs/B01/CAMERA001/CHANGELOG.md",
+      "sha256": "d3532852c0ef981bf887e0686743e15161897fd7f2d783adfee52e54df5ad06f",
+      "bytes": 1464
+    },
+    {
+      "path": "Docs/B01/CAMERA001/DIFFERENTIAL_R121.md",
+      "sha256": "f128db310fcb6a05b858d4c8616fc50e09c7eeb0f0331009559667c7c04b35b7",
+      "bytes": 5703
+    },
+    {
+      "path": "Docs/B01/CAMERA001/INSTALL_FOR_CODEX.md",
+      "sha256": "1f11d14027a1e0b7ae16e85e45ae4e114af3e00dd53ee44ee46d1b74f804eb37",
+      "bytes": 6054
+    },
+    {
+      "path": "Docs/B01/CAMERA001/KNOWN_LIMITATIONS.md",
+      "sha256": "5519ba19d2e0bdf1642608fca1a9a0b54bb20dbfaea8dd3ef0c00fedbd92c0a8",
+      "bytes": 1025
+    },
+    {
+      "path": "Docs/B01/CAMERA001/PROMPT_FOR_CODEX.md",
+      "sha256": "57dab92263c00442cd013786ab66680bef4e6dc449cc7124043eb5e1b2b586bc",
+      "bytes": 5290
+    },
+    {
+      "path": "Docs/B01/CAMERA001/README.md",
+      "sha256": "5ca6c2e1cca2699d8cdffa37b3eea1cfc8f173674de81bbd399603ff1409fa14",
+      "bytes": 667
+    },
+    {
+      "path": "Docs/B01/CAMERA001/RECEIVER_HANDOFF.md",
+      "sha256": "9793d296f293dfa12f01187a6c37096b0af0bd560e988c706077194b83702d3c",
+      "bytes": 707
+    },
+    {
+      "path": "Docs/B01/CAMERA001/RECEIVER_HANDOFF_R12.md",
+      "sha256": "c99425e906ea5b4e6a90e09f2b8827f0690aaeb7060c7717399c52647f0aeb0f",
+      "bytes": 2009
+    },
+    {
+      "path": "Docs/B01/CAMERA001/RECEIVER_HANDOFF_R121.md",
+      "sha256": "5812b182d1f0ca797eaecd9dfc17057acd836a53862f68ead6add938d76d8016",
+      "bytes": 2034
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_EVIDENCE.md",
+      "sha256": "0b8a6b457c95dbff36ff441f905e0f91e24be6e65f31ff2b99edc46a63f4a699",
+      "bytes": 1378
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_EVIDENCE_R12.md",
+      "sha256": "cfeb9c55613406b9844bc7cbd0c3188fab09bdfd42341c64d1aa79c209a0968d",
+      "bytes": 6375
+    },
+    {
+      "path": "Docs/B01/CAMERA001/TEST_PLAN.md",
+      "sha256": "de5cbfd2a0e4758a95989bf7d813931c055ab812bc988e41ab8c6efe6037f99b",
+      "bytes": 2253
+    },
+    {
+      "path": "Docs/B01/CAMERA001/W9_SOURCE_REPAIR_R11.md",
+      "sha256": "fd030d5dc4386aa601f32083cfb4707cadf8f9e373b44455e150cf0eefe76482",
+      "bytes": 1371
+    },
+    {
+      "path": "Docs/B01/CAMERA001/manifest.json",
+      "sha256": "79e6ff7c0ff912567b1ec4af0c7367cb2a09adc5d9b68495e9f7014c1a8eb851",
+      "bytes": 31294
+    },
+    {
+      "path": "Tools/B01/CAMERA001/AimDifferential/AimDifferential.csproj",
+      "sha256": "c160092b33562317110ef2e704eac344d573d6c0402254730845ffc97599f255",
+      "bytes": 550
+    },
+    {
+      "path": "Tools/B01/CAMERA001/AimDifferential/Program.cs",
+      "sha256": "bcc442712debc12be6aab39d0b9c2a5d88d34f69b5554079bb77f8203ad013d4",
+      "bytes": 3734
+    },
+    {
+      "path": "Tools/B01/CAMERA001/AimDifferential/UnitySurrogate.cs",
+      "sha256": "adbdf3d1f990b164316259c5c69891b489cb7dc6c657bc426b5c3cf854fd6e29",
+      "bytes": 1191
+    },
+    {
+      "path": "Tools/B01/CAMERA001/check_r121_contract.py",
+      "sha256": "1cc92118a34dd5c1858223c4b06a57fded4a901c2ead61054a2bfe144250910f",
+      "bytes": 2178
+    },
+    {
+      "path": "Tools/B01/CAMERA001/check_r12_contract.py",
+      "sha256": "fe30043ba9a9f5228975a9dbafa45b45b5916d54e1e403902e95bd15fc4eb684",
+      "bytes": 4034
+    },
+    {
+      "path": "Tools/B01/CAMERA001/geometry_probe.js",
+      "sha256": "77427601467da9934addeed5d18414b13e46ddf7031ea51e7c5fe103e93192d8",
+      "bytes": 2907
+    },
+    {
+      "path": "Tools/B01/CAMERA001/package_gate.py",
+      "sha256": "f10614b4a218b422da2001d5940fbd620ca0bf99b0c7b3eaaa8e9a7c43a3d285",
+      "bytes": 2899
+    }
+  ],
+  "status": "STAGED_FULL_PINNED_SOURCE"
+}

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4,8395006">
+  <test-suite type="TestSuite" id="1615" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="428" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.839501" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1418" name="RoboRougelike.RAC001.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/RoboRougelike.RAC001.PlayModeTests.dll" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.829382" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="32604" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1419" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.828974" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1420" name="Mechanics" fullname="RoboRougelike.Mechanics" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.828775" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1421" name="RAC001" fullname="RoboRougelike.Mechanics.RAC001" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.828582" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestSuite" id="1422" name="Tests" fullname="RoboRougelike.Mechanics.RAC001.Tests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.828383" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-suite type="TestFixture" id="1412" name="CheckpointRacePlayModeTests" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:00Z" duration="0.024588" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1413" name="EventFiresExactlyOnceForWinningCheckpoint" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests.EventFiresExactlyOnceForWinningCheckpoint" methodname="EventFiresExactlyOnceForWinningCheckpoint" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests" runstate="Runnable" seed="1359648010" result="Passed" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:00Z" duration="0.013258" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1415" name="MissingRunnerCannotStart" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests.MissingRunnerCannotStart" methodname="MissingRunnerCannotStart" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests" runstate="Runnable" seed="996463954" result="Passed" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:00Z" duration="0.001023" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1414" name="TimeoutEventAndResetAreSafe" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests.TimeoutEventAndResetAreSafe" methodname="TimeoutEventAndResetAreSafe" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRacePlayModeTests" runstate="Runnable" seed="336812122" result="Passed" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:00Z" duration="0.001027" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="TestFixture" id="1416" name="RAC001PhysicalDemoTests" fullname="RoboRougelike.Mechanics.RAC001.Tests.RAC001PhysicalDemoTests" classname="RoboRougelike.Mechanics.RAC001.Tests.RAC001PhysicalDemoTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.802943" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <failure>
+                  <message><![CDATA[One or more child tests had errors]]></message>
+                </failure>
+                <test-case id="1417" name="RigidbodyDemoUsesRealForcesToReachCheckpoint" fullname="RoboRougelike.Mechanics.RAC001.Tests.RAC001PhysicalDemoTests.RigidbodyDemoUsesRealForcesToReachCheckpoint" methodname="RigidbodyDemoUsesRealForcesToReachCheckpoint" classname="RoboRougelike.Mechanics.RAC001.Tests.RAC001PhysicalDemoTests" runstate="Runnable" seed="2003649588" result="Failed" start-time="2026-10-26 11:02:00Z" end-time="2026-10-26 11:02:05Z" duration="4.802330" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <failure>
+                    <message><![CDATA[  Dynamic body did not cross the real floor
+  Expected: greater than 4.0f
+  But was:  1.18745446f
+]]></message>
+                    <stack-trace><![CDATA[at RoboRougelike.Mechanics.RAC001.Tests.RAC001PhysicalDemoTests+<RigidbodyDemoUsesRealForcesToReachCheckpoint>d__0.MoveNext () [0x002a3] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-B01-Unified-RC2\Assets\RoboRougelikeMechanics\RAC001CheckpointRace\Tests\PlayMode\RAC001PhysicalDemoTests.cs:43
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                  </failure>
+                  <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

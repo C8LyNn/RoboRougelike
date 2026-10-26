@@ -1,0 +1,203 @@
+{
+  "package": "MAPGENWORLD",
+  "source": "5ce9d806d7fc7eb0ab2ef7b586626404c346174f",
+  "targetBefore": "c3fad71e16ac4595271075e4a0f0a7a6b0594d4b",
+  "zip": {
+    "name": "mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip",
+    "sha256": "28b6422e7c358f379a47b49a0a671f631cee6d7f627daf3f6bf4807d7c3b8a41",
+    "bytes": 38067,
+    "entries": 37,
+    "gitMatched": 36,
+    "generatedManifests": [
+      "META-INF/MAPGENWORLD001_MANIFEST.json"
+    ]
+  },
+  "preservedShared": [],
+  "sourceFiles": 36,
+  "GUIDCountAfter": 832,
+  "obsolete": [],
+  "files": [
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001.meta",
+      "sha256": "f7a3b8b5565ae2111f7b8b82df5ac00503c32a78eb2f98538111d1ba495d479f",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime.meta",
+      "sha256": "7da92276acf6ee02befd925bd892fb62fdf801a79ca509f03fdaf07c3be161a0",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/B01.MAPGENWORLD001.Runtime.asmdef",
+      "sha256": "828e173e05a804b88939d02fe26e8608652b52ea18152f93acd428e6ee3a6332",
+      "bytes": 377
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/B01.MAPGENWORLD001.Runtime.asmdef.meta",
+      "sha256": "7aaaae03eab640d42a848977ed38be19d0ebda394ac7f9a5d80a2e407560071c",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapGenWorldAdapter.cs",
+      "sha256": "0d41d12ea58d285a0fe7af98e99f703df919ad5bee7b795df5931af85c2da621",
+      "bytes": 6934
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapGenWorldAdapter.cs.meta",
+      "sha256": "443eb62fef9dc6bf097df9dbf05890409d3c87e11cef8b401a344f5fb7cc52c8",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs",
+      "sha256": "d7c89a62422656c638ff9dd9d110313abd8655097e17e5ef69886b16e8557e11",
+      "bytes": 2101
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs.meta",
+      "sha256": "bf58808d02ed950fe2b92ed77249a402e74b070b2ec2fcac7eb0575b054b7615",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldDemo.cs",
+      "sha256": "39735ab764bdf697fdf309fd4ae62af1f5edc6acf30a895a3d60b0aa526bb844",
+      "bytes": 2435
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldDemo.cs.meta",
+      "sha256": "2ae93bde455279d79471f7370895788e8089b9a70579dd900c63a7216b2eaee5",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs",
+      "sha256": "64010b39d0ef1bb375318504a8877fd583cd7b1812b3f8882ddf5c05157ec0f1",
+      "bytes": 2305
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs.meta",
+      "sha256": "94398a33d7ed4f91ad6cfd0042118cd7d84af5c6505c29da3b0af6d588ed8c7f",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests.meta",
+      "sha256": "40ce2314b2d7a498c92fa96712b89d2c4974e242ff144c378e7f27764f6ce37f",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/EditMode.meta",
+      "sha256": "423f5c229eb5546e68a7de83b3c4800a3f451dee81bd823751f285d521ad9b3b",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/B01.MAPGENWORLD001.EditModeTests.asmdef",
+      "sha256": "b2d71fc97d9730117ad4ed4c73de266ba155d0fb8224fd3eb78c705713aee741",
+      "bytes": 305
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/B01.MAPGENWORLD001.EditModeTests.asmdef.meta",
+      "sha256": "bb3e8df7f9e0b144f4e04b171cff6dda777dd86932056b79b20ca730a3ca558c",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/MapWorldPolicyTests.cs",
+      "sha256": "d426dc56027547fab604a54fad112ab099f8ed7d09634a165591ba8de5e7c063",
+      "bytes": 2786
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/EditMode/MapWorldPolicyTests.cs.meta",
+      "sha256": "8132dff2c71b6ce126c4352fb1334e36dd3f2236a2b196a046ae1e86ec203351",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode.meta",
+      "sha256": "3364916bd532218f2b17f7b4ea4a362c903f234d63dfe46e8b73563f5f4ca4b7",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/B01.MAPGENWORLD001.PlayModeTests.asmdef",
+      "sha256": "6c83d43e48d5f7012cca28e49a1214c36522887c2b9739d4998778aec78d9ef9",
+      "bytes": 297
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/B01.MAPGENWORLD001.PlayModeTests.asmdef.meta",
+      "sha256": "10f722909b9722905e1053de4c1aa719804add09d54fcc870586f1cf227e3ba5",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/MapWorldLifecycleTests.cs",
+      "sha256": "97eafbc8734d6dddba47e9761363c3a580628efa1682d2842f96551f7fa18c90",
+      "bytes": 5231
+    },
+    {
+      "path": "Assets/B01Packages/MAPGENWORLD001/Tests/PlayMode/MapWorldLifecycleTests.cs.meta",
+      "sha256": "47485b96b1a2a6febb7835320032e8c6477ce54307cca51fc591d28f588c136e",
+      "bytes": 243
+    },
+    {
+      "path": "Docs/B01/MAPGENWORLD001/INSTALL_FOR_CODEX.md",
+      "sha256": "0a79bd0002c2557826f6b9e8e24a5b0c6db5d2daf7c4d4f4c0557f66d2c29a41",
+      "bytes": 3960
+    },
+    {
+      "path": "Docs/B01/MAPGENWORLD001/PROMPT_FOR_CODEX.md",
+      "sha256": "a537843b4ade1f1802f712eb03fa568890a4ce680520c101e13aa7000578dd45",
+      "bytes": 1503
+    },
+    {
+      "path": "Docs/B01/MAPGENWORLD001/R2_HARDENING.md",
+      "sha256": "5fe242daebd06ffb86a546c4f600b1658a0f3a25e83e2b77976e42113d8bee0e",
+      "bytes": 3930
+    },
+    {
+      "path": "Docs/B01/MAPGENWORLD001/README.md",
+      "sha256": "9ae1528ac09bc3d8e5fd73c6b491b2c8bfe9152ba44f3afa2925eba5413a7f46",
+      "bytes": 3864
+    },
+    {
+      "path": "Docs/B01/MAPGENWORLD001/TEST_EVIDENCE.md",
+      "sha256": "c7c3a2cce5325b498ffc04286b27b11d382dff6bf50f79a1b4d65755031ae144",
+      "bytes": 3080
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/Adapter.SourceTests.csproj",
+      "sha256": "651a6ce344a90ffc512176893df5cd1ff89cd05135335de0cc604684233316cb",
+      "bytes": 1055
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/AdapterFakeBuilder.cs",
+      "sha256": "46e3e307e41baf221f262e77b9ad8238f542e0cb0c3b3320b38d0d6ab1a1b5c8",
+      "bytes": 2888
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/AdapterSourceTests.cs",
+      "sha256": "9480a16d1caa6f8678473bc2ac6356cb693a2d2ddcf3fbfa4e2deb1775374660",
+      "bytes": 8021
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/MapWorld.SourceTests.csproj",
+      "sha256": "93d60254aa19101622b103d2f1866a0110c5c845c778be9f69cf2beb9338a484",
+      "bytes": 1001
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/SourceTests.cs",
+      "sha256": "10ac640c606fac91cdd2c14a163147c505f0979aa038e491b5ef002a3ad283d0",
+      "bytes": 5241
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/build_adapter_shim.py",
+      "sha256": "1cb96c69da35ebafc2c1e44b07d71a3497fc393b6ef2bd2b1bce8e112dcfcf8b",
+      "bytes": 2043
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/package_world.py",
+      "sha256": "ea0f383a4c232eb8add1e95f89d0b84fbb7afe4f93824fc033457ebc6c1180f5",
+      "bytes": 6202
+    },
+    {
+      "path": "Tools/B01/MAPGENWORLD001/test_package_world.py",
+      "sha256": "b024ba45ea7fc0cc2b77cfd86d8d52e240c9c0d40ec641cdf52e6edc176d16de",
+      "bytes": 4612
+    }
+  ],
+  "status": "STAGED_FULL_PINNED_SOURCE",
+  "receiptCorrection": "Initial staging receipt printed the last meta length because of a variable-name collision; actual archive hash/source comparison was valid. Corrected from retained physical bytes before acceptance."
+}

@@ -1,0 +1,17 @@
+{
+  "exitCode": 2,
+  "startedUtc": "2026-10-26T11:09:06.2572038Z",
+  "stage": "Keep3-SourceGate-NativeInput",
+  "finishedUtc": "2026-10-26T11:09:26.1208018Z",
+  "phase": "EditMode",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Keep3-SourceGate-NativeInput-20261026T110855Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"B01.RewardKeep3|UnifiedRC2IntegrationTests\""
+  ],
+  "source": "7897fb78bf7aef70d1dab8a80e5f482027b67579"
+}

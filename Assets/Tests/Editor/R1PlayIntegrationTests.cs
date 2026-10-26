@@ -240,8 +240,18 @@ public class R1PlayIntegrationTests
         yield return Until(() => Run.Progress.State != R1RunState.Ready, "Enter powinien rozpocząć wyprawę.");
         InputSystem.QueueStateEvent(keyboard, new KeyboardState());
         yield return Until(() => !Run.Transitioning, "Inicjalizacja po klawiszu Enter.");
+        Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Garage), "RC2 prepares the canonical garage before activity choice.");
+        Assert.That(Run.Player.Structure.CoreAlive, Is.True);
+        Assert.That(Run.Encounter.AliveCount, Is.Zero, "Enter alone must not start an unchosen encounter.");
+        var preparedModel = Run.VehicleModel;
+        var preparedIds = preparedModel.Parts.Select(part => part.Id).ToArray();
+        Assert.That(Run.StartNextEncounter(), Is.True);
+        Assert.That(Run.ChooseRoute(0), Is.True);
+        yield return Until(() => !Run.Transitioning, "Chosen encounter initializes after preparation.");
         Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Combat));
         Assert.That(Run.Player.Structure.CoreAlive, Is.True);
+        Assert.That(Run.VehicleModel, Is.SameAs(preparedModel));
+        Assert.That(Run.VehicleModel.Parts.Select(part => part.Id), Is.EqualTo(preparedIds));
     }
 
     [UnityTest]

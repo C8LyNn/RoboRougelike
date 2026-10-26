@@ -1,0 +1,20 @@
+{
+  "rollbackCheckoutSHA": "5c29e8e28e7b34fedf0c992fca49451828b02314",
+  "rollbackGameSHA": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+  "baseGameTreesIdentical": true,
+  "preservedArchives": [
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01_RC1_20261025\\RoboRougelike_B01_RC1_BASE_Windows_x64.zip",
+      "bytes": 38481635,
+      "sha256": "457ec2020375e18c4599d832dc028eed7900f8cf5d603765c9e417fd80a8ca90",
+      "historicalHashUnchanged": true
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01_RC1_20261025\\Final\\RoboRougelike_B01_RC1_MAPGEN_EXPERIMENTAL_Windows_x64.zip",
+      "bytes": 38502444,
+      "sha256": "722be56b98db0abe1517ec1d018b6f4d6ecbf0a46ea172d198f8294a7edc8cca",
+      "historicalHashUnchanged": true
+    }
+  ],
+  "usage": "Launch preserved Final MAPGEN EXE, or create a NEW worktree at rollbackCheckoutSHA. Do not reset an active or dirty worktree."
+}

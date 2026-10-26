@@ -1,0 +1,11 @@
+{
+  "phase": "Compile",
+  "finishedUtc": "2026-10-26T11:29:56.7330374Z",
+  "exitCode": 0,
+  "source": "f5cae0da5a85e25a0b6949463506f2579bf3439b",
+  "startedUtc": "2026-10-26T11:29:42.7531184Z",
+  "stage": "RewardHost-GREEN",
+  "arguments": [
+    "-quit"
+  ]
+}

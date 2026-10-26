@@ -61,19 +61,20 @@ public class R5EncounterTests
     [UnityTest] public IEnumerator BossFiresTwoPhysicalBatteriesAndDestroyedBatteryStops()
     {
         yield return Reach(5);var boss=Run.Encounter.Enemies.First();
+        var batteryIds=Enumerable.Range(0,boss.VariantWeapons.Count).Select(i=>boss.EquipmentInstanceId("gun/"+i)).ToArray();
         var seen=new System.Collections.Generic.HashSet<string>();Run.Encounter.SetCombatActive(true);
         float end=Time.time+8;
         while(Time.time<end)
         {
             foreach(var origin in UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None))
-                if(origin.PartId.StartsWith("OBLĘŻNIK/")){seen.Add(origin.PartId);Assert.That(origin.GetComponent<P17PhysicalShell>(),Is.Not.Null);}
+                if(batteryIds.Contains(origin.PartId)){seen.Add(origin.PartId);Assert.That(origin.GetComponent<P17PhysicalShell>(),Is.Not.Null);}
             yield return null;
         }
         Assert.That(seen.Count,Is.EqualTo(2));Run.Encounter.SetCombatActive(false);
         var gun=boss.VariantWeapons[0];gun.Block.ApplyDamage(10000,gun.Block.transform.position,Vector3.up);
         R1EncounterManager.ClearTransientObjects();seen.Clear();Run.Encounter.SetCombatActive(true);end=Time.time+7;
-        while(Time.time<end){foreach(var origin in UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None))if(origin.PartId.StartsWith("OBLĘŻNIK/"))seen.Add(origin.PartId);yield return null;}
-        Assert.That(seen.Count,Is.EqualTo(1));Assert.That(seen.Single(),Does.Contain("Bateria 1"));
+        while(Time.time<end){foreach(var origin in UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None))if(batteryIds.Contains(origin.PartId))seen.Add(origin.PartId);yield return null;}
+        Assert.That(seen.Count,Is.EqualTo(1));Assert.That(seen.Single(),Is.EqualTo(batteryIds[1]));
     }
     [UnityTest] public IEnumerator BossSupportSeveranceDropsPhysicalWingAndLeavesOtherGunOperational()
     {
@@ -101,8 +102,9 @@ public class R5EncounterTests
     {
         yield return Reach(5);var boss=Run.Encounter.Enemies.First();
         boss.ConfigureEncounter(Run.Player.transform,1,1,1,1.5f);Run.Encounter.SetCombatActive(true);
+        var batteryIds=Enumerable.Range(0,boss.VariantWeapons.Count).Select(i=>boss.EquipmentInstanceId("gun/"+i)).ToArray();
         R4ProjectileOrigin shot=null;
-        yield return Until(()=>{shot=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).FirstOrDefault(p=>p.PartId.StartsWith("OBLĘŻNIK/"));return shot!=null;},"Configured boss projectile");
+        yield return Until(()=>{shot=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).FirstOrDefault(p=>batteryIds.Contains(p.PartId));return shot!=null;},"Configured boss projectile");
         Assert.That(shot.GetComponent<Rigidbody>().linearVelocity.magnitude,Is.EqualTo(R4WeaponDefinition.Get(shot.Weapon).Speed*.8f*1.5f).Within(.1f));
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}

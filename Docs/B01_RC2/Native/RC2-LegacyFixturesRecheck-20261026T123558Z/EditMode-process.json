@@ -1,0 +1,17 @@
+{
+  "startedUtc": "2026-10-26T12:35:58.6583160Z",
+  "exitCode": 0,
+  "phase": "EditMode",
+  "stage": "LegacyFixturesRecheck",
+  "source": "f6184d2254c0ff4c59bcd1e9f21db6a134a54097",
+  "finishedUtc": "2026-10-26T12:36:20.8800785Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-LegacyFixturesRecheck-20261026T123558Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"R1PlayIntegrationTests.KeyboardEnterStartsRunWithoutPrematureDefeat;RRLW34ReviewRegressionTests.FullInventoryHasExplicitRecoveryForMandatoryRewardsIncludingFinalVictory\""
+  ]
+}

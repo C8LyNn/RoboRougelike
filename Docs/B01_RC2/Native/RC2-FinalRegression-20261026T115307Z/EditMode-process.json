@@ -1,0 +1,15 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-FinalRegression-20261026T115307Z\\EditMode.xml\""
+  ],
+  "stage": "FinalRegression",
+  "finishedUtc": "2026-10-26T12:31:56.0262664Z",
+  "startedUtc": "2026-10-26T11:53:07.5297944Z",
+  "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "exitCode": 2,
+  "phase": "EditMode"
+}

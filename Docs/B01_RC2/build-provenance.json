@@ -1,0 +1,36 @@
+{
+  "gameSource": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "phases": [
+    {
+      "exitCode": 0,
+      "arguments": [
+        "-quit",
+        "-executeMethod",
+        "B01RC2Build.BuildRelease"
+      ],
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "stage": "ReleaseCandidate",
+      "finishedUtc": "2026-10-26T11:51:30.3147907Z",
+      "phase": "Build",
+      "startedUtc": "2026-10-26T11:50:20.8779200Z"
+    },
+    {
+      "exitCode": 0,
+      "arguments": [
+        "-quit"
+      ],
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "stage": "ReleaseCandidate",
+      "finishedUtc": "2026-10-26T11:50:20.8605877Z",
+      "phase": "Compile",
+      "startedUtc": "2026-10-26T11:50:07.0056990Z"
+    }
+  ],
+  "buildLogSummary": [
+    "[B01 UNIFIED RC2 BUILD] Succeeded bytes=103391191 errors=0 warnings=4"
+  ],
+  "singleGameplayScene": "Assets/scene 1.unity",
+  "options": "BuildOptions.None",
+  "diagnostics": "Dormant; attaches only to explicit -rc2-...-output CLI argument",
+  "archiveBytes": 38523382
+}

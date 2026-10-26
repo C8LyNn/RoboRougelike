@@ -1,0 +1,22 @@
+{
+  "packages": [
+    {
+      "package": "MAPGENWORLD",
+      "source": "5ce9d806d7fc7eb0ab2ef7b586626404c346174f",
+      "files": 36,
+      "mismatch": []
+    },
+    {
+      "package": "KEEP3",
+      "source": "6bb6796ee3ad88a015fb6c8d033023c0ee3b5e94",
+      "files": 25,
+      "mismatch": []
+    }
+  ],
+  "GUIDs": 851,
+  "duplicateGUIDs": [],
+  "missingMeta": [],
+  "sharedParentPreserved": true,
+  "originalRewardPortIdentical": true,
+  "blockedAssetsPresent": []
+}

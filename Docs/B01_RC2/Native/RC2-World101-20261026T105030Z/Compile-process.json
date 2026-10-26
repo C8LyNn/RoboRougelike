@@ -1,0 +1,11 @@
+{
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T10:50:30.4445170Z",
+  "finishedUtc": "2026-10-26T10:52:25.9776411Z",
+  "phase": "Compile",
+  "source": "328706d6665feb0796e9a50b83e06d562563d906",
+  "stage": "World101",
+  "arguments": [
+    "-quit"
+  ]
+}

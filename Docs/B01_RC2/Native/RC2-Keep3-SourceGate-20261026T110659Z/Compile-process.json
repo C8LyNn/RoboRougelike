@@ -1,0 +1,11 @@
+{
+  "stage": "Keep3-SourceGate",
+  "arguments": [
+    "-quit"
+  ],
+  "phase": "Compile",
+  "exitCode": 1,
+  "source": "41eb0f9c63f5b27332c3d6723f5b6a19a5c75412",
+  "finishedUtc": "2026-10-26T11:07:07.0074721Z",
+  "startedUtc": "2026-10-26T11:06:59.4590838Z"
+}

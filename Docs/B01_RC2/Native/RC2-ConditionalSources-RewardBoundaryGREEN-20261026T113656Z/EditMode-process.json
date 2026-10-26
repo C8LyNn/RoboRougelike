@@ -1,0 +1,17 @@
+{
+  "source": "084a64292c0c0db1dd54151b30674d454319e8e9",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T11:37:54.2202123Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-ConditionalSources-RewardBoundaryGREEN-20261026T113656Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"RewardRC2IntegrationTests|UnifiedRC2IntegrationTests|AimTransition|Legendary.*Tests|Rebuild.*Tests\""
+  ],
+  "phase": "EditMode",
+  "stage": "ConditionalSources-RewardBoundaryGREEN",
+  "startedUtc": "2026-10-26T11:37:11.4403333Z"
+}

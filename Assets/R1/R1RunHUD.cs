@@ -106,9 +106,9 @@ namespace RoboRougelike.R1
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
-                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • B01 RC1 EXP", title);
+                GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • B01 RC2", title);
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz pojazd do Gauntletu", heading);
-                if(GUI.Button(new Rect(90,173,1100,28),"RC1 EKSPERYMENT: przygotuj pojazd do wygenerowanej areny MAPGEN",compactButton))run.PrepareMapgenRun();
+                GUI.Label(new Rect(90,173,1100,28),"Jeden pojazd, wspólny garaż i nagrody. Aktywność wybierzesz po przygotowaniu.",small);
                 for(int i=0;i<3;i++)
                 {
                     var kind=(R3VehicleKind)i;var design=R3VehicleCatalog.Create(kind);float x=80+i*380;
@@ -122,9 +122,9 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
-                if (GUI.Button(new Rect(90,600,500,65), "Rozpocznij Gauntlet  [Enter]", button)) run.StartRun();
+                if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
-                if(GUI.Button(new Rect(640,554,550,38),"Obrona reaktora • przygotuj pojazd",compactButton))run.PrepareReactorRun();
+                GUI.Label(new Rect(640,554,550,38),"Trasy • obrona reaktora • generowana arena",small);
                 GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM — ogień • Esc — pauza",small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
@@ -236,7 +236,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(350,25,580,60),run.SandboxWorkshop?$"{model.Design.Name} • Warsztat poligonu":$"{model.Design.Name}  •  Następna walka {run.Progress.EncounterIndex+1}/{run.Progress.TotalEncounters}",heading);
             DrawReactorGarageAction(run);
             if(!run.ReactorPrepared&&!run.SandboxWorkshop){GUI.enabled=run.CanChooseGeneratedArena;
-                if(GUI.Button(new Rect(355,80,280,38),"MAPGEN: arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();GUI.enabled=true;}
+                if(GUI.Button(new Rect(355,80,280,38),"Generowana arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();GUI.enabled=true;}
             if(GUI.Button(new Rect(355,538,125,44),"Obrót ←",compactButton))garage.Orbit(-25);
             if(GUI.Button(new Rect(485,538,125,44),"Obrót →",compactButton))garage.Orbit(25);
             if(GUI.Button(new Rect(615,538,125,44),"Widok ↑",compactButton))garage.Tilt(10);

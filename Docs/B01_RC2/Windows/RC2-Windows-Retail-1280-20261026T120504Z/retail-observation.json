@@ -1,0 +1,9 @@
+{
+  "observedUtc": "2026-10-26T12:28:21.580974+00:00",
+  "status": "NOT_RUN_MANUAL_RESULT_PENDING",
+  "UIActionsPerformed": 0,
+  "accessibilityClientAttached": false,
+  "automationFailure": "UI helper initialization failed before any app/window state or action",
+  "watcher": "Waited20minutes for exit; no exit was observed. No forced close or fake success. Game left open for user.",
+  "method": "Retail launch is recorded, but ordinary clicks/hardware and Alt+F4 cannot be claimed from launch alone."
+}

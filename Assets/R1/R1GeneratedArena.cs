@@ -19,12 +19,13 @@ namespace RoboRougelike.R1
         public bool CanChooseGeneratedArena => Player!=null&&CanChooseReactorDefense&&!ReactorPrepared&&
             VehicleModel.SelectedDrive==R3DriveKind.Wheels&&RouteOffers.Length>0&&RouteOffers[0].SpawnCount<=3;
 
-        public bool PrepareMapgenRun()
+        public bool PrepareMapgenRun()=>PrepareUnifiedRun();
+        public bool PrepareUnifiedRun()
         {
             if(Progress?.State!=R1RunState.Ready||!StartRun()||!Progress.PrepareGarage())return false;
             Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
             followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
-            Garage.Message="RC1 MAPGEN: wybierz wygenerowaną arenę nad pojazdem. Seed pochodzi z menu.";
+            Garage.Message="Przygotuj pojazd. Wybierz trasę, wygenerowaną arenę albo obronę reaktora. Seed pochodzi z menu.";
             return true;
         }
         public bool ChooseGeneratedArena()

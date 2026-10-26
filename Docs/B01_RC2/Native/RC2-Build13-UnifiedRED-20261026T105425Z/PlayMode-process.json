@@ -1,0 +1,17 @@
+{
+  "phase": "PlayMode",
+  "exitCode": 0,
+  "source": "61b577226fe5d3b963dc16c9a3cd9f45806b5fea",
+  "startedUtc": "2026-10-26T10:54:59.1105696Z",
+  "finishedUtc": "2026-10-26T10:55:12.1915581Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Build13-UnifiedRED-20261026T105425Z\\PlayMode.xml\"",
+    "-testFilter",
+    "\"B01.BUILD001|UnifiedRC2IntegrationTests\""
+  ],
+  "stage": "Build13-UnifiedRED"
+}

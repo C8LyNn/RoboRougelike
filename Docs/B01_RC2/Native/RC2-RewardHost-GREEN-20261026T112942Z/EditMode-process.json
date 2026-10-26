@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-26T11:31:49.7864384Z",
+  "exitCode": 0,
+  "source": "f5cae0da5a85e25a0b6949463506f2579bf3439b",
+  "startedUtc": "2026-10-26T11:29:56.7510225Z",
+  "stage": "RewardHost-GREEN",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RewardHost-GREEN-20261026T112942Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"RewardRC2IntegrationTests|UnifiedRC2IntegrationTests|Keep3EditModeTests|RRLW6EmpTests|R5EncounterTests|RRLW2\""
+  ]
+}

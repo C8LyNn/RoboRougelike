@@ -1,0 +1,7 @@
+# RAC R3.1 — native gate incomplete / excluded pending producer retest
+
+Producer source PR216 fd9a3f4dda08eaba56d9f74007bc35dc0809b67e, full stacked package37ZIP/Git files, SHA25678ec4592ee4144504d6fb259addbba8cc5fd68685d9fc057f603d6a9cfec1a7a,30,977B. Shared mechanics parent preserved.
+
+Actual snapshotc3629d86144ea07ea404c87709d86e598f035675, Unity6000.3.14f1: compile0; package Edit11/11PASS; Play3/4PASS, native2. Failed original authored test RAC001PhysicalDemoTests.RigidbodyDemoUsesRealForcesToReachCheckpoint:150kg dynamic cube, floor, checkpointx6/radius1.3, original demo driver,240FixedUpdate steps. Expected maximumX>4; actual1.18745446m. Original assertion/time limit/force/controller unchanged. Logs and actual NUnit XML retained in Artifacts/Local/RC2-RAC31-Unified-20261026T110114Z (published Native evidence).
+
+The checkpoint state/observer cases pass. This failure concerns producer's physical demo/controller fixture, not proven R3/R6 race behavior. Do not infer that real wheeled robots cannot race, or call this a native PASS. User requires failed packages outside final build. RAC not activated in the canonical gameplay loop, no race reward/timer UI claimed. Source fix/retest belongs to the package producer through B01-00; exact reproduction is available at the frozen source. A later native-green revision still needs actual R6 checkpoint runs, pause, win/loss/one-time settlement and garage/regeneration regression.

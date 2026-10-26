@@ -1,0 +1,145 @@
+{
+  "package": "KEEP3",
+  "source": "6bb6796ee3ad88a015fb6c8d033023c0ee3b5e94",
+  "targetBefore": "85ba58f63e45a7038b1793bf3329d64a74b2e3d6",
+  "zip": {
+    "name": "REWARDKEEP3001_Unity_Source.zip",
+    "sha256": "27df176be1ca28a307dc1b61f92710b9f8b0d7e37b420c033cdb61d020266fe4",
+    "bytes": 19785,
+    "entries": 16,
+    "gitMatched": 16,
+    "generatedManifests": []
+  },
+  "preservedShared": [],
+  "sourceFiles": 25,
+  "GUIDCountAfter": 843,
+  "obsolete": [],
+  "files": [
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001.meta",
+      "sha256": "7557eb1aaaea534bd3432f623746b03630aefc225516258cd3e5f7bd2e7acc76",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Examples.meta",
+      "sha256": "a3a0f6e47f50959f9d08d303ec598545b41fc75c77f24d45c0064619e1495b6e",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Examples/Keep3SmokeExample.cs",
+      "sha256": "399822efbc9255401f43a509f289e82673855a8915cada680165d279bd985941",
+      "bytes": 317
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Examples/Keep3SmokeExample.cs.meta",
+      "sha256": "64b57c0b8edbf3e5edeacabac9a918a188f5ea73a52bb1f5215b7d424e9ecaf3",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Runtime.meta",
+      "sha256": "e385357f7a434423c5de631c22be98c0af0b421fba92f6d8b76fcdb79aa0ab9f",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Runtime/B01.RewardKeep3.Runtime.asmdef",
+      "sha256": "50da4550393ed10a0c1c3e753c4b133af44ee8a42d26a12489cd018627456007",
+      "bytes": 358
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Runtime/B01.RewardKeep3.Runtime.asmdef.meta",
+      "sha256": "345f534b9d0de7f1566574741459840156baf01a6d33636b82f8d766cdc13ebc",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Runtime/RewardKeep3Service.cs",
+      "sha256": "2a69f35254020d0b10202ee43ed9f565966156edffef1f5cc0db411244eb5337",
+      "bytes": 11822
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Runtime/RewardKeep3Service.cs.meta",
+      "sha256": "d1c3c66027ef9d62aa3c2132e69245ddaca9ce01fe4b814ce93a4969971a4594",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Tests.meta",
+      "sha256": "7dee293ee26904e5a65399d583f14949e08c3399ffa27fa952cfde5b37dff453",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Tests/EditMode.meta",
+      "sha256": "88a3e1f5c066f11e2ceb0f032ab80a87bdf50d643e32e43b6552d453ad6f06aa",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Tests/EditMode/B01.RewardKeep3.EditMode.asmdef",
+      "sha256": "f678b69071051f2392a935c69de5da8dcb0e57d43071b7cec3f0670230d23cf6",
+      "bytes": 472
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Tests/EditMode/B01.RewardKeep3.EditMode.asmdef.meta",
+      "sha256": "519f7ceeec2b1ee097dc6873d361954b45cad2e50fcb99554301e0905df3c53d",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Tests/EditMode/Keep3EditModeTests.cs",
+      "sha256": "72445671c9ed6f0a5b2e27ea12c0e91774ed65f882453e7e75aef45aeeed6e5a",
+      "bytes": 1541
+    },
+    {
+      "path": "Assets/B01Packages/REWARDKEEP3001/Tests/EditMode/Keep3EditModeTests.cs.meta",
+      "sha256": "121a27022b7d5f033fd10c79dcf7dc911b3eb9a2f37a00467c45ae5e348a8f03",
+      "bytes": 243
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/INSTALL_FOR_CODEX.md",
+      "sha256": "9538ce1983bb7e2be51b0c3ade262185ecccc18d02d71b71c046f139b1dbff67",
+      "bytes": 2585
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/PROMPT_FOR_CODEX.md",
+      "sha256": "d487cb2c075bdd00d75be69d46c88da68e25365f7907c97167176e8971f866ee",
+      "bytes": 1195
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/R3RewardPort.install.cs",
+      "sha256": "941ef00b467f06287d46b6b2c9ee12eacf2bd8b568197483aac95678ede5c7eb",
+      "bytes": 2161
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/README.md",
+      "sha256": "c239e2573024db116291e64f6729bb70aa65d825df9353d9ed73bf67dbbf6e08",
+      "bytes": 3393
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/build_package.py",
+      "sha256": "638f50eb1c8471901268271d120c9d2968ba499d557ce6856244f2e7e20064eb",
+      "bytes": 2439
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/tests/BridgeCompile/BridgeCompile.csproj",
+      "sha256": "1628483ddfe4c0debd611c29f474265d27932c2a4dd750d64c479e16ff7adbe1",
+      "bytes": 673
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/tests/BridgeCompile/VerifiedR3Surface.cs",
+      "sha256": "928bc468bb7bca9f16cbd7b5fef22716afe297c5a7121265b41d98a951f78ce0",
+      "bytes": 359
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/tests/Program.cs",
+      "sha256": "6a90a108e51e56930de59e3674e7d9231d344898d1d0c7e5f6f63e43139e3905",
+      "bytes": 7765
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/tests/RewardKeep3.SurrogateTests.csproj",
+      "sha256": "481852c6efa1fd4b7e7b4460e2fed10300a8cbc69c6e102478b6a139ba2273a4",
+      "bytes": 446
+    },
+    {
+      "path": "Tools/B01/REWARDKEEP3001/tests/UnityJsonShim.cs",
+      "sha256": "24ec9a0a5a38077a1037a528999d07ab9ec7a3b332597f4561b519b80710f044",
+      "bytes": 367
+    }
+  ],
+  "status": "STAGED_FULL_PINNED_SOURCE"
+}

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems><Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AdapterSourceTests.cs" />
+    <Compile Include="AdapterFakeBuilder.cs" />
+    <Compile Include="../../../mapgenworld-evidence/adapter-shim/UnitySurrogate.cs" Link="GeneratedNonUnityShim.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapGenWorldAdapter.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs" />
+  </ItemGroup>
+</Project>
