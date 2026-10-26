@@ -117,9 +117,12 @@ public sealed class FullMergeAdditionalRegression
         run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Heavy);Assert.That(run.PrepareUnifiedRun(),Is.True);Assert.That(run.ChooseRoadChallenge(MapR4Mode.TimeAttack),Is.True);
         while(run.Transitioning)yield return null;
         var mesh=run.RoadWorld.Edges["junction_upper"].GetComponent<MeshFilter>().sharedMesh;var v=mesh.vertices;
-        var p=(v[50]+v[51])*.5f;Physics.SyncTransforms();
-        var hits=Physics.RaycastAll(p+Vector3.up*5,Vector3.down,10,~0,QueryTriggerInteraction.Ignore).Where(h=>h.collider.transform.IsChildOf(run.RoadWorld.Root.transform)).ToArray();
-        Assert.That(hits.Length,Is.GreaterThan(0));Assert.That(hits.Max(h=>h.point.y),Is.EqualTo(p.y).Within(.03f),"Flat expanded junction pad must not create a vertical curb above the source road grade");
+        Physics.SyncTransforms();
+        for(int i=16;i<=31;i++){
+            var p=(v[2*i]+v[2*i+1])*.5f;
+            var hits=Physics.RaycastAll(p+Vector3.up*5,Vector3.down,10,~0,QueryTriggerInteraction.Ignore).Where(h=>h.collider.transform.IsChildOf(run.RoadWorld.Root.transform)).ToArray();
+            Assert.That(hits.Length,Is.GreaterThan(0));Assert.That(hits.Max(h=>h.point.y),Is.EqualTo(p.y).Within(.03f),"Junction curb above actual source grade at sample "+i);
+        }
     }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

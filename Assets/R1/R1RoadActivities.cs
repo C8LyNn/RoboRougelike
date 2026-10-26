@@ -66,8 +66,26 @@ namespace RoboRougelike.R1
             var material=new Material(palette.Parts[(int)R3PartKind.Armor]){name="MAP-R6 canonical URP road"};material.color=new Color(.32f,.4f,.45f);
             RoadWorld=MapR4GeometryBuilder.Build(roadMap,transform,material,material);RoadWorld.OwnedMaterials.Add(material);
             RoadState=new MapR4StateController(roadMap,RoadWorld);RoadState.TrySetState(roadMode==MapR4Mode.Escape?"bridge_collapsed":"intact");
+            BuildRaisedRoadJoins(material);
             playerRotation=Quaternion.Euler(0,90,0);Physics.SyncTransforms();
             return RoadWorld.Anchors[roadMode==MapR4Mode.Survival||roadMode==MapR4Mode.Boss?"arena_middle":"spawn_west"].position+Vector3.up*1.05f;
+        }
+        void BuildRaisedRoadJoins(Material material)
+        {
+            foreach(var node in roadMap.nodes){
+                var edges=roadMap.edges.Where(e=>e.fromNode==node.id||e.toNode==node.id).ToArray();
+                bool raised=edges.Any(e=>roadMap.nodes.First(n=>n.id==(e.fromNode==node.id?e.toNode:e.fromNode)).position.y<node.position.y-.01f);
+                if(!raised||edges.Length!=2||edges.Any(e=>!RoadWorld.Edges[e.id].activeInHierarchy))continue;
+                var plan=MapR6JunctionPlanner.Plan(roadMap,edges[0].id,edges[1].id,node.id,RoadProfile);
+                if(!plan.Valid)throw new InvalidOperationException("Raised road join rejected: "+node.id+" / "+plan.Reason);
+                // Use the existing source planner's graded splice. A flat cube
+                // across a ramp is a physical curb even at the authored width.
+                var pad=RoadWorld.Root.transform.Find("Node_"+node.id);if(pad!=null)pad.gameObject.SetActive(false);
+                var shape=new MapR4EdgeData{id="R6_join_"+node.id,width=plan.Width,roadThickness=.35f,roadSegments=32,useCurve=true,controlA=plan.ControlA,controlB=plan.ControlB};
+                var mesh=MapR5RoadMesh.Build(plan.Start,plan.End,shape);RoadWorld.OwnedMeshes.Add(mesh);
+                var join=new GameObject("R6 graded join "+node.id);join.transform.SetParent(RoadWorld.Root.transform,false);
+                join.AddComponent<MeshFilter>().sharedMesh=mesh;join.AddComponent<MeshRenderer>().sharedMaterial=material;join.AddComponent<MeshCollider>().sharedMesh=mesh;
+            }
         }
         void BeginRoadChallenge()
         {
