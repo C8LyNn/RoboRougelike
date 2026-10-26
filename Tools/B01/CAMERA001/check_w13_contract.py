@@ -40,10 +40,24 @@ assert 'NegativeFrameRejectedAndMaxIntFrameCannotWrap' in edit
 mutated_guard=runtime.replace('(long)frame.FrameIndex - previous.FrameIndex != 1L','false')
 assert mutated_guard!=runtime and '(long)frame.FrameIndex - previous.FrameIndex != 1L' not in mutated_guard
 
+# W15 SOURCE RECEIPT: raw previous/current target and muzzle world geometry
+# must survive capture and appear as recomputable invariant numeric CSV columns.
+assert "public Camera001AimTransitionDiagnostics.Sample Sample;" in runtime
+assert "Sample = sample, // prior target/forward" in runtime
+assert "previousTargetX,previousTargetY,previousTargetZ,currentTargetX" in runtime
+assert "muzzleX,muzzleY,muzzleZ,previousForwardX" in runtime
+assert "currentForwardX,currentForwardY,currentForwardZ,deltaTimeSeconds" in runtime
+assert "Num(v.x) + \",\" + Num(v.y) + \",\" + Num(v.z)" in runtime
+assert "StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" in edit
+assert "RawProvenanceSurvivesCallerSpoofAndIsRecomputable" in edit
+assert "CsvRawFloatsRemainInvariantInCommaDecimalLocale" in edit
+m = runtime.replace("Sample = sample, // prior target/forward", "/*lost raw evidence*/")
+assert m!=runtime and "Sample = sample, // prior target/forward" not in m
+
 assert "transform.rotation = actualRotation;" in original
 edit_names=re.findall(r'\[Test\]\s+public void (\w+)\(',edit)
 play_names=re.findall(r'\[UnityTest\]\s+public IEnumerator (\w+)\(',play)
-assert len(set(edit_names))==8 and len(edit_names)==8,edit_names
+assert len(set(edit_names))==11 and len(edit_names)==11,edit_names
 assert len(set(play_names))==2 and len(play_names)==2,play_names
 assert "Physics.Raycast(ray" in play and "Vector3.RotateTowards(" in play
 assert "QueryTriggerInteraction.Ignore" in play
