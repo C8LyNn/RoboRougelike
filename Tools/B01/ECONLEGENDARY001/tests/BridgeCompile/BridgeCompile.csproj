@@ -8,4 +8,6 @@
 <Compile Include="../../_receiver/R3EconRebuildPort.install.cs" />
 <Compile Include="../UnityJsonShim.cs" />
 <Compile Include="R3SignatureStub.cs" />
+<Compile Include="NUnitCompileShim.cs" />
+<Compile Include="../../../../../Assets/B01Packages/ECONLEGENDARY001/Tests/EditMode/EconLegendaryGuardEditModeTests.cs" Link="AuthoredNativeEditModeTests.cs" />
 </ItemGroup></Project>
