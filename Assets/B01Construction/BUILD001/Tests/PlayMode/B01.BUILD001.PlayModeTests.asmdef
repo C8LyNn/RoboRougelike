@@ -1,0 +1,12 @@
+{
+  "name": "B01.BUILD001.PlayModeTests",
+  "rootNamespace": "B01.BUILD001.Tests",
+  "references": [
+    "B01.BUILD001.Runtime"
+  ],
+  "includePlatforms": [],
+  "autoReferenced": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

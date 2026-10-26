@@ -5,7 +5,7 @@
   "zip": {
     "name": "mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip",
     "sha256": "28b6422e7c358f379a47b49a0a671f631cee6d7f627daf3f6bf4807d7c3b8a41",
-    "bytes": 264,
+    "bytes": 38067,
     "entries": 37,
     "gitMatched": 36,
     "generatedManifests": [
@@ -198,5 +198,6 @@
       "bytes": 4612
     }
   ],
-  "status": "STAGED_FULL_PINNED_SOURCE"
+  "status": "STAGED_FULL_PINNED_SOURCE",
+  "receiptCorrection": "Initial staging receipt printed the last meta length because of a variable-name collision; actual archive hash/source comparison was valid. Corrected from retained physical bytes before acceptance."
 }

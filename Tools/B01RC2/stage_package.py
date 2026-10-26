@@ -23,7 +23,7 @@ def run(key,apply=False):
  wrapper=zipfile.ZipFile(physical);assert wrapper.testzip() is None
  candidates=[(n,wrapper.read(n)) for n in wrapper.namelist() if n.endswith('.zip') and not n.endswith('/')]
  nested=[(n,b) for n,b in candidates if h(b)==digest];assert len(nested)==1,(key,'No exact inner ZIP',[(n,h(b)) for n,b in candidates])
- name,b=nested[0];z=zipfile.ZipFile(io.BytesIO(b));assert z.testzip() is None
+ name,b=nested[0];inner_bytes=len(b);z=zipfile.ZipFile(io.BytesIO(b));assert z.testzip() is None
  matches=[];generated=[]
  for n in z.namelist():
   if n.endswith('/'):continue
@@ -51,7 +51,7 @@ def run(key,apply=False):
  for p in src:
   if p.startswith('Assets/') and pathlib.Path(p).suffix in ('.cs','.asmdef','.unity','.shader','.mat','.prefab'):
    assert p+'.meta' in src or (R/(p+'.meta')).exists(),(p,'missing meta')
- receipt={'package':key,'source':pin,'targetBefore':git('rev-parse','HEAD').decode().strip(),'zip':{'name':name,'sha256':digest,'bytes':len(b),'entries':len(z.namelist()),'gitMatched':len(matches),'generatedManifests':generated},'preservedShared':skipped,'sourceFiles':len(paths),'GUIDCountAfter':len(seen),'obsolete':obsolete,'files':[{'path':p,'sha256':h(v),'bytes':len(v)} for p,v in src.items()],'status':'VERIFIED_NOT_STAGED'}
+ receipt={'package':key,'source':pin,'targetBefore':git('rev-parse','HEAD').decode().strip(),'zip':{'name':name,'sha256':digest,'bytes':inner_bytes,'entries':len(z.namelist()),'gitMatched':len(matches),'generatedManifests':generated},'preservedShared':skipped,'sourceFiles':len(paths),'GUIDCountAfter':len(seen),'obsolete':obsolete,'files':[{'path':p,'sha256':h(v),'bytes':len(v)} for p,v in src.items()],'status':'VERIFIED_NOT_STAGED'}
  if apply:
   before={p:base64.b64encode((R/p).read_bytes()).decode() if (R/p).exists() else None for p in list(src)+obsolete}
   journal=R/'Artifacts/Intake'/(key+'-stage-journal.json');journal.write_text(json.dumps({'before':before,'receipt':receipt},indent=2))
