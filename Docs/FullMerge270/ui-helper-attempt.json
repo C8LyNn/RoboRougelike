@@ -1,0 +1,10 @@
+{
+  "utc": "2026-10-26T18:15:10.487173+00:00",
+  "attempts": [
+    "node_repl initial import @oai/sky failed before any target selection",
+    "js_reset succeeded; node_repl retry same failure"
+  ],
+  "error": "failed to write kernel assets: System nie moze odnalezc okreslonej sciezki (os error 3)",
+  "status": "OS_UI_NOT_RUN",
+  "noUIAClientAttached": true
+}

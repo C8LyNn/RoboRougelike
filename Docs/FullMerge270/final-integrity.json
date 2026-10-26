@@ -1,0 +1,86 @@
+{
+  "sha": "3e650c1e21ddc5550ded50d1ce033e96d7f4cceb",
+  "baseline": "056911a8284f7d61f2a8d13ed2669e453c3d9915",
+  "originalAssetFiles": 1507,
+  "deletedOriginalAssets": [],
+  "changedOriginalGUIDs": [],
+  "guidCount": 971,
+  "duplicateGUIDs": {},
+  "missingMeta": [],
+  "sharedParentPreserved": true,
+  "packages": [
+    {
+      "name": "BUILD",
+      "source": "95707c68c8071a949b5d9fec7ff57926e92f8198",
+      "manifestFiles": 59,
+      "localPatches": [],
+      "missing": []
+    },
+    {
+      "name": "WORLD",
+      "source": "5f6df2af0a1365779347c3dc9b6b3a81708bb2e6",
+      "manifestFiles": 43,
+      "localPatches": [],
+      "missing": []
+    },
+    {
+      "name": "CAMERA",
+      "source": "ba90bca4a33ee37bdf7923b7d4fad14dc75adc69",
+      "manifestFiles": 61,
+      "localPatches": [
+        {
+          "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs",
+          "sourceSHA256": "d6cd37a9c2ebdefbe7b8002c060ffcb852a0eb60b787427e264c1e41e4835d3b",
+          "receiverSHA256": "0a66ddc542af6b38cc0f6ce668d109fe5af419ca8f6ffb2f374db655af83436e"
+        }
+      ],
+      "missing": []
+    },
+    {
+      "name": "RAC",
+      "source": "fd9a3f4dda08eaba56d9f74007bc35dc0809b67e",
+      "manifestFiles": 36,
+      "localPatches": [
+        {
+          "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceChallenge.cs",
+          "sourceSHA256": "a3d3e5cdf4fc9fd9d122bb77706d3bc79d8725f39856350aae1f5196da895049",
+          "receiverSHA256": "d4cb8eae97285e1f142af73242856f54bef7d620545cbcca325e25f5dfd5f7af"
+        },
+        {
+          "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/CheckpointRaceDemoController.cs",
+          "sourceSHA256": "8797dd9f7f5bd231de8f85f61aba5355de2f2e90611255ca02f60baf99cf5d13",
+          "receiverSHA256": "cabf04146635004d66718475610cb41d707aa8eb053255229c46061a529b4d9a"
+        },
+        {
+          "path": "Assets/RoboRougelikeMechanics/RAC001CheckpointRace/Tests/PlayMode/RAC001PhysicalDemoTests.cs",
+          "sourceSHA256": "8850a6e4c87f6b134759140af047d043343f0530ffefb824618b9e3799174832",
+          "receiverSHA256": "fe0737169d8e934a5b6503c133d323a133a6933a854b55ddfd82c849628546cc"
+        }
+      ],
+      "missing": []
+    },
+    {
+      "name": "MAPR6",
+      "source": "79b9605e07864b60fb38892c9e38f1cbb4072218",
+      "manifestFiles": 109,
+      "localPatches": [
+        {
+          "path": "Assets/R6/MapR6ProductionEvidenceBridge.cs",
+          "sourceSHA256": "639d5d7611ca3c237b70534f939770ed5645dcbe731dbf40f6e3ec6e9fd5f70f",
+          "receiverSHA256": "ff420b77c9a9440d49d102a4726b75508dc2aac34a14e5afd1320a5c30522d55"
+        },
+        {
+          "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/RoboRougelike.MapSystemR4.EditModeTests.asmdef",
+          "sourceSHA256": "db64e1899ba653f3002fa64f24f594d99f07493e5f0c1811ad7ac82d513215b4",
+          "receiverSHA256": "ee22c1d4cfad74fda3dee34b85b1727921513acd1826c892703f2dbe7db40a59"
+        },
+        {
+          "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/RoboRougelike.MapSystemR4.PlayModeTests.asmdef",
+          "sourceSHA256": "8cf0b3db3eea98413172289a0eadda406bfd6a77ba0ff758c027312247e60cd0",
+          "receiverSHA256": "c48b11b14bd293b75911e4eb34bda467f17057e21a0f2cd37db2f27fe03288ce"
+        }
+      ],
+      "missing": []
+    }
+  ]
+}
