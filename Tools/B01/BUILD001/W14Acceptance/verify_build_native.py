@@ -9,10 +9,91 @@ import argparse
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from collections import Counter
 
 SOURCE_SHA = "95707c68c8071a949b5d9fec7ff57926e92f8198"
 EDIT_TOTAL = 35  # R1.3 original18 + R1.4 new14 + original RC2 external3
 PLAY_TOTAL = 6
+
+# Frozen R1.4 producer and unchanged RC2 external receiver method inventory.
+# Allow parameterized NUnit cases by counts; prohibit surrogate green methods.
+EDIT_METHODS = {
+    "B01.BUILD001.Tests.Build001SocketTests": {
+        "WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel": 1,
+        "WheelCanBeMirroredByYawAndMountOppositeSide": 1,
+        "GunHasBaseOnlyAndLateralBarrelContactIsRejected": 1,
+        "SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor": 1,
+        "MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces": 1,
+        "StructuralGraphDisconnectsAfterSupportDies": 1,
+        "AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment": 1,
+        "InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed": 1,
+        "TwoTinyEdgePatchesMustHaveGenuineContactArea": 1,
+        "NoCorePlacementAndNoCellOrOwnershipDuplication": 1,
+        "OneQuarterRotationAlwaysRemainsIntegralAndReversible": 1,
+    },
+    "B01.BUILD001.Tests.Build001R13SafetyTests": {
+        "W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland": 1,
+        "W9_02_StrictInstallReportsDisconnectedFragment": 1,
+        "W9_03_DisjointCellsCannotShareOneOwner": 1,
+        "W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay": 1,
+        "W9_03_Joined2x2RotationStillWorks": 1,
+        "W9_04_NullEvidenceMustNotBeCommitted": 1,
+        "TypedMobilityHubDoesNotWildcardIntoStructural": 1,
+    },
+    "B01.BUILD001.Tests.Build001R14ContactAreaTests": {
+        "RC2_NestedPatchUsesRealContactArea": 4,
+        "RC2_NestedAcceptedAreaEqualsActualPhysicalSquareMetres": 1,
+        "OffsetNestedSocketNeverBorrowsSurroundingArea": 1,
+        "NonoverlapAndEdgeOnlyRemainRejected": 1,
+        "UnequalPartiallyOverlappingRectanglesReportExactArea": 1,
+        "QuarterTurnRotationsPreserveExactNestedArea": 5,
+        "ReceiverMinimumAreaIsNotCumulativeAcrossTinySockets": 1,
+    },
+    "BuildRC2SafetyTests": {
+        "NestedPatchMustSatisfyActualMinimumContactArea": 2,
+        "AcceptedNestedPatchReportsItsTrueGeometricArea": 1,
+    },
+}
+PLAY_METHODS = {
+    "B01.BUILD001.Tests.Build001PhysicalHitTests": {
+        "RealCubeColliderFaceIsSelectedButWheelTreadIsNot": 1,
+        "TopFaceCanSelectStructuralSocketWithoutCreatingArtOwnedPorts": 1,
+    },
+    "B01.BUILD001.Tests.Build001R13PhysicalTests": {
+        "W9_01_DecorativeChildRayCannotBecomeStructuralSocket": 1,
+        "W9_04_ActualPhysXPenetrationRejectsLargePhysicalPart": 1,
+        "W9_04_GenuineNonOverlappingBodiesCanCommit": 1,
+        "DemoURPShaderIsIncludedAndSupported": 1,
+    },
+}
+
+def expected_case_methods(expected_total):
+    if expected_total == EDIT_TOTAL:
+        return EDIT_METHODS
+    if expected_total == PLAY_TOTAL:
+        return PLAY_METHODS
+    raise ValueError("UNRECOGNISED_BUILD_NATIVE_SUITE_TOTAL")
+
+def require_exact_methods(cases, expected_total):
+    inventory = expected_case_methods(expected_total)
+    intended = Counter((cls, method) for cls, methods in inventory.items()
+                       for method, multiplicity in methods.items()
+                       for _ in range(multiplicity))
+    seen = Counter()
+    fullnames = set()
+    for case in cases:
+        cls = case.get("classname", "")
+        name = case.get("name", "")
+        fullname = case.get("fullname", "")
+        if not cls or not name or not fullname or not fullname.startswith(cls + "."):
+            raise ValueError("MISSING_OR_BAD_NUNIT_TEST_ID")
+        method = name.split("(", 1)[0]
+        if not fullname.startswith(cls + "." + name) or fullname in fullnames:
+            raise ValueError("DUPLICATE_OR_MISSING_TEST_ID")
+        fullnames.add(fullname)
+        seen[(cls, method)] += 1
+    if seen != intended:
+        raise ValueError("UNEXPECTED_METHOD_OR_CASE_DISTRIBUTION")
 
 def parse_nunit(raw, expected_total, expected_counts):
     root = ET.fromstring(raw)
@@ -30,15 +111,8 @@ def parse_nunit(raw, expected_total, expected_counts):
             x.get("fullname", "") + " " + x.get("classname", ""))]
         if len(selected) != expected:
             raise ValueError("MISSING_OR_EXTRA_CASES:" + class_fragment)
-    if expected_total == EDIT_TOTAL:
-        receiver = [x for x in cases if "BuildRC2SafetyTests" in
-                    (x.get("fullname", "")+" "+x.get("classname", ""))]
-        if sum("NestedPatchMustSatisfyActualMinimumContactArea" in
-               x.get("name", "") for x in receiver) != 2:
-            raise ValueError("UNMODIFIED_RECEIVER_NEGATIVE_AND_POSITIVE_MISSING")
-        if sum("AcceptedNestedPatchReportsItsTrueGeometricArea" in
-               x.get("name", "") for x in receiver) != 1:
-            raise ValueError("UNMODIFIED_RECEIVER_EXACT_AREA_MISSING")
+    # No substitution, duplicate invocation IDs or omitted high-risk methods.
+    require_exact_methods(cases, expected_total)
     return {"total":len(cases), "passed":len(cases), "skipped":0, "failed":0}
 
 
