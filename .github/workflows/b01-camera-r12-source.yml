@@ -1,8 +1,8 @@
-name: B01 CAMERA R1.2.2 isolated source QA (NOT Unity)
+name: B01 CAMERA R1.2.3 isolated source QA (NOT Unity)
 on:
   push:
     branches:
-      - feature/b01-camera001-w13-r122-aim-timeline-native-20261026
+      - fix/b01-camera001-w14-r123-contiguous-frame-proof-20261026
     paths:
       - "Assets/B01Packages/CAMERA001/**"
       - "Docs/B01/CAMERA001/**"
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: CAMERA R1.2.2 static regressions and mutation sentinel
+      - name: CAMERA R1.2.3 static regressions and mutation sentinel
         run: python Tools/B01/CAMERA001/check_r12_contract.py
       - name: R1.2.1 passive source-only invariant and UnityTest preservation
         run: python Tools/B01/CAMERA001/check_r121_contract.py
@@ -36,14 +36,14 @@ jobs:
           dotnet-version: 8.0.x
       - name: Compile and execute exact CAMERA diagnostic CSharp (math surrogate, NOT UNITY)
         run: dotnet run --project Tools/B01/CAMERA001/AimDifferential/AimDifferential.csproj --configuration Release
-      - name: W13 real Unity test sources and passive target recorder static gate
+      - name: W14 contiguous-frame regression and original native Unity test contracts
         run: python Tools/B01/CAMERA001/check_w13_contract.py
       - name: Existing 840-case geometry analytic surrogate
         run: node Tools/B01/CAMERA001/geometry_probe.js
       - name: Compute real source SHA256; verify manifest and make deterministic ZIP when ready
         shell: bash
         run: |
-          if python -c "import json; m=json.load(open('Docs/B01/CAMERA001/manifest.json')); assert m['revision']=='R1.2.2' and 'r122_source_sha256_by_path' in m"; then
+          if python -c "import json; m=json.load(open('Docs/B01/CAMERA001/manifest.json')); assert m['revision']=='R1.2.3' and 'r123_source_sha256_by_path' in m"; then
             python Tools/B01/CAMERA001/package_gate.py --verify-zip
           else
             python Tools/B01/CAMERA001/package_gate.py --emit
@@ -52,7 +52,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: camera-r122-source-zip
-          path: camera-r122-evidence/
+          name: camera-r123-source-zip
+          path: camera-r123-evidence/
           if-no-files-found: ignore
           retention-days: 21

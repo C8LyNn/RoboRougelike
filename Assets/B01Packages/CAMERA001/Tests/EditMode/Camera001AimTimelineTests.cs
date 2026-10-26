@@ -93,6 +93,45 @@ namespace B01.CAMERA001.Tests
             StringAssert.Contains("\"Enemy,\"\"Armor\"\"\"", q.ToCsv());
         }
 
+        [Test] public void SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew()
+        {
+            var t = new Camera001AimTimeline();
+            var muzzle = new Vector3(0f, 1.5f, 27f);
+            var enemy = new Vector3(0f, 2f, 30f);
+            var ground = new Vector3(0f, 0f, 35f);
+            var forward = (enemy - muzzle).normalized;
+            t.Capture(F(100, 1, enemy, muzzle, forward));
+            // Previous permissive source treated ten missing frames as one
+            // 1/60s slew opportunity: false blame of limited turret speed.
+            var skipped = F(110, 2, ground, muzzle, forward);
+            var before = t.ToCsv();
+            var ex = Assert.Throws<ArgumentException>(() => t.Capture(skipped));
+            StringAssert.Contains("SKIPPED_FRAME", ex.Message);
+            Assert.AreEqual(1, t.Count);
+            Assert.AreEqual(0, t.ChangedFirstHitCount);
+            Assert.AreEqual(0, t.RetargetOverBudgetCount);
+            Assert.AreEqual(before, t.ToCsv());
+            // After reject the next contiguous frame must still work.
+            var actual = t.Capture(F(101, 2, ground, muzzle, forward));
+            Assert.IsTrue(actual.FirstHitChanged);
+            Assert.IsTrue(actual.Observation.TargetChangeExceedsOneFrameTurretBudget);
+        }
+
+        [Test] public void NegativeFrameRejectedAndMaxIntFrameCannotWrap()
+        {
+            var t = new Camera001AimTimeline();
+            var v = F(-1, 1, Vector3.forward * 30f,
+                Vector3.zero, Vector3.forward);
+            Assert.Throws<ArgumentException>(() => t.Capture(v));
+            Assert.AreEqual(0, t.Count);
+            v.FrameIndex = int.MaxValue;
+            t.Capture(v);
+            var overflow = F(int.MinValue, 2, Vector3.forward * 30f,
+                Vector3.zero, Vector3.forward);
+            Assert.Throws<ArgumentException>(() => t.Capture(overflow));
+            Assert.AreEqual(1, t.Count);
+        }
+
         [Test] public void UnsafeCameraSampleNeverLabelsRateAsProvenCausality()
         {
             var q = new Camera001AimTimeline();

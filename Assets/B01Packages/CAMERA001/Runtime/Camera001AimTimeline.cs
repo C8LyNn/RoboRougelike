@@ -58,8 +58,17 @@ namespace B01.CAMERA001
         {
             if (records.Count >= capacity)
                 throw new InvalidOperationException("CAMERA001_AIM_TIMELINE_CAPACITY");
+            if (frame.FrameIndex < 0)
+                throw new ArgumentException("CAMERA001_AIM_TIMELINE_NEGATIVE_FRAME");
             if (hasPrevious && frame.FrameIndex <= previous.FrameIndex)
                 throw new ArgumentException("CAMERA001_AIM_TIMELINE_NONMONOTONIC_FRAME");
+            // The measured aim jump is compared with the angular budget for
+            // *one* current-frame dt. If intermediate frames were dropped,
+            // classifying that multi-frame jump as a one-frame servo failure
+            // is mathematically invalid. Reject before state mutation.
+            // Use widened arithmetic to prevent int overflow at the limit.
+            if (hasPrevious && (long)frame.FrameIndex - previous.FrameIndex != 1L)
+                throw new ArgumentException("CAMERA001_AIM_TIMELINE_SKIPPED_FRAME");
             if (string.IsNullOrEmpty(frame.HitKind) || frame.HitKind.Length > 256)
                 throw new ArgumentException("CAMERA001_AIM_TIMELINE_HIT_KIND_INVALID");
 
