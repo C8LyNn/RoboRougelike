@@ -7,7 +7,7 @@ using RoboRougelike.B01.Legendary;
 using RoboRougelike.B01.Economy.Rebuild;
 using RoboRougelike.B01.Economy.LegendaryGuard;
 
-sealed class SharedHost : IAuthoritativeR3Port, IAuthoritativeRebuildPort, IRebuildReservationProof
+sealed class SharedHost : IAuthoritativeR3Port, IAuthoritativeRebuildPort, IRebuildReservationProof, ISharedR3PhysicalOwnerIdentity
 {
     public sealed class Item {public string Id,Kind,Family;public float Health;public bool IsMounted;}
     public string RobotId {get;}
@@ -16,6 +16,8 @@ sealed class SharedHost : IAuthoritativeR3Port, IAuthoritativeRebuildPort, IRebu
     public readonly HashSet<string> Completed=new(StringComparer.Ordinal);
     public int Scrap=1000,RebuildQuote=25,BuyPrice=100,UnsafeRepairCalls,Debits,Completions,Salvages;
     public bool ProofAvailable=true,RejectReservation=false,RejectComplete=false,RejectMounted=false,SnapshotMismatch=false;
+    public bool HideOwnershipIdentity;
+    public object AuthoritativeR3Model => HideOwnershipIdentity ? null : this;
     public SharedHost(string id){RobotId=id;}
     public IReadOnlyList<PartObservation> Mounted=>Parts.Where(x=>x.IsMounted).Select(x=>new PartObservation(x.Id,x.Kind,x.Family,x.Health)).ToArray();
     public IReadOnlyList<PartObservation> Inventory=>Parts.Where(x=>!x.IsMounted).Select(x=>new PartObservation(x.Id,x.Kind,x.Family,x.Health)).ToArray();
@@ -268,6 +270,18 @@ static class Program
             Ensure(!guard.CheckSharedOwnership(out var reason),
                 "SPLIT_BRAIN: identical GUID/kind/HP conceals DIFFERENT authoritative R3 inventories");
             Same(reason,"OWNER_IDENTITY_MISMATCH");
+        });
+        Test("W14_missing_shared_owner_proof_refuses_mutations",()=>{
+            var host=new SharedHost("A");
+            var id=NewId();
+            host.Parts.Add(new SharedHost.Item{Id=id,Kind="Gun",Family="Railgun",Health=0});
+            host.HideOwnershipIdentity=true;
+            var gate=new GuardedLegendaryPort(host,host,new RebuildQueueService(host),host);
+            Ensure(!gate.CheckSharedOwnership(out var reason));
+            Same(reason,"OWNER_IDENTITY_UNAVAILABLE");
+            Ensure(!gate.RepairExisting(id,out reason));
+            Same(reason,"OWNER_IDENTITY_UNAVAILABLE");
+            Same(host.UnsafeRepairCalls,0);
         });
         Test("18_seeded_1800_damage_queue_win_restart_stress",()=>{
             var (h,e,l,g)=Start();
