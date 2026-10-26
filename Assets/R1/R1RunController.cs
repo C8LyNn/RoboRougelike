@@ -113,6 +113,7 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Route||index<0||index>=RouteOffers.Length)return false;
             ClearGeneratedArena();
+            ClearFullActivities();
             var choice=RouteOffers[index];
             reactorRequested=false;ReactorPrepared=false;LastActivityWasReactor=false;
             if(!Progress.ChooseRoute())return false;
@@ -211,7 +212,8 @@ namespace RoboRougelike.R1
         {
             Transitioning = true; Paused = false; SetSimulation(false);
             Encounter.Clear();
-            if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
+            if(roadRequested)playerSpawn=ActivateRoadWorld();
+            else if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
             else {Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;}
             if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,playerRotation);
             else Player.MoveTo(playerSpawn,playerRotation);
@@ -223,7 +225,9 @@ namespace RoboRougelike.R1
             // Preserve only modifiers from currently mounted, operational bonus modules.
             Player.Apply(ActiveStats??Progress.Stats);
             ResetRecoveryForEncounter();Salvage=new R4SalvageLedger(3);
-            if(reactorRequested)BeginReactorActivity();
+            if(raceRequested)BeginCheckpointRace();
+            else if(roadRequested)BeginRoadChallenge();
+            else if(reactorRequested)BeginReactorActivity();
             else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,mapgenRequested?GeneratedWorld.EnemySpawns:null);
             yield return null;
             Transitioning = false; SetSimulation(true);
@@ -239,6 +243,7 @@ namespace RoboRougelike.R1
             if (Transitioning || Progress.State != R1RunState.Combat || Paused) return;
             string defeat = Player == null ? "Pojazd został zniszczony." : Player.DefeatReason;
             if(defeat==null)defeat=ReactorDefeat();
+            if(defeat==null)defeat=FullActivityDefeat();
             // Resolve player loss first when both sides die in the same physics step.
             if (defeat != null)
             {
@@ -246,22 +251,25 @@ namespace RoboRougelike.R1
                 Player?.GetComponent<R3VehicleAssembly>().Capture();
                 Progress.Lose(defeat); SetSimulation(false);
                 ClearReactorActivity();
+                ClearFullActivities();
                 ClearGeneratedArena();
                 Debug.Log("[R1] Porażka: " + defeat);
             }
             else if(ReactorActive&&!UpdateReactorDefense())return;
-            else if (Encounter.Cleared)
+            else if(!UpdateFullActivity())return;
+            else if (Encounter.Cleared||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
             {
                 Player.GetComponent<R3VehicleAssembly>().Capture();
                 LastScrapReward=Definition.Encounters[Progress.EncounterIndex].ScrapReward;
                 VehicleModel.Award(LastScrapReward);
-                EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count;
+                EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
                 Progress.WinEncounter(Definition.Upgrades, Plan.UpgradeRandom(Progress.EncounterIndex));
                 Progress.OpenSalvage();
                 OpenRecoveryWindow();
                 SetSimulation(false);
                 Encounter.Clear();
                 ClearReactorActivity();
+                ClearFullActivities();
                 ClearGeneratedArena();
                 Debug.Log("[R3] Wygrano starcie " + Progress.CompletedEncounters + "; Złom +"+LastScrapReward+"; stan=" + Progress.State);
             }
@@ -315,6 +323,7 @@ namespace RoboRougelike.R1
         private void OnDestroy()
         {
             ClearReactorActivity();
+            ClearFullActivities();
             ClearGeneratedArena();
             if (Definition != null) Destroy(Definition);
             if (Instance == this) { Instance = null; Time.timeScale = 1; }
