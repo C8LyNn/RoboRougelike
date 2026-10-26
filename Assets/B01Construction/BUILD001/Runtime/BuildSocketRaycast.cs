@@ -5,6 +5,15 @@ namespace B01.BUILD001
 {
     public enum BuildHitResult { Valid, NoOwner, DecorativeSurface, OutsidePatch, ObliqueHit }
 
+    /// <summary>Physical collider opt-in. Art colliders have no such marker.
+    /// This must be assigned during trusted prefab authoring, not from ray hits.</summary>
+    [DisallowMultipleComponent]
+    public sealed class BuildMountSurface : MonoBehaviour
+    {
+        public string PartInstanceId;
+        public int SocketIndex = -1;
+    }
+
     /// <summary>An explicit, per-robot collider-to-socket authorization registry.
     /// A decorative child, even under the same root, is NEVER implicitly authorized.</summary>
     public sealed class BuildSocketRegistry
@@ -28,6 +37,9 @@ namespace B01.BUILD001
                 !collider.transform.IsChildOf(root) || !collider.enabled ||
                 !definition.SupportsOtherParts || definition.Role == BuildRole.Wheel ||
                 definition.Role == BuildRole.Gun) return false;
+            var marker = collider.GetComponent<BuildMountSurface>();
+            if (marker == null || marker.PartInstanceId != partId ||
+                marker.SocketIndex != socketIndex) return false;
             var socket = definition.Sockets[socketIndex];
             if (socket.Kind != BuildSocketKind.Structural &&
                 socket.Kind != BuildSocketKind.Axle) return false;
