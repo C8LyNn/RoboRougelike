@@ -16,3 +16,5 @@ Task6: PENDING.
 Ruling: use native inline implementation with limited read-only source review — shared Unity/editor/state cannot be modified concurrently. Source package G2 text does not override user's new experimental authorization; no independent approval claimed.
 
 Receipt correction: source staging used a reused variable for printed ZIP length (last meta264B). Hash and all36ZIP/Git byte comparisons were correct; receipt repaired from actual retained ZIP38,067B and helper fixed before acceptance. No producer change.
+
+Task5 checkpoint084a64292c0c0db1dd54151b30674d454319e8e9: native compile0/Edit22/22. Raw policy bypass negative failed at0663d3ac5da17786bdc3fa95de71cd169df91071 as intended, then receiver guard authorizes physical commit only inside R1.ConfirmRewards; new7host casesGREEN. Conditional CAMERA diagnostic6,LEG3,ECON3nativePASS but gameplay dependencies remain blocked; see Blocked/CONDITIONAL_PACKAGES.md. Remove their Assets before release; KEEP3 stays active.
