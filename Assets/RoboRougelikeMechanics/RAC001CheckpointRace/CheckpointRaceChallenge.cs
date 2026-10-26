@@ -18,6 +18,7 @@ namespace RoboRougelike.Mechanics.RAC001
         [SerializeField] private UnityEvent onInvalidated = new UnityEvent();
 
         private readonly CheckpointRaceState state = new CheckpointRaceState();
+        private Rigidbody observedBody;
         public RacePhase Phase => state.Phase;
         public bool Running => Phase == RacePhase.Running;
         public bool Won => Phase == RacePhase.Won;
@@ -28,13 +29,14 @@ namespace RoboRougelike.Mechanics.RAC001
         public UnityEvent OnWon => onWon;
         public UnityEvent OnTimedOut => onTimedOut;
 
-        public void BindRunner(Transform value) => runner = value;
+        public void BindRunner(Transform value)
+        { runner=value; observedBody=value!=null?value.GetComponent<Rigidbody>():null; }
 
         /// <summary>Opt-in configuration for isolated demos and tests; never edits assets.</summary>
         public void Configure(Transform value, Transform[] course, float radius, float seconds, float speed = 250f)
         {
             ResetRace();
-            runner = value;
+            BindRunner(value);
             checkpoints = course;
             radiusMeters = radius;
             timeLimitSeconds = seconds;
@@ -56,7 +58,11 @@ namespace RoboRougelike.Mechanics.RAC001
 
         public void ResetRace() => state.Reset();
 
-        private void Update() => Advance(Time.deltaTime);
+        // Observe physics motion on its own clock. A render frame can have a tiny
+        // delta after a fixed body step; comparing that step with render delta
+        // falsely triggers the movement guard and disarms a genuine checkpoint.
+        private void Update() { if(observedBody==null)Advance(Time.deltaTime); }
+        private void FixedUpdate() { if(observedBody!=null)Advance(Time.fixedDeltaTime); }
 
         /// <summary>Manual deterministic step for a separate adapter/test; never mutates runner.</summary>
         public RaceStepResult Advance(float deltaSeconds)
@@ -68,7 +74,7 @@ namespace RoboRougelike.Mechanics.RAC001
                 onInvalidated.Invoke();
                 return RaceStepResult.Invalidated;
             }
-            RaceStepResult result = state.Advance(runner.position, deltaSeconds);
+            RaceStepResult result = state.Advance(observedBody!=null?observedBody.position:runner.position, deltaSeconds);
             if (result == RaceStepResult.Checkpoint || result == RaceStepResult.Won)
                 onCheckpoint.Invoke();
             if (result == RaceStepResult.Won) onWon.Invoke();
