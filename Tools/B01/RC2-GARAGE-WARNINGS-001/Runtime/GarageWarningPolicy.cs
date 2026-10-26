@@ -61,7 +61,10 @@ namespace B01.GameDesign.RC2GarageWarnings
                 p.Health>0&&p.ConnectedToTrustedCore==true&&p.Operational==true;
             static bool Potential(GaragePart p) =>
                 p.Health>0&&p.ConnectedToTrustedCore!=false&&p.Operational!=false;
-            bool hasCore=parts.Count(p=>p.Kind=="Core"&&Available(p))==1;
+            // Count every physically mounted Core, including 0HP and disabled entries.
+            // BUILD rejects duplicate roots on load; a destroyed extra Core must not mask this.
+            bool hasCore=parts.Count(p=>p.Kind=="Core")==1 &&
+                         parts.Any(p=>p.Kind=="Core"&&Available(p));
             if (!hasCore) errors.Add("CORE_NONFUNCTIONAL_OR_AMBIGUOUS");
             // Mounted 0HP and inventory or disconnected parts cannot authenticate support.
             if(parts.Any(p=>p.Health>0&&p.ConnectedToTrustedCore==false))
