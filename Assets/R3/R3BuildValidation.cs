@@ -50,7 +50,8 @@ namespace RoboRougelike.R3
         }
         List<BuildInstalledPart> Installed()=>model.Parts.Select(p=>{
             var actual=assembly.Parts.FirstOrDefault(a=>a!=null&&a.Id==p.Id);
-            bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform);
+            bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform)&&
+                actual.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&c.gameObject.activeInHierarchy&&!c.isTrigger&&c.attachedRigidbody==GetComponent<Rigidbody>());
             return new BuildInstalledPart(p.Id,Definition(p),new BuildPose(p.Cell,p.RotationQuarterTurns),alive);
         }).ToList();
 

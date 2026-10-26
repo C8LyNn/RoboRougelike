@@ -33,6 +33,7 @@ namespace RoboRougelike.R1
                 minTurnRadius=4.5f,maxSlopeDeg=16,capabilities=new[]{"ground"}};
             foreach(var edge in map.edges){edge.width=Mathf.Max(edge.width,envelope.x+2*profile.sideMargin);edge.clearHeight=Mathf.Max(edge.clearHeight,envelope.y+profile.verticalMargin);}
             foreach(var node in map.nodes)node.padWidth=Mathf.Max(node.padWidth,envelope.x+envelope.z+2*profile.minTurnRadius+2*profile.sideMargin);
+            foreach(var node in map.nodes)if(node.id=="central_arena")node.padWidth=Mathf.Max(40,node.padWidth);
             string state=mode==MapR4Mode.Escape?"bridge_collapsed":"intact";
             string target=mode==MapR4Mode.TimeAttack?"upper_ramp":mode==MapR4Mode.Escape?"exit":"central_arena";
             if(!MapR6RouteValidator.CanReachWithTurns(map,state,"start",target,profile,out string reason))
@@ -75,7 +76,10 @@ namespace RoboRougelike.R1
         void SpawnRoadOpponents()
         {
             roadWave++;var center=RoadWorld.Anchors["arena_middle"].position;
-            var spawns=new[]{center+new Vector3(6,.7f,4),center+new Vector3(-6,.7f,4),center+new Vector3(0,.7f,-7)};
+            var spawns=Enumerable.Range(0,CurrentEncounter.SpawnCount).Select(i=>{
+                float angle=(i+.5f)*Mathf.PI*2/CurrentEncounter.SpawnCount;
+                return center+new Vector3(Mathf.Cos(angle)*12,.7f,Mathf.Sin(angle)*12);
+            }).ToArray();
             Encounter.Spawn(enemyTemplate,Player.transform,CurrentEncounter,Salvage,runId+"/roads/"+Progress.EncounterIndex+"/wave/"+roadWave,spawns);
         }
         bool UpdateRoadChallenge()

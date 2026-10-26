@@ -201,10 +201,15 @@ namespace RoboRougelike.R1
             // Garage edits must preserve the exact world frame used by the cursor and ghost.
             var position=Player!=null?Player.transform.position:playerSpawn;
             var rotation=Player!=null?Player.transform.rotation:playerRotation;
+            var gunPoses=Player!=null?Player.GetComponent<R3VehicleAssembly>().Parts
+                .Where(p=>p!=null&&p.GunPivot!=null).ToDictionary(p=>p.Id,p=>p.GunPivot.localRotation):null;
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             R1EncounterManager.ClearTransientObjects();
             Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,position,rotation);
+            if(gunPoses!=null)foreach(var part in Player.GetComponent<R3VehicleAssembly>().Parts)
+                if(part.GunPivot!=null&&gunPoses.TryGetValue(part.Id,out var pose))part.GunPivot.localRotation=pose;
             followCamera.Configure(Player.transform,Player.CameraPivot);
+            R3BuildValidation.SetGarageSockets(Player.GetComponent<R3VehicleAssembly>(),true);
             Garage.RefreshPreview();
         }
 
@@ -257,7 +262,7 @@ namespace RoboRougelike.R1
             }
             else if(ReactorActive&&!UpdateReactorDefense())return;
             else if(!UpdateFullActivity())return;
-            else if (Encounter.Cleared||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
+            else if (Encounter.Cleared||CheckpointRace?.Won==true||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
             {
                 Player.GetComponent<R3VehicleAssembly>().Capture();
                 LastScrapReward=Definition.Encounters[Progress.EncounterIndex].ScrapReward;
