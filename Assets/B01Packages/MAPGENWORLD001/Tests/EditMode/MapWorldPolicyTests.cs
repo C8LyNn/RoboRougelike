@@ -47,6 +47,14 @@ namespace B01.MAPGENWORLD001.Tests
             Assert.IsFalse(MapWorldPolicy.TryPlan(r, out _, out var status));
             Assert.AreEqual(MapWorldFailure.InvalidClearance, status);
         }
+        [Test] public void InvalidReplayReceiptDoesNotYieldAnyRequest()
+        {
+            Assert.IsFalse(MapWorldReplayCodec.TryDecode("garbage",out var r,out var plan,out var reason));
+            Assert.IsNull(r);
+            Assert.IsNull(plan);
+            Assert.AreEqual(MapWorldFailure.InvalidReplayReceipt,reason);
+        }
+
         [Test] public void NullAndInvalidRigFailClosed()
         {
             Assert.IsFalse(MapWorldPolicy.TryPlan(null, out _, out var n));

@@ -1,8 +1,9 @@
-name: B01-21 MAPGENWORLD001 W12 source package
+name: B01-21 MAPGENWORLD001 v1.1 W13 replay source
 on:
   push:
     branches:
       - "pkg/b01-21-mapgenworld001-w12-20261025"
+      - "pkg/b01-21-mapgenworld001-w13-replay-20261026"
     paths:
       - "Assets/B01Packages/MAPGENWORLD001/**"
       - "Assets/B01Packages/MAPGENWORLD001.meta"
@@ -57,6 +58,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m unittest discover -s Tools/B01/MAPGENWORLD001 -p 'test_*.py' -v 2>&1 | tee mapgenworld-evidence/package-tests.log
+          python3 Tools/B01/MAPGENWORLD001/test_w14_native_acceptance.py manifest mapgenworld-evidence/W14_NATIVE_MATRIX_NOT_RUN.json | tee mapgenworld-evidence/W14_fixture-source.log
           python3 Tools/B01/MAPGENWORLD001/package_world.py build mapgenworld-evidence/package | tee mapgenworld-evidence/package-build.log
           python3 Tools/B01/MAPGENWORLD001/package_world.py verify mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip | tee mapgenworld-evidence/package-verify.log
           cp mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip mapgenworld-evidence/rebuild-proof.zip
@@ -70,8 +72,8 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'MAPWORLD_SOURCE_RESULT total=31 pass=31 fail=0' mapgenworld-evidence/source-console.log
-          grep -q 'ADAPTER_SOURCE_RESULT total=16 pass=16 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
-          grep -q 'Ran 12 tests' mapgenworld-evidence/package-tests.log
+          grep -q 'ADAPTER_SOURCE_RESULT total=30 pass=30 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
+          grep -q 'Ran 19 tests' mapgenworld-evidence/package-tests.log
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -79,7 +81,12 @@ jobs:
           names=[row["path"] for row in manifest["files"]]
           assert not any({"obj","bin","__pycache__"} & set(Path(p).parts) for p in names)
           assert len(names) == len(set(names))
-          assert manifest["version"] == "1.0.1"
+          assert manifest["version"] == "1.1.0"
+          cases=json.loads(Path("mapgenworld-evidence/W14_NATIVE_MATRIX_NOT_RUN.json").read_text())
+          assert cases["nativeCases"] == 12 and cases["unity"] == "NOT_RUN"
+          assert cases["actualR6Drive"] == "NOT_RUN"
+          assert len([p for p in names if "MapWorldW14NativeAcceptanceTests.cs" in p]) == 2
+          print("W14_NATIVE_FIXTURE_CHECK_PASS cases=12+1 unity=NOT_RUN")
           print("INSTALLABLE_SOURCE_ONLY_MANIFEST=PASS entries="+str(len(names)))
           PY
       - name: Archive exact SHA source case results, negative tests, manifest, FULL ZIP

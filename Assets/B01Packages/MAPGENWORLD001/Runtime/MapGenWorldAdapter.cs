@@ -59,7 +59,7 @@ namespace B01.MAPGENWORLD001
                 return false;
             }
             var old = previous;
-            snapshot = new MapWorldSnapshot(built, ++revision);
+            snapshot = new MapWorldSnapshot(built, ++revision, MapWorldReplayCodec.Encode(request, plan));
             Current = snapshot;
             LastFailure = failure = MapWorldFailure.None;
             if (old != null) Notify(old, false);
@@ -69,6 +69,23 @@ namespace B01.MAPGENWORLD001
 
         public bool TryRegenerate(MapWorldRequest request, out MapWorldSnapshot snapshot,
             out MapWorldFailure failure) => TryGenerate(request, out snapshot, out failure);
+
+        /// <summary>
+        /// Replay a saved seed/config/actual measured hull. Refuse corrupted
+        /// or mismatching generator layout before changing the live world.
+        /// </summary>
+        public bool TryReplay(string receipt, out MapWorldSnapshot snapshot,
+            out MapWorldFailure failure)
+        {
+            snapshot = null;
+            if (!MapWorldReplayCodec.TryDecode(receipt, out MapWorldRequest request,
+                out _, out failure))
+            {
+                LastFailure = failure;
+                return false;
+            }
+            return TryGenerate(request, out snapshot, out failure);
+        }
 
         public void ClearWorld()
         {
