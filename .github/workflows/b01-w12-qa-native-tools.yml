@@ -21,7 +21,7 @@ jobs:
           python-version: '3.13'
       - name: Run B01-60 negative receipt fixtures (NOT Unity)
         working-directory: Tools/B01/QA-NATIVE-001
-        run: python -m unittest -v test_qa_native.py
+        run: python -m unittest discover -v -p 'test_*.py'
       - name: Build SHA256-gated deterministic source ZIP twice
         shell: bash
         run: |
