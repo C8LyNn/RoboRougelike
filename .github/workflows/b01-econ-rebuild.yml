@@ -33,6 +33,9 @@ jobs:
       - name: Compile exact Unity C# runtime with labelled JsonUtility surrogate
         id: build
         run: dotnet build Tools/B01/ECONREBUILD001/tests/EconRebuild.SurrogateTests.csproj -c Release --nologo
+      - name: Compile install-only R3 bridge against verified OBJ API signatures
+        id: bridge
+        run: dotnet build Tools/B01/ECONREBUILD001/tests/BridgeCompile/BridgeCompile.csproj -c Release --nologo
       - name: Execute actual bounded economy queue tests
         id: tests
         shell: bash
@@ -53,6 +56,7 @@ jobs:
         if: always()
         env:
           BUILD: ${{ steps.build.outcome }}
+          BRIDGE: ${{ steps.bridge.outcome }}
           TESTS: ${{ steps.tests.outcome }}
           PACKAGE: ${{ steps.package.outcome }}
         run: |
@@ -62,7 +66,7 @@ jobs:
           f=d/"test-results.json";t=json.loads(f.read_text()) if f.exists() else None
           result={"schema":"b01.econ-rebuild.ci.v1",
              "sha":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
-             "dotnet_build":os.environ["BUILD"],"surrogate_tests":os.environ["TESTS"],
+             "dotnet_build":os.environ["BUILD"],"r3_signature_compile":os.environ["BRIDGE"],"surrogate_tests":os.environ["TESTS"],
              "package":os.environ["PACKAGE"],"results":({k:t[k] for k in ["total","passed","failed"]} if t else None),
              "unity_editor":"NOT_RUN","unity_playmode":"NOT_RUN","g0_independent":"PENDING","g2":"HOLD"}
           (d/"ci-receipt.json").write_text(json.dumps(result,indent=2)+"\n")
