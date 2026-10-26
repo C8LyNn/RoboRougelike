@@ -58,7 +58,28 @@ def retrofit(raw,model):
   m.setdefault("extras",{})["urpBindingPolicy"]="EXPLICIT_MATERIAL_ASSET_REFERENCE_REQUIRED"
   m["extras"]["mayFallbackToMagentaWithoutUrpMaterial"]=True
  for k,v in preserved.items():
-  if d.get(k)!=v:raise AssertionError("geometry/animation changed: "+k)
+  if d.get(k)!=v:raise AssertionError("source geometry/animation changed: "+k)
+ # M04 Blender exports each independent gimbal as a separate clip.
+ # Most Unity viewers play one clip at a time, so retain original clips and
+ # append a single four-channel clip referencing the ORIGINAL accessor data.
+ if model=="M04-024":
+  originals=list(d.get("animations",[]))
+  if len(originals)!=4 or any(len(c.get("channels",[]))!=1 for c in originals):
+   raise ValueError("unexpected M04 animation layout; refuse unsafe clip repair")
+  joint_samplers=[];joint_channels=[];target_nodes=set()
+  for clip in originals:
+   offset=len(joint_samplers)
+   joint_samplers.extend(copy.deepcopy(clip["samplers"]))
+   for channel in clip["channels"]:
+    mapped=copy.deepcopy(channel)
+    mapped["sampler"]=channel["sampler"]+offset
+    if mapped["target"]["path"]!="rotation":raise ValueError("non-rotation M04 gimbal animation")
+    if mapped["target"]["node"] in target_nodes:raise ValueError("duplicate gimbal target")
+    target_nodes.add(mapped["target"]["node"])
+    joint_channels.append(mapped)
+  if len(target_nodes)!=4:raise ValueError("four unique gimbals required")
+  d["animations"].append({"name":"LEG-MOV-001_ALL_FOUR_GIMBALS","samplers":joint_samplers,"channels":joint_channels,
+                          "extras":{"b01VisualOnly":True,"sourceClipsPreserved":True}})
  result=write_glb(d,chunks)
  rebuilt,chunk2=parse_glb(result)
  if chunk2[1:]!=chunks[1:]:raise AssertionError("original GLB BIN changed")
