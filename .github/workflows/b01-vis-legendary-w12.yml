@@ -39,6 +39,25 @@ jobs:
             --output "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/m04-rework.json"
           sha256sum "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/M04_R11_SHA256.txt"
           python3 -m unittest discover -s "$root/tests" -v
+      - name: Sample actual animated mesh vertices and combined gimbal envelope
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/VIS-LEGENDARY-W12-R1
+          python3 "$root/tools/swept_geometry_qa.py" --glb "$root/binaries/M01-018_LEG-WPN-001_R1.glb" --output "$root/output/M01-018_SWEEP.json" --samples 121
+          python3 "$root/tools/swept_geometry_qa.py" --glb "$root/output/M04-024_LEG-MOV-001_R1.glb" --output "$root/output/M04-024_SWEEP.json" --samples 121
+          python3 - <<'PYCODE'
+          import json
+          from pathlib import Path
+          root=Path("Tools/B01/VIS-LEGENDARY-W12-R1/output")
+          m01=json.loads((root/"M01-018_SWEEP.json").read_text())
+          m04=json.loads((root/"M04-024_SWEEP.json").read_text())
+          assert len(m01["animations"])==1
+          assert len(m04["animations"])==5
+          assert [a["channels"] for a in m04["animations"]]==[1,1,1,1,4]
+          assert m04["animations"][-1]["clip"]=="LEG-MOV-001_ALL_FOUR_GIMBALS"
+          assert all(x>0 for a in m01["animations"]+m04["animations"] for x in a["sampledSweptSize"])
+          PYCODE
       - name: Make actual full 2-asset Codex ZIP and SHA256 receipts
         shell: bash
         run: |
@@ -49,6 +68,8 @@ jobs:
           cp "$root/binaries/M01-018_LEG-WPN-001_R1.glb" /tmp/B01-VIS-LEGENDARY-W12-R1/models/
           cp "$root/"*.md /tmp/B01-VIS-LEGENDARY-W12-R1/ 2>/dev/null || true
           cp "$root/manifest.json" "$root/binding_spec.json" /tmp/B01-VIS-LEGENDARY-W12-R1/
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/qa
+          cp "$root/output/M01-018_SWEEP.json" "$root/output/M04-024_SWEEP.json" /tmp/B01-VIS-LEGENDARY-W12-R1/qa/
           (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
