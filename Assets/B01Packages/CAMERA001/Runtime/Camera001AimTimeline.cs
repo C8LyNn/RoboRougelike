@@ -29,6 +29,10 @@ namespace B01.CAMERA001
             public int HitColliderInstanceId;
             public string HitKind;
             public bool FirstHitChanged;
+            // Exact normalized per-frame raw inputs, not just a derived
+            // angle or self-declared previous target. Enables independent
+            // BASE/R1.1/R1.2 recomputation and tracks lag AFTER hit settles.
+            public Camera001AimTransitionDiagnostics.Sample Sample;
             public Camera001AimTransitionDiagnostics.Observation Observation;
         }
 
@@ -93,6 +97,7 @@ namespace B01.CAMERA001
                 HitColliderInstanceId = frame.HitColliderInstanceId,
                 HitKind = frame.HitKind,
                 FirstHitChanged = changedHit,
+                Sample = sample, // prior target/forward were overwritten from prior actual capture
                 Observation = measure
             };
             frame.Sample = sample;
@@ -113,7 +118,7 @@ namespace B01.CAMERA001
         public string ToCsv()
         {
             var b = new StringBuilder();
-            b.AppendLine("frame,phase,hitId,hitKind,hitChanged,targetStepDeg,availableSlewDeg,worldMuzzleStepDeg,trackingErrorDeg,catchupLowerSec,rateStepOverBudget,cameraPoseUnsafe,worldMuzzleStepOverBudget,classification");
+            b.AppendLine("frame,phase,hitId,hitKind,hitChanged,targetStepDeg,availableSlewDeg,worldMuzzleStepDeg,trackingErrorDeg,catchupLowerSec,rateStepOverBudget,cameraPoseUnsafe,worldMuzzleStepOverBudget,classification,previousTargetX,previousTargetY,previousTargetZ,currentTargetX,currentTargetY,currentTargetZ,muzzleX,muzzleY,muzzleZ,previousForwardX,previousForwardY,previousForwardZ,currentForwardX,currentForwardY,currentForwardZ,deltaTimeSeconds,turretSlewDegPerSec,cameraFinalAimErrorDeg,cameraOwnHullRayHit,cameraWorldOverlap");
             foreach (var r in records)
             {
                 var o = r.Observation;
@@ -129,12 +134,24 @@ namespace B01.CAMERA001
                  .Append(Bool(o.TargetChangeExceedsOneFrameTurretBudget)).Append(',')
                  .Append(Bool(o.CameraFinalPoseUnsafe)).Append(',')
                  .Append(Bool(o.MuzzleWorldStepExceedsTurretBudget)).Append(',')
-                 .Append(o.Classification).Append('\n');
+                 .Append(o.Classification).Append(',')
+                 .Append(Vec(r.Sample.PreviousTargetWorld)).Append(',')
+                 .Append(Vec(r.Sample.CurrentTargetWorld)).Append(',')
+                 .Append(Vec(r.Sample.CurrentMuzzleWorld)).Append(',')
+                 .Append(Vec(r.Sample.PreviousMuzzleForwardWorld)).Append(',')
+                 .Append(Vec(r.Sample.CurrentMuzzleForwardWorld)).Append(',')
+                 .Append(Num(r.Sample.DeltaTimeSeconds)).Append(',')
+                 .Append(Num(r.Sample.TurretSlewDegreesPerSecond)).Append(',')
+                 .Append(Num(r.Sample.CameraFinalAimErrorDegrees)).Append(',')
+                 .Append(Bool(r.Sample.CameraOwnHullRayHit)).Append(',')
+                 .Append(Bool(r.Sample.CameraWorldOverlap)).Append('\n');
             }
             return b.ToString();
         }
 
         private static string Num(float n) => n.ToString("R", CultureInfo.InvariantCulture);
+        private static string Vec(Vector3 v) =>
+            Num(v.x) + "," + Num(v.y) + "," + Num(v.z);
         private static string Bool(bool b) => b ? "true" : "false";
         private static string CsvText(string s) =>
             "\"" + s.Replace("\"", "\"\"").Replace("\r", " ").Replace("\n", " ") + "\"";

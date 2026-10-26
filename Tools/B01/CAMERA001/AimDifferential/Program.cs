@@ -155,6 +155,65 @@ class Program
         catch(ArgumentException){overflowRejected=true;}
         Check("w14-frame-wrap-rejected",overflowRejected && frameBounds.Count==1);
 
+        // W15: exact-source raw evidence must allow independent recalculation
+        // across BASE/R1.1/R1.2, including HIGH gun lag without a new hit switch.
+        var rawTimeline=new Camera001AimTimeline();
+        var r0=new Camera001AimTimeline.Frame{
+            FrameIndex=200,HitColliderInstanceId=71,HitKind="Enemy",
+            Sample=Sample(old,old,m,before,before)
+        };
+        rawTimeline.Capture(r0);
+        var r1=new Camera001AimTimeline.Frame{
+            FrameIndex=201,HitColliderInstanceId=72,HitKind="Floor",
+            Sample=Sample(next,next,m,before,before)
+        };
+        r1.Sample.PreviousTargetWorld=next; // malicious caller prior
+        r1.Sample.PreviousMuzzleForwardWorld=Vector3.right;
+        var captured=rawTimeline.Capture(r1);
+        Check("w15-real-previous-target-preserved",
+            captured.Sample.PreviousTargetWorld.x==old.x &&
+            captured.Sample.PreviousTargetWorld.y==old.y &&
+            captured.Sample.PreviousTargetWorld.z==old.z);
+        Check("w15-real-previous-gun-preserved",
+            captured.Sample.PreviousMuzzleForwardWorld.x==before.x &&
+            captured.Sample.PreviousMuzzleForwardWorld.y==before.y &&
+            captured.Sample.PreviousMuzzleForwardWorld.z==before.z);
+        var recalculated=Vector3.Angle(
+            captured.Sample.PreviousTargetWorld-captured.Sample.CurrentMuzzleWorld,
+            captured.Sample.CurrentTargetWorld-captured.Sample.CurrentMuzzleWorld);
+        Check("w15-recompute-retarget-angle",Math.Abs(
+            recalculated-captured.Observation.TargetDirectionChangeDegrees)<.0001f);
+        var rawCsv=rawTimeline.ToCsv().TrimEnd().Split('\n');
+        Check("w15-csv-evidence-header-34",rawCsv[0].Split(',').Length==34);
+        Check("w15-csv-evidence-records-34",rawCsv[1].Split(',').Length==34 &&
+            rawCsv[2].Split(',').Length==34);
+        var steady=new Camera001AimTimeline();
+        var mf=new Vector3(0f,1.5552f,27.8219f);
+        var floorHit=new Vector3(0f,0f,34.8804f);
+        var zf=Vector3.forward;
+        steady.Capture(new Camera001AimTimeline.Frame{
+            FrameIndex=1,HitColliderInstanceId=72,HitKind="Floor",
+            Sample=Sample(floorHit,floorHit,mf,zf,zf)
+        });
+        var residual=steady.Capture(new Camera001AimTimeline.Frame{
+            FrameIndex=2,HitColliderInstanceId=72,HitKind="Floor",
+            Sample=Sample(floorHit,floorHit,mf,zf,zf)
+        });
+        Check("w15-stable-hit-not-false-retarget",
+            !residual.FirstHitChanged &&
+            !residual.Observation.TargetChangeExceedsOneFrameTurretBudget);
+        Check("w15-stable-hit-can-keep-high-muzzle-error",
+            residual.Observation.CurrentMuzzleToTargetErrorDegrees>10f &&
+            residual.Observation.Classification=="UNRESOLVED_TRACKING_GAP_REQUIRES_PAIRED_NATIVE_QA");
+        var oldLocale=System.Globalization.CultureInfo.CurrentCulture;
+        try{
+            System.Globalization.CultureInfo.CurrentCulture=
+                System.Globalization.CultureInfo.GetCultureInfo("pl-PL");
+            Check("w15-invariant-decimal-comma-locale",
+                rawTimeline.ToCsv().TrimEnd().Split('\n')[2].Split(',').Length==34 &&
+                rawTimeline.ToCsv().Contains("1.5552"));
+        }finally{System.Globalization.CultureInfo.CurrentCulture=oldLocale;}
+
         Console.WriteLine("CAMERA_DIAG_EXACT_SOURCE_CSHARP_PASS="+passed+
             " FAIL="+failed+" NATIVE_UNITY=NOT_RUN");
         return failed==0?0:2;

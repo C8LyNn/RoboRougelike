@@ -1,3 +1,8 @@
+# W15 CAMERA R1.2.4 — RAW-AIM-PROVENANCE QA ONLY / G2 HOLD
+Full source stack #134+#214+#247+#251+#262+#265+#this W15 Draft; parent R1.2.3 immutable `33f2dee55044b0635611b3a88cf2189ee0acbec1`. Read `W15_R124_RAW_EVIDENCE.md` and published final immutable W15 PR SHA + inner ZIP receipt. ONLY CAMERA-owned passive timeline evidence export changes; preserves original first 14 columns, appends 20 raw columns for target/muzzle vector recomputation. No actual gun, P12, RC2 runtime or camera controller changes, no integration permission.
+One finite authorized native QA slot: disposable Unity6000.3.14f1 compile, 22 Edit and15 Play expected NUnit methods, then paired real Light BASE/R1.1/R1.2 target/hit/muzzle A/B/C at 720/1080 with actual continuous frames. Keep all .meta and existing recipient shared root GUID. G2 HOLD. Roll back R1.2.4 only to frozen parent #265; source head and ZIP must match current final issue #66 pin.
+
+---
 # W14 CAMERA R1.2.3 NATIVE-QA-ONLY OVERRIDE — G2 HOLD
 Review `W14_R123_HARDENING.md` and final immutable new Draft SHA/inner archive digest from issue #66 before receiver import. Whole stack #134+#214+#247+#251+#262+#W14 is mandatory, not W14 diff only. Current source changes only passive aim timeline contiguous native frame guard and two new Unity EditMode tests (19 Edit +15 Play authored, native NOT_RUN). Do not treat 10 missing frames as one 1/60s turret opportunity. Capture matched BASE/R1.1/R1.2 Light720/1080 W+LMB native test only via authorized independent disposable checkout. Preserve all meta/GUIDs and existing target shared `Assets/B01Packages.meta`; zero active Codex RC2, weapon, camera controller source changes. Rollback only W14 extension to R1.2.2 SHA `063e755c50c9728f0a9627d25d3677280625a73d`. No merge/G2.
 

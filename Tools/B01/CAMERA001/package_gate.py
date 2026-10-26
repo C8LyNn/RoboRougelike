@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic complete CAMERA R1.2.3 ZIP and exact per-file SHA256/bytes gate.
+"""Deterministic complete CAMERA R1.2.4 ZIP and exact per-file SHA256/bytes gate.
 This does not compile Unity or import assets into the host game.
 """
 import hashlib,json,subprocess,zipfile,argparse
@@ -7,8 +7,8 @@ from pathlib import Path
 MANIFEST="Docs/B01/CAMERA001/manifest.json"
 PARENTS=["Assets/B01Packages.meta","Assets/B01Packages/CAMERA001.meta"]
 ROOTS=["Assets/B01Packages/CAMERA001/","Docs/B01/CAMERA001/","Tools/B01/CAMERA001/"]
-OUT=Path("camera-r123-evidence")
-ZIP="CAMERA001_R1_2_3_FULL_SOURCE_QA.zip"
+OUT=Path("camera-r124-evidence")
+ZIP="CAMERA001_R1_2_4_FULL_SOURCE_QA.zip"
 def h(b):return hashlib.sha256(b).hexdigest()
 def files():
     data=subprocess.check_output(["git","ls-files","-z","--",*PARENTS,
@@ -41,19 +41,19 @@ def main():
     parser.add_argument("--emit",action="store_true")
     a=parser.parse_args()
     receipt=scan()
-    print("CAMERA_R123_SHA256_RECEIPT_JSON="+json.dumps(receipt,separators=(",",":"),sort_keys=True))
+    print("CAMERA_R124_SHA256_RECEIPT_JSON="+json.dumps(receipt,separators=(",",":"),sort_keys=True))
     if a.verify_zip:
         m=json.loads(Path(MANIFEST).read_text())
-        if m.get("revision")!="R1.2.3":raise RuntimeError("REVISION_MISMATCH")
-        if m.get("r123_source_sha256_by_path")!={p:v["sha256"] for p,v in receipt.items()}:raise RuntimeError("SHA256_MISMATCH")
-        if m.get("r123_source_bytes_by_path")!={p:v["bytes"] for p,v in receipt.items()}:raise RuntimeError("BYTES_MISMATCH")
+        if m.get("revision")!="R1.2.4":raise RuntimeError("REVISION_MISMATCH")
+        if m.get("r124_source_sha256_by_path")!={p:v["sha256"] for p,v in receipt.items()}:raise RuntimeError("SHA256_MISMATCH")
+        if m.get("r124_source_bytes_by_path")!={p:v["bytes"] for p,v in receipt.items()}:raise RuntimeError("BYTES_MISMATCH")
         for path in receipt:
             if path.startswith("Assets/B01Packages/CAMERA001/") and path.endswith((".cs",".asmdef",".unity")):
                 if not Path(path+".meta").is_file():raise RuntimeError("MISSING_META "+path)
         result=zip_bytes(receipt)
         result["source_files"]=len(receipt)
-        print("CAMERA_R123_ZIP_RESULT_JSON="+json.dumps(result,sort_keys=True))
+        print("CAMERA_R124_ZIP_RESULT_JSON="+json.dumps(result,sort_keys=True))
         (OUT/"SHA256_REPORT.json").write_text(json.dumps(result,indent=2)+"\n")
     else:
-        print("CAMERA_R123_ZIP=NOT_BUILT_MANIFEST_PENDING")
+        print("CAMERA_R124_ZIP=NOT_BUILT_MANIFEST_PENDING")
 if __name__=="__main__":main()
