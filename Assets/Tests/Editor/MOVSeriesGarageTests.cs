@@ -35,7 +35,7 @@ public class MOVSeriesGarageTests
         var method=typeof(R1RunController).GetMethod(name);Assert.That(method,Is.Not.Null,"Missing real R1 action: "+name);
         return (bool)method.Invoke(run,args);
     }
-    void Buy(Vector3Int cell,R3PartKind kind)=>Assert.That(run.GarageBuy(cell,kind),Is.True,kind+" at "+cell);
+    void Buy(Vector3Int cell,R3PartKind kind)=>Assert.That(run.GarageBuy(cell,kind),Is.True,kind+" at "+cell+" / "+run.VehicleModel.PlacementError(cell,kind));
     void Corners(R3PartKind kind)
     {foreach(int x in new[]{-2,2})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,0,z),kind);}
     void FullConstruction()

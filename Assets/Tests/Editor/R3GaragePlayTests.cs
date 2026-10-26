@@ -137,7 +137,7 @@ public class R3GaragePlayTests
         Assert.That(Run.GarageRepair(wheelCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-16));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(12));
         Assert.That(Run.GarageRepair(armorCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-17));
-        Assert.That(Run.GarageBuy(new Vector3Int(0,2,1),R3PartKind.Armor),Is.True);
+        Assert.That(Run.GarageBuy(new Vector3Int(0,2,1),R3PartKind.Armor),Is.True,Run.VehicleModel.PlacementError(new Vector3Int(0,2,1),R3PartKind.Armor));
         Assert.That(Run.GarageBuy(new Vector3Int(1,2,0),R3PartKind.Gun),Is.True);
         Assert.That(Run.GarageBuy(new Vector3Int(4,0,0),R3PartKind.Wheel),Is.True);
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(13));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
