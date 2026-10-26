@@ -110,6 +110,13 @@ jobs:
           # Receiver has all scripts and a portable failing-forgery regression.
           CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 /tmp/B01-VIS-LEGENDARY-W12-R1/tests/test_sweep_provenance.py -v
                     (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
+          # W15: importer QA creates Python caches under the archived tools directory.
+          # Refuse stale/interpreter-specific bytecode in the Codex delivery.
+          find /tmp/B01-VIS-LEGENDARY-W12-R1 -type d -name '__pycache__' -prune -exec rm -rf {} +
+          if find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f \\( -name '*.pyc' -o -name '*.pyo' \\) | grep -q .; then
+            echo 'ERROR: interpreter bytecode slipped into source packet' >&2
+            exit 2
+          fi
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
           find B01-VIS-LEGENDARY-W12-R1 -type f -exec touch -t 198001010000.00 {} +
@@ -118,6 +125,16 @@ jobs:
           rm B01-VIS-LEGENDARY-W12-R1.zip
           find B01-VIS-LEGENDARY-W12-R1 -type f | LC_ALL=C sort | zip -X -q B01-VIS-LEGENDARY-W12-R1.zip -@
           cmp /tmp/B01-VIS-LEGENDARY-W12-R1-first.zip B01-VIS-LEGENDARY-W12-R1.zip
+          python3 - <<'PYZIP'
+          from zipfile import ZipFile
+          with ZipFile('B01-VIS-LEGENDARY-W12-R1.zip') as z:
+              names=z.namelist()
+              assert len(names)>=22
+              assert all('__pycache__' not in p and not p.endswith(('.pyc','.pyo')) for p in names)
+              assert any(p.endswith('/qa/REAL_GLB_SWEEP_PROVENANCE_W15.json') for p in names)
+              assert any(p.endswith('/tests/test_sweep_provenance.py') for p in names)
+              assert z.testzip() is None
+          PYZIP
           cp B01-VIS-LEGENDARY-W12-R1.zip "$GITHUB_WORKSPACE/$root/output/"
           sha256sum "$GITHUB_WORKSPACE/$root/output/B01-VIS-LEGENDARY-W12-R1.zip" | tee "$GITHUB_WORKSPACE/$root/output/ZIP_SHA256.txt"
       - uses: actions/upload-artifact@v4
