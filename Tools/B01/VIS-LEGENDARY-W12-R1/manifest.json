@@ -9,7 +9,7 @@
   "noGameIntegration": true,
   "noMerge": true,
   "g2Approved": false,
-  "status": "PRODUCER_R11_TWO_GLBS_CI_PASS_SWEPT_E2_PASS_G0_TARGET_PENDING",
+  "status": "PRODUCER_SOURCE_BINARY_QA_PASS_INDEPENDENT_G0_SOURCE_APPROVED_G0_TARGET_PENDING",
   "binaries": [
     {
       "modelId": "M01-018",
@@ -36,7 +36,7 @@
       "ciOutputPath": "Tools/B01/VIS-LEGENDARY-W12-R1/output/M04-024_LEG-MOV-001_R1.glb",
       "realLocalBinary": true,
       "ciWorkflow": ".github/workflows/b01-vis-legendary-w12.yml",
-      "ciVerdict": "PENDING_REVALIDATION_AT_UPDATED_HEAD",
+      "ciVerdict": "PASS_ACTUAL_PINNED_ARTIFACT_AND_REWORK_HASH",
       "unityImported": false,
       "massKg": null,
       "animationClips": 5,
@@ -53,12 +53,14 @@
     }
   ],
   "localProducerTests": {
-    "result": "CI_RETEST_PENDING",
+    "result": "PASS_ON_CI_RUN_40292486059_RETEST_AT_FINAL_SHA_REQUIRED",
     "ciRun": 40291905422,
     "sourceSha": "e24dfd15f3526ea15a363b6699f8ca16a3f20808",
     "realGlbTests": "10/10 M01 then 10/10 M01+M04",
     "animationSweep": "M01 1 clip + M04 5 clips x 121 samples",
-    "nativeUnity": "NOT_RUN"
+    "nativeUnity": "NOT_RUN_CREDENTIAL_PREFLIGHT",
+    "mathAndRealAssetCases": "20/20 before M04 + 20/20 after M04",
+    "samplesPerClip": 121
   },
   "sourceOwnedPaths": [
     "Tools/B01/VIS-LEGENDARY-W12-R1/.*",
