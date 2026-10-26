@@ -61,7 +61,18 @@
         "N03_GIMBAL_PIVOT",
         "N04_GIMBAL_PIVOT"
       ],
-      "maxAngleDeg": 12
+      "maxAngleDeg": 12,
+      "animationClipCombined": "LEG-MOV-001_ALL_FOUR_GIMBALS",
+      "originalIndividualClipsPreserved": 4,
+      "combinedChannels": 4,
+      "sampledGlbVertexEnvelopeMeters": [
+        1.57756,
+        0.884306,
+        1.57756
+      ],
+      "sampledFramesPerClip": 121,
+      "sampledWithinProposedExtent": true,
+      "limitations": "E2 sampled 121 poses, does not establish continuous triangle collision, attachment safety or Unity import"
     }
   ]
 }
