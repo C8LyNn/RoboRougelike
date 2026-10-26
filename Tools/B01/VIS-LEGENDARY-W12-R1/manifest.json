@@ -9,7 +9,7 @@
   "noGameIntegration": true,
   "noMerge": true,
   "g2Approved": false,
-  "status": "PRODUCER_SOURCE_BINARY_QA_PASS_INDEPENDENT_G0_SOURCE_APPROVED_G0_TARGET_PENDING",
+  "status": "PRODUCER_R11_QA_PASS_INDEPENDENT_G0_R11_PENDING_UNITY_G1_NOT_RUN",
   "binaries": [
     {
       "modelId": "M01-018",
@@ -82,5 +82,7 @@
     "Codex target integrator ACK"
   ],
   "packageRevision": "R1.1",
-  "latestCiRun": 40291905422
+  "latestCiRun": 40291905422,
+  "independentG0R11": "PENDING_B01_40_RECHECK_SOURCE_AND_ZIP",
+  "g1Native": "NOT_RUN_UNITY_CREDENTIALS"
 }
