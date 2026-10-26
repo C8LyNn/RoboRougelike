@@ -86,6 +86,29 @@ namespace B01.MAPGENWORLD001.Tests
             finally { Object.Destroy(host); }
         }
 
+        [UnityTest] public IEnumerator ReplayReceiptRegeneratesExactlyOrFailsClosed()
+        {
+            var host=new GameObject("WORLD001_ReplayNative");
+            var adapter=host.AddComponent<MapGenWorldAdapter>();
+            try
+            {
+                var request=Request(31);request.Recipe=MapRecipe.ObstacleCourse;
+                Assert.IsTrue(adapter.TryGenerate(request,out var first,out var failure),failure.ToString());
+                Assert.IsNotEmpty(first.ReplayReceipt);
+                Assert.IsTrue(adapter.TryReplay(first.ReplayReceipt,out var second,out failure),failure.ToString());
+                Assert.AreEqual(first.GeometryHash,second.GeometryHash);
+                Assert.AreEqual(first.ReplayReceipt,second.ReplayReceipt);
+                var original=adapter.Current;
+                Assert.IsFalse(adapter.TryReplay(first.ReplayReceipt+"0",out var rejected,out failure));
+                Assert.AreEqual(MapWorldFailure.InvalidReplayReceipt,failure);
+                Assert.IsNull(rejected);
+                Assert.AreSame(original,adapter.Current);
+                adapter.ClearWorld();
+                yield return null;
+            }
+            finally {Object.Destroy(host);}
+        }
+
         [UnityTest] public IEnumerator MissingMeasuredProfileAndNarrowRealLightDoNotSpawn()
         {
             var host = new GameObject("WORLD001_Negative_Test");

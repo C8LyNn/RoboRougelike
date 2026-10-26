@@ -34,6 +34,17 @@ internal static class AdapterSourceTests
         return (adapter,builder);
     }
     static void Require(bool value,string msg){if(!value)throw new Exception(msg);}
+
+    static string Resign(string[] fields)
+    {
+        string body=string.Join("|",fields,0,fields.Length-1);
+        using(var h=System.Security.Cryptography.SHA256.Create())
+        {
+            string sig=BitConverter.ToString(h.ComputeHash(System.Text.Encoding.UTF8.GetBytes(body)))
+                .Replace("-","").ToLowerInvariant();
+            return body+"|"+sig;
+        }
+    }
     static int Main(string[] args)
     {
         Check("GENERATE_VALID_WORLD",()=>{
@@ -131,6 +142,105 @@ internal static class AdapterSourceTests
                     "activity callbacks must reflect invalid world teardown "+mode);
             });
         }
+
+        Check("REPLAY_ROUNDTRIP_SAME_ARENA_WITH_HASH",()=>{
+            var (a,b)=Pair();
+            Require(a.TryGenerate(Request(7),out var first,out _),"first");
+            Require(first.ReplayReceipt.StartsWith(MapWorldReplayCodec.Format+"|"),"version prefix");
+            Require(a.TryReplay(first.ReplayReceipt,out var second,out var status),"replay "+status);
+            Require(second.Seed==first.Seed && second.GeometryHash==first.GeometryHash,
+                "mismatched replay geometry");
+            Require(second.ReplayReceipt==first.ReplayReceipt,
+                "replay not byte-identical");
+            Require(second.Revision==2 && b.GenerateCalls==2,"revision/side effects");
+        });
+        Check("REPLAY_ROUNDTRIP_COURSE_HEAVY_SEED31",()=>{
+            var (a,b)=Pair();
+            var heavy=Request(31,true);
+            heavy.Vehicle=B01.MAPGEN001.MapVehicleProfile.Heavy;
+            heavy.Vehicle.Width=5.180f;
+            Require(a.TryGenerate(heavy,out var first,out _),"initial heavy course");
+            Require(a.TryReplay(first.ReplayReceipt,out var second,out var failure),"heavy replay "+failure);
+            Require(second.GeometryHash==first.GeometryHash && second.Checkpoints.Length>0,
+                "heavy checkpoints");
+        });
+        Check("REPLAY_CULTURE_INVARIANT_ROUNDTRIP",()=>{
+            var saved=System.Globalization.CultureInfo.CurrentCulture;
+            try{
+                var (a,b)=Pair();
+                var q=Request(83,true);q.Config.Difficulty=.727f;
+                Require(a.TryGenerate(q,out var first,out _),"culture baseline");
+                System.Globalization.CultureInfo.CurrentCulture=new System.Globalization.CultureInfo("pl-PL");
+                Require(a.TryReplay(first.ReplayReceipt,out var next,out var failure),
+                    "culture-dependent read "+failure);
+                Require(next.ReplayReceipt==first.ReplayReceipt,"culture-dependent receipt");
+            }
+            finally {System.Globalization.CultureInfo.CurrentCulture=saved;}
+        });
+        foreach(var corrupt in new[]{ "NULL","EMPTY","PREFIX","CHECKSUM","TRUNCATED","OVERSIZE" })
+        {
+            var mode=corrupt;
+            Check("REPLAY_REJECTS_CORRUPT_RECEIPT_"+mode,()=>{
+                var (a,b)=Pair();
+                int cleared=0,ready=0;
+                a.WorldReady+=_=>ready++;a.WorldCleared+=_=>cleared++;
+                Require(a.TryGenerate(Request(7),out var first,out _),"baseline");
+                int count=b.GenerateCalls;
+                string data=first.ReplayReceipt;
+                switch(mode){
+                    case "NULL":data=null;break;
+                    case "EMPTY":data="";break;
+                    case "PREFIX":data="UNKNOWN"+data.Substring(7);break;
+                    case "CHECKSUM":data=data.Substring(0,data.Length-1)+(data.EndsWith("0")?"1":"0");break;
+                    case "TRUNCATED":data=data.Substring(0,data.Length-3);break;
+                    case "OVERSIZE":data=new string('X',2048);break;
+                }
+                Require(!a.TryReplay(data,out var second,out var failure),"should fail replay");
+                Require(second==null && failure==MapWorldFailure.InvalidReplayReceipt,
+                    "corrupt receipt wrong error "+failure);
+                Require(a.Current==first && first.GeneratedRoot.activeInHierarchy
+                    && b.GenerateCalls==count && ready==1 && cleared==0,
+                    "corrupt replay changed current scene");
+            });
+        }
+        Check("REPLAY_GENERATION_VERSION_DRIFT_NO_BUILD",()=>{
+            var (a,b)=Pair();
+            Require(a.TryGenerate(Request(7),out var old,out _),"baseline");
+            var fields=old.ReplayReceipt.Split('|');
+            fields[13]=(int.Parse(fields[13],System.Globalization.CultureInfo.InvariantCulture)+1)
+                .ToString(System.Globalization.CultureInfo.InvariantCulture);
+            string receipt=Resign(fields);
+            int before=b.GenerateCalls;
+            Require(!a.TryReplay(receipt,out var next,out var failure),"drift must reject");
+            Require(failure==MapWorldFailure.ReplayGeometryMismatch &&
+                next==null && a.Current==old && b.GenerateCalls==before,
+                "generation version drift not detected before build");
+        });
+        Check("REPLAY_GEOMETRY_HASH_DRIFT_NO_BUILD",()=>{
+            var (a,b)=Pair();
+            Require(a.TryGenerate(Request(7),out var old,out _),"baseline");
+            var fields=old.ReplayReceipt.Split('|');
+            fields[12]=new string('a',64);
+            if(fields[12]==old.GeometryHash)fields[12]=new string('b',64);
+            var altered=Resign(fields);
+            int before=b.GenerateCalls;
+            Require(!a.TryReplay(altered,out var next,out var failure),"geometry mismatch");
+            Require(failure==MapWorldFailure.ReplayGeometryMismatch && next==null &&
+                a.Current==old && b.GenerateCalls==before && old.GeneratedRoot.activeInHierarchy,
+                "geometry mismatch mutated source world");
+        });
+        Check("REPLAY_INVALID_MEASURED_HULL_REJECTS_PRESERVES",()=>{
+            var (a,b)=Pair();
+            Require(a.TryGenerate(Request(7),out var old,out _),"baseline");
+            var fields=old.ReplayReceipt.Split('|');
+            fields[7]="0"; // width zero; must not accept even with valid checksum.
+            var altered=Resign(fields);
+            int before=b.GenerateCalls;
+            Require(!a.TryReplay(altered,out var next,out var failure),"zero width must reject");
+            Require(failure==MapWorldFailure.RejectedGeneratorConfig && next==null &&
+                a.Current==old && b.GenerateCalls==before,
+                "bad measured envelope changed live geometry");
+        });
         var n=results.Count(x=>x.StartsWith("FAIL"));
         string file=args.Length>0?args[0]:"mapworld-adapter-fake-results.json";
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(file)));

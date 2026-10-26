@@ -1,8 +1,9 @@
-name: B01-21 MAPGENWORLD001 W12 source package
+name: B01-21 MAPGENWORLD001 v1.1 W13 replay source
 on:
   push:
     branches:
       - "pkg/b01-21-mapgenworld001-w12-20261025"
+      - "pkg/b01-21-mapgenworld001-w13-replay-20261026"
     paths:
       - "Assets/B01Packages/MAPGENWORLD001/**"
       - "Assets/B01Packages/MAPGENWORLD001.meta"
@@ -70,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'MAPWORLD_SOURCE_RESULT total=31 pass=31 fail=0' mapgenworld-evidence/source-console.log
-          grep -q 'ADAPTER_SOURCE_RESULT total=16 pass=16 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
+          grep -q 'ADAPTER_SOURCE_RESULT total=28 pass=28 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
           grep -q 'Ran 12 tests' mapgenworld-evidence/package-tests.log
           python3 - <<'PY'
           import json
@@ -79,7 +80,7 @@ jobs:
           names=[row["path"] for row in manifest["files"]]
           assert not any({"obj","bin","__pycache__"} & set(Path(p).parts) for p in names)
           assert len(names) == len(set(names))
-          assert manifest["version"] == "1.0.1"
+          assert manifest["version"] == "1.1.0"
           print("INSTALLABLE_SOURCE_ONLY_MANIFEST=PASS entries="+str(len(names)))
           PY
       - name: Archive exact SHA source case results, negative tests, manifest, FULL ZIP
