@@ -1,0 +1,27 @@
+name: B01-10 GAMEPLAY experiment source QA
+on:
+  push:
+    paths:
+      - 'Tools/B01/GAMEPLAY-EXPERIMENT-001/**'
+      - '.github/workflows/b01-gameplay-experiment.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/GAMEPLAY-EXPERIMENT-001/**'
+      - '.github/workflows/b01-gameplay-experiment.yml'
+  workflow_dispatch:
+jobs:
+  test-analytics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate controlled synthetic evidence
+        run: node Tools/B01/GAMEPLAY-EXPERIMENT-001/generate.mjs
+      - name: Execute fail-closed analytics tests
+        run: node Tools/B01/GAMEPLAY-EXPERIMENT-001/test.mjs
+      - name: Prove no synthetic-data player claims
+        run: |
+          node Tools/B01/GAMEPLAY-EXPERIMENT-001/analyze.mjs Tools/B01/GAMEPLAY-EXPERIMENT-001/SYNTHETIC_FIXTURES.json

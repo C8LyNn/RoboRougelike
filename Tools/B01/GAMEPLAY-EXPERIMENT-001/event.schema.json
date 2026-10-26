@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "B01-GAMEPLAY-EXPERIMENT-001 event (v1)",
+  "type": "object", "additionalProperties": false,
+  "required": ["eventId","origin","buildId","challenge","seed","finished","seconds","repairScrap","lootedNonArmor","lootedArmor","wheelDamage","steeringBeforeDegSec","steeringAfterDegSec","partsChangedAfterRun","garageSeconds","firstMeaningfulActionSeconds"],
+  "properties": {
+    "eventId":{"type":"string","minLength":1},
+    "origin":{"enum":["native_player","native_api","synthetic_fixture"]},
+    "buildId":{"type":"string","minLength":1},
+    "challenge":{"enum":["defense","race","boss"]},
+    "seed":{"type":"integer","minimum":0},
+    "finished":{"type":"boolean"},
+    "seconds":{"type":"number","minimum":0},
+    "repairScrap":{"type":"number","minimum":0},
+    "lootedNonArmor":{"type":"integer","minimum":0,"maximum":3},
+    "lootedArmor":{"const":0},
+    "wheelDamage":{"type":"integer","minimum":0},
+    "steeringBeforeDegSec":{"type":"number","minimum":0},
+    "steeringAfterDegSec":{"type":"number","minimum":0},
+    "partsChangedAfterRun":{"type":"integer","minimum":0},
+    "garageSeconds":{"type":"number","minimum":0},
+    "firstMeaningfulActionSeconds":{"type":"number","minimum":0}
+  }
+}
