@@ -71,6 +71,18 @@ jobs:
           cp "$root/manifest.json" "$root/binding_spec.json" /tmp/B01-VIS-LEGENDARY-W12-R1/
           mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/qa
           cp "$root/output/M01-018_SWEEP.json" "$root/output/M04-024_SWEEP.json" /tmp/B01-VIS-LEGENDARY-W12-R1/qa/
+          python3 "$root/tools/footprint_fit_qa.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/FOOTPRINT_FIT_W13.json
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_footprint_fit.py" -v
+          python3 - <<'PYGATE'
+          import json
+          from pathlib import Path
+          f=Path('/tmp/B01-VIS-LEGENDARY-W12-R1/qa/FOOTPRINT_FIT_W13.json')
+          d=json.loads(f.read_text())
+          assert d['status']=='BLOCKED_FOR_PHYSICAL_MOUNT'
+          assert all(r['status']=='BLOCKED' and not r['approvedToMount'] for r in d['reports'])
+          expected={'M01-018':-2.572,'M04-024':-0.47756}
+          assert all(abs(r['extentRemainderM'][2]-expected[r['modelId']])<0.00001 for r in d['reports'])
+          PYGATE
           (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
