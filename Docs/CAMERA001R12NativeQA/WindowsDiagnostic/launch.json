@@ -1,0 +1,23 @@
+{
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "source": "c4cd93565e002aef6e0135ba8b1d18810874afea",
+  "assemblySHA256": "6C98068236D87A587B7FCB1372EBF49C9A33D644B5C9FFB91712DB2CD4421917",
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Builds\\CAMERA-R12-QA\\CameraR12QA.exe",
+  "visible": true,
+  "pid": 56820,
+  "startedUtc": "2026-10-26T00:15:10.9524935Z",
+  "producer": "48581e49a878eca376674551017532bf17fd35b2",
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    "1280",
+    "-screen-height",
+    "720",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T001510Z\\Player.log\"",
+    "-camera-qa-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T001510Z\""
+  ],
+  "accessibilityClientAttached": false
+}

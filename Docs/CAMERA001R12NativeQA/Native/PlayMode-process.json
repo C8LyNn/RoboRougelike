@@ -1,0 +1,17 @@
+{
+  "producer": "48581e49a878eca376674551017532bf17fd35b2",
+  "finishedUtc": "2026-10-26T00:08:26.1510421Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testFilter",
+    "B01.CAMERA001.Tests",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Tests-20261026T000603Z\\PlayMode.xml\""
+  ],
+  "source": "32534edcbfafda786b8f079f558efe8e52bdf5a6",
+  "phase": "PlayMode",
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T00:08:10.6310326Z"
+}

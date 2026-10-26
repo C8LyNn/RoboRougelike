@@ -1,0 +1,13 @@
+{
+  "phase": "Build",
+  "source": "27dca30d3a5566cefd7e44911f14b55e8e13a907",
+  "producer": "48581e49a878eca376674551017532bf17fd35b2",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "CameraR12QABuild.Build"
+  ],
+  "finishedUtc": "2026-10-26T00:10:24.1236738Z",
+  "startedUtc": "2026-10-26T00:09:07.4627280Z",
+  "exitCode": 0
+}
