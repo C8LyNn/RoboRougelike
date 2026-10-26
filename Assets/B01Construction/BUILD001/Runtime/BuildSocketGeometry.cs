@@ -5,7 +5,7 @@ using UnityEngine;
 namespace B01.BUILD001
 {
     public enum BuildRole { Core, Armor, Wheel, Gun, Suspension, Device }
-    public enum BuildSocketKind { Structural, Axle, WeaponBase, SuspensionBase }
+    public enum BuildSocketKind { Structural, Axle, WeaponBase, SuspensionBase, MobilityHub }
 
     /// <summary>
     /// Structural mount patch in local 0.55m grid units. Not a render collider
@@ -29,6 +29,16 @@ namespace B01.BUILD001
         }
     }
 
+    /// <summary>Author-declared physical join between two adjacent occupied cells.
+    /// This is a contract; runtime colliders/joints must still be checked on import.</summary>
+    public struct BuildCellBond
+    {
+        public readonly Vector3Int A, B;
+        public readonly bool PhysicalJoin;
+        public BuildCellBond(Vector3Int a, Vector3Int b, bool physicalJoin = true)
+        { A = a; B = b; PhysicalJoin = physicalJoin; }
+    }
+
     public sealed class BuildDefinition
     {
         public string Id;
@@ -36,11 +46,13 @@ namespace B01.BUILD001
         public Vector3Int[] Cells;
         public BuildSocket[] Sockets;
         public bool SupportsOtherParts;
+        public BuildCellBond[] CellBonds;
 
         public BuildDefinition(string id, BuildRole role, Vector3Int[] cells,
-            BuildSocket[] sockets, bool support)
+            BuildSocket[] sockets, bool support, BuildCellBond[] cellBonds = null)
         {
             Id = id; Role = role; Cells = cells; Sockets = sockets; SupportsOtherParts = support;
+            CellBonds = cellBonds;
         }
     }
 
@@ -82,6 +94,32 @@ namespace B01.BUILD001
             var cells = new HashSet<Vector3Int>();
             foreach (var cell in def.Cells)
                 if (!cells.Add(cell)) { reason = "DUPLICATE_OCCUPIED_CELL"; return false; }
+
+            // A single owner cannot bridge separated voxels. All multi-cell
+            // ownership requires a declared, orthogonal, physically joined tree.
+            if (cells.Count > 1)
+            {
+                if (def.CellBonds == null || def.CellBonds.Length == 0)
+                { reason = "DISCONNECTED_FOOTPRINT"; return false; }
+                var adjacency = new Dictionary<Vector3Int, List<Vector3Int>>();
+                foreach (var c in cells) adjacency.Add(c, new List<Vector3Int>());
+                foreach (var bond in def.CellBonds)
+                {
+                    if (!bond.PhysicalJoin || !cells.Contains(bond.A) ||
+                        !cells.Contains(bond.B) || !UnitFace(bond.A - bond.B))
+                    { reason = "UNVERIFIED_PHYSICAL_JOIN"; return false; }
+                    adjacency[bond.A].Add(bond.B);
+                    adjacency[bond.B].Add(bond.A);
+                }
+                var reached = new HashSet<Vector3Int>();
+                var queue = new Queue<Vector3Int>();
+                reached.Add(def.Cells[0]); queue.Enqueue(def.Cells[0]);
+                while (queue.Count > 0)
+                    foreach (var next in adjacency[queue.Dequeue()])
+                        if (reached.Add(next)) queue.Enqueue(next);
+                if (reached.Count != cells.Count)
+                { reason = "DISCONNECTED_FOOTPRINT"; return false; }
+            }
 
             foreach (var s in def.Sockets)
             {
