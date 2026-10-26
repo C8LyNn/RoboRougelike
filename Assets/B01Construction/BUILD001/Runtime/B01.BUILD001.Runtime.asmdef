@@ -1,0 +1,9 @@
+{
+  "name": "B01.BUILD001.Runtime",
+  "rootNamespace": "B01.BUILD001",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "autoReferenced": true,
+  "noEngineReferences": false
+}

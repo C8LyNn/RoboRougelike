@@ -1,0 +1,15 @@
+# Execution ledger — Docs/superpowers/plans/2026-10-26-codex-full-merge-270.md
+
+Authority: current user and Issue270 request full existing Codex merge, not selective RC3. Root executes inline, read-only history/camera agents advise. No new approval pause for authorized technical work.
+
+Base056911a8284f7d61f2a8d13ed2669e453c3d9915 / RC2 PR258; all18previous worktrees clean and preserved. Separate integration/codex-full-merge-270 at RoboRougelike-Full-Merge270. Unity6000.3.14f1 fresh baseline compile native0, evidence Artifacts/Local/FM270-Baseline-20261026T163606Z.224PR index saved; exact current producer source heads saved. Never use PR body prose as SHA authority where its older frozen lines differ from actual Git HEAD.
+
+User scope answer: prototype models need methodology/design/implementation preparation later; “na razie nie ruszaj. ignoruj.” Exclude visual models, ModelFactory and PR55/W01/H01 work from current implementation, but account them explicitly in matrix. Do not spend effort finding/importing their GLBs.
+
+Read-only history audit: all W1/W2/W3/W4/W5/WPN/DEF/COV/HAZ/VFX/COM/SEN/MOV011/PHY/OBJ/RC1/RC2 ancestry retained, no original migration Assets paths deleted. Concrete mandatory omissions: MAP-R6#3 complete roads/graph/activity code and RAC001#13 source; MAPGEN does not supersede MAP-R6. BUILD/CAMERA are unfinished receiver efforts needing actual completion. MOV010 explicitly source-unavailable at original#2, not developed missing gameplay. Standalone B01 ECON/LEG/guard/RUNSAFETY are producer-only policy proposals, not automatically existing Codex gameplay.
+
+Camera audit: prior strict Light peaks remainFAIL; original full trace recomputation shows actual previous-frame hull→floor direction jumps19.2604/16.9068deg, world muzzle steps2.8283/2.8290 within170deg/s frame budget2.8333/2.8326, recovery<=.05deg after.1000/.0833s. Need native matched actual consumed target/local-pivot attribution, do not call all tracking green. Source camera pose oldR12 unchanged inlatest269 (passive raw audit). Candidate receiver compatibility issues to test: own root-level P17 shells accepted by FindAimPoint; CAMERA world collision includes R3Debris/projectiles while oldP12 excludes debris. Recommended one-owner P12 API facade delegates disabled autonomous Camera001Rig.StepCamera once; garage ownership preserved.
+
+Artifacts downloaded via GitHub connector and physically saved: BUILD R14 full inner60entries155320B SHA25662321794e8f91f1660c32597632b40b9bccdbab1becd3c7e750632f06f8714aa; WORLD latest261 inner57501B SHA2564a097ea1039032fa86ec69012909029c0c6ab6a66c21516703a5c234a0dc0ed2; CAMERA latest269 inner87128B SHA25605ea3a379a5a3f48cbabf36989119fa13f1cf219b60997cc93c61d4b15b6c0f5. Per-file manifest/Git/meta staging gate not yet run.
+
+Task1 IN_PROGRESS. Tasks2–6 pending; do not stop after source import or a subset of mechanics.

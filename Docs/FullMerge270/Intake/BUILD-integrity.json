@@ -1,0 +1,317 @@
+{
+  "package": "BUILD",
+  "source": "95707c68c8071a949b5d9fec7ff57926e92f8198",
+  "targetBefore": "056911a8284f7d61f2a8d13ed2669e453c3d9915",
+  "zip": {
+    "name": "B01-BUILD001-R14.zip",
+    "sha256": "62321794e8f91f1660c32597632b40b9bccdbab1becd3c7e750632f06f8714aa",
+    "bytes": 155320,
+    "entries": 60,
+    "gitMatched": 59,
+    "generatedManifests": [
+      "PACKAGE_MANIFEST_R13.json"
+    ]
+  },
+  "preservedShared": [],
+  "sourceFiles": 59,
+  "GUIDCountAfter": 875,
+  "obsolete": [],
+  "files": [
+    {
+      "path": "Assets/B01Construction.meta",
+      "sha256": "46781a32906e45a4a1152005716f1eaeef2a93bc673223bf4d0fda10cfac5f98",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001.meta",
+      "sha256": "319b87e20e735a6c97e63f4190976ff6678275a99ea4793a4a5dcea1792d9d3f",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo.meta",
+      "sha256": "5a50874b891218060a034d0051d8622f0a52d068149f3268bdb089f7493efade",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity",
+      "sha256": "9b635fe9d14cdf0a628f6e515f533fb82969dbc73ef16fd71ac86bbeab3bbbf7",
+      "bytes": 1378
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/BUILD001_Demo.unity.meta",
+      "sha256": "ec58c77941b2c6017fe1589b0aa63950d6a8e7461a001b64bd2e2e6d1358d837",
+      "bytes": 152
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs",
+      "sha256": "7186e1d357ef0c8112ae4c13d937dc3d25b1e2977c0a6b695eca5126b0095e6d",
+      "bytes": 5064
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Demo/Build001Demo.cs.meta",
+      "sha256": "2ba4fb08c910c16f9650ba09a1192df47f04e8f2b2abccc6314b9dbec9eb9a35",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Resources.meta",
+      "sha256": "d89b7ac175d6a4b0159a869856926ca38c3a72b5a695fd16d27ca14807f57b91",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Resources/BUILD001_PreviewURP.shader",
+      "sha256": "8a067901a5c24aa4f17f64355f203d25e8bb65a748762aef4eba03d8d08fdab6",
+      "bytes": 1090
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Resources/BUILD001_PreviewURP.shader.meta",
+      "sha256": "05b381a53dbcb8f80afa83329744cdbf20ab787b2096f28b6c67a112df8ead32",
+      "bytes": 201
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime.meta",
+      "sha256": "f0bfb365743b8d9717fa89308f1ff80bb2a9ad0466efae6600398ba079a6981f",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef",
+      "sha256": "44ccd9d21d3dcb4334abdad1ff44a11814fc894482bc40b7b1ea006bc99b50df",
+      "bytes": 201
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/B01.BUILD001.Runtime.asmdef.meta",
+      "sha256": "62a4a6c2dd0c86b9fb29e35b24361ed879ae63ae46ab70ade83ca8bdc5280ae8",
+      "bytes": 163
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildMountSurface.cs",
+      "sha256": "bfee68f5d0869b64d816aadb54dcc247c28cf374fe7014c99c43f943d4039780",
+      "bytes": 395
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildMountSurface.cs.meta",
+      "sha256": "f098a80dbd07019c46d80fa63fcec2aeb5a6e65abbb5bd39489187e8948c943a",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs",
+      "sha256": "f785063e5ab63a9ced1f6ba1d198920953f0016b520841a724103577379da1f5",
+      "bytes": 10996
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs.meta",
+      "sha256": "38f0d4dbc64cf015de0283030d8702d057f0a4cd785efbd6330ffce00618e24a",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs",
+      "sha256": "3db5d07bf688fa5be9ab355b24d3d28533963f137d46e2a60893e319a4000f0f",
+      "bytes": 11540
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs.meta",
+      "sha256": "c8d7a0bc123746a467ef40cbc9ee55662298f963d42c1a772d69a37686c099d9",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs",
+      "sha256": "ea33d86328fc77514c7e272eb7b6a0a7f0a8c5f0b1b65de82ec0d0ce3fc7b0bb",
+      "bytes": 7149
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs.meta",
+      "sha256": "63a0d7ac3c8ec0ed38b4b478b202f8fd9f50597875c4742480864501b21c3fb5",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildVolumeValidator.cs",
+      "sha256": "19115e2337fc93581bde9d4400a2c5624e06093bfd9b0a25f1c628b9c3c9e4a9",
+      "bytes": 2893
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Runtime/BuildVolumeValidator.cs.meta",
+      "sha256": "61387d4f85778e5cb12158f3b8388511eb6f1ddfeb01d7090cf319f84fb147d6",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests.meta",
+      "sha256": "c2e5a06f6da52f3005a65995c93f02e297ed511d28612a8ff9cb98d2cfddcd3d",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode.meta",
+      "sha256": "02a875154c301b5017ea77bf7338c90d92e56e96d5dc83320c55ddd03d9f1844",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef",
+      "sha256": "52241836f31149296796d935ba625692ff8539a0dc0217fcfedb9d086d13f905",
+      "bytes": 260
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/B01.BUILD001.EditModeTests.asmdef.meta",
+      "sha256": "516de5f08d9932a1810be7120cd371d6697289490bd9fd806daf20c702b4502a",
+      "bytes": 163
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001R13SafetyTests.cs",
+      "sha256": "03d23c1d6c50c1667b0685388431825db144950188abf3c14b7f3c76e6141e83",
+      "bytes": 4284
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001R13SafetyTests.cs.meta",
+      "sha256": "777bc00237809ed561d2e383991e7ecb91f67f6861d122f8fbf09e839189d0be",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001R14ContactAreaTests.cs",
+      "sha256": "6a72589cdf4af0d039ddb4166f4e23ea209cc2e753f4dc33ed0294d6fc3d1477",
+      "bytes": 4790
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001R14ContactAreaTests.cs.meta",
+      "sha256": "467a19684ed1ebc0e31e698c03d97c9ae5900ae0d58225e404be244da1ea13dd",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs",
+      "sha256": "89e57990f043369489d120ec300470f372789713e1aa5cb3ca449afe067521f2",
+      "bytes": 9254
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/EditMode/Build001SocketTests.cs.meta",
+      "sha256": "f94398a6cb6a37517df53d38bf11ba0d2ab3dac02413fa46c0d38bad26956bc7",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode.meta",
+      "sha256": "87d8ffb98edb67dd651cdcea21184e9d251950d2d1d4c758af19d341a8fa06e0",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef",
+      "sha256": "ddc2c9599957a5c4e03402a64b6765bf5f6a46588adb284e5aeabcdb793ac0b8",
+      "bytes": 244
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/B01.BUILD001.PlayModeTests.asmdef.meta",
+      "sha256": "07e9ddfeee7b76aadb9f898efc8937ccb90c95ce387f3a2d5c3feb1bf7950715",
+      "bytes": 163
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs",
+      "sha256": "d52a0d575583b650313042df71e2a90d0c0e4f1094fa0cf184865d258ca0f370",
+      "bytes": 3505
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001PhysicalHitTests.cs.meta",
+      "sha256": "99d7daa6d1b20c78381aeb731381d8a933a56310d40a646cb71016384393229a",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001R13PhysicalTests.cs",
+      "sha256": "1a4d71aaa16b85be1b75c01c754f6a250bfabdb58b56be2fe89f8817104ad213",
+      "bytes": 6743
+    },
+    {
+      "path": "Assets/B01Construction/BUILD001/Tests/PlayMode/Build001R13PhysicalTests.cs.meta",
+      "sha256": "3ee77e3e8bb7eb1ceec81d0ba2169cd41563ae18394d78e03dc9182769972ea6",
+      "bytes": 240
+    },
+    {
+      "path": "Docs/B01/BUILD001/API.md",
+      "sha256": "5664901b822f7c39b06fd47d87b7779991e353b913596127f91efcb54ee5da89",
+      "bytes": 1679
+    },
+    {
+      "path": "Docs/B01/BUILD001/INSTALL_FOR_CODEX.md",
+      "sha256": "e66f7e04bb409e1e239fc1ec3e2b973abf81ec7503f38f48c0f16d647d997fe4",
+      "bytes": 2867
+    },
+    {
+      "path": "Docs/B01/BUILD001/KNOWN_LIMITATIONS.md",
+      "sha256": "95e54c2a1645b64aca1e2ffa888f59b9ced2befcedb6600f6caebeb7d75b8909",
+      "bytes": 1221
+    },
+    {
+      "path": "Docs/B01/BUILD001/PROMPT_FOR_CODEX.md",
+      "sha256": "51fbb3d5b933dca8e8b54c530ca7992f5eef87f77181a2dbaeb838416279864d",
+      "bytes": 3172
+    },
+    {
+      "path": "Docs/B01/BUILD001/R13_RECEIVER_HANDOFF.md",
+      "sha256": "319f508cf07fa44e8a27bf3b003993b9b97441f51218d4cb2e7765d83cd8f589",
+      "bytes": 4381
+    },
+    {
+      "path": "Docs/B01/BUILD001/R13_TEST_MATRIX.md",
+      "sha256": "797304d50bc7c305c193a70a2ca2c624762a21e20efbe2e81b2f83d998a7a07a",
+      "bytes": 2124
+    },
+    {
+      "path": "Docs/B01/BUILD001/R14_NATIVE_RETEST.md",
+      "sha256": "81174f387142965fd64b922006beabbb92e928064f3ef803b28076c402536ba0",
+      "bytes": 3658
+    },
+    {
+      "path": "Docs/B01/BUILD001/README.md",
+      "sha256": "e967661693ce077122bebaea5261fec0da45092f75ff7f5880053c13c35015e6",
+      "bytes": 1318
+    },
+    {
+      "path": "Docs/B01/BUILD001/RECEIVER_HANDOFF.md",
+      "sha256": "4812c1b0ddfe76f5c8ad43708a52eb6a34326fbb50f0ab9e9fd394844d5f3fde",
+      "bytes": 678
+    },
+    {
+      "path": "Docs/B01/BUILD001/TEST_EVIDENCE.md",
+      "sha256": "0ce865c31f5214dc83a25610adbc44bdc3ef6e23893b5849196d42f1b5fc18af",
+      "bytes": 2167
+    },
+    {
+      "path": "Docs/B01/BUILD001/TEST_PLAN.md",
+      "sha256": "0604ff99dba81090b0fc4019e1a9e480f201a858d706efbcbdaefec2d17f7136",
+      "bytes": 1517
+    },
+    {
+      "path": "Docs/B01/BUILD001/W9_SOURCE_REPAIR_R12.md",
+      "sha256": "127354c7e2568a377bdcf9625fc882234eeeaac558514dcc29a8702f3f9937f6",
+      "bytes": 1355
+    },
+    {
+      "path": "Docs/B01/BUILD001/manifest.json",
+      "sha256": "eb0065ffff8534e1dfdebd99b4373baf7866631bdc66dc36014822dd52b57eb9",
+      "bytes": 1940
+    },
+    {
+      "path": "Tools/B01/BUILD001/Portable/B01.Build001.Portable.csproj",
+      "sha256": "59f9ef41493f981eb876c6422c747dff9ccca04a2a8ffdea48231f76ae974977",
+      "bytes": 912
+    },
+    {
+      "path": "Tools/B01/BUILD001/Portable/Program.cs",
+      "sha256": "1f3a1bf8197cd9c8c811a2b44e67450818c4c730ce9ba9d3f6f193dd0d537917",
+      "bytes": 11117
+    },
+    {
+      "path": "Tools/B01/BUILD001/Portable/UnityStubs.cs",
+      "sha256": "d08d5678c8ae7e77082815fd16e39ec645f1d111b34825938b19590f436d8249",
+      "bytes": 7322
+    },
+    {
+      "path": "Tools/B01/BUILD001/package_r13.py",
+      "sha256": "b280a7239fc55ccea1c91a7e34096f2e866bbd633b5b17a490b58eb30835b985",
+      "bytes": 5707
+    },
+    {
+      "path": "Tools/B01/BUILD001/package_r14.py",
+      "sha256": "d23a4aa2ceaee38f50c834dcc3397e9e9958760a3f22e33a39bfb030b4412f18",
+      "bytes": 1901
+    },
+    {
+      "path": "Tools/B01/BUILD001/test_package_r13.py",
+      "sha256": "abd0152b505ac52c1ac2d86b86a5dd780aa0ca68c213c554f18d8d34d932300d",
+      "bytes": 2871
+    }
+  ],
+  "status": "STAGED_FULL_PINNED_SOURCE"
+}

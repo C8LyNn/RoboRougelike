@@ -1,0 +1,47 @@
+{
+  "package_id": "B01-BUILD001",
+  "revision": "R1.4",
+  "owner": "B01-23",
+  "dispatch": "HQ-B01-20261026-W13-RC2-BUILD001-NATIVE-AREA-FIX",
+  "source_parent_sha": "be54b4a33360cbd1923ae5dacbc92dff8eaf586b",
+  "source_branch": "b01-23/w13-build001-r14-contact-area",
+  "full_package": "Assets/B01Construction.meta + Assets/B01Construction/BUILD001.meta + Assets/B01Construction/BUILD001/**",
+  "source_paths": [
+    "Assets/B01Construction/BUILD001/**",
+    "Docs/B01/BUILD001/**",
+    "Tools/B01/BUILD001/**"
+  ],
+  "checksum_receipt": "Tools/B01/BUILD001/package_r14.py reports SHA256, bytes and entry counts. Embedded PACKAGE_MANIFEST_R13.json has schema B01-PACKAGE-FULL-SHA256-R14 and SHA256 of all included files.",
+  "uri": "https://github.com/C8LyNn/RoboRougelike/issues/140",
+  "test_baseline": "Codex native QA on R1.2, 34 PASS / 4 FAIL, not evidence for R1.3",
+  "authored_tests": {
+    "existing_editmode": 11,
+    "new_editmode": 7,
+    "existing_playmode": 2,
+    "new_playmode": 4
+  },
+  "native_compile": "NOT_RUN_ON_R14",
+  "native_editmode": "NOT_RUN_ON_R14",
+  "native_playmode": "NOT_RUN_ON_R14",
+  "player_720_1080": "NOT_RUN_ON_R14",
+  "physx": "NOT_RUN_ON_R14",
+  "source_qa": "PENDING_FINAL_W13_CI",
+  "independent_B01_40": "PENDING",
+  "independent_B01_60": "PENDING",
+  "codex_target_ack": "UNKNOWN",
+  "G2": "HOLD",
+  "merge": "PROHIBITED",
+  "supersedes": "R1.2 manifest in immutable ancestor; do not use old 37-entry R1.2 ZIP",
+  "authorized_gamescope": "ISOLATED_BUILD001_ONLY_NO_ACTIVE_GAME",
+  "native_R13_external": {
+    "source_sha": "be54b4a33360cbd1923ae5dacbc92dff8eaf586b",
+    "original_editmode": "18_PASS",
+    "original_playmode": "6_PASS",
+    "receiver_new_contact_area": "2_FAIL_1_POSITIVE_PASS",
+    "source": "PR258"
+  },
+  "R14_new_native_testcases": 14,
+  "expected_total_editmode_cases": 32,
+  "expected_total_playmode_cases": 6,
+  "installable_only_after_independent_G1_and_G2": true
+}

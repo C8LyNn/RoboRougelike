@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="UnityStubs.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="../../../../Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs" />
+    <Compile Include="../../../../Assets/B01Construction/BUILD001/Runtime/BuildPlacementRules.cs" />
+    <Compile Include="../../../../Assets/B01Construction/BUILD001/Runtime/BuildSocketRaycast.cs" />
+    <Compile Include="../../../../Assets/B01Construction/BUILD001/Runtime/BuildMountSurface.cs" />
+    <Compile Include="../../../../Assets/B01Construction/BUILD001/Runtime/BuildVolumeValidator.cs" />
+  </ItemGroup>
+</Project>
