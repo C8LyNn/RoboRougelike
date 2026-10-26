@@ -48,7 +48,8 @@ public sealed class UnifiedRC2IntegrationTests
         // EditMode EnterPlayMode has no focused GameView input pump. Process the
         // native event and invoke the unchanged production input consumer in the
         // same input update; OS/manual input is a separate Windows check.
-        InputState.Change(keyboard,new KeyboardState(Key.Enter));Assert.That(Keyboard.current,Is.SameAs(keyboard));
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
+        InputSystem.Update(InputUpdateType.Dynamic);Assert.That(Keyboard.current,Is.SameAs(keyboard));
         Assert.That(keyboard.enterKey.wasPressedThisFrame,Is.True);
         typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(run,null);
         yield return null;yield return null;

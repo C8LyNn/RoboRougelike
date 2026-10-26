@@ -1,0 +1,14 @@
+{
+  "name": "B01.RewardKeep3.Runtime",
+  "rootNamespace": "RoboRougelike.B01.Rewards",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
