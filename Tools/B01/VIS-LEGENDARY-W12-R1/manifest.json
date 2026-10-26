@@ -36,7 +36,7 @@
       "ciOutputPath": "Tools/B01/VIS-LEGENDARY-W12-R1/output/M04-024_LEG-MOV-001_R1.glb",
       "realLocalBinary": true,
       "ciWorkflow": ".github/workflows/b01-vis-legendary-w12.yml",
-      "ciVerdict": "NOT_YET_VERIFIED",
+      "ciVerdict": "PENDING_REVALIDATION_AT_UPDATED_HEAD",
       "unityImported": false,
       "massKg": null,
       "animationClips": 5,
@@ -53,7 +53,7 @@
     }
   ],
   "localProducerTests": {
-    "result": "PASS",
+    "result": "CI_RETEST_PENDING",
     "ciRun": 40291905422,
     "sourceSha": "e24dfd15f3526ea15a363b6699f8ca16a3f20808",
     "realGlbTests": "10/10 M01 then 10/10 M01+M04",
@@ -80,6 +80,5 @@
     "Codex target integrator ACK"
   ],
   "packageRevision": "R1.1",
-  "latestCiRun": 40291905422,
-  "packageInnerZipSha256": "3745a52d51df53708d48e8c30df0833932245f0ff2e6956e6a9987a2419ed297"
+  "latestCiRun": 40291905422
 }
