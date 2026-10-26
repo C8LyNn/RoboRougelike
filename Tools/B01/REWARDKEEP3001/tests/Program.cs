@@ -45,6 +45,16 @@ static class Program {
   T("existing_physical_guid_refused",()=>{var h=H();var p=P();h.Owned.Add(p.InstanceId);var s=S(h);Bad(s.TryOpen("v",new[]{p},out var e),e,"OFFER_CONTAINS_OWNED_INSTANCE");});
   T("uppercase_guid_refused",()=>{var h=H();var s=S(h);Bad(s.TryOpen("v",new[]{P(id:"ABCDEF00112233445566778899AABBCC")},out var e),e,"INVALID_OR_DUPLICATE_OFFER");});
   T("empty_guid_refused",()=>{var h=H();var s=S(h);Bad(s.TryOpen("v",new[]{P(id:Guid.Empty.ToString("N"))},out var e),e,"INVALID_OR_DUPLICATE_OFFER");});
+  T("mixed_case_armor_spoof_rejected",()=>{
+   var h=H();var s=S(h);
+   Bad(s.TryOpen("v",new[]{P("armor")},out var e),e,"INVALID_OR_DUPLICATE_OFFER");
+   Bad(s.TryOpen("v",new[]{P("ARMOR")},out e),e,"INVALID_OR_DUPLICATE_OFFER");
+   A(!s.HasOpenWindow);
+  });
+  T("unknown_part_kind_rejected",()=>{
+   var h=H();var s=S(h);
+   Bad(s.TryOpen("v",new[]{P("UntrustedModule")},out var e),e,"INVALID_OR_DUPLICATE_OFFER");
+  });
   T("core_not_salvageable",()=>{var h=H();var s=S(h);Bad(s.TryOpen("v",new[]{P("Core")},out var e),e,"INVALID_OR_DUPLICATE_OFFER");});
   T("second_window_cannot_replace_open_choice",()=>{var h=H();h.Wins.Add("other");var s=S(h);Open(s,P());var save=Save(s);Bad(s.TryOpen("other",new[]{P()},out var e),e,"WINDOW_ALREADY_OPEN");E(Save(s),save);});
   T("deselect_releases_slot",()=>{var h=H();var s=S(h);var p=new[]{P(),P(),P(),P()};Open(s,p);foreach(var x in p.Take(3))Pick(s,x);Pick(s,p[0]);Pick(s,p[3]);Commit(s);A(!h.Owned.Contains(p[0].InstanceId));E(h.Owned.Count,3);});
