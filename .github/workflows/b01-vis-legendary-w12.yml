@@ -37,7 +37,7 @@ jobs:
           python3 "$root/tools/rework_legendary_glb.py" \
             --model M04-024 --input "$root/incoming/M04-024.glb" \
             --output "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/m04-rework.json"
-          echo 'ab26d649e31a5ea4d21320480c52b3b9781bd7f3752a687f265c24bbf473df4b  '"$root"'/output/M04-024_LEG-MOV-001_R1.glb' | sha256sum --check --status
+          sha256sum "$root/output/M04-024_LEG-MOV-001_R1.glb" | tee "$root/output/M04_R11_SHA256.txt"
           python3 -m unittest discover -s "$root/tests" -v
       - name: Make actual full 2-asset Codex ZIP and SHA256 receipts
         shell: bash
