@@ -9,7 +9,7 @@
   "noGameIntegration": true,
   "noMerge": true,
   "g2Approved": false,
-  "status": "PRODUCER_PARTIAL_BINARY_LOCAL_AND_GIT_VERIFIED;CI_ZIP_VERDICT_PENDING;G0_TARGET_PENDING",
+  "status": "PRODUCER_R11_TWO_GLBS_CI_PASS_SWEPT_E2_PASS_G0_TARGET_PENDING",
   "binaries": [
     {
       "modelId": "M01-018",
@@ -31,21 +31,33 @@
       "originalSourceHead": "eef02864b106546b200011a2f0286fe7d9a83a1f",
       "originalActionsArtifact": 12586794828,
       "originalGlbSha256": "280bb77e21995b7440fdda5c7551fc135b2b3b5ce6999322708fb670ff979414",
-      "reworkedSha256": "ab26d649e31a5ea4d21320480c52b3b9781bd7f3752a687f265c24bbf473df4b",
-      "reworkedBytes": 856744,
+      "reworkedSha256": "c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8",
+      "reworkedBytes": 857292,
       "ciOutputPath": "Tools/B01/VIS-LEGENDARY-W12-R1/output/M04-024_LEG-MOV-001_R1.glb",
       "realLocalBinary": true,
       "ciWorkflow": ".github/workflows/b01-vis-legendary-w12.yml",
       "ciVerdict": "NOT_YET_VERIFIED",
       "unityImported": false,
-      "massKg": null
+      "massKg": null,
+      "animationClips": 5,
+      "animationChannels": 8,
+      "simultaneousClip": "LEG-MOV-001_ALL_FOUR_GIMBALS",
+      "clipPolicy": "PRESERVE_4_ORIGINAL_CLIPS_AND_ADD_COMBINED_SYNC_CLIP",
+      "sampledSweptAabbMeters": [
+        1.57756,
+        0.884306,
+        1.57756
+      ],
+      "sampledFramesPerClip": 121,
+      "sampledBoundsStatus": "E2_MESH_VERTEX_POINTS_ONLY_NOT_COLLISION"
     }
   ],
   "localProducerTests": {
     "result": "PASS",
-    "passed": 13,
-    "total": 13,
-    "source": "local M04 actual binary + synthetic M01",
+    "ciRun": 40291905422,
+    "sourceSha": "e24dfd15f3526ea15a363b6699f8ca16a3f20808",
+    "realGlbTests": "10/10 M01 then 10/10 M01+M04",
+    "animationSweep": "M01 1 clip + M04 5 clips x 121 samples",
     "nativeUnity": "NOT_RUN"
   },
   "sourceOwnedPaths": [
@@ -66,5 +78,8 @@
     "B01-60 G1_NATIVE",
     "B01-00 explicit G2",
     "Codex target integrator ACK"
-  ]
+  ],
+  "packageRevision": "R1.1",
+  "latestCiRun": 40291905422,
+  "packageInnerZipSha256": "3745a52d51df53708d48e8c30df0833932245f0ff2e6956e6a9987a2419ed297"
 }
