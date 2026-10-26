@@ -1,0 +1,20 @@
+{
+  "reportType": "Producer preflight before independent CI",
+  "sourceCommit": "5c29e8e28e7b34fedf0c992fca49451828b02314",
+  "sourceBlobs": [
+    {
+      "relativePath": "samples/drive.csv",
+      "path": "Docs/B01_RC1/FinalMapgen1080/drive.csv",
+      "blobSha1": "f486527f62feb552ee71e72cb03d7bf14bb3614b"
+    },
+    {
+      "relativePath": "samples/rc1-native-result.json",
+      "path": "Docs/B01_RC1/FinalMapgen1080/rc1-native-result.json",
+      "blobSha1": "97e4bbcde23e755747cb5efcf96bbca31f7dcf7a"
+    }
+  ],
+  "status": "TESTS_21_AUTHORED_CI_NOT_RUN_YET",
+  "nativeUnity": "NOT_RUN_BY_B01_10",
+  "humanPlaytest": "NOT_RUN",
+  "g2": "HOLD"
+}

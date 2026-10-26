@@ -1,0 +1,7 @@
+# Receiver handoff — B01-60/Codex (read-only, no integration approval)
+1. Verify Draft PR full SHA and exact original [RC1 QA #248](https://github.com/C8LyNn/RoboRougelike/pull/248) source `5c29e8e28e7b34fedf0c992fca49451828b02314`; do not substitute stale/release ZIP or compressed bundle.
+2. Copy `Tools/B01/RC1-TELEMETRY-INTAKE-001/**` into a disposable QA checkout (not live Codex game). No NPM, no Unity package import, no scripts run against the game or save.
+3. Run `node .../test.mjs`, then `node .../ingest.mjs`. Verify original 33 samples, external 185 contact observations and all structural quality warnings. Real sample output does **not** populate human telemetry #255.
+4. For new native evidence: do **not** bypass source manifest by rehashing arbitrary data without provenance. First append a separate receipt with its own immutable producer commit, source blob ID and signed capture provenance; pass source-specific expectations. This R1 intake is deliberately pinned to one known RC1 snapshot.
+5. One next request to licensed QA/Codex: collect genuine same-seed paired **Light vs Heavy** raw R6 drive traces with authoritative input provenance, wheel-loss before/after, outcome, salvage selections and receipt for each. B01-10 will analyze resulting gameplay only after observing actual data.
+6. Rollback: remove this own Tools directory and workflow, no game, R3/R6/R1, save or Unity ProjectSettings affected. G0 source-only, G1/human NOT_RUN, G2 HOLD.
