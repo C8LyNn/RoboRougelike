@@ -25,6 +25,12 @@ jobs:
       - name: Compile real ECON plus real LEGENDARY plus actual new guarded port
         id: compile
         run: dotnet build Tools/B01/ECONLEGENDARY001/tests/CrossQa.csproj -c Release --nologo
+      - name: Prepare immutable receiver-only Csharp source adapters
+        id: receiver
+        run: python3 Tools/B01/ECONLEGENDARY001/patch_receiver.py artifacts/econlegendary
+      - name: Compile actual install-only R3 bridges against OBJ pinned API signature doubles
+        id: bridge
+        run: dotnet build Tools/B01/ECONLEGENDARY001/tests/BridgeCompile/BridgeCompile.csproj -c Release --nologo
       - name: Execute original-source cross-system regressions
         id: tests
         shell: bash
@@ -48,13 +54,15 @@ jobs:
           COMP: ${{ steps.compile.outcome }}
           TEST: ${{ steps.tests.outcome }}
           PACK: ${{ steps.package.outcome }}
+          BRIDGE: ${{ steps.bridge.outcome }}
+          RECEIVER: ${{ steps.receiver.outcome }}
         run: |
           python3 - <<'PY'
           import json,os,subprocess,pathlib
           p=pathlib.Path("artifacts/econlegendary");p.mkdir(parents=True,exist_ok=True)
           rpath=p/"results.json";r=json.loads(rpath.read_text()) if rpath.exists() else None
           data={"head_sha":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
-                "pinned_source_check":os.environ["PIN"],"actual_csharp_compile":os.environ["COMP"],
+                "pinned_source_check":os.environ["PIN"],"actual_csharp_compile":os.environ["COMP"],"receiver_adapter_patch":os.environ["RECEIVER"],"receiver_bridge_signature_compile":os.environ["BRIDGE"],
                 "portable_regressions":os.environ["TEST"],"deterministic_zip":os.environ["PACK"],
                 "results":({key:r[key] for key in ("passed","failed","total")} if r else None),
                 "unity_native_editmode":"NOT_RUN","unity_native_playmode":"NOT_RUN","unity_physx":"NOT_RUN","g2":"HOLD"}
