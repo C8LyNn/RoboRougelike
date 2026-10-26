@@ -1,7 +1,9 @@
 import csv,gzip,hashlib,json,pathlib,shutil,xml.etree.ElementTree as ET
 from PIL import Image,ImageStat
 r=pathlib.Path(__file__).resolve().parents[2];out=r/'Docs/CAMERA001R12NativeQA'
-sources={'Native':'CameraR12-Tests-20261026T000603Z','BuildInitial':'CameraR12-Build-20261026T000907Z','BuildDiagnostic':'CameraR12-Build-20261026T001430Z','WindowsInitial':'CameraR12-Player-20261026T001057Z','WindowsDiagnostic':'CameraR12-Player-20261026T001510Z'}
+finalPlayers=sorted((r/'Artifacts/Local').glob('CameraR12-Player-*'))
+assert len(finalPlayers)==3,'Collect only after final bounded follow-up exists'
+sources={'Native':'CameraR12-Tests-20261026T000603Z','BuildInitial':'CameraR12-Build-20261026T000907Z','BuildDiagnostic':'CameraR12-Build-20261026T001430Z','BuildFinal':'CameraR12-Build-20261026T002026Z','WindowsInitial':'CameraR12-Player-20261026T001057Z','WindowsDiagnostic':'CameraR12-Player-20261026T001510Z','WindowsFinal':finalPlayers[-1].name}
 def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
 for name,folder in sources.items():
  src=r/'Artifacts/Local'/folder;dest=out/name;dest.mkdir(exist_ok=True)
@@ -21,7 +23,7 @@ for mode,expected in [('EditMode',5),('PlayMode',13)]:
  native[mode]={'counts':{k:int(node.get(k)) for k in ('total','passed','failed','skipped')},'process':p,'cases':[{'name':x.get('fullname'),'result':x.get('result')} for x in node.findall('.//test-case')]}
  assert native[mode]['counts']=={'total':expected,'passed':expected,'failed':0,'skipped':0} and p['exitCode']==0
 windows={};shots=[]
-for name in ('WindowsInitial','WindowsDiagnostic'):
+for name in ('WindowsInitial','WindowsDiagnostic','WindowsFinal'):
  dest=out/name;d=read(dest/'functional-results.json');p=read(dest/'process.json')
  assert len(d['rows'])==8 and d['status']!='Running'
  traces=list(csv.DictReader((dest/'camera-trace.csv').read_text().splitlines()))
@@ -43,7 +45,7 @@ for name in ('WindowsInitial','WindowsDiagnostic'):
   ET.SubElement(diagnostic,'case',id=row['id'],status=row['status'],ownOriginHits=str(row['finalOriginOwnHits']),ownNearClipHits=str(row['ownReticleHits']),worldOverlaps=str(row['worldSphereOverlapSamples']),speedViolations=str(row['speedCapViolations']),aimViolations=str(row['aimErrorViolations']))
  ET.ElementTree(diagnostic).write(dest/'functional-diagnostic.xml',encoding='utf-8',xml_declaration=True)
  windows[name]={'process':p,'launch':read(dest/'launch.json'),'overall':d['status'],'rows':d['rows'],'errors':d['errors'],'samples':len(traces),'phases':phases,'screenshots':screenshots}
- if name=='WindowsDiagnostic':
+ if name in ('WindowsDiagnostic','WindowsFinal'):
   aim=[json.loads(s) for s in gzip.decompress((dest/'aim-trace.jsonl.gz').read_bytes()).decode().splitlines()]
   shot=[json.loads(s) for s in gzip.decompress((dest/'shots.jsonl.gz').read_bytes()).decode().splitlines()]
   percase=[]
@@ -57,8 +59,14 @@ for name in ('WindowsInitial','WindowsDiagnostic'):
     assert len(aa)==1,(sh,len(aa))
     paired.append({'shot':sh,'aim':aa[0]})
    percase.append({'id':row['id'],'peak':peak,'gunTrackingViolationsAfter1_5s':sum(x['consumedError']>.05 for x in a),'identifiedShots':len(shotscase),'maximumFiringFrameAimError':max(x['aim']['consumedError'] for x in paired),'firingFrameViolations':sum(x['aim']['consumedError']>.05 for x in paired),'shots':paired})
-  (out/'aim-diagnostics.json').write_text(json.dumps(percase,indent=2)+'\n')
+  (out/('aim-diagnostics.json' if name=='WindowsFinal' else 'aim-diagnostics-initial.json')).write_text(json.dumps(percase,indent=2)+'\n')
   windows[name]['aimSummary']=[{k:v for k,v in x.items() if k!='shots'} for x in percase]
-summary={'producer':'48581e49a878eca376674551017532bf17fd35b2','base':'4c9236a4cdc27814ea2e7679872ec4a524150cc8','compile':read(out/'Native/Compile-process.json'),'native':native,'builds':{k:read(out/k/'Build-process.json') for k in ('BuildInitial','BuildDiagnostic')},'windows':windows,'status':'CAMERA_REGRESSIONS_PASS; WEAPON_TRACKING_OBSERVATION_FAIL; NO_G2'}
+ if name=='WindowsFinal':
+  final=list(csv.DictReader((dest/'final-rendered-pose.csv').read_text().splitlines()))
+  windows[name]['endOfFrame']={'samples':len(final),'ownOriginHits':sum(x['ownOrigin']=='True' for x in final),'ownNearClipHits':sum(x['ownNearClip']=='True' for x in final),'insideOwn':sum(x['insideOwn']=='True' for x in final),'worldOverlaps':sum(x['worldOverlap']=='True' for x in final)}
+  windows[name]['flightAimMaximum']=max(x['flightAimError'] for x in shot)
+  windows[name]['flightAimViolations']=sum(x['flightAimError']>.05 for x in shot)
+coreFail=any(x[k] for x in windows['WindowsFinal']['rows'] for k in ('ownReticleHits','finalOriginOwnHits','originInsideOwnSamples','speedCapViolations','worldSphereOverlapSamples','aimErrorViolations','finalRenderedOwnHits','finalRenderedWorldOverlaps'))
+summary={'producer':'48581e49a878eca376674551017532bf17fd35b2','base':'4c9236a4cdc27814ea2e7679872ec4a524150cc8','compile':read(out/'Native/Compile-process.json'),'native':native,'builds':{k:read(out/k/'Build-process.json') for k in ('BuildInitial','BuildDiagnostic','BuildFinal')},'windows':windows,'cameraStatus':'FAIL' if coreFail else 'PASS_OBSERVED','overallFunctional':windows['WindowsFinal']['overall'],'G2':'NOT_GRANTED'}
 (out/'native-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
-print(json.dumps({'native':{k:v['counts'] for k,v in native.items()},'windows':{k:{'exit':v['process']['exitCode'],'samples':v['samples'],'rows':[(x['id'],x['status'],x.get('maxMuzzleConsumedAfterSettle',x.get('maxMuzzleAfterSettle'))) for x in v['rows']]} for k,v in windows.items()},'shotDiagnostics':windows['WindowsDiagnostic']['aimSummary']}))
+print(json.dumps({'native':{k:v['counts'] for k,v in native.items()},'windows':{k:{'exit':v['process']['exitCode'],'samples':v['samples'],'rows':[(x['id'],x['status'],x.get('maxMuzzleConsumedAfterSettle',x.get('maxMuzzleAfterSettle'))) for x in v['rows']]} for k,v in windows.items()},'endOfFrame':windows['WindowsFinal']['endOfFrame'],'flightAimMaximum':windows['WindowsFinal']['flightAimMaximum'],'cameraStatus':summary['cameraStatus']}))
