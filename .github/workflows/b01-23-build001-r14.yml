@@ -1,0 +1,43 @@
+name: B01-23 W13 BUILD001 R1.4 interval hardening
+on:
+  push:
+    branches:
+      - 'b01-23/w13-build001-r14-contact-area'
+    paths:
+      - 'Assets/B01Construction/BUILD001/**'
+      - 'Docs/B01/BUILD001/**'
+      - 'Tools/B01/BUILD001/**'
+      - '.github/workflows/b01-23-build001-r14.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build001-r14:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Python R1.3 inherited archive and negative selftests
+        run: python3 Tools/B01/BUILD001/test_package_r13.py
+      - name: Compile production BUILD001 C# with explicit NONNATIVE surrogate; execute 16 cases
+        run: dotnet run --project Tools/B01/BUILD001/Portable/B01.Build001.Portable.csproj -c Release
+      - name: Double-build exact R1.4 ZIP and verify checksum/contents
+        shell: bash
+        run: |
+          mkdir -p dist
+          python3 Tools/B01/BUILD001/package_r14.py --out dist/B01-BUILD001-R14.zip | tee dist/BUILD001_R14_RECEIPT.json
+          python3 Tools/B01/BUILD001/package_r14.py --out dist/B01-BUILD001-R14-second.zip >/dev/null
+          cmp dist/B01-BUILD001-R14.zip dist/B01-BUILD001-R14-second.zip
+          rm dist/B01-BUILD001-R14-second.zip
+          sha256sum dist/B01-BUILD001-R14.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-BUILD001-R14-contact-area-source
+          path: |
+            dist/B01-BUILD001-R14.zip
+            dist/BUILD001_R14_RECEIPT.json
+          if-no-files-found: error
