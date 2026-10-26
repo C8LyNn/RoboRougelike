@@ -72,6 +72,26 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard.Tests
             Assert.IsFalse(guard.RepairExisting(h.Id,out error));
             Assert.AreEqual(0,h.Repairs);
         }
+        [Test] public void NoncanonicalUppercasePhysicalGuidMustFailClosed()
+        {
+            var raw=Guid.NewGuid().ToString("N").ToUpperInvariant();
+            var h=new Host(raw){Hp=0.5f};
+            var guard=Guard(h);
+            Assert.IsFalse(guard.CheckSharedOwnership(out var error));
+            Assert.AreEqual("INVALID_PHYSICAL_INSTANCE",error);
+            Assert.IsFalse(guard.RepairExisting(raw,out error));
+            Assert.AreEqual(0,h.Repairs);
+        }
+        [Test] public void EmptyPhysicalGuidOrHpOverMaxMustFailClosed()
+        {
+            var empty=new Host(Guid.Empty.ToString("N")){Hp=0.5f};
+            Assert.IsFalse(Guard(empty).CheckSharedOwnership(out var error));
+            Assert.AreEqual("INVALID_PHYSICAL_INSTANCE",error);
+            var tooHealthy=new Host{Hp=1.5f};
+            Assert.IsFalse(Guard(tooHealthy).CheckSharedOwnership(out error));
+            Assert.AreEqual("INVALID_PHYSICAL_INSTANCE",error);
+            Assert.AreEqual(0,tooHealthy.Repairs);
+        }
         [Test] public void DestroyedNeverInstantHeals()
         {
             var h=new Host{Hp=0};
