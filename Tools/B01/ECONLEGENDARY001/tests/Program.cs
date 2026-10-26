@@ -15,7 +15,7 @@ sealed class SharedHost : IAuthoritativeR3Port, IAuthoritativeRebuildPort, IRebu
     public readonly Dictionary<string,string> Reservations=new(StringComparer.Ordinal);
     public readonly HashSet<string> Completed=new(StringComparer.Ordinal);
     public int Scrap=1000,RebuildQuote=25,BuyPrice=100,UnsafeRepairCalls,Debits,Completions,Salvages;
-    public bool ProofAvailable=true,RejectReservation,RejectComplete,RejectMounted,SnapshotMismatch;
+    public bool ProofAvailable=true,RejectReservation=false,RejectComplete=false,RejectMounted=false,SnapshotMismatch=false;
     public SharedHost(string id){RobotId=id;}
     public IReadOnlyList<PartObservation> Mounted=>Parts.Where(x=>x.IsMounted).Select(x=>new PartObservation(x.Id,x.Kind,x.Family,x.Health)).ToArray();
     public IReadOnlyList<PartObservation> Inventory=>Parts.Where(x=>!x.IsMounted).Select(x=>new PartObservation(x.Id,x.Kind,x.Family,x.Health)).ToArray();
@@ -150,7 +150,7 @@ static class Program
             Same(h.Parts.Single().Id,id);
         });
         Test("06_two_zero_hp_copies_first_free_second_paid",()=>{
-            var (h,e,l,g)=Start();var a=Grant(h,l),b=Grant(h,l);Destroy(h,a);Destroy(h,b);
+            var (h,e,l,g)=Start();string a=Grant(h,l),b=Grant(h,l);Destroy(h,a);Destroy(h,b);
             Ensure(e.TryQueueDestroyed(a,out var reason),reason);
             Ensure(e.TryQueueDestroyed(b,out reason),reason);
             Same(h.Scrap,975);Same(h.Debits,2);
@@ -160,7 +160,7 @@ static class Program
             Same(h.Scrap,975);Same(h.Completions,1);
         });
         Test("07_paid_order_insufficient_money_leaves_all_unchanged",()=>{
-            var (h,e,l,g)=Start();var a=Grant(h,l),b=Grant(h,l);Destroy(h,a);Destroy(h,b);
+            var (h,e,l,g)=Start();string a=Grant(h,l),b=Grant(h,l);Destroy(h,a);Destroy(h,b);
             Ensure(e.TryQueueDestroyed(a,out var reason),reason);
             h.Scrap=10;var before=Save(e);
             Ensure(!e.TryQueueDestroyed(b,out reason));Same(reason,"RESERVE_DENIED");
@@ -245,13 +245,13 @@ static class Program
             var q1=new RebuildQueueService(h1);var q2=new RebuildQueueService(h2);
             var g1=new GuardedLegendaryPort(h1,h1,q1,h1);var g2=new GuardedLegendaryPort(h2,h2,q2,h2);
             var l=new LegendaryUnityService(new IAuthoritativeR3Port[]{g1,g2},LegendaryCatalog.CreatePilotDefinitions());
-            var a=Grant(h1,l),b=Grant(h2,l);
+            string a=Grant(h1,l),b=Grant(h2,l);
             Ensure(l.TryEquip("A",a,new LegendaryPlacement(0,0,0,"weapon"),out var reason),reason);
             Ensure(l.TryEquip("B",b,new LegendaryPlacement(0,0,0,"weapon"),out reason),reason);
             Ensure(l.CheckInvariants(out reason),reason);
         });
         Test("17_queued_destroyed_mounted_keeps_legend_slot",()=>{
-            var (h,e,l,g)=Start();var a=Grant(h,l),b=Grant(h,l);
+            var (h,e,l,g)=Start();string a=Grant(h,l),b=Grant(h,l);
             Ensure(l.TryEquip(h.RobotId,a,new LegendaryPlacement(0,0,0,"weapon"),out var reason),reason);
             Destroy(h,a);Ensure(e.TryQueueDestroyed(a,out reason),reason);
             Ensure(!l.TryEquip(h.RobotId,b,new LegendaryPlacement(0,0,0,"weapon"),out reason));
