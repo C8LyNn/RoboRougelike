@@ -10,3 +10,5 @@
 
 - R1.1 corrects synchrony with one extra glTF animation clip; importer may ignore simultaneous clip semantics unless importer exports named clip and receiver actively selects it. Inspect 4 gimbals in Unity at 0/25/50/75/100% manually.
 - New E2 121-sample vertex envelope is discrete time sampling, **not** continuous PhysX triangle collision; 3.622cm nominal per-side remainder on M04 requires actual rotation/scale/socket/mounted rig test.
+
+- Source of original M04 artifact is historical GitHub Actions artifact 12586794828; GH artifact expiration/deletion can make rebuild-from-original fail later. Final R1.1 two-GLB ZIP is also published under a separate Actions artifact and must be archived by receiver with SHA256 if long-term support is needed. Never treat transient artifact ID as permanent binary source.
