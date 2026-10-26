@@ -38,7 +38,7 @@ export function ingest({csvBytes,resultBytes,manifest,origin='native_api'}){
  insist(report.errors?.length===0,'NATIVE_RUNTIME_ERRORS');
  const checks=report.checks;
  insist(Array.isArray(checks)&&checks.length>=10&&checks.every(c=>c.passed===true),'NATIVE_OBSERVATION_FAILED');
- for(const keyword of ['Real R6 grounded force drive','Real hostile and player projectile damage','Controlled win uses existing salvage']){
+ for(const keyword of ['Real R6 grounded force drive','Real hostile and player projectile damage','Controlled win uses existing salvage and clears generated world']){
   insist(checks.some(x=>x.name===keyword),'MISSING_REQUIRED_NATIVE_CHECK');
  }
  insist(rows.length===manifest.expected.sampleRows,'TRACE_ROW_COUNT_MISMATCH');
