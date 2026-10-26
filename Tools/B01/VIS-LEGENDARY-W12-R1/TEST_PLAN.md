@@ -9,3 +9,9 @@
 **NOT_RUN:** new Blender FBX export, Unity import/EditMode/PlayMode, 720p/1080p actual URP Player, narrow-phase continuous triangles, host physics collider tests, mass/COM calibration. AABB does NOT prove actual triangle non-intersection.
 
 **Known FAIL/BLOCK:** M01 3.672m visual longitudinal length does not fit proposed footprint 1.10m depth. No configured live authoritative MobilityHub socket yet. Do not approve G2.
+
+## R1.1 source-independent animation E2 plan
+
+CI executes `python3 tools/swept_geometry_qa.py --glb <edited.glb> --output <output.json> --samples 121` on both reworked GLBs, checking all actual glTF positions under each node's full parent TRS and all animation channels with LINEAR/slerp interpolation. Test math with analytical translation, rotation, scene nesting, invalid accessor length, non-LINEAR rejection, real M01 and generated M04 combined clip cases. See `tests/test_swept.py`.
+
+At first successful R1.1 run, M01 sampled extent 1.172×0.9125×3.672m; M04 *combined* sampled extent 1.57756×0.884306×1.57756m. For M04, four separate single-channel clips also retained. **Sampling 121 poses is not continuous BVH triangle/Unity Collider proof**: high-frequency narrow overlap between sample times remains NOT_RUN; `MaxDistance`/suspension/COM/hover behavior NOT_RUN. Unity model importer, URP shader/material and mounted camera silhouettes still NOT_RUN.
