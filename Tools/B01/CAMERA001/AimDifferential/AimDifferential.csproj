@@ -10,5 +10,6 @@
     <Compile Include="Program.cs"/>
     <Compile Include="UnitySurrogate.cs"/>
     <Compile Include="../../../../Assets/B01Packages/CAMERA001/Runtime/Camera001AimTransitionDiagnostics.cs" Link="ActualCameraSource.cs"/>
+    <Compile Include="../../../../Assets/B01Packages/CAMERA001/Runtime/Camera001AimTimeline.cs" Link="ActualTimelineSource.cs"/>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
     <Compile Include="SourceTests.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs" Link="MapWorldContract.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs" Link="MapWorldPolicy.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldReplayCodec.cs" Link="MapWorldReplayCodec.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs" Link="MapGenData.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs" Link="MapGenPlanner.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs" Link="MapGenRouteValidator.cs" />

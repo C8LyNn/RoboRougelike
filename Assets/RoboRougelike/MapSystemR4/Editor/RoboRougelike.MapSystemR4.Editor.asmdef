@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.MapSystemR4.Editor",
+  "rootNamespace": "RoboRougelike.MapSystemR4.Editor",
+  "references": ["RoboRougelike.MapSystemR4.Runtime"],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
