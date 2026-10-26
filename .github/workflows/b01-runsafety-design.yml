@@ -1,0 +1,22 @@
+name: B01-10 RUNSAFETY S04 design oracle
+on:
+  push:
+    paths:
+      - 'Tools/B01/RUNSAFETY-DESIGN-001/**'
+      - '.github/workflows/b01-runsafety-design.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/RUNSAFETY-DESIGN-001/**'
+      - '.github/workflows/b01-runsafety-design.yml'
+  workflow_dispatch:
+jobs:
+  test-design-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify 48 cases, 3 mutation controls and 2000 seeded ECON trials
+        run: node Tools/B01/RUNSAFETY-DESIGN-001/run.mjs

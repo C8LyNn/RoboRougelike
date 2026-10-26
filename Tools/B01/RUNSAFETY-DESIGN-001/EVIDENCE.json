@@ -1,0 +1,28 @@
+{
+  "task": "RS-S04-DESIGN-001",
+  "source_SHA": "b2623f50e2bdb16106b88d0107d215867ed8791b",
+  "source_code_test_execution": "NOT_RUN",
+  "port_description": "Portable independent JS model; source-equivalent producer gate for counterexamples only",
+  "scenarios": 48,
+  "passed": 48,
+  "failed": 0,
+  "byDomain": {
+    "ELIGIBILITY": 24,
+    "PRODUCER_GAP": 4,
+    "ECON_LEDGER": 15,
+    "ALTERNATIVE_POLICY": 5
+  },
+  "mutationControls": {
+    "total": 3,
+    "passed": 3
+  },
+  "deterministicStress": {
+    "seeds": 2000,
+    "failed": 0
+  },
+  "failures": [],
+  "verdict": "PASS",
+  "UnityNative": "NOT_RUN",
+  "HQPolicyApproved": false,
+  "G2": "HOLD"
+}
