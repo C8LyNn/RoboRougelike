@@ -9,7 +9,7 @@
   "noGameIntegration": true,
   "noMerge": true,
   "g2Approved": false,
-  "status": "VISUAL_GLBS_GENUINE_QA_PASS; BOTH_TYPED_FOOTPRINTS_BLOCKED; INDEPENDENT_G0_PENDING",
+  "status": "PRODUCER_SOURCE_EVIDENCE_INTEGRITY_GATE; BOTH_PHYSICAL_MOUNTS_STILL_BLOCKED",
   "binaries": [
     {
       "modelId": "M01-018",
@@ -86,7 +86,7 @@
     "Codex target integrator ACK",
     "B01-10/B01-00 explicit geometry footprint approval before mounting"
   ],
-  "packageRevision": "R1.2_W13_RC1_GEOMETRY_GATE",
+  "packageRevision": "R1.3_W15_SOURCE_SWEEP_RECEIPT_AUTH",
   "latestCiRun": 40291905422,
   "independentG0R11": "PENDING_B01_40_RECHECK_SOURCE_AND_ZIP",
   "g1Native": "NOT_RUN_UNITY_CREDENTIALS",
@@ -107,5 +107,16 @@
     "approvedForMount": false,
     "shaIncludesBinaryAndSweep": true,
     "originPivotAndPhysx": "NOT_RUN"
+  },
+  "w15SourceReceiptGate": {
+    "status": "SOURCE_RECOMPUTE_REQUIRED_BEFORE_FOOTPRINT",
+    "code": "tools/verify_sweep_provenance.py",
+    "tests": "tests/test_sweep_provenance.py",
+    "output": "qa/REAL_GLB_SWEEP_PROVENANCE_W15.json",
+    "authenticSamplesPerClip": 121,
+    "rejects": "forged min/max/size/intermediate frames and clip schema even if true GLB SHA256 is unchanged",
+    "vertexAlgorithm": "same owner glTF sampler, actual binary re-evaluation, not a second independent algorithm",
+    "unityNative": "NOT_RUN",
+    "mountApproved": false
   }
 }
