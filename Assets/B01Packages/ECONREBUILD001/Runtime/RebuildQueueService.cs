@@ -179,7 +179,7 @@ namespace RoboRougelike.B01.Economy.Rebuild
                 catch(Exception){reason="CORRUPT_REBUILD_SAVE";return false;}
                 if(save==null||save.Version!=1||save.Wins<0||save.Pending==null||
                    save.AppliedVictoryEvents==null||
-                   (save.FreeSlotUsedAtWin!=-1&&save.FreeSlotUsedAtWin!=save.Wins))
+                   (save.FreeSlotUsedAtWin < -1 || save.FreeSlotUsedAtWin > save.Wins))
                 {reason="CORRUPT_REBUILD_SAVE";return false;}
                 var tickets=new Dictionary<string,RebuildTicket>(StringComparer.Ordinal);
                 var events=new HashSet<string>(StringComparer.Ordinal);
