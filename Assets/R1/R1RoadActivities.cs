@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using RoboRougelike.MapSystemR4;
 using RoboRougelike.R3;
@@ -11,6 +12,7 @@ namespace RoboRougelike.R1
         bool roadRequested,roadFloorActive,roadLayoutActive;
         GameObject roadFloor,roadLayout;
         MapR4MapData roadMap;
+        MapR6JunctionPlan[] roadGradeJoins=Array.Empty<MapR6JunctionPlan>();
         MapR4Mode roadMode;
         Quaternion previousRoadRotation;
         float nextRoadWave;
@@ -31,21 +33,29 @@ namespace RoboRougelike.R1
             // Fit original source geometry to the measured assembled robot, not a demo cube.
             var profile=new MapR4VehicleProfile{id="R3/"+SelectedVehicle,width=envelope.x,height=envelope.y,length=envelope.z,
                 minTurnRadius=4.5f,maxSlopeDeg=16,capabilities=new[]{"ground"}};
-            foreach(var edge in map.edges){edge.width=Mathf.Max(edge.width,envelope.x+2*profile.sideMargin);edge.clearHeight=Mathf.Max(edge.clearHeight,envelope.y+profile.verticalMargin);}
+            // Round measured clearance outward to centimetres; storing an exact
+            // float boundary can be smaller than the planner's recomputed sum.
+            foreach(var edge in map.edges){edge.width=Mathf.Max(edge.width,Mathf.Ceil((profile.width+2*profile.sideMargin+.001f)*100)/100);edge.clearHeight=Mathf.Max(edge.clearHeight,Mathf.Ceil((profile.height+profile.verticalMargin+.001f)*100)/100);}
             foreach(var node in map.nodes){
                 // Enlarging a flat raised pad backward across an incoming grade
                 // creates a vertical curb (native Heavy stall: +0.368m). Keep
                 // the authored raised joins and let the unchanged source turn
                 // validator reject a profile that cannot negotiate them.
-                bool graded=map.edges.Any(e=>(e.fromNode==node.id||e.toNode==node.id)&&
-                    Mathf.Abs(map.nodes.First(n=>n.id==e.fromNode).position.y-map.nodes.First(n=>n.id==e.toNode).position.y)>.01f);
-                if(!graded)node.padWidth=Mathf.Max(node.padWidth,envelope.x+envelope.z+2*profile.minTurnRadius+2*profile.sideMargin);
+                if(!RaisedNode(map,node))node.padWidth=Mathf.Max(node.padWidth,envelope.x+envelope.z+2*profile.minTurnRadius+2*profile.sideMargin);
             }
             foreach(var node in map.nodes)if(node.id=="central_arena")node.padWidth=Mathf.Max(40,node.padWidth);
             string state=mode==MapR4Mode.Escape?"bridge_collapsed":"intact";
             string target=mode==MapR4Mode.TimeAttack?"upper_ramp":mode==MapR4Mode.Escape?"exit":"central_arena";
             if(!MapR6RouteValidator.CanReachWithTurns(map,state,"start",target,profile,out string reason))
             {Garage.Message="Droga odrzucona: "+reason;return false;}
+            if(mode==MapR4Mode.TimeAttack||mode==MapR4Mode.Escape){
+                var route=mode==MapR4Mode.TimeAttack?new[]{"start_junction","junction_upper","upper_bridge","bridge_exit"}:new[]{"start_junction","junction_lower","lower_exit"};
+                if(!MapR6RouteValidator.ValidateExplicitRoute(map,state,"start",route,profile,out reason)){Garage.Message="Trasa odrzucona: "+reason;return false;}
+            }
+            // Validate every surface that activation will build BEFORE changing
+            // canonical progression. An invalid join never strands a coroutine.
+            var joins=PlanRaisedRoadJoins(map,state,profile);var invalid=joins.FirstOrDefault(p=>!p.Valid);
+            if(invalid.JunctionNodeId!=null){Garage.Message="Złącze odrzucone: "+invalid.JunctionNodeId+" / "+invalid.Reason;return false;}
             if(Progress.State==R1RunState.Garage&&!StartNextEncounter())return false;
             if(!Progress.ChooseRoute())return false;
             var template=mode==MapR4Mode.Boss?Definition.RouteStages.Last().Options[0]:RouteOffers[0];
@@ -54,7 +64,7 @@ namespace RoboRougelike.R1
             CurrentEncounter.Rule=mode==MapR4Mode.TimeAttack?"Górny checkpoint → meta • 180 s":mode==MapR4Mode.Escape?"Dotrzyj do wschodniego wyjścia • most zamknięty":mode==MapR4Mode.Survival?"Przetrwaj 30 sekund kolejnych fal":"Pokonaj Oblężnika";
             Definition.Encounters[Progress.EncounterIndex]=CurrentEncounter;
             reactorRequested=false;ReactorPrepared=false;LastActivityWasReactor=false;raceRequested=false;mapgenRequested=false;
-            roadRequested=true;roadMap=map;roadMode=mode;RoadProfile=profile;
+            roadRequested=true;roadMap=map;roadMode=mode;RoadProfile=profile;roadGradeJoins=joins;
             StartCoroutine(BeginEncounter());return true;
         }
         Vector3 ActivateRoadWorld()
@@ -70,20 +80,27 @@ namespace RoboRougelike.R1
             playerRotation=Quaternion.Euler(0,90,0);Physics.SyncTransforms();
             return RoadWorld.Anchors[roadMode==MapR4Mode.Survival||roadMode==MapR4Mode.Boss?"arena_middle":"spawn_west"].position+Vector3.up*1.05f;
         }
+        static bool RaisedNode(MapR4MapData map,MapR4NodeData node)=>map.edges.Where(e=>e.fromNode==node.id||e.toNode==node.id)
+            .Any(e=>map.nodes.First(n=>n.id==(e.fromNode==node.id?e.toNode:e.fromNode)).position.y<node.position.y-.01f);
+        static MapR6JunctionPlan[] PlanRaisedRoadJoins(MapR4MapData map,string state,MapR4VehicleProfile profile)
+        {
+            var result=new List<MapR6JunctionPlan>();var disabled=map.states.First(s=>s.id==state).disabledEdgeIds??Array.Empty<string>();
+            foreach(var node in map.nodes){
+                var edges=map.edges.Where(e=>e.fromNode==node.id||e.toNode==node.id).ToArray();
+                if(!RaisedNode(map,node)||edges.Length!=2||edges.Any(e=>disabled.Contains(e.id)))continue;
+                result.Add(MapR6JunctionPlanner.Plan(map,edges[0].id,edges[1].id,node.id,profile));
+            }
+            return result.ToArray();
+        }
         void BuildRaisedRoadJoins(Material material)
         {
-            foreach(var node in roadMap.nodes){
-                var edges=roadMap.edges.Where(e=>e.fromNode==node.id||e.toNode==node.id).ToArray();
-                bool raised=edges.Any(e=>roadMap.nodes.First(n=>n.id==(e.fromNode==node.id?e.toNode:e.fromNode)).position.y<node.position.y-.01f);
-                if(!raised||edges.Length!=2||edges.Any(e=>!RoadWorld.Edges[e.id].activeInHierarchy))continue;
-                var plan=MapR6JunctionPlanner.Plan(roadMap,edges[0].id,edges[1].id,node.id,RoadProfile);
-                if(!plan.Valid)throw new InvalidOperationException("Raised road join rejected: "+node.id+" / "+plan.Reason);
+            foreach(var plan in roadGradeJoins){
                 // Use the existing source planner's graded splice. A flat cube
                 // across a ramp is a physical curb even at the authored width.
-                var pad=RoadWorld.Root.transform.Find("Node_"+node.id);if(pad!=null)pad.gameObject.SetActive(false);
-                var shape=new MapR4EdgeData{id="R6_join_"+node.id,width=plan.Width,roadThickness=.35f,roadSegments=32,useCurve=true,controlA=plan.ControlA,controlB=plan.ControlB};
+                var pad=RoadWorld.Root.transform.Find("Node_"+plan.JunctionNodeId);if(pad!=null)pad.gameObject.SetActive(false);
+                var shape=new MapR4EdgeData{id="R6_join_"+plan.JunctionNodeId,width=plan.Width,roadThickness=.35f,roadSegments=32,useCurve=true,controlA=plan.ControlA,controlB=plan.ControlB};
                 var mesh=MapR5RoadMesh.Build(plan.Start,plan.End,shape);RoadWorld.OwnedMeshes.Add(mesh);
-                var join=new GameObject("R6 graded join "+node.id);join.transform.SetParent(RoadWorld.Root.transform,false);
+                var join=new GameObject("R6 graded join "+plan.JunctionNodeId);join.transform.SetParent(RoadWorld.Root.transform,false);
                 join.AddComponent<MeshFilter>().sharedMesh=mesh;join.AddComponent<MeshRenderer>().sharedMaterial=material;join.AddComponent<MeshCollider>().sharedMesh=mesh;
             }
         }
@@ -130,7 +147,7 @@ namespace RoboRougelike.R1
             RoadChallenge=null;RoadState=null;roadRequested=false;nextRoadWave=0;
             if(RoadWorld!=null){if(RoadWorld.Root!=null){RoadWorld.Root.SetActive(false);Destroy(RoadWorld.Root);}MapR4GeometryBuilder.DisposeMeshes(RoadWorld);RoadWorld=null;playerRotation=previousRoadRotation;}
             if(roadFloor!=null)roadFloor.SetActive(roadFloorActive);if(roadLayout!=null)roadLayout.SetActive(roadLayoutActive);
-            roadFloor=roadLayout=null;roadMap=null;RoadProfile=null;
+            roadFloor=roadLayout=null;roadMap=null;RoadProfile=null;roadGradeJoins=Array.Empty<MapR6JunctionPlan>();
         }
     }
 }
