@@ -83,5 +83,39 @@ replace('        if(rig.WorldClipped)row.clipSamples++;','''        Ray originRa
         if(rig.ActualOwnHullIntersectsCrosshair)row.diagnosticOwnFlags++;
         if(rig.WorldClipped)row.clipSamples++;''')
 replace('rig.WorldOverlapAtAim.ToString()}','rig.WorldOverlapAtAim.ToString(),stepDt.ToString("R",System.Globalization.CultureInfo.InvariantCulture),(15*stepDt).ToString("R",System.Globalization.CultureInfo.InvariantCulture),excess.ToString("R",System.Globalization.CultureInfo.InvariantCulture),originHit.ToString(),inside.ToString(),worldOverlap.ToString(),rig.ActualOwnHullIntersectsCrosshair.ToString(),actualAimError.ToString("R",System.Globalization.CultureInfo.InvariantCulture),Screen.width.ToString(),Screen.height.ToString()}')
+replace('public float maxContinuousSpeed,', 'public int forwardObservedFrames,discardedFastBodies;public float maxMuzzleConsumedAfterSettle;\n        public float maxContinuousSpeed,')
+replace('Result result=new Result();Row row;string output;StreamWriter trace;', '''[Serializable] public sealed class AimSample
+    {
+        public string id,phase,firstHitBefore,firstHitAfter,gun;public float time,sincePhase,consumedError,postFireError;public Vector3 consumedAim,postFireAim,cameraPosition,muzzlePosition,muzzleForward;
+    }
+    [Serializable] public sealed class ShotSample
+    {public string id,phase,part,components,owner;public int instance;public float time;public Vector3 position,velocity,forward;}
+    Result result=new Result();Row row;string output;StreamWriter trace,aimTrace,shotTrace;''')
+replace('QualitySettings.vSyncCount=0;', 'aimTrace=new StreamWriter(Path.Combine(output,"aim-trace.jsonl"));shotTrace=new StreamWriter(Path.Combine(output,"shots.jsonl"));\n        QualitySettings.vSyncCount=0;')
+replace('yield return new WaitForEndOfFrame();\n            Vector3 aim=actor.Controller.ModuleAimPoint();', '''Vector3 consumedAim=actor.Controller.ModuleAimPoint();string hitBefore=FirstAimHit();
+            if(Keyboard.current!=null&&Keyboard.current.wKey.isPressed)row.forwardObservedFrames++;
+            yield return new WaitForEndOfFrame();
+            Vector3 aim=actor.Controller.ModuleAimPoint();string hitAfter=FirstAimHit();''')
+replace('if(left&&Time.time-start>1.5f)row.maxMuzzleAfterSettle=Mathf.Max(row.maxMuzzleAfterSettle,error);', '''if(left&&Time.time-start>1.5f)row.maxMuzzleAfterSettle=Mathf.Max(row.maxMuzzleAfterSettle,error);
+                float consumedError=Vector3.Angle(gun.Muzzle.forward,consumedAim-gun.Muzzle.position);
+                if(left&&Time.time-start>1.5f)row.maxMuzzleConsumedAfterSettle=Mathf.Max(row.maxMuzzleConsumedAfterSettle,consumedError);
+                aimTrace.WriteLine(JsonUtility.ToJson(new AimSample{id=row.id,phase=row.phase,firstHitBefore=hitBefore,firstHitAfter=hitAfter,gun=gun.Id,time=Time.time,sincePhase=Time.time-start,consumedError=consumedError,postFireError=error,consumedAim=consumedAim,postFireAim=aim,cameraPosition=view.transform.position,muzzlePosition=gun.Muzzle.position,muzzleForward=gun.Muzzle.forward}));''')
+replace('{row.newFastBodies++;row.shotComponents=string.Join(";",rb.GetComponents<Component>().Select(c=>c.GetType().Name));owned.Add(rb.gameObject);}', '''{
+                var shell=rb.GetComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();var origin=rb.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+                if(shell==null||!shell.IsActiveProjectile||shell.OwnerRoot!=actor.transform||origin==null||!assembly.Parts.Any(p=>p.Id==origin.PartId)){row.discardedFastBodies++;continue;}
+                row.newFastBodies++;row.shotComponents=string.Join(";",rb.GetComponents<Component>().Select(c=>c.GetType().Name));owned.Add(rb.gameObject);
+                shotTrace.WriteLine(JsonUtility.ToJson(new ShotSample{id=row.id,phase=row.phase,part=origin.PartId,components=row.shotComponents,owner=shell.OwnerRoot.name,instance=rb.GetInstanceID(),time=Time.time,position=rb.position,velocity=rb.linearVelocity,forward=rb.transform.forward}));
+            }''')
+replace('row.inputLeftShells>0&&row.maxMuzzleAfterSettle<=.1f?', 'row.inputLeftShells>0&&row.inputLeftObservedFrames>0&&row.inputRightObservedFrames>0&&row.forwardObservedFrames>0&&row.distanceMoved>1f&&row.maxMuzzleConsumedAfterSettle<=.05f?')
+replace('Save();trace.Dispose();InputSystem.RemoveDevice','Save();trace.Dispose();aimTrace.Dispose();shotTrace.Dispose();InputSystem.RemoveDevice')
+replace('    void SetAimOrbit()', '''    string FirstAimHit()
+    {
+        Ray ray=view.ViewportPointToRay(new Vector3(.5f,.5f));var hits=Physics.RaycastAll(ray,200,~0,QueryTriggerInteraction.Ignore).OrderBy(h=>h.distance);
+        foreach(var hit in hits)if(!hit.collider.transform.IsChildOf(actor.transform))return hit.collider.name+"/"+string.Join(";",hit.collider.GetComponents<Component>().Select(c=>c.GetType().Name));
+        return "none";
+    }
+    void SetAimOrbit()''')
+replace('Physics.RaycastAll(ray,150)', 'Physics.RaycastAll(ray,150,~0,QueryTriggerInteraction.Ignore)')
+replace('Physics.RaycastAll(view.transform.position,direction.normalized,direction.magnitude)', 'Physics.RaycastAll(view.transform.position,direction.normalized,direction.magnitude,~0,QueryTriggerInteraction.Ignore)')
 (r/'Tools/CameraR12QA/CameraR12NativeQA.cs').write_text(s,encoding='utf-8')
 print('Staged receiver fixture; original producer source untouched.')

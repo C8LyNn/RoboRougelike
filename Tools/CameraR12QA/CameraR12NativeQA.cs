@@ -21,6 +21,7 @@ public sealed class CameraR12NativeQA : MonoBehaviour
         public int width,height,parts,ownReticleHits,enemyBlockedSamples,enemyOffscreenSamples,worldPenetrationSamples,clipSamples,pivotOverlapSamples,samples,fireCalls,newFastBodies,partsAfterDamage;
         public bool fitSaturated,damageDetached;
         public int finalOriginOwnHits,originInsideOwnSamples,speedCapViolations,worldSphereOverlapSamples,diagnosticOwnFlags,aimErrorViolations,zoomSteps,inputIdleShells,inputRightShells,inputLeftShells,inputLeftObservedFrames,inputRightObservedFrames;
+        public int forwardObservedFrames,discardedFastBodies;public float maxMuzzleConsumedAfterSettle;
         public float maxContinuousSpeed,maxActualAimError,maxStepExcess,maxMuzzleAfterSettle;
         public string inputMethod="InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input";
         public Vector3 hullSize,initialPosition,finalPosition;
@@ -31,7 +32,13 @@ public sealed class CameraR12NativeQA : MonoBehaviour
         public string source="48581e49a878eca376674551017532bf17fd35b2",target="4c9236a4cdc27814ea2e7679872ec4a524150cc8",method="Windows Player; API-driven real R3/R6 actors; camera-only static fixtures plus real drive/fire phase",status="Running";
         public List<Row> rows=new List<Row>();public List<string> errors=new List<string>();
     }
-    Result result=new Result();Row row;string output;StreamWriter trace;
+    [Serializable] public sealed class AimSample
+    {
+        public string id,phase,firstHitBefore,firstHitAfter,gun;public float time,sincePhase,consumedError,postFireError;public Vector3 consumedAim,postFireAim,cameraPosition,muzzlePosition,muzzleForward;
+    }
+    [Serializable] public sealed class ShotSample
+    {public string id,phase,part,components,owner;public int instance;public float time;public Vector3 position,velocity,forward;}
+    Result result=new Result();Row row;string output;StreamWriter trace,aimTrace,shotTrace;
     R3VisualPalette palette;R1VehicleState actor,target;R3VehicleAssembly assembly;Rigidbody body;
     Camera view;Camera001Rig rig;List<GameObject> owned=new List<GameObject>();List<GameObject> walls=new List<GameObject>();
     HashSet<int> oldBodies=new HashSet<int>();HashSet<int> measuredBodies=new HashSet<int>();
@@ -47,6 +54,7 @@ public sealed class CameraR12NativeQA : MonoBehaviour
     IEnumerator Start()
     {
         string[] args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"-camera-qa-output");output=index>=0?args[index+1]:Path.Combine(Application.persistentDataPath,"CameraR12QA");Directory.CreateDirectory(output);
+        aimTrace=new StreamWriter(Path.Combine(output,"aim-trace.jsonl"));shotTrace=new StreamWriter(Path.Combine(output,"shots.jsonl"));
         QualitySettings.vSyncCount=0;Application.targetFrameRate=60;
         Application.logMessageReceived+=OnLog;
         qaMouse=InputSystem.AddDevice<Mouse>("Camera QA virtual mouse");qaKeyboard=InputSystem.AddDevice<Keyboard>("Camera QA virtual keyboard");
@@ -107,10 +115,10 @@ public sealed class CameraR12NativeQA : MonoBehaviour
             row.inputLeftShells=row.newFastBodies-row.inputIdleShells-row.inputRightShells;
             QueueInput(false,false,false);yield return null;actor.Controller.enabled=false;
             row.finalPosition=body.position;row.distanceMoved=Vector3.Distance(row.initialPosition,row.finalPosition);yield return Capture("driveFire");
-            row.status=row.ownReticleHits==0&&row.finalOriginOwnHits==0&&row.originInsideOwnSamples==0&&row.speedCapViolations==0&&row.worldSphereOverlapSamples==0&&row.aimErrorViolations==0&&row.worldPenetrationSamples==0&&row.enemyBlockedSamples==0&&row.damageDetached&&row.inputIdleShells==0&&row.inputRightShells==0&&row.inputLeftShells>0&&row.maxMuzzleAfterSettle<=.1f?"PASS_OBSERVED":"FAIL_OBSERVED";Save();
+            row.status=row.ownReticleHits==0&&row.finalOriginOwnHits==0&&row.originInsideOwnSamples==0&&row.speedCapViolations==0&&row.worldSphereOverlapSamples==0&&row.aimErrorViolations==0&&row.worldPenetrationSamples==0&&row.enemyBlockedSamples==0&&row.damageDetached&&row.inputIdleShells==0&&row.inputRightShells==0&&row.inputLeftShells>0&&row.inputLeftObservedFrames>0&&row.inputRightObservedFrames>0&&row.forwardObservedFrames>0&&row.distanceMoved>1f&&row.maxMuzzleConsumedAfterSettle<=.05f?"PASS_OBSERVED":"FAIL_OBSERVED";Save();
             foreach(var go in owned)if(go!=null)Destroy(go);owned.Clear();yield return null;yield return null;
         }
-        result.status=result.errors.Count==0&&result.rows.All(r=>r.status=="PASS_OBSERVED")?"PASS_OBSERVED":"FAIL_OBSERVED";Save();trace.Dispose();InputSystem.RemoveDevice(qaMouse);InputSystem.RemoveDevice(qaKeyboard);Application.Quit(result.status=="PASS_OBSERVED"?0:2);
+        result.status=result.errors.Count==0&&result.rows.All(r=>r.status=="PASS_OBSERVED")?"PASS_OBSERVED":"FAIL_OBSERVED";Save();trace.Dispose();aimTrace.Dispose();shotTrace.Dispose();InputSystem.RemoveDevice(qaMouse);InputSystem.RemoveDevice(qaKeyboard);Application.Quit(result.status=="PASS_OBSERVED"?0:2);
     }
     IEnumerator InputPhase(bool left,bool right,bool forward,float seconds)
     {
@@ -120,17 +128,33 @@ public sealed class CameraR12NativeQA : MonoBehaviour
             QueueInput(left,right,forward);yield return null;SetAimOrbit();Step(Time.deltaTime);Measure(true);
             if(Mouse.current!=null&&Mouse.current.leftButton.isPressed)row.inputLeftObservedFrames++;
             if(Mouse.current!=null&&Mouse.current.rightButton.isPressed)row.inputRightObservedFrames++;
+            Vector3 consumedAim=actor.Controller.ModuleAimPoint();string hitBefore=FirstAimHit();
+            if(Keyboard.current!=null&&Keyboard.current.wKey.isPressed)row.forwardObservedFrames++;
             yield return new WaitForEndOfFrame();
-            Vector3 aim=actor.Controller.ModuleAimPoint();
+            Vector3 aim=actor.Controller.ModuleAimPoint();string hitAfter=FirstAimHit();
             foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Operational&&p.Muzzle!=null))
             {
                 float error=Vector3.Angle(gun.Muzzle.forward,aim-gun.Muzzle.position);
                 row.maxMuzzleAimError=Mathf.Max(row.maxMuzzleAimError,error);
                 if(left&&Time.time-start>1.5f)row.maxMuzzleAfterSettle=Mathf.Max(row.maxMuzzleAfterSettle,error);
+                float consumedError=Vector3.Angle(gun.Muzzle.forward,consumedAim-gun.Muzzle.position);
+                if(left&&Time.time-start>1.5f)row.maxMuzzleConsumedAfterSettle=Mathf.Max(row.maxMuzzleConsumedAfterSettle,consumedError);
+                aimTrace.WriteLine(JsonUtility.ToJson(new AimSample{id=row.id,phase=row.phase,firstHitBefore=hitBefore,firstHitAfter=hitAfter,gun=gun.Id,time=Time.time,sincePhase=Time.time-start,consumedError=consumedError,postFireError=error,consumedAim=consumedAim,postFireAim=aim,cameraPosition=view.transform.position,muzzlePosition=gun.Muzzle.position,muzzleForward=gun.Muzzle.forward}));
             }
             foreach(var rb in FindObjectsByType<Rigidbody>(FindObjectsSortMode.None))if(!oldBodies.Contains(rb.GetInstanceID())&&rb.linearVelocity.magnitude>10&&measuredBodies.Add(rb.GetInstanceID()))
-            {row.newFastBodies++;row.shotComponents=string.Join(";",rb.GetComponents<Component>().Select(c=>c.GetType().Name));owned.Add(rb.gameObject);}
+            {
+                var shell=rb.GetComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();var origin=rb.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
+                if(shell==null||!shell.IsActiveProjectile||shell.OwnerRoot!=actor.transform||origin==null||!assembly.Parts.Any(p=>p.Id==origin.PartId)){row.discardedFastBodies++;continue;}
+                row.newFastBodies++;row.shotComponents=string.Join(";",rb.GetComponents<Component>().Select(c=>c.GetType().Name));owned.Add(rb.gameObject);
+                shotTrace.WriteLine(JsonUtility.ToJson(new ShotSample{id=row.id,phase=row.phase,part=origin.PartId,components=row.shotComponents,owner=shell.OwnerRoot.name,instance=rb.GetInstanceID(),time=Time.time,position=rb.position,velocity=rb.linearVelocity,forward=rb.transform.forward}));
+            }
         }
+    }
+    string FirstAimHit()
+    {
+        Ray ray=view.ViewportPointToRay(new Vector3(.5f,.5f));var hits=Physics.RaycastAll(ray,200,~0,QueryTriggerInteraction.Ignore).OrderBy(h=>h.distance);
+        foreach(var hit in hits)if(!hit.collider.transform.IsChildOf(actor.transform))return hit.collider.name+"/"+string.Join(";",hit.collider.GetComponents<Component>().Select(c=>c.GetType().Name));
+        return "none";
     }
     void SetAimOrbit()
     {
@@ -143,10 +167,10 @@ public sealed class CameraR12NativeQA : MonoBehaviour
         row.samples++;row.fitSaturated|=rig.LastSolution.FitSaturated;
         float step=Vector3.Distance(previous,view.transform.position),angle=Quaternion.Angle(previousRotation,view.transform.rotation);row.maxCameraStep=Mathf.Max(row.maxCameraStep,step);row.maxCameraRotationStep=Mathf.Max(row.maxCameraRotationStep,angle);
         previous=view.transform.position;previousRotation=view.transform.rotation;
-        Ray ray=view.ViewportPointToRay(new Vector3(.5f,.5f));bool own=Physics.RaycastAll(ray,150).Any(h=>h.collider.transform.IsChildOf(actor.transform));if(own)row.ownReticleHits++;
+        Ray ray=view.ViewportPointToRay(new Vector3(.5f,.5f));bool own=Physics.RaycastAll(ray,150,~0,QueryTriggerInteraction.Ignore).Any(h=>h.collider.transform.IsChildOf(actor.transform));if(own)row.ownReticleHits++;
         bool penetration=walls.Any(w=>w.activeSelf&&w.GetComponent<Collider>().bounds.SqrDistance(view.transform.position)<.01f);if(penetration)row.worldPenetrationSamples++;
         Vector3 enemy=Camera001Rig.GetHullBounds(target.transform).center;Vector3 viewport=view.WorldToViewportPoint(enemy);
-        bool blocked=false;if(facingEnemy){Vector3 direction=enemy-view.transform.position;blocked=Physics.RaycastAll(view.transform.position,direction.normalized,direction.magnitude).Any(h=>h.collider.transform.IsChildOf(actor.transform));if(blocked)row.enemyBlockedSamples++;if(viewport.z<=0||viewport.x<0||viewport.x>1||viewport.y<0||viewport.y>1)row.enemyOffscreenSamples++;row.maxCenterEnemyAngle=Mathf.Max(row.maxCenterEnemyAngle,Vector3.Angle(view.transform.forward,direction));}
+        bool blocked=false;if(facingEnemy){Vector3 direction=enemy-view.transform.position;blocked=Physics.RaycastAll(view.transform.position,direction.normalized,direction.magnitude,~0,QueryTriggerInteraction.Ignore).Any(h=>h.collider.transform.IsChildOf(actor.transform));if(blocked)row.enemyBlockedSamples++;if(viewport.z<=0||viewport.x<0||viewport.x>1||viewport.y<0||viewport.y>1)row.enemyOffscreenSamples++;row.maxCenterEnemyAngle=Mathf.Max(row.maxCenterEnemyAngle,Vector3.Angle(view.transform.forward,direction));}
         Ray originRay=new Ray(view.transform.position,view.transform.forward);
         var ownColliders=actor.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.gameObject.activeInHierarchy).ToArray();
         bool originHit=ownColliders.Any(c=>c.Raycast(originRay,out RaycastHit h,200));
