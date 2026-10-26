@@ -113,7 +113,7 @@ jobs:
           # W15: importer QA creates Python caches under the archived tools directory.
           # Refuse stale/interpreter-specific bytecode in the Codex delivery.
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type d -name '__pycache__' -prune -exec rm -rf {} +
-          if find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f \\( -name '*.pyc' -o -name '*.pyo' \\) | grep -q .; then
+          if find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -name '*.pyc' | grep -q . || find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -name '*.pyo' | grep -q .; then
             echo 'ERROR: interpreter bytecode slipped into source packet' >&2
             exit 2
           fi
