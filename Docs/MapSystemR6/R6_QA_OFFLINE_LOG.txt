@@ -1,0 +1,179 @@
+=== R3 logic tests ===
+COMMAND: /opt/pyvenv/bin/python3 R3_Reference/Tests/test_validation.py
+EXIT: 0
+
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK
+
+
+=== R5 logic tests ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/test_r5_offline.py
+EXIT: 0
+
+test_all_routes_closed (__main__.MapR5OfflineTests.test_all_routes_closed) ... ok
+test_anchor_references (__main__.MapR5OfflineTests.test_anchor_references) ... ok
+test_bridge_collapsed_but_not_lower (__main__.MapR5OfflineTests.test_bridge_collapsed_but_not_lower) ... ok
+test_curve_controls (__main__.MapR5OfflineTests.test_curve_controls) ... ok
+test_curve_present (__main__.MapR5OfflineTests.test_curve_present) ... ok
+test_edges_reference_nodes (__main__.MapR5OfflineTests.test_edges_reference_nodes) ... ok
+test_no_r4_original_metadata_claim (__main__.MapR5OfflineTests.test_no_r4_original_metadata_claim) ... ok
+test_reference_topology (__main__.MapR5OfflineTests.test_reference_topology) ... ok
+test_road_resolution (__main__.MapR5OfflineTests.test_road_resolution) ... ok
+test_slope_metadata_recalibrated (__main__.MapR5OfflineTests.test_slope_metadata_recalibrated) ... ok
+test_unique_ids (__main__.MapR5OfflineTests.test_unique_ids) ... ok
+test_valid_map_id (__main__.MapR5OfflineTests.test_valid_map_id) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK
+
+
+=== R6 junction math ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/test_r6_junctions.py
+EXIT: 0
+
+test_existing_geometry_preserved (__main__.OfflineJunctionTests.test_existing_geometry_preserved) ... ok
+test_extreme_radius_blocks_same_turn (__main__.OfflineJunctionTests.test_extreme_radius_blocks_same_turn) ... ok
+test_reproducible_route (__main__.OfflineJunctionTests.test_reproducible_route) ... ok
+test_wide_synthetic_ninety_degree_turn (__main__.OfflineJunctionTests.test_wide_synthetic_ninety_degree_turn) ... ok
+test_zero_degree_straight_link (__main__.OfflineJunctionTests.test_zero_degree_straight_link) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+OK
+
+
+=== R6 route & pad fix ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/test_r6_route_offline.py
+EXIT: 0
+
+test_all_exit_routes_closed (__main__.MapR6RouteOfflineTests.test_all_exit_routes_closed) ... ok
+test_bridge_route_disabled_after_collapse (__main__.MapR6RouteOfflineTests.test_bridge_route_disabled_after_collapse) ... ok
+test_escape_lower_route_possible_geometrically (__main__.MapR6RouteOfflineTests.test_escape_lower_route_possible_geometrically) ... ok
+test_missing_turn_connection_rejected (__main__.MapR6RouteOfflineTests.test_missing_turn_connection_rejected) ... ok
+test_original_lower_turn_was_too_tight (__main__.MapR6RouteOfflineTests.test_original_lower_turn_was_too_tight) ... ok
+test_reference_pad_footprint_not_physically_proven (__main__.MapR6RouteOfflineTests.test_reference_pad_footprint_not_physically_proven) ... ok
+test_revised_lower_turn_exceeds_radius (__main__.MapR6RouteOfflineTests.test_revised_lower_turn_exceeds_radius) ... ok
+test_tight_turn_vehicle_fails (__main__.MapR6RouteOfflineTests.test_tight_turn_vehicle_fails) ... ok
+test_version_increment_and_pad_fix (__main__.MapR6RouteOfflineTests.test_version_increment_and_pad_fix) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.008s
+
+OK
+
+
+=== R3–R6 topology ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/check_r3_r5_topology.py
+EXIT: 0
+PASS — R3/R5 nodes, anchors counts, edge endpoints, widths, heights, states. Slopes/curves intentionally recalibrated.
+
+
+
+=== R5 road math ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/check_r5_geometry.py
+EXIT: 0
+  start_junction: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  junction_upper: maxSlope=4.11 deg declared=4.2; minRadius=12.9 m
+  upper_bridge: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  bridge_exit: maxSlope=2.87 deg declared=2.9; minRadius=23.6 m
+  junction_lower: maxSlope=0.00 deg declared=0.0; minRadius=27.9 m
+  lower_exit: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  junction_arena: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+  arena_exit: maxSlope=0.00 deg declared=0.0; minRadius=inf m
+R5 offline geometry: 8 roads, 0 errors
+RESULT: PASS — data/path calculations only; Unity/PhysX NOT TESTED
+
+
+
+=== R5 mesh topology ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/check_r5_mesh_topology.py
+EXIT: 0
+R5 mesh topology: 8 meshes / 2080 triangles / 0 errors
+
+
+
+=== Unity source structure ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/check_unity_source_layout.py
+EXIT: 0
+PASS static Unity source layout: 36 source/assets, 43 unique .meta GUIDs, 4 assembly definitions
+
+
+
+=== R3 scenario cases ===
+COMMAND: /opt/pyvenv/bin/python3 R3_Reference/Tools/validate_examples.py
+EXIT: 0
+PASS race_intact: valid
+PASS survival_intact: valid
+PASS escape_collapsed: valid
+PASS boss_intact: valid
+PASS escape_softlock: rejected [Unreachable path spawn_west -> exit_east in all_eastern_routes_closed for standard_ref]
+PASS escape_oversized_vehicle: rejected [Unreachable path spawn_west -> exit_east in intact for oversized_ref]
+PASS race_unknown_state: rejected [Unknown state not_a_state]
+PASS unknown_challenge: rejected [Unknown challenge]
+
+
+
+=== R6 sample junction audit ===
+COMMAND: /opt/pyvenv/bin/python3 Tools/inspect_r6_reference_turns.py
+EXIT: 0
+{
+  "note": "Offline geometric candidate only; no Unity driving evidence",
+  "mapId": "quarry_03",
+  "vehicleMinTurnRadius": 4.5,
+  "results": [
+    {
+      "incoming": "start_junction",
+      "outgoing": "junction_lower",
+      "junction": "junction",
+      "radiusMeters": 6.2,
+      "slopeDeg": 0.0,
+      "status": "CANDIDATE"
+    },
+    {
+      "incoming": "start_junction",
+      "outgoing": "junction_upper",
+      "junction": "junction",
+      "radiusMeters": 7.88,
+      "slopeDeg": 0.69,
+      "status": "CANDIDATE"
+    },
+    {
+      "incoming": "start_junction",
+      "outgoing": "junction_arena",
+      "junction": "junction",
+      "radiusMeters": 19.02,
+      "slopeDeg": 0.0,
+      "status": "CANDIDATE"
+    },
+    {
+      "incoming": "junction_lower",
+      "outgoing": "lower_exit",
+      "junction": "lower_road",
+      "radiusMeters": 5.86,
+      "slopeDeg": 0.0,
+      "status": "CANDIDATE"
+    },
+    {
+      "incoming": "junction_upper",
+      "outgoing": "upper_bridge",
+      "junction": "upper_ramp",
+      "radiusMeters": 7.92,
+      "slopeDeg": 0.77,
+      "status": "CANDIDATE"
+    },
+    {
+      "incoming": "lower_exit",
+      "outgoing": "start_junction",
+      "junction": "junction",
+      "status": "INVALID_CONNECTIVITY"
+    }
+  ]
+}
+
+

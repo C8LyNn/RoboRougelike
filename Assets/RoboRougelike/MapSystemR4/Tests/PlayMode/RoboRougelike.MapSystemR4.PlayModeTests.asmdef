@@ -1,7 +1,9 @@
 {
   "name": "RoboRougelike.MapSystemR4.PlayModeTests",
   "rootNamespace": "RoboRougelike.MapSystemR4.Tests",
-  "references": ["RoboRougelike.MapSystemR4.Runtime", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
+  "references": [
+    "RoboRougelike.MapSystemR4.Runtime"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
@@ -11,5 +13,7 @@
   "defineConstraints": [],
   "versionDefines": [],
   "noEngineReferences": false,
-  "optionalUnityReferences": ["TestAssemblies"]
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
 }
