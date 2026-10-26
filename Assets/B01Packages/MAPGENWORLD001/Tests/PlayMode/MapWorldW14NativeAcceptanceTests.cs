@@ -66,7 +66,8 @@ namespace B01.MAPGENWORLD001.Tests
             var probeCollider = probe.AddComponent<BoxCollider>();
             var request = Request(recipe, seed, heavy);
             var profile = request.Vehicle;
-            probeCollider.size = new Vector3(profile.Width, ProbeHeight, profile.Length);
+            probeCollider.size = new Vector3(profile.Width + 2f * request.ClearancePerSideMeters,
+                ProbeHeight, profile.Length); // Include required 0.25m clearance per SIDE
             var snapshots = 0;
             var cleared = 0;
             adapter.WorldReady += _ => snapshots++;
@@ -142,7 +143,8 @@ namespace B01.MAPGENWORLD001.Tests
                 Assert.IsFalse(originalRoot.activeInHierarchy);
                 Debug.Log("W14_NATIVE_MAP_REPLAY_AND_ENVELOPE_CASE_PASS recipe=" +
                     recipe + " seed=" + seed + " heavy=" + heavy +
-                    " width=" + profile.Width + " length=" + profile.Length +
+                    " width=" + profile.Width + " lateralMarginEach=" + request.ClearancePerSideMeters +
+                    " length=" + profile.Length +
                     " samples=" + samples + " worstOverlapM=" + worstDepth +
                     " oldRootCleared=true nativePhysxUnpowered=true actualR6Drive=NOT_RUN");
             }

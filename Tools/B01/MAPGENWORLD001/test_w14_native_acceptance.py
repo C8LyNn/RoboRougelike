@@ -44,7 +44,7 @@ class W14NativeSourceFixtureTests(unittest.TestCase):
         self.assertIn("Physics.ComputePenetration(",text)
         self.assertIn("yield return new WaitForFixedUpdate()",text)
         self.assertIn("PenetrationTolerance = .005f",text)
-        self.assertIn("new Vector3(profile.Width, ProbeHeight, profile.Length)",text)
+        self.assertIn("profile.Width + 2f * request.ClearancePerSideMeters",text)
         self.assertIn("actualR6Drive=NOT_RUN",text)
         self.assertNotIn("R6_DRIVE_PASS",text)
     def test_five_impossible_real_light_seeds_have_no_scene_mutation(self):
