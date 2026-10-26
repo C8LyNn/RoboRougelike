@@ -40,7 +40,7 @@ namespace RoboRougelike.Mechanics.RAC001.Tests
                 for (int step = 0; step < 240 && !race.Won; step++)
                 {
                     yield return new WaitForFixedUpdate();
-                    if(step%60==0) Debug.Log("[RAC native diagnostic] step="+step+" dt="+Time.fixedDeltaTime+" renderDt="+Time.deltaTime+" racePhase="+race.Phase+" raceElapsed="+race.ElapsedSeconds+" time="+Time.time+" gravity="+Physics.gravity+" pos="+body.position+" velocity="+body.linearVelocity+" contacts="+string.Join(";",contacts.Contacts));
+                    if(step%60==0) Debug.Log("[RAC native diagnostic] step="+step+" dt="+Time.fixedDeltaTime+" renderDt="+Time.deltaTime+" racePhase="+race.Phase+" raceElapsed="+race.ElapsedSeconds+" time="+Time.time+" gravity="+Physics.gravity+" transformPos="+cube.transform.position+" armed="+typeof(CheckpointRaceState).GetField("entryArmed",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).GetValue(typeof(CheckpointRaceChallenge).GetField("state",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).GetValue(race))+" previous="+typeof(CheckpointRaceState).GetField("previousPosition",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).GetValue(typeof(CheckpointRaceChallenge).GetField("state",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).GetValue(race))+" pos="+body.position+" velocity="+body.linearVelocity+" contacts="+string.Join(";",contacts.Contacts));
                     maxX = Mathf.Max(maxX, body.position.x);
                     Assert.Greater(body.position.y, -2f, "Fell off static physical floor");
                 }
