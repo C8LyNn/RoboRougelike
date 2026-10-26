@@ -1,0 +1,40 @@
+name: B01-23 BUILD001 R1.3 package static QA
+on:
+  push:
+    branches:
+      - 'b01-23/**'
+    paths:
+      - 'Assets/B01Construction/**'
+      - 'Docs/B01/BUILD001/**'
+      - 'Tools/B01/BUILD001/**'
+      - '.github/workflows/b01-23-build001-r13.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-qa:
+    name: SHA256, GUID, negative tests, repeatable ZIP (not native Unity)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static integrity and adversarial tests
+        run: python3 Tools/B01/BUILD001/test_package_r13.py
+      - name: Build reproducible full source archive
+        shell: bash
+        run: |
+          mkdir -p dist
+          python3 Tools/B01/BUILD001/package_r13.py --out dist/B01-BUILD001-R13.zip | tee dist/report.json
+          python3 Tools/B01/BUILD001/package_r13.py --out dist/B01-BUILD001-R13-2.zip > /dev/null
+          cmp dist/B01-BUILD001-R13.zip dist/B01-BUILD001-R13-2.zip
+          sha256sum dist/B01-BUILD001-R13.zip
+          rm dist/B01-BUILD001-R13-2.zip
+      - name: Upload verified inner ZIP and receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-BUILD001-R13-source
+          path: |
+            dist/B01-BUILD001-R13.zip
+            dist/report.json
+          if-no-files-found: error
