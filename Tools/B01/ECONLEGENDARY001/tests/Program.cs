@@ -283,6 +283,28 @@ static class Program
             Same(reason,"OWNER_IDENTITY_UNAVAILABLE");
             Same(host.UnsafeRepairCalls,0);
         });
+        Test("W15_noncanonical_R3_physical_ID_rejected_before_any_repair",()=>{
+            var (h,e,l,g)=Start();
+            var id=Guid.NewGuid().ToString("N").ToUpperInvariant();
+            h.Parts.Add(new SharedHost.Item{Id=id,Kind="Gun",Family="Railgun",Health=0.5f});
+            Ensure(!g.CheckSharedOwnership(out var reason),
+                "INVALID_PHYSICAL_INSTANCE: Uppercase GUID accepted by both live R3 host views");
+            Same(reason,"INVALID_PHYSICAL_INSTANCE");
+            Ensure(!g.RepairExisting(id,out reason),
+                "Unsafe direct repair accepted noncanonical physical R3 ID");
+            Same(h.UnsafeRepairCalls,0);
+        });
+        Test("W15_empty_and_out_of_range_R3_physical_ID_rejected",()=>{
+            var (h,e,l,g)=Start();
+            h.Parts.Add(new SharedHost.Item{Id=Guid.Empty.ToString("N"),Kind="Gun",Family="Railgun",Health=0.5f});
+            Ensure(!g.CheckSharedOwnership(out var reason),"Guid.Empty accepted by shared owner");
+            Same(reason,"INVALID_PHYSICAL_INSTANCE");
+            h.Parts[0].Id=NewId();
+            h.Parts[0].Health=1.5f;
+            Ensure(!g.CheckSharedOwnership(out reason),"HP>1 accepted by shared owner");
+            Same(reason,"INVALID_PHYSICAL_INSTANCE");
+            Same(h.UnsafeRepairCalls,0);
+        });
         Test("18_seeded_1800_damage_queue_win_restart_stress",()=>{
             var (h,e,l,g)=Start();
             var ids=new[]{Grant(h,l),Grant(h,l,"HoverEngine"),Grant(h,l)};
