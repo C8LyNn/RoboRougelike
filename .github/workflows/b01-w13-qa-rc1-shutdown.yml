@@ -1,0 +1,45 @@
+name: B01-60 W13 RC1 shutdown A-B evidence toolkit (NO UNITY)
+on:
+  push:
+    branches:
+      - qa/b01-60-w12-native-harness-r1-20261025
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/**'
+      - '.github/workflows/b01-w13-qa-rc1-shutdown.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/**'
+      - '.github/workflows/b01-w13-qa-rc1-shutdown.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-qa-ab:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Independent negative ZIP/receipt selftests — NOT Unity gameplay
+        working-directory: Tools/B01/QA-NATIVE-001
+        run: python -m unittest -v test_rc1_shutdown_ab.py
+      - name: Verify SHA256 manifest, build deterministic full QA-only ZIP twice
+        shell: bash
+        run: |
+          python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/W13-RC1-QA-TOOLS.zip --report Artifacts/B01-60/W13-SHA256.json
+          python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/W13-RC1-QA-TOOLS-repeat.zip --report Artifacts/B01-60/W13-SHA256-repeat.json
+          python -c 'import json; from pathlib import Path; p=Path("Artifacts/B01-60"); a=json.loads((p/"W13-SHA256.json").read_text()); b=json.loads((p/"W13-SHA256-repeat.json").read_text()); assert a["sha256"]==b["sha256"],"ZIP_NONDETERMINISTIC"'
+      - name: Preserve actual tools-only source ZIP and SHA256 receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-60-W13-RC1-TOOLS-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            Artifacts/B01-60/W13-RC1-QA-TOOLS.zip
+            Artifacts/B01-60/W13-SHA256.json
+          if-no-files-found: error
+          retention-days: 14
