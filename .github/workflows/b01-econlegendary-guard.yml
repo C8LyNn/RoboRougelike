@@ -1,0 +1,69 @@
+name: B01 W13 ECON LEGENDARY GUARD
+on:
+  push:
+    branches: [b01-22/w13-econlegendary-guard-r1]
+  pull_request:
+    paths: ['Assets/B01Packages/ECONLEGENDARY001/**','Tools/B01/ECONLEGENDARY001/**','.github/workflows/b01-econlegendary-guard.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pinned-real-Csharp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch and verify actual immutable two upstream Csharp source blobs
+        id: pinned
+        run: bash Tools/B01/ECONLEGENDARY001/prepare_upstream.sh
+      - name: Compile real ECON plus real LEGENDARY plus actual new guarded port
+        id: compile
+        run: dotnet build Tools/B01/ECONLEGENDARY001/tests/CrossQa.csproj -c Release --nologo
+      - name: Execute original-source cross-system regressions
+        id: tests
+        shell: bash
+        run: |
+          mkdir -p artifacts/econlegendary
+          set -o pipefail
+          dotnet run --project Tools/B01/ECONLEGENDARY001/tests/CrossQa.csproj -c Release --no-build -- artifacts/econlegendary/results.json | tee artifacts/econlegendary/test-console.log
+      - name: SHA256 manifest deterministic Unity-only ZIP and GUID QA
+        id: package
+        if: always()
+        run: |
+          python3 Tools/B01/ECONLEGENDARY001/build_package.py artifacts/econlegendary
+          cp artifacts/econlegendary/ECONLEGENDARY-GUARD-001.zip artifacts/econlegendary/check.zip
+          python3 Tools/B01/ECONLEGENDARY001/build_package.py artifacts/econlegendary
+          cmp artifacts/econlegendary/check.zip artifacts/econlegendary/ECONLEGENDARY-GUARD-001.zip
+          rm artifacts/econlegendary/check.zip
+      - name: Truthful receipt
+        if: always()
+        env:
+          PIN: ${{ steps.pinned.outcome }}
+          COMP: ${{ steps.compile.outcome }}
+          TEST: ${{ steps.tests.outcome }}
+          PACK: ${{ steps.package.outcome }}
+        run: |
+          python3 - <<'PY'
+          import json,os,subprocess,pathlib
+          p=pathlib.Path("artifacts/econlegendary");p.mkdir(parents=True,exist_ok=True)
+          rpath=p/"results.json";r=json.loads(rpath.read_text()) if rpath.exists() else None
+          data={"head_sha":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+                "pinned_source_check":os.environ["PIN"],"actual_csharp_compile":os.environ["COMP"],
+                "portable_regressions":os.environ["TEST"],"deterministic_zip":os.environ["PACK"],
+                "results":({key:r[key] for key in ("passed","failed","total")} if r else None),
+                "unity_native_editmode":"NOT_RUN","unity_native_playmode":"NOT_RUN","unity_physx":"NOT_RUN","g2":"HOLD"}
+          (p/"ci-receipt.json").write_text(json.dumps(data,indent=2)+"\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:f.write("ECON+LEGEND W13 "+str(data)+"\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-w13-econlegendary-cross-source-evidence
+          path: artifacts/econlegendary/
+          retention-days: 30
