@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -130,6 +131,76 @@ namespace B01.CAMERA001.Tests
                 Vector3.zero, Vector3.forward);
             Assert.Throws<ArgumentException>(() => t.Capture(overflow));
             Assert.AreEqual(1, t.Count);
+        }
+
+        [Test] public void RawProvenanceSurvivesCallerSpoofAndIsRecomputable()
+        {
+            var log = new Camera001AimTimeline();
+            var origin = new Vector3(.00401f, 1.5552f, 27.8219f);
+            var enemy = new Vector3(.00391f, 1.914f, 30.8045f);
+            var floor = new Vector3(.00269f, 0f, 34.8804f);
+            var gun = (enemy - origin).normalized;
+            log.Capture(F(9, 1, enemy, origin, gun));
+            var second = F(10, 2, floor, origin, gun);
+            second.Sample.PreviousTargetWorld = floor; // forged prior
+            second.Sample.PreviousMuzzleForwardWorld = Vector3.right;
+            var observed = log.Capture(second);
+            Assert.AreEqual(enemy, observed.Sample.PreviousTargetWorld);
+            Assert.AreEqual(gun, observed.Sample.PreviousMuzzleForwardWorld);
+            Assert.AreEqual(floor, observed.Sample.CurrentTargetWorld);
+            Assert.AreEqual(origin, observed.Sample.CurrentMuzzleWorld);
+            Assert.AreEqual(170f, observed.Sample.TurretSlewDegreesPerSecond);
+            float recalculated = Vector3.Angle(
+                observed.Sample.PreviousTargetWorld - observed.Sample.CurrentMuzzleWorld,
+                observed.Sample.CurrentTargetWorld - observed.Sample.CurrentMuzzleWorld);
+            Assert.AreEqual(recalculated,
+                observed.Observation.TargetDirectionChangeDegrees, .0001f);
+            Assert.Greater(observed.Observation.CurrentMuzzleToTargetErrorDegrees, 10f);
+            Assert.AreEqual(observed.Sample.CurrentTargetWorld, log.Snapshot()[1].Sample.CurrentTargetWorld);
+        }
+
+        [Test] public void StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates()
+        {
+            var log = new Camera001AimTimeline();
+            var muzzle = new Vector3(0f, 1.5552f, 27.8219f);
+            var floor = new Vector3(0f, 0f, 34.8804f);
+            var stationaryGun = Vector3.forward;
+            log.Capture(F(100, 7, floor, muzzle, stationaryGun));
+            var record = log.Capture(F(101, 7, floor, muzzle, stationaryGun));
+            Assert.IsFalse(record.FirstHitChanged);
+            Assert.IsFalse(record.Observation.TargetChangeExceedsOneFrameTurretBudget);
+            Assert.Greater(record.Observation.CurrentMuzzleToTargetErrorDegrees, 10f);
+            Assert.AreEqual("UNRESOLVED_TRACKING_GAP_REQUIRES_PAIRED_NATIVE_QA",
+                record.Observation.Classification);
+            string[] lines = log.ToCsv().TrimEnd().Split('\n');
+            Assert.AreEqual(3, lines.Length);
+            Assert.AreEqual(34, lines[0].Split(',').Length);
+            Assert.AreEqual(34, lines[2].Split(',').Length);
+            Assert.AreEqual("false", lines[2].Split(',')[4]);
+        }
+
+        [Test] public void CsvRawFloatsRemainInvariantInCommaDecimalLocale()
+        {
+            var oldCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            try
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture =
+                    CultureInfo.GetCultureInfo("pl-PL");
+                var log = new Camera001AimTimeline();
+                var target = new Vector3(.1f, 1.25f, 30.875f);
+                var muzzle = new Vector3(.1f, 1.5f, 0f);
+                log.Capture(F(1, 3, target, muzzle, Vector3.forward));
+                string[] lines = log.ToCsv().TrimEnd().Split('\n');
+                Assert.AreEqual(34, lines[0].Split(',').Length);
+                Assert.AreEqual(34, lines[1].Split(',').Length);
+                StringAssert.Contains("1.25", lines[1]);
+                StringAssert.Contains("30.875", lines[1]);
+                StringAssert.Contains("1.5", lines[1]);
+            }
+            finally
+            {
+                System.Threading.Thread.CurrentThread.CurrentCulture = oldCulture;
+            }
         }
 
         [Test] public void UnsafeCameraSampleNeverLabelsRateAsProvenCausality()
