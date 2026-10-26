@@ -18,7 +18,7 @@ def xml(names, failures=()):
     body = "".join('<test-case name="{}" fullname="{}" result="{}"/>'.format(
         escape(n.split(".")[-1]), escape(n), "Failed" if n in failures else "Passed") for n in names)
     n = len(names); f = len(failures)
-    return f'<test-run testcasecount="{n}" total="{n}" passed="{n-f}" failed="{f}" skipped="0" result="{("Passed" if not f else "Failed(Child)")}>{body}</test-run>'
+    return f'<test-run testcasecount="{n}" total="{n}" passed="{n-f}" failed="{f}" skipped="0" result="{("Passed" if not f else "Failed(Child)")}">{body}</test-run>'
 
 
 class GateTests(unittest.TestCase):
