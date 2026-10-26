@@ -67,6 +67,8 @@ namespace RoboRougelike.R3
         private readonly List<R3PartState> inventory=new List<R3PartState>();
         public IReadOnlyList<R3PartState> Inventory => inventory;
         public int Scrap { get; private set; }
+        private Func<R3PartState,string> installationGate;
+        internal void SetInstallationGate(Func<R3PartState,string> gate) { installationGate=gate; }
         public bool SuspensionEnabled = true;
         public RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode SuspensionMode = RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode.FullSupport;
         public float SuspensionHeightOffset;
@@ -150,7 +152,7 @@ namespace RoboRougelike.R3
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
-            return null;
+            return installationGate?.Invoke(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=contactMask});
         }
         public bool Buy(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,
             Vector3Int rotation=default)

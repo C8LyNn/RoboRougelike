@@ -13,7 +13,7 @@ namespace RoboRougelike.R3
         public readonly List<R3MountedPart> Parts = new List<R3MountedPart>();
         public R3VehicleModel Model { get; private set; }
         private P12PipelineSafeTankController controller;
-        public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; }
+        public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; R3BuildValidation.Bind(this,model); }
         public void Capture()
         {
             foreach(var emp in GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLEmpPartState>())emp.CaptureState();
