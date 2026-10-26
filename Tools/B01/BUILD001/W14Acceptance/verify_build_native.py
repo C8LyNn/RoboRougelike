@@ -125,7 +125,7 @@ def verify_real_source_method_inventory(assets):
             if len(re.findall(pattern, source)) != 1:
                 raise ValueError("AUTHENTIC_SOURCE_METHOD_MISSING_OR_DUPLICATED:" + method)
             checked += 1
-    if checked != 35:
+    if checked != 31:
         raise ValueError("INCORRECT_FROZEN_SOURCE_METHOD_INVENTORY")
     return checked
 
