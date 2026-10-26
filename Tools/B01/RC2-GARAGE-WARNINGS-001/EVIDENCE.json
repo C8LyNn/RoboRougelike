@@ -3,8 +3,23 @@
   "producer": "B01-10",
   "sourcePin": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
   "fixtureCount": 33,
-  "tests": "C# .NET8 real execution PENDING_CI",
-  "realUnity": "NOT_RUN",
+  "actualExecuted": {
+    "environment": ".NET8 GitHub Actions CI native C# source not Unity",
+    "runId": 40328864462,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40328864462",
+    "fixturesPassed": 33,
+    "deterministicIterationsPassed": 2000,
+    "negativeControlsPassed": 3,
+    "detectedFailures": 0,
+    "conclusion": "PASS"
+  },
+  "CI01": {
+    "runId": 40328864489,
+    "conclusion": "PASS"
+  },
+  "unityCI02": "BLOCKED_AT_ACTIVATION_TESTS_NOT_RUN",
+  "unityCI03": "BLOCKED_AT_ACTIVATION_TESTS_NOT_RUN",
+  "hostWiring": "NOT_RUN",
   "humanQA": "NOT_RUN",
-  "g2": "HOLD"
+  "G2": "HOLD"
 }
