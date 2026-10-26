@@ -41,6 +41,20 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard
             authoritativeReservations=trustedReservationProof??throw new ArgumentNullException(nameof(trustedReservationProof));
         }
 
+        // A live R3 item must use ONE canonical physical ID and a finite normalized HP.
+        // Owner reference equality alone is insufficient if BOTH adapters observe
+        // the same corrupt backing item.
+        private static bool ValidPhysicalView(string id, float hp, string kind)
+        {
+            Guid parsed;
+            return !string.IsNullOrEmpty(id) &&
+                Guid.TryParseExact(id,"N",out parsed) &&
+                parsed!=Guid.Empty &&
+                string.Equals(id,parsed.ToString("N"),StringComparison.Ordinal) &&
+                !string.IsNullOrWhiteSpace(kind) &&
+                !float.IsNaN(hp) && !float.IsInfinity(hp) && hp>=0f && hp<=1f;
+        }
+
         public string RobotId => inner.RobotId;
         public IReadOnlyList<PartObservation> Mounted => inner.Mounted;
         public IReadOnlyList<PartObservation> Inventory => inner.Inventory;
@@ -62,8 +76,10 @@ namespace RoboRougelike.B01.Economy.LegendaryGuard
             {reason="MISSING_AUTHORITATIVE_OWNER";return false;}
             var items=mounted.Concat(inventory).ToArray();
             var economy=physical.ToArray();
-            if(items.Any(p=>p==null)||economy.Any(p=>p==null)||
-                items.Select(p=>p.InstanceId).Distinct(StringComparer.Ordinal).Count()!=items.Length||
+            if(items.Any(p=>p==null||!ValidPhysicalView(p.InstanceId,p.Health,p.BasePartKind))||
+                economy.Any(p=>p==null||!ValidPhysicalView(p.InstanceId,p.Health,p.PartKind)))
+            {reason="INVALID_PHYSICAL_INSTANCE";return false;}
+            if(items.Select(p=>p.InstanceId).Distinct(StringComparer.Ordinal).Count()!=items.Length||
                 economy.Select(p=>p.InstanceId).Distinct(StringComparer.Ordinal).Count()!=economy.Length)
             {reason="DUPLICATE_HOST_OWNERSHIP";return false;}
             foreach(var part in items)
