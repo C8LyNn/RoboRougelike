@@ -40,6 +40,7 @@ namespace B01.CAMERA001
         // Receiver-only semantic filter (for transient projectiles/wreckage).
         // Null preserves the standalone package policy and its original tests.
         public Func<Collider,bool> WorldColliderFilter {get;set;}
+        public Func<Transform,Bounds> ReceiverHullBounds {get;set;}
         public bool RequireFullHullFraming {get;set;}
         public float ReceiverFitDistance {get;private set;}
         public bool ReceiverFramingSaturated {get;private set;}
@@ -94,7 +95,7 @@ namespace B01.CAMERA001
         public void StepCamera(float deltaTime)
         {
             if (vehicleRoot == null || attachedCamera == null) return;
-            Bounds bounds = GetHullBounds(vehicleRoot);
+            Bounds bounds = ReceiverHullBounds!=null?ReceiverHullBounds(vehicleRoot):GetHullBounds(vehicleRoot);
             var request = new Camera001Framing.Request {
                 HullBounds = bounds,
                 YawDegrees = yaw,
