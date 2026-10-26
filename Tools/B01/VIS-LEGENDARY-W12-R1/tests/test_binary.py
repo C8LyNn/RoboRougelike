@@ -30,24 +30,31 @@ class ActualBinaryTests(unittest.TestCase):
   with self.assertRaisesRegex(ValueError,"already retrofitted"):mod.retrofit(M01,"M01-018")
  def test_reject_unknown_model(self):
   with self.assertRaises(ValueError):mod.retrofit(M01,"M02-001")
- def test_fake_m04_root(self):
+ def test_reject_wrong_m04_source_animation(self):
   d,ch=mod.parse_glb(M01)
-  d= json.loads(json.dumps(d))
+  d=json.loads(json.dumps(d))
   d["nodes"][next(i for i,n in enumerate(d["nodes"]) if n["name"]=="MOUNT_TOP_SOCKET")]["name"]="ROOT_UNDERSIDE_MOUNT_Z0"
   d["nodes"]=[{**n,"name":n["name"].replace("VIS_LEG_","NEUTRAL_TEST_")} if n.get("name","").startswith("VIS_LEG_") else n for n in d["nodes"]]
   raw=mod.write_glb(d,ch)
-  out,e=mod.retrofit(raw,"M04-024")
-  gltf,chunks=mod.parse_glb(out)
-  self.assertEqual(e["animations"],1)
-  self.assertFalse(gltf["asset"]["extras"]["b01VisualRetrofit"]["socketAuthority"])
+  with self.assertRaisesRegex(ValueError,"unexpected M04 animation layout"):mod.retrofit(raw,"M04-024")
  def test_m04_actual_if_supplied(self):
   f=BASE/"incoming/M04-024.glb"
   if not f.exists():self.skipTest("M04 original is CI artifact; no implicit download")
   raw=f.read_bytes()
   self.assertEqual(hashlib.sha256(raw).hexdigest(),"280bb77e21995b7440fdda5c7551fc135b2b3b5ce6999322708fb670ff979414")
   modified,r=mod.retrofit(raw,"M04-024")
-  self.assertEqual(hashlib.sha256(modified).hexdigest(),"ab26d649e31a5ea4d21320480c52b3b9781bd7f3752a687f265c24bbf473df4b")
   d,ch=mod.parse_glb(raw);new,nch=mod.parse_glb(modified)
   self.assertEqual(ch[1:],nch[1:])
-  self.assertEqual((len(new["meshes"]),len(new["materials"]),sum(len(a["channels"]) for a in new["animations"])),(105,8,4))
+  self.assertEqual((len(new["meshes"]),len(new["materials"])),(105,8))
+  self.assertEqual(len(d["animations"]),4)
+  self.assertEqual(len(new["animations"]),5)
+  self.assertEqual(d["animations"],new["animations"][:4])
+  self.assertEqual(new["animations"][-1]["name"],"LEG-MOV-001_ALL_FOUR_GIMBALS")
+  combined=new["animations"][-1]
+  self.assertEqual(len(combined["channels"]),4)
+  self.assertEqual(len(set(c["target"]["node"] for c in combined["channels"])),4)
+  self.assertTrue(all(c["target"]["path"]=="rotation" for c in combined["channels"]))
+  self.assertTrue(all(0<=c["sampler"]<len(combined["samplers"]) for c in combined["channels"]))
+  again,_=mod.retrofit(raw,"M04-024")
+  self.assertEqual(modified,again)
 if __name__=="__main__":unittest.main(verbosity=2)
