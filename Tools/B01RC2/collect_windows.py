@@ -22,6 +22,10 @@ for folder in sorted((r / 'Artifacts/Local').glob('RC2-Windows-*')):
     for p in sorted(folder.iterdir()):
         if p.suffix == '.json':
             shutil.copy2(p, dest / p.name)
+            if p.name == 'human-confirmation.json':
+                manual = json.loads(p.read_text(encoding='utf-8-sig'))
+                row['manualAcceptance'] = {'status': manual['status'], 'file': p.name,
+                    'checks': manual['checks'], 'nativeExitCode': manual['nativeExitCode']}
             if p.name.endswith('-result.json'):
                 result = json.loads(p.read_text(encoding='utf-8-sig'))
                 checks = result.get('checks', [])

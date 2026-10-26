@@ -1172,6 +1172,15 @@
     "results": [],
     "screenshots": [],
     "logErrorLines": [],
-    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Retail-1280-20261026T120504Z"
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Retail-1280-20261026T120504Z",
+    "manualAcceptance": {
+      "status": "PASS_USER_CONFIRMED",
+      "file": "human-confirmation.json",
+      "checks": {
+        "preparationGarageEntry": "PASS_USER_CONFIRMED",
+        "manualAltF4Shutdown": "PASS_USER_CONFIRMED"
+      },
+      "nativeExitCode": null
+    }
   }
 ]
