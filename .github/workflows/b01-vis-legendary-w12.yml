@@ -83,7 +83,24 @@ jobs:
           expected={'M01-018':-2.572,'M04-024':-0.47756}
           assert all(abs(r['extentRemainderM'][2]-expected[r['modelId']])<0.00001 for r in d['reports'])
           PYGATE
-          (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
+          # W14: actual pinned GLB geometry, unchanged root axes + explicit mount planes.
+          python3 "$root/tools/mount_envelope_candidates.py" --package /tmp/B01-VIS-LEGENDARY-W12-R1 --output /tmp/B01-VIS-LEGENDARY-W12-R1/qa/MOUNT_ENVELOPE_OPTIONS_W14.json
+          CI_PACKAGE_DIR=/tmp/B01-VIS-LEGENDARY-W12-R1 python3 "$root/tests/test_mount_envelope_candidates.py" -v
+          python3 - <<'PYW14'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/B01-VIS-LEGENDARY-W12-R1/qa/MOUNT_ENVELOPE_OPTIONS_W14.json")
+          d=json.loads(p.read_text())
+          assert not d['approvedToMount']
+          rows={m['modelId']:m for m in d['models']}
+          assert rows['M01-018']['minimumUnchangedRootDepthCenter']['cellsWHD']==[3,2,8]
+          assert rows['M01-018']['minimumConditionalDepthCenterShift']['cellsWHD']==[3,2,7]
+          assert rows['M04-024']['minimumUnchangedRootDepthCenter']['cellsWHD']==[4,2,4]
+          assert all(not m['minimumUnchangedRootDepthCenter']['approvedToMount'] for m in rows.values())
+          PYW14
+          mkdir -p /tmp/B01-VIS-LEGENDARY-W12-R1/tools
+          cp "$root/tools/mount_envelope_candidates.py" /tmp/B01-VIS-LEGENDARY-W12-R1/tools/
+                    (cd /tmp/B01-VIS-LEGENDARY-W12-R1 && sha256sum models/*.glb > SHA256SUMS)
           find /tmp/B01-VIS-LEGENDARY-W12-R1 -type f -print0 | sort -z | xargs -0 sha256sum > "$root/output/SHA256SUMS_INPUTS.txt"
           cd /tmp
           find B01-VIS-LEGENDARY-W12-R1 -type f -exec touch -t 198001010000.00 {} +
