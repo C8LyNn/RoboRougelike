@@ -1,0 +1,121 @@
+{
+  "inspectedUtc": "2026-10-26T00:11:21.206635+00:00",
+  "worktrees": [
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-GitHub",
+      "head": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+      "branch": "refs/heads/main",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1",
+      "head": "5c29e8e28e7b34fedf0c992fca49451828b02314",
+      "branch": "refs/heads/integration/b01-rc1-experimental",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1-RollbackProof",
+      "head": "4d246dd49a65ae3ac70367c6de4726534bdfb358",
+      "branch": "refs/heads/rollback/b01-rc1-20261025T222207Z",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-RC1-RollbackProof-Final",
+      "head": "52e3af002e9de2a1a95f4081df31e161704fab2b",
+      "branch": "refs/heads/rollback/b01-rc1-20261025T225554Z",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-BUILD-R12-QA",
+      "head": "1b515154f5fadf56dabbd21977f5359c88208b23",
+      "branch": "refs/heads/qa/rrl-build-r12-native",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-BUILD001-Validation",
+      "head": "4d4465b3bc2775f7e5a7912af74044bdbf4df9d0",
+      "branch": "refs/heads/qa/rrl-build001-native",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA",
+      "head": "2236e08fcadaf55cecb6e094b94a1691effc125a",
+      "branch": "refs/heads/qa/rrl-camera-r12-native",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-MAPGEN-R32-QA",
+      "head": "5d410e11b5d4f330a52096fdab63e4a26a8a5610",
+      "branch": "refs/heads/qa/rrl-mapgen-r34-native",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-MAPGEN-R341-QA",
+      "head": "e4d67cb286499b9ac4aceec9818017cd110b14aa",
+      "branch": "refs/heads/qa/rrl-mapgen-r341-native",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-OBJ001",
+      "head": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+      "branch": "refs/heads/feature/rrl-obj001-integration",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-RAC001-Validation",
+      "head": "52222a7e3c9f1c25c00df3cb768757773c979eb4",
+      "branch": "refs/heads/qa/rrl-rac001-native",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-RRL-W2",
+      "head": "a0f0a6590b07ed2f5007361a7e761f133e52ff99",
+      "branch": "refs/heads/feature/unified-rewards-debris-density",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W3-W4",
+      "head": "916bf6d195bb7647f159a4dc50a4d6b2ab18b063",
+      "branch": "refs/heads/feature/rrl-w3-w4-integration",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W5-RC1",
+      "head": "2154b4341dd6b6fefb135187dc07b4b12d44f908",
+      "branch": "refs/heads/release/rrl-w5-candidate",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W6-W9",
+      "head": "916654634d1bfdc2bbc14e64b9eeac856ede1fa8",
+      "branch": "refs/heads/codex/b01-phy-grounding-core-r1",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W9-QA-Report",
+      "head": "d54411c1173066e8259950238f3b1d60b2a224f9",
+      "branch": "refs/heads/qa/rrl-w9-native-report",
+      "status": []
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-W9-Validation",
+      "head": "17a2399f74b7562be19c2b429dc0b1312957c66a",
+      "branch": "refs/heads/qa/rrl-camera-r11-native",
+      "status": []
+    }
+  ],
+  "RC1Archives": [
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01_RC1_20261025\\RoboRougelike_B01_RC1_BASE_Windows_x64.zip",
+      "bytes": 38481635,
+      "sha256": "457ec2020375e18c4599d832dc028eed7900f8cf5d603765c9e417fd80a8ca90"
+    },
+    {
+      "path": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01_RC1_20261025\\Final\\RoboRougelike_B01_RC1_MAPGEN_EXPERIMENTAL_Windows_x64.zip",
+      "bytes": 38502444,
+      "sha256": "722be56b98db0abe1517ec1d018b6f4d6ecbf0a46ea172d198f8294a7edc8cca"
+    }
+  ],
+  "preservedRetailProcess": 46264,
+  "note": "CAMERA QA does not operate the existing RC1 retail window. Read-only snapshot; no other worktree writes."
+}

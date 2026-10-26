@@ -1,0 +1,11 @@
+{
+  "producer": "48581e49a878eca376674551017532bf17fd35b2",
+  "finishedUtc": "2026-10-26T00:07:57.2450067Z",
+  "arguments": [
+    "-quit"
+  ],
+  "source": "32534edcbfafda786b8f079f558efe8e52bdf5a6",
+  "phase": "Compile",
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T00:06:03.6327790Z"
+}

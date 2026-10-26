@@ -1,0 +1,4313 @@
+{
+  "producer": "48581e49a878eca376674551017532bf17fd35b2",
+  "base": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "compile": {
+    "producer": "48581e49a878eca376674551017532bf17fd35b2",
+    "finishedUtc": "2026-10-26T00:07:57.2450067Z",
+    "arguments": [
+      "-quit"
+    ],
+    "source": "32534edcbfafda786b8f079f558efe8e52bdf5a6",
+    "phase": "Compile",
+    "exitCode": 0,
+    "startedUtc": "2026-10-26T00:06:03.6327790Z"
+  },
+  "native": {
+    "EditMode": {
+      "counts": {
+        "total": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "process": {
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "finishedUtc": "2026-10-26T00:08:10.6013295Z",
+        "arguments": [
+          "-runTests",
+          "-testPlatform",
+          "EditMode",
+          "-testFilter",
+          "B01.CAMERA001.Tests",
+          "-testResults",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Tests-20261026T000603Z\\EditMode.xml\""
+        ],
+        "source": "32534edcbfafda786b8f079f558efe8e52bdf5a6",
+        "phase": "EditMode",
+        "exitCode": 0,
+        "startedUtc": "2026-10-26T00:07:57.2672616Z"
+      },
+      "cases": [
+        {
+          "name": "B01.CAMERA001.Tests.Camera001FramingTests.BiggerAndTallerRobotsDemandMoreFramingDistance",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001FramingTests.DifferentResolutionWithSameAspectKeepsGeometry",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001FramingTests.EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001FramingTests.InvalidGeometryAndNonFiniteRequestFailClosed",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001FramingTests.SafeMaximumZoomNeverExceedsConfiguredLimit",
+          "result": "Passed"
+        }
+      ]
+    },
+    "PlayMode": {
+      "counts": {
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      "process": {
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "finishedUtc": "2026-10-26T00:08:26.1510421Z",
+        "arguments": [
+          "-runTests",
+          "-testPlatform",
+          "PlayMode",
+          "-testFilter",
+          "B01.CAMERA001.Tests",
+          "-testResults",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Tests-20261026T000603Z\\PlayMode.xml\""
+        ],
+        "source": "32534edcbfafda786b8f079f558efe8e52bdf5a6",
+        "phase": "PlayMode",
+        "exitCode": 0,
+        "startedUtc": "2026-10-26T00:08:10.6310326Z"
+      },
+      "cases": [
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM01_Light_720_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM02_Light_1080_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM03_Heavy_720_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM04_Heavy_1080_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM05_Tall_720_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM06_Tall_1080_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM07_Wide_720_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM08_Wide_1080_FinalPose",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.HeavyToLightSwitchClearsPreviousSmoothing",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.IgnoresOwnCollidersWithoutDisablingThem",
+          "result": "Passed"
+        },
+        {
+          "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.WorldObstacleShortensCameraSpringArm",
+          "result": "Passed"
+        }
+      ]
+    }
+  },
+  "builds": {
+    "BuildInitial": {
+      "phase": "Build",
+      "source": "27dca30d3a5566cefd7e44911f14b55e8e13a907",
+      "producer": "48581e49a878eca376674551017532bf17fd35b2",
+      "arguments": [
+        "-quit",
+        "-executeMethod",
+        "CameraR12QABuild.Build"
+      ],
+      "finishedUtc": "2026-10-26T00:10:24.1236738Z",
+      "startedUtc": "2026-10-26T00:09:07.4627280Z",
+      "exitCode": 0
+    },
+    "BuildDiagnostic": {
+      "exitCode": 0,
+      "producer": "48581e49a878eca376674551017532bf17fd35b2",
+      "phase": "Build",
+      "startedUtc": "2026-10-26T00:14:30.4952413Z",
+      "source": "c4cd93565e002aef6e0135ba8b1d18810874afea",
+      "arguments": [
+        "-quit",
+        "-executeMethod",
+        "CameraR12QABuild.Build"
+      ],
+      "finishedUtc": "2026-10-26T00:14:56.2573173Z"
+    },
+    "BuildFinal": {
+      "phase": "Build",
+      "source": "37160c687f57d9552b86442fac0590fe657cf008",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-26T00:20:51.9487493Z",
+      "startedUtc": "2026-10-26T00:20:26.2450417Z",
+      "arguments": [
+        "-quit",
+        "-executeMethod",
+        "CameraR12QABuild.Build"
+      ],
+      "producer": "48581e49a878eca376674551017532bf17fd35b2"
+    }
+  },
+  "windows": {
+    "WindowsInitial": {
+      "process": {
+        "exitCode": 2,
+        "source": "2236e08fcadaf55cecb6e094b94a1691effc125a",
+        "startedUtc": "2026-10-26T00:10:57.0702007Z",
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "finishedUtc": "2026-10-26T00:13:28.3108658Z"
+      },
+      "launch": {
+        "startedUtc": "2026-10-26T00:10:57.0702007Z",
+        "accessibilityClientAttached": false,
+        "visible": true,
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+        "source": "2236e08fcadaf55cecb6e094b94a1691effc125a",
+        "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Builds\\CAMERA-R12-QA\\CameraR12QA.exe",
+        "pid": 41980,
+        "assemblySHA256": "0EC6E1AAB2DEC7F7980CBE063F1664461493F1AE65C333FCD5DB3DED9D98A040",
+        "args": [
+          "-screen-fullscreen",
+          "0",
+          "-screen-width",
+          "1280",
+          "-screen-height",
+          "720",
+          "-logFile",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T001057Z\\Player.log\"",
+          "-camera-qa-output",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T001057Z\""
+        ]
+      },
+      "overall": "FAIL_OBSERVED",
+      "rows": [
+        {
+          "id": "Light-1280",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 20,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 167,
+          "pivotOverlapSamples": 114,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 19,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000046730041504,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 7.748603820800781e-07,
+          "maxMuzzleAfterSettle": 15.439070701599121,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 1.564000129699707,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999999403953552,
+            "z": 1.6391277313232422e-07
+          },
+          "finalPosition": {
+            "x": -0.0020623505115509033,
+            "y": 0.6512219905853271,
+            "z": 27.280179977416992
+          },
+          "maxCameraStep": 0.251065731048584,
+          "maxCameraRotationStep": 4.808723449707031,
+          "maxMuzzleAimError": 15.439070701599121,
+          "maxCenterEnemyAngle": 6.8817362785339355,
+          "distanceMoved": 27.28240966796875
+        },
+        {
+          "id": "Heavy-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 139,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 71,
+          "pivotOverlapSamples": 16,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 138,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000027656555176,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.544854164123535e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 5.180010795593262,
+            "y": 2.1140007972717285,
+            "z": 4.9200005531311035
+          },
+          "initialPosition": {
+            "x": 1.1753290891647339e-05,
+            "y": 1.0,
+            "z": -8.735805749893188e-06
+          },
+          "finalPosition": {
+            "x": -0.016033334657549858,
+            "y": 0.6499979496002197,
+            "z": 21.278345108032227
+          },
+          "maxCameraStep": 0.2523060142993927,
+          "maxCameraRotationStep": 6.035965442657471,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.468870759010315,
+          "distanceMoved": 21.281238555908203
+        },
+        {
+          "id": "Tall-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 34,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 85,
+          "pivotOverlapSamples": 24,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 33,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000021934509277,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 3.650784492492676e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 9.160000801086426,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999997615814209,
+            "z": 1.5681955289892358e-07
+          },
+          "finalPosition": {
+            "x": 0.04778554290533066,
+            "y": 0.9038535356521606,
+            "z": 14.407976150512695
+          },
+          "maxCameraStep": 0.25101450085639954,
+          "maxCameraRotationStep": 5.2947516441345215,
+          "maxMuzzleAimError": 2.705735206604004,
+          "maxCenterEnemyAngle": 2.4736177921295166,
+          "distanceMoved": 14.40837574005127
+        },
+        {
+          "id": "Wide-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 149,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 59,
+          "pivotOverlapSamples": 14,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 148,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000028610229492,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.805624485015869e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 10.420035362243652,
+            "y": 2.114006280899048,
+            "z": 4.920017242431641
+          },
+          "initialPosition": {
+            "x": 1.1712312698364258e-05,
+            "y": 0.9999995827674866,
+            "z": -1.5832483768463135e-05
+          },
+          "finalPosition": {
+            "x": -0.023967646062374115,
+            "y": 0.6499979496002197,
+            "z": 20.404211044311523
+          },
+          "maxCameraStep": 0.2504384517669678,
+          "maxCameraRotationStep": 6.016214370727539,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.4690039157867432,
+          "distanceMoved": 20.407241821289062
+        },
+        {
+          "id": "Light-1920",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 20,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 167,
+          "pivotOverlapSamples": 114,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 19,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000027656555176,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.6566128730773926e-07,
+          "maxMuzzleAfterSettle": 12.685635566711426,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 1.564000129699707,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999999403953552,
+            "z": 1.6391277313232422e-07
+          },
+          "finalPosition": {
+            "x": -0.008348655886948109,
+            "y": 0.6631525754928589,
+            "z": 27.28145408630371
+          },
+          "maxCameraStep": 0.25075677037239075,
+          "maxCameraRotationStep": 4.808560371398926,
+          "maxMuzzleAimError": 12.685635566711426,
+          "maxCenterEnemyAngle": 6.665356636047363,
+          "distanceMoved": 27.28353500366211
+        },
+        {
+          "id": "Heavy-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 139,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 71,
+          "pivotOverlapSamples": 16,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 138,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.00002384185791,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 3.986060619354248e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 5.180010795593262,
+            "y": 2.1140007972717285,
+            "z": 4.9200005531311035
+          },
+          "initialPosition": {
+            "x": 1.1753290891647339e-05,
+            "y": 1.0,
+            "z": -8.735805749893188e-06
+          },
+          "finalPosition": {
+            "x": 0.033781737089157104,
+            "y": 0.6499810218811035,
+            "z": 21.382164001464844
+          },
+          "maxCameraStep": 0.25056132674217224,
+          "maxCameraRotationStep": 6.034927845001221,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.3823931217193604,
+          "distanceMoved": 21.38506507873535
+        },
+        {
+          "id": "Tall-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 34,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 85,
+          "pivotOverlapSamples": 24,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 33,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000031471252441,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 5.19677996635437e-07,
+          "maxMuzzleAfterSettle": 0.01978234015405178,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 9.160000801086426,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999997615814209,
+            "z": 1.5681955289892358e-07
+          },
+          "finalPosition": {
+            "x": -0.623990535736084,
+            "y": 1.383798360824585,
+            "z": 3.1219189167022705
+          },
+          "maxCameraStep": 0.2505626976490021,
+          "maxCameraRotationStep": 5.293864727020264,
+          "maxMuzzleAimError": 2.653726816177368,
+          "maxCenterEnemyAngle": 10.75442123413086,
+          "distanceMoved": 3.2067182064056396
+        },
+        {
+          "id": "Wide-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 149,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 59,
+          "pivotOverlapSamples": 14,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 148,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "maxContinuousSpeed": 15.000029563903809,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.954636096954346e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 10.420035362243652,
+            "y": 2.114006280899048,
+            "z": 4.920017242431641
+          },
+          "initialPosition": {
+            "x": 1.1712312698364258e-05,
+            "y": 0.9999995827674866,
+            "z": -1.5832483768463135e-05
+          },
+          "finalPosition": {
+            "x": -0.020229127258062363,
+            "y": 0.6499987244606018,
+            "z": 20.309303283691406
+          },
+          "maxCameraStep": 0.25084951519966125,
+          "maxCameraRotationStep": 6.016474723815918,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.4690039157867432,
+          "distanceMoved": 20.31234359741211
+        }
+      ],
+      "errors": [],
+      "samples": 7664,
+      "phases": {
+        "corridor": {
+          "samples": 560,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.251,
+          "maxStepExcess": 2.17929482e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Tall-1280",
+            "phase": "corridor",
+            "seconds": "44.3795",
+            "x": "0.6040",
+            "y": "11.7674",
+            "z": "-2.1101",
+            "step": "0.2510",
+            "rotationStep": "1.9200",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.0621",
+            "enemyViewportY": "0.4494",
+            "clipped": "True",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0167342965",
+            "allowedStep": "0.251014441",
+            "stepExcess": "5.401671E-08",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0.0279764552",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "damage": {
+          "samples": 360,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0961,
+          "maxStepExcess": -0.153937414,
+          "maxAimError": 0.01978234,
+          "peak": {
+            "case": "Tall-1920",
+            "phase": "damage",
+            "seconds": "117.3029",
+            "x": "0.0000",
+            "y": "13.6407",
+            "z": "-7.7557",
+            "step": "0.0961",
+            "rotationStep": "0.2471",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5294",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166690052",
+            "allowedStep": "0.250035077",
+            "stepExcess": "-0.153967589",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        },
+        "framing": {
+          "samples": 160,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0,
+          "maxStepExcess": -0.248454079,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "framing",
+            "seconds": "0.0912",
+            "x": "0.0000",
+            "y": "2.9894",
+            "z": "-4.8787",
+            "step": "0.0000",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0711706951",
+            "allowedStep": "1.06756043",
+            "stepExcess": "-1.06756043",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputIdle": {
+          "samples": 384,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0208,
+          "maxStepExcess": -0.229255527,
+          "maxAimError": 0.01978234,
+          "peak": {
+            "case": "Tall-1280",
+            "phase": "inputIdle",
+            "seconds": "46.3795",
+            "x": "0.0000",
+            "y": "13.0634",
+            "z": "-7.3710",
+            "step": "0.0208",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5077",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166677013",
+            "allowedStep": "0.250015527",
+            "stepExcess": "-0.229255527",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputLMBDrive": {
+          "samples": 2400,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2501,
+          "maxStepExcess": 7.748604e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1920",
+            "phase": "inputLMBDrive",
+            "seconds": "87.6838",
+            "x": "0.0800",
+            "y": "5.1499",
+            "z": "19.6399",
+            "step": "0.2501",
+            "rotationStep": "0.8041",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4963",
+            "enemyViewportY": "0.4627",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166706",
+            "allowedStep": "0.250059",
+            "stepExcess": "-5.51342964E-07",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        },
+        "inputRMB": {
+          "samples": 576,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0,
+          "maxStepExcess": -0.248747975,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "inputRMB",
+            "seconds": "11.1920",
+            "x": "0.0000",
+            "y": "2.9871",
+            "z": "-4.8787",
+            "step": "0.0000",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166693032",
+            "allowedStep": "0.250039548",
+            "stepExcess": "-0.250039548",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "pitch18TransitionAndOrbit360": {
+          "samples": 1824,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2177,
+          "maxStepExcess": -0.0322556943,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "pitch18TransitionAndOrbit360",
+            "seconds": "0.7412",
+            "x": "-0.0784",
+            "y": "3.6123",
+            "z": "-4.7345",
+            "step": "0.2177",
+            "rotationStep": "1.7543",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4753",
+            "enemyViewportY": "0.5492",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166672971",
+            "allowedStep": "0.250009447",
+            "stepExcess": "-0.0322615281",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "wallEntry": {
+          "samples": 200,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2507,
+          "maxStepExcess": 3.65078449e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Wide-1920",
+            "phase": "wallEntry",
+            "seconds": "133.1711",
+            "x": "0.0000",
+            "y": "3.6384",
+            "z": "-2.6141",
+            "step": "0.2507",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "True",
+            "pivotBlocked": "False",
+            "deltaTime": "0.016712904",
+            "allowedStep": "0.25069356",
+            "stepExcess": "1.1920929E-07",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        },
+        "zoom3to18": {
+          "samples": 1200,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2523,
+          "maxStepExcess": 5.19678e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Heavy-1280",
+            "phase": "zoom3to18",
+            "seconds": "24.5267",
+            "x": "0.0000",
+            "y": "6.4299",
+            "z": "-5.9952",
+            "step": "0.2523",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.6412",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.016820401",
+            "allowedStep": "0.252306",
+            "stepExcess": "0",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        }
+      },
+      "screenshots": [
+        {
+          "path": "WindowsInitial/Heavy-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "4ae79c8aee6966d936126e0f7ad59da519cf4bb196f3e35f4ad72999db98029a"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "36523e9f06797e0626085a753f1dd5d63634d2d3e8dca588c00641b3b61e3648"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "a86172ea93e9f5cb3abbbad84959229f14f652f92ae042972f8004ab2ac2a89b"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "26cc6d3f687aa6933f94b26a85d1e837829f27c5656fe5c36a509bb265517f0a"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "b5b39feb3f9cdfdbb7d3fcd8bf688b7b73e9ee213d17223447a23795e1388166"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "d0b6ae0aaa140ef79b82dc4c8fd1df56ce940a00cd421fea805ab48ee2c41b87"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "5631bdd6e886f4d643f39ba2200e2d4a1b7a320e81c10c26ee97364ba4d1e740"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "f1ba9aef2b77eadcff762abf224a84586a3efa6e5515aed53985b1c72885e6f6"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "1300b6a01db62f13871db88ffdac49d10a446ac0d7bc9f0d40e4af69167be0fd"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "942a77f80617b7bda4e00b42212469c7a599bf1a01be53eb0b8a96c2db0ad6fd"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "f5aeb2dbef9fb3070a6fcd15f285a3e0d33ede6cb0bd9f32130a65b81eaba024"
+        },
+        {
+          "path": "WindowsInitial/Heavy-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "53352372c3e6ae967b1fb1e93e104413ab43c85278277e329c67420e9f481692"
+        },
+        {
+          "path": "WindowsInitial/Light-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "b2dad190f721d77ffd44dd019da25e87155505daa1adc826728a985e03f1bcd2"
+        },
+        {
+          "path": "WindowsInitial/Light-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "bcc5a4d4a577a6fefc724c66ddaa8fabbbeeba717ab139ad21d3c353094ed19e"
+        },
+        {
+          "path": "WindowsInitial/Light-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "4e4f8968fe0f83a016bf947eb11976bb560a7c69d2f1b83a7a0c14ec7f3028b4"
+        },
+        {
+          "path": "WindowsInitial/Light-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "7fe03faf7c8ab2b8c32633417a11ff3e5790eccd300d86dad00b12f9ecd62c6c"
+        },
+        {
+          "path": "WindowsInitial/Light-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "526ebb5155bc15293fd60b78b181fbd45eca1d05e5cc19c4b1618847d3d04aa5"
+        },
+        {
+          "path": "WindowsInitial/Light-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "ade4338d6b363ae748d554463607151b27f14beb06ba525d10d38cf56eaef6ba"
+        },
+        {
+          "path": "WindowsInitial/Light-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "52150514aa3bc1c27e056ebaa97a38d70692334e6d516584c13354a9a440f868"
+        },
+        {
+          "path": "WindowsInitial/Light-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "7ecc109c307cf6dad9dad39c8cbf5bf0fbfb1b5012b8f4594a2f4a686dbdfbae"
+        },
+        {
+          "path": "WindowsInitial/Light-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "d6c5e4c03de3a46d7c500b8a07b809111e64ef768135ba507bcbae9e5ca59ad1"
+        },
+        {
+          "path": "WindowsInitial/Light-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "3f39a23973c55da19cc6d6256d7df03d660a6c1c672e138f31a227f2665030d7"
+        },
+        {
+          "path": "WindowsInitial/Light-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "5a925f91da8a59f8212bfe76ada0b1c0b39a068488cc0636276fb663222e27d7"
+        },
+        {
+          "path": "WindowsInitial/Light-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "33a8c3ce172be0e383c5d1866412e9f53e8d6dc4a3445de6451d1193fcd5dae8"
+        },
+        {
+          "path": "WindowsInitial/Tall-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "d6c30aa2773080b4fc8210a3bb822cad6902e6fe8effebcc9a6ed7951b6dab29"
+        },
+        {
+          "path": "WindowsInitial/Tall-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "da836026daa6358400fe4e970ca6e3fffa7659708aca3a688b895793641280b1"
+        },
+        {
+          "path": "WindowsInitial/Tall-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "33e37ea0f5d2af871c800b5566e820f582617e0a106e5f8efca5c3031db0b990"
+        },
+        {
+          "path": "WindowsInitial/Tall-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "dbc207784fe0804e3dde0b66cc058e10947adb8da3f6b56a653f8037e3b49619"
+        },
+        {
+          "path": "WindowsInitial/Tall-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "b114716c9750d705171fd26aeb23c2e27b529dea383050f64dc824ffd646d185"
+        },
+        {
+          "path": "WindowsInitial/Tall-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "7a11ed74c6ff922a207db578e4afa1ce7ecc5328b442af9ad9a9a6c482159486"
+        },
+        {
+          "path": "WindowsInitial/Tall-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "6a78b959a1205cba5c924d14499896d10e4407d7aa2426ccf1923d20bfe06ea3"
+        },
+        {
+          "path": "WindowsInitial/Tall-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "398e0b56c3d8a99e41e8385f614956853918c4406c019970c9b59beaa8822144"
+        },
+        {
+          "path": "WindowsInitial/Tall-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "72b1af336fa11ea3b9a8755fc39f18c772e428f747b013ed9ed147b4f064c651"
+        },
+        {
+          "path": "WindowsInitial/Tall-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "36f6c3219e17079901fc435a6fd7100d503abc1a031254a0e36b0ea4dcda5289"
+        },
+        {
+          "path": "WindowsInitial/Tall-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "7da6199b5e2ea6049767cef7352b15abba38e1fa956d1a215aebf4f40817c25b"
+        },
+        {
+          "path": "WindowsInitial/Tall-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "5169c8674ef09478778367fc3867d0a895398bd54b7275af5d307a34f7c02127"
+        },
+        {
+          "path": "WindowsInitial/Wide-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "83b2a3af1b6e6c8d3a36ded847e677d17a0c9d88fa4ba272b5a67916feb0734b"
+        },
+        {
+          "path": "WindowsInitial/Wide-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "17bf471ad071f50ff79293bceb948c8dcff72afb45ce3cb5884d7ded050bd8bf"
+        },
+        {
+          "path": "WindowsInitial/Wide-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "2e218b62ea0d934cda9acd9e417cb8ae461ef2363db79e1cc32370ba31770559"
+        },
+        {
+          "path": "WindowsInitial/Wide-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "852fd36c949bb6da89e528187257fc4eb517d8f47a776efc5e97ff18e22dff92"
+        },
+        {
+          "path": "WindowsInitial/Wide-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "726eaa62c83c1ad2e37639937a3b4d66970f6a9189a2cc869e95a245a2fde6db"
+        },
+        {
+          "path": "WindowsInitial/Wide-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "0a571e14417dc4db755d091e597eabb86b83c9740cd0a7ce2f68c86d2b4b8b08"
+        },
+        {
+          "path": "WindowsInitial/Wide-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "0f06db3e27bd43e1d1a0e5180fc4c38f83d9ae3bfefe8180a1155aa47186fd1c"
+        },
+        {
+          "path": "WindowsInitial/Wide-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "2cd9e8d3837f4af8ecd7d4fe7f4779da50f0ea14ef07e72759034c8d24196d9f"
+        },
+        {
+          "path": "WindowsInitial/Wide-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "005e2642ddb97622c304f120dbbc57802294b3c1f84fc6714a4f5f6f90a1ebb6"
+        },
+        {
+          "path": "WindowsInitial/Wide-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "e76cc43547f18c63736ce0b14f45bf5c807d065ed4ec8805f0154763d381c980"
+        },
+        {
+          "path": "WindowsInitial/Wide-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "3916d78c9be4e0cdfe940ed2ca813e3cf93e180252fa4e61852b633b17818296"
+        },
+        {
+          "path": "WindowsInitial/Wide-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "c129c3cc0d3ef3878174b206aa6cb2417864ecad1324d2bbcb8b79d9b629ff20"
+        }
+      ]
+    },
+    "WindowsDiagnostic": {
+      "process": {
+        "source": "c4cd93565e002aef6e0135ba8b1d18810874afea",
+        "finishedUtc": "2026-10-26T00:17:39.2707951Z",
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "exitCode": 2,
+        "startedUtc": "2026-10-26T00:15:10.9524935Z"
+      },
+      "launch": {
+        "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+        "source": "c4cd93565e002aef6e0135ba8b1d18810874afea",
+        "assemblySHA256": "6C98068236D87A587B7FCB1372EBF49C9A33D644B5C9FFB91712DB2CD4421917",
+        "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Builds\\CAMERA-R12-QA\\CameraR12QA.exe",
+        "visible": true,
+        "pid": 56820,
+        "startedUtc": "2026-10-26T00:15:10.9524935Z",
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "args": [
+          "-screen-fullscreen",
+          "0",
+          "-screen-width",
+          "1280",
+          "-screen-height",
+          "720",
+          "-logFile",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T001510Z\\Player.log\"",
+          "-camera-qa-output",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T001510Z\""
+        ],
+        "accessibilityClientAttached": false
+      },
+      "overall": "FAIL_OBSERVED",
+      "rows": [
+        {
+          "id": "Light-1280",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 20,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 166,
+          "pivotOverlapSamples": 113,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 19,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 15.308438301086426,
+          "maxContinuousSpeed": 15.000049591064453,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 8.326023817062378e-07,
+          "maxMuzzleAfterSettle": 15.308438301086426,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 1.564000129699707,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999999403953552,
+            "z": 1.6391277313232422e-07
+          },
+          "finalPosition": {
+            "x": -0.0020487308502197266,
+            "y": 0.6512086391448975,
+            "z": 27.28019142150879
+          },
+          "maxCameraStep": 0.25235095620155334,
+          "maxCameraRotationStep": 4.808723449707031,
+          "maxMuzzleAimError": 15.308438301086426,
+          "maxCenterEnemyAngle": 6.693484306335449,
+          "distanceMoved": 27.282421112060547
+        },
+        {
+          "id": "Heavy-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 139,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 71,
+          "pivotOverlapSamples": 16,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 138,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000024795532227,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.0978193283081055e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 5.180010795593262,
+            "y": 2.1140007972717285,
+            "z": 4.9200005531311035
+          },
+          "initialPosition": {
+            "x": 1.1753290891647339e-05,
+            "y": 1.0,
+            "z": -8.735805749893188e-06
+          },
+          "finalPosition": {
+            "x": -0.016177630051970482,
+            "y": 0.6499979496002197,
+            "z": 21.38955307006836
+          },
+          "maxCameraStep": 0.25015348196029663,
+          "maxCameraRotationStep": 6.034927845001221,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.5316128730773926,
+          "distanceMoved": 21.392431259155273
+        },
+        {
+          "id": "Tall-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 34,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 85,
+          "pivotOverlapSamples": 24,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 33,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.00002670288086,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.470348358154297e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 9.160000801086426,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999997615814209,
+            "z": 1.5681955289892358e-07
+          },
+          "finalPosition": {
+            "x": -0.017365779727697372,
+            "y": 0.905259370803833,
+            "z": 14.622572898864746
+          },
+          "maxCameraStep": 0.25036606192588806,
+          "maxCameraRotationStep": 5.294308185577393,
+          "maxMuzzleAimError": 2.549677610397339,
+          "maxCenterEnemyAngle": 2.4736177921295166,
+          "distanceMoved": 14.62289047241211
+        },
+        {
+          "id": "Wide-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 149,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 59,
+          "pivotOverlapSamples": 14,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 148,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000025749206543,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.33996319770813e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 10.420035362243652,
+            "y": 2.114006280899048,
+            "z": 4.920017242431641
+          },
+          "initialPosition": {
+            "x": 1.1712312698364258e-05,
+            "y": 0.9999995827674866,
+            "z": -1.5832483768463135e-05
+          },
+          "finalPosition": {
+            "x": 0.012468722648918629,
+            "y": 0.6499994993209839,
+            "z": 20.408037185668945
+          },
+          "maxCameraStep": 0.2507849633693695,
+          "maxCameraRotationStep": 6.016735076904297,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.427932858467102,
+          "distanceMoved": 20.411056518554688
+        },
+        {
+          "id": "Light-1920",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 20,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 167,
+          "pivotOverlapSamples": 114,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 19,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 12.905630111694336,
+          "maxContinuousSpeed": 15.000041961669922,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 7.059425115585327e-07,
+          "maxMuzzleAfterSettle": 12.905630111694336,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 1.564000129699707,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999999403953552,
+            "z": 1.6391277313232422e-07
+          },
+          "finalPosition": {
+            "x": 0.13183461129665375,
+            "y": 0.6503140926361084,
+            "z": 27.280046463012695
+          },
+          "maxCameraStep": 0.25080302357673645,
+          "maxCameraRotationStep": 4.808560371398926,
+          "maxMuzzleAimError": 12.905630111694336,
+          "maxCenterEnemyAngle": 6.660882949829102,
+          "distanceMoved": 27.28260612487793
+        },
+        {
+          "id": "Heavy-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 139,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 71,
+          "pivotOverlapSamples": 16,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 138,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000020980834961,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 3.427267074584961e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 5.180010795593262,
+            "y": 2.1140007972717285,
+            "z": 4.9200005531311035
+          },
+          "initialPosition": {
+            "x": 1.1753290891647339e-05,
+            "y": 1.0,
+            "z": -8.735805749893188e-06
+          },
+          "finalPosition": {
+            "x": 0.012311343103647232,
+            "y": 0.6500013470649719,
+            "z": 21.42206573486328
+          },
+          "maxCameraStep": 0.252529501914978,
+          "maxCameraRotationStep": 6.041800498962402,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.4683377742767334,
+          "distanceMoved": 21.424938201904297
+        },
+        {
+          "id": "Tall-1920",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 34,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 85,
+          "pivotOverlapSamples": 24,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 33,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 2.060610771179199,
+          "maxContinuousSpeed": 15.000028610229492,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.805624485015869e-07,
+          "maxMuzzleAfterSettle": 2.060610771179199,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 9.160000801086426,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999997615814209,
+            "z": 1.5681955289892358e-07
+          },
+          "finalPosition": {
+            "x": 0.06634059548377991,
+            "y": 0.9054007530212402,
+            "z": 14.698042869567871
+          },
+          "maxCameraStep": 0.2533183693885803,
+          "maxCameraRotationStep": 5.2919416427612305,
+          "maxMuzzleAimError": 2.610445499420166,
+          "maxCenterEnemyAngle": 2.4736177921295166,
+          "distanceMoved": 14.69849681854248
+        },
+        {
+          "id": "Wide-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 149,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 59,
+          "pivotOverlapSamples": 14,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 148,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000025749206543,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.3585896492004395e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 10.420035362243652,
+            "y": 2.114006280899048,
+            "z": 4.920017242431641
+          },
+          "initialPosition": {
+            "x": 1.1712312698364258e-05,
+            "y": 0.9999995827674866,
+            "z": -1.5832483768463135e-05
+          },
+          "finalPosition": {
+            "x": -0.027618009597063065,
+            "y": 0.6499871611595154,
+            "z": 20.402189254760742
+          },
+          "maxCameraStep": 0.25043436884880066,
+          "maxCameraRotationStep": 6.016994953155518,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.4690039157867432,
+          "distanceMoved": 20.40522575378418
+        }
+      ],
+      "errors": [],
+      "samples": 7664,
+      "phases": {
+        "corridor": {
+          "samples": 560,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2525,
+          "maxStepExcess": 2.06753612e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Heavy-1920",
+            "phase": "corridor",
+            "seconds": "97.8222",
+            "x": "-0.0047",
+            "y": "3.7106",
+            "z": "-0.9468",
+            "step": "0.2525",
+            "rotationStep": "2.5851",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4822",
+            "enemyViewportY": "0.5246",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0168352965",
+            "allowedStep": "0.252529442",
+            "stepExcess": "5.401671E-08",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        },
+        "damage": {
+          "samples": 360,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0961,
+          "maxStepExcess": -0.153967768,
+          "maxAimError": 0.01978234,
+          "peak": {
+            "case": "Tall-1280",
+            "phase": "damage",
+            "seconds": "45.3656",
+            "x": "0.0000",
+            "y": "13.6406",
+            "z": "-7.7557",
+            "step": "0.0961",
+            "rotationStep": "0.2471",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5294",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166732986",
+            "allowedStep": "0.25009948",
+            "stepExcess": "-0.154006809",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "framing": {
+          "samples": 160,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0,
+          "maxStepExcess": -0.2495625,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "framing",
+            "seconds": "0.0786",
+            "x": "0.0000",
+            "y": "2.9894",
+            "z": "-4.8787",
+            "step": "0.0000",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.058604598",
+            "allowedStep": "0.879069",
+            "stepExcess": "-0.879069",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputIdle": {
+          "samples": 384,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0208,
+          "maxStepExcess": -0.229230389,
+          "maxAimError": 0.01978234,
+          "peak": {
+            "case": "Tall-1280",
+            "phase": "inputIdle",
+            "seconds": "46.3823",
+            "x": "0.0000",
+            "y": "13.0634",
+            "z": "-7.3710",
+            "step": "0.0208",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5077",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166658945",
+            "allowedStep": "0.249988422",
+            "stepExcess": "-0.229230389",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputLMBDrive": {
+          "samples": 2400,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2502,
+          "maxStepExcess": 8.326024e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1920",
+            "phase": "inputLMBDrive",
+            "seconds": "87.7216",
+            "x": "0.1094",
+            "y": "5.4711",
+            "z": "20.0800",
+            "step": "0.2502",
+            "rotationStep": "0.8108",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4949",
+            "enemyViewportY": "0.4547",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166799035",
+            "allowedStep": "0.250198543",
+            "stepExcess": "4.377216E-07",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0.0279764552",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        },
+        "inputRMB": {
+          "samples": 576,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0,
+          "maxStepExcess": -0.249487579,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "inputRMB",
+            "seconds": "11.1794",
+            "x": "0.0000",
+            "y": "2.9871",
+            "z": "-4.8787",
+            "step": "0.0000",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166650023",
+            "allowedStep": "0.249975041",
+            "stepExcess": "-0.249975041",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "pitch18TransitionAndOrbit360": {
+          "samples": 1824,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2177,
+          "maxStepExcess": -0.0322597846,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "pitch18TransitionAndOrbit360",
+            "seconds": "0.7287",
+            "x": "-0.0784",
+            "y": "3.6123",
+            "z": "-4.7345",
+            "step": "0.2177",
+            "rotationStep": "1.7547",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4753",
+            "enemyViewportY": "0.5492",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166673958",
+            "allowedStep": "0.250010937",
+            "stepExcess": "-0.03226246",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "wallEntry": {
+          "samples": 200,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2533,
+          "maxStepExcess": 3.296882e-07,
+          "maxAimError": 0.01978234,
+          "peak": {
+            "case": "Tall-1920",
+            "phase": "wallEntry",
+            "seconds": "115.2254",
+            "x": "0.0000",
+            "y": "13.1502",
+            "z": "-5.7962",
+            "step": "0.2533",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "True",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0168878976",
+            "allowedStep": "0.253318459",
+            "stepExcess": "-9.49949E-08",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        },
+        "zoom3to18": {
+          "samples": 1200,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2508,
+          "maxStepExcess": 4.80562449e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Wide-1280",
+            "phase": "zoom3to18",
+            "seconds": "59.5352",
+            "x": "0.0000",
+            "y": "6.7735",
+            "z": "-7.0527",
+            "step": "0.2508",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.6369",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0167189986",
+            "allowedStep": "0.250785",
+            "stepExcess": "-1.49011612E-08",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        }
+      },
+      "screenshots": [
+        {
+          "path": "WindowsDiagnostic/Heavy-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "abae18066e7f8ed85066a130b4600a75a8ed4691e9a3233ab3ad3905de1390ad"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "73a3929d68f3e73290fb1f3607d8801da25a030826c6e43e1c7995b48eed5563"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "748f342e860bf83fe218394ad73a10c2474df6206f2393a9642f5b4fdb85fd1a"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "01e527918097cdce4896fc7f4208a59aa6c127c8aa3f82a34aeead0077104b02"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "a2082369dbdfa12bb2966c85e09abee41854551bf5a5811e26dea2c44ece5013"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "7838685342ec4241478a3d83b24060b25fee69d445c23011a82e6bf576a5b096"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "7e38526f7c57967ce4876c441ea8469052f3fa524e3d20af3084d39fe17d6608"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "ab05df710b1670f2305f87b7b9d1e40c896a062e8a46e3b37b10c9b715c45feb"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "6f56523ed5eef3f11c4a521eeb1dedded2fe670f2d44e4e8227099fe433c875b"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "5d000ab53efd0ec7a670658b177677163b1b0d98e2e69a181b0618354e08446e"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "d6790623842f10d4f0174b8a9537aa39bb0bf27b03baed33b7bedcf837cd32f2"
+        },
+        {
+          "path": "WindowsDiagnostic/Heavy-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "8a3402d26eb35b93aa9197ba08947ea05120fc1b8db598f9db26563a1abfded8"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "0129882b19840f0849a7abf3acc4611e4f79f67e5a09ea5694a253e29ee9bb1a"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "250895438360d47084d1d0e2141c8a072f1318096e28bb4c9e71e59aa1244656"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "aa23aa9a736621286766ce5b6eddf71b116e2e29190c81df453feda4b4c7bf41"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "2398c76a1e4ab80960a52bd766e0a57fcf6e2445d1a02713855f9de45d9ead15"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "917ffa6433465169b08fcc0fd09bee2fc1825b54eacc944051d62c89e335eb4c"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "367ee13494d74edf0184ab82da3243fd1036031e3ee1c890b82147e8d9316fe0"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "ae48aff2b722be698e358e9eafa14506a97a872541eb149b60f677bbdbb5209c"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "64e3c219dcac24b5a2d18efc85369ac5a93c46acbba9ca6681a5560b6899964f"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "a7470007af6a5073f71989aff0a2dc1fe3bc78dfdb7b43c6da547dbbfc9d0db0"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "633d56ade6406cba647c09aea70eff4e003165a93e5a8ed246ab45a57b36e276"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "5e4587d9f33cca3816ad81b0efd13e8983b1ef03db0fa389ce907d17e3111756"
+        },
+        {
+          "path": "WindowsDiagnostic/Light-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "22f1a5324ea4405a7401f01ed9298e61a205480063a27ac6977ce068b4a99cba"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "810884c7ac4de83bfe415017a657d02b2360d390ae40dc39130eb791ce53eea0"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "7875994e2d47696a24b1fb31a87ce9fac9ba58470b422f49eb32d45cdab90ea6"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "c04c2100b38703d172da4ec9a7efd128eff63f05977a59e86aa6fdf38cd70bab"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "3c9cd3318ec53fb33d2965ef06c5689c369b710fddaef6b77531ea6944ed7eaa"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "1793fb7fbb4a950ce96ecd24df46396373784b6f769add28d55c17be9be6433a"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "7d78e929152a8bd9d060e6cc78ba44b5b9a6cbc23c60d1403ca96217524f8ac2"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "a18d604904d0f03ffa5720af893e5b96974a6883a32488ba42f78a63c8547672"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "b7d3ef60df4b39f1f7b1a6a7765658358fb89b3efb6dee03bb25b4ae8d2edab2"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "e328956b0a6058f12f472051d01703d25f63109f4a49d6e1c14276b0da041a08"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "aea2fd6b30b8363afc49e1f6180716b8d09ddd44843eeb1965893670f8a10c5e"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "1eeb825eded0fc58478f821c0ae67305d5425fc9e29c3ba31f72852b367f1dae"
+        },
+        {
+          "path": "WindowsDiagnostic/Tall-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "7cbd52b5927bc3d300fd6820878cd3505bebe149c695a1295fa93d3238c4f376"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "bb91d4b0dd9fbcc7707dc91a7384745e96fda7b3cbb0dc406895bfc137003001"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "e7e17a010eb19d840ac8ab7e4c126851b2591a78f84619c846a92bf18662c413"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "fcf678f2b48a0e6fabf20487d3eb32ba256921bba20612927340f2878b362f78"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "e73ac20fa3f29b27dca53a11bece502d2744b75c4cb8c09def17ae98e47d4b9e"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "360024981ecf47ece27d1453663b199bcfb115a377a92ee48e5e4cd98f38d7dc"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "c8b6492f9ccd72a8bee7177d94bda3c94993479b60051affc1429a1fb0e782e7"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "b087237a78e9a5388302ba2899d09cf7f2b081304959717d562c49cd7afb5468"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "7b4228915615da13c57748447b2a4ec55d92b9ccf3d35d2e6553203b99b850bf"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "cf2e77a2b40c51c40455439a5eeb69e401201ea0133da5741550eba8e250c1be"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "67fff359406c7094c75fb08cc9cd138b09b60f9d6445da432a4908fb3ea738c4"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "3082ba94060ad24524e26704a35c62b56562e6d30c03e914a09f08147f25c3f7"
+        },
+        {
+          "path": "WindowsDiagnostic/Wide-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "e115a872c1e654643994beb8ee4ac4eaf33bff9fee8545656460d766328a6540"
+        }
+      ],
+      "aimSummary": [
+        {
+          "id": "Light-1280",
+          "peak": {
+            "id": "Light-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "firstHitAfter": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "gun": "a423ddc27bfc45bf80a32407dc1170e9",
+            "time": 15.962980270385742,
+            "sincePhase": 3.6002607345581055,
+            "consumedError": 15.308438301086426,
+            "postFireError": 15.308438301086426,
+            "consumedAim": {
+              "x": 0.0026925394777208567,
+              "y": 0.0,
+              "z": 34.88037872314453
+            },
+            "postFireAim": {
+              "x": 0.0026925394777208567,
+              "y": 0.0,
+              "z": 34.88037872314453
+            },
+            "cameraPosition": {
+              "x": 0.006046793423593044,
+              "y": 6.592938423156738,
+              "z": 21.567262649536133
+            },
+            "muzzlePosition": {
+              "x": 0.004005664028227329,
+              "y": 1.5552150011062622,
+              "z": 27.821897506713867
+            },
+            "muzzleForward": {
+              "x": -0.00012927019270136952,
+              "y": 0.05029371380805969,
+              "z": 0.9987344741821289
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 6,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Heavy-1280",
+          "peak": {
+            "id": "Heavy-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "P17_PlayerPhysicalShell/Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+            "firstHitAfter": "P17_PlayerPhysicalShell/Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+            "gun": "fdef78b8148a442cbe8a737f5ad93ca0",
+            "time": 33.014068603515625,
+            "sincePhase": 2.683492660522461,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": -0.003030784660950303,
+              "y": 1.3316367864608765,
+              "z": 29.544086456298828
+            },
+            "postFireAim": {
+              "x": -0.003030784660950303,
+              "y": 1.3316367864608765,
+              "z": 29.544086456298828
+            },
+            "cameraPosition": {
+              "x": -0.0019928745459765196,
+              "y": 3.4867489337921143,
+              "z": 4.124027729034424
+            },
+            "muzzlePosition": {
+              "x": -0.0025602022651582956,
+              "y": 2.0323286056518555,
+              "z": 9.293170928955078
+            },
+            "muzzleForward": {
+              "x": -2.3223636162583716e-05,
+              "y": -0.03457982838153839,
+              "z": 0.9994019269943237
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.01978234015405178,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Tall-1280",
+          "peak": {
+            "id": "Tall-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "bc0fc4ed3d9b4d599b1278e04c521363",
+            "time": 52.050392150878906,
+            "sincePhase": 3.7343521118164062,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": -0.03701121360063553,
+              "y": 1.809999942779541,
+              "z": 29.75443458557129
+            },
+            "postFireAim": {
+              "x": -0.03701121360063553,
+              "y": 1.809999942779541,
+              "z": 29.75443458557129
+            },
+            "cameraPosition": {
+              "x": -0.02954666130244732,
+              "y": 12.407132148742676,
+              "z": 1.7484570741653442
+            },
+            "muzzlePosition": {
+              "x": -0.03279942274093628,
+              "y": 1.646806240081787,
+              "z": 9.058122634887695
+            },
+            "muzzleForward": {
+              "x": -0.00020349833357613534,
+              "y": 0.007884887978434563,
+              "z": 0.9999688863754272
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.01978234015405178,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Wide-1280",
+          "peak": {
+            "id": "Wide-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "8ae9e68f8f63420dace45d0c2e6d8225",
+            "time": 69.55390167236328,
+            "sincePhase": 3.2502517700195312,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": 0.003279029857367277,
+              "y": 1.321035623550415,
+              "z": 29.739999771118164
+            },
+            "postFireAim": {
+              "x": 0.003279029857367277,
+              "y": 1.321035623550415,
+              "z": 29.739999771118164
+            },
+            "cameraPosition": {
+              "x": 0.002164467703551054,
+              "y": 3.600240468978882,
+              "z": 6.587758541107178
+            },
+            "muzzlePosition": {
+              "x": 0.0025813328102231026,
+              "y": 2.0283353328704834,
+              "z": 11.726861953735352
+            },
+            "muzzleForward": {
+              "x": 3.8702841266058385e-05,
+              "y": -0.03923553600907326,
+              "z": 0.9992299675941467
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.01978234015405178,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Light-1920",
+          "peak": {
+            "id": "Light-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "firstHitAfter": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "gun": "3215f01b75794130b4cf9f05d9db82c6",
+            "time": 87.78829193115234,
+            "sincePhase": 3.5001678466796875,
+            "consumedError": 12.905630111694336,
+            "postFireError": 12.905630111694336,
+            "consumedAim": {
+              "x": 0.12567895650863647,
+              "y": 0.0,
+              "z": 34.25346374511719
+            },
+            "postFireAim": {
+              "x": 0.12567895650863647,
+              "y": 0.0,
+              "z": 34.25346374511719
+            },
+            "cameraPosition": {
+              "x": 0.11171204596757889,
+              "y": 6.081475734710693,
+              "z": 20.87203598022461
+            },
+            "muzzlePosition": {
+              "x": 0.12012831121683121,
+              "y": 1.5296630859375,
+              "z": 26.88425636291504
+            },
+            "muzzleForward": {
+              "x": 0.0004422672791406512,
+              "y": 0.0205755103379488,
+              "z": 0.999788224697113
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 5,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Heavy-1920",
+          "peak": {
+            "id": "Heavy-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "f06cdd7e5d84474da5ee2ab14d8c04c9",
+            "time": 105.14067840576172,
+            "sincePhase": 2.9012680053710938,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": 0.002680982928723097,
+              "y": 1.33946692943573,
+              "z": 29.739999771118164
+            },
+            "postFireAim": {
+              "x": 0.002680982928723097,
+              "y": 1.33946692943573,
+              "z": 29.739999771118164
+            },
+            "cameraPosition": {
+              "x": 0.0019267310854047537,
+              "y": 3.542163610458374,
+              "z": 5.416029930114746
+            },
+            "muzzlePosition": {
+              "x": 0.0024606771767139435,
+              "y": 2.0310516357421875,
+              "z": 10.579961776733398
+            },
+            "muzzleForward": {
+              "x": 1.1490634278743528e-05,
+              "y": -0.03607168793678284,
+              "z": 0.9993491768836975
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Tall-1920",
+          "peak": {
+            "id": "Tall-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "e61f149c1c934e89bb980ba9e13b3875",
+            "time": 125.15938568115234,
+            "sincePhase": 4.950386047363281,
+            "consumedError": 2.060610771179199,
+            "postFireError": 2.060610771179199,
+            "consumedAim": {
+              "x": 0.06937561929225922,
+              "y": 1.809999942779541,
+              "z": 30.118558883666992
+            },
+            "postFireAim": {
+              "x": 0.06937561929225922,
+              "y": 1.809999942779541,
+              "z": 30.118558883666992
+            },
+            "cameraPosition": {
+              "x": 0.060136593878269196,
+              "y": 13.639629364013672,
+              "z": 7.809598922729492
+            },
+            "muzzlePosition": {
+              "x": 0.062491580843925476,
+              "y": 1.62603759765625,
+              "z": 14.677184104919434
+            },
+            "muzzleForward": {
+              "x": 0.00043095104047097266,
+              "y": -0.024049393832683563,
+              "z": 0.9997106790542603
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 2,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Wide-1920",
+          "peak": {
+            "id": "Wide-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "67a407fd2a364018b94404ffc9146803",
+            "time": 141.4285430908203,
+            "sincePhase": 3.2500457763671875,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": -0.015130804851651192,
+              "y": 1.3315494060516357,
+              "z": 29.739999771118164
+            },
+            "postFireAim": {
+              "x": -0.015130804851651192,
+              "y": 1.3315494060516357,
+              "z": 29.739999771118164
+            },
+            "cameraPosition": {
+              "x": -0.013187703676521778,
+              "y": 3.603581428527832,
+              "z": 6.650934219360352
+            },
+            "muzzlePosition": {
+              "x": -0.013878371566534042,
+              "y": 2.028672695159912,
+              "z": 11.799596786499023
+            },
+            "muzzleForward": {
+              "x": -6.9758141762577e-05,
+              "y": -0.038828425109386444,
+              "z": 0.9992458820343018
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        }
+      ]
+    },
+    "WindowsFinal": {
+      "process": {
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "source": "f5ed27b6b47dbe851ca32be400d8e129ad54c9cd",
+        "exitCode": 2,
+        "startedUtc": "2026-10-26T00:21:20.9168741Z",
+        "finishedUtc": "2026-10-26T00:23:49.2917678Z"
+      },
+      "launch": {
+        "pid": 53592,
+        "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+        "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Builds\\CAMERA-R12-QA\\CameraR12QA.exe",
+        "source": "f5ed27b6b47dbe851ca32be400d8e129ad54c9cd",
+        "accessibilityClientAttached": false,
+        "visible": true,
+        "assemblySHA256": "5450BF9F3B9EAFA7C607D0BB2C018AAA6C7B15309EFCBA874888583A34ADB8E7",
+        "startedUtc": "2026-10-26T00:21:20.9168741Z",
+        "producer": "48581e49a878eca376674551017532bf17fd35b2",
+        "args": [
+          "-screen-fullscreen",
+          "0",
+          "-screen-width",
+          "1280",
+          "-screen-height",
+          "720",
+          "-logFile",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T002120Z\\Player.log\"",
+          "-camera-qa-output",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-CAMERA-R12-QA\\Artifacts\\Local\\CameraR12-Player-20261026T002120Z\""
+        ]
+      },
+      "overall": "FAIL_OBSERVED",
+      "rows": [
+        {
+          "id": "Light-1280",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 20,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 166,
+          "pivotOverlapSamples": 113,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 19,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 15.30643367767334,
+          "maxContinuousSpeed": 15.000039100646973,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 6.50063157081604e-07,
+          "maxMuzzleAfterSettle": 15.30643367767334,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 1.564000129699707,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999999403953552,
+            "z": 1.6391277313232422e-07
+          },
+          "finalPosition": {
+            "x": -0.0020487308502197266,
+            "y": 0.6512086391448975,
+            "z": 27.28019142150879
+          },
+          "maxCameraStep": 0.25167158246040344,
+          "maxCameraRotationStep": 4.808072090148926,
+          "maxMuzzleAimError": 15.30643367767334,
+          "maxCenterEnemyAngle": 6.694040775299072,
+          "distanceMoved": 27.282421112060547
+        },
+        {
+          "id": "Heavy-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 139,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 71,
+          "pivotOverlapSamples": 16,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 138,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000025749206543,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.302710294723511e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 5.180010795593262,
+            "y": 2.1140007972717285,
+            "z": 4.9200005531311035
+          },
+          "initialPosition": {
+            "x": 1.1753290891647339e-05,
+            "y": 1.0,
+            "z": -8.735805749893188e-06
+          },
+          "finalPosition": {
+            "x": -0.016177630051970482,
+            "y": 0.6499979496002197,
+            "z": 21.38955307006836
+          },
+          "maxCameraStep": 0.25080606341362,
+          "maxCameraRotationStep": 6.036095142364502,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.5312293767929077,
+          "distanceMoved": 21.392431259155273
+        },
+        {
+          "id": "Tall-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 34,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 85,
+          "pivotOverlapSamples": 24,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 33,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000025749206543,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.33996319770813e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 9.160000801086426,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999997615814209,
+            "z": 1.5681955289892358e-07
+          },
+          "finalPosition": {
+            "x": -0.017365779727697372,
+            "y": 0.905259370803833,
+            "z": 14.622572898864746
+          },
+          "maxCameraStep": 0.2505687177181244,
+          "maxCameraRotationStep": 5.2944560050964355,
+          "maxMuzzleAimError": 2.5525929927825928,
+          "maxCenterEnemyAngle": 2.473775863647461,
+          "distanceMoved": 14.62289047241211
+        },
+        {
+          "id": "Wide-1280",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1280,
+          "height": 720,
+          "parts": 149,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 59,
+          "pivotOverlapSamples": 14,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 148,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000028610229492,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.805624485015869e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 10.420035362243652,
+            "y": 2.114006280899048,
+            "z": 4.920017242431641
+          },
+          "initialPosition": {
+            "x": 1.1712312698364258e-05,
+            "y": 0.9999995827674866,
+            "z": -1.5832483768463135e-05
+          },
+          "finalPosition": {
+            "x": 0.012468722648918629,
+            "y": 0.6499994993209839,
+            "z": 20.408037185668945
+          },
+          "maxCameraStep": 0.2503502368927002,
+          "maxCameraRotationStep": 6.0163445472717285,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.427932858467102,
+          "distanceMoved": 20.411056518554688
+        },
+        {
+          "id": "Light-1920",
+          "phase": "inputLMBDrive",
+          "status": "FAIL_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 20,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 167,
+          "pivotOverlapSamples": 114,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 19,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 13.104462623596191,
+          "maxContinuousSpeed": 15.000041961669922,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 6.966292858123779e-07,
+          "maxMuzzleAfterSettle": 13.104462623596191,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 1.564000129699707,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999999403953552,
+            "z": 1.6391277313232422e-07
+          },
+          "finalPosition": {
+            "x": 0.13969339430332184,
+            "y": 0.6513922214508057,
+            "z": 27.28021812438965
+          },
+          "maxCameraStep": 0.25325721502304077,
+          "maxCameraRotationStep": 4.808235168457031,
+          "maxMuzzleAimError": 13.104462623596191,
+          "maxCenterEnemyAngle": 6.669415473937988,
+          "distanceMoved": 27.28280258178711
+        },
+        {
+          "id": "Heavy-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 139,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 71,
+          "pivotOverlapSamples": 16,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 138,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.01978234015405178,
+          "maxContinuousSpeed": 15.000027656555176,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.675239324569702e-07,
+          "maxMuzzleAfterSettle": 0.01978234015405178,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 5.180010795593262,
+            "y": 2.1140007972717285,
+            "z": 4.9200005531311035
+          },
+          "initialPosition": {
+            "x": 1.1753290891647339e-05,
+            "y": 1.0,
+            "z": -8.735805749893188e-06
+          },
+          "finalPosition": {
+            "x": 0.012308631092309952,
+            "y": 0.6500013470649719,
+            "z": 21.42206382751465
+          },
+          "maxCameraStep": 0.25124692916870117,
+          "maxCameraRotationStep": 6.035446643829346,
+          "maxMuzzleAimError": 0.01978234015405178,
+          "maxCenterEnemyAngle": 1.5031105279922485,
+          "distanceMoved": 21.424936294555664
+        },
+        {
+          "id": "Tall-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 34,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 85,
+          "pivotOverlapSamples": 24,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 33,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000027656555176,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.675239324569702e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 2.9800102710723877,
+            "y": 9.160000801086426,
+            "z": 2.7200000286102295
+          },
+          "initialPosition": {
+            "x": 3.129243850708008e-07,
+            "y": 0.9999997615814209,
+            "z": 1.5681955289892358e-07
+          },
+          "finalPosition": {
+            "x": 0.03573441132903099,
+            "y": 0.8950504064559937,
+            "z": 14.354667663574219
+          },
+          "maxCameraStep": 0.2505807876586914,
+          "maxCameraRotationStep": 5.294308185577393,
+          "maxMuzzleAimError": 2.4470465183258057,
+          "maxCenterEnemyAngle": 2.4736177921295166,
+          "distanceMoved": 14.355095863342285
+        },
+        {
+          "id": "Wide-1920",
+          "phase": "inputLMBDrive",
+          "status": "PASS_OBSERVED",
+          "shotComponents": "Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+          "width": 1920,
+          "height": 1080,
+          "parts": 149,
+          "ownReticleHits": 0,
+          "enemyBlockedSamples": 0,
+          "enemyOffscreenSamples": 0,
+          "worldPenetrationSamples": 0,
+          "clipSamples": 59,
+          "pivotOverlapSamples": 14,
+          "samples": 958,
+          "fireCalls": 0,
+          "newFastBodies": 14,
+          "partsAfterDamage": 148,
+          "fitSaturated": false,
+          "damageDetached": true,
+          "finalOriginOwnHits": 0,
+          "originInsideOwnSamples": 0,
+          "speedCapViolations": 0,
+          "worldSphereOverlapSamples": 0,
+          "diagnosticOwnFlags": 0,
+          "aimErrorViolations": 0,
+          "zoomSteps": 150,
+          "inputIdleShells": 0,
+          "inputRightShells": 0,
+          "inputLeftShells": 14,
+          "inputLeftObservedFrames": 300,
+          "inputRightObservedFrames": 72,
+          "finalRenderedSamples": 420,
+          "finalRenderedOwnHits": 0,
+          "finalRenderedWorldOverlaps": 0,
+          "forwardObservedFrames": 300,
+          "discardedFastBodies": 0,
+          "maxMuzzleConsumedAfterSettle": 0.02797645516693592,
+          "maxContinuousSpeed": 15.000028610229492,
+          "maxActualAimError": 0.02797645516693592,
+          "maxStepExcess": 4.7497451305389404e-07,
+          "maxMuzzleAfterSettle": 0.02797645516693592,
+          "inputMethod": "InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input",
+          "hullSize": {
+            "x": 10.420035362243652,
+            "y": 2.114006280899048,
+            "z": 4.920017242431641
+          },
+          "initialPosition": {
+            "x": 1.1712312698364258e-05,
+            "y": 0.9999995827674866,
+            "z": -1.5832483768463135e-05
+          },
+          "finalPosition": {
+            "x": -0.017270967364311218,
+            "y": 0.6499873995780945,
+            "z": 20.46389389038086
+          },
+          "maxCameraStep": 0.2512878477573395,
+          "maxCameraRotationStep": 6.016994953155518,
+          "maxMuzzleAimError": 0.02797645516693592,
+          "maxCenterEnemyAngle": 1.5321238040924072,
+          "distanceMoved": 20.466909408569336
+        }
+      ],
+      "errors": [],
+      "samples": 7664,
+      "phases": {
+        "corridor": {
+          "samples": 560,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2517,
+          "maxStepExcess": 2.17929482e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "corridor",
+            "seconds": "9.0785",
+            "x": "0.5333",
+            "y": "4.0533",
+            "z": "0.8935",
+            "step": "0.2517",
+            "rotationStep": "0.9091",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4213",
+            "enemyViewportY": "0.9065",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.016778104",
+            "allowedStep": "0.251671553",
+            "stepExcess": "2.23517418E-08",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0.0279764552",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "damage": {
+          "samples": 360,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0961,
+          "maxStepExcess": -0.153944984,
+          "maxAimError": 0.01978234,
+          "peak": {
+            "case": "Tall-1280",
+            "phase": "damage",
+            "seconds": "45.3660",
+            "x": "0.0000",
+            "y": "13.6407",
+            "z": "-7.7557",
+            "step": "0.0961",
+            "rotationStep": "0.2439",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5294",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166665949",
+            "allowedStep": "0.249998927",
+            "stepExcess": "-0.153944984",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0.01978234",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "framing": {
+          "samples": 160,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0,
+          "maxStepExcess": -0.247309536,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "framing",
+            "seconds": "0.0779",
+            "x": "0.0000",
+            "y": "2.9894",
+            "z": "-4.8787",
+            "step": "0.0000",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0579443946",
+            "allowedStep": "0.8691659",
+            "stepExcess": "-0.8691659",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputIdle": {
+          "samples": 384,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0208,
+          "maxStepExcess": -0.229226962,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Tall-1280",
+            "phase": "inputIdle",
+            "seconds": "46.3827",
+            "x": "0.0000",
+            "y": "13.0634",
+            "z": "-7.3710",
+            "step": "0.0208",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5077",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166655965",
+            "allowedStep": "0.249983951",
+            "stepExcess": "-0.229226962",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputLMBDrive": {
+          "samples": 2400,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2501,
+          "maxStepExcess": 6.966293e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "inputLMBDrive",
+            "seconds": "15.8624",
+            "x": "0.0063",
+            "y": "5.9949",
+            "z": "20.7588",
+            "step": "0.2501",
+            "rotationStep": "0.8318",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4998",
+            "enemyViewportY": "0.4410",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166743975",
+            "allowedStep": "0.250115961",
+            "stepExcess": "-6.277114E-07",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "inputRMB": {
+          "samples": 576,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.0,
+          "maxStepExcess": -0.2492685,
+          "maxAimError": 0.0,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "inputRMB",
+            "seconds": "11.1786",
+            "x": "0.0000",
+            "y": "2.9871",
+            "z": "-4.8787",
+            "step": "0.0000",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166684035",
+            "allowedStep": "0.250026047",
+            "stepExcess": "-0.250026047",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "pitch18TransitionAndOrbit360": {
+          "samples": 1824,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2177,
+          "maxStepExcess": -0.03225711,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "pitch18TransitionAndOrbit360",
+            "seconds": "0.7280",
+            "x": "-0.0784",
+            "y": "3.6123",
+            "z": "-4.7345",
+            "step": "0.2177",
+            "rotationStep": "1.7543",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.4754",
+            "enemyViewportY": "0.5492",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0166672058",
+            "allowedStep": "0.250008076",
+            "stepExcess": "-0.0322627835",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "wallEntry": {
+          "samples": 200,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2511,
+          "maxStepExcess": 3.37138772e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1280",
+            "phase": "wallEntry",
+            "seconds": "7.3116",
+            "x": "0.0000",
+            "y": "2.9279",
+            "z": "-3.7241",
+            "step": "0.2511",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.5000",
+            "clipped": "True",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0167403985",
+            "allowedStep": "0.251105964",
+            "stepExcess": "-1.322478E-07",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1280",
+            "screenHeight": "720"
+          }
+        },
+        "zoom3to18": {
+          "samples": 1200,
+          "originOwnHits": 0,
+          "nearClipOwnHits": 0,
+          "worldOverlaps": 0,
+          "maxStep": 0.2533,
+          "maxStepExcess": 4.80562449e-07,
+          "maxAimError": 0.0279764552,
+          "peak": {
+            "case": "Light-1920",
+            "phase": "zoom3to18",
+            "seconds": "77.6350",
+            "x": "0.0000",
+            "y": "5.6365",
+            "z": "-6.3462",
+            "step": "0.2533",
+            "rotationStep": "0.0000",
+            "idealOwnBlocked": "False",
+            "actualOwnBlocked": "False",
+            "enemyOwnBlocked": "False",
+            "enemyViewportX": "0.5000",
+            "enemyViewportY": "0.6608",
+            "clipped": "False",
+            "pivotBlocked": "False",
+            "deltaTime": "0.0168838017",
+            "allowedStep": "0.253257036",
+            "stepExcess": "1.899898E-07",
+            "actualOriginOwnHit": "False",
+            "insideOwn": "False",
+            "worldSphereOverlap": "False",
+            "ownDiagnostic": "False",
+            "actualAimError": "0",
+            "screenWidth": "1920",
+            "screenHeight": "1080"
+          }
+        }
+      },
+      "screenshots": [
+        {
+          "path": "WindowsFinal/Heavy-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "461eee27b81c70ed56de59c1b013986d7bc6b0794ac62f4b72d867ff0fb468cb"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "c0493db5b34249cb1842c4a0d868b4e3900037b4495e6dff48bf5be7ea2daff8"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "c5ca7e6a71bbc06308db1d9ed6bbf3b3482c0ba67f70b35709cc7df38638a358"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "5508fe2107787d49b6a75f38e9d0aa5fa81f408ec87b8b6dc33327f0981be281"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "e3525651c9ae30d00371e3934dab7faf379fc2117606376f06fe39d0024bdfba"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "093f69cbaf192d1383268e3b0a7a7448a795f1e9631e84b2d946351768ae8cf3"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "5ffe2b4fb0dc1b7a907806d8805f783755c002345708a8efb7eba6d8735fcf8a"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "4c11684f423e1847e9d26dc46e1da002b724484abe95cb76ea25dca12a03ecc1"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "fb1547f6ee2b9e65a5388e2a347e3df18cf2d3a5649cd3a5f2321d25ab4c5615"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "c31be9e8851b9636e96ec1433227b787e4013fba4434f200bf0fa4ae9f58fddc"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "e75831bc274ef7c7e6713c433a7e09697ffe09b649324f30808ab8baa698993b"
+        },
+        {
+          "path": "WindowsFinal/Heavy-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "d468b1f47d64a16bf7dd94a16a6dd641a43de5ee09545dcaf9ed62660b063883"
+        },
+        {
+          "path": "WindowsFinal/Light-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "a2cd32d921c8458c44a7ba8d721e967dad348a8b52a08881c6e333402de55508"
+        },
+        {
+          "path": "WindowsFinal/Light-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "9beab454cfe9ce08a42bc5f6e2b7bff0a4ae29ff5c7f04bed52a3eeb9708497f"
+        },
+        {
+          "path": "WindowsFinal/Light-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "e57c4705e8830911013969b2ed866527641eb1ed1812ac06db990f023d6d1961"
+        },
+        {
+          "path": "WindowsFinal/Light-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "06953afa9e8c3214a0a702cdb534491e7bfa3084ab9a75e2dcdfed9469e315f2"
+        },
+        {
+          "path": "WindowsFinal/Light-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "82d1e338c9af02931558adea4d7095451c0e64afacaa985a261a4ab7451cc33e"
+        },
+        {
+          "path": "WindowsFinal/Light-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "83cc0248f5b91b34f41c6d9b40ce92f5391d1f6e7016cbd49d8967252a89f7c0"
+        },
+        {
+          "path": "WindowsFinal/Light-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "2fbbca40ac597f1671cca3543417a86e9d4721dc1e217740b7406e438d0f90cc"
+        },
+        {
+          "path": "WindowsFinal/Light-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "991dc0cbe4b65c7861faa86e09a774fb2eb9c6780f5f0b27d32248545adc3472"
+        },
+        {
+          "path": "WindowsFinal/Light-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "7bb2b8e3a9996702266f1cdd67ec624791266e2e885e2e9bb324a4f34b93b28a"
+        },
+        {
+          "path": "WindowsFinal/Light-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "e67d632f425fe7dcc379f70052c28e121d656feb14f7d44b384b9c64b142ab1c"
+        },
+        {
+          "path": "WindowsFinal/Light-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "8bf8fcd6ba51bf3c32e81448e4b59d6ab87fe8d51a2fb892c75e55286e86e13a"
+        },
+        {
+          "path": "WindowsFinal/Light-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "9a79224b0137579759e606d237c0296b548f1e8c8fde36400031f3f355a90bf2"
+        },
+        {
+          "path": "WindowsFinal/Tall-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "6c28e9f88fde1955fcaccb90701828d5d754f6706cb37c9e7fb795abdd061669"
+        },
+        {
+          "path": "WindowsFinal/Tall-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "8e2dfcf35f870cafa9c65f164761b61e88a0fb96578c79d397f5a378bd91a6ff"
+        },
+        {
+          "path": "WindowsFinal/Tall-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "03f6cc9b45e672baad23970527ef3df8f91ef1d54174fdc14d28fa59ca4845dc"
+        },
+        {
+          "path": "WindowsFinal/Tall-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "c1a7b489d58ac56790c8410cc4d4ee76b27a50ef5838a22044b6d445b82e4c03"
+        },
+        {
+          "path": "WindowsFinal/Tall-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "ed565e27b75872c5a0c8ab7c82dbdb2c4ef900ca305813320d21fa60524e71cc"
+        },
+        {
+          "path": "WindowsFinal/Tall-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "52e29519b662eb6bab6ec8b134d1bd30833d20ff62e4b57773ecb65b146790c0"
+        },
+        {
+          "path": "WindowsFinal/Tall-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "52c212a32468fc96f7db6de1a1b1770e210d2c862f544c228a9556c4eb2d61e6"
+        },
+        {
+          "path": "WindowsFinal/Tall-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "f2a9be19a47efc820855986dacc7c3743b212b0a2098591b9df23b98499fcff2"
+        },
+        {
+          "path": "WindowsFinal/Tall-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "c1c9e795fe675fdf1c1907604c0650236966f0e1f0fdc4d795305c1d05e76936"
+        },
+        {
+          "path": "WindowsFinal/Tall-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "a6356bf0cc253f231ab4bc63de7aff0c25c6304ac366ba8318e0b9d145b30ad4"
+        },
+        {
+          "path": "WindowsFinal/Tall-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "225507c5b751b11a07c5c826af2314943413d10a814280397cbe708c458a052e"
+        },
+        {
+          "path": "WindowsFinal/Tall-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "889d60aa96982e8a69574bdb7c01c7986374ed425c8510c6dce15b4a4290da0d"
+        },
+        {
+          "path": "WindowsFinal/Wide-1280-corridor.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "a61129d0657487cc649d6ee0fa4e8191f71f7772ab43e45457df0bf71e447911"
+        },
+        {
+          "path": "WindowsFinal/Wide-1280-damage.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "c2357369a9fe5a7bc2630e5e20cb8a8eac61e6af8479594d4ad6ba73a601f4c0"
+        },
+        {
+          "path": "WindowsFinal/Wide-1280-driveFire.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "1a5d310014c427fb16df2318a8aaab7018630a43102e5ec8dc6542a057c2cfb2"
+        },
+        {
+          "path": "WindowsFinal/Wide-1280-framing.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "bc5d4f4a049270602fd4da3b01279241ffbb105b367514b75dc3c2581d103c7c"
+        },
+        {
+          "path": "WindowsFinal/Wide-1280-wall.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "563a2cba4a4ae4140236e492d1240a058a6e1a79df277da9d2ac6b212c2d96ab"
+        },
+        {
+          "path": "WindowsFinal/Wide-1280-zoom.png",
+          "width": 1280,
+          "height": 720,
+          "sha256": "6f57959474a17b2172eea3e4c9aae3b6f7f780a135e740e1f602484840c18e12"
+        },
+        {
+          "path": "WindowsFinal/Wide-1920-corridor.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "e8a50515695d69a200c315605e095ab42fed0d935b1945e1f2ac0b471f2ae799"
+        },
+        {
+          "path": "WindowsFinal/Wide-1920-damage.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "20149d40214998a86f8cc3eb7da1c960338e3766ab7fd0040cc846af91d1fe44"
+        },
+        {
+          "path": "WindowsFinal/Wide-1920-driveFire.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "89a3fb8b5783384c0f4f8cb63a98a7cd0c2d453ac0d0f74ccd64522521fa3b63"
+        },
+        {
+          "path": "WindowsFinal/Wide-1920-framing.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "d407f7044870fbd906932d50fb5143e757c978c2dd2fdae479ae7d5b5a45433b"
+        },
+        {
+          "path": "WindowsFinal/Wide-1920-wall.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "10ced0e9d475b849ca6c30d5b51388f505d00f67013c3a7eebebb5b4ad9f9c4b"
+        },
+        {
+          "path": "WindowsFinal/Wide-1920-zoom.png",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "235a9c749f63828522e05a78e9262003a4216fa5d20ecb51894a0f7d42a632a0"
+        }
+      ],
+      "aimSummary": [
+        {
+          "id": "Light-1280",
+          "peak": {
+            "id": "Light-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "firstHitAfter": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "gun": "6c1296ed27c54912917f2bfa44eb808b",
+            "time": 15.962409019470215,
+            "sincePhase": 3.600414276123047,
+            "consumedError": 15.30643367767334,
+            "postFireError": 15.30643367767334,
+            "consumedAim": {
+              "x": 0.002692390466108918,
+              "y": 0.0,
+              "z": 34.880775451660156
+            },
+            "postFireAim": {
+              "x": 0.002692390466108918,
+              "y": 0.0,
+              "z": 34.880775451660156
+            },
+            "cameraPosition": {
+              "x": 0.006046999711543322,
+              "y": 6.592568397521973,
+              "z": 21.566776275634766
+            },
+            "muzzlePosition": {
+              "x": 0.004011185839772224,
+              "y": 1.5553290843963623,
+              "z": 27.81612777709961
+            },
+            "muzzleForward": {
+              "x": -0.0001302419841522351,
+              "y": 0.05042657628655434,
+              "z": 0.9987277388572693
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 6,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Heavy-1280",
+          "peak": {
+            "id": "Heavy-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "f271928ee28b4ec1b4140b04c10c120d",
+            "time": 32.89774703979492,
+            "sincePhase": 2.567415237426758,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": -0.0025955596938729286,
+              "y": 1.307425856590271,
+              "z": 29.739999771118164
+            },
+            "postFireAim": {
+              "x": -0.0025955596938729286,
+              "y": 1.307425856590271,
+              "z": 29.739999771118164
+            },
+            "cameraPosition": {
+              "x": -0.0016291452338919044,
+              "y": 3.4618334770202637,
+              "z": 3.479611873626709
+            },
+            "muzzlePosition": {
+              "x": -0.002161626238375902,
+              "y": 2.032515048980713,
+              "z": 8.651118278503418
+            },
+            "muzzleForward": {
+              "x": -2.056427183561027e-05,
+              "y": -0.03436224162578583,
+              "z": 0.9994094371795654
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Tall-1280",
+          "peak": {
+            "id": "Tall-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Lufa/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "firstHitAfter": "Lufa/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "gun": "5140abefa4d046218fabeab2230f8430",
+            "time": 52.983177185058594,
+            "sincePhase": 4.667011260986328,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": -0.018991917371749878,
+              "y": 1.8500351905822754,
+              "z": 30.077999114990234
+            },
+            "postFireAim": {
+              "x": -0.018991917371749878,
+              "y": 1.8500351905822754,
+              "z": 30.077999114990234
+            },
+            "cameraPosition": {
+              "x": -0.03176902234554291,
+              "y": 13.283323287963867,
+              "z": 6.158478736877441
+            },
+            "muzzlePosition": {
+              "x": -0.02704845555126667,
+              "y": 1.6514272689819336,
+              "z": 13.201568603515625
+            },
+            "muzzleForward": {
+              "x": 0.0004773509281221777,
+              "y": 0.011767541989684105,
+              "z": 0.9999306201934814
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Wide-1280",
+          "peak": {
+            "id": "Wide-1280",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "P17_PlayerPhysicalShell/Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+            "firstHitAfter": "P17_PlayerPhysicalShell/Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+            "gun": "0db2f77055b841e7b4c2c198ffc11eee",
+            "time": 68.95100402832031,
+            "sincePhase": 2.6669769287109375,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": 0.0011935168877243996,
+              "y": 1.327468752861023,
+              "z": 29.560001373291016
+            },
+            "postFireAim": {
+              "x": 0.0011935168877243996,
+              "y": 1.327468752861023,
+              "z": 29.560001373291016
+            },
+            "cameraPosition": {
+              "x": 0.00023861114459577948,
+              "y": 3.4609341621398926,
+              "z": 3.456772804260254
+            },
+            "muzzlePosition": {
+              "x": 0.0005486413137987256,
+              "y": 2.0331122875213623,
+              "z": 8.613126754760742
+            },
+            "muzzleForward": {
+              "x": 3.076880966546014e-05,
+              "y": -0.033668193966150284,
+              "z": 0.9994330406188965
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.01978234015405178,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Light-1920",
+          "peak": {
+            "id": "Light-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "firstHitAfter": "QA flat floor/Transform;MeshFilter;BoxCollider;MeshRenderer",
+            "gun": "c3f4371b5cb7403287d32be2d601ab50",
+            "time": 87.75234985351562,
+            "sincePhase": 3.5004119873046875,
+            "consumedError": 13.104462623596191,
+            "postFireError": 13.104462623596191,
+            "consumedAim": {
+              "x": 0.12560436129570007,
+              "y": 0.0,
+              "z": 34.20186996459961
+            },
+            "postFireAim": {
+              "x": 0.12560436129570007,
+              "y": 0.0,
+              "z": 34.20186996459961
+            },
+            "cameraPosition": {
+              "x": 0.11178378015756607,
+              "y": 6.107391357421875,
+              "z": 20.906383514404297
+            },
+            "muzzlePosition": {
+              "x": 0.1203228086233139,
+              "y": 1.5303936004638672,
+              "z": 26.924945831298828
+            },
+            "muzzleForward": {
+              "x": 0.00039053798536770046,
+              "y": 0.021426986902952194,
+              "z": 0.9997703433036804
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 5,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.01978234015405178,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Heavy-1920",
+          "peak": {
+            "id": "Heavy-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "P17_PlayerPhysicalShell/Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+            "firstHitAfter": "P17_PlayerPhysicalShell/Transform;MeshFilter;SphereCollider;MeshRenderer;R4ProjectileOrigin;Rigidbody;P17PhysicalShell;RRLPointDefenseThreat;PointDefenseThreatProxy",
+            "gun": "adbae1b4598d4423bcbc0cec89ecad87",
+            "time": 103.81989288330078,
+            "sincePhase": 1.5833892822265625,
+            "consumedError": 0.01978234015405178,
+            "postFireError": 0.01978234015405178,
+            "consumedAim": {
+              "x": 0.0006293668411672115,
+              "y": 1.3373565673828125,
+              "z": 28.46476936340332
+            },
+            "postFireAim": {
+              "x": 0.0006293668411672115,
+              "y": 1.3373565673828125,
+              "z": 28.46476936340332
+            },
+            "cameraPosition": {
+              "x": 0.0010567641584202647,
+              "y": 3.3164899349212646,
+              "z": -1.432508111000061
+            },
+            "muzzlePosition": {
+              "x": 0.001089847064577043,
+              "y": 2.0378410816192627,
+              "z": 3.592743396759033
+            },
+            "muzzleForward": {
+              "x": -1.850662738434039e-05,
+              "y": -0.028152383863925934,
+              "z": 0.9996036291122437
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Tall-1920",
+          "peak": {
+            "id": "Tall-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "389a190460b54719ae39f71f99d910b0",
+            "time": 123.98836517333984,
+            "sincePhase": 3.7668609619140625,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": 0.024514896795153618,
+              "y": 1.7144763469696045,
+              "z": 29.739999771118164
+            },
+            "postFireAim": {
+              "x": 0.024514896795153618,
+              "y": 1.7144763469696045,
+              "z": 29.739999771118164
+            },
+            "cameraPosition": {
+              "x": 0.022244462743401527,
+              "y": 12.376822471618652,
+              "z": 1.5352669954299927
+            },
+            "muzzlePosition": {
+              "x": 0.022985178977251053,
+              "y": 1.6530253887176514,
+              "z": 8.883366584777832
+            },
+            "muzzleForward": {
+              "x": 7.334411202464253e-05,
+              "y": 0.002946313936263323,
+              "z": 0.9999956488609314
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.01978234015405178,
+          "firingFrameViolations": 0
+        },
+        {
+          "id": "Wide-1920",
+          "peak": {
+            "id": "Wide-1920",
+            "phase": "inputLMBDrive",
+            "firstHitBefore": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "firstHitAfter": "Gun (0, 1, 0)/Transform;MeshFilter;BoxCollider;MeshRenderer;P12PipelineSafeDamageable;P12_PipelineSafePlayerBlock;R3BlockMountPoints;R3MountedPart;P12PipelineSafeFunctionalModule;RRLRocketDamageReceiver;RRLEmpPartState;EmpReceiver",
+            "gun": "b8d32a3ebba64380ae1321d3c2da1863",
+            "time": 143.14035034179688,
+            "sincePhase": 4.9503936767578125,
+            "consumedError": 0.02797645516693592,
+            "postFireError": 0.02797645516693592,
+            "consumedAim": {
+              "x": -0.017353251576423645,
+              "y": 1.4661121368408203,
+              "z": 29.739999771118164
+            },
+            "postFireAim": {
+              "x": -0.017353251576423645,
+              "y": 1.4661121368408203,
+              "z": 29.739999771118164
+            },
+            "cameraPosition": {
+              "x": -0.016276197507977486,
+              "y": 4.772589683532715,
+              "z": 15.973111152648926
+            },
+            "muzzlePosition": {
+              "x": -0.016861092299222946,
+              "y": 2.0093860626220703,
+              "z": 20.895111083984375
+            },
+            "muzzleForward": {
+              "x": -5.5538643209729344e-05,
+              "y": -0.06130685284733772,
+              "z": 0.9981189370155334
+            }
+          },
+          "gunTrackingViolationsAfter1_5s": 0,
+          "identifiedShots": 14,
+          "maximumFiringFrameAimError": 0.0,
+          "firingFrameViolations": 0
+        }
+      ],
+      "endOfFrame": {
+        "samples": 3360,
+        "ownOriginHits": 0,
+        "ownNearClipHits": 0,
+        "insideOwn": 0,
+        "worldOverlaps": 0
+      },
+      "flightAimMaximum": 0.01978234015405178,
+      "flightAimViolations": 0
+    }
+  },
+  "cameraStatus": "PASS_OBSERVED",
+  "overallFunctional": "FAIL_OBSERVED",
+  "G2": "NOT_GRANTED"
+}

@@ -1,0 +1,10 @@
+{
+  "producer": "48581e49a878eca376674551017532bf17fd35b2",
+  "base": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "nativeTestSnapshot": "32534edcbfafda786b8f079f558efe8e52bdf5a6",
+  "finalBuildCodeSnapshot": "37160c687f57d9552b86442fac0590fe657cf008",
+  "finalLaunchSnapshot": "f5ed27b6b47dbe851ca32be400d8e129ad54c9cd",
+  "generatedSceneSHA256": "b288c943f58b9489aba31ef6d303cdb5b807f27194578de690558642e9029824",
+  "gameAssemblySHA256": "5450bf9f3b9eafa7c607d0bb2c018aaa6c7b15309efcba874888583a34adb8e7",
+  "note": "Build factory saves a new receiver-only scene; scene frozen in finalLaunchSnapshot. Producer source remains exact. Report-only commits do not alter built code."
+}
