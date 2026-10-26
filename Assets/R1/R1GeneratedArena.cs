@@ -83,16 +83,23 @@ namespace RoboRougelike.R1
         static bool TryMeasureEnvelope(Rigidbody body,out Vector3 size)
         {
             size=default;if(body==null)return false;
-            var colliders=body.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.attachedRigidbody==body).ToArray();
+            var colliders=body.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&c.gameObject.activeInHierarchy&&!c.isTrigger&&c.attachedRigidbody==body).ToArray();
             bool found=false;Bounds bounds=default;
             foreach(var collider in colliders)
             {
+                // Measure shape-local data. A just-restored paused/interpolated
+                // PhysX collider can still return stale world bounds after MoveTo;
+                // that inflated a road→garage robot to94m at x=-90.
+                Bounds local;
+                if(collider is BoxCollider box)local=new Bounds(box.center,box.size);
+                else if(collider is SphereCollider sphere)local=new Bounds(sphere.center,Vector3.one*sphere.radius*2);
+                else if(collider is CapsuleCollider capsule){var diameter=Vector3.one*capsule.radius*2;diameter[capsule.direction]=Mathf.Max(capsule.height,capsule.radius*2);local=new Bounds(capsule.center,diameter);}
+                else if(collider is MeshCollider mesh&&mesh.sharedMesh!=null)local=mesh.sharedMesh.bounds;
+                else return false; // An unknown shape is not a measured envelope.
                 for(int x=-1;x<=1;x+=2)for(int y=-1;y<=1;y+=2)for(int z=-1;z<=1;z+=2)
                 {
-                    var sign=new Vector3(x,y,z);Vector3 point;
-                    if(collider is BoxCollider box)
-                        point=box.transform.TransformPoint(box.center+Vector3.Scale(box.size*.5f,sign));
-                    else point=collider.bounds.center+Vector3.Scale(collider.bounds.extents,sign);
+                    var sign=new Vector3(x,y,z);
+                    Vector3 point=collider.transform.TransformPoint(local.center+Vector3.Scale(local.extents,sign));
                     point=body.transform.InverseTransformPoint(point);
                     if(!found){bounds=new Bounds(point,Vector3.zero);found=true;}else bounds.Encapsulate(point);
                 }
