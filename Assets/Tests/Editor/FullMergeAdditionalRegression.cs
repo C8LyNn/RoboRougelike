@@ -124,5 +124,18 @@ public sealed class FullMergeAdditionalRegression
             Assert.That(hits.Length,Is.GreaterThan(0));Assert.That(hits.Max(h=>h.point.y),Is.EqualTo(p.y).Within(.03f),"Junction curb above actual source grade at sample "+i);
         }
     }
+    [UnityTest]public IEnumerator ArticulatingGunCannotFeedBackIntoTheCameraAimAnchor(){
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        run.Player.Controller.enabled=false;
+        var follow=Object.FindFirstObjectByType<P12PipelineSafeCamera>();var gun=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.Gun);
+        Vector3? first=null;
+        foreach(var rotation in new[]{Quaternion.identity,Quaternion.Euler(35,90,0),Quaternion.Euler(-20,170,0),Quaternion.Euler(60,45,0)}){
+            gun.GunPivot.localRotation=rotation;Physics.SyncTransforms();Set(follow,"yaw",0f);Set(follow,"pitch",38f);Set(follow,"distance",10f);follow.ReceiverRig.ResetSmoothing();
+            typeof(P12PipelineSafeCamera).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(follow,null);
+            var anchor=follow.ReceiverRig.LastSolution.AimWorld;if(!first.HasValue)first=anchor;
+            Assert.That(Vector3.Distance(anchor,first.Value),Is.LessThan(.001f),"Unchanged chassis must not move its camera aim anchor as the gun follows that same reticle");
+        }
+        yield return null;
+    }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
