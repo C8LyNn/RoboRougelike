@@ -10,7 +10,7 @@ PINS = {
  'BUILD_R14': {'outer':'B01_BUILD_R14_actions.zip','inner':'B01-BUILD001-R14.zip','sha':'62321794e8f91f1660c32597632b40b9bccdbab1becd3c7e750632f06f8714aa','bytes':155320,'count':60,'source':'95707c68c8071a949b5d9fec7ff57926e92f8198','root':'Assets/B01Construction/BUILD001','meta':'Assets/B01Construction/BUILD001.meta','manifest':'PACKAGE_MANIFEST_R13.json','records':59},
  'WORLD_R11': {'outer':'B01_WORLD_R11_actions.zip','inner':'mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip','sha':'a27891c3b9420a3060190c613104121154ef1385c6d15354d2d68aa22f22802a','bytes':46467,'count':40,'source':'5ce70920478043210edbd78713f746b8d8ff431d','root':'Assets/B01Packages/MAPGENWORLD001','meta':'Assets/B01Packages/MAPGENWORLD001.meta','manifest':'META-INF/MAPGENWORLD001_MANIFEST.json','records':39},
  'CAMERA_R122': {'outer':'B01_CAMERA_R122_actions.zip','inner':'CAMERA001_R1_2_2_FULL_SOURCE_QA.zip','sha':'ecf2211e317a35af7a726afe1b484e83e1b7a326faeb5aed3057fe6153b338ee','bytes':76032,'count':60,'source':'063e755c50c9728f0a9627d25d3677280625a73d','root':'Assets/B01Packages/CAMERA001','meta':'Assets/B01Packages/CAMERA001.meta','manifest':'Docs/B01/CAMERA001/manifest.json','records':59},
- 'ECONLEG_GUARD': {'outer':'B01_ECONLEG_GUARD_actions.zip','inner':'ECONLEGENDARY-GUARD-001.zip','sha':'ec250b8446d89b219eba332244a318e5768e7240c2f02088f7041fa0ca9ecd3b','bytes':7379,'count':13,'source':'e6c152f0795f105a94743018093b650d453e26a1','root':'Assets/B01Packages/ECONLEGENDARY001','meta':'Assets/B01Packages/ECONLEGENDARY001.meta','manifest':None,'records':13}
+ 'ECONLEG_GUARD': {'outer':'B01_ECONLEG_GUARD_actions.zip','inner':'ECONLEGENDARY-GUARD-001.zip','sha':'7f826d0148d0dacf612b256a21e32fe3eaaf341651c600ca742dd36e5fdcf09c','bytes':7908,'count':13,'source':'01ee22a3a2dbd0c2ced3140032042894f88d2ebb','root':'Assets/B01Packages/ECONLEGENDARY001','meta':'Assets/B01Packages/ECONLEGENDARY001.meta','manifest':None,'records':13}
 }
 SHA_RE=re.compile(r'^[0-9a-f]{64}$'); GUID_RE=re.compile(rb'(?m)^guid: ([0-9a-fA-F]{32})\s*$')
 EXTS=('.cs','.asmdef','.shader','.unity','.prefab','.asset','.mat','.controller','.anim','.uxml','.uss')
@@ -48,6 +48,9 @@ def records_for(kind,contents,outer):
         try:m=json.loads(outer['source-manifest.json'])
         except (KeyError,ValueError) as e:raise GateError('EXTERNAL_MANIFEST_REQUIRED') from e
         if m.get('producer_head')!=pin['source']:raise GateError('SOURCE_SHA_MISMATCH')
+        try:bridge_receipt=json.loads(outer['receiver-bridge-receipt.json'])
+        except (ValueError,KeyError) as e:raise GateError('RECEIVER_BRIDGE_RECEIPT_MISSING') from e
+        require_guard_bridge_receipt(bridge_receipt)
         entries={x['path']:(x['sha256'],x['bytes'],None) for x in m['files'] if x['path'] in contents}
         if len(entries)!=pin['records']:raise GateError('MANIFEST_SCOPE')
         return entries
@@ -101,6 +104,8 @@ def verify(kind,outer_bytes):
         guid=v.group(1).decode().lower()
         if guid in guid_to_path:raise GateError('GUID_COLLISION:'+path+' vs '+guid_to_path[guid])
         guid_to_path[guid]=path
+    if kind=='ECONLEG_GUARD':
+        require_guard_owner_identity(assets)
     for path,d in assets.items():
         if path.endswith('.asmdef'):
             try:a=json.loads(d)
@@ -109,6 +114,53 @@ def verify(kind,outer_bytes):
             if not name or name in asmnames:raise GateError('BAD_OR_DUP_ASMDEF:'+path)
             asmnames[name]=path;asmrefs[name]=a.get('references',[])
     return {'package':kind,'source':p['source'],'zip_sha256':digest(inner_bytes),'zip_bytes':len(inner_bytes),'zip_entries':len(contents),'file_sha256_pass':len(records),'guid_count':len(guid_to_path),'asmdefs':asmrefs,'status':'G0_SOURCE_PASS_NOT_NATIVE'},contents,guid_to_path
+
+def require_guard_owner_identity(assets):
+    """W15 P0: fail closed on a stale permissive cross-R3 ownership guard.
+
+    This only verifies actual pinned source text. The separate native C# behavior
+    and receiver adapters remain NOT_RUN / NOT_PROVEN by this static gate.
+    """
+    path='Assets/B01Packages/ECONLEGENDARY001/Runtime/GuardedLegendaryPort.cs'
+    blob=assets.get(path)
+    if blob is None:raise GateError('GUARD_SOURCE_MISSING')
+    source=blob.decode('utf-8')
+    required=(
+        'interface ISharedR3PhysicalOwnerIdentity',
+        'object AuthoritativeR3Model { get; }',
+        'inner as ISharedR3PhysicalOwnerIdentity',
+        'economyHost as ISharedR3PhysicalOwnerIdentity',
+        'OWNER_IDENTITY_UNAVAILABLE',
+        'OWNER_IDENTITY_MISMATCH',
+        'object.ReferenceEquals(legendOwner.AuthoritativeR3Model,econOwner.AuthoritativeR3Model)',
+        'if(!CheckSharedOwnership(out reason))return false;',
+    )
+    for snippet in required:
+        if source.count(snippet)!=1:
+            raise GateError('OWNER_IDENTITY_CONTRACT_ABSENT_OR_DUPLICATED:'+snippet)
+    return 'STATIC_OWNER_REFERENCE_EQUALITY_PRESENT_NOT_NATIVE_PROOF'
+
+def require_guard_bridge_receipt(receipt):
+    """Enforce the W15 bridge receipt contract; does not verify generated bridge
+    source bytes, which are not shipped in this Unity-only source artifact.
+    """
+    if (receipt.get('purpose')!='COMPILE_ONLY_RECEIVER_REFERENCE_NOT_INSTALLED' or
+        receipt.get('upstream_legend')!='dffabbc6960304fdb33322b5a23c884feac804c6' or
+        receipt.get('upstream_econ')!='12572117a3dce369257feabc57021cde58023369' or
+        receipt.get('native_unity')!='NOT_RUN' or receipt.get('g2')!='HOLD'):
+        raise GateError('RECEIVER_BRIDGE_STATUS_OR_UPSTREAM_MISMATCH')
+    expect={
+      'R3LegendaryPort.install.cs':('d1ea529d2acc657bc51039d2022b4839ab6fb19a25ba799630030b08d2803981','5bb862dd082c5ad1ab237fadde086985dbb2a829da3e889db9b9234f4d7dce02'),
+      'R3EconRebuildPort.install.cs':('225db15dd242516e21cf38d794dbbb069f4d5512f8257e82101c138b7f488027','6a852fe94a2627f41d07291a657b9db36967cc7ee88bca5fcee10932a43b4932')}
+    seen=set()
+    for entry in receipt.get('files',[]):
+        name=entry.get('file')
+        if name not in expect or name in seen:raise GateError('RECEIVER_BRIDGE_FILE_SCOPE')
+        seen.add(name)
+        if (entry.get('upstream_sha256'),entry.get('receiver_sha256'))!=expect[name] or entry.get('changed_lines')!=2:
+            raise GateError('RECEIVER_BRIDGE_SHA_RECEIPT:'+name)
+    if seen!=set(expect):raise GateError('RECEIVER_BRIDGE_INCOMPLETE')
+    return 'BRIDGE_RECEIPT_PINNED_ONLY_NO_GENERATED_BYTES'
 
 def cross_check(results):
     paths={};guids={};duplicate=[];incompat=[];missing_references=[]; asmnames=set()

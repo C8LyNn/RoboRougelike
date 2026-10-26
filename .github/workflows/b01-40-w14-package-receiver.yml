@@ -58,9 +58,30 @@ jobs:
         with:
           name: b01-w13-econlegendary-cross-source-evidence
           repository: C8LyNn/RoboRougelike
-          run-id: '40326093033'
+          run-id: '40329477269'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: artifacts/guard
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-w13-econlegendary-cross-source-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40326093033'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/guardold
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-legendary-unity-w12-zip-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40221819197'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/legend
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-econ-rebuild-001-source-and-test-evidence
+          repository: C8LyNn/RoboRougelike
+          run-id: '40292923440'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/econ
       - name: Reconstruct transport wrappers WITHOUT altering producer inner ZIPs
         shell: bash
         run: |
@@ -68,7 +89,7 @@ jobs:
           from pathlib import Path
           import zipfile
           base=Path('artifacts'); dest=base/'pinned';dest.mkdir(exist_ok=True)
-          mapping={'build':'B01_BUILD_R14_actions.zip','world11':'B01_WORLD_R11_actions.zip','camera':'B01_CAMERA_R122_actions.zip','guard':'B01_ECONLEG_GUARD_actions.zip','world10':'MAPGENWORLD_R2_PRODUCER_ARTIFACT.zip'}
+          mapping={'build':'B01_BUILD_R14_actions.zip','world11':'B01_WORLD_R11_actions.zip','camera':'B01_CAMERA_R122_actions.zip','guard':'B01_ECONLEG_GUARD_actions.zip','world10':'MAPGENWORLD_R2_PRODUCER_ARTIFACT.zip','guardold':'B01_ECONLEG_GUARD_W14_actions.zip','legend':'W12_LEGUNITY_artifact.zip','econ':'B01_ECON_SOURCE_ARTIFACT.zip'}
           for name,out in mapping.items():
               folder=base/name
               files=sorted(p for p in folder.rglob('*') if p.is_file())

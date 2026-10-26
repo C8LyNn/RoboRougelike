@@ -60,6 +60,42 @@ class Receipts(unittest.TestCase):
         result={n:v.verify(n,d) for n,d in self.original.items()}
         missing=v.cross_check(result)['external_assembly_refs'];self.assertTrue(any(x['external']=='B01.Legendary.Unity' for x in missing))
         self.assertTrue(any(x['external']=='B01.MAPGEN001.Runtime' for x in missing))
+    def test_25_w15_new_guard_has_reference_identity_required(self):
+        rec,contents,_=v.verify('ECONLEG_GUARD',self.original['ECONLEG_GUARD'])
+        self.assertEqual(rec['source'],'01ee22a3a2dbd0c2ced3140032042894f88d2ebb')
+        assets={k:d for k,d in contents.items() if k.startswith('Assets/')}
+        self.assertIn('STATIC_OWNER_REFERENCE_EQUALITY_PRESENT',v.require_guard_owner_identity(assets))
+    def test_26_w15_false_green_guid_equality_guard_rejected(self):
+        _,contents,_=v.verify('ECONLEG_GUARD',self.original['ECONLEG_GUARD'])
+        assets={k:d for k,d in contents.items() if k.startswith('Assets/')}
+        source='Assets/B01Packages/ECONLEGENDARY001/Runtime/GuardedLegendaryPort.cs'
+        assets[source]=assets[source].replace(b'object.ReferenceEquals(',b'object.Equals(')
+        with self.assertRaisesRegex(v.GateError,'OWNER_IDENTITY_CONTRACT'):
+            v.require_guard_owner_identity(assets)
+    def test_27_w15_missing_identity_interface_rejected(self):
+        _,contents,_=v.verify('ECONLEG_GUARD',self.original['ECONLEG_GUARD'])
+        assets={k:d for k,d in contents.items() if k.startswith('Assets/')}
+        key='Assets/B01Packages/ECONLEGENDARY001/Runtime/GuardedLegendaryPort.cs'
+        assets[key]=assets[key].replace(b'interface ISharedR3PhysicalOwnerIdentity',b'interface IUntrustedOwnerIdentity')
+        with self.assertRaisesRegex(v.GateError,'OWNER_IDENTITY_CONTRACT'):
+            v.require_guard_owner_identity(assets)
+    def test_28_w15_forged_receiver_bridge_receipt_rejected(self):
+        outer=v.read_zip(self.original['ECONLEG_GUARD'])
+        receipt=json.loads(outer['receiver-bridge-receipt.json'])
+        self.assertEqual(receipt['purpose'],'COMPILE_ONLY_RECEIVER_REFERENCE_NOT_INSTALLED')
+        self.assertEqual(len(receipt['files']),2)
+        original={x['file']:x for x in receipt['files']}
+        self.assertEqual(original['R3LegendaryPort.install.cs']['changed_lines'],2)
+        self.assertEqual(original['R3EconRebuildPort.install.cs']['changed_lines'],2)
+        self.assertEqual(receipt['native_unity'],'NOT_RUN')
+        receipt['files'][0]['receiver_sha256']='0'*64
+        with self.assertRaisesRegex(v.GateError,'RECEIVER_BRIDGE_SHA_RECEIPT'):
+            v.require_guard_bridge_receipt(receipt)
+    def test_29_w15_old_guard_artifact_is_not_current_source(self):
+        old=ART/'B01_ECONLEG_GUARD_W14_actions.zip'
+        if not old.exists():self.skipTest('historical guard artifact not provided')
+        with self.assertRaisesRegex(v.GateError,'INNER_ZIP_SHA'):
+            v.verify('ECONLEG_GUARD',old.read_bytes())
     def test_11_fake_external_manifest_sha_rejected(self):
         kind='ECONLEG_GUARD';z=v.read_zip(self.original[kind]);m=json.loads(z['source-manifest.json']);m['producer_head']='0'*40;z['source-manifest.json']=json.dumps(m).encode()
         with self.assertRaisesRegex(v.GateError,'SOURCE_SHA_MISMATCH'):v.verify(kind,mkzip(z))
@@ -145,6 +181,71 @@ class WorldUpgrade(unittest.TestCase):
         p,c,n=self._normalized_qa_archive('BUILD_R14')
         with self.assertRaisesRegex(a.GateError,'After 2 files'):a.stage(c,p,self.s,fault_after=2)
         self.assertFalse((self.s/'Assets/B01Construction/BUILD001.meta').exists())
+    def _w15_three_upstream_assets(self):
+        pins=(
+          ('LEGENDARY_UNITY','W12_LEGUNITY_artifact.zip','LEGENDARY-UNITY-001.zip','14eccb49f69b2e67ecb34008fe19689b1b66e629ed94491224fb327216fc1fb2','B01.Legendary.Unity'),
+          ('ECONREBUILD','B01_ECON_SOURCE_ARTIFACT.zip','ECONREBUILD001_Unity_Source.zip','fdcb15e6b394715f450771cac798b1c02b8efe1f33acb815e9e0957c46bd2d87','B01.EconRebuild.Runtime'),
+          ('ECONLEG_GUARD',v.PINS['ECONLEG_GUARD']['outer'],v.PINS['ECONLEG_GUARD']['inner'],v.PINS['ECONLEG_GUARD']['sha'],'B01.EconLegendary.Guard'))
+        merged={}; assemblies=set(); meta_guids={}
+        for package,outer_name,inner_name,sha,expected_assembly in pins:
+            raw=(ART/outer_name).read_bytes()
+            with zipfile.ZipFile(io.BytesIO(raw)) as w:
+                inner=w.read(inner_name)
+            self.assertEqual(v.digest(inner),sha)
+            entries=v.read_zip(inner)
+            if package=='LEGENDARY_UNITY':
+                with zipfile.ZipFile(io.BytesIO(raw)) as z:manifest=json.loads(z.read('source-manifest.json'))
+                registered={x['path']:(x['sha256'],x['size']) for x in manifest['files']}
+            elif package=='ECONREBUILD':
+                with zipfile.ZipFile(io.BytesIO(raw)) as z:manifest=json.loads(z.read('source-manifest.json'))
+                registered={x['path']:(x['sha256'],x['bytes']) for x in manifest['entries']}
+            else:
+                with zipfile.ZipFile(io.BytesIO(raw)) as z:manifest=json.loads(z.read('source-manifest.json'))
+                registered={x['path']:(x['sha256'],x['bytes']) for x in manifest['files']}
+            for name,body in entries.items():
+                self.assertIn(name,registered)
+                self.assertEqual((v.digest(body),len(body)),registered[name])
+                if not name.startswith('Assets/'):continue
+                if name in merged:self.assertEqual(merged[name],body,'Byte collision '+name)
+                merged[name]=body
+                if name.endswith('.asmdef'):assemblies.add(json.loads(body)['name'])
+                if name.endswith('.meta'):
+                    hit=v.GUID_RE.search(body);self.assertIsNotNone(hit,name)
+                    guid=hit.group(1).lower()
+                    if guid in meta_guids:self.assertEqual(meta_guids[guid],name,'GUID collision')
+                    meta_guids[guid]=name
+            self.assertIn(expected_assembly,assemblies)
+        refs=[ref for path,body in merged.items() if path.endswith('.asmdef') for ref in json.loads(body).get('references',[]) if not ref.startswith('GUID:')]
+        self.assertFalse(set(refs)-assemblies)
+        self.assertEqual(len(merged),43)
+        self.assertEqual(len(meta_guids),29) # shared Assets/B01Packages.meta counted once
+        return merged
+    def _w15_three_qa_zip(self):
+        payload=self._w15_three_upstream_assets();mp='B01_W15_QA_ONLY_MANIFEST.json'
+        payload[mp]=json.dumps({'source_file_sha256_by_path':{k:v.digest(d) for k,d in payload.items()},'source_file_size_by_path':{k:len(d) for k,d in payload.items()}},sort_keys=True).encode()
+        b=mkzip(payload);out=self.p/'w15-upstreams-qa-only.zip';out.write_bytes(b)
+        cfg={'id':'W15_THREE_PACKAGE_QA_ONLY','source_sha':'01ee22a3a2dbd0c2ced3140032042894f88d2ebb',
+        'zip_sha256':v.digest(b),'zip_bytes':len(b),'zip_entries':len(payload),'manifest_path':mp,
+        'owned_prefixes':['Assets/B01Packages/LEGENDARY001/','Assets/B01Packages/ECONREBUILD001/','Assets/B01Packages/ECONLEGENDARY001/'],
+        'owned_root_metas':['Assets/B01Packages/LEGENDARY001.meta','Assets/B01Packages/ECONREBUILD001.meta','Assets/B01Packages/ECONLEGENDARY001.meta'],
+        'preserve_parent_meta':['Assets/B01Packages.meta'],'unity_editor_version':'6000.3.14f1'}
+        return out,cfg
+    def test_30_w15_three_real_pinned_source_archives_no_guid_overlap_and_stage_rollback(self):
+        archive,config=self._w15_three_qa_zip()
+        prior=(self.s/'Assets/B01Packages.meta').read_bytes()
+        data,_=a.verify_package(config,archive)
+        self.assertEqual(data['status'],'PASS_SOURCE_STATIC_NOT_NATIVE')
+        dry,_=a.plan_import(config,archive,self.s)
+        self.assertTrue(dry['dry_run_ok'],dry['conflicts'])
+        self.assertEqual(len(dry['preserved_parent']),1)
+        staged=a.stage(config,archive,self.s);self.assertEqual(staged['installed'],42)
+        rolled=a.restore(self.s,staged['journal']);self.assertEqual(rolled['restored'],42)
+        self.assertEqual((self.s/'Assets/B01Packages.meta').read_bytes(),prior)
+    def test_31_w15_three_real_source_packages_fault_auto_rolls_back(self):
+        archive,config=self._w15_three_qa_zip()
+        with self.assertRaisesRegex(a.GateError,'After 4 files'):a.stage(config,archive,self.s,fault_after=4)
+        self.assertFalse((self.s/'Assets/B01Packages/ECONLEGENDARY001.meta').exists())
+        self.assertFalse((self.s/'Assets/B01Packages/LEGENDARY001.meta').exists())
     def test_20_missing_parent_guid_refused(self):
         (self.s/'Assets/B01Packages.meta').write_bytes(b'invalid')
         with self.assertRaises(w.Blocked):w.plan(self.s,self.o,self.n)
