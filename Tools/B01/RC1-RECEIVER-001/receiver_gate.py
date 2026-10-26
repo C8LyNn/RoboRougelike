@@ -159,7 +159,7 @@ def audit_native(native, camera):
         require(v.get('status')=='Passed' and v.get('nativeExit')==0 and not v.get('failedChecks'),f'final RC1 runtime failed {field}')
     hidden=native['windows'].get('MapgenHidden720')
     require(hidden is not None and hidden.get('nativeExit')!=0, 'known shutdown failure omitted or incorrectly marked clean')
-    require(camera['producer']==CAMERA and camera.get('G2')=='HOLD','camera QA pins/gate mismatch')
+    require(camera['producer']==CAMERA and camera.get('G2') in ('HOLD','NOT_GRANTED'),'camera QA pins/gate mismatch')
     require(camera['compile'].get('exitCode')==0,'camera original compilation failure')
     for phase,n in [('EditMode',5),('PlayMode',13)]:
         d=camera['native'][phase]

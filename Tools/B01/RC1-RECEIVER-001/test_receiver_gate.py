@@ -123,12 +123,15 @@ class ReceiverTests(unittest.TestCase):
     def test_13_native_external_pass_does_not_override_known_failure(self):
         native={'gameSource':RC1_GAME,'baseSource':RC1_BASE,'G2':'HOLD','independentG1':'PENDING','windows':{k:{'status':'Passed','nativeExit':0,'failedChecks':[]} for k in ['FinalMapgen720','FinalMapgen1080','FinalReactor']}}
         native['windows']['MapgenHidden720']={'nativeExit':-1073741819}
-        cam={'producer':CAMERA,'G2':'HOLD','compile':{'exitCode':0},'native':{mode:{'counts':{'total':n,'passed':n,'failed':0,'skipped':0},'process':{'exitCode':0}} for mode,n in [('EditMode',5),('PlayMode',13)]},'windows':{'WindowsFinal':{'process':{'exitCode':2}}}}
+        cam={'producer':CAMERA,'G2':'NOT_GRANTED','compile':{'exitCode':0},'native':{mode:{'counts':{'total':n,'passed':n,'failed':0,'skipped':0},'process':{'exitCode':0}} for mode,n in [('EditMode',5),('PlayMode',13)]},'windows':{'WindowsFinal':{'process':{'exitCode':2}}}}
         x=audit_native(native,cam)
         self.assertEqual(x['camera_functional'],'FAIL_OBSERVED_2_OF_8_LIGHT_AIM_TRACKING')
         cam['windows']['WindowsFinal']['process']['exitCode']=0
         with self.assertRaisesRegex(GateError,'incorrectly claimed success'):audit_native(native,cam)
         cam['windows']['WindowsFinal']['process']['exitCode']=2
+        cam['G2']='APPROVED'
+        with self.assertRaisesRegex(GateError,'camera QA pins/gate mismatch'):audit_native(native,cam)
+        cam['G2']='NOT_GRANTED'
         native['windows']['MapgenHidden720']['nativeExit']=0
         with self.assertRaisesRegex(GateError,'known shutdown failure'):audit_native(native,cam)
     def test_14_out_of_scope_receipt_rejected(self):
