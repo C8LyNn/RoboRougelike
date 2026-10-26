@@ -45,8 +45,8 @@ namespace RoboRougelike.R3
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
             "Wybierz kolejną część w magazynie. Zakup wymaga świadomego wyboru typu części.":!HasTarget?"Najedź na ścianę bloku pojazdu.":
             Owned?.Health<=0?"Zniszczony moduł wymaga odbudowy przed montażem.":
-            run.VehicleModel.PlacementError(Cell,MountKind,Owned!=null,MountWeapon,
-                SelectedRotation,SelectedContactMask);
+            Owned!=null?run.VehicleModel.OwnedPlacementError(Owned.Id,Cell,SelectedRotation):
+            run.VehicleModel.PlacementError(Cell,MountKind,false,MountWeapon,SelectedRotation,SelectedContactMask);
         public void Initialize(R1RunController owner,Camera camera,P12PipelineSafeCamera cameraFollow,R3VisualPalette colors)
         {run=owner;view=camera;follow=cameraFollow;palette=colors;}
         public void Open()

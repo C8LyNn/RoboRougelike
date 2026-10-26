@@ -24,7 +24,7 @@ namespace RoboRougelike.R3
                 var liveIds=new HashSet<string>(assembly.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).Select(p=>p.Id));
                 var prospective=dead.Concat(model.Parts.Where(p=>p.Health>0&&!liveIds.Contains(p.Id))).GroupBy(p=>p.Id).Select(g=>g.First()).ToArray();
                 var replacedIds=new HashSet<string>(prospective.Select(p=>p.Id));
-                bool FactoryWheel(R3PartState p)=>p.Kind==R3PartKind.Wheel&&model.Design.Parts.Any(d=>d.Id==p.Id&&d.Kind==p.Kind&&d.Cell==p.Cell&&d.RotationQuarterTurns==p.RotationQuarterTurns&&d.ContactMask==p.ContactMask);
+                bool FactoryWheel(R3PartState p)=>model.IsFactoryWheel(p);
                 // The shipped factory wheel rows have deliberately intersecting
                 // treads on one compound body. Restore that approved group as a
                 // compound shape; NEVER apply this exemption to new placement,
@@ -66,6 +66,17 @@ namespace RoboRougelike.R3
             }
             foreach(var renderer in probe.GetComponentsInChildren<Renderer>())renderer.enabled=false;
             return probe;
+        }
+        HashSet<Collider> FactoryGroupForReinstallation(R3PartState candidate)
+        {
+            if(!model.IsFactoryWheel(candidate)||!model.Inventory.Any(p=>p.Id==candidate.Id))return null;
+            var result=new HashSet<Collider>();
+            foreach(var part in assembly.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform))){
+                var state=model.Parts.FirstOrDefault(p=>p.Id==part.Id);
+                if(state==null||!model.IsFactoryWheel(state))continue;
+                foreach(var c in part.GetComponentsInChildren<Collider>())if(c.enabled&&!c.isTrigger&&c.attachedRigidbody==GetComponent<Rigidbody>())result.Add(c);
+            }
+            return result;
         }
     }
 }

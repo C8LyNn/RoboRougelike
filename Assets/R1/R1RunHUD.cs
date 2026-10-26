@@ -65,7 +65,7 @@ namespace RoboRougelike.R1
                 if (player != null)
                 {
                     var core = player.Core;
-                    GUI.Label(new Rect(36, 58, 630, 28), $"RDZEŃ: {(core != null ? core.CurrentHp : 0):0}/{(core != null ? core.MaxHp : 0):0} HP   •   {(run.ReactorActive?"Chroń reaktor":"Zniszcz rdzeń przeciwnika")}", body);
+                    GUI.Label(new Rect(36, 58, 630, 28), $"RDZEŃ: {(core != null ? core.CurrentHp : 0):0}/{(core != null ? core.MaxHp : 0):0} HP   •   {ActivityGoal(run)}", body);
                     int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
                     GUI.Label(new Rect(36, 93, 630, 26), $"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount}    Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount}    Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}", small);
                     var physicsBody=player.GetComponent<Rigidbody>();

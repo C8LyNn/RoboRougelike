@@ -5,6 +5,10 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         MapR4Mode roadSelection;
+        static string ActivityGoal(R1RunController run)=>run.CheckpointRace!=null?"Zalicz bramki i metę":
+            run.RoadChallenge!=null?run.RoadChallenge.Mode==MapR4Mode.TimeAttack?"Checkpoint → meta":
+            run.RoadChallenge.Mode==MapR4Mode.Escape?"Dotrzyj do wyjścia":run.RoadChallenge.Mode==MapR4Mode.Survival?"Przetrwaj fale":"Pokonaj bossa i eskortę":
+            run.ReactorActive?"Chroń reaktor":"Zniszcz rdzenie przeciwników";
         void DrawFullActivityGarageActions(R1RunController run)
         {
             if(run.SandboxWorkshop||run.ReactorPrepared)return;

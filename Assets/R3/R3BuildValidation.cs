@@ -74,10 +74,11 @@ namespace RoboRougelike.R3
                 probe=CreateProbe(candidate);
                 var candidateColliders=probe.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger).ToArray();
                 Physics.SyncTransforms();var neighbors=new HashSet<Collider>();
+                var factoryGroup=FactoryGroupForReinstallation(candidate);
                 // Allocating broadphase returns ALL candidates; no fixed buffer/truncation PASS.
                 foreach(var collider in candidateColliders)
                 foreach(var other in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents+Vector3.one*.001f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
-                    if(!other.transform.IsChildOf(probe.transform))neighbors.Add(other);
+                    if(!other.transform.IsChildOf(probe.transform)&&(factoryGroup==null||!factoryGroup.Contains(other)))neighbors.Add(other);
                 var result=BuildPlacementRules.CheckForInstallation(installed,item,
                     new BuildPhysicsEvidence(candidateColliders,neighbors.ToArray(),true),out _);
                 return result==BuildPlacementResult.Valid?null:Explain(result);

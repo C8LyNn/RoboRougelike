@@ -49,5 +49,23 @@ public sealed class FullMergeAdditionalRegression
         int scrap=run.VehicleModel.Scrap;Assert.That(run.GarageRepair(cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
         Object.Destroy(obstacle);yield return null;Assert.That(run.GarageRepair(cell),Is.True);
     }
+    [UnityTest]public IEnumerator FactoryWheelCanReturnAndRestoreWithoutIgnoringForgedForeignColliders()
+    {
+        var old=run;run.RestartRun();while(R1RunController.Instance==old||R1RunController.Instance?.Progress==null)yield return null;
+        run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Standard);Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;yield return null;
+        var cell=new Vector3Int(-3,0,0);string id=run.VehicleModel.At(cell).Id;int money=run.VehicleModel.Scrap;
+        Assert.That(run.GarageRemove(cell),Is.True);yield return null;
+        Assert.That(run.VehicleModel.OwnedPlacementError(id,cell,default),Is.Null);
+        Assert.That(run.GarageMount(id,cell),Is.True);yield return null;
+        Assert.That(run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(money));
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var wheel=assembly.Parts.Single(p=>p.Id==id);
+        wheel.Damageable.ApplyDamage(100000,wheel.transform.position,Vector3.zero);assembly.Capture();yield return null;yield return null;
+        var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.transform.position=run.Player.transform.TransformPoint((Vector3)cell*.55f);obstacle.transform.localScale=Vector3.one*.2f;
+        obstacle.AddComponent<R3MountedPart>().Id=id;Physics.SyncTransforms();
+        Assert.That(run.GarageRepair(cell),Is.False,"A forged matching ID outside the vehicle never gains factory exemption");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(money));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
+        Object.Destroy(obstacle);yield return null;Assert.That(run.GarageRepair(cell),Is.True);
+        Assert.That(run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(run.VehicleModel.At(cell).Health,Is.EqualTo(1));
+    }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
