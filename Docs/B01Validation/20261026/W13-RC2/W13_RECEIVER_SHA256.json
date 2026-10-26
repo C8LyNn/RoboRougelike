@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "role": "B01-40",
+  "scope": "W13 RC2 release gate read-only",
+  "unity_native": "NOT_RUN",
+  "package_import": "NOT_RUN",
+  "G2": "HOLD",
+  "files": [
+    {
+      "path": ".github/workflows/b01-40-w13-rc2-release-gate.yml",
+      "bytes": 4033,
+      "sha256": "5fd365076fba914f43a474a6d0b6d967657d33d0893e337a8c31553edb82caef"
+    },
+    {
+      "path": "Docs/B01Validation/20261026/W13-RC2/LOCAL_TEST_RESULTS.json",
+      "bytes": 321,
+      "sha256": "c31c66ab1cbeae721143f61c778257e0d042e36e18ceac45317f80776ad5e324"
+    },
+    {
+      "path": "Docs/B01Validation/20261026/W13-RC2/W13_RC2_SOURCE_RECEIVER.md",
+      "bytes": 4289,
+      "sha256": "b56a3aa7cd4558baa545542f11dce67b58f9b5312f94bd55867b99a1dffabfe4"
+    },
+    {
+      "path": "Tools/B01/RC2-RELEASE-GATE-001/README.md",
+      "bytes": 4562,
+      "sha256": "77f3efc39a1d9364f2db66f56dec883e1020c44ca03e57a19fc35b0df4951c7b"
+    },
+    {
+      "path": "Tools/B01/RC2-RELEASE-GATE-001/RECEIVER_HANDOFF_FOR_CODEX.md",
+      "bytes": 1524,
+      "sha256": "1c0ba5dcfb9a6322d27716b9a5088bc4e80f949f549c26946d21e66b85cc2220"
+    },
+    {
+      "path": "Tools/B01/RC2-RELEASE-GATE-001/rc2_release_gate.py",
+      "bytes": 11826,
+      "sha256": "0f5ea943ebaa98bc96ca3acb831e0ce3ae532ad111bde821fae230c849e1ff21"
+    },
+    {
+      "path": "Tools/B01/RC2-RELEASE-GATE-001/source_intake.py",
+      "bytes": 7693,
+      "sha256": "5a2676bd5bb7a7c973b811dea0c47d284a37477de048e3b6d59df4dbda7802b6"
+    },
+    {
+      "path": "Tools/B01/RC2-RELEASE-GATE-001/tests/test_rc2_gate.py",
+      "bytes": 13465,
+      "sha256": "87ca7139d76dda857495b81f7e0b19c685b89d2ceeae78b0353e76c78de011d6"
+    }
+  ]
+}
