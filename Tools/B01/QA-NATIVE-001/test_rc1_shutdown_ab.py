@@ -111,7 +111,14 @@ class ShutdownABTests(unittest.TestCase):
             qa.prepare(self.plan_file, self.evidence)
 
     def test_windows_backslash_zip_rejected(self):
-        self.replace_zip("BASE", [("sub\\Game.exe", b"fixture"), ("Game.exe", b"fixture")])
+        # On Windows zipfile's writer normalizes a slash automatically; edit raw
+        # equal-length member names to ensure the archive really stores backslashes.
+        self.replace_zip("BASE", [("sub/Game.exe", b"fixture"), ("Game.exe", b"fixture")])
+        path = self.root / "BASE.zip"
+        raw = path.read_bytes().replace(b"sub/Game.exe", b"sub\\Game.exe")
+        path.write_bytes(raw)
+        self.plan["builds"]["BASE"]["sha256"] = qa.digest(path)
+        self.write_plan()
         with self.assertRaisesRegex(ValueError, "UNSAFE_ZIP_PATH"):
             qa.prepare(self.plan_file, self.evidence)
 
