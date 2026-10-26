@@ -21,7 +21,7 @@
         0.9125,
         3.672
       ],
-      "fit": "BLOCKED_VISUAL_DEPTH",
+      "fit": "BLOCKED_TYPED_DEPTH_XYZ",
       "aimAxis": [
         0,
         0,
@@ -29,7 +29,9 @@
       ],
       "pivot": "MOUNT_TOP_SOCKET",
       "animation": "COUNTERWEIGHT_SLIDE_Y_AXIS",
-      "travelMeters": 0.22
+      "travelMeters": 0.22,
+      "typedFootprintDepthOverrunMeters": 2.572,
+      "status": "NOT_AUTHORIZED_TO_MOUNT"
     },
     {
       "id": "M04-024",
@@ -48,7 +50,7 @@
         0.869,
         1.5
       ],
-      "fit": "REST_ONLY_PLAUSIBLE_SWEEP_NOT_RUN",
+      "fit": "BLOCKED_TYPED_DEPTH_XYZ",
       "exhaustAxis": [
         0,
         -1,
@@ -71,8 +73,18 @@
         1.57756
       ],
       "sampledFramesPerClip": 121,
-      "sampledWithinProposedExtent": true,
-      "limitations": "E2 sampled 121 poses, does not establish continuous triangle collision, attachment safety or Unity import"
+      "sampledWithinProposedExtent": false,
+      "limitations": "Actual combined 4-gimbal sampled GLB Z extent 1.57756m vs exact W12 Depth2x0.55=1.10m. Reassigning axis or changing 3x3x2 cells REQUIRES approved owner decision. AABB is not a triangle/PhysX certificate.",
+      "measuredAxisMapping": {
+        "X": "Width",
+        "Y": "Height",
+        "Z": "Depth"
+      },
+      "typedFootprintDepthOverrunMeters": 0.47756,
+      "animatedTotalFootprintToleranceMeters": 0,
+      "status": "NOT_AUTHORIZED_TO_MOUNT"
     }
-  ]
+  ],
+  "actualFootprintApproval": false,
+  "geometryVerification": "SAMPLED_VERTEX_AABB_E2; NATIVE_UNITY_NOT_RUN; PHYSX_NOT_RUN"
 }
