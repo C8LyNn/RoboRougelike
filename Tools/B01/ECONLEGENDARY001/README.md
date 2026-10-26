@@ -54,6 +54,33 @@ path; the new authored Unity EditMode tests are **NOT_RUN** until a licensed
 native Unity 6000.3.14f1 run with XML, exits and source identity.
 No claim of integrated RC2 ECON/LEGENDARY gameplay.
 
+## W15 — execution-based corrupted R3 owner regression and receiver artifact completeness
+
+**W15 RED** with both actual immutable upstream C# sources: original guard
+accepted live-authoritative R3 parts whose GUID was UPPERCASE or
+`00000000000000000000000000000000`. Equal invalid DTOs under ECON and LEGEND
+passed shared-owner identity and payload checks, enabling direct guarded host
+mutators to work on invalid item identity. A third failing subcase accepted
+HP=1.5. `CheckSharedOwnership` now requires every R3 view to contain
+**canonical lowercase nonempty 32-digit physical GUID**, valid part kind and
+finite normalized HP in [0,1], BEFORE calling any host-side mutation.
+Existing LEGEND and ECON sources were left unchanged.
+
+W15 executable C# negative cases:
+`W15_noncanonical_R3_physical_ID_rejected_before_any_repair` and
+`W15_empty_and_out_of_range_R3_physical_ID_rejected`.
+Two matching NUnit EditMode test methods AUTHORED; native Unity NOT_RUN.
+Expected portable total **22** (including 1800 seeded transitions).
+
+**W15 receiver ZIP/CI artifact repair:** generated `_receiver/*.install.cs`
+was previously not copied into the published `artifacts/econlegendary/`
+root. The W15 producer script now copies both verified generated source
+files into `artifacts/econlegendary/receiver/`, byte-compares with the
+same sources compiled by the receiver signature check and asserts exactly
+two .cs files. CI uploads this full directory; Codex can actually retrieve
+both source files instead of getting only SHA receipts. This fixes a
+package-delivery gap, not the active game.
+
 ## Reproduce
 ```bash
 bash Tools/B01/ECONLEGENDARY001/prepare_upstream.sh
