@@ -9,6 +9,7 @@
     <Compile Include="../../../mapgenworld-evidence/adapter-shim/UnitySurrogate.cs" Link="GeneratedNonUnityShim.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs" />
+    <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldReplayCodec.cs" Link="MapWorldReplayCodec.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapGenWorldAdapter.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs" />
     <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs" />

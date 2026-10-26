@@ -1,0 +1,17 @@
+{
+  "startedUtc": "2026-10-26T16:54:03.7247371Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-BuildR14Source-20261026T165336Z\\PlayMode.xml\"",
+    "-testFilter",
+    "\"B01.BUILD001;BuildRC2SafetyTests\""
+  ],
+  "stage": "BuildR14Source",
+  "phase": "PlayMode",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T16:54:17.5530713Z",
+  "source": "d77d361e2823d15f9159903e984bab10a6e59115"
+}

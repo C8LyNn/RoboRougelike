@@ -1,0 +1,13 @@
+{
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "FullMergeBuild.BuildRelease"
+  ],
+  "stage": "FinalFindingsRED",
+  "source": "038ec70998f708f078395f13e098a919f693bf26",
+  "exitCode": 0,
+  "phase": "Build",
+  "startedUtc": "2026-10-26T22:35:08.9971592Z",
+  "finishedUtc": "2026-10-26T22:35:31.8937036Z"
+}

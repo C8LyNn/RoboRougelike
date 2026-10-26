@@ -1,10 +1,13 @@
 # MAPGEN-WORLD-ADAPTER-001 — B01-21 / W12
-**Version 1.0.1, Draft QA-ready source-only; G2 HOLD.** Standalone Unity 6.0 package under `Assets/B01Packages/MAPGENWORLD001/**`, independent of original MAPGEN runtime owner B01-20. No R3/R4/R6/Pack dependency or edits.
+**Version 1.1.0, Draft QA-ready source-only; G2 HOLD.** Standalone Unity 6.0 package under `Assets/B01Packages/MAPGENWORLD001/**`, independent of original MAPGEN runtime owner B01-20. No R3/R4/R6/Pack dependency or edits.
 
 ## Source dependency / immutable pin
 - Required complete producer MAPGEN001 **R3.4.1**, [PR #237](https://github.com/C8LyNn/RoboRougelike/pull/237), exact `5be31039411f89f17654b1c332f8692883fa03cc` (full stacked #99/#103/#211/#225/#235/#237).
 - Verified public signatures: `MapGenPlanner.Plan(MapRecipe,int,MapGenConfig,MapVehicleProfile)`, `MapGenBuilder.Generate(...)`, `MapGenBuilder.Clear()`, `MapResult` world-coordinates `Start`, `Finish`, `CheckpointDescriptors`, `Spawns`, `GeometryHash`, `GeneratedRoot`.
 - B01-10 [W12 contract PR #240](https://github.com/C8LyNn/RoboRougelike/pull/240) sets measured Light 2.980m, Heavy 5.180m, ≥0.25m lateral margin per side on **main route**; optional side ramp is Light-first and not automatically Heavy-certified.
+
+## W13 RC1/RC2 seed replay addition (source-level, opt-in)
+Successful `TryGenerate` returns a snapshot with `ReplayReceipt`, a bounded portable invariant-culture string of seed, recipe, all config parameters, **measured** rig envelope, clearance, expected original geometry hash and producer generation version. Persist the string with existing game save data; this package does not create another save authority. Call `TryReplay(receipt,...)` in the same opt-in host. The receipt is SHA256 checksummed for corruption only (not tamper-proof authentication): a corrupted/unsupported/changed-layout receipt is rejected **before** scene replacement, keeping the existing map intact. A replay does not grant physical route certification; R6 must still be driven on the target Unity build. See `W13_SEED_REPLAY_HANDOFF.md` for exact errors and native retest.
 
 ## Runtime API
 - `MapWorldRequest`: Recipe, Seed, Config, **actual measured** `MapVehicleProfile` and `EnvelopeMeasured=true`, `ClearancePerSideMeters>=.25`.

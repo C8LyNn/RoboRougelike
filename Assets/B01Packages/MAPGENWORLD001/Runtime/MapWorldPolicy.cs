@@ -7,7 +7,7 @@ namespace B01.MAPGENWORLD001
     /// <summary>Pure source-level preflight; never claims actual PhysX swept-path safety.</summary>
     public static class MapWorldPolicy
     {
-        public const string Version = "1.0.1";
+        public const string Version = "1.1.0";
         public static bool TryPlan(MapWorldRequest request, out MapBlueprint plan,
             out MapWorldFailure failure)
         {

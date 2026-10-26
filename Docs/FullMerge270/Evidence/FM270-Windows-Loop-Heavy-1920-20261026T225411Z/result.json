@@ -1,0 +1,53 @@
+{
+    "status": "Running",
+    "mode": "Loop",
+    "vehicle": "Heavy",
+    "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "startedUtc": "2026-10-26T22:54:14.5960514Z",
+    "finishedUtc": "",
+    "width": 1920,
+    "height": 1080,
+    "frames": 656,
+    "contacts": 532,
+    "maxContacts": 12,
+    "selfRayHits": 0,
+    "worldOverlaps": 0,
+    "shots": 0,
+    "completed": 1,
+    "detachedParts": 0,
+    "enemyShots": 0,
+    "maxAliveEnemies": 0,
+    "saturatedFrames": 0,
+    "offscreenHullFrames": 0,
+    "continuousSpeedViolations": 0,
+    "distance": 54.1731071472168,
+    "peakAimError": 0.0,
+    "settledAimError": 0.0,
+    "peakCameraStep": 0.10196622461080551,
+    "peakFrameMs": 27.35529327392578,
+    "meanFrameMs": 16.68653106689453,
+    "maxEnemyMovement": 0.0,
+    "finalPosition": {
+        "x": -2.8131511211395265,
+        "y": 0.650000810623169,
+        "z": 58.37171936035156
+    },
+    "settledAimObserved": false,
+    "checks": [
+        "Vehicle selected",
+        "Actual preparation garage",
+        "Garage selects Race: Przygotuj pojazd. Wybierz trasę, wygenerowaną arenę albo obronę reaktora. Seed pochodzi z menu.",
+        "Activity entered canonical live state",
+        "One delegated camera owner",
+        "Active scene uses supported actual materials",
+        "One canonical model through result",
+        "Canonical bonus and up-to-three salvage once",
+        "Result returns to same garage",
+        "Actual repair preserves deployment",
+        "Garage selects TimeAttack: Przygotuj pojazd. Wybierz trasę, wygenerowaną arenę albo obronę reaktora. Seed pochodzi z menu."
+    ],
+    "errors": [
+        "InvalidOperationException: Raised road join rejected: upper_ramp / Vehicle envelope exceeds edge clearance"
+    ]
+}

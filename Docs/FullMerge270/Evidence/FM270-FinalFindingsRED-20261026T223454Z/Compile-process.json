@@ -1,0 +1,11 @@
+{
+  "arguments": [
+    "-quit"
+  ],
+  "stage": "FinalFindingsRED",
+  "source": "038ec70998f708f078395f13e098a919f693bf26",
+  "exitCode": 0,
+  "phase": "Compile",
+  "startedUtc": "2026-10-26T22:34:54.6881631Z",
+  "finishedUtc": "2026-10-26T22:35:08.9801620Z"
+}

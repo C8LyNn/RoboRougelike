@@ -1,0 +1,11 @@
+{
+  "source": "11b2f8efafa11598e25e460db8238ee34d4ce4d7",
+  "stage": "FinalCameraAnchorRED",
+  "phase": "Compile",
+  "startedUtc": "2026-10-26T23:20:14.0595925Z",
+  "arguments": [
+    "-quit"
+  ],
+  "finishedUtc": "2026-10-26T23:20:49.0086006Z",
+  "exitCode": 0
+}

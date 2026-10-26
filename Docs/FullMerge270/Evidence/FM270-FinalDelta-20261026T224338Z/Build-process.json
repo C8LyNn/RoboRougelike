@@ -1,0 +1,13 @@
+{
+  "stage": "FinalDelta",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "FullMergeBuild.BuildRelease"
+  ],
+  "finishedUtc": "2026-10-26T22:44:16.2608632Z",
+  "phase": "Build",
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T22:43:52.5081835Z",
+  "source": "0ac75cc41d0369eef8630b61695d0f49c83c3a6b"
+}

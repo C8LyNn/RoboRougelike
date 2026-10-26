@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="82" result="Passed" total="82" passed="82" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0,6483376">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1174" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.648338" total="82" passed="82" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1466" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="382" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.484025" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8248" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1123" name="MapgenRC1IntegrationTests" fullname="MapgenRC1IntegrationTests" classname="MapgenRC1IntegrationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.469170" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1125" name="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" fullname="MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" methodname="MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="389526775" result="Passed" start-time="2026-10-26 17:03:09Z" end-time="2026-10-26 17:03:13Z" duration="3.314617" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Heavy
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1126" name="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" fullname="MapgenRC1IntegrationTests.OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" methodname="OversizedColliderRejectsWithoutLeavingGarageOrHidingFloor" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="451792466" result="Passed" start-time="2026-10-26 17:03:13Z" end-time="2026-10-26 17:03:16Z" duration="3.305015" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1128" name="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" fullname="MapgenRC1IntegrationTests.PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" methodname="PlayerDefeatClearsWorldAndRestartReturnsToOriginalMenu" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="330755750" result="Passed" start-time="2026-10-26 17:03:16Z" end-time="2026-10-26 17:03:20Z" duration="3.721710" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 19 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+]]></output>
+        </test-case>
+        <test-case id="1124" name="UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" fullname="MapgenRC1IntegrationTests.UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" methodname="UnpreparedRouteRejectsGeneratedEntryWithoutPlayer" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="83460188" result="Passed" start-time="2026-10-26 17:03:20Z" end-time="2026-10-26 17:03:23Z" duration="3.151638" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+]]></output>
+        </test-case>
+        <test-case id="1127" name="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" fullname="MapgenRC1IntegrationTests.VictoryUsesExistingRewardsRepairsAndFreshRegeneration" methodname="VictoryUsesExistingRewardsRepairsAndFreshRegeneration" classname="MapgenRC1IntegrationTests" runstate="Runnable" seed="1162856214" result="Passed" start-time="2026-10-26 17:03:23Z" end-time="2026-10-26 17:03:26Z" duration="3.412451" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=1; złom z demontażu=33
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 2: przeciwników=3
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1538" name="B01.CAMERA001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/B01.CAMERA001.EditModeTests.dll" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.023949" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8248" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1539" name="B01" fullname="B01" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.023595" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1540" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.023371" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1541" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.023065" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1513" name="Camera001AimTimelineTests" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.012411" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1516" name="CallerCannotOverwriteRecordedPreviousTarget" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.CallerCannotOverwriteRecordedPreviousTarget" methodname="CallerCannotOverwriteRecordedPreviousTarget" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="35282352" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.003067" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1523" name="CsvRawFloatsRemainInvariantInCommaDecimalLocale" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.CsvRawFloatsRemainInvariantInCommaDecimalLocale" methodname="CsvRawFloatsRemainInvariantInCommaDecimalLocale" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1564541258" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.002568" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1517" name="InvalidFrameDoesNotMutateRecorder" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.InvalidFrameDoesNotMutateRecorder" methodname="InvalidFrameDoesNotMutateRecorder" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="470125883" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001066" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1518" name="MonotonicFrameAndCsvQuoteEscapeFailClosed" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.MonotonicFrameAndCsvQuoteEscapeFailClosed" methodname="MonotonicFrameAndCsvQuoteEscapeFailClosed" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="846504824" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000286" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1520" name="NegativeFrameRejectedAndMaxIntFrameCannotWrap" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.NegativeFrameRejectedAndMaxIntFrameCannotWrap" methodname="NegativeFrameRejectedAndMaxIntFrameCannotWrap" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="806207943" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000328" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1521" name="RawProvenanceSurvivesCallerSpoofAndIsRecomputable" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.RawProvenanceSurvivesCallerSpoofAndIsRecomputable" methodname="RawProvenanceSurvivesCallerSpoofAndIsRecomputable" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1098777884" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001542" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1514" name="RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" methodname="RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="741621852" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000318" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1519" name="SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" methodname="SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1282333654" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000553" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1522" name="StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" methodname="StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1247036087" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000359" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1515" name="UnchangedTargetWithChangedHitIdIsNotAnAngularJump" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.UnchangedTargetWithChangedHitIdIsNotAnAngularJump" methodname="UnchangedTargetWithChangedHitIdIsNotAnAngularJump" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="98899728" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000231" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1524" name="UnsafeCameraSampleNeverLabelsRateAsProvenCausality" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.UnsafeCameraSampleNeverLabelsRateAsProvenCausality" methodname="UnsafeCameraSampleNeverLabelsRateAsProvenCausality" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1293187744" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000169" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1525" name="Camera001AimTransitionTests" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.002058" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1529" name="ActualCameraPoseFailureHasPriority" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualCameraPoseFailureHasPriority" methodname="ActualCameraPoseFailureHasPriority" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1985207667" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000214" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1530" name="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" methodname="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="479215405" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000148" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1531" name="InvalidZeroDeltaOrCoincidentTargetRejects" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.InvalidZeroDeltaOrCoincidentTargetRejects" methodname="InvalidZeroDeltaOrCoincidentTargetRejects" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="198195259" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000341" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1526" name="R12LightHitSwitchRequiresMoreThanOneFrameSlew" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.R12LightHitSwitchRequiresMoreThanOneFrameSlew" methodname="R12LightHitSwitchRequiresMoreThanOneFrameSlew" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="2081688465" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000161" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1528" name="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.SafePoseButStableTargetGapIsUnresolvedNotCameraFault" methodname="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1041377164" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000116" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1527" name="StableTargetAndAlignedGunAreNotFalselyBlamed" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.StableTargetAndAlignedGunAreNotFalselyBlamed" methodname="StableTargetAndAlignedGunAreNotFalselyBlamed" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="796942512" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000163" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1532" name="Camera001FramingTests" fullname="B01.CAMERA001.Tests.Camera001FramingTests" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.008108" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1534" name="BiggerAndTallerRobotsDemandMoreFramingDistance" fullname="B01.CAMERA001.Tests.Camera001FramingTests.BiggerAndTallerRobotsDemandMoreFramingDistance" methodname="BiggerAndTallerRobotsDemandMoreFramingDistance" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1070058043" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001112" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1536" name="DifferentResolutionWithSameAspectKeepsGeometry" fullname="B01.CAMERA001.Tests.Camera001FramingTests.DifferentResolutionWithSameAspectKeepsGeometry" methodname="DifferentResolutionWithSameAspectKeepsGeometry" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="968922247" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000293" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1533" name="EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" fullname="B01.CAMERA001.Tests.Camera001FramingTests.EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" methodname="EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1092538237" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.005296" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1537" name="InvalidGeometryAndNonFiniteRequestFailClosed" fullname="B01.CAMERA001.Tests.Camera001FramingTests.InvalidGeometryAndNonFiniteRequestFailClosed" methodname="InvalidGeometryAndNonFiniteRequestFailClosed" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="345652290" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000384" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1535" name="SafeMaximumZoomNeverExceedsConfiguredLimit" fullname="B01.CAMERA001.Tests.Camera001FramingTests.SafeMaximumZoomNeverExceedsConfiguredLimit" methodname="SafeMaximumZoomNeverExceedsConfiguredLimit" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1057646929" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000204" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1583" name="B01.MAPGENWORLD001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/B01.MAPGENWORLD001.EditModeTests.dll" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.010797" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8248" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1584" name="B01" fullname="B01" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.010488" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1585" name="MAPGENWORLD001" fullname="B01.MAPGENWORLD001" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.010265" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1586" name="Tests" fullname="B01.MAPGENWORLD001.Tests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.010044" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1575" name="MapWorldPolicyTests" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.009803" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1576" name="ArenaLight7PassesWithMeasuredEnvelope" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.ArenaLight7PassesWithMeasuredEnvelope" methodname="ArenaLight7PassesWithMeasuredEnvelope" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1102666064" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.003705" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1577" name="CourseHeavy31PassesWithMeasuredEnvelope" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.CourseHeavy31PassesWithMeasuredEnvelope" methodname="CourseHeavy31PassesWithMeasuredEnvelope" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="490899500" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.004027" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1581" name="InvalidReplayReceiptDoesNotYieldAnyRequest" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.InvalidReplayReceiptDoesNotYieldAnyRequest" methodname="InvalidReplayReceiptDoesNotYieldAnyRequest" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1729277513" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000454" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1580" name="MinimumClearanceCannotBeWeakened" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MinimumClearanceCannotBeWeakened" methodname="MinimumClearanceCannotBeWeakened" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1572146324" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000087" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1578" name="MissingMeasurementRejectedBeforeBuilder" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.MissingMeasurementRejectedBeforeBuilder" methodname="MissingMeasurementRejectedBeforeBuilder" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="1083256830" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000064" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1579" name="NarrowCourseWithRealLightRejects" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NarrowCourseWithRealLightRejects" methodname="NarrowCourseWithRealLightRejects" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="644789515" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000114" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1582" name="NullAndInvalidRigFailClosed" fullname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests.NullAndInvalidRigFailClosed" methodname="NullAndInvalidRigFailClosed" classname="B01.MAPGENWORLD001.Tests.MapWorldPolicyTests" runstate="Runnable" seed="478722395" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000090" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1826" name="RoboRougelike.MapSystemR4.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/RoboRougelike.MapSystemR4.EditModeTests.dll" runstate="Runnable" testcasecount="37" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.038719" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8248" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1827" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="37" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.037476" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1828" name="MapSystemR4" fullname="RoboRougelike.MapSystemR4" runstate="Runnable" testcasecount="37" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.036321" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1829" name="Tests" fullname="RoboRougelike.MapSystemR4.Tests" runstate="Runnable" testcasecount="37" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.035004" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1782" name="MapR4GraphTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.011553" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1787" name="AllEastRoutesBlocked_EscapeRejected" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.AllEastRoutesBlocked_EscapeRejected" methodname="AllEastRoutesBlocked_EscapeRejected" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="287708597" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.005806" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1786" name="CollapsedBridge_EscapeReachableViaLowerRoad" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.CollapsedBridge_EscapeReachableViaLowerRoad" methodname="CollapsedBridge_EscapeReachableViaLowerRoad" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="297854212" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000417" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1791" name="DanglingEdgeDetected" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.DanglingEdgeDetected" methodname="DanglingEdgeDetected" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="323758889" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000573" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1792" name="NoCapabilityMeansNoSpecialRoute" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.NoCapabilityMeansNoSpecialRoute" methodname="NoCapabilityMeansNoSpecialRoute" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="1693153613" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000444" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1785" name="NormalRoute_Reachable" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.NormalRoute_Reachable" methodname="NormalRoute_Reachable" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="124979770" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000354" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1789" name="PhysicallySteepLink_IsRejectedEvenIfSlopeMetadataIsLow" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.PhysicallySteepLink_IsRejectedEvenIfSlopeMetadataIsLow" methodname="PhysicallySteepLink_IsRejectedEvenIfSlopeMetadataIsLow" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="574337134" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000321" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1784" name="SampleMap_ContainsExpectedTopology" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.SampleMap_ContainsExpectedTopology" methodname="SampleMap_ContainsExpectedTopology" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="181050061" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000178" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1783" name="SampleMap_G0NoStructuralErrors" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.SampleMap_G0NoStructuralErrors" methodname="SampleMap_G0NoStructuralErrors" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="1786245040" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000262" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1788" name="TooWideVehicle_Rejected" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.TooWideVehicle_Rejected" methodname="TooWideVehicle_Rejected" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="1190448332" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000230" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1790" name="UnknownStateRejected" fullname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests.UnknownStateRejected" methodname="UnknownStateRejected" classname="RoboRougelike.MapSystemR4.Tests.MapR4GraphTests" runstate="Runnable" seed="1702854282" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000222" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1793" name="MapR4ScenarioTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.002586" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1797" name="Boss_RequiresExplicitAdapterEvent" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests.Boss_RequiresExplicitAdapterEvent" methodname="Boss_RequiresExplicitAdapterEvent" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" seed="1980266881" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000384" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1795" name="Escape_CompletesAtExit" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests.Escape_CompletesAtExit" methodname="Escape_CompletesAtExit" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" seed="719764129" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000099" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1798" name="PlayerDestroyed_FailsAndDoesNotLaterSucceed" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests.PlayerDestroyed_FailsAndDoesNotLaterSucceed" methodname="PlayerDestroyed_FailsAndDoesNotLaterSucceed" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" seed="1139688526" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000102" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1796" name="Survival_DurationSucceedsInSandbox" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests.Survival_DurationSucceedsInSandbox" methodname="Survival_DurationSucceedsInSandbox" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" seed="1951486365" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000181" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1794" name="TimeAttack_NeedsCheckpointFirst" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests.TimeAttack_NeedsCheckpointFirst" methodname="TimeAttack_NeedsCheckpointFirst" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" seed="161241620" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000093" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1799" name="Timeout_FailsAndCannotCompleteLater" fullname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests.Timeout_FailsAndCannotCompleteLater" methodname="Timeout_FailsAndCannotCompleteLater" classname="RoboRougelike.MapSystemR4.Tests.MapR4ScenarioTests" runstate="Runnable" seed="817796995" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000069" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1800" name="MapR4SocketTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR4SocketTests" classname="RoboRougelike.MapSystemR4.Tests.MapR4SocketTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.002228" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1801" name="TryAlign_PutsSocketOnTargetAndFacesOppositeDirection" fullname="RoboRougelike.MapSystemR4.Tests.MapR4SocketTests.TryAlign_PutsSocketOnTargetAndFacesOppositeDirection" methodname="TryAlign_PutsSocketOnTargetAndFacesOppositeDirection" classname="RoboRougelike.MapSystemR4.Tests.MapR4SocketTests" runstate="Runnable" seed="1666356364" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001169" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1802" name="TryAlign_RejectsWidthMismatch" fullname="RoboRougelike.MapSystemR4.Tests.MapR4SocketTests.TryAlign_RejectsWidthMismatch" methodname="TryAlign_RejectsWidthMismatch" classname="RoboRougelike.MapSystemR4.Tests.MapR4SocketTests" runstate="Runnable" seed="551423739" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000278" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1803" name="MapR5RoadMathTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.005790" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1805" name="AllRoads_HaveSlopeWithinMetadata" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.AllRoads_HaveSlopeWithinMetadata" methodname="AllRoads_HaveSlopeWithinMetadata" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="1912291817" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000601" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1808" name="CurvedRoad_GeneratesClosedColliderMesh" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.CurvedRoad_GeneratesClosedColliderMesh" methodname="CurvedRoad_GeneratesClosedColliderMesh" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="1247170762" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001519" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1804" name="CurvedRoute_BeginsAndEndsExactlyAtNodes" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.CurvedRoute_BeginsAndEndsExactlyAtNodes" methodname="CurvedRoute_BeginsAndEndsExactlyAtNodes" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="841683963" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000624" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1810" name="CurveRadius_RejectsVehicleWithInsufficientSteering" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.CurveRadius_RejectsVehicleWithInsufficientSteering" methodname="CurveRadius_RejectsVehicleWithInsufficientSteering" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="204712025" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000294" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1809" name="IncorrectSlopeMetadata_RejectsMap" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.IncorrectSlopeMetadata_RejectsMap" methodname="IncorrectSlopeMetadata_RejectsMap" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="1182906437" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000253" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1806" name="RoadVerticalProfile_IsFlatAtBothNodeEndpoints" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.RoadVerticalProfile_IsFlatAtBothNodeEndpoints" methodname="RoadVerticalProfile_IsFlatAtBothNodeEndpoints" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="1021205177" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000211" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1807" name="StraightPath_HasInfiniteCurvatureRadius" fullname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests.StraightPath_HasInfiniteCurvatureRadius" methodname="StraightPath_HasInfiniteCurvatureRadius" classname="RoboRougelike.MapSystemR4.Tests.MapR5RoadMathTests" runstate="Runnable" seed="1315183687" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000169" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1811" name="MapR6DriveEvidenceTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests" classname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001812" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1813" name="NoProgressWithDemand_TriggersOnceUntilReset" fullname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests.NoProgressWithDemand_TriggersOnceUntilReset" methodname="NoProgressWithDemand_TriggersOnceUntilReset" classname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests" runstate="Runnable" seed="1044403341" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000531" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1814" name="TracksDistanceAndTilt" fullname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests.TracksDistanceAndTilt" methodname="TracksDistanceAndTilt" classname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests" runstate="Runnable" seed="704638618" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000146" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1812" name="VehicleStationaryWithoutDemand_NeverCountsAsStuck" fullname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests.VehicleStationaryWithoutDemand_NeverCountsAsStuck" methodname="VehicleStationaryWithoutDemand_NeverCountsAsStuck" classname="RoboRougelike.MapSystemR4.Tests.MapR6DriveEvidenceTests" runstate="Runnable" seed="1076631618" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000111" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1815" name="MapR6JunctionTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests" classname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.003384" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1819" name="Junction_RejectsTooWideVehicle" fullname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests.Junction_RejectsTooWideVehicle" methodname="Junction_RejectsTooWideVehicle" classname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests" runstate="Runnable" seed="1360547550" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001340" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1817" name="SameJunction_RejectsOversizedTurnRadius" fullname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests.SameJunction_RejectsOversizedTurnRadius" methodname="SameJunction_RejectsOversizedTurnRadius" classname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests" runstate="Runnable" seed="185295884" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000277" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1816" name="WideJunction_ProducesContinuousCandidate" fullname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests.WideJunction_ProducesContinuousCandidate" methodname="WideJunction_ProducesContinuousCandidate" classname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests" runstate="Runnable" seed="312869752" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000405" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1818" name="WrongConnection_IsRejected" fullname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests.WrongConnection_IsRejected" methodname="WrongConnection_IsRejected" classname="RoboRougelike.MapSystemR4.Tests.MapR6JunctionTests" runstate="Runnable" seed="135200534" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000075" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1820" name="MapR6RouteValidatorTests" fullname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" classname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.005352" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1823" name="AllEasternRoutesClosed_RemainsUnreachable" fullname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests.AllEasternRoutesClosed_RemainsUnreachable" methodname="AllEasternRoutesClosed_RemainsUnreachable" classname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" runstate="Runnable" seed="706747050" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.001844" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1821" name="CollapsedBridge_LowerDetourIsValidAfterJunctionRedesign" fullname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests.CollapsedBridge_LowerDetourIsValidAfterJunctionRedesign" methodname="CollapsedBridge_LowerDetourIsValidAfterJunctionRedesign" classname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" runstate="Runnable" seed="1673323130" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000706" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1825" name="KnownState_CanReachExitViaTurnAwareGraph" fullname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests.KnownState_CanReachExitViaTurnAwareGraph" methodname="KnownState_CanReachExitViaTurnAwareGraph" classname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" runstate="Runnable" seed="796771126" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000745" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1824" name="NoUnknownStateAccepted" fullname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests.NoUnknownStateAccepted" methodname="NoUnknownStateAccepted" classname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" runstate="Runnable" seed="259433594" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000258" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1822" name="PhysicallyOversizedTurnVehicle_IsNotGivenFalseRoute" fullname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests.PhysicallyOversizedTurnVehicle_IsNotGivenFalseRoute" methodname="PhysicallyOversizedTurnVehicle_IsNotGivenFalseRoute" classname="RoboRougelike.MapSystemR4.Tests.MapR6RouteValidatorTests" runstate="Runnable" seed="408922021" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:26Z" duration="0.000256" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="2142" name="RoboRougelike.RAC001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/RoboRougelike.RAC001.EditModeTests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.008296" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8248" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="2143" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.007761" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="2144" name="Mechanics" fullname="RoboRougelike.Mechanics" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.007333" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="2145" name="RAC001" fullname="RoboRougelike.Mechanics.RAC001" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.006923" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="2146" name="Tests" fullname="RoboRougelike.Mechanics.RAC001.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.006491" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="2130" name="CheckpointRaceStateTests" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.006022" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="2134" name="ImplausibleTeleportCannotScoreCheckpoint" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ImplausibleTeleportCannotScoreCheckpoint" methodname="ImplausibleTeleportCannotScoreCheckpoint" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="570355730" result="Passed" start-time="2026-10-26 17:03:26Z" end-time="2026-10-26 17:03:27Z" duration="0.001137" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2136" name="InvalidCourseAndNumbersCannotBegin" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.InvalidCourseAndNumbersCannotBegin" methodname="InvalidCourseAndNumbersCannotBegin" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1227779456" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000300" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2139" name="InvalidInputInvalidatesOnce" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.InvalidInputInvalidatesOnce" methodname="InvalidInputInvalidatesOnce" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="414075264" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000164" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2132" name="OutOfOrderCheckpointDoesNotAdvance" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.OutOfOrderCheckpointDoesNotAdvance" methodname="OutOfOrderCheckpointDoesNotAdvance" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="383873333" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000215" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2137" name="OverlappingCheckpointsRequireFreshExit" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.OverlappingCheckpointsRequireFreshExit" methodname="OverlappingCheckpointsRequireFreshExit" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1701906730" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000236" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2138" name="ResetClearsRaceAndPermitsNewAttempt" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ResetClearsRaceAndPermitsNewAttempt" methodname="ResetClearsRaceAndPermitsNewAttempt" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="848442288" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000206" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2131" name="StartInsideCheckpointRequiresExitAndReentry" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.StartInsideCheckpointRequiresExitAndReentry" methodname="StartInsideCheckpointRequiresExitAndReentry" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1881623662" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000159" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2133" name="SweptSegmentRegistersHighSpeedCrossing" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.SweptSegmentRegistersHighSpeedCrossing" methodname="SweptSegmentRegistersHighSpeedCrossing" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="979462907" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000104" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2135" name="TimeoutAtDeadlineBeatsCheckpoint" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.TimeoutAtDeadlineBeatsCheckpoint" methodname="TimeoutAtDeadlineBeatsCheckpoint" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1692599557" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000211" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2141" name="TinyPositiveTicksCannotExploitPerStepDistanceAllowance" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.TinyPositiveTicksCannotExploitPerStepDistanceAllowance" methodname="TinyPositiveTicksCannotExploitPerStepDistanceAllowance" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1411493778" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000177" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2140" name="ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime" methodname="ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1006176647" result="Passed" start-time="2026-10-26 17:03:27Z" end-time="2026-10-26 17:03:27Z" duration="0.000287" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -113,6 +113,7 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Route||index<0||index>=RouteOffers.Length)return false;
             ClearGeneratedArena();
+            ClearFullActivities();
             var choice=RouteOffers[index];
             reactorRequested=false;ReactorPrepared=false;LastActivityWasReactor=false;
             if(!Progress.ChooseRoute())return false;
@@ -200,10 +201,15 @@ namespace RoboRougelike.R1
             // Garage edits must preserve the exact world frame used by the cursor and ghost.
             var position=Player!=null?Player.transform.position:playerSpawn;
             var rotation=Player!=null?Player.transform.rotation:playerRotation;
+            var gunPoses=Player!=null?Player.GetComponent<R3VehicleAssembly>().Parts
+                .Where(p=>p!=null&&p.Operational&&p.GunPivot!=null&&p.transform.IsChildOf(Player.transform)).ToDictionary(p=>p.Id,p=>p.GunPivot.localRotation):null;
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             R1EncounterManager.ClearTransientObjects();
             Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,position,rotation);
+            if(gunPoses!=null)foreach(var part in Player.GetComponent<R3VehicleAssembly>().Parts)
+                if(part.GunPivot!=null&&gunPoses.TryGetValue(part.Id,out var pose))part.GunPivot.localRotation=pose;
             followCamera.Configure(Player.transform,Player.CameraPivot);
+            R3BuildValidation.SetGarageSockets(Player.GetComponent<R3VehicleAssembly>(),true);
             Garage.RefreshPreview();
         }
 
@@ -211,7 +217,8 @@ namespace RoboRougelike.R1
         {
             Transitioning = true; Paused = false; SetSimulation(false);
             Encounter.Clear();
-            if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
+            if(roadRequested)playerSpawn=ActivateRoadWorld();
+            else if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
             else {Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;}
             if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,playerRotation);
             else Player.MoveTo(playerSpawn,playerRotation);
@@ -223,7 +230,9 @@ namespace RoboRougelike.R1
             // Preserve only modifiers from currently mounted, operational bonus modules.
             Player.Apply(ActiveStats??Progress.Stats);
             ResetRecoveryForEncounter();Salvage=new R4SalvageLedger(3);
-            if(reactorRequested)BeginReactorActivity();
+            if(raceRequested)BeginCheckpointRace();
+            else if(roadRequested)BeginRoadChallenge();
+            else if(reactorRequested)BeginReactorActivity();
             else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,mapgenRequested?GeneratedWorld.EnemySpawns:null);
             yield return null;
             Transitioning = false; SetSimulation(true);
@@ -239,6 +248,7 @@ namespace RoboRougelike.R1
             if (Transitioning || Progress.State != R1RunState.Combat || Paused) return;
             string defeat = Player == null ? "Pojazd został zniszczony." : Player.DefeatReason;
             if(defeat==null)defeat=ReactorDefeat();
+            if(defeat==null)defeat=FullActivityDefeat();
             // Resolve player loss first when both sides die in the same physics step.
             if (defeat != null)
             {
@@ -246,22 +256,25 @@ namespace RoboRougelike.R1
                 Player?.GetComponent<R3VehicleAssembly>().Capture();
                 Progress.Lose(defeat); SetSimulation(false);
                 ClearReactorActivity();
+                ClearFullActivities();
                 ClearGeneratedArena();
                 Debug.Log("[R1] Porażka: " + defeat);
             }
             else if(ReactorActive&&!UpdateReactorDefense())return;
-            else if (Encounter.Cleared)
+            else if(!UpdateFullActivity())return;
+            else if (Encounter.Cleared||CheckpointRace?.Won==true||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
             {
                 Player.GetComponent<R3VehicleAssembly>().Capture();
                 LastScrapReward=Definition.Encounters[Progress.EncounterIndex].ScrapReward;
                 VehicleModel.Award(LastScrapReward);
-                EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count;
+                EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
                 Progress.WinEncounter(Definition.Upgrades, Plan.UpgradeRandom(Progress.EncounterIndex));
                 Progress.OpenSalvage();
                 OpenRecoveryWindow();
                 SetSimulation(false);
                 Encounter.Clear();
                 ClearReactorActivity();
+                ClearFullActivities();
                 ClearGeneratedArena();
                 Debug.Log("[R3] Wygrano starcie " + Progress.CompletedEncounters + "; Złom +"+LastScrapReward+"; stan=" + Progress.State);
             }
@@ -315,6 +328,7 @@ namespace RoboRougelike.R1
         private void OnDestroy()
         {
             ClearReactorActivity();
+            ClearFullActivities();
             ClearGeneratedArena();
             if (Definition != null) Destroy(Definition);
             if (Instance == this) { Instance = null; Time.timeScale = 1; }

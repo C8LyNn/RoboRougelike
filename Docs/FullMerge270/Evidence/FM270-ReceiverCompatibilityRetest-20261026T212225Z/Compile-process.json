@@ -1,0 +1,11 @@
+{
+  "arguments": [
+    "-quit"
+  ],
+  "finishedUtc": "2026-10-26T21:22:38.1501280Z",
+  "phase": "Compile",
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T21:22:25.5113059Z",
+  "stage": "ReceiverCompatibilityRetest",
+  "source": "ef6b9d3accc47a6fbfcf86c4e2308ad4632c3f97"
+}

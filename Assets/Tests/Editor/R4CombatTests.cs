@@ -154,7 +154,7 @@ public class R4CombatTests
         string damageId=Run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==damage.Id).Id;
         string reloadId=Run.VehicleModel.Inventory.Last(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==reload.Id).Id;
         Assert.That(Run.GarageMount(damageId,new Vector3Int(1,2,1)),Is.True);
-        Assert.That(Run.GarageMount(reloadId,new Vector3Int(-2,2,1)),Is.True);
+        Assert.That(Run.GarageMount(reloadId,new Vector3Int(-2,2,-2)),Is.True);
         Assert.That(Run.Progress.Stats.Damage,Is.EqualTo(1));Assert.That(Run.ActiveStats.Damage,Is.GreaterThan(1));
         Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Strzelanie");Run.Encounter.SetCombatActive(false);
         var assembly=Run.Player.GetComponent<R3VehicleAssembly>();

@@ -1,0 +1,552 @@
+{
+  "source": "79b9605e07864b60fb38892c9e38f1cbb4072218",
+  "method": "full owned Git source, exact blobs, no archive fabricated",
+  "sourceFiles": [
+    {
+      "path": "Assets/Editor/MapR6AttachRealVehicleEvidence.cs",
+      "sha256": "299973419f90e596a6e9bdd1dcc91a0eca70494aa9b02acda49aee829495eb6f",
+      "bytes": 1399
+    },
+    {
+      "path": "Assets/Editor/MapR6AttachRealVehicleEvidence.cs.meta",
+      "sha256": "806808bacd210f14cc44a142309f3a19c5f303a8f2129a521aadc8c0c692f173",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/R6/MapR6ProductionEvidenceBridge.cs",
+      "sha256": "639d5d7611ca3c237b70534f939770ed5645dcbe731dbf40f6e3ec6e9fd5f70f",
+      "bytes": 3042
+    },
+    {
+      "path": "Assets/R6/MapR6ProductionEvidenceBridge.cs.meta",
+      "sha256": "08abe183d6925ff11ba96347c9b0cfb23590db579e57c400eb3586c2610fa25a",
+      "bytes": 240
+    },
+    {
+      "path": "Assets/RoboRougelike.meta",
+      "sha256": "77db77bb6d225b632545e3433ce0dd0629a0a854d73d96464c361951f62e9086",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4.meta",
+      "sha256": "b65dddd8cf4f097d38dc1ec8a69e9044ebfff5cd6c8b5ce0bb624cd8373c1df8",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Editor.meta",
+      "sha256": "efcf1613c571b6314dbe4d6b2726b9e0ed19f3b03484955d086c243781b7c62d",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Editor/MapR4DemoMenu.cs",
+      "sha256": "ca1202cbbe290618eb86168c1692f43a0dac69aa755d61d0404a101bdc0ea001",
+      "bytes": 697
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Editor/MapR4DemoMenu.cs.meta",
+      "sha256": "fec4db86d7c4bfc9298aa5928496a138845313d4323eb1c606001cb9b294c2de",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Editor/RoboRougelike.MapSystemR4.Editor.asmdef",
+      "sha256": "d33f534d38b493c0a3c557917e24e0b6ff9e01135b3bf3315636c73201153d22",
+      "bytes": 418
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Editor/RoboRougelike.MapSystemR4.Editor.asmdef.meta",
+      "sha256": "4c812e201be1ff4c387258c874c698bdc1b0f0e9f57fe90aa51dbf78875705dd",
+      "bytes": 155
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime.meta",
+      "sha256": "14a3c928db8db45665292186aa1624957dc806fc523c16ea70091ea772dea66d",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4AnchorTrigger.cs",
+      "sha256": "72fa7893520f6939ae718889d435278638fa7bb277556fb29ea0655bea45ea7e",
+      "bytes": 784
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4AnchorTrigger.cs.meta",
+      "sha256": "44b7cc1c513a5d68e57cb12f8c5c05ba61dcc0a14a49ff29e266805824def2fe",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4ChallengeRuntime.cs",
+      "sha256": "8be56dbf4fc71ad63572a795a4fcba4d0b4540426d8872c96f452080c3c68021",
+      "bytes": 2629
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4ChallengeRuntime.cs.meta",
+      "sha256": "d3e19f92b02320a2c7fbce8a46e335a0516018b54bfbc54d2a03f821ee59cc51",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4ClearanceProbe.cs",
+      "sha256": "f0623e802ac77bcc3b5d6204f278c2d4accceb82d4568f1ac1e81aa61284044f",
+      "bytes": 1756
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4ClearanceProbe.cs.meta",
+      "sha256": "2c96b8caff0b67d2c86f6f9d6db8526b5200940f94f111c4711c5f9965ee315d",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4Data.cs",
+      "sha256": "041f0480330a722d44a8d0a6bd87b1c7796cca7224f387dfc9d592d4fda60fd1",
+      "bytes": 2538
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4Data.cs.meta",
+      "sha256": "1a3ab0bbddd1a9afe563505acabf9e16d4e36095d7bfbd9b02dc8cda4b4ebb14",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4DemoController.cs",
+      "sha256": "539783277a5c2d4772f55408f8af226fa258f89b230f1f73efbee93ccf8ccf8f",
+      "bytes": 13364
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4DemoController.cs.meta",
+      "sha256": "8369debb3b9137529fa745c5ec2e6da8ea9ba16f7aba8311ae4ba88ed6f54936",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4GeometryBuilder.cs",
+      "sha256": "9f3d48cdf7a0fcafed3d72516c74884ba3836e0f504d5b71be19383c76736a98",
+      "bytes": 5115
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4GeometryBuilder.cs.meta",
+      "sha256": "0122538686c7be29a272afff871b170d55b3cadb49c41695cf24eeabc0f79b8c",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4GraphValidator.cs",
+      "sha256": "00539e8c09b5b5d48d3fb639e1501de2d8c50f1db73dc436707b84e283339008",
+      "bytes": 8010
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4GraphValidator.cs.meta",
+      "sha256": "df978e8db545264c6006b6a96dc736d4be356c55307719ac53003f29c3337d13",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4ModuleSocket.cs",
+      "sha256": "c5cf6491dd7ac055f18c17c7257c24490994a908daf5b91c3d60fc2df081894b",
+      "bytes": 361
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4ModuleSocket.cs.meta",
+      "sha256": "fa49ad94ee4318403a5b836710f24724a0dd729faae30d46dec80cb06a7e1ca9",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4PrototypeDriver.cs",
+      "sha256": "3f3475fe11b3066d1eb97a0066ce371ed8b2667c16d44ef159076a7ec935433f",
+      "bytes": 2301
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4PrototypeDriver.cs.meta",
+      "sha256": "24e053211a850c74672083b0b4e7e734d389b76bbefa322ee41f4c2e1c87796b",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4SocketPlacement.cs",
+      "sha256": "9d0196b06161375e2fe6df95a18b2c84e845e76a9f978b5f9f35cf1cbf9bf99e",
+      "bytes": 1563
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4SocketPlacement.cs.meta",
+      "sha256": "8ce87fa0afa279a7900d7ddaae33eb95e05949b7351104f69e8c893b7efa392a",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4StateController.cs",
+      "sha256": "093e2184178c1f7bd20b1b054b3426e5fe1f686578f6b48a2de69cadf8a1e608",
+      "bytes": 1360
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR4StateController.cs.meta",
+      "sha256": "0d28946933a340686604174d383c51278e47556b2b05aef50329d14c84a8d191",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR5RoadMath.cs",
+      "sha256": "67a9c055009318bf67554e8b1cda8c4b4dcda9fcb25a1f6779e32380cb76043e",
+      "bytes": 4580
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR5RoadMath.cs.meta",
+      "sha256": "e7a5134dbb91e0e363c88ef360d15308b0e046762f1ffb63862572ecb2542438",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR5RoadMesh.cs",
+      "sha256": "3d208129dfbb5bb6883f04602faeb76c0aba048035eac12307743bc71417e5e2",
+      "bytes": 3227
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR5RoadMesh.cs.meta",
+      "sha256": "7bea173a9108d933d0367a4a0fdac4ddb013297a561492da5fced257fb1c50da",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR5TraversalProbe.cs",
+      "sha256": "db26ecdae1a8dbc89a83793f9d07b65222d9d84781e783e85a4ad704200a36a6",
+      "bytes": 3962
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR5TraversalProbe.cs.meta",
+      "sha256": "bb2871f9bbee3d74a533489f82ce3105c25a51778efff41b3b979702bfa90eca",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6DriveEvidence.cs",
+      "sha256": "f92f18e495357b4869406ebbc07174f395266bf17d3f7f0ad81f501a4dbbb29c",
+      "bytes": 5735
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6DriveEvidence.cs.meta",
+      "sha256": "e8cd3bac515e018713d3f8097b381770848c64ffeae58108dab3f52b7b9a7cd3",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6JunctionClearanceProbe.cs",
+      "sha256": "ad9c84c5425179174a70ed2da642f4dd0520e9524c656bf2629545844b8fad4f",
+      "bytes": 1297
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6JunctionClearanceProbe.cs.meta",
+      "sha256": "6b772283fafaf750b0dac57e6a994036495b70ae8e247cb5f484e1c172f4f0a2",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6JunctionGizmos.cs",
+      "sha256": "f9e6d65ed529df67dc39e25998ca40227cf0217b05bbcd1a01f1d580b72eaa0d",
+      "bytes": 934
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6JunctionGizmos.cs.meta",
+      "sha256": "e82c19b603579bd3e41c3079fb9c1e81e67cf3bcc95304d0e98c8fe904ff6981",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6JunctionPlanner.cs",
+      "sha256": "4fefab64ab3d54adab92b66642c11c43b6d3e78d82e9e64dc18ef78380585e5d",
+      "bytes": 7477
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6JunctionPlanner.cs.meta",
+      "sha256": "d3ba270a2db13409a60ded714dc0e34be9f93856fb4c1eca705db77771739ca8",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6RouteValidator.cs",
+      "sha256": "4fa5fbf8bf413635d6d72efe6942d07ae31198fbbc8deb64d8a86bcb68ba82ce",
+      "bytes": 6435
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/MapR6RouteValidator.cs.meta",
+      "sha256": "f0bf9a23555e450a8ea4c7f11adf7560dfdb29118d4ffdeb6091471c810974cc",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/RoboRougelike.MapSystemR4.Runtime.asmdef",
+      "sha256": "cec233ecdc30f95a662641f0dfc5514822d0021771ae6ef519d21e6aa6a4df0f",
+      "bytes": 395
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Runtime/RoboRougelike.MapSystemR4.Runtime.asmdef.meta",
+      "sha256": "66d503d3a1d853695b8aedbd9e92efc597bcde69bc4532897aa0332a918e8d74",
+      "bytes": 155
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Samples.meta",
+      "sha256": "55b7cf6a1e4a714fad608fe66e0a0575bd0afd560ea6251ad147ea6e934a0dc9",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Samples/Resources.meta",
+      "sha256": "195537ae4780e6cc578e73f987ecc7f8309bc5cf880bad7e73bb1fd05be4435e",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Samples/Resources/MAP_R4_quarry_03.json",
+      "sha256": "b459bfb5a86f1cabc6cfb00c78950ee48ac0775ccde22b4e9d212ec846eba0cc",
+      "bytes": 6587
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Samples/Resources/MAP_R4_quarry_03.json.meta",
+      "sha256": "b46dcdb8752d0bd5d3ef3f4fa8d1625b815107738f89bfdead59036622fd6403",
+      "bytes": 155
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests.meta",
+      "sha256": "7cbf46e66256155326e6e953376c038ef850a3cdc0dffd7abd8cd91d277719d9",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode.meta",
+      "sha256": "be89433df16e5c518038ca042639b9629173684ab351f6c69261ad3e1f5034ec",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR4GraphTests.cs",
+      "sha256": "b7ef023f8eeb82ec3b9da78804edaca7943a0feaaa7234fa5a2cc84ea04b26b7",
+      "bytes": 2616
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR4GraphTests.cs.meta",
+      "sha256": "eb0339dbe18c69a7dde93167de2c4770bdcc8df01acb32a764a2c97d24339c57",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR4ScenarioTests.cs",
+      "sha256": "5a35afc4d39ebac09bbe521c047decebc0ce27cfc8bd10405fef5cb338023b62",
+      "bytes": 2535
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR4ScenarioTests.cs.meta",
+      "sha256": "c3b8c952a18db863062623c3dd984e4c43ffe3990fd09b244e2aa02a15c06d45",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR4SocketTests.cs",
+      "sha256": "e57f3a8c96ee08fb80a34561bce0d8eac1765b360ba14a511240051e01f0634b",
+      "bytes": 1800
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR4SocketTests.cs.meta",
+      "sha256": "559dc99cd01df2a70e81923f1ff29e0c2088191ef59ef16b99f23c11130a4741",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR5RoadMathTests.cs",
+      "sha256": "9a15ad1a90f2217fe30800b73a6e5d0bd6b51d6a3c464c5c1785152908a0e26e",
+      "bytes": 3740
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR5RoadMathTests.cs.meta",
+      "sha256": "16a2f908727ab183197820ea35647c0724c14f6f939377eecde9a06a7c6e7f0e",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR6DriveEvidenceTests.cs",
+      "sha256": "55e5049af3070b53b5ade2ab5525507dc106cb5fb63f2214af639332c9ee5a3b",
+      "bytes": 1372
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR6DriveEvidenceTests.cs.meta",
+      "sha256": "74761a6698c91e79bfcfec96ce2219baac85c0618625cad4753edc6758b948c1",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR6JunctionTests.cs",
+      "sha256": "c7e6b3995f087782e421146759b60bf12ba1958bf320ba332e5b5f5d3017aa74",
+      "bytes": 2794
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR6JunctionTests.cs.meta",
+      "sha256": "338ea2665054eebb577e5fa5b36246c55b3a438933b26159860414d93635e13a",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR6RouteValidatorTests.cs",
+      "sha256": "6c87e2d5a6cb4c243fa99c4d936164cb1016d2d3aca2938e0a54e552ff2dad10",
+      "bytes": 2052
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/MapR6RouteValidatorTests.cs.meta",
+      "sha256": "1c2aca7e8e22fc3b1dc242457afb8044df04b953231140556f8e6250163c165e",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/RoboRougelike.MapSystemR4.EditModeTests.asmdef",
+      "sha256": "db64e1899ba653f3002fa64f24f594d99f07493e5f0c1811ad7ac82d513215b4",
+      "bytes": 525
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/EditMode/RoboRougelike.MapSystemR4.EditModeTests.asmdef.meta",
+      "sha256": "734f2e9b5811a6ddf3312a5738d093e90c4c3691b98f1eea341c4565ebd4a9d2",
+      "bytes": 155
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode.meta",
+      "sha256": "eb82acb017e584686ce6dce046d3bf2ae27270b9e24479a74997c73f34d07aab",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR4GeometryPlayModeTests.cs",
+      "sha256": "7267a85350cc523968791dd80efa5a083f5cdd511a4264df0558ffe46959790d",
+      "bytes": 3269
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR4GeometryPlayModeTests.cs.meta",
+      "sha256": "55c384c1783d4320bb89857c10301f3a992856ec64faf28f6ca2410297a2e5e3",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR5TraversalProbePlayModeTests.cs",
+      "sha256": "abf799b49c1b0a9da7cb87814e0047212d3f23d8b3afd2f4472c902712be00d5",
+      "bytes": 2322
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR5TraversalProbePlayModeTests.cs.meta",
+      "sha256": "ec62c05743e1d02f76e1d0eb3fa26ddcc247bcf88da189cc5dbda0d06e51d994",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR6DriveEvidencePlayModeTests.cs",
+      "sha256": "768c593c6ce0328cdedf54e5d4fbe8c89bc8f5389211e895e02fc65fc88a4415",
+      "bytes": 1061
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR6DriveEvidencePlayModeTests.cs.meta",
+      "sha256": "f3d54b8864443a391dc41490c91c79758b4dda635b57aa480644ad7179cc44ea",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR6JunctionClearancePlayModeTests.cs",
+      "sha256": "25b6c836e6ca836a5cb3e3d606695e75683e9c8a92b2ab459666cc35a3177bfe",
+      "bytes": 2498
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/MapR6JunctionClearancePlayModeTests.cs.meta",
+      "sha256": "b7fd0e32f1c9e06d6ba6a7fdbac465c9cae1fc1dd4a7e11904db7e8d27d55f31",
+      "bytes": 60
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/RoboRougelike.MapSystemR4.PlayModeTests.asmdef",
+      "sha256": "8cf0b3db3eea98413172289a0eadda406bfd6a77ba0ff758c027312247e60cd0",
+      "bytes": 517
+    },
+    {
+      "path": "Assets/RoboRougelike/MapSystemR4/Tests/PlayMode/RoboRougelike.MapSystemR4.PlayModeTests.asmdef.meta",
+      "sha256": "a38d55113d3d7baf4b44ad85d30c7c765bf471b160f3e7f01a8030fed96f0d36",
+      "bytes": 155
+    },
+    {
+      "path": "Docs/MapSystemR6/ARCHIVE_R4_IMPLEMENTATION_PL.md",
+      "sha256": "5fbf2b7340bde3d4a32237ae3ebf896581c627a3fbad4d5fcae05cfe2847cbdf",
+      "bytes": 3703
+    },
+    {
+      "path": "Docs/MapSystemR6/ARCHIVE_R4_QA_EXECUTION_REPORT.md",
+      "sha256": "228281824270869df6b2632cf9b7fc5955cffa4b36c56a1b466a13cac002839d",
+      "bytes": 3462
+    },
+    {
+      "path": "Docs/MapSystemR6/ARCHIVE_R4_QA_MATRIX_PL.md",
+      "sha256": "3c35593b7689aadc3c4a758ad1aaffd09b949435384953238c9584633848fa2e",
+      "bytes": 1778
+    },
+    {
+      "path": "Docs/MapSystemR6/CODEX_HANDOFF_PL.md",
+      "sha256": "0a29b62160bdc828381279785e485a57037a69ebc36b193536465b698805b880",
+      "bytes": 2048
+    },
+    {
+      "path": "Docs/MapSystemR6/INTEGRATION_WITH_GAME_PL.md",
+      "sha256": "753df55d064e9daf0fb90523986ab416bc16b162a1a18b1ea956b6c9f60164e5",
+      "bytes": 3664
+    },
+    {
+      "path": "Docs/MapSystemR6/R5_CHANGELOG_PL.md",
+      "sha256": "a8c3495f1e2c64e784a4de7ab372174485bbc3a19a88940f1b639184e08eee1c",
+      "bytes": 1864
+    },
+    {
+      "path": "Docs/MapSystemR6/R5_QA_EXECUTION_REPORT.md",
+      "sha256": "241e2d980707baf39da53daba452591e579299d20ccd81f35f15a2a476e48ff2",
+      "bytes": 2956
+    },
+    {
+      "path": "Docs/MapSystemR6/R5_QA_OFFLINE_LOG.txt",
+      "sha256": "70e8523256e7f7b08bea4c33d92c8e2e6f829d7e18dc95e6e62a8b44d6e522bc",
+      "bytes": 4035
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_CHANGELOG_PL.md",
+      "sha256": "b4d4d58961b40f5f4dfea02694820b4acfb6f0f971d4b85ba33e466163728475",
+      "bytes": 1797
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_CODEX_HANDOFF_PL.md",
+      "sha256": "2ea3b00ce713aff4f4d014830e641a844b5f6c63705ef522ed6d12d905d80968",
+      "bytes": 2051
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_GEOMETRY_FIX_PL.md",
+      "sha256": "7324f8b8eb81a2ee6e4eee8a8aaa5dfda4927ae2581b5a3d4314cf03ed6558a5",
+      "bytes": 784
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_QA_EXECUTION_REPORT.md",
+      "sha256": "837f474a092e10b086aabfbf1646a3b8be210163de451ac496e719193070e97c",
+      "bytes": 2392
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_QA_OFFLINE_LOG.txt",
+      "sha256": "f61abb37e843d8a30693835f66a2887ff073a56e8c5704fcf5339d8548958168",
+      "bytes": 6652
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_REFERENCE_JUNCTION_REPORT.json",
+      "sha256": "abc5afb1671f56091c56b7bb827b3ec22ed12d40d4a3eb518f388ce6efef35c4",
+      "bytes": 1270
+    },
+    {
+      "path": "Docs/MapSystemR6/R6_VALIDATION_DESIGN_PL.md",
+      "sha256": "c137dd3af44787c8741b985973b4b5925f25c13ace837383f77f04f48e75554d",
+      "bytes": 2903
+    },
+    {
+      "path": "Docs/MapSystemR6/README_START_HERE_PL.md",
+      "sha256": "e1848bb11bf8786c539b199a01e411d0b72f40dc566eaa14d7589b9153c395bc",
+      "bytes": 2292
+    },
+    {
+      "path": "Tools/MapSystemR6/check_r3_r5_topology.py",
+      "sha256": "2a278e7c086529123676e9948371adc32cdf2ea78ee145747ae688aab38fe7d2",
+      "bytes": 1228
+    },
+    {
+      "path": "Tools/MapSystemR6/check_r5_geometry.py",
+      "sha256": "e4ad55bf459d7271d2953a1e926041b738eac107367d747f2df2a7403ffe290c",
+      "bytes": 4221
+    },
+    {
+      "path": "Tools/MapSystemR6/check_r5_mesh_topology.py",
+      "sha256": "bfbf2e3e4d2b917587435de2581d552180ad1982ad5aceaa947d16969370cd34",
+      "bytes": 1711
+    },
+    {
+      "path": "Tools/MapSystemR6/check_unity_source_layout.py",
+      "sha256": "cd109f7dd8fb914967ff876e713598a155b146408f1a2d3b7aa1c91e3c3a4c1e",
+      "bytes": 1621
+    },
+    {
+      "path": "Tools/MapSystemR6/inspect_r6_reference_turns.py",
+      "sha256": "b577912e6133ad32b714d54af2b9999ba8d8966e72556f26f53795282c1c99cd",
+      "bytes": 1266
+    },
+    {
+      "path": "Tools/MapSystemR6/test_r5_offline.py",
+      "sha256": "8e5d65a0f2c37ac725ff6b638b2ab0d6fa230e5e303a903c8b79bf06a62cba99",
+      "bytes": 2686
+    },
+    {
+      "path": "Tools/MapSystemR6/test_r6_junctions.py",
+      "sha256": "811e43e3bb7656e87a905e2120a46fcffd9e176f860d07524c1e78002400da6b",
+      "bytes": 4498
+    },
+    {
+      "path": "Tools/MapSystemR6/test_r6_route_offline.py",
+      "sha256": "9329d9603a2f61e07d0f8fcba595d9ebcb65f060724adca0618d3f8152956751",
+      "bytes": 2362
+    }
+  ],
+  "GUIDsAfter": 961
+}

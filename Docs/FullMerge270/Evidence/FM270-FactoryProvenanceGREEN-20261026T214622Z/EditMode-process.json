@@ -1,0 +1,17 @@
+{
+  "startedUtc": "2026-10-26T21:46:35.8332746Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FactoryProvenanceGREEN-20261026T214622Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeAdditionalRegression.FactoryWheelCanReturnAndRestoreWithoutIgnoringForgedForeignColliders;R3GaragePlayTests.PaidRepairsNewModulesIndependentEnemiesAndCleanRestart\""
+  ],
+  "stage": "FactoryProvenanceGREEN",
+  "finishedUtc": "2026-10-26T21:46:58.0808304Z",
+  "phase": "EditMode",
+  "source": "c5a4d4c67a8c83742f1eada1ac434d68becd7970",
+  "exitCode": 0
+}

@@ -9,10 +9,12 @@ namespace B01.MAPGEN001 {
     }
     public sealed class MapGenBuilder : MonoBehaviour {
         public MapResult Current { get; private set; }
+        public int GenerateCalls;
         public bool FailNext;
         public bool CorruptNextHash;
         public FakeWorldFault NextFault;
         public MapResult Generate(MapRecipe recipe,int seed,MapGenConfig config,MapVehicleProfile vehicle) {
+            GenerateCalls++;
             if(FailNext){FailNext=false;throw new System.InvalidOperationException("FAKE_BUILD_FAILURE");}
             var plan=MapGenPlanner.Plan(recipe,seed,config,vehicle);
             var result=new MapResult {

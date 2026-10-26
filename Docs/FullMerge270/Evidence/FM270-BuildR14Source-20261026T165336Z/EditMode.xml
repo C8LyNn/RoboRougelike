@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="35" result="Passed" total="35" passed="35" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0,0575871">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1103" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.057587" total="35" passed="35" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1509" name="B01.BUILD001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/B01.BUILD001.EditModeTests.dll" runstate="Runnable" testcasecount="35" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.040286" total="35" passed="35" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="41308" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1510" name="B01" fullname="B01" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.038448" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1511" name="BUILD001" fullname="B01.BUILD001" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.038142" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1512" name="Tests" fullname="B01.BUILD001.Tests" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.037840" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1472" name="Build001R13SafetyTests" fullname="B01.BUILD001.Tests.Build001R13SafetyTests" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.028200" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1479" name="TypedMobilityHubDoesNotWildcardIntoStructural" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.TypedMobilityHubDoesNotWildcardIntoStructural" methodname="TypedMobilityHubDoesNotWildcardIntoStructural" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="2050592300" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.013715" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1474" name="W9_02_StrictInstallReportsDisconnectedFragment" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_02_StrictInstallReportsDisconnectedFragment" methodname="W9_02_StrictInstallReportsDisconnectedFragment" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="1183256512" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000613" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1473" name="W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland" methodname="W9_02_TwoLoadedCoreRootsCannotAuthorizeIsland" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="1661985130" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000464" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1476" name="W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay" methodname="W9_03_AdjacentCellsWithoutDeclaredPhysicalJoinCannotRelay" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="2053426818" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.001711" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1475" name="W9_03_DisjointCellsCannotShareOneOwner" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_DisjointCellsCannotShareOneOwner" methodname="W9_03_DisjointCellsCannotShareOneOwner" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="691692443" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000215" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1477" name="W9_03_Joined2x2RotationStillWorks" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_03_Joined2x2RotationStillWorks" methodname="W9_03_Joined2x2RotationStillWorks" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="237284648" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.001325" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1478" name="W9_04_NullEvidenceMustNotBeCommitted" fullname="B01.BUILD001.Tests.Build001R13SafetyTests.W9_04_NullEvidenceMustNotBeCommitted" methodname="W9_04_NullEvidenceMustNotBeCommitted" classname="B01.BUILD001.Tests.Build001R13SafetyTests" runstate="Runnable" seed="73615821" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000403" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1480" name="Build001R14ContactAreaTests" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.004776" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1488" name="NonoverlapAndEdgeOnlyRemainRejected" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.NonoverlapAndEdgeOnlyRemainRejected" methodname="NonoverlapAndEdgeOnlyRemainRejected" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="174606181" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000596" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1487" name="OffsetNestedSocketNeverBorrowsSurroundingArea" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.OffsetNestedSocketNeverBorrowsSurroundingArea" methodname="OffsetNestedSocketNeverBorrowsSurroundingArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1934896927" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000430" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1495" name="QuarterTurnRotationsPreserveExactNestedArea" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.QuarterTurnRotationsPreserveExactNestedArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000886" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1490" name="QuarterTurnRotationsPreserveExactNestedArea(0,0,0)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.QuarterTurnRotationsPreserveExactNestedArea(0,0,0)" methodname="QuarterTurnRotationsPreserveExactNestedArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="409679079" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000252" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1491" name="QuarterTurnRotationsPreserveExactNestedArea(1,0,0)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.QuarterTurnRotationsPreserveExactNestedArea(1,0,0)" methodname="QuarterTurnRotationsPreserveExactNestedArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1541229785" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000034" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1492" name="QuarterTurnRotationsPreserveExactNestedArea(0,1,0)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.QuarterTurnRotationsPreserveExactNestedArea(0,1,0)" methodname="QuarterTurnRotationsPreserveExactNestedArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="2032934057" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1493" name="QuarterTurnRotationsPreserveExactNestedArea(0,0,1)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.QuarterTurnRotationsPreserveExactNestedArea(0,0,1)" methodname="QuarterTurnRotationsPreserveExactNestedArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1930217725" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000024" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1494" name="QuarterTurnRotationsPreserveExactNestedArea(1,2,3)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.QuarterTurnRotationsPreserveExactNestedArea(1,2,3)" methodname="QuarterTurnRotationsPreserveExactNestedArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1920219954" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000026" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1486" name="RC2_NestedAcceptedAreaEqualsActualPhysicalSquareMetres" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.RC2_NestedAcceptedAreaEqualsActualPhysicalSquareMetres" methodname="RC2_NestedAcceptedAreaEqualsActualPhysicalSquareMetres" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1655947703" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000204" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1485" name="RC2_NestedPatchUsesRealContactArea" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.RC2_NestedPatchUsesRealContactArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.001126" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1481" name="RC2_NestedPatchUsesRealContactArea(0.02f,False)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.RC2_NestedPatchUsesRealContactArea(0.02f,False)" methodname="RC2_NestedPatchUsesRealContactArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1973929753" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000624" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1482" name="RC2_NestedPatchUsesRealContactArea(0.049f,False)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.RC2_NestedPatchUsesRealContactArea(0.049f,False)" methodname="RC2_NestedPatchUsesRealContactArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="869768228" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000046" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1483" name="RC2_NestedPatchUsesRealContactArea(0.051f,True)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.RC2_NestedPatchUsesRealContactArea(0.051f,True)" methodname="RC2_NestedPatchUsesRealContactArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="896954991" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000029" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1484" name="RC2_NestedPatchUsesRealContactArea(0.2f,True)" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.RC2_NestedPatchUsesRealContactArea(0.2f,True)" methodname="RC2_NestedPatchUsesRealContactArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="600447429" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000029" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1496" name="ReceiverMinimumAreaIsNotCumulativeAcrossTinySockets" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.ReceiverMinimumAreaIsNotCumulativeAcrossTinySockets" methodname="ReceiverMinimumAreaIsNotCumulativeAcrossTinySockets" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="875417182" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000133" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1489" name="UnequalPartiallyOverlappingRectanglesReportExactArea" fullname="B01.BUILD001.Tests.Build001R14ContactAreaTests.UnequalPartiallyOverlappingRectanglesReportExactArea" methodname="UnequalPartiallyOverlappingRectanglesReportExactArea" classname="B01.BUILD001.Tests.Build001R14ContactAreaTests" runstate="Runnable" seed="1679010481" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000122" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1497" name="Build001SocketTests" fullname="B01.BUILD001.Tests.Build001SocketTests" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.003792" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1504" name="AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" fullname="B01.BUILD001.Tests.Build001SocketTests.AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" methodname="AliveButCoreDisconnectedFragmentCannotAcceptNewAttachment" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="976362573" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000385" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1500" name="GunHasBaseOnlyAndLateralBarrelContactIsRejected" fullname="B01.BUILD001.Tests.Build001SocketTests.GunHasBaseOnlyAndLateralBarrelContactIsRejected" methodname="GunHasBaseOnlyAndLateralBarrelContactIsRejected" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1957074661" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000198" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1505" name="InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" fullname="B01.BUILD001.Tests.Build001SocketTests.InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" methodname="InvalidZeroPatchInternalFaceAndBadSocketTypeFailClosed" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="409683252" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000168" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1502" name="MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" fullname="B01.BUILD001.Tests.Build001SocketTests.MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" methodname="MultiCellOneIdBlocksOccupancyAndRotatesWithoutPhantomInternalFaces" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1458605186" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000606" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1507" name="NoCorePlacementAndNoCellOrOwnershipDuplication" fullname="B01.BUILD001.Tests.Build001SocketTests.NoCorePlacementAndNoCellOrOwnershipDuplication" methodname="NoCorePlacementAndNoCellOrOwnershipDuplication" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1866918414" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000171" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1508" name="OneQuarterRotationAlwaysRemainsIntegralAndReversible" fullname="B01.BUILD001.Tests.Build001SocketTests.OneQuarterRotationAlwaysRemainsIntegralAndReversible" methodname="OneQuarterRotationAlwaysRemainsIntegralAndReversible" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="754483426" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000184" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1503" name="StructuralGraphDisconnectsAfterSupportDies" fullname="B01.BUILD001.Tests.Build001SocketTests.StructuralGraphDisconnectsAfterSupportDies" methodname="StructuralGraphDisconnectsAfterSupportDies" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1931177365" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000174" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1501" name="SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" fullname="B01.BUILD001.Tests.Build001SocketTests.SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" methodname="SuspensionCarriesWheelThroughAxleAndBaseConnectsToArmor" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="2009466914" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000239" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1506" name="TwoTinyEdgePatchesMustHaveGenuineContactArea" fullname="B01.BUILD001.Tests.Build001SocketTests.TwoTinyEdgePatchesMustHaveGenuineContactArea" methodname="TwoTinyEdgePatchesMustHaveGenuineContactArea" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="482848826" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000220" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1499" name="WheelCanBeMirroredByYawAndMountOppositeSide" fullname="B01.BUILD001.Tests.Build001SocketTests.WheelCanBeMirroredByYawAndMountOppositeSide" methodname="WheelCanBeMirroredByYawAndMountOppositeSide" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="1381519761" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000149" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1498" name="WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" fullname="B01.BUILD001.Tests.Build001SocketTests.WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" methodname="WheelOnlyConnectsToRealHubNotTopTreadOrGunBarrel" classname="B01.BUILD001.Tests.Build001SocketTests" runstate="Runnable" seed="311752843" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000198" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1467" name="BuildRC2SafetyTests" fullname="BuildRC2SafetyTests" classname="BuildRC2SafetyTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.001244" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1471" name="AcceptedNestedPatchReportsItsTrueGeometricArea" fullname="BuildRC2SafetyTests.AcceptedNestedPatchReportsItsTrueGeometricArea" methodname="AcceptedNestedPatchReportsItsTrueGeometricArea" classname="BuildRC2SafetyTests" runstate="Runnable" seed="1227798555" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000290" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1470" name="NestedPatchMustSatisfyActualMinimumContactArea" fullname="BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea" classname="BuildRC2SafetyTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000531" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1468" name="NestedPatchMustSatisfyActualMinimumContactArea(0.02f,False)" fullname="BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea(0.02f,False)" methodname="NestedPatchMustSatisfyActualMinimumContactArea" classname="BuildRC2SafetyTests" runstate="Runnable" seed="762331488" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000231" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1469" name="NestedPatchMustSatisfyActualMinimumContactArea(0.2f,True)" fullname="BuildRC2SafetyTests.NestedPatchMustSatisfyActualMinimumContactArea(0.2f,True)" methodname="NestedPatchMustSatisfyActualMinimumContactArea" classname="BuildRC2SafetyTests" runstate="Runnable" seed="1242370875" result="Passed" start-time="2026-10-26 16:54:02Z" end-time="2026-10-26 16:54:02Z" duration="0.000038" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

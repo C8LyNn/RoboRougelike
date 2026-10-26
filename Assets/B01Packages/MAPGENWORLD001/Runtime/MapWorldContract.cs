@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace B01.MAPGENWORLD001
 {
-    /// <summary>V1.0.0 opt-in host contract. Width MUST be measured from the actual assembled robot.</summary>
+    /// <summary>V1.1.0 opt-in host contract. Width MUST be measured from the actual assembled robot.</summary>
     [Serializable]
     public sealed class MapWorldRequest
     {
@@ -20,7 +20,8 @@ namespace B01.MAPGENWORLD001
     {
         None, MissingRequest, UnmeasuredEnvelope, InvalidClearance,
         RejectedGeneratorConfig, InsufficientMainRouteClearance,
-        InvalidWorldEndpoints, WorldBuildFailed, InvalidWorldResult
+        InvalidWorldEndpoints, WorldBuildFailed, InvalidWorldResult,
+        InvalidReplayReceipt, ReplayGeometryMismatch
     }
 
     public sealed class MapWorldSnapshot
@@ -29,6 +30,7 @@ namespace B01.MAPGENWORLD001
         public readonly MapRecipe Recipe;
         public readonly int Seed;
         public readonly string GeometryHash;
+        public readonly string ReplayReceipt;
         public readonly Vector3 Start;
         public readonly Vector3 Finish;
         private readonly Vector3[] checkpoints;
@@ -37,12 +39,13 @@ namespace B01.MAPGENWORLD001
         public Vector3[] EnemySpawns => (Vector3[])enemySpawns.Clone();
         public readonly GameObject GeneratedRoot;
 
-        internal MapWorldSnapshot(MapResult result, int revision)
+        internal MapWorldSnapshot(MapResult result, int revision, string replayReceipt)
         {
             Revision = revision;
             Recipe = result.Recipe;
             Seed = result.Seed;
             GeometryHash = result.GeometryHash;
+            ReplayReceipt = replayReceipt;
             Start = result.Start;
             Finish = result.Finish;
             checkpoints = (Vector3[])(result.CheckpointDescriptors ?? new Vector3[0]).Clone();

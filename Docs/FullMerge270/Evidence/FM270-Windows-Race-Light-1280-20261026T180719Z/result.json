@@ -1,0 +1,41 @@
+{
+    "status": "Passed",
+    "mode": "Race",
+    "vehicle": "Light",
+    "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "startedUtc": "2026-10-26T18:07:25.0353154Z",
+    "finishedUtc": "2026-10-26T18:07:33.1814327Z",
+    "width": 1280,
+    "height": 720,
+    "frames": 382,
+    "contacts": 303,
+    "maxContacts": 4,
+    "selfRayHits": 0,
+    "worldOverlaps": 0,
+    "shots": 0,
+    "completed": 1,
+    "distance": 54.42020034790039,
+    "peakAimError": 0.0,
+    "peakCameraStep": 0.17479613423347474,
+    "peakFrameMs": 17.6929988861084,
+    "meanFrameMs": 16.67108154296875,
+    "finalPosition": {
+        "x": -3.114321708679199,
+        "y": 0.6499865055084229,
+        "z": 58.61149215698242
+    },
+    "checks": [
+        "Vehicle selected",
+        "Actual preparation garage",
+        "Garage selects Race: Przygotuj pojazd. Wybierz trasę, wygenerowaną arenę albo obronę reaktora. Seed pochodzi z menu.",
+        "Activity entered canonical live state",
+        "One delegated camera owner",
+        "One canonical model through result",
+        "Canonical bonus and up-to-three salvage once",
+        "Result returns to same garage",
+        "Actual repair preserves deployment",
+        "Restart removes all activity objects"
+    ],
+    "errors": []
+}

@@ -1,0 +1,11 @@
+{
+  "startedUtc": "2026-10-26T17:52:43.1407518Z",
+  "phase": "Compile",
+  "source": "2e9ae3594e06a61260d236c111296e227ac45962",
+  "arguments": [
+    "-quit"
+  ],
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T17:52:54.8448232Z",
+  "stage": "CameraReceiverGREEN-ActivityRetest"
+}

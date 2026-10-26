@@ -1,0 +1,34 @@
+ROBOROUGELIKE — PEŁNA INTEGRACJA / WINDOWS x64
+
+Wypakuj cały ZIP i uruchom RoboRougelike.exe. Folder danych, MonoBleedingEdge i DLL muszą pozostać obok EXE.
+W menu wybierz pojazd i kliknij „Przygotuj pojazd” lub naciśnij Enter.
+
+Garaż: montaż, naprawy i zdejmowanie części. Q/E, R/F, Z/X obracają część w trzech osiach.
+Klikaj rzeczywiste punkty mocowania konstrukcji. Koła i lufy nie służą jako rusztowanie.
+Magazyn zawiera zdjęte elementy, bonusy i łupy. Bonus działa dopiero po zamontowaniu.
+
+Z tego samego garażu wybierzesz:
+- Następna trasa: standardowa wyprawa, elity i finał.
+- Generowana arena: walka na mapie dla seedu wybranego w menu.
+- Obrona reaktora: chroń reaktor przez trzy fale.
+- Wyścig: zalicz kolejno wszystkie bramki i metę w 180 sekund.
+- Drogi: strzałką › wybierz tryb, potem kliknij jego nazwę.
+  Próba czasowa — górny checkpoint i wschodnia meta.
+  Ewakuacja — wschodnie wyjście dolną drogą; most jest zamknięty.
+  Przetrwanie — przeżyj 30 sekund fal przeciwników.
+  Arena bossa — pokonaj Oblężnika z bocznymi bateriami.
+
+Aktywności zaliczają etapy tej samej sześciostopniowej wyprawy. Ostatni etap jest finałem.
+Po zwycięstwie wybierz jeden bonus z trzech i do trzech kwalifikujących się części.
+Wróć do garażu, napraw lub zamontuj łupy i wybierz kolejną aktywność.
+Poligon używa kopii pojazdu; powrót zachowuje oryginalny warsztat.
+
+W/S — jazda/hamowanie; A/D — skręt. Omni/Hover: A/D — bok, Z/C — obrót.
+Mysz — celowanie; LPM — ogień; kółko — zoom; Esc — pauza/wznowienie.
+Moduły: Shift — booster, Spacja — skok, Q — blink, E — grapple, G — żyroskop,
+K — skan konstrukcji, L — impuls skanera, M — tryb niezależnego skrętu.
+PPM obraca widok w garażu; nie uruchamia drugiej grupy broni.
+
+Po porażce lub finale Enter rozpoczyna nową próbę. Alt+F4 zamyka grę.
+Stan części jest zachowywany w bieżącej wyprawie; ponowne uruchomienie zaczyna nową grę.
+Prototypowe modele wizualne pominięto zgodnie z decyzją użytkownika.

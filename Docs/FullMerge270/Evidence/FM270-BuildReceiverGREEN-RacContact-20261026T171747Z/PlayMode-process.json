@@ -1,0 +1,17 @@
+{
+  "startedUtc": "2026-10-26T17:18:34.5094693Z",
+  "finishedUtc": "2026-10-26T17:18:52.8718224Z",
+  "source": "69c5163332f8e1ccca26b5a784360d208cd5195d",
+  "stage": "BuildReceiverGREEN-RacContact",
+  "exitCode": 2,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-BuildReceiverGREEN-RacContact-20261026T171747Z\\PlayMode.xml\"",
+    "-testFilter",
+    "\"FullMergeBuildTests;RAC001PhysicalDemoTests\""
+  ],
+  "phase": "PlayMode"
+}

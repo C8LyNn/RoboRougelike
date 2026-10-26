@@ -1,0 +1,17 @@
+{
+  "stage": "ReceiverCompatibilityGREEN-Retry",
+  "finishedUtc": "2026-10-26T21:21:13.9113344Z",
+  "startedUtc": "2026-10-26T21:13:04.5659725Z",
+  "phase": "EditMode",
+  "exitCode": -1,
+  "source": "aa30508da2608e2e805bc2997eb46b0e57f23769",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-ReceiverCompatibilityGREEN-Retry-20261026T211252Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMerge;MOVSeriesGarageTests;R3GaragePlayTests;R4CombatTests\""
+  ]
+}

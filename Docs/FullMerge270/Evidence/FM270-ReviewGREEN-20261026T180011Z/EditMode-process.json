@@ -1,0 +1,17 @@
+{
+  "exitCode": 0,
+  "stage": "ReviewGREEN",
+  "finishedUtc": "2026-10-26T18:01:26.6199142Z",
+  "startedUtc": "2026-10-26T18:00:22.8063080Z",
+  "phase": "EditMode",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-ReviewGREEN-20261026T180011Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeActivityTests;FullMergeBuildTests;FullMergeCameraTests\""
+  ],
+  "source": "c65d1d8bb9c6b375ba7e324b67bf169d87f223cc"
+}

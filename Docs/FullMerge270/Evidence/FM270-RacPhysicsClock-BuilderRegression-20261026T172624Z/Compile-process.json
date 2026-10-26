@@ -1,0 +1,11 @@
+{
+  "exitCode": 0,
+  "arguments": [
+    "-quit"
+  ],
+  "stage": "RacPhysicsClock-BuilderRegression",
+  "source": "2f919a72f312ecdaf557def4a66d4ebea6eb6fb1",
+  "finishedUtc": "2026-10-26T17:26:36.4925714Z",
+  "phase": "Compile",
+  "startedUtc": "2026-10-26T17:26:24.8291137Z"
+}

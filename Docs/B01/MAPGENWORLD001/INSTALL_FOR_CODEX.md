@@ -1,4 +1,4 @@
-# INSTALL_FOR_CODEX — MAPGENWORLD001 1.0.1 / G2 HOLD
+# INSTALL_FOR_CODEX — MAPGENWORLD001 1.1.0 / G2 HOLD
 **Do not install into Codex's active game before B01-00 per-package G2.** This is a SOURCE_COMPLETE_FOR_QA package, not a deployment authorization.
 
 ## Pin / dependency
@@ -31,6 +31,16 @@ if (adapter.TryGenerate(request, out var map, out var reason))
 }
 else UnityEngine.Debug.LogWarning("WORLD001_REJECTED " + reason);
 ```
+Save/replay opt-in (only **after** package G2):
+```csharp
+// From an approved generated world:
+string gameSaveSeedReceipt = map.ReplayReceipt;
+// Restore through the same world-adapter component, without creating a shadow save manager:
+if (!adapter.TryReplay(gameSaveSeedReceipt, out var restored, out var replayReason))
+    UnityEngine.Debug.LogWarning("MAPGENWORLD001_REPLAY_REJECTED " + replayReason);
+```
+For `InvalidReplayReceipt` and `ReplayGeometryMismatch`, keep current activity/world unchanged and surface a safe restart choice. Do not override the hash/seed or silently re-roll.
+
 No host API names are guessed here. Robot spawning, wheel traction, checkpoint trigger sizes and activity transitions remain receiver's responsibility. Do not bypass a rejected request. Do not present optional Heavy ramp as mandatory.
 
 ## Native QA and transactional rollback

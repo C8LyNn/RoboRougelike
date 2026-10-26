@@ -1,0 +1,11 @@
+{
+  "phase": "Compile",
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T22:41:02.8756785Z",
+  "source": "3eb909f41e52b22d5ba62ed7661eea3fedbd843d",
+  "arguments": [
+    "-quit"
+  ],
+  "stage": "FinalSurfaceFramingRED",
+  "finishedUtc": "2026-10-26T22:41:15.7164119Z"
+}

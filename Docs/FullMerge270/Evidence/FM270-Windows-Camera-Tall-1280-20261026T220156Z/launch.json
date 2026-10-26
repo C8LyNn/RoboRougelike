@@ -1,0 +1,31 @@
+{
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "height": 720,
+  "startedUtc": "2026-10-26T22:01:56.9410565Z",
+  "mode": "Camera",
+  "visible": true,
+  "pid": 59028,
+  "source": "b97b434c8682bc26dc7a681ddd1d247079c59910",
+  "assemblySHA256": "4CE719B6FFF9B15929658485B58C6FFC1F7AAB9FB745C9AC49B7E8126CA9AFC0",
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1280,
+    "-screen-height",
+    720,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Camera-Tall-1280-20261026T220156Z\\Player.log\"",
+    "-fm270-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Camera-Tall-1280-20261026T220156Z\"",
+    "-fm270-mode",
+    "Camera",
+    "-fm270-vehicle",
+    "Tall"
+  ],
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+  "accessibilityClientAttached": false,
+  "vehicle": "Tall",
+  "width": 1280
+}

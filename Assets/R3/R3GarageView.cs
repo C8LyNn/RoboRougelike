@@ -45,19 +45,24 @@ namespace RoboRougelike.R3
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
             "Wybierz kolejną część w magazynie. Zakup wymaga świadomego wyboru typu części.":!HasTarget?"Najedź na ścianę bloku pojazdu.":
             Owned?.Health<=0?"Zniszczony moduł wymaga odbudowy przed montażem.":
-            run.VehicleModel.PlacementError(Cell,MountKind,Owned!=null,MountWeapon,
-                SelectedRotation,SelectedContactMask);
+            Owned!=null?run.VehicleModel.OwnedPlacementError(Owned.Id,Cell,SelectedRotation):
+            run.VehicleModel.PlacementError(Cell,MountKind,false,MountWeapon,SelectedRotation,SelectedContactMask);
         public void Initialize(R1RunController owner,Camera camera,P12PipelineSafeCamera cameraFollow,R3VisualPalette colors)
         {run=owner;view=camera;follow=cameraFollow;palette=colors;}
         public void Open()
         {
             if(!isOpen)previousNear=view.nearClipPlane;isOpen=true;
             HideArena();follow.enabled=false;view.nearClipPlane=0.05f;view.rect=Viewport;
+            foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts)
+                if(part!=null&&part.Operational&&part.GunPivot!=null&&part.transform.IsChildOf(run.Player.transform))part.GunPivot.localRotation=Quaternion.identity;
+            Physics.SyncTransforms();
+            R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),true);
             Cursor.lockState=CursorLockMode.None;Cursor.visible=true;HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;SelectedRotation=default;
             RefreshPreview();FrameVehicle();
         }
         public void Close()
         {
+            if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
             previewRoot=null;marker=null;HasTarget=false;orbitDragging=false;
             RestoreArena();
@@ -216,6 +221,9 @@ namespace RoboRougelike.R3
                 nearest=hit.distance;normal=hit.normal;nearestHit=hit;
             }
             HasTarget=target!=null||missing!=null;
+            if(Tool==R41GarageTool.Mount&&target!=null&&
+                !R3BuildValidation.ValidateHit(run.Player.GetComponent<R3VehicleAssembly>(),nearestHit))
+            {HasTarget=false;RefreshMarker();return false;}
             if(HasTarget)
             {
                 var nearestCell=target!=null?target.Cell:missing.Part.Cell;

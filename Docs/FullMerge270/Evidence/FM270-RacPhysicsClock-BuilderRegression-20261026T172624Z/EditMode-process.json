@@ -1,0 +1,17 @@
+{
+  "exitCode": 0,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-RacPhysicsClock-BuilderRegression-20261026T172624Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"RAC001;FullMergeBuildTests;RRLW34GarageTests;RRLW34ReviewRegressionTests\""
+  ],
+  "stage": "RacPhysicsClock-BuilderRegression",
+  "source": "2f919a72f312ecdaf557def4a66d4ebea6eb6fb1",
+  "finishedUtc": "2026-10-26T17:27:49.7908975Z",
+  "phase": "EditMode",
+  "startedUtc": "2026-10-26T17:26:36.5190671Z"
+}

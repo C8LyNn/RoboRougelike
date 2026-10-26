@@ -1,0 +1,21 @@
+{
+  "name": "RoboRougelike.MapSystemR4.EditModeTests",
+  "rootNamespace": "RoboRougelike.MapSystemR4.Tests",
+  "references": [
+    "RoboRougelike.MapSystemR4.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

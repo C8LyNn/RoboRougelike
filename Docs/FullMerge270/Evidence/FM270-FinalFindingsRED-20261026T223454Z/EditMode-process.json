@@ -1,0 +1,17 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalFindingsRED-20261026T223454Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeAdditionalRegression.HeavyHullFitsAtMinimumPitch;FullMergeAdditionalRegression.WideHullFitsAtQuarterOrbits;FullMergeAdditionalRegression.ActivityApisRejectMissingPhysicalPlayer;MOVSeriesSpecialTests.EmitterDeathRepairAndSecondEmitterCannotResetVehicleCooldown;R1PlayIntegrationTests.PaidGarageRestoresConstructionAndKeepsEarnedDamageBonus;RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp;RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss\""
+  ],
+  "stage": "FinalFindingsRED",
+  "source": "038ec70998f708f078395f13e098a919f693bf26",
+  "exitCode": 2,
+  "phase": "EditMode",
+  "startedUtc": "2026-10-26T22:35:31.9070359Z",
+  "finishedUtc": "2026-10-26T22:36:11.9783932Z"
+}

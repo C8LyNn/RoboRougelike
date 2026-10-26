@@ -1,0 +1,11 @@
+{
+  "source": "1c3bbe367c8b3e5a907c559d1004783c205d7d84",
+  "startedUtc": "2026-10-26T22:53:09.9216024Z",
+  "arguments": [
+    "-quit"
+  ],
+  "finishedUtc": "2026-10-26T22:53:22.8770322Z",
+  "stage": "FinalRoadClosure",
+  "exitCode": 0,
+  "phase": "Compile"
+}

@@ -1,0 +1,17 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-ReviewRED-20261026T175616Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeActivityTests.ApiControlledRaceCompletionActuallySettlesOnce;FullMergeBuildTests.StructuralFaceRemainsClickableAfterSuccessfulGarageRebuild\""
+  ],
+  "stage": "ReviewRED",
+  "startedUtc": "2026-10-26T17:56:16.9912385Z",
+  "exitCode": 2,
+  "source": "1966b4d35ae716c6cdf1f4dc2e128904e1fc44e8",
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-26T17:56:36.4267845Z"
+}

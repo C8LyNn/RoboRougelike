@@ -1,0 +1,15 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FullRelease-20261026T180512Z\\PlayMode.xml\""
+  ],
+  "exitCode": 0,
+  "source": "3e650c1e21ddc5550ded50d1ce033e96d7f4cceb",
+  "phase": "PlayMode",
+  "stage": "FullRelease",
+  "startedUtc": "2026-10-26T18:45:43.2225714Z",
+  "finishedUtc": "2026-10-26T18:48:28.1446826Z"
+}

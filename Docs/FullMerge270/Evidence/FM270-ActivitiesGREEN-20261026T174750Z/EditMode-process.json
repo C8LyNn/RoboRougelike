@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "startedUtc": "2026-10-26T17:48:04.0066266Z",
+  "stage": "ActivitiesGREEN",
+  "exitCode": 2,
+  "source": "d4398040e4aaab68cca1412f0ed90b36e9979e71",
+  "finishedUtc": "2026-10-26T17:48:31.2044316Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-ActivitiesGREEN-20261026T174750Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeActivityTests\""
+  ]
+}

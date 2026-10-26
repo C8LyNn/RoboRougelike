@@ -34,11 +34,13 @@ public class RRLW6ShieldPhysicalTests
     {
         Assert.That(Enum.TryParse("DirectionalShield",out R3PartKind kind),Is.True,"DEF001 not integrated into real parts");
         var run=R1RunController.Instance;var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
+        var physicalBase=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,1,100),Quaternion.identity);Physics.SyncTransforms();
         Vector3Int? mount=null;
         for(int z=-6;z<=-2&&!mount.HasValue;z++)for(int x=-5;x<=4&&!mount.HasValue;x++)for(int y=0;y<4&&!mount.HasValue;y++)
         {var cell=new Vector3Int(x,y,z);if(model.PlacementError(cell,kind)==null)mount=cell;}
         Assert.That(mount.HasValue,Is.True,"Four-cell rear mount must use real reciprocal contacts");
         Assert.That(model.Buy(mount.Value,kind),Is.True);
+        physicalBase.gameObject.SetActive(false);UnityEngine.Object.Destroy(physicalBase.gameObject);
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,1,100),Quaternion.identity);
         var assembly=vehicle.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.First(p=>p.Kind==kind);
         Assert.That(part.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().Length,Is.EqualTo(1));

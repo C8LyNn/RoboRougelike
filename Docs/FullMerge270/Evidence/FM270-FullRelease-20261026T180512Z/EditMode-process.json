@@ -1,0 +1,15 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FullRelease-20261026T180512Z\\EditMode.xml\""
+  ],
+  "exitCode": 2,
+  "source": "3e650c1e21ddc5550ded50d1ce033e96d7f4cceb",
+  "phase": "EditMode",
+  "stage": "FullRelease",
+  "startedUtc": "2026-10-26T18:06:22.1158095Z",
+  "finishedUtc": "2026-10-26T18:45:43.0506242Z"
+}

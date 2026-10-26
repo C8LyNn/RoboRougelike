@@ -1,0 +1,17 @@
+{
+  "source": "e6f3b1e6fa51e8383bdc69071d53da6814f3a9ab",
+  "stage": "CameraRED-ActivityDiagnostic",
+  "exitCode": 2,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-CameraRED-ActivityDiagnostic-20261026T175008Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeCameraTests;FullMergeActivityTests.RoadResultUsesOneCanonicalRewardAndAllowsNextActivity\""
+  ],
+  "startedUtc": "2026-10-26T17:50:08.9788426Z",
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-26T17:50:37.4659132Z"
+}

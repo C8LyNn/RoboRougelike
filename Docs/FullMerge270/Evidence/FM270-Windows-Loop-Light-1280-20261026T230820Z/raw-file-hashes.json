@@ -1,0 +1,22 @@
+[
+  {
+    "file": "aim-provenance.csv",
+    "rawSHA256": "4b8dcc70cdd0119c21fdd8bfd73f7ac8edbcc6a3bd97c870d2ecfbb02a0581ff",
+    "bytes": 133
+  },
+  {
+    "file": "aim-timeline.csv",
+    "rawSHA256": "b5e0bc021698eefe693a533f1ad4b59fc32eec39cc4ac0c2733448b20754b81f",
+    "bytes": 513
+  },
+  {
+    "file": "drive.csv",
+    "rawSHA256": "adf5ae7e5b7c7d0072bec14fb165038b4818daf9e81693bf55484bcc208b03f6",
+    "bytes": 262440
+  },
+  {
+    "file": "Player.log",
+    "rawSHA256": "98e4a0905b0206863f2e09cc3176245ce317052851b16a866ff6d9173355702b",
+    "bytes": 9647
+  }
+]

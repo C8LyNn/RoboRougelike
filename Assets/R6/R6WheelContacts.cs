@@ -54,7 +54,7 @@ namespace RoboRougelike.R6
             if(Vector3.Dot(-down,Vector3.up)<.35f)return false;
             if(!wheelColliders.TryGetValue(part,out var colliders))wheelColliders.Add(part,colliders=part.GetComponentsInChildren<Collider>());
             bool hasTread=false;
-            foreach(var c in colliders)if(c.transform!=part.transform&&Eligible(c,body))hasTread=true;
+            foreach(var c in colliders)if(Eligible(c,body)&&c.transform!=part.transform)hasTread=true;
             foreach(var c in colliders)
             {
                 if(!Eligible(c,body)||(hasTread&&c.transform==part.transform))continue;

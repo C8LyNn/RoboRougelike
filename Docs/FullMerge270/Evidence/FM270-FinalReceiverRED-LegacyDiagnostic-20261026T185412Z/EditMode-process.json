@@ -1,0 +1,17 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalReceiverRED-LegacyDiagnostic-20261026T185412Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeAdditionalRegression;MOVSeriesGarageTests.AllOriginalPartsSettingsInventoryAndResourcesSurviveRangeDamageResetAndReturn;R3GaragePlayTests.PaidRepairsNewModulesIndependentEnemiesAndCleanRestart;R4CombatTests.AllWeaponsHaveIndependentCadenceUpgradesAndPhysicalDamage\""
+  ],
+  "source": "3d0fb35aa0e386707f2e8f0d7f59ad3565351242",
+  "finishedUtc": "2026-10-26T18:54:50.0612815Z",
+  "phase": "EditMode",
+  "exitCode": 2,
+  "stage": "FinalReceiverRED-LegacyDiagnostic",
+  "startedUtc": "2026-10-26T18:54:13.0710285Z"
+}

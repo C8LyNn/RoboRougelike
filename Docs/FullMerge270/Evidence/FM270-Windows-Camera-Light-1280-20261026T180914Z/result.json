@@ -1,0 +1,39 @@
+{
+    "status": "Passed",
+    "mode": "Camera",
+    "vehicle": "Light",
+    "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "startedUtc": "2026-10-26T18:09:17.3683624Z",
+    "finishedUtc": "2026-10-26T18:09:34.1086234Z",
+    "width": 1280,
+    "height": 720,
+    "frames": 901,
+    "contacts": 751,
+    "maxContacts": 4,
+    "selfRayHits": 0,
+    "worldOverlaps": 0,
+    "shots": 40,
+    "completed": 0,
+    "distance": 45.002811431884769,
+    "peakAimError": 33.19956970214844,
+    "peakCameraStep": 0.2500353157520294,
+    "peakFrameMs": 18.62120246887207,
+    "meanFrameMs": 16.670927047729493,
+    "finalPosition": {
+        "x": -0.10891696810722351,
+        "y": 0.6500003337860107,
+        "z": 18.970382690429689
+    },
+    "checks": [
+        "Vehicle selected",
+        "Actual preparation garage",
+        "Same garage enters actual test range",
+        "Activity entered canonical live state",
+        "One delegated camera owner",
+        "Zero actual own-hull reticle intersections",
+        "Real owned physical shots observed",
+        "Actual R6 movement while aiming"
+    ],
+    "errors": []
+}

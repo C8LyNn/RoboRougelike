@@ -1,0 +1,17 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-ReceiverCompatibilityRetest-20261026T212225Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMerge;MOVSeriesGarageTests;R3GaragePlayTests;R4CombatTests\""
+  ],
+  "finishedUtc": "2026-10-26T21:25:49.2292870Z",
+  "phase": "EditMode",
+  "exitCode": 2,
+  "startedUtc": "2026-10-26T21:22:38.1794433Z",
+  "stage": "ReceiverCompatibilityRetest",
+  "source": "ef6b9d3accc47a6fbfcf86c4e2308ad4632c3f97"
+}

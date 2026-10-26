@@ -1,182 +1,110 @@
-using System;
 using UnityEngine;
-
+using B01.CAMERA001;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
-
 namespace RogueMachine.P12PipelineSafe
 {
+    // Existing input/API facade is the only automatic pose owner. The source rig
+    // stays disabled and is stepped exactly once, before the weapon LateUpdate500.
+    [DefaultExecutionOrder(100)]
     public class P12PipelineSafeCamera : MonoBehaviour
     {
-        [SerializeField] private Transform targetRoot;
-        [SerializeField] private Transform pivot;
-        [SerializeField] private float distance = 7.8f;
-        [SerializeField] private float minDistance = 3f;
-        [SerializeField] private float maxDistance = 12f;
-        [SerializeField] private float mouseSensitivity = 0.12f;
-        [SerializeField] private float minPitch = -5f;
-        [SerializeField] private float maxPitch = 58f;
-        [SerializeField] private float zoomSpeed = 0.015f;
-        [SerializeField] private float cameraRadius = 0.28f;
-        [SerializeField] private float wallPadding = 0.18f;
-
-        private float yaw;
-        private Vector3 smoothPivot,pivotVelocity;
-        private bool pivotInitialized;
-        private float pitch = 16f;
-        private bool cursorLocked = true;
-        private bool gameplayInputEnabled = true;
-        public Transform Pivot => pivot;
-        public Transform TargetRoot => targetRoot;
-
+        [SerializeField] Transform targetRoot,pivot;
+        [SerializeField] float distance=7.8f,minDistance=3,maxDistance=18,mouseSensitivity=.12f,minPitch=18,maxPitch=58,zoomSpeed=.015f;
+        float yaw,pitch=18;
+        bool cursorLocked=true,gameplayInputEnabled=true;
+        Camera001Rig rig;
+        public Transform Pivot=>pivot;
+        public Transform TargetRoot=>targetRoot;
+        public Camera001Rig ReceiverRig=>rig;
+        void EnsureRig()
+        {
+            if(rig!=null)return;
+            rig=GetComponent<Camera001Rig>()??gameObject.AddComponent<Camera001Rig>();
+            rig.enabled=false;rig.WorldColliderFilter=IsCameraWorld;rig.RequireFullHullFraming=true;rig.ReceiverHullBounds=StableVehicleBounds;
+        }
+        static Bounds StableVehicleBounds(Transform root)
+        {
+            bool any=false;Bounds total=default;
+            foreach(var c in root.GetComponentsInChildren<Collider>()){
+                if(c==null||!c.enabled||c.isTrigger||!c.gameObject.activeInHierarchy)continue;
+                var part=c.GetComponentInParent<RoboRougelike.R3.R3MountedPart>();
+                var pivot=part!=null&&part.GunPivot!=null&&c.transform.IsChildOf(part.GunPivot)?part.GunPivot:null;
+                var shape=RenderShapeBounds(c,pivot!=null?pivot.position:Vector3.zero,out float radius);
+                // The camera cannot chase a barrel that is itself chasing the
+                // camera reticle. Its full rotational envelope stays constant;
+                // chassis motion and actual mounting/detachment still update it.
+                if(pivot!=null)shape=new Bounds(pivot.position,Vector3.one*radius*2);
+                if(!any){total=shape;any=true;}else total.Encapsulate(shape);
+            }
+            return any?total:Camera001Rig.GetHullBounds(root);
+        }
+        static Bounds RenderShapeBounds(Collider c,Vector3 pivot,out float radius)
+        {
+            var t=c.transform;var scale=t.lossyScale;scale=new Vector3(Mathf.Abs(scale.x),Mathf.Abs(scale.y),Mathf.Abs(scale.z));
+            if(c is SphereCollider sphere){
+                float r=sphere.radius*Mathf.Max(scale.x,scale.y,scale.z);var center=t.TransformPoint(sphere.center);
+                radius=Vector3.Distance(center,pivot)+r;return new Bounds(center,Vector3.one*r*2);
+            }
+            if(c is CapsuleCollider cap){
+                int axis=cap.direction;float r=cap.radius*Mathf.Max(scale[(axis+1)%3],scale[(axis+2)%3]);
+                float segment=Mathf.Max(0,cap.height*scale[axis]*.5f-r);var direction=Vector3.zero;direction[axis]=1;
+                direction=t.TransformDirection(direction).normalized;var center=t.TransformPoint(cap.center);
+                radius=Vector3.Distance(center,pivot)+segment+r;
+                var extents=Vector3.one*r+new Vector3(Mathf.Abs(direction.x),Mathf.Abs(direction.y),Mathf.Abs(direction.z))*segment;
+                return new Bounds(center,extents*2);
+            }
+            Bounds local;
+            if(c is BoxCollider box)local=new Bounds(box.center,box.size);
+            else if(c is MeshCollider mesh&&mesh.sharedMesh!=null)local=mesh.sharedMesh.bounds;
+            else {var fallback=c.bounds;radius=Vector3.Distance(fallback.center,pivot)+fallback.extents.magnitude;return fallback;}
+            var matrix=t.localToWorldMatrix;Bounds world=default;radius=0;
+            for(int i=0;i<8;i++){
+                var e=local.extents;var corner=local.center+new Vector3((i&1)==0?-e.x:e.x,(i&2)==0?-e.y:e.y,(i&4)==0?-e.z:e.z);
+                var p=matrix.MultiplyPoint3x4(corner);radius=Mathf.Max(radius,Vector3.Distance(p,pivot));
+                if(i==0)world=new Bounds(p,Vector3.zero);else world.Encapsulate(p);
+            }
+            return world;
+        }
+        static bool IsCameraWorld(Collider c)=>c.GetComponentInParent<RoboRougelike.R3.R3Debris>()==null&&
+            c.GetComponentInParent<P17PhysicalShell>()==null&&
+            c.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>()==null;
         public void SetGameplayInputEnabled(bool active)
         {
-            gameplayInputEnabled = active;
-            cursorLocked = active;
-            ApplyCursor();
+            if(active&&!gameplayInputEnabled&&rig!=null)rig.ResetSmoothing();
+            gameplayInputEnabled=active;cursorLocked=active;ApplyCursor();
         }
-
-        public void Configure(Transform root, Transform cameraPivot)
+        public void Configure(Transform root,Transform cameraPivot)
         {
-            targetRoot = root;
-            pivot = cameraPivot;
-            pivotInitialized=false;
+            targetRoot=root;pivot=cameraPivot;EnsureRig();rig.Configure(root,GetComponent<Camera>());
         }
-
-        private void Start()
+        void Start(){EnsureRig();if(targetRoot!=null){yaw=targetRoot.eulerAngles.y;rig.Configure(targetRoot,GetComponent<Camera>());}ApplyCursor();}
+        void OnEnable(){if(rig!=null)rig.ResetSmoothing();}
+        void Update()
         {
-            if (targetRoot != null)
-                yaw = targetRoot.eulerAngles.y;
-
-            ApplyCursor();
-            SnapNow();
-        }
-
-        private void Update()
-        {
-            if (!gameplayInputEnabled) return;
+            if(!gameplayInputEnabled)return;
 #if ENABLE_INPUT_SYSTEM
-            bool escape =
-                Keyboard.current != null &&
-                Keyboard.current.escapeKey.wasPressedThisFrame;
-
-            Vector2 mouseDelta =
-                Mouse.current != null ?
-                Mouse.current.delta.ReadValue() :
-                Vector2.zero;
-
-            float scroll =
-                Mouse.current != null ?
-                Mouse.current.scroll.ReadValue().y :
-                0f;
+            bool escape=Keyboard.current!=null&&Keyboard.current.escapeKey.wasPressedThisFrame;
+            Vector2 delta=Mouse.current!=null?Mouse.current.delta.ReadValue():Vector2.zero;
+            float scroll=Mouse.current!=null?Mouse.current.scroll.ReadValue().y:0;
 #else
-            bool escape = Input.GetKeyDown(KeyCode.Escape);
-            Vector2 mouseDelta =
-                new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * 8f;
-            float scroll = Input.mouseScrollDelta.y * 120f;
+            bool escape=Input.GetKeyDown(KeyCode.Escape);
+            Vector2 delta=new Vector2(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"))*8;
+            float scroll=Input.mouseScrollDelta.y*120;
 #endif
-
-            if (escape && RoboRougelike.R1.R1RunController.Instance == null)
-            {
-                cursorLocked = !cursorLocked;
-                ApplyCursor();
-            }
-
-            if (!cursorLocked)
-                return;
-
-            yaw += mouseDelta.x * mouseSensitivity;
-            pitch -= mouseDelta.y * mouseSensitivity;
-            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-
-            if (Mathf.Abs(scroll) > 0.01f)
-            {
-                distance = Mathf.Clamp(
-                    distance - scroll * zoomSpeed,
-                    minDistance,
-                    maxDistance
-                );
-            }
+            if(escape&&RoboRougelike.R1.R1RunController.Instance==null){cursorLocked=!cursorLocked;ApplyCursor();}
+            if(!cursorLocked)return;
+            yaw+=delta.x*mouseSensitivity;pitch=Mathf.Clamp(pitch-delta.y*mouseSensitivity,Mathf.Max(18,minPitch),maxPitch);
+            distance=Mathf.Clamp(distance-scroll*zoomSpeed,minDistance,Mathf.Max(18,maxDistance));
         }
-
-        private void LateUpdate()
+        void LateUpdate()
         {
-            SnapNow();
+            if(!gameplayInputEnabled||targetRoot==null||pivot==null)return;
+            EnsureRig();var body=targetRoot.GetComponent<Rigidbody>();
+            rig.ReceiverFollowSpeed=body!=null?body.linearVelocity.magnitude:0;
+            rig.SetOrbit(yaw,Mathf.Max(18,pitch),distance);rig.StepCamera(Time.deltaTime);
         }
-
-        private void SnapNow()
-        {
-            if (pivot == null || targetRoot == null)
-                return;
-
-            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
-            Vector3 direction = rotation * Vector3.back;
-            if(!pivotInitialized){smoothPivot=pivot.position;pivotVelocity=Vector3.zero;pivotInitialized=true;}
-            else smoothPivot=Vector3.SmoothDamp(smoothPivot,pivot.position,ref pivotVelocity,RoboRougelike.R6.R6Tuning.Current.CameraSmoothSeconds,Mathf.Infinity,Time.deltaTime);
-
-            float safeDistance =
-                FindSafeDistance(
-                    smoothPivot,
-                    direction,
-                    distance
-                );
-
-            transform.position =
-                smoothPivot +
-                direction * safeDistance;
-
-            transform.rotation = rotation;
-        }
-
-        private float FindSafeDistance(
-            Vector3 origin,
-            Vector3 direction,
-            float requestedDistance)
-        {
-            RaycastHit[] hits = Physics.SphereCastAll(
-                origin,
-                cameraRadius,
-                direction,
-                requestedDistance,
-                ~0,
-                QueryTriggerInteraction.Ignore
-            );
-
-            Array.Sort(
-                hits,
-                (a, b) => a.distance.CompareTo(b.distance)
-            );
-
-            foreach (RaycastHit hit in hits)
-            {
-                if (hit.collider == null)
-                    continue;
-
-                Transform t = hit.collider.transform;
-                if(hit.collider.GetComponentInParent<RoboRougelike.R3.R3Debris>()!=null)continue;
-
-                if (t == targetRoot || t.IsChildOf(targetRoot))
-                    continue;
-
-                return Mathf.Clamp(
-                    hit.distance - wallPadding,
-                    0.65f,
-                    requestedDistance
-                );
-            }
-
-            return requestedDistance;
-        }
-
-        private void ApplyCursor()
-        {
-            Cursor.lockState =
-                cursorLocked ?
-                CursorLockMode.Locked :
-                CursorLockMode.None;
-
-            Cursor.visible = !cursorLocked;
-        }
+        void ApplyCursor(){Cursor.lockState=cursorLocked?CursorLockMode.Locked:CursorLockMode.None;Cursor.visible=!cursorLocked;}
     }
 }

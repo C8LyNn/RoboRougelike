@@ -1,0 +1,13 @@
+{
+  "stage": "FinalRoadClosure",
+  "startedUtc": "2026-10-26T23:01:54.9257889Z",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "FullMergeBuild.BuildRelease"
+  ],
+  "source": "8b91c5499615d33fc15c1aa8834071896b5ee48b",
+  "finishedUtc": "2026-10-26T23:02:17.2400636Z",
+  "phase": "Build",
+  "exitCode": 0
+}

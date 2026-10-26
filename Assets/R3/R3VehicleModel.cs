@@ -67,6 +67,17 @@ namespace RoboRougelike.R3
         private readonly List<R3PartState> inventory=new List<R3PartState>();
         public IReadOnlyList<R3PartState> Inventory => inventory;
         public int Scrap { get; private set; }
+        private Func<R3PartState,string> installationGate;
+        internal void SetInstallationGate(Func<R3PartState,string> gate) { installationGate=gate; }
+        private Func<IReadOnlyList<R3PartState>,bool> restorationGate;
+        internal void SetRestorationGate(Func<IReadOnlyList<R3PartState>,bool> gate){restorationGate=gate;}
+        readonly struct FactoryWheelPose {
+            public readonly Vector3Int Cell,Rotation;public readonly int Contacts;
+            public FactoryWheelPose(R3PartState p){Cell=p.Cell;Rotation=p.RotationQuarterTurns;Contacts=p.ContactMask;}
+        }
+        readonly Dictionary<string,FactoryWheelPose> factoryWheels=new Dictionary<string,FactoryWheelPose>(StringComparer.Ordinal);
+        internal bool IsFactoryWheel(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&
+            factoryWheels.TryGetValue(part.Id,out var pose)&&pose.Cell==part.Cell&&pose.Rotation==part.RotationQuarterTurns&&pose.Contacts==part.ContactMask;
         public bool SuspensionEnabled = true;
         public RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode SuspensionMode = RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode.FullSupport;
         public float SuspensionHeightOffset;
@@ -77,7 +88,8 @@ namespace RoboRougelike.R3
         public float GrappleReadyAt;
         public R3GarageEconomy Economy { get; }
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
-        { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy(); }
+        { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
+            foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Wheel))factoryWheels.Add(part.Id,new FactoryWheelPose(part)); }
         public static readonly Vector3Int[] Neighbours = { Vector3Int.left, Vector3Int.right, Vector3Int.up,
             Vector3Int.down, Vector3Int.forward, Vector3Int.back };
         public R3VehicleModel DeepCopy()
@@ -86,6 +98,7 @@ namespace RoboRougelike.R3
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
             var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost});
             copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
@@ -131,6 +144,14 @@ namespace RoboRougelike.R3
         public string PlacementError(Vector3Int cell, R3PartKind kind, bool owned=false,
             R4WeaponKind weapon=R4WeaponKind.Basic,Vector3Int rotation=default,
             int contactMask=R3MountingGrid.AllFaces)
+            => CheckPlacement(cell,kind,owned,weapon,rotation,contactMask,null);
+        public string OwnedPlacementError(string id,Vector3Int cell,Vector3Int rotation)
+        {
+            var part=inventory.FirstOrDefault(p=>p.Id==id);
+            return part==null?"Brak części w magazynie.":part.Health<=0?"Odtwórz zniszczoną część przed montażem.":
+                CheckPlacement(cell,part.Kind,true,part.Weapon,rotation,part.ContactMask,part.Id);
+        }
+        string CheckPlacement(Vector3Int cell,R3PartKind kind,bool owned,R4WeaponKind weapon,Vector3Int rotation,int contactMask,string ownedId)
         {
             if (kind == R3PartKind.Core) return "Rdzeń jest jedyny i nie można go kupić.";
             if (!Enum.IsDefined(typeof(R3PartKind),kind)) return "Nieznany typ części.";
@@ -150,7 +171,10 @@ namespace RoboRougelike.R3
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
-            return null;
+            if(installationGate==null)return null;
+            var candidate=new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=contactMask};
+            if(ownedId!=null)candidate.Id=ownedId;
+            return installationGate(candidate);
         }
         public bool Buy(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,
             Vector3Int rotation=default)
@@ -175,6 +199,7 @@ namespace RoboRougelike.R3
             if (part == null || price <= 0 || Scrap < price) return false;
             if (part.Health<=0&&!HasAliveExternalNeighbour(part.Cell,part.Kind,
                 part.RotationQuarterTurns,part.ContactMask))return false;
+            if(part.Health<=0&&restorationGate!=null&&!restorationGate(new[]{part}))return false;
             Scrap -= price; part.Health = 1; return true;
         }
         public int RepairAffordable()
@@ -244,7 +269,7 @@ namespace RoboRougelike.R3
             var part=inventory.FirstOrDefault(p=>p.Id==id);
             rotation=R3MountingGrid.Normalize(rotation);
             if(part==null||part.Health<=0||
-                PlacementError(cell,part.Kind,true,part.Weapon,rotation,part.ContactMask)!=null)return false;
+                OwnedPlacementError(part.Id,cell,rotation)!=null)return false;
             inventory.Remove(part);part.Cell=cell;part.RotationQuarterTurns=rotation;
             Parts.Add(part);return true;
         }
@@ -312,6 +337,7 @@ namespace RoboRougelike.R3
             if(plan==null||plan.Count==0)return false;
             int price=plan.Sum(RepairCost);
             if(Scrap<price)return false;
+            if(restorationGate!=null&&!restorationGate(plan))return false;
             Scrap-=price;
             foreach(var part in plan)part.Health=1;
             return true;
