@@ -6,6 +6,9 @@ P={
  'BUILD':('be54b4a33360cbd1923ae5dacbc92dff8eaf586b','bbd604f497539451bee3ed54094132fd830e68901d11ba6fa7c5943babbebc75',['Assets/B01Construction.meta','Assets/B01Construction/BUILD001.meta','Assets/B01Construction/BUILD001/','Docs/B01/BUILD001/','Tools/B01/BUILD001/']),
  'RAC':('fd9a3f4dda08eaba56d9f74007bc35dc0809b67e','78ec4592ee4144504d6fb259addbba8cc5fd68685d9fc057f603d6a9cfec1a7a',['Assets/RoboRougelikeMechanics.meta','Assets/RoboRougelikeMechanics/RAC001CheckpointRace.meta','Assets/RoboRougelikeMechanics/RAC001CheckpointRace/','Docs/ParallelMechanics/RAC-001/']),
  'KEEP3':('6bb6796ee3ad88a015fb6c8d033023c0ee3b5e94','27df176be1ca28a307dc1b61f92710b9f8b0d7e37b420c033cdb61d020266fe4',['Assets/B01Packages/REWARDKEEP3001.meta','Assets/B01Packages/REWARDKEEP3001/','Tools/B01/REWARDKEEP3001/']),
+ 'CAMERA':('52b5930a04a6e5d9f2fc28fa5b616036b61f0e44','b5d74b724d4479a39c8dd8f19414c50b62ad3418782c6f7d67dfeedcbb1e1099',['Assets/B01Packages/CAMERA001.meta','Assets/B01Packages/CAMERA001/','Docs/B01/CAMERA001/','Tools/B01/CAMERA001/']),
+ 'LEGENDARY':('dffabbc6960304fdb33322b5a23c884feac804c6','14eccb49f69b2e67ecb34008fe19689b1b66e629ed94491224fb327216fc1fb2',['Assets/B01Packages/LEGENDARY001.meta','Assets/B01Packages/LEGENDARY001/','Tools/B01/LEGENDARY-UNITY-001/']),
+ 'ECON':('12572117a3dce369257feabc57021cde58023369','fdcb15e6b394715f450771cac798b1c02b8efe1f33acb815e9e0957c46bd2d87',['Assets/B01Packages/ECONREBUILD001.meta','Assets/B01Packages/ECONREBUILD001/','Tools/B01/ECONREBUILD001/']),
 }
 SHARED={'Assets/B01Packages.meta','Assets/B01Construction.meta','Assets/RoboRougelikeMechanics.meta'}
 def git(*args):return subprocess.check_output(['git','-C',str(R),*args])
@@ -34,8 +37,10 @@ def run(key,apply=False):
    assert n.lower().endswith(('.json','.txt')) and ('manifest' in n.lower() or 'sha256' in n.lower()),n
    generated.append(n)
  skipped=[]
- for p in list(src):
-  if p in SHARED and (R/p).exists():skipped.append({'path':p,'preservedSHA256':h((R/p).read_bytes()),'sourceSHA256':h(src[p])});del src[p]
+ for p in SHARED:
+  data=src.get(p,z.read(p) if p in z.namelist() else None)
+  if data is not None and (R/p).exists():
+   skipped.append({'path':p,'preservedSHA256':h((R/p).read_bytes()),'sourceSHA256':h(data)});src.pop(p,None)
  existing=git('ls-files').decode().splitlines();obsolete=[p for p in existing if owned(p,roots) and p not in paths and p not in SHARED]
  for p in list(src)+obsolete:
   path=R/p;assert path.resolve().is_relative_to(R.resolve()) and not path.is_symlink()

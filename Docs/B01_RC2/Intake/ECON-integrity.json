@@ -1,0 +1,156 @@
+{
+  "package": "ECON",
+  "source": "12572117a3dce369257feabc57021cde58023369",
+  "targetBefore": "0663d3ac5da17786bdc3fa95de71cd169df91071",
+  "zip": {
+    "name": "ECONREBUILD001_Unity_Source.zip",
+    "sha256": "fdcb15e6b394715f450771cac798b1c02b8efe1f33acb815e9e0957c46bd2d87",
+    "bytes": 21422,
+    "entries": 16,
+    "gitMatched": 16,
+    "generatedManifests": []
+  },
+  "preservedShared": [
+    {
+      "path": "Assets/B01Packages.meta",
+      "preservedSHA256": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed",
+      "sourceSHA256": "c7b723f30e7c41b25011e4420275d34df5cb1f5e717af97d9a072935b4b70fed"
+    }
+  ],
+  "sourceFiles": 26,
+  "GUIDCountAfter": 884,
+  "obsolete": [],
+  "files": [
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001.meta",
+      "sha256": "aa7429964f1a04227228d0c7e2b2bc9981ec4aef15099cd2cbb0b7b6b0eb05d9",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Examples.meta",
+      "sha256": "893e3a19555e6d239b4e291f424e177d3c6a222e14861fa7f7166013bc43fdf9",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Examples/EconRebuildSmokeExample.cs",
+      "sha256": "777f228097fe08bd7888632218d9c7b73bc7a1b4af895cab3c9def727ac8da8a",
+      "bytes": 422
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Examples/EconRebuildSmokeExample.cs.meta",
+      "sha256": "a661b6b875131b3ced564b8eec6edeed697e35c38e4524cecc832fc0ef12e558",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Runtime.meta",
+      "sha256": "0118d3eae1817729baa1993f2daa2949af966ae9298715fa4a3c728e3ab48b59",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Runtime/B01.EconRebuild.Runtime.asmdef",
+      "sha256": "4d05a91fb96c0751e3b7d096c21a496407ae7d2994a00be0cec8a07ce7c3a82f",
+      "bytes": 366
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Runtime/B01.EconRebuild.Runtime.asmdef.meta",
+      "sha256": "20c0d99f624235b3fd285a6dbebbfedb7aa625f5d50ca47dd7b09e682c0eda61",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs",
+      "sha256": "114869a0ee5e38d9b07da6a9ad5973af39b228315dfafd19782bd3a3d0ba8edd",
+      "bytes": 11985
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs.meta",
+      "sha256": "4f9d2e0596a5903ec26d48d2f7ddf8146e7a2bfea56a3812ef78a6b7c8df5cd1",
+      "bytes": 243
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Tests.meta",
+      "sha256": "fac7361ea73a95f32e2851620b89b89d827a0f5724bf7e3019ed301bf9a7fc9a",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Tests/EditMode.meta",
+      "sha256": "bae7848c5142eb610b7fcf98a2b437cf710e165506dd72d0a732f8bfb75ad73c",
+      "bytes": 172
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Tests/EditMode/B01.EconRebuild.EditMode.asmdef",
+      "sha256": "b97c30c4ce32963d1c4cdd90dcf503fa3435661f50b0e38a8f793ebd333b6cc4",
+      "bytes": 480
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Tests/EditMode/B01.EconRebuild.EditMode.asmdef.meta",
+      "sha256": "47789083b856c00aaf33d2fd5440476e87208505243c9fc512f2b65f955b5de1",
+      "bytes": 166
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Tests/EditMode/RebuildQueueEditModeTests.cs",
+      "sha256": "c809358785de1c0e7dd7f2eba01fb667af58814890b0009aa791a308f45ca248",
+      "bytes": 2838
+    },
+    {
+      "path": "Assets/B01Packages/ECONREBUILD001/Tests/EditMode/RebuildQueueEditModeTests.cs.meta",
+      "sha256": "46a0ad9ea16b4b1af4c60dd04c2a104a75812e2a217cda3d5cd41954e9051b2f",
+      "bytes": 243
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/INSTALL_FOR_CODEX.md",
+      "sha256": "b95a804f08bf865bd12e29b17dd4c99e3a80d518a1d8f5e5c5e5f035be0307b5",
+      "bytes": 3426
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/PROMPT_FOR_CODEX.md",
+      "sha256": "c0fcc7c13af43b678ee3cb7acc05629aaff4a6f90e0ae2dd01062b9d595d5a0f",
+      "bytes": 1204
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/R3EconRebuildPort.install.cs",
+      "sha256": "225db15dd242516e21cf38d794dbbb069f4d5512f8257e82101c138b7f488027",
+      "bytes": 2263
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/README.md",
+      "sha256": "a1c2d0fcd3b838ea2c8b46796d15a2164e40e1a971f8b4ddbc101b45f603c2ba",
+      "bytes": 4426
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/TEST_PLAN.md",
+      "sha256": "c6f9a0391a33d13145ac0a12e8d8d2e164eb280aad4dcb133ef131a903e66c21",
+      "bytes": 1935
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/build_package.py",
+      "sha256": "ce568f6e0a8d2ae02206f97d8d099eea9535da66ef48370e0ec8411ba8c7bd96",
+      "bytes": 2439
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/tests/BridgeCompile/BridgeCompile.csproj",
+      "sha256": "66e2568e4c25836d14541f9f9ec3c1ea09f3c25ceabd3bd98917397c9d9cbf80",
+      "bytes": 697
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/tests/BridgeCompile/VerifiedR3Surface.cs",
+      "sha256": "773608da84ce75914d8f1991a01df6322c27041b0dc9150f678554f2e30fce16",
+      "bytes": 956
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/tests/EconRebuild.SurrogateTests.csproj",
+      "sha256": "9d564628c38e271021a0461f2ba3a1b47434066e683bef45e3986e1c02fe1f00",
+      "bytes": 452
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/tests/Program.cs",
+      "sha256": "ba53cc1b025aabfc174473771cebfe4f623f89b2be241b334bdfe1fb626d7a36",
+      "bytes": 12534
+    },
+    {
+      "path": "Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs",
+      "sha256": "4fca5659b197c4fe4cd8cb18849498c6b49bb74fc580091e74578db4f5e45da1",
+      "bytes": 421
+    }
+  ],
+  "status": "STAGED_FULL_PINNED_SOURCE"
+}

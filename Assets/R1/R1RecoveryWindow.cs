@@ -42,8 +42,9 @@ namespace RoboRougelike.R1
             foreach(var id in parts)
                 if(!recoveryWindow.SelectedIds.Contains(id)&&!recoveryWindow.TryToggleSelection(id,out _))return false;
             recoveryHost.BonusChoice=(int[])bonuses.Clone();
-            bool success=recoveryWindow.TryCommit(out var reason);RecoveryError=success?null:reason;
-            return success;
+            recoveryHost.CommitAuthorized=true;
+            try {bool success=recoveryWindow.TryCommit(out var reason);RecoveryError=success?null:reason;return success;}
+            finally {recoveryHost.CommitAuthorized=false;}
         }
 
         sealed class RecoveryHost : IAtomicR3RewardHooks
@@ -51,6 +52,7 @@ namespace RoboRougelike.R1
             readonly R1RunController owner;readonly R3VehicleModel model;readonly R4SalvageLedger ledger;
             readonly string eventId;readonly HashSet<string> committed;
             public int[] BonusChoice;
+            public bool CommitAuthorized;
             public RecoveryHost(R1RunController run,R3VehicleModel state,R4SalvageLedger drops,string evt,HashSet<string> receipts)
             {owner=run;model=state;ledger=drops;eventId=evt;committed=receipts;}
             // There is one owned robot in this game session. Garage designs are
@@ -62,7 +64,7 @@ namespace RoboRougelike.R1
             public bool CommitVerifiedSalvageBatch(string evt,IReadOnlyList<RewardCandidate> selection,out string reason)
             {
                 reason="INVALID_RECOVERY_TRANSACTION";
-                if(!IsAuthenticVictory(evt)||committed.Contains(evt)||selection==null||BonusChoice==null)return false;
+                if(!CommitAuthorized||!IsAuthenticVictory(evt)||committed.Contains(evt)||selection==null||BonusChoice==null)return false;
                 foreach(var choice in selection)
                 {
                     var original=ledger.Items.FirstOrDefault(p=>p.Id==choice.InstanceId);
