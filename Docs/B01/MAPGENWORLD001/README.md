@@ -1,5 +1,5 @@
 # MAPGEN-WORLD-ADAPTER-001 — B01-21 / W12
-**Version 1.0.0, Draft QA-ready source-only; G2 HOLD.** Standalone Unity 6.0 package under `Assets/B01Packages/MAPGENWORLD001/**`, independent of original MAPGEN runtime owner B01-20. No R3/R4/R6/Pack dependency or edits.
+**Version 1.0.1, Draft QA-ready source-only; G2 HOLD.** Standalone Unity 6.0 package under `Assets/B01Packages/MAPGENWORLD001/**`, independent of original MAPGEN runtime owner B01-20. No R3/R4/R6/Pack dependency or edits.
 
 ## Source dependency / immutable pin
 - Required complete producer MAPGEN001 **R3.4.1**, [PR #237](https://github.com/C8LyNn/RoboRougelike/pull/237), exact `5be31039411f89f17654b1c332f8692883fa03cc` (full stacked #99/#103/#211/#225/#235/#237).

@@ -1,4 +1,4 @@
-# INSTALL_FOR_CODEX — MAPGENWORLD001 1.0.0 / G2 HOLD
+# INSTALL_FOR_CODEX — MAPGENWORLD001 1.0.1 / G2 HOLD
 **Do not install into Codex's active game before B01-00 per-package G2.** This is a SOURCE_COMPLETE_FOR_QA package, not a deployment authorization.
 
 ## Pin / dependency

@@ -65,6 +65,23 @@ jobs:
           rm mapgenworld-evidence/rebuild-proof.zip
           sha256sum mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip
           echo DETERMINISTIC_REBUILD_PASS
+      - name: Assert focused cases and clean installable source package
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'MAPWORLD_SOURCE_RESULT total=31 pass=31 fail=0' mapgenworld-evidence/source-console.log
+          grep -q 'ADAPTER_SOURCE_RESULT total=16 pass=16 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
+          grep -q 'Ran 12 tests' mapgenworld-evidence/package-tests.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path("mapgenworld-evidence/package/MANIFEST.json").read_text())
+          names=[row["path"] for row in manifest["files"]]
+          assert not any({"obj","bin","__pycache__"} & set(Path(p).parts) for p in names)
+          assert len(names) == len(set(names))
+          assert manifest["version"] == "1.0.1"
+          print("INSTALLABLE_SOURCE_ONLY_MANIFEST=PASS entries="+str(len(names)))
+          PY
       - name: Archive exact SHA source case results, negative tests, manifest, FULL ZIP
         if: always()
         uses: actions/upload-artifact@v4

@@ -100,6 +100,37 @@ internal static class AdapterSourceTests
             Require(a.Current==null && b.Current==null && !old.GeneratedRoot.activeInHierarchy,"must clear stale");
             Require(cleared==1,"must notify disappeared old world");
         });
+        foreach(var fault in new [] {
+            FakeWorldFault.StartOutsideWorldBounds,
+            FakeWorldFault.FinishOutsideWorldBounds,
+            FakeWorldFault.CheckpointOutsideWorldBounds,
+            FakeWorldFault.SpawnOutsideWorldBounds,
+            FakeWorldFault.MissingCheckpoint,
+            FakeWorldFault.WrongSeed,
+            FakeWorldFault.WrongVersion,
+            FakeWorldFault.NonFiniteFinish
+        })
+        {
+            var mode=fault;
+            Check("REJECT_CORRUPT_WORLD_METADATA_"+mode,()=>{
+                var (a,b)=Pair();
+                int clearCount=0,readyCount=0;
+                a.WorldCleared+=_=>clearCount++;
+                a.WorldReady+=_=>readyCount++;
+                Require(a.TryGenerate(Request(7),out var first,out _),"baseline");
+                b.NextFault=mode;
+                bool course=(mode==FakeWorldFault.CheckpointOutsideWorldBounds ||
+                             mode==FakeWorldFault.MissingCheckpoint);
+                Require(!a.TryRegenerate(Request(31,course),out var failed,out var reason),
+                    "must reject generated unsafe world metadata "+mode);
+                Require(reason==MapWorldFailure.InvalidWorldResult && failed==null,
+                    "wrong failure class for "+mode);
+                Require(a.Current==null && b.Current==null && !first.GeneratedRoot.activeInHierarchy,
+                    "invalid result must fail closed and clear old "+mode);
+                Require(clearCount==1 && readyCount==1,
+                    "activity callbacks must reflect invalid world teardown "+mode);
+            });
+        }
         var n=results.Count(x=>x.StartsWith("FAIL"));
         string file=args.Length>0?args[0]:"mapworld-adapter-fake-results.json";
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(file)));

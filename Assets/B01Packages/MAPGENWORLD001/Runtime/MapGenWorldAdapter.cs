@@ -50,11 +50,7 @@ namespace B01.MAPGENWORLD001
             }
             // Check a generated result without recalculating MAPGEN's geometry or mutating the vehicle.
             var previous = Current;
-            if (built == null || built.GeneratedRoot == null ||
-                !built.GeneratedRoot.activeInHierarchy ||
-                built.GeometryHash != plan.GeometryHash ||
-                !ValidPoint(built.Start) || !ValidPoint(built.Finish) ||
-                (built.CheckpointDescriptors == null) || (built.Spawns == null))
+            if (!ValidWorldResult(plan, request, built))
             {
                 builder.Clear(); // Reject unsafe/unknown live state; never return a false SUCCESS.
                 Current = null;
@@ -82,6 +78,46 @@ namespace B01.MAPGENWORLD001
             Current = null;
             LastFailure = MapWorldFailure.None;
             if (old != null) Notify(old, false);
+        }
+
+        private static bool ValidWorldResult(MapBlueprint plan, MapWorldRequest request, MapResult built)
+        {
+            if (built == null || built.GeneratedRoot == null ||
+                !built.GeneratedRoot.activeInHierarchy ||
+                built.Seed != request.Seed || built.Recipe != request.Recipe ||
+                built.GenerationVersion != plan.GenerationVersion ||
+                built.GeometryHash != plan.GeometryHash ||
+                built.CheckpointDescriptors == null || built.Spawns == null ||
+                built.CheckpointDescriptors.Length != plan.Checkpoints.Count ||
+                built.Spawns.Length != plan.EnemySpawns.Count)
+                return false;
+
+            // The source blueprint is local to the generator host; MapResult's bounds
+            // and all metadata are in WORLD space. Never compare their coordinates directly.
+            // The actual builder derives world bounds from colliders. A finite point far
+            // outside that world envelope is an invalid activity spawn/finish.
+            if (!InsideWorldBounds(built.Bounds, built.Start) ||
+                !InsideWorldBounds(built.Bounds, built.Finish) ||
+                Vector3.Distance(built.Start, built.Finish) <= 1f)
+                return false;
+            foreach (var point in built.CheckpointDescriptors)
+                if (!InsideWorldBounds(built.Bounds, point)) return false;
+            foreach (var point in built.Spawns)
+                if (!InsideWorldBounds(built.Bounds, point)) return false;
+            return true;
+        }
+
+        private static bool InsideWorldBounds(Bounds bounds, Vector3 point)
+        {
+            if (!ValidPoint(point) || !ValidPoint(bounds.min) || !ValidPoint(bounds.max))
+                return false;
+            const float toleranceMeters = .025f; // float transform/Bounds rounding only
+            return point.x >= bounds.min.x - toleranceMeters &&
+                   point.x <= bounds.max.x + toleranceMeters &&
+                   point.y >= bounds.min.y - toleranceMeters &&
+                   point.y <= bounds.max.y + toleranceMeters &&
+                   point.z >= bounds.min.z - toleranceMeters &&
+                   point.z <= bounds.max.z + toleranceMeters;
         }
 
         private static bool ValidPoint(Vector3 p) =>

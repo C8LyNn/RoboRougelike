@@ -58,7 +58,7 @@ def validate_assets(files):
 
 def create_zip(files):
     guids = validate_assets(files)
-    info = {"schemaVersion":1,"package":"MAPGEN-WORLD-ADAPTER-001","version":"1.0.0",
+    info = {"schemaVersion":1,"package":"MAPGEN-WORLD-ADAPTER-001","version":"1.0.1",
             "upstreamMAPGEN001":UPSTREAM,"unityNative":"NOT_RUN","g2":"HOLD",
             "preserveTargetParentMeta":"Assets/B01Packages.meta",
             "guidCount":len(guids),

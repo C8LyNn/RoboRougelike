@@ -63,6 +63,29 @@ namespace B01.MAPGENWORLD001.Tests
             finally { Object.Destroy(host); }
         }
 
+        [UnityTest] public IEnumerator RotatedAndOffsetHostAcceptsValidatedWorldMetadata()
+        {
+            // Native-only: source math surrogate cannot establish transformed Collider bounds.
+            var host=new GameObject("WORLD001_OffsetMetadata_Test");
+            host.transform.position=new Vector3(17f,2.5f,-13f);
+            host.transform.rotation=Quaternion.Euler(0f,41f,0f);
+            var adapter=host.AddComponent<MapGenWorldAdapter>();
+            try
+            {
+                var req=Request(31);req.Recipe=MapRecipe.ObstacleCourse;
+                var plan=MapGenPlanner.Plan(req.Recipe,req.Seed,req.Config,req.Vehicle);
+                Assert.IsTrue(adapter.TryGenerate(req,out var world,out var error),error.ToString());
+                Assert.Less(Vector3.Distance(host.transform.TransformPoint(plan.Start),world.Start),.001f);
+                Assert.Less(Vector3.Distance(host.transform.TransformPoint(plan.Finish),world.Finish),.001f);
+                Assert.AreEqual(plan.Checkpoints.Count,world.Checkpoints.Length);
+                Assert.Greater(Vector3.Distance(world.Start,plan.Start),1f,
+                    "Offset host points must be WORLD coordinates");
+                adapter.ClearWorld();
+                yield return null;
+            }
+            finally { Object.Destroy(host); }
+        }
+
         [UnityTest] public IEnumerator MissingMeasuredProfileAndNarrowRealLightDoNotSpawn()
         {
             var host = new GameObject("WORLD001_Negative_Test");
