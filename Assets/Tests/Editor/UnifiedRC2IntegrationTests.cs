@@ -12,7 +12,7 @@ using RoboRougelike.R3;
 
 public sealed class UnifiedRC2IntegrationTests
 {
-    R1RunController run;Keyboard keyboard;
+    R1RunController run;Keyboard keyboard;InputSettings.UpdateMode oldInputMode;bool inputModeChanged;
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -44,12 +44,14 @@ public sealed class UnifiedRC2IntegrationTests
     }
     [UnityTest] public IEnumerator NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage()
     {
-        keyboard=InputSystem.AddDevice<Keyboard>();
+        oldInputMode=InputSystem.settings.updateMode;inputModeChanged=true;
+        InputSystem.settings.updateMode=InputSettings.UpdateMode.ProcessEventsManually;
+        keyboard=InputSystem.AddDevice<Keyboard>();InputSystem.EnableDevice(keyboard);
         // EditMode EnterPlayMode has no focused GameView input pump. Process the
         // native event and invoke the unchanged production input consumer in the
         // same input update; OS/manual input is a separate Windows check.
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
-        InputSystem.Update(InputUpdateType.Dynamic);Assert.That(Keyboard.current,Is.SameAs(keyboard));
+        InputSystem.Update();Assert.That(Keyboard.current,Is.SameAs(keyboard));
         Assert.That(keyboard.enterKey.wasPressedThisFrame,Is.True);
         typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(run,null);
         yield return null;yield return null;
@@ -57,5 +59,5 @@ public sealed class UnifiedRC2IntegrationTests
         Assert.That(run.Player,Is.Not.Null);Assert.That(run.Encounter.AliveCount,Is.Zero);
     }
     [UnityTearDown] public IEnumerator Cleanup()
-    {if(keyboard!=null)InputSystem.RemoveDevice(keyboard);if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+    {if(keyboard!=null)InputSystem.RemoveDevice(keyboard);if(inputModeChanged)InputSystem.settings.updateMode=oldInputMode;if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
