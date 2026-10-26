@@ -42,11 +42,17 @@ public sealed class UnifiedRC2IntegrationTests
         Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(run.Player,Is.SameAs(actor));
         Assert.That(model.Parts.Select(p=>p.Id).ToArray(),Is.EqualTo(ids));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
     }
-    [UnityTest] public IEnumerator OrdinaryEnterKeyUsesUnifiedPreparationInsteadOfSkippingGarage()
+    [UnityTest] public IEnumerator NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage()
     {
         keyboard=InputSystem.AddDevice<Keyboard>();InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
+        // EditMode EnterPlayMode has no focused GameView input pump. Process the
+        // native event and invoke the unchanged production input consumer in the
+        // same input update; OS/manual input is a separate Windows check.
+        InputSystem.Update();Assert.That(Keyboard.current,Is.SameAs(keyboard));
+        Assert.That(keyboard.enterKey.wasPressedThisFrame,Is.True);
+        typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(run,null);
         yield return null;yield return null;
-        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage),"Normal keyboard control must follow the same menu entry as the button");
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage),"The production Enter binding must follow the same menu entry as the button");
         Assert.That(run.Player,Is.Not.Null);Assert.That(run.Encounter.AliveCount,Is.Zero);
     }
     [UnityTearDown] public IEnumerator Cleanup()
