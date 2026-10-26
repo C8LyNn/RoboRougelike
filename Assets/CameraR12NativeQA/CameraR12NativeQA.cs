@@ -21,7 +21,7 @@ public sealed class CameraR12NativeQA : MonoBehaviour
         public int width,height,parts,ownReticleHits,enemyBlockedSamples,enemyOffscreenSamples,worldPenetrationSamples,clipSamples,pivotOverlapSamples,samples,fireCalls,newFastBodies,partsAfterDamage;
         public bool fitSaturated,damageDetached;
         public int finalOriginOwnHits,originInsideOwnSamples,speedCapViolations,worldSphereOverlapSamples,diagnosticOwnFlags,aimErrorViolations,zoomSteps,inputIdleShells,inputRightShells,inputLeftShells,inputLeftObservedFrames,inputRightObservedFrames;
-        public int forwardObservedFrames,discardedFastBodies;public float maxMuzzleConsumedAfterSettle;
+        public int finalRenderedSamples,finalRenderedOwnHits,finalRenderedWorldOverlaps;public int forwardObservedFrames,discardedFastBodies;public float maxMuzzleConsumedAfterSettle;
         public float maxContinuousSpeed,maxActualAimError,maxStepExcess,maxMuzzleAfterSettle;
         public string inputMethod="InputSystem queued virtual Mouse/Keyboard consumed by unchanged P12 controller; not OS/human input";
         public Vector3 hullSize,initialPosition,finalPosition;
@@ -37,8 +37,8 @@ public sealed class CameraR12NativeQA : MonoBehaviour
         public string id,phase,firstHitBefore,firstHitAfter,gun;public float time,sincePhase,consumedError,postFireError;public Vector3 consumedAim,postFireAim,cameraPosition,muzzlePosition,muzzleForward;
     }
     [Serializable] public sealed class ShotSample
-    {public string id,phase,part,components,owner;public int instance;public float time;public Vector3 position,velocity,forward;}
-    Result result=new Result();Row row;string output;StreamWriter trace,aimTrace,shotTrace;
+    {public string id,phase,part,components,owner;public int instance;public float time;public Vector3 position,velocity,forward,consumedAim;public float flightAimError;}
+    Result result=new Result();Row row;string output;StreamWriter trace,aimTrace,shotTrace,renderTrace;
     R3VisualPalette palette;R1VehicleState actor,target;R3VehicleAssembly assembly;Rigidbody body;
     Camera view;Camera001Rig rig;List<GameObject> owned=new List<GameObject>();List<GameObject> walls=new List<GameObject>();
     HashSet<int> oldBodies=new HashSet<int>();HashSet<int> measuredBodies=new HashSet<int>();
@@ -54,7 +54,7 @@ public sealed class CameraR12NativeQA : MonoBehaviour
     IEnumerator Start()
     {
         string[] args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"-camera-qa-output");output=index>=0?args[index+1]:Path.Combine(Application.persistentDataPath,"CameraR12QA");Directory.CreateDirectory(output);
-        aimTrace=new StreamWriter(Path.Combine(output,"aim-trace.jsonl"));shotTrace=new StreamWriter(Path.Combine(output,"shots.jsonl"));
+        aimTrace=new StreamWriter(Path.Combine(output,"aim-trace.jsonl"));shotTrace=new StreamWriter(Path.Combine(output,"shots.jsonl"));renderTrace=new StreamWriter(Path.Combine(output,"final-rendered-pose.csv"));renderTrace.WriteLine("case,phase,time,ownOrigin,ownNearClip,insideOwn,worldOverlap");
         QualitySettings.vSyncCount=0;Application.targetFrameRate=60;
         Application.logMessageReceived+=OnLog;
         qaMouse=InputSystem.AddDevice<Mouse>("Camera QA virtual mouse");qaKeyboard=InputSystem.AddDevice<Keyboard>("Camera QA virtual keyboard");
@@ -115,10 +115,10 @@ public sealed class CameraR12NativeQA : MonoBehaviour
             row.inputLeftShells=row.newFastBodies-row.inputIdleShells-row.inputRightShells;
             QueueInput(false,false,false);yield return null;actor.Controller.enabled=false;
             row.finalPosition=body.position;row.distanceMoved=Vector3.Distance(row.initialPosition,row.finalPosition);yield return Capture("driveFire");
-            row.status=row.ownReticleHits==0&&row.finalOriginOwnHits==0&&row.originInsideOwnSamples==0&&row.speedCapViolations==0&&row.worldSphereOverlapSamples==0&&row.aimErrorViolations==0&&row.worldPenetrationSamples==0&&row.enemyBlockedSamples==0&&row.damageDetached&&row.inputIdleShells==0&&row.inputRightShells==0&&row.inputLeftShells>0&&row.inputLeftObservedFrames>0&&row.inputRightObservedFrames>0&&row.forwardObservedFrames>0&&row.distanceMoved>1f&&row.maxMuzzleConsumedAfterSettle<=.05f?"PASS_OBSERVED":"FAIL_OBSERVED";Save();
+            row.status=row.ownReticleHits==0&&row.finalOriginOwnHits==0&&row.originInsideOwnSamples==0&&row.speedCapViolations==0&&row.worldSphereOverlapSamples==0&&row.aimErrorViolations==0&&row.worldPenetrationSamples==0&&row.enemyBlockedSamples==0&&row.damageDetached&&row.inputIdleShells==0&&row.inputRightShells==0&&row.inputLeftShells>0&&row.inputLeftObservedFrames>0&&row.inputRightObservedFrames>0&&row.forwardObservedFrames>0&&row.distanceMoved>1f&&row.finalRenderedSamples>0&&row.finalRenderedOwnHits==0&&row.finalRenderedWorldOverlaps==0&&row.maxMuzzleConsumedAfterSettle<=.05f?"PASS_OBSERVED":"FAIL_OBSERVED";Save();
             foreach(var go in owned)if(go!=null)Destroy(go);owned.Clear();yield return null;yield return null;
         }
-        result.status=result.errors.Count==0&&result.rows.All(r=>r.status=="PASS_OBSERVED")?"PASS_OBSERVED":"FAIL_OBSERVED";Save();trace.Dispose();aimTrace.Dispose();shotTrace.Dispose();InputSystem.RemoveDevice(qaMouse);InputSystem.RemoveDevice(qaKeyboard);Application.Quit(result.status=="PASS_OBSERVED"?0:2);
+        result.status=result.errors.Count==0&&result.rows.All(r=>r.status=="PASS_OBSERVED")?"PASS_OBSERVED":"FAIL_OBSERVED";Save();trace.Dispose();aimTrace.Dispose();shotTrace.Dispose();renderTrace.Dispose();InputSystem.RemoveDevice(qaMouse);InputSystem.RemoveDevice(qaKeyboard);Application.Quit(result.status=="PASS_OBSERVED"?0:2);
     }
     IEnumerator InputPhase(bool left,bool right,bool forward,float seconds)
     {
@@ -131,7 +131,7 @@ public sealed class CameraR12NativeQA : MonoBehaviour
             Vector3 consumedAim=actor.Controller.ModuleAimPoint();string hitBefore=FirstAimHit();
             if(Keyboard.current!=null&&Keyboard.current.wKey.isPressed)row.forwardObservedFrames++;
             yield return new WaitForEndOfFrame();
-            Vector3 aim=actor.Controller.ModuleAimPoint();string hitAfter=FirstAimHit();
+            MeasureFinalRenderedPose();Vector3 aim=actor.Controller.ModuleAimPoint();string hitAfter=FirstAimHit();
             foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p.Operational&&p.Muzzle!=null))
             {
                 float error=Vector3.Angle(gun.Muzzle.forward,aim-gun.Muzzle.position);
@@ -146,9 +146,23 @@ public sealed class CameraR12NativeQA : MonoBehaviour
                 var shell=rb.GetComponent<RogueMachine.P12PipelineSafe.P17PhysicalShell>();var origin=rb.GetComponent<RoboRougelike.R4.R4ProjectileOrigin>();
                 if(shell==null||!shell.IsActiveProjectile||shell.OwnerRoot!=actor.transform||origin==null||!assembly.Parts.Any(p=>p.Id==origin.PartId)){row.discardedFastBodies++;continue;}
                 row.newFastBodies++;row.shotComponents=string.Join(";",rb.GetComponents<Component>().Select(c=>c.GetType().Name));owned.Add(rb.gameObject);
-                shotTrace.WriteLine(JsonUtility.ToJson(new ShotSample{id=row.id,phase=row.phase,part=origin.PartId,components=row.shotComponents,owner=shell.OwnerRoot.name,instance=rb.GetInstanceID(),time=Time.time,position=rb.position,velocity=rb.linearVelocity,forward=rb.transform.forward}));
+                shotTrace.WriteLine(JsonUtility.ToJson(new ShotSample{id=row.id,phase=row.phase,part=origin.PartId,components=row.shotComponents,owner=shell.OwnerRoot.name,instance=rb.GetInstanceID(),time=Time.time,position=rb.position,velocity=rb.linearVelocity,forward=rb.transform.forward,consumedAim=consumedAim,flightAimError=Vector3.Angle(rb.linearVelocity,consumedAim-rb.position)}));
             }
         }
+    }
+    void MeasureFinalRenderedPose()
+    {
+        row.finalRenderedSamples++;
+        var colliders=actor.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.gameObject.activeInHierarchy).ToArray();
+        Ray origin=new Ray(view.transform.position,view.transform.forward);Ray near=view.ViewportPointToRay(new Vector3(.5f,.5f));
+        bool originHit=colliders.Any(c=>c.Raycast(origin,out RaycastHit h,200));
+        bool nearHit=colliders.Any(c=>c.Raycast(near,out RaycastHit h,200));
+        bool inside=colliders.Any(c=>(c.ClosestPoint(view.transform.position)-view.transform.position).sqrMagnitude<.000001f);
+        float n=view.nearClipPlane,hh=n*Mathf.Tan(view.fieldOfView*Mathf.Deg2Rad*.5f),hw=hh*view.aspect;
+        float radius=Mathf.Max(.26f,Mathf.Sqrt(n*n+hh*hh+hw*hw))+.14f;
+        bool world=Physics.OverlapSphere(view.transform.position,radius,~0,QueryTriggerInteraction.Ignore).Any(c=>!c.transform.IsChildOf(actor.transform));
+        if(originHit||nearHit||inside)row.finalRenderedOwnHits++;if(world)row.finalRenderedWorldOverlaps++;
+        renderTrace.WriteLine(string.Join(",",new[]{row.id,row.phase,Time.time.ToString("R",System.Globalization.CultureInfo.InvariantCulture),originHit.ToString(),nearHit.ToString(),inside.ToString(),world.ToString()}));
     }
     string FirstAimHit()
     {

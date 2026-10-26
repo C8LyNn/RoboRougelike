@@ -11,3 +11,5 @@ Read-only peer review identified receiver instrumentation limitations:
 - Propagate failing native/test outcomes through the outer scripts, alongside original native exit receipts.
 
 One bounded additional Windows run is warranted by these evidence issues. The producer's source, thresholds and original 5 EditMode/13 PlayMode cases remain byte-identical. No generator, game, weapon, physics, camera implementation or RC1 edits. The strict muzzle check may still fail; preserve and diagnose, never silently remove it.
+
+The diagnostic run retained FAIL: Light720/1080 and Tall1080 have short acquisition transients. A final narrow instrumentation follow-up measures own rays/inside/world sphere at EndOfFrame after weapon LateUpdate (the camera itself has one writer), and records projectile velocity-to-consumed-aim error. This closes the rendered-pose timing requirement; no source fix or assertion relaxation. Preserve the first two runs. No further cycle after this bounded follow-up.

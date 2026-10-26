@@ -117,5 +117,28 @@ replace('    void SetAimOrbit()', '''    string FirstAimHit()
     void SetAimOrbit()''')
 replace('Physics.RaycastAll(ray,150)', 'Physics.RaycastAll(ray,150,~0,QueryTriggerInteraction.Ignore)')
 replace('Physics.RaycastAll(view.transform.position,direction.normalized,direction.magnitude)', 'Physics.RaycastAll(view.transform.position,direction.normalized,direction.magnitude,~0,QueryTriggerInteraction.Ignore)')
+replace('public int forwardObservedFrames,discardedFastBodies;', 'public int finalRenderedSamples,finalRenderedOwnHits,finalRenderedWorldOverlaps;public int forwardObservedFrames,discardedFastBodies;')
+replace('StreamWriter trace,aimTrace,shotTrace;', 'StreamWriter trace,aimTrace,shotTrace,renderTrace;')
+replace('shotTrace=new StreamWriter(Path.Combine(output,"shots.jsonl"));', 'shotTrace=new StreamWriter(Path.Combine(output,"shots.jsonl"));renderTrace=new StreamWriter(Path.Combine(output,"final-rendered-pose.csv"));renderTrace.WriteLine("case,phase,time,ownOrigin,ownNearClip,insideOwn,worldOverlap");')
+replace('public Vector3 position,velocity,forward;}', 'public Vector3 position,velocity,forward,consumedAim;public float flightAimError;}')
+replace('Vector3 aim=actor.Controller.ModuleAimPoint();string hitAfter=FirstAimHit();', 'MeasureFinalRenderedPose();Vector3 aim=actor.Controller.ModuleAimPoint();string hitAfter=FirstAimHit();')
+replace('forward=rb.transform.forward}', 'forward=rb.transform.forward,consumedAim=consumedAim,flightAimError=Vector3.Angle(rb.linearVelocity,consumedAim-rb.position)}')
+replace('row.distanceMoved>1f&&row.maxMuzzleConsumedAfterSettle<=.05f?', 'row.distanceMoved>1f&&row.finalRenderedSamples>0&&row.finalRenderedOwnHits==0&&row.finalRenderedWorldOverlaps==0&&row.maxMuzzleConsumedAfterSettle<=.05f?')
+replace('shotTrace.Dispose();InputSystem.RemoveDevice', 'shotTrace.Dispose();renderTrace.Dispose();InputSystem.RemoveDevice')
+replace('    string FirstAimHit()', '''    void MeasureFinalRenderedPose()
+    {
+        row.finalRenderedSamples++;
+        var colliders=actor.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.gameObject.activeInHierarchy).ToArray();
+        Ray origin=new Ray(view.transform.position,view.transform.forward);Ray near=view.ViewportPointToRay(new Vector3(.5f,.5f));
+        bool originHit=colliders.Any(c=>c.Raycast(origin,out RaycastHit h,200));
+        bool nearHit=colliders.Any(c=>c.Raycast(near,out RaycastHit h,200));
+        bool inside=colliders.Any(c=>(c.ClosestPoint(view.transform.position)-view.transform.position).sqrMagnitude<.000001f);
+        float n=view.nearClipPlane,hh=n*Mathf.Tan(view.fieldOfView*Mathf.Deg2Rad*.5f),hw=hh*view.aspect;
+        float radius=Mathf.Max(.26f,Mathf.Sqrt(n*n+hh*hh+hw*hw))+.14f;
+        bool world=Physics.OverlapSphere(view.transform.position,radius,~0,QueryTriggerInteraction.Ignore).Any(c=>!c.transform.IsChildOf(actor.transform));
+        if(originHit||nearHit||inside)row.finalRenderedOwnHits++;if(world)row.finalRenderedWorldOverlaps++;
+        renderTrace.WriteLine(string.Join(",",new[]{row.id,row.phase,Time.time.ToString("R",System.Globalization.CultureInfo.InvariantCulture),originHit.ToString(),nearHit.ToString(),inside.ToString(),world.ToString()}));
+    }
+    string FirstAimHit()''')
 (r/'Tools/CameraR12QA/CameraR12NativeQA.cs').write_text(s,encoding='utf-8')
 print('Staged receiver fixture; original producer source untouched.')
