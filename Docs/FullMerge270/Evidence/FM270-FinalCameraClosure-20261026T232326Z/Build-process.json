@@ -1,0 +1,13 @@
+{
+  "startedUtc": "2026-10-26T23:23:40.1198688Z",
+  "source": "88b8eed60345c49481648833e1fde6dc1a400258",
+  "phase": "Build",
+  "stage": "FinalCameraClosure",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T23:24:06.0359485Z",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "FullMergeBuild.BuildRelease"
+  ]
+}

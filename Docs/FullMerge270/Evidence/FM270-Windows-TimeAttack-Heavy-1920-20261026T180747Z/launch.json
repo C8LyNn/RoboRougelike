@@ -1,0 +1,31 @@
+{
+  "visible": true,
+  "height": 1080,
+  "mode": "TimeAttack",
+  "width": 1920,
+  "assemblySHA256": "713B386EEEF2A626923D36C61E6BA96A8D9D547F119D374DDC2DE700CC030A00",
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+  "startedUtc": "2026-10-26T18:07:47.4282064Z",
+  "vehicle": "Heavy",
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "accessibilityClientAttached": false,
+  "pid": 33388,
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-TimeAttack-Heavy-1920-20261026T180747Z\\Player.log\"",
+    "-fm270-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-TimeAttack-Heavy-1920-20261026T180747Z\"",
+    "-fm270-mode",
+    "TimeAttack",
+    "-fm270-vehicle",
+    "Heavy"
+  ],
+  "source": "3e650c1e21ddc5550ded50d1ce033e96d7f4cceb"
+}

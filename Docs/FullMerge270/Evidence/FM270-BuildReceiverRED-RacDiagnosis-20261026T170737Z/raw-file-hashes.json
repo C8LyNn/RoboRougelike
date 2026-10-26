@@ -1,0 +1,12 @@
+[
+  {
+    "file": "EditMode.log",
+    "rawSHA256": "eeac62482300926866c75396914af54a4c94944e046ec10c2a8dbed3f3727fff",
+    "bytes": 274705
+  },
+  {
+    "file": "PlayMode.log",
+    "rawSHA256": "089ceda31c1d31d97f2dd9d803da2b8b84f08f19a60276dcfb43b93c299d0295",
+    "bytes": 56735
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "stage": "RacObservedPositionDiagnostic",
+  "finishedUtc": "2026-10-26T17:23:55.9152018Z",
+  "exitCode": 2,
+  "source": "a81f3b7d61ea57b3db8b0efbc008486732998695",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-RacObservedPositionDiagnostic-20261026T172336Z\\PlayMode.xml\"",
+    "-testFilter",
+    "\"RAC001PhysicalDemoTests\""
+  ],
+  "startedUtc": "2026-10-26T17:23:36.2600808Z",
+  "phase": "PlayMode"
+}

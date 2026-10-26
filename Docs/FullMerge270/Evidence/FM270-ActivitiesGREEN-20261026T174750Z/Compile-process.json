@@ -1,0 +1,11 @@
+{
+  "phase": "Compile",
+  "startedUtc": "2026-10-26T17:47:50.3938332Z",
+  "stage": "ActivitiesGREEN",
+  "exitCode": 0,
+  "source": "d4398040e4aaab68cca1412f0ed90b36e9979e71",
+  "finishedUtc": "2026-10-26T17:48:03.9833105Z",
+  "arguments": [
+    "-quit"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "finishedUtc": "2026-10-26T21:34:37.7117176Z",
+  "arguments": [
+    "-quit"
+  ],
+  "source": "f9ec5eaa920c066c2536ce7abece8228e9c5830c",
+  "stage": "FactoryAxleAndRoadClock",
+  "startedUtc": "2026-10-26T21:34:24.6738147Z",
+  "exitCode": 0,
+  "phase": "Compile"
+}

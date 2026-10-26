@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Passed" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 18:01:24Z" end-time="2026-10-26 18:01:25Z" duration="0,4107089">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1190" result="Passed" start-time="2026-10-26 18:01:24Z" end-time="2026-10-26 18:01:25Z" duration="0.410709" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1485" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="398" result="Passed" start-time="2026-10-26 18:01:24Z" end-time="2026-10-26 18:01:25Z" duration="0.354618" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="10272" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1026" name="FullMergeActivityTests" fullname="FullMergeActivityTests" classname="FullMergeActivityTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 18:00:52Z" end-time="2026-10-26 18:00:52Z" duration="0.406607" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1032" name="ApiControlledRaceCompletionActuallySettlesOnce" fullname="FullMergeActivityTests.ApiControlledRaceCompletionActuallySettlesOnce" methodname="ApiControlledRaceCompletionActuallySettlesOnce" classname="FullMergeActivityTests" runstate="Runnable" seed="2031548849" result="Passed" start-time="2026-10-26 18:00:32Z" end-time="2026-10-26 18:00:36Z" duration="3.375475" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+]]></output>
+        </test-case>
+        <test-case id="1028" name="RaceTimeoutUsesCanonicalLossAndCleansItsMap" fullname="FullMergeActivityTests.RaceTimeoutUsesCanonicalLossAndCleansItsMap" methodname="RaceTimeoutUsesCanonicalLossAndCleansItsMap" classname="FullMergeActivityTests" runstate="Runnable" seed="910076085" result="Passed" start-time="2026-10-26 18:00:36Z" end-time="2026-10-26 18:00:39Z" duration="3.179388" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+[R1] Porażka: Wyścig zakończony: TimedOut
+]]></output>
+        </test-case>
+        <test-case id="1027" name="RaceUsesSameRobotWithoutEmptyEnemyAutoVictoryAndPausesItsClock" fullname="FullMergeActivityTests.RaceUsesSameRobotWithoutEmptyEnemyAutoVictoryAndPausesItsClock" methodname="RaceUsesSameRobotWithoutEmptyEnemyAutoVictoryAndPausesItsClock" classname="FullMergeActivityTests" runstate="Runnable" seed="393256036" result="Passed" start-time="2026-10-26 18:00:39Z" end-time="2026-10-26 18:00:42Z" duration="3.606043" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+]]></output>
+        </test-case>
+        <test-case id="1031" name="RoadFailureDoesNotRewardAndRestartsWithoutActivityObjects" fullname="FullMergeActivityTests.RoadFailureDoesNotRewardAndRestartsWithoutActivityObjects" methodname="RoadFailureDoesNotRewardAndRestartsWithoutActivityObjects" classname="FullMergeActivityTests" runstate="Runnable" seed="115161282" result="Passed" start-time="2026-10-26 18:00:42Z" end-time="2026-10-26 18:00:46Z" duration="3.482624" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+[R1] Porażka: Wyzwanie drogowe: Player destroyed
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+]]></output>
+        </test-case>
+        <test-case id="1030" name="RoadResultUsesOneCanonicalRewardAndAllowsNextActivity" fullname="FullMergeActivityTests.RoadResultUsesOneCanonicalRewardAndAllowsNextActivity" methodname="RoadResultUsesOneCanonicalRewardAndAllowsNextActivity" classname="FullMergeActivityTests" runstate="Runnable" seed="736381815" result="Passed" start-time="2026-10-26 18:00:46Z" end-time="2026-10-26 18:00:49Z" duration="3.260569" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=0
+[R1] Starcie 2: przeciwników=0
+]]></output>
+        </test-case>
+        <test-case id="1029" name="RoadTimeAttackHasRealSourceWorldAndSharedVehicle" fullname="FullMergeActivityTests.RoadTimeAttackHasRealSourceWorldAndSharedVehicle" methodname="RoadTimeAttackHasRealSourceWorldAndSharedVehicle" classname="FullMergeActivityTests" runstate="Runnable" seed="1213310893" result="Passed" start-time="2026-10-26 18:00:49Z" end-time="2026-10-26 18:00:52Z" duration="3.217134" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1033" name="FullMergeBuildTests" fullname="FullMergeBuildTests" classname="FullMergeBuildTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 18:01:15Z" end-time="2026-10-26 18:01:15Z" duration="0.330970" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1034" name="DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" fullname="FullMergeBuildTests.DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" methodname="DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" classname="FullMergeBuildTests" runstate="Runnable" seed="1563895691" result="Passed" start-time="2026-10-26 18:00:52Z" end-time="2026-10-26 18:00:56Z" duration="3.146380" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1035" name="DirectMountCannotMoveInventoryOntoGunSupport" fullname="FullMergeBuildTests.DirectMountCannotMoveInventoryOntoGunSupport" methodname="DirectMountCannotMoveInventoryOntoGunSupport" classname="FullMergeBuildTests" runstate="Runnable" seed="749194637" result="Passed" start-time="2026-10-26 18:00:56Z" end-time="2026-10-26 18:00:59Z" duration="3.209818" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1036" name="ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" fullname="FullMergeBuildTests.ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" methodname="ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" classname="FullMergeBuildTests" runstate="Runnable" seed="160907156" result="Passed" start-time="2026-10-26 18:00:59Z" end-time="2026-10-26 18:01:02Z" duration="3.444352" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1038" name="RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" fullname="FullMergeBuildTests.RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" methodname="RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" classname="FullMergeBuildTests" runstate="Runnable" seed="350183766" result="Passed" start-time="2026-10-26 18:01:02Z" end-time="2026-10-26 18:01:05Z" duration="3.087514" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1039" name="RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" fullname="FullMergeBuildTests.RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" methodname="RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" classname="FullMergeBuildTests" runstate="Runnable" seed="2017161663" result="Passed" start-time="2026-10-26 18:01:05Z" end-time="2026-10-26 18:01:09Z" duration="3.130213" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1040" name="StructuralFaceRemainsClickableAfterSuccessfulGarageRebuild" fullname="FullMergeBuildTests.StructuralFaceRemainsClickableAfterSuccessfulGarageRebuild" methodname="StructuralFaceRemainsClickableAfterSuccessfulGarageRebuild" classname="FullMergeBuildTests" runstate="Runnable" seed="1431167867" result="Passed" start-time="2026-10-26 18:01:09Z" end-time="2026-10-26 18:01:12Z" duration="3.442062" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1037" name="WheelHitCannotAuthorizeMountingStructuralParts" fullname="FullMergeBuildTests.WheelHitCannotAuthorizeMountingStructuralParts" methodname="WheelHitCannotAuthorizeMountingStructuralParts" classname="FullMergeBuildTests" runstate="Runnable" seed="1554686357" result="Passed" start-time="2026-10-26 18:01:12Z" end-time="2026-10-26 18:01:15Z" duration="3.125119" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1041" name="FullMergeCameraTests" fullname="FullMergeCameraTests" classname="FullMergeCameraTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 18:01:25Z" end-time="2026-10-26 18:01:25Z" duration="0.338851" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1044" name="DelegatedCameraIgnoresTransientDebrisButStillClipsRealWalls" fullname="FullMergeCameraTests.DelegatedCameraIgnoresTransientDebrisButStillClipsRealWalls" methodname="DelegatedCameraIgnoresTransientDebrisButStillClipsRealWalls" classname="FullMergeCameraTests" runstate="Runnable" seed="453262429" result="Passed" start-time="2026-10-26 18:01:15Z" end-time="2026-10-26 18:01:18Z" duration="3.218757" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1042" name="FacadeDelegatesToExactlyOneDisabledAutonomousRigAndGarageKeepsPose" fullname="FullMergeCameraTests.FacadeDelegatesToExactlyOneDisabledAutonomousRigAndGarageKeepsPose" methodname="FacadeDelegatesToExactlyOneDisabledAutonomousRigAndGarageKeepsPose" classname="FullMergeCameraTests" runstate="Runnable" seed="1175375179" result="Passed" start-time="2026-10-26 18:01:18Z" end-time="2026-10-26 18:01:22Z" duration="3.387647" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1043" name="OwnRootLevelProjectileIsNotConsumedAsCrosshairTarget" fullname="FullMergeCameraTests.OwnRootLevelProjectileIsNotConsumedAsCrosshairTarget" methodname="OwnRootLevelProjectileIsNotConsumedAsCrosshairTarget" classname="FullMergeCameraTests" runstate="Runnable" seed="756655738" result="Passed" start-time="2026-10-26 18:01:22Z" end-time="2026-10-26 18:01:25Z" duration="3.080984" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

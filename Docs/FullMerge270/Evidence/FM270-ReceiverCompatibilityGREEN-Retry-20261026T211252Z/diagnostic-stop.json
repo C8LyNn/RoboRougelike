@@ -1,0 +1,6 @@
+{
+  "status": "INTERRUPTED_NOT_COMPLETE",
+  "reason": "Owned Unity process terminated after MissingReferenceException accessing deferred-destroyed CapsuleCollider in R6WheelContacts.FindSupport; no NUnit XML; native -1 is Stop-Process, not C0000005",
+  "source": "aa30508da2608e2e805bc2997eb46b0e57f23769",
+  "ownedUnityPID": 58328
+}

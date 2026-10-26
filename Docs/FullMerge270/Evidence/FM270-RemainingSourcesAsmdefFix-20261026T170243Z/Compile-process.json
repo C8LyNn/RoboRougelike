@@ -1,0 +1,11 @@
+{
+  "finishedUtc": "2026-10-26T17:02:58.8774764Z",
+  "exitCode": 0,
+  "source": "bf1cc3715f2aad9ddf1e16e96798f0023c314733",
+  "phase": "Compile",
+  "arguments": [
+    "-quit"
+  ],
+  "startedUtc": "2026-10-26T17:02:43.3439142Z",
+  "stage": "RemainingSourcesAsmdefFix"
+}

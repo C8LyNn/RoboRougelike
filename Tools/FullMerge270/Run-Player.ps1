@@ -9,7 +9,9 @@ if(@(git -C $project diff --name-only $source -- Assets Packages ProjectSettings
 if(!$Executable){$Executable=Join-Path $build 'RoboRougelike.exe'}
 $data=Join-Path (Split-Path $Executable) 'RoboRougelike_Data/Managed/Assembly-CSharp.dll'
 if((Get-FileHash $data).Hash -ne (Get-FileHash (Join-Path $build 'RoboRougelike_Data/Managed/Assembly-CSharp.dll')).Hash){throw 'Extracted assembly differs'}
-$run=Join-Path $project ('Artifacts/Local/FM270-Windows-'+$Mode+'-'+$Vehicle+'-'+$Width+'-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))
+# The retained RC2 fixtures select the menu default internally.
+$actualVehicle=if($Mode -in @('Mapgen','Reactor','Input')){'Standard'}else{$Vehicle}
+$run=Join-Path $project ('Artifacts/Local/FM270-Windows-'+$Mode+'-'+$actualVehicle+'-'+$Width+'-'+[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))
 New-Item -ItemType Directory -Path $run | Out-Null
 $args=@('-screen-fullscreen','0','-screen-width',$Width,'-screen-height',$Height,'-force-d3d11','-logFile',('"'+(Join-Path $run 'Player.log')+'"'))
 $resultFile='result.json'
@@ -20,12 +22,12 @@ elseif($Mode -ne 'Retail'){$args+=@('-fm270-output',('"'+$run+'"'),'-fm270-mode'
 $start=[DateTime]::UtcNow
 $p=Start-Process -FilePath $Executable -ArgumentList $args -WorkingDirectory (Split-Path $Executable) -WindowStyle Normal -PassThru
 $handle=$p.Handle
-@{source=$source;pid=$p.Id;mode=$Mode;vehicle=$Vehicle;executable=$Executable;exeSHA256=(Get-FileHash $Executable).Hash;assemblySHA256=(Get-FileHash $data).Hash;width=$Width;height=$Height;startedUtc=$start.ToString('o');args=$args;visible=$true;accessibilityClientAttached=$false} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $run 'launch.json')
-Write-Output "PLAYER $Mode/$Vehicle pid=$($p.Id) evidence=$run"
+@{source=$source;pid=$p.Id;mode=$Mode;vehicle=$actualVehicle;requestedVehicle=$Vehicle;executable=$Executable;exeSHA256=(Get-FileHash $Executable).Hash;assemblySHA256=(Get-FileHash $data).Hash;width=$Width;height=$Height;startedUtc=$start.ToString('o');args=$args;visible=$true;accessibilityClientAttached=$false} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $run 'launch.json')
+Write-Output "PLAYER $Mode/$actualVehicle pid=$($p.Id) evidence=$run"
 if($Mode -eq 'Retail'){Write-Output 'Interactive retail left open';exit 0}
 if(!$p.WaitForExit(660000)){throw 'Finite acceptance exceeded watchdog; owned process retained for inspection'}
 $p.Refresh();$code=$p.ExitCode
-@{source=$source;mode=$Mode;vehicle=$Vehicle;exitCode=$code;startedUtc=$start.ToString('o');finishedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content (Join-Path $run 'process.json')
+@{source=$source;mode=$Mode;vehicle=$actualVehicle;exitCode=$code;startedUtc=$start.ToString('o');finishedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content (Join-Path $run 'process.json')
 Write-Output "PLAYER COMPLETE native=$code evidence=$run"
 if($code -ne 0){exit $code}
 $result=Get-Content -Raw (Join-Path $run $resultFile) | ConvertFrom-Json

@@ -1,0 +1,11 @@
+{
+  "startedUtc": "2026-10-26T16:53:36.9503684Z",
+  "arguments": [
+    "-quit"
+  ],
+  "stage": "BuildR14Source",
+  "phase": "Compile",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T16:53:52.3932124Z",
+  "source": "d77d361e2823d15f9159903e984bab10a6e59115"
+}

@@ -1,0 +1,13 @@
+{
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "FullMergeBuild.BuildRelease"
+  ],
+  "exitCode": 0,
+  "source": "3e650c1e21ddc5550ded50d1ce033e96d7f4cceb",
+  "phase": "Build",
+  "stage": "FullRelease",
+  "startedUtc": "2026-10-26T18:05:26.1258855Z",
+  "finishedUtc": "2026-10-26T18:06:22.1071704Z"
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 23:21:03Z" end-time="2026-10-26 23:21:03Z" duration="0,4586135">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1204" result="Failed" site="Child" start-time="2026-10-26 23:21:03Z" end-time="2026-10-26 23:21:03Z" duration="0.458614" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1500" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="412" result="Failed" site="Child" start-time="2026-10-26 23:21:03Z" end-time="2026-10-26 23:21:03Z" duration="0.411647" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="57572" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1035" name="FullMergeAdditionalRegression" fullname="FullMergeAdditionalRegression" classname="FullMergeAdditionalRegression" runstate="Runnable" testcasecount="11" result="Failed" site="Child" start-time="2026-10-26 23:21:03Z" end-time="2026-10-26 23:21:03Z" duration="0.407080" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1046" name="ArticulatingGunCannotFeedBackIntoTheCameraAimAnchor" fullname="FullMergeAdditionalRegression.ArticulatingGunCannotFeedBackIntoTheCameraAimAnchor" methodname="ArticulatingGunCannotFeedBackIntoTheCameraAimAnchor" classname="FullMergeAdditionalRegression" runstate="Runnable" seed="1147068876" result="Failed" start-time="2026-10-26 23:21:00Z" end-time="2026-10-26 23:21:03Z" duration="3.363659" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Unchanged chassis must not move its camera aim anchor as the gun follows that same reticle
+  Expected: less than 0.00100000005f
+  But was:  0.054142952f
+]]></message>
+            <stack-trace><![CDATA[at FullMergeAdditionalRegression+<ArticulatingGunCannotFeedBackIntoTheCameraAimAnchor>d__16.MoveNext () [0x001d8] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Full-Merge270\Assets\Tests\Editor\FullMergeAdditionalRegression.cs:136
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

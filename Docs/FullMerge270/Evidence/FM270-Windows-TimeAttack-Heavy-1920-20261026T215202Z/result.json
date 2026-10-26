@@ -1,0 +1,48 @@
+{
+    "status": "Failed",
+    "mode": "TimeAttack",
+    "vehicle": "Heavy",
+    "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "startedUtc": "2026-10-26T21:52:07.6303676Z",
+    "finishedUtc": "2026-10-26T21:55:09.3762026Z",
+    "width": 1920,
+    "height": 1080,
+    "frames": 10800,
+    "contacts": 8988,
+    "maxContacts": 12,
+    "selfRayHits": 0,
+    "worldOverlaps": 0,
+    "shots": 0,
+    "completed": 0,
+    "detachedParts": 0,
+    "enemyShots": 0,
+    "maxAliveEnemies": 0,
+    "saturatedFrames": 0,
+    "offscreenHullFrames": 0,
+    "continuousSpeedViolations": 0,
+    "distance": 97.64567565917969,
+    "peakAimError": 0.0,
+    "settledAimError": 0.0,
+    "peakCameraStep": 0.05289015918970108,
+    "peakFrameMs": 25.44000244140625,
+    "meanFrameMs": 16.67017364501953,
+    "maxEnemyMovement": 0.0,
+    "finalPosition": {
+        "x": -12.593329429626465,
+        "y": 3.083190679550171,
+        "z": 33.77119827270508
+    },
+    "settledAimObserved": false,
+    "checks": [
+        "Vehicle selected",
+        "Actual preparation garage",
+        "Garage selects TimeAttack: Przygotuj pojazd. Wybierz trasę, wygenerowaną arenę albo obronę reaktora. Seed pochodzi z menu.",
+        "Activity entered canonical live state",
+        "One delegated camera owner",
+        "Active scene uses supported actual materials"
+    ],
+    "errors": [
+        "System.InvalidOperationException: Actual activity lost: Wyzwanie drogowe: Time limit expired\r\n  at FullMergeRuntimeQA.Update () [0x003a7] in <25251ff3de3d410a9016104ea8430e56>:0 "
+    ]
+}

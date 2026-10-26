@@ -1,0 +1,11 @@
+{
+  "startedUtc": "2026-10-26T17:17:47.6995257Z",
+  "finishedUtc": "2026-10-26T17:18:02.2622985Z",
+  "source": "69c5163332f8e1ccca26b5a784360d208cd5195d",
+  "stage": "BuildReceiverGREEN-RacContact",
+  "exitCode": 0,
+  "arguments": [
+    "-quit"
+  ],
+  "phase": "Compile"
+}

@@ -1,0 +1,135 @@
+{
+    "status": "Passed",
+    "method": "API-controlled real R3/R6 forces and real AI/player projectiles; explicit core-damage win/loss settlement; NOT human gameplay or an unassisted combat victory",
+    "startedUtc": "2026-10-26T23:40:00.7289781Z",
+    "finishedUtc": "2026-10-26T23:40:10.1542640Z",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "width": 1920,
+    "height": 1080,
+    "contactSamples": 185,
+    "supportedSamples": 185,
+    "maxContacts": 12,
+    "distance": 15.44301700592041,
+    "playerHpLost": 24.48046875,
+    "enemyHpLost": 40.0,
+    "start": {
+        "x": 0.0,
+        "y": 1.0341801643371583,
+        "z": -25.0
+    },
+    "last": {
+        "x": -0.009925068356096745,
+        "y": 0.6500052809715271,
+        "z": -9.941198348999024
+    },
+    "measuredEnvelope": {
+        "x": 4.920000076293945,
+        "y": 2.114000082015991,
+        "z": 4.9199981689453129
+    },
+    "firstHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+    "secondHash": "d1eae2baa61a18e2afd0b671d9d8e1434646134f245e912b992710b952532835",
+    "checks": [
+        {
+            "name": "Real game menu",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Player-accessible MAPGEN preparation",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Ordinary preparation economy",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Generated activity selected through actual run API",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Seed7 map with legacy floor disabled",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Canonical enemies on source map spawns",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual source Resources shader renders generated arena",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Real R6 grounded force drive",
+            "detail": "distance=15,443, contacts=12",
+            "passed": true
+        },
+        {
+            "name": "Real hostile and player projectile damage",
+            "detail": "playerLost=24,5, enemyLost=40,0",
+            "passed": true
+        },
+        {
+            "name": "Controlled win uses existing salvage and clears generated world",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "One bonus plus real enemy loot claimed",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Rewards return to actual garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Canonical repair after explicit2HP fixture injury",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Recovered module mounted through canonical garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Second generated activity after rewards",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "New seed regenerates map without old root",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual source Resources shader renders generated arena",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Controlled player loss cleans map and restores normal terrain",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Scene restart returns to menu without stale map",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Restart releases owned generated material",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "errors": []
+}

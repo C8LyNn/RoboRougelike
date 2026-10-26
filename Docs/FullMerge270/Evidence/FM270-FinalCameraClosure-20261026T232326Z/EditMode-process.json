@@ -1,0 +1,17 @@
+{
+  "startedUtc": "2026-10-26T23:24:06.0466017Z",
+  "source": "88b8eed60345c49481648833e1fde6dc1a400258",
+  "phase": "EditMode",
+  "stage": "FinalCameraClosure",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T23:25:59.1633499Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalCameraClosure-20261026T232326Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMerge;B01.CAMERA001\""
+  ]
+}

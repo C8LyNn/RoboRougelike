@@ -1,0 +1,17 @@
+{
+  "source": "1c3bbe367c8b3e5a907c559d1004783c205d7d84",
+  "startedUtc": "2026-10-26T22:53:46.3888241Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalRoadClosure-20261026T225309Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMerge\""
+  ],
+  "finishedUtc": "2026-10-26T22:55:40.5061952Z",
+  "stage": "FinalRoadClosure",
+  "exitCode": 2,
+  "phase": "EditMode"
+}

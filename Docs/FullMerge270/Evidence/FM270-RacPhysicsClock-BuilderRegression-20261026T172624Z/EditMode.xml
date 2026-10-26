@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="29" result="Passed" total="29" passed="29" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 17:27:47Z" end-time="2026-10-26 17:27:48Z" duration="0,570952">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1180" result="Passed" start-time="2026-10-26 17:27:47Z" end-time="2026-10-26 17:27:48Z" duration="0.570952" total="29" passed="29" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1473" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="388" result="Passed" start-time="2026-10-26 17:27:47Z" end-time="2026-10-26 17:27:48Z" duration="0.491813" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48452" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1026" name="FullMergeBuildTests" fullname="FullMergeBuildTests" classname="FullMergeBuildTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 17:27:06Z" end-time="2026-10-26 17:27:07Z" duration="0.381082" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1027" name="DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" fullname="FullMergeBuildTests.DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" methodname="DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" classname="FullMergeBuildTests" runstate="Runnable" seed="727889018" result="Passed" start-time="2026-10-26 17:26:47Z" end-time="2026-10-26 17:26:50Z" duration="3.433904" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1028" name="DirectMountCannotMoveInventoryOntoGunSupport" fullname="FullMergeBuildTests.DirectMountCannotMoveInventoryOntoGunSupport" methodname="DirectMountCannotMoveInventoryOntoGunSupport" classname="FullMergeBuildTests" runstate="Runnable" seed="1467348721" result="Passed" start-time="2026-10-26 17:26:50Z" end-time="2026-10-26 17:26:53Z" duration="3.324051" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1029" name="ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" fullname="FullMergeBuildTests.ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" methodname="ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" classname="FullMergeBuildTests" runstate="Runnable" seed="180335017" result="Passed" start-time="2026-10-26 17:26:53Z" end-time="2026-10-26 17:26:57Z" duration="3.491158" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1031" name="RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" fullname="FullMergeBuildTests.RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" methodname="RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" classname="FullMergeBuildTests" runstate="Runnable" seed="497200113" result="Passed" start-time="2026-10-26 17:26:57Z" end-time="2026-10-26 17:27:00Z" duration="3.284454" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1032" name="RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" fullname="FullMergeBuildTests.RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" methodname="RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" classname="FullMergeBuildTests" runstate="Runnable" seed="1234903544" result="Passed" start-time="2026-10-26 17:27:00Z" end-time="2026-10-26 17:27:03Z" duration="3.273172" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1030" name="WheelHitCannotAuthorizeMountingStructuralParts" fullname="FullMergeBuildTests.WheelHitCannotAuthorizeMountingStructuralParts" methodname="WheelHitCannotAuthorizeMountingStructuralParts" classname="FullMergeBuildTests" runstate="Runnable" seed="137195714" result="Passed" start-time="2026-10-26 17:27:03Z" end-time="2026-10-26 17:27:07Z" duration="3.359048" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1334" name="RRLW34GarageTests" fullname="RRLW34GarageTests" classname="RRLW34GarageTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 17:27:30Z" end-time="2026-10-26 17:27:30Z" duration="0.357499" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1342" name="BothRequiredResolutionsKeepPanelsOutsidePlacement" fullname="RRLW34GarageTests.BothRequiredResolutionsKeepPanelsOutsidePlacement" classname="RRLW34GarageTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-26 17:27:13Z" end-time="2026-10-26 17:27:13Z" duration="0.401896" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1340" name="BothRequiredResolutionsKeepPanelsOutsidePlacement(1280,720)" fullname="RRLW34GarageTests.BothRequiredResolutionsKeepPanelsOutsidePlacement(1280,720)" methodname="BothRequiredResolutionsKeepPanelsOutsidePlacement" classname="RRLW34GarageTests" runstate="Runnable" seed="1677994472" result="Passed" start-time="2026-10-26 17:27:07Z" end-time="2026-10-26 17:27:10Z" duration="3.220971" asserts="0">
+            <properties />
+            <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+          </test-case>
+          <test-case id="1341" name="BothRequiredResolutionsKeepPanelsOutsidePlacement(1920,1080)" fullname="RRLW34GarageTests.BothRequiredResolutionsKeepPanelsOutsidePlacement(1920,1080)" methodname="BothRequiredResolutionsKeepPanelsOutsidePlacement" classname="RRLW34GarageTests" runstate="Runnable" seed="1450339557" result="Passed" start-time="2026-10-26 17:27:10Z" end-time="2026-10-26 17:27:13Z" duration="3.454622" asserts="0">
+            <properties />
+            <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+          </test-case>
+        </test-suite>
+        <test-case id="1338" name="ControllerRemountPreservesStoredOrientationIdPortsAndHp" fullname="RRLW34GarageTests.ControllerRemountPreservesStoredOrientationIdPortsAndHp" methodname="ControllerRemountPreservesStoredOrientationIdPortsAndHp" classname="RRLW34GarageTests" runstate="Runnable" seed="896263756" result="Passed" start-time="2026-10-26 17:27:13Z" end-time="2026-10-26 17:27:17Z" duration="3.529373" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1336" name="RotatedGreenFootprintPortsAndActualMountAgreeAfterVehicleYaw" fullname="RRLW34GarageTests.RotatedGreenFootprintPortsAndActualMountAgreeAfterVehicleYaw" methodname="RotatedGreenFootprintPortsAndActualMountAgreeAfterVehicleYaw" classname="RRLW34GarageTests" runstate="Runnable" seed="949393324" result="Passed" start-time="2026-10-26 17:27:17Z" end-time="2026-10-26 17:27:20Z" duration="3.357707" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1335" name="SixShortcutsRotateOnlyTheirAxisAndInverseUndoesWithoutSpending" fullname="RRLW34GarageTests.SixShortcutsRotateOnlyTheirAxisAndInverseUndoesWithoutSpending" methodname="SixShortcutsRotateOnlyTheirAxisAndInverseUndoesWithoutSpending" classname="RRLW34GarageTests" runstate="Runnable" seed="1168633586" result="Passed" start-time="2026-10-26 17:27:20Z" end-time="2026-10-26 17:27:24Z" duration="3.354546" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1339" name="SwitchingIdenticalShapesRefreshesTheirDifferentContactMarkers" fullname="RRLW34GarageTests.SwitchingIdenticalShapesRefreshesTheirDifferentContactMarkers" methodname="SwitchingIdenticalShapesRefreshesTheirDifferentContactMarkers" classname="RRLW34GarageTests" runstate="Runnable" seed="1394281747" result="Passed" start-time="2026-10-26 17:27:24Z" end-time="2026-10-26 17:27:27Z" duration="3.233658" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1337" name="ZeroHpBoundsAndMismatchedPortsNeverShowGreenOrSpend" fullname="RRLW34GarageTests.ZeroHpBoundsAndMismatchedPortsNeverShowGreenOrSpend" methodname="ZeroHpBoundsAndMismatchedPortsNeverShowGreenOrSpend" classname="RRLW34GarageTests" runstate="Runnable" seed="885748679" result="Passed" start-time="2026-10-26 17:27:27Z" end-time="2026-10-26 17:27:30Z" duration="3.229399" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1343" name="RRLW34ReviewRegressionTests" fullname="RRLW34ReviewRegressionTests" classname="RRLW34ReviewRegressionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-26 17:27:47Z" end-time="2026-10-26 17:27:48Z" duration="0.470713" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1344" name="CoreDeathCountsAndReleasesEachPhysicalOwnerOnlyOnce" fullname="RRLW34ReviewRegressionTests.CoreDeathCountsAndReleasesEachPhysicalOwnerOnlyOnce" methodname="CoreDeathCountsAndReleasesEachPhysicalOwnerOnlyOnce" classname="RRLW34ReviewRegressionTests" runstate="Runnable" seed="1878360400" result="Passed" start-time="2026-10-26 17:27:30Z" end-time="2026-10-26 17:27:34Z" duration="3.282445" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 3 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 3 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 3 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 3 structural block(s).
+[Pack 18] Detached structural chunk: 2 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+]]></output>
+        </test-case>
+        <test-case id="1345" name="FullInventoryHasExplicitRecoveryForMandatoryRewardsIncludingFinalVictory" fullname="RRLW34ReviewRegressionTests.FullInventoryHasExplicitRecoveryForMandatoryRewardsIncludingFinalVictory" methodname="FullInventoryHasExplicitRecoveryForMandatoryRewardsIncludingFinalVictory" classname="RRLW34ReviewRegressionTests" runstate="Runnable" seed="2062393133" result="Passed" start-time="2026-10-26 17:27:34Z" end-time="2026-10-26 17:27:37Z" duration="3.607825" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=3; złom z demontażu=27
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=94
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 37 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 37 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[R3] Wygrano starcie 3; Złom +82; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=129
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 4: przeciwników=2
+[R3] Wygrano starcie 4; Złom +96; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=71
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 5: przeciwników=3
+[R3] Wygrano starcie 5; Złom +99; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=103
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 117 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 117 structural block(s).
+[R1] Starcie 6: przeciwników=1
+[R3] Wygrano starcie 6; Złom +134; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=3; złom z demontażu=21
+]]></output>
+        </test-case>
+        <test-case id="1348" name="InvertedHoverDoesNotProduceUpwardLiftFromTheFloorBelow" fullname="RRLW34ReviewRegressionTests.InvertedHoverDoesNotProduceUpwardLiftFromTheFloorBelow" methodname="InvertedHoverDoesNotProduceUpwardLiftFromTheFloorBelow" classname="RRLW34ReviewRegressionTests" runstate="Runnable" seed="823314425" result="Passed" start-time="2026-10-26 17:27:37Z" end-time="2026-10-26 17:27:40Z" duration="3.309645" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+]]></output>
+        </test-case>
+        <test-case id="1346" name="RotatedTrackTractionFollowsMountForwardAndInvertedTracksCannotProbeTheFloor" fullname="RRLW34ReviewRegressionTests.RotatedTrackTractionFollowsMountForwardAndInvertedTracksCannotProbeTheFloor" methodname="RotatedTrackTractionFollowsMountForwardAndInvertedTracksCannotProbeTheFloor" classname="RRLW34ReviewRegressionTests" runstate="Runnable" seed="1391658716" result="Passed" start-time="2026-10-26 17:27:40Z" end-time="2026-10-26 17:27:44Z" duration="3.897561" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+]]></output>
+        </test-case>
+        <test-case id="1347" name="SidewaysHoverProbesItsNozzleAxisAndAppliesActualLateralForce" fullname="RRLW34ReviewRegressionTests.SidewaysHoverProbesItsNozzleAxisAndAppliesActualLateralForce" methodname="SidewaysHoverProbesItsNozzleAxisAndAppliesActualLateralForce" classname="RRLW34ReviewRegressionTests" runstate="Runnable" seed="1884216411" result="Passed" start-time="2026-10-26 17:27:44Z" end-time="2026-10-26 17:27:48Z" duration="3.464270" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="2149" name="RoboRougelike.RAC001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/RoboRougelike.RAC001.EditModeTests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.010541" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48452" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="2150" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.010162" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="2151" name="Mechanics" fullname="RoboRougelike.Mechanics" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.009974" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="2152" name="RAC001" fullname="RoboRougelike.Mechanics.RAC001" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.009830" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="2153" name="Tests" fullname="RoboRougelike.Mechanics.RAC001.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.009657" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="2137" name="CheckpointRaceStateTests" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.009410" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="2141" name="ImplausibleTeleportCannotScoreCheckpoint" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ImplausibleTeleportCannotScoreCheckpoint" methodname="ImplausibleTeleportCannotScoreCheckpoint" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1118145845" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.004921" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2143" name="InvalidCourseAndNumbersCannotBegin" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.InvalidCourseAndNumbersCannotBegin" methodname="InvalidCourseAndNumbersCannotBegin" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="225760828" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000417" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2146" name="InvalidInputInvalidatesOnce" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.InvalidInputInvalidatesOnce" methodname="InvalidInputInvalidatesOnce" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="2100573849" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000264" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2139" name="OutOfOrderCheckpointDoesNotAdvance" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.OutOfOrderCheckpointDoesNotAdvance" methodname="OutOfOrderCheckpointDoesNotAdvance" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1109568885" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000297" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2144" name="OverlappingCheckpointsRequireFreshExit" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.OverlappingCheckpointsRequireFreshExit" methodname="OverlappingCheckpointsRequireFreshExit" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="354530811" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000221" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2145" name="ResetClearsRaceAndPermitsNewAttempt" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ResetClearsRaceAndPermitsNewAttempt" methodname="ResetClearsRaceAndPermitsNewAttempt" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1285434785" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000528" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2138" name="StartInsideCheckpointRequiresExitAndReentry" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.StartInsideCheckpointRequiresExitAndReentry" methodname="StartInsideCheckpointRequiresExitAndReentry" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="871908609" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000190" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2140" name="SweptSegmentRegistersHighSpeedCrossing" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.SweptSegmentRegistersHighSpeedCrossing" methodname="SweptSegmentRegistersHighSpeedCrossing" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1929609815" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000141" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2142" name="TimeoutAtDeadlineBeatsCheckpoint" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.TimeoutAtDeadlineBeatsCheckpoint" methodname="TimeoutAtDeadlineBeatsCheckpoint" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="2054595454" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000174" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2148" name="TinyPositiveTicksCannotExploitPerStepDistanceAllowance" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.TinyPositiveTicksCannotExploitPerStepDistanceAllowance" methodname="TinyPositiveTicksCannotExploitPerStepDistanceAllowance" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1456598845" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000169" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="2147" name="ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime" fullname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests.ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime" methodname="ZeroTimeTicksCannotMoveOrScoreWithoutElapsedTime" classname="RoboRougelike.Mechanics.RAC001.Tests.CheckpointRaceStateTests" runstate="Runnable" seed="1055819057" result="Passed" start-time="2026-10-26 17:27:48Z" end-time="2026-10-26 17:27:48Z" duration="0.000275" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

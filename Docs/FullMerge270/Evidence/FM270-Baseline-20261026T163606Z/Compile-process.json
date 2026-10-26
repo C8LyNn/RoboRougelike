@@ -1,0 +1,11 @@
+{
+  "phase": "Compile",
+  "stage": "Baseline",
+  "startedUtc": "2026-10-26T16:36:06.2317841Z",
+  "source": "056911a8284f7d61f2a8d13ed2669e453c3d9915",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T16:37:42.0902847Z",
+  "arguments": [
+    "-quit"
+  ]
+}

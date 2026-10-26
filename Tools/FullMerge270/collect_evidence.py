@@ -4,6 +4,7 @@ from PIL import Image,ImageStat
 r=pathlib.Path(__file__).resolve().parents[2];out=r/'Docs/FullMerge270/Evidence';out.mkdir(parents=True,exist_ok=True)
 native=[];windows=[]
 for folder in sorted((r/'Artifacts/Local').glob('FM270-*')):
+ if not folder.is_dir():continue
  dest=out/folder.name;dest.mkdir(exist_ok=True);screens=[];raw=[]
  for p in folder.iterdir():
   if not p.is_file():continue
@@ -11,7 +12,7 @@ for folder in sorted((r/'Artifacts/Local').glob('FM270-*')):
    b=p.read_bytes();raw.append({'file':p.name,'rawSHA256':hashlib.sha256(b).hexdigest(),'bytes':len(b)})
    if p.suffix=='.log':
     lines=b.decode('utf-8-sig',errors='replace').splitlines()
-    lines=['[machine/connection identifier omitted]' if re.search(r'^\s*(Machine Id:|Player connection \[|Serial number:|User ID:|AccessToken:)',x,re.I) else x.rstrip() for x in lines]
+    lines=['[machine/licensing/connection identifier omitted]' if re.search(r'(Machine Id:|Player connection \[|Serial number:|User ID:|Access.?Token|licensee|licens.*serial|user.*email)',x,re.I) else re.sub(r'("serial"\s*:\s*)"[^"]*"',r'\1"[omitted]"',x.rstrip(),flags=re.I) for x in lines]
     b=('\n'.join(lines)+'\n').encode()
    (dest/(p.name+'.gz')).write_bytes(gzip.compress(b,mtime=0))
   elif p.suffix in ('.json','.xml'):shutil.copy2(p,dest/p.name)

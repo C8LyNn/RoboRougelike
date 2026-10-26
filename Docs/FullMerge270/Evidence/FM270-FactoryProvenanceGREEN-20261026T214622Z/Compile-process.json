@@ -1,0 +1,11 @@
+{
+  "startedUtc": "2026-10-26T21:46:22.7723671Z",
+  "arguments": [
+    "-quit"
+  ],
+  "stage": "FactoryProvenanceGREEN",
+  "finishedUtc": "2026-10-26T21:46:35.8116054Z",
+  "phase": "Compile",
+  "source": "c5a4d4c67a8c83742f1eada1ac434d68becd7970",
+  "exitCode": 0
+}

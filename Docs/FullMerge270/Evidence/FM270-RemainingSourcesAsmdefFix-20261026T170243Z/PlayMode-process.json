@@ -1,0 +1,17 @@
+{
+  "finishedUtc": "2026-10-26T17:03:47.7590850Z",
+  "exitCode": 2,
+  "source": "bf1cc3715f2aad9ddf1e16e96798f0023c314733",
+  "phase": "PlayMode",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-RemainingSourcesAsmdefFix-20261026T170243Z\\PlayMode.xml\"",
+    "-testFilter",
+    "\"B01.CAMERA001;MapWorld;MapgenRC1IntegrationTests;RAC001;RoboRougelike.MapSystemR4\""
+  ],
+  "startedUtc": "2026-10-26T17:03:28.5823705Z",
+  "stage": "RemainingSourcesAsmdefFix"
+}

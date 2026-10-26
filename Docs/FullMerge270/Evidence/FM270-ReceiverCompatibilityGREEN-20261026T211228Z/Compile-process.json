@@ -1,0 +1,11 @@
+{
+  "stage": "ReceiverCompatibilityGREEN",
+  "startedUtc": "2026-10-26T21:12:28.8845473Z",
+  "phase": "Compile",
+  "finishedUtc": "2026-10-26T21:12:37.4647948Z",
+  "exitCode": 1,
+  "source": "20c623dce40b9eff32b3e2b29f22143184d603e8",
+  "arguments": [
+    "-quit"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "exitCode": 2,
+  "source": "91ff6852dc979da5137534425b8227027403c28d",
+  "startedUtc": "2026-10-26T19:03:27.3680347Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-AxleAndFastFollowRED-20261026T190327Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeBuildTests.ActualWheelFitsFreeAxleBesideStructuralArmor;FullMergeAdditionalRegression.CameraKeepsUpWithFastActualBodyWithoutBypassingItsSweep\""
+  ],
+  "finishedUtc": "2026-10-26T19:03:48.9814787Z",
+  "stage": "AxleAndFastFollowRED"
+}

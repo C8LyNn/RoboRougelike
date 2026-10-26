@@ -1,0 +1,11 @@
+{
+  "stage": "ReceiverCompatibilityGREEN-Retry",
+  "finishedUtc": "2026-10-26T21:13:04.5509345Z",
+  "startedUtc": "2026-10-26T21:12:52.6702366Z",
+  "phase": "Compile",
+  "exitCode": 0,
+  "source": "aa30508da2608e2e805bc2997eb46b0e57f23769",
+  "arguments": [
+    "-quit"
+  ]
+}

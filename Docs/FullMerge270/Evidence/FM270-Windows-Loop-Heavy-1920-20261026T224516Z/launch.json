@@ -1,0 +1,32 @@
+{
+  "source": "0ac75cc41d0369eef8630b61695d0f49c83c3a6b",
+  "vehicle": "Heavy",
+  "height": 1080,
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "visible": true,
+  "pid": 67288,
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+  "requestedVehicle": "Heavy",
+  "assemblySHA256": "8591F1053FAD6FDEBDBE7218C8FFFE2E62031994A38051813F1987BF28E1FE2E",
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261026T224516Z\\Player.log\"",
+    "-fm270-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261026T224516Z\"",
+    "-fm270-mode",
+    "Loop",
+    "-fm270-vehicle",
+    "Heavy"
+  ],
+  "startedUtc": "2026-10-26T22:45:16.2347404Z",
+  "accessibilityClientAttached": false,
+  "width": 1920,
+  "mode": "Loop"
+}

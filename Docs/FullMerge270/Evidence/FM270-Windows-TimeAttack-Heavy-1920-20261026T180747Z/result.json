@@ -1,0 +1,38 @@
+{
+    "status": "Failed",
+    "mode": "TimeAttack",
+    "vehicle": "Heavy",
+    "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+    "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+    "startedUtc": "2026-10-26T18:07:50.2020562Z",
+    "finishedUtc": "2026-10-26T18:08:07.8083705Z",
+    "width": 1920,
+    "height": 1080,
+    "frames": 952,
+    "contacts": 713,
+    "maxContacts": 12,
+    "selfRayHits": 0,
+    "worldOverlaps": 0,
+    "shots": 0,
+    "completed": 0,
+    "distance": 81.33909606933594,
+    "peakAimError": 0.0,
+    "peakCameraStep": 0.25001269578933718,
+    "peakFrameMs": 17.146400451660158,
+    "meanFrameMs": 16.668794631958009,
+    "finalPosition": {
+        "x": -17.185054779052736,
+        "y": -4.147286415100098,
+        "z": 15.611174583435059
+    },
+    "checks": [
+        "Vehicle selected",
+        "Actual preparation garage",
+        "Garage selects TimeAttack: Przygotuj pojazd. Wybierz trasę, wygenerowaną arenę albo obronę reaktora. Seed pochodzi z menu.",
+        "Activity entered canonical live state",
+        "One delegated camera owner"
+    ],
+    "errors": [
+        "Real vehicle fell below road: (-17.19, -4.15, 15.61)"
+    ]
+}

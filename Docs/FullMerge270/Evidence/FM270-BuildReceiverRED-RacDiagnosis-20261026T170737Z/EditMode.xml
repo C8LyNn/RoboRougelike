@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 17:08:11Z" end-time="2026-10-26 17:08:12Z" duration="0,4423202">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1180" result="Failed" site="Child" start-time="2026-10-26 17:08:11Z" end-time="2026-10-26 17:08:12Z" duration="0.442320" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1473" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Full-Merge270/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="388" result="Failed" site="Child" start-time="2026-10-26 17:08:11Z" end-time="2026-10-26 17:08:12Z" duration="0.387589" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="33440" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1026" name="FullMergeBuildTests" fullname="FullMergeBuildTests" classname="FullMergeBuildTests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-26 17:08:11Z" end-time="2026-10-26 17:08:12Z" duration="0.381006" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1027" name="DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" fullname="FullMergeBuildTests.DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" methodname="DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal" classname="FullMergeBuildTests" runstate="Runnable" seed="1023745641" result="Failed" start-time="2026-10-26 17:07:52Z" end-time="2026-10-26 17:07:55Z" duration="3.339444" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Direct model API must respect the actual bound garage validator
+  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at FullMergeBuildTests+<DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal>d__2.MoveNext () [0x000af] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Full-Merge270\Assets\Tests\Editor\FullMergeBuildTests.cs:26
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1028" name="DirectMountCannotMoveInventoryOntoGunSupport" fullname="FullMergeBuildTests.DirectMountCannotMoveInventoryOntoGunSupport" methodname="DirectMountCannotMoveInventoryOntoGunSupport" classname="FullMergeBuildTests" runstate="Runnable" seed="1871414452" result="Failed" start-time="2026-10-26 17:07:55Z" end-time="2026-10-26 17:07:59Z" duration="3.321547" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at FullMergeBuildTests+<DirectMountCannotMoveInventoryOntoGunSupport>d__3.MoveNext () [0x000d1] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Full-Merge270\Assets\Tests\Editor\FullMergeBuildTests.cs:36
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1029" name="ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" fullname="FullMergeBuildTests.ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" methodname="ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending" classname="FullMergeBuildTests" runstate="Runnable" seed="2106705692" result="Failed" start-time="2026-10-26 17:07:59Z" end-time="2026-10-26 17:08:02Z" duration="3.430319" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Actual colliders must be consulted before canonical spend
+  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at FullMergeBuildTests+<ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending>d__4.MoveNext () [0x000fa] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Full-Merge270\Assets\Tests\Editor\FullMergeBuildTests.cs:48
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1031" name="RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" fullname="FullMergeBuildTests.RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" methodname="RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw" classname="FullMergeBuildTests" runstate="Runnable" seed="1804058176" result="Passed" start-time="2026-10-26 17:08:02Z" end-time="2026-10-26 17:08:05Z" duration="3.201630" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1032" name="RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" fullname="FullMergeBuildTests.RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" methodname="RotatedWideOwnedPartUsesActualGeometryAndKeepsOneIdentity" classname="FullMergeBuildTests" runstate="Runnable" seed="1250768854" result="Passed" start-time="2026-10-26 17:08:05Z" end-time="2026-10-26 17:08:08Z" duration="3.135409" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 84 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1030" name="WheelHitCannotAuthorizeMountingStructuralParts" fullname="FullMergeBuildTests.WheelHitCannotAuthorizeMountingStructuralParts" methodname="WheelHitCannotAuthorizeMountingStructuralParts" classname="FullMergeBuildTests" runstate="Runnable" seed="1171644938" result="Failed" start-time="2026-10-26 17:08:08Z" end-time="2026-10-26 17:08:12Z" duration="3.293761" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Wheel hub/tire is not a structural socket owner
+  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at FullMergeBuildTests+<WheelHitCannotAuthorizeMountingStructuralParts>d__5.MoveNext () [0x00125] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Full-Merge270\Assets\Tests\Editor\FullMergeBuildTests.cs:59
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

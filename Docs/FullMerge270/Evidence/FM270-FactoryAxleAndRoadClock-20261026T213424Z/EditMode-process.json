@@ -1,0 +1,17 @@
+{
+  "finishedUtc": "2026-10-26T21:36:10.4326396Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FactoryAxleAndRoadClock-20261026T213424Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMerge;R3GaragePlayTests.PaidRepairsNewModulesIndependentEnemiesAndCleanRestart\""
+  ],
+  "source": "f9ec5eaa920c066c2536ce7abece8228e9c5830c",
+  "stage": "FactoryAxleAndRoadClock",
+  "startedUtc": "2026-10-26T21:34:37.7296355Z",
+  "exitCode": 2,
+  "phase": "EditMode"
+}

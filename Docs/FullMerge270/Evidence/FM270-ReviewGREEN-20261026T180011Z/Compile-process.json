@@ -1,0 +1,11 @@
+{
+  "exitCode": 0,
+  "stage": "ReviewGREEN",
+  "finishedUtc": "2026-10-26T18:00:22.7867008Z",
+  "startedUtc": "2026-10-26T18:00:11.2941324Z",
+  "phase": "Compile",
+  "arguments": [
+    "-quit"
+  ],
+  "source": "c65d1d8bb9c6b375ba7e324b67bf169d87f223cc"
+}

@@ -1,10 +1,10 @@
 {
-  "sha": "3e650c1e21ddc5550ded50d1ce033e96d7f4cceb",
+  "sha": "88b8eed60345c49481648833e1fde6dc1a400258",
   "baseline": "056911a8284f7d61f2a8d13ed2669e453c3d9915",
   "originalAssetFiles": 1507,
   "deletedOriginalAssets": [],
   "changedOriginalGUIDs": [],
-  "guidCount": 971,
+  "guidCount": 973,
   "duplicateGUIDs": {},
   "missingMeta": [],
   "sharedParentPreserved": true,
@@ -13,7 +13,13 @@
       "name": "BUILD",
       "source": "95707c68c8071a949b5d9fec7ff57926e92f8198",
       "manifestFiles": 59,
-      "localPatches": [],
+      "localPatches": [
+        {
+          "path": "Assets/B01Construction/BUILD001/Runtime/BuildVolumeValidator.cs",
+          "sourceSHA256": "19115e2337fc93581bde9d4400a2c5624e06093bfd9b0a25f1c628b9c3c9e4a9",
+          "receiverSHA256": "bc05d881e79ba9b9bca136fa7f501e81672f2c7dc2d01ee312fb9e8e1cf47faf"
+        }
+      ],
       "missing": []
     },
     {
@@ -31,7 +37,7 @@
         {
           "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs",
           "sourceSHA256": "d6cd37a9c2ebdefbe7b8002c060ffcb852a0eb60b787427e264c1e41e4835d3b",
-          "receiverSHA256": "0a66ddc542af6b38cc0f6ce668d109fe5af419ca8f6ffb2f374db655af83436e"
+          "receiverSHA256": "4e35d4e2cb13e596ac6eeda9b56f74b27f3bbf83bac09d51d727cba4843d249b"
         }
       ],
       "missing": []

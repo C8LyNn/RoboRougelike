@@ -1,0 +1,12 @@
+[
+  {
+    "file": "drive.csv",
+    "rawSHA256": "1a8cf699fe874889cbd8c6f1c5b9793b168f79f260ca5c93438ee0be3f2c7ac4",
+    "bytes": 1498
+  },
+  {
+    "file": "Player.log",
+    "rawSHA256": "9e9f9c7dee90ad484163f812867ceb9090aec4212d34ad7c089a23a7825d0070",
+    "bytes": 11711
+  }
+]

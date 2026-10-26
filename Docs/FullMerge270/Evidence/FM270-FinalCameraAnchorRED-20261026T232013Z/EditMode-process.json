@@ -1,0 +1,17 @@
+{
+  "source": "11b2f8efafa11598e25e460db8238ee34d4ce4d7",
+  "stage": "FinalCameraAnchorRED",
+  "phase": "EditMode",
+  "startedUtc": "2026-10-26T23:20:49.0286344Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalCameraAnchorRED-20261026T232013Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeAdditionalRegression.ArticulatingGunCannotFeedBackIntoTheCameraAimAnchor\""
+  ],
+  "finishedUtc": "2026-10-26T23:21:04.7849254Z",
+  "exitCode": 2
+}

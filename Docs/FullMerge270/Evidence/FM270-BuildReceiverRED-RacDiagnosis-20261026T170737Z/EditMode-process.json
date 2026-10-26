@@ -1,0 +1,17 @@
+{
+  "finishedUtc": "2026-10-26T17:08:13.5433163Z",
+  "phase": "EditMode",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-BuildReceiverRED-RacDiagnosis-20261026T170737Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeBuildTests;RAC001PhysicalDemoTests\""
+  ],
+  "startedUtc": "2026-10-26T17:07:37.9222914Z",
+  "source": "a1ba9bd08d963311a840977dea7ccaf97d0e70b9",
+  "exitCode": 2,
+  "stage": "BuildReceiverRED-RacDiagnosis"
+}

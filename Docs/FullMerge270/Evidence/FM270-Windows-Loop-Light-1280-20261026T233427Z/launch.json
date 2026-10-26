@@ -1,0 +1,32 @@
+{
+  "startedUtc": "2026-10-26T23:34:27.7381270Z",
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "pid": 58684,
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+  "mode": "Loop",
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1280,
+    "-screen-height",
+    720,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Loop-Light-1280-20261026T233427Z\\Player.log\"",
+    "-fm270-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Loop-Light-1280-20261026T233427Z\"",
+    "-fm270-mode",
+    "Loop",
+    "-fm270-vehicle",
+    "Light"
+  ],
+  "accessibilityClientAttached": false,
+  "requestedVehicle": "Light",
+  "visible": true,
+  "source": "88b8eed60345c49481648833e1fde6dc1a400258",
+  "width": 1280,
+  "assemblySHA256": "C601D1EADCEFFAEC291C1ADBD39ED710F3882B4F30DE37897EC5321E9C29986F",
+  "vehicle": "Light",
+  "height": 720
+}

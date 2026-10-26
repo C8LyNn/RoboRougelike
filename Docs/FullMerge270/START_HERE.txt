@@ -16,7 +16,7 @@ Z tego samego garażu wybierzesz:
   Próba czasowa — górny checkpoint i wschodnia meta.
   Ewakuacja — wschodnie wyjście dolną drogą; most jest zamknięty.
   Przetrwanie — przeżyj 30 sekund fal przeciwników.
-  Arena bossa — pokonaj bossa i eskortę.
+  Arena bossa — pokonaj Oblężnika z bocznymi bateriami.
 
 Aktywności zaliczają etapy tej samej sześciostopniowej wyprawy. Ostatni etap jest finałem.
 Po zwycięstwie wybierz jeden bonus z trzech i do trzech kwalifikujących się części.

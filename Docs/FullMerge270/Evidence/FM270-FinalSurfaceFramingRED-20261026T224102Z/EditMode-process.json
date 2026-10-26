@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "exitCode": 2,
+  "startedUtc": "2026-10-26T22:41:15.7365774Z",
+  "source": "3eb909f41e52b22d5ba62ed7661eea3fedbd843d",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalSurfaceFramingRED-20261026T224102Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeAdditionalRegression.HeavyHullFitsAtAllGameplayPitches;FullMergeAdditionalRegression.WideHullFitsAtQuarterOrbits;FullMergeAdditionalRegression.StaticWorldMesh;FullMergeAdditionalRegression.RaisedJunction\""
+  ],
+  "stage": "FinalSurfaceFramingRED",
+  "finishedUtc": "2026-10-26T22:41:46.4082672Z"
+}

@@ -1,0 +1,17 @@
+{
+  "stage": "FinalDelta",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-FinalDelta-20261026T224338Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMerge;B01.BUILD001;BuildRC2SafetyTests;B01.CAMERA001;MOVSeriesSpecialTests;R1PlayIntegrationTests;RRLW6PointDefenseTests;RRLW6ShieldPhysicalTests\""
+  ],
+  "finishedUtc": "2026-10-26T22:52:05.5999368Z",
+  "phase": "EditMode",
+  "exitCode": 0,
+  "startedUtc": "2026-10-26T22:44:16.3174169Z",
+  "source": "0ac75cc41d0369eef8630b61695d0f49c83c3a6b"
+}

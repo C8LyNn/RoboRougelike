@@ -1,0 +1,17 @@
+{
+  "startedUtc": "2026-10-26T17:52:54.8662413Z",
+  "phase": "EditMode",
+  "source": "2e9ae3594e06a61260d236c111296e227ac45962",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-CameraReceiverGREEN-ActivityRetest-20261026T175243Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"FullMergeCameraTests;FullMergeActivityTests\""
+  ],
+  "exitCode": 2,
+  "finishedUtc": "2026-10-26T17:53:32.1592555Z",
+  "stage": "CameraReceiverGREEN-ActivityRetest"
+}

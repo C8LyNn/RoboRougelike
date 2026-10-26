@@ -1,0 +1,28 @@
+{
+  "executable": "C:/Users/kubap/Desktop/Prototypy/Releases/ROBOROUGELIKE_FULL_INTEGRATION_270_20261027/RoboRougelike_FULL_INTEGRATION_270_Windows_x64-VerifiedExtract/RoboRougelike.exe",
+  "source": "88b8eed60345c49481648833e1fde6dc1a400258",
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Reactor-Standard-1920-20261026T234029Z\\Player.log\"",
+    "-rc2-reactor-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Full-Merge270\\Artifacts\\Local\\FM270-Windows-Reactor-Standard-1920-20261026T234029Z\""
+  ],
+  "assemblySHA256": "C601D1EADCEFFAEC291C1ADBD39ED710F3882B4F30DE37897EC5321E9C29986F",
+  "height": 1080,
+  "width": 1920,
+  "mode": "Reactor",
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "requestedVehicle": "Heavy",
+  "startedUtc": "2026-10-26T23:40:29.4416546Z",
+  "pid": 59196,
+  "vehicle": "Standard",
+  "accessibilityClientAttached": false,
+  "visible": true
+}

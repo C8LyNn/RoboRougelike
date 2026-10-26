@@ -4,7 +4,7 @@ r=pathlib.Path(__file__).resolve().parents[2];build=r/'Builds/FULL-MERGE270'
 receipts=sorted((r/'Artifacts/Local').glob('FM270-*/Build-process.json'),key=lambda p:p.stat().st_mtime)
 receipt=json.loads(receipts[-1].read_text(encoding='utf-8-sig'));source=receipt['source'];assert receipt['exitCode']==0
 assert not subprocess.check_output(['git','diff','--name-only',source,'--','Assets','Packages','ProjectSettings']).strip(),'Built source differs'
-out=r.parent/'Releases'/'ROBOROUGELIKE_FULL_INTEGRATION_270_20261026';out.mkdir(parents=True,exist_ok=True)
+out=r.parent/'Releases'/'ROBOROUGELIKE_FULL_INTEGRATION_270_20261027';out.mkdir(parents=True,exist_ok=True)
 name='RoboRougelike_FULL_INTEGRATION_270_Windows_x64';archive=out/(name+'.zip');extract=out/(name+'-VerifiedExtract')
 assert not archive.exists() and not extract.exists(),'Refuse overwrite'
 for name_required in ['RoboRougelike.exe','UnityPlayer.dll','RoboRougelike_Data','MonoBleedingEdge']:assert (build/name_required).exists()

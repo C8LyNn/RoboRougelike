@@ -1,0 +1,7 @@
+{
+  "reason": "Confirmed coroutine activation exception; no gameplay completion. Stop owned diagnostic process instead of waiting for 600s timeout.",
+  "intentionalTermination": true,
+  "pid": 51992,
+  "utc": "2026-10-26T23:01:37.8142805Z",
+  "source": "1c3bbe367c8b3e5a907c559d1004783c205d7d84"
+}
