@@ -11,3 +11,9 @@ Tool adds named VIS_LEG_*_SOCKET_*, VIS_LEG_*_WEAK_* and VIS_LEG_*_NOMINAL_AIM_A
 Mass LEG-WPN R0 650kg vs R1 220kg, LEG-MOV R0 780kg vs R1 150kg: all unresolved; no approved mass inferred. Source geometry/animation binary integrity PASS independently, Blender/Unity actual new runtime tests NOT_RUN, G2 HOLD.
 
 The offline B01-30 package ZIP contains actual edited M04 and test tools; M01 is committed in this exact Git branch (offline ZIP deliberately references it rather than mirroring). The GitHub Actions workflow generates a **complete** two-binary Codex ZIP once its actual run succeeds; do not claim workflow PASS before inspecting the run.
+
+## R1.1 — combined gimbal animation and real sampled bounds
+
+Preserved all four old single-channel clips and added `LEG-MOV-001_ALL_FOUR_GIMBALS` with four synchronous rotation channels referencing **unchanged GLB vertex and animation buffers**. M04 R1.1 GLB is 857292 bytes SHA256 `c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8`. Source-only M04 export hash R1 `ab26d649...` is superseded, NEVER mix R1 archive with R1.1 manifest.
+
+New Python stdlib `tools/swept_geometry_qa.py` samples actual vertex positions at 121 times per animation clip, evaluating glTF quaternion interpolation and node hierarchy; CI ships machine-readable `qa/M01-018_SWEEP.json` and `qa/M04-024_SWEEP.json` with the inner ZIP. M04 combined clip sampled swept size **1.57756 × 0.884306 × 1.57756 m**; nominal 3×3×2 footprint 1.65×1.10×1.65m provides only 0.07244m total lateral dimension difference (0.03622m per side IF perfectly centered). This is **not** a certified gameplay clearance or a continuous triangle collision pass. Mass/MobilityHub authority remain blocked.
