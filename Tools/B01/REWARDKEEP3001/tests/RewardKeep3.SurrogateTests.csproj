@@ -1,0 +1,2 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><Deterministic>true</Deterministic></PropertyGroup>
+<ItemGroup><Compile Include="../../../../Assets/B01Packages/REWARDKEEP3001/Runtime/RewardKeep3Service.cs" Link="RewardKeep3Service.cs"/></ItemGroup></Project>
