@@ -30,5 +30,11 @@
   "impact": "Critical warnings ALWAYS shown regardless of suggestions enabled; lack of gun suppressed ONLY when selected activity authoritatively declares weapon not required. No changes to current R3 CanDeploy/StartNextEncounter; launch gate is owner-open and must not be inferred from warnings.",
   "nativeVerification": "NOT_RUN",
   "UnityGameplay": "NOT_RUN",
-  "G2": "HOLD"
+  "G2": "HOLD",
+  "coreCardinalityW15": {
+    "rule": "Count ALL mounted Core parts, including destroyed 0HP and disabled copies; require exactly one total, and require that sole Core healthy, connected to itself, operational. Persisted second Core is not hidden by Health filtering.",
+    "reasonCode": "CORE_NONFUNCTIONAL_OR_AMBIGUOUS",
+    "negativeFixture": "W15-GW-34",
+    "policy": "read-only warning; does not change game launch gate or approve save migration"
+  }
 }
