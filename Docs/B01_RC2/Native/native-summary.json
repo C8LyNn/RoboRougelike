@@ -199,6 +199,154 @@
     "evidence": "Docs\\B01_RC2\\Native\\RC2-Build13-UnifiedRED-20261026T105425Z"
   },
   {
+    "source": "084a64292c0c0db1dd54151b30674d454319e8e9",
+    "exitCode": 0,
+    "finishedUtc": "2026-10-26T11:37:11.4143482Z",
+    "arguments": [
+      "-quit"
+    ],
+    "phase": "Compile",
+    "stage": "ConditionalSources-RewardBoundaryGREEN",
+    "startedUtc": "2026-10-26T11:36:56.5129765Z",
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-ConditionalSources-RewardBoundaryGREEN-20261026T113656Z"
+  },
+  {
+    "source": "084a64292c0c0db1dd54151b30674d454319e8e9",
+    "exitCode": 0,
+    "finishedUtc": "2026-10-26T11:37:54.2202123Z",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-ConditionalSources-RewardBoundaryGREEN-20261026T113656Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"RewardRC2IntegrationTests|UnifiedRC2IntegrationTests|AimTransition|Legendary.*Tests|Rebuild.*Tests\""
+    ],
+    "phase": "EditMode",
+    "stage": "ConditionalSources-RewardBoundaryGREEN",
+    "startedUtc": "2026-10-26T11:37:11.4403333Z",
+    "nunit": {
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "RewardRC2IntegrationTests.FourthOrOwnedSelectionCannotMutateCanonicalRewardState",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.FullInventoryRefusalKeepsTheSameWindowAndCanRetry",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.KilledEnemyDropsUseCanonicalPhysicalIds",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.NoRecoveryWindowBeforeAuthenticatedVictory",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.RawServiceCannotBypassTheControllerSettlementBoundary",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RewardRC2IntegrationTests.SlotIdentityIsStableAcrossRepeatedSalvageBinding",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualCameraPoseFailureHasPriority",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualOwnRayOrWorldOverlapAlwaysFlagsCamera",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.InvalidZeroDeltaOrCoincidentTargetRejects",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.R12LightHitSwitchRequiresMoreThanOneFrameSlew",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.SafePoseButStableTargetGapIsUnresolvedNotCameraFault",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.StableTargetAndAlignedGunAreNotFalselyBlamed",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests.DuplicateWinBlocked",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests.FreeThenPaidRequiresVictory",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests.SaveRestorePreservesQueue",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests.FirstEquipAndDuplicateRefusal",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests.MobilityHubWithoutAdapterIsRejected",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests.SaveRestorePreservesInstance",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-ConditionalSources-RewardBoundaryGREEN-20261026T113656Z"
+  },
+  {
     "stage": "Keep3-SourceGate",
     "arguments": [
       "-quit"
@@ -426,6 +574,37 @@
       }
     ],
     "evidence": "Docs\\B01_RC2\\Native\\RC2-RAC31-Unified-20261026T110114Z"
+  },
+  {
+    "stage": "RewardBoundary-RED",
+    "phase": "EditMode",
+    "finishedUtc": "2026-10-26T11:34:21.1582936Z",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-RewardBoundary-RED-20261026T113405Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"RawServiceCannotBypassTheControllerSettlementBoundary\""
+    ],
+    "startedUtc": "2026-10-26T11:34:05.7840915Z",
+    "source": "0663d3ac5da17786bdc3fa95de71cd169df91071",
+    "exitCode": 2,
+    "nunit": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "RewardRC2IntegrationTests.RawServiceCannotBypassTheControllerSettlementBoundary",
+        "result": "Failed",
+        "failure": "  Policy API must not bypass controller accounting after a previous rejected UI attempt\n  Expected: False\n  But was:  True\n"
+      }
+    ],
+    "evidence": "Docs\\B01_RC2\\Native\\RC2-RewardBoundary-RED-20261026T113405Z"
   },
   {
     "phase": "Compile",

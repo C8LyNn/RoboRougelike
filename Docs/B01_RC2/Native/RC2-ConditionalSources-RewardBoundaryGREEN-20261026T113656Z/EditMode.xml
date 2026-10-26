@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="22" result="Passed" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-26 11:37:52Z" end-time="2026-10-26 11:37:53Z" duration="0,4276165">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1085" result="Passed" start-time="2026-10-26 11:37:52Z" end-time="2026-10-26 11:37:53Z" duration="0.427617" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1466" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="382" result="Passed" start-time="2026-10-26 11:37:52Z" end-time="2026-10-26 11:37:53Z" duration="0.347591" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="20940" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1454" name="RewardRC2IntegrationTests" fullname="RewardRC2IntegrationTests" classname="RewardRC2IntegrationTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-26 11:37:42Z" end-time="2026-10-26 11:37:43Z" duration="0.356099" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1459" name="FourthOrOwnedSelectionCannotMutateCanonicalRewardState" fullname="RewardRC2IntegrationTests.FourthOrOwnedSelectionCannotMutateCanonicalRewardState" methodname="FourthOrOwnedSelectionCannotMutateCanonicalRewardState" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="478322544" result="Passed" start-time="2026-10-26 11:37:21Z" end-time="2026-10-26 11:37:24Z" duration="3.215256" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=42
+]]></output>
+        </test-case>
+        <test-case id="1460" name="FullInventoryRefusalKeepsTheSameWindowAndCanRetry" fullname="RewardRC2IntegrationTests.FullInventoryRefusalKeepsTheSameWindowAndCanRetry" methodname="FullInventoryRefusalKeepsTheSameWindowAndCanRetry" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="281325978" result="Passed" start-time="2026-10-26 11:37:24Z" end-time="2026-10-26 11:37:27Z" duration="3.178665" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=42
+]]></output>
+        </test-case>
+        <test-case id="1455" name="KilledEnemyDropsUseCanonicalPhysicalIds" fullname="RewardRC2IntegrationTests.KilledEnemyDropsUseCanonicalPhysicalIds" methodname="KilledEnemyDropsUseCanonicalPhysicalIds" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="818077178" result="Passed" start-time="2026-10-26 11:37:27Z" end-time="2026-10-26 11:37:30Z" duration="3.236827" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1458" name="LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" fullname="RewardRC2IntegrationTests.LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" methodname="LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1129142240" result="Passed" start-time="2026-10-26 11:37:30Z" end-time="2026-10-26 11:37:34Z" duration="3.271494" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=3; złom z demontażu=27
+]]></output>
+        </test-case>
+        <test-case id="1457" name="NoRecoveryWindowBeforeAuthenticatedVictory" fullname="RewardRC2IntegrationTests.NoRecoveryWindowBeforeAuthenticatedVictory" methodname="NoRecoveryWindowBeforeAuthenticatedVictory" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1837985166" result="Passed" start-time="2026-10-26 11:37:34Z" end-time="2026-10-26 11:37:37Z" duration="3.064747" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+        <test-case id="1461" name="RawServiceCannotBypassTheControllerSettlementBoundary" fullname="RewardRC2IntegrationTests.RawServiceCannotBypassTheControllerSettlementBoundary" methodname="RawServiceCannotBypassTheControllerSettlementBoundary" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1887866797" result="Passed" start-time="2026-10-26 11:37:37Z" end-time="2026-10-26 11:37:40Z" duration="3.125731" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=42
+]]></output>
+        </test-case>
+        <test-case id="1456" name="SlotIdentityIsStableAcrossRepeatedSalvageBinding" fullname="RewardRC2IntegrationTests.SlotIdentityIsStableAcrossRepeatedSalvageBinding" methodname="SlotIdentityIsStableAcrossRepeatedSalvageBinding" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="21705903" result="Passed" start-time="2026-10-26 11:37:40Z" end-time="2026-10-26 11:37:43Z" duration="3.052588" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1462" name="UnifiedRC2IntegrationTests" fullname="UnifiedRC2IntegrationTests" classname="UnifiedRC2IntegrationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:52Z" end-time="2026-10-26 11:37:53Z" duration="0.334572" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1465" name="NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage" fullname="UnifiedRC2IntegrationTests.NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage" methodname="NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="1848740722" result="Passed" start-time="2026-10-26 11:37:43Z" end-time="2026-10-26 11:37:46Z" duration="3.208371" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1464" name="RepeatedPreparationDoesNotReplacePhysicalOwnership" fullname="UnifiedRC2IntegrationTests.RepeatedPreparationDoesNotReplacePhysicalOwnership" methodname="RepeatedPreparationDoesNotReplacePhysicalOwnership" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="2019242489" result="Passed" start-time="2026-10-26 11:37:46Z" end-time="2026-10-26 11:37:49Z" duration="3.277650" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1463" name="UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" fullname="UnifiedRC2IntegrationTests.UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" methodname="UnifiedEntryPreparesOneCanonicalActorBeforeAnyActivity" classname="UnifiedRC2IntegrationTests" runstate="Runnable" seed="1410489951" result="Passed" start-time="2026-10-26 11:37:49Z" end-time="2026-10-26 11:37:53Z" duration="3.225888" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=7; pojazd=Heavy
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1480" name="B01.CAMERA001.EditModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/B01.CAMERA001.EditModeTests.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.008161" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="20940" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1481" name="B01" fullname="B01" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.007816" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1482" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.007623" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1483" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.007419" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1467" name="Camera001AimTransitionTests" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.007116" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1471" name="ActualCameraPoseFailureHasPriority" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualCameraPoseFailureHasPriority" methodname="ActualCameraPoseFailureHasPriority" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="261189475" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.002087" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1472" name="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" methodname="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="467451767" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.000215" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1473" name="InvalidZeroDeltaOrCoincidentTargetRejects" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.InvalidZeroDeltaOrCoincidentTargetRejects" methodname="InvalidZeroDeltaOrCoincidentTargetRejects" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="428435564" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.001626" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1468" name="R12LightHitSwitchRequiresMoreThanOneFrameSlew" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.R12LightHitSwitchRequiresMoreThanOneFrameSlew" methodname="R12LightHitSwitchRequiresMoreThanOneFrameSlew" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="619239418" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.001068" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1470" name="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.SafePoseButStableTargetGapIsUnresolvedNotCameraFault" methodname="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="512808583" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.000149" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1469" name="StableTargetAndAlignedGunAreNotFalselyBlamed" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.StableTargetAndAlignedGunAreNotFalselyBlamed" methodname="StableTargetAndAlignedGunAreNotFalselyBlamed" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="723085529" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.000621" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1488" name="B01.EconRebuild.EditMode.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/B01.EconRebuild.EditMode.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.006457" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="20940" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1489" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.006227" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1490" name="B01" fullname="RoboRougelike.B01" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.006072" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1491" name="Economy" fullname="RoboRougelike.B01.Economy" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.005921" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1492" name="Rebuild" fullname="RoboRougelike.B01.Economy.Rebuild" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.005776" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestSuite" id="1493" name="Tests" fullname="RoboRougelike.B01.Economy.Rebuild.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.005662" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-suite type="TestFixture" id="1484" name="RebuildQueueEditModeTests" fullname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests" classname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.005518" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                  <properties />
+                  <test-case id="1486" name="DuplicateWinBlocked" fullname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests.DuplicateWinBlocked" methodname="DuplicateWinBlocked" classname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests" runstate="Runnable" seed="1096916138" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.001461" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1485" name="FreeThenPaidRequiresVictory" fullname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests.FreeThenPaidRequiresVictory" methodname="FreeThenPaidRequiresVictory" classname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests" runstate="Runnable" seed="1291268275" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.001794" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                  <test-case id="1487" name="SaveRestorePreservesQueue" fullname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests.SaveRestorePreservesQueue" methodname="SaveRestorePreservesQueue" classname="RoboRougelike.B01.Economy.Rebuild.Tests.RebuildQueueEditModeTests" runstate="Runnable" seed="1906871597" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.001536" asserts="0">
+                    <properties>
+                      <property name="retryIteration" value="0" />
+                      <property name="repeatIteration" value="0" />
+                    </properties>
+                  </test-case>
+                </test-suite>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1498" name="B01.Legendary.Unity.Tests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-B01-Unified-RC2/Library/ScriptAssemblies/B01.Legendary.Unity.Tests.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.009051" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="20940" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1499" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.008878" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1500" name="B01" fullname="RoboRougelike.B01" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.008758" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1501" name="Legendary" fullname="RoboRougelike.B01.Legendary" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.008639" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1502" name="Tests" fullname="RoboRougelike.B01.Legendary.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.008527" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1494" name="LegendaryEditModeTests" fullname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests" classname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.008386" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1495" name="FirstEquipAndDuplicateRefusal" fullname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests.FirstEquipAndDuplicateRefusal" methodname="FirstEquipAndDuplicateRefusal" classname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests" runstate="Runnable" seed="1854128034" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.004812" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1496" name="MobilityHubWithoutAdapterIsRejected" fullname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests.MobilityHubWithoutAdapterIsRejected" methodname="MobilityHubWithoutAdapterIsRejected" classname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests" runstate="Runnable" seed="1502435473" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.000220" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1497" name="SaveRestorePreservesInstance" fullname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests.SaveRestorePreservesInstance" methodname="SaveRestorePreservesInstance" classname="RoboRougelike.B01.Legendary.Tests.LegendaryEditModeTests" runstate="Runnable" seed="878706562" result="Passed" start-time="2026-10-26 11:37:53Z" end-time="2026-10-26 11:37:53Z" duration="0.002708" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

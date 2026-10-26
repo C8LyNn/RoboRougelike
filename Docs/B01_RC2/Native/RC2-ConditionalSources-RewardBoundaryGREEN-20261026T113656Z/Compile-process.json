@@ -1,0 +1,11 @@
+{
+  "source": "084a64292c0c0db1dd54151b30674d454319e8e9",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-26T11:37:11.4143482Z",
+  "arguments": [
+    "-quit"
+  ],
+  "phase": "Compile",
+  "stage": "ConditionalSources-RewardBoundaryGREEN",
+  "startedUtc": "2026-10-26T11:36:56.5129765Z"
+}
