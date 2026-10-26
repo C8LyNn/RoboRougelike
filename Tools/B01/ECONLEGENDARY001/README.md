@@ -18,6 +18,42 @@ Actual new **Unity C# runtime** `Assets/B01Packages/ECONLEGENDARY001/Runtime/Gua
 - Does **NOT** intercept a third-party caller invoking raw R3 Repair, ReceiveSalvage or Mount directly. Codex MUST route those entry points through controlled service and ECON reservation rules. Full host+two-sidecar checkpoint must be atomic or fail-closed. Whole-run lifetime/anti-softlock loaner remains HQ decision.
 - Source results from portable .NET8 harness compile **actual immutable upstream C# sources** fetched at exact full commit and verified Git blobs; Unity JsonUtility stub explicitly labeled NON-NATIVE. This is stronger than reproducing policy in new simulated code, but **NOT** native Unity/PhysX/real host R3.
 
+## W14 RC2 — CONFIRMED ROOT CAUSE / REQUIRED RECEIVER PATCH
+
+The W14 **negative red test** used TWO SEPARATE R3 backing stores with an identical
+physical GUID, kind and 0HP, one under LEGENDARY and one under ECON. Older
+`CheckSharedOwnership` accepted the matching snapshots and could therefore
+allow an ECON win to restore a DIFFERENT model from the one used in the garage.
+See the pinned failing run for a real 18/19, not a theoretical warning.
+
+**Fixed invariant:** both host ports MUST implement
+`ISharedR3PhysicalOwnerIdentity` and return the exact same LIVE
+`R3VehicleModel` reference in `AuthoritativeR3Model`. The guard checks
+`object.ReferenceEquals` before any host mutation. Missing owner proof
+`OWNER_IDENTITY_UNAVAILABLE`, different owner instance
+`OWNER_IDENTITY_MISMATCH`. A matching string GUID, cloned R3 model,
+equal-valued DTO or Unity instance ID is NOT identity proof.
+**Do not silently fallback when proof unavailable.**
+
+**Executable receiver bridge**: the W14 CI fetches the pinned original
+`R3LegendaryPort.install.cs` (#242) and `R3EconRebuildPort.install.cs`
+(#252) with exact Git blob checks, generates two adapted install-only .cs
+files in `Tools/B01/ECONLEGENDARY001/_receiver/` WITHOUT modifying upstream,
+then compiles both against the verified OBJ #210 *API signature stubs*.
+The Actions artifact contains the two compiled-source receiver bridge files,
+their SHA256 receipt and instructions; **not in the Unity Assets ZIP**.
+Codex should use these exact generated .cs instead of the older unguarded host
+examples, and instantiate them with ONE identical `R3VehicleModel` object.
+The `IAtomicRebuildR3Hooks` hooks, certified typed sockets, real 3D
+collision and durable wallet/run-event journal still require original
+integration owners and explicit G2.
+
+**Reproduction and native acceptance cases**:
+`W14_NATIVE_ACCEPTANCE.md`. Portable C# tests prove the real source
+path; the new authored Unity EditMode tests are **NOT_RUN** until a licensed
+native Unity 6000.3.14f1 run with XML, exits and source identity.
+No claim of integrated RC2 ECON/LEGENDARY gameplay.
+
 ## Reproduce
 ```bash
 bash Tools/B01/ECONLEGENDARY001/prepare_upstream.sh
