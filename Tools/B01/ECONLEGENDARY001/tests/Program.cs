@@ -257,6 +257,18 @@ static class Program
             Ensure(!l.TryEquip(h.RobotId,b,new LegendaryPlacement(0,0,0,"weapon"),out reason));
             Same(reason,"LEGEND_ALREADY_EQUIPPED");Same(h.Parts.Count,2);
         });
+        Test("W14_same_guid_different_physical_owner_must_reject",()=>{
+            var actualRobot=new SharedHost("A");
+            var wrongEconomyStore=new SharedHost("A");
+            var id=NewId();
+            actualRobot.Parts.Add(new SharedHost.Item{Id=id,Kind="Gun",Family="Railgun",Health=0});
+            wrongEconomyStore.Parts.Add(new SharedHost.Item{Id=id,Kind="Gun",Family="Railgun",Health=0});
+            var guard=new GuardedLegendaryPort(actualRobot,wrongEconomyStore,
+                new RebuildQueueService(wrongEconomyStore),wrongEconomyStore);
+            Ensure(!guard.CheckSharedOwnership(out var reason),
+                "SPLIT_BRAIN: identical GUID/kind/HP conceals DIFFERENT authoritative R3 inventories");
+            Same(reason,"OWNER_IDENTITY_MISMATCH");
+        });
         Test("18_seeded_1800_damage_queue_win_restart_stress",()=>{
             var (h,e,l,g)=Start();
             var ids=new[]{Grant(h,l),Grant(h,l,"HoverEngine"),Grant(h,l)};
