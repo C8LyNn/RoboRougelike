@@ -79,5 +79,13 @@ public sealed class FullMergeBuildTests
         Assert.That(mounted.GetComponentsInChildren<R3MountedPart>().Length,Is.EqualTo(1));
         Assert.That(model.Scrap,Is.EqualTo(money));Assert.That(Quaternion.Angle(run.Player.transform.rotation,Quaternion.Euler(0,37,0)),Is.LessThan(.01f));
     }
+    [UnityTest] public IEnumerator StructuralFaceRemainsClickableAfterSuccessfulGarageRebuild()
+    {
+        Assert.That(run.GarageBuy(new Vector3Int(1,2,1),R3PartKind.Armor),Is.True);yield return null;yield return null;
+        var armor=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==new Vector3Int(2,1,2));
+        var ray=new Ray(armor.transform.TransformPoint(Vector3.right*4),armor.transform.TransformDirection(Vector3.left));
+        Physics.SyncTransforms();Assert.That(run.Garage.Point(ray),Is.True,"A successful edit must rebuild authorized hit surfaces too");
+        Assert.That(run.Garage.Cell,Is.EqualTo(armor.Cell+Vector3Int.right));
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

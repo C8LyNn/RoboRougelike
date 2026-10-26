@@ -76,5 +76,17 @@ public sealed class FullMergeActivityTests
         Assert.That(R1RunController.Instance,Is.Not.SameAs(old));Assert.That(R1RunController.Instance.Progress.State,Is.EqualTo(R1RunState.Ready));
         Assert.That(UnityEngine.Object.FindObjectsByType<CheckpointRaceChallenge>(FindObjectsSortMode.None),Is.Empty);
     }
+    [UnityTest] public IEnumerator ApiControlledRaceCompletionActuallySettlesOnce()
+    {
+        Assert.That(Choose("ChooseCheckpointRace"),Is.True);yield return Ready();
+        var race=(CheckpointRaceChallenge)Get("CheckpointRace");race.enabled=false;
+        // API-controlled outcome fixture ONLY, not physical driving evidence.
+        var state=(CheckpointRaceState)typeof(CheckpointRaceChallenge).GetField("state",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(race);
+        state.Reset();Assert.That(state.Begin(Vector3.zero,new[]{Vector3.forward*5},1,180,250),Is.True);
+        state.Advance(Vector3.forward*5,.1f);Assert.That(race.Won,Is.True);
+        yield return null;yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(1));
+        Assert.That(Get("CheckpointRace"),Is.Null);Assert.That(run.GeneratedWorld,Is.Null);
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
