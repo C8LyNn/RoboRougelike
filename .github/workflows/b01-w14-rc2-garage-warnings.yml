@@ -17,5 +17,17 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - name: Real source C# build and 33 negative/positive fixtures
+      - name: Compile and execute actual C# policy tests
         run: dotnet run --project Tools/B01/RC2-GARAGE-WARNINGS-001/Tests/WarningTests.csproj -- Tools/B01/RC2-GARAGE-WARNINGS-001/fixtures.json
+      - name: Build archive twice and verify byte-identical hashes
+        run: |
+          python Tools/B01/RC2-GARAGE-WARNINGS-001/package.py output/one.zip output/receipt.json
+          python Tools/B01/RC2-GARAGE-WARNINGS-001/package.py output/two.zip
+          cmp output/one.zip output/two.zip
+      - name: Publish release-ready SOURCE-only contract ZIP and checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-W14-GARAGE-WARNING-SOURCE-R1
+          path: |
+            output/one.zip
+            output/receipt.json
