@@ -1,0 +1,23 @@
+{
+  "name": "B01.EconLegendary.Guard.EditMode",
+  "rootNamespace": "RoboRougelike.B01.Economy.LegendaryGuard.Tests",
+  "references": [
+    "B01.EconLegendary.Guard",
+    "B01.Legendary.Unity",
+    "B01.EconRebuild.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "noEngineReferences": false
+}
