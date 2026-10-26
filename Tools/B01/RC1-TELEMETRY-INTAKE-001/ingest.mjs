@@ -2,7 +2,7 @@
 import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
-export function gitBlobSha(bytes){return createHash('sha1').update('blob '+bytes.length+'\\0').update(bytes).digest('hex');}
+export function gitBlobSha(bytes){return createHash('sha1').update('blob '+bytes.length).update(Buffer.from([0])).update(bytes).digest('hex');}
 function insist(ok,reason){if(!ok)throw new Error(reason);}
 function finite(v){return typeof v==='number'&&Number.isFinite(v);}
 const FIELDS=['phase','time','x','y','z','speed','contacts','wheels','aliveEnemies'];
