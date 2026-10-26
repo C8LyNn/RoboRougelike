@@ -22,7 +22,7 @@ function Invoke-Phase([string]$phase,[string[]]$extra){
  if($code -ne 0){$script:failed=$true}
 }
 if($Compile){Invoke-Phase 'Compile' @('-quit')}
-if($Build){Invoke-Phase 'Build' @('-quit','-executeMethod','B01RC2Build.BuildRelease')}
+if($Build){Invoke-Phase 'Build' @('-quit','-executeMethod','FullMergeBuild.BuildRelease')}
 $testModes=if($Modes -eq 'None'){@()}elseif($Modes -eq 'Both'){@('EditMode','PlayMode')}else{@($Modes)}
 foreach($mode in $testModes){
  $xml=Join-Path $run ($mode+'.xml');$extra=@('-runTests','-testPlatform',$mode,'-testResults',('"'+$xml+'"'))
