@@ -7,7 +7,8 @@ namespace B01.BUILD001
     public enum BuildPlacementResult
     {
         Valid, InvalidDefinition, DuplicatePartId, OccupiedCells, NoSupport,
-        NoCompatibleSocket, InvalidCore, OutOfBounds
+        NoCompatibleSocket, InvalidCore, OutOfBounds, MultipleCoreRoots,
+        CoreDisconnected, DisconnectedFootprint, PhysicsUnverified, ColliderPenetration
     }
 
     public sealed class BuildInstalledPart
@@ -30,17 +31,22 @@ namespace B01.BUILD001
             BuildInstalledPart candidate, out string supportsPartId)
         {
             supportsPartId = null;
-            if (installed == null || candidate == null ||
-                !BuildSocketGeometry.Valid(candidate.Definition, out _) ||
-                string.IsNullOrEmpty(candidate.PartId))
+            if (installed == null || candidate == null || string.IsNullOrEmpty(candidate.PartId))
                 return BuildPlacementResult.InvalidDefinition;
+            if (!BuildSocketGeometry.Valid(candidate.Definition, out var candidateReason))
+                return candidateReason == "DISCONNECTED_FOOTPRINT" ||
+                    candidateReason == "UNVERIFIED_PHYSICAL_JOIN" ?
+                    BuildPlacementResult.DisconnectedFootprint : BuildPlacementResult.InvalidDefinition;
 
             var cells = new HashSet<Vector3Int>();
             foreach (var previous in installed)
             {
-                if (previous == null || previous.Definition == null ||
-                    !BuildSocketGeometry.Valid(previous.Definition, out _))
+                if (previous == null || previous.Definition == null)
                     return BuildPlacementResult.InvalidDefinition;
+                if (!BuildSocketGeometry.Valid(previous.Definition, out var installedReason))
+                    return installedReason == "DISCONNECTED_FOOTPRINT" ||
+                        installedReason == "UNVERIFIED_PHYSICAL_JOIN" ?
+                        BuildPlacementResult.DisconnectedFootprint : BuildPlacementResult.InvalidDefinition;
                 if (previous.PartId == candidate.PartId)
                     return BuildPlacementResult.DuplicatePartId;
                 foreach (var cell in BuildSocketGeometry.Occupied(previous.Definition,previous.Pose))
@@ -55,6 +61,10 @@ namespace B01.BUILD001
             }
             if (candidate.Definition.Role == BuildRole.Core)
                 return BuildPlacementResult.InvalidCore; // Existing one Core is not player-placeable.
+            int livingRoots = 0;
+            foreach (var previous in installed)
+                if (previous.Alive && previous.Definition.Role == BuildRole.Core) livingRoots++;
+            if (livingRoots > 1) return BuildPlacementResult.MultipleCoreRoots;
             if (installed.Count == 0)
                 return BuildPlacementResult.NoSupport;
 
@@ -76,6 +86,43 @@ namespace B01.BUILD001
         }
 
         /// <summary>
+        /// Only this method can authorize installation. Check() is a pure grid
+        /// preview, not a safety or save permission. Null physics evidence fails closed.
+        /// </summary>
+        public static BuildPlacementResult CheckForInstallation(
+            IReadOnlyList<BuildInstalledPart> installed, BuildInstalledPart candidate,
+            BuildPhysicsEvidence evidence, out string supportsPartId)
+        {
+            supportsPartId = null;
+            var result = Check(installed, candidate, out var support);
+            if (result != BuildPlacementResult.Valid &&
+                result != BuildPlacementResult.NoCompatibleSocket) return result;
+            int roots = 0;
+            if (installed != null)
+                foreach (var p in installed)
+                    if (p != null && p.Alive && p.Definition != null &&
+                        p.Definition.Role == BuildRole.Core) roots++;
+            if (roots > 1) return BuildPlacementResult.MultipleCoreRoots;
+            if (roots != 1) return BuildPlacementResult.CoreDisconnected;
+            if (result == BuildPlacementResult.NoCompatibleSocket)
+            {
+                // Reveal orphan contact distinctly without granting that island authority.
+                foreach (var p in installed)
+                    if (p != null && p.Alive && p.Definition != null &&
+                        p.Definition.SupportsOtherParts &&
+                        BuildSocketGeometry.Touches(p.Definition, p.Pose,
+                            candidate.Definition, candidate.Pose, out _) &&
+                        !Reachable(installed).Contains(p.PartId))
+                        return BuildPlacementResult.CoreDisconnected;
+                return result;
+            }
+            var physical = BuildVolumeValidator.Check(evidence);
+            if (physical != BuildPlacementResult.Valid) return physical;
+            supportsPartId = support;
+            return BuildPlacementResult.Valid;
+        }
+
+        /// <summary>
         /// A destroyed support can disconnect the graph. Only a living Core
         /// seeds connected ownership, and wheel/gun items cannot relay connections.
         /// This diagnostic does NOT replace R3/P12 canonical damage/detach authority.
@@ -85,13 +132,18 @@ namespace B01.BUILD001
             var result = new HashSet<string>();
             if (installed == null) return result;
             var queue = new Queue<int>();
+            int rootIndex = -1;
             for (int i = 0; i < installed.Count; i++)
             {
                 var p = installed[i];
-                if (p != null && p.Alive && p.Definition != null &&
-                    p.Definition.Role == BuildRole.Core && result.Add(p.PartId))
-                    queue.Enqueue(i);
+                if (p == null || !p.Alive || p.Definition == null ||
+                    p.Definition.Role != BuildRole.Core) continue;
+                if (rootIndex != -1) return result; // Quarantine ambiguous loaded robot.
+                rootIndex = i;
             }
+            if (rootIndex < 0) return result;
+            result.Add(installed[rootIndex].PartId);
+            queue.Enqueue(rootIndex);
             while (queue.Count != 0)
             {
                 var src = installed[queue.Dequeue()];
@@ -160,7 +212,12 @@ namespace B01.BUILD001
                 if (!internalFace) sockets.Add(S(face,BuildSocketKind.Structural,cell));
             }
             return new BuildDefinition("Wide2x2OneId",BuildRole.Device,
-                cells,sockets.ToArray(),true);
+                cells,sockets.ToArray(),true, new[] {
+                    new BuildCellBond(Vector3Int.zero, Vector3Int.right),
+                    new BuildCellBond(Vector3Int.zero, Vector3Int.forward),
+                    new BuildCellBond(Vector3Int.right,
+                        Vector3Int.right+Vector3Int.forward)
+                });
         }
     }
 }
