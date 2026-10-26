@@ -1,6 +1,6 @@
 {
   "contract": "B01-W14-RC2-GARAGE-WARNINGS-R1",
-  "fixtureCount": 33,
+  "fixtureCount": 34,
   "scenarios": [
     {
       "id": "W14-GW-01",
@@ -1513,6 +1513,63 @@
       "expectedCritical": [
         "STRUCTURE_DISCONNECTED",
         "WEAPON_NONFUNCTIONAL"
+      ],
+      "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "W15-GW-34",
+      "description": "P0: second persisted destroyed Core must not disappear from root cardinality; remains invalid even when 0HP",
+      "input": {
+        "selectedDrive": "Wheels",
+        "activityRequiresWeapon": true,
+        "activityId": "Combat",
+        "suggestionsEnabled": true,
+        "riskyCenterOfMass": false,
+        "parts": [
+          {
+            "id": "core",
+            "kind": "Core",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "gun",
+            "kind": "Gun",
+            "cellX": 0,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "left",
+            "kind": "Wheel",
+            "cellX": -1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "right",
+            "kind": "Wheel",
+            "cellX": 1,
+            "health": 1,
+            "connectedToTrustedCore": true,
+            "operational": true
+          },
+          {
+            "id": "loaded-core-0hp",
+            "kind": "Core",
+            "cellX": 3,
+            "health": 0,
+            "connectedToTrustedCore": true,
+            "operational": false
+          }
+        ]
+      },
+      "expectedCritical": [
+        "CORE_NONFUNCTIONAL_OR_AMBIGUOUS"
       ],
       "expectedLaunchDecision": "UNDECIDED_OWNER_APPROVAL_REQUIRED"
     }
