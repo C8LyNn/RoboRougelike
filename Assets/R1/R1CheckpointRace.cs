@@ -14,7 +14,7 @@ namespace RoboRougelike.R1
         bool raceRequested;
         GameObject raceHost;
         public CheckpointRaceChallenge CheckpointRace {get;private set;}
-        public bool CanChooseCheckpointRace => CanChooseReactorDefense&&!ReactorPrepared&&
+        public bool CanChooseCheckpointRace => Player!=null&&CanChooseReactorDefense&&!ReactorPrepared&&
             VehicleModel.SelectedDrive==R3DriveKind.Wheels;
         public bool ChooseCheckpointRace()
         {

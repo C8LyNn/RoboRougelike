@@ -32,7 +32,15 @@ namespace RoboRougelike.R1
             var profile=new MapR4VehicleProfile{id="R3/"+SelectedVehicle,width=envelope.x,height=envelope.y,length=envelope.z,
                 minTurnRadius=4.5f,maxSlopeDeg=16,capabilities=new[]{"ground"}};
             foreach(var edge in map.edges){edge.width=Mathf.Max(edge.width,envelope.x+2*profile.sideMargin);edge.clearHeight=Mathf.Max(edge.clearHeight,envelope.y+profile.verticalMargin);}
-            foreach(var node in map.nodes)node.padWidth=Mathf.Max(node.padWidth,envelope.x+envelope.z+2*profile.minTurnRadius+2*profile.sideMargin);
+            foreach(var node in map.nodes){
+                // Enlarging a flat raised pad backward across an incoming grade
+                // creates a vertical curb (native Heavy stall: +0.368m). Keep
+                // the authored raised joins and let the unchanged source turn
+                // validator reject a profile that cannot negotiate them.
+                bool graded=map.edges.Any(e=>(e.fromNode==node.id||e.toNode==node.id)&&
+                    Mathf.Abs(map.nodes.First(n=>n.id==e.fromNode).position.y-map.nodes.First(n=>n.id==e.toNode).position.y)>.01f);
+                if(!graded)node.padWidth=Mathf.Max(node.padWidth,envelope.x+envelope.z+2*profile.minTurnRadius+2*profile.sideMargin);
+            }
             foreach(var node in map.nodes)if(node.id=="central_arena")node.padWidth=Mathf.Max(40,node.padWidth);
             string state=mode==MapR4Mode.Escape?"bridge_collapsed":"intact";
             string target=mode==MapR4Mode.TimeAttack?"upper_ramp":mode==MapR4Mode.Escape?"exit":"central_arena";

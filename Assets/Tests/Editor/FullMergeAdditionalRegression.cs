@@ -97,7 +97,7 @@ public sealed class FullMergeAdditionalRegression
         foreach(MapR4Mode mode in System.Enum.GetValues(typeof(MapR4Mode)))Assert.That(run.ChooseRoadChallenge(mode),Is.False);
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Route));Assert.That(run.RoadWorld,Is.Null);Assert.That(run.GeneratedWorld,Is.Null);
     }
-    IEnumerator StaticMeshEvidence(bool penetrating){
+    void StaticMeshEvidence(bool penetrating){
         var candidate=GameObject.CreatePrimitive(PrimitiveType.Cube);candidate.transform.position=new Vector3(100,5,100);
         var terrain=GameObject.CreatePrimitive(PrimitiveType.Cube);terrain.transform.position=candidate.transform.position+(penetrating?Vector3.right*.8f:Vector3.right*3);
         terrain.GetComponent<BoxCollider>().enabled=false;var mesh=terrain.AddComponent<MeshCollider>();mesh.sharedMesh=terrain.GetComponent<MeshFilter>().sharedMesh;mesh.convex=false;Physics.SyncTransforms();
@@ -106,12 +106,12 @@ public sealed class FullMergeAdditionalRegression
         Assert.That(hit,Is.EqualTo(penetrating));if(hit)Assert.That(depth,Is.GreaterThan(.005f));
         var evidence=new B01.BUILD001.BuildPhysicsEvidence(new[]{c},new Collider[]{mesh},true);
         Assert.That(B01.BUILD001.BuildVolumeValidator.Check(evidence),Is.EqualTo(penetrating?B01.BUILD001.BuildPlacementResult.ColliderPenetration:B01.BUILD001.BuildPlacementResult.Valid));
-        var rb=terrain.AddComponent<Rigidbody>();rb.isKinematic=true;
+        mesh.enabled=false;var rb=terrain.AddComponent<Rigidbody>();rb.isKinematic=true;mesh.enabled=true;Physics.SyncTransforms();
         Assert.That(B01.BUILD001.BuildVolumeValidator.Check(evidence),Is.EqualTo(B01.BUILD001.BuildPlacementResult.PhysicsUnverified),"Moving non-convex mesh is not an admitted world surface");
-        Object.Destroy(candidate);Object.Destroy(terrain);yield return null;
+        Object.Destroy(candidate);Object.Destroy(terrain);
     }
-    [UnityTest]public IEnumerator StaticWorldMeshAllowsCertifiedClearance(){yield return StaticMeshEvidence(false);}
-    [UnityTest]public IEnumerator StaticWorldMeshPenetrationStillBlocksInstallation(){yield return StaticMeshEvidence(true);}
+    [UnityTest]public IEnumerator StaticWorldMeshAllowsCertifiedClearance(){StaticMeshEvidence(false);yield return null;}
+    [UnityTest]public IEnumerator StaticWorldMeshPenetrationStillBlocksInstallation(){StaticMeshEvidence(true);yield return null;}
     [UnityTest]public IEnumerator RaisedJunctionDoesNotPutACurbAcrossItsIncomingGrade(){
         var old=run;run.RestartRun();while(R1RunController.Instance==old||R1RunController.Instance?.Progress==null)yield return null;
         run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Heavy);Assert.That(run.PrepareUnifiedRun(),Is.True);Assert.That(run.ChooseRoadChallenge(MapR4Mode.TimeAttack),Is.True);

@@ -121,6 +121,10 @@ namespace B01.CAMERA001
                     ReceiverFitDistance=Mathf.Max(ReceiverFitDistance,Mathf.Abs(v.x)/tanX-v.z,
                         Mathf.Abs(v.y)/tanY-v.z,attachedCamera.nearClipPlane+.01f-v.z);
                 }
+                // Manual zoom retains its configured range. Receiver auto-framing
+                // must accommodate the measured hull rather than crop a legal
+                // heavy/wide construction at the standalone demo's 18m cap.
+                request.MaximumDistance=Mathf.Max(request.MaximumDistance,ReceiverFitDistance);
                 request.RequestedDistance=Mathf.Clamp(Mathf.Max(request.RequestedDistance,ReceiverFitDistance),request.MinimumDistance,request.MaximumDistance);
                 LastSolution=Camera001Framing.Solve(request);
                 ReceiverFramingSaturated=ReceiverFitDistance>request.MaximumDistance;

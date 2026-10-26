@@ -30,7 +30,9 @@ public class MOVSeriesSpecialTests
     R1VehicleState Build(R3VehicleKind kind,float x,params R3PartKind[] devices)
     {
         var m=new R3VehicleModel(R3VehicleCatalog.Create(kind));int y=kind==R3VehicleKind.Light?1:2;
-        for(int i=0;i<devices.Length;i++)m.Parts.Add(new R3PartState(new Vector3Int(i%2==0?-1:1,y,i/2),devices[i]));
+        // The third Blink formerly intersected the forward grapple payload by
+        // 23cm. Preserve the same devices/cost/abilities on a free rear cell.
+        for(int i=0;i<devices.Length;i++)m.Parts.Add(new R3PartState(new Vector3Int(i%2==0?-1:1,y,i==2&&devices[i]==R3PartKind.Blink?-1:i/2),devices[i]));
         var v=R3VehicleAssembly.Build(m,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
         v.transform.SetParent(fixtures.transform,true);v.Controller.SetGameplayInputEnabled(true);return v;
     }

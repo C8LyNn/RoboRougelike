@@ -32,6 +32,18 @@ namespace B01.BUILD001
             return mesh != null && mesh.convex;
         }
 
+        private static bool SupportedNeighbor(Collider c)
+        {
+            if (Supported(c)) return true;
+            // ComputePenetration requires a primitive/convex candidate, but its
+            // other shape may be an actual static non-convex world mesh.
+            // Keep every neighbor and test its real triangles, including floor
+            // contacts. Moving/nonexistent/disabled meshes still fail closed.
+            var mesh = c as MeshCollider;
+            return mesh != null && mesh.enabled && mesh.gameObject.activeInHierarchy &&
+                !mesh.isTrigger && !mesh.convex && mesh.sharedMesh != null && mesh.attachedRigidbody == null;
+        }
+
         /// <summary>
         /// All colliders must be actively certified; missing/unsupported/bypassed
         /// evidence means PHYSICS_UNVERIFIED, never an inferred valid placement.
@@ -45,7 +57,7 @@ namespace B01.BUILD001
             foreach (var candidate in input.Candidate)
                 if (!Supported(candidate)) return BuildPlacementResult.PhysicsUnverified;
             foreach (var other in input.Neighbors)
-                if (!Supported(other)) return BuildPlacementResult.PhysicsUnverified;
+                if (!SupportedNeighbor(other)) return BuildPlacementResult.PhysicsUnverified;
             Physics.SyncTransforms();
             foreach (var candidate in input.Candidate)
             foreach (var other in input.Neighbors)
