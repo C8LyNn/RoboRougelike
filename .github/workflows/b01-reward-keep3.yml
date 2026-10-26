@@ -36,7 +36,7 @@ jobs:
       - name: Compile install-only R3 bridge against verified OBJ API signatures
         id: bridge
         run: dotnet build Tools/B01/REWARDKEEP3001/tests/BridgeCompile/BridgeCompile.csproj -c Release --nologo
-      - name: Execute actual bounded economy queue tests
+      - name: Execute bounded reward-selection tests (0..3 non-armor)
         id: tests
         shell: bash
         run: |
@@ -70,7 +70,7 @@ jobs:
              "package":os.environ["PACKAGE"],"results":({k:t[k] for k in ["total","passed","failed"]} if t else None),
              "unity_editor":"NOT_RUN","unity_playmode":"NOT_RUN","g0_independent":"PENDING","g2":"HOLD"}
           (d/"ci-receipt.json").write_text(json.dumps(result,indent=2)+"\n")
-          summary=f"ECON rebuild source {result['sha']}: build {result['dotnet_build']} / tests {result['surrogate_tests']} {result['results']} / package {result['package']}; Unity native NOT_RUN, G2 HOLD\n"
+          summary=f"REWARD keep3 source {result['sha']}: build {result['dotnet_build']} / tests {result['surrogate_tests']} {result['results']} / package {result['package']}; Unity native NOT_RUN, G2 HOLD\n"
           (d/"ci-summary.txt").write_text(summary)
           pathlib.Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a").write(summary)
           PY
