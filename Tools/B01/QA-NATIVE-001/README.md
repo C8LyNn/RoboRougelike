@@ -2,7 +2,7 @@
 
 Independently owned QA tools only; no producer/game code or Codex worktree edits.
 
-**Executable source**: `qa_native.py` (stdlib Python 3.10+) + `Run-NativeQA.ps1` (Windows). Distinct `test_qa_native.py` exercises synthetic negative receipts. Both native tests and manual playtest are **NOT_RUN** in the B01-60 Linux environment. **G2 HOLD**.
+**Executable source**: `qa_native.py` (original parser) plus `qa_gate_v2.py` (strict profile/receipt gate) (stdlib Python 3.10+) + `Run-NativeQA.ps1` (Windows). Distinct `test_qa_native.py` exercises synthetic negative receipts. Both native tests and manual playtest are **NOT_RUN** in the B01-60 Linux environment. **G2 HOLD**.
 
 ## Why this is not fake native PASS
 
@@ -20,7 +20,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File Tools\B01\QA-NATIVE-001\Run-
   -PlayerExe 'C:\QA\RRL-isolated\Builds\NativeQA.exe'
 ```
 
-The optional Player must implement `-qa-output <dir>`, generate *actual* named PNGs and telemetry per the plan. Without it the Player phases are NOT_RUN. Source/target SHA mismatches, live Editor locks, outside-worktree Player, reused evidence directory, invalid source file hashes and incorrect Unity version fail early. For evidence-only review: `python qa_native.py --plan plan.json --evidence Evidence/run-001 --out verdict.json`.
+The optional Player must implement `-qa-output <dir>`, generate *actual* named PNGs and telemetry per the plan. Without it the Player phases are NOT_RUN. Source/target SHA mismatches, live Editor locks, outside-worktree Player, reused evidence directory, invalid source file hashes and incorrect Unity version fail early. For evidence-only review: `python qa_gate_v2.py --plan plan.json --evidence Evidence/run-001 --out verdict.json`. V2 requires explicit nonempty Edit/Play NUnit cases and full-profile coverage. `--validate-only` rejects incomplete plans before Unity launches. CAMERA receipt needs finite aim/speed; R6 requires measured wheel queries/contact, distance, checkpoints and event counts. A structural receipt `PASS` is NOT independently witnessed native B01-60 acceptance.
 
 **Exit:** `0 PASS`, `2 FAIL`, `3 BLOCKED/NOT_RUN`. Capture raw original Editor.log/XML/Player.log/telemetry, never forge output for producer receipts. Remaining API-driven R6 wheel tests do not imply manual keyboard play.
 
