@@ -1,0 +1,1675 @@
+{
+  "fixturesVersion": "1.0.0",
+  "cases": [
+    {
+      "id": "EL-01",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LOANER_ELIGIBLE_POLICY_PROPOSED"
+    },
+    {
+      "id": "EL-02",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": []
+      },
+      "expected": "NO_QUALIFYING_DESTROYED_OWNED_PART"
+    },
+    {
+      "id": "EL-03",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-healthy",
+            "role": "weapon",
+            "hp": 100,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "NO_QUALIFYING_DESTROYED_OWNED_PART"
+    },
+    {
+      "id": "EL-04",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": true,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "HEALTHY_RECOVERY_AVAILABLE"
+    },
+    {
+      "id": "EL-05",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": false,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LOANER_INCOMPATIBLE_WITH_ACTIVITY"
+    },
+    {
+      "id": "EL-06",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": false,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LOANER_ACTIVITY_NOT_CERTIFIED"
+    },
+    {
+      "id": "EL-07",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": false,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "CORE_NOT_ALIVE"
+    },
+    {
+      "id": "EL-08",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": false,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "RUN_ENDED"
+    },
+    {
+      "id": "EL-09",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": false,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "NOT_IN_GARAGE"
+    },
+    {
+      "id": "EL-10",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": false,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "NO_NEXT_CHALLENGE"
+    },
+    {
+      "id": "EL-11",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": true,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "OTHER_START_BLOCKER"
+    },
+    {
+      "id": "EL-12",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": true,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LEASE_ALREADY_ACTIVE"
+    },
+    {
+      "id": "EL-13",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": true,
+        "structureConnected": true,
+        "functionalWeapon": true,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "NORMAL_DEPLOY"
+    },
+    {
+      "id": "EL-14",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": true,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "INCONSISTENT_CAN_DEPLOY"
+    },
+    {
+      "id": "EL-15",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": true,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "OTHER_START_BLOCKER"
+    },
+    {
+      "id": "EL-16",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": false,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "WEAPONLESS_ACTIVITY_REQUIRES_HOST_LAUNCH_POLICY"
+    },
+    {
+      "id": "EL-17",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": true,
+        "functionalDrive": false,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "drive-0",
+            "role": "drive",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LOANER_ELIGIBLE_POLICY_PROPOSED"
+    },
+    {
+      "id": "EL-18",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": false,
+        "functionalWeapon": true,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "bridge-0",
+            "role": "structure",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LOANER_ELIGIBLE_POLICY_PROPOSED"
+    },
+    {
+      "id": "EL-19",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": false,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "bridge-0",
+            "role": "structure",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "NO_QUALIFYING_DESTROYED_OWNED_PART"
+    },
+    {
+      "id": "EL-20",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "alien",
+            "role": "weapon",
+            "hp": 0,
+            "owned": false
+          }
+        ]
+      },
+      "expected": "NO_QUALIFYING_DESTROYED_OWNED_PART"
+    },
+    {
+      "id": "EL-21",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "dup",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          },
+          {
+            "id": "dup",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "INVALID_OR_UNTRUSTED_SNAPSHOT"
+    },
+    {
+      "id": "EL-22",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": " ",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "INVALID_OR_UNTRUSTED_SNAPSHOT"
+    },
+    {
+      "id": "EL-23",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun",
+            "role": "weapon",
+            "hp": -1,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "INVALID_OR_UNTRUSTED_SNAPSHOT"
+    },
+    {
+      "id": "EL-24",
+      "domain": "ELIGIBILITY",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": true,
+        "functionalDrive": false,
+        "activityWeaponRequired": false,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "drive-0",
+            "role": "drive",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LOANER_ELIGIBLE_POLICY_PROPOSED"
+    },
+    {
+      "id": "SOURCE-01",
+      "domain": "PRODUCER_GAP",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": []
+      },
+      "expected": "LoanerOffered"
+    },
+    {
+      "id": "SOURCE-02",
+      "domain": "PRODUCER_GAP",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "healthy",
+            "role": "weapon",
+            "hp": 100,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LoanerOffered"
+    },
+    {
+      "id": "SOURCE-03",
+      "domain": "PRODUCER_GAP",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": true,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": false,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LoanerOffered"
+    },
+    {
+      "id": "SOURCE-04",
+      "domain": "PRODUCER_GAP",
+      "snapshot": {
+        "runActive": true,
+        "inGarage": true,
+        "nextChallengeAvailable": true,
+        "coreAlive": true,
+        "otherStartBlocker": false,
+        "canDeploy": false,
+        "structureConnected": true,
+        "functionalWeapon": false,
+        "functionalDrive": true,
+        "activityWeaponRequired": false,
+        "healthyRecoveryAvailable": false,
+        "activityLoanerCompatible": true,
+        "loanerCertified": true,
+        "leaseActive": false,
+        "challengeId": "enc-1",
+        "ownedParts": [
+          {
+            "id": "gun-0",
+            "role": "weapon",
+            "hp": 0,
+            "owned": true
+          }
+        ]
+      },
+      "expected": "LoanerOffered"
+    },
+    {
+      "id": "ECO-01",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "mount",
+          "id": "gun"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "CANNOT_MOUNT"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": true,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-02",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        },
+        {
+          "id": "wheel",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "order",
+          "id": "wheel"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "INSUFFICIENT_SCRAP"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": true,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          },
+          {
+            "id": "wheel",
+            "hp": 0,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-03",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        },
+        {
+          "id": "wheel",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 7,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "order",
+          "id": "wheel"
+        },
+        {
+          "op": "order",
+          "id": "wheel"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "QUEUED_PAID",
+          "ALREADY_QUEUED"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": true,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          },
+          {
+            "id": "wheel",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-04",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "cheap",
+          "hp": 0,
+          "buy": 1,
+          "quote": 0,
+          "mounted": false
+        },
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "order",
+          "id": "cheap"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "QUEUED_PAID"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": true,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "cheap",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          },
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-05",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "LOSS"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "DEFEAT_RECORDED"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": true,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-06",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "WIN"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "VICTORY_RECORDED"
+        ],
+        "winSerial": 1,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 100,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-07",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "stolen",
+          "kind": "WIN",
+          "trusted": false
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "WIN"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "STALE_OR_UNTRUSTED_OUTCOME",
+          "VICTORY_RECORDED"
+        ],
+        "winSerial": 1,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 100,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-08",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "WIN"
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "WIN"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "VICTORY_RECORDED",
+          "STALE_OR_UNTRUSTED_OUTCOME"
+        ],
+        "winSerial": 1,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 100,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-09",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "WIN"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "ACTIVE_ENCOUNTER",
+          "VICTORY_RECORDED"
+        ],
+        "winSerial": 1,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 100,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-10",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "start",
+          "id": "another",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "LOSS"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "INVALID_OR_DUPLICATE_ENCOUNTER",
+          "DEFEAT_RECORDED"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": true,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": true,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-11",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        },
+        {
+          "id": "wheel",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "battle1",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle1",
+          "kind": "WIN"
+        },
+        {
+          "op": "order",
+          "id": "wheel"
+        },
+        {
+          "op": "start",
+          "id": "battle2",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle2",
+          "kind": "WIN"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "VICTORY_RECORDED",
+          "QUEUED_FREE",
+          "STARTED",
+          "VICTORY_RECORDED"
+        ],
+        "winSerial": 2,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 100,
+            "pending": false,
+            "mounted": false
+          },
+          {
+            "id": "wheel",
+            "hp": 100,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-12",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "healthy",
+          "hp": 25,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "healthy"
+        }
+      ],
+      "expected": {
+        "results": [
+          "NOT_DESTROYED"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "healthy",
+            "hp": 25,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-13",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "battle",
+          "kind": "LOSS"
+        },
+        {
+          "op": "start",
+          "id": "battle",
+          "loaner": true
+        }
+      ],
+      "expected": {
+        "results": [
+          "STARTED",
+          "DEFEAT_RECORDED",
+          "INVALID_OR_DUPLICATE_ENCOUNTER"
+        ],
+        "winSerial": 0,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-14",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "reward",
+          "id": "event-1",
+          "amount": 11,
+          "canonical": true
+        },
+        {
+          "op": "reward",
+          "id": "event-1",
+          "amount": 11,
+          "canonical": true
+        },
+        {
+          "op": "reward",
+          "id": "event-untrusted",
+          "amount": 20,
+          "canonical": false
+        }
+      ],
+      "expected": {
+        "results": [
+          "REWARD_ONCE",
+          "REWARD_REJECT",
+          "REWARD_REJECT"
+        ],
+        "winSerial": 0,
+        "scrap": 11,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 0,
+            "pending": false,
+            "mounted": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ECO-15",
+      "domain": "ECON_LEDGER",
+      "parts": [
+        {
+          "id": "gun",
+          "hp": 0,
+          "buy": 10,
+          "quote": 7,
+          "mounted": false
+        }
+      ],
+      "scrap": 0,
+      "actions": [
+        {
+          "op": "order",
+          "id": "gun"
+        },
+        {
+          "op": "start",
+          "id": "b",
+          "loaner": true
+        },
+        {
+          "op": "outcome",
+          "id": "b",
+          "kind": "WIN"
+        },
+        {
+          "op": "mount",
+          "id": "gun"
+        }
+      ],
+      "expected": {
+        "results": [
+          "QUEUED_FREE",
+          "STARTED",
+          "VICTORY_RECORDED",
+          "MOUNTED"
+        ],
+        "winSerial": 1,
+        "scrap": 0,
+        "freeUsed": false,
+        "loanerInventoryCount": 0,
+        "parts": [
+          {
+            "id": "gun",
+            "hp": 100,
+            "pending": false,
+            "mounted": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "POL-01",
+      "domain": "ALTERNATIVE_POLICY",
+      "policy": "A",
+      "probe": "preservesOneWinRebuildDelay",
+      "expected": false
+    },
+    {
+      "id": "POL-02",
+      "domain": "ALTERNATIVE_POLICY",
+      "policy": "A",
+      "probe": "abuseRisk",
+      "expected": "high"
+    },
+    {
+      "id": "POL-03",
+      "domain": "ALTERNATIVE_POLICY",
+      "policy": "B",
+      "probe": "requiresNewMissionMode",
+      "expected": true
+    },
+    {
+      "id": "POL-04",
+      "domain": "ALTERNATIVE_POLICY",
+      "policy": "C",
+      "probe": "preservesOneWinRebuildDelay",
+      "expected": true
+    },
+    {
+      "id": "POL-05",
+      "domain": "ALTERNATIVE_POLICY",
+      "policy": "C",
+      "probe": "recommendation",
+      "expected": "RECOMMEND_FOR_HQ_APPROVAL"
+    }
+  ]
+}

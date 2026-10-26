@@ -1,0 +1,44 @@
+{
+  "id": "B01-RUNSAFETY-S04-DESIGN-R1",
+  "taskId": "RS-S04-DESIGN-001",
+  "hqDispatch": "HQ-B01-20261025-S04",
+  "sourceSHA": "b2623f50e2bdb16106b88d0107d215867ed8791b",
+  "state": "POLICY_RECOMMENDED_AWAITING_HQ_APPROVAL",
+  "approvedLiveIntegration": false,
+  "recommendedVariant": "C",
+  "ownerDecisionPending": ["Approve conditional loaner C", "Confirm standard real mission rewards including scrap", "Activity compatibility for combat vs weaponless race/escape", "Thresholds for loaner physical viability"],
+  "invariants": {
+    "freeDestroyedItemOrdersPerWonCycle": 1,
+    "mustWinRealChallengeAfterOrder": true,
+    "defeatPreservesPendingAndDoesNotIncrementSerial": true,
+    "allowPaidQuoteZeroWhenPurchasePriceOne": true,
+    "rebuildQuoteStrictlyLessThanPurchase": true,
+    "ownedItemIdentityStable": true,
+    "loanerPhysicalItemsNeverOwnedOrSalvageable": true,
+    "loanerHasDistinctEncounterLeaseId": true,
+    "duplicateEncounterOrRewardEventNeverPaysTwice": true,
+    "cancelsOnCanonicalRunTermination": true,
+    "normalDeployNeverForcedToLoaner": true,
+    "noFreeLoanerMerelyByUnequippingHealthyItems": true,
+    "requiresActuallyDestroyedOwnedEssentialPart": true,
+    "noHealthyDeployableAlternative": true,
+    "activityAndRoverNeedsNativeCertificate": true,
+    "activityWeaponNeedSpecific": true,
+    "canonicalR1ControlsRewardsAndDefeat": true
+  },
+  "telemetry": ["encounterId", "leaseId", "loanerReason", "runPhase", "runEnded", "actualFunctionalDrive", "actualFunctionalWeapon", "destroyedEssentialCount", "healthyAlternativeCount", "activityRequiresWeapon", "challengeType", "loanerCertifiedForChallenge", "winSerial", "rewardEventId", "scrapBeforeAfter", "rebuildOrderEventIds", "stalledSeconds", "completionSeconds"],
+  "proposedBalanceExperiment": {
+    "notApproved": true,
+    "sampleSeeds": 100,
+    "difficultyTiers": ["easy", "normal", "hard"],
+    "vehicleProfiles": ["loaner", "startingLight", "starterHeavy"],
+    "metrics": ["successRate", "timeToFirstDamageSec", "medianCompletionSec", "weaponOperationalPercent", "twoSidedDriveOperationalPercent", "tippingIncidents", "damagePerSecond", "scrapEarnedPerEligibleVictory", "loanerReturnOrDuplicationCount", "missionFailureRate"],
+    "acceptance": ["Loaner is physically completable in the designated eligible challenge classes", "Not strictly superior to optimized starter in speed, survivability and firepower simultaneously", "Zero exploits converting lease parts into owned inventory", "No repeated rewards for one event ID", "No separate economic/reward authority"],
+    "numericalWinRateThreshold": null
+  },
+  "options": [
+    {"id":"A","label":"instant free emergency repair","preservesOneWinRebuildDelay":false,"canBreakSoftlockNow":true,"requiresNewMissionMode":false,"abuseRisk":"high","recommendation":"REJECT_PERMANENT"},
+    {"id":"B","label":"separate service mission","preservesOneWinRebuildDelay":true,"canBreakSoftlockNow":false,"requiresNewMissionMode":true,"abuseRisk":"medium","recommendation":"DEFER_HQ_DESIGN"},
+    {"id":"C","label":"one-real-encounter physical temporary loaner","preservesOneWinRebuildDelay":true,"canBreakSoftlockNow":true,"requiresNewMissionMode":false,"abuseRisk":"conditional","recommendation":"RECOMMEND_FOR_HQ_APPROVAL"}
+  ]
+}
