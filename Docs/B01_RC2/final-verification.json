@@ -1,0 +1,45 @@
+{
+  "status": "EVIDENCE_GATE_PASS_WITH_TWO_RECHECKED_EDITOR_FIXTURES",
+  "gameSource": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "editorTestRevision": "f6184d2254c0ff4c59bcd1e9f21db6a134a54097",
+  "editorOnlyChangedFiles": [
+    "Assets/Tests/Editor/R1PlayIntegrationTests.cs",
+    "Assets/Tests/Editor/RRLW34ReviewRegressionTests.cs"
+  ],
+  "native": [
+    {
+      "phase": "EditMode",
+      "exitCode": 2,
+      "nunit": {
+        "total": 1068,
+        "passed": 1066,
+        "failed": 2,
+        "skipped": 0
+      }
+    },
+    {
+      "phase": "PlayMode",
+      "exitCode": 0,
+      "nunit": {
+        "total": 424,
+        "passed": 424,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "targetedRecheck": {
+    "phase": "EditMode",
+    "exitCode": 0,
+    "nunit": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "finiteWindowsRuns": 7,
+  "zipSHA256": "7d35cd1bc823499a8855258e24ed0a0ff1d47e49bd694adb94c031ef8c946de6",
+  "zipBytes": 38523382,
+  "note": "Initial unfiltered Edit cycle remains1066/1068 with2FAIL. Those2Editor fixtures were corrected and rerun2/2, with production unchanged; no second full Edit run is claimed. Does not assert human UI, G1/G2, blocked package admission or a shutdown fix."
+}

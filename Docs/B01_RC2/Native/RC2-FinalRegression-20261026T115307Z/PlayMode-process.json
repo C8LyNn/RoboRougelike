@@ -1,0 +1,15 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-FinalRegression-20261026T115307Z\\PlayMode.xml\""
+  ],
+  "stage": "FinalRegression",
+  "finishedUtc": "2026-10-26T12:34:40.8369255Z",
+  "startedUtc": "2026-10-26T12:31:56.2529807Z",
+  "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "exitCode": 0,
+  "phase": "PlayMode"
+}

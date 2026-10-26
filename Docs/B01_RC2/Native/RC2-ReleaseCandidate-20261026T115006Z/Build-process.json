@@ -1,0 +1,13 @@
+{
+  "exitCode": 0,
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "B01RC2Build.BuildRelease"
+  ],
+  "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "stage": "ReleaseCandidate",
+  "finishedUtc": "2026-10-26T11:51:30.3147907Z",
+  "phase": "Build",
+  "startedUtc": "2026-10-26T11:50:20.8779200Z"
+}

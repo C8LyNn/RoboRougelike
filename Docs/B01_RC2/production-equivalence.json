@@ -1,0 +1,13 @@
+{
+  "productionBuildSHA": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "editorTestRevision": "f6184d2254c0ff4c59bcd1e9f21db6a134a54097",
+  "changedUnityFiles": [
+    "Assets/Tests/Editor/R1PlayIntegrationTests.cs",
+    "Assets/Tests/Editor/RRLW34ReviewRegressionTests.cs"
+  ],
+  "productionChangesExcludingEditorTests": [],
+  "assemblySHA256": "9250338fa8ff71d153875cea35678f992d1c94461ef4a6c10bfedd978c465910",
+  "buildAndExtractedAssemblyIdentical": true,
+  "archiveSHA256": "7d35cd1bc823499a8855258e24ed0a0ff1d47e49bd694adb94c031ef8c946de6",
+  "status": "PRODUCTION_UNCHANGED; ONLY_TWO_EDITOR_FIXTURES_CORRECTED"
+}

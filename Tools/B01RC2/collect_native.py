@@ -2,6 +2,7 @@ import gzip,json,pathlib,shutil,xml.etree.ElementTree as ET
 r=pathlib.Path(__file__).resolve().parents[2];out=r/'Docs/B01_RC2/Native';out.mkdir(parents=True,exist_ok=True);summary=[]
 for folder in sorted((r/'Artifacts/Local').glob('RC2-*')):
  if not folder.is_dir():continue
+ if folder.name.startswith('RC2-Windows-'):continue
  dest=out/folder.name;dest.mkdir(exist_ok=True)
  for p in folder.iterdir():
   if p.suffix not in ('.json','.xml','.log'):continue
@@ -14,4 +15,4 @@ for folder in sorted((r/'Artifacts/Local').glob('RC2-*')):
   if xml.exists():
    root=ET.parse(xml).getroot();receipt['nunit']={k:int(root.get(k)) for k in ('total','passed','failed','skipped')};receipt['cases']=[{'name':c.get('fullname'),'result':c.get('result'),'failure':c.findtext('failure/message')} for c in root.findall('.//test-case')]
   receipt['evidence']=str(dest.relative_to(r));summary.append(receipt)
-(out/'native-summary.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps([{k:v for k,v in s.items() if k in ('stage','phase','exitCode','nunit','source')} for s in summary]))
+(out/'native-summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps([{k:v for k,v in s.items() if k in ('stage','phase','exitCode','nunit','source')} for s in summary]))

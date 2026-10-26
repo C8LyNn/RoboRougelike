@@ -1,0 +1,1177 @@
+[
+  {
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "startedUtc": "2026-10-26T11:55:37.9712980Z",
+    "visible": true,
+    "width": 1280,
+    "pid": 2780,
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1280-20261026T115537Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1280-20261026T115537Z\""
+    ],
+    "mode": "Input",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "height": 720,
+    "process": {
+      "exitCode": 0,
+      "mode": "Input",
+      "startedUtc": "2026-10-26T11:55:37.9712980Z",
+      "finishedUtc": "2026-10-26T11:55:50.6162859Z",
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f"
+    },
+    "results": [
+      {
+        "file": "rc2-input-result.json",
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "errors": [],
+        "observations": 20,
+        "distinctChecks": 13,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T11:55:43.0467883Z",
+          "finishedUtc": "2026-10-26T11:55:49.9445445Z",
+          "width": 1280,
+          "height": 720,
+          "physicalShots": 8,
+          "rmbNewShots": 0,
+          "maxGroundedWheels": 12,
+          "movedMeters": 17.62144660949707,
+          "turnedDegrees": 51.97927474975586
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.230824652777777,
+          27.834375,
+          32.650073784722224
+        ],
+        "nonBlack": true,
+        "sha256": "29af9f621a87a82a09ceb580368d31cd79bd50e24a1c6141e5c004e81515ea8b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          39.39427083333333,
+          50.354594184027775,
+          54.021595052083335
+        ],
+        "nonBlack": true,
+        "sha256": "c5c19d6c5ca10597e22d341007841fda13f48a57038760775bfa68553976dd09"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          54.23094292534722,
+          50.01487521701389,
+          47.36519639756944
+        ],
+        "nonBlack": true,
+        "sha256": "bb2ed34577092482bf1e88f61bf97148ae2416553c9178efb4e7136c474cc6bf"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.866108940972225,
+          49.68718641493056,
+          47.72489800347222
+        ],
+        "nonBlack": true,
+        "sha256": "b5ad1cebf34ef729507170ccb3992d573696fb622df64fa7fdc706a51c326a97"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          15.099396701388889,
+          19.548199869791667,
+          24.121790364583333
+        ],
+        "nonBlack": true,
+        "sha256": "a6952c66978fd70293a0586326cf39968a6aa3758797b9347a310182a4337d54"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.96987955729167,
+          49.91132378472222,
+          48.01442057291667
+        ],
+        "nonBlack": true,
+        "sha256": "1ce21be10a0f23a43ac1b8e7990d30b49513317d716beb16cb58f6de6d43194f"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Input-1280-20261026T115537Z"
+  },
+  {
+    "executable": "C:/Users/kubap/Desktop/Prototypy/Releases/B01_UNIFIED_RC2_20261026/RoboRougelike_B01_UNIFIED_RC2_Windows_x64-VerifiedExtract/RoboRougelike.exe",
+    "accessibilityClientAttached": false,
+    "width": 1280,
+    "visible": true,
+    "startedUtc": "2026-10-26T12:04:10.6466437Z",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1280-20261026T120410Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1280-20261026T120410Z\""
+    ],
+    "mode": "Input",
+    "height": 720,
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "pid": 13264,
+    "process": {
+      "exitCode": 0,
+      "startedUtc": "2026-10-26T12:04:10.6466437Z",
+      "mode": "Input",
+      "finishedUtc": "2026-10-26T12:04:20.8521772Z",
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f"
+    },
+    "results": [
+      {
+        "file": "rc2-input-result.json",
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "errors": [],
+        "observations": 20,
+        "distinctChecks": 13,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T12:04:13.5372332Z",
+          "finishedUtc": "2026-10-26T12:04:20.1615689Z",
+          "width": 1280,
+          "height": 720,
+          "physicalShots": 8,
+          "rmbNewShots": 0,
+          "maxGroundedWheels": 12,
+          "movedMeters": 17.62144660949707,
+          "turnedDegrees": 51.97927474975586
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.230824652777777,
+          27.834375,
+          32.650073784722224
+        ],
+        "nonBlack": true,
+        "sha256": "29af9f621a87a82a09ceb580368d31cd79bd50e24a1c6141e5c004e81515ea8b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          39.39339409722222,
+          50.35340603298611,
+          54.02055555555555
+        ],
+        "nonBlack": true,
+        "sha256": "0ad753372665e1a4e20a32d7eb219f78c47909ff2285869bf6ee32920891c85a"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          54.23521158854167,
+          50.0156640625,
+          47.36551866319444
+        ],
+        "nonBlack": true,
+        "sha256": "7e15e7b60d3469ddc95c1fb8c48b5fa742ffb21971a0bfcb5c1f923eb58fc7be"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.865625,
+          49.68671983506945,
+          47.7249609375
+        ],
+        "nonBlack": true,
+        "sha256": "17844365daf910f1284f9f5cb51c9898abcfc27a6de3c5b0df18bd8fa9ea4244"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          14.830628255208333,
+          19.278562282986112,
+          23.852022569444443
+        ],
+        "nonBlack": true,
+        "sha256": "3ddd13c6778815f8697310e664c9ada78f1ae8720634b39c922bc60ab907b95c"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.96939670138889,
+          49.910893012152776,
+          48.013987630208334
+        ],
+        "nonBlack": true,
+        "sha256": "f81cb91d24037539350c1d4c72fb35ccbb6d48079f27d4614893a9e847191a22"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Input-1280-20261026T120410Z"
+  },
+  {
+    "accessibilityClientAttached": false,
+    "width": 1920,
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+    "pid": 24280,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "startedUtc": "2026-10-26T11:59:55.9125027Z",
+    "height": 1080,
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1920-20261026T115955Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1920-20261026T115955Z\""
+    ],
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "visible": true,
+    "process": {
+      "startedUtc": "2026-10-26T11:59:55.9125027Z",
+      "finishedUtc": "2026-10-26T12:00:05.9733807Z",
+      "mode": "Input",
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "file": "rc2-input-result.json",
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "errors": [],
+        "observations": 20,
+        "distinctChecks": 13,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T11:59:58.6906867Z",
+          "finishedUtc": "2026-10-26T12:00:05.2940656Z",
+          "width": 1920,
+          "height": 1080,
+          "physicalShots": 8,
+          "rmbNewShots": 0,
+          "maxGroundedWheels": 12,
+          "movedMeters": 17.62144660949707,
+          "turnedDegrees": 51.97927474975586
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.343350212191357,
+          27.946271701388888,
+          32.760741705246915
+        ],
+        "nonBlack": true,
+        "sha256": "7e54482716f215d16e687b31429922f473edef142be36b46b25b2aa6284e599b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.67086323302469,
+          50.67129436728395,
+          54.33957802854938
+        ],
+        "nonBlack": true,
+        "sha256": "a2db71cedf3bbf65450f2e4e0109302e5f73003c26f72a508d7341b76635448f"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          54.26560474537037,
+          50.049089988425926,
+          47.399353780864196
+        ],
+        "nonBlack": true,
+        "sha256": "f5bd589e2a78565bfcaf46f455f74a5e37df58da3e47a018fb3cfa99e04a950a"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.80429976851852,
+          49.63837914737654,
+          47.685869502314816
+        ],
+        "nonBlack": true,
+        "sha256": "986a6fda2a5546ef1dea5c3dc783f6f45fd4210c360863f750e1092c6f209ee3"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.86302951388889,
+          19.309663869598765,
+          23.883707561728396
+        ],
+        "nonBlack": true,
+        "sha256": "10d3f3d79ef5ee8bb0d133fa5ef8ae81fbb51117ec58c792b9ef22a88980181c"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.05146894290124,
+          49.97566936728395,
+          48.073489583333334
+        ],
+        "nonBlack": true,
+        "sha256": "1a1618c580410e8a583040667ef26884c1638f43ec9b1010c3ff836282d6ad32"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Input-1920-20261026T115955Z"
+  },
+  {
+    "visible": true,
+    "mode": "Mapgen",
+    "accessibilityClientAttached": false,
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "startedUtc": "2026-10-26T12:00:51.9922843Z",
+    "width": 1280,
+    "pid": 6528,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "height": 720,
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Mapgen-1280-20261026T120051Z\\Player.log\"",
+      "-rc2-native-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Mapgen-1280-20261026T120051Z\""
+    ],
+    "process": {
+      "startedUtc": "2026-10-26T12:00:51.9922843Z",
+      "exitCode": 0,
+      "mode": "Mapgen",
+      "finishedUtc": "2026-10-26T12:01:05.0890820Z",
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f"
+    },
+    "results": [
+      {
+        "file": "rc2-native-result.json",
+        "status": "Passed",
+        "method": "API-controlled real R3/R6 forces and real AI/player projectiles; explicit core-damage win/loss settlement; NOT human gameplay or an unassisted combat victory",
+        "errors": [],
+        "observations": 20,
+        "distinctChecks": 19,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T12:00:54.8284590Z",
+          "finishedUtc": "2026-10-26T12:01:03.9993814Z",
+          "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+          "width": 1280,
+          "height": 720,
+          "contactSamples": 185,
+          "supportedSamples": 185,
+          "maxContacts": 12,
+          "distance": 15.540950775146484,
+          "playerHpLost": 28.5595703125,
+          "enemyHpLost": 40.0,
+          "start": {
+            "x": 0.0,
+            "y": 1.0341801643371582,
+            "z": -25.0
+          },
+          "last": {
+            "x": -0.0085902139544487,
+            "y": 0.6500141620635986,
+            "z": -9.843254089355469
+          },
+          "measuredEnvelope": {
+            "x": 5.180010795593262,
+            "y": 2.114000082015991,
+            "z": 4.9199981689453125
+          },
+          "firstHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+          "secondHash": "d1eae2baa61a18e2afd0b671d9d8e1434646134f245e912b992710b952532835"
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.230824652777777,
+          27.834375,
+          32.650073784722224
+        ],
+        "nonBlack": true,
+        "sha256": "29af9f621a87a82a09ceb580368d31cd79bd50e24a1c6141e5c004e81515ea8b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          39.11969943576389,
+          50.53892795138889,
+          54.34196397569445
+        ],
+        "nonBlack": true,
+        "sha256": "f831c300ebb2147f022efd5e1395bdef6f9ed5473b48af14a4c362f508c75c73"
+      },
+      {
+        "file": "02-generated-start.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          52.31708767361111,
+          67.48134006076388,
+          72.877314453125
+        ],
+        "nonBlack": true,
+        "sha256": "7c404620421464a10a2ce90467f65c672062633b61ece167fa5c909db1a39c1e"
+      },
+      {
+        "file": "03-real-drive-projectile-damage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          53.105785590277776,
+          66.3925607638889,
+          71.41886827256944
+        ],
+        "nonBlack": true,
+        "sha256": "0fa46c279f261126b7b2f82551c3add1aab7d1f6b33f9407cdb604b93a586ed7"
+      },
+      {
+        "file": "04-rewards.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          21.43259548611111,
+          27.519873046875,
+          32.58006293402778
+        ],
+        "nonBlack": true,
+        "sha256": "bf52b3d59c3d48b41e372fdecea6a5030efdd517387457085deeee60ddb16740"
+      },
+      {
+        "file": "05-repaired-mounted-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          39.46066189236111,
+          50.95992296006944,
+          54.34942925347222
+        ],
+        "nonBlack": true,
+        "sha256": "edd17238bd701570a0cf1281ac71ec47da2f06c20c2eb9d458a42718aea2e572"
+      },
+      {
+        "file": "06-regenerated31.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          55.31837565104167,
+          70.74682725694444,
+          74.31449652777778
+        ],
+        "nonBlack": true,
+        "sha256": "70b61c83078b14450a2f22365f1824511a64f37050a7f873deab1f27f09163c6"
+      },
+      {
+        "file": "07-defeat.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          15.359760199652778,
+          21.251969401041666,
+          26.180528428819443
+        ],
+        "nonBlack": true,
+        "sha256": "0e91879621ad090a462f643635c431efc4442c5e5e6de95a65126aeb2718cc37"
+      },
+      {
+        "file": "08-restarted-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.230824652777777,
+          27.834375,
+          32.650073784722224
+        ],
+        "nonBlack": true,
+        "sha256": "29af9f621a87a82a09ceb580368d31cd79bd50e24a1c6141e5c004e81515ea8b"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Mapgen-1280-20261026T120051Z"
+  },
+  {
+    "width": 1920,
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Mapgen-1920-20261026T120127Z\\Player.log\"",
+      "-rc2-native-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Mapgen-1920-20261026T120127Z\""
+    ],
+    "visible": true,
+    "mode": "Mapgen",
+    "pid": 46944,
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "accessibilityClientAttached": false,
+    "height": 1080,
+    "startedUtc": "2026-10-26T12:01:27.2154830Z",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "process": {
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "startedUtc": "2026-10-26T12:01:27.2154830Z",
+      "finishedUtc": "2026-10-26T12:01:40.2486932Z",
+      "mode": "Mapgen",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "file": "rc2-native-result.json",
+        "status": "Passed",
+        "method": "API-controlled real R3/R6 forces and real AI/player projectiles; explicit core-damage win/loss settlement; NOT human gameplay or an unassisted combat victory",
+        "errors": [],
+        "observations": 20,
+        "distinctChecks": 19,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T12:01:29.9974369Z",
+          "finishedUtc": "2026-10-26T12:01:39.1572980Z",
+          "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+          "width": 1920,
+          "height": 1080,
+          "contactSamples": 185,
+          "supportedSamples": 185,
+          "maxContacts": 12,
+          "distance": 15.497041702270508,
+          "playerHpLost": 20.400390625,
+          "enemyHpLost": 40.0,
+          "start": {
+            "x": 0.0,
+            "y": 1.0341801643371582,
+            "z": -25.0
+          },
+          "last": {
+            "x": -0.009073739871382713,
+            "y": 0.6500140428543091,
+            "z": -9.887163162231445
+          },
+          "measuredEnvelope": {
+            "x": 5.180010795593262,
+            "y": 2.114000082015991,
+            "z": 4.9199981689453125
+          },
+          "firstHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+          "secondHash": "d1eae2baa61a18e2afd0b671d9d8e1434646134f245e912b992710b952532835"
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.343350212191357,
+          27.946271701388888,
+          32.760741705246915
+        ],
+        "nonBlack": true,
+        "sha256": "7e54482716f215d16e687b31429922f473edef142be36b46b25b2aa6284e599b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.3950072337963,
+          50.85762538580247,
+          54.6638671875
+        ],
+        "nonBlack": true,
+        "sha256": "fcdb3797d062f25344dff1e46f0be6f09404b46c138e4158534e6ea288bba58b"
+      },
+      {
+        "file": "02-generated-start.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.30782552083333,
+          67.47765528549382,
+          72.87716386959876
+        ],
+        "nonBlack": true,
+        "sha256": "ae7e16de5f10b6c7eee3648731e92ebdfaa4d5419d5ac5bb8dc1f2327f447e2c"
+      },
+      {
+        "file": "03-real-drive-projectile-damage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          53.121699459876545,
+          66.34832127700618,
+          71.34513937114197
+        ],
+        "nonBlack": true,
+        "sha256": "0c2389d3e666f604b189fad6cc86e5fe1cf01c5a578247e946d71ba08a0ee5f9"
+      },
+      {
+        "file": "04-rewards.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.49738667052469,
+          27.581224922839507,
+          32.642959587191356
+        ],
+        "nonBlack": true,
+        "sha256": "6de0117dc23ad23d0906e84b24ea50a61b739365d291743cc5089dfa6d309e75"
+      },
+      {
+        "file": "05-repaired-mounted-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.73629774305556,
+          51.26176359953703,
+          54.65113618827161
+        ],
+        "nonBlack": true,
+        "sha256": "8104a2b94fd65edfa16d298f3107241f76fb496fe26b4464e66b6692d4e1bfc7"
+      },
+      {
+        "file": "06-regenerated31.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          55.29781153549383,
+          70.71146074459877,
+          74.28236930941358
+        ],
+        "nonBlack": true,
+        "sha256": "53ea9ecef63b0db5390c1ea21850ab3a5c090757561cc69024e323fe6c2e2c3a"
+      },
+      {
+        "file": "07-defeat.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          15.383323206018519,
+          21.27610580632716,
+          26.205413290895063
+        ],
+        "nonBlack": true,
+        "sha256": "42f245e89bb64b3ec222660a08b79da544f0c39fe277943382bfd302fd6db604"
+      },
+      {
+        "file": "08-restarted-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.343350212191357,
+          27.946271701388888,
+          32.760741705246915
+        ],
+        "nonBlack": true,
+        "sha256": "7e54482716f215d16e687b31429922f473edef142be36b46b25b2aa6284e599b"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Mapgen-1920-20261026T120127Z"
+  },
+  {
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "width": 1280,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+    "mode": "Reactor",
+    "accessibilityClientAttached": false,
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Reactor-1280-20261026T120154Z\\Player.log\"",
+      "-rc2-reactor-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Reactor-1280-20261026T120154Z\""
+    ],
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "startedUtc": "2026-10-26T12:01:54.0144687Z",
+    "height": 720,
+    "visible": true,
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "pid": 29628,
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-26T12:02:11.8409080Z",
+      "startedUtc": "2026-10-26T12:01:54.0144687Z",
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "mode": "Reactor"
+    },
+    "results": [
+      {
+        "file": "rc2-reactor-result.json",
+        "status": "Passed",
+        "method": "Native controlled API/physics: real AI fire, canonical HP, explicit core-damage wave completion, actual reward/garage/restart; NOT human gameplay",
+        "errors": [],
+        "observations": 364,
+        "distinctChecks": 21,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T12:01:56.7924091Z",
+          "finishedUtc": "2026-10-26T12:02:10.8592513Z",
+          "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+          "width": 1280,
+          "height": 720
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.230824652777777,
+          27.834375,
+          32.650073784722224
+        ],
+        "nonBlack": true,
+        "sha256": "29af9f621a87a82a09ceb580368d31cd79bd50e24a1c6141e5c004e81515ea8b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          13.404410807291667,
+          18.327811414930554,
+          23.06977105034722
+        ],
+        "nonBlack": true,
+        "sha256": "805b97c84e576ef71d5f8f1d8ca2d006b545c061007ec8f3c038928177a3c8db"
+      },
+      {
+        "file": "02-first-wave.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.48159071180555,
+          59.234204644097225,
+          57.11824652777778
+        ],
+        "nonBlack": true,
+        "sha256": "a1fbaef8193fbe621467803c68eb89e491b6902fb4bc8c8e74dfe427628ec28f"
+      },
+      {
+        "file": "03-real-ai-damage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          52.73761176215278,
+          55.782420789930555,
+          54.70597981770833
+        ],
+        "nonBlack": true,
+        "sha256": "124f8647ebe0073ec43d31215f18e9d9e904cf5e28aca71e00ab8f793aade632"
+      },
+      {
+        "file": "04-wave2.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          52.79026041666667,
+          55.735844184027776,
+          54.672080078125
+        ],
+        "nonBlack": true,
+        "sha256": "b79e9879dcb93e7c8e007fd7e815c848d489263cb06494e1ea03acf4fd2ee704"
+      },
+      {
+        "file": "04-wave3.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          52.68437065972222,
+          55.77448025173611,
+          54.738727213541665
+        ],
+        "nonBlack": true,
+        "sha256": "1c99931301d3776dd5fa599698bd74355a68fa29e51431fa70254eb8610e8ae3"
+      },
+      {
+        "file": "05-defense-won.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.24142035590278,
+          28.102438151041667,
+          33.04427300347222
+        ],
+        "nonBlack": true,
+        "sha256": "0d5de672c5d531c4b105ae8bb95211a87903bce3d38475036e49f08eafcf40a2"
+      },
+      {
+        "file": "06-reward-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          14.925072699652778,
+          19.327352430555557,
+          23.347165798611112
+        ],
+        "nonBlack": true,
+        "sha256": "a536738a9ce0edb38badfc7226a23e99fafaf273cc2b71d9410c6b243dccea89"
+      },
+      {
+        "file": "07-standard-fight.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          72.3578146701389,
+          73.677275390625,
+          63.50611979166667
+        ],
+        "nonBlack": true,
+        "sha256": "f3f5065f97f45537177fb33ba09b2349f09b3d9cf1dc264ee7c277283309c34e"
+      },
+      {
+        "file": "08-reactor-lost.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          16.20837456597222,
+          21.564855685763888,
+          26.16755642361111
+        ],
+        "nonBlack": true,
+        "sha256": "13f414df9b13302ad534af0a00ae089cad530c65027b7b65c2c5caa00b40f7d2"
+      },
+      {
+        "file": "09-restart-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.230824652777777,
+          27.834375,
+          32.650073784722224
+        ],
+        "nonBlack": true,
+        "sha256": "29af9f621a87a82a09ceb580368d31cd79bd50e24a1c6141e5c004e81515ea8b"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Reactor-1280-20261026T120154Z"
+  },
+  {
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Reactor-1920-20261026T120235Z\\Player.log\"",
+      "-rc2-reactor-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Reactor-1920-20261026T120235Z\""
+    ],
+    "accessibilityClientAttached": false,
+    "height": 1080,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "pid": 10568,
+    "visible": true,
+    "width": 1920,
+    "startedUtc": "2026-10-26T12:02:35.4148911Z",
+    "mode": "Reactor",
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "process": {
+      "exitCode": 0,
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "finishedUtc": "2026-10-26T12:02:53.3429021Z",
+      "startedUtc": "2026-10-26T12:02:35.4148911Z",
+      "mode": "Reactor"
+    },
+    "results": [
+      {
+        "file": "rc2-reactor-result.json",
+        "status": "Passed",
+        "method": "Native controlled API/physics: real AI fire, canonical HP, explicit core-damage wave completion, actual reward/garage/restart; NOT human gameplay",
+        "errors": [],
+        "observations": 364,
+        "distinctChecks": 21,
+        "failedChecks": [],
+        "telemetry": {
+          "status": "Passed",
+          "startedUtc": "2026-10-26T12:02:38.2756184Z",
+          "finishedUtc": "2026-10-26T12:02:52.3575109Z",
+          "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+          "width": 1920,
+          "height": 1080
+        }
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.343350212191357,
+          27.946271701388888,
+          32.760741705246915
+        ],
+        "nonBlack": true,
+        "sha256": "7e54482716f215d16e687b31429922f473edef142be36b46b25b2aa6284e599b"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.400012538580247,
+          18.322380401234568,
+          23.062747395833334
+        ],
+        "nonBlack": true,
+        "sha256": "6ebc082d341b8afbe30fb92bc5382752e1a4ab35026247e1e13542fd1119d9da"
+      },
+      {
+        "file": "02-first-wave.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.48860628858025,
+          59.22498070987654,
+          57.1082388117284
+        ],
+        "nonBlack": true,
+        "sha256": "afbb947d4cf2608a0d3e22f5fc755d2da85ecc56abf8a175419b4f93ac8ef3a1"
+      },
+      {
+        "file": "03-real-ai-damage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.71646846064815,
+          55.76271604938272,
+          54.678172743055555
+        ],
+        "nonBlack": true,
+        "sha256": "4d6ab56c43cfa0c1191032e79fd9be8791abb53a51cd97bb9c79dfbd1ad45a7a"
+      },
+      {
+        "file": "04-wave2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.78951195987654,
+          55.701400462962965,
+          54.6287427662037
+        ],
+        "nonBlack": true,
+        "sha256": "de1c47071271e573447cac24fce315cdba8c8465118581a1e5b89bfe9decbcfd"
+      },
+      {
+        "file": "04-wave3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.688037229938274,
+          55.73780623070988,
+          54.6917365933642
+        ],
+        "nonBlack": true,
+        "sha256": "2e64a7826aa3f6f12c0978e06f4acf215b770674bffb860fed16ac38d2618ff1"
+      },
+      {
+        "file": "05-defense-won.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.30529755015432,
+          28.163857060185187,
+          33.10392505787037
+        ],
+        "nonBlack": true,
+        "sha256": "ff557a362c114b4711e018e4a653891dae1b7b062ad0426d956e1d84eb003759"
+      },
+      {
+        "file": "06-reward-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.924785397376544,
+          19.325227141203705,
+          23.342733892746914
+        ],
+        "nonBlack": true,
+        "sha256": "7ad83d28b3825a79f39eff4023900b61ad303f751b3f86c0729b76d0d2cdcc8b"
+      },
+      {
+        "file": "07-standard-fight.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          72.36546151620371,
+          73.67874469521605,
+          63.50103587962963
+        ],
+        "nonBlack": true,
+        "sha256": "5ce30f6ce6f28b4b480bef8e7690024475da211c168d7bc012cde8ae073a7c52"
+      },
+      {
+        "file": "08-reactor-lost.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          16.232467206790123,
+          21.589276138117285,
+          26.191493537808643
+        ],
+        "nonBlack": true,
+        "sha256": "0c41718ee59c3ce063a3f226203736a5b62e19600ec74977df116ea885755310"
+      },
+      {
+        "file": "09-restart-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.343350212191357,
+          27.946271701388888,
+          32.760741705246915
+        ],
+        "nonBlack": true,
+        "sha256": "7e54482716f215d16e687b31429922f473edef142be36b46b25b2aa6284e599b"
+      }
+    ],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Reactor-1920-20261026T120235Z"
+  },
+  {
+    "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+    "mode": "Retail",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Retail-1280-20261026T120504Z\\Player.log\""
+    ],
+    "height": 720,
+    "pid": 39968,
+    "executable": "C:/Users/kubap/Desktop/Prototypy/Releases/B01_UNIFIED_RC2_20261026/RoboRougelike_B01_UNIFIED_RC2_Windows_x64-VerifiedExtract/RoboRougelike.exe",
+    "width": 1280,
+    "visible": true,
+    "startedUtc": "2026-10-26T12:05:04.6328273Z",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "process": null,
+    "results": [],
+    "screenshots": [],
+    "logErrorLines": [],
+    "evidence": "Docs/B01_RC2/Windows/RC2-Windows-Retail-1280-20261026T120504Z"
+  }
+]

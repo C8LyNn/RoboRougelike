@@ -1,0 +1,26 @@
+{
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Builds\\B01-UNIFIED-RC2\\RoboRougelike.exe",
+  "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+  "startedUtc": "2026-10-26T11:55:37.9712980Z",
+  "visible": true,
+  "width": 1280,
+  "pid": 2780,
+  "args": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1280,
+    "-screen-height",
+    720,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1280-20261026T115537Z\\Player.log\"",
+    "-rc2-input-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-B01-Unified-RC2\\Artifacts\\Local\\RC2-Windows-Input-1280-20261026T115537Z\""
+  ],
+  "mode": "Input",
+  "accessibilityClientAttached": false,
+  "assemblySHA256": "9250338FA8FF71D153875CEA35678F992D1C94461EF4A6C10BFEDD978C465910",
+  "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+  "height": 720
+}

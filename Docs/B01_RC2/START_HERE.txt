@@ -1,0 +1,25 @@
+RoboRougelike B01 UNIFIED RC2 / Windows x64
+Unity 6000.3.14f1 / one shared game
+
+Wypakuj CALY ZIP do jednego folderu i uruchom RoboRougelike.exe.
+Nie przenos samego EXE: folder Data, MonoBleedingEdge i biblioteki DLL musza pozostac obok.
+
+Wybierz pojazd i kliknij Przygotuj pojazd (lub Enter). W garazu zamontuj/napraw czesci,
+a potem wybierz trase wyprawy, generowana arene lub obrone reaktora. Poligon jest w tym samym garazu.
+Wspolne pojazdy, stan czesci, waluta i nagrody: jeden bonus + od 0 do 3 czesci przeciwnika.
+Po zwyciestwie wroc do garazu i wybierz kolejna aktywnosc. Nowa proba resetuje bieg wyprawy.
+
+Sterowanie: WASD jazda/hamowanie; mysz celowanie; LPM ogien; Esc pauza/wznowienie.
+Garaz: wskaz rzeczywisty element, wybierz narzedzie i obracaj czesc X/Y/Z przyciskami.
+PPM nie ma przypisanej drugiej grupy broni w tej wersji. Zapis trwalej wyprawy nie jest obslugiwany.
+Wyjscie: Alt+F4.
+
+Aktywne: dotychczasowy R3/R6/PHY, garaz/1x2x2/XYZ, bron/obrona/sensory/napedy,
+6-etapowa wyprawa, 3-falowa obrona reaktora, generowana CombatArena R3.4.1,
+MAPGENWORLD1.0.1 oraz kanoniczne rozliczenie nagrod z KEEP3 i stabilnymi ID czesci.
+Poza tym RC: nowy BUILD R1.3, RAC, CAMERA R1.2.1, LEGENDARY i ECONREBUILD.
+
+Release Candidate do odbioru. Brak merge main/develop i brak deklaracji G2.
+Znany C0000005 przy automatyzacji zamykania nie zostal uznany za naprawiony.
+Raport i blokery: Draft PR258 https://github.com/C8LyNn/RoboRougelike/pull/258
+Kod gry:46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f
