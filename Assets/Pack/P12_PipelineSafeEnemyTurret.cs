@@ -553,6 +553,15 @@ namespace RogueMachine.P12PipelineSafe
             yawPivot=null;muzzle=null;
         }
 
+        private Bounds movementBounds=new Bounds(Vector3.zero,new Vector3(76,100,76));
+        public Bounds MovementBounds=>movementBounds;
+        public void ConfigureMovementBounds(Bounds bounds)
+        {
+            if(!(bounds.size.x>0&&bounds.size.z>0)||float.IsNaN(bounds.center.x)||float.IsNaN(bounds.center.z)||
+                float.IsInfinity(bounds.center.x)||float.IsInfinity(bounds.center.z)||float.IsInfinity(bounds.size.x)||float.IsInfinity(bounds.size.z))
+                throw new System.ArgumentException("Invalid encounter movement bounds");
+            movementBounds=bounds;
+        }
         private void FixedUpdate()
         {
             var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
@@ -598,13 +607,13 @@ namespace RogueMachine.P12PipelineSafe
             }
             else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f))desired=obstacleTangent;
             Vector3 next = movementBody.position + desired * step;
-            if(Mathf.Abs(next.x)>38)desired.x=0;
-            if(Mathf.Abs(next.z)>38)desired.z=0;
-            if(desired.sqrMagnitude<0.001f)desired=Vector3.ProjectOnPlane(-movementBody.position,Vector3.up).normalized;
+            if((next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0))desired.x=0;
+            if((next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0))desired.z=0;
+            if(desired.sqrMagnitude<0.001f)desired=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
             desired.Normalize();
             if (!CanMove(desired, step + 0.08f)) return;
             next=movementBody.position+desired*step;
-            next.x=Mathf.Clamp(next.x,-38,38);next.z=Mathf.Clamp(next.z,-38,38);
+            next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)drive.StepWorld(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor));
         }
 

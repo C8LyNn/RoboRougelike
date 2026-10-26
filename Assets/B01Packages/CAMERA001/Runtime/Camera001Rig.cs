@@ -40,6 +40,16 @@ namespace B01.CAMERA001
         // Receiver-only semantic filter (for transient projectiles/wreckage).
         // Null preserves the standalone package policy and its original tests.
         public Func<Collider,bool> WorldColliderFilter {get;set;}
+        public bool RequireFullHullFraming {get;set;}
+        public float ReceiverFitDistance {get;private set;}
+        public bool ReceiverFramingSaturated {get;private set;}
+        float receiverFollowSpeed;
+        public float ReceiverFollowSpeed {
+            get=>receiverFollowSpeed;
+            set=>receiverFollowSpeed=float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Clamp(value,0,100);
+        }
+        public float EffectiveContinuousSpeedLimit=>Mathf.Max(Mathf.Max(.1f,maxContinuousSpeed),
+            receiverFollowSpeed>maxContinuousSpeed?receiverFollowSpeed+3:0);
 
         public void Configure(Transform root, Camera camera)
         {
@@ -98,6 +108,23 @@ namespace B01.CAMERA001
                 AimLead = Mathf.Max(0f, aimLead)
             };
             LastSolution = Camera001Framing.Solve(request);
+            ReceiverFitDistance=LastSolution.FitDistance;
+            ReceiverFramingSaturated=LastSolution.FitSaturated;
+            if(RequireFullHullFraming){
+                // Receiver correction uses this rig's authoritative request.
+                // Centre-only fit omitted the ABOVE/AHEAD aim offset.
+                float tanY=Mathf.Tan(request.VerticalFovDegrees*Mathf.Deg2Rad*.5f)*.86f;
+                float tanX=tanY*request.Aspect;
+                foreach(int x in new[]{-1,1})foreach(int y in new[]{-1,1})foreach(int z in new[]{-1,1}){
+                    var corner=bounds.center+Vector3.Scale(bounds.extents,new Vector3(x,y,z));
+                    var v=Quaternion.Inverse(LastSolution.Rotation)*(corner-LastSolution.AimWorld);
+                    ReceiverFitDistance=Mathf.Max(ReceiverFitDistance,Mathf.Abs(v.x)/tanX-v.z,
+                        Mathf.Abs(v.y)/tanY-v.z,attachedCamera.nearClipPlane+.01f-v.z);
+                }
+                request.RequestedDistance=Mathf.Clamp(Mathf.Max(request.RequestedDistance,ReceiverFitDistance),request.MinimumDistance,request.MaximumDistance);
+                LastSolution=Camera001Framing.Solve(request);
+                ReceiverFramingSaturated=ReceiverFitDistance>request.MaximumDistance;
+            }
             Vector3 aim = LastSolution.AimWorld;
             Vector3 away = LastSolution.DesiredCameraWorld - aim;
             float length = away.magnitude;
@@ -137,7 +164,7 @@ namespace B01.CAMERA001
                 // A genuine orbit/follow update can never traverse 9m in one
                 // ordinary frame; intentional Configure/ResetSmoothing is distinct.
                 candidate = Vector3.MoveTowards(previous, eased,
-                    Mathf.Max(.1f, maxContinuousSpeed) * deltaTime);
+                    EffectiveContinuousSpeedLimit * deltaTime);
                 Vector3 movement = candidate - previous;
                 float distance = movement.magnitude;
                 if (distance > .00001f)

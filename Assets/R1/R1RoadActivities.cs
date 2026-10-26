@@ -81,6 +81,7 @@ namespace RoboRougelike.R1
                 return center+new Vector3(Mathf.Cos(angle)*12,.7f,Mathf.Sin(angle)*12);
             }).ToArray();
             Encounter.Spawn(enemyTemplate,Player.transform,CurrentEncounter,Salvage,runId+"/roads/"+Progress.EncounterIndex+"/wave/"+roadWave,spawns);
+            foreach(var enemy in Encounter.Enemies)enemy.ConfigureMovementBounds(new Bounds(center,new Vector3(34,100,34)));
         }
         bool UpdateRoadChallenge()
         {

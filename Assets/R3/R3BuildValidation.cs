@@ -8,7 +8,7 @@ using UnityEngine;
 namespace RoboRougelike.R3
 {
     // Receiver policy only. R3 remains the sole inventory/wallet/HP owner.
-    public sealed class R3BuildValidation : MonoBehaviour
+    public sealed partial class R3BuildValidation : MonoBehaviour
     {
         R3VehicleAssembly assembly;
         R3VehicleModel model;
@@ -22,6 +22,7 @@ namespace RoboRougelike.R3
             var gate=actual.GetComponent<R3BuildValidation>()??actual.gameObject.AddComponent<R3BuildValidation>();
             gate.assembly=actual;gate.model=canonical;
             canonical.SetInstallationGate(candidate=>gate!=null?gate.Validate(candidate):"Brak rzeczywistego pojazdu do walidacji montażu.");
+            canonical.SetRestorationGate(parts=>gate!=null&&gate.ValidateRestoration(parts));
         }
         BuildDefinition Definition(R3PartState part)
         {
@@ -70,13 +71,7 @@ namespace RoboRougelike.R3
             try
             {
                 // Exact existing R3 cube/wide/payload geometry; no controller, HP, body or forces.
-                probe=GameObject.CreatePrimitive(PrimitiveType.Cube);probe.name="R3 temporary installation geometry";
-                probe.transform.SetParent(transform,false);probe.transform.localPosition=(Vector3)candidate.Cell*R41PartGeometry.Grid;
-                probe.transform.localRotation=R3MountingGrid.Rotation(candidate.RotationQuarterTurns);
-                probe.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
-                if(R3VehicleModel.UsesWideFootprint(candidate.Kind))R3BonusModuleGeometry.ConfigureCube(probe,true);
-                else R41PartGeometry.Payload(probe.transform,candidate.Kind,candidate.Weapon,null,true,out _);
-                foreach(var renderer in probe.GetComponentsInChildren<Renderer>())renderer.enabled=false;
+                probe=CreateProbe(candidate);
                 var candidateColliders=probe.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger).ToArray();
                 Physics.SyncTransforms();var neighbors=new HashSet<Collider>();
                 // Allocating broadphase returns ALL candidates; no fixed buffer/truncation PASS.

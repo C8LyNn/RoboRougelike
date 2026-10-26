@@ -88,5 +88,23 @@ public sealed class FullMergeActivityTests
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(1));
         Assert.That(Get("CheckpointRace"),Is.Null);Assert.That(run.GeneratedWorld,Is.Null);
     }
+    [UnityTest] public IEnumerator ApiControlledFallCannotWinSurvivalInTheVoid()
+    {
+        Assert.That(run.ChooseRoadChallenge(MapR4Mode.Survival),Is.True);yield return Ready();
+        run.RoadChallenge.Tick(29.9f);var body=run.Player.GetComponent<Rigidbody>();
+        // Explicit API failure fixture; real road traversals are separate Player tests.
+        body.position=new Vector3(body.position.x,-8,body.position.z);Physics.SyncTransforms();
+        yield return null;yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Lost));Assert.That(run.Progress.CompletedEncounters,Is.Zero);
+        Assert.That(run.RoadWorld,Is.Null);Assert.That(run.VehicleModel.Inventory,Is.Empty);
+    }
+    [UnityTest] public IEnumerator RoadEnemiesUseActualArenaBoundsAndReallyMoveOutsideOldOriginBox()
+    {
+        Assert.That(run.ChooseRoadChallenge(MapR4Mode.Survival),Is.True);yield return Ready();
+        var enemies=run.Encounter.Enemies.ToArray();Assert.That(enemies.Length,Is.GreaterThanOrEqualTo(2));
+        foreach(var enemy in enemies)Assert.That(enemy.MovementBounds.center.x,Is.EqualTo(45).Within(.01f));
+        var positions=enemies.Select(e=>e.transform.position).ToArray();yield return new WaitForSeconds(2);
+        Assert.That(enemies.Select((e,i)=>Vector3.Distance(e.transform.position,positions[i])).Max(),Is.GreaterThan(.1f));
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

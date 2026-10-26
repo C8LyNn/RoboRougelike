@@ -54,7 +54,16 @@ namespace RoboRougelike.R4_1
             {
                 var wheel=Primitive(PrimitiveType.Cylinder,block,material,solid,"Koło").transform;
                 wheel.localPosition=new Vector3(0,-0.5f,0);wheel.localRotation=Quaternion.Euler(0,0,90);
-                wheel.localScale=new Vector3(1.5f,0.35f,1.5f);return wheel;
+                wheel.localScale=new Vector3(1.5f,0.35f,1.5f);
+                if(solid){
+                    // A short CapsuleCollider becomes a sphere under this axle
+                    // scale and penetrates the supporting armor by ~10cm.
+                    // Use the existing rendered cylinder as its convex shape.
+                    var capsule=wheel.GetComponent<Collider>();capsule.enabled=false;Object.Destroy(capsule);
+                    var tire=wheel.gameObject.AddComponent<MeshCollider>();
+                    tire.sharedMesh=wheel.GetComponent<MeshFilter>().sharedMesh;tire.convex=true;
+                }
+                return wheel;
             }
             if(kind!=R3PartKind.Gun)return null;
             var pivot=new GameObject("Obrót broni").transform;pivot.SetParent(block,false);pivot.localPosition=Vector3.up*0.6f;

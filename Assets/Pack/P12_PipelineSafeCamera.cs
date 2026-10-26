@@ -22,7 +22,7 @@ namespace RogueMachine.P12PipelineSafe
         {
             if(rig!=null)return;
             rig=GetComponent<Camera001Rig>()??gameObject.AddComponent<Camera001Rig>();
-            rig.enabled=false;rig.WorldColliderFilter=IsCameraWorld;
+            rig.enabled=false;rig.WorldColliderFilter=IsCameraWorld;rig.RequireFullHullFraming=true;
         }
         static bool IsCameraWorld(Collider c)=>c.GetComponentInParent<RoboRougelike.R3.R3Debris>()==null&&
             c.GetComponentInParent<P17PhysicalShell>()==null&&
@@ -58,7 +58,9 @@ namespace RogueMachine.P12PipelineSafe
         void LateUpdate()
         {
             if(!gameplayInputEnabled||targetRoot==null||pivot==null)return;
-            EnsureRig();rig.SetOrbit(yaw,Mathf.Max(18,pitch),distance);rig.StepCamera(Time.deltaTime);
+            EnsureRig();var body=targetRoot.GetComponent<Rigidbody>();
+            rig.ReceiverFollowSpeed=body!=null?body.linearVelocity.magnitude:0;
+            rig.SetOrbit(yaw,Mathf.Max(18,pitch),distance);rig.StepCamera(Time.deltaTime);
         }
         void ApplyCursor(){Cursor.lockState=cursorLocked?CursorLockMode.Locked:CursorLockMode.None;Cursor.visible=!cursorLocked;}
     }

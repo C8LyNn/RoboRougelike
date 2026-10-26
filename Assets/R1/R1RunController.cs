@@ -202,7 +202,7 @@ namespace RoboRougelike.R1
             var position=Player!=null?Player.transform.position:playerSpawn;
             var rotation=Player!=null?Player.transform.rotation:playerRotation;
             var gunPoses=Player!=null?Player.GetComponent<R3VehicleAssembly>().Parts
-                .Where(p=>p!=null&&p.GunPivot!=null).ToDictionary(p=>p.Id,p=>p.GunPivot.localRotation):null;
+                .Where(p=>p!=null&&p.Operational&&p.GunPivot!=null&&p.transform.IsChildOf(Player.transform)).ToDictionary(p=>p.Id,p=>p.GunPivot.localRotation):null;
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             R1EncounterManager.ClearTransientObjects();
             Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,position,rotation);

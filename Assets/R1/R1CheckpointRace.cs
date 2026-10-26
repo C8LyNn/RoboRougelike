@@ -36,7 +36,7 @@ namespace RoboRougelike.R1
             if(Progress.State==R1RunState.Garage&&!StartNextEncounter()){generatedArena.ClearWorld();return false;}
             if(!Progress.ChooseRoute()){generatedArena.ClearWorld();return false;}
             CurrentEncounter=JsonUtility.FromJson<R1EncounterDefinition>(JsonUtility.ToJson(RouteOffers[0]));
-            CurrentEncounter.Id="RAC001/"+CurrentEncounter.Id;CurrentEncounter.Title="Wyścig przez checkpointy";
+            CurrentEncounter.Id="RAC001/"+CurrentEncounter.Id;CurrentEncounter.Title="Wyścig checkpointów";
             CurrentEncounter.Rule="Przejedź kolejno przez bramki i metę • 180 s";
             Definition.Encounters[Progress.EncounterIndex]=CurrentEncounter;
             reactorRequested=false;ReactorPrepared=false;LastActivityWasReactor=false;
@@ -68,6 +68,10 @@ namespace RoboRougelike.R1
         }
         string FullActivityDefeat()
         {
+            if(Player!=null&&(RoadWorld!=null||GeneratedWorld!=null)){
+                float floor=RoadWorld!=null?roadMap.nodes.Min(n=>n.position.y):Mathf.Min(GeneratedWorld.Start.y,GeneratedWorld.Finish.y)-1.25f;
+                if(Player.GetComponent<Rigidbody>().position.y<floor-6)return "Pojazd wypadł poza mapę.";
+            }
             if(CheckpointRace!=null&&(CheckpointRace.Phase==RacePhase.TimedOut||CheckpointRace.Phase==RacePhase.Invalidated))return "Wyścig zakończony: "+CheckpointRace.Phase;
             if(RoadChallenge?.Status==MapR4Status.Failed)return "Wyzwanie drogowe: "+RoadChallenge.Resolution;
             return null;

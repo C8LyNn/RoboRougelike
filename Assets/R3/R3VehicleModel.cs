@@ -69,6 +69,8 @@ namespace RoboRougelike.R3
         public int Scrap { get; private set; }
         private Func<R3PartState,string> installationGate;
         internal void SetInstallationGate(Func<R3PartState,string> gate) { installationGate=gate; }
+        private Func<IReadOnlyList<R3PartState>,bool> restorationGate;
+        internal void SetRestorationGate(Func<IReadOnlyList<R3PartState>,bool> gate){restorationGate=gate;}
         public bool SuspensionEnabled = true;
         public RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode SuspensionMode = RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode.FullSupport;
         public float SuspensionHeightOffset;
@@ -177,6 +179,7 @@ namespace RoboRougelike.R3
             if (part == null || price <= 0 || Scrap < price) return false;
             if (part.Health<=0&&!HasAliveExternalNeighbour(part.Cell,part.Kind,
                 part.RotationQuarterTurns,part.ContactMask))return false;
+            if(part.Health<=0&&restorationGate!=null&&!restorationGate(new[]{part}))return false;
             Scrap -= price; part.Health = 1; return true;
         }
         public int RepairAffordable()
@@ -314,6 +317,7 @@ namespace RoboRougelike.R3
             if(plan==null||plan.Count==0)return false;
             int price=plan.Sum(RepairCost);
             if(Scrap<price)return false;
+            if(restorationGate!=null&&!restorationGate(plan))return false;
             Scrap-=price;
             foreach(var part in plan)part.Health=1;
             return true;
