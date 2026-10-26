@@ -15,6 +15,8 @@ import source_intake
 
 BUILD=os.environ.get('B01_BUILD_R13_ARTIFACT','/mnt/data/BUILD_R13_PRODUCER_ARTIFACT.zip')
 WORLD=os.environ.get('B01_WORLD_R2_ARTIFACT','/mnt/data/MAPGENWORLD_R2_PRODUCER_ARTIFACT.zip')
+KEEP=os.environ.get('B01_KEEP3_ARTIFACT','/mnt/data/B01_KEEP3_SOURCE_ARTIFACT.zip')
+ECON=os.environ.get('B01_ECON_ARTIFACT','/mnt/data/B01_ECON_SOURCE_ARTIFACT.zip')
 
 class GateTests(unittest.TestCase):
  def setUp(self):
@@ -134,6 +136,38 @@ class GateTests(unittest.TestCase):
   d=self._git_fixture('pack')
   with patch.object(gate,'git_tree',side_effect=lambda _repo,ref:d[ref]):
    with self.assertRaisesRegex(gate.GateError,'UNREVIEWED_PACK_CHANGE'):gate.inspect_git_source(self.root,{k:k for k in gate.PINS})
+ def test_25_real_keep3_unity_source_zip(self):
+  if not Path(KEEP).exists():self.skipTest('requires real Actions artifact')
+  self.assertEqual(source_intake.audit_domain_artifact(KEEP,'REWARDKEEP3')['manifest_file_hashes_pass'],16)
+ def test_26_real_econ_unity_source_zip(self):
+  if not Path(ECON).exists():self.skipTest('requires real Actions artifact')
+  self.assertEqual(source_intake.audit_domain_artifact(ECON,'ECONREBUILD')['guid_unique'],11)
+ def test_27_external_domain_manifest_missing_rejected(self):
+  if not Path(KEEP).exists():self.skipTest('requires real Actions artifact')
+  fake=self.root/'no-manifest.zip'
+  with zipfile.ZipFile(KEEP) as z,zipfile.ZipFile(fake,'w') as o:
+   for n in z.namelist():
+    if n!='source-manifest.json':o.writestr(n,z.read(n))
+  with self.assertRaisesRegex(gate.GateError,'DOMAIN_EXTERNAL_MANIFEST_OR_ZIP_MISSING'):source_intake.audit_domain_artifact(fake,'REWARDKEEP3')
+ def test_28_external_domain_source_sha_forged_rejected(self):
+  if not Path(ECON).exists():self.skipTest('requires real Actions artifact')
+  fake=self.root/'wrong-source.zip'
+  with zipfile.ZipFile(ECON) as z,zipfile.ZipFile(fake,'w') as o:
+   for n in z.namelist():
+    b=z.read(n)
+    if n=='source-manifest.json':
+     j=json.loads(b);j['commit_sha']='0'*40;b=json.dumps(j).encode()
+    o.writestr(n,b)
+  with self.assertRaisesRegex(gate.GateError,'DOMAIN_STALE_SOURCE_SHA'):source_intake.audit_domain_artifact(fake,'ECONREBUILD')
+ def test_29_external_domain_modified_inner_zip_rejected(self):
+  if not Path(KEEP).exists():self.skipTest('requires real Actions artifact')
+  fake=self.root/'tampered-domain.zip'
+  with zipfile.ZipFile(KEEP) as z,zipfile.ZipFile(fake,'w') as o:
+   for n in z.namelist():
+    b=z.read(n)
+    if n=='REWARDKEEP3001_Unity_Source.zip':b=b[:-1]+bytes([b[-1]^1])
+    o.writestr(n,b)
+  with self.assertRaisesRegex(gate.GateError,'DOMAIN_ZIP_SHA_MISMATCH'):source_intake.audit_domain_artifact(fake,'REWARDKEEP3')
  def test_20_no_release_artifact_claimed_without_file(self):
   result=gate.main(['--report',str(self.root/'result.json')])
   self.assertEqual(result,0)

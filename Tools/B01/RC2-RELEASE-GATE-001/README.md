@@ -6,6 +6,8 @@ Executable, read-only, **fail-closed receiver**, not a second game integrator. P
 
 `python source_intake.py BUILD_R13 /path/to/Actions-BUILD-wrapper.zip` and `python source_intake.py MAPGENWORLD_R2 /path/to/Actions-WORLD-wrapper.zip`. Each also accepts the intact producer INNER ZIP from `actions/download-artifact`. Required exact sources: BUILD R1.3 `be54b4a33360cbd1923ae5dacbc92dff8eaf586b`; WORLD R2 `5ce9d806d7fc7eb0ab2ef7b586626404c346174f`. Entire ZIP SHA256+length, all 55+36 file records, asmdef/GUID/meta, trusted source head and upstream dependency checked. No native Unity is run. B01-23's new R1.4 supersedes R1.3 for actual functional fix as soon as frozen; rerun this gate for its **new** archive, not reusing old hashes.
 
+**Additional owner-only source-only gates:** real REWARDKEEP3 #257 final `6bb6796ee3ad88a015fb6c8d033023c0ee3b5e94` and ECONREBUILD #252 `12572117a3dce369257feabc57021cde58023369`: `python source_intake.py REWARDKEEP3 <Actions-wrapper.zip>` and `python source_intake.py ECONREBUILD <Actions-wrapper.zip>`. Each requires *the actual external* `source-manifest.json`, an exact deterministic Unity ZIP, 16/16 independently hashed bytes, 11 GUID and two asmdefs. The ZIP cannot be verified independently without the manifest wrapper. **ECON native G1 NOT_RUN**; KEEP3 full RC2 receiver native evidence belongs to Codex; independently reviewing its source hash is not own Unity G1.
+
 ## RC2 actual Windows retail ZIP (requires file on Windows PC)
 
 The original RC2 release ZIP is **not available in this B01-40 session**. Do not mark it verified from the published JSON/ZIP digest. On an isolated local Windows copy with user permission:

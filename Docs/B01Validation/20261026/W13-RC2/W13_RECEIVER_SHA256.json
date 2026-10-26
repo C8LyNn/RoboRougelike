@@ -8,23 +8,23 @@
   "files": [
     {
       "path": ".github/workflows/b01-40-w13-rc2-release-gate.yml",
-      "bytes": 2381,
-      "sha256": "4f04cb48c629c5e74f9755d504d4f474811d37586904f5b10961c95b0bc7cc44"
+      "bytes": 4033,
+      "sha256": "5fd365076fba914f43a474a6d0b6d967657d33d0893e337a8c31553edb82caef"
     },
     {
       "path": "Docs/B01Validation/20261026/W13-RC2/LOCAL_TEST_RESULTS.json",
-      "bytes": 283,
-      "sha256": "eff82a7a549cb2c91ddd6ffc12a2862ff8f52c43442507ed0861dadc96326e9f"
+      "bytes": 321,
+      "sha256": "c31c66ab1cbeae721143f61c778257e0d042e36e18ceac45317f80776ad5e324"
     },
     {
       "path": "Docs/B01Validation/20261026/W13-RC2/W13_RC2_SOURCE_RECEIVER.md",
-      "bytes": 3398,
-      "sha256": "65863333180398c87cd00df7c0bae4bbea4b088e5665080031d015765b63d0d4"
+      "bytes": 4289,
+      "sha256": "b56a3aa7cd4558baa545542f11dce67b58f9b5312f94bd55867b99a1dffabfe4"
     },
     {
       "path": "Tools/B01/RC2-RELEASE-GATE-001/README.md",
-      "bytes": 3884,
-      "sha256": "775ba61e7a53f2ae38a268d7ad2e2ed4ef3f0aeaaaa10e8d225826abebb96de7"
+      "bytes": 4562,
+      "sha256": "77f3efc39a1d9364f2db66f56dec883e1020c44ca03e57a19fc35b0df4951c7b"
     },
     {
       "path": "Tools/B01/RC2-RELEASE-GATE-001/RECEIVER_HANDOFF_FOR_CODEX.md",
@@ -38,13 +38,13 @@
     },
     {
       "path": "Tools/B01/RC2-RELEASE-GATE-001/source_intake.py",
-      "bytes": 5197,
-      "sha256": "5bcefdf9b0c6b99293b30ccf00aeb57eaae6860298322082185c29d4bd855264"
+      "bytes": 7693,
+      "sha256": "5a2676bd5bb7a7c973b811dea0c47d284a37477de048e3b6d59df4dbda7802b6"
     },
     {
       "path": "Tools/B01/RC2-RELEASE-GATE-001/tests/test_rc2_gate.py",
-      "bytes": 11340,
-      "sha256": "04925e48543b532f236aeb901109cad3ab391add6cbb1d755e3ab8ec0f7bde26"
+      "bytes": 13465,
+      "sha256": "87ca7139d76dda857495b81f7e0b19c685b89d2ceeae78b0353e76c78de011d6"
     }
   ]
 }
