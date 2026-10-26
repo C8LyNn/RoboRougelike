@@ -23,7 +23,7 @@ Actual independent GitHub REST tree review against published RC2 #258 head `4f39
 
 Local unittest: **24/24 PASS**, including physical original outer/inner ZIPs and neg SHA/manifest/meta/path/casefold/GUID/dependency, real WORLD 5+2 stage/rollback, simulated interrupted upgrade after third file, protection of external edits, wrong HEAD/mismatched old asset, and original other-three-assets staging and rollback under the previously built and separately tested PACKAGE-AUTO-001. Those three are explicitly QA-only normalized from unchanged original verified asset bytes and are NOT new producer release artifacts.
 
-Windows/Ubuntu GitHub CI status must be recorded from **actual W14 run** after publishing; no CI claim from the local run, no Unity native work by B01-40.
+First actual W14 push CI uncovered a Windows-only synthetic git-worktree checkout CRLF conversion: the byte-pinned receiver correctly refused the altered `.meta` and **Windows was RED** (Ubuntu PASS). The **test fixture only** was repaired with `core.autocrlf=false`, committed `.gitattributes` `* -text`, and an explicit post-checkout byte-identity assertion. The receiver hash thresholds are unchanged. Final new CI must be inspected before PASS attribution; no Unity native work by B01-40.
 
 ## Priority and owner boundaries
 

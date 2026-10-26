@@ -67,7 +67,8 @@ class Receipts(unittest.TestCase):
 class WorldUpgrade(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.p=Path(self.tmp.name)
-        self.repo=self.p/'repo';self.repo.mkdir();git('init','-q',cwd=self.repo);git('config','user.email','test@example.com',cwd=self.repo);git('config','user.name','G0 test',cwd=self.repo)
+        self.repo=self.p/'repo';self.repo.mkdir();git('init','-q',cwd=self.repo);git('config','user.email','test@example.com',cwd=self.repo);git('config','user.name','G0 test',cwd=self.repo);git('config','core.autocrlf','false',cwd=self.repo)
+        (self.repo/'.gitattributes').write_bytes(b'* -text\n')
         self.o=self.p/'r2.zip';self.o.write_bytes(old_zip());self.n=self.p/'r11.zip';self.n.write_bytes(world_new_zip())
         for name,body in assets_from_zip(old_zip()).items():
             t=self.repo/name;t.parent.mkdir(parents=True,exist_ok=True);t.write_bytes(body)
@@ -76,6 +77,7 @@ class WorldUpgrade(unittest.TestCase):
         (self.repo/'Packages').mkdir();(self.repo/'Packages/manifest.json').write_text('{"dependencies":{"com.unity.render-pipelines.universal":"17.3.0"}}')
         git('add','.',cwd=self.repo);git('commit','-qm','synthetic frozen RC2-like reference, never active game',cwd=self.repo)
         self.head=git('rev-parse','HEAD',cwd=self.repo);self.s=self.p/'sandbox';a.create_sandbox(self.repo,self.s,self.head)
+        for k,d in assets_from_zip(old_zip()).items():self.assertEqual((self.s/k).read_bytes(),d,'Synthetic baseline must remain byte-identical even on Windows checkout: '+k)
     def test_12_plan_exact_five_and_two(self):
         result=w.plan(self.s,self.o,self.n)[-1];self.assertEqual((result['replacements'],result['additions']),(5,2))
     def test_13_real_stage_and_verified_rollback(self):
