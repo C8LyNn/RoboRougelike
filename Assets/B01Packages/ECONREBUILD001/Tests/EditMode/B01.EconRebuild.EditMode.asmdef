@@ -1,0 +1,21 @@
+{
+  "name": "B01.EconRebuild.EditMode",
+  "rootNamespace": "RoboRougelike.B01.Economy.Rebuild.Tests",
+  "references": [
+    "B01.EconRebuild.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "noEngineReferences": false
+}
