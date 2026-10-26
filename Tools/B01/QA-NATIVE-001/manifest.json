@@ -5,24 +5,24 @@
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "files": {
     ".github/workflows/b01-w12-qa-native-tools.yml": {
-      "sha256": "50473174f786b051e7219997403ee43cd7cc1f22ea192843ea4cc68ba06ef32a",
-      "bytes": 1819,
-      "git_blob_sha1": "3f8566f018b59a0d4090c13db1558e23bd7ed55c"
+      "sha256": "ae54fde2d8d5d9403beafc4cc60f49ffefbd08fabd81a96aac866dd702a2ae03",
+      "bytes": 1825,
+      "git_blob_sha1": "50ef22e3a9ef6277d857be09c115519c12f028fc"
     },
     "Tools/B01/QA-NATIVE-001/KNOWN_LIMITATIONS.md": {
-      "sha256": "b6fe8fcd641027fa17a1f32f671d66818574ac21d0adb5148b0e420b14f3190f",
-      "bytes": 1168,
-      "git_blob_sha1": "97dd5586aa8b763f211f208df98ff5ccfae30494"
+      "sha256": "ae881bee3fac519bdfb4be3619a78466147f450277ff371dccfab6874fc005a5",
+      "bytes": 1745,
+      "git_blob_sha1": "f2a1dede81d15bda1ca1e339dddaccecc1c94749"
     },
     "Tools/B01/QA-NATIVE-001/README.md": {
-      "sha256": "713a07b4a776fb4e3fe26558c0410e42a0e3b5842dc0a9a6800372ea9ca1db29",
-      "bytes": 3760,
-      "git_blob_sha1": "96dff74c9bf79c3e64f6c52bee73e2b09398355d"
+      "sha256": "22baea74dbe00839c35906579a54368aaff6babd60e58a0885835e0aacf412c1",
+      "bytes": 4183,
+      "git_blob_sha1": "a8daeae23ab4379c66ac79f1c023bcde0450b3a7"
     },
     "Tools/B01/QA-NATIVE-001/Run-NativeQA.ps1": {
-      "sha256": "a8c6140b5c150794e841985cb6388e9ade6c53a9ef0e75b8a0ad5ef108bb1da2",
-      "bytes": 4667,
-      "git_blob_sha1": "2d82149553ea13178d44b946f6c4a078e9cc7465"
+      "sha256": "7d71202e252aed931043caa0c23a7a5c264954cc6e6cc8bda0fe222681509a44",
+      "bytes": 4887,
+      "git_blob_sha1": "56d52c3a1e867cd539d8829daf6334989ff33ff7"
     },
     "Tools/B01/QA-NATIVE-001/TEST_PLAN.md": {
       "sha256": "b9b8b9041653eabc0784005b317d658952347456e21fabfc5622f23a4fbe0142",
@@ -30,9 +30,9 @@
       "git_blob_sha1": "cd20228d60c4b2f6f16883135cfed60bd8b3e5b8"
     },
     "Tools/B01/QA-NATIVE-001/plan.example.json": {
-      "sha256": "14420c69b835b9f195d7a10f002eadf29f0d0eaf67c05369680cde844a4c7f7b",
-      "bytes": 1461,
-      "git_blob_sha1": "693cf965b1110b5bf67d093e911c2b8cbc6d5496"
+      "sha256": "3f499fd0731bd2767200bcb0b955cad618a44b0dc02dfa23b67082d40604737d",
+      "bytes": 3001,
+      "git_blob_sha1": "454bb0a353ce46a1bf6d4f0beef2de2d72e0f74b"
     },
     "Tools/B01/QA-NATIVE-001/qa_native.py": {
       "sha256": "66f88e65daac8d90770964fd3ab6209e8456c866b93c7391d6d198707e25bae6",
@@ -48,22 +48,26 @@
       "sha256": "203cd83b0bc37691f4a956299e7ce7862ae8dfc1a003c9c73c84d7c81b692415",
       "bytes": 2249,
       "git_blob_sha1": "6454f5f6515a16ad0ca36a2d789827e8309d1c61"
+    },
+    "Tools/B01/QA-NATIVE-001/qa_gate_v2.py": {
+      "sha256": "edc1a9b84f119e6ee4928f087c735b6024c36f66f7fc54c558d3b1334677e8ad",
+      "bytes": 10117,
+      "git_blob_sha1": "7f2a3099d4c13e7b1c1c968e03ed89b2bb47de61"
+    },
+    "Tools/B01/QA-NATIVE-001/test_gate_v2.py": {
+      "sha256": "046b75a42a57c1441fa0cbeed7c95317cfaf9bdfce9d54a89a20621969f2341c",
+      "bytes": 9839,
+      "git_blob_sha1": "4e229ad1f56d4f62e9915de2a97448a28d46547c"
     }
   },
   "tests": {
-    "repo_ci_initial": 40222146734,
-    "windows": "13/13 PASS synthetic on initial tracked runner",
-    "linux": "13/13 PASS synthetic on initial tracked runner",
+    "linux_local": "42/42 PASS V2 adversarial cases (not Unity)",
+    "windows_ci": "PENDING",
+    "linux_ci": "PENDING",
     "native_unity": "NOT_RUN",
-    "powershell_native_runner": "NOT_RUN",
-    "new_deterministic_package_ci": "RETEST_CROSS_PLATFORM_PENDING"
+    "powershell_native_runner": "NOT_RUN"
   },
   "g2": "HOLD",
-  "local_separate_full_source_zip": {
-    "bytes": 18018,
-    "sha256": "cf3c7dc31f8089339984c09ce503898eb0273f433a784879d29ba972edfa6121",
-    "note": "Local ChatGPT archive is not byte-identical to tracked PR source; do not mix release hashes"
-  },
-  "manifest_basis_sha": "75954d32f6d2f50ce4771b74898a93efd4b8a33d",
-  "package_zip_source": "GitHub Actions generated deterministic archive of exact paths above; SHA256 emitted by CI."
+  "package_zip_source": "GitHub Actions deterministic SHA256-gated archive of exact tracked files; final receipt published by CI.",
+  "version": "2.0.0"
 }
