@@ -66,6 +66,17 @@ class W14NativeSourceFixtureTests(unittest.TestCase):
         self.assertIn("Assert.AreEqual(receipt, replay.ReplayReceipt)",text)
         self.assertIn("Assert.IsFalse(originalRoot.activeInHierarchy)",text)
         self.assertIn("adapter.ClearWorld()",text)
+    def test_w15_re_signed_seed_drift_keeps_real_world(self):
+        # Structural gate ONLY, NOT native Unity execution.
+        old=BASE.read_text(encoding="utf-8")
+        self.assertIn("W15SignedSeedGeometryContradictionKeepsLiveMap",old)
+        self.assertIn('parts[2]="31"',old)
+        self.assertIn("sha.ComputeHash(",old)
+        self.assertIn("MapWorldFailure.ReplayGeometryMismatch",old)
+        self.assertIn("Assert.AreSame(first,adapter.Current)",old)
+        self.assertIn("Assert.AreSame(existing,builder.Current)",old)
+        self.assertIn("Assert.AreEqual(0,cleared)",old)
+
     def test_native_meta_and_existing_tests_preserved(self):
         m=META.read_text(encoding="utf-8")
         self.assertIn("guid: b0121001000000000000000000000010",m)

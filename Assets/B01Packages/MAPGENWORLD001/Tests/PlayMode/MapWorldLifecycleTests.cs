@@ -109,6 +109,59 @@ namespace B01.MAPGENWORLD001.Tests
             finally {Object.Destroy(host);}
         }
 
+        [UnityTest] public IEnumerator W15SignedSeedGeometryContradictionKeepsLiveMap()
+        {
+            // Native Unity regression. A well-formed, rechecksummed save refers
+            // to a real but DIFFERENT layout. Check real builder root identity.
+            var host = new GameObject("WORLD001_W15_SignedSeedDrift");
+            var adapter = host.AddComponent<MapGenWorldAdapter>();
+            var builder = host.GetComponent<MapGenBuilder>();
+            int ready=0, cleared=0;
+            adapter.WorldReady += _ => ready++;
+            adapter.WorldCleared += _ => cleared++;
+            try
+            {
+                var request=Request(7);
+                request.Recipe=MapRecipe.ObstacleCourse;
+                Assert.IsTrue(adapter.TryGenerate(request,out var first,out var reason),
+                    "W15 baseline "+reason);
+                var alternative=Request(31);
+                alternative.Recipe=MapRecipe.ObstacleCourse;
+                var plan=MapGenPlanner.Plan(alternative.Recipe,alternative.Seed,
+                    alternative.Config,alternative.Vehicle);
+                Assert.AreNotEqual(first.GeometryHash,plan.GeometryHash,
+                    "W15 test requires two genuinely different MAPGEN layouts");
+
+                var parts=first.ReplayReceipt.Split('|');
+                parts[2]="31"; // tamper seed, retain old original geometry hash
+                var body=string.Join("|",parts,0,parts.Length-1);
+                string digest;
+                using(var sha=System.Security.Cryptography.SHA256.Create())
+                    digest=System.BitConverter.ToString(
+                        sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(body)))
+                        .Replace("-","").ToLowerInvariant();
+                var alternate=body+"|"+digest; // fully valid new checksum, not bit-flip
+                var existing=builder.Current;
+                var root=first.GeneratedRoot;
+                Assert.IsFalse(adapter.TryReplay(alternate,out var rejected,out reason));
+                Assert.AreEqual(MapWorldFailure.ReplayGeometryMismatch,reason);
+                Assert.IsNull(rejected);
+                Assert.AreSame(first,adapter.Current);
+                Assert.AreSame(existing,builder.Current);
+                Assert.AreSame(root,builder.Current.GeneratedRoot);
+                Assert.IsTrue(root.activeInHierarchy);
+                Assert.AreEqual(1,ready);
+                Assert.AreEqual(0,cleared);
+                yield return null;
+                Assert.IsTrue(root.activeInHierarchy);
+            }
+            finally
+            {
+                if (adapter != null) adapter.ClearWorld();
+                Object.Destroy(host);
+            }
+        }
+
         [UnityTest] public IEnumerator MissingMeasuredProfileAndNarrowRealLightDoNotSpawn()
         {
             var host = new GameObject("WORLD001_Negative_Test");

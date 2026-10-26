@@ -241,6 +241,57 @@ internal static class AdapterSourceTests
                 a.Current==old && b.GenerateCalls==before,
                 "bad measured envelope changed live geometry");
         });
+        // W15: a validly re-signed save may refer to another real generated
+        // layout while retaining the old geometry hash. A checksum alone is
+        // insufficient. Assert drift is detected BEFORE MapGenBuilder.Generate.
+        foreach(var mutation in new[]{"SEED_7_TO_31", "OBSTACLE_DENSITY_50_TO_100"})
+        {
+            var mode=mutation;
+            Check("W15_SIGNED_REAL_LAYOUT_DRIFT_"+mode+"_NO_SCENE_MUTATION",()=>{
+                var (a,b)=Pair();
+                int ready=0,cleared=0;
+                a.WorldReady+=_=>ready++;
+                a.WorldCleared+=_=>cleared++;
+                var initialRequest=Request(7,true); // Real planner: ObstacleCourse + measured Light 2.980m.
+                Require(a.TryGenerate(initialRequest,out var initial,out var initFailure),
+                    "W15 baseline "+initFailure);
+                var saved=initial.ReplayReceipt.Split('|');
+                var changedRequest=Request(7,true);
+                if(mode=="SEED_7_TO_31")
+                {
+                    saved[2]="31";
+                    changedRequest.Seed=31;
+                }
+                else
+                {
+                    saved[4]="100";
+                    var cfg=changedRequest.Config;
+                    cfg.ObstacleDensity=100;
+                    changedRequest.Config=cfg;
+                }
+                var changedPlan=MapGenPlanner.Plan(changedRequest.Recipe,
+                    changedRequest.Seed,changedRequest.Config,changedRequest.Vehicle);
+                Require(changedPlan.GeometryHash!=initial.GeometryHash,
+                    "test precondition: requested change must alter real producer layout");
+                string forgedButConsistentChecksum=Resign(saved);
+                Require(forgedButConsistentChecksum!=initial.ReplayReceipt,
+                    "test precondition: receipt must be distinct");
+                int calls=b.GenerateCalls;
+                var originalRoot=initial.GeneratedRoot;
+                var originalResult=b.Current;
+                Require(!a.TryReplay(forgedButConsistentChecksum,out var rejected,out var failure),
+                    "signed layout contradiction must be rejected");
+                Require(failure==MapWorldFailure.ReplayGeometryMismatch && rejected==null,
+                    "expected strict replay geometry mismatch, got "+failure);
+                Require(b.GenerateCalls==calls && a.Current==initial &&
+                    object.ReferenceEquals(b.Current,originalResult) &&
+                    object.ReferenceEquals(initial.GeneratedRoot,originalRoot) &&
+                    originalRoot.activeInHierarchy,"rejected replay modified real current world");
+                Require(ready==1 && cleared==0,"rejected replay sent scene callbacks");
+                Require(a.LastFailure==MapWorldFailure.ReplayGeometryMismatch,
+                    "LastFailure must preserve exact replay cause");
+            });
+        }
         var n=results.Count(x=>x.StartsWith("FAIL"));
         string file=args.Length>0?args[0]:"mapworld-adapter-fake-results.json";
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(file)));

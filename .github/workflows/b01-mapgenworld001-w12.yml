@@ -72,8 +72,8 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'MAPWORLD_SOURCE_RESULT total=31 pass=31 fail=0' mapgenworld-evidence/source-console.log
-          grep -q 'ADAPTER_SOURCE_RESULT total=28 pass=28 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
-          grep -q 'Ran 18 tests' mapgenworld-evidence/package-tests.log
+          grep -q 'ADAPTER_SOURCE_RESULT total=30 pass=30 fail=0' mapgenworld-evidence/adapter-synthetic-console.log
+          grep -q 'Ran 19 tests' mapgenworld-evidence/package-tests.log
           python3 - <<'PY'
           import json
           from pathlib import Path
