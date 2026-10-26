@@ -21,15 +21,17 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
 {
     [Serializable] public sealed class Result {
         public string status="Running",mode,vehicle,method="API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",graphics,startedUtc,finishedUtc;
-        public int width,height,frames,contacts,maxContacts,selfRayHits,worldOverlaps,shots,completed;
-        public float distance,peakAimError,peakCameraStep,peakFrameMs,meanFrameMs;
+        public int width,height,frames,contacts,maxContacts,selfRayHits,worldOverlaps,shots,completed,detachedParts,enemyShots,maxAliveEnemies,saturatedFrames,offscreenHullFrames,continuousSpeedViolations;
+        public float distance,peakAimError,settledAimError,peakCameraStep,peakFrameMs,meanFrameMs,maxEnemyMovement;
         public Vector3 finalPosition;
+        public bool settledAimObserved;
         public List<string> checks=new List<string>(),errors=new List<string>();
     }
     Result result=new Result();string output,mode,vehicle;R1RunController run,oldRun;Rigidbody body;R6VehicleDrive drive;
     R3VehicleAssembly assembly;P12PipelineSafeCamera follow;readonly List<Vector3> path=new List<Vector3>();int target,phase,activity;
     float entered,deadline,lastTrace,lastKill;Vector3 previous;StreamWriter trace,aim;
     readonly HashSet<int> shots=new HashSet<int>();bool finished;Camera001AimTimeline timeline=new Camera001AimTimeline(65536);
+    readonly HashSet<int> hostileShots=new HashSet<int>();readonly Dictionary<int,Vector3> enemyStarts=new Dictionary<int,Vector3>();bool detached;
     Keyboard keyboard;Mouse mouse;
     static readonly BindingFlags fields=BindingFlags.Instance|BindingFlags.NonPublic;
     static void Field(object obj,string name,object value)=>obj.GetType().GetField(name,fields).SetValue(obj,value);
@@ -54,7 +56,8 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
     void Capture(string name)=>ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));
     bool Live=>run!=null&&!run.Transitioning&&run.Player!=null&&(run.Progress.State==R1RunState.Combat||run.Progress.State==R1RunState.TestDrive);
     void Bind(){body=run.Player.GetComponent<Rigidbody>();drive=body.GetComponent<R6VehicleDrive>();assembly=body.GetComponent<R3VehicleAssembly>();previous=body.position;
-        run.Player.Controller.enabled=mode=="Camera";follow=FindFirstObjectByType<P12PipelineSafeCamera>();Require(follow.ReceiverRig!=null&&!follow.ReceiverRig.enabled,"One delegated camera owner");}
+        run.Player.Controller.enabled=mode=="Camera";follow=FindFirstObjectByType<P12PipelineSafeCamera>();Require(follow.ReceiverRig!=null&&!follow.ReceiverRig.enabled,"One delegated camera owner");
+        Require(FindObjectsByType<Renderer>(FindObjectsSortMode.None).Where(r=>r.enabled&&r.gameObject.activeInHierarchy).All(r=>r.sharedMaterials.All(m=>m!=null&&m.shader!=null&&m.shader.isSupported&&!m.shader.name.Contains("InternalError"))),"Active scene uses supported actual materials");}
     void SelectActivity(){
         path.Clear();target=0;
         string selected=mode=="Loop"?new[]{"Race","TimeAttack","Escape","Survival","Reactor","Ordinary"}[activity]:mode;
@@ -78,8 +81,8 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
                 run.RequestedSeed=7;Require(mode=="Camera"?run.OpenSandboxGarage():run.PrepareUnifiedRun(),"Actual preparation garage");Capture("00-garage");Go(1);}
             else if(phase==1){if(Time.realtimeSinceStartup-entered<.4f)return;
                 if(mode=="Camera"){
-                    if(vehicle=="Tall")for(int y=2;y<=5;y++)Require(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),"Tall real structural part "+y);
-                    if(vehicle=="Wide")for(int x=2;x<=6;x++)if(run.VehicleModel.At(new Vector3Int(x,1,0))==null)Require(run.GarageBuy(new Vector3Int(x,1,0),R3PartKind.Armor),"Wide real structural part "+x);
+                    if(vehicle=="Tall")for(int y=1;y<=5;y++)Require(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),"Tall real structural part "+y);
+                    if(vehicle=="Wide")foreach(int side in new[]{-1,1})for(int x=1;x<=6;x++)Require(run.GarageBuy(new Vector3Int(side*x,1,0),R3PartKind.Armor),"Wide real structural part "+(side*x));
                     Require(run.EnterTestRange(),"Same garage enters actual test range");Go(2);
                 }else SelectActivity();}
             else if(phase==2){if(run.Transitioning)return;Require(Live,"Activity entered canonical live state");Bind();BuildPath();lastKill=Time.time;Capture("01-activity-"+activity);Go(3);}
@@ -88,7 +91,11 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
                 if(mode=="Camera"){
                     InputSystem.QueueStateEvent(keyboard,new KeyboardState(Time.realtimeSinceStartup-entered<3?new[]{Key.W}:Array.Empty<Key>()));
                     InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));
-                    if(Time.realtimeSinceStartup-entered>15){Require(result.selfRayHits==0,"Zero actual own-hull reticle intersections");Require(result.shots>0,"Real owned physical shots observed");Require(result.distance>2,"Actual R6 movement while aiming");Capture("02-camera-final");Finish();}return;}
+                    if(!detached&&Time.realtimeSinceStartup-entered>8){
+                        var part=assembly.Parts.Where(p=>p!=null&&p.Operational&&p.Kind==R3PartKind.Armor).OrderByDescending(p=>Mathf.Abs(p.Cell.x)+p.Cell.y).First();
+                        part.Damageable.ApplyDamage(100000,part.transform.position,Vector3.zero);detached=true;result.detachedParts++;Capture("02-explicit-part-detachment");
+                    }
+                    if(Time.realtimeSinceStartup-entered>16.3f){Require(result.selfRayHits==0,"Zero actual own-hull reticle intersections");Require(result.shots>0,"Real owned physical shots observed");Require(result.distance>2,"Actual R6 movement while aiming");Require(result.continuousSpeedViolations==0,"Continuous camera motion respects its declared limit");Require(result.settledAimObserved&&result.settledAimError<=.05f,"Settled muzzle aligns after orbit stops; all transient peaks retained");Capture("03-camera-final");Finish();}return;}
                 if(run.Progress.State==R1RunState.Salvage){Require(run.VehicleModel==assembly.Model,"One canonical model through result");result.completed++;Capture("02-reward-"+activity);Go(4);return;}
                 if(run.Encounter.AliveCount>0&&Time.time-lastKill>3){
                     // Explicit controlled settlement, distinct from genuine force driving and native physical-gun test.
@@ -114,7 +121,17 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
         if(path.Count>0){while(target<path.Count-1&&Vector2.Distance(new Vector2(body.position.x,body.position.z),new Vector2(path[target].x,path[target].z))<2.2f)target++;goal=path[target];}
         var to=goal-body.position;to.y=0;float angle=Vector3.SignedAngle(Vector3.ProjectOnPlane(body.transform.forward,Vector3.up),to,Vector3.up);
         float throttle=path.Count>0?(to.magnitude>1.8f&&Mathf.Abs(angle)<65?1:0):mode=="Camera"?(Time.realtimeSinceStartup-entered<3?1:0):0;
-        if(mode!="Camera")drive.Step(throttle,Mathf.Clamp(angle/35-body.angularVelocity.y*.2f,-1,1),run.Player.Controller.EffectiveForwardSpeed,run.Player.Controller.EffectiveReverseSpeed,run.Player.Controller.EffectiveTurnSpeed);
+        float forwardLimit=run.Player.Controller.EffectiveForwardSpeed;
+        if(run.RoadWorld!=null&&path.Count>0){
+            // The initial pilot accelerated Heavy through a sharp curve and drove
+            // OFF the road. Follow source centres slowly, braking with actual R6
+            // input rather than widening roads or moving the body into place.
+            forwardLimit=3;
+            if(drive.ForwardSpeed>3.2f)throttle=-1;
+            if(Mathf.Abs(angle)>35&&drive.ForwardSpeed>1)throttle=-1;
+        }
+        if(mode!="Camera")drive.Step(throttle,Mathf.Clamp(angle/35-body.angularVelocity.y*.2f,-1,1),forwardLimit,run.Player.Controller.EffectiveReverseSpeed,run.Player.Controller.EffectiveTurnSpeed);
+        body.GetComponent<MapR6ProductionEvidenceBridge>()?.SetExternalDemand01(Mathf.Abs(throttle));
         result.distance+=Vector3.Distance(previous,body.position);previous=result.finalPosition=body.position;result.maxContacts=Mathf.Max(result.maxContacts,drive.GroundedWheels);if(drive.GroundedWheels>0)result.contacts++;
         if(body.position.y< -4){result.errors.Add("Real vehicle fell below road: "+body.position);result.status="Failed";Go(99);}
         if(Time.time-lastTrace>.1f){lastTrace=Time.time;trace.WriteLine(FormattableString.Invariant($"{Time.frameCount},{Time.time:F3},{activity},{body.position.x:F3},{body.position.y:F3},{body.position.z:F3},{body.linearVelocity.magnitude:F3},{drive.GroundedWheels},{target},{run.Progress.State}"));trace.Flush();}
@@ -124,14 +141,29 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
         try{
             var rig=follow.ReceiverRig;result.frames++;float ms=Time.unscaledDeltaTime*1000;result.meanFrameMs+=(ms-result.meanFrameMs)/result.frames;result.peakFrameMs=Mathf.Max(result.peakFrameMs,ms);
             result.peakCameraStep=Mathf.Max(result.peakCameraStep,rig.LastCameraStepMeters);if(rig.ActualOwnHullIntersectsCrosshair)result.selfRayHits++;if(rig.WorldOverlapAtCamera)result.worldOverlaps++;
+            if(rig.ReceiverFramingSaturated)result.saturatedFrames++;
+            if(rig.LastCameraStepMeters>rig.EffectiveContinuousSpeedLimit*Time.deltaTime+.001f)result.continuousSpeedViolations++;
+            var hull=Camera001Rig.GetHullBounds(body.transform);bool cropped=false;
+            foreach(int x in new[]{-1,1})foreach(int y in new[]{-1,1})foreach(int z in new[]{-1,1}){
+                var p=Camera.main.WorldToViewportPoint(hull.center+Vector3.Scale(hull.extents,new Vector3(x,y,z)));
+                if(p.z<=0||p.x<0||p.x>1||p.y<0||p.y>1)cropped=true;
+            }
+            if(cropped)result.offscreenHullFrames++;
             if(mode=="Camera"){
                 // Orbit inputs are injected into the real facade; source rig still has one automatic writer.
-                float t=Time.realtimeSinceStartup-entered;Field(follow,"yaw",t*24);Field(follow,"pitch",18+20*(1+Mathf.Sin(t*.6f)));Field(follow,"distance",Mathf.Lerp(3,18,(1+Mathf.Sin(t*.5f))*.5f));
+                float t=Mathf.Min(15,Time.realtimeSinceStartup-entered);Field(follow,"yaw",t*24);Field(follow,"pitch",18+20*(1+Mathf.Sin(t*.6f)));Field(follow,"distance",Mathf.Lerp(3,18,(1+Mathf.Sin(t*.5f))*.5f));
             }
             foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))if(shot.IsActiveProjectile&&shot.OwnerRoot==body.transform&&shots.Add(shot.GetInstanceID()))result.shots++;
+            foreach(var shot in FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))if(shot.IsActiveProjectile&&shot.OwnerRoot!=body.transform&&hostileShots.Add(shot.GetInstanceID()))result.enemyShots++;
+            result.maxAliveEnemies=Mathf.Max(result.maxAliveEnemies,run.Encounter.AliveCount);
+            foreach(var enemy in run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated)){
+                int id=enemy.GetInstanceID();if(!enemyStarts.TryGetValue(id,out var start))enemyStarts[id]=start=enemy.transform.position;
+                result.maxEnemyMovement=Mathf.Max(result.maxEnemyMovement,Vector3.Distance(start,enemy.transform.position));
+            }
             var gun=assembly.Parts.FirstOrDefault(p=>p!=null&&p.Operational&&p.Muzzle!=null);var controller=run.Player.Controller;
             if(gun!=null&&controller.LastConsumedAimFrame==Time.frameCount&&Time.deltaTime>0){
                 float error=Vector3.Angle(gun.Muzzle.forward,controller.LastConsumedAimPoint-gun.Muzzle.position);result.peakAimError=Mathf.Max(result.peakAimError,error);
+                if(mode=="Camera"&&Time.realtimeSinceStartup-entered>=16.2f){result.settledAimError=error;result.settledAimObserved=true;}
                 var hit=controller.LastConsumedAimCollider;var q=body.rotation;var g=gun.GunPivot.localRotation;var p=controller.LastConsumedAimPoint;
                 aim.WriteLine(FormattableString.Invariant($"{Time.frameCount},{Time.deltaTime:R},{(hit!=null?hit.GetInstanceID():0)},{(hit!=null?hit.name.Replace(',','_'):"no_hit")},{p.x:R},{p.y:R},{p.z:R},{q.x:R},{q.y:R},{q.z:R},{q.w:R},{g.x:R},{g.y:R},{g.z:R},{g.w:R},{error:R}"));
                 timeline.Capture(new Camera001AimTimeline.Frame{FrameIndex=Time.frameCount,HitColliderInstanceId=hit!=null?hit.GetInstanceID():0,HitKind=hit!=null?hit.name:"no_hit",Sample=new Camera001AimTransitionDiagnostics.Sample{CurrentTargetWorld=p,CurrentMuzzleWorld=gun.Muzzle.position,CurrentMuzzleForwardWorld=gun.Muzzle.forward,DeltaTimeSeconds=Time.deltaTime,TurretSlewDegreesPerSecond=170,CameraFinalAimErrorDegrees=rig.LastAimErrorDegrees,CameraOwnHullRayHit=rig.ActualOwnHullIntersectsCrosshair,CameraWorldOverlap=rig.WorldOverlapAtCamera}});

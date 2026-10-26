@@ -32,7 +32,7 @@ namespace RoboRougelike.R3
                     foreach(var collider in colliders)foreach(var other in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents+Vector3.one*.001f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
                         if(!other.transform.IsChildOf(probe.transform)){
                             var old=other.GetComponentInParent<R3MountedPart>();
-                            if(old==null||!replacedIds.Contains(old.Id))neighbors.Add(other);
+                            if(old==null||!old.transform.IsChildOf(transform)||old.GetComponentInParent<Rigidbody>()!=GetComponent<Rigidbody>()||!replacedIds.Contains(old.Id))neighbors.Add(other);
                         }
                     if(BuildVolumeValidator.Check(new BuildPhysicsEvidence(colliders,neighbors.ToArray(),true))!=BuildPlacementResult.Valid)return false;
                 }

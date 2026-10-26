@@ -33,7 +33,8 @@ public sealed class FullMergeAdditionalRegression
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         run.Player.Controller.enabled=false;var body=run.Player.GetComponent<Rigidbody>();var rig=Camera.main.GetComponent<Camera001Rig>();var start=body.position;
         // Explicit velocity-controlled camera stress fixture, NOT a driving acceptance.
-        for(int i=0;i<100;i++){body.linearVelocity=Vector3.forward*22;float before=Time.fixedTime;while(Time.fixedTime<=before)yield return null;}
+        float deadline=Time.realtimeSinceStartup+8;
+        for(int i=0;i<100;i++){body.linearVelocity=Vector3.forward*22;float before=Time.fixedTime;while(Time.fixedTime<=before){Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline),"Owned fixed-clock fixture must not hang");yield return null;}}
         yield return null;
         Assert.That(body.position.z-start.z,Is.GreaterThan(30));
         Assert.That(Vector3.Distance(rig.transform.position,rig.LastSolution.DesiredCameraWorld),Is.LessThan(5),"Total15m/s cap loses a22m/s robot indefinitely");
