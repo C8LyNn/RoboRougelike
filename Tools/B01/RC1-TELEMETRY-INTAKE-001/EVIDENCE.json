@@ -1,0 +1,51 @@
+{
+  "taskId": "W13-B01-10-RC1-TELEMETRY-INTAKE-R1",
+  "role": "B01-10 Game Design & Balance",
+  "sourceReference": {
+    "pr": 248,
+    "commit": "5c29e8e28e7b34fedf0c992fca49451828b02314",
+    "originalDriveBlob": "f486527f62feb552ee71e72cb03d7bf14bb3614b",
+    "originalNativeResultBlob": "97e4bbcde23e755747cb5efcf96bbca31f7dcf7a"
+  },
+  "originalExternalCodexNativeEvidence": {
+    "nativeResult": "Passed",
+    "method": "API-controlled, not human",
+    "sampleDriveRows": 33,
+    "traceDurationSeconds": 3.66,
+    "traceIntegratedDistanceMetres": 15.082,
+    "fullNativeReportedTravelDistanceMetres": 15.57582950592041,
+    "contactSamples": 185,
+    "supportedSamples": 185
+  },
+  "sourceToolTests": {
+    "firstAttempt": {
+      "commit": "3e034e15b71295a86569122fea7202146710fcac",
+      "run": 40325543987,
+      "status": "FAIL",
+      "passed": 14,
+      "failed": 7,
+      "issue": "Native check string was truncated in importer; source check text mismatch blocked entire sample"
+    },
+    "fixedAttempt": {
+      "commit": "08855734b9acf91711f3e2388d755c19d0e1154a",
+      "run": 40325695956,
+      "status": "PASS",
+      "passed": 21,
+      "failed": 0,
+      "reportArtifactName": "B01-W13-RC1-NATIVE-RECEIPT",
+      "allStepsSuccessful": true
+    }
+  },
+  "reviewState": {
+    "nativeFileHashExact": true,
+    "semanticTelemetryParser": "PASS_SOURCE_TESTED",
+    "newNativeUnityTests": "NOT_RUN",
+    "independentB0160Unity": "NOT_RUN",
+    "humanPlaytest": "NOT_RUN",
+    "pairedABBuildEvidence": "NOT_RUN",
+    "gameplayExperiment255RowsGenerated": 0,
+    "gameplayBalanceVerdict": "NO_GAMEPLAY_CLAIM",
+    "G2": "HOLD"
+  },
+  "releaseRestrictions": "Source-only Draft, no other producer edits, no host changes, no merge or gameplay integration"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "sourceRepo": "C8LyNn/RoboRougelike",
+  "sourceGitCommit": "5c29e8e28e7b34fedf0c992fca49451828b02314",
+  "sourcePR": 248,
+  "context": "Actual Codex native Windows x64 R3/R6 API-controlled gameplay samples; game is not a human playtest",
+  "sources": [
+    {
+      "relativePath": "samples/drive.csv",
+      "path": "Docs/B01_RC1/FinalMapgen1080/drive.csv",
+      "blobSha1": "f486527f62feb552ee71e72cb03d7bf14bb3614b"
+    },
+    {
+      "relativePath": "samples/rc1-native-result.json",
+      "path": "Docs/B01_RC1/FinalMapgen1080/rc1-native-result.json",
+      "blobSha1": "97e4bbcde23e755747cb5efcf96bbca31f7dcf7a"
+    }
+  ],
+  "expected": {
+    "rig": "Heavy",
+    "measuredRigWidthM": 5.180010795593262,
+    "sampleRows": 33,
+    "firstPhase": 5,
+    "summaryContactSamples": 185,
+    "summarySupportedSamples": 185
+  },
+  "gates": {
+    "independentB0160": "NOT_RUN",
+    "humanPlaytest": "NOT_RUN",
+    "G2": "HOLD"
+  }
+}

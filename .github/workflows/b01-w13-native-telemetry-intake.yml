@@ -1,0 +1,32 @@
+name: B01-W13-RC1-Native-Telemetry-Intake
+on:
+  push:
+    paths:
+      - 'Tools/B01/RC1-TELEMETRY-INTAKE-001/**'
+      - '.github/workflows/b01-w13-native-telemetry-intake.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/RC1-TELEMETRY-INTAKE-001/**'
+      - '.github/workflows/b01-w13-native-telemetry-intake.yml'
+  workflow_dispatch:
+jobs:
+  verified-native-sample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify sample provenance and run 21 adversarial intake tests
+        run: node Tools/B01/RC1-TELEMETRY-INTAKE-001/test.mjs
+      - name: Produce real-only provenance report (not gameplay PASS)
+        run: node Tools/B01/RC1-TELEMETRY-INTAKE-001/ingest.mjs Tools/B01/RC1-TELEMETRY-INTAKE-001/manifest.json Tools/B01/RC1-TELEMETRY-INTAKE-001/samples/drive.csv Tools/B01/RC1-TELEMETRY-INTAKE-001/samples/rc1-native-result.json --output observed.json
+      - name: Build deterministic source ZIP twice and independently verify source hashes
+        run: python Tools/B01/RC1-TELEMETRY-INTAKE-001/package.py ./package-output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-W13-RC1-NATIVE-RECEIPT
+          path: |
+            observed.json
+            package-output/B01_RC1_TELEMETRY_INTAKE_R1.zip
+            package-output/PACKAGE_SHA256_REPORT.json
