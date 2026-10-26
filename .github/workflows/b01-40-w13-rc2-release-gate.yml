@@ -1,0 +1,57 @@
+name: B01-40 W13 RC2 independent release gate
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/RC2-RELEASE-GATE-001/**'
+      - 'Docs/B01Validation/20261026/W13-RC2/**'
+      - '.github/workflows/b01-40-w13-rc2-release-gate.yml'
+  push:
+    paths:
+      - 'Tools/B01/RC2-RELEASE-GATE-001/**'
+      - 'Docs/B01Validation/20261026/W13-RC2/**'
+      - '.github/workflows/b01-40-w13-rc2-release-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify-receiver:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-BUILD001-R13-source
+          repository: C8LyNn/RoboRougelike
+          run-id: '40293968350'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-21-mapgenworld001-w12-source-full
+          repository: C8LyNn/RoboRougelike
+          run-id: '40292271476'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: artifacts/world
+      - name: Independently verify real producer archives and test negatives
+        shell: bash
+        env:
+          B01_BUILD_R13_ARTIFACT: ${{ github.workspace }}/artifacts/build/B01-BUILD001-R13.zip
+          B01_WORLD_R2_ARTIFACT: ${{ github.workspace }}/artifacts/world/mapgenworld-evidence/package/MAPGENWORLD001_SOURCE_FULL.zip
+        run: |
+          set -euo pipefail
+          test -f "$B01_BUILD_R13_ARTIFACT"
+          test -f "$B01_WORLD_R2_ARTIFACT"
+          cd Tools/B01/RC2-RELEASE-GATE-001
+          python source_intake.py BUILD_R13 "$B01_BUILD_R13_ARTIFACT" --report "$RUNNER_TEMP/build-r13.json"
+          python source_intake.py MAPGENWORLD_R2 "$B01_WORLD_R2_ARTIFACT" --report "$RUNNER_TEMP/world-r2.json"
+          python -m unittest discover -s tests -v
+          python rc2_release_gate.py --report "$RUNNER_TEMP/rc2-hold.json"
+          python -c "import json,os; p=os.path.join(os.environ['RUNNER_TEMP'],'rc2-hold.json'); r=json.load(open(p)); assert r['G2']=='HOLD' and r['binary']['status']=='PENDING_BINARY_ACCESS'; print('RC2 BINARY ACCESS: PENDING, G2 HOLD verified')"

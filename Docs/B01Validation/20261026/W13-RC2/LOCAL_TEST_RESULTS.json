@@ -1,0 +1,13 @@
+{
+  "test_status": "PASS",
+  "tests": 24,
+  "failures": 0,
+  "executed_on_actual_producer_zip": [
+    "BUILD_R13",
+    "MAPGENWORLD_R2"
+  ],
+  "evidence_origin": "B01-40 localhost tests",
+  "native_unity": "NOT_RUN",
+  "rc2_release_binary": "PENDING_BINARY_ACCESS",
+  "G2": "HOLD"
+}
