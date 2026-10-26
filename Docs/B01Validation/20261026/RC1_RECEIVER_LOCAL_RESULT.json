@@ -1,0 +1,37 @@
+{
+  "package": "B01-40 RC1-RECEIVER-001",
+  "G2": "HOLD",
+  "camera_source": {
+    "status": "PASS_SOURCE_STATIC_NOT_NATIVE",
+    "source": "48581e49a878eca376674551017532bf17fd35b2",
+    "files_sha256": 40,
+    "entries": 41,
+    "bytes": 46544,
+    "zip_sha256": "d00e3a3f4aea9ce15a8ecc4d95838fcc5a42329060568da63d0e2a72817cbd9d",
+    "unity_guids": 16,
+    "asmdefs": [
+      "B01.CAMERA001.EditModeTests",
+      "B01.CAMERA001.PlayModeTests",
+      "B01.CAMERA001.Runtime"
+    ],
+    "source_parent_guid": "b01c0000000000000000000000000001",
+    "parent_meta_policy": "PRESERVE_TARGET_IF_PRESENT",
+    "native_qa": "EXTERNAL_FAIL_AIM_TRACKING_RC1_INTEGRATION_HOLD"
+  },
+  "rc1_source": {
+    "status": "PENDING_LIVE_GIT_TREE_RECEIPT",
+    "reason": "use --live for independent pinned 58-file comparison"
+  },
+  "external_native": {
+    "status": "PENDING_LIVE_RAW_QA_RECEIPT"
+  },
+  "windows_zip_base": {
+    "status": "PENDING_BINARY_ACCESS",
+    "reason": "owner Windows ZIP not supplied"
+  },
+  "windows_zip_experimental": {
+    "status": "PENDING_BINARY_ACCESS",
+    "reason": "owner Windows ZIP not supplied"
+  },
+  "status": "PASS_PERFORMED_CHECKS_G2_HOLD"
+}

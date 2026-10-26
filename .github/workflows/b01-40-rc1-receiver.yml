@@ -1,0 +1,61 @@
+name: B01-40 RC1 CAMERA receiver (read-only)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'Tools/B01/RC1-RECEIVER-001/**'
+      - '.github/workflows/b01-40-rc1-receiver.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/RC1-RECEIVER-001/**'
+      - '.github/workflows/b01-40-rc1-receiver.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verified-producer-and-rc1-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@v4
+        with:
+          name: camera-r12-source-zip
+          run-id: 40226247928
+          repository: C8LyNn/RoboRougelike
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/camera-source
+      - name: Reconstruct GitHub artifact outer wrapper for local tests only
+        shell: python
+        run: |
+          import zipfile
+          from pathlib import Path
+          root = Path(r'${{ runner.temp }}') / 'camera-source'
+          out = Path('Tools/B01/RC1-RECEIVER-001/camera-real-artifact.zip')
+          with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED) as z:
+              for name in ['CAMERA001_R1_2_FULL_SOURCE_QA.zip', 'SHA256_REPORT.json']:
+                  p = root / name
+                  assert p.is_file(), f'MISSING ACTUAL PRODUCER ARTIFACT: {p}'
+                  z.write(p, name)
+      - name: Positive, negative, and independent Git-tree regression
+        run: python -m unittest discover -v -s Tools/B01/RC1-RECEIVER-001 -p 'test_receiver_gate.py'
+      - name: Audit real pinned CAMERA source plus live published RC1 Git trees and native reports
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          python Tools/B01/RC1-RECEIVER-001/receiver_gate.py
+          --camera-artifact Tools/B01/RC1-RECEIVER-001/camera-real-artifact.zip
+          --live
+          --json-out rc1-g0-result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc1-b01-40-receiver-${{ matrix.os }}
+          path: rc1-g0-result.json
+          if-no-files-found: ignore
