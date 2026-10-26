@@ -9,10 +9,60 @@
       "bytes": 1825,
       "git_blob_sha1": "50ef22e3a9ef6277d857be09c115519c12f028fc"
     },
+    ".github/workflows/b01-w13-qa-rc1-shutdown.yml": {
+      "sha256": "f7132615522901f64d7d046ce6ed6122956088e98da2cd852c06663ed1ed9f46",
+      "bytes": 2059,
+      "git_blob_sha1": "a8ea17f8db3289715bcd8b3beeb785d1fe2b145d"
+    },
+    ".github/workflows/b01-w15-qa-rc2-edit-retest.yml": {
+      "sha256": "ed0a61a9a172fdf109697384e0bf2e637f9bb0eefa0730c2b9a415b60c06126a",
+      "bytes": 1883,
+      "git_blob_sha1": "e3bfa9841e1e4e8016c796cc49aba1474e34c4e3"
+    },
     "Tools/B01/QA-NATIVE-001/KNOWN_LIMITATIONS.md": {
       "sha256": "ae881bee3fac519bdfb4be3619a78466147f450277ff371dccfab6874fc005a5",
       "bytes": 1745,
       "git_blob_sha1": "f2a1dede81d15bda1ca1e339dddaccecc1c94749"
+    },
+    "Tools/B01/QA-NATIVE-001/package.py": {
+      "sha256": "203cd83b0bc37691f4a956299e7ce7862ae8dfc1a003c9c73c84d7c81b692415",
+      "bytes": 2249,
+      "git_blob_sha1": "6454f5f6515a16ad0ca36a2d789827e8309d1c61"
+    },
+    "Tools/B01/QA-NATIVE-001/plan.example.json": {
+      "sha256": "3f499fd0731bd2767200bcb0b955cad618a44b0dc02dfa23b67082d40604737d",
+      "bytes": 3001,
+      "git_blob_sha1": "454bb0a353ce46a1bf6d4f0beef2de2d72e0f74b"
+    },
+    "Tools/B01/QA-NATIVE-001/qa_gate_v2.py": {
+      "sha256": "edc1a9b84f119e6ee4928f087c735b6024c36f66f7fc54c558d3b1334677e8ad",
+      "bytes": 10117,
+      "git_blob_sha1": "7f2a3099d4c13e7b1c1c968e03ed89b2bb47de61"
+    },
+    "Tools/B01/QA-NATIVE-001/qa_native.py": {
+      "sha256": "66f88e65daac8d90770964fd3ab6209e8456c866b93c7391d6d198707e25bae6",
+      "bytes": 5583,
+      "git_blob_sha1": "f93be92299889eef14462a5e9131f072e69ed95a"
+    },
+    "Tools/B01/QA-NATIVE-001/RC1_SHUTDOWN_AB_README.md": {
+      "sha256": "0c7723f620928eb1a58b4c1b0da886d149af138ed3a33f069a418cabec626dc6",
+      "bytes": 5632,
+      "git_blob_sha1": "c30c73f2cc789ece5da95cd454655afbed4ad9d5"
+    },
+    "Tools/B01/QA-NATIVE-001/rc1_shutdown_ab.py": {
+      "sha256": "154f2e1ddf215e172e1d6682c9b1fb864d6d6255d8aa291c96731a0430ed9e8f",
+      "bytes": 15493,
+      "git_blob_sha1": "19e194d129f60e83c87280422376a9a0925c1c39"
+    },
+    "Tools/B01/QA-NATIVE-001/rc1_shutdown.example.json": {
+      "sha256": "b8b751fdebc8bc268a9a0d589565170fb74ded2a246992e8789178d3c0296de7",
+      "bytes": 1250,
+      "git_blob_sha1": "e1c0c8b7f942023888a63f5d1dfad8952ca62778"
+    },
+    "Tools/B01/QA-NATIVE-001/rc2_edit_retest_gate.py": {
+      "sha256": "264f9a8581bc87f6e223d5505a1f14819314e982fe259b5d3fe1028a9ecacc0d",
+      "bytes": 6487,
+      "git_blob_sha1": "d78ef9d0374587880c2e88e27bf5a7bcf2dcf72e"
     },
     "Tools/B01/QA-NATIVE-001/README.md": {
       "sha256": "22baea74dbe00839c35906579a54368aaff6babd60e58a0885835e0aacf412c1",
@@ -24,65 +74,35 @@
       "bytes": 4887,
       "git_blob_sha1": "56d52c3a1e867cd539d8829daf6334989ff33ff7"
     },
+    "Tools/B01/QA-NATIVE-001/test_gate_v2.py": {
+      "sha256": "046b75a42a57c1441fa0cbeed7c95317cfaf9bdfce9d54a89a20621969f2341c",
+      "bytes": 9839,
+      "git_blob_sha1": "4e229ad1f56d4f62e9915de2a97448a28d46547c"
+    },
     "Tools/B01/QA-NATIVE-001/TEST_PLAN.md": {
       "sha256": "b9b8b9041653eabc0784005b317d658952347456e21fabfc5622f23a4fbe0142",
       "bytes": 1645,
       "git_blob_sha1": "cd20228d60c4b2f6f16883135cfed60bd8b3e5b8"
-    },
-    "Tools/B01/QA-NATIVE-001/plan.example.json": {
-      "sha256": "3f499fd0731bd2767200bcb0b955cad618a44b0dc02dfa23b67082d40604737d",
-      "bytes": 3001,
-      "git_blob_sha1": "454bb0a353ce46a1bf6d4f0beef2de2d72e0f74b"
-    },
-    "Tools/B01/QA-NATIVE-001/qa_native.py": {
-      "sha256": "66f88e65daac8d90770964fd3ab6209e8456c866b93c7391d6d198707e25bae6",
-      "bytes": 5583,
-      "git_blob_sha1": "f93be92299889eef14462a5e9131f072e69ed95a"
     },
     "Tools/B01/QA-NATIVE-001/test_qa_native.py": {
       "sha256": "27f813f30b722d4319475f356725d91d874daad742dde019511016f990db1a0e",
       "bytes": 4404,
       "git_blob_sha1": "922429a7927b0ef99692c663a81cb844f1917f17"
     },
-    "Tools/B01/QA-NATIVE-001/package.py": {
-      "sha256": "203cd83b0bc37691f4a956299e7ce7862ae8dfc1a003c9c73c84d7c81b692415",
-      "bytes": 2249,
-      "git_blob_sha1": "6454f5f6515a16ad0ca36a2d789827e8309d1c61"
-    },
-    "Tools/B01/QA-NATIVE-001/qa_gate_v2.py": {
-      "sha256": "edc1a9b84f119e6ee4928f087c735b6024c36f66f7fc54c558d3b1334677e8ad",
-      "bytes": 10117,
-      "git_blob_sha1": "7f2a3099d4c13e7b1c1c968e03ed89b2bb47de61"
-    },
-    "Tools/B01/QA-NATIVE-001/test_gate_v2.py": {
-      "sha256": "046b75a42a57c1441fa0cbeed7c95317cfaf9bdfce9d54a89a20621969f2341c",
-      "bytes": 9839,
-      "git_blob_sha1": "4e229ad1f56d4f62e9915de2a97448a28d46547c"
-    },
-    "Tools/B01/QA-NATIVE-001/rc1_shutdown_ab.py": {
-      "sha256": "154f2e1ddf215e172e1d6682c9b1fb864d6d6255d8aa291c96731a0430ed9e8f",
-      "bytes": 15493,
-      "git_blob_sha1": "19e194d129f60e83c87280422376a9a0925c1c39"
-    },
     "Tools/B01/QA-NATIVE-001/test_rc1_shutdown_ab.py": {
       "sha256": "e615e2962c330e718b5bd154dc6ec920580c2a1c3ddd75979aad10ea219cd61a",
       "bytes": 11343,
       "git_blob_sha1": "f602ad6d24fb7284802a34bcccccfeeb9c3a9649"
     },
-    "Tools/B01/QA-NATIVE-001/rc1_shutdown.example.json": {
-      "sha256": "b8b751fdebc8bc268a9a0d589565170fb74ded2a246992e8789178d3c0296de7",
-      "bytes": 1250,
-      "git_blob_sha1": "e1c0c8b7f942023888a63f5d1dfad8952ca62778"
+    "Tools/B01/QA-NATIVE-001/test_rc2_edit_retest_gate.py": {
+      "sha256": "dc052c3006396c412bbfc0791b21f9f6c3e7f260e30ba561fd15c588a5834dd9",
+      "bytes": 5216,
+      "git_blob_sha1": "97e133a95f34d75d8efff5dc264daa9dadc49a2a"
     },
-    "Tools/B01/QA-NATIVE-001/RC1_SHUTDOWN_AB_README.md": {
-      "sha256": "0c7723f620928eb1a58b4c1b0da886d149af138ed3a33f069a418cabec626dc6",
-      "bytes": 5632,
-      "git_blob_sha1": "c30c73f2cc789ece5da95cd454655afbed4ad9d5"
-    },
-    ".github/workflows/b01-w13-qa-rc1-shutdown.yml": {
-      "sha256": "f7132615522901f64d7d046ce6ed6122956088e98da2cd852c06663ed1ed9f46",
-      "bytes": 2059,
-      "git_blob_sha1": "a8ea17f8db3289715bcd8b3beeb785d1fe2b145d"
+    "Tools/B01/QA-NATIVE-001/W15_RC2_EDIT_EVIDENCE.md": {
+      "sha256": "e76a7f10aa94884337de82eb6d8ae5c3ee669f721226eebd629a69f6be4acb24",
+      "bytes": 2455,
+      "git_blob_sha1": "4a2a93d989708f145bf1c8cd4ac713f08b7b0570"
     }
   },
   "tests": {
@@ -92,7 +112,8 @@
     "native_unity": "NOT_RUN",
     "powershell_native_runner": "NOT_RUN",
     "w13_qa_crash_harness": "29/29 local synthetic PASS; native Windows player NOT_RUN",
-    "w13_watcher": "GitHub CI pending"
+    "w13_watcher": "GitHub CI pending",
+    "w15_rc2_split_sha": "16/16 local synthetic PASS; Unity NOT_RUN; full EditMode corrected SHA NOT_RUN; Windows+Ubuntu CI pending"
   },
   "g2": "HOLD",
   "package_zip_source": "GitHub Actions deterministic SHA256-gated archive of exact tracked files; final receipt published by CI.",
