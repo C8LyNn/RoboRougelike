@@ -16,6 +16,15 @@ TOOLS = "Tools/B01/MAPGENWORLD001"
 UPSTREAM = "5be31039411f89f17654b1c332f8692883fa03cc"
 MANIFEST = "META-INF/MAPGENWORLD001_MANIFEST.json"
 EPOCH = (1980,1,1,0,0,0)
+# Deterministic source ZIP excludes all .NET/Unity caches and compiler outputs.
+GENERATED_COMPONENTS = frozenset({
+    "obj", "bin", "__pycache__", ".pytest_cache", ".mypy_cache",
+    ".vs", ".idea", ".vscode", "Library", "Temp", "Artifacts"
+})
+GENERATED_EXTENSIONS = (".pyc", ".pyo", ".pdb", ".dll", ".zip", ".tmp", ".bak")
+
+def is_generated(path):
+    return any(part in GENERATED_COMPONENTS for part in Path(path).parts) or path.endswith(GENERATED_EXTENSIONS)
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
@@ -32,7 +41,7 @@ def gather(root=ROOT):
             if f.is_symlink(): raise ValueError("SYMLINK " + str(f))
             if not f.is_file(): continue
             rel = f.relative_to(root).as_posix()
-            if rel.endswith((".pyc",".zip",".pdb",".dll")) or "/__pycache__/" in rel:
+            if is_generated(rel):
                 continue
             if not owned(rel): raise ValueError("SCOPE " + rel)
             found[rel] = f.read_bytes()
@@ -44,6 +53,7 @@ def validate_assets(files):
     for p in files:
         if not owned(p) or p.startswith("/") or ".." in Path(p).parts or "\\" in p:
             raise ValueError("PATH_NOT_OWNED " + p)
+        if is_generated(p): raise ValueError("GENERATED_FILE_NOT_ALLOWED " + p)
         if p.startswith(ASSET + "/") and not p.endswith(".meta"):
             if p + ".meta" not in files: raise ValueError("MISSING_META " + p)
         if p == META or p.startswith(ASSET + "/") and p.endswith(".meta"):
@@ -84,6 +94,8 @@ def verify_zip(data):
         for name in names:
             if name!=MANIFEST and not owned(name) or name.startswith("/") or ".." in Path(name).parts or "\\" in name:
                 raise ValueError("ZIP_TRAVERSAL "+name)
+            if name!=MANIFEST and is_generated(name):
+                raise ValueError("GENERATED_FILE_NOT_ALLOWED "+name)
         manifest=json.loads(z.read(MANIFEST))
         if manifest.get("upstreamMAPGEN001")!=UPSTREAM: raise ValueError("UPSTREAM_PIN_MISMATCH")
         expected={f["path"]:f for f in manifest["files"]}
