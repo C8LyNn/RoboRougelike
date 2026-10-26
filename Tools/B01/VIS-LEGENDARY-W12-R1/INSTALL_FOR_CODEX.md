@@ -7,3 +7,7 @@
 5. Inspect 0%,25%,50%,75%,100% and intermediate animation frames; perform narrowphase Physics.ComputePenetration and true mounted footprint checks, 720p/1080p low/wide/tall chassis camera/reticle, green/red invalid socket ghosts. Decorative visual marker MUST NOT create BuildSocket or authorize physical attachment. MobilityHub unsupported unless actual authoritative adapter exists.
 6. M01 nominal depth is too small; BLOCK mounting until B01-10/22/00 approve real geometry. Do not pick 220 vs650kg or150 vs780kg in visuals. B01-60 independent G1 and B01-40 target/ZIP gate required before B01-00 G2.
 7. Rollback: delete imports/materials and generated .meta only in disposable preview project; restore snapshot; never alter active game, original model factory claims, main/develop, Unity ProjectSettings or packages. No merge.
+
+## R1.1 import delta
+
+Use the SHA-verified **R1.1** GLB from the latest Actions archive (M04 `c40ce2c090b232833340e3135d75184d01eb7f81c072ab07c80d46508f2af0d8`, not older `ab26...`). For `LEG-MOV-001` select clip **`LEG-MOV-001_ALL_FOUR_GIMBALS`**; four older clips only drive each gimbal separately. Inspect raw `qa/M04-024_SWEEP.json` and verify all four animated nodes moved at 25%/75%, then check target Unity importer retention, real collider/clearances, 720p/1080p. Do not equate glTF pose bounds to a Unity physical mount approval.
