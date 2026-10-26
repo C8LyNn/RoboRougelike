@@ -48,6 +48,16 @@ namespace RoboRougelike.B01.Rewards
         public RewardKeep3Service(IAuthoritativeRewardPort authoritative) {
             host=authoritative??throw new ArgumentNullException(nameof(authoritative));
         }
+        // Exact canonical R3PartKind names from verified OBJ #210. No casing aliases:
+        // an offered "armor" must never be reinterpreted as lootable equipment.
+        private static readonly HashSet<string> KnownKinds=new HashSet<string>(StringComparer.Ordinal)
+        {
+            "Armor","Wheel","Gun","Core","Suspension","Booster","JumpDrive","Blink",
+            "Gyroscope","OmniDrive","MagneticGrapple","HoverEngine","CrawlerTrack",
+            "BonusModule","DirectionalShield","PointDefense","StructuralScanner",
+            "ScannerPulse","IndependentSteering"
+        };
+
         private static bool ValidGuid(string id) {
             Guid parsed;
             return !string.IsNullOrEmpty(id)&&Guid.TryParseExact(id,"N",out parsed)&&
@@ -65,7 +75,7 @@ namespace RoboRougelike.B01.Rewards
             var seen=new HashSet<string>(StringComparer.Ordinal);
             foreach(var c in choices) {
                 if(c==null||!ValidGuid(c.InstanceId)||!seen.Add(c.InstanceId)||
-                   string.IsNullOrWhiteSpace(c.PartKind) || c.PartKind=="Core" ||
+                   string.IsNullOrWhiteSpace(c.PartKind) || !KnownKinds.Contains(c.PartKind) || c.PartKind=="Core" ||
                    float.IsNaN(c.Health)||float.IsInfinity(c.Health)||c.Health<0||c.Health>1) {
                     error="INVALID_OR_DUPLICATE_OFFER";return false;
                 }
