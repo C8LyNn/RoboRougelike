@@ -29,7 +29,7 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
     }
     Result result=new Result();string output,mode,vehicle;R1RunController run,oldRun;Rigidbody body;R6VehicleDrive drive;
     R3VehicleAssembly assembly;P12PipelineSafeCamera follow;readonly List<Vector3> path=new List<Vector3>();int target,phase,activity;
-    float entered,deadline,lastTrace,lastKill;Vector3 previous;StreamWriter trace,aim;
+    float entered,deadline,lastTrace,lastKill,noMotionSince=-1;Vector3 previous;StreamWriter trace,aim;
     readonly HashSet<int> shots=new HashSet<int>();bool finished;Camera001AimTimeline timeline=new Camera001AimTimeline(65536);
     readonly HashSet<int> hostileShots=new HashSet<int>();readonly Dictionary<int,Vector3> enemyStarts=new Dictionary<int,Vector3>();bool detached;
     Keyboard keyboard;Mouse mouse;
@@ -44,7 +44,7 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
         output=folder;mode=result.mode=selectedMode;vehicle=result.vehicle=selectedVehicle;Directory.CreateDirectory(folder);
         result.startedUtc=DateTime.UtcNow.ToString("o");result.graphics=SystemInfo.graphicsDeviceType+" / "+SystemInfo.graphicsDeviceName;
         Application.runInBackground=true;Application.targetFrameRate=60;QualitySettings.vSyncCount=0;deadline=Time.realtimeSinceStartup+600;
-        trace=new StreamWriter(Path.Combine(folder,"drive.csv"));trace.WriteLine("frame,time,activity,x,y,z,speed,grounded,target,state");
+        trace=new StreamWriter(Path.Combine(folder,"drive.csv"));trace.WriteLine("frame,time,activity,x,y,z,speed,grounded,target,state,yaw,goalX,goalY,goalZ,angle,throttle,steering,forwardSpeed,yawRate,availableForce,normalX,normalY,normalZ,kinematic,sleeping");
         aim=new StreamWriter(Path.Combine(folder,"aim-provenance.csv"));aim.WriteLine("frame,dt,hitId,hitName,targetX,targetY,targetZ,chassisX,chassisY,chassisZ,chassisW,localGunX,localGunY,localGunZ,localGunW,gunError");
         Application.logMessageReceived+=Log;Save();
         if(mode=="Camera"){InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;keyboard=InputSystem.AddDevice<Keyboard>();mouse=InputSystem.AddDevice<Mouse>();}
@@ -134,7 +134,14 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
         body.GetComponent<MapR6ProductionEvidenceBridge>()?.SetExternalDemand01(Mathf.Abs(throttle));
         result.distance+=Vector3.Distance(previous,body.position);previous=result.finalPosition=body.position;result.maxContacts=Mathf.Max(result.maxContacts,drive.GroundedWheels);if(drive.GroundedWheels>0)result.contacts++;
         if(body.position.y< -4){result.errors.Add("Real vehicle fell below road: "+body.position);result.status="Failed";Go(99);}
-        if(Time.time-lastTrace>.1f){lastTrace=Time.time;trace.WriteLine(FormattableString.Invariant($"{Time.frameCount},{Time.time:F3},{activity},{body.position.x:F3},{body.position.y:F3},{body.position.z:F3},{body.linearVelocity.magnitude:F3},{drive.GroundedWheels},{target},{run.Progress.State}"));trace.Flush();}
+        if(Time.time-lastTrace>.1f){lastTrace=Time.time;trace.WriteLine(FormattableString.Invariant($"{Time.frameCount},{Time.time:F3},{activity},{body.position.x:F3},{body.position.y:F3},{body.position.z:F3},{body.linearVelocity.magnitude:F3},{drive.GroundedWheels},{target},{run.Progress.State},{body.rotation.eulerAngles.y:F3},{goal.x:F3},{goal.y:F3},{goal.z:F3},{angle:F3},{throttle:F3},{Mathf.Clamp(angle/35-body.angularVelocity.y*.2f,-1,1):F3},{drive.ForwardSpeed:F3},{body.angularVelocity.y:F3},{drive.AvailableForce:F3},{drive.GroundNormal.x:F3},{drive.GroundNormal.y:F3},{drive.GroundNormal.z:F3},{body.isKinematic},{body.IsSleeping()}"));trace.Flush();}
+        if(run.RoadWorld!=null&&path.Count>0&&target>0&&body.linearVelocity.sqrMagnitude<.0025f){
+            if(noMotionSince<0)noMotionSince=Time.realtimeSinceStartup;
+            if(Time.realtimeSinceStartup-noMotionSince>5){
+                result.errors.Add(FormattableString.Invariant($"Diagnostic pilot stall: target={target}, angle={angle}, throttle={throttle}, yawRate={body.angularVelocity.y}, availableForce={drive.AvailableForce}"));
+                result.status="Failed";Capture("STALL-live-before-any-loss-overlay");Go(99);
+            }
+        }else noMotionSince=-1;
     }
     void LateUpdate(){
         if(phase!=3||!Live||body==null)return;

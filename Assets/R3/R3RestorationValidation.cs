@@ -48,10 +48,22 @@ namespace RoboRougelike.R3
                             var old=other.GetComponentInParent<R3MountedPart>();
                             if(old==null||!old.transform.IsChildOf(transform)||old.GetComponentInParent<Rigidbody>()!=GetComponent<Rigidbody>()||!replacedIds.Contains(old.Id))neighbors.Add(other);
                         }
-                    if(BuildVolumeValidator.Check(new BuildPhysicsEvidence(colliders,neighbors.ToArray(),true))!=BuildPlacementResult.Valid)return false;
+                    var volume=BuildVolumeValidator.Check(new BuildPhysicsEvidence(colliders,neighbors.ToArray(),true));
+                    if(volume!=BuildPlacementResult.Valid){TraceRestorationFailure(prospective[index],volume,colliders,neighbors);return false;}
                 }
                 return true;
             }finally{foreach(var probe in probes)if(probe!=null){probe.SetActive(false);if(Application.isPlaying)Destroy(probe);else DestroyImmediate(probe);}}
+        }
+        [System.Diagnostics.Conditional("UNITY_EDITOR"),System.Diagnostics.Conditional("B01_UNIFIED_RC2_ACCEPTANCE")]
+        void TraceRestorationFailure(R3PartState part,BuildPlacementResult result,Collider[] candidates,HashSet<Collider> neighbors)
+        {
+            Debug.Log($"[BUILD restoration rejected] {part.Kind}/{part.Id} cell={part.Cell} result={result} root={transform.position} rotation={transform.eulerAngles}");
+            foreach(var candidate in candidates)foreach(var other in neighbors){
+                bool overlap=Physics.ComputePenetration(candidate,candidate.transform.position,candidate.transform.rotation,other,other.transform.position,other.transform.rotation,out _,out float depth);
+                if(!overlap&&!(other is MeshCollider mesh&&!mesh.convex))continue;
+                var mounted=other.GetComponentInParent<R3MountedPart>();
+                Debug.Log($"[BUILD restoration pair] candidate={candidate.name} at={candidate.transform.position} other={other.name} type={other.GetType().Name} at={other.transform.position} depth={depth:R} oldID={mounted?.Id} sameActor={other.transform.IsChildOf(transform)} sameBody={other.attachedRigidbody==GetComponent<Rigidbody>()}");
+            }
         }
         GameObject CreateProbe(R3PartState candidate)
         {

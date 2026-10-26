@@ -67,5 +67,35 @@ public sealed class FullMergeAdditionalRegression
         Object.Destroy(obstacle);yield return null;Assert.That(run.GarageRepair(cell),Is.True);
         Assert.That(run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(run.VehicleModel.At(cell).Health,Is.EqualTo(1));
     }
+    IEnumerator FreshVehicle(R3VehicleKind kind){
+        var old=run;run.RestartRun();while(R1RunController.Instance==old||R1RunController.Instance?.Progress==null)yield return null;
+        run=R1RunController.Instance;Assert.That(run.SelectVehicle(kind),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;yield return null;
+    }
+    void AssertQuarterOrbitFraming(){
+        run.Garage.Close();Physics.SyncTransforms();
+        var follow=Object.FindFirstObjectByType<P12PipelineSafeCamera>();follow.Configure(run.Player.transform,run.Player.CameraPivot);follow.SetGameplayInputEnabled(true);
+        foreach(float yaw in new[]{0f,45f,90f,135f,180f,225f,270f,315f}){
+            Set(follow,"yaw",yaw);Set(follow,"pitch",18f);Set(follow,"distance",3f);follow.ReceiverRig.ResetSmoothing();
+            typeof(P12PipelineSafeCamera).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(follow,null);
+            var b=Camera001Rig.GetHullBounds(run.Player.transform);
+            foreach(int x in new[]{-1,1})foreach(int y in new[]{-1,1})foreach(int z in new[]{-1,1}){
+                var p=Camera.main.WorldToViewportPoint(b.center+Vector3.Scale(b.extents,new Vector3(x,y,z)));
+                string detail=$"yaw={yaw} fit={follow.ReceiverRig.ReceiverFitDistance} viewport={p}";
+                Assert.That(p.z,Is.GreaterThan(0),detail);Assert.That(p.x,Is.InRange(.02f,.98f),detail);Assert.That(p.y,Is.InRange(.02f,.98f),detail);
+            }
+        }
+    }
+    [UnityTest]public IEnumerator HeavyHullFitsAtMinimumPitch(){yield return FreshVehicle(R3VehicleKind.Heavy);AssertQuarterOrbitFraming();}
+    [UnityTest]public IEnumerator WideHullFitsAtQuarterOrbits(){
+        foreach(int side in new[]{-1,1})for(int x=1;x<=6;x++)Assert.That(run.GarageBuy(new Vector3Int(side*x,1,0),R3PartKind.Armor),Is.True);
+        yield return null;AssertQuarterOrbitFraming();
+    }
+    [UnityTest]public IEnumerator ActivityApisRejectMissingPhysicalPlayer(){
+        var old=run;run.RestartRun();while(R1RunController.Instance==old||R1RunController.Instance?.Progress==null)yield return null;
+        run=R1RunController.Instance;Assert.That(run.StartRun(),Is.True);Assert.That(run.Player,Is.Null);
+        Assert.That(run.CanChooseCheckpointRace,Is.False);Assert.That(run.ChooseCheckpointRace(),Is.False);
+        foreach(MapR4Mode mode in System.Enum.GetValues(typeof(MapR4Mode)))Assert.That(run.ChooseRoadChallenge(mode),Is.False);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Route));Assert.That(run.RoadWorld,Is.Null);Assert.That(run.GeneratedWorld,Is.Null);
+    }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
