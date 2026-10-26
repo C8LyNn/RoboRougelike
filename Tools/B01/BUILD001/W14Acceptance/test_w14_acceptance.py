@@ -12,25 +12,27 @@ import prepare_build_native as p
 import verify_build_native as v
 
 
-def make_cases(edit=True, missing_receiver=False, fail=False):
+def make_cases(edit=True, missing_receiver=False, fail=False, spoof_orig=False):
+    # SYNTHETIC NUnit structure only. Positive fixture copies exact pinned
+    # expected method inventory; negative mutations independently exercise
+    # fail-closed evidence gates, NOT Unity test outcomes.
     root=ET.Element("test-run",{"result":"Passed"})
-    counts = ([("B01.BUILD001.Tests.Build001R14ContactAreaTests",14),
-               ("BuildRC2SafetyTests",3 if not missing_receiver else 2),
-               ("B01.BUILD001.Tests.Build001SocketTests",11),
-               ("B01.BUILD001.Tests.Build001R13SafetyTests",7)] if edit else
-              [("B01.BUILD001.Tests.Build001PhysicalHitTests",2),
-               ("B01.BUILD001.Tests.Build001R13PhysicalTests",4)])
-    for cls,num in counts:
-        for i in range(num):
-            if cls=="BuildRC2SafetyTests":
-                name=(("NestedPatchMustSatisfyActualMinimumContactArea(" + str(i) + ")")
-                      if i<2 else "AcceptedNestedPatchReportsItsTrueGeometricArea")
-            else:
-                name=("RC2_NestedAcceptedAreaEqualsActualPhysicalSquareMetres" if
-                    cls.endswith("Build001R14ContactAreaTests") and i==0 else
-                    f"Test{i}")
-            ET.SubElement(root,"test-case",{"classname":cls,"fullname":cls+"."+name,
-                "name":name,"result":"Passed"})
+    inventory=v.EDIT_METHODS if edit else v.PLAY_METHODS
+    for cls,methods in inventory.items():
+        for method,multiplicity in methods.items():
+            for i in range(multiplicity):
+                if missing_receiver and cls=="BuildRC2SafetyTests" and (
+                    method=="AcceptedNestedPatchReportsItsTrueGeometricArea"):
+                    continue
+                visible=method
+                if spoof_orig and cls in (
+                    "B01.BUILD001.Tests.Build001SocketTests",
+                    "B01.BUILD001.Tests.Build001R13SafetyTests"):
+                    visible="UnverifiedGreenReplacement"+str(i)
+                name=visible+("("+str(i)+")" if multiplicity>1 else "")
+                ET.SubElement(root,"test-case",{
+                    "classname":cls,"fullname":cls+"."+name,
+                    "name":name,"result":"Passed"})
     cases=list(root.iter("test-case"))
     root.set("total",str(len(cases)));root.set("passed",str(len(cases)))
     if fail:
@@ -117,7 +119,7 @@ class AcceptanceProfileTests(unittest.TestCase):
         # Existing W14 checker counts R1.4(14) + receiver(3), but formerly
         # accepted 18 plausible-looking PASS rows for methods not in source.
         # This is synthetic *negative* receipt data, NOT native Unity PASS.
-        bad=make_cases()
+        bad=make_cases(spoof_orig=True)
         with self.assertRaisesRegex(ValueError,"UNEXPECTED_METHOD_OR_CASE_DISTRIBUTION"):
             v.parse_nunit(bad,35,
                 {"B01.BUILD001.Tests.Build001R14ContactAreaTests":14,
@@ -128,7 +130,7 @@ class AcceptanceProfileTests(unittest.TestCase):
         cases=root.findall(".//test-case")
         # Two fake independent native cases with exactly one fullname, even
         # though total / passed / fixture class counts all claim green.
-        cases[18].set("fullname",cases[17].get("fullname"))
+        cases[1].set("fullname",cases[0].get("fullname"))
         with self.assertRaisesRegex(ValueError,"DUPLICATE_OR_MISSING_TEST_ID"):
             v.parse_nunit(ET.tostring(root,encoding="unicode"),35,
                 {"B01.BUILD001.Tests.Build001R14ContactAreaTests":14,
@@ -137,7 +139,7 @@ class AcceptanceProfileTests(unittest.TestCase):
     def test_15_foreign_test_substitution_cannot_satisfy_build_count(self):
         root=ET.fromstring(make_cases())
         cases=root.findall(".//test-case")
-        fake=cases[-1]
+        fake=cases[0]
         fake.set("classname","Outside.BuildUnknownTests")
         fake.set("fullname","Outside.BuildUnknownTests.NotAuthorised")
         fake.set("name","NotAuthorised")
