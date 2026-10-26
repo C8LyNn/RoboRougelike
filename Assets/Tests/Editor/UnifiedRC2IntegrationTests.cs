@@ -45,8 +45,10 @@ public sealed class UnifiedRC2IntegrationTests
     [UnityTest] public IEnumerator NativeEnterBindingUsesUnifiedPreparationInsteadOfSkippingGarage()
     {
         probe=new GameObject("RC2 editor input-state probe").AddComponent<RC2EditorInputProbe>();
-        for(int i=0;i<6&&run.Progress.State!=R1RunState.Garage;i++)yield return null;
-        Assert.That(probe.Sent&&probe.PressObserved,Is.True,"Inject and observe input inside the real player Update");
+        yield return new WaitForSecondsRealtime(.2f);
+        for(int i=0;i<6&&run.Progress.State!=R1RunState.Garage;i++){if(UnityEditor.EditorApplication.isPaused)UnityEditor.EditorApplication.Step();yield return null;}
+        Assert.That(probe.Sent,Is.True,"Player Update did not run; paused="+UnityEditor.EditorApplication.isPaused+" playing="+Application.isPlaying);
+        Assert.That(probe.PressObserved,Is.True,"Player Update ran but native press was not observed");
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage),"The production Enter binding must follow the same menu entry as the button");
         Assert.That(run.Player,Is.Not.Null);Assert.That(run.Encounter.AliveCount,Is.Zero);
     }
