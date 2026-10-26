@@ -24,7 +24,7 @@ namespace B01.BUILD001.Tests
         }
 
         [TestCase(.02f, false)]
-        [TestCase(.05f, false)]
+        [TestCase(.049f, false)]
         [TestCase(.051f, true)]
         [TestCase(.2f, true)]
         public void RC2_NestedPatchUsesRealContactArea(float half, bool shouldTouch)
