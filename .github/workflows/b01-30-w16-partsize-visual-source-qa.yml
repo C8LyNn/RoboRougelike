@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PIN=937838662f79c4c441d682d731fa860e4cc3d0f1
+          PIN=be2be0e4802bc3f450179901f9ae91c6d84bcb5b
           git fetch --depth=1 origin "$PIN"
           test "$(git rev-parse FETCH_HEAD)" = "$PIN"
           out=/tmp/b01-partsize-pr286
@@ -85,7 +85,7 @@ jobs:
           git show "$PIN:Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.prefab" > "$out/PARTSIZE001_Demo.prefab"
           git show "$PIN:Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv" > "$out/observed_r3_size_matrix.csv"
           test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeContract.cs")" = 07455919a5544875fee5a78ecbbce36dc6cb49c2
-          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs")" = 78bd448ada36638670adaa7a19d9c5c2350a02be
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs")" = 44c507eba175029fb2750acbcac44119c1d97001
           test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs")" = 6153d1758e800ec5c4210323610b061c06e8ea85
           test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs")" = a9c74387a6dd33641dc758de08ee91d3fb6f3871
           test "$(git rev-parse "$PIN:Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv")" = 663883256a521b385ebd51c53abf72e9fbe6b034
