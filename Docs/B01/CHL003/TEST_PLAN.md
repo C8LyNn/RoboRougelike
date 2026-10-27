@@ -1,8 +1,17 @@
+## PASS 3 / native traction falsifier for B01-60 W26 QA-01
+
+**New E20** pure production C# wheel reach: old 0.95m detects root Y1.28m hovering 35cm, but corrected wheel radius .41m+origin lift .14m+near-contact allowance .03m = **0.58m** max cast, and rejects roots Y1.28 and Y1.34. Root Y0.93 must accept near actual wheel touching; Y0.97 (4cm gap) must reject. Source .NET8 runs exact new production helper (not Unity).
+
+**New PlayMode P15** uses original built Demo, actual Light Rigidbody SphereCollider wheels, real BoxCollider ground and genuine Physics.ComputePenetration; at root Y1.28 /1.34 confirms wheel-floor not penetrating and full throttle+steer cannot grant traction or horizontal/yaw acceleration for two physics ticks, then root Y0.93 must permit support. **AUTHORED NOT_RUN** until licensed Unity6000.3.14f1. Existing P07 Light3+Heavy3 continuous course, P08 CP4+finish same-step and P14 Heavy yaw8 negative also remain mandatory and native NOT_RUN.
+
+Suite target now **EditMode20 / PlayMode15**, original raw XML, Editor.log, process exit, physical captures and six real trial CSV receipts required. New source SHA requires new independent B01-40 G0 archive audit + rollback; all previous G0 evidence on `077e692...` is HISTORICAL. Neither source CI nor source math passes G1.
+
+
 ## C1 native acceptance triggered by B01-21 QA PR #295
 
 - **E19** original C# analytic yaw8 Heavy four original spheres/chassis projection: 3.50m old gate RED, 3.70m aligned gate GREEN, strict >=0.25m minimum retained.
 - **P14** authored-only real Unity physical cross through CP0 of SAME Heavy Rigidbody at yaw8: modify CP0 to old 3.50m and confirm **zero** CP; Retry, restore original 3.70m CP, use same real physics and confirm CP count increments exactly +1. No direct call to EnterCheckpoint.
-- Complete suite becomes **19 authored EditMode / 14 authored PlayMode**. Native Unity runner/test XML/real Light/Heavy six completions remain NOT_RUN, license credentials preflight blocks CI-02/CI-03.
+- Complete suite becomes **20 authored EditMode / 15 authored PlayMode**. Native Unity runner/test XML/real Light/Heavy six completions remain NOT_RUN, license credentials preflight blocks CI-02/CI-03.
 - Source original geometry and explicit blocking conditions: `DEPENDENCY_C1_HEAVY_YAW8.md`. C1 green allows B01-40 current ZIP G0 and B01-60 licensed native G1 only; does NOT authorize merge.
 
 ## W17 same-course elapsed-time authority
@@ -25,8 +34,8 @@ compiles and runs EXACT `Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Cou
 
 ## Licensed native Unity mandatory (not executed by producer)
 Open isolated demo in Unity6000.3.14f1 (URP), record actual compile Editor.log/exit and Test Framework:
-- EditMode19 exact E01–E15, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
-- PlayMode14 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
+- EditMode20 exact E01–E15, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
+- PlayMode15 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
 - Manual: 2 profiles Light/Heavy (real masses/collider footprints), 3 completed crossing attempts each, HUD and controls both input backends, at least 3 failed falls+retries, off-course/pause, no leaks. Record seed or static scene checksum, elapsed, checkpoint counts, fall/timeouts, bumper/wheel contact, screenshot/video, XML and actual process exits, all on pinned exact commit.
 - If a test is unsupported or fails: actual FAIL/NOT_RUN, no masking, report to B01-20 before source freeze. No G1 without independent B01-60.
 
