@@ -34,7 +34,7 @@ namespace RoboRougelike.R1
             SuspensionModes(run,30,389,280);SuspensionHeight(run,30,425,280);
             string introduction=!string.IsNullOrEmpty(state.Protection)&&run.VehicleModel.SelectedDrive!=R3DriveKind.Hover?
                 "Full ograniczony przez sprężyny kół.":"Podpiera kadłub na nierównościach.";
-            bool placementError=run.Garage.Tool==RoboRougelike.R4_1.R41GarageTool.Mount&&run.Garage.PlacementIssue!=null;
+            bool placementError=run.Garage.Tool==RoboRougelike.R4_1.R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.PlacementIssue!=null;
             if(!placementError)GUI.Label(new Rect(30,462,280,52),introduction+"\nOFF: wył. • Assist: słabsze • Full: pełne.\n+/−: docelowa wysokość (±0,35 m).\nWybierz Zawieszenie i kliknij zielone widmo.",SuspensionHelp);
         }
         void DrawSuspensionPause(R1RunController run)
