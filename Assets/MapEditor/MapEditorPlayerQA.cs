@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using RoboRougelike.R1;
 using RoboRougelike.R6;
@@ -59,7 +60,7 @@ namespace RoboRougelike.MapEditor
             run.SetMapTool(false,false);
             var preview=new MapItem{kind=MapItemKind.Steps,x=20,z=0,scaleX=2,scaleY=3,scaleZ=1};
             var palette=run.GetComponent<R3VisualPalette>();run.EditorWorld.ShowGhost(preview,true,palette);
-            var ghost=run.EditorWorld.transform.Find("Widmo edytora map");
+            var ghost=run.EditorWorld.GetComponentsInChildren<Transform>().FirstOrDefault(t=>t.name=="Widmo edytora map"&&t.gameObject.activeInHierarchy);
             report.ghost=ghost!=null&&ghost.localScale==new Vector3(2,3,1)&&ghost.GetComponentInChildren<Renderer>().sharedMaterial==palette.Valid;
             run.EditorWorld.HideGhost();Require(report.globalFloor&&report.scaledObject&&report.ghost&&report.additionalObjects,"Expanded editor tools");
             var expected=run.EditorDraft.ToJson();string path=Path.Combine(directory,"test-map.json");
