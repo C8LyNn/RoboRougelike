@@ -203,7 +203,7 @@ report = {
     "glb_axes": "+X length, -Z road-facing, +Y up",
     "root_pivot_m": [0, 0, 0],
     "suggested_box_collider_blender_m": {
-        "center": [0.0, 0.0, 0.47], "size": [2.46, 0.70, 0.96]
+        "center": [0.0, -0.04, 0.47], "size": [2.46, 0.86, 0.96]
     },
     "animation": "NOT_APPLICABLE",
     "license": "CC0-1.0; original geometry and script, no third-party models",
