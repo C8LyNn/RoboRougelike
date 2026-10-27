@@ -94,6 +94,11 @@ public sealed class WeaponGroupTests
         Assert.That(second.NextFireTime,Is.Zero,"secondary gun must wait for its own trigger");
         assembly.FireGroup(true);
         Assert.That(second.NextFireTime,Is.GreaterThan(0),"secondary trigger fires its gun");
+        second.NextFireTime=0;
+        var receiver=second.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
+        Assert.That(receiver,Is.Not.Null);receiver.ApplyEmp(3);
+        assembly.FireGroup(true);Assert.That(second.NextFireTime,Is.Zero,"EMP-disrupted group must not fire");
+        receiver.ClearEmp();
         first.NextFireTime=second.NextFireTime=0;
         model.SwapWeaponGroups();assembly.FireGuns();
         Assert.That(first.NextFireTime,Is.Zero);Assert.That(second.NextFireTime,Is.GreaterThan(0));
