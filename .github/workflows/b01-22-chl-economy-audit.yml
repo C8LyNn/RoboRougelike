@@ -44,7 +44,7 @@ jobs:
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
           files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
             if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
-          assert len(files)==8,files
+          assert len(files)==9,files
           assert all(not s.startswith("Assets/") for s in files)
           manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
           (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
