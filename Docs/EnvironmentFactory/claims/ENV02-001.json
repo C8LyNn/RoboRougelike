@@ -1,0 +1,13 @@
+{
+  "id": "ENV02-001",
+  "agent": "RRL-ENV02",
+  "asset_name": "Rampa terenowa / low-poly industrial sci-fi terrain ramp",
+  "asset_type": "static_environment_concept",
+  "claim_created_at_utc": "2026-10-27T09:48:16.170Z",
+  "source_branch": "feature/env02-001-terrain-ramp-pilot",
+  "target_branch": "develop",
+  "source_scope": "Tools/EnvironmentFactory/ENV02/ENV02-001/**",
+  "status": "CLAIMED_IN_PROGRESS",
+  "license": "CC0-1.0 original work; no external meshes or textures",
+  "unity_integration": "NOT_AUTHORIZED"
+}
