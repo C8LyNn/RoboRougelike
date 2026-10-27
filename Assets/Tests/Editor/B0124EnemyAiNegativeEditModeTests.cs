@@ -113,6 +113,53 @@ public sealed class B0124EnemyAiNegativeEditModeTests
     }
 
     [Test]
+    public void InactiveCachedTarget_IsInvalidatedAtNextAiUpdate_Regression()
+    {
+        // Separate regression from fresh selection: currentTarget points to a
+        // collider that was active last frame and is now inactive, while the
+        // ordinary 0.8-second periodic refresh has not elapsed.
+        var target = PlayerPart("PreviouslyActive", true);
+
+        var coreObject = Own(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        coreObject.transform.SetParent(enemy.transform, false);
+        coreObject.transform.position = new Vector3(-30f, 1f, 0f);
+        var core = coreObject.AddComponent<P12PipelineSafeDamageable>();
+        core.Configure(100f, false);
+
+        var weaponObject = Own(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        weaponObject.transform.SetParent(enemy.transform, false);
+        weaponObject.transform.position = new Vector3(-30f, 1f, 2f);
+        var weapon = weaponObject.AddComponent<P12PipelineSafeDamageable>();
+        weapon.Configure(100f, false);
+
+        var yaw = Own(new GameObject("B0124_CacheYaw")).transform;
+        yaw.SetParent(enemy.transform, false);
+        yaw.position = new Vector3(0f, 1f, 0f);
+        var muzzle = Own(new GameObject("B0124_CacheMuzzle")).transform;
+        muzzle.SetParent(yaw, false);
+        muzzle.position = yaw.position;
+
+        enemy.Configure(playerRoot.transform, yaw, muzzle, enemy.transform, core, null);
+        Field("weaponBlock", weapon);
+        Field("turretSupport", core);
+        Field("currentTarget", target);
+        Field("nextTargetTime", float.PositiveInfinity);
+        // We test target invalidation without emitting a projectile.
+        Field("maxRange", 0f);
+        enemy.SetCombatActive(true);
+
+        target.gameObject.SetActive(false);
+        Assert.That(target.enabled, Is.True);
+        Assert.That(target.gameObject.activeInHierarchy, Is.False);
+        Method("Update").Invoke(enemy, null);
+        var cached = typeof(P12PipelineSafeEnemyTurret).GetField(
+            "currentTarget", BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.That(cached, Is.Not.Null);
+        Assert.That((Collider)cached.GetValue(enemy), Is.Null,
+            "An inactive cached player part must be dropped before the 0.8-second refresh.");
+    }
+
+    [Test]
     [Explicit("Enable only after HQ/B01-10 approves opaque solid cover suppressing enemy shots.")]
     public void SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy()
     {
