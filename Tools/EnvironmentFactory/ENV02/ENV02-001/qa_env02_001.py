@@ -78,7 +78,11 @@ def main(out):
     assert count_tris(collider) <= 30
     check_png(out / 'ENV02-001_view_3q.png')
     check_png(out / 'ENV02-001_view_side.png')
-    assert (out / 'ENV02-001.blend').read_bytes()[:7] == b'BLENDER'
+    # Blender may save compressed .blend (gzip or Zstandard); CI separately reopens it in Blender.
+    blend_magic = (out / 'ENV02-001.blend').read_bytes()[:8]
+    assert (blend_magic.startswith(b'BLENDER') or
+            blend_magic.startswith(bytes.fromhex('1f8b')) or
+            blend_magic.startswith(bytes.fromhex('28b52ffd'))), blend_magic.hex()
     manifest = {
         'asset_id': 'ENV02-001',
         'status': 'BLENDER_QA_PASS_UNITY_NOT_RUN',
