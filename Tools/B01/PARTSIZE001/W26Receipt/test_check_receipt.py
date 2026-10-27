@@ -27,7 +27,7 @@ def stage(folder,platform,xml=None,log=None):
     log=("Initialize engine version: "+v.UNITY+"\n"+("Native runner log segment\n"*3)).encode() if log is None else log
     (folder/(platform+".xml")).write_bytes(data)
     (folder/(platform+".log")).write_bytes(log)
-    return {"exit_code":0,
+    return {"exit_code":0, "assembly":v.ASSEMBLIES[platform],
             "xml_sha256":hashlib.sha256(data).hexdigest(),
             "log_sha256":hashlib.sha256(log).hexdigest()}
 
@@ -119,5 +119,49 @@ class NativeEvidenceParserUnitTests(unittest.TestCase):
         root.set("total","18")
         with self.assertRaisesRegex(v.EvidenceError,"NUNIT_TOTAL_MISMATCH"):
             v.check_xml(raw_xml(root),"EditMode")
+
+    # W66 PASS13: three independent B01-40 original-parser RED cases,
+    # plus exact-positive control. Synthetic receipt only; Unity NOT_RUN.
+    def test_13_NEG01_fullname_must_equal_classname_dot_name(self):
+        for platform in ("EditMode","PlayMode"):
+            with self.subTest(platform=platform):
+                root=mock_xml(platform)
+                first=list(root.iter("test-case"))[0]
+                # Valid classname and expected name, but a DIFFERENT
+                # prefixed fullname. Old parser incorrectly returned green.
+                first.set("fullname",v.CLASSES[platform]+".ForeignButPassed")
+                with self.assertRaisesRegex(v.EvidenceError,"FOREIGN_OR_MALFORMED_NUNIT_CASE"):
+                    v.check_xml(raw_xml(root),platform)
+
+    def test_14_NEG02_foreign_test_assembly_is_fail_closed(self):
+        for platform in ("EditMode","PlayMode"):
+            with self.subTest(platform=platform), TemporaryDirectory() as temp:
+                f=Path(temp);o=receipt(f)
+                o[platform]["assembly"]="B01.EVIL.FOREIGN."+platform+"Tests"
+                (f/"receipt.json").write_text(json.dumps(o))
+                with self.assertRaisesRegex(v.EvidenceError,"WRONG_NATIVE_TEST_ASSEMBLY_"+platform):
+                    v.inspect_receipt(f)
+
+    def test_15_NEG03_json_boolean_false_is_not_integer_exit_zero(self):
+        for platform in ("EditMode","PlayMode"):
+            with self.subTest(platform=platform), TemporaryDirectory() as temp:
+                f=Path(temp);o=receipt(f)
+                o[platform]["exit_code"]=False # JSON false == 0 in Python; reject exact type
+                (f/"receipt.json").write_text(json.dumps(o))
+                with self.assertRaisesRegex(v.EvidenceError,"INVALID_OR_NONZERO_UNITY_EXIT_"+platform):
+                    v.inspect_receipt(f)
+
+    def test_16_positive_exact_native_assembly_and_integer_exit_per_stage(self):
+        with TemporaryDirectory() as temp:
+            f=Path(temp);o=receipt(f)
+            for platform in ("EditMode","PlayMode"):
+                self.assertEqual(o[platform]["assembly"],v.ASSEMBLIES[platform])
+                self.assertIs(type(o[platform]["exit_code"]),int)
+                self.assertEqual(o[platform]["exit_code"],0)
+                self.assertEqual(v.check_xml(raw_xml(mock_xml(platform)),platform)
+                                 ["cases"],v.EXPECTED_COUNTS[platform])
+            result=v.inspect_receipt(f)
+            self.assertEqual(result["status"],"STRUCTURAL_EVIDENCE_REVIEW_REQUIRED")
+            self.assertEqual(result["G2"],"HOLD")
 
 if __name__=="__main__":unittest.main(verbosity=2)
