@@ -1,0 +1,62 @@
+name: ENV03-001 isolated Blender export and QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-env03-001-arena-wall-segment
+    paths:
+      - 'Tools/EnvironmentFactory/ENV03/ENV03-001/**'
+      - '.github/workflows/ci-env03-001.yml'
+      - 'Docs/EnvironmentFactory/claims/ENV03-001.json'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV03/ENV03-001/**'
+      - '.github/workflows/ci-env03-001.yml'
+      - 'Docs/EnvironmentFactory/claims/ENV03-001.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  env03-blender-qa:
+    name: ENV03-001 Blender CPU export + independent QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout isolated pilot
+        uses: actions/checkout@v4
+
+      - name: Install real Blender from Ubuntu repository
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -3
+
+      - name: Generate BLEND, GLB, and two CPU preview renders
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p env03-001-artifacts
+          blender -b -noaudio --python Tools/EnvironmentFactory/ENV03/ENV03-001/generate_env03_001.py -- --output-dir "$PWD/env03-001-artifacts" 2>&1 | tee env03-001-artifacts/blender_export.log
+
+      - name: Independently inspect saved BLEND and re-import GLB
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender -b -noaudio --python Tools/EnvironmentFactory/ENV03/ENV03-001/qa_env03_001.py -- --output-dir "$PWD/env03-001-artifacts" 2>&1 | tee env03-001-artifacts/blender_qa.log
+          test -s env03-001-artifacts/ENV03-001_ArenaWall.blend
+          test -s env03-001-artifacts/ENV03-001_ArenaWall.glb
+          test -s env03-001-artifacts/qa_report.json
+          printf 'SOURCE_SHA=%s\n' "$GITHUB_SHA" > env03-001-artifacts/source_sha.txt
+          (cd env03-001-artifacts && sha256sum ENV03-001_ArenaWall.blend ENV03-001_ArenaWall.glb > SHA256SUMS)
+
+      - name: Upload actual exports, previews, hashes, and QA logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ENV03-001-Blender-Exports-and-QA
+          path: env03-001-artifacts/
+          if-no-files-found: warn
+          retention-days: 14
