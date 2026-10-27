@@ -1,0 +1,411 @@
+{
+  "version": 2,
+  "globalFloor": false,
+  "items": [
+    {
+      "kind": 0,
+      "x": 0,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 0,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 0,
+      "z": 3,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 0,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 0,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 1,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 1,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 1,
+      "z": 3,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 1,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 1,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 2,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 2,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 2,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 2,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 3,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 3,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 3,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 3,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 4,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 4,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 4,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 4,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 5,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 5,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 5,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 5,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 6,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 6,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 6,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 6,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 7,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 7,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 7,
+      "z": 3,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 7,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 7,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 8,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 8,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 8,
+      "z": 3,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 8,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 0,
+      "x": 8,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 4,
+      "x": 0,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 5,
+      "x": 8,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 1,
+      "x": 4,
+      "z": 1,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 8,
+      "x": 4,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 2,
+      "x": 5,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    }
+  ]
+}
