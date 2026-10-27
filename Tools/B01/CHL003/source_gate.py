@@ -11,12 +11,17 @@ expected=[
 "Runtime/CHL003CourseController.cs",
 "Runtime/CHL003Gate.cs",
 "Runtime/CHL003VehicleMotor.cs",
+"Runtime/CHL003ContactMonitor.cs",
+"Runtime/CHL003FinishArbiter.cs",
+"Runtime/CHL003TrialMetrics.cs",
 "Runtime/B01.CHL003.Runtime.asmdef",
 "Demo/CHL003DemoBootstrap.cs",
 "Demo/CHL003_Demo.unity",
 "Tests/EditMode/B01.CHL003.EditModeTests.asmdef",
 "Tests/PlayMode/B01.CHL003.PlayModeTests.asmdef",
 "Tests/EditMode/CHL003CoreEditModeTests.cs",
+"Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs",
+"Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs",
 "Tests/PlayMode/CHL003PhysicsPlayModeTests.cs"]
 def require(condition,message):
     if not condition:raise RuntimeError("CHL003_SOURCE_RED:"+message)
@@ -54,7 +59,7 @@ for must in ["index != CheckpointIndex","physicsActorToken != ActorToken",
              "State != Phase.Running","Paused","Completed?.Invoke",
              "CheckpointReached?.Invoke","TimeLimitSeconds"]:
     require(must in core,"missing state guard: "+must)
-for must in ["GameObject.CreatePrimitive","new Vector3(3.0f, .60f, 10f)",
+for must in ["GameObject.CreatePrimitive","new Vector3(3.70f, .60f, 10f)",
              "REAL_LOW_BARRIER","SOLID_RAMP","Gate(\"CP0\"",
              "CHL003_LIGHT_RIG","CHL003_HEAVY_RIG",
              "GUILayout.RepeatButton","RigidbodyInterpolation.Interpolate"]:
@@ -64,8 +69,36 @@ for must in ["Physics.ComputePenetration","Physics.Raycast" if False else "Physi
     require(must in physical,"physical test must use Unity Physics: "+must)
 editNames=re.findall(r"\[Test\]\s+public void (\w+)\(",edit)
 playNames=re.findall(r"\[UnityTest\]\s+public IEnumerator (\w+)\(",physical)
-require(len(editNames)==10 and len(set(editNames))==10, "expected exactly ten Edit NUnit methods")
-require(len(playNames)==6 and len(set(playNames))==6, "expected exactly six Play UnityTest methods")
+moreEdit=(pkg/"Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs").read_text()
+morePlay=(pkg/"Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs").read_text()
+editNames += re.findall(r"\[Test\]\s+public void (\w+)\(",moreEdit)
+playNames += re.findall(r"\[UnityTest\]\s+public IEnumerator (\w+)\(",morePlay)
+require(len(editNames)==15 and len(set(editNames))==15, "expected 15 authored Edit NUnit methods")
+require(len(playNames)==9 and len(set(playNames))==9, "expected 9 authored Play UnityTests")
+arbiter=(pkg/"Runtime/CHL003FinishArbiter.cs").read_text()
+metrics=(pkg/"Runtime/CHL003TrialMetrics.cs").read_text()
+monitor=(pkg/"Runtime/CHL003ContactMonitor.cs").read_text()
+for invariant in ("LastCheckpointAccepted(fixedStep)", "TryCommit(fixedStep,",
+                 "PhysicallyOverlapsFinish()", "Physics.ComputePenetration(",
+                 "activeActor.isKinematic = true", "metrics.RecordPhysics("):
+    require(invariant in runtime,"W17 runtime arbitration/physics missing: "+invariant)
+for invariant in ("fixedStep <= queuedStep.Value", "fixedStep <= lastCheckpointStep",
+                 "stillPhysicallyOverlapping", "CancelPending()"):
+    require(invariant in arbiter,"same-step finish gate missing: "+invariant)
+for invariant in ("CollisionEntries", "BarrierContacts", "RampContacts",
+                 "BridgeContacts", "RecordCheckpoint", "RecordFailed", "SummaryCsv"):
+    require(invariant in metrics,"real trial telemetry field missing: "+invariant)
+require("OnCollisionEnter" in monitor and "OnCollisionStay" in monitor,
+        "no native contact event source")
+require("OnTriggerStay" in (pkg/"Runtime/CHL003Gate.cs").read_text(),
+        "co-located physics stay callback missing")
+require("P07_SameNativeCourseLightHeavyThreeRunsEachWithRealContact" in morePlay and
+        "P08_FinalCheckpointAndFinishCoLocatedNeverCompleteSameFixedStep" in morePlay,
+        "real native physical course acceptance missing")
+# Negative mutation: same-step protection absent would be caught.
+mutated=arbiter.replace("fixedStep <= lastCheckpointStep", "false")
+require(mutated!=arbiter and "fixedStep <= lastCheckpointStep" not in mutated,
+        "co-located same-step negative mutation was not detected")
 for mode in ("EditMode","PlayMode"):
     asm=json.loads((pkg/"Tests"/mode/("B01.CHL003."+mode+"Tests.asmdef")).read_text())
     require(asm["references"]==["B01.CHL003.Runtime"],"wrong asmdef owner")
