@@ -5,9 +5,10 @@ using UnityEngine;
 namespace B01.PARTSIZE001
 {
     /// <summary>
-    /// Native Unity ONLY: actual registered Collider bounds and PhysX narrow
-    /// phase. Caller MUST supply a complete nearby collider inventory;
-    /// preview cell occupancy alone never authorizes real installation.
+    /// Native Unity ONLY: independently query all nearby world Colliders, then
+    /// test actual PhysX narrow phase. The caller's broadphase completeness
+    /// flag is NEVER proof of its own inventory: omissions fail closed.
+    /// Preview cell occupancy does not authorize installation or typed mounts.
     /// Standalone producer demo, NOT a replacement for Codex R3 mounting.
     /// </summary>
     public static class PartSizeNativePhysics
@@ -57,6 +58,9 @@ namespace B01.PARTSIZE001
                 (owner.lossyScale-Vector3.one).sqrMagnitude>1e-8f)
                 return "NONCANONICAL_OWNER_TRANSFORM";
 
+            // Update the world broadphase BEFORE reading world-space collider
+            // AABBs. Otherwise recent owner movements may be absent from queries.
+            Physics.SyncTransforms();
             var seen=new HashSet<Collider>();
             Bounds envelope=GridBounds(definition,anchor,quarterTurns);
             foreach(Collider c in allOwnedColliders)
@@ -77,23 +81,75 @@ namespace B01.PARTSIZE001
                     return "UNREGISTERED_PHYSICAL_COLLIDER";
 
             var otherSeen=new HashSet<Collider>();
-            Physics.SyncTransforms();
             foreach(var outside in fullExternalBroadphase)
             {
                 if(outside==null||!otherSeen.Add(outside)||seen.Contains(outside)||
                    !outside.enabled||outside.isTrigger||!outside.gameObject.activeInHierarchy)
                     return "INVALID_EXTERNAL_BROADPHASE";
                 if(!Supported(outside))return "UNSUPPORTED_EXTERNAL_SHAPE";
-                foreach(var inside in allOwnedColliders)
+            }
+
+            // P0 W17: discover *independently* through Unity's actual scene
+            // physics. A caller may omit a colliding neighbour even when it
+            // asserts completeExternalBroadphase=true. Each owned physical
+            // collider is queried with a padded world-space AABB; Physics
+            // returns the full allocated result array (no truncating fixed
+            // NonAlloc capacity). Layer mask ~0 also includes IgnoreRaycast.
+            // We do NOT guess that an exposed logical grid face is a socket.
+            foreach(var inside in allOwnedColliders)
+            {
+                Bounds b=inside.bounds;
+                if(b.size.sqrMagnitude<=0f)
+                    return "PHYSICS_QUERY_UNVERIFIED";
+                bool selfObserved=false;
+                Collider[] nearby=Physics.OverlapBox(b.center,
+                    b.extents+Vector3.one*(MaxPenetrationMeters+WorldBoundsEpsilon),
+                    Quaternion.identity,~0,QueryTriggerInteraction.Ignore);
+                if(nearby==null||nearby.Length==0)
+                    return "PHYSICS_QUERY_UNVERIFIED";
+                foreach(var discovered in nearby)
                 {
-                    if(Physics.ComputePenetration(inside,inside.transform.position,
-                        inside.transform.rotation,outside,outside.transform.position,
-                        outside.transform.rotation,out _,out float depth) &&
-                        depth>MaxPenetrationMeters)
-                        return "PHYSICAL_PENETRATION";
+                    if(discovered==null)
+                        return "PHYSICS_QUERY_UNVERIFIED";
+                    if(discovered==inside)selfObserved=true;
+                    if(seen.Contains(discovered))continue;
+                    if(!discovered.enabled||discovered.isTrigger||
+                       !discovered.gameObject.activeInHierarchy)
+                        return "PHYSICS_QUERY_UNVERIFIED";
+                    if(!otherSeen.Contains(discovered))
+                        return "INCOMPLETE_EXTERNAL_BROADPHASE";
                 }
+                // If this physical collider wasn't observed by an actual Unity
+                // world query, the physics scene may not be the one we queried.
+                // Never accept an empty/default-physics-scene false-green.
+                if(!selfObserved)return "PHYSICS_QUERY_UNVERIFIED";
+            }
+
+            foreach(var outside in fullExternalBroadphase)
+            foreach(var inside in allOwnedColliders)
+            {
+                if(Physics.ComputePenetration(inside,inside.transform.position,
+                    inside.transform.rotation,outside,outside.transform.position,
+                    outside.transform.rotation,out _,out float depth) &&
+                    depth>MaxPenetrationMeters)
+                    return "PHYSICAL_PENETRATION";
             }
             return null;
+        }
+
+        /// <summary>
+        /// PARTSIZE knows only occupied cells, not signed/typed trusted Build
+        /// sockets, support graph or actual normal-specific mount area.
+        /// A logically exposed face is NEVER placement authorization.
+        /// The Codex-owned host must supply its own authoritative socket gate.
+        /// </summary>
+        public static string ValidateMountSocketAuthority(PartSizeDefinition definition,
+            Cell3 localCell,Cell3 face)
+        {
+            if(definition==null)return "INVALID_LOGICAL_FOOTPRINT";
+            if(!PartSizeGrid.IsExposedFace(definition,localCell,face))
+                return "NOT_EXPOSED_LOGICAL_FACE";
+            return "TYPED_SOCKET_UNVERIFIED";
         }
     }
 
