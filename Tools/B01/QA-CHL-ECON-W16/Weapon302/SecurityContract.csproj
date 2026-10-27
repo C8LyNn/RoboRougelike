@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="SecurityContract.cs" />
+    <Compile Include="OutsideUnityApi.cs" />
+    <Compile Include="_pinned/Assets/R3/R3VehicleModel.cs" Link="ORIGINAL_CODEX_R3.cs" />
+    <Compile Include="_pinned/Assets/R4/R4WeaponDefinition.cs" Link="ORIGINAL_CODEX_R4.cs" />
+  </ItemGroup>
+</Project>
