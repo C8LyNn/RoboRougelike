@@ -8,10 +8,14 @@ compiles and runs EXACT `Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Cou
 
 ## Licensed native Unity mandatory (not executed by producer)
 Open isolated demo in Unity6000.3.14f1 (URP), record actual compile Editor.log/exit and Test Framework:
-- EditMode10 exact E01–E10, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
-- PlayMode6 exact P01–P06 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
+- EditMode15 exact E01–E15, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
+- PlayMode9 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
 - Manual: 2 profiles Light/Heavy (real masses/collider footprints), 3 completed crossing attempts each, HUD and controls both input backends, at least 3 failed falls+retries, off-course/pause, no leaks. Record seed or static scene checksum, elapsed, checkpoint counts, fall/timeouts, bumper/wheel contact, screenshot/video, XML and actual process exits, all on pinned exact commit.
 - If a test is unsupported or fails: actual FAIL/NOT_RUN, no masking, report to B01-20 before source freeze. No G1 without independent B01-60.
+
+## New native acceptance tests (authored, NOT_RUN)
+
+`E11–E13`: both CP-last/Finish orders at one tick, early Finish, overlap-loss, pause and Retry; `E14–E15`: independently recount actual contact metrics and reset Heavy. `P07`: instantiate the **actual production CHL demo bootstrap** in Unity6, drive Light and Heavy three attempts each on identical generated geometry via Rigidbody `AddForce`, verify gate4/finish and original collision/ramp/bridge samples. `P08`: move actual finish trigger over CP4 and verify Unity `PhysicsStep` of Completed is strictly later than CP4; one completion only. `P09`: pause must freeze Rigidbody and clock, actual fall must fail, Retry must clear references/counters and never inherit stale win. These require real Unity/PhysX and are NOT_RUN by producer. No direct method injection is a replacement for collision-trigger tests.
 
 ## Negative integration checks
 Compare base `main` exact source SHA and isolated CHL branch; changed paths must be solely package + docs/tools/dedicated CI, no forbidden host world/garage/weapon/financial/ProjectSettings source. B01-40 proves target-root GUID policy and rollback in disposable checkout. No main merge/G2.
