@@ -57,5 +57,46 @@
   "passed": 13,
   "failed": 0,
   "evidence": "Original source Git blob matched and real original data fixtures were created in memory (V8); NOT compiled/executed original C# or Unity.",
-  "native": "NOT_RUN"
+  "native": "NOT_RUN",
+  "newDifferentialEvidence": {
+    "id": "LD01-MANDATORY-OBSTACLE-BYPASS-001",
+    "actualInputType": "Original GitHub JSON v2 files at exact Git blob SHA, V8 grid BFS ignoring ALL obstacle-kind cells; NOT native Unity/PhysX",
+    "before": {
+      "version": "P11/LD01.json",
+      "gitBlob": "85b575691f25520d85f2caf9718d74b881ff32b3",
+      "obstacleFreeSpawnFinish": true,
+      "stepCount": 14,
+      "gridCells": [
+        "0,1",
+        "1,1",
+        "2,1",
+        "2,0",
+        "3,0",
+        "4,0",
+        "5,0",
+        "6,0",
+        "7,0",
+        "8,0",
+        "9,0",
+        "10,0",
+        "11,0",
+        "12,0",
+        "12,1"
+      ]
+    },
+    "after": {
+      "version": "P13/LD01_MIN.json",
+      "gitBlob": "d97534da8d4f767f229a125428cfe012a23aab0b",
+      "obstacleFreeSpawnFinish": false,
+      "visitedGridCellsBeforeExhaustion": 16
+    },
+    "result": "Original design's mobility obstacles all avoidable on on-floor 4-neighbour path; revised design forces floor-topology contact with barrier line. Physical feasibility UNTESTED.",
+    "owner": "B01-25 design-only; B01-21 clearance review; B01-60 native if HQ authorized",
+    "gates": [
+      "Unity/R6/PhysX NOT_RUN",
+      "Heavy/Light turning/contact NOT_RUN",
+      "vehicle could jump off floor; not ruled out",
+      "no G1 upgrade"
+    ]
+  }
 }
