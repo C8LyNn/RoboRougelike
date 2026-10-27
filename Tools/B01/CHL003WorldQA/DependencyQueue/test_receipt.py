@@ -106,8 +106,8 @@ class ReceiptMutationTests(unittest.TestCase):
         self.reject()
     def test_08_guard_forged_as_zero_is_rejected(self):
         self.d["guardEachSideMeters"]=0;self.reject()
-    def test_09_gate_width_forged_as_bridge_is_rejected(self):
-        self.d["realCHLWidthMeters"]=3.7;self.reject()
+    def test_09_new_gate_width_forged_as_old_is_rejected(self):
+        self.d["realCHLWidthMeters"]=3.5;self.reject()
     def test_10_source_count_false_positive_rejected(self):
         self.d["sourceTestPassed"]=19;self.reject()
     def test_11_garbage_nonfinite_margin_rejected(self):

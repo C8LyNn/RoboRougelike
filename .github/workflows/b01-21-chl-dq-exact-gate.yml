@@ -70,7 +70,7 @@ jobs:
           set -euo pipefail
           dotnet run --project Tools/B01/CHL003WorldQA/DependencyQueue/GateGeometryReceipt.csproj -c Release -- "$PWD/chl-dq-evidence/GATE_ACTUAL_CSHARP_VERDICTS.json" | tee chl-dq-evidence/actual-production-policy.log
           grep -q 'CHL_SOURCE_GATE_EXACT_RESULT PASS=25 FAIL=0 NATIVE_UNITY=NOT_RUN' chl-dq-evidence/actual-production-policy.log
-      - name: Independent receipt schema checks and 11 tampered-receipt negatives
+      - name: Independent receipt schema checks and 14 tampered-receipt negatives
         shell: bash
         run: |
           set -euo pipefail
