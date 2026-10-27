@@ -50,13 +50,13 @@ jobs:
           set -euo pipefail
           dotnet run --project Tools/B01/CHL003WorldQA/CHL003RouteQA.csproj -c Release -- "$PWD/chl003-source-qa/CHL003_world_source.json" | tee chl003-source-qa/mapgen-csharp.log
           grep -q "CHL003_WORLD_SOURCE_RESULT total=30 pass=30 fail=0 nativeUnity=NOT_RUN" chl003-source-qa/mapgen-csharp.log
-      - name: Execute schema validator and 19 adversarial independent JSON receipt negatives
+      - name: Execute schema validator and 20 adversarial independent JSON receipt negatives
         shell: bash
         run: |
           set -euo pipefail
           python Tools/B01/CHL003WorldQA/verify_receipt.py chl003-source-qa/CHL003_world_source.json | tee chl003-source-qa/verify.log
           CHL003_RECEIPT="$PWD/chl003-source-qa/CHL003_world_source.json" python -m unittest discover -s Tools/B01/CHL003WorldQA -p 'test_*.py' -v 2>&1 | tee chl003-source-qa/mutation-tests.log
-          grep -q 'Ran 19 tests' chl003-source-qa/mutation-tests.log
+          grep -q 'Ran 20 tests' chl003-source-qa/mutation-tests.log
           echo CHL003_ACTUAL_MAPGEN_COMPAT_SOURCE_QA=PASS nativeUnity=NOT_RUN CHL_controller=NOT_RUN
       - name: Capture original hashes, provenance and clear native-not-run
         shell: bash

@@ -69,6 +69,11 @@ def verify(x):
             for i,point in enumerate(cp):
                 n3(point,"CHECKPOINT")
                 demand(abs(point[2]-(13+16*i))<.001,"CHECKPOINT_ORDER_OR_POSITION")
+            demand(row.get("lastCheckpointCoincidesWithFinish") is True and
+                   row.get("receiverMustDisambiguateFinishTrigger") is True,
+                   "UNDECLARED_FINISH_TRIGGER_COLOCATION")
+            demand(all(abs(cp[-1][i]-row["finish"][i])<.001 for i in range(3)),
+                   "FINISH_LAST_CHECKPOINT_DIFFER")
             demand(abs(row["start"][2]-5)<.001 and
                    abs(row["finish"][2]-(16*key[1]-3))<.001,
                    "START_FINISH_Z_MISMATCH")

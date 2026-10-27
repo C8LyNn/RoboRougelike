@@ -64,7 +64,10 @@ class CHL003WorldReceiptTests(unittest.TestCase):
         self.data["sourceCases"][0]["geometryHash"]="G"*64;self.bad()
     def test_18_route_validator_bypassed_rejected(self):
         self.data["sourceCases"][0]["validatorExploredCells"]=0;self.bad()
-    def test_19_changed_finish_coordinate_rejected(self):
+    def test_19_finish_colocation_not_declared_rejected(self):
+        self.data["sourceCases"][0]["receiverMustDisambiguateFinishTrigger"]=False
+        self.bad()
+    def test_20_changed_finish_coordinate_rejected(self):
         self.data["sourceCases"][0]["finish"][2]+=5;self.bad()
 
 if __name__=="__main__":unittest.main()

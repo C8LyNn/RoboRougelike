@@ -40,8 +40,9 @@ internal static class CHL003CourseProbe
         MapGenRouteValidator.Report route=MapGenRouteValidator.Validate(p,rig);
         Assert(route.Passed && route.Code=="BFS_SPINE_CLEARANCE_OK","NO_PROTECTED_ROUTE");
         Assert(p.Checkpoints.Count==segments,"WRONG_CHECKPOINT_COUNT");
-        Assert(p.Start.z<p.Checkpoints[0].z && p.Checkpoints[^1].z<p.Finish.z,
-            "ORDER_AND_FINISH");
+        Assert(p.Start.z<p.Checkpoints[0].z &&
+            Vector3.Distance(p.Checkpoints[^1],p.Finish)<.0001f,
+            "LAST_CHECKPOINT_FINISH_COLOCATION_NOT_CAPTURED");
         for(int i=0;i<p.Checkpoints.Count;i++)
         {
             Assert(MathF.Abs(p.Checkpoints[i].z-(13f+i*16f))<.001f,
@@ -65,6 +66,8 @@ internal static class CHL003CourseProbe
             minSideMarginMeters=.25f, laneMeters=cfg.LaneWidth,
             recipe="ObstacleCourse",generationVersion=p.GenerationVersion,
             geometryHash=p.GeometryHash,routeCode=route.Code,
+            lastCheckpointCoincidesWithFinish=true,
+            receiverMustDisambiguateFinishTrigger=true,
             validatorExploredCells=route.ExploredCells,
             start=Point(p.Start),finish=Point(p.Finish),
             checkpoints=p.Checkpoints.Select(Point).ToArray(),
