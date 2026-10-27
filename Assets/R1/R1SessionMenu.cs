@@ -75,8 +75,7 @@ namespace RoboRougelike.R1
             finally
             {
                 Time.timeScale = 1;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                if(!Application.isBatchMode){Cursor.lockState = CursorLockMode.None;Cursor.visible = true;}
             }
             Debug.Log("[EXIT273] Shutdown prepared: " + source);
             return true;

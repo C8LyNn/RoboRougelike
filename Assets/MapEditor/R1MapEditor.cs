@@ -141,9 +141,15 @@ namespace RoboRougelike.R1
             if(e.type!=EventType.MouseDown||e.button!=0)return;
             GUI.FocusControl(null);EditorTextFocused=false;
             var ray=Camera.main.ScreenPointToRay(new Vector2(raw.x,Screen.height-raw.y));
-            if(new Plane(Vector3.up,Vector3.zero).Raycast(ray,out float distance))
+            var hits=Physics.RaycastAll(ray,1000,~0,QueryTriggerInteraction.Ignore);
+            float nearest=float.PositiveInfinity;Vector3 point=default;bool hasPoint=false;
+            foreach(var hit in hits)
+                if(EditorWorld.Layout!=null&&hit.collider.transform.IsChildOf(EditorWorld.Layout)&&hit.distance<nearest)
+                {nearest=hit.distance;point=hit.point;hasPoint=true;}
+            if(!hasPoint&&new Plane(Vector3.up,Vector3.zero).Raycast(ray,out float distance)){point=ray.GetPoint(distance);hasPoint=true;}
+            if(hasPoint)
             {
-                var cell=MapWorld.Cell(ray.GetPoint(distance));
+                var cell=MapWorld.Cell(point);
                 bool changed=EditorRemove?EditorDraft.Remove(cell.x,cell.y):EditorDraft.Place(EditorKind,cell.x,cell.y,EditorRotation);
                 if(changed){EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
                 else EditorMessage="Nie można zmienić tego pola.";
