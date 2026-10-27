@@ -92,6 +92,25 @@ namespace B01.PARTSIZE001.Tests
             Assert.AreEqual("INVALID_LOGICAL_FOOTPRINT",
                 PartSizeGrid.EnvelopeError(d,new Cell3(0,0,0),new Cell3(0,0,0)));
         }
+        [Test] public void CanonicalR3NineteenTypesNeverInferWheelOrGunPhysicalExtent()
+        {
+            Assert.AreEqual(19,PartSizeBaselineCatalog.CanonicalNames.Length);
+            foreach(var id in new[]{"Wheel","Gun","Suspension","CrawlerTrack","HoverEngine"})
+            {
+                var d=PartSizeBaselineCatalog.ForSourceKind(id);
+                Assert.AreEqual("UNMEASURED_PHYSICAL_ENVELOPE",
+                    PartSizeGrid.EnvelopeError(d,new Cell3(0,0,0),new Cell3(0,0,0)));
+            }
+            foreach(var id in new[]{"BonusModule","DirectionalShield","PointDefense",
+                "StructuralScanner","ScannerPulse","IndependentSteering"})
+            {
+                var d=PartSizeBaselineCatalog.ForSourceKind(id);
+                Assert.AreEqual(4,PartSizeGrid.Occupied(d,
+                    new Cell3(0,0,0),new Cell3(0,0,0)).Length);
+                Assert.IsNull(PartSizeGrid.EnvelopeError(d,new Cell3(0,0,0),
+                    new Cell3(0,0,0)));
+            }
+        }
         [Test] public void RotationPeriod4AndNegativeTurnsRemainEquivalent()
         {
             var d=PartSizeReferenceFixtures.LegacyWide();
