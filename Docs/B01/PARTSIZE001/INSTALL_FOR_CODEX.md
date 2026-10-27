@@ -1,0 +1,12 @@
+# INSTALL_FOR_CODEX — PARTSIZE001 R1 (NOT AUTHORIZED NOW)
+
+**Do not install into live Codex #275 worktree.** The steps below are for a later B01-00 permitted **disposable** Unity6000.3.14f1 checkout with explicit target SHA and B01-40 G0. Pack is currently IN_PROGRESS / Unity NOT_RUN.
+
+1. Confirm Codex feature scope and explicit ACK state in #79. BUILD R1.4/Garage remains CODEX-RESERVED. This packet contains **no R3/Pack/Camera** files and does not offer an R3 installation adapter.
+2. Download full Actions inner ZIP corresponding to exactly the W16 producer SHA; independently SHA256 the physical artifact and source manifest. Reject if received SHA differs from manifest. Check every `guid:` and `*.meta` and conflict-check existing `Assets/B01Packages/PARTSIZE001/**`. No silent overwrite of root `Assets/B01Packages.meta`.
+3. Create detached/marked disposable Unity 6000.3.14f1 checkout at approved target SHA. Snapshot exact Git status/HEAD and collision-set file bytes. In addition to existing `Assets/B01Packages.meta`, stage ONLY dedicated `Assets/B01Packages/PARTSIZE001.meta` and `Assets/B01Packages/PARTSIZE001/**`; never copy Docs/Tools into Unity Assets by accident.
+4. Launch Unity -batchmode editor compile. Run test assemblies `B01.PARTSIZE001.EditModeTests` and `B01.PARTSIZE001.PlayModeTests` with original XML, logs and process exit. Include missing/oversized/penetrating/rotated/unknown-broadphase negatives. Open a new empty URP scene, drag `PARTSIZE001_Demo.prefab`, Play and visually inspect 720p and 1080p. Confirm green, green and intentional red sample with three in-scene receipts and no magenta shader.
+5. Restore original detached checkout: remove only the staged PARTSIZE folder+its sibling `.meta`; verify every baseline file including `Assets/B01Packages.meta` unchanged, clean git status. On any failure roll back immediately and keep evidence.
+6. B01-60 independent native G1 and B01-40 G0 signoffs; B01-00 G2 permission **separate**, Codex integration/repair right remains exclusive. If return requested by Codex: explicit `RETURNED_FOR_REWORK` and new version/SHA, never alter existing OFFERED source.
+
+**No authoritative policy proposed** for unmeasured wheel radius, gun barrel/arc, suspension sweep, Hover/Track altitude or mass, visual GLB dimensions, functional effects, HP, save migration. Do not infer a physical measurement from 0.52m root cube or prototype screenshots.
