@@ -40,6 +40,18 @@ namespace B01.CAMERA001
         public Bounds LastHullBounds {get;private set;}
         public int SmoothingResetCount {get;private set;}
         public Vector3 RequestedOrbit => new Vector3(yaw,pitch,requestedDistance);
+        // Receiver policy: filter follow geometry once, keep deliberate mouse orbit direct.
+        // Standalone package callers retain the original translation policy by default.
+        public bool ReceiverResponsiveMotion {get;set;}
+        public float ReceiverHorizontalDamping {get;set;}=.06f;
+        public float ReceiverVerticalDamping {get;set;}=.12f;
+        public float ReceiverFramingDamping {get;set;}=.22f;
+        public float ReceiverZoomMaximum {get;set;}
+        public float LastFollowStepMeters {get;private set;}
+        public float LastOrbitInputStepMeters {get;private set;}
+        Vector3 filteredCenter,centerVelocity,filteredExtents;
+        Vector2 previousOrbit;
+        bool boundsInitialized,orbitInitialized;
         // Receiver-only semantic filter (for transient projectiles/wreckage).
         // Null preserves the standalone package policy and its original tests.
         public Func<Collider,bool> WorldColliderFilter {get;set;}
@@ -68,7 +80,7 @@ namespace B01.CAMERA001
         {
             yaw = Mathf.Repeat(yawDegrees, 360f);
             pitch = Mathf.Clamp(pitchDegrees, -8f, 70f);
-            requestedDistance = Mathf.Clamp(zoomDistance, minDistance, maxDistance);
+            requestedDistance = Mathf.Clamp(zoomDistance, minDistance, Mathf.Max(maxDistance,ReceiverZoomMaximum));
         }
 
         public void OrbitBy(float deltaYawDegrees, float deltaPitchDegrees, float zoomDelta)
@@ -82,6 +94,7 @@ namespace B01.CAMERA001
             SmoothingResetCount++;
             velocity = Vector3.zero;
             initialized = false;
+            boundsInitialized=orbitInitialized=false;centerVelocity=Vector3.zero;
         }
 
         private void Awake() { attachedCamera = GetComponent<Camera>(); }
@@ -99,15 +112,16 @@ namespace B01.CAMERA001
         public void StepCamera(float deltaTime)
         {
             if (vehicleRoot == null || attachedCamera == null) return;
-            Bounds bounds = ReceiverHullBounds!=null?ReceiverHullBounds(vehicleRoot):GetHullBounds(vehicleRoot);
-            LastHullBounds=bounds;
+            Bounds rawBounds = ReceiverHullBounds!=null?ReceiverHullBounds(vehicleRoot):GetHullBounds(vehicleRoot);
+            LastHullBounds=rawBounds;
+            Bounds bounds=ReceiverResponsiveMotion?FilterFollowBounds(rawBounds,deltaTime):rawBounds;
             var request = new Camera001Framing.Request {
                 HullBounds = bounds,
                 YawDegrees = yaw,
                 PitchDegrees = pitch,
                 RequestedDistance = requestedDistance,
                 MinimumDistance = Mathf.Max(.1f, minDistance),
-                MaximumDistance = Mathf.Max(minDistance, maxDistance),
+                MaximumDistance = Mathf.Max(minDistance, maxDistance,ReceiverZoomMaximum),
                 VerticalFovDegrees = attachedCamera.fieldOfView,
                 Aspect = attachedCamera.aspect,
                 SafetyHeadroom = Mathf.Max(0f, headroom),
@@ -135,6 +149,8 @@ namespace B01.CAMERA001
                 LastSolution=Camera001Framing.Solve(request);
                 ReceiverFramingSaturated=ReceiverFitDistance>request.MaximumDistance;
             }
+            if(ReceiverResponsiveMotion)
+                LastSolution=ProtectResponsiveFraming(LastSolution,rawBounds,request);
             Vector3 aim = LastSolution.AimWorld;
             Vector3 away = LastSolution.DesiredCameraWorld - aim;
             float length = away.magnitude;
@@ -166,15 +182,31 @@ namespace B01.CAMERA001
             Vector3 previous = transform.position;
             bool reset = !initialized || deltaTime <= 0f;
             Vector3 candidate = desired;
+            LastFollowStepMeters=LastOrbitInputStepMeters=0;
             if (!reset)
             {
-                Vector3 eased = Vector3.SmoothDamp(previous, desired,
-                    ref velocity, Mathf.Max(.015f, smoothSeconds),
-                    Mathf.Infinity, deltaTime);
-                // A genuine orbit/follow update can never traverse 9m in one
-                // ordinary frame; intentional Configure/ResetSmoothing is distinct.
-                candidate = Vector3.MoveTowards(previous, eased,
-                    EffectiveContinuousSpeedLimit * deltaTime);
+                Vector3 orbitBase=previous;
+                if(ReceiverResponsiveMotion)
+                {
+                    if(orbitInitialized&&!WorldOverlapAtAim&&
+                        (Mathf.Abs(Mathf.DeltaAngle(previousOrbit.x,yaw))>.00001f||Mathf.Abs(previousOrbit.y-pitch)>.00001f))
+                    {
+                        var oldRequest=request;oldRequest.YawDegrees=previousOrbit.x;oldRequest.PitchDegrees=previousOrbit.y;
+                        oldRequest.RequestedDistance=LastSolution.Distance;
+                        var oldSolution=ProtectResponsiveFraming(Camera001Framing.Solve(oldRequest),rawBounds,oldRequest);
+                        Quaternion turn=LastSolution.Rotation*Quaternion.Inverse(oldSolution.Rotation);
+                        orbitBase=aim+turn*(previous-oldSolution.AimWorld);
+                    }
+                    candidate=Vector3.MoveTowards(orbitBase,desired,EffectiveContinuousSpeedLimit*deltaTime);
+                }
+                else
+                {
+                    Vector3 eased = Vector3.SmoothDamp(previous, desired,
+                        ref velocity, Mathf.Max(.015f, smoothSeconds),Mathf.Infinity,deltaTime);
+                    candidate=Vector3.MoveTowards(previous,eased,EffectiveContinuousSpeedLimit*deltaTime);
+                }
+                LastOrbitInputStepMeters=Vector3.Distance(previous,orbitBase);
+                LastFollowStepMeters=Vector3.Distance(orbitBase,candidate);
                 Vector3 movement = candidate - previous;
                 float distance = movement.magnitude;
                 if (distance > .00001f)
@@ -216,11 +248,53 @@ namespace B01.CAMERA001
             transform.rotation = actualRotation; // atomic final-pose commit
 
             initialized = true;
+            previousOrbit=new Vector2(yaw,pitch);orbitInitialized=true;
             LastCameraStepMeters = reset ? 0f : Vector3.Distance(previous, candidate);
             LastAimErrorDegrees = Vector3.Angle(transform.forward, aim - transform.position);
             WorldOverlapAtCamera = IsWorldOverlapping(transform.position, radius);
             ActualOwnHullIntersectsCrosshair = HitsOwnHullFromActualPose(
-                transform.position, transform.forward, bounds);
+                transform.position, transform.forward, rawBounds);
+        }
+
+        Bounds FilterFollowBounds(Bounds raw,float dt)
+        {
+            if(!boundsInitialized||dt<=0){filteredCenter=raw.center;filteredExtents=raw.extents;boundsInitialized=true;centerVelocity=Vector3.zero;}
+            else
+            {
+                filteredCenter.x=Mathf.SmoothDamp(filteredCenter.x,raw.center.x,ref centerVelocity.x,Mathf.Max(.015f,ReceiverHorizontalDamping),Mathf.Infinity,dt);
+                filteredCenter.z=Mathf.SmoothDamp(filteredCenter.z,raw.center.z,ref centerVelocity.z,Mathf.Max(.015f,ReceiverHorizontalDamping),Mathf.Infinity,dt);
+                filteredCenter.y=Mathf.SmoothDamp(filteredCenter.y,raw.center.y,ref centerVelocity.y,Mathf.Max(.015f,ReceiverVerticalDamping),Mathf.Infinity,dt);
+                filteredExtents=Vector3.Lerp(filteredExtents,raw.extents,1-Mathf.Exp(-dt/Mathf.Max(.015f,ReceiverFramingDamping)));
+            }
+            return new Bounds(filteredCenter,filteredExtents*2);
+        }
+
+        Camera001Framing.Result ProtectResponsiveFraming(Camera001Framing.Result solution,Bounds raw,Camera001Framing.Request request)
+        {
+            // Filtered geometry may lag a bump or a newly exposed corner. The actual
+            // hull, not the filtered hull, remains the authority for safety/framing.
+            var aim=solution.AimWorld;var heading=Quaternion.Euler(0,request.YawDegrees,0)*Vector3.forward;
+            float slope=Mathf.Tan(request.PitchDegrees*Mathf.Deg2Rad),requiredY=float.NegativeInfinity;
+            for(int i=0;i<8;i++)
+            {
+                var e=raw.extents;var corner=raw.center+new Vector3((i&1)==0?-e.x:e.x,(i&2)==0?-e.y:e.y,(i&4)==0?-e.z:e.z);
+                requiredY=Mathf.Max(requiredY,corner.y+slope*Vector3.Dot(corner-aim,heading));
+            }
+            aim.y=Mathf.Max(aim.y,requiredY+.08f);
+            float distance=solution.Distance;
+            if(RequireFullHullFraming)
+            {
+                float tanY=Mathf.Tan(request.VerticalFovDegrees*Mathf.Deg2Rad*.5f)*.98f,tanX=tanY*request.Aspect;
+                for(int i=0;i<8;i++)
+                {
+                    var e=raw.extents;var corner=raw.center+new Vector3((i&1)==0?-e.x:e.x,(i&2)==0?-e.y:e.y,(i&4)==0?-e.z:e.z);
+                    var v=Quaternion.Inverse(solution.Rotation)*(corner-aim);
+                    distance=Mathf.Max(distance,Mathf.Abs(v.x)/tanX-v.z,Mathf.Abs(v.y)/tanY-v.z,attachedCamera.nearClipPlane+.01f-v.z);
+                }
+            }
+            solution.AimWorld=aim;solution.Distance=distance;
+            solution.DesiredCameraWorld=aim+solution.Rotation*Vector3.back*distance;
+            return solution;
         }
 
         private float SafeCameraRadius()
