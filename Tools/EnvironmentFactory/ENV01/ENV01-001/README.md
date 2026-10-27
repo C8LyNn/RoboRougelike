@@ -10,7 +10,7 @@ Autorska, niska, stalowo-betonowa bariera ochronna do krawędzi areny lub toru p
 - **glTF/GLB:** exporter Blender z `export_yup=True` konwertuje +Z up na +Y up; przód Blender +Y odpowiada glTF -Z. Unity importer może stosować własne konwersje; **Unity NOT_RUN**.
 - **Pivot:** `ENV01_001_ROOT` w (0,0,0), środek rzutu bariery na poziomie gruntu.
 - **Bryła:** ok. 2.4 m długości × 0.7 m głębokości × 0.94 m wysokości; szczegółowe AABB w raporcie QA.
-- **Proponowana kolizja:** jeden `BoxCollider`, w układzie Blender center (0,0,0.47), size (2.46,0.70,0.96) m. To tylko propozycja — brak testu PhysX.
+- **Proponowana kolizja:** jeden `BoxCollider`, w układzie Blender center (0,-0.04,0.47), size (2.46,0.86,0.96) m. To tylko propozycja — brak testu PhysX.
 - **Materiały:** maksymalnie 3: beton chłodnoszary, grafitowa stal, bursztynowe oznaczenia.
 - **Budżet:** 200–1500 trójkątów, weryfikacja w Blender QA. Bez tekstur zewnętrznych.
 - **Ruch:** `ANIMATION_NOT_APPLICABLE`. Statyczny obiekt.
