@@ -48,6 +48,20 @@ Each drawing A/B/C contains a **central platform/body together with several dist
 
 **Recommended minimum HQ decision sequence:** FIRST (1) select **A/B/C/MIX/REVISE/PARK**, (2) decide authoring unit `SINGLE_ATTACHABLE_PART | MULTI_PART_MODULE | WHOLE_VEHICLE_CONCEPT`, (3) select motion meaning A fixed/steered/suspended; B belt purely visual vs mechanically simulated; C hover vs contact omni. Only after that B01-10 may produce design parameters, B01-23 provide typed socket/physical envelope consultation, and B01-30 finalize an actual `TECH_ART_CARD`. **No selected variant or MODEL_JOB was found during this pass, so this section is a decision aid, not stage ART.A3 passed.**
 
+### PASS 3 late source correction — old pixel stress superseded for blind user tests
+
+**B01-31 PR #294 advanced to `7a1416d3e10ee720d9d28931a3c268f95e2bba15`.** Its sole change since `3efd76bb...` was `qa_render.py`: new blind silhouettes remove the 0.55m reference-cube label from an in-memory copy of each source SVG, leaving the 3 authored SVG visuals byte-for-byte unchanged. The original technical full-card artwork intentionally RETAINS its grid comparator. Producer real [CI #40518648031](https://github.com/C8LyNn/RoboRougelike/actions/runs/40518648031) passed source visual parser and pixel checks 36/36; [authentic artifact #12739939008](https://github.com/C8LyNn/RoboRougelike/actions/runs/40518648031/artifacts/12739939008) contains the six updated 64/128 PNGs.
+
+The **earlier 185/316/208 bright-pixel counts and 85.95/87.66/78.85%** are from previous full-card-source crop with reference overlay and different content margins. **HISTORICAL, not a current blind-study acceptance.** The new `blind_reference_free_qa.py` independently pins the NEW six original reference-free PNG SHA256, inspects actual current 64px/128px original images, runs same grayscale bright-pigment >96 / 25%-four-edge stress, and outputs `current_producer_reference_free_stress.json`. Its 12 adverse/source checks refuse forged new rasters; old stress tool remains only for provenance and the visible annotated technical card, not current blind scores.
+
+| Concept | NEW 64px source blind bright pixels | NEW 64px 25%-left retention | NEW 128px 25%-left retention |
+|---|---:|---:|---:|
+| A — Wheel | **142** | **87.32%** | **87.29%** |
+| B — Track | **237** | **93.67%** | **88.64%** |
+| C — Omni | **170** | **80.00%** | **79.87%** |
+
+These are independent **source raster measurements**, not manual human interpretation. The new B01-31 clean PNG deliberately differs from the technical annotation art: full-card annotated view can show the 0.55m scale comparator; **blind user recognition samples must not show it**. The percent score measures only surviving bright pixels, not total silhouette mass or UX readability. Design hypothesis remains that C is most susceptible to losing visible cues under left-edge occlusion; no concept selected, no accepted physical pivots or actual 3D.
+
 ### New actually executable evidence
 
 `tech_art_hypotheses.py` inputs immutable genuine full 700x866 source PNGs from B01-31 Actions artifact #12723984143, uses the **current producer** common subject crop `(142,264,620,529)`, and emits:
