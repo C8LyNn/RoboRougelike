@@ -145,5 +145,65 @@ namespace B01.CHL003.Tests
             for(int n=0;n<3;n++)yield return new WaitForFixedUpdate();
             Assert.AreEqual(0,demo.Course.Metrics.Completions);
         }
+
+        [UnityTest]
+        public IEnumerator P10_AirborneMotorDoesNotAccelerateOrSteerWithoutRealTerrain()
+        {
+            // Actual Rigidbody, real four wheel-ray ground probe and gravity.
+            // No pseudo-Physics substitutes or direct checkpoint completions.
+            demo.ActiveVehicle.position = new Vector3(0f, 8f, 2f);
+            demo.ActiveVehicle.linearVelocity = Vector3.zero;
+            demo.ActiveVehicle.angularVelocity = Vector3.zero;
+            demo.Motor.SetAxes(1f, 1f);
+            Physics.SyncTransforms();
+            for (int n=0;n<4;n++) yield return new WaitForFixedUpdate();
+            Assert.GreaterOrEqual(demo.Motor.AirborneSteps, 3);
+            Assert.IsFalse(demo.Motor.IsGrounded);
+            Assert.AreEqual(0,demo.Motor.SupportRayCount);
+            Assert.Less(new Vector2(demo.ActiveVehicle.linearVelocity.x,
+                demo.ActiveVehicle.linearVelocity.z).magnitude,.02f,
+                "No body horizontal acceleration by propulsive air control");
+            Assert.Less(Mathf.Abs(demo.ActiveVehicle.angularVelocity.y),.02f);
+        }
+
+        [UnityTest]
+        public IEnumerator P11_RealBackwardCrossAndWheelGrazeMustNotScore()
+        {
+            demo.Motor.SetAxes(0f,0f);
+            var body=demo.ActiveVehicle;
+            // Start BEYOND CP0 and pass back through its real trigger.
+            body.position = new Vector3(0f,1.02f,6f);
+            body.linearVelocity = Vector3.back*7f;
+            Physics.SyncTransforms();
+            for(int n=0;n<16;n++)yield return new WaitForFixedUpdate();
+            Assert.AreEqual(0,demo.Course.Core.CheckpointIndex,
+                "Reverse crossing must never earn CP0");
+            demo.Course.Retry();
+            demo.Course.Begin();
+            // Physically touch gate with outside wheel while whole body
+            // clearance falls outside aperture. Underlying floor stays valid.
+            body.position=new Vector3(1.5f,1.02f,2.6f);
+            body.linearVelocity=Vector3.forward*10f;
+            body.angularVelocity=Vector3.zero;
+            Physics.SyncTransforms();
+            for(int n=0;n<18;n++)yield return new WaitForFixedUpdate();
+            Assert.AreEqual(0,demo.Course.Core.CheckpointIndex,
+                "One wheel grazing CP0 must never score entire vehicle");
+        }
+
+        [UnityTest]
+        public IEnumerator P12_DrivingForceOccursOnlyWhenRealWheelGroundRaySupports()
+        {
+            demo.Motor.SetAxes(1f,0f);
+            var body=demo.ActiveVehicle;
+            body.linearVelocity=Vector3.zero;
+            for(int n=0;n<24;n++)yield return new WaitForFixedUpdate();
+            Assert.Greater(demo.Motor.GroundedSteps,3,
+                "Four actual wheel rays should find the CHL ground");
+            Assert.Greater(body.linearVelocity.z,.4f,
+                "Real grounded Rigidbody must accelerate by AddForce");
+            Assert.AreEqual(0,demo.Course.Core.CheckpointIndex,
+                "The first gate should not be rewarded by time or ray cast alone");
+        }
     }
 }
