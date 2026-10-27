@@ -2,6 +2,7 @@ using System.Linq;
 using NUnit.Framework;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
+using RoboRougelike.R1;
 using UnityEngine;
 
 // Model-level EditMode tests; these do not create the game scene or capture input.
@@ -68,6 +69,40 @@ public sealed class WeaponTypeLimitTests
         var loaded=new R3VehicleModel(design);loaded.Award(10000);
         Assert.That(loaded.CanDeploy,Is.False);
         Assert.That(loaded.Repair(Cell(1)),Is.False);
+        Assert.That(loaded.EmergencyRepair(),Is.False);
+        Assert.That(loaded.EmergencyRepairCost,Is.Zero);
         Assert.That(loaded.DeepCopy().CanDeploy,Is.False);
+    }
+
+    [Test] public void TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts()
+    {
+        var model=Model();var paletteObject=new GameObject("Weapon type test palette");
+        var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        R1VehicleState rig=null;
+        try
+        {
+            var cells=(from z in new[]{-4,-2,2,4} from x in new[]{-3,-1,1,3} select new Vector3Int(x,2,z)).Take(11).ToArray();
+            for(int i=0;i<cells.Length;i++)
+            {
+                rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+                var kind=i%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic;
+                Assert.That(model.PlacementError(cells[i],R3PartKind.Gun,false,kind),Is.Null,$"physical gate gun {i+2}");
+                Assert.That(model.Buy(cells[i],R3PartKind.Gun,kind),Is.True,$"buy gun {i+2}");
+                Object.DestroyImmediate(rig.gameObject);rig=null;
+            }
+            rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+            Assert.That(rig.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Gun),Is.EqualTo(12));
+            Assert.That(model.PlacementError(new Vector3Int(3,2,4),R3PartKind.Gun,false,R4WeaponKind.Heavy),Is.Not.Null);
+        }
+        finally
+        {
+            if(rig!=null)Object.DestroyImmediate(rig.gameObject);
+            for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=null;
+            for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=null;
+            Object.DestroyImmediate(paletteObject);Object.DestroyImmediate(material);
+        }
     }
 }
