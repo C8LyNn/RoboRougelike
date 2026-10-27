@@ -49,6 +49,8 @@ jobs:
         run: python -m unittest discover -s Tools/B01/QA-CHL-ECON-W16 -p "test_*.py" -v
       - name: Audit original CHL285 source boundaries and actual original Codex host reward ingress
         run: python Tools/B01/QA-CHL-ECON-W16/audit.py --host Tools/B01/QA-CHL-ECON-W16/_pinned --chl Tools/B01/QA-CHL-ECON-W16/_pinned/Assets/RoboRougelikeChallenges/CHL003 --out artifacts/chl-econ/receipt.json
+      - name: Verify B01-62 Windows map name gate using compiled ORIGINAL Codex MapStorage C# (witness not security GREEN)
+        run: python Tools/B01/QA-CHL-ECON-W16/test_original_mapstorage62.py
       - name: QA-only source file hash manifest and strict scope
         shell: python
         run: |
@@ -58,7 +60,7 @@ jobs:
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
           files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
             if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
-          assert len(files)==18,files
+          assert len(files)==19,files
           assert all(not s.startswith("Assets/") for s in files)
           manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
           (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
