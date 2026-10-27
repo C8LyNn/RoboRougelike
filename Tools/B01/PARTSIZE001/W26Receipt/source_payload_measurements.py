@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Seven static *source-defined payload* AABBs, never native PhysX measurements.
 
-Input: exact source Git blobs from Codex PR #300 and PARTSIZE PR #286.
+Input: exact source Git blobs from Codex PR #302 and PARTSIZE PR #286.
 AABB assumptions: unit Unity primitives (Cylinder diameter=1,height=2,
-Sphere diameter=1), unrotated unit-scale parent; rotating child only X90/Z90.
+Sphere diameter=1), counterfactual unit-scale parent and separately actual
+R3VehicleAssembly 0.52-scale host root, yaw0; child X90/Z90.
 Collider.enabled, whole-part volume, swept clearance & typed mounts UNKNOWN.
 """
 import argparse
@@ -14,10 +15,12 @@ import re
 import subprocess
 import sys
 
-CODEX_SHA="7cfd1276d4708395144668249223d78fb83c3b19"
+CODEX_SHA="d44fa09c227dffca1c1f8832383bbd80430bba90"
 PART_SHA="be2be0e4802bc3f450179901f9ae91c6d84bcb5b"
 GEOM_PATH="Assets/R4_1/R41PartGeometry.cs"
 GEOM_BLOB="76a14de4c347dd3e91b0a37487d804023eab5da1"
+HOST_PATH="Assets/R3/R3VehicleAssembly.cs"
+HOST_BLOB="1b49c7365388694ebffacc5a4f20b3572150577a"
 CAT_PATH="Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs"
 CAT_BLOB="6153d1758e800ec5c4210323610b061c06e8ea85"
 KINDS=("Booster","JumpDrive","Blink","Gyroscope","OmniDrive","MagneticGrapple","HoverEngine")
@@ -92,18 +95,61 @@ def classify(p,kind):
             "typed_socket":"UNVERIFIED",
             "gyro_decorative_ring_nonphysical":kind=="Gyroscope"}
 
-def analyze(geom,catalog):
+def host_scale_from_original_assembly(source):
+    # Source evidence from real Codex #302 (and #300), not a guessed prefab.
+    required=("var root=new GameObject(\"Pojazd \" + model.Design.Name); root.SetActive(false);",
+      "root.transform.SetPositionAndRotation(position,rotation);",
+      "item.transform.SetParent(root.transform,false);",
+      "item.transform.localPosition=(Vector3)state.Cell*0.55f;",
+      "item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);",
+      "if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,",
+      "true,out partMuzzle);")
+    for x in required:
+        if x not in source: raise ValueError("HOST_SOURCE_CONTRACT_CHANGED:"+x)
+    actual=float(find_one(source,r"item\.transform\.localScale=Vector3\.one\*([\d.]+)f;"))
+    if actual<=0 or actual>=1: raise ValueError("HOST_SCALE_UNSUPPORTED")
+    if actual!=.52: raise ValueError("HOST_SCALE_SOURCE_CHANGED_FROM_052")
+    return actual
+
+def fitted_host_row(counterfactual,scale):
+    # Original R41 child local transform is nested under the actual .52 host
+    # part root, itself an existing physical unit-cube scaled .52. Yaw=0 only.
+    lo=[round(x*scale,7) for x in counterfactual["payload_aabb_min_m"]]
+    hi=[round(x*scale,7) for x in counterfactual["payload_aabb_max_m"]]
+    root_extent=scale*.5
+    union_lo=[round(min(x,-root_extent),7) for x in lo]
+    union_hi=[round(max(x,+root_extent),7) for x in hi]
+    cells=[list(range(math.floor((a+GRID/2)/GRID),
+         math.floor((b+GRID/2)/GRID)+1)) for a,b in zip(union_lo,union_hi)]
+    overshoot=[round(max(0,-GRID/2-a,b-GRID/2),6) for a,b in zip(union_lo,union_hi)]
+    return {"assembled_source_scale":scale,"assembled_yaw_deg":0,
+       "assembled_payload_aabb_min_m":lo,
+       "assembled_payload_aabb_max_m":hi,
+       "assembled_root_plus_payload_aabb_min_m":union_lo,
+       "assembled_root_plus_payload_aabb_max_m":union_hi,
+       "assembled_signed_cells_xyz":cells,
+       "assembled_overshoot_vs_one_cell_xyz_m":overshoot,
+       "assembled_overhang_any":any(x>0 for x in overshoot),
+       "assembled_host_requests_solid_payload":True,
+       "assembled_native_collider_verified":False}
+
+def analyze(geom,catalog,host_source):
     params=source_parameters(geom)
     names=re.findall(r'"([^"]+)"',find_one(catalog,r"CanonicalNames = \{([\s\S]*?)\};"))
     if len(names)!=19 or not set(KINDS).issubset(names):
         raise ValueError("PARTSIZE_CANONICAL_CATALOG_MISMATCH")
     if "return PartSizeReferenceFixtures.Unmeasured(canonicalKind," not in catalog:
         raise ValueError("PRODUCER_NO_LONGER_FAILS_CLOSED")
+    scale=host_scale_from_original_assembly(host_source)
     rows=[classify(params,k) for k in KINDS]
+    for row in rows:
+        row["unit_parent_counterfactual_only"]=True
+        row.update(fitted_host_row(row,scale))
     return {"producer_sha":PART_SHA,"codex_sha":CODEX_SHA,
         "geometry_blob":GEOM_BLOB,"catalog_blob":CAT_BLOB,
+        "host_assembly_blob":HOST_BLOB,"host_assembly_scale":scale,
         "source_only":True,"native":"NOT_RUN","G2":"HOLD",
-        "assumption":"Unity nominal primitive bounds and static local transforms, no PhysX or imported Collider data",
+        "assumption":"original CODEX R3VehicleAssembly .52 scaled source parent, static yaw0 part anchor, nominal primitive bounds; no native Unity/PhysX or dynamic pose verification",
         "rows":rows}
 
 def main():
@@ -112,11 +158,12 @@ def main():
     parser.add_argument("--out")
     args=parser.parse_args()
     report=analyze(git_bytes(args.repo,CODEX_SHA,GEOM_PATH,GEOM_BLOB),
-                   git_bytes(args.repo,PART_SHA,CAT_PATH,CAT_BLOB))
+                   git_bytes(args.repo,PART_SHA,CAT_PATH,CAT_BLOB),
+                   git_bytes(args.repo,CODEX_SHA,HOST_PATH,HOST_BLOB))
     body=json.dumps(report,sort_keys=True,indent=2)+"\n"
     if args.out:Path(args.out).write_text(body,encoding="utf8")
     else:print(body)
-    print("7 SOURCE_STATIC_AABB RECORDS; NATIVE_UNITY_NOT_RUN",file=sys.stderr)
+    print("7 SOURCE_STATIC_AABB RECORDS FROM ACTUAL HOST SCALE; NATIVE_UNITY_NOT_RUN",file=sys.stderr)
 
 if __name__=="__main__":
     main()
