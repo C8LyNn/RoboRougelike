@@ -19,13 +19,13 @@ Original static low-poly industrial sci-fi roadside marker for obstacle courses 
 ## Reproduce and verify
 
 ```sh
-blender -b -t 2 --python-exit-code 1 --python Tools/EnvironmentFactory/ENV05/ENV05-001/generate_env05_001.py -- --out /tmp/env05-001 --self-test
+blender -b -t 2 --python-exit-code 1 --python Tools/EnvironmentFactory/ENV05/ENV05-001/generate_env05_001.py -- --out /tmp/env05-001 --self-test --fresh-scene
 python3 Tools/EnvironmentFactory/ENV05/ENV05-001/validate_env05_001.py /tmp/env05-001
 ```
 
 Expected **actual** files only after successful execution: `ENV05-001_light_bollard.blend`, `ENV05-001_light_bollard.glb`, `ENV05-001_front_three_quarter.png`, `ENV05-001_rear_three_quarter.png`, `ENV05-001_qa.json`, `ENV05-001_export_validation.json`. The dedicated GitHub Actions workflow uploads physical files as a downloadable artifact with 14-day retention; this README does not assert that CI has passed.
 
-Blender self-test regenerates twice in one scene, checks preservation of an unrelated sentinel object, triangle/material budget, closed manifold geometry, nondegenerate faces, base pivot and bounds. The independent validator checks real GLB structure/triangle count/material count, BLEND and PNG file signatures and SHA-256 hashes. Two orthographic previews are rendered with Blender Cycles on CPU.
+The explicit `--fresh-scene` batch flag removes Blender factory-startup objects **only when requested**; without it the generator preserves unrelated scene objects. Blender self-test regenerates twice in one scene, checks preservation of an unrelated sentinel object, triangle/material budget, closed manifold geometry, nondegenerate faces, base pivot and bounds. The independent validator checks real GLB structure/triangle count/material count, BLEND and PNG file signatures and SHA-256 hashes. Two orthographic previews are rendered with Blender Cycles on CPU.
 
 ## Original authorship / license
 
