@@ -70,7 +70,11 @@ def inspect_host(run,model):
 CALLS=[
  ("DIRECT_REWARD_WRITE",r"\b(?:Award|ReceiveSalvage|ReceiveBonuses|Dismantle)\s*\("),
  ("RUN_REWARD_MUTATION",r"\b(?:ConfirmSalvage|ConfirmRewards|WinEncounter|OpenSalvage)\s*\("),
- ("DIRECT_CURRENCY_WRITE",r"\b(?:Scrap|EarnedScrap|LastScrapReward)\s*(?:\+\+|--|[+\-]?=)")
+ ("DIRECT_CURRENCY_WRITE",r"\b(?:Scrap|EarnedScrap|LastScrapReward)\s*(?:\+\+|--|[+\-]?=)"),
+ ("PART_DAMAGE_WRITE",r"\.\s*(?:Health|HitPoints|Durability)\s*(?:\+\+|--|[+\-*/]?=)"),
+ ("INVENTORY_MUTATION",r"\b(?:Inventory|OwnedParts|Parts)\s*\.\s*(?:Add|AddRange|Remove|RemoveAt|Clear|Insert)\s*\("),
+ ("GARAGE_OR_SAVE_WRITE",r"\b(?:File|PlayerPrefs|SaveManager|JsonUtility)\s*\.\s*(?:WriteAllText|WriteAllBytes|SetInt|SetFloat|SetString|DeleteKey|DeleteAll|Save|ToJson)\s*\("),
+ ("UNAUTHORIZED_REPAIR_OR_PURCHASE",r"\b(?:RepairInventory|GarageBuy|GarageRepair|EmergencyRepair|BuyWeapon)\s*\(")
 ]
 CORE_IMPORT=re.compile(r"\busing\s+RoboRougelike\.(?:R1|R3|R4)\s*;")
 def inspect_chl_files(sources):
@@ -105,23 +109,53 @@ def main():
     args=ap.parse_args()
     base=pathlib.Path(args.host)
     receipt=json.loads((base/"receipt.json").read_text(encoding="utf8"))
-    for entry in receipt["actual_pinned_host_files"]:
+    for entry in receipt["actual_pinned_host_files"]+receipt["actual_pinned_chl_files"]:
         raw=(base/entry["path"]).read_bytes()
         require(hashlib.sha256(raw).hexdigest()==entry["sha256"],
-          "FROZEN_HOST_SOURCE_BYTES_CHANGED")
+          "ORIGINAL_PINNED_SOURCE_BYTES_CHANGED "+entry["path"])
     h=inspect_host((base/R1).read_text(encoding="utf8"),(base/R3).read_text(encoding="utf8"))
-    c=inspect_chl_directory(pathlib.Path(args.chl))
-    result={"schema":"b01-22-w16-chl-economy-boundary-v1",
+    actual_chl=base/CHL
+    # Fail closed on a wrong 'main' path: only inspect exact original PR #285.
+    require(pathlib.Path(args.chl).resolve()==actual_chl.resolve(),
+       "CHL_SOURCE_NOT_PINNED_285")
+    c=inspect_chl_directory(actual_chl)
+    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==7,
+       "CHL_EXPECTED_7_ACTUAL_CSHARP_FILES_MISSING")
+    core=(actual_chl/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
+    controller=(actual_chl/"Runtime/CHL003CourseController.cs").read_text(encoding="utf8")
+    demo=(actual_chl/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
+    require("Completed?.Invoke(ElapsedSeconds);" in core and
+       "public void Retry()" in core and
+       "public event Action<float> Completed;" in core,
+       "CHL_COMPLETION_RETRY_SOURCE_CONTRACT_CHANGED")
+    require("activeActor.position = spawnPosition;" in controller and
+       "activeActor.linearVelocity = Vector3.zero;" in controller,
+       "CHL_RETRY_RIGIDBODY_RESET_CONTRACT_CHANGED")
+    require('owned = new GameObject("CHL003_GENERATED_DEMO_ONLY")' in demo and
+       "if (vehicle != null) Destroy(vehicle.gameObject);" in demo,
+       "CHL_DEMO_RIG_OWNERSHIP_CHANGED")
+    c["original_chl_pin"]=receipt["chl_commit"]
+    c["core_completed_event_has_durable_activity_id"]=False
+    c["event_fires_once_per_attempt_not_once_per_host_run"]=True
+    c["controller_retry_alters_configured_rigidbody_pose"]=True
+    c["controller_retry_writes_r3_physical_hp"]=False
+    c["demo_swap_destroys_current_demo_vehicle_gameobject"]=True
+    c["standalone_economic_source_writes_detected"]=False
+    result={"schema":"b01-22-w16-chl-economy-boundary-v2",
       "real_code_source_commit":receipt["commit"],
       "real_code_source_blobs":receipt["actual_pinned_host_files"],
+      "actual_chl_source_commit":receipt["chl_commit"],
+      "actual_chl_source_blobs":receipt["actual_pinned_chl_files"],
       "host_source_audit":"STATIC_PASS",
       "host":h,"chl":c,
-      "native_unity":"NOT_RUN","runtime_chl_reward_gates":"NOT_RUN","g2":"HOLD"}
+      "native_unity":"NOT_RUN","real_r3_wallet_hp_inventory_save_integration":"NOT_RUN",
+      "runtime_chl_reward_gates":"NOT_RUN","g2":"HOLD"}
     out=pathlib.Path(args.out)
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf8")
     print("PINNED_R1_R3_HOST_REWARD_INGRESS_STATIC_PASS")
-    print("CHL_SOURCE_STATE",c["state"])
+    print("CHL285_ORIGINAL_SOURCE_BOUNDARY",c["state"],c["count"],"REAL_CSHARP_FILES")
+    print("CHL285_RETRY_COMPLETED_EVENT_PER_ATTEMPT",c["event_fires_once_per_attempt_not_once_per_host_run"])
     print("CHL_NATIVE_REWARD_AND_PHYSICS_NOT_RUN")
 
 if __name__=="__main__":
