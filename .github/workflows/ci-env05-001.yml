@@ -1,0 +1,44 @@
+name: ENV05-001 Light Bollard Blender QA
+on:
+  push:
+    branches: [feature/rrl-env05-001-light-bollard]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV05/ENV05-001/**'
+      - '.github/workflows/ci-env05-001.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV05/ENV05-001/**'
+      - '.github/workflows/ci-env05-001.yml'
+  workflow_dispatch:
+jobs:
+  blender-export-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install actual Blender runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Python syntax check
+        run: python3 -m py_compile Tools/EnvironmentFactory/ENV05/ENV05-001/*.py
+      - name: Execute Blender generation and QA
+        run: |
+          blender -b -t 2 --python-exit-code 1 \
+            --python Tools/EnvironmentFactory/ENV05/ENV05-001/generate_env05_001.py \
+            -- --out "$GITHUB_WORKSPACE/env05-001-artifacts" --self-test
+      - name: Independent export and SHA-256 verification
+        run: |
+          python3 Tools/EnvironmentFactory/ENV05/ENV05-001/validate_env05_001.py "$GITHUB_WORKSPACE/env05-001-artifacts"
+      - name: Upload physical outputs and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ENV05-001-BLEND-GLB-Preview-QA
+          path: env05-001-artifacts/
+          if-no-files-found: warn
+          retention-days: 14
