@@ -50,6 +50,10 @@ jobs:
           [System.Management.Automation.Language.Parser]::ParseFile('Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1', [ref]$tokens, [ref]$parseErrors) | Out-Null
           if ($parseErrors.Count -gt 0) { $parseErrors | Out-String | Write-Host; throw 'POWERSHELL_OPERATOR_SYNTAX_RED' }
           Write-Host 'POWERSHELL_OPERATOR_SOURCE_SYNTAX_PASS; actual licensed Unity NOT_RUN'
+      - name: Exercise actual Git linked-worktree PowerShell operator preflight + negative escape attempts
+        shell: pwsh
+        run: |
+          & 'Tools/B01/PARTSIZE001/W26Receipt/test_native_preflight.ps1'
       - name: Explicit no-native/no-G2 boundary
         shell: bash
         run: |
