@@ -85,8 +85,8 @@ def build():
   for sy in (-1,1):
    bolt("BaseBolt_%s_%s"%(sx,sy),(sx*.117,sy*.117,.088),steel,col,root)
  taper(col,root,dark)
- box("FrontServicePanel",(0,-.116,.395),(.118,.010,.173),steel,col,root,.006)
- box("FrontServiceInset",(0,-.123,.395),(.075,.006,.112),dark,col,root,.003)
+ box("FrontServicePanel",(0,-.116,.395),(.118,.010,.173),steel,col,root,.003)
+ box("FrontServiceInset",(0,-.123,.395),(.075,.006,.112),dark,col,root,.0015)
  for label,x in (("L",-.101),("R",.101)):
   box("CornerRib_"+label,(x,-.076,.430),(.018,.022,.492),steel,col,root,.004)
  box("BeaconLowerGasket",(0,0,.674),(.195,.195,.038),dark,col,root,.008)
