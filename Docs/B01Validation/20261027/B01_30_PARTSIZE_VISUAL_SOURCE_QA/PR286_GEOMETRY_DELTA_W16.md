@@ -1,7 +1,7 @@
 # B01-30 / W16 — rzeczywiste porównanie geometrii PR #281 → PARTSIZE PR #286
 
 **Klasa wyniku: QA ONLY / input dla B01-23, nie paczka produkcyjna ani zatwierdzony BUILD adapter.**
-**Kod źródłowy PARTSIZE:** [Draft #286](https://github.com/C8LyNn/RoboRougelike/pull/286) dokładnie `2b27c3255e6979a291652103bbb7dac2f6c425c5`, bez jakichkolwiek zmian po stronie B01-30. **Canonical R3/R41:** [#272](https://github.com/C8LyNn/RoboRougelike/pull/272) `9cd5a5272a9ebda130a97a5f1f73ce3eaf24b976`. **Poprzednie QA [#281](https://github.com/C8LyNn/RoboRougelike/pull/281)**: analityczne bryły z oryginalnych danych C#.
+**Kod źródłowy PARTSIZE:** [Draft #286](https://github.com/C8LyNn/RoboRougelike/pull/286) początkowo `2b27c3255e6979a291652103bbb7dac2f6c425c5`, **ostateczny ponowny pin aktualnego HEAD: `937838662f79c4c441d682d731fa860e4cc3d0f1`**. Osiem kluczowych plików źródłowych ma w obu wersjach identyczne Git blob SHA-1, bez jakichkolwiek zmian po stronie B01-30. **Canonical R3/R41:** [#272](https://github.com/C8LyNn/RoboRougelike/pull/272) `9cd5a5272a9ebda130a97a5f1f73ce3eaf24b976`. **Poprzednie QA [#281](https://github.com/C8LyNn/RoboRougelike/pull/281)**: analityczne bryły z oryginalnych danych C#.
 Nie utożsamiać `source-predicted` z rzeczywistym `Unity Collider.bounds` ani `Physics.ComputePenetration` — silnik nie został uruchomiony.
 
 ## Sprawdzona zgodność faktycznych dwóch implementacji
