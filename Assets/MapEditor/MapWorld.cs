@@ -34,6 +34,12 @@ namespace RoboRougelike.MapEditor
                     marker.transform.localPosition=new Vector3(0,.04f,0);marker.transform.localScale=new Vector3(2,.04f,2);
                     marker.GetComponent<Collider>().enabled=false;marker.GetComponent<Renderer>().sharedMaterial=material;
                     Colorize(marker.GetComponent<Renderer>(),item.kind==MapItemKind.Spawn?Color.cyan:Color.yellow);
+                    if(item.kind==MapItemKind.Spawn)
+                    {
+                        var arrow=GameObject.CreatePrimitive(PrimitiveType.Cube);arrow.name="Kierunek startu";arrow.transform.SetParent(o.transform,false);
+                        arrow.transform.localPosition=new Vector3(0,.12f,.75f);arrow.transform.localScale=new Vector3(.22f,.12f,1.1f);
+                        arrow.GetComponent<Collider>().enabled=false;arrow.GetComponent<Renderer>().sharedMaterial=material;Colorize(arrow.GetComponent<Renderer>(),Color.white);
+                    }
                     if(item.kind==MapItemKind.Finish){var trigger=o.AddComponent<BoxCollider>();trigger.isTrigger=true;trigger.center=new Vector3(0,1,0);trigger.size=new Vector3(3.5f,2,3.5f);o.AddComponent<MapFinish>().Owner=this;}
                     continue;
                 }

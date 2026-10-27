@@ -39,8 +39,11 @@ public sealed class MapEditorIntegrationTests
         Assert.That(run.Player.GetComponent<R6VehicleDrive>(),Is.Not.Null);
         Assert.That(run.VehicleModel,Is.Not.SameAs(model));
         Assert.That(run.Player.transform.position.z,Is.EqualTo(-8).Within(.5f));
-        var part=run.Player.GetComponentsInChildren<Collider>().First(c=>c.attachedRigidbody==run.Player.GetComponent<Rigidbody>());
-        run.EditorWorld.MarkFinish(part);Assert.That(run.EditorWorld.Finished,Is.True);
+        // Teleport only to isolate the trigger test; the separate R6 test drives across the ramp.
+        var body=run.Player.GetComponent<Rigidbody>();body.position=MapWorld.Position(draft.Finish)+Vector3.up*.7f;
+        Physics.SyncTransforms();float fixedBefore=Time.fixedTime;
+        while(!run.EditorWorld.Finished&&Time.fixedTime-fixedBefore<.2f)yield return null;
+        Assert.That(run.EditorWorld.Finished,Is.True,"The actual finish collider detects the player's rigidbody");
         run.TogglePause();Assert.That(run.Paused,Is.True);
         Assert.That(run.ReturnFromEditedMapTest(),Is.True);
         end=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;

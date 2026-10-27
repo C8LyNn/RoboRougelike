@@ -134,7 +134,7 @@ namespace RoboRougelike.R1
                 if(e.control&&e.keyCode==KeyCode.Y){ChangeEditedMap(false);e.Use();return;}
             }
             if(e.type==EventType.MouseUp&&e.button==1)editorOrbit=false;
-            if(virtualPos.x<325||virtualPos.y>675)return;
+            if(virtualPos.x<325||virtualPos.y>615)return;
             if(e.type==EventType.MouseDown&&e.button==1){editorOrbit=true;e.Use();return;}
             if(e.type==EventType.MouseDrag&&e.button==1&&editorOrbit){editorYaw+=e.delta.x*.4f;editorPitch=Mathf.Clamp(editorPitch-e.delta.y*.35f,20,85);UpdateEditorCamera();e.Use();return;}
             if(e.type==EventType.ScrollWheel){editorDistance=Mathf.Clamp(editorDistance+e.delta.y*1.2f,8,90);UpdateEditorCamera();e.Use();return;}
