@@ -85,6 +85,7 @@ namespace B01.PARTSIZE001
         {
             if(def==null||string.IsNullOrWhiteSpace(def.PartId)||
                def.Dimensions.X<=0||def.Dimensions.Y<=0||def.Dimensions.Z<=0||
+               def.Dimensions.X>180||def.Dimensions.Y>180||def.Dimensions.Z>180||
                (long)def.Dimensions.X*def.Dimensions.Y*def.Dimensions.Z>180L)
                 return "INVALID_LOGICAL_FOOTPRINT";
             if(def.LocalBoxCenter.HasValue!=def.LocalBoxSize.HasValue)
