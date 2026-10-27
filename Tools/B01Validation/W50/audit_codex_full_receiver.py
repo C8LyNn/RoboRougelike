@@ -141,7 +141,8 @@ def evaluate(records, contents):
                          if p.startswith("Assets/") and not (p.startswith(root) or p == root_meta))
         if escaped:
             violations.append(producer + ":SOURCE_SCOPE_ESCAPE:" + repr(escaped[:5]))
-        path_overlap = groups["CODEX"]["paths"] & groups[producer]["paths"]
+        path_overlap = {p for p in (groups["CODEX"]["paths"] & groups[producer]["paths"])
+                        if p.startswith("Assets/")}
         if path_overlap:
             violations.append(producer + ":CODEX_PATH_OVERLAP:" + repr(sorted(path_overlap)[:5]))
         guid_overlap = set(groups["CODEX"]["guids"].values()) & set(groups[producer]["guids"].values())
@@ -231,7 +232,18 @@ def main():
         test = unittest.TextTestRunner(verbosity=2).run(suite)
         raise SystemExit(0 if test.wasSuccessful() else 2)
     repo = str(pathlib.Path(a.repo).resolve())
-    records = {name: tree(repo, sha) for name, sha in PINS.items()}
+    raw_records = {name: tree(repo, sha) for name, sha in PINS.items()}
+    # Producer commits inherit the entire base game repository. The package
+    # being received is ONLY its exclusive source root + root .meta; comparing
+    # inherited Assets/ and repo files would invent massive false collisions.
+    # Retain project config in the input selection for host compatibility.
+    records = {"CODEX": raw_records["CODEX"]}
+    host_config = {"ProjectSettings/ProjectVersion.txt", "Packages/manifest.json"}
+    for producer, (root, root_meta) in EXPECTED_ROOTS.items():
+        records[producer] = {p: oid for p, oid in raw_records[producer].items()
+                             if p.startswith(root) or p == root_meta or p in host_config}
+        if not any(p.startswith(root) for p in records[producer]) or root_meta not in records[producer]:
+            raise ValueError(producer + ":MISSING_EXCLUSIVE_PACKAGE_ROOT")
     relevant = set()
     for files in records.values():
         for p, oid in files.items():
