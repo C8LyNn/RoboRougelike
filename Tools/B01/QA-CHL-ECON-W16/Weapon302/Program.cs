@@ -39,7 +39,7 @@ static class Program
             Require(m.Inventory.Single().Health==1 && m.Scrap==before-price,"repair loss/debit mismatch");
         });
         Test("R03_valid_two_physical_automatic_parts_price_and_dismantle_count",()=>{
-            var m=New();var a=Part(R4WeaponKind.Automatic),b=Part(R4WeaponKind.Automatic);
+            var m=New();var a=Part(R4WeaponKind.Automatic);var b=Part(R4WeaponKind.Automatic);
             Require(m.ReceiveSalvage(new[]{a,b}),"multiple same weapon failed");
             int before=m.Scrap;int expected=m.DismantleValue(a);
             Require(m.Dismantle(a.Id),"valid dismantle failed");
