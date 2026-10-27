@@ -18,14 +18,14 @@ class PartSizeSourceTests(unittest.TestCase):
 
     def test_02_reject_cross_owner_and_traversal(self):
         for name in ["Assets/R3/R3VehicleModel.cs","Assets/B01Packages.meta",
-                     "../Assets/B01Packages/PARTSIZE001/Bad.cs",
-                     "Assets/B01Packages/PARTSIZE001/../../R3/file.cs",
+                     "../Assets/PARTSIZE001/Bad.cs",
+                     "Assets/PARTSIZE001/../../R3/file.cs",
                      "Assets\\B01Packages\\PARTSIZE001\\Bad.cs"]:
             self.assertFalse(p.valid_path(name),name)
 
     def test_03_no_missing_Unity_meta(self):
         bad=[x for x in self.files if not x.endswith(
-             "Assets/B01Packages/PARTSIZE001/Runtime/PartSizeContract.cs.meta")]
+             "Assets/PARTSIZE001/Runtime/PartSizeContract.cs.meta")]
         with self.assertRaisesRegex(ValueError,"MISSING_ASSET_META"):
             p.validate(bad)
 
@@ -65,7 +65,7 @@ class PartSizeSourceTests(unittest.TestCase):
 
     def test_09_nunit_assemblies_expose_UnityTest(self):
         for category in ("EditMode","PlayMode"):
-            path=(p.ROOT/"Assets/B01Packages/PARTSIZE001/Tests"/category/
+            path=(p.ROOT/"Assets/PARTSIZE001/Tests"/category/
                   ("B01.PARTSIZE001."+category+"Tests.asmdef"))
             obj=json.loads(path.read_text())
             self.assertEqual(obj["references"],["B01.PARTSIZE001.Runtime"])
@@ -73,7 +73,7 @@ class PartSizeSourceTests(unittest.TestCase):
             self.assertIn("nunit.framework.dll",obj["precompiledReferences"])
 
     def test_10_all_19_csv_kinds_match_real_catalog(self):
-        source=(p.ROOT/"Assets/B01Packages/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs").read_text()
+        source=(p.ROOT/"Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs").read_text()
         section=source.split("CanonicalNames = {",1)[1].split("};",1)[0]
         names=re.findall(r'"([^"]+)"',section)
         with (p.ROOT/"Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv").open(newline="") as f:
@@ -84,7 +84,7 @@ class PartSizeSourceTests(unittest.TestCase):
         self.assertTrue(all(row["actual_unity_collider_measured"]=="NOT_RUN" for row in rows))
 
     def test_11_real_PhysX_source_not_replaced_by_stub(self):
-        source=(p.ROOT/"Assets/B01Packages/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text()
+        source=(p.ROOT/"Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text()
         self.assertIn("Physics.ComputePenetration",source)
         self.assertIn("owner.GetComponentsInChildren<Collider>(true)",source)
         self.assertIn('return "PHYSICS_UNVERIFIED"',source)
@@ -92,7 +92,7 @@ class PartSizeSourceTests(unittest.TestCase):
         self.assertNotIn("using RoboRougelike.R3",source)
 
     def test_12_prefab_script_reference_uses_owned_guid(self):
-        path=p.ROOT/"Assets/B01Packages/PARTSIZE001"
+        path=p.ROOT/"Assets/PARTSIZE001"
         prefab=(path/"Demo/PARTSIZE001_Demo.prefab").read_text()
         meta=(path/"Runtime/PartSizeDemoEntry.cs.meta").read_text()
         guid=re.search(r"(?m)^guid: ([0-9a-f]{32})$",meta).group(1)
@@ -101,20 +101,20 @@ class PartSizeSourceTests(unittest.TestCase):
                          "Producer branch cannot originate/own shared folder meta")
 
     def test_13_authored_native_case_counts_match_docs(self):
-        source=p.ROOT/"Assets/B01Packages/PARTSIZE001/Tests"
+        source=p.ROOT/"Assets/PARTSIZE001/Tests"
         edit=(source/"EditMode/PartSize001EditModeTests.cs").read_text()
         play=(source/"PlayMode/PartSize001PlayModeTests.cs").read_text()
         self.assertEqual(edit.count("[Test]")+edit.count("[TestCase("),17)
         self.assertEqual(play.count("[UnityTest]"),8)
         self.assertIn("Physics.ComputePenetration",
-            (p.ROOT/"Assets/B01Packages/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text())
+            (p.ROOT/"Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text())
 
     def test_14_package_bytes_match_frozen_git_blobs_even_on_windows(self):
         payload,manifest=p.build(self.files,"a"*40)
         by_path={f["path"]:f for f in manifest["files"]}
         for path in (
-            "Assets/B01Packages/PARTSIZE001/Runtime/PartSizeContract.cs",
-            "Assets/B01Packages/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs",
+            "Assets/PARTSIZE001/Runtime/PartSizeContract.cs",
+            "Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs",
             "Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv"
         ):
             blob=p.committed_bytes(path)
