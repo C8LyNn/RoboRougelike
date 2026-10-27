@@ -194,7 +194,7 @@ namespace RoboRougelike.R1
             }
             GUI.backgroundColor=Color.white;
             DrawMovementGarage(run);
-            if(settingsTab!=2)GUI.Label(new Rect(30,453,280,60),garage.Tool==R41GarageTool.Mount?
+            if(settingsTab!=2||(garage.Tool==R41GarageTool.Mount&&garage.PlacementIssue!=null))GUI.Label(new Rect(30,453,280,60),garage.Tool==R41GarageTool.Mount?
                 garage.PlacementIssue??"Punkty mocowania zgodne. Kliknij, aby zamontować.":
                 "Wybierz część konstrukcji: jej stan zobaczysz w warsztacie.",small);
             GUI.enabled=garage.Tool==R41GarageTool.Mount;

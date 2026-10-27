@@ -9,6 +9,7 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         int partsPage,settingsTab;
+        GUIStyle garageTabStyle;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
             R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering};
@@ -47,11 +48,12 @@ namespace RoboRougelike.R1
         void ChangeMovement(R1RunController run,float power,float duration,bool gyro,float height)=>run.ConfigureMovement(power,duration,gyro,height);
         void DrawMovementGarage(R1RunController run)
         {
-            var m=run.VehicleModel;string[] tabs={"Napęd","Moduł","Zawiesz."};
+            var m=run.VehicleModel;string[] tabs={"Napęd","Moduł","Zawieszenie"};
+            if(garageTabStyle==null)garageTabStyle=new GUIStyle(compactButton){fontSize=13};
             for(int i=0;i<3;i++)
             {
                 GUI.backgroundColor=settingsTab==i?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(30+i*94,320,90,29),tabs[i],compactButton))settingsTab=i;
+                if(GUI.Button(new Rect(30+i*94,320,90,29),tabs[i],garageTabStyle))settingsTab=i;
             }
             GUI.backgroundColor=Color.white;
             if(settingsTab==0)
