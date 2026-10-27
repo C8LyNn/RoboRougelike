@@ -14,9 +14,9 @@ import re
 from pathlib import Path
 
 GRID=.55
-SOURCE_CODEX="7cfd1276d4708395144668249223d78fb83c3b19"
+SOURCE_CODEX="d44fa09c227dffca1c1f8832383bbd80430bba90"
 SOURCE_PART="be2be0e4802bc3f450179901f9ae91c6d84bcb5b"
-SOURCE_PAYLOAD_QA="dc2b3c199e6576f757f5ff6214e41fff444f73a8"
+SOURCE_PAYLOAD_QA="60c91b8172229bde9b02042125a79c3ebbfe5faa"
 SOURCE_HEAD_ART="7a1416d3e10ee720d9d28931a3c268f95e2bba15"
 ANCHOR_ASSEMBLY=[
  "item.transform.localPosition=(Vector3)state.Cell*0.55f;",
@@ -78,7 +78,9 @@ def reconcile(assembly,geometry,catalog,producer_script):
  factor=root_scale(assembly)
  check_anchors(geometry,ANCHOR_GEOM,"R41PartGeometry.cs")
  source=original_producer_module(producer_script)
- prior=source.analyze(geometry,catalog)
+ prior=source.analyze(geometry,catalog,assembly)
+ if prior.get("host_assembly_scale")!=factor:
+  raise ValueError("B01_23_CURRENT_HOST_SCALE_DISAGREEMENT")
  if prior.get("source_only")!=True or prior.get("native")!="NOT_RUN":
   raise ValueError("OWNER_PROXY_NOT_SOURCE_ONLY")
  if [row['kind'] for row in prior['rows']]!=list(KINDS):
@@ -111,6 +113,10 @@ def reconcile(assembly,geometry,catalog,producer_script):
     "rootPlusPayloadSignedCellsXYZ":cell_cover(fullLo,fullHi),
     "unityRealColliderBounds":"NOT_RUN",
     "sourceStaticOnly":True})
+  if entries[0]["payloadSourceProxyWorldMinXYZ"]!=row["assembled_payload_aabb_min_m"] or entries[0]["payloadSourceProxyWorldMaxXYZ"]!=row["assembled_payload_aabb_max_m"]:
+   raise ValueError("B01_23_CURRENT_YAW0_SOURCE_DISAGREEMENT "+k)
+  if entries[0]["unionWithCoreRootBoxMinXYZ"]!=row["assembled_root_plus_payload_aabb_min_m"] or entries[0]["unionWithCoreRootBoxMaxXYZ"]!=row["assembled_root_plus_payload_aabb_max_m"]:
+   raise ValueError("B01_23_CURRENT_YAW0_ROOT_DISAGREEMENT "+k)
   out.append({
    "kind":k,
    "b01_23_unitParentSourceProxyMinXYZ":unitLo,
@@ -135,7 +141,7 @@ def reconcile(assembly,geometry,catalog,producer_script):
   "inputProducerSourceProxyQaHead":SOURCE_PAYLOAD_QA,
   "originalConceptHead":SOURCE_HEAD_ART,
   "sourceR3PartParentScale":factor,
-  "purpose":"Reconcile unit-scale source proxy vs actual R3VehicleAssembly parent; NOT a real Collider.bounds measurement",
+  "purpose":"Independently verify UPDATED B01-23 owner host-scale yaw0 and extend to other three quarter-turns; NOT a real Collider.bounds measurement",
   "OmniDriveNewSourceFact":"R41 one cylinder child, NOT four ring pods in CM001-C",
   "fullVehicleDimensions":"UNKNOWN",
   "dynamicMotion":"NOT_RUN","actualUnity":"NOT_RUN","physx":"NOT_RUN",
