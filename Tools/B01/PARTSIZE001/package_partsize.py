@@ -92,17 +92,21 @@ def build(files,source_sha):
        "guid_count":len(guids),"source_file_count":len(files)
     }
     out=io.BytesIO()
-    with zipfile.ZipFile(out,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
+    # ZIP_STORED avoids zlib-version differences; fixed creator system avoids
+    # platform-dependent central-directory flags on Windows vs Linux.
+    with zipfile.ZipFile(out,"w",compression=zipfile.ZIP_STORED) as archive:
         for path in files:
             zi=zipfile.ZipInfo(path,date_time=(2026,10,27,8,0,0))
-            zi.compress_type=zipfile.ZIP_DEFLATED
+            zi.compress_type=zipfile.ZIP_STORED
+            zi.create_system=3
             zi.external_attr=0o100644<<16
-            archive.writestr(zi,committed_bytes(path),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+            archive.writestr(zi,committed_bytes(path),compress_type=zipfile.ZIP_STORED)
         zi=zipfile.ZipInfo(MANIFEST,date_time=(2026,10,27,8,0,0))
-        zi.compress_type=zipfile.ZIP_DEFLATED
+        zi.compress_type=zipfile.ZIP_STORED
+            zi.create_system=3
         zi.external_attr=0o100644<<16
         archive.writestr(zi,(json.dumps(manifest,indent=2,sort_keys=True)+"\n").encode("utf8"),
-                         compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+                         compress_type=zipfile.ZIP_STORED)
     payload=out.getvalue()
     verify_zip(payload,manifest)
     return payload,manifest
