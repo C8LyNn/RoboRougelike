@@ -38,6 +38,10 @@ namespace B01.CHL003
             CheckpointCount = checkpoints;
             ActorToken = actorToken;
             TimeLimitSeconds = timeLimitSeconds;
+            // Configure establishes the configured Ready lifecycle BEFORE
+            // calling the shared reset routine. Previously Retry() threw
+            // CHL003_NOT_CONFIGURED on first import (CI 40476956772 RED).
+            State = Phase.Ready;
             Retry();
         }
 
