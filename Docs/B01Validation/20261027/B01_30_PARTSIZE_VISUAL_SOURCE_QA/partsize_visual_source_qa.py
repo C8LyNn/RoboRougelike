@@ -155,12 +155,37 @@ def measure(name,q):
   "visualFitsLogicalAABB":all(v==0 for v in vExceed),
   "unityNative":"NOT_RUN","physxComputePenetration":"NOT_RUN"}
 
+def axis_aligned_child_box_neighbor_overlap(part, direction=(0,0,1)):
+ """Exact positive *rest-pose BoxCollider vs BoxCollider* overlap volumes.
+
+ Only source PrimitiveType.Cube collider payloads, never wheel convex meshes.
+ Both colliders are axis-aligned in tested q=0. This does not call Unity PhysX.
+ """
+ if part not in ("CrawlerTrack","GunHeavy"):raise ValueError("only source-backed box collider kinds")
+ if direction != (0,0,1):raise ValueError("W16 evidence only checks adjacent +Z voxel")
+ lo,hi=union_bounds([PARTS[part]["shapes"][1]],0,True)
+ target_center=[v*GRID for v in direction]
+ near=[v-BLOCK/2 for v in target_center]
+ far=[v+BLOCK/2 for v in target_center]
+ dims=[round(max(0,min(hi[i],far[i])-max(lo[i],near[i])),6) for i in range(3)]
+ return {"part":part,"adjacentBlockCellOffsetXYZ":list(direction),
+         "payloadBoxMinXYZ":lo,"payloadBoxMaxXYZ":hi,
+         "adjacentCubeMinXYZ":[round(v,6) for v in near],
+         "adjacentCubeMaxXYZ":[round(v,6) for v in far],
+         "overlapDepthsXYZ":dims,
+         "overlapVolumeM3":round(math.prod(dims),9),
+         "positiveSourceGeometryIntersection":all(x>0 for x in dims),
+         "actualUnityCollision":"NOT_RUN",
+         "scope":"unrotated source BoxColliders only, not runtime selected vehicle placement"}
+
 def run(paths,out):
  anchors=verify_sources(paths)
  records=[measure(k,q) for k in PARTS for q in range(4)]
+ overlap=[axis_aligned_child_box_neighbor_overlap(k) for k in ("CrawlerTrack","GunHeavy")]
  report={"kind":"B01_30_W16_PARTSIZE_VISUAL_QA_ONLY","sourceHead":SOURCE_HEAD,
   "sourceAnchorsVerified":anchors,"gridM":GRID,"baseCubeM":BLOCK,
-  "records":records,"sourceScope":"EXISTING_CANONICAL_READ_ONLY",
+  "records":records,"adjacentStaticBoxColliderIntersections":overlap,
+  "sourceScope":"EXISTING_CANONICAL_READ_ONLY",
   "geometryMethod":"analytical transformed Unity primitive bounding boxes, not actual Unity engine render or collision solve",
   "G2":"HOLD","unityNative":"NOT_RUN","approvedFootprints":False}
  out=Path(out);out.parent.mkdir(parents=True,exist_ok=True)
