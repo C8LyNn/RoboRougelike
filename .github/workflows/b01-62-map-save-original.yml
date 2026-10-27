@@ -1,0 +1,55 @@
+name: B01-62 original Codex CSharp map-save QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Tools/B01/B01-62/MapSaveSourceQA/**'
+      - '.github/workflows/b01-62-map-save-original.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-map-csharp:
+    name: Original Codex map-save methods (Windows + Ubuntu)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      CODEX_SHA: 231005c6d0351945a8ee6684f3856af118f0e94f
+      STORAGE_BLOB: f31a94c16e8cb244e66e39b0ac344b085095b630
+      DRAFT_BLOB: b5f8f395f93972c0ede000701dbbada8fcfcdfdb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch unmodified exact Codex PR310 original CSharp (fail closed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/pull/310/head:refs/remotes/origin/b01-62-codex-310'
+          actual="$(git rev-parse refs/remotes/origin/b01-62-codex-310)"
+          test "$actual" = "$CODEX_SHA"
+          storage="$(git rev-parse "${CODEX_SHA}:Assets/MapEditor/MapStorage.cs")"
+          draft="$(git rev-parse "${CODEX_SHA}:Assets/MapEditor/MapDraft.cs")"
+          test "$storage" = "$STORAGE_BLOB"
+          test "$draft" = "$DRAFT_BLOB"
+          mkdir -p Tools/B01/B01-62/MapSaveSourceQA/Original
+          git show "${CODEX_SHA}:Assets/MapEditor/MapStorage.cs" > Tools/B01/B01-62/MapSaveSourceQA/Original/MapStorage.cs
+          git show "${CODEX_SHA}:Assets/MapEditor/MapDraft.cs" > Tools/B01/B01-62/MapSaveSourceQA/Original/MapDraft.cs
+          echo "PINNED ORIGINALS: CODEX=$actual STORAGE=$storage DRAFT=$draft"
+      - name: Compile and execute the actual Codex CSharp source with .NET stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/MapSaveSourceQA/MapSaveSourceQA.csproj -c Release             2>&1 | tee "Tools/B01/B01-62/MapSaveSourceQA/run-${RUNNER_OS}.txt"
+      - name: Upload original-source evidence (not Unity G1)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-62-map-save-csharp-${{ matrix.os }}
+          path: Tools/B01/B01-62/MapSaveSourceQA/run-*.txt
+          if-no-files-found: warn
+          retention-days: 7
