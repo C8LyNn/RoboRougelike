@@ -146,5 +146,28 @@ namespace B01.CHL003.Tests
                 -.10f,.10f,-h,h,-2.16f,-.45f,
                 -1.75f,1.75f,-2.25f,2.25f,1f));
         }
+  
+        [Test] public void E20_B0160NearGroundFalseSupportRejectsHoveringWheel()
+        {
+            // Original Light spheres 0.82m diameter, Y root -.52m,
+            // floor top Y=0. This checks original SOURCE C# reach policy,
+            // not a licensed Unity physics contact.
+            const float radius = .41f;
+            float hover35 = 1.28f-.52f+
+                CHL003WheelSupportWindow.OriginLiftMeters;
+            float hover41 = 1.34f-.52f+
+                CHL003WheelSupportWindow.OriginLiftMeters;
+            Assert.Less(hover35,.95f, "Old long ray falsely allowed thrust");
+            Assert.IsFalse(CHL003WheelSupportWindow.WithinWheelReach(hover35,radius));
+            Assert.IsFalse(CHL003WheelSupportWindow.WithinWheelReach(hover41,radius));
+            Assert.IsTrue(CHL003WheelSupportWindow.WithinWheelReach(
+                .93f-.52f+CHL003WheelSupportWindow.OriginLiftMeters,radius));
+            Assert.IsFalse(CHL003WheelSupportWindow.WithinWheelReach(
+                .97f-.52f+CHL003WheelSupportWindow.OriginLiftMeters,radius));
+            Assert.AreEqual(.58f,
+                CHL003WheelSupportWindow.MaximumCastMeters(radius),.00001f);
+            Assert.AreEqual(0f,
+                CHL003WheelSupportWindow.MaximumCastMeters(float.NaN));
+        }
     }
 }
