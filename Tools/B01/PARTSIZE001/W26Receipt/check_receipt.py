@@ -126,13 +126,15 @@ def check_xml(raw,platform):
         full=c.get("fullname") or ""
         cls=c.get("classname") or ""
         name=c.get("name") or ""
+        # Preserve the older distinct duplicate-provenance diagnostic.
+        # Exact classname/name/fullname matching remains mandatory afterward.
+        if full in fullnames:
+            raise EvidenceError("DUPLICATE_NUNIT_FULLNAME")
         if cls!=CLASSES[platform] or not name or full!=cls+"."+name:
             raise EvidenceError("FOREIGN_OR_MALFORMED_NUNIT_CASE")
         method=name.split("(",1)[0]
         if method not in expected:
             raise EvidenceError("FOREIGN_OR_SUBSTITUTED_TEST_METHOD")
-        if full in fullnames:
-            raise EvidenceError("DUPLICATE_NUNIT_FULLNAME")
         fullnames.add(full)
         got[method]+=1
     if got!=Counter(expected):
