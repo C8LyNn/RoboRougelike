@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 static class Program
 {
-    const string Pin="bec51e4a66ada534b875ce13f08b83d63f2cd7b8";
+    const string Pin="8c69313b41312f5d027285469c6a2f22958a931f";
     static readonly List<(string Name,string Status,string Detail)> Cases=new();
     static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
     static CHL003CourseCore New(int n=4,int actor=101)
@@ -125,6 +125,30 @@ static class Program
             Check(c.State==CHL003CourseCore.Phase.Completed,"state reverted");
             Check(!c.EnterFinish(101),"another finish accepted after exception");
             // Without transactional host settlement, subscriber exception leaves ambiguous external status.
+        });
+        Run("C11_real_finish_arbiter_no_same_step_or_nonoverlap_completion",()=>{
+            var a=new CHL003FinishArbiter();
+            Check(!a.ObserveFinishContact(4,false),"early finish queued");
+            a.LastCheckpointAccepted(5);
+            Check(a.ObserveFinishContact(5,true),"last-checkpoint/finish same step not queued");
+            Check(!a.TryCommit(5,true,true,false),"same-step committed");
+            Check(!a.TryCommit(6,true,false,false),"no-overlap committed");
+            Check(!a.IsQueued,"stale finish after moved outside");
+            Check(a.ObserveFinishContact(7,true),"new contact");
+            Check(a.TryCommit(8,true,true,false),"physical overlapped next-step not committed");
+            a.Reset();Check(!a.IsQueued,"retry retained finish");
+        });
+        Run("C12_real_trial_metrics_reset_does_not_retire_host_inventory",()=>{
+            var m=new CHL003TrialMetrics();
+            m.Reset("LIGHT",1,270f,2f,2.3f);m.Begin();
+            m.RecordPhysics(0f,1f,1f,2f,0.1f);
+            for(int k=1;k<=4;k++)m.RecordCheckpoint(k,k*0.2f);
+            m.RecordCompleted(1.5f);
+            Check(m.Completions==1 && m.TerminalState=="Completed","metrics finish");
+            Check(m.ToCsv().Contains("COMPLETE"),"csv missing event");
+            m.Reset("LIGHT",2,270f,2f,2.3f);
+            Check(m.Completions==0 && m.Checkpoints==0 && m.Events.Count==1,
+               "retry preserved stale metrics/reward-like event");
         });
         int pass=Cases.Count(x=>x.Status=="PASS");
         var result=new{source_pin=Pin,core_source="ACTUAL_CHL_285_CSHARP_DIRECTLY_COMPILED",
