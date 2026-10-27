@@ -1,0 +1,26 @@
+{
+  "record": "Public GitHub Actions metadata and redacted log markers, not a Unity launch",
+  "source_sha": "d95d3660c6e575349d4d825b3522a05e8a650ac3",
+  "EditMode": {
+    "workflow": "CI-02 Unity EditMode",
+    "run_id": 40588337207,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40588337207",
+    "steps": [
+      {"name":"Validate project before launching Unity", "conclusion":"success"},
+      {"name":"Require valid Unity activation credentials", "conclusion":"failure"},
+      {"name":"Unity 6000.3.14f1 EditMode", "conclusion":"skipped"}
+    ],
+    "public_log_excerpt": "Validated 663 tracked files; 0 error(s). BLOCKED: Unity NOT RUN. Unity activation is missing. No tests or build executed."
+  },
+  "PlayMode": {
+    "workflow": "CI-03 Unity PlayMode",
+    "run_id": 40588337178,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40588337178",
+    "steps": [
+      {"name":"Validate project before launching Unity", "conclusion":"success"},
+      {"name":"Require valid Unity activation credentials", "conclusion":"failure"},
+      {"name":"Unity 6000.3.14f1 PlayMode", "conclusion":"skipped"}
+    ],
+    "public_log_excerpt": "Validated 663 tracked files; 0 error(s). BLOCKED: Unity NOT RUN. Unity activation is missing. No tests or build executed."
+  }
+}
