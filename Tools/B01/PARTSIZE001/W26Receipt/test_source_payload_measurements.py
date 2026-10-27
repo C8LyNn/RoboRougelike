@@ -52,7 +52,9 @@ class OriginalR41StaticGeometryTests(unittest.TestCase):
         row=self.items["OmniDrive"]
         self.assertEqual(row["payload_aabb_min_m"],[-.18,-.85,-.45])
         self.assertEqual(row["payload_aabb_max_m"],[.18,.05,.45])
-        self.assertEqual(row["signed_cells_intersected_xyz"][1],[-1,0])
+        # y=-0.85 is 0.025m below signed cell -1 minimum -0.825.
+        # The source axis-aligned proxy intersects THREE y layers, not two.
+        self.assertEqual(row["signed_cells_intersected_xyz"][1],[-2,-1,0])
 
     def test_09_all_seven_outgrow_nominal_single_055_cell(self):
         for k,row in self.items.items():
