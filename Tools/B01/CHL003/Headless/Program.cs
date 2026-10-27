@@ -287,6 +287,55 @@ static class Program
                 System.Globalization.CultureInfo.InvariantCulture)+
             " newMargin="+bridgeMargin.ToString("R",
                 System.Globalization.CultureInfo.InvariantCulture));
+        // B01-60 original W26 QA-01: .82m diameter wheels, local Y=-.52,
+        // support floor top=0, origin lift=.14. Previous fixed .95m
+        // detected ground when there was a .35m air gap.
+        static float WheelHitFromRoot(float rootY) => rootY - .52f +
+            CHL003WheelSupportWindow.OriginLiftMeters;
+        float realWheelRadius=.82f*.5f;
+        Check("w26-original-ground-ray-095-was-false-ground-at-128",
+            WheelHitFromRoot(1.28f)<.95f &&
+            (1.28f-.52f-realWheelRadius)>.30f);
+        Check("w26-near-ground-128-must-not-support",
+            !CHL003WheelSupportWindow.WithinWheelReach(
+                WheelHitFromRoot(1.28f),realWheelRadius));
+        Check("w26-airborne-134-must-not-support",
+            !CHL003WheelSupportWindow.WithinWheelReach(
+                WheelHitFromRoot(1.34f),realWheelRadius));
+        Check("w26-original-spawn-gap-009-not-physical-contact",
+            !CHL003WheelSupportWindow.WithinWheelReach(
+                WheelHitFromRoot(1.02f),realWheelRadius));
+        Check("w26-touching-wheel-093-real-ground-support",
+            CHL003WheelSupportWindow.WithinWheelReach(
+                WheelHitFromRoot(.93f),realWheelRadius));
+        Check("w26-tiny-contact-margin-under3cm-allowed",
+            CHL003WheelSupportWindow.WithinWheelReach(
+                WheelHitFromRoot(.95f),realWheelRadius));
+        Check("w26-gap4cm-not-support",
+            !CHL003WheelSupportWindow.WithinWheelReach(
+                WheelHitFromRoot(.97f),realWheelRadius));
+        Check("w26-length-derived-from-wheel-radius-not-constant",
+            Math.Abs(CHL003WheelSupportWindow.MaximumCastMeters(.41f)-.58f)<.000001f &&
+            Math.Abs(CHL003WheelSupportWindow.MaximumCastMeters(.82f)-.99f)<.000001f);
+        Check("w26-invalid-world-radius-fails-closed",
+            CHL003WheelSupportWindow.MaximumCastMeters(0f)==0f &&
+            CHL003WheelSupportWindow.MaximumCastMeters(float.NaN)==0f &&
+            CHL003WheelSupportWindow.MaximumCastMeters(float.PositiveInfinity)==0f);
+        Check("w26-invalid-distance-fails-closed",
+            !CHL003WheelSupportWindow.WithinWheelReach(float.NaN,.41f) &&
+            !CHL003WheelSupportWindow.WithinWheelReach(float.NegativeInfinity,.41f) &&
+            !CHL003WheelSupportWindow.WithinWheelReach(-.01f,.41f));
+        for(int i=0;i<640;i++)
+        {
+            float gap=(i-320)*.001f;
+            float distance=realWheelRadius+
+                CHL003WheelSupportWindow.OriginLiftMeters+gap;
+            bool expected=gap<=CHL003WheelSupportWindow.NearContactAllowanceMeters;
+            Check("w26-near-ground-sweep-"+i,
+                CHL003WheelSupportWindow.WithinWheelReach(
+                    distance,realWheelRadius)==expected);
+        }
+        Console.WriteLine("CHL003_W26_WHEEL_CONTACT_QA01_ORIGINAL_SOURCE_WINDOW_CHECKS_COMPLETE");
         Console.WriteLine("CHL003_FINISH_ARBITER_AND_TELEMETRY_CHECKS_COMPLETE");
         Console.WriteLine("CHL003_ACTUAL_CSHARP_CORE PASS="+pass+" FAIL="+fail+
             " NATIVE_UNITY=NOT_RUN");
