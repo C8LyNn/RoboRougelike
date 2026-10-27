@@ -140,7 +140,7 @@ def inspect_receipt(folder):
     f=folder/"receipt.json"
     if not f.is_file():
         return {"status":"NOT_RUN","reason":"NO_NATIVE_RECEIPT"}
-    try: receipt=json.loads(f.read_text(encoding="utf8-sig"))
+    try: receipt=json.loads(f.read_text(encoding="utf-8-sig"))
     except (json.JSONDecodeError,UnicodeError) as exc:
         raise EvidenceError("BROKEN_RECEIPT") from exc
     if receipt.get("source_sha")!=SOURCE_SHA or receipt.get("unity_version")!=UNITY:
