@@ -21,7 +21,11 @@ public sealed class MapEditorIntegrationTests
         Assert.That(R1RunController.Instance?.Progress,Is.Not.Null,"Real main menu initialized");
         run=R1RunController.Instance;
     }
-    [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+    [UnityTearDown] public IEnumerator Cleanup()
+    {
+        if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+    }
     [UnityTest] public IEnumerator MenuEditorGarageVehicleTestAndReturnPreserveMap()
     {
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
