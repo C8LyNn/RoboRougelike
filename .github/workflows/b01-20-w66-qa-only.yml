@@ -1,0 +1,33 @@
+name: B01 CHL W66 QA-only source-pin operator (NATIVE UNITY NOT RUN)
+on:
+  push:
+    branches:
+      - 'b01-20/qa-w66-chl003-operator-source-pin'
+    paths:
+      - 'Tools/B01/CHL003/W66Receipt/**'
+      - '.github/workflows/b01-20-w66-qa-only.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qa-source-only:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Real Git linked worktree and synthetic parser negative acceptance (NO UNITY)
+        working-directory: Tools/B01/CHL003/W66Receipt
+        run: python test_chl003_w66_operator.py
+      - name: Repinned original CHL operator source compile (NO UNITY)
+        working-directory: Tools/B01/CHL003/W66Receipt
+        run: python -m py_compile chl003_w66_operator.py test_chl003_w66_operator.py
+      - name: Fail-closed direct selftest route (NO UNITY)
+        working-directory: Tools/B01/CHL003/W66Receipt
+        run: python chl003_w66_operator.py --preflight-only --selftest
