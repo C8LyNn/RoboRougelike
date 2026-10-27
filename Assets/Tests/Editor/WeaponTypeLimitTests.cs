@@ -1,9 +1,12 @@
 using System.Linq;
+using System.Collections;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.R1;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 // Model-level EditMode tests; these do not create the game scene or capture input.
 public sealed class WeaponTypeLimitTests
@@ -74,8 +77,10 @@ public sealed class WeaponTypeLimitTests
         Assert.That(loaded.DeepCopy().CanDeploy,Is.False);
     }
 
-    [Test] public void TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts()
+    [UnityTest] public IEnumerator TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts()
     {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+        yield return new EnterPlayMode();
         var model=Model();var paletteObject=new GameObject("Weapon type test palette");
         var palette=paletteObject.AddComponent<R3VisualPalette>();
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
@@ -91,7 +96,8 @@ public sealed class WeaponTypeLimitTests
                 var kind=i%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic;
                 Assert.That(model.PlacementError(cells[i],R3PartKind.Gun,false,kind),Is.Null,$"physical gate gun {i+2}");
                 Assert.That(model.Buy(cells[i],R3PartKind.Gun,kind),Is.True,$"buy gun {i+2}");
-                Object.DestroyImmediate(rig.gameObject);rig=null;
+                rig.gameObject.SetActive(false);Object.Destroy(rig.gameObject);rig=null;
+                yield return null;
             }
             rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
             Assert.That(rig.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Gun),Is.EqualTo(12));
@@ -99,10 +105,11 @@ public sealed class WeaponTypeLimitTests
         }
         finally
         {
-            if(rig!=null)Object.DestroyImmediate(rig.gameObject);
+            if(rig!=null)Object.Destroy(rig.gameObject);
             for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=null;
             for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=null;
-            Object.DestroyImmediate(paletteObject);Object.DestroyImmediate(material);
+            Object.Destroy(paletteObject);Object.Destroy(material);
         }
+        yield return new ExitPlayMode();
     }
 }
