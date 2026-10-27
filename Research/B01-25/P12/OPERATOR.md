@@ -1,0 +1,33 @@
+# B01-25 / PASS 12 — source-pinned original JSON import & native operator cards
+
+**Scope:** B01-25 independent research/import fixtures only. No gameplay-source/Unity CHL/Codex edits. Canonical Codex [#310](https://github.com/C8LyNn/RoboRougelike/pull/310) at `231005c6d0351945a8ee6684f3856af118f0e94f` and real `MapDraft/MapStorage/R1MapEditor` original blobs as in `manifest.json`.
+
+## Safe import, NOT a button accepting an arbitrary downloaded file
+1. Acquire the **exact original files** [LD01](https://github.com/C8LyNn/RoboRougelike/blob/bdd6c69fc9fd519b863e3a9cb217b3cd39404194/Research/B01-25/P11/LD01.json), [LD02](https://github.com/C8LyNn/RoboRougelike/blob/bdd6c69fc9fd519b863e3a9cb217b3cd39404194/Research/B01-25/P11/LD02.json), [LD03](https://github.com/C8LyNn/RoboRougelike/blob/bdd6c69fc9fd519b863e3a9cb217b3cd39404194/Research/B01-25/P11/LD03.json). Validate Git blob SHA from the manifest against `git hash-object FILE` (Git blob SHA1; not file SHA256).
+2. On an HQ-authorized **separate** Windows Unity/Player host, use a **throwaway isolated profile**. `MapStorage.DirectoryPath` is `Application.persistentDataPath/Maps`. Inspect the host's actual Unity persistentDataPath first. **Never use an existing real player's `Maps` directory or guess its address.** Backup or isolate any prior data.
+3. Create three **unique** destination files named `B01_25_LD01_P12.json`, `B01_25_LD02_P12.json`, `B01_25_LD03_P12.json` directly in disposable `Maps`. Abort if any target exists; no overwrite/rename/case/space aliases (known D02).
+4. Launch original supported game build; main menu → Edytor map → input `EditorName = B01_25_LD01_P12` → click **Wczytaj**. The editor resolves exactly `name.Trim()+".json"`; there is no external file chooser/import wizard. Verify original Spawn, Finish and obstacle count, and repeat for LD02/LD03.
+5. Before **Testuj mapę**, use garage with an actually functional gun and selected-drive mobility; the original `TestEditedMap()` requires both via `VehicleModel.DeployError`. Do **not** change HQ's warning/start policy. The edited map is copied into a sandbox test; the UI displays `META OSIĄGNIĘTA` for a touch, not certified route success.
+6. If importing a `*_NEG` variant, do so only in a **second** separate empty disposable profile with unique names, and restore the positive map between tests. Expect exactly the negative conditions below. A rejection must not corrupt the current draft.
+
+## B — 3 original-format negative variants (authored, source expectations; original Unity NOT_RUN)
+
+| Negative | Exact mutation from PASS11 original | Source-derived expectation | Distinguishing result |
+|---|---|---|---|
+| LD01_NEG | remove only Ground(0,1) under authored Spawn(0,1) | `MapDraft.TryLoad`: accept; `TestError`: `Dodaj podłoże pod punktem startowym.` | No physical start without a grounded Spawn |
+| LD02_NEG | append a second Finish(10,8) | `MapDraft.TryLoad`: reject `Mapa może mieć tylko jeden start i jedną metę.`; old draft unchanged | Native transactional failed-import acceptance required |
+| LD03_NEG | remove Ground(4,4) and Ground(4,5), preserving risky shortcut and Spawn/Finish | `TryLoad`: accept; `TestError`: null, but the **design-specific safe detour** no longer crosses x=4; this is NOT loader failure | Unsafe route isolation must be caught by game-design/route verification, not by existing sandbox gate |
+
+## C — one real-player-run script per challenge (future operator, **NOT_RUN**)
+
+All trials: record `operator/host`, actual `Unity/Player version`, `source SHA`, exact map Git blob, profile/configuration IDs, map hash, run/session ID, complete fixed-step trajectory **if available**, controls used, time/falls/stuck, visible finish notification, physically observed wheel contacts/clearance and source of evidence. Preserve original log, screenshots (if authorized), and exact data hashes. No implied Unity G1/CHL package certification from these exploratory map-editor sessions. No teleport, manual lifting, missing frames or route splicing.
+
+**LD01 — Kalibracja napędu / driving:** Load `B01_25_LD01_P12`; check one Spawn/Finish, pillars at (3,1),(6,2), barrier(8,1), ramp(9,2), steps(10,1), 52 Ground cells. Drive without teleport through the obstacle corridor to Finish. On truly separate licensed host, run 3 Light + 3 Heavy **if approved**, each using the same original map. Record start→finish continuous trajectory, collisions, ability to recover from stop/tip, actual width/turning radius, 90s *research-only* timeout. Finish touch proves only the trigger; report `TOUCH_ONLY` unless a separately approved route evidence policy exists. A physical failure/stuck is `OBSERVED_PLAYER_TRIAL_FAILURE`, not a Unity NUnit FAIL.
+
+**LD02 — Krzyżowy ostrzał / geometry-only:** Load `B01_25_LD02_P12`; check GlobalFloor and 4 pillars / 2 barriers / 2 walls; drive around cover and reach Finish. Record exposure/occlusion and possible bypass of all cover. **Do not claim enemy kill or combat completion:** current editor spawns no 2 enemies and has no kill gate. A true combat player-run is `BLOCKED_BY_CODEX_ENCOUNTER_PLUS_HQ_POLICY`. Opaque-cover enemy LOS is separately handled by B01-24/Codex; no third implementation stream authorized. Touch Finish equals `TOUCH_ONLY`.
+
+**LD03 — Skrót albo objazd / branch:** Load `B01_25_LD03_P12`; note short branch through barrier(4,2) then ramp(5,2), safe detour via z=5. For each **independent reset** run, deliberately choose short or detour with Light, and short or detour with Heavy; collect three repeats each per approved operator schedule, real physical clearance and actual path class. The detour must still exist when short branch is blocked. Restore original after testing `LD03_NEG`: crossing x=4 on safe z=4/5 is absent, so only short/risk path survives statically. No invented reward/time saving; observed measured times required.
+
+**Native validation boundary:** The separate **CHL-003 #285** producer now has `c7b2a234a286089383503da41883d624fe650551` latest checked (not prior `2355...`). Its [independent G1 guide](https://github.com/C8LyNn/RoboRougelike/blob/c7b2a234a286089383503da41883d624fe650551/Docs/B01/CHL003/QA_B01_60.md) specifies 20E/15P + Light×3/Heavy×3, exact CP0–3 and authentic Unity XML/Editor.log/physic receipts. **These three map-editor scenarios are NOT CHL-003 or its CP tests; do not mix the results.** Independent B01-40 new-SHA G0 and HQ licensed host remain prerequisites for CHL native G1.
+
+**Delegation:** B01-21 geometry/native clearance and data validity; B01-10 fairness/goal/failure; B01-24 enemy LOS; B01-60 separate Unity/PhysX acceptance only after HQ gate; Codex sole canonical gameplay owner. No merge, OFFERED/G2 or ACK.
