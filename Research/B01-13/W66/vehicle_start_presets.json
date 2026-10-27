@@ -1,0 +1,245 @@
+{
+  "schema": "B01-13-human-operator-presets/v1",
+  "importable_into_Unity": false,
+  "warning": "Operator-reproducible instructions, not Player save, not native-tested; no human recruitment permitted.",
+  "source": {
+    "codex_pr": 310,
+    "head_sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "catalog": "Assets/R3/R3VehicleCatalog.cs",
+    "catalog_git_blob": "f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
+    "model": "Assets/R3/R3VehicleModel.cs",
+    "model_git_blob": "9f1bf190c7535182c6ce375cbfe67f5b2862e811"
+  },
+  "baseline": {
+    "vehicle": "R3VehicleKind.Light",
+    "mode": "new isolated Garage and training yard",
+    "drive": "R3DriveKind.Wheels",
+    "core": [
+      0,
+      0,
+      0
+    ],
+    "gun": [
+      [
+        0,
+        1,
+        0
+      ]
+    ],
+    "wheels_left": [
+      [
+        -2,
+        0,
+        -1
+      ],
+      [
+        -2,
+        0,
+        1
+      ]
+    ],
+    "wheels_right": [
+      [
+        2,
+        0,
+        -1
+      ],
+      [
+        2,
+        0,
+        1
+      ]
+    ],
+    "reset": "RESELECT original Light vehicle and rebuild fresh isolated garage per case; verify no inventory/data changes",
+    "verify": "Physical UI placement, actual selected drive, item removal success and connected structure before participant sees vehicle"
+  },
+  "cases": [
+    {
+      "id": "READY_CONTROL",
+      "critical": "none",
+      "operator_steps": [],
+      "expected_SOURCE_ONLY": {
+        "remaining_healthy_guns": 1,
+        "remaining_healthy_wheels_left": 2,
+        "remaining_healthy_wheels_right": 2,
+        "selected_drive_functional": true,
+        "first_DeployError": null,
+        "CanDeploy": true
+      },
+      "native_result": "NOT_RUN"
+    },
+    {
+      "id": "NO_GUN",
+      "critical": "missing functional gun",
+      "operator_steps": [
+        {
+          "action": "GarageRemove",
+          "kind": "Gun",
+          "cell": [
+            0,
+            1,
+            0
+          ]
+        }
+      ],
+      "expected_SOURCE_ONLY": {
+        "remaining_healthy_guns": 0,
+        "remaining_healthy_wheels_left": 2,
+        "remaining_healthy_wheels_right": 2,
+        "selected_drive_functional": true,
+        "first_DeployError": "Brak sprawnej broni.",
+        "CanDeploy": false
+      },
+      "native_result": "NOT_RUN"
+    },
+    {
+      "id": "NO_MOBILITY",
+      "critical": "missing functional selected drive",
+      "operator_steps": [
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            -2,
+            0,
+            1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            2,
+            0,
+            -1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            2,
+            0,
+            1
+          ]
+        }
+      ],
+      "expected_SOURCE_ONLY": {
+        "remaining_healthy_guns": 1,
+        "remaining_healthy_wheels_left": 0,
+        "remaining_healthy_wheels_right": 0,
+        "selected_drive_functional": false,
+        "first_DeployError": "Potrzebne co najmniej jedno koło na każdej stronie.",
+        "CanDeploy": false
+      },
+      "native_result": "NOT_RUN"
+    },
+    {
+      "id": "BOTH",
+      "critical": "both gun and selected drive missing",
+      "operator_steps": [
+        {
+          "action": "GarageRemove",
+          "kind": "Gun",
+          "cell": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            -2,
+            0,
+            -1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            -2,
+            0,
+            1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            2,
+            0,
+            -1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            2,
+            0,
+            1
+          ]
+        }
+      ],
+      "expected_SOURCE_ONLY": {
+        "remaining_healthy_guns": 0,
+        "remaining_healthy_wheels_left": 0,
+        "remaining_healthy_wheels_right": 0,
+        "selected_drive_functional": false,
+        "first_DeployError": "Brak sprawnej broni.",
+        "CanDeploy": false
+      },
+      "native_result": "NOT_RUN"
+    },
+    {
+      "id": "ONE_SIDED",
+      "critical": "right wheels missing",
+      "operator_steps": [
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            2,
+            0,
+            -1
+          ]
+        },
+        {
+          "action": "GarageRemove",
+          "kind": "Wheel",
+          "cell": [
+            2,
+            0,
+            1
+          ]
+        }
+      ],
+      "expected_SOURCE_ONLY": {
+        "remaining_healthy_guns": 1,
+        "remaining_healthy_wheels_left": 2,
+        "remaining_healthy_wheels_right": 0,
+        "selected_drive_functional": false,
+        "first_DeployError": "Potrzebne co najmniej jedno koło na każdej stronie.",
+        "CanDeploy": false
+      },
+      "native_result": "NOT_RUN"
+    }
+  ],
+  "known_limitations": [
+    "D03 first DeployError prioritizes missing gun: BOTH is not proof the mobility problem is visually conveyed",
+    "No native Unity or Windows GUI preflight, no approval for real human participant tests",
+    "If an operation is impossible in the interactive garage, record BLOCKED_SETUP and reconfigure only with licensed operator approval"
+  ]
+}
