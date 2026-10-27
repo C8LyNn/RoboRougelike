@@ -1,0 +1,139 @@
+{
+  "schema": "B01-25-PASS11-RESULT-v1",
+  "source": {
+    "pr": 310,
+    "commit": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "blobs": {
+      "Assets/MapEditor/MapDraft.cs": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+      "Assets/MapEditor/MapWorld.cs": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+      "Assets/MapEditor/R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+      "Assets/R3/R3VehicleModel.cs": "9f1bf190c7535182c6ce375cbfe67f5b2862e811"
+    },
+    "note": "Independent Node/V8 model of original C# MapDraft load/footprint/TestError; NOT original C# execution or Unity/PhysX proof."
+  },
+  "passed": 23,
+  "failed": 0,
+  "tests": [
+    {
+      "name": "A01 LD01 exact v2 schema + one Spawn/Finish + grounded start",
+      "status": "PASS"
+    },
+    {
+      "name": "A02 LD01 five obstacle instances + conservative 4-neighbour route",
+      "status": "PASS"
+    },
+    {
+      "name": "A03 LD02 valid arena authoring footprint + four covers + two barriers",
+      "status": "PASS"
+    },
+    {
+      "name": "A04 LD02 conservative Spawn->Finish grid reachability",
+      "status": "PASS"
+    },
+    {
+      "name": "A05 LD03 valid branching JSON + both witness paths",
+      "status": "PASS"
+    },
+    {
+      "name": "A06 LD03 distinct inner paths and detour longer",
+      "status": "PASS"
+    },
+    {
+      "name": "B01 missing Finish rejected by current TestError",
+      "status": "PASS"
+    },
+    {
+      "name": "B02 missing Spawn floor rejected by current TestError",
+      "status": "PASS"
+    },
+    {
+      "name": "B03 top-layer overlap rejected on JSON import",
+      "status": "PASS"
+    },
+    {
+      "name": "B04 duplicate Finish rejected on JSON import",
+      "status": "PASS"
+    },
+    {
+      "name": "B05 rotated scaled footprint crossing map bound rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "B06 scale>4 rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "B07 sever safe detour but keep testError null and risky short available",
+      "status": "PASS"
+    },
+    {
+      "name": "B08 noncombat map test cannot prove two enemy kills",
+      "status": "PASS"
+    },
+    {
+      "name": "B09 weaponless robot prevented from starting current editor test",
+      "status": "PASS"
+    },
+    {
+      "name": "B10 mobility-less robot prevented from starting current editor test",
+      "status": "PASS"
+    },
+    {
+      "name": "B11 simultaneous weaponless and mobility-less also blocked",
+      "status": "PASS"
+    },
+    {
+      "name": "B12 timeout is not yet a runtime failure reason",
+      "status": "PASS"
+    },
+    {
+      "name": "B13 stuck robot is not yet a runtime failure reason",
+      "status": "PASS"
+    },
+    {
+      "name": "B14 teleported/unsupported Finish touch is not verified route",
+      "status": "PASS"
+    },
+    {
+      "name": "B15 current TestError accepts disconnected/unfloored Finish",
+      "status": "PASS"
+    },
+    {
+      "name": "C01 matrix ranks each unique existing brief exactly once",
+      "status": "PASS"
+    },
+    {
+      "name": "C02 matrix does not claim verified runtime or production combat",
+      "status": "PASS"
+    }
+  ],
+  "matrix": [
+    {
+      "rank": 1,
+      "id": "LD01",
+      "sourceReady": "JSON_V2_AND_STATIC_ROUTE",
+      "oneDependency": "HQ licensed isolated native Light/Heavy Rigidbody traversals (B01-60 with B01-21); route success policy HQ",
+      "owner": "B01-21 / B01-60 / HQ"
+    },
+    {
+      "rank": 2,
+      "id": "LD03",
+      "sourceReady": "TWO_DISTINCT_GRID_PATHS_ONLY",
+      "oneDependency": "B01-21 physical 2-rig clearance on both variants; HQ sandbox vs route-verified choice",
+      "owner": "B01-21 / HQ"
+    },
+    {
+      "rank": 3,
+      "id": "LD02",
+      "sourceReady": "EDITOR_GEOMETRY_ONLY",
+      "oneDependency": "Codex/HQ-approved enemy encounter/win-condition integration; independent B01-24 LOS QA",
+      "owner": "HQ / Codex / B01-24"
+    }
+  ],
+  "limits": [
+    "Portable JavaScript mirrors only documented original MapDraft invariants; C# Unity JsonUtility not executed.",
+    "4-neighbour footprint/path is not vehicle physics, collider clearance, slope, turning radius or true PlayMode.",
+    "Proposed timeout/stuck/combat outcomes are not implemented in editor.",
+    "Actual finish touch is not a verified full route; HQ route policy undecided."
+  ]
+}
