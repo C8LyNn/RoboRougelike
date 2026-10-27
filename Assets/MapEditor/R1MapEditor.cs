@@ -19,6 +19,7 @@ namespace RoboRougelike.R1
         public MapItemKind EditorKind=MapItemKind.Ground;
         public bool EditorRemove;
         public int EditorRotation;
+        public int EditorScaleX=1,EditorScaleY=1,EditorScaleZ=1;
         public string EditorName="Moja mapa",EditorMessage="Wybierz element i kliknij siatkę.";
         public bool EditorTextFocused;
         GameObject editorGrid,editorGround;
@@ -35,12 +36,13 @@ namespace RoboRougelike.R1
         void MakeEditorGrid()
         {
             editorGrid=new GameObject("Siatka edytora map");editorGrid.transform.SetParent(transform,false);
-            for(int i=-20;i<=20;i++)for(int axis=0;axis<2;axis++)
+            for(int i=-MapDraft.MaxCoordinate;i<=MapDraft.MaxCoordinate;i++)for(int axis=0;axis<2;axis++)
             {
                 var line=GameObject.CreatePrimitive(PrimitiveType.Cube);line.transform.SetParent(editorGrid.transform,false);
                 line.GetComponent<Collider>().enabled=false;line.GetComponent<Renderer>().sharedMaterial=palette.Parts[0];
-                line.transform.localPosition=axis==0?new Vector3(i*MapWorld.Grid,-.12f,0):new Vector3(0,-.12f,i*MapWorld.Grid);
-                line.transform.localScale=axis==0?new Vector3(.035f,.015f,164):new Vector3(164,.015f,.035f);
+                line.transform.localPosition=axis==0?new Vector3(i*MapWorld.Grid,.015f,0):new Vector3(0,.015f,i*MapWorld.Grid);
+                float width=(MapDraft.MaxCoordinate*2+1)*MapWorld.Grid;
+                line.transform.localScale=axis==0?new Vector3(.035f,.015f,width):new Vector3(width,.015f,.035f);
             }
         }
         public bool ReturnToMapEditorFromGarage()
@@ -52,7 +54,7 @@ namespace RoboRougelike.R1
         }
         public void MapEditorGarage()
         {
-            if(!MapEditing||Transitioning)return;MapEditing=false;editorGrid.SetActive(false);
+            if(!MapEditing||Transitioning)return;MapEditing=false;editorGrid.SetActive(false);EditorWorld.HideGhost();
             if(EditorWorld.Layout!=null)EditorWorld.Layout.gameObject.SetActive(false);
             if(editorGround!=null)editorGround.SetActive(true);Player.gameObject.SetActive(true);followCamera.enabled=true;Garage.Open();
         }
@@ -63,7 +65,7 @@ namespace RoboRougelike.R1
             if(error!=null){EditorMessage=error;return false;}
             workshopModel=VehicleModel;testStats=Progress.Stats.Copy();workshopPosition=Player.transform.position;workshopRotation=Player.transform.rotation;
             if(!Progress.BeginTest())return false;
-            MapEditing=false;MapEditorTesting=true;editorGrid.SetActive(false);StartCoroutine(BuildEditedMapTest());return true;
+            MapEditing=false;MapEditorTesting=true;editorGrid.SetActive(false);EditorWorld.HideGhost();StartCoroutine(BuildEditedMapTest());return true;
         }
         IEnumerator BuildEditedMapTest()
         {
@@ -104,6 +106,8 @@ namespace RoboRougelike.R1
         }
         public void ChangeEditedMap(bool undo)
         {if((undo?EditorDraft.Undo():EditorDraft.Redo())){EditorWorld.Build(EditorDraft,palette);EditorMessage=undo?"Cofnięto zmianę.":"Ponowiono zmianę.";}}
+        public void ToggleMapFloor()
+        {if(EditorDraft.SetGlobalFloor(!EditorDraft.GlobalFloor)){EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorDraft.GlobalFloor?"Włączono podłoże całej mapy.":"Wyłączono podłoże całej mapy.";}}
         void UpdateEditorCamera()
         {
             if(!MapEditing||Camera.main==null)return;
@@ -134,12 +138,13 @@ namespace RoboRougelike.R1
                 if(e.control&&e.keyCode==KeyCode.Y){ChangeEditedMap(false);e.Use();return;}
             }
             if(e.type==EventType.MouseUp&&e.button==1)editorOrbit=false;
-            if(virtualPos.x<325||virtualPos.y>615)return;
+            if(virtualPos.x<325||virtualPos.y>615){EditorWorld.HideGhost();return;}
             if(e.type==EventType.MouseDown&&e.button==1){editorOrbit=true;e.Use();return;}
-            if(e.type==EventType.MouseDrag&&e.button==1&&editorOrbit){editorYaw+=e.delta.x*.4f;editorPitch=Mathf.Clamp(editorPitch-e.delta.y*.35f,20,85);UpdateEditorCamera();e.Use();return;}
+            if(e.type==EventType.MouseDrag&&e.button==1&&editorOrbit){EditorWorld.HideGhost();editorYaw+=e.delta.x*.4f;editorPitch=Mathf.Clamp(editorPitch-e.delta.y*.35f,20,85);UpdateEditorCamera();e.Use();return;}
             if(e.type==EventType.ScrollWheel){editorDistance=Mathf.Clamp(editorDistance+e.delta.y*1.2f,8,90);UpdateEditorCamera();e.Use();return;}
-            if(e.type!=EventType.MouseDown||e.button!=0)return;
-            GUI.FocusControl(null);EditorTextFocused=false;
+            bool click=e.type==EventType.MouseDown&&e.button==0;
+            if(!click&&e.type!=EventType.Repaint&&e.type!=EventType.MouseMove)return;
+            if(click){GUI.FocusControl(null);EditorTextFocused=false;}
             var ray=Camera.main.ScreenPointToRay(new Vector2(raw.x,Screen.height-raw.y));
             var hits=Physics.RaycastAll(ray,1000,~0,QueryTriggerInteraction.Ignore);
             float nearest=float.PositiveInfinity;Vector3 point=default;bool hasPoint=false;
@@ -150,11 +155,22 @@ namespace RoboRougelike.R1
             if(hasPoint)
             {
                 var cell=MapWorld.Cell(point);
-                bool changed=EditorRemove?EditorDraft.Remove(cell.x,cell.y):EditorDraft.Place(EditorKind,cell.x,cell.y,EditorRotation);
-                if(changed){EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
-                else EditorMessage="Nie można zmienić tego pola.";
+                if(EditorRemove)EditorWorld.HideGhost();
+                else
+                {
+                    var item=new MapItem{kind=EditorKind,x=cell.x,z=cell.y,rotation=EditorRotation,scaleX=EditorScaleX,scaleY=EditorScaleY,scaleZ=EditorScaleZ};
+                    bool valid=EditorDraft.CanPlace(EditorKind,cell.x,cell.y,EditorRotation,EditorScaleX,EditorScaleY,EditorScaleZ);
+                    EditorWorld.ShowGhost(item,valid,palette);
+                }
+                if(click)
+                {
+                    bool changed=EditorRemove?EditorDraft.Remove(cell.x,cell.y):EditorDraft.Place(EditorKind,cell.x,cell.y,EditorRotation,EditorScaleX,EditorScaleY,EditorScaleZ);
+                    if(changed){EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
+                    else EditorMessage="Nie można zmienić tego pola.";
+                }
             }
-            e.Use();
+            else EditorWorld.HideGhost();
+            if(click)e.Use();
         }
     }
 }

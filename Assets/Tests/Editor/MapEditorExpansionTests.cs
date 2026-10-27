@@ -2,6 +2,11 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.MapEditor;
+using RoboRougelike.R3;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.TestTools;
+using UnityEditor.SceneManagement;
 
 public sealed class MapEditorExpansionTests
 {
@@ -36,5 +41,37 @@ public sealed class MapEditorExpansionTests
         Assert.That(sx.GetValue(copy.Items[1]),Is.EqualTo(2));Assert.That(typeof(MapItem).GetField("scaleY").GetValue(copy.Items[1]),Is.EqualTo(3));
         Assert.That(typeof(MapItem).GetField("scaleZ").GetValue(copy.Items[1]),Is.EqualTo(4));
         Assert.That(Enum.GetValues(typeof(MapItemKind)).Length,Is.GreaterThanOrEqualTo(10));
+    }
+    [UnityTest] public IEnumerator GhostMatchesScaledRealGeometryAndFloorHasCollider()
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
+        var paletteObject=new GameObject("Map expansion test palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var valid=new Material(Shader.Find("Universal Render Pipeline/Lit"));var invalid=new Material(valid);
+        palette.Valid=valid;palette.Invalid=invalid;
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=valid;
+        var obj=new GameObject("Map expansion fixture");var world=obj.AddComponent<MapWorld>();
+        try
+        {
+            var draft=new MapDraft();draft.SetGlobalFloor(true);
+            Assert.That(draft.Place(MapItemKind.Ramp,0,0,1,2,2,1),Is.True);world.Build(draft,palette);
+            var item=draft.Items[0];world.ShowGhost(item,true,palette);
+            var ghost=obj.transform.Find("Widmo edytora map");var real=world.Layout.Find("Ramp");
+            Assert.That(ghost,Is.Not.Null);Assert.That(real,Is.Not.Null);
+            Assert.That(ghost.position,Is.EqualTo(real.position));Assert.That(ghost.rotation,Is.EqualTo(real.rotation));
+            Assert.That(ghost.localScale,Is.EqualTo(real.localScale));
+            Assert.That(ghost.GetComponentsInChildren<Collider>().Length,Is.Zero);
+            Assert.That(ghost.GetComponent<Renderer>().sharedMaterial,Is.SameAs(valid));
+            world.ShowGhost(item,false,palette);Assert.That(ghost.GetComponent<Renderer>().sharedMaterial,Is.SameAs(invalid));
+            Physics.SyncTransforms();Assert.That(Physics.Raycast(new Vector3(100,5,100),Vector3.down,out var hit,10),Is.True);
+            Assert.That(hit.collider.name,Is.EqualTo("Podłoże całej mapy"));
+            Assert.That(real.GetComponent<MeshCollider>(),Is.Not.Null);
+            world.HideGhost();Assert.That(ghost.gameObject.activeSelf,Is.False);
+        }
+        finally
+        {
+            UnityEngine.Object.Destroy(obj);for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=null;
+            palette.Valid=null;palette.Invalid=null;UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(valid);UnityEngine.Object.Destroy(invalid);
+        }
+        yield return new ExitPlayMode();
     }
 }

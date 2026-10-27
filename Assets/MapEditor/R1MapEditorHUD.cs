@@ -5,7 +5,7 @@ namespace RoboRougelike.R1
 {
     public sealed partial class R1RunHUD
     {
-        static readonly string[] mapNames={"Podłoże","Ściana","Rampa","Przeszkoda","Start pojazdu","Meta"};
+        static readonly string[] mapNames={"Podłoże","Ściana","Rampa","Przeszkoda","Start pojazdu","Meta","Platforma","Filar","Niska bariera","Schody"};
         void DrawMapEditor(R1RunController run)
         {
             Panel(new Rect(10,10,305,660));
@@ -14,23 +14,32 @@ namespace RoboRougelike.R1
             for(int i=0;i<mapNames.Length;i++)
             {
                 int index=i;bool selected=!run.EditorRemove&&(int)run.EditorKind==index;
-                if(GUI.Button(new Rect(25,90+i*42,270,36),(selected?"●  ":"")+mapNames[i],compactButton))
+                if(GUI.Button(new Rect(25+(i%2)*138,85+(i/2)*38,132,33),(selected?"●  ":"")+mapNames[i],compactButton))
                 {run.EditorKind=(MapItemKind)index;run.EditorRemove=false;GUI.FocusControl(null);}
             }
+            GUI.Label(new Rect(25,282,270,22),"Skala elementu:",small);
+            MapScalePicker(25,"X",ref run.EditorScaleX);MapScalePicker(115,"Y",ref run.EditorScaleY);MapScalePicker(205,"Z",ref run.EditorScaleZ);
             if(GUI.Button(new Rect(25,350,130,35),"Obróć 90° [V]",compactButton)){run.EditorRotation=(run.EditorRotation+1)%4;GUI.FocusControl(null);}
             if(GUI.Button(new Rect(165,350,130,35),run.EditorRemove?"Usuwanie ✓":"Usuń",compactButton)){run.EditorRemove=!run.EditorRemove;GUI.FocusControl(null);}
-            GUI.enabled=run.EditorDraft.CanUndo;if(GUI.Button(new Rect(25,392,130,35),"Cofnij",compactButton))run.ChangeEditedMap(true);
-            GUI.enabled=run.EditorDraft.CanRedo;if(GUI.Button(new Rect(165,392,130,35),"Ponów",compactButton))run.ChangeEditedMap(false);GUI.enabled=true;
-            GUI.Label(new Rect(25,435,270,25),"Nazwa mapy:",small);GUI.SetNextControlName("map-name");
-            run.EditorName=GUI.TextField(new Rect(25,460,270,30),run.EditorName,64);
+            if(GUI.Button(new Rect(25,390,270,35),run.EditorDraft.GlobalFloor?"Podłoga całej mapy: WŁ":"Podłoga całej mapy: WYŁ",compactButton))run.ToggleMapFloor();
+            GUI.enabled=run.EditorDraft.CanUndo;if(GUI.Button(new Rect(25,430,130,35),"Cofnij",compactButton))run.ChangeEditedMap(true);
+            GUI.enabled=run.EditorDraft.CanRedo;if(GUI.Button(new Rect(165,430,130,35),"Ponów",compactButton))run.ChangeEditedMap(false);GUI.enabled=true;
+            GUI.Label(new Rect(25,475,70,25),"Nazwa:",small);GUI.SetNextControlName("map-name");
+            run.EditorName=GUI.TextField(new Rect(95,472,200,30),run.EditorName,64);
             run.EditorTextFocused=GUI.GetNameOfFocusedControl()=="map-name";
-            if(GUI.Button(new Rect(25,498,130,35),"Zapisz",compactButton)){run.SaveEditedMap();GUI.FocusControl(null);}
-            if(GUI.Button(new Rect(165,498,130,35),"Wczytaj",compactButton)){run.LoadEditedMap();GUI.FocusControl(null);}
-            if(GUI.Button(new Rect(25,540,270,42),"Testuj mapę",button)){GUI.FocusControl(null);run.TestEditedMap();}
-            if(GUI.Button(new Rect(25,588,270,35),"Dostosuj pojazd w garażu",compactButton))run.MapEditorGarage();
-            if(GUI.Button(new Rect(25,630,270,30),"Powrót do menu",compactButton))run.RestartRun();
+            if(GUI.Button(new Rect(25,510,130,35),"Zapisz",compactButton)){run.SaveEditedMap();GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(165,510,130,35),"Wczytaj",compactButton)){run.LoadEditedMap();GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(25,550,270,40),"Testuj mapę",button)){GUI.FocusControl(null);run.TestEditedMap();}
+            if(GUI.Button(new Rect(25,595,270,35),"Dostosuj pojazd w garażu",compactButton))run.MapEditorGarage();
+            if(GUI.Button(new Rect(25,635,270,28),"Powrót do menu",compactButton))run.RestartRun();
             Panel(new Rect(340,615,920,88));
-            GUI.Label(new Rect(355,624,890,65),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nV — obrót elementu • Ctrl+Z / Ctrl+Y — cofnij / ponów\n"+run.EditorMessage,small);
+            GUI.Label(new Rect(355,624,890,65),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
+        }
+        void MapScalePicker(float x,string axis,ref int value)
+        {
+            GUI.Label(new Rect(x,305,85,22),axis+"  ×"+value,small);
+            if(GUI.Button(new Rect(x,325,38,25),"−",compactButton)){value=Mathf.Max(1,value-1);GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(x+42,325,38,25),"+",compactButton)){value=Mathf.Min(MapDraft.MaxScale,value+1);GUI.FocusControl(null);}
         }
         void DrawMapTest(R1RunController run)
         {
