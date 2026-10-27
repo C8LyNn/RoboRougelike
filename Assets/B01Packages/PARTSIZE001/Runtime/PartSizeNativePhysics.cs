@@ -68,6 +68,14 @@ namespace B01.PARTSIZE001
                 if(!Inside(envelope,c.bounds))return "PHYSICAL_ENVELOPE_OUTSIDE_OWNED_CELLS";
             }
 
+            // Do not trust a caller that enumerates only the convenient
+            // colliders. Every enabled, non-trigger physical Collider under
+            // this owner must appear EXACTLY once in the authoritative list.
+            foreach(var actual in owner.GetComponentsInChildren<Collider>(true))
+                if(actual!=null&&actual.enabled&&!actual.isTrigger&&
+                   actual.gameObject.activeInHierarchy&&!seen.Contains(actual))
+                    return "UNREGISTERED_PHYSICAL_COLLIDER";
+
             var otherSeen=new HashSet<Collider>();
             Physics.SyncTransforms();
             foreach(var outside in fullExternalBroadphase)
