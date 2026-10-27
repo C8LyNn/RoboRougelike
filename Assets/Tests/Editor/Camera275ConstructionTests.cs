@@ -13,17 +13,18 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class Camera275ConstructionTests
 {
-    R1RunController run;GameObject wall;P12PipelineSafeCamera follow;
+    R1RunController run;GameObject wall;P12PipelineSafeCamera follow;Camera275RuntimeInput native;
     [UnitySetUp]public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;
+        native=new GameObject("CAM275 construction input isolation").AddComponent<Camera275RuntimeInput>();
     }
     IEnumerator Prepare(R3VehicleKind kind,string extra="")
     {
         Assert.That(run.SelectVehicle(kind)&&run.OpenSandboxGarage(),Is.True);
-        if(extra=="Tall")for(int y=1;y<=5;y++)Assert.That(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),Is.True);
-        if(extra=="Wide")foreach(int sign in new[]{-1,1})for(int x=1;x<=6;x++)Assert.That(run.GarageBuy(new Vector3Int(sign*x,1,0),R3PartKind.Armor),Is.True);
+        if(extra=="Tall")for(int y=2;y<=6;y++)Assert.That(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),Is.True,"Tall added cell "+y);
+        if(extra=="Wide")foreach(int sign in new[]{-1,1})for(int x=3;x<=6;x++)Assert.That(run.GarageBuy(new Vector3Int(sign*x,1,0),R3PartKind.Armor),Is.True,"Wide added cell "+sign*x);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         run.GetComponent<R6TestRange>().Layout.gameObject.SetActive(false);
         run.Player.GetComponent<Rigidbody>().isKinematic=true;
@@ -71,6 +72,7 @@ public sealed class Camera275ConstructionTests
     {
         yield return Prepare(R3VehicleKind.Standard);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        gun.GunPivot.rotation=Quaternion.identity;
         var point=gun.Muzzle.position+gun.Muzzle.forward*30;
         wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="CAM275 enclosing muzzle wall";
         wall.transform.position=gun.Muzzle.position;wall.transform.localScale=Vector3.one*.5f;Physics.SyncTransforms();
@@ -89,5 +91,5 @@ public sealed class Camera275ConstructionTests
         StringAssert.Contains("Brak sprawnej broni",run.Player.Controller.AimFeedback.Caption);
     }
     [UnityTearDown]public IEnumerator Cleanup()
-    {if(wall!=null)Object.Destroy(wall);if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+    {if(native!=null)Object.DestroyImmediate(native.gameObject);if(wall!=null)Object.Destroy(wall);if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
