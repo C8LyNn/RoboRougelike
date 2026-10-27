@@ -30,7 +30,7 @@ jobs:
         run: |
           blender -b -t 2 --python-exit-code 1 \
             --python Tools/EnvironmentFactory/ENV05/ENV05-001/generate_env05_001.py \
-            -- --out "$GITHUB_WORKSPACE/env05-001-artifacts" --self-test
+            -- --out "$GITHUB_WORKSPACE/env05-001-artifacts" --self-test --fresh-scene
       - name: Independent export and SHA-256 verification
         run: |
           python3 Tools/EnvironmentFactory/ENV05/ENV05-001/validate_env05_001.py "$GITHUB_WORKSPACE/env05-001-artifacts"
