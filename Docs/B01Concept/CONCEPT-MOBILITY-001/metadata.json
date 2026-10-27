@@ -1,0 +1,77 @@
+{
+  "schema": "b01-concept-research-v1",
+  "concept_id": "CONCEPT-MOBILITY-001",
+  "owner": "B01-31",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/287",
+  "date": "2026-10-27",
+  "state": "OPTION_SET_READY/HQ_DECISION_PENDING",
+  "type": "original authored vector schematic",
+  "source": "Original procedural SVG composition authored in this B01-31 research session; no third-party artwork, textures, or models used.",
+  "reference_cell_meters": 0.55,
+  "dimension_qualification": "Reference cube is a visual comparator; silhouette is exploratory, not measured PARTSIZE footprint. Do not scale silhouettes into sockets, bounds, or game mechanics.",
+  "status_unknown": [
+    "socket_positions",
+    "collider_bounds",
+    "actual_mass",
+    "moving_part_clearances",
+    "traversability",
+    "suspension_behavior",
+    "hover_or_omni_physics",
+    "module_mount_compatibility"
+  ],
+  "variants": [
+    {
+      "concept_id": "CM001-A-WHEEL",
+      "mode": "COMPACT WHEEL",
+      "caption": "Cztery kompaktowe koła",
+      "one_function": "Koło i wahacz czytelne w rzucie 3/4",
+      "risks": [
+        "R1  Koła mogą zasłaniać dolne porty",
+        "R2  Skręt i skok zawieszenia: UNKNOWN"
+      ],
+      "hqs_decision": "PENDING",
+      "license": "original artwork within project; rights to reuse subject to repository licensing"
+    },
+    {
+      "concept_id": "CM001-B-TRACK",
+      "mode": "HEAVY TRACK",
+      "caption": "Dwie ciężkie gąsienice",
+      "one_function": "Ciągła taśma i napinacz komunikują trakcję",
+      "risks": [
+        "R1  Ryzyko większego obrysu bocznego",
+        "R2  Promień skrętu i klinowanie: UNKNOWN"
+      ],
+      "hqs_decision": "PENDING",
+      "license": "original artwork within project; rights to reuse subject to repository licensing"
+    },
+    {
+      "concept_id": "CM001-C-OMNI",
+      "mode": "OMNI / HOVER",
+      "caption": "Cztery autonomiczne pods",
+      "one_function": "Otwarty rdzeń i pierścienie sygnalizują omni",
+      "risks": [
+        "R1  Model ruchu niepotwierdzony w grze",
+        "R2  Prześwit i kolizje podów: UNKNOWN"
+      ],
+      "hqs_decision": "PENDING",
+      "license": "original artwork within project; rights to reuse subject to repository licensing"
+    }
+  ],
+  "context": {
+    "partsize_pr": 286,
+    "partsize_head_at_review": "937838662f79c4c441d682d731fa860e4cc3d0f1",
+    "chl_pr": 285,
+    "chl_head_at_review": "30c0355a62764eb37798347612564ee51f3b36e1"
+  },
+  "tests": {
+    "svg_xml_parse": "NOT_RUN_PENDING_RECEIVER_VALIDATION",
+    "svg_raster_render": "NOT_RUN_PENDING_RECEIVER_VALIDATION",
+    "native_unity": "NOT_RUN",
+    "real_physics": "NOT_RUN",
+    "visual_playtest": "NOT_RUN"
+  },
+  "links": {
+    "governance_issue": 276,
+    "codex_inbox": 79
+  }
+}
