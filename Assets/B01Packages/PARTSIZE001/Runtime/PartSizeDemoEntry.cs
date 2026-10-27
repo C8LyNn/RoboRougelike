@@ -8,6 +8,7 @@ namespace B01.PARTSIZE001
     public sealed class PartSizeDemoEntry : MonoBehaviour
     {
         private readonly List<GameObject> spawned=new List<GameObject>();
+        private readonly List<Material> createdMaterials=new List<Material>();
         private readonly List<string> receipts=new List<string>();
         public IReadOnlyList<string> Receipts => receipts;
 
@@ -62,8 +63,11 @@ namespace B01.PARTSIZE001
             if(shader!=null)
             {
                 var material=new Material(shader);
-                material.color=pass?(reason==null?new Color(.13f,.76f,.35f):new Color(.93f,.29f,.25f)):
+                Color tint=pass?(reason==null?new Color(.13f,.76f,.35f):new Color(.93f,.29f,.25f)):
                     new Color(.9f,.05f,.8f);
+                if(material.HasProperty("_BaseColor"))material.SetColor("_BaseColor",tint);
+                else if(material.HasProperty("_Color"))material.SetColor("_Color",tint);
+                createdMaterials.Add(material);
                 child.GetComponent<Renderer>().sharedMaterial=material;
             }
         }
@@ -74,6 +78,8 @@ namespace B01.PARTSIZE001
             foreach(var go in spawned)
                 if(go!=null)Destroy(go);
             spawned.Clear();
+            foreach(var material in createdMaterials)if(material!=null)Destroy(material);
+            createdMaterials.Clear();
         }
         private void OnGUI()
         {
