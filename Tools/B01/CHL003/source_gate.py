@@ -75,7 +75,7 @@ morePlay=(pkg/"Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs").read_text()
 editNames += re.findall(r"\[Test\]\s+public void (\w+)\(",moreEdit)
 playNames += re.findall(r"\[UnityTest\]\s+public IEnumerator (\w+)\(",morePlay)
 require(len(editNames)==18 and len(set(editNames))==18, "expected 18 authored Edit NUnit methods")
-require(len(playNames)==12 and len(set(playNames))==12, "expected 12 authored Play UnityTests")
+require(len(playNames)==13 and len(set(playNames))==13, "expected 13 authored Play UnityTests")
 arbiter=(pkg/"Runtime/CHL003FinishArbiter.cs").read_text()
 metrics=(pkg/"Runtime/CHL003TrialMetrics.cs").read_text()
 monitor=(pkg/"Runtime/CHL003ContactMonitor.cs").read_text()
@@ -96,6 +96,14 @@ require("OnTriggerStay" in (pkg/"Runtime/CHL003Gate.cs").read_text(),
 require("P07_SameNativeCourseLightHeavyThreeRunsEachWithRealContact" in morePlay and
         "P08_FinalCheckpointAndFinishCoLocatedNeverCompleteSameFixedStep" in morePlay,
         "real native physical course acceptance missing")
+# Fixed-step authoritative telemetry clock, never render-driven Update.
+require("core.AdvanceTime(Time.fixedDeltaTime)" in runtime,
+        "CHL elapsed clock must advance on real physics tick")
+require("core.AdvanceTime(Time.deltaTime)" not in runtime,
+        "render FPS must not advance CHL trial time")
+require("P13_ElapsedTimeTracksPhysicsTicksNotRenderedFrames" in morePlay,
+        "native fixed-vs-render frame verification missing")
+
 # W17 CHL-02 independent forward body plane and wheel-graze negatives
 crossing=(pkg/"Runtime/CHL003GateCrossing.cs").read_text()
 motor=(pkg/"Runtime/CHL003VehicleMotor.cs").read_text()
