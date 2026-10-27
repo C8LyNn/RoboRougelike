@@ -168,7 +168,7 @@ def neutral_copy(p):
     check("Zwrotność: NIEZMIERZONA" in p.locator("#rigHeavy").inner_text(), "Rig label lost after Retry")
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
+    browser = p.chromium.launch(channel=os.getenv("B01_UX_CHROME_CHANNEL") or None, headless=True, args=["--no-sandbox"])
     case(browser, "UX-01-UNKNOWN-and-critical", ux01)
     case(browser, "UX-02-layered-reasons", ux02)
     case(browser, "UX-03-compact-cause", ux03)
