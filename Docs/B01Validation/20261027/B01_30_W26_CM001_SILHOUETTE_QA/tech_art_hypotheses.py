@@ -18,8 +18,8 @@ OPTIONS={
   "axisQuestions":["wheel spin: axle normal to illustrated wheel plane (Unity signed axis UNKNOWN)",
                    "steering yaw: local vertical? UNKNOWN","suspension travel and limits: UNKNOWN"],
   "noMountAssumption":"frame-to-strut and strut-to-wheel visual joins do not imply typed socket",
-  "markers":[(0.48,.41,"visual frame reference"),(.16,.46,"left wheel hub (image)"),
-     (.365,.74,"near wheel hub (image)"),(.78,.52,"right wheel hub (image)")]},
+  "markers":[(.45,.23,"visual frame reference"),(.14,.34,"left wheel hub (image)"),
+     (.32,.55,"near wheel hub (image)"),(.70,.35,"right wheel hub (image)")]},
  "B-track":{
   "unitBoundary":"two-track vehicle illustration; no isolated single track-module interface shown",
   "candidateBreakdown":["frame reference (illustration only)","left belt loop as visual rig",
@@ -28,8 +28,8 @@ OPTIONS={
                    "belt scrolling/UV or skinned path: implementation UNKNOWN",
                    "individual tread dynamic collision vs static hull: design decision"],
   "noMountAssumption":"central-body side plates are not verified typed frame sockets",
-  "markers":[(.48,.35,"central reference frame"),(.22,.58,"left track belt loop"),
-     (.68,.41,"right track belt loop"),(.30,.64,"left idler/sprocket candidate")]},
+  "markers":[(.44,.27,"central reference frame"),(.21,.39,"left track belt loop"),
+     (.59,.32,"right track belt loop"),(.295,.56,"left idler/sprocket candidate")]},
  "C-omni":{
   "unitBoundary":"four-pod vehicle illustration; no approved single mobility module or drive type",
   "candidateBreakdown":["frame/hub reference (art only)","radial arms x4",
@@ -38,8 +38,8 @@ OPTIONS={
                    "rings rotate mechanically or glow only? UNKNOWN",
                    "true hover vs omni-wheel ground contact: HQ GAME DESIGN DECISION"],
   "noMountAssumption":"arm-root and pod-join graphics are not authoritative mounting sockets",
-  "markers":[(.47,.33,"central illustrated frame"),(.12,.48,"left ring pod"),
-     (.36,.76,"near ring pod"),(.81,.48,"right ring pod")]}
+  "markers":[(.45,.25,"central illustrated frame"),(.12,.37,"left ring pod"),
+     (.32,.62,"near ring pod"),(.72,.37,"right ring pod")]}
 }
 STATE={"artReference":"SOURCE_2D_ONLY","allMechanicPivots":UNKNOWN,
        "allUnityAxisDirections":UNKNOWN,"allTypedSockets":UNKNOWN,
