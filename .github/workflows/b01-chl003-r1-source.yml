@@ -1,0 +1,48 @@
+name: B01 CHL-003 R1 actual CSharp and Unity importer gate (native Unity NOT_RUN)
+on:
+  push:
+    branches:
+      - feature/b01-20-chl003-r1-physics-course-20261027
+    paths:
+      - 'Assets/RoboRougelikeChallenges/**'
+      - 'Docs/B01/CHL003/**'
+      - 'Tools/B01/CHL003/**'
+      - '.github/workflows/b01-chl003-r1-source.yml'
+  pull_request:
+    paths:
+      - 'Assets/RoboRougelikeChallenges/**'
+      - 'Docs/B01/CHL003/**'
+      - 'Tools/B01/CHL003/**'
+      - '.github/workflows/b01-chl003-r1-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and execute ACTUAL CHL-003 CSharp course engine (NOT Unity)
+        run: dotnet run --project Tools/B01/CHL003/Headless/CHL003.Headless.csproj --configuration Release
+      - name: Real Unity source meta and negative contract (NOT Unity engine)
+        run: python Tools/B01/CHL003/source_gate.py
+      - name: Full source SHA256 receipt; validate physical ZIP only after manifest frozen
+        shell: bash
+        run: |
+          if python -c "import json; d=json.load(open('Docs/B01/CHL003/manifest.json')); assert d['revision']=='R1' and bool(d.get('source_sha256_by_path'))"; then
+            python Tools/B01/CHL003/package_gate.py --verify-zip
+          else
+            python Tools/B01/CHL003/package_gate.py
+          fi
+      - name: Upload complete verified CHL source ZIP and SHA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-chl003-r1-source
+          path: chl003-r1-evidence/
+          if-no-files-found: ignore
+          retention-days: 21

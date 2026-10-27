@@ -1,0 +1,22 @@
+{
+  "name": "B01.CHL003.PlayModeTests",
+  "rootNamespace": "B01.CHL003.Tests",
+  "references": [
+    "B01.CHL003.Runtime",
+    "B01.CHL003.Demo"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

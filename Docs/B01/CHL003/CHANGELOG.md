@@ -1,0 +1,12 @@
+- **W26–W29 PASS 3 / B01-60 QA-01:** corrected false traction when wheel hovers 0.35m: replace fixed 0.95m groundcast with genuine attached SphereCollider world vertical radius +0.14m ray origin lift +0.03m documented near-contact allowance. Fail closed for missing/nonphysical wheels. Actual-source .NET8 red-old/green-new 650-case expansion; native E20/P15 authored, NOT_RUN. Re-pin all original SHA/bytes + ZIP; B01-40 old-head G0 no longer valid.
+
+- C1 task B01-20 triggered by verified B01-21 source QA PR #295: fix geometric clearance mismatch: actual physical bridge3.70m admitted Heavy yaw8 with >=.25m side but CP/Finish3.50m refused. Align ALL CHL physical gate triggers to3.70m, visual side posts ±1.97m, strict full-body .25m untouched; add real-source analytical C# RED-old/GREEN-new and native authored E19/P14; 19 Edit /14 Play, native NOT_RUN.
+- **W17:** real forward-root gate plane/full-body collider envelope acceptance (reject reverse/only-wheel edge), actual four-wheel grounding rays prevent artificial airborne force/turn; body dimensions derive Collider.bounds, physically authored E16–E18/P10–P13 and 6400 deterministic source C# negative input cases. Licensed Unity and whole course play still NOT_RUN.
+
+
+# CHL-003 R1
+- First isolated challenge package: pure source-tested fixed-count ordered checkpoint logic, exact-actor/duplicate guard, retry/cancel/pause/time failure and events.
+- Unity Rigidbody-backed collision validator with OnTriggerEnter, physical low barrier+ramp+bridge, two different demo motor rigs and camera/HUD.
+- Fifteen authored NUnit EditMode + nine authored Unity PlayMode tests; exact core C# source compiled/executed in GitHub dotnet8 CI.
+- W16 acceptance hardening: co-located CP4+Finish fixed-step arbiter with actual sustained PhysX overlap; real pause/velocity restoration, separate trial metrics/Csv log (contacts/ramp/bridge/height/speed/falls), live rig-switch cancel, wider physically viable bridge and 3x per-rig native PlayMode fixture. Source-only executable RED→FIX→RETEST; native Unity still NOT_RUN.
+- Original stable .meta scripts/scene/folder/asmdefs. Reproducible full ZIP and receipt to be pinned by source workflow. Native G1 and Codex integration NOT_RUN; no host changes.
