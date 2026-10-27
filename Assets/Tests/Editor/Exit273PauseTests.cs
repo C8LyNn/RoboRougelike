@@ -45,6 +45,22 @@ public sealed class Exit273PauseTests
         Assert.That(R1RunController.Instance.Progress.State, Is.EqualTo(R1RunState.Ready));
         Assert.That(R1RunController.Instance.GeneratedWorld, Is.Null);
     }
+    [UnityTest] public IEnumerator ShutdownPreparationIsIdempotentAndReleasesCursor()
+    {
+        run.TogglePause();
+        var prepare = typeof(R1RunController).GetMethod("PrepareShutdown", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        Assert.That(prepare, Is.Not.Null);
+        Assert.That(prepare.Invoke(run,new object[]{"NativeTest"}), Is.True);
+        Assert.That(prepare.Invoke(run,new object[]{"DuplicateTest"}), Is.False);
+        Assert.That(run.QuitRequested, Is.True);
+        Assert.That(Cursor.lockState, Is.EqualTo(CursorLockMode.None));
+        Assert.That(Cursor.visible, Is.True);
+        Assert.That(Time.timeScale, Is.EqualTo(1));
+        var previous = run;
+        run.RestartRun();
+        yield return null;
+        Assert.That(R1RunController.Instance, Is.SameAs(previous), "No scene load during shutdown");
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }

@@ -25,6 +25,8 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(650,400,400,60),"Powrót do garażu",button))run.ReturnFromTestRange();
                 DrawSuspensionPause(run);
                 DrawMovementPause(run);
+                if(GUI.Button(new Rect(230,660,395,42),PauseCaption(run,1,"Powrót do menu głównego"),compactButton))run.RestartRun();
+                if(GUI.Button(new Rect(650,660,400,42),PauseCaption(run,2,"Wyjdź z gry"),compactButton))run.RequestQuit();
                 return;
             }
             Panel(new Rect(18,18,610,150));

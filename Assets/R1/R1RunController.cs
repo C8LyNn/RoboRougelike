@@ -241,8 +241,10 @@ namespace RoboRougelike.R1
 
         private void Update()
         {
+            if (ReadSessionInput()) return;
             if (Error != null || Progress == null || Transitioning) return;
             ReadMenuInput();
+            if (Paused || QuitRequested) return;
             if(Progress.State==R1RunState.TestDrive){if(!Transitioning)UpdateRange();return;}
             // Menu actions can begin a coroutine before the new vehicle has run Start().
             if (Transitioning || Progress.State != R1RunState.Combat || Paused) return;
@@ -293,7 +295,6 @@ namespace RoboRougelike.R1
                 else if (keyboard.digit2Key.wasPressedThisFrame) ChooseUpgrade(1);
                 else if (keyboard.digit3Key.wasPressedThisFrame) ChooseUpgrade(2);
             }
-            else if ((Progress.State == R1RunState.Combat||Progress.State==R1RunState.TestDrive) && keyboard.escapeKey.wasPressedThisFrame) HandleEscape();
             else if(Progress.State==R1RunState.TestDrive&&keyboard.rKey.wasPressedThisFrame)ResetTestRange();
             else if ((Progress.State == R1RunState.Won || Progress.State == R1RunState.Lost) &&
                 keyboard.enterKey.wasPressedThisFrame) RestartRun();
@@ -302,8 +303,10 @@ namespace RoboRougelike.R1
 
         public void TogglePause()
         {
-            if (Transitioning || Progress == null || (Progress.State != R1RunState.Combat&&Progress.State!=R1RunState.TestDrive)||RangeDisabled) return;
-            Paused = !Paused; SetSimulation(!Paused);
+            if (QuitRequested || Transitioning || Progress == null || Progress.State == R1RunState.Ready || RangeDisabled) return;
+            Paused = !Paused;
+            PauseSelection = 0;
+            SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive));
         }
         public void HandleEscape()
         {
@@ -321,6 +324,11 @@ namespace RoboRougelike.R1
 
         public void RestartRun()
         {
+            if (QuitRequested || returningToMenu) return;
+            returningToMenu = true;
+            Transitioning = true;
+            StopAllCoroutines();
+            SetSimulation(false);
             Time.timeScale = 1;
             SceneManager.LoadScene(gameObject.scene.path);
         }
