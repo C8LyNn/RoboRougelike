@@ -5,7 +5,7 @@ Manifest self-file excluded from hash map; physically included in ZIP.
 import argparse,hashlib,json,subprocess,zipfile
 from pathlib import Path
 ROOTS=["Assets/RoboRougelikeChallenges/","Docs/B01/CHL003/","Tools/B01/CHL003/"]
-SINGLE=["Assets/RoboRougelikeChallenges.meta"]
+SINGLE=["Assets/RoboRougelikeChallenges.meta",".github/workflows/b01-chl003-r1-source.yml"]
 MANIFEST="Docs/B01/CHL003/manifest.json"
 OUT=Path("chl003-r1-evidence")
 OUT_ZIP=OUT/"CHL003_R1_FULL_SOURCE_AND_QA.zip"
