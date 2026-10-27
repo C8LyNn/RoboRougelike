@@ -31,6 +31,12 @@ jobs:
         run: dotnet build Tools/B01/QA-CHL-ECON-W16/CrossSource/CrossSource.csproj -c Release --nologo
       - name: Execute original CHL285 C# completion-retry vs mock-host boundary negatives
         run: dotnet run --project Tools/B01/QA-CHL-ECON-W16/CrossSource/CrossSource.csproj -c Release --no-build -- artifacts/chl-econ/chl-realcore-results.json
+      - name: Verify exact PR302 R3+R4 original Git blob hashes
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/prepare.py
+      - name: Compile actual PR302 R3/R4 source with explicitly labeled non-Unity API signatures
+        run: dotnet build Tools/B01/QA-CHL-ECON-W16/Weapon302/RealWeaponEconomyQA.csproj -c Release --nologo
+      - name: Exercise original PR302 recovered weapon malformed enum and loss of physical inventory on exception
+        run: dotnet run --project Tools/B01/QA-CHL-ECON-W16/Weapon302/RealWeaponEconomyQA.csproj -c Release --no-build -- artifacts/chl-econ/weapon302-result.json
       - name: Run immutable host source mutation and CHL direct-reward gate cases
         run: python -m unittest discover -s Tools/B01/QA-CHL-ECON-W16 -p "test_*.py" -v
       - name: Audit original CHL285 source boundaries and actual original Codex host reward ingress
@@ -44,7 +50,7 @@ jobs:
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
           files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
             if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
-          assert len(files)==9,files
+          assert len(files)==13,files
           assert all(not s.startswith("Assets/") for s in files)
           manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
           (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
@@ -57,4 +63,5 @@ jobs:
           path: |
             artifacts/chl-econ/
             Tools/B01/QA-CHL-ECON-W16/_pinned/receipt.json
+            Tools/B01/QA-CHL-ECON-W16/Weapon302/_pinned/real-source-receipt.json
           retention-days: 30
