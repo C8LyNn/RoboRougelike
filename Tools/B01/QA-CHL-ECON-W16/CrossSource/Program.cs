@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 static class Program
 {
-    const string Pin="8c69313b41312f5d027285469c6a2f22958a931f";
+    const string Pin="23d40eb21a7c0db97238516c9e9ec6e708f54998";
     static readonly List<(string Name,string Status,string Detail)> Cases=new();
     static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
     static CHL003CourseCore New(int n=4,int actor=101)

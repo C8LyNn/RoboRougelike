@@ -119,8 +119,8 @@ def main():
     require(pathlib.Path(args.chl).resolve()==actual_chl.resolve(),
        "CHL_SOURCE_NOT_PINNED_285")
     c=inspect_chl_directory(actual_chl)
-    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==10,
-       "CHL_EXPECTED_10_ACTUAL_CSHARP_FILES_MISSING")
+    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==12,
+       "CHL_EXPECTED_12_ACTUAL_CSHARP_FILES_MISSING")
     core=(actual_chl/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
     controller=(actual_chl/"Runtime/CHL003CourseController.cs").read_text(encoding="utf8")
     demo=(actual_chl/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")

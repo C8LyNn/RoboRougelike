@@ -19,7 +19,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         receipt=json.loads(RECEIPT.read_text(encoding="utf8"))
-        if receipt.get("chl_commit")!="8c69313b41312f5d027285469c6a2f22958a931f":
+        if receipt.get("chl_commit")!="23d40eb21a7c0db97238516c9e9ec6e708f54998":
             raise RuntimeError("PINNED_CHL285_SHA_CHANGED")
         cls.code=[(str(p),p.read_text(encoding="utf8")) for p in sorted(ROOT.rglob("*.cs"))]
         cls.core=(ROOT/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
@@ -27,7 +27,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
         cls.demo=(ROOT/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
 
     def test_16_actual_original_seven_Csharp_files_are_reward_free(self):
-        self.assertEqual(audit.inspect_chl_files(self.code),10)
+        self.assertEqual(audit.inspect_chl_files(self.code),12)
 
     def test_17_runtime_asmdef_has_no_host_references(self):
         obj=json.loads((ROOT/"Runtime/B01.CHL003.Runtime.asmdef").read_text())
