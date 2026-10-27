@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B01-12 / D03 — dwa krytyczne braki</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1220;--surface:#151f30;--raised:#1c293b;--edge:#34445c;--ink:#ecf3fc;--muted:#b3bfd3;--critical:#ffc38b;--criticalbg:#422c28;--ok:#9de6bd;--focus:#99d7fc}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0,#26354a 0,#0c1220 52%);font:15px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink)}.shell{max-width:1240px;margin:auto;padding:25px 20px 36px}.eyebrow{font-size:11px;letter-spacing:.12em;font-weight:800;color:#94cadb;text-transform:uppercase}h1{font-size:clamp(24px,3.5vw,37px);margin:7px 0}h2{font-size:19px;margin:0 0 12px}h3{font-size:15px;margin:0 0 3px}.intro{max-width:850px;color:var(--muted);margin:0 0 20px}.notice{font-size:12px;color:#ffdbab;background:#3a2f27;border-left:3px solid #edaf68;padding:10px 14px;margin-bottom:19px}.cols{display:grid;grid-template-columns:minmax(245px,330px) minmax(0,1fr);gap:18px}.panel{background:var(--surface);border:1px solid var(--edge);border-radius:13px;padding:20px;min-width:0}.stack{display:grid;gap:11px}.control{background:#111a29;border:1px solid var(--edge);padding:13px;border-radius:10px}.control>label,.groupLabel{font-weight:750;display:block;margin-bottom:7px}.mini{font-size:12px;color:var(--muted)}button,select{font:inherit;max-width:100%}button{background:#273950;border:1px solid #57708f;border-radius:7px;color:var(--ink);padding:8px 11px;cursor:pointer;font-weight:650}button:hover{background:#35506e}button[aria-pressed="true"]{background:#286074;border-color:#7dcfe6}button:focus-visible,select:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}button:disabled{opacity:.53;cursor:not-allowed}select{padding:9px 10px;border-radius:7px;border:1px solid #68839a;background:#152236;color:var(--ink);width:100%}.row{display:flex;flex-wrap:wrap;gap:8px}.row>*{flex:1 1 auto}.smallbtn{font-size:12px;padding:7px 9px}.variantbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:0 0 16px}.variantbar .row{flex:0 1 auto}.flags{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}.flag{flex:1 1 120px;padding:10px 12px;border:1px solid #4b6180;border-radius:8px;background:#12283a}.flag[data-state="missing"]{border-color:#c88b69;background:#3b2929}.flag .name{display:block;font-size:12px;color:var(--muted)}.flag strong{font-size:17px}.criticalPanel{background:#291f24;border:1px solid #ac7064;border-radius:11px;padding:16px;margin-bottom:13px}.okPanel{background:#193429;border:1px solid #4f9c75;border-radius:11px;padding:15px;margin-bottom:13px}.issue{background:var(--criticalbg);border:1px solid #a36f5e;border-left:5px solid #f2ae7b;border-radius:9px;padding:11px 13px;margin:10px 0}.issue .code{font-size:10px;color:#ecc2a0;letter-spacing:.055em}.issue strong{display:block;font-size:16px}.issue p{margin:5px 0 0;font-size:13px;color:#f7dbc4}.aggregate-head{font-size:19px;font-weight:850}.summary-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:12px 0}.summary-tile{border:1px solid #c08d77;background:#46302a;border-radius:8px;padding:11px}.summary-tile span{display:block;color:#f9d6c2;font-size:12px}.summary-tile strong{display:block;font-size:16px}.reasonDetails{border:1px solid #92695a;border-radius:7px;padding:7px 10px;margin-top:9px;background:#3a2828}.reasonDetails summary{cursor:pointer;font-weight:750}.reasonDetails p{margin:7px 0 3px;color:#fae0cd;font-size:13px}.status{background:#122333;border:1px solid #435d78;padding:13px 14px;border-radius:9px}.status strong{display:block;margin-bottom:2px}.status[aria-label="Gotowość"]{border-color:#4f9c75}.assist{margin-top:10px;font-size:12px;color:#c6d3e7}.assist[hidden]{display:none}.divider{height:1px;background:#35475d;margin:18px 0}.actions{display:flex;flex-wrap:wrap;gap:8px}.actions button{flex:1 1 160px}.log{padding:10px 12px;font-size:12px;min-height:40px;border-radius:8px;border:1px solid #4f6079;background:#0e1b2a;margin-top:10px}.foot{margin-top:18px;color:#b6c3d3;font-size:12px}input[type=checkbox]{width:17px;height:17px;accent-color:#8dccdb;vertical-align:middle;margin-right:6px}@media(max-width:780px){.cols{grid-template-columns:1fr}.shell{padding:16px 13px}.panel{padding:15px}.variantbar{align-items:stretch}.variantbar .row{width:100%}.variantbar button{flex:1 1 45%}}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="eyebrow">B01-12 · W50–W53 · D03 / P1 · eksperyment badawczy</div>
+<h1>Garaż — dwa jednoczesne braki krytyczne</h1>
+<p class="intro">Porównanie wyłącznie <b>sposobu przekazywania diagnozy</b>. W aktualnym kodzie Codexa główny komunikat zwraca pierwszą przyczynę odmowy, choć może brakować równocześnie broni i sprawnego napędu. Ta strona nie uruchamia Unity ani nie naprawia produkcyjnego garażu.</p>
+<div class="notice">DANE FIKCYJNE · NIE JEST TO ZRZUT GRY · Nie mierzy PhysX, łączności, socketów ani prawdziwej sprawności robota. Status decyzji HQ „blokada vs ostrzeżenie z potwierdzeniem” pozostaje nierozstrzygnięty. Przycisk w tym demonstratorze pokazuje tylko mockowy wynik obowiązującej blokady.</div>
+<div class="cols">
+<section class="panel" aria-label="Sterowanie stanem robota">
+<h2>01 / Jeden stan testowy</h2>
+<div class="stack">
+<div class="control"><span class="groupLabel">Szybkie scenariusze</span><div class="row" id="presets"><button data-preset="both" aria-pressed="true" class="smallbtn">Brak obu</button><button data-preset="gunOnly" aria-pressed="false" class="smallbtn">Tylko broń</button><button data-preset="driveOnly" aria-pressed="false" class="smallbtn">Tylko napęd</button><button data-preset="ready" aria-pressed="false" class="smallbtn">Kompletny</button><button data-preset="broken" aria-pressed="false" class="smallbtn">Części 0 HP</button><button data-preset="oneWheel" aria-pressed="false" class="smallbtn">Jedno koło</button></div></div>
+<div class="control"><label for="driveKind">Wybrany typ napędu</label><select id="driveKind"><option value="wheels">Koła — obie strony</option><option value="tracks">Gąsienice — obie strony</option><option value="omni">Omni — minimum jeden</option><option value="hover">Hover — minimum jeden</option></select><div class="mini">Zmiana wyboru sprawdza tylko wybrany napęd. Pozostałe części nie dają automatycznie mobilności.</div></div>
+<div class="control"><span class="groupLabel">Kolejne czynności</span><div class="row"><button id="fixGun" class="smallbtn">Przywróć broń</button><button id="fixDrive" class="smallbtn">Przywróć wybrany napęd</button><button id="removeGun" class="smallbtn">Usuń broń</button><button id="removeDrive" class="smallbtn">Usuń wybrany napęd</button><button id="damageGun" class="smallbtn">Broń → 0 HP</button><button id="damageDrive" class="smallbtn">Napęd → 0 HP</button></div></div>
+<div class="control"><label><input id="disconnected" type="checkbox">Dodaj odłączoną konstrukcję</label><label><input id="tips" type="checkbox" checked>Pokazuj zwykłe podpowiedzi</label><p class="mini">Oba krytyczne powody pozostają widoczne także po wyłączeniu podpowiedzi. Odłączenie części jest osobną trzecią diagnozą, nie zastępuje dwóch pierwszych.</p></div>
+</div>
+</section>
+<section class="panel" aria-label="Warianty ostrzeżeń">
+<div class="variantbar"><div><h2>02 / Sposób przedstawienia</h2><div class="mini">Przełączanie nie zmienia stanu robota</div></div><div class="row" role="group" aria-label="Wariant ostrzeżeń"><button id="viewA" aria-pressed="true">A — oddzielna lista</button><button id="viewB" aria-pressed="false">B — stan zbiorczy</button></div></div>
+<div class="flags" aria-label="Podstawowe stany funkcjonalności"><div class="flag" id="weaponFlag"><span class="name">Sprawna broń</span><strong id="weaponState">NIE</strong></div><div class="flag" id="driveFlag"><span class="name">Sprawny wybrany napęd</span><strong id="driveState">NIE</strong></div></div>
+<div id="warnings" aria-live="polite" aria-label="Krytyczne ostrzeżenia"></div>
+<div class="divider"></div>
+<div class="status" role="status" id="deployStatus" aria-live="polite"></div>
+<div class="assist" id="ordinaryTips">Zwykła podpowiedź: przed jazdą sprawdź konfigurację. (To można wyłączyć.)</div>
+<div class="divider"></div>
+<div class="actions"><button id="simulateStart">Sprawdź próbę rozpoczęcia (mock)</button><button id="returnEditor">Powrót do edytora map (mock)</button></div>
+<div class="log" id="outcome" role="status" aria-live="polite">Przełącz wariant lub zmień konstrukcję. To mock, nie gra.</div>
+<div class="foot">Źródła kontraktu: Codex #310 / <code>R3VehicleModel.DeployError</code> i <code>R1RunHUD.DrawGarage</code>, wskazane przez B01-11 w D03. Wyświetlamy dwie niezależne diagnozy; nie wnioskujemy o zgodzie na fizyczny montaż ani o faktycznym przejściu aktywności. H1/H3: żadnych prawdziwych uczestników w tej demonstracji.</div>
+</section>
+</div>
+</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const DRIVE={wheels:{name:'koła',kind:'wheel',two:true},tracks:{name:'gąsienice',kind:'track',two:true},omni:{name:'Omni',kind:'omni',two:false},hover:{name:'Hover',kind:'hover',two:false}};
+let view='A'; let state;
+function empty(){return{gun:null,parts:{wheel:[],track:[],omni:[],hover:[]},drive:'wheels',connected:true,preset:'both'}}
+function addFunctionalDrive(s){const d=DRIVE[s.drive];s.parts[d.kind]=d.two?[{side:'L',hp:100},{side:'R',hp:100}]:[{side:'C',hp:100}];}
+function seed(name){let s=empty();s.preset=name;if(name==='gunOnly'||name==='ready'||name==='oneWheel')s.gun={hp:100};if(name==='driveOnly'||name==='ready')addFunctionalDrive(s);if(name==='broken'){s.gun={hp:0};s.parts.wheel=[{side:'L',hp:0},{side:'R',hp:0}];}if(name==='oneWheel')s.parts.wheel=[{side:'L',hp:100}];return s;}
+function isWeaponReady(){return!!(state.gun&&state.gun.hp>0)}
+function isDriveReady(){const d=DRIVE[state.drive],parts=state.parts[d.kind].filter(p=>p.hp>0);return d.two?parts.some(p=>p.side==='L')&&parts.some(p=>p.side==='R'):parts.length>0}
+function issues(){let a=[];if(!state.connected)a.push({key:'structure',label:'Konstrukcja: ODŁĄCZONA',detail:'Przywróć połączenie elementów z rdzeniem.',code:'CRITICAL_STRUCTURE'});if(!isWeaponReady())a.push({key:'weapon',label:'Broń: BRAK SPRAWNEJ',detail:'Zamontuj lub napraw przynajmniej jedną funkcjonalną broń. Obecność części z 0 HP nie wystarcza.',code:'CRITICAL_WEAPON'});if(!isDriveReady())a.push({key:'drive',label:'Mobilność: BRAK SPRAWNEJ',detail:DRIVE[state.drive].two?'Wybrany napęd '+DRIVE[state.drive].name+' wymaga działającej części po lewej i prawej stronie.':'Wybrany napęd '+DRIVE[state.drive].name+' wymaga przynajmniej jednej działającej jednostki.',code:'CRITICAL_MOBILITY'});return a}
+function esc(s){return String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]))}
+function render(){const problems=issues(),hasGun=isWeaponReady(),hasDrive=isDriveReady();
+$('driveKind').value=state.drive;$('disconnected').checked=!state.connected;
+$('weaponState').textContent=hasGun?'TAK':'NIE';$('driveState').textContent=hasDrive?'TAK':'NIE';$('weaponFlag').dataset.state=hasGun?'ok':'missing';$('driveFlag').dataset.state=hasDrive?'ok':'missing';
+$('viewA').setAttribute('aria-pressed',String(view==='A'));$('viewB').setAttribute('aria-pressed',String(view==='B'));
+for(const btn of document.querySelectorAll('[data-preset]'))btn.setAttribute('aria-pressed',String(btn.dataset.preset===state.preset));
+const node=$('warnings');
+if(!problems.length){node.innerHTML='<div class="okPanel" data-result="ready"><strong>Brak wykrytych braków krytycznych w tej fikcyjnej konfiguracji.</strong><div class="mini">Nie stanowi to certyfikacji Unity, PhysX ani socketów.</div></div>'}
+else if(view==='A'){node.innerHTML='<div class="eyebrow">Wariant A · lista wszystkich przyczyn</div>'+problems.map(p=>'<div class="issue" data-issue="'+p.key+'"><span class="code">'+p.code+'</span><strong>'+esc(p.label)+'</strong><p>'+esc(p.detail)+'</p></div>').join('')}
+else {node.innerHTML='<section class="criticalPanel"><div class="eyebrow">Wariant B · zbiorczy stan</div><div class="aggregate-head">NIEGOTOWY · '+problems.length+' krytyczne '+(problems.length===1?'przeszkoda':'przeszkody')+'</div><div class="summary-tiles">'+problems.map(p=>'<div class="summary-tile" data-summary="'+p.key+'"><span>'+p.code+'</span><strong>'+esc(p.label)+'</strong></div>').join('')+'</div><div class="mini">Rozwiń pojedynczy problem, aby sprawdzić powód i sugerowaną naprawę.</div>'+problems.map(p=>'<details class="reasonDetails" data-issue="'+p.key+'"><summary>'+esc(p.label)+' — szczegóły</summary><p>'+esc(p.detail)+'</p></details>').join('')+'</section>'}
+const first=problems[0];$('deployStatus').setAttribute('aria-label',problems.length?'Brak gotowości':'Gotowość');$('deployStatus').innerHTML='<strong>'+ (problems.length?'MOCK: START NIEDOSTĘPNY':'MOCK: BRAK ZNANYCH BLOKAD')+'</strong><span>'+(first?'Źródłowy DeployError pokazałby tylko pierwszą przyczynę: '+esc(first.label)+'. Tutaj zawsze pokazujemy również pozostałe krytyczne braki.':'Ta fikcyjna konfiguracja przechodzi przyjęte kontrole. To nie autoryzacja gry.')+'</span>';
+$('ordinaryTips').hidden=!$('tips').checked;
+}
+function update(fn){fn();state.preset='custom';render();}
+$('viewA').onclick=()=>{view='A';render()};$('viewB').onclick=()=>{view='B';render()};
+for(const btn of document.querySelectorAll('[data-preset]'))btn.onclick=()=>{const selected=state.drive;state=seed(btn.dataset.preset);state.drive=selected;if(btn.dataset.preset==='ready'||btn.dataset.preset==='driveOnly'){state.parts={wheel:[],track:[],omni:[],hover:[]};addFunctionalDrive(state)}if(btn.dataset.preset==='broken'){state.parts={wheel:[],track:[],omni:[],hover:[]};addFunctionalDrive(state);state.parts[DRIVE[state.drive].kind].forEach(p=>p.hp=0)}if(btn.dataset.preset==='oneWheel'&&state.drive!=='wheels'){state.parts={wheel:[],track:[],omni:[],hover:[]};let d=DRIVE[state.drive];state.parts[d.kind]=[{side:d.two?'L':'C',hp:100}]}render();};
+$('driveKind').onchange=e=>update(()=>state.drive=e.target.value);
+$('disconnected').onchange=e=>update(()=>state.connected=!e.target.checked);
+$('tips').onchange=()=>render();
+$('fixGun').onclick=()=>update(()=>{state.gun={hp:100}});
+$('removeGun').onclick=()=>update(()=>{state.gun=null});
+$('damageGun').onclick=()=>update(()=>{state.gun={hp:0}});
+$('fixDrive').onclick=()=>update(()=>addFunctionalDrive(state));
+$('removeDrive').onclick=()=>update(()=>{state.parts[DRIVE[state.drive].kind]=[]});
+$('damageDrive').onclick=()=>update(()=>{const d=DRIVE[state.drive];if(state.parts[d.kind].length===0)addFunctionalDrive(state);state.parts[d.kind].forEach(p=>p.hp=0)});
+$('simulateStart').onclick=()=>{$('outcome').textContent=issues().length?'MOCK: źródłowy warunek CanDeploy byłby fałszywy; demonstrator nie uruchamia aktywności.':'MOCK: w tym uproszczonym stanie nie znaleziono blokad. Nie uruchomiono gry.'};
+$('returnEditor').onclick=()=>{$('outcome').textContent='MOCK: powrót do edytora map pozostaje osobnym działaniem; brak uruchamiania aktywności.'};
+state=seed('both');render();
+})();
+</script>
+</body>
+</html>
