@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RogueMachine.P12PipelineSafe;
@@ -19,6 +20,8 @@ public sealed class PerWeaponReticleTests
 
     [SetUp]public void Setup()
     {
+        // Other integration fixtures can leave their arena colliders in the editor scene.
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         root=new GameObject("reticle test vehicle");assembly=root.AddComponent<R3VehicleAssembly>();
         controller=root.AddComponent<P12PipelineSafeTankController>();
         cameraObject=new GameObject("reticle test camera");view=cameraObject.AddComponent<Camera>();
