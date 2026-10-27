@@ -2,6 +2,8 @@
 // UnityEngine shim is limited to Vector2Int/Application/JsonUtility; Unity itself is NOT run.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -81,8 +83,65 @@ public static class Program
         return draft;
     }
 
-    public static int Main()
+    // A child process exits intentionally AFTER fully staging data but BEFORE promotion.
+    // This is NOT a kill injected inside the unmodified MapStorage.Save implementation.
+    private static int StageAndExit(string path)
     {
+        string pending = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
+        byte[] bytes = Encoding.UTF8.GetBytes(One(MapItemKind.Wall, 3, 0).ToJson());
+        using (var stream = new FileStream(pending, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+        {
+            stream.Write(bytes, 0, bytes.Length);
+            stream.Flush(flushToDisk: true);
+        }
+        Console.WriteLine("STAGED_BEFORE_PROMOTION " + Path.GetFileName(pending));
+        Console.Out.Flush();
+        Environment.Exit(73); // Explicit process termination. No MapStorage.Save or OS power failure.
+        return 73;
+    }
+
+    private static int LoadInFreshProcess(string path)
+    {
+        var draft = new MapDraft();
+        bool ok = MapStorage.Load(path, draft, out var error);
+        Console.WriteLine("FRESH_PROCESS_LOAD=" + ok + " KIND=" +
+                          (ok && draft.Items.Count == 1 ? draft.Items[0].kind.ToString() : "NONE") +
+                          " ERR=" + error);
+        return ok && draft.Items.Count == 1 && draft.Items[0].kind == MapItemKind.Ground ? 0 : 81;
+    }
+
+    private static (int exit, string output) InvokeOwnChild(string mode, string path)
+    {
+        string binary = Environment.ProcessPath ??
+                        throw new InvalidOperationException("No .NET QA process path");
+        var p = new ProcessStartInfo(binary)
+        {
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            CreateNoWindow = true
+        };
+        p.ArgumentList.Add(mode);
+        p.ArgumentList.Add(path);
+        using var child = Process.Start(p) ?? throw new InvalidOperationException("Unable to launch own .NET child");
+        string output = child.StandardOutput.ReadToEnd();
+        string errors = child.StandardError.ReadToEnd();
+        if (!child.WaitForExit(15000))
+        {
+            child.Kill(entireProcessTree: true);
+            throw new TimeoutException("C# isolated sub-process exceeded 15 seconds");
+        }
+        if (errors.Length > 0 && child.ExitCode == 0)
+            Console.WriteLine("CHILD_STDERR_NONFATAL=" + errors.Trim());
+        return (child.ExitCode, output);
+    }
+
+    public static int Main(string[] args)
+    {
+        if (args.Length == 2 && args[0] == "--stage-and-exit")
+            return StageAndExit(args[1]);
+        if (args.Length == 2 && args[0] == "--load-in-new-process")
+            return LoadInFreshProcess(args[1]);
         Console.WriteLine("B01-62 original C# MapStorage+MapDraft QA | Codex PR310 pinned SHA");
         Console.WriteLine("NOTICE: original C# source methods + actual filesystem; Unity types/JSON shimmed.");
         Console.WriteLine("NOTICE: KNOWN_DEFECT_RED is observed failure, NOT a successful game fix.");
@@ -209,11 +268,50 @@ public static class Program
                        !File.Exists(path);
             }));
 
+        Case("B06-new-map-after-intentional-CSharp-process-termination", "OBSERVATION", () =>
+            InTemporaryDirectory(directory =>
+            {
+                var path = Path.Combine(directory, "uncommitted.json");
+                var child = InvokeOwnChild("--stage-and-exit", path);
+                var draft = new MapDraft();
+                bool loaded = MapStorage.Load(path, draft, out var error);
+                string[] temps = Directory.GetFiles(directory, "uncommitted.json.*.tmp");
+                return child.exit == 73 && child.output.Contains("STAGED_BEFORE_PROMOTION") &&
+                       !loaded && !File.Exists(path) && temps.Length == 1 &&
+                       File.ReadAllText(temps[0]).Contains("\"version\": 2") &&
+                       draft.Items.Count == 0;
+            }));
+
+        Case("B07-existing-map-after-intentional-CSharp-process-termination", "OBSERVATION", () =>
+            InTemporaryDirectory(directory =>
+            {
+                var path = Path.Combine(directory, "committed.json");
+                MapStorage.Save(path, One(MapItemKind.Ground));
+                byte[] before = File.ReadAllBytes(path);
+                var child = InvokeOwnChild("--stage-and-exit", path);
+                var loaded = new MapDraft();
+                bool loadedOld = MapStorage.Load(path, loaded, out var error);
+                string[] temps = Directory.GetFiles(directory, "committed.json.*.tmp");
+                return child.exit == 73 && child.output.Contains("STAGED_BEFORE_PROMOTION") &&
+                       loadedOld && before.SequenceEqual(File.ReadAllBytes(path)) &&
+                       loaded.Items.Count == 1 && loaded.Items[0].kind == MapItemKind.Ground &&
+                       temps.Length == 1 && File.ReadAllText(temps[0]).Contains("\"version\": 2");
+            }));
+
+        Case("B08-original-MapStorage-reload-across-two-processes", "POSITIVE", () =>
+            InTemporaryDirectory(directory =>
+            {
+                var path = Path.Combine(directory, "durable.json");
+                MapStorage.Save(path, One(MapItemKind.Ground));
+                var child = InvokeOwnChild("--load-in-new-process", path);
+                return child.exit == 0 && child.output.Contains("FRESH_PROCESS_LOAD=True KIND=Ground");
+            }));
+
         Console.WriteLine("RESULT_JSON=" + JsonSerializer.Serialize(new
         {
             source = "UNMODIFIED_CODEX_CSHARP_WITH_UNITY_SHIM",
             nativeUnity = "NOT_RUN",
-            windowsProcessCrash = "NOT_RUN",
+            windowsProcessCrash = "STAGING_CHILD_EXIT_73_NOT_INJECTED_MAPSTORAGE_SAVE",
             unexpected,
             cases = Evidence
         }));
