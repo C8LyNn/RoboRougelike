@@ -11,14 +11,19 @@ using RoboRougelike.R6;
 
 public sealed class MapEditorIntegrationTests
 {
-    [UnityTest] public IEnumerator MenuEditorGarageVehicleTestAndReturnPreserveMap()
+    R1RunController run;
+    [UnitySetUp] public IEnumerator Setup()
     {
         Assert.That(Application.isBatchMode,Is.True,"Run without touching the user's cursor");
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         float end=Time.realtimeSinceStartup+30;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
         Assert.That(R1RunController.Instance?.Progress,Is.Not.Null,"Real main menu initialized");
-        var run=R1RunController.Instance;
+        run=R1RunController.Instance;
+    }
+    [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+    [UnityTest] public IEnumerator MenuEditorGarageVehicleTestAndReturnPreserveMap()
+    {
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
         Assert.That(run.OpenMapEditor(),Is.True);Assert.That(run.MapEditing,Is.True);
         var model=run.VehicleModel;var draft=run.EditorDraft;
@@ -28,7 +33,7 @@ public sealed class MapEditorIntegrationTests
         run.MapEditorGarage();Assert.That(run.MapEditing,Is.False);Assert.That(run.VehicleModel,Is.SameAs(model));
         Assert.That(run.ReturnToMapEditorFromGarage(),Is.True);Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(expected));
         Assert.That(run.TestEditedMap(),Is.True);
-        end=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        float end=Time.realtimeSinceStartup+30;while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
         Assert.That(run.Transitioning,Is.False,"Custom test drive transition");
         Assert.That(run.MapEditorTesting,Is.True);Assert.That(run.Progress.State,Is.EqualTo(R1RunState.TestDrive));
         Assert.That(run.Player.GetComponent<R6VehicleDrive>(),Is.Not.Null);
@@ -42,6 +47,5 @@ public sealed class MapEditorIntegrationTests
         Assert.That(run.Transitioning,Is.False,"Return from custom test");
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.MapEditing,Is.True);
         Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(expected));
-        yield return new ExitPlayMode();
     }
 }
