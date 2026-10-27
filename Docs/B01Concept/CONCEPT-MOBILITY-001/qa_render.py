@@ -224,8 +224,21 @@ def main():
         "concept_art_approval":"HQ_NOT_SELECTED",
         "responses_recorded":0,
         "sessions":private_key
-    },indent=2)+"\\n",encoding="utf-8")
+    },indent=2)+"\n",encoding="utf-8")
     record(keyfile)
+    try:
+        parsed_key=json.loads(keyfile.read_text(encoding="utf-8"))
+        contract_ok=(
+            parsed_key.get("responses_recorded")==0
+            and len(parsed_key.get("sessions",[]))==8
+            and [(v["participant"],v["pixels"],v["sequence"])
+                 for v in parsed_key["sessions"]]==list(BLIND_ORDERS)
+            and all(len(v["stimuli"])==3 for v in parsed_key["sessions"])
+        )
+        check("blind-facilitator-key-json-valid",contract_ok,
+              "real JSON.parse equivalent and exact 8-session protocol mapping; zero fabricated responses")
+    except (ValueError,KeyError,TypeError) as exc:
+        check("blind-facilitator-key-json-valid",False,repr(exc))
     check("blind-private-key-separated",keyfile.parent==OUT and
           keyfile.parent!=blind_dir and keyfile.is_file() and
           not any(x.name.endswith(".json") for x in blind_dir.rglob("*")),
