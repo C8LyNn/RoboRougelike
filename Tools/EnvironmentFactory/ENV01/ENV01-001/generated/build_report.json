@@ -1,0 +1,34 @@
+{
+  "id": "ENV01-001",
+  "asset_type": "STATIC_ENVIRONMENT_ONLY",
+  "triangles": 968,
+  "mesh_objects": 26,
+  "materials": [
+    "01_CONCRETE_COOL_GRAY",
+    "02_STEEL_GRAPHITE",
+    "03_SAFETY_AMBER"
+  ],
+  "units": "1 Blender unit = 1 metre",
+  "blender_axes": "+X length, +Y road-facing, +Z up",
+  "glb_axes": "+X length, -Z road-facing, +Y up",
+  "root_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "suggested_box_collider_blender_m": {
+    "center": [
+      0.0,
+      0.0,
+      0.47
+    ],
+    "size": [
+      2.46,
+      0.7,
+      0.96
+    ]
+  },
+  "animation": "NOT_APPLICABLE",
+  "license": "CC0-1.0; original geometry and script, no third-party models",
+  "source_file_sha256": "1f9a4c24b65c8758e2dd20e8e56d1c4f21983f90a7ed369f9b7a502e91b30a55"
+}

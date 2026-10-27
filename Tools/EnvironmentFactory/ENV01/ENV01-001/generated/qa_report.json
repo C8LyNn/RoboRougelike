@@ -1,0 +1,50 @@
+{
+  "id": "ENV01-001",
+  "status": "BLENDER_QA_PASS",
+  "blender_version": "4.0.2",
+  "triangles": 968,
+  "mesh_objects": 26,
+  "materials": [
+    "01_CONCRETE_COOL_GRAY",
+    "02_STEEL_GRAPHITE",
+    "03_SAFETY_AMBER"
+  ],
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "negative_volume_meshes": [],
+  "blender_aabb_min_m": [
+    -1.175,
+    -0.42,
+    0.0225
+  ],
+  "blender_aabb_max_m": [
+    1.175,
+    0.343,
+    0.91
+  ],
+  "preview_dimensions": {
+    "preview_front.png": [
+      960,
+      640
+    ],
+    "preview_rear.png": [
+      960,
+      640
+    ]
+  },
+  "glb_valid": true,
+  "license": "CC0-1.0; original geometry",
+  "unity_editmode": "NOT_RUN",
+  "unity_playmode": "NOT_RUN",
+  "windows": "NOT_RUN",
+  "manual_art_review": "PENDING_HQ",
+  "sha256": {
+    "generate_env01_001.py": "1f9a4c24b65c8758e2dd20e8e56d1c4f21983f90a7ed369f9b7a502e91b30a55",
+    "qa_env01_001.py": "de8a9baaf361703bc4e35a473baa815a66e781bafc10d7003d667efc87e8ce97",
+    "generated/ENV01-001_protective_barrier.blend": "6bbc1d0cc26706ed472d5e09f575372157df2a57e816386864769336ee60152c",
+    "generated/ENV01-001_protective_barrier.glb": "cf133a026691ced77846654764c3186e5aaf282e5ffe5b6feacb6aee6a20485e",
+    "generated/preview_front.png": "b45327f04988fbe7405cd3b6c98800117b97364fc3ced1abf290e38d1e76dcc2",
+    "generated/preview_rear.png": "235577d68eee184408368b47cfb8b85e453308afe59661f669686d7d656c32d3",
+    "generated/build_report.json": "f8430cddaa57866d94da4cd61ac71cb83ea4689b1418d6f29b2f8ff60469917d"
+  }
+}
