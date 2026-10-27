@@ -121,6 +121,56 @@ namespace B01.PARTSIZE001.Tests
                     at,new Collider[]{a},new Collider[0],true));
         }
 
+        [UnityTest] public IEnumerator W17_LyingCompleteExternalInventoryCannotHideOverlappingBox()
+        {
+            // Independent native RED target: both enabled colliders occupy the
+            // SAME physical cube; caller lies with empty[] and complete=true.
+            // The previous implementation returned null (false-green).
+            var d=PartSizeReferenceFixtures.LegacyCube();
+            var omitted=Make(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                Vector3.one*.52f,out Transform otherRoot);
+            var candidate=Make(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                Vector3.one*.52f,out Transform ownerRoot);
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual("INCOMPLETE_EXTERNAL_BROADPHASE",
+                PartSizeNativePhysics.Validate(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                    ownerRoot,new Collider[]{candidate},new Collider[0],true));
+            Assert.AreEqual("PHYSICAL_PENETRATION",
+                PartSizeNativePhysics.Validate(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                    ownerRoot,new Collider[]{candidate},new Collider[]{omitted},true));
+        }
+
+        [UnityTest] public IEnumerator W17_IrrelevantExternalListCannotMaskOmittedPenetrator()
+        {
+            var d=PartSizeReferenceFixtures.LegacyCube();
+            var overlapping=Make(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                Vector3.one*.52f,out Transform otherRoot);
+            var decoy=Make(d,new Cell3(20,0,0),new Cell3(0,0,0),
+                Vector3.one*.52f,out Transform decoyRoot);
+            var candidate=Make(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                Vector3.one*.52f,out Transform ownerRoot);
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual("INCOMPLETE_EXTERNAL_BROADPHASE",
+                PartSizeNativePhysics.Validate(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                    ownerRoot,new Collider[]{candidate},new Collider[]{decoy},true));
+            Assert.AreEqual("PHYSICAL_PENETRATION",
+                PartSizeNativePhysics.Validate(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                    ownerRoot,new Collider[]{candidate},new Collider[]{overlapping,decoy},true));
+        }
+
+        [UnityTest] public IEnumerator W17_ExposedGridFaceCannotAuthorizePhysicalMountSocket()
+        {
+            var spec=PartSizeReferenceFixtures.LegacyCube();
+            Assert.IsTrue(PartSizeGrid.IsExposedFace(spec,new Cell3(0,0,0),
+                new Cell3(1,0,0)));
+            // PARTSIZE only has logical faces and NO source-owned trusted
+            // typed socket registry; physical installation remains blocked.
+            Assert.AreEqual("TYPED_SOCKET_UNVERIFIED",
+                PartSizeNativePhysics.ValidateMountSocketAuthority(
+                    spec,new Cell3(0,0,0),new Cell3(1,0,0)));
+            yield return null;
+        }
+
         [UnityTest] public IEnumerator DemoProducesThreePhysicallyCheckedColorStates()
         {
             var go=new GameObject("PARTSIZE demo native");
