@@ -133,7 +133,7 @@ class PartSizeSourceTests(unittest.TestCase):
         self.assertIn("PARTSIZE001_DemoSceneRoot",scene)
         self.assertIn("m_Roots:",scene)
         self.assertEqual(scene.count("m_GameObject: {fileID: 510000}"),2)
-        self.assertIn("guid: b0123100000000000000000000000017",scene_meta)
+        self.assertIn("guid: b012310000000000000000000000009e",scene_meta)
         self.assertNotEqual(script_guid,"b0123100000000000000000000000017")
         self.assertIn("Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity",self.files)
         self.assertIn("Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity.meta",self.files)
