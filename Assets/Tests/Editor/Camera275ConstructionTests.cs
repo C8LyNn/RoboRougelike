@@ -62,9 +62,10 @@ public sealed class Camera275ConstructionTests
         Assert.That(armor.Operational,Is.False);Assert.That(armor.transform.IsChildOf(run.Player.transform),Is.False);
         for(int frame=0;frame<120;frame++){rig.StepCamera(1f/60);Assert.That(rig.ActualOwnHullIntersectsCrosshair,Is.False);}
         Assert.That(rig.SmoothingResetCount,Is.EqualTo(resets),"Normal part detachment does not restart smoothing");
+        rig.SetOrbit(0,18,45);for(int frame=0;frame<180;frame++)rig.StepCamera(1f/60);
         wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="CAM275 receiver orbit wall";
         var direction=(Camera.main.transform.position-rig.LastSolution.AimWorld).normalized;
-        wall.transform.position=rig.LastSolution.AimWorld+direction*12;wall.transform.rotation=Quaternion.LookRotation(direction);wall.transform.localScale=new Vector3(12,12,1);
+        wall.transform.position=Vector3.Lerp(rig.LastSolution.AimWorld,Camera.main.transform.position,.5f);wall.transform.rotation=Quaternion.LookRotation(direction);wall.transform.localScale=new Vector3(12,12,1);
         Physics.SyncTransforms();bool clipped=false;
         for(int frame=0;frame<180;frame++)
         {

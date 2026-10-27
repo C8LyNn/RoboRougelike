@@ -72,9 +72,12 @@ public sealed class Camera275AimQA : MonoBehaviour
         // The garage correctly forbids removing the last gun. Install its
         // replacement first, then remove the old gun through the normal rules.
         var oldGuns=owner.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
-        var cell=oldGuns.Any(p=>p.Cell==new Vector3Int(1,2,0))?new Vector3Int(0,2,0):new Vector3Int(1,2,0);
-        Require(owner.GarageBuyWeapon(cell,weapon),"Mount actual weapon "+weapon);
-        foreach(var gun in oldGuns)Require(owner.GarageRemove(gun.Cell),"Remove previous gun");
+        if(oldGuns.Length!=1||oldGuns[0].Weapon!=weapon)
+        {
+            var cell=oldGuns.Any(p=>p.Cell==new Vector3Int(1,2,0))?new Vector3Int(0,2,0):new Vector3Int(1,2,0);
+            Require(owner.GarageBuyWeapon(cell,weapon),"Mount actual weapon "+weapon);
+            foreach(var gun in oldGuns)Require(owner.GarageRemove(gun.Cell),"Remove previous gun");
+        }
         yield return null;Require(owner.EnterTestRange(),"Enter actual range");while(owner.Transitioning)yield return null;
         yield return new WaitForSecondsRealtime(.5f);
         var body=owner.Player.GetComponent<Rigidbody>();body.isKinematic=true;
