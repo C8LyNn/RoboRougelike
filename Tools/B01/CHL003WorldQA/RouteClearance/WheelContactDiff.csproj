@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- This C# is extracted byte-exact from the exclusive B01-20 producer commit. -->
+    <Compile Include="../../../../n27-route-evidence/CHL003_current_window.cs" Link="ORIGINAL_CHL003WheelSupportWindow.cs"/>
+    <Compile Include="WheelContactDiff.cs"/>
+  </ItemGroup>
+</Project>

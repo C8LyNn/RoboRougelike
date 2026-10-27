@@ -28,7 +28,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Pin immutable CURRENT producer source Git blobs, not old QA branch source
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Pin prior CHL geometry source inputs (historical unchanged baseline)
         shell: bash
         run: |
           set -euo pipefail
@@ -80,6 +83,29 @@ jobs:
             --selftest 2>&1 | tee n27-route-evidence/motor_map_differential.log
           grep -q 'Ran 16 tests' n27-route-evidence/motor_map_differential.log
           grep -q 'B01_21_PASS3_MOTOR_MAP_SOURCE_DIFFERENTIAL_PASS cases=12 tests=16 native=NOT_RUN' n27-route-evidence/motor_map_differential.log
+      - name: Source-check latest exclusive-owner wheel radius guard and compile true original CSharp
+        shell: bash
+        run: |
+          set -euo pipefail
+          producer=2355bff6026e22443b164aa9de816c27d3a289e9
+          git cat-file -e "$producer^{commit}"
+          demo=Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs
+          motor=Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs
+          win=Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs
+          test "$(git rev-parse "$producer:$demo")" = 9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e
+          test "$(git rev-parse "$producer:$motor")" = 9b777837179253300cd73cb5e156abe5221bb8d5
+          test "$(git rev-parse "$producer:$win")" = edfc98c0adb55bf8b092db43d93a15be29e99490
+          git show "$producer:$motor" > n27-route-evidence/CHL003_new_motor.cs
+          git show "$producer:$win" > n27-route-evidence/CHL003_current_window.cs
+          test "$(git hash-object n27-route-evidence/CHL003_new_motor.cs)" = 9b777837179253300cd73cb5e156abe5221bb8d5
+          test "$(git hash-object n27-route-evidence/CHL003_current_window.cs)" = edfc98c0adb55bf8b092db43d93a15be29e99490
+          grep -Fq 'CHL003WheelSupportWindow.MaximumCastMeters(physicalRadius)' n27-route-evidence/CHL003_new_motor.cs
+          grep -Fq 'CHL003WheelSupportWindow.WithinWheelReach(' n27-route-evidence/CHL003_new_motor.cs
+          grep -Fq 'wheel.bounds.extents.y' n27-route-evidence/CHL003_new_motor.cs
+          echo "$producer" > n27-route-evidence/LATEST_OWNER_WHEEL_PATCH_SHA.txt
+          dotnet run -c Release --project Tools/B01/CHL003WorldQA/RouteClearance/WheelContactDiff.csproj -- "$PWD/n27-route-evidence/ORIGINAL_NEW_WHEEL_WINDOW_RECEIPT.json" 2>&1 | tee n27-route-evidence/original_production_new_window.log
+          grep -q 'B01_21_PASS3_ACTUAL_ORIGINAL_WINDOW_CSHARP_RESULT PASS=28 FAIL=0 NATIVE_NOT_RUN' n27-route-evidence/original_production_new_window.log
+          echo "B01_21_PASS3_OWNER_NEW_PHYSICAL_WHEEL_SOURCE_GREEN_ONLY_UNITY_NOT_RUN"
       - name: Check B01-21 ownership and preserve SHA receipt
         shell: bash
         run: |
@@ -88,7 +114,7 @@ jobs:
           if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue|RouteClearance)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate|n27-route)\.yml$)' n27-route-evidence/changed_paths.txt; then
             echo B01_21_N27_SCOPE_VIOLATION; exit 6
           fi
-          sha256sum n27-route-evidence/CURRENT_N27_CHL_ROUTE.json n27-route-evidence/CURRENT_MOTOR_MAP_CONTACT_DIFFERENTIAL.json > n27-route-evidence/SHA256SUMS.txt
+          sha256sum n27-route-evidence/CURRENT_N27_CHL_ROUTE.json n27-route-evidence/CURRENT_MOTOR_MAP_CONTACT_DIFFERENTIAL.json n27-route-evidence/ORIGINAL_NEW_WHEEL_WINDOW_RECEIPT.json > n27-route-evidence/SHA256SUMS.txt
           echo "B01_21_N27_SOURCE_QA_DONE_NATIVE_NOT_RUN"
       - if: always()
         uses: actions/upload-artifact@v4
