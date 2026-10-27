@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "globalFloor": true,
+  "items": [
+    {
+      "kind": 1,
+      "x": 0,
+      "z": 0,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    }
+  ]
+}
