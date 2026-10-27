@@ -131,7 +131,8 @@ namespace B01.CHL003.Tests
             for (int n = 0; n < 8; n++) yield return null;
             Assert.AreEqual(start, controller.Core.ElapsedSeconds);
             controller.SetPaused(false);
-            yield return null;
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
             Assert.Greater(controller.Core.ElapsedSeconds, start);
         }
 
