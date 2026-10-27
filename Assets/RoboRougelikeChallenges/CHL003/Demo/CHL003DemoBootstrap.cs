@@ -154,6 +154,7 @@ namespace B01.CHL003
             course.Retry();
             nextTrial[rigIndex] = course.Metrics.Attempt + 1;
             course.Begin();
+            if (motor != null) motor.ResetTelemetry();
             retries++;
         }
 
@@ -180,6 +181,8 @@ namespace B01.CHL003
                 new Vector3(1.45f, .52f, 2.3f);
             chassis.transform.localPosition = new Vector3(0f, -.12f, 0f);
             float width = heavy ? 1.0f : .59f;
+            Transform[] wheelProbes = new Transform[4];
+            int wheelIndex = 0;
             for (int side = -1; side <= 1; side += 2)
             for (int end = -1; end <= 1; end += 2)
             {
@@ -189,6 +192,7 @@ namespace B01.CHL003
                 wheel.transform.localPosition = new Vector3(side * width,
                     -.52f, end * (heavy ? 1.15f : .75f));
                 wheel.transform.localScale = new Vector3(.82f, .82f, .82f);
+                wheelProbes[wheelIndex++] = wheel.transform;
             }
             vehicle = go.AddComponent<Rigidbody>();
             vehicle.mass = heavy ? 1150f : 270f;
@@ -197,14 +201,31 @@ namespace B01.CHL003
             vehicle.constraints = RigidbodyConstraints.FreezeRotationX |
                 RigidbodyConstraints.FreezeRotationZ;
             motor = go.AddComponent<CHL003VehicleMotor>();
-            motor.Configure(course, heavy ? 7000f : 2800f, heavy ? 1550f : 390f);
+            motor.Configure(course, heavy ? 7000f : 2800f,
+                heavy ? 1550f : 390f, wheelProbes);
             // Collisions are physically reported by the active actor's root.
             go.AddComponent<CHL003ContactMonitor>().Configure(course);
-            float measuredWidth = heavy ? 2.82f : 2.00f; // wheel + hull physical width
-            float length = heavy ? 3.40f : 2.30f;
+            // Physically evaluate the actual colliders, not a declared
+            // prefab cell-size or manually asserted vehicle footprint.
+            Physics.SyncTransforms();
+            var actualColliders = go.GetComponentsInChildren<Collider>();
+            float hullMinX = float.PositiveInfinity, hullMaxX = float.NegativeInfinity;
+            float hullMinZ = float.PositiveInfinity, hullMaxZ = float.NegativeInfinity;
+            foreach (var physical in actualColliders)
+            {
+                if (physical == null || !physical.enabled || physical.isTrigger)
+                    continue;
+                Bounds bounds = physical.bounds;
+                hullMinX = Mathf.Min(hullMinX, bounds.min.x);
+                hullMaxX = Mathf.Max(hullMaxX, bounds.max.x);
+                hullMinZ = Mathf.Min(hullMinZ, bounds.min.z);
+                hullMaxZ = Mathf.Max(hullMaxZ, bounds.max.z);
+            }
+            float measuredWidth = hullMaxX - hullMinX;
+            float measuredLength = hullMaxZ - hullMinZ;
             course.Configure(vehicle, gatesLocal, finishLocal, spawn,
                 failureY: -3f, rigProfile: heavy ? "HEAVY" : "LIGHT",
-                widthMeters: measuredWidth, lengthMeters: length,
+                widthMeters: measuredWidth, lengthMeters: measuredLength,
                 trialNumber: nextTrial[rigIndex]++);
             course.Core.Completed += _ => ArchiveAttempt();
             course.Core.Failed += _ => ArchiveAttempt();
@@ -273,6 +294,11 @@ namespace B01.CHL003
             GUILayout.Label("REAL PHYSICS: " + m.Profile + " trial " + m.Attempt +
                 " mass " + m.MassKg + "kg | width " + m.WidthMeters +
                 "m | length " + m.LengthMeters + "m");
+            GUILayout.Label("Actual traction (no thrust in air): " +
+                (motor != null && motor.IsGrounded ? "GROUNDED" : "AIRBORNE") +
+                " | ground steps " + (motor == null ? 0 : motor.GroundedSteps) +
+                " | airborne steps " + (motor == null ? 0 : motor.AirborneSteps) +
+                " | support rays " + (motor == null ? 0 : motor.SupportRayCount));
             GUILayout.Label("Elapsed " + m.ElapsedSeconds.ToString("F2") +
                 "s | physics frames " + m.PhysicsSamples +
                 " | peak speed " + m.PeakSpeedMetersPerSecond.ToString("F2") +
