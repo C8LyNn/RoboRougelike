@@ -30,6 +30,13 @@ public sealed class WeaponTypeLimitTests
         Assert.That(model.CanDeploy,Is.True);
     }
 
+    [Test] public void TwelveIdenticalGunsAreAllowed()
+    {
+        var model=Model();
+        for(int i=0;i<11;i++)Assert.That(model.Buy(Cell(i),R3PartKind.Gun,R4WeaponKind.Basic),Is.True,$"gun {i+2}");
+        Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Basic),Is.EqualTo(12));
+    }
+
     [Test] public void ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed()
     {
         var model=Model();Assert.That(model.Buy(Cell(0),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
@@ -60,6 +67,9 @@ public sealed class WeaponTypeLimitTests
         Assert.That(model.OwnedPlacementError(recovered.Id,Cell(1),Vector3Int.zero),Is.Not.Null);
         Assert.That(model.Mount(recovered.Id,Cell(1)),Is.False);
         Assert.That(model.Inventory.Any(p=>p.Id==recovered.Id),Is.True);
+        var restored=model.DeepCopy();
+        Assert.That(restored.Mount(recovered.Id,Cell(1)),Is.False);
+        Assert.That(restored.Inventory.Any(p=>p.Id==recovered.Id),Is.True);
     }
 
     [Test] public void CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType()
