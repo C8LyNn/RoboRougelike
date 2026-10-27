@@ -100,4 +100,14 @@ class PartSizeSourceTests(unittest.TestCase):
         self.assertFalse((p.ROOT/"Assets/B01Packages.meta").exists(),
                          "Producer branch cannot originate/own shared folder meta")
 
+    def test_13_authored_native_case_counts_match_docs(self):
+        source=p.ROOT/"Assets/B01Packages/PARTSIZE001/Tests"
+        edit=(source/"EditMode/PartSize001EditModeTests.cs").read_text()
+        play=(source/"PlayMode/PartSize001PlayModeTests.cs").read_text()
+        self.assertEqual(len(re.findall(r"\\[Test\\]",edit))+
+                         len(re.findall(r"\\[TestCase\\(",edit)),17)
+        self.assertEqual(len(re.findall(r"\\[UnityTest\\]",play)),8)
+        self.assertIn("Physics.ComputePenetration",
+            (p.ROOT/"Assets/B01Packages/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text())
+
 if __name__=="__main__":unittest.main(verbosity=2)
