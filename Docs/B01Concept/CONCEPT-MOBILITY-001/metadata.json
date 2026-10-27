@@ -64,8 +64,14 @@
     "chl_head_at_review": "30c0355a62764eb37798347612564ee51f3b36e1"
   },
   "tests": {
-    "svg_xml_parse": "NOT_RUN_PENDING_RECEIVER_VALIDATION",
-    "svg_raster_render": "NOT_RUN_PENDING_RECEIVER_VALIDATION",
+    "original_svg_xml_parse": "PASS_4_OF_4_CI",
+    "reference_and_unknown_annotations": "PASS_4_OF_4_CI",
+    "canvas_size_and_vector_shapes": "PASS_8_OF_8_CI",
+    "original_svg_raster_render": "PASS_4_OF_4_CI",
+    "subject_only_64px_128px_thumbnail_crops": "PASS_6_OF_6_SOURCE_IMAGE_PRESENT_CI",
+    "subject_only_crop_framing_and_nonflat_checks": "PASS_6_OF_6_CI",
+    "comparison_thumbnail_sheet": "PASS_1_OF_1_CI",
+    "visual_legibility_by_human_observers": "NOT_RUN",
     "native_unity": "NOT_RUN",
     "real_physics": "NOT_RUN",
     "visual_playtest": "NOT_RUN"
@@ -73,5 +79,22 @@
   "links": {
     "governance_issue": 276,
     "codex_inbox": 79
+  },
+  "w26_review": {
+    "scope": "Cropped subject-only 64/128px previews and risk review only; no new concept selection or gameplay package",
+    "document": "W26_RISK_AND_READABILITY_REVIEW.md",
+    "png_renderer": "qa_render.py",
+    "status": "VISUAL_REVIEW_READY/HQ_DECISION_PENDING",
+    "technical_approval": "UNKNOWN",
+    "measured_mounting": "UNKNOWN",
+    "automated_source_QA": [
+      "XML parse",
+      "shape count",
+      "disclosure text",
+      "real CairoSVG PNG",
+      "crop bounds",
+      "nonflat crop"
+    ],
+    "manual_readability": "NOT_RUN"
   }
 }
