@@ -51,6 +51,10 @@ try {
     # worktree provenance (ordinary clone and attached worktree must fail).
     & git clone --quiet --no-hardlinks --local $repo $ordinary
     if($LASTEXITCODE -ne 0){throw "CLONE_FOR_NEGATIVE_FAILED"}
+    # actions/checkout creates a shallow current-branch clone; the historical
+    # producer SHA must be fetched explicitly into the ordinary-clone negative.
+    & git -C $ordinary fetch --quiet --no-tags $repo $SOURCE
+    if($LASTEXITCODE -ne 0){throw "CLONE_FETCH_PIN_FOR_NEGATIVE_FAILED"}
     & git -C $ordinary checkout --quiet --detach $SOURCE
     if($LASTEXITCODE -ne 0){throw "CLONE_PIN_FOR_NEGATIVE_FAILED"}
     Set-Content -LiteralPath (Join-Path $ordinary ".b01-60-disposable-qa") -Value "forged"
