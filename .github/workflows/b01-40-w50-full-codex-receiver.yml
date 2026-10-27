@@ -1,0 +1,48 @@
+name: B01-40 W50 FULL Codex310 public receiver GUID namespace ASMDEF audit
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W50/**'
+      - '.github/workflows/b01-40-w50-full-codex-receiver.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-pinned-source-receiver:
+    name: Exact Git object target-full GUID/asmdef on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch three original source commit objects without checkout or Unity Editor
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 231005c6d0351945a8ee6684f3856af118f0e94f
+          git fetch --no-tags --depth=1 origin 2355bff6026e22443b164aa9de816c27d3a289e9
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          git cat-file -e '231005c6d0351945a8ee6684f3856af118f0e94f^{commit}'
+          git cat-file -e '2355bff6026e22443b164aa9de816c27d3a289e9^{commit}'
+          git cat-file -e 'be2be0e4802bc3f450179901f9ae91c6d84bcb5b^{commit}'
+      - name: Run independent failing fixture checks for malformed Unity meta and asmdef
+        run: python Tools/B01Validation/W50/audit_codex_full_receiver.py --selftest
+      - name: Decode every actual pinned Git meta and asmdef blob; compare all target against both producers
+        run: python Tools/B01Validation/W50/audit_codex_full_receiver.py --repo . --out b01-w50-codex-public-git-receiver.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W50-public-target-full-meta-${{ matrix.os }}
+          path: b01-w50-codex-public-git-receiver.json
+          if-no-files-found: error
+          retention-days: 10
+      - name: Report explicit limits
+        shell: bash
+        run: |
+          echo 'ORIGINAL EXACT GIT SOURCE PUBLIC RECEIVER ONLY; no active Codex checkout.'
+          echo 'Full .meta and asmdef per current PR HEAD audited, no Unity Editor executed, G1 NOT_RUN, G2 HOLD.'
+          echo 'Privately unpushed Codex checkout, Unity import compilation and live G0_TARGET not verified.'
