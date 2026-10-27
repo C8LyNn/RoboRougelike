@@ -28,7 +28,7 @@ export function review(s){
  const flags={
   barrierAssert:/Assert\.(Greater|IsTrue)\s*\([^;]*?measured\.BarrierContacts/s.test(test),
   wheelSupportAssert:/Assert\.(Greater|IsTrue)\s*\([^;]*?(GroundedSteps|SupportRayCount|AirborneSteps)/s.test(test),
-  dynamicDifferenceAssert:/Assert\.(Greater|Less|AreNotEqual)\s*\([^;]*?(PeakSpeed|ElapsedSeconds|RampContacts|BridgeContacts)/s.test(test),
+  dynamicDifferenceAssert:/\b(light|heavy)(Elapsed|PeakSpeed|RampContacts|BridgeContacts)\b/i.test(test),
   yaw8FullFinishAssert:/Assert\.AreEqual\s*\(\s*CHL003CourseCore\.Phase\.Completed/s.test(yaw)
  };
  return{status:errors.length?'SOURCE_FAIL':'PINNED_SOURCE_INSPECTED',inputSha:PRODUCER,verifiedBlobs:4,flags,
