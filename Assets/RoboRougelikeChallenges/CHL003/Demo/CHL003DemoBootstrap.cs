@@ -20,6 +20,10 @@ namespace B01.CHL003
         private float steer;
         private float drive;
         private float guiDrive, guiSteer;
+        private readonly int[] nextTrial = { 1, 1 };
+        private string lastLightSummary = "No Light trial recorded";
+        private string lastHeavySummary = "No Heavy trial recorded";
+        private string lastArchiveKey;
 
         private void Start()
         {
@@ -85,7 +89,7 @@ namespace B01.CHL003
             Box("SOLID_RAMP", new Vector3(0f, .54f, 16f),
                 new Vector3(3.7f, .55f, 7f), -12f);
             Box("NARROW_SOLID_BRIDGE", new Vector3(0f, 1.38f, 24.5f),
-                new Vector3(3.0f, .60f, 10f));
+                new Vector3(3.70f, .60f, 10f));
             Box("FINAL_PLATFORM", new Vector3(0f, 1.38f, 34.5f),
                 new Vector3(4.2f, .60f, 11f));
             spawn = new GameObject("CHL003_PHYSICAL_SPAWN").transform;
@@ -110,10 +114,43 @@ namespace B01.CHL003
         private CHL003Gate[] gatesLocal;
         private CHL003Gate finishLocal;
 
+        private void ArchiveAttempt()
+        {
+            if (course == null || course.Core == null || course.Metrics == null ||
+                course.Metrics.Attempt < 1) return;
+            var m = course.Metrics;
+            string key = m.Profile + "/" + m.Attempt + "/" + m.TerminalState;
+            if (key == lastArchiveKey) return;
+            lastArchiveKey = key;
+            string row = m.SummaryCsv().TrimEnd();
+            if (m.Profile == "LIGHT") lastLightSummary = row.Split('\n')[1];
+            else lastHeavySummary = row.Split('\n')[1];
+            // Original real per-trial collision, CP and physics receipt in
+            // Editor/Player.log, not fabricated results or automatic rewards.
+            Debug.Log("CHL003_ACTUAL_TRIAL_SUMMARY_CSV\n" + row);
+            Debug.Log("CHL003_ACTUAL_TRIAL_EVENTS_CSV\n" + m.ToCsv());
+        }
+
+        private void RetryCurrent()
+        {
+            ArchiveAttempt();
+            course.Retry();
+            nextTrial[rigIndex] = course.Metrics.Attempt + 1;
+            course.Begin();
+            retries++;
+        }
+
         private void SelectRig(int next)
         {
-            rigIndex = next;
+            // A live course cannot be reconfigured. Cancel first, so the
+            // old Rigidbody's deferred OnTriggerStay cannot score for new ID.
+            if (course != null && course.Core != null)
+            {
+                ArchiveAttempt();
+                course.Cancel();
+            }
             if (vehicle != null) Destroy(vehicle.gameObject);
+            rigIndex = next;
             bool heavy = rigIndex == 1;
             var go = new GameObject(heavy ? "CHL003_HEAVY_RIG" : "CHL003_LIGHT_RIG");
             go.transform.SetParent(owned.transform);
@@ -143,10 +180,17 @@ namespace B01.CHL003
             vehicle.constraints = RigidbodyConstraints.FreezeRotationX |
                 RigidbodyConstraints.FreezeRotationZ;
             motor = go.AddComponent<CHL003VehicleMotor>();
-            // Distinct mass/footprint and force-to-mass response.
             motor.Configure(course, heavy ? 7000f : 2800f, heavy ? 1550f : 390f);
+            // Collisions are physically reported by the active actor's root.
+            go.AddComponent<CHL003ContactMonitor>().Configure(course);
+            float measuredWidth = heavy ? 2.82f : 2.00f; // wheel + hull physical width
+            float length = heavy ? 3.40f : 2.30f;
             course.Configure(vehicle, gatesLocal, finishLocal, spawn,
-                failureY: -3f);
+                failureY: -3f, rigProfile: heavy ? "HEAVY" : "LIGHT",
+                widthMeters: measuredWidth, lengthMeters: length,
+                trialNumber: nextTrial[rigIndex]++);
+            course.Core.Completed += _ => ArchiveAttempt();
+            course.Core.Failed += _ => ArchiveAttempt();
             course.Begin();
             Physics.SyncTransforms();
             retries = 0;
@@ -168,7 +212,7 @@ namespace B01.CHL003
             pause = Input.GetKeyDown(KeyCode.P);
             switchRig = Input.GetKeyDown(KeyCode.Tab);
 #endif
-            if (retry) { course.Retry(); course.Begin(); retries++; }
+            if (retry) RetryCurrent();
             if (pause) course.SetPaused(!course.IsPaused);
             if (switchRig) SelectRig(1 - rigIndex);
             if (motor != null) motor.SetAxes(drive, steer);
@@ -189,7 +233,7 @@ namespace B01.CHL003
         {
             if (course == null || course.Core == null) return;
             var c = course.Core;
-            GUILayout.BeginArea(new Rect(16, 16, 545, 240), GUI.skin.box);
+            GUILayout.BeginArea(new Rect(16, 16, 750, 420), GUI.skin.box);
             GUILayout.Label("CHL-003 ISOLATED PHYSICS OBSTACLE COURSE | " +
                 (rigIndex == 0 ? "LIGHT" : "HEAVY"));
             GUILayout.Label("Gate " + c.CheckpointIndex + "/" + c.CheckpointCount +
@@ -205,10 +249,29 @@ namespace B01.CHL003
             guiDrive = uiForward + uiBackward;
             guiSteer = uiLeft + uiRight;
             GUILayout.Label("Goal: cross 4 gates in order, over low barrier + ramp + narrow bridge, reach finish.");
-            if (GUILayout.Button("Retry / Reset course")) { course.Retry(); course.Begin(); retries++; }
+            if (GUILayout.Button("Retry / Reset course")) RetryCurrent();
             if (GUILayout.Button("Pause / Resume")) course.SetPaused(!course.IsPaused);
             if (GUILayout.Button("Swap Light / Heavy")) SelectRig(1 - rigIndex);
-            GUILayout.Label("Actual Rigidbody mass " + vehicle.mass + " kg | retries " + retries);
+            var m = course.Metrics;
+            GUILayout.Label("REAL PHYSICS: " + m.Profile + " trial " + m.Attempt +
+                " mass " + m.MassKg + "kg | width " + m.WidthMeters +
+                "m | length " + m.LengthMeters + "m");
+            GUILayout.Label("Elapsed " + m.ElapsedSeconds.ToString("F2") +
+                "s | physics frames " + m.PhysicsSamples +
+                " | peak speed " + m.PeakSpeedMetersPerSecond.ToString("F2") +
+                "m/s | travel " + m.DistanceMeters.ToString("F1") + "m");
+            GUILayout.Label("ACTUAL collision events " + m.CollisionEntries +
+                " | contact points " + m.ContactPoints +
+                " | barrier " + m.BarrierContacts + " ramp " + m.RampContacts +
+                " bridge " + m.BridgeContacts + " ground " + m.GroundContacts);
+            GUILayout.Label("Falls " + m.Falls + " | CP " + m.Checkpoints +
+                " | wins " + m.Completions + " | minY " +
+                (m.PhysicsSamples == 0 ? "n/a" : m.MinHeightMeters.ToString("F2")) +
+                " maxY " + (m.PhysicsSamples == 0 ? "n/a" : m.MaxHeightMeters.ToString("F2")) +
+                " | retries " + retries);
+            GUILayout.Label("LAST LIGHT (CSV): " + lastLightSummary);
+            GUILayout.Label("LAST HEAVY (CSV): " + lastHeavySummary);
+            GUILayout.Label("Full event CSV in Unity Editor.log / Player.log when you finish/retry/swap");
             GUILayout.EndArea();
         }
 
