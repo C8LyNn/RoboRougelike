@@ -57,11 +57,12 @@ class PR286SourceComparativeQA(unittest.TestCase):
   self.assertTrue(self.report["demo"]["sceneAndPrefabReferToExactMonoScriptGUID"])
  def test_demo_does_not_model_actual_wheels(self):
   self.assertFalse(self.report["demo"]["hasPhysicalWheelOrTrackCase"])
- def test_actual_broadphase_is_caller_claim_only(self):
+ def test_actual_source_fixes_caller_false_green_with_independent_query(self):
   risk=self.report["externalBroadphase"]
   self.assertTrue(risk["callerCanPassEmptyListAndCompleteTrue"])
-  self.assertFalse(risk["recomputesExternalCandidatesWithPhysicsOverlap"])
-  self.assertTrue(risk["potentialFalseGreenIfCallerOmitsNeighbor"])
+  self.assertTrue(risk["recomputesExternalCandidatesWithPhysicsOverlap"])
+  self.assertFalse(risk["potentialFalseGreenIfCallerOmitsNeighbor"])
+  self.assertEqual(risk["nativeNeighborMissingNegativeTest"],"AUTHORED_NATIVE_NOT_RUN")
  def test_forged_grid_constant_rejected(self):
   self.mutate("PartSizeContract.cs",
     "public const double GridMeters=.55;",
@@ -82,6 +83,10 @@ class PR286SourceComparativeQA(unittest.TestCase):
   self.mutate("PartSizeNativePhysics.cs",
     "fullExternalBroadphase==null||!completeExternalBroadphase",
     "fullExternalBroadphase==null","PR286_SOURCE_DRIFT")
+ def test_removing_authoritative_overlap_query_rejected(self):
+  self.mutate("PartSizeNativePhysics.cs",
+   "Collider[] nearby=Physics.OverlapBox(",
+   "Collider[] nearby=FAKE_UNTRUSTED_BROADPHASE(","PR286_SOURCE_DRIFT")
  def test_catalog_name_drift_rejected(self):
   self.mutate("PartSizeBaselineCatalog.cs",'"CrawlerTrack"', '"FakeTrack"',"canonical part catalog list drift")
  def test_native_is_not_marked_pass(self):
