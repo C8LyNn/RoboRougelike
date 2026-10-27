@@ -20,10 +20,11 @@ def clear_own():
  if col:
   for obj in list(col.all_objects): bpy.data.objects.remove(obj,do_unlink=True)
   bpy.data.collections.remove(col)
- for mat in list(bpy.data.materials):
-  if mat.name.startswith(PREFIX) and mat.users==0: bpy.data.materials.remove(mat)
+ # Remove orphaned meshes first: their material slots otherwise keep old materials alive.
  for mesh in list(bpy.data.meshes):
   if mesh.name.startswith(PREFIX) and mesh.users==0: bpy.data.meshes.remove(mesh)
+ for mat in list(bpy.data.materials):
+  if mat.name.startswith(PREFIX) and mat.users==0: bpy.data.materials.remove(mat)
 
 def make_material(name,params):
  rgba,metal,rough,emission=params
