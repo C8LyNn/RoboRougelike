@@ -1,3 +1,4 @@
+- C1 task B01-20 triggered by verified B01-21 source QA PR #295: fix geometric clearance mismatch: actual physical bridge3.70m admitted Heavy yaw8 with >=.25m side but CP/Finish3.50m refused. Align ALL CHL physical gate triggers to3.70m, visual side posts ±1.97m, strict full-body .25m untouched; add real-source analytical C# RED-old/GREEN-new and native authored E19/P14; 19 Edit /14 Play, native NOT_RUN.
 - **W17:** real forward-root gate plane/full-body collider envelope acceptance (reject reverse/only-wheel edge), actual four-wheel grounding rays prevent artificial airborne force/turn; body dimensions derive Collider.bounds, physically authored E16–E18/P10–P13 and 6400 deterministic source C# negative input cases. Licensed Unity and whole course play still NOT_RUN.
 
 
