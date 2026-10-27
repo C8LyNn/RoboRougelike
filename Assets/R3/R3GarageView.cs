@@ -312,7 +312,7 @@ namespace RoboRougelike.R3
         }
         private void LateUpdate()
         {
-            if(run.Progress?.State!=R1RunState.Garage||run.Player==null)return;
+            if(!isOpen||run.Progress?.State!=R1RunState.Garage||run.Player==null)return;
             var pivot=run.Player.transform.TransformPoint(pivotLocal);var rotation=Quaternion.Euler(pitch,yaw,0);
             view.transform.SetPositionAndRotation(pivot+rotation*Vector3.back*distance,rotation);
         }
