@@ -1,0 +1,26 @@
+{
+  "schema": "b01-60-w16-qa-sources-v1",
+  "package_class": "QA_ONLY_NOT_GAME_PACKAGE",
+  "version": "1",
+  "owner": "B01-60",
+  "files": {
+    "qa_w16.py": {
+      "bytes": 9073,
+      "sha256": "c0594a6445d848e701948b40f76483d7152ccce9769ee2ccccef7297a28f5766"
+    },
+    "test_qa_w16.py": {
+      "bytes": 5222,
+      "sha256": "045ec59f20ee374ee7c75e26b3204d3a14be7678643a30f3c422306e5e932a68"
+    },
+    "README.md": {
+      "bytes": 3422,
+      "sha256": "1c827b0fa3e177c15d41e492b06026b4c3bf2edb337ad82e3d81ccf7582d0174"
+    },
+    "verify_manifest.py": {
+      "bytes": 562,
+      "sha256": "9c8245e466823fcaa62eb2c21c696721f21c35a2c4e2decaaeb83af1e832eb91"
+    }
+  },
+  "unity_native": "NOT_RUN",
+  "g2": "HOLD"
+}
