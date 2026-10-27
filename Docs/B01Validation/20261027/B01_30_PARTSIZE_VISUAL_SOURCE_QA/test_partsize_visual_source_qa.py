@@ -111,4 +111,21 @@ class SourceGeometryTests(unittest.TestCase):
    self.assertEqual(len(res["records"]),32)
    self.assertEqual(json.loads(p.read_text())["G2"],"HOLD")
 
+ def test_23_track_neighbor_real_box_box_intersection(self):
+  r=geo.axis_aligned_child_box_neighbor_overlap("CrawlerTrack")
+  self.assertEqual(r["overlapDepthsXYZ"],[.442,.104,.178])
+  self.assertAlmostEqual(r["overlapVolumeM3"],.008182304,places=9)
+  self.assertTrue(r["positiveSourceGeometryIntersection"])
+  self.assertEqual(r["actualUnityCollision"],"NOT_RUN")
+ def test_24_heavy_weapon_neighbor_real_box_box_intersection(self):
+  r=geo.axis_aligned_child_box_neighbor_overlap("GunHeavy")
+  self.assertEqual(r["overlapDepthsXYZ"],[.2496,.052,.52])
+  self.assertAlmostEqual(r["overlapVolumeM3"],.006749184,places=9)
+  self.assertTrue(r["positiveSourceGeometryIntersection"])
+ def test_25_convex_wheel_cannot_claim_box_box_intersection(self):
+  with self.assertRaises(ValueError):
+   geo.axis_aligned_child_box_neighbor_overlap("Wheel")
+ def test_26_no_unverified_other_neighbor_direction(self):
+  with self.assertRaises(ValueError):
+   geo.axis_aligned_child_box_neighbor_overlap("CrawlerTrack",(1,0,0))
 if __name__=="__main__":unittest.main(verbosity=2)
