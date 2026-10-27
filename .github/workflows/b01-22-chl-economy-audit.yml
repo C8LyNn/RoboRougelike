@@ -1,0 +1,53 @@
+name: B01-22 W16 read-only CHL ECON boundary audit
+on:
+  push:
+    branches: [audit/b01-22-w16-chl-economy-boundary-qa-20261027]
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-CHL-ECON-W16/**'
+      - '.github/workflows/b01-22-chl-economy-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-pinned-host-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independently fetch real pinned Codex R1/R3 Csharp and match original Git blob hashes
+        run: python Tools/B01/QA-CHL-ECON-W16/prepare.py
+      - name: Run immutable host source mutation and CHL direct-reward gate cases
+        run: python -m unittest discover -s Tools/B01/QA-CHL-ECON-W16 -p "test_*.py" -v
+      - name: Read-only receiver reward ingress receipt and truthful CHL source status
+        run: python Tools/B01/QA-CHL-ECON-W16/audit.py --host Tools/B01/QA-CHL-ECON-W16/_pinned --chl Assets/RoboRougelikeChallenges/CHL003 --out artifacts/chl-econ/receipt.json
+      - name: QA-only source file hash manifest and strict scope
+        shell: python
+        run: |
+          import hashlib,json,pathlib,subprocess
+          out=pathlib.Path("artifacts/chl-econ")
+          out.mkdir(parents=True,exist_ok=True)
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
+            if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
+          assert len(files)==5,files
+          assert all(not s.startswith("Assets/") for s in files)
+          manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
+          (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
+            "files":manifest,"native":"NOT_RUN","g2":"HOLD"},indent=2)+"\n")
+          print("OWNED_QA_ONLY_SCOPE_PASS",head,len(files))
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-22-w16-chl-econ-${{ matrix.os }}-qa
+          path: |
+            artifacts/chl-econ/
+            Tools/B01/QA-CHL-ECON-W16/_pinned/receipt.json
+          retention-days: 30
