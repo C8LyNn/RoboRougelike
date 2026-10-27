@@ -2,7 +2,8 @@
   "name": "B01.CHL003.PlayModeTests",
   "rootNamespace": "B01.CHL003.Tests",
   "references": [
-    "B01.CHL003.Runtime"
+    "B01.CHL003.Runtime",
+    "B01.CHL003.Demo"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"
