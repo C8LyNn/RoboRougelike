@@ -167,6 +167,27 @@ def neutral_copy(p):
     check("READY" in p.locator("#currentState").inner_text(), "Neutral text change broke Retry")
     check("Zwrotność: NIEZMIERZONA" in p.locator("#rigHeavy").inner_text(), "Rig label lost after Retry")
 
+
+def moderator_h3_mask(p):
+    p.locator("#tabChl").click()
+    # Actual B01-12 study instructions, no source edits or hidden fake study data:
+    # facilitator sets the mocked cause before participant is shown the page.
+    p.locator("#reviewReason").select_option("TIMEOUT")
+    p.evaluate("""() => {
+        document.querySelector('#reviewReason').closest('.scenario').style.display = 'none';
+        document.querySelector('#eventLog').style.display = 'none';
+    }""")
+    check(not p.locator("#reviewReason").is_visible(), "Mock cause selector still disclosed to participant")
+    check(not p.locator('label[for="reviewReason"]').is_visible(), "Cause answer still disclosed in label")
+    check(not p.locator("#eventLog").is_visible(), "Mock event log disclosed during first answer")
+    p.locator("#begin").click()
+    p.locator("#fail").click()
+    check("FAILED" in p.locator("#currentState").inner_text(), "Hidden moderator setup breaks failure")
+    check("TIMEOUT" in p.locator("#chlState").inner_text(), "Moderator cause not reflected in public failure reason")
+    check(p.locator("#retry").is_visible(), "Retry hidden by moderator mask")
+    p.locator("#retry").click()
+    check("READY" in p.locator("#currentState").inner_text(), "Retry broken after masked trial")
+
 with sync_playwright() as p:
     browser = p.chromium.launch(channel=os.getenv("B01_UX_CHROME_CHANNEL") or None, headless=True, args=["--no-sandbox"])
     case(browser, "UX-01-UNKNOWN-and-critical", ux01)
@@ -176,6 +197,7 @@ with sync_playwright() as p:
     case(browser, "UX-05-retry-rig-a11y", ux05, 390, 844)
     case(browser, "UX-06-neutral-copy-desktop", neutral_copy, 1440, 960)
     case(browser, "UX-07-neutral-copy-mobile", neutral_copy, 390, 844)
+    case(browser, "UX-08-moderator-H3-answer-masking", moderator_h3_mask, 1440, 960)
     browser.close()
 
 receipt = {
