@@ -77,6 +77,29 @@ static class Test
         Must(PartSizeGrid.EnvelopeError(huge,new Cell3(0,0,0),new Cell3(0,0,0))==
             "INVALID_LOGICAL_FOOTPRINT","overflow guarded by long");
 
+        Must(PartSizeBaselineCatalog.CanonicalNames.Length==19,"all 19 actual R3 kinds listed");
+        var catalogSeen=new HashSet<string>();
+        int wideCount=0, unmeasuredCount=0;
+        foreach(var kind in PartSizeBaselineCatalog.CanonicalNames)
+        {
+            Must(catalogSeen.Add(kind),"no duplicate canonical names");
+            var spec=PartSizeBaselineCatalog.ForSourceKind(kind);
+            var cells=PartSizeGrid.Occupied(spec,new Cell3(0,0,0),new Cell3(0,0,0));
+            if(cells.Length==4)wideCount++;
+            else Must(cells.Length==1,"only source-observed 1 and 2x1x2 occupancy");
+            var error=PartSizeGrid.EnvelopeError(spec,new Cell3(0,0,0),new Cell3(0,0,0));
+            if(error=="UNMEASURED_PHYSICAL_ENVELOPE")unmeasuredCount++;
+            else Must(error==null,"source-derived physics boxes fit nominal footprint");
+        }
+        Must(wideCount==6,"canonical R3 source declares six wide kinds");
+        Must(unmeasuredCount==11,"eleven moving/decorative kinds require native measurement");
+        try
+        {
+            PartSizeBaselineCatalog.ForSourceKind("AngledArmor_proposed");
+            Must(false,"unapproved kind cannot silently become canonical");
+        }
+        catch(ArgumentException) { Must(true,"unapproved kind rejected"); }
+
         Console.WriteLine("PARTSIZE_PURE_CSHARP_PASS "+checks+
             "/"+checks+" REAL_PRODUCTION_SOURCE_COMPILED; Unity/PhysX NOT_RUN; G2 HOLD");
     }
