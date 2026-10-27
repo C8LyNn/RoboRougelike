@@ -1,0 +1,59 @@
+name: ENV04-001 static industrial ventilation grate - Blender QA
+on:
+  push:
+    branches:
+      - feature/rrl-env04-001-industrial-vent-grate-20261027
+    paths:
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/README.md'
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/LICENSE.txt'
+      - '.github/workflows/ci-env04-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  blender-static-art:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Generate native BLEND GLB and two real preview renders
+        run: |
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/generate_env04_001.py -- --out Tools/EnvironmentFactory/ENV04/ENV04-001/generated
+      - name: Independent actual Blender mesh GLB and PNG QA
+        run: |
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/qa_env04_001.py -- --out Tools/EnvironmentFactory/ENV04/ENV04-001/generated
+      - name: Record source commit and physical SHA-256
+        run: |
+          cd Tools/EnvironmentFactory/ENV04/ENV04-001/generated
+          rm -f *.blend1
+          git rev-parse HEAD > SOURCE_SHA.txt
+          sha256sum *.blend *.glb *.png *.json SOURCE_SHA.txt > SHA256SUMS
+          cat SOURCE_SHA.txt SHA256SUMS
+      - name: Upload real generated assets and QA evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ENV04-001-vent-grate-real-blender-exports
+          path: Tools/EnvironmentFactory/ENV04/ENV04-001/generated/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit binaries exclusively to own feature branch
+        if: success() && github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f Tools/EnvironmentFactory/ENV04/ENV04-001/generated/*
+          if ! git diff --cached --quiet; then
+            git commit -m 'ENV04-001: actual Blender-validated ventilation grate exports'
+            git fetch origin feature/rrl-env04-001-industrial-vent-grate-20261027
+            git rebase origin/feature/rrl-env04-001-industrial-vent-grate-20261027
+            git push origin HEAD:feature/rrl-env04-001-industrial-vent-grate-20261027
+          fi
