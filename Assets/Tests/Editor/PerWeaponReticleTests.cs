@@ -85,6 +85,20 @@ public sealed class PerWeaponReticleTests
         Assert.That(Field<bool>(away[0],"Offscreen"),Is.True);
         Assert.That(Vector2.Distance(Field<Vector2>(away[0],"Viewport"),new Vector2(.5f,.5f)),Is.GreaterThan(.5f));
     }
+    [Test]public void RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle()
+    {
+        right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
+        left.Weapon=R4WeaponKind.RocketLauncher;
+        var launcher=left.gameObject.AddComponent<RoboRougelike.Mechanics.Rockets.RocketLauncher>();
+        var binding=left.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
+        typeof(RoboRougelike.WeaponIntegration.RRLRocketBinding).GetProperty("Module").SetValue(binding,launcher);
+        wall=GameObject.CreatePrimitive(PrimitiveType.Sphere);wall.transform.position=new Vector3(0,0,10);
+        var shell=wall.AddComponent<P17PhysicalShell>();
+        typeof(P17PhysicalShell).GetField("ownerRoot",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(shell,root.transform);
+        Physics.SyncTransforms();
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.True,
+            "An existing shell is not part of the vehicle hierarchy and the real rocket can collide with it");
+    }
     [Test]public void ViewportMarkersMapCorrectlyToLetterboxedHud()
     {
         var type=typeof(R3VehicleAssembly).Assembly.GetType("RoboRougelike.WeaponIntegration.RRLWeaponReticles");
