@@ -122,13 +122,14 @@ def package_members():
     return members,metadata
 
 def make_zip(members,dest):
-    with zipfile.ZipFile(dest,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
+    # ZIP_STORED avoids zlib implementation-dependent compressed streams on Windows/Linux.
+    with zipfile.ZipFile(dest,"w",compression=zipfile.ZIP_STORED) as archive:
         for path,raw in sorted(members.items()):
             info=zipfile.ZipInfo(path,date_time=(1980,1,1,0,0,0))
-            info.compress_type=zipfile.ZIP_DEFLATED
+            info.compress_type=zipfile.ZIP_STORED
             info.external_attr=(0o100644<<16)
             info.create_system=3
-            archive.writestr(info,raw,compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+            archive.writestr(info,raw,compress_type=zipfile.ZIP_STORED)
 
 def verify_archive(archive_path,members):
     with zipfile.ZipFile(archive_path) as zf:
