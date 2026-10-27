@@ -25,12 +25,12 @@ jobs:
       - name: Fetch EXACT original producer Git object only (no source modifications)
         shell: bash
         run: git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
-      - name: Fetch original Codex PR300 geometry Git object by EXACT SHA (not main)
+      - name: Fetch original Codex PR302 physical host+geometry at EXACT SHA (not main)
         shell: bash
-        run: git fetch --no-tags --depth=1 origin 7cfd1276d4708395144668249223d78fb83c3b19
-      - name: Run 14 actual Codex R41 source geometry measurements and mutants (NOT Unity)
+        run: git fetch --no-tags --depth=1 origin d44fa09c227dffca1c1f8832383bbd80430bba90
+      - name: Run 24 actual source and host-scaled static geometry regressions (NOT Unity)
         run: python Tools/B01/PARTSIZE001/W26Receipt/test_source_payload_measurements.py
-      - name: Emit seven measured-from-source proxy AABB records with native UNKNOWN
+      - name: Emit seven host-corrected + prior counterfactual source AABB records
         run: python Tools/B01/PARTSIZE001/W26Receipt/source_payload_measurements.py --repo . --out partsize-seven-source-proxies.json
       - uses: actions/upload-artifact@v4
         with:
