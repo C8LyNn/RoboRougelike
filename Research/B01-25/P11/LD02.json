@@ -1,0 +1,96 @@
+{
+  "version": 2,
+  "globalFloor": true,
+  "items": [
+    {
+      "kind": 4,
+      "x": 0,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 5,
+      "x": 11,
+      "z": 5,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 7,
+      "x": 3,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 7,
+      "x": 3,
+      "z": 7,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 7,
+      "x": 8,
+      "z": 2,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 7,
+      "x": 8,
+      "z": 7,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 8,
+      "x": 5,
+      "z": 4,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 8,
+      "x": 5,
+      "z": 6,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 1,
+      "x": 5,
+      "z": 0,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    },
+    {
+      "kind": 1,
+      "x": 5,
+      "z": 9,
+      "rotation": 0,
+      "scaleX": 1,
+      "scaleY": 1,
+      "scaleZ": 1
+    }
+  ]
+}
