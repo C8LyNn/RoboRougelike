@@ -1,0 +1,10 @@
+SPDX-License-Identifier: CC0-1.0
+ENV04-001 original industrial ventilation grate
+Copyright 2026 RoboRougelike project contributors
+
+The authors dedicate the original geometry, source generator, QA scripts,
+documentation, and generated visual assets of ENV04-001 to the public domain
+under Creative Commons CC0 1.0 Universal.
+See https://creativecommons.org/publicdomain/zero/1.0/
+
+No third-party model, texture, trademark or competitor geometry is included.
