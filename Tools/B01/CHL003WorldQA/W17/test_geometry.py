@@ -19,8 +19,8 @@ class W17ActualCHLGeometryTests(unittest.TestCase):
         return next(x for x in self.report["yawSampleRows"]
                     if x["rig"]==rig and x["yawDeg"]==yaw and x["zone"]==zone)
 
-    def test_01_actual_producer_geometry_fifty_scenarios(self):
-        self.assertEqual(len(self.report["yawSampleRows"]),2*len(YAW_SAMPLES)*3)
+    def test_01_actual_producer_geometry_seventy_two_scenarios(self):
+        self.assertEqual(len(self.report["yawSampleRows"]),2*len(YAW_SAMPLES)*4)
         self.assertEqual(self.report["producerExactSourceHead"],
             "9a947108928d4c2cdfdfbb25cbeb30464439da37")
         self.assertEqual(len(YAW_SAMPLES),9)
