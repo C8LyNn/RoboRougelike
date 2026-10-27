@@ -11,6 +11,7 @@
     <Compile Include="../../../../Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseCore.cs" Link="ActualCHL003CourseCore.cs"/>
     <Compile Include="../../../../Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003FinishArbiter.cs" Link="ActualCHL003FinishArbiter.cs"/>
     <Compile Include="../../../../Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs" Link="ActualCHL003GateCrossing.cs"/>
+    <Compile Include="../../../../Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs" Link="ActualCHL003WheelSupportWindow.cs"/>
     <Compile Include="../../../../Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs" Link="ActualCHL003TrialMetrics.cs"/>
   </ItemGroup>
 </Project>
