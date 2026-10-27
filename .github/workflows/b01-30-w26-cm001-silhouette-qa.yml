@@ -49,6 +49,21 @@ jobs:
           d=Docs/B01Validation/20261027/B01_30_W26_CM001_SILHOUETTE_QA
           python "$d/test_silhouette_stress.py" -v 2>&1 | tee /tmp/cm001-evidence/tests.log
           python "$d/silhouette_stress.py" --source "$B01_CM001_RENDER_DIR" --output /tmp/cm001-evidence/derived
+          python "$d/test_tech_art_hypotheses.py" -v 2>&1 | tee /tmp/cm001-evidence/tech-art-tests.log
+          python "$d/tech_art_hypotheses.py" --source "$B01_CM001_RENDER_DIR" --output /tmp/cm001-evidence/derived
+          python - <<'PY_ART'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/cm001-evidence/derived/tech_art_receipt.json')
+          t=json.loads(p.read_text())
+          assert t['producerPR294Head']=='3efd76bb2eaa319282a51ad588f8f4176d0cc33b'
+          assert t['engineeringStates']['HQSelected']=='PENDING'
+          assert t['engineeringStates']['allTypedSockets']=='UNKNOWN_NOT_MEASURED'
+          assert t['engineeringStates']['unityNative']=='NOT_RUN'
+          assert len(t['variants'])==3
+          assert all(len(v['imageMarkers'])==4 for v in t['variants'])
+          print('CM001_TECH_ART_PRESELECTION_ONLY_ANNOTATED_ART_PASS')
+          PY_ART
           python - <<'PY'
           import json
           from pathlib import Path
