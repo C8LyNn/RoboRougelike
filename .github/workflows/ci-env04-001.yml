@@ -8,6 +8,13 @@ on:
       - 'Tools/EnvironmentFactory/ENV04/ENV04-001/README.md'
       - 'Tools/EnvironmentFactory/ENV04/ENV04-001/LICENSE.txt'
       - '.github/workflows/ci-env04-001.yml'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/README.md'
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/LICENSE.txt'
+      - '.github/workflows/ci-env04-001.yml'
   workflow_dispatch:
 
 permissions:
