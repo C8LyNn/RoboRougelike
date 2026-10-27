@@ -1,0 +1,36 @@
+# B01-40 / W26 — CHL.C2 exact-original-source intake, pinned @ 077e692
+
+**TASK_ID:** `CHL.C2-W26-INDEPENDENT-G0`  
+**OWNER:** B01-40 Integration & Build / QA-only  
+**INPUT_SHA:** CHL Draft [#285](https://github.com/C8LyNn/RoboRougelike/pull/285) `077e692785aff2990a2d72a80fd1db62ac57b0e8`  
+**STATUS:** **C2 SOURCE G0 PASS for the exact SHA**, separate licensed Unity/target gates **NOT_RUN/PENDING**. This is not G2, OFFERED, a Codex claim, native Unity or live Codex worktree import.
+
+## Original artifact actually downloaded, not the historical f4ca318 or 30c0355 ZIP
+- Genuine [GitHub Actions source run #40489108497](https://github.com/C8LyNn/RoboRougelike/actions/runs/40489108497), [artifact **12726496630**](https://github.com/C8LyNn/RoboRougelike/actions/runs/40489108497/artifacts/12726496630).
+- Actual external Actions ZIP: **70,211 bytes**, SHA256 `e6c9acba6a6a49b4da0f7e772c82b2ad920e9ac925a6b7538cb5fd9970d8df0e`. Its `SHA256_REPORT.json` is checked against inner bytes.
+- Actual immutable inner `CHL003_R1_FULL_SOURCE_AND_QA.zip`: **59 entries, 78,228 bytes, SHA256 `4e822952ccb7b1647a42c4c61af75e86add79f2547583c52eecd32f965374d14`**. Outer+inner actual CRC PASS.
+- Actual embedded `Docs/B01/CHL003/manifest.json`: **58/58 distinct producer file SHA256 AND byte lengths PASS**, one separate embedded manifest. No missing/extra registered path, ZIP traversal, casefold duplicate, malformed Windows reserved component or symlink.
+- **Exact independent Git provenance:** for 58 real original downloaded file bytes compute `SHA1("blob "+size+"\\0"+bytes)` and compare sorted path↔blob object list to the untruncated GitHub `git/trees/077e692...?recursive=1` full Git tree. Both independently computed sorted `path<TAB>GitBlobSHA1<LF>` SHA256 digests **MATCH**: `e5e140d752be8e55e23f9c9c940414efc48a62d16324b702d7cb632ce15e37ce`. Separately, physical embedded manifest Git blob SHA1 `b1d21914c794947e634bc1156e50264b91b09a40` equals repository tree blob. **58/58 Git source objects + tracked manifest PASS**.
+- Source scope: PR #285 main→exact HEAD 59 changed files; **0 outside B01-20's CHL Assets/Docs/Tools/own CI**.
+- Actual imported `Assets/**.meta`: **25 unique valid GUIDs**, complete asset↔meta pair structure; root `Assets/RoboRougelikeChallenges.meta` and `CHL003.meta` present. **4 real asmdefs** (`Runtime, Demo, EditModeTests, PlayModeTests`), zero unresolved *owned* references. External Unity Test Framework dependencies are assumed, **not validated in real target**.
+- Against the **current** B01-23 original PARTSIZE #286 `be2be0e4802bc3f450179901f9ae91c6d84bcb5b`: 25 CHL GUID + 17 PARTSIZE GUID, **0 cross-package duplicates**. Published historical base `main@5f06af8` and R41 `9cd5a52` Git trees have zero existing `Assets/RoboRougelikeChallenges*` source paths. This is NOT a private Codex current target scan.
+
+## Executed independent negative mutation & disposable stage/rollback
+Tests intentionally modify **copies of physical original source** while preserving original archive unchanged:
+1. Change actual `CHL003GateCrossing.cs` contents without manifest edit → **PASS: rejected** with per-file SHA256/bytes mismatch.
+2. Remove real `CHL003_Demo.unity.meta` → **PASS: rejected** because physical registered file set mismatches.
+3. Duplicate a genuine `.meta` Unity GUID, **forge the changed file's manifest SHA256 to match it**, then rebuild test-only ZIP with valid outer receipt → **PASS: rejected** on duplicate GUID; not a superficial receipt mismatch.
+
+A real detached Git worktree was created from a *disposable synthetic target repo* containing three protected control files. Stage the **59 unmodified original ZIP members**, verify each staged SHA256/bytes, ensure zero tracked unowned modifications; mutate one staged file intentionally and verify rollback refuses deletion; restore its original bytes; byte-guarded delete only 59 staged paths; verify `git status --porcelain` clean, same HEAD and all **3/3** protected sentinel bytes unchanged. **59/59 STAGE/ROLLBACK PASS**, source mutation guard PASS. This tests real Git/extracted original package bytes, **not** Unity native import and **not** the Codex active/authorized target. Existing B01-40 [PACKAGE-AUTO #238](https://github.com/C8LyNn/RoboRougelike/pull/238) remains the intended production receiver; it was not run on a live target here. Old [#284](https://github.com/C8LyNn/RoboRougelike/pull/284) synthetic intake gate still has separately documented real-archive schema/path mismatches and is NOT falsely declared passed.
+
+## Exact source CI vs native G1
+- Exact HEAD [source CI #40489115782](https://github.com/C8LyNn/RoboRougelike/actions/runs/40489115782) **SUCCESS**: original compiled .NET C# actual code **24,063/24,063 PASS** and static source/importer positive+negative source checks **PASS**. **19 EditMode + 14 PlayMode authored only**.
+- Exact HEAD [CI-02 #40489115671](https://github.com/C8LyNn/RoboRougelike/actions/runs/40489115671) and [CI-03 #40489115690](https://github.com/C8LyNn/RoboRougelike/actions/runs/40489115690) both **FAILED at `Require valid Unity activation credentials`**, with Unity6000.3.14f1 actual run steps **SKIPPED**. Thus Editor compile, **Edit19, Play14, genuine Light3×+Heavy3× physical obstacle completion, P14 Heavy yaw8 old3.5m fail/current3.7m pass, raw NUnit XML, Editor.log, ground/ramp/bridge contacts, fall/Retry/Pause and HUD/screenshots: NOT_RUN**, not functional PASS or functional FAIL.
+- No licensed Unity executable was available in the B01-40 execution container; target private Codex SHA/dirty/scope ACK absent. **No verification on live target and no native Unity import/rollback.**
+
+## Dependency handoff / exactly one priority operator request
+`CHL.C1 = SOURCE_DONE@077e692` (B01-20), `CHL.C2 = G0_ORIGINAL_PHYSICAL+GIT+DISPOSABLE_GIT_ROLLBACK_PASS@077e692` (B01-40), `CHL.C3 = BLOCKED_BY LICENSED_UNITY_6000.3.14f1 + authorized disposable target` (B01-60/operator), `CHL.C4 HQ G2=HOLD`, `CHL.C5 OFFERED_FROZEN=NO`, `CHL.C6 CODEX_CLAIMED=NO`.
+
+**Next C3 input:** same exact original ZIP #12726496630 + matching `077e692`, licensed Unity6000.3.14f1 URP disposable checkout; verify existing root GUID/scope before copy, preserve all `.meta`; open `Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003_Demo.unity`, capture actual editor compile, raw Edit19/Play14 results XML, Editor.log/process exits. Independently document **three COMPLETE Light and three COMPLETE Heavy motor/PhysX obstacle crossings of the same four CP and finish** with recorded contacts/time/checkpoints/fall+Retry; P14 old 3.5m / new3.7m actual Heavy yaw8 negative/positive (including yaw8 lateral offsets +.03 ACCEPT vs +.05 REJECT when tested), plus pause/airborne/reverse/foreign actor. Label any real failure FAIL; no fake completion. No frozen/version state change without HQ.
+
+**NEEDS_RECEIVER_ACK:** exact real disposable Unity source checkout HEAD and any existing `Assets/RoboRougelikeChallenges.meta` target GUID, which cannot be inferred from public R41, and valid native operator credentials/runner. **NEXT:** B01-60/operator C3 executes native; B01-00 may schedule C3 and decide G2 only after independently supported native evidence; B01-40 then handles C5 if explicitly approved. No producer/Codex modifications, no merge.
