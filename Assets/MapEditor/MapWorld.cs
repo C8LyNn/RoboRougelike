@@ -54,7 +54,7 @@ namespace RoboRougelike.MapEditor
         static Mesh RampMesh()
         {
             var m=new Mesh{name="Rampa mapy gracza"};
-            m.vertices=new[]{new Vector3(-2,0,-2),new Vector3(2,0,-2),new Vector3(-2,0,2),new Vector3(2,0,2),new Vector3(-2,2,2),new Vector3(2,2,2)};
+            m.vertices=new[]{new Vector3(-2,0,-2),new Vector3(2,0,-2),new Vector3(-2,0,2),new Vector3(2,0,2),new Vector3(-2,1,2),new Vector3(2,1,2)};
             m.triangles=new[]{0,4,5,0,5,1,0,2,4,1,5,3,2,3,5,2,5,4,0,1,3,0,3,2};
             m.RecalculateNormals();m.RecalculateBounds();return m;
         }

@@ -28,16 +28,18 @@ namespace RoboRougelike.R1
             // Preserve the range reset shortcut while the session menu owns other input.
             if (!MapEditorTesting && Progress?.State == R1RunState.TestDrive && keys != null && keys.rKey.wasPressedThisFrame)
             { ResetTestRange(); return true; }
+            int pauseOptions=MapEditorTesting?4:3;
             if ((keys != null && keys.upArrowKey.wasPressedThisFrame) ||
-                (pad != null && pad.dpad.up.wasPressedThisFrame)) PauseSelection = (PauseSelection + 2) % 3;
+                (pad != null && pad.dpad.up.wasPressedThisFrame)) PauseSelection = (PauseSelection + pauseOptions-1) % pauseOptions;
             if ((keys != null && keys.downArrowKey.wasPressedThisFrame) ||
-                (pad != null && pad.dpad.down.wasPressedThisFrame)) PauseSelection = (PauseSelection + 1) % 3;
+                (pad != null && pad.dpad.down.wasPressedThisFrame)) PauseSelection = (PauseSelection + 1) % pauseOptions;
             if (pad != null && pad.buttonEast.wasPressedThisFrame) { TogglePause(); return true; }
             if ((keys != null && keys.enterKey.wasPressedThisFrame) ||
                 (pad != null && pad.buttonSouth.wasPressedThisFrame))
             {
                 if (PauseSelection == 0) TogglePause();
-                else if (PauseSelection == 1) RestartRun();
+                else if (PauseSelection == 1 && MapEditorTesting) ReturnFromEditedMapTest();
+                else if (PauseSelection == 1 || (PauseSelection == 2 && MapEditorTesting)) RestartRun();
                 else RequestQuit();
             }
             return true;

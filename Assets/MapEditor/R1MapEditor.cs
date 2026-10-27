@@ -139,6 +139,7 @@ namespace RoboRougelike.R1
             if(e.type==EventType.MouseDrag&&e.button==1&&editorOrbit){editorYaw+=e.delta.x*.4f;editorPitch=Mathf.Clamp(editorPitch-e.delta.y*.35f,20,85);UpdateEditorCamera();e.Use();return;}
             if(e.type==EventType.ScrollWheel){editorDistance=Mathf.Clamp(editorDistance+e.delta.y*1.2f,8,90);UpdateEditorCamera();e.Use();return;}
             if(e.type!=EventType.MouseDown||e.button!=0)return;
+            GUI.FocusControl(null);EditorTextFocused=false;
             var ray=Camera.main.ScreenPointToRay(new Vector2(raw.x,Screen.height-raw.y));
             if(new Plane(Vector3.up,Vector3.zero).Raycast(ray,out float distance))
             {
