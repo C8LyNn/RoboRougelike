@@ -2,7 +2,7 @@
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
-export const PRODUCER='59214ee5fed2f17672ab796a3ddc86201c888d30';
+export const PRODUCER='2355bff6026e22443b164aa9de816c27d3a289e9';
 export const BLOBS={motor:'9b777837179253300cd73cb5e156abe5221bb8d5',demo:'9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e',play:'e220a6b06db9ed669a3e4b3ff0fc346559b4fc71',metrics:'b5050e3921092a2192d5928f86aec6ca0f208ab6',window:'edfc98c0adb55bf8b092db43d93a15be29e99490'};
 export const load=folder=>Object.fromEntries(Object.keys(BLOBS).map(k=>[k,readFileSync(path.join(folder,k+'.cs'),'utf8')]));
 const isTrue=(s,v)=>s.includes(v);

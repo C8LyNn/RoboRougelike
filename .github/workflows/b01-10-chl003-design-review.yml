@@ -31,12 +31,12 @@ jobs:
       - name: Export four exact original CHL source inputs (motor, demo, PlayMode P07, telemetry)
         run: |
           mkdir -p /tmp/b01-chl-pass3
-          git fetch --no-tags --depth=1 origin 59214ee5fed2f17672ab796a3ddc86201c888d30
-          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs > /tmp/b01-chl-pass3/motor.cs
-          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-chl-pass3/demo.cs
-          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs > /tmp/b01-chl-pass3/play.cs
-          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs > /tmp/b01-chl-pass3/metrics.cs
-          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs > /tmp/b01-chl-pass3/window.cs
+          git fetch --no-tags --depth=1 origin 2355bff6026e22443b164aa9de816c27d3a289e9
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs > /tmp/b01-chl-pass3/motor.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-chl-pass3/demo.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs > /tmp/b01-chl-pass3/play.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs > /tmp/b01-chl-pass3/metrics.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs > /tmp/b01-chl-pass3/window.cs
       - name: Pass 3 original source gameplay COVERAGE falsifiers (Unity NOT_RUN)
         env:
           P3_ORIGINAL_DIR: /tmp/b01-chl-pass3
