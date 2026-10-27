@@ -81,8 +81,8 @@ def calculate(demo,motor):
         if row["scenario"]=="OUTSIDE_RAY_041":
             check(not row["sourceRayCanReach"],"RAY_RANGE_MUTATION")
         elif row["scenario"]=="IDEAL_TOUCH":
-            check(not row["wheelSurfaceGeometricallySeparated"] and
-                  row["sourceRayCanReach"],"IDEAL_TOUCH_MUTATION")
+            check(abs(row["wheelBottomGapM"])<1e-6 and
+                  row["sourceRayCanReach"],"IDEAL_TOUCH_CALIBRATION_OR_SOURCE_DRIFT")
         else:
             check(row["sourceRayCanReach"] and row["wheelSurfaceGeometricallySeparated"],
                   "PHANTOM_GROUND_DIFFERENTIAL_NOT_PROVEN")
