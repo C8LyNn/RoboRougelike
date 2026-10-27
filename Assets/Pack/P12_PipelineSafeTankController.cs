@@ -98,6 +98,7 @@ namespace RogueMachine.P12PipelineSafe
         {
             gameplayInputEnabled = active;
             if (active) return;
+            AimFeedback=default;
             moveInput = turnInput = currentSpeed = 0;
             fireHeld = false;
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();

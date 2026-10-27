@@ -22,6 +22,21 @@ namespace RoboRougelike.WeaponIntegration
                 $"{Distance:0} m • tor: {Clear}/{Guns}"+(DamageableSurface?"":" • podłoże / osłona");
         }
         static readonly RaycastHit[] hits=new RaycastHit[64];
+        static readonly Collider[] overlaps=new Collider[64];
+        static float ProjectileRadius(R3MountedPart part)
+        {
+            if(part.Weapon==R4WeaponKind.RocketLauncher)return part.GetComponent<RRLRocketBinding>()?.Module?.CurrentSpec.CollisionRadius??0;
+            if(part.Weapon==R4WeaponKind.Railgun)return part.GetComponent<RRLRailgunBinding>()?.Module?.CurrentSpec.Radius??0;
+            if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.EmpEmitter||part.Weapon==R4WeaponKind.RotarySaw)return 0;
+            return R4WeaponDefinition.Get(part.Weapon).Diameter*.5f;
+        }
+        static bool Blocks(Collider c,Collider target,Transform owner)
+        {
+            if(c==null||c==target||c.transform.IsChildOf(owner)||c.GetComponentInParent<R3Debris>()!=null)return false;
+            var shell=c.GetComponentInParent<P17PhysicalShell>();if(shell!=null&&shell.OwnerRoot==owner)return false;
+            var rocket=c.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();if(rocket!=null&&rocket.OwnerRoot==owner)return false;
+            return true;
+        }
         public static float Range(R3MountedPart part,P12PipelineSafeTankController controller)
         {
             switch(part.Weapon)
@@ -67,18 +82,15 @@ namespace RoboRougelike.WeaponIntegration
                 bool radial=part.Weapon==R4WeaponKind.EmpEmitter||part.Weapon==R4WeaponKind.RotarySaw;
                 if(!radial&&Vector3.Angle(part.Muzzle.forward,direction)>.25f)continue;
                 result.Aligned++;
-                int count=Physics.RaycastNonAlloc(origin,direction.normalized,hits,Mathf.Max(0,distance-.03f),~0,QueryTriggerInteraction.Ignore);
-                bool blocked=count>=hits.Length;
+                float radius=ProjectileRadius(part);
+                int initial=Physics.OverlapSphereNonAlloc(origin,Mathf.Max(.001f,radius),overlaps,~0,QueryTriggerInteraction.Ignore);
+                bool blocked=initial>=overlaps.Length;
+                for(int i=0;i<initial&&!blocked;i++)blocked=Blocks(overlaps[i],target,assembly.transform);
+                int count=radius>0?Physics.SphereCastNonAlloc(origin,radius,direction.normalized,hits,Mathf.Max(0,distance-.03f),~0,QueryTriggerInteraction.Ignore):
+                    Physics.RaycastNonAlloc(origin,direction.normalized,hits,Mathf.Max(0,distance-.03f),~0,QueryTriggerInteraction.Ignore);
+                blocked|=count>=hits.Length;
                 for(int i=0;i<count&&!blocked;i++)
-                {
-                    var c=hits[i].collider;
-                    if(c==null||c==target||c.transform.IsChildOf(assembly.transform)||c.GetComponentInParent<R3Debris>()!=null)continue;
-                    var shell=c.GetComponentInParent<P17PhysicalShell>();
-                    if(shell!=null&&shell.OwnerRoot==assembly.transform)continue;
-                    var rocket=c.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
-                    if(rocket!=null&&rocket.OwnerRoot==assembly.transform)continue;
-                    blocked=true;
-                }
+                    blocked=Blocks(hits[i].collider,target,assembly.transform);
                 if(!blocked)result.Clear++;
             }
             return result;
