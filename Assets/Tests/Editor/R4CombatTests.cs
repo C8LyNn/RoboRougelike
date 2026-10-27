@@ -159,9 +159,9 @@ public class R4CombatTests
         Run.StartNextEncounter();yield return Until(()=>!Run.Transitioning,"Strzelanie");Run.Encounter.SetCombatActive(false);
         var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))part.GunPivot.rotation=Quaternion.Euler(-30,180,0);
-        R1EncounterManager.ClearTransientObjects();assembly.FireGuns();
+        R1EncounterManager.ClearTransientObjects();assembly.FireGuns();assembly.FireGroup(true);
         Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
-        float end=Time.time+0.17f;yield return Until(()=>Time.time>=end,"Szybkostrzelność");assembly.FireGuns();
+        float end=Time.time+0.17f;yield return Until(()=>Time.time>=end,"Szybkostrzelność");assembly.FireGuns();assembly.FireGroup(true);
         var shots=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None);
         Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Automatic),Is.EqualTo(4));
         Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Basic),Is.EqualTo(1));

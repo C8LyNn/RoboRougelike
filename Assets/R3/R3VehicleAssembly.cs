@@ -61,10 +61,26 @@ namespace RoboRougelike.R3
                 if(part!=null&&part.Weapon==R4WeaponKind.RotarySaw)
                     part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
         }
-        public void FireGuns()
+        public void SetGroupTriggers(bool groupA,bool groupB)
         {
+            var a=Model.WeaponGroupA;var b=Model.WeaponGroupB;
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
+            {
+                if(part==null||part.Kind!=R3PartKind.Gun)continue;
+                bool held=part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
+                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject)&&
+                    ((groupA&&a==part.Weapon)||(groupB&&b==part.Weapon));
+                part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
+                part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
+            }
+        }
+        public void FireGuns() => FireGroup(false);
+        public void FireGroup(bool secondary)
+        {
+            var kind=secondary?Model.WeaponGroupB:Model.WeaponGroupA;
+            if(!kind.HasValue)return;
+            foreach(var part in Parts)
+                if(part!=null && part.Kind==R3PartKind.Gun && part.Weapon==kind.Value && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
                     if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
                     if(part.Weapon==R4WeaponKind.EmpEmitter)
