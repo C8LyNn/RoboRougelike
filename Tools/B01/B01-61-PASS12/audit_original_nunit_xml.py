@@ -34,7 +34,20 @@ def main():
     all_cases=[]
     checks=[]
     for platform,path in EVIDENCE.items():
-        root=ET.fromstring(source(opt.repo,opt.sha,path))
+        raw_xml=source(opt.repo,opt.sha,path)
+        raw_well_formed=True
+        redacted_placeholder_count=raw_xml.count(b"<WORKSPACE>")
+        try:
+            root=ET.fromstring(raw_xml)
+        except ET.ParseError as e:
+            # Original Codex QA XML puts literal '<WORKSPACE>' inside fullname
+            # attributes, which is INVALID XML. Do not silently certify raw bytes.
+            if not redacted_placeholder_count:
+                raise
+            raw_well_formed=False
+            # Normalize ONLY this known public redaction in memory for testcase
+            # enumeration; the immutable Git XML remains invalid and is recorded.
+            root=ET.fromstring(raw_xml.replace(b"<WORKSPACE>",b"WORKSPACE_REDACTED"))
         actual=root.findall(".//test-case")
         names=[c.attrib.get("fullname") or c.attrib.get("name","") for c in actual]
         all_cases+=names
@@ -49,6 +62,9 @@ def main():
           "source_path":path,"reported_total":count,"parsed_actual_cases":len(actual),
           "passed":passed,"discovered_suite_cases":discovered,"all_passed":run_ok,
           "full_discovered_suite_executed":run_ok and count==discovered,
+          "raw_original_xml_well_formed":raw_well_formed,
+          "invalid_redaction_PLACEHOLDER_count":redacted_placeholder_count,
+          "raw_invalid_xml_is_release_blocker":not raw_well_formed,
           "classes":sorted(set(n.rsplit(".",1)[0].rsplit(".",1)[-1] for n in names))
         }
     for group,cl in REQUIRED_NATIVE_CLASSES.items():
@@ -58,11 +74,14 @@ def main():
          "explicit_case_in_selected_xml":any(any(s in n for s in signals) for n in all_cases),
          "signals":list(signals)
         }
-    full=all(s["full_discovered_suite_executed"] for s in output["suites"].values())
+    full=all(s["full_discovered_suite_executed"] and
+             s["raw_original_xml_well_formed"] for s in output["suites"].values())
     negatives=all(v["explicit_case_in_selected_xml"] for v in output["negative_case_gaps"].values())
     output["release_ready"]=all(checks) and full and negatives
     print(json.dumps(output,indent=2,sort_keys=True))
-    print("NUNIT_XML_AUDIT="+("PASS_TARGETED_ORIGINAL_XML" if all(checks) else "FAIL_INVALID_ORIGINAL_XML"))
+    print("NUNIT_XML_AUDIT="+("PASS_TARGETED_CASE_ENUMERATION_AFTER_EXPLICIT_REDACTION_NORMALIZATION" if all(checks) else "FAIL_XML_CASES"))
+    if any(not s["raw_original_xml_well_formed"] for s in output["suites"].values()):
+        print("RAW_XML_INVALID_UNESCAPED_WORKSPACE_REDACTION=YES | ORIGINAL_BYTES_NOT_VALID_XML")
     print("RELEASE_GATE="+("PASS" if output["release_ready"] else "BLOCKED_NO_FULL_AND_NEGATIVE_NATIVE_PROOF"))
     return int(not all(checks) or (opt.require_full and not output["release_ready"]))
 if __name__=="__main__":
