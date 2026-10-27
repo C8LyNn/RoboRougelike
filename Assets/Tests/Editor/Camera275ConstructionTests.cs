@@ -23,7 +23,7 @@ public sealed class Camera275ConstructionTests
     IEnumerator Prepare(R3VehicleKind kind,string extra="")
     {
         Assert.That(run.SelectVehicle(kind)&&run.OpenSandboxGarage(),Is.True);
-        if(extra=="Tall")for(int y=2;y<=6;y++)Assert.That(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),Is.True,"Tall added cell "+y);
+        if(extra=="Tall")for(int y=2;y<=5;y++)Assert.That(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),Is.True,"Tall added cell "+y);
         if(extra=="Wide")foreach(int sign in new[]{-1,1})for(int x=3;x<=6;x++)Assert.That(run.GarageBuy(new Vector3Int(sign*x,1,0),R3PartKind.Armor),Is.True,"Wide added cell "+sign*x);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         run.GetComponent<R6TestRange>().Layout.gameObject.SetActive(false);
@@ -62,6 +62,17 @@ public sealed class Camera275ConstructionTests
         Assert.That(armor.Operational,Is.False);Assert.That(armor.transform.IsChildOf(run.Player.transform),Is.False);
         for(int frame=0;frame<120;frame++){rig.StepCamera(1f/60);Assert.That(rig.ActualOwnHullIntersectsCrosshair,Is.False);}
         Assert.That(rig.SmoothingResetCount,Is.EqualTo(resets),"Normal part detachment does not restart smoothing");
+        wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="CAM275 receiver orbit wall";
+        var direction=(Camera.main.transform.position-rig.LastSolution.AimWorld).normalized;
+        wall.transform.position=rig.LastSolution.AimWorld+direction*12;wall.transform.rotation=Quaternion.LookRotation(direction);wall.transform.localScale=new Vector3(12,12,1);
+        Physics.SyncTransforms();bool clipped=false;
+        for(int frame=0;frame<180;frame++)
+        {
+            rig.SetOrbit(frame*2,18,45);rig.StepCamera(1f/60);clipped|=rig.WorldClipped;
+            Assert.That(rig.WorldOverlapAtCamera,Is.False,"Receiver sweep must protect the final camera volume");
+            Assert.That(rig.ActualOwnHullIntersectsCrosshair,Is.False);
+        }
+        Assert.That(clipped,Is.True,"Test must actually exercise a collision correction");
     }
     [UnityTest]public IEnumerator LightConstructionSafety()=>Construction(R3VehicleKind.Light);
     [UnityTest]public IEnumerator StandardConstructionSafety()=>Construction(R3VehicleKind.Standard);

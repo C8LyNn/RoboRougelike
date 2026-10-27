@@ -4,6 +4,7 @@ namespace RoboRougelike.R1
 {
     public sealed partial class R1RunHUD
     {
+        GUIStyle aimCrossStyle,aimCaptionStyle;
         void DrawTestRange(R1RunController run)
         {
             if(run.Transitioning){Panel(new Rect(0,0,1280,720));GUI.Label(new Rect(300,300,700,80),"Przygotowanie poligonu…",title);return;}
@@ -48,13 +49,11 @@ namespace RoboRougelike.R1
         void DrawAimReticle(R1RunController run)
         {
             var feedback=run.Player.Controller.AimFeedback;
-            var previous=GUI.color;
-            GUI.color=feedback.Clear>0?Color.white:new Color(1,.72f,.3f);
-            var cross=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
-            GUI.Label(new Rect(624,344,32,32),"+",cross);
-            GUI.color=previous;
-            var caption=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
-            GUI.Label(new Rect(430,382,420,48),feedback.Caption,caption);
+            if(aimCrossStyle==null)aimCrossStyle=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
+            if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
+            aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
+            GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
+            GUI.Label(new Rect(430,382,420,48),feedback.Caption,aimCaptionStyle);
         }
         void DrawFeedback()
         {

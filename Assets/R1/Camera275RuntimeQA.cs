@@ -100,7 +100,7 @@ public sealed class Camera275RuntimeQA : MonoBehaviour
             if(phase==1)
             {
                 if(Time.realtimeSinceStartup-entered<.3f)return;
-                if(result.vehicle=="Tall")for(int y=2;y<=6;y++)Check(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),"Tall mount "+y);
+                if(result.vehicle=="Tall")for(int y=2;y<=5;y++)Check(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),"Tall mount "+y);
                 if(result.vehicle=="Wide")foreach(int sign in new[]{-1,1})for(int x=3;x<=6;x++)Check(run.GarageBuy(new Vector3Int(sign*x,1,0),R3PartKind.Armor),"Wide mount "+sign*x);
                 Check(run.EnterTestRange(),"Range entry");Go(2,"stationary");return;
             }
