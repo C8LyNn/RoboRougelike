@@ -103,6 +103,26 @@ jobs:
             --producer "$B01_PARTSIZE_PR286_SOURCE" \
             --canonical "$B01_PARTSIZE_PINNED_SOURCE" \
             --output "$B01_PARTSIZE_PR286_SOURCE/PR286_SOURCE_VS_R41_GEOMETRY.json"
+      - name: W17 verify THREE physical placement conflicts and noncolliding Suspension in four yaw poses
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_w17_signed_placement_conflicts.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/W17_SIGNED_PLACEMENT_TEST_LOG.txt"
+          python3 "$dir/w17_signed_placement_conflicts.py" \
+            --producer "$B01_PARTSIZE_PR286_SOURCE" \
+            --canonical "$B01_PARTSIZE_PINNED_SOURCE" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/W17_SIGNED_PLACEMENT_4_YAW.json"
+          python3 - <<'PYW17'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ["B01_PARTSIZE_PR286_SOURCE"])/"W17_SIGNED_PLACEMENT_4_YAW.json").read_text())
+          assert len(r["parts"])==4
+          assert len(r["boxNeighborProbes"])==8
+          assert all(x["positiveBoxBoxIntersection"] for x in r["boxNeighborProbes"])
+          assert r["unityPhysx"]=="NOT_RUN"
+          assert r["thisReportApprovesNoMounts"]
+          PYW17
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -124,4 +144,6 @@ jobs:
             /tmp/b01-partsize-pr286/PR286_DELTA_UNIT_LOG.txt
             /tmp/b01-partsize-pr286/PR286_SOURCE_VS_R41_GEOMETRY.json
             /tmp/b01-partsize-pr286/PR286_CSHARP_REAL_SOURCE_REPLAY.txt
+            /tmp/b01-partsize-pr286/W17_SIGNED_PLACEMENT_TEST_LOG.txt
+            /tmp/b01-partsize-pr286/W17_SIGNED_PLACEMENT_4_YAW.json
           retention-days: 30
