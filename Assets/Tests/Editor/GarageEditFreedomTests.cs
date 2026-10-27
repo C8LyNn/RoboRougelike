@@ -85,11 +85,11 @@ public sealed class GarageEditFreedomTests
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
         var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
-        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
         var wheels=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
         foreach(var wheel in wheels)Assert.That(run.GarageRemove(wheel.Cell),Is.True);
         Assert.That(run.VehicleModel.CanDeploy,Is.False);Assert.That(run.EnterTestRange(),Is.False);
-        var cell=new Vector3Int(1,2,2);Assert.That(run.GarageBuy(cell,R3PartKind.OmniDrive),Is.True,"real physical mounting gate");
+        var cell=new Vector3Int(0,0,3);Assert.That(run.GarageBuy(cell,R3PartKind.OmniDrive),Is.True,"real physical mounting gate: "+run.VehicleModel.PlacementError(cell,R3PartKind.OmniDrive));
         Assert.That(run.ConfigureDrive(R3DriveKind.Omni),Is.True);Assert.That(run.VehicleModel.CanDeploy,Is.True);
         Assert.That(run.GarageRemove(cell),Is.True);Assert.That(run.VehicleModel.CanDeploy,Is.False);
         foreach(var wheel in wheels)Assert.That(run.GarageMount(wheel.Id,wheel.Cell,wheel.RotationQuarterTurns),Is.True);
