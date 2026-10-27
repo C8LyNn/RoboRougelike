@@ -163,6 +163,32 @@ jobs:
           assert x['actualUnity']=='NOT_RUN' and x['g2']=='HOLD'
           print('CODEX_R3_ACTUAL_PARENT_SCALE_SOURCE_RECONCILIATION_PASS')
           PYW30
+      - name: W34 genuine Codex303 existing Gyroscope decorative ring source-only visual overhang, negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=c89744d5ab43f4a795abe62527d94439be573693
+          git fetch --depth=1 origin "$PIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          test "$(git rev-parse "$PIN:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
+          test "$(git rev-parse "$PIN:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_w34_gyro_ring_envelope.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/W34_GYRO_VISUAL_RING_TEST_LOG.txt"
+          python3 "$dir/w34_gyro_ring_envelope.py" \
+            --r41 "$B01_PARTSIZE_PINNED_SOURCE/R41PartGeometry.cs" \
+            --r3 "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleAssembly.cs" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/W34_GYRO_VISUAL_RING_SOURCE_AABB.json"
+          python3 - <<'PYW34'
+          import json,os
+          from pathlib import Path
+          x=json.loads((Path(os.environ['B01_PARTSIZE_PR286_SOURCE'])/'W34_GYRO_VISUAL_RING_SOURCE_AABB.json').read_text())
+          assert x['inputCodexPR303Head']=='c89744d5ab43f4a795abe62527d94439be573693'
+          assert len(x['ringYawCases'])==4
+          assert x['ringYawCases'][0]['decorativeRingConservativeSignedCellsXYZ']==[[-1,0,1],[0],[0]]
+          assert x['ringYawCases'][1]['decorativeRingConservativeSignedCellsXYZ']==[[0],[0],[-1,0,1]]
+          assert x['actualEngine']=='NOT_RUN' and x['typedSocket']=='UNVERIFIED'
+          print('ACTUAL_CODEX303_GYRO_VISUAL_SOURCE_AABB_PASS / UNITY_NOT_RUN')
+          PYW34
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -189,4 +215,6 @@ jobs:
             /tmp/b01-partsize-pr286/W30_PROVENANCE.txt
             /tmp/b01-partsize-pr286/W30_SCALE_QA_UNIT_LOG.txt
             /tmp/b01-partsize-pr286/W30_R3_PARENT_SCALE_CORRECTION.json
+            /tmp/b01-partsize-pr286/W34_GYRO_VISUAL_RING_TEST_LOG.txt
+            /tmp/b01-partsize-pr286/W34_GYRO_VISUAL_RING_SOURCE_AABB.json
           retention-days: 30
