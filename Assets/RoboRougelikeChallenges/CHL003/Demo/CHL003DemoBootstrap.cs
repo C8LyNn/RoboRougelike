@@ -25,6 +25,20 @@ namespace B01.CHL003
         private string lastHeavySummary = "No Heavy trial recorded";
         private string lastArchiveKey;
 
+        // Read-only handles for disposable native acceptance fixtures.
+        // No public method advances checkpoints or grants completion.
+        public CHL003CourseController Course => course;
+        public Rigidbody ActiveVehicle => vehicle;
+        public CHL003VehicleMotor Motor => motor;
+        public void SelectRigForTest(int index)
+        {
+            if (index != 0 && index != 1)
+                throw new System.ArgumentOutOfRangeException(nameof(index));
+            if (course == null) throw new System.InvalidOperationException("CHL003_DEMO_NOT_STARTED");
+            SelectRig(index);
+        }
+        public void RetryForTest() => RetryCurrent();
+
         private void Start()
         {
             owned = new GameObject("CHL003_GENERATED_DEMO_ONLY");
