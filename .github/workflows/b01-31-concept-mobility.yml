@@ -1,0 +1,37 @@
+name: B01-31 W17 Concept Mobility Research Raster QA
+
+on:
+  push:
+    branches:
+      - research/b01-31-concept-mobility-001-w17
+    paths:
+      - 'Docs/B01Concept/CONCEPT-MOBILITY-001/**'
+      - '.github/workflows/b01-31-concept-mobility.yml'
+  pull_request:
+    paths:
+      - 'Docs/B01Concept/CONCEPT-MOBILITY-001/**'
+      - '.github/workflows/b01-31-concept-mobility.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original-svg-raster-research-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --disable-pip-version-check 'CairoSVG==2.8.2' 'Pillow==11.3.0'
+      - name: Parse all original SVG and rasterize real PNGs
+        run: python Docs/B01Concept/CONCEPT-MOBILITY-001/qa_render.py
+      - name: Upload all four actually rendered PNGs, thumbnails, hashes and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-31-w17-mobility-rendered-qa
+          path: Docs/B01Concept/CONCEPT-MOBILITY-001/rendered/
+          if-no-files-found: error
+          retention-days: 30
