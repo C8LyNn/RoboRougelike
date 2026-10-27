@@ -13,13 +13,29 @@ SOURCES = {
     "Assets/R1/R1RunController.cs": "c6d5f3efe4949da68a5c48ec38ef5028af8b8410",
     "Assets/R3/R3VehicleModel.cs": "cdd75fff4923a382b16c430dac1452320eda88f6",
 }
+CHL_PIN = "bec51e4a66ada534b875ce13f08b83d63f2cd7b8"
+CHL_SOURCES = {
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseCore.cs": "fa8a12ae71addccc7acee587702bff041bc74d33",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs": "300cd26058a49a337f1e0140e5099ec3ccb9efce",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Gate.cs": "9dabf1ed569c43cf6e3d4e321c6db6ce4e45c786",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs": "f0417d5f0de1eb63d8579932d5dad707b0f06980",
+    "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs": "6448ce9750c40fd63a15cf5f775fbaac87766a90",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/EditMode/CHL003CoreEditModeTests.cs": "f361800e81f76cd1060d9aaeaca554893e60c2b9",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003PhysicsPlayModeTests.cs": "c979f474dab98ff7a475d1c8021a10e55d8fe2ce",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/B01.CHL003.Runtime.asmdef": "28cf327188cc7f17888e889ce096cc38b7f7e534",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/EditMode/B01.CHL003.EditModeTests.asmdef": "740fd4fc6f478149fff6f6ff934204ceb41198b1",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/B01.CHL003.PlayModeTests.asmdef": "29f79be3a6103f2861a98188dc6eda83a04bf5ec",
+    "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003_Demo.unity": "2852e6f6a7738bf18d8ec3fdda3626b097549339",
+}
 def blob_id(raw):
     return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
 
 def main():
     receipts=[]
-    for path, expected in SOURCES.items():
-        url="https://raw.githubusercontent.com/C8LyNn/RoboRougelike/"+PIN+"/"+path
+    chl_receipts=[]
+    for path, expected in list(SOURCES.items()) + list(CHL_SOURCES.items()):
+        source_pin = CHL_PIN if path in CHL_SOURCES else PIN
+        url="https://raw.githubusercontent.com/C8LyNn/RoboRougelike/"+source_pin+"/"+path
         err=None
         for trial in range(3):
             try:
@@ -38,11 +54,14 @@ def main():
         file=DEST/path
         file.parent.mkdir(parents=True,exist_ok=True)
         file.write_bytes(raw)
-        receipts.append({"path":path,"git_blob":actual,
-          "sha256":hashlib.sha256(raw).hexdigest(),"bytes":len(raw)})
-    (DEST/"receipt.json").write_text(json.dumps({"commit":PIN,"actual_pinned_host_files":receipts,
+        item={"path":path,"git_blob":actual,
+          "sha256":hashlib.sha256(raw).hexdigest(),"bytes":len(raw)}
+        (chl_receipts if path in CHL_SOURCES else receipts).append(item)
+    (DEST/"receipt.json").write_text(json.dumps({"commit":PIN,"chl_commit":CHL_PIN,
+       "actual_pinned_host_files":receipts,"actual_pinned_chl_files":chl_receipts,
        "native_unity":"NOT_RUN"},indent=2)+"\n",encoding="utf-8")
     print("ACTUAL_PINNED_CODEX_CSHARP_VERIFIED",len(receipts),"ORIGINAL_GIT_BLOBS")
+    print("ACTUAL_PINNED_CHL285_SOURCE_VERIFIED",len(chl_receipts),"ORIGINAL_GIT_BLOBS",CHL_PIN)
 
 if __name__=="__main__":
     main()
