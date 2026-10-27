@@ -19,6 +19,6 @@ All interactions are UX fiction and should be run using the standalone HTML.
 
 Recommended moderated protocol: 3–5 users, counterbalanced A/B/C order, observe completion time, critical misread rate, incorrect "PhysX cleared" assumption count, wrong clicks, preference + quote; B01-11 should independently decide sample and interpretation. No participant testing performed by B01-12.
 
-**Automation actual:** 23 PASS / 0 FAIL in Chromium (Playwright, viewport 1440×960, direct page set_content); full runnable script/screenshots in W17 research ZIP. **Unity/native/real 3×Light+3×Heavy: NOT_RUN.**
+**Automation actual:** 28 PASS / 0 FAIL in Chromium (Playwright, viewport 1440×960, direct page set_content); full runnable script/screenshots in W17 research ZIP. **Unity/native/real 3×Light+3×Heavy: NOT_RUN.**
 
 **Exit criteria for future adoption:** B01-23 validates actual typed sockets, colliders, rotated bounds, broadphase fail-closed. B01-20/60 verify real CHL CP finish arbitration, retry, physics and 6 measured drive completions. No implementation claims from UI research.
