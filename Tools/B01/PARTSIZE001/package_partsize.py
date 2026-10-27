@@ -35,13 +35,24 @@ def source_paths():
         "Tools/B01/PARTSIZE001","Docs/B01/PARTSIZE001"],cwd=ROOT).decode().splitlines()
     return sorted(lines)
 
+def committed_bytes(path):
+    """Canonical Git HEAD blob bytes, never checkout-smudged CRLF bytes.
+
+    Source package is immutable per committed SHA on Windows and Linux.
+    It does NOT package dirty/uncommitted worktree edits.
+    """
+    if not valid_path(path):
+        raise ValueError("BAD_OR_OUT_OF_SCOPE_BLOB_PATH")
+    return subprocess.check_output(["git","show","HEAD:"+path],cwd=ROOT)
+
+
 def validate(files):
     if not files or len(files)!=len(set(files)) or not all(valid_path(x) for x in files):
         raise ValueError("BAD_OR_OUT_OF_SCOPE_SOURCE_PATH")
     if SIBLING_META not in files:raise ValueError("MISSING_PACKAGE_FOLDER_META")
     meta_guids={}
     for path in files:
-        data=(ROOT/path).read_bytes()
+        data=committed_bytes(path)
         if not data:raise ValueError("EMPTY_FILE:"+path)
         if path.endswith(".meta"):
             txt=data.decode("utf8")
@@ -76,8 +87,8 @@ def build(files,source_sha):
        "native_unity":"NOT_RUN","independent_B01_60":"NOT_RUN",
        "codex_target_sha":None,"CODEX_ACK":None,"G2":G2,
        "note":"Real C# geometry portable checks are NOT Unity or actual PhysX. Source-derived reference fixture is not a live measured wheel/gun model.",
-       "files":[{"path":path,"bytes":(ROOT/path).stat().st_size,
-                 "sha256":sha((ROOT/path).read_bytes())} for path in files],
+       "files":[{"path":path,"bytes":len(committed_bytes(path)),
+                 "sha256":sha(committed_bytes(path))} for path in files],
        "guid_count":len(guids),"source_file_count":len(files)
     }
     out=io.BytesIO()
@@ -86,7 +97,7 @@ def build(files,source_sha):
             zi=zipfile.ZipInfo(path,date_time=(2026,10,27,8,0,0))
             zi.compress_type=zipfile.ZIP_DEFLATED
             zi.external_attr=0o100644<<16
-            archive.writestr(zi,(ROOT/path).read_bytes(),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+            archive.writestr(zi,committed_bytes(path),compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
         zi=zipfile.ZipInfo(MANIFEST,date_time=(2026,10,27,8,0,0))
         zi.compress_type=zipfile.ZIP_DEFLATED
         zi.external_attr=0o100644<<16
