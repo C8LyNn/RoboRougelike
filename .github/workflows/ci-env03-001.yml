@@ -31,7 +31,7 @@ jobs:
       - name: Install real Blender from Ubuntu repository
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender
+          sudo apt-get install -y blender python3-numpy
           blender --version | head -3
 
       - name: Generate BLEND, GLB, and two CPU preview renders
@@ -40,6 +40,8 @@ jobs:
           set -euo pipefail
           mkdir -p env03-001-artifacts
           blender -b -noaudio --python Tools/EnvironmentFactory/ENV03/ENV03-001/generate_env03_001.py -- --output-dir "$PWD/env03-001-artifacts" 2>&1 | tee env03-001-artifacts/blender_export.log
+          test -s env03-001-artifacts/ENV03-001_ArenaWall.blend
+          test -s env03-001-artifacts/ENV03-001_ArenaWall.glb
 
       - name: Independently inspect saved BLEND and re-import GLB
         shell: bash
