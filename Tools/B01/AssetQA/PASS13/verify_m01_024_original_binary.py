@@ -134,6 +134,17 @@ def main():
                 options.append((worst,order,signs,scale))
     options.sort()
     candidate=options[0]
+    assert candidate[0]<0.00001, ("FAIL CLOSED: original FBX mesh basis cannot be reconciled",candidate)
+    # Clearly labelled SYNTHETIC falsifier: shift one original FBX submesh 20mm
+    # and ensure the source-mesh reconciliation would reject the corruption.
+    witness=sorted(objs)[0]
+    original=objs[witness]
+    order,signs,scale=candidate[1],candidate[2],candidate[3]
+    expected=bbox([tuple(scale*signs[i]*p[order[i]] for i in range(3))
+                   for p in original])
+    forged=bbox([(p[0]+.020,p[1],p[2]) for p in fbx[witness]])
+    mutant_rejected=err(expected,forged)>.005
+    assert mutant_rejected, "FAIL CLOSED: +20mm mesh payload mutation not detected"
     report={
        "original_commit":COMMIT,"original_blobs":BLOBS,
        "actual_binary_bytes":{k:len(v) for k,v in raw.items()},
@@ -148,6 +159,7 @@ def main():
            "max_aabb_delta_m":candidate[0],"permutation":candidate[1],
            "signs":candidate[2],"unit_scale":candidate[3]},
        "fbx_raw_mesh_global_match_10um":candidate[0]<0.00001,
+       "synthetic_fbx_20mm_negative_control":"EXPECTED_REJECTION",
        "glb_original_meshes_matching_obj_basis":51,
        "glb_max_aabb_delta_m":glb_max,
        "actual_test_kind":"GIT_ORIGINAL_BINARY_DEFLATE+OBJ_GLB_FBX_SOURCE_QA",
