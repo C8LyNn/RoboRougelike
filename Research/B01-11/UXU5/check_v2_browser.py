@@ -14,7 +14,7 @@ OUT = Path(os.getenv("B01_UX_OUT", "Research/B01-11/UXU5/output"))
 OUT.mkdir(parents=True, exist_ok=True)
 data = SOURCE.read_bytes()
 assert hashlib.sha256(data).hexdigest() == EXPECTED_SHA256, "SOURCE_SHA256_MISMATCH_FAIL_CLOSED"
-blob = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\\0" + data).hexdigest()
+blob = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\x00" + data).hexdigest()
 assert blob == EXPECTED_BLOB_SHA1, "SOURCE_BLOB_SHA1_MISMATCH_FAIL_CLOSED"
 html = data.decode("utf-8")
 results = []
