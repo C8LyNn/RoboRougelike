@@ -118,7 +118,12 @@ class ActualN27CorridorQA(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"PRODUCER_GATE_POLICY_DRIFT"):
             analyze(self.demo,old)
     def test_23_mutant_finish_final_platform_shortened_rejected(self):
+        # Preserve bridge->final overlap while shortening ONLY the exit.
+        # Otherwise the earlier seam check masks the intended end-of-track guard.
         old=self.demo.replace(
+            'Box("FINAL_PLATFORM", new Vector3(0f, 1.38f, 34.5f)',
+            'Box("FINAL_PLATFORM", new Vector3(0f, 1.38f, 31.5f)',1)
+        old=old.replace(
             'new Vector3(4.2f, .60f, 11f)',
             'new Vector3(4.2f, .60f, 5f)',1)
         self.assertNotEqual(old,self.demo)
