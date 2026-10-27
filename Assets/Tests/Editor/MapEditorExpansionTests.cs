@@ -42,6 +42,19 @@ public sealed class MapEditorExpansionTests
         Assert.That(typeof(MapItem).GetField("scaleZ").GetValue(copy.Items[1]),Is.EqualTo(4));
         Assert.That(Enum.GetValues(typeof(MapItemKind)).Length,Is.GreaterThanOrEqualTo(10));
     }
+    [Test] public void ExistingObjectCanBeResizedAndBlockedResizeIsAtomic()
+    {
+        var m=new MapDraft();Assert.That(m.Place(MapItemKind.Wall,0,0,0),Is.True);
+        Assert.That(m.Place(MapItemKind.Obstacle,1,0,0),Is.True);
+        var resize=typeof(MapDraft).GetMethod("Resize");var at=typeof(MapDraft).GetMethod("ItemAt");
+        Assert.That(resize,Is.Not.Null);Assert.That(at,Is.Not.Null);
+        var wall=at.Invoke(m,new object[]{0,0});
+        Assert.That(resize.Invoke(m,new object[]{wall,0,2,1,1}),Is.False);
+        Assert.That(typeof(MapItem).GetField("scaleX").GetValue(wall),Is.EqualTo(1));
+        Assert.That(resize.Invoke(m,new object[]{wall,0,1,3,1}),Is.True);
+        Assert.That(typeof(MapItem).GetField("scaleY").GetValue(wall),Is.EqualTo(3));
+        Assert.That(m.Undo(),Is.True);Assert.That(typeof(MapItem).GetField("scaleY").GetValue(m.Items[0]),Is.EqualTo(1));
+    }
     [UnityTest] public IEnumerator GhostMatchesScaledRealGeometryAndFloorHasCollider()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
