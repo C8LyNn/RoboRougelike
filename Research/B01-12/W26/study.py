@@ -42,7 +42,7 @@ def expected_rows():
             fixture = {
                 "UX01": "UNMEASURED_PHYSICAL_ENVELOPE",
                 "UX02": FIXTURES[idx // 2],
-                "UX03": "LOGICAL_OVERLAP",
+                "UX03": "LOGICAL_OCCUPIED",
                 "UX04": "CHL_WRONG_CP_AND_FALL",
                 "UX05": "CHL_RETRY_AND_RIG_CONTEXT",
             }[case]
@@ -274,6 +274,25 @@ class Selftest(unittest.TestCase):
     def test_17_extra_result_not_applicable_to_other_cases(self):
         r=self.complete();r[0]["retry_seconds"]="1"
         self.assertEqual(report(r,self.verify)["test_status"],"FAIL")
+
+
+    def test_18_ux03_matches_actual_html(self):
+        html = Path(__file__).with_name("index.html").read_text(encoding="utf-8")
+        self.assertEqual({r["fixture"] for r in expected_rows() if r["case_id"]=="UX03"}, {"LOGICAL_OCCUPIED"})
+        self.assertIn("LOGICAL_OCCUPIED", html)
+        self.assertNotIn("LOGICAL_OVERLAP", html)
+    def test_19_old_stale_fixture_rejected(self):
+        rows = expected_rows()
+        for r in rows:
+            if r["case_id"] == "UX03": r["fixture"] = "LOGICAL_OVERLAP"
+        errors, completed = validate(rows)
+        self.assertEqual(sum("FIXTURE_MISMATCH" in e for e in errors), 24)
+        self.assertEqual(len(completed), 0)
+    def test_20_new_blank_matrix_valid_but_not_run(self):
+        rows = expected_rows()
+        self.assertEqual(len(rows), 120)
+        self.assertEqual(validate(rows), ([], []))
+        self.assertEqual(report(rows, self.verify)["study_status"], "NOT_RUN")
 
 
 def main():
