@@ -88,6 +88,7 @@ public sealed class MapEditorDraftTests
             {
                 yield return new WaitForFixedUpdate();drive.Step(1,0,10,4,90);
                 if(drive.GroundedWheels>0)grounded++;maximumZ=Mathf.Max(maximumZ,body.position.z);
+                if(i%100==0)Debug.Log($"[MapEditor physics] step={i} position={body.position} velocity={body.linearVelocity} grounded={drive.GroundedWheels} rotation={body.rotation.eulerAngles}");
             }
             Assert.That(grounded,Is.GreaterThan(0),"Real wheels must contact edited terrain");
             Assert.That(maximumZ,Is.GreaterThan(-6),"Real wheel forces must propel the player vehicle");
