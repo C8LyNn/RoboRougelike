@@ -77,7 +77,7 @@ def ux02(p):
         p.locator("#reasonFixture").select_option(option)
         check(code in p.locator("#layers").inner_text(), f"Reason not in layered context: {code}")
         check(code in p.locator("#placement").inner_text(), f"Reason not at point of action: {code}")
-        check("NIEZWERYFIKOWANY" in p.locator("#layers").inner_text() or "ODRZUCONE" in p.locator("#placement").inner_text(), "Mock accepted as physical success")
+        check(p.locator("#placement").get_attribute("data-severity") == ("invalid" if option == "penetration" else "unknown"), "Mock validation status incorrectly accepted")
     check(p.locator("#layers .layer").count() == 3, "Not three separate layers")
     check("MOUNT_AUTHORITY: UNVERIFIED" in p.locator("#researchReady").inner_text(), "Mock approved")
 
