@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PIN=2b27c3255e6979a291652103bbb7dac2f6c425c5
+          PIN=937838662f79c4c441d682d731fa860e4cc3d0f1
           git fetch --depth=1 origin "$PIN"
           test "$(git rev-parse FETCH_HEAD)" = "$PIN"
           out=/tmp/b01-partsize-pr286
@@ -92,6 +92,7 @@ jobs:
           printf 'B01-23 PR286 EXACT_SHA=%s\n' "$PIN" | tee "$out/PR286_SOURCE_RECEIPT.txt"
           sha256sum "$out"/* | tee -a "$out/PR286_SOURCE_RECEIPT.txt"
           echo "B01_PARTSIZE_PR286_SOURCE=$out" >> "$GITHUB_ENV"
+          echo "B01_PARTSIZE_PR286_HEAD=$PIN" >> "$GITHUB_ENV"
       - name: Execute read-only producer-vs-Codex source audit and mutations
         shell: bash
         run: |
