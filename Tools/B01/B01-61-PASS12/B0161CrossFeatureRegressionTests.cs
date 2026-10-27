@@ -77,6 +77,7 @@ public sealed class B0161CrossFeatureRegressionTests
         Assert.That(garageModel.WeaponGroupB,Is.EqualTo(R4WeaponKind.Basic));
         var originalGun=garageModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
         var gunId=originalGun.Id;
+        var originalGunHealth=originalGun.Health;
         var scrap=garageModel.Scrap;
         var partIds=garageModel.Parts.Select(p=>p.Id).OrderBy(id=>id).ToArray();
         Assert.That(run.ReturnToMapEditorFromGarage(),Is.True);
@@ -103,6 +104,18 @@ public sealed class B0161CrossFeatureRegressionTests
         // never the original garage build restored after returning to editor.
         Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,-.1f),Is.True);
         Assert.That(run.VehicleModel.SuspensionMode,Is.EqualTo(ActiveSuspensionSupportMode.FullSupport));
+
+        // Cross-feature negative missed by separate model-only tests:
+        // mutate BOTH firing assignment and owned-part health in the active map test.
+        // Neither test-only change may leak into the original garage model.
+        run.VehicleModel.SwapWeaponGroups();
+        Assert.That(run.VehicleModel.WeaponGroupA,Is.EqualTo(R4WeaponKind.Basic));
+        Assert.That(run.VehicleModel.WeaponGroupB,Is.Null);
+        var temporaryGun=run.VehicleModel.Parts.First(p=>p.Id==gunId);
+        Assert.That(temporaryGun,Is.Not.SameAs(originalGun));
+        temporaryGun.Health=0;
+        Assert.That(temporaryGun.Health,Is.Zero);
+        Assert.That(originalGun.Health,Is.EqualTo(originalGunHealth));
         run.TogglePause();
         Assert.That(run.Paused,Is.True);
         Assert.That(run.ReturnFromEditedMapTest(),Is.True);
@@ -115,6 +128,8 @@ public sealed class B0161CrossFeatureRegressionTests
         Assert.That(run.VehicleModel,Is.SameAs(garageModel));
         Assert.That(run.VehicleModel.WeaponGroupA,Is.Null);
         Assert.That(run.VehicleModel.WeaponGroupB,Is.EqualTo(R4WeaponKind.Basic));
+        Assert.That(run.VehicleModel.Parts.First(p=>p.Id==gunId).Health,Is.EqualTo(originalGunHealth),
+            "Test-only gun damage must not overwrite the original garage part state");
         Assert.That(run.VehicleModel.SuspensionMode,Is.EqualTo(ActiveSuspensionSupportMode.AssistOnly));
         Assert.That(run.VehicleModel.SuspensionHeightOffset,Is.EqualTo(.2f).Within(.001f));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
