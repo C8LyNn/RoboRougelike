@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T21:05:53.9095527Z",
+    "source":  "7299dcc5fd63ac042a0ffcd97b69d02fb8744649",
+    "stage":  "SUSP309-RC",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"<WORKSPACE>\\Desktop\\Prototypy\\RoboRougelike-Suspension309\\Artifacts\\Local\\FM270-SUSP309-RC-20261027T210233Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"SuspensionUxTests;MOV009IntegrationTests;MOV009ModelTests;GarageEditFreedomTests;WeaponGroupTests;PerWeaponReticleTests;MapEditorIntegrationTests;MapEditorExpansionTests;Exit273PauseTests;RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests;B01.CAMERA001.Tests.Camera001WorldCollisionTests\""
+                  ],
+    "startedUtc":  "2026-10-27T21:03:45.6902225Z",
+    "phase":  "EditMode"
+}

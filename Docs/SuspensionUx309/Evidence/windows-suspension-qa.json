@@ -1,0 +1,21 @@
+{
+    "status": "PASS",
+    "error": "",
+    "missingStatus": "Brak modułu — zamontuj zawieszenie.",
+    "readyStatus": "Gotowe — zadziała po ruszeniu.",
+    "activeStatus": "Pracuje — podpiera pojazd.",
+    "hoverStatus": "Nieaktywne — wybrano napęd Hover.",
+    "damagedStatus": "Brak sprawnych modułów zawieszenia.",
+    "batchMode": true,
+    "missing": true,
+    "garage": true,
+    "off": true,
+    "assist": true,
+    "full": true,
+    "height": true,
+    "actualForce": true,
+    "paused": true,
+    "hover": true,
+    "damaged": true,
+    "force": 1161.3800048828125
+}
