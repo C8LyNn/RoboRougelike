@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="61" result="Passed" total="61" passed="61" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 19:58:03Z" end-time="2026-10-27 19:58:07Z" duration="3,6141622">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1250" result="Passed" start-time="2026-10-27 19:58:03Z" end-time="2026-10-27 19:58:07Z" duration="3.614162" total="61" passed="61" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1556" name="Assembly-CSharp-Editor.dll" fullname="PROJECT/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="458" result="Passed" start-time="2026-10-27 19:58:03Z" end-time="2026-10-27 19:58:07Z" duration="3.487741" total="39" passed="39" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="21368" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1180" name="MapEditorDraftTests" fullname="MapEditorDraftTests" classname="MapEditorDraftTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-27 19:57:26Z" end-time="2026-10-27 19:57:36Z" duration="10.351031" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1185" name="ActualGeometrySupportsRealR6WheelDrivenVehicle" fullname="MapEditorDraftTests.ActualGeometrySupportsRealR6WheelDrivenVehicle" methodname="ActualGeometrySupportsRealR6WheelDrivenVehicle" classname="MapEditorDraftTests" runstate="Runnable" seed="2088118038" result="Passed" start-time="2026-10-27 19:57:23Z" end-time="2026-10-27 19:57:36Z" duration="12.963748" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[MapEditor physics] step=0 position=(0.00, 0.66, -12.00) velocity=(0.00, -0.78, 0.00) grounded=4 rotation=(0.00, 0.00, 0.00)
+[MapEditor physics] step=100 position=(0.00, 1.28, 0.34) velocity=(-0.03, 2.41, 9.78) grounded=4 rotation=(343.65, 0.09, 359.98)
+[MapEditor physics] step=200 position=(0.15, 0.73, 20.19) velocity=(0.27, -0.41, 10.10) grounded=2 rotation=(357.28, 0.06, 357.49)
+[MapEditor physics] step=300 position=(0.09, -15.45, 40.19) velocity=(-0.04, -17.70, 10.03) grounded=0 rotation=(71.73, 0.31, 0.68)
+[MapEditor physics] step=400 position=(0.01, -70.59, 60.28) velocity=(-0.04, -37.32, 10.03) grounded=0 rotation=(43.15, 179.05, 179.20)
+]]></output>
+        </test-case>
+        <test-case id="1182" name="BuildRotateRemoveUndoRedoAndUniqueMarkers" fullname="MapEditorDraftTests.BuildRotateRemoveUndoRedoAndUniqueMarkers" methodname="BuildRotateRemoveUndoRedoAndUniqueMarkers" classname="MapEditorDraftTests" runstate="Runnable" seed="1912949691" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:36Z" duration="0.003467" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1183" name="JsonLoadIsTransactionalAndTestsRequireSpawnFinishAndGround" fullname="MapEditorDraftTests.JsonLoadIsTransactionalAndTestsRequireSpawnFinishAndGround" methodname="JsonLoadIsTransactionalAndTestsRequireSpawnFinishAndGround" classname="MapEditorDraftTests" runstate="Runnable" seed="1367894576" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:36Z" duration="0.001889" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1184" name="LocalFileRoundTripAndNameValidation" fullname="MapEditorDraftTests.LocalFileRoundTripAndNameValidation" methodname="LocalFileRoundTripAndNameValidation" classname="MapEditorDraftTests" runstate="Runnable" seed="691781508" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:36Z" duration="0.014718" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1181" name="RuntimeMapDraftExistsForInGameEditing" fullname="MapEditorDraftTests.RuntimeMapDraftExistsForInGameEditing" methodname="RuntimeMapDraftExistsForInGameEditing" classname="MapEditorDraftTests" runstate="Runnable" seed="2136467612" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:36Z" duration="0.000225" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1186" name="MapEditorExpansionTests" fullname="MapEditorExpansionTests" classname="MapEditorExpansionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-27 19:57:39Z" end-time="2026-10-27 19:57:39Z" duration="0.308281" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1190" name="ExistingObjectCanBeResizedAndBlockedResizeIsAtomic" fullname="MapEditorExpansionTests.ExistingObjectCanBeResizedAndBlockedResizeIsAtomic" methodname="ExistingObjectCanBeResizedAndBlockedResizeIsAtomic" classname="MapEditorExpansionTests" runstate="Runnable" seed="839558292" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:36Z" duration="0.000814" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1187" name="FullFloorCanBeUndoneRedoneAndSaved" fullname="MapEditorExpansionTests.FullFloorCanBeUndoneRedoneAndSaved" methodname="FullFloorCanBeUndoneRedoneAndSaved" classname="MapEditorExpansionTests" runstate="Runnable" seed="949149219" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:36Z" duration="0.001153" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1191" name="GhostMatchesScaledRealGeometryAndFloorHasCollider" fullname="MapEditorExpansionTests.GhostMatchesScaledRealGeometryAndFloorHasCollider" methodname="GhostMatchesScaledRealGeometryAndFloorHasCollider" classname="MapEditorExpansionTests" runstate="Runnable" seed="708484940" result="Passed" start-time="2026-10-27 19:57:36Z" end-time="2026-10-27 19:57:39Z" duration="2.883385" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+        </test-case>
+        <test-case id="1189" name="OldMapsLoadAtUnitScaleAndNewScaleRoundTrips" fullname="MapEditorExpansionTests.OldMapsLoadAtUnitScaleAndNewScaleRoundTrips" methodname="OldMapsLoadAtUnitScaleAndNewScaleRoundTrips" classname="MapEditorExpansionTests" runstate="Runnable" seed="467777163" result="Passed" start-time="2026-10-27 19:57:39Z" end-time="2026-10-27 19:57:39Z" duration="0.002401" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1188" name="ScaleOccupiesRotatedCellsAndRemovesFromCoveredCell" fullname="MapEditorExpansionTests.ScaleOccupiesRotatedCellsAndRemovesFromCoveredCell" methodname="ScaleOccupiesRotatedCellsAndRemovesFromCoveredCell" classname="MapEditorExpansionTests" runstate="Runnable" seed="754751541" result="Passed" start-time="2026-10-27 19:57:39Z" end-time="2026-10-27 19:57:39Z" duration="0.001043" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1192" name="MapEditorIntegrationTests" fullname="MapEditorIntegrationTests" classname="MapEditorIntegrationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.478415" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1193" name="MenuEditorGarageVehicleTestAndReturnPreserveMap" fullname="MapEditorIntegrationTests.MenuEditorGarageVehicleTestAndReturnPreserveMap" methodname="MenuEditorGarageVehicleTestAndReturnPreserveMap" classname="MapEditorIntegrationTests" runstate="Runnable" seed="630025273" result="Passed" start-time="2026-10-27 19:57:39Z" end-time="2026-10-27 19:57:42Z" duration="3.395120" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1213" name="PerWeaponReticleTests" fullname="PerWeaponReticleTests" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.015490" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1217" name="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" fullname="PerWeaponReticleTests.AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" methodname="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" classname="PerWeaponReticleTests" runstate="Runnable" seed="1250976674" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.006933" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1215" name="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" fullname="PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" methodname="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" classname="PerWeaponReticleTests" runstate="Runnable" seed="1221927915" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000693" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1214" name="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" fullname="PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" methodname="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" classname="PerWeaponReticleTests" runstate="Runnable" seed="726477739" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.001199" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1216" name="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" fullname="PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" methodname="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" classname="PerWeaponReticleTests" runstate="Runnable" seed="2118993686" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.001091" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1218" name="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" fullname="PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" methodname="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" classname="PerWeaponReticleTests" runstate="Runnable" seed="129384561" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.002457" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1219" name="ViewportMarkersMapCorrectlyToLetterboxedHud" fullname="PerWeaponReticleTests.ViewportMarkersMapCorrectlyToLetterboxedHud" methodname="ViewportMarkersMapCorrectlyToLetterboxedHud" classname="PerWeaponReticleTests" runstate="Runnable" seed="1719308921" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000863" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1256" name="R3GarageModelTests" fullname="R3GarageModelTests" classname="R3GarageModelTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.013926" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1259" name="BuyingChecksConnectivityOccupancyAndFundsAtomically" fullname="R3GarageModelTests.BuyingChecksConnectivityOccupancyAndFundsAtomically" methodname="BuyingChecksConnectivityOccupancyAndFundsAtomically" classname="R3GarageModelTests" runstate="Runnable" seed="668109821" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.002167" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1262" name="EmergencyOnlyRebuildsMissingEssentialsAtFullPrice" fullname="R3GarageModelTests.EmergencyOnlyRebuildsMissingEssentialsAtFullPrice" methodname="EmergencyOnlyRebuildsMissingEssentialsAtFullPrice" classname="R3GarageModelTests" runstate="Runnable" seed="618490533" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.007366" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1261" name="RemovalProtectsCoreEssentialPlanAndConnectedFragments" fullname="R3GarageModelTests.RemovalProtectsCoreEssentialPlanAndConnectedFragments" methodname="RemovalProtectsCoreEssentialPlanAndConnectedFragments" classname="R3GarageModelTests" runstate="Runnable" seed="1191349362" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000667" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1260" name="RepairIsCheaperThanReplacingLostModuleAndDoesNotCreateFreeParts" fullname="R3GarageModelTests.RepairIsCheaperThanReplacingLostModuleAndDoesNotCreateFreeParts" methodname="RepairIsCheaperThanReplacingLostModuleAndDoesNotCreateFreeParts" classname="R3GarageModelTests" runstate="Runnable" seed="1459630421" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000343" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1258" name="RunDamageDoesNotMutateIntactBlueprint" fullname="R3GarageModelTests.RunDamageDoesNotMutateIntactBlueprint" methodname="RunDamageDoesNotMutateIntactBlueprint" classname="R3GarageModelTests" runstate="Runnable" seed="1356240883" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000122" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1257" name="ThreeBlueprintsHaveDistinctConnectedGeometryAndMobility" fullname="R3GarageModelTests.ThreeBlueprintsHaveDistinctConnectedGeometryAndMobility" methodname="ThreeBlueprintsHaveDistinctConnectedGeometryAndMobility" classname="R3GarageModelTests" runstate="Runnable" seed="741023953" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.001381" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1298" name="R4SalvageModelTests" fullname="R4SalvageModelTests" classname="R4SalvageModelTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.008071" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1300" name="FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" fullname="R4SalvageModelTests.FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" methodname="FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" classname="R4SalvageModelTests" runstate="Runnable" seed="539325887" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.005417" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1301" name="RunOwnershipAndLedgerIdsDoNotSurviveNewModel" fullname="R4SalvageModelTests.RunOwnershipAndLedgerIdsDoNotSurviveNewModel" methodname="RunOwnershipAndLedgerIdsDoNotSurviveNewModel" classname="R4SalvageModelTests" runstate="Runnable" seed="1874673426" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000770" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1299" name="SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" fullname="R4SalvageModelTests.SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" methodname="SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" classname="R4SalvageModelTests" runstate="Runnable" seed="431285825" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:42Z" duration="0.000720" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1339" name="R6RangeTests" fullname="R6RangeTests" classname="R6RangeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-27 19:58:00Z" end-time="2026-10-27 19:58:01Z" duration="0.492552" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1341" name="ExpeditionRangePreservesInventoryUpgradesAndMoneyAcrossRepeatedVisits" fullname="R6RangeTests.ExpeditionRangePreservesInventoryUpgradesAndMoneyAcrossRepeatedVisits" methodname="ExpeditionRangePreservesInventoryUpgradesAndMoneyAcrossRepeatedVisits" classname="R6RangeTests" runstate="Runnable" seed="206662349" result="Passed" start-time="2026-10-27 19:57:42Z" end-time="2026-10-27 19:57:46Z" duration="3.563523" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=1; złom z demontażu=33
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1342" name="MaximumConstructionFiresPhysicalShotAndReturnsWithItsOriginalBudget" fullname="R6RangeTests.MaximumConstructionFiresPhysicalShotAndReturnsWithItsOriginalBudget" methodname="MaximumConstructionFiresPhysicalShotAndReturnsWithItsOriginalBudget" classname="R6RangeTests" runstate="Runnable" seed="555212018" result="Passed" start-time="2026-10-27 19:57:46Z" end-time="2026-10-27 19:57:57Z" duration="11.274926" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 180 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1340" name="MenuRangeUsesEditableStarterAndResetDoesNotChargeGarage" fullname="R6RangeTests.MenuRangeUsesEditableStarterAndResetDoesNotChargeGarage" methodname="MenuRangeUsesEditableStarterAndResetDoesNotChargeGarage" classname="R6RangeTests" runstate="Runnable" seed="1371448013" result="Passed" start-time="2026-10-27 19:57:57Z" end-time="2026-10-27 19:58:01Z" duration="3.456562" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1544" name="WeaponTypeLimitTests" fullname="WeaponTypeLimitTests" classname="WeaponTypeLimitTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-27 19:58:03Z" end-time="2026-10-27 19:58:07Z" duration="3.446498" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1554" name="CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" fullname="WeaponTypeLimitTests.CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" methodname="CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" classname="WeaponTypeLimitTests" runstate="Runnable" seed="468626881" result="Passed" start-time="2026-10-27 19:58:01Z" end-time="2026-10-27 19:58:01Z" duration="0.006853" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1552" name="LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" fullname="WeaponTypeLimitTests.LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" methodname="LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1965241198" result="Passed" start-time="2026-10-27 19:58:01Z" end-time="2026-10-27 19:58:01Z" duration="0.001636" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1553" name="RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" fullname="WeaponTypeLimitTests.RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" methodname="RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1363219147" result="Passed" start-time="2026-10-27 19:58:01Z" end-time="2026-10-27 19:58:01Z" duration="0.002318" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1551" name="ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" fullname="WeaponTypeLimitTests.ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" methodname="ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" classname="WeaponTypeLimitTests" runstate="Runnable" seed="425523535" result="Passed" start-time="2026-10-27 19:58:01Z" end-time="2026-10-27 19:58:01Z" duration="0.000623" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1555" name="TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts" fullname="WeaponTypeLimitTests.TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts" methodname="TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts" classname="WeaponTypeLimitTests" runstate="Runnable" seed="2053913565" result="Passed" start-time="2026-10-27 19:58:01Z" end-time="2026-10-27 19:58:07Z" duration="6.012152" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 140 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 140 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 141 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 141 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 142 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 142 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 143 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 143 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 144 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 144 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 145 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 145 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 146 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 146 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 147 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 147 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 148 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 148 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 149 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 149 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 150 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 150 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1550" name="TwelveIdenticalGunsAreAllowed" fullname="WeaponTypeLimitTests.TwelveIdenticalGunsAreAllowed" methodname="TwelveIdenticalGunsAreAllowed" classname="WeaponTypeLimitTests" runstate="Runnable" seed="571593333" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.001764" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1549" name="TwoTypesPermitRequestedNumberOfGuns" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.006933" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1545" name="TwoTypesPermitRequestedNumberOfGuns(1)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(1)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1581465930" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.002987" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1546" name="TwoTypesPermitRequestedNumberOfGuns(2)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(2)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="173691491" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000549" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1547" name="TwoTypesPermitRequestedNumberOfGuns(4)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(4)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="908354321" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000642" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1548" name="TwoTypesPermitRequestedNumberOfGuns(12)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(12)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1539464017" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000958" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1628" name="B01.CAMERA001.EditModeTests.dll" fullname="PROJECT/Library/ScriptAssemblies/B01.CAMERA001.EditModeTests.dll" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.034408" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="21368" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1629" name="B01" fullname="B01" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.032999" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1630" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.031739" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1631" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.030519" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1603" name="Camera001AimTimelineTests" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.015629" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1606" name="CallerCannotOverwriteRecordedPreviousTarget" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.CallerCannotOverwriteRecordedPreviousTarget" methodname="CallerCannotOverwriteRecordedPreviousTarget" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="440245087" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.003422" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1613" name="CsvRawFloatsRemainInvariantInCommaDecimalLocale" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.CsvRawFloatsRemainInvariantInCommaDecimalLocale" methodname="CsvRawFloatsRemainInvariantInCommaDecimalLocale" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="442105492" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.002634" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1607" name="InvalidFrameDoesNotMutateRecorder" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.InvalidFrameDoesNotMutateRecorder" methodname="InvalidFrameDoesNotMutateRecorder" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1745339725" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.001159" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1608" name="MonotonicFrameAndCsvQuoteEscapeFailClosed" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.MonotonicFrameAndCsvQuoteEscapeFailClosed" methodname="MonotonicFrameAndCsvQuoteEscapeFailClosed" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1678983306" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000294" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1610" name="NegativeFrameRejectedAndMaxIntFrameCannotWrap" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.NegativeFrameRejectedAndMaxIntFrameCannotWrap" methodname="NegativeFrameRejectedAndMaxIntFrameCannotWrap" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1004225033" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000312" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1611" name="RawProvenanceSurvivesCallerSpoofAndIsRecomputable" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.RawProvenanceSurvivesCallerSpoofAndIsRecomputable" methodname="RawProvenanceSurvivesCallerSpoofAndIsRecomputable" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="834165755" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.001972" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1604" name="RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" methodname="RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1553253970" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000310" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1609" name="SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" methodname="SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1038990169" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000580" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1612" name="StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" methodname="StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="195389897" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000376" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1605" name="UnchangedTargetWithChangedHitIdIsNotAnAngularJump" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.UnchangedTargetWithChangedHitIdIsNotAnAngularJump" methodname="UnchangedTargetWithChangedHitIdIsNotAnAngularJump" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1985287496" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000241" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1614" name="UnsafeCameraSampleNeverLabelsRateAsProvenCausality" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.UnsafeCameraSampleNeverLabelsRateAsProvenCausality" methodname="UnsafeCameraSampleNeverLabelsRateAsProvenCausality" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="304317191" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000166" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1615" name="Camera001AimTransitionTests" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.003369" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1619" name="ActualCameraPoseFailureHasPriority" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualCameraPoseFailureHasPriority" methodname="ActualCameraPoseFailureHasPriority" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="2088178084" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000214" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1620" name="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" methodname="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="737850740" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000126" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1621" name="InvalidZeroDeltaOrCoincidentTargetRejects" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.InvalidZeroDeltaOrCoincidentTargetRejects" methodname="InvalidZeroDeltaOrCoincidentTargetRejects" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1989029405" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000330" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1616" name="R12LightHitSwitchRequiresMoreThanOneFrameSlew" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.R12LightHitSwitchRequiresMoreThanOneFrameSlew" methodname="R12LightHitSwitchRequiresMoreThanOneFrameSlew" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="244737668" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000157" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1618" name="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.SafePoseButStableTargetGapIsUnresolvedNotCameraFault" methodname="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1788449923" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000109" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1617" name="StableTargetAndAlignedGunAreNotFalselyBlamed" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.StableTargetAndAlignedGunAreNotFalselyBlamed" methodname="StableTargetAndAlignedGunAreNotFalselyBlamed" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1767082844" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000104" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1622" name="Camera001FramingTests" fullname="B01.CAMERA001.Tests.Camera001FramingTests" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.009740" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1624" name="BiggerAndTallerRobotsDemandMoreFramingDistance" fullname="B01.CAMERA001.Tests.Camera001FramingTests.BiggerAndTallerRobotsDemandMoreFramingDistance" methodname="BiggerAndTallerRobotsDemandMoreFramingDistance" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="367018987" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.001168" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1626" name="DifferentResolutionWithSameAspectKeepsGeometry" fullname="B01.CAMERA001.Tests.Camera001FramingTests.DifferentResolutionWithSameAspectKeepsGeometry" methodname="DifferentResolutionWithSameAspectKeepsGeometry" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1842681576" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000381" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1623" name="EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" fullname="B01.CAMERA001.Tests.Camera001FramingTests.EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" methodname="EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1450837781" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.005606" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1627" name="InvalidGeometryAndNonFiniteRequestFailClosed" fullname="B01.CAMERA001.Tests.Camera001FramingTests.InvalidGeometryAndNonFiniteRequestFailClosed" methodname="InvalidGeometryAndNonFiniteRequestFailClosed" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1952640825" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000389" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1625" name="SafeMaximumZoomNeverExceedsConfiguredLimit" fullname="B01.CAMERA001.Tests.Camera001FramingTests.SafeMaximumZoomNeverExceedsConfiguredLimit" methodname="SafeMaximumZoomNeverExceedsConfiguredLimit" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="962507063" result="Passed" start-time="2026-10-27 19:58:07Z" end-time="2026-10-27 19:58:07Z" duration="0.000192" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: USER_DIR/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

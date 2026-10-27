@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T19:56:50.4856987Z",
+    "source":  "eb87d88fad30bfb52b79f0c82cd0472a60c5af58",
+    "stage":  "MAPEXPANSION-RC",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T19:56:38.6325810Z",
+    "phase":  "Compile"
+}
