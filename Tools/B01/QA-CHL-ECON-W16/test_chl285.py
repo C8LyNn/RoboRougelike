@@ -19,7 +19,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         receipt=json.loads(RECEIPT.read_text(encoding="utf8"))
-        if receipt.get("chl_commit")!="43f8fb6cae682c89d12618d883b387b0bf5bc30d":
+        if receipt.get("chl_commit")!="59214ee5fed2f17672ab796a3ddc86201c888d30":
             raise RuntimeError("PINNED_CHL285_SHA_CHANGED")
         cls.code=[(str(p),p.read_text(encoding="utf8")) for p in sorted(ROOT.rglob("*.cs"))]
         cls.core=(ROOT/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
