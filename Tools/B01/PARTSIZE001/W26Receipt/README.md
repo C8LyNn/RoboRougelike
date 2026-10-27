@@ -18,7 +18,7 @@ The external script `Run-UnityNative.ps1` DOES NOT stage or edit PARTSIZE source
 3. Run from a separate checkout of THIS read-only QA-only branch (or copy only the script, not Unity source into Codex):
 
 ```powershell
-pwsh -File "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1" -UnityEditor "C:\\Program Files\\Unity\\Hub\\Editor\\6000.3.14f1\\Editor\\Unity.exe" -ProjectPath "C:\\QA\\PartsizeDisposable" -EvidenceDir "C:\\QA\\Evidence\\Partsize_be2be0e"
+pwsh -File "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1" -UnityEditor "C:\Program Files\Unity\Hub\Editor\6000.3.14f1\Editor\Unity.exe" -ProjectPath "C:\QA\PartsizeDisposable" -EvidenceDir "C:\QA\Evidence\Partsize_be2be0e"
 ```
 
 4. Parse original generated files, not a rewritten XML summary:
