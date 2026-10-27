@@ -1,3 +1,10 @@
+## C1 native acceptance triggered by B01-21 QA PR #295
+
+- **E19** original C# analytic yaw8 Heavy four original spheres/chassis projection: 3.50m old gate RED, 3.70m aligned gate GREEN, strict >=0.25m minimum retained.
+- **P14** authored-only real Unity physical cross through CP0 of SAME Heavy Rigidbody at yaw8: modify CP0 to old 3.50m and confirm **zero** CP; Retry, restore original 3.70m CP, use same real physics and confirm CP count increments exactly +1. No direct call to EnterCheckpoint.
+- Complete suite becomes **19 authored EditMode / 14 authored PlayMode**. Native Unity runner/test XML/real Light/Heavy six completions remain NOT_RUN, license credentials preflight blocks CI-02/CI-03.
+- Source original geometry and explicit blocking conditions: `DEPENDENCY_C1_HEAVY_YAW8.md`. C1 green allows B01-40 current ZIP G0 and B01-60 licensed native G1 only; does NOT authorize merge.
+
 ## W17 same-course elapsed-time authority
 CHL003CourseController advances time ONLY once in FixedUpdate via `Time.fixedDeltaTime`; rendering callback Update does not modify timer. P13 verifies measured physics step count vs actual elapsed under varying render frame intervals, P04 was corrected to wait actual fixed steps after unpause. This is authored native Unity acceptance **NOT_RUN**; headless C# source test cannot prove Unity frame scheduling.
 
@@ -18,8 +25,8 @@ compiles and runs EXACT `Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Cou
 
 ## Licensed native Unity mandatory (not executed by producer)
 Open isolated demo in Unity6000.3.14f1 (URP), record actual compile Editor.log/exit and Test Framework:
-- EditMode18 exact E01–E15, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
-- PlayMode13 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
+- EditMode19 exact E01–E15, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
+- PlayMode14 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
 - Manual: 2 profiles Light/Heavy (real masses/collider footprints), 3 completed crossing attempts each, HUD and controls both input backends, at least 3 failed falls+retries, off-course/pause, no leaks. Record seed or static scene checksum, elapsed, checkpoint counts, fall/timeouts, bumper/wheel contact, screenshot/video, XML and actual process exits, all on pinned exact commit.
 - If a test is unsupported or fails: actual FAIL/NOT_RUN, no masking, report to B01-20 before source freeze. No G1 without independent B01-60.
 
