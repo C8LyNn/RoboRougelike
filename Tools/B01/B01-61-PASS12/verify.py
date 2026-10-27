@@ -27,6 +27,11 @@ def main():
     ck("Assist vs Full acceptance", "AssistOnly" in s and "FullSupport" in s)
     ck("identity and Scrap", "partIds" in s and "gunId" in s and "Is.EqualTo(scrap)" in s)
     ck("map and pause return", "Is.EqualTo(mapBefore)" in s and "ReturnFromEditedMapTest()" in s)
+    ck("original garage gun HP snapshot", "var originalGunHealth=originalGun.Health" in s)
+    ck("map test mutates disposable A/B assignment", "run.VehicleModel.SwapWeaponGroups();" in s and "Assert.That(run.VehicleModel.WeaponGroupB,Is.Null);" in s)
+    ck("map test mutates disposable owned gun health", "temporaryGun.Health=0;" in s and "Assert.That(temporaryGun.Health,Is.Zero);" in s)
+    ck("original owned gun HP restored", "run.VehicleModel.Parts.First(p=>p.Id==gunId).Health,Is.EqualTo(originalGunHealth)" in s)
+
     ck("native unrun declared", all(m[k]=="NOT_RUN" for k in ("Unity_EditMode","Unity_PlayMode","Windows_Player")))
     if not opt.fixture_only:
         sha=m["codex_sha"]
