@@ -30,6 +30,9 @@ namespace B01.CHL003
         public CHL003CourseController Course => course;
         public Rigidbody ActiveVehicle => vehicle;
         public CHL003VehicleMotor Motor => motor;
+        public Transform FinalCheckpointTransform =>
+            gatesLocal == null ? null : gatesLocal[gatesLocal.Length - 1].transform;
+        public Transform FinishTransform => finishLocal == null ? null : finishLocal.transform;
         public void SelectRigForTest(int index)
         {
             if (index != 0 && index != 1)
