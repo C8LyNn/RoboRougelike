@@ -19,6 +19,7 @@ namespace B01.CHL003
         private int retries;
         private float steer;
         private float drive;
+        private float guiDrive, guiSteer;
 
         private void Start()
         {
@@ -139,12 +140,16 @@ namespace B01.CHL003
 
         private void Update()
         {
-            drive = 0f;
-            steer = 0f;
+            // UI hold controls are a complete fallback when the game uses
+            // the new-only Input System without old axes.
+            drive = guiDrive;
+            steer = guiSteer;
             bool retry = false, pause = false, switchRig = false;
 #if ENABLE_LEGACY_INPUT_MANAGER
-            drive = Input.GetAxisRaw("Vertical");
-            steer = Input.GetAxisRaw("Horizontal");
+            float keysDrive = Input.GetAxisRaw("Vertical");
+            float keysSteer = Input.GetAxisRaw("Horizontal");
+            if (Mathf.Abs(keysDrive) > .01f) drive = keysDrive;
+            if (Mathf.Abs(keysSteer) > .01f) steer = keysSteer;
             retry = Input.GetKeyDown(KeyCode.R);
             pause = Input.GetKeyDown(KeyCode.P);
             switchRig = Input.GetKeyDown(KeyCode.Tab);
@@ -176,7 +181,15 @@ namespace B01.CHL003
             GUILayout.Label("Gate " + c.CheckpointIndex + "/" + c.CheckpointCount +
                 "  Time " + c.ElapsedSeconds.ToString("F2") +
                 "  State " + c.State + "  Fail " + c.LastFailure);
-            GUILayout.Label("W/S drive, A/D steer | R retry | P pause | TAB switch rig");
+            GUILayout.Label("W/S drive, A/D steer (legacy input), or GUI hold; R retry, P pause, TAB switch rig");
+            GUILayout.BeginHorizontal();
+            float uiForward = GUILayout.RepeatButton("HOLD DRIVE") ? 1f : 0f;
+            float uiBackward = GUILayout.RepeatButton("HOLD REVERSE") ? -1f : 0f;
+            float uiLeft = GUILayout.RepeatButton("HOLD LEFT") ? -1f : 0f;
+            float uiRight = GUILayout.RepeatButton("HOLD RIGHT") ? 1f : 0f;
+            GUILayout.EndHorizontal();
+            guiDrive = uiForward + uiBackward;
+            guiSteer = uiLeft + uiRight;
             GUILayout.Label("Goal: cross 4 gates in order, over low barrier + ramp + narrow bridge, reach finish.");
             if (GUILayout.Button("Retry / Reset course")) { course.Retry(); course.Begin(); retries++; }
             if (GUILayout.Button("Pause / Resume")) course.SetPaused(!course.IsPaused);
