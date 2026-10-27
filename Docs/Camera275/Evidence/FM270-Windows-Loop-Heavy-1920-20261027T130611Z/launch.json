@@ -1,0 +1,32 @@
+{
+    "pid":  55400,
+    "height":  1080,
+    "vehicle":  "Heavy",
+    "exeSHA256":  "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible":  true,
+    "width":  1920,
+    "source":  "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable":  "Builds/CAM275-Final/RoboRougelike.exe",
+    "mode":  "Loop",
+    "args":  [
+                 "-screen-fullscreen",
+                 "0",
+                 "-screen-width",
+                 1920,
+                 "-screen-height",
+                 1080,
+                 "-force-d3d11",
+                 "-logFile",
+                 "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T130611Z\\Player.log\"",
+                 "-fm270-output",
+                 "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T130611Z\"",
+                 "-fm270-mode",
+                 "Loop",
+                 "-fm270-vehicle",
+                 "Heavy"
+             ],
+    "requestedVehicle":  "Heavy",
+    "accessibilityClientAttached":  false,
+    "assemblySHA256":  "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc":  "2026-10-27T13:06:11.0550938Z"
+}

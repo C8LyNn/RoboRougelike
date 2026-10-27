@@ -20,7 +20,9 @@ modified=[line.split('\t',1)[1] for line in changes if line.startswith('M\t')]
 receipts=[]
 for name in modified:
     receipts.append(dict(path=name,baseSHA256=sha(git('show',base+':'+name)),currentSHA256=sha((r/name).read_bytes())))
-result=dict(source=git('rev-parse','HEAD').decode().strip(),baseline=base,GUIDs=len(guids),missingMeta=missing,
+build=json.loads((r/'Builds/CAM275-Final/receipt.json').read_text(encoding='utf-8-sig'))
+assert not git('diff','--name-only',build['source'],'--','Assets','Packages','ProjectSettings').strip(),'Source changed since build'
+result=dict(source=git('rev-parse','HEAD').decode().strip(),frozenBuildSource=build['source'],frozenGameBytesUnchanged=True,baseline=base,GUIDs=len(guids),missingMeta=missing,
     duplicateGUIDs=duplicates,deletedAssets=deleted,modifiedExistingMeta=modified_meta,preserved=preserved,modifiedFiles=receipts)
 assert not missing and not duplicates and not deleted and not modified_meta and all(preserved.values()),result
 out=r/'Docs/Camera275';out.mkdir(parents=True,exist_ok=True)

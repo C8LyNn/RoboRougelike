@@ -5,5 +5,5 @@
   "cameraFeel": "OWNER_ACCEPTED_AS_SUFFICIENT: significantly improved, further tweaks may eventually help; wheel rebound became the more noticeable problem",
   "requestedZoom": "Smooth distance change while camera stays attached to and follows the vehicle; no detached free camera",
   "qualification": "Feedback precedes the final smooth-zoom/reticle changes. Not acceptance at all five constructions or all FPS targets. No exit code is inferred from this message.",
-  "finalZipManualZoom": "PENDING"
+  "finalZipManualZoom": "NOT_RUN — the owner will test the delivered build personally"
 }

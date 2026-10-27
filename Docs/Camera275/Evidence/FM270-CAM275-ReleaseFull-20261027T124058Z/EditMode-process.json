@@ -1,0 +1,15 @@
+{
+    "exitCode":  2,
+    "finishedUtc":  "2026-10-27T13:28:37.2855015Z",
+    "source":  "c61894a6389e43727db42a6dd58f153a496923ee",
+    "stage":  "CAM275-ReleaseFull",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ReleaseFull-20261027T124058Z\\EditMode.xml\""
+                  ],
+    "startedUtc":  "2026-10-27T12:40:58.3819818Z",
+    "phase":  "EditMode"
+}

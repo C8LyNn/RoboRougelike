@@ -2218,6 +2218,93 @@
     "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Candidate1-Standard-60-20261027T095432Z"
   },
   {
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "height": 1080,
+    "vehicle": "Standard",
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "startedUtc": "2026-10-27T13:12:07.6639768Z",
+    "width": 1920,
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "fps": 60,
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      60
+    ],
+    "pid": 55192,
+    "stage": "ExtractedRetest",
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          35.584774305555555,
+          42.99103877314815,
+          47.572703028549384
+        ],
+        "nonBlack": true,
+        "sha256": "1edf21e70a9bf8ab027dd21c07c9918082443d076b5a797f7161482f377df76a"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:12:42.6730492Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "pid": 55192,
+      "startedUtc": "2026-10-27T13:12:07.6639768Z",
+      "exitHex": "0x00000000"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T13:12:10.9937661Z",
+        "finishedUtc": "2026-10-27T13:12:41.9936834Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 1830,
+        "groundedFrames": 1722,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 59.543540954589844,
+        "peakAngularStep": 0.6829932928085327,
+        "peakLinearStep": 0.535133957862854,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z"
+  },
+  {
     "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
     "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
     "source": "c61894a6389e43727db42a6dd58f153a496923ee",
@@ -3421,5 +3508,1322 @@
       }
     ],
     "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Wide-60-20261027T130102Z"
+  },
+  {
+    "pid": 60184,
+    "height": 1080,
+    "vehicle": "Heavy",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Camera",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Heavy-1920-20261027T131102Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Heavy-1920-20261027T131102Z\"",
+      "-fm270-mode",
+      "Camera",
+      "-fm270-vehicle",
+      "Heavy"
+    ],
+    "requestedVehicle": "Heavy",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:02.4499648Z",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          38.58211612654321,
+          50.12690055941358,
+          53.96656539351852
+        ],
+        "nonBlack": true,
+        "sha256": "04069e18e8e0c63783476a3c87c503169921eef3dc24297d6cfb8274a27e35f7"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.95691550925926,
+          50.98593557098766,
+          57.622024980709874
+        ],
+        "nonBlack": true,
+        "sha256": "e3263d61926b2433cc7e487f0100bd235bf008fafb72f13ad85afb68de7c81af"
+      },
+      {
+        "file": "02-explicit-part-detachment.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.61672164351852,
+          52.47841435185185,
+          60.074409239969135
+        ],
+        "nonBlack": true,
+        "sha256": "b008c3452bfd3724eca6eef144fd32a08afe7494f9a68503c9e6a19ea9a59516"
+      },
+      {
+        "file": "03-camera-final.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          48.02232301311729,
+          54.90869212962963,
+          61.898598572530865
+        ],
+        "nonBlack": true,
+        "sha256": "ea294ea210968ee663bfaf40da69fa5deccf434a7d7fb536e01af63690089ee5"
+      },
+      {
+        "file": "camera-120.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.27024739583333,
+          54.314858217592594,
+          59.585785108024695
+        ],
+        "nonBlack": true,
+        "sha256": "3a449989eaed49ec5bd348ff399ca5559ca5ddf05ffaa1d90324569661a5e396"
+      },
+      {
+        "file": "camera-240.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.42261043595679,
+          64.86762876157407,
+          75.70940248842592
+        ],
+        "nonBlack": true,
+        "sha256": "cec77205c56cc11de89add0b6b2ac0b328c2db8cd0bf9efb5b5212e1fbd7f949"
+      },
+      {
+        "file": "camera-360.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.53982349537037,
+          58.24863136574074,
+          66.60894097222223
+        ],
+        "nonBlack": true,
+        "sha256": "87db98125677b522a11880473123d98efc15d728863052651b2caa26ae417ff5"
+      },
+      {
+        "file": "camera-480.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.788557581018516,
+          53.41980902777778,
+          61.6208984375
+        ],
+        "nonBlack": true,
+        "sha256": "1ab4a1e9b16c362ec1086b1086d3623e328fb5cf87cd83c8389600b2c0ed4e85"
+      },
+      {
+        "file": "camera-600.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.88997444058642,
+          54.08431857638889,
+          60.784052854938274
+        ],
+        "nonBlack": true,
+        "sha256": "d7d31757d6068d42e2cbb2e82b96f72de0b2630d47c2c94e6fd466ea3ca3830a"
+      },
+      {
+        "file": "camera-720.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.2366333912037,
+          55.935264274691356,
+          62.63792341820988
+        ],
+        "nonBlack": true,
+        "sha256": "7d5590909176a4438945c30838a24b6c3de9bb263d0770ddb06b8b42c2b1a1e6"
+      },
+      {
+        "file": "camera-840.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          46.65358699845679,
+          53.081321855709874,
+          58.467122395833336
+        ],
+        "nonBlack": true,
+        "sha256": "06e562e028d2708ee93859a23275849576b70abd44ee11914cf06a60d01cf904"
+      },
+      {
+        "file": "camera-960.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          48.02322868441358,
+          54.90926793981482,
+          61.89790461033951
+        ],
+        "nonBlack": true,
+        "sha256": "15ae89ed7614973db322b2de8f3a50411d781a1004890d5f421d78e48a3368e1"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:11:24.1560726Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:02.4499648Z",
+      "vehicle": "Heavy",
+      "mode": "Camera"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Camera",
+        "vehicle": "Heavy",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T13:11:05.3571518Z",
+        "finishedUtc": "2026-10-27T13:11:23.4514917Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 978,
+        "contacts": 816,
+        "maxContacts": 12,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 43,
+        "completed": 0,
+        "detachedParts": 1,
+        "enemyShots": 0,
+        "maxAliveEnemies": 0,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 0,
+        "continuousSpeedViolations": 0,
+        "distance": 20.58592414855957,
+        "peakAimError": 7.616281509399414,
+        "settledAimError": 0.0,
+        "peakCameraStep": 5.74437952041626,
+        "peakFrameMs": 34.01620864868164,
+        "meanFrameMs": 16.69161605834961,
+        "maxEnemyMovement": 0.0,
+        "finalPosition": {
+          "x": 0.04344458132982254,
+          "y": 0.6499785780906677,
+          "z": -5.455399513244629
+        },
+        "settledAimObserved": true,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Same garage enters actual test range",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "Zero actual own-hull reticle intersections",
+          "No actual camera/world volume overlap",
+          "Entire actual hull stays in viewport during the open-range orbit",
+          "Real owned physical shots observed",
+          "Actual R6 movement while aiming",
+          "Continuous camera motion respects its declared limit",
+          "Settled muzzle aligns after orbit stops; all transient peaks retained"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Camera-Heavy-1920-20261027T131102Z"
+  },
+  {
+    "pid": 42188,
+    "height": 1080,
+    "vehicle": "Wide",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Camera",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Wide-1920-20261027T131124Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Wide-1920-20261027T131124Z\"",
+      "-fm270-mode",
+      "Camera",
+      "-fm270-vehicle",
+      "Wide"
+    ],
+    "requestedVehicle": "Wide",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:24.6120191Z",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.374494116512345,
+          48.880759066358024,
+          52.070525655864195
+        ],
+        "nonBlack": true,
+        "sha256": "d7b7865a8a90ead4c21fc234225d2831eb3c07c82facafec0d1efbb48ed94d58"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          41.231684027777774,
+          53.69308786651234,
+          60.64653501157407
+        ],
+        "nonBlack": true,
+        "sha256": "5935a56d8441ef47a82e3c6b537bb99833abf65834ff43b0168f3081fe62cfa3"
+      },
+      {
+        "file": "02-explicit-part-detachment.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.50505449459877,
+          50.789030671296295,
+          57.072446469907405
+        ],
+        "nonBlack": true,
+        "sha256": "7d8cb19c6c11ceef2a613c086991e4fc026c01ba5ca6cd475280e391872ada91"
+      },
+      {
+        "file": "03-camera-final.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.426127507716046,
+          50.29979263117284,
+          52.99534481095679
+        ],
+        "nonBlack": true,
+        "sha256": "3685419cfeacb032893d5efd599c46ed3ea09fe530c82d63fe847a38f3286ca9"
+      },
+      {
+        "file": "camera-120.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.76222945601852,
+          55.385776909722225,
+          61.72112895447531
+        ],
+        "nonBlack": true,
+        "sha256": "09a5ec2d5b47b1fe7926d72f1e60157872365ef8f97b908a5a179474331018d7"
+      },
+      {
+        "file": "camera-240.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.89914978780864,
+          60.600556037808644,
+          69.25483362268518
+        ],
+        "nonBlack": true,
+        "sha256": "23838dff904add7acd917b4d2d8b1efbdb08e4c15cd2c1630222787821eb6126"
+      },
+      {
+        "file": "camera-360.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          49.49389708719136,
+          55.649538966049384,
+          62.18452835648148
+        ],
+        "nonBlack": true,
+        "sha256": "fd0cc8d47c88d27debf413512f35d912ea8f551ebbfbace16432c79fe45b5210"
+      },
+      {
+        "file": "camera-480.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.44210792824074,
+          51.01491512345679,
+          57.235326485339506
+        ],
+        "nonBlack": true,
+        "sha256": "ff5c6542b9a31886c6ed7debf476da6719f1aa367d93635d3352bc64453225c5"
+      },
+      {
+        "file": "camera-600.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.47285976080247,
+          51.90856819058642,
+          57.38573398919753
+        ],
+        "nonBlack": true,
+        "sha256": "5ba1e593d993c32d2968dd9c68ea958f404d5db4f20cbc333f9a9514ff1ba10d"
+      },
+      {
+        "file": "camera-720.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.57957272376543,
+          48.31054976851852,
+          49.193676215277776
+        ],
+        "nonBlack": true,
+        "sha256": "cb62d62e4f2dd9a91fa3c750f321c2176499633ab9f9810033d7efac39d67ed0"
+      },
+      {
+        "file": "camera-840.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.16797453703704,
+          50.13054205246914,
+          53.3045172646605
+        ],
+        "nonBlack": true,
+        "sha256": "7a522f3817ff8ae840d0445f2ed64bd25d86467814504274341e87afc22b522b"
+      },
+      {
+        "file": "camera-960.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.43163242669753,
+          50.30322868441358,
+          52.99492862654321
+        ],
+        "nonBlack": true,
+        "sha256": "bbea608b8415786b5d9e650e89a4ac35e4b29fe1cfe0b78959478f62fd9f9107"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:11:46.2359587Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:24.6120191Z",
+      "vehicle": "Wide",
+      "mode": "Camera"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Camera",
+        "vehicle": "Wide",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T13:11:27.3744248Z",
+        "finishedUtc": "2026-10-27T13:11:45.5424816Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 979,
+        "contacts": 816,
+        "maxContacts": 4,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 43,
+        "completed": 0,
+        "detachedParts": 1,
+        "enemyShots": 0,
+        "maxAliveEnemies": 0,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 0,
+        "continuousSpeedViolations": 0,
+        "distance": 35.024261474609375,
+        "peakAimError": 15.364490509033203,
+        "settledAimError": 0.0,
+        "peakCameraStep": 4.152501583099365,
+        "peakFrameMs": 31.356603622436523,
+        "meanFrameMs": 16.688871383666992,
+        "maxEnemyMovement": 0.0,
+        "finalPosition": {
+          "x": 0.04947376251220703,
+          "y": 0.6500012874603271,
+          "z": 8.984572410583496
+        },
+        "settledAimObserved": true,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Wide real structural part -1",
+          "Wide real structural part -2",
+          "Wide real structural part -3",
+          "Wide real structural part -4",
+          "Wide real structural part -5",
+          "Wide real structural part -6",
+          "Wide real structural part 1",
+          "Wide real structural part 2",
+          "Wide real structural part 3",
+          "Wide real structural part 4",
+          "Wide real structural part 5",
+          "Wide real structural part 6",
+          "Same garage enters actual test range",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "Zero actual own-hull reticle intersections",
+          "No actual camera/world volume overlap",
+          "Entire actual hull stays in viewport during the open-range orbit",
+          "Real owned physical shots observed",
+          "Actual R6 movement while aiming",
+          "Continuous camera motion respects its declared limit",
+          "Settled muzzle aligns after orbit stops; all transient peaks retained"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Camera-Wide-1920-20261027T131124Z"
+  },
+  {
+    "pid": 56116,
+    "height": 720,
+    "vehicle": "Standard",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1280,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T131146Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T131146Z\""
+    ],
+    "requestedVehicle": "Light",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:46.6786992Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          40.07701388888889,
+          50.93183159722222,
+          54.57451605902778
+        ],
+        "nonBlack": true,
+        "sha256": "58de00c7ce08d950286b312b33211709ac1a701198022bc78f674db28b6c3263"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          52.392489149305554,
+          47.53325520833334,
+          44.67966362847222
+        ],
+        "nonBlack": true,
+        "sha256": "50b2b2756c721aad348033c96e4e01a2b47293f462969f7a91e7c1f37ff6c646"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.16395073784722,
+          46.561527777777776,
+          43.35028103298611
+        ],
+        "nonBlack": true,
+        "sha256": "a9899bafe29b5a4b856c4ed283457d4fb8e55945066d24707f7f71d95636a5ad"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          18.236060112847223,
+          22.471399739583333,
+          26.753370225694443
+        ],
+        "nonBlack": true,
+        "sha256": "3758eef4d71b9545481241b9472e319edbec8192933346040d9404c0c050692b"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          50.91380099826389,
+          46.55045138888889,
+          43.54898654513889
+        ],
+        "nonBlack": true,
+        "sha256": "f93ce2213d16a4b79dc802adb0489a62005d7edd3e3a5134d649e5a1c44e386d"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:11:56.7129617Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:46.6786992Z",
+      "vehicle": "Standard",
+      "mode": "Input"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T13:11:49.4400253Z",
+        "finishedUtc": "2026-10-27T13:11:56.0377863Z",
+        "width": 1280,
+        "height": 720,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.621429443359375,
+        "turnedDegrees": 50.025550842285156,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,026",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Input-Standard-1280-20261027T131146Z"
+  },
+  {
+    "pid": 15720,
+    "height": 1080,
+    "vehicle": "Standard",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T131157Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T131157Z\""
+    ],
+    "requestedVehicle": "Light",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:57.1868030Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.382280092592595,
+          51.278256172839505,
+          54.922472993827164
+        ],
+        "nonBlack": true,
+        "sha256": "176e12fe0583307a72de9088c70e2c966d4b6ecec463ebb3a120234b95d6d15b"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.33838927469136,
+          47.47525896990741,
+          44.626237461419755
+        ],
+        "nonBlack": true,
+        "sha256": "b490e0e87b2e6791d5f3e2f2eb7077b09f6b631efcd4e9283d89263c625e9fcd"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.174547646604935,
+          46.57125385802469,
+          43.36459731867284
+        ],
+        "nonBlack": true,
+        "sha256": "10e6ec65175d122b55bc7f767268bbbbf0a1329a46158abe1e30ef2ff2a2b011"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.320396894290123,
+          22.558233989197532,
+          26.83980324074074
+        ],
+        "nonBlack": true,
+        "sha256": "f636c9827ef9995e0e090f2ee2be1da1c7092f6003c9b6cecc96aaad21db245d"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.92831259645062,
+          46.558751929012345,
+          43.5550178433642
+        ],
+        "nonBlack": true,
+        "sha256": "25c085f14ab427049a11e2afb525ad5dc892bc53dffab53961ed5d287d3f7d75"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:12:07.2550871Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:57.1868030Z",
+      "vehicle": "Standard",
+      "mode": "Input"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T13:11:59.9613696Z",
+        "finishedUtc": "2026-10-27T13:12:06.5821943Z",
+        "width": 1920,
+        "height": 1080,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.62143898010254,
+        "turnedDegrees": 49.98659133911133,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "49,987",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Input-Standard-1920-20261027T131157Z"
+  },
+  {
+    "pid": 55400,
+    "height": 1080,
+    "vehicle": "Heavy",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "Builds/CAM275-Final/RoboRougelike.exe",
+    "mode": "Loop",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T130611Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T130611Z\"",
+      "-fm270-mode",
+      "Loop",
+      "-fm270-vehicle",
+      "Heavy"
+    ],
+    "requestedVehicle": "Heavy",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:06:11.0550938Z",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.10578800154321,
+          51.463534915123454,
+          55.24599971064815
+        ],
+        "nonBlack": true,
+        "sha256": "72b7f6cee0f8bbe605795431aea67b4825c4a28b34c78ad8547dd063d86073f9"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          16.0109659529321,
+          22.82744212962963,
+          26.241199363425928
+        ],
+        "nonBlack": true,
+        "sha256": "dd1c63458071a5ac7943e22c421d2172589781e9e81d8abd34245efa5df4c603"
+      },
+      {
+        "file": "01-activity-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.165392071759259,
+          14.35429976851852,
+          17.098543113425926
+        ],
+        "nonBlack": true,
+        "sha256": "00dc0ed841192e4ae8d9d3db943d5d9b4d93ce9e7eea4d0715d8aa250bae1c0b"
+      },
+      {
+        "file": "01-activity-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          30.06615547839506,
+          37.59721836419753,
+          42.99415605709876
+        ],
+        "nonBlack": true,
+        "sha256": "205fb6e444bd8ad9534c84e4fcbbdc53a566a9db899329ecd725ca8395a4e418"
+      },
+      {
+        "file": "01-activity-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.16391878858025,
+          51.02252700617284,
+          57.960902777777775
+        ],
+        "nonBlack": true,
+        "sha256": "d36a95b63abc63d93a8b93d42988c249e08f3de084dd0ca5f2e3f557c783505b"
+      },
+      {
+        "file": "01-activity-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          53.69076678240741,
+          46.95961516203704,
+          43.08489101080247
+        ],
+        "nonBlack": true,
+        "sha256": "5d3f7bc39e529baf71e946b1be18a3e1bf1512ad517c22fd25225986b5bdc44e"
+      },
+      {
+        "file": "01-activity-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          75.29567274305556,
+          66.31614824459876,
+          51.94049913194444
+        ],
+        "nonBlack": true,
+        "sha256": "e0dd943aca36b75053ece40a0334427a517f67a023c85508a1d4b2451d875c66"
+      },
+      {
+        "file": "02-reward-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.295930266203705,
+          24.466118827160493,
+          29.472779706790124
+        ],
+        "nonBlack": true,
+        "sha256": "5dfa579a4e150e77777a61290ccff8cb00cda73ed91cf0a0a05cf70e8e226dfe"
+      },
+      {
+        "file": "02-reward-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.29997010030864,
+          23.38666473765432,
+          28.453691165123455
+        ],
+        "nonBlack": true,
+        "sha256": "c363187b40ee1ee6ffb0625e8d5b9c84d32200b76be1cc17859be1f97545a18d"
+      },
+      {
+        "file": "02-reward-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.408668981481483,
+          23.491348861882717,
+          28.56681954089506
+        ],
+        "nonBlack": true,
+        "sha256": "c90f269f250783bb8ef4f1420a293001046074308c8b6a1a7911335ba223a6f5"
+      },
+      {
+        "file": "02-reward-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.34287856867284,
+          27.413706114969134,
+          32.45820891203704
+        ],
+        "nonBlack": true,
+        "sha256": "19b2d58a06add2d4cdd30595d0c2bd542ff3740daea0a87247c92368f23e75d7"
+      },
+      {
+        "file": "02-reward-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.174028260030862,
+          27.992210165895063,
+          32.926316550925925
+        ],
+        "nonBlack": true,
+        "sha256": "1637915c3b520f6c5bf5dee09cb4d4950b101c825f64cdb23abb7e826268469f"
+      },
+      {
+        "file": "02-reward-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.374738136574074,
+          27.985625,
+          32.50887201003086
+        ],
+        "nonBlack": true,
+        "sha256": "68f99174832806f962e59b1480895c5d0ecb6c639ffbad14d9a21ef33d0e0e44"
+      },
+      {
+        "file": "03-garage-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.06419849537037,
+          16.28056278935185,
+          21.355521797839508
+        ],
+        "nonBlack": true,
+        "sha256": "20ed93035a4ddda4ecf756a2b16c519b8d12d08f0c91fcacd43f99c222e17e47"
+      },
+      {
+        "file": "03-garage-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.879759355709876,
+          17.248721547067902,
+          22.518912037037037
+        ],
+        "nonBlack": true,
+        "sha256": "efa05310d5c5ab3f0e2efbae3911a6d577868d190cdf6cc845dbfb7d981b541e"
+      },
+      {
+        "file": "03-garage-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          12.5485440779321,
+          17.97527199074074,
+          23.35921971450617
+        ],
+        "nonBlack": true,
+        "sha256": "a14aeb1cb72e4a5caeac4d86cf67b7f58e86d576b8d9436e04932bba85343c3b"
+      },
+      {
+        "file": "03-garage-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.401458333333334,
+          18.00144434799383,
+          22.676332465277778
+        ],
+        "nonBlack": true,
+        "sha256": "e8be9ae9f7afd6c36f0c5b52e02e920ab010dcabf482d62c2ac67f43ddbaedaf"
+      },
+      {
+        "file": "03-garage-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.961345486111112,
+          19.064599729938273,
+          22.91431568287037
+        ],
+        "nonBlack": true,
+        "sha256": "37a8998f73ca0f6027398f81a5d2d2e9221c5677e329878f24c8c78b1c85a43b"
+      },
+      {
+        "file": "04-restart.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757231867283952,
+          28.349658564814813,
+          33.18136429398148
+        ],
+        "nonBlack": true,
+        "sha256": "05bd535053c6dd6c95f4f9200da9fd62a3bf32c1200af201ff60f3b53ca657fe"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:09:39.7651252Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:06:11.0550938Z",
+      "vehicle": "Heavy",
+      "mode": "Loop"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Loop",
+        "vehicle": "Heavy",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T13:06:13.8406640Z",
+        "finishedUtc": "2026-10-27T13:09:39.0846576Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 12173,
+        "contacts": 10093,
+        "maxContacts": 12,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 0,
+        "completed": 6,
+        "detachedParts": 0,
+        "enemyShots": 11,
+        "maxAliveEnemies": 2,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 50,
+        "continuousSpeedViolations": 0,
+        "distance": 501.89453125,
+        "peakAimError": 0.0,
+        "settledAimError": 0.0,
+        "peakCameraStep": 0.35928934812545776,
+        "peakFrameMs": 23.95260238647461,
+        "meanFrameMs": 16.671249389648438,
+        "maxEnemyMovement": 6.15022611618042,
+        "finalPosition": {
+          "x": 3.459984554865514e-06,
+          "y": 0.6499907970428467,
+          "z": -22.0001220703125
+        },
+        "settledAimObserved": false,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Garage selects Race: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects TimeAttack: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Escape: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Survival: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Reactor: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Ordinary: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Full six-stage finale",
+          "Restart removes all activity objects"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Loop-Heavy-1920-20261027T130611Z"
   }
 ]

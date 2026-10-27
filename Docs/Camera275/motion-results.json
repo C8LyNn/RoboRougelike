@@ -261,6 +261,71 @@
     }
   },
   {
+    "stage": "CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:12:42.6730492Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "pid": 55192,
+      "startedUtc": "2026-10-27T13:12:07.6639768Z",
+      "exitHex": "0x00000000"
+    },
+    "result": {
+      "status": "Passed",
+      "vehicle": "Standard",
+      "startedUtc": "2026-10-27T13:12:10.9937661Z",
+      "finishedUtc": "2026-10-27T13:12:41.9936834Z",
+      "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+      "fps": 60,
+      "width": 1920,
+      "height": 1080,
+      "frames": 1830,
+      "groundedFrames": 1722,
+      "ownRayHits": 0,
+      "worldOverlaps": 0,
+      "resets": 5,
+      "distance": 59.543540954589844,
+      "peakAngularStep": 0.6829932928085327,
+      "peakLinearStep": 0.535133957862854,
+      "phases": [
+        "waiting",
+        "garage",
+        "stationary",
+        "flat-acceleration",
+        "braking",
+        "sharp-turn",
+        "low-steps",
+        "uneven-and-ramp",
+        "ramp-exit",
+        "orbit-and-max-zoom",
+        "settled"
+      ],
+      "errors": []
+    },
+    "motion": {
+      "evidence": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z",
+      "frames": 1830,
+      "elapsed": 30.479240859999997,
+      "medianFPS": 59.99986956028358,
+      "slowFrameMs": 16.678202900000002,
+      "uncommandedAngularSpeedRMS": 0.000141152068715471,
+      "uncommandedAngularSpeedP95": 0.00021423993705036335,
+      "uncommandedAngularSpeedMax": 0.0005355998505140528,
+      "cameraVerticalAccelerationRMS": 4.991154827548928,
+      "bodyVerticalAccelerationRMS": 12.67734944786762,
+      "fitRateRMS": 1.6229014166418054,
+      "freeOrbitYawErrorRMS": 0.19259725769293282,
+      "actualYawDegreesPerInputPixel": 0.11999985388162099,
+      "selfRayFrames": 0,
+      "worldOverlapFrames": 0,
+      "conservativeCornerOffscreenFrames": 0,
+      "projectionQualification": "Derived from final native pose + raw AABB, frozen scene FOV60 and 16:9; unclipped frames only. Conservative bounds, not direct mesh/occlusion measurement.",
+      "resetCountChange": 0.0,
+      "qualification": "Actual native drive trace; not human comfort acceptance. Motion statistics exclude deliberate mouse input/collision and stationary frames as stated."
+    }
+  },
+  {
     "stage": "CAM275-Windows-Final-Heavy-120-20261027T125409Z",
     "source": "c61894a6389e43727db42a6dd58f153a496923ee",
     "process": {

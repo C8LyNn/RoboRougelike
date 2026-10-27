@@ -1,6 +1,6 @@
 # CAMERA275 — stabilizacja, responsywność, zoom i celowanie
 
-Status roboczy: **IN_PROGRESS — pełna regresja Unity i macierz Windows trwają**. Wyników niezakończonych prób nie zaliczamy jako PASS. Nie wykonano merge do main/develop.
+Status: **BUILD DO TESTÓW GRACZA; OTWARTE PROBLEMY QA**. Pełny EditMode zgłosił jeden błąd, pełny PlayMode nie dostarczył końcowego wyniku, a siedem automatycznych przejazdów nie ukończyło trasy. Wersja jest dostępna do samodzielnego sprawdzenia. Nie wykonano merge do main/develop.
 
 ## Źródło i zachowanie integracji
 
@@ -37,7 +37,10 @@ Celownik jest wyśrodkowany na faktycznym promieniu. Pokazuje ograniczenie zasi�
 | Celowane źródło `69938a0e` | PlayMode PASS **15/15**, exit0; EditMode 42/44, dwa błędy przygotowania testów konstrukcji pozostawione w dowodach | `FM270-CAM275-ReceiverGreen-20261027T101615Z` |
 | Końcowe konstrukcje `c61894a6` | PASS **7/7**, exit0: Light/Standard/Heavy/Tall/Wide, obrys i samoprzecięcia, utrata części, korekty przy ścianie, utrata ostatniej broni, nakładanie lufy | `FM270-CAM275-ConstructionRetest-20261027T102225Z` |
 | Końcowa kompilacja i Windows build | PASS, oba rzeczywiste exit0 | ten sam etap, Compile/Build-process.json |
-| Pełny EditMode / PlayMode `c61894a6` | **IN_PROGRESS** | `FM270-CAM275-ReleaseFull-20261027T124058Z` |
+| Pełny EditMode `c61894a6` | **FAIL: 1222/1223**, exit 2, bez pominięć. Nie przeszedł test płynności zoomu: oczekiwano przesunięcia poniżej 1 m w dwóch klatkach, zmierzono 1,5407 m | `FM270-CAM275-ReleaseFull-20261027T124058Z/EditMode.xml` |
+| Pełny PlayMode `c61894a6` | **BRAK WYNIKU**: proces rozpoczął zapis logu, ale nie ma końcowego XML ani potwierdzonego kodu procesu | `FM270-CAM275-ReleaseFull-20261027T124058Z/PlayMode.log` |
+
+Test zoomu przeszedł wcześniej w osobnym przebiegu 8/8 na `1b87185f`, z tym samym kodem kamery. Test w pełnym przebiegu nie zapisał czasu obu klatek, a jego warunek używa stałej odległości dla dwóch klatek. Nie ustalono jeszcze, czy różnica wynika z czasu klatek pod obciążeniem, czy z zachowania kamery. Należy ją zbadać; nie oznaczamy pełnego EditMode jako PASS.
 
 Testy konstrukcji używają prawdziwych zmontowanych pojazdów i fizyki colliderów, lecz krok kamery 30/60/120 jest deterministyczny, a podwozie jest utrzymane w miejscu. Nie zastępuje to rzeczywistych przejazdów Windows.
 
@@ -53,9 +56,17 @@ W pierwszej próbie Standard60 automat utknął przy niskim stopniu w `(13.275, 
 
 Przed zmianą algorytmu zachowano natywne przejazdy Standard60 i Heavy60 na źródle `aa81912a`; oba exit0. Po pierwszej poprawce Standard60 `814525e6` również exit0, z zerem samoprzecięć i kolizji kamery. Trasy mają te same punkty, ale fizyczne trajektorie nie są deterministycznie identyczne, więc statystyki nie są laboratoryjnym A/B klatka w klatkę. [Surowe i obliczone pomiary](motion-results.json) rozdzielają świadomy ruch myszy i korekty kolizji od niezamówionego ruchu widoku. Nie deklarujemy zerowych drgań we wszystkich warunkach; pozostają sporadyczne korekty brzegowe i ruch od rzeczywistego podwozia.
 
-**Ocena właściciela po rzeczywistej grze, źródło `814525e6`:** kamera została znacznie poprawiona i jest aktualnie wystarczająco dobra; większym zauważonym problemem było odbijanie kół. To pozytywna ocena komfortu tej wersji, a nie wynik automatu ani deklaracja idealnego działania na każdym FPS. Właściciel doprecyzował następnie zoom: płynnie bliżej/dalej, stale przy pojeździe. Funkcjonalny test tego zoomu przeszedł. Ręczna kontrola końcowego ZIP-a z nowym zoomem: **PENDING**.
+**Ocena właściciela po rzeczywistej grze, źródło `814525e6`:** kamera została znacznie poprawiona i jest aktualnie wystarczająco dobra; większym zauważonym problemem było odbijanie kół. To pozytywna ocena komfortu tej wersji, a nie wynik automatu ani deklaracja idealnego działania na każdym FPS. Właściciel doprecyzował następnie zoom: płynnie bliżej/dalej, stale przy pojeździe. Osobny test tego zoomu przeszedł, natomiast pełny przebieg wykazał opisaną wyżej niezgodność. Ręczna ocena końcowego zoomu: **NOT_RUN**, do wykonania przez gracza.
 
-Pełna regresja sześciu starć Heavy oraz końcowe wejście z wypakowanego ZIP-a: **PENDING**. Starszego PASS z #277 nie przepisano na bieżący build. Historyczny C0000005 związany z dostępnością/UIA pozostaje **NOT PROVEN FIXED**, zgodnie z #277. Nie aktualizowano silnika ani nie zabijano Playera jako sposobu normalnego zamknięcia. Fizyczny kontroler/gamepad oraz dynamiczne trafienia w ruchomy cel na wszystkich dystansach: **NOT_RUN**.
+Macierz początkowa: **8/15** ukończonych tras, **7/15 FAIL** (Standard 60/120, Heavy 60/120, Wide 30/60/120). Wszystkie 15 z rzeczywistą medianą odpowiednio 30/60/120 FPS, zero własnych przecięć i nakładań kamery. W jednym ograniczonym reteście Standard 60 z finalnego ZIP-a trasa została ukończona, exit 0, bez zmian w kodzie/parametrach/asercjach. Nie unieważnia to pierwszego FAIL ani nie dowodzi naprawy pilota/napędu; brak procedury cofania utrudnia interpretację zakleszczeń. Light i Tall ukończyły wszystkie trzy próby FPS.
+
+Wypakowany EXE przeszedł dodatkowo dwie odrębne próby kamery Heavy i Wide: fizyczny ruch z wejścia, obrót, strzelanie i faktyczne odpadnięcie części. Każda wyemitowała **43 fizyczne pociski**, odłączyła jedną część i zapisała zero samoprzecięć, nakładań, naruszeń limitu podążania oraz obrysu poza ekranem; błąd lufy po zatrzymaniu orbity:0°. Heavy przejechał20,59 m, Wide35,02 m. Ten dodatkowy Wide jest szeroką rozbudową lekkiej bazy, a macierz 15 prób używa szerokiej bazy Standard; nie są tym samym przypadkiem testowym.
+
+Ten sam EXE z ZIP-a przeszedł testy sterowania w **1280×720 i1920×1080**, oba exit0: WASD faktycznie porusza/obraca R6, LPM emituje8 pocisków, PPM nie emituje dodatkowych pocisków grupy LPM, Esc/menu zachowują istniejący przepływ. Są to natywne zdarzenia Input System, nie ręczne kliknięcia OS.
+
+Pętla Heavy zakończyła **6/6 aktywności** (Race, TimeAttack, Escape, Survival, Reactor, Ordinary), restart i sprzątanie; exit0,501,89 m, kontakt do12 kół,11 zaobserwowanych pocisków przeciwników, zero samoprzecięć/nakładań kamery. Wybór i rozstrzygnięcie aktywności były sterowane API; przejazdy były rzeczywistą fizyką, AI i wrogie pociski działały. Nie jest to ręczne przejście sześciu walk przez gracza. Regresja sprawdza też wspólny model, nagrodę/łupy tylko raz, powrót do garażu i naprawę. Odnotowano50 klatek konserwatywnego obrysu poza kadrem w tej pętli, wobec47 w #277; nie przypisujemy bez dalszego dowodu przyczyny ani nie deklarujemy idealnego kadru w każdej scenie. W odrębnych otwartych próbach kamery Heavy/Wide było0 takich klatek.
+
+Starszego PASS z #277 nie przepisano na bieżący build. Historyczny C0000005 związany z dostępnością/UIA pozostaje **NOT PROVEN FIXED**, zgodnie z #277. Nie aktualizowano silnika ani nie zabijano Playera jako sposobu normalnego zamknięcia. Fizyczny kontroler/gamepad oraz dynamiczne trafienia w ruchomy cel na wszystkich dystansach: **NOT_RUN**.
 
 ## Wydanie i ręczna próba
 
