@@ -119,8 +119,8 @@ def main():
     require(pathlib.Path(args.chl).resolve()==actual_chl.resolve(),
        "CHL_SOURCE_NOT_PINNED_285")
     c=inspect_chl_directory(actual_chl)
-    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==7,
-       "CHL_EXPECTED_7_ACTUAL_CSHARP_FILES_MISSING")
+    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==10,
+       "CHL_EXPECTED_10_ACTUAL_CSHARP_FILES_MISSING")
     core=(actual_chl/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
     controller=(actual_chl/"Runtime/CHL003CourseController.cs").read_text(encoding="utf8")
     demo=(actual_chl/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
@@ -134,12 +134,26 @@ def main():
     require('owned = new GameObject("CHL003_GENERATED_DEMO_ONLY")' in demo and
        "if (vehicle != null) Destroy(vehicle.gameObject);" in demo,
        "CHL_DEMO_RIG_OWNERSHIP_CHANGED")
+    controller_arbiter=controller
+    arbiter=(actual_chl/"Runtime/CHL003FinishArbiter.cs").read_text(encoding="utf8")
+    metrics=(actual_chl/"Runtime/CHL003TrialMetrics.cs").read_text(encoding="utf8")
+    require("finishArbiter.TryCommit(fixedStep," in controller_arbiter and
+       "PhysicallyOverlapsFinish()" in controller_arbiter and
+       "core.EnterFinish(activeActor.GetInstanceID());" in controller_arbiter and
+       "fixedStep <= queuedStep.Value" in arbiter,
+       "CHL_TWO_PHASE_FINISH_AUTHORITY_CHANGED")
+    require('Debug.Log("CHL003_ACTUAL_TRIAL_SUMMARY_CSV\\n" + row);' in demo and
+       "public string SummaryCsv()" in metrics,
+       "CHL_DIAGNOSTIC_LOGGING_OR_METRICS_CONTRACT_CHANGED")
     c["original_chl_pin"]=receipt["chl_commit"]
     c["core_completed_event_has_durable_activity_id"]=False
     c["event_fires_once_per_attempt_not_once_per_host_run"]=True
     c["controller_retry_alters_configured_rigidbody_pose"]=True
     c["controller_retry_writes_r3_physical_hp"]=False
     c["demo_swap_destroys_current_demo_vehicle_gameobject"]=True
+    c["demo_writes_editor_player_log_diagnostics"]=True
+    c["finish_requires_next_fixedstep_and_narrow_phase_overlap"]=True
+    c["controller_pause_changes_actor_kinematic"]=True
     c["standalone_economic_source_writes_detected"]=False
     result={"schema":"b01-22-w16-chl-economy-boundary-v2",
       "real_code_source_commit":receipt["commit"],
