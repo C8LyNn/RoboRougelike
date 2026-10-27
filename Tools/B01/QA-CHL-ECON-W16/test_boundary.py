@@ -51,8 +51,13 @@ class OriginalCodexHostSourceTest(unittest.TestCase):
             audit.inspect_host(altered,self.model_source)
 
     def test_06_missing_reward_commit_guard_rejected(self):
-        altered=self.run_source.replace("Progress?.State!=R1RunState.Salvage",
-            "Progress?.State!=R1RunState.Combat",1)
+        # Mutate the actual ConfirmRewards method, not the earlier
+        # DismantleRewardInventoryItem method with a similar state check.
+        needle="if(Transitioning||Progress?.State!=R1RunState.Salvage||Salvage==null||VehicleModel==null)return false;"
+        self.assertIn(needle,self.run_source)
+        altered=self.run_source.replace(needle,needle.replace(
+            "R1RunState.Salvage","R1RunState.Combat"),1)
+        self.assertNotEqual(altered,self.run_source)
         with self.assertRaisesRegex(audit.QAError,"HOST_SALVAGE_CONFIRM_UNGUARDED"):
             audit.inspect_host(altered,self.model_source)
 
