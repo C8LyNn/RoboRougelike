@@ -71,7 +71,7 @@ for(const btn of document.querySelectorAll('[data-preset]'))btn.onclick=()=>{con
 $('driveKind').onchange=e=>update(()=>state.drive=e.target.value);
 $('disconnected').onchange=e=>update(()=>state.connected=!e.target.checked);
 $('tips').onchange=()=>render();
-$('participantMode').onchange=e=>{document.body.classList.toggle('participant-mode',e.target.checked);if(e.target.checked)$('warnings').focus()};
+$('participantMode').onchange=e=>{document.body.classList.toggle('participant-mode',e.target.checked);if(e.target.checked){render();$('warnings').focus()}};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('participantMode').checked){$('participantMode').checked=false;document.body.classList.remove('participant-mode');$('participantMode').focus()}});
 $('fixGun').onclick=()=>update(()=>{state.gun={hp:100}});
 $('removeGun').onclick=()=>update(()=>{state.gun=null});
@@ -86,3 +86,4 @@ state=seed('both');render();
 </script>
 </body>
 </html>
+
