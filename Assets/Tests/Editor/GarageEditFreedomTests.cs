@@ -74,8 +74,27 @@ public sealed class GarageEditFreedomTests
         var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);run.MapEditorGarage();
         var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(run.GarageRemove(gun.Cell),Is.True);
         Assert.That(run.ReturnToMapEditorFromGarage(),Is.True);Assert.That(run.MapEditing,Is.True);
+        run.ToggleMapFloor();
+        Assert.That(run.EditorDraft.Place(RoboRougelike.MapEditor.MapItemKind.Spawn,0,-3,0),Is.True);
+        Assert.That(run.EditorDraft.Place(RoboRougelike.MapEditor.MapItemKind.Finish,0,3,0),Is.True);
         Assert.That(run.TestEditedMap(),Is.False);Assert.That(run.MapEditing,Is.True);
+        Assert.That(run.EditorMessage,Does.Contain("broni"));
         yield return new ExitPlayMode();
+    }
+    [UnityTest] public IEnumerator ActualGarageCanSwapWheelsForOmniAndBackWithoutTemporaryParts()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        var wheels=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        foreach(var wheel in wheels)Assert.That(run.GarageRemove(wheel.Cell),Is.True);
+        Assert.That(run.VehicleModel.CanDeploy,Is.False);Assert.That(run.EnterTestRange(),Is.False);
+        var cell=new Vector3Int(1,2,2);Assert.That(run.GarageBuy(cell,R3PartKind.OmniDrive),Is.True,"real physical mounting gate");
+        Assert.That(run.ConfigureDrive(R3DriveKind.Omni),Is.True);Assert.That(run.VehicleModel.CanDeploy,Is.True);
+        Assert.That(run.GarageRemove(cell),Is.True);Assert.That(run.VehicleModel.CanDeploy,Is.False);
+        foreach(var wheel in wheels)Assert.That(run.GarageMount(wheel.Id,wheel.Cell,wheel.RotationQuarterTurns),Is.True);
+        Assert.That(run.ConfigureDrive(R3DriveKind.Wheels),Is.True);Assert.That(run.VehicleModel.CanDeploy,Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);yield return null;yield return new ExitPlayMode();
     }
     [UnityTest] public IEnumerator RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved()
     {
