@@ -23,7 +23,7 @@ Place this isolated QA branch in an approved disposable Unity 6000.3.14f1 worktr
 & "C:\Program Files\Unity\Hub\Editor\6000.3.14f1\Editor\Unity.exe" -batchmode -nographics -projectPath "C:\QA\RoboRougelike-B0124" -runTests -testPlatform editmode -testFilter B0124EnemyAiNegativeEditModeTests -testResults "C:\QA\Evidence\B0124-Edit.xml" -logFile "C:\QA\Evidence\B0124-Editor.log" -quit
 ```
 
-The first five tests should run without product policy. NUnit may report **3 expected RED** before the fix, but **none have actually run in Unity in this swarm environment**, so do not assert any real 2/4 result until the XML/Editor.log/exit receipt is collected. The sixth is [Explicit] and requires separate product-policy authorization. B01-60 should execute independently; Codex should repair target selection and cache invalidation only after reproducing actual failure.
+The first five tests should run without product policy. NUnit may report **3 expected RED** before the fix, but **none have actually run in Unity in this swarm environment**, so do not assert any real NUnit result until the XML/Editor.log/exit receipt is collected. The sixth is [Explicit] and requires separate product-policy authorization. B01-60 should execute independently; Codex should repair target selection and cache invalidation only after reproducing actual failure.
 
 ## What this does NOT prove
 
@@ -34,7 +34,7 @@ The first five tests should run without product policy. NUnit may report **3 exp
 
 ## PASS13 extension — exact original LD02 physical map fixture
 
-**NEW** [`B0124LD02PhysicalLosPlayModeTests.cs`](../../../../Assets/Tests/Editor/B0124LD02PhysicalLosPlayModeTests.cs), authored under the SAME B01-24 QA branch. A stable, tracked `.meta` was also added for this source and for the older enemy fixture, to avoid untracked Unity import-generated metadata and changing test script identity.
+**NEW** [`B0124LD02PhysicalLosPlayModeTests.cs`](../../../Assets/Tests/Editor/B0124LD02PhysicalLosPlayModeTests.cs), authored under the SAME B01-24 QA branch. A stable, tracked `.meta` was also added for this source and for the older enemy fixture, to avoid untracked Unity import-generated metadata and changing test script identity.
 
 Original **B01-25** [LD02.json](https://github.com/C8LyNn/RoboRougelike/blob/bdd6c69fc9fd519b863e3a9cb217b3cd39404194/Research/B01-25/P11/LD02.json) blob `71c305077b97015a3a4dad7a5fc64dea59943617`: 10 existing map items, unique Spawn/Finish, four Pillars, two LowBarriers, two Walls, GlobalFloor ON. New test invokes **original production** `MapDraft.Place`, `MapWorld.Build` and Physics.Raycast in a real Unity `EnterPlayMode` transition, using all ten exact source coordinates.
 
