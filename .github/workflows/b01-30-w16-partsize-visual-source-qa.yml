@@ -1,0 +1,220 @@
+name: B01-30 W16 PARTSIZE original source visual AABB QA
+on:
+  pull_request:
+    paths:
+      - 'Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA/**'
+      - '.github/workflows/b01-30-w16-partsize-visual-source-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measured-source-fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Pin actual Codex PR272 source SHA, blobs and bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=9cd5a5272a9ebda130a97a5f1f73ce3eaf24b976
+          git fetch --depth=1 origin pull/272/head
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          out=/tmp/b01-partsize-pinned
+          mkdir -p "$out"
+          git show "$PIN:Assets/R4_1/R41PartGeometry.cs" > "$out/R41PartGeometry.cs"
+          git show "$PIN:Assets/R3/R3VehicleAssembly.cs" > "$out/R3VehicleAssembly.cs"
+          git show "$PIN:Assets/R3/R3BonusModuleGeometry.cs" > "$out/R3BonusModuleGeometry.cs"
+          git show "$PIN:Assets/R3/R3VehicleModel.cs" > "$out/R3VehicleModel.cs"
+          test "$(git rev-parse "$PIN:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
+          test "$(git rev-parse "$PIN:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
+          test "$(git rev-parse "$PIN:Assets/R3/R3BonusModuleGeometry.cs")" = 99f55a2002a80603f1707466d7a0066260d5c3ee
+          test "$(git rev-parse "$PIN:Assets/R3/R3VehicleModel.cs")" = cdd75fff4923a382b16c430dac1452320eda88f6
+          printf 'SOURCE_SHA=%s\n' "$PIN" | tee "$out/RECEIPT.txt"
+          sha256sum "$out"/*.cs | tee -a "$out/RECEIPT.txt"
+          echo "B01_PARTSIZE_PINNED_SOURCE=$out" >> "$GITHUB_ENV"
+      - name: Execute real-source and negative analytical tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_partsize_visual_source_qa.py" -v |& tee /tmp/b01-partsize-pinned/QA_TEST_LOG.txt
+      - name: Generate 32 measured analytical orientation records
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/partsize_visual_source_qa.py" \
+            --geometry "$B01_PARTSIZE_PINNED_SOURCE/R41PartGeometry.cs" \
+            --assembly "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleAssembly.cs" \
+            --bonus "$B01_PARTSIZE_PINNED_SOURCE/R3BonusModuleGeometry.cs" \
+            --model "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleModel.cs" \
+            --out "$B01_PARTSIZE_PINNED_SOURCE/PARTSIZE_VISUAL_SOURCE_32_ROWS.json"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['B01_PARTSIZE_PINNED_SOURCE'])/'PARTSIZE_VISUAL_SOURCE_32_ROWS.json').read_text())
+          assert len(d['records'])==32
+          wheel=next(x for x in d['records'] if x['part']=='Wheel' and x['yawQuarterTurns']==0)
+          heavy=next(x for x in d['records'] if x['part']=='GunHeavy' and x['yawQuarterTurns']==0)
+          suspension=next(x for x in d['records'] if x['part']=='Suspension' and x['yawQuarterTurns']==0)
+          assert wheel['physicalColliderSizeXYZ']==[.52,.91,.78]
+          assert heavy['physicalColliderSizeXYZ']==[.52,.676,1.352]
+          assert suspension['physicalFitsLogicalAABB']
+          assert not suspension['visualFitsLogicalAABB']
+          assert d['G2']=='HOLD'
+          PY
+      - name: Fetch exact PR286 full source by immutable SHA (producer files remain untouched)
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          git fetch --depth=1 origin "$PIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          out=/tmp/b01-partsize-pr286
+          mkdir -p "$out"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeContract.cs" > "$out/PartSizeContract.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs" > "$out/PartSizeNativePhysics.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs" > "$out/PartSizeBaselineCatalog.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs" > "$out/PartSizeDemoEntry.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs.meta" > "$out/PartSizeDemoEntry.cs.meta"
+          git show "$PIN:Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs" > "$out/PartSize001PlayModeTests.cs"
+          git show "$PIN:Assets/PARTSIZE001/Tests/EditMode/PartSize001EditModeTests.cs" > "$out/PartSize001EditModeTests.cs"
+          git show "$PIN:Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity" > "$out/PARTSIZE001_Demo.unity"
+          git show "$PIN:Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.prefab" > "$out/PARTSIZE001_Demo.prefab"
+          git show "$PIN:Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv" > "$out/observed_r3_size_matrix.csv"
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeContract.cs")" = 07455919a5544875fee5a78ecbbce36dc6cb49c2
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs")" = 44c507eba175029fb2750acbcac44119c1d97001
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs")" = 6153d1758e800ec5c4210323610b061c06e8ea85
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs")" = a9c74387a6dd33641dc758de08ee91d3fb6f3871
+          test "$(git rev-parse "$PIN:Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv")" = 663883256a521b385ebd51c53abf72e9fbe6b034
+          printf 'B01-23 PR286 EXACT_SHA=%s\n' "$PIN" | tee "$out/PR286_SOURCE_RECEIPT.txt"
+          sha256sum "$out"/* | tee -a "$out/PR286_SOURCE_RECEIPT.txt"
+          echo "B01_PARTSIZE_PR286_SOURCE=$out" >> "$GITHUB_ENV"
+          echo "B01_PARTSIZE_PR286_HEAD=$PIN" >> "$GITHUB_ENV"
+      - name: Execute read-only producer-vs-Codex source audit and mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_partsize_pr286_delta.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/PR286_DELTA_UNIT_LOG.txt"
+          python3 "$dir/partsize_pr286_delta.py" \
+            --producer "$B01_PARTSIZE_PR286_SOURCE" \
+            --canonical "$B01_PARTSIZE_PINNED_SOURCE" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/PR286_SOURCE_VS_R41_GEOMETRY.json"
+      - name: W17 verify THREE physical placement conflicts and noncolliding Suspension in four yaw poses
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_w17_signed_placement_conflicts.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/W17_SIGNED_PLACEMENT_TEST_LOG.txt"
+          python3 "$dir/w17_signed_placement_conflicts.py" \
+            --producer "$B01_PARTSIZE_PR286_SOURCE" \
+            --canonical "$B01_PARTSIZE_PINNED_SOURCE" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/W17_SIGNED_PLACEMENT_4_YAW.json"
+          python3 - <<'PYW17'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ["B01_PARTSIZE_PR286_SOURCE"])/"W17_SIGNED_PLACEMENT_4_YAW.json").read_text())
+          assert len(r["parts"])==4
+          assert len(r["boxNeighborProbes"])==8
+          assert all(x["positiveBoxBoxIntersection"] for x in r["boxNeighborProbes"])
+          assert r["unityPhysx"]=="NOT_RUN"
+          assert r["thisReportApprovesNoMounts"]
+          PYW17
+      - name: W30 reconcile actual R3 block parent 0.52 scale against B01-23 original seven UNIT-PARENT source proxies
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=60c91b8172229bde9b02042125a79c3ebbfe5faa
+          CODEX=d44fa09c227dffca1c1f8832383bbd80430bba90
+          PATH_OWNER=Tools/B01/PARTSIZE001/W26Receipt/source_payload_measurements.py
+          git fetch --depth=1 origin "$PIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          git fetch --depth=1 origin "$CODEX"
+          test "$(git rev-parse FETCH_HEAD)" = "$CODEX"
+          test "$(git rev-parse "$PIN:$PATH_OWNER")" = 443775bf24a5ab7accea94a1152ef240872d67b1
+          test "$(git rev-parse "$CODEX:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
+          test "$(git rev-parse "$CODEX:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
+          git show "$PIN:$PATH_OWNER" > "$B01_PARTSIZE_PR286_SOURCE/source_payload_measurements.py"
+          echo "B01_PARTSIZE_OWNER_7_PROXY=$B01_PARTSIZE_PR286_SOURCE/source_payload_measurements.py" >> "$GITHUB_ENV"
+          printf 'B01_23_QA_PROXY_SHA=%s\nCODEX_ORIGINAL_R3_SHA=%s\n' "$PIN" "$CODEX" | tee "$B01_PARTSIZE_PR286_SOURCE/W30_PROVENANCE.txt"
+      - name: W30 16 genuine source cross-hierarchy tests + 7x4 yaws reconstructed
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_w30_parent_scale_reconcile.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/W30_SCALE_QA_UNIT_LOG.txt"
+          python3 "$dir/w30_parent_scale_reconcile.py" \
+            --assembly "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleAssembly.cs" \
+            --geometry "$B01_PARTSIZE_PINNED_SOURCE/R41PartGeometry.cs" \
+            --catalog "$B01_PARTSIZE_PR286_SOURCE/PartSizeBaselineCatalog.cs" \
+            --producer "$B01_PARTSIZE_OWNER_7_PROXY" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/W30_R3_PARENT_SCALE_CORRECTION.json"
+          python3 - <<'PYW30'
+          import json,os
+          from pathlib import Path
+          x=json.loads((Path(os.environ['B01_PARTSIZE_PR286_SOURCE'])/'W30_R3_PARENT_SCALE_CORRECTION.json').read_text())
+          assert len(x['rows'])==7 and all(len(r['actualR3ScaledStaticYawCases'])==4 for r in x['rows'])
+          omni=next(r for r in x['rows'] if r['kind']=='OmniDrive')
+          assert omni['b01_23_unitParentSourceCellsXYZ'][1]==[-2,-1,0]
+          assert omni['actualR3ScaledStaticYawCases'][0]['payloadSignedCellsXYZ'][1]==[-1,0]
+          assert x['actualUnity']=='NOT_RUN' and x['g2']=='HOLD'
+          print('CODEX_R3_ACTUAL_PARENT_SCALE_SOURCE_RECONCILIATION_PASS')
+          PYW30
+      - name: W34 genuine Codex303 existing Gyroscope decorative ring source-only visual overhang, negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=c89744d5ab43f4a795abe62527d94439be573693
+          git fetch --depth=1 origin "$PIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          test "$(git rev-parse "$PIN:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
+          test "$(git rev-parse "$PIN:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_w34_gyro_ring_envelope.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/W34_GYRO_VISUAL_RING_TEST_LOG.txt"
+          python3 "$dir/w34_gyro_ring_envelope.py" \
+            --r41 "$B01_PARTSIZE_PINNED_SOURCE/R41PartGeometry.cs" \
+            --r3 "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleAssembly.cs" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/W34_GYRO_VISUAL_RING_SOURCE_AABB.json"
+          python3 - <<'PYW34'
+          import json,os
+          from pathlib import Path
+          x=json.loads((Path(os.environ['B01_PARTSIZE_PR286_SOURCE'])/'W34_GYRO_VISUAL_RING_SOURCE_AABB.json').read_text())
+          assert x['inputCodexPR303Head']=='c89744d5ab43f4a795abe62527d94439be573693'
+          assert len(x['ringYawCases'])==4
+          assert x['ringYawCases'][0]['decorativeRingConservativeSignedCellsXYZ']==[[-1,0,1],[0],[0]]
+          assert x['ringYawCases'][1]['decorativeRingConservativeSignedCellsXYZ']==[[0],[0],[-1,0,1]]
+          assert x['actualEngine']=='NOT_RUN' and x['typedSocket']=='UNVERIFIED'
+          print('ACTUAL_CODEX303_GYRO_VISUAL_SOURCE_AABB_PASS / UNITY_NOT_RUN')
+          PYW34
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual production PARTSIZE C# directly and replay 32 physical envelopes
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          dotnet run --project "$dir/PR286ContractReplay.csproj" --configuration Release \
+            -- "$B01_PARTSIZE_PR286_SOURCE/PR286_SOURCE_VS_R41_GEOMETRY.json" |& tee "$B01_PARTSIZE_PR286_SOURCE/PR286_CSHARP_REAL_SOURCE_REPLAY.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W16-PARTSIZE-READONLY-32-ORIENTATION-EVIDENCE
+          path: |
+            /tmp/b01-partsize-pinned/RECEIPT.txt
+            /tmp/b01-partsize-pinned/QA_TEST_LOG.txt
+            /tmp/b01-partsize-pinned/PARTSIZE_VISUAL_SOURCE_32_ROWS.json
+            /tmp/b01-partsize-pr286/PR286_SOURCE_RECEIPT.txt
+            /tmp/b01-partsize-pr286/PR286_DELTA_UNIT_LOG.txt
+            /tmp/b01-partsize-pr286/PR286_SOURCE_VS_R41_GEOMETRY.json
+            /tmp/b01-partsize-pr286/PR286_CSHARP_REAL_SOURCE_REPLAY.txt
+            /tmp/b01-partsize-pr286/W17_SIGNED_PLACEMENT_TEST_LOG.txt
+            /tmp/b01-partsize-pr286/W17_SIGNED_PLACEMENT_4_YAW.json
+            /tmp/b01-partsize-pr286/W30_PROVENANCE.txt
+            /tmp/b01-partsize-pr286/W30_SCALE_QA_UNIT_LOG.txt
+            /tmp/b01-partsize-pr286/W30_R3_PARENT_SCALE_CORRECTION.json
+            /tmp/b01-partsize-pr286/W34_GYRO_VISUAL_RING_TEST_LOG.txt
+            /tmp/b01-partsize-pr286/W34_GYRO_VISUAL_RING_SOURCE_AABB.json
+          retention-days: 30
