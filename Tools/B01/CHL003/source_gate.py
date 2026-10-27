@@ -14,6 +14,7 @@ expected=[
 "Runtime/CHL003ContactMonitor.cs",
 "Runtime/CHL003FinishArbiter.cs",
 "Runtime/CHL003GateCrossing.cs",
+"Runtime/CHL003WheelSupportWindow.cs",
 "Runtime/CHL003TrialMetrics.cs",
 "Runtime/B01.CHL003.Runtime.asmdef",
 "Demo/CHL003DemoBootstrap.cs",
@@ -75,8 +76,8 @@ moreEdit=(pkg/"Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs").read_te
 morePlay=(pkg/"Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs").read_text()
 editNames += re.findall(r"\[Test\]\s+public void (\w+)\(",moreEdit)
 playNames += re.findall(r"\[UnityTest\]\s+public IEnumerator (\w+)\(",morePlay)
-require(len(editNames)==19 and len(set(editNames))==19, "expected 19 authored Edit NUnit methods")
-require(len(playNames)==14 and len(set(playNames))==14, "expected 14 authored Play UnityTests")
+require(len(editNames)==20 and len(set(editNames))==20, "expected 20 authored Edit NUnit methods")
+require(len(playNames)==15 and len(set(playNames))==15, "expected 15 authored Play UnityTests")
 arbiter=(pkg/"Runtime/CHL003FinishArbiter.cs").read_text()
 metrics=(pkg/"Runtime/CHL003TrialMetrics.cs").read_text()
 monitor=(pkg/"Runtime/CHL003ContactMonitor.cs").read_text()
@@ -131,6 +132,36 @@ require("core.AdvanceTime(Time.deltaTime)" not in runtime,
         "render FPS must not advance CHL trial time")
 require("P13_ElapsedTimeTracksPhysicsTicksNotRenderedFrames" in morePlay,
         "native fixed-vs-render frame verification missing")
+
+# B01-60 W26 QA-01 original-source near-ground false support:
+# old fixed 0.95m would enable AddForce while a 0.41m-radius wheel
+# hovers 0.35m above floor. Actual wheel bounds+3cm tolerance required.
+wheelpolicy=(pkg/"Runtime/CHL003WheelSupportWindow.cs").read_text()
+motor=(pkg/"Runtime/CHL003VehicleMotor.cs").read_text()
+for invariant in ("NearContactAllowanceMeters = 0.03f",
+                  "OriginLiftMeters = 0.14f",
+                  "wheelVerticalRadiusMeters + OriginLiftMeters +",
+                  "hitDistanceMeters <= reach"):
+    require(invariant in wheelpolicy,"source wheel radius reach policy lost: "+invariant)
+for invariant in ("probe.GetComponent<SphereCollider>()",
+                  "wheel.attachedRigidbody != body",
+                  "wheel.bounds.extents.y",
+                  "CHL003WheelSupportWindow.MaximumCastMeters(physicalRadius)",
+                  "CHL003WheelSupportWindow.WithinWheelReach(",
+                  "groundHits[i].distance",
+                  "if (!IsGrounded) return;"):
+    require(invariant in motor,"motor no longer validates physical wheel radius: "+invariant)
+require("groundHits, .95f" not in motor,
+        "B01-60 W26 false-ground regression: old 0.95m ray restored")
+require("E20_B0160NearGroundFalseSupportRejectsHoveringWheel" in moreEdit and
+        "P15_B0160NearGroundAirGapNeverAppliesThrustOrYaw" in morePlay,
+        "missing native near-ground falsifier authored source")
+broken=motor.replace(
+    "CHL003WheelSupportWindow.MaximumCastMeters(physicalRadius)",
+    "0.95f")
+require(broken!=motor and
+        "CHL003WheelSupportWindow.MaximumCastMeters(physicalRadius)" not in broken,
+        "old fixed .95m source mutation not detected")
 
 # W17 CHL-02 independent forward body plane and wheel-graze negatives
 crossing=(pkg/"Runtime/CHL003GateCrossing.cs").read_text()
