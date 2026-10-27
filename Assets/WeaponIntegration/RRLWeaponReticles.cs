@@ -20,6 +20,21 @@ namespace RoboRougelike.WeaponIntegration
         static readonly RaycastHit[] hits=new RaycastHit[128];
         static readonly Collider[] overlaps=new Collider[128];
 
+        static bool IsObstacle(Collider collider,R3MountedPart part,Transform owner)
+        {
+            if(collider==null||!collider.enabled||collider.isTrigger||!collider.gameObject.activeInHierarchy||
+                collider.transform==owner||collider.transform.IsChildOf(owner))return false;
+            // Existing outgoing projectiles must not drag the indicator down
+            // the barrel every time the player fires.
+            var shell=collider.GetComponentInParent<P17PhysicalShell>();
+            if(shell!=null&&shell.OwnerRoot==owner)return false;
+            var rocket=collider.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+            if(rocket!=null&&rocket.OwnerRoot==owner)return false;
+            // RocketProjectile treats solid wreckage as an impact; standard
+            // shells and beams use the shared hit router's ignore policy.
+            return part.Weapon==R4WeaponKind.RocketLauncher||RRLHitRouter.CanHit(collider,owner);
+        }
+
         public static Vector2 ToHudPoint(Vector2 viewport,Rect pixelRect,Vector2 screen)
         {
             float scale=Mathf.Min(screen.x/1280f,screen.y/720f);
@@ -76,7 +91,7 @@ namespace RoboRougelike.WeaponIntegration
                     int count=Physics.OverlapSphereNonAlloc(origin,Mathf.Max(.001f,radius),overlaps,~0,QueryTriggerInteraction.Ignore);
                     marker.Obstructed=count>=overlaps.Length;
                     for(int i=0;i<count&&!marker.Obstructed;i++)
-                        marker.Obstructed=RRLAimFeedback.Blocks(overlaps[i],null,assembly.transform);
+                        marker.Obstructed=IsObstacle(overlaps[i],part,assembly.transform);
                     if(marker.Obstructed)visiblePoint=origin;
                     else if(travel>.001f)
                     {
@@ -85,7 +100,7 @@ namespace RoboRougelike.WeaponIntegration
                         marker.Obstructed=count>=hits.Length;
                         float nearest=float.PositiveInfinity;RaycastHit best=default;
                         for(int i=0;i<count;i++)
-                            if(hits[i].distance<nearest&&RRLAimFeedback.Blocks(hits[i].collider,null,assembly.transform))
+                            if(hits[i].distance<nearest&&IsObstacle(hits[i].collider,part,assembly.transform))
                             {nearest=hits[i].distance;best=hits[i];}
                         if(nearest<float.PositiveInfinity)
                         {

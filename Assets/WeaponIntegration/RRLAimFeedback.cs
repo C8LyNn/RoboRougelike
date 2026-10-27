@@ -30,7 +30,7 @@ namespace RoboRougelike.WeaponIntegration
             if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.EmpEmitter||part.Weapon==R4WeaponKind.RotarySaw)return 0;
             return R4WeaponDefinition.Get(part.Weapon).Diameter*.5f;
         }
-        internal static bool Blocks(Collider c,Collider target,Transform owner)
+        static bool Blocks(Collider c,Collider target,Transform owner)
         {
             if(c==null||c==target||c.transform.IsChildOf(owner)||c.GetComponentInParent<R3Debris>()!=null)return false;
             var shell=c.GetComponentInParent<P17PhysicalShell>();if(shell!=null&&shell.OwnerRoot==owner)return false;

@@ -55,7 +55,7 @@ namespace RoboRougelike.R1
             if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
             aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
             GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
-            GUI.Label(new Rect(430,382,420,48),feedback.Caption,aimCaptionStyle);
+            GUI.Label(new Rect(430,412,420,48),feedback.Caption,aimCaptionStyle);
         }
         void DrawWeaponReticles(RogueMachine.P12PipelineSafe.P12PipelineSafeTankController controller)
         {
