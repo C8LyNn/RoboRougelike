@@ -139,7 +139,7 @@ def main():
         p = os.path.join(out, "ENV03-001_preview_%s.png" % label)
         if os.path.isfile(p) and os.path.getsize(p) > 1024:
             with open(p, "rb") as f:
-                assert f.read(8) == b"\\x89PNG\\r\\n\\x1a\\n", "PNG signature invalid"
+                assert f.read(8) == bytes([137, 80, 78, 71, 13, 10, 26, 10]), "PNG signature invalid"
             previews[label] = {"status": "PASS", "bytes": os.path.getsize(p), "sha256": sha256(p)}
         else:
             previews[label] = {"status": "NOT_RUN"}
