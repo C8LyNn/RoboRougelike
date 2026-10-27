@@ -1,0 +1,75 @@
+name: B01-30 W16 PARTSIZE original source visual AABB QA
+on:
+  pull_request:
+    paths:
+      - 'Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA/**'
+      - '.github/workflows/b01-30-w16-partsize-visual-source-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measured-source-fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Pin actual Codex PR272 source SHA, blobs and bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=9cd5a5272a9ebda130a97a5f1f73ce3eaf24b976
+          git fetch --depth=1 origin pull/272/head
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          out=/tmp/b01-partsize-pinned
+          mkdir -p "$out"
+          git show "$PIN:Assets/R4_1/R41PartGeometry.cs" > "$out/R41PartGeometry.cs"
+          git show "$PIN:Assets/R3/R3VehicleAssembly.cs" > "$out/R3VehicleAssembly.cs"
+          git show "$PIN:Assets/R3/R3BonusModuleGeometry.cs" > "$out/R3BonusModuleGeometry.cs"
+          git show "$PIN:Assets/R3/R3VehicleModel.cs" > "$out/R3VehicleModel.cs"
+          test "$(git rev-parse "$PIN:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
+          test "$(git rev-parse "$PIN:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
+          test "$(git rev-parse "$PIN:Assets/R3/R3BonusModuleGeometry.cs")" = 99f55a2002a80603f1707466d7a0066260d5c3ee
+          test "$(git rev-parse "$PIN:Assets/R3/R3VehicleModel.cs")" = cdd75fff4923a382b16c430dac1452320eda88f6
+          printf 'SOURCE_SHA=%s\n' "$PIN" | tee "$out/RECEIPT.txt"
+          sha256sum "$out"/*.cs | tee -a "$out/RECEIPT.txt"
+          echo "B01_PARTSIZE_PINNED_SOURCE=$out" >> "$GITHUB_ENV"
+      - name: Execute real-source and negative analytical tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_partsize_visual_source_qa.py" -v |& tee /tmp/b01-partsize-pinned/QA_TEST_LOG.txt
+      - name: Generate 32 measured analytical orientation records
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/partsize_visual_source_qa.py" \
+            --geometry "$B01_PARTSIZE_PINNED_SOURCE/R41PartGeometry.cs" \
+            --assembly "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleAssembly.cs" \
+            --bonus "$B01_PARTSIZE_PINNED_SOURCE/R3BonusModuleGeometry.cs" \
+            --model "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleModel.cs" \
+            --out "$B01_PARTSIZE_PINNED_SOURCE/PARTSIZE_VISUAL_SOURCE_32_ROWS.json"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['B01_PARTSIZE_PINNED_SOURCE'])/'PARTSIZE_VISUAL_SOURCE_32_ROWS.json').read_text())
+          assert len(d['records'])==32
+          wheel=next(x for x in d['records'] if x['part']=='Wheel' and x['yawQuarterTurns']==0)
+          heavy=next(x for x in d['records'] if x['part']=='GunHeavy' and x['yawQuarterTurns']==0)
+          suspension=next(x for x in d['records'] if x['part']=='Suspension' and x['yawQuarterTurns']==0)
+          assert wheel['physicalColliderSizeXYZ']==[.52,.91,.78]
+          assert heavy['physicalColliderSizeXYZ']==[.52,.676,1.352]
+          assert suspension['physicalFitsLogicalAABB']
+          assert not suspension['visualFitsLogicalAABB']
+          assert d['G2']=='HOLD'
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W16-PARTSIZE-READONLY-32-ORIENTATION-EVIDENCE
+          path: |
+            /tmp/b01-partsize-pinned/RECEIPT.txt
+            /tmp/b01-partsize-pinned/QA_TEST_LOG.txt
+            /tmp/b01-partsize-pinned/PARTSIZE_VISUAL_SOURCE_32_ROWS.json
+          retention-days: 30
