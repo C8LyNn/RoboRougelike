@@ -13,9 +13,9 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[3]
 MAIN_SHA="5f06af81e2dd9d877e4300259bb3dd008cb9c9d1"
-SCOPES=("Assets/B01Packages/PARTSIZE001/","Assets/B01Packages/PARTSIZE001.meta",
+SCOPES=("Assets/PARTSIZE001/","Assets/PARTSIZE001.meta",
         "Tools/B01/PARTSIZE001/","Docs/B01/PARTSIZE001/")
-SIBLING_META="Assets/B01Packages/PARTSIZE001.meta"
+SIBLING_META="Assets/PARTSIZE001.meta"
 MANIFEST="PARTSIZE001_SOURCE_MANIFEST.json"
 G2="HOLD"
 
@@ -31,7 +31,7 @@ def valid_path(path):
 
 def source_paths():
     lines=subprocess.check_output(["git","ls-files","--",
-        "Assets/B01Packages/PARTSIZE001","Assets/B01Packages/PARTSIZE001.meta",
+        "Assets/PARTSIZE001","Assets/PARTSIZE001.meta",
         "Tools/B01/PARTSIZE001","Docs/B01/PARTSIZE001"],cwd=ROOT).decode().splitlines()
     return sorted(lines)
 
@@ -64,7 +64,7 @@ def validate(files):
         elif path.startswith("Assets/") and path+".meta" not in files:
             raise ValueError("MISSING_ASSET_META:"+path)
     for folder in ["Runtime","Demo","Tests","Tests/EditMode","Tests/PlayMode"]:
-        if "Assets/B01Packages/PARTSIZE001/"+folder+".meta" not in files:
+        if "Assets/PARTSIZE001/"+folder+".meta" not in files:
             raise ValueError("MISSING_FOLDER_META:"+folder)
     if len(meta_guids)<12:raise ValueError("TOO_FEW_GUIDS")
     if "Assets/B01Packages.meta" in files:raise ValueError("SHARED_ROOT_META_COLLISION")
