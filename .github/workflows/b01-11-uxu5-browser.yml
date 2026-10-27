@@ -1,0 +1,44 @@
+name: B01-11 UX.U5 independent exact-blob browser scenarios
+on:
+  push:
+    branches:
+      - research/b01-11-pass3-uxu5-independent-browser
+    paths:
+      - Research/B01-11/UXU5/**
+      - .github/workflows/b01-11-uxu5-browser.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch ORIGINAL B01-12 exact HTML (never branch-current substitution)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin c920bd3bba7c3b05173225d6d2148bef08e1f319
+          git show c920bd3bba7c3b05173225d6d2148bef08e1f319:Research/B01-12/W17/index.html > /tmp/b01-12-v2-exact.html
+          echo "Pinned original source commit: c920bd3bba7c3b05173225d6d2148bef08e1f319"
+          sha256sum /tmp/b01-12-v2-exact.html
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser runtime on disposable runner
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Run independent five actual Chromium UX cases
+        env:
+          B01_UX_HTML: /tmp/b01-12-v2-exact.html
+          B01_UX_OUT: Research/B01-11/UXU5/output
+        run: python Research/B01-11/UXU5/check_v2_browser.py
+      - name: Preserve original browser screenshots and machine receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-11-uxu5-independent-chromium
+          path: Research/B01-11/UXU5/output/
+          if-no-files-found: warn
