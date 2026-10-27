@@ -57,7 +57,8 @@ namespace RoboRougelike.R3
                 if(part!=null&&part.Operational&&part.GunPivot!=null&&part.transform.IsChildOf(run.Player.transform))part.GunPivot.localRotation=Quaternion.identity;
             Physics.SyncTransforms();
             R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),true);
-            Cursor.lockState=CursorLockMode.None;Cursor.visible=true;HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;SelectedRotation=default;
+            if(!Application.isBatchMode){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;}
+            HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;SelectedRotation=default;
             RefreshPreview();FrameVehicle();
         }
         public void Close()
@@ -312,7 +313,7 @@ namespace RoboRougelike.R3
         }
         private void LateUpdate()
         {
-            if(run.Progress?.State!=R1RunState.Garage||run.Player==null)return;
+            if(!isOpen||run.Progress?.State!=R1RunState.Garage||run.Player==null)return;
             var pivot=run.Player.transform.TransformPoint(pivotLocal);var rotation=Quaternion.Euler(pitch,yaw,0);
             view.transform.SetPositionAndRotation(pivot+rotation*Vector3.back*distance,rotation);
         }

@@ -117,6 +117,6 @@ namespace RogueMachine.P12PipelineSafe
             renderedDistance=Mathf.SmoothDamp(renderedDistance,distance,ref zoomVelocity,Mathf.Max(.015f,zoomFollowSeconds),Mathf.Infinity,Time.deltaTime);
             rig.SetOrbit(yaw,pitch,renderedDistance);rig.StepCamera(Time.deltaTime);
         }
-        void ApplyCursor(){Cursor.lockState=cursorLocked?CursorLockMode.Locked:CursorLockMode.None;Cursor.visible=!cursorLocked;}
+        void ApplyCursor(){if(Application.isBatchMode)return;Cursor.lockState=cursorLocked?CursorLockMode.Locked:CursorLockMode.None;Cursor.visible=!cursorLocked;}
     }
 }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="15" result="Passed" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0,1191983">
+  <test-suite type="TestSuite" id="1682" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="474" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.119198" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1030" name="B01.CAMERA001.PlayModeTests.dll" fullname="PROJECT/Library/ScriptAssemblies/B01.CAMERA001.PlayModeTests.dll" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.088045" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="44336" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1031" name="B01" fullname="B01" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.086688" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1032" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.085611" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1033" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.084591" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1013" name="Camera001AimTimelinePhysicsTests" fullname="B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests" classname="B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.038868" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1014" name="NativeRayChangesEnemyToFloorAndRecordsSlewBudget" fullname="B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests.NativeRayChangesEnemyToFloorAndRecordsSlewBudget" methodname="NativeRayChangesEnemyToFloorAndRecordsSlewBudget" classname="B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests" runstate="Runnable" seed="1713497424" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.020369" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="RealCameraFinalPoseFlagOutranksTargetRetargetClassification" fullname="B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests.RealCameraFinalPoseFlagOutranksTargetRetargetClassification" methodname="RealCameraFinalPoseFlagOutranksTargetRetargetClassification" classname="B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests" runstate="Runnable" seed="1747525710" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.008082" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1016" name="Camera001WorldCollisionTests" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.043864" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1020" name="CAM01_Light_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM01_Light_720_FinalPose" methodname="CAM01_Light_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1480433212" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.008070" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="CAM02_Light_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM02_Light_1080_FinalPose" methodname="CAM02_Light_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1039805517" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.003233" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="CAM03_Heavy_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM03_Heavy_720_FinalPose" methodname="CAM03_Heavy_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1154056772" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.002940" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="CAM04_Heavy_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM04_Heavy_1080_FinalPose" methodname="CAM04_Heavy_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="988460840" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:50Z" duration="0.002984" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1024" name="CAM05_Tall_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM05_Tall_720_FinalPose" methodname="CAM05_Tall_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1987418529" result="Passed" start-time="2026-10-27 14:46:50Z" end-time="2026-10-27 14:46:51Z" duration="0.003173" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="CAM06_Tall_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM06_Tall_1080_FinalPose" methodname="CAM06_Tall_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="2136254833" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.002978" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="CAM07_Wide_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM07_Wide_720_FinalPose" methodname="CAM07_Wide_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="2009664689" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.003391" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="CAM08_Wide_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM08_Wide_1080_FinalPose" methodname="CAM08_Wide_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="816179616" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.003075" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1028" name="CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration" methodname="CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1340072029" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.002409" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput" methodname="CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1525990147" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.001444" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="HeavyToLightSwitchClearsPreviousSmoothing" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.HeavyToLightSwitchClearsPreviousSmoothing" methodname="HeavyToLightSwitchClearsPreviousSmoothing" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1762666445" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.001287" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="IgnoresOwnCollidersWithoutDisablingThem" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.IgnoresOwnCollidersWithoutDisablingThem" methodname="IgnoresOwnCollidersWithoutDisablingThem" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="586839122" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.001180" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="WorldObstacleShortensCameraSpringArm" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.WorldObstacleShortensCameraSpringArm" methodname="WorldObstacleShortensCameraSpringArm" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="890928992" result="Passed" start-time="2026-10-27 14:46:51Z" end-time="2026-10-27 14:46:51Z" duration="0.001391" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: USER_DIR/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

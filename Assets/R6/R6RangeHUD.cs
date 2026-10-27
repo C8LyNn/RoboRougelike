@@ -8,6 +8,7 @@ namespace RoboRougelike.R1
         static readonly string[] weaponMarkerNumbers={"1","2","3","4"};
         void DrawTestRange(R1RunController run)
         {
+            if(run.MapEditorTesting){DrawMapTest(run);return;}
             if(run.Transitioning){Panel(new Rect(0,0,1280,720));GUI.Label(new Rect(300,300,700,80),"Przygotowanie poligonu…",title);return;}
             if(run.Paused)
             {

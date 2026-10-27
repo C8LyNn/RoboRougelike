@@ -243,6 +243,7 @@ namespace RoboRougelike.R1
         {
             if (ReadSessionInput()) return;
             if (Error != null || Progress == null || Transitioning) return;
+            MapEditorTick();
             ReadMenuInput();
             if (Paused || QuitRequested) return;
             if(Progress.State==R1RunState.TestDrive){if(!Transitioning)UpdateRange();return;}
@@ -295,7 +296,7 @@ namespace RoboRougelike.R1
                 else if (keyboard.digit2Key.wasPressedThisFrame) ChooseUpgrade(1);
                 else if (keyboard.digit3Key.wasPressedThisFrame) ChooseUpgrade(2);
             }
-            else if(Progress.State==R1RunState.TestDrive&&keyboard.rKey.wasPressedThisFrame)ResetTestRange();
+            else if(!MapEditorTesting&&Progress.State==R1RunState.TestDrive&&keyboard.rKey.wasPressedThisFrame)ResetTestRange();
             else if ((Progress.State == R1RunState.Won || Progress.State == R1RunState.Lost) &&
                 keyboard.enterKey.wasPressedThisFrame) RestartRun();
 #endif

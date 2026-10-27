@@ -42,7 +42,8 @@ namespace RoboRougelike.R1
             try
             {
                 Draw(run);
-                if(!sessionOverlay&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
+                else if(!sessionOverlay&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
@@ -61,6 +62,7 @@ namespace RoboRougelike.R1
             }
             if (run.Progress == null) return;
             var progress = run.Progress;
+            if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
             if(progress.State==R1RunState.Garage&&!run.Transitioning){DrawGarage(run);return;}
             if (progress.State == R1RunState.Combat && !run.Transitioning)
@@ -122,7 +124,7 @@ namespace RoboRougelike.R1
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
                 if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
-                GUI.Label(new Rect(640,548,300,48),"Trasy • obrona reaktora • generowana arena",small);
+                if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
                 GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM — ogień • Esc — pauza",small);
             }
@@ -257,7 +259,8 @@ namespace RoboRougelike.R1
             Panel(new Rect(345,590,585,115));
             GUI.Label(new Rect(360,600,555,55),garage.Message,small);
             GUI.enabled=model.CanDeploy;
-            if(GUI.Button(new Rect(360,654,270,40),"Testuj na poligonie",compactButton))run.EnterTestRange();
+            if(run.MapEditorSession){if(GUI.Button(new Rect(360,654,270,40),"Wróć do edytora map",compactButton))run.ReturnToMapEditorFromGarage();}
+            else if(GUI.Button(new Rect(360,654,270,40),"Testuj na poligonie",compactButton))run.EnterTestRange();
             GUI.enabled=run.SandboxWorkshop||model.CanDeploy;
             if(GUI.Button(new Rect(645,654,270,40),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?"Menu główne":"Następna trasa",compactButton))
             {if(run.ReactorPrepared)run.ChooseReactorDefense();else if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
