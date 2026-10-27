@@ -213,8 +213,12 @@ namespace B01.CHL003.Tests
 
                 wheel.enabled = true;
                 foreign.transform.position = new UnityEngine.Vector3(0f, .41f, 0f);
+                var foreignBody = foreign.AddComponent<UnityEngine.Rigidbody>();
+                foreignBody.isKinematic = true;
                 var foreignSphere = foreign.AddComponent<UnityEngine.SphereCollider>();
                 foreignSphere.radius = radius;
+                Assert.AreSame(foreignBody, foreignSphere.attachedRigidbody,
+                    "Negative fixture must have a different actual Rigidbody");
                 motor.Configure(null, 4200f, 700f,
                     new UnityEngine.Transform[] { foreign.transform });
                 UnityEngine.Physics.SyncTransforms();
