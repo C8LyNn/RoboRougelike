@@ -3,7 +3,7 @@ Gates require actual root Rigidbody **center plane forward crossing within one p
 
 The standalone motor now has explicitly **NO THRUST OR STEERING IN AIR**; grounded status requires at least one of the four actual wheel probes to raycast a non-trigger, non-self physical surface with supporting normal (>0.5 Y). While airborne Rigidbody gravity and inertia continue, horizontal acceleration is not artificially granted. HUD exposes grounded/airborne steps; runtime computes physical Light/Heavy dimensions from real `Collider.bounds` rather than constants. Do not claim WheelCollider or real R3 mechanical suspension simulation; these are standalone rigid-body physics demo wheels.
 
-W17 authorship: **18 EditMode and 12 PlayMode** native Unity tests (NOT_RUN), including new E16–E18 and P10–P12 forward-full-body, reverse, wheel-graze and airborne traction negatives. The headless suite compiles original source `CHL003GateCrossing.cs` and exercises thousands of physically-dimensional input contracts; it does **not** execute Unity PhysX or native motor tests.
+W17 authorship: **18 EditMode and 13 PlayMode** native Unity tests (NOT_RUN), including new E16–E18 and P10–P13 forward-full-body, reverse, wheel-graze and airborne traction negatives. The headless suite compiles original source `CHL003GateCrossing.cs` and exercises thousands of physically-dimensional input contracts; it does **not** execute Unity PhysX or native motor tests.
 
 
 # B01 / CHL-003 R1 — Complete obstacle-course candidate, QA pending
