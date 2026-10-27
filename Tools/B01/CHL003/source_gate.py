@@ -75,8 +75,8 @@ moreEdit=(pkg/"Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs").read_te
 morePlay=(pkg/"Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs").read_text()
 editNames += re.findall(r"\[Test\]\s+public void (\w+)\(",moreEdit)
 playNames += re.findall(r"\[UnityTest\]\s+public IEnumerator (\w+)\(",morePlay)
-require(len(editNames)==18 and len(set(editNames))==18, "expected 18 authored Edit NUnit methods")
-require(len(playNames)==13 and len(set(playNames))==13, "expected 13 authored Play UnityTests")
+require(len(editNames)==19 and len(set(editNames))==19, "expected 19 authored Edit NUnit methods")
+require(len(playNames)==14 and len(set(playNames))==14, "expected 14 authored Play UnityTests")
 arbiter=(pkg/"Runtime/CHL003FinishArbiter.cs").read_text()
 metrics=(pkg/"Runtime/CHL003TrialMetrics.cs").read_text()
 monitor=(pkg/"Runtime/CHL003ContactMonitor.cs").read_text()
@@ -97,6 +97,33 @@ require("OnTriggerStay" in (pkg/"Runtime/CHL003Gate.cs").read_text(),
 require("P07_SameNativeCourseLightHeavyThreeRunsEachWithRealContact" in morePlay and
         "P08_FinalCheckpointAndFinishCoLocatedNeverCompleteSameFixedStep" in morePlay,
         "real native physical course acceptance missing")
+# Dependency-triggered C1 concrete original geometry mismatch from B01-21
+# QA Draft #295: bridge 3.70m physically admits Heavy yaw8 while old
+# 3.50m CP trigger rejected its entire real Collider.bounds envelope under
+# 0.25m required clearance. Gate opening MUST equal narrowest physical span.
+gate_match=re.search(r'var obj = Box\\(label, new Vector3\\(0f, 2\\.25f, z\\),\\s*new Vector3\\(([\\d.]+)f, 4\\.5f, \\.16f\\)',demo)
+bridge_match=re.search(r'"NARROW_SOLID_BRIDGE".*?new Vector3\\(([\\d.]+)f, \\.60f, 10f\\)',demo,re.S)
+post_match=re.search(r'new Vector3\\(side \\* ([\\d.]+)f, 1\\.3f, z\\)',demo)
+require(gate_match is not None and bridge_match is not None and
+        post_match is not None, "B01-21 original physical gate geometry not found")
+gate_width=float(gate_match.group(1))
+bridge_width=float(bridge_match.group(1))
+marker_half_position=float(post_match.group(1))
+require(gate_width==bridge_width==3.70,
+        "CHL-CP-GEOMETRY_RED: body-clearance gate narrower than physically traversable bridge")
+require(abs(marker_half_position-(gate_width*.5+.12))<1e-6,
+        "visual gate posts not aligned with actual trigger width")
+bad_demo=demo.replace('new Vector3(3.70f, 4.5f, .16f)',
+                      'new Vector3(3.50f, 4.5f, .16f)')
+require(bad_demo!=demo and
+        'new Vector3(3.70f, 4.5f, .16f)' not in bad_demo and
+        'new Vector3(3.50f, 4.5f, .16f)' in bad_demo,
+        "negative trigger aperture mutation did not turn RED")
+require('P14_HeavyYaw8_RealGateMatchesBridgeRatherThanRejectingClearance' in morePlay,
+        "missing exact real PhysX upstream source mismatch reproduction")
+require('E19_UpstreamB0121HeavyYaw8OldGateFailsBridgeAlignedGatePasses' in moreEdit,
+        "missing original B01-21 exact width/clearance negative")
+
 # Fixed-step authoritative telemetry clock, never render-driven Update.
 require("core.AdvanceTime(Time.fixedDeltaTime)" in runtime,
         "CHL elapsed clock must advance on real physics tick")
