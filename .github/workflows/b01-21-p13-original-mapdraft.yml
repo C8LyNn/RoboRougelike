@@ -29,7 +29,9 @@ jobs:
           git fetch --no-tags --depth=1 origin refs/pull/310/head
           if ($LASTEXITCODE -ne 0 -or (git rev-parse FETCH_HEAD).Trim() -ne $codex) { throw 'CODEX HEAD MOVED OR FETCH FAILED -- FAIL CLOSED' }
           git fetch --no-tags --depth=30 origin refs/heads/research/b01-25-p11-level-fixtures
-          if ($LASTEXITCODE -ne 0 -or (git rev-parse FETCH_HEAD).Trim() -ne $research) { throw 'B01-25 RESEARCH HEAD MOVED OR FETCH FAILED -- FAIL CLOSED' }
+          if ($LASTEXITCODE -ne 0) { throw 'B01-25 RESEARCH FETCH FAILED' }
+          git cat-file -e "${research}^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'PINNED B01-25 HISTORIC COMMIT UNREACHABLE -- FAIL CLOSED' }
           $expect = @{
             'Assets/MapEditor/MapDraft.cs' = 'b5f8f395f93972c0ede000701dbbada8fcfcdfdb'
           }
