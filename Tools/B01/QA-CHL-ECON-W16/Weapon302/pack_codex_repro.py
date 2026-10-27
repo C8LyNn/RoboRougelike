@@ -94,6 +94,11 @@ def package_members():
         raise RuntimeError("ORIGINAL_RECEIPT_FILES_NOT_TWO_EXPECTED_SOURCES")
     for relative in LOCAL:
         raw=(HERE/relative).read_bytes()
+        # Git checkout may write CRLF for our QA text on Windows; archive
+        # must stay byte-identical on Windows and Linux. NEVER normalize
+        # original pinned Codex R3/R4 Git blobs or their provenance receipt.
+        if not relative.startswith("_pinned/"):
+            raw=raw.replace(b"\r\n",b"\n")
         members[f"{ARCHIVE_ROOT}/Weapon302/{relative}"]=raw
     for p,expected in SOURCES.items():
         raw=members[f"{ARCHIVE_ROOT}/Weapon302/_pinned/{p}"]
