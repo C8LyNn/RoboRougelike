@@ -1,0 +1,112 @@
+// PASS13 independent executable source QA. Compiles the original, unchanged
+// #310 Assets/MapEditor/MapDraft.cs, pinned by workflow Git blob SHA.
+// System.Text.Json is ONLY a shim for UnityEngine.JsonUtility, not actual Unity.
+using System;
+using System.IO;
+using System.Linq;
+using RoboRougelike.MapEditor;
+
+internal static class Program
+{
+    static int ok, fail;
+    const string MissingGround = "Dodaj podłoże pod punktem startowym.";
+    static void Need(bool condition, string message)
+    {
+        if (!condition) throw new InvalidOperationException(message);
+    }
+    static void Case(string name, Action body)
+    {
+        try { body(); ok++; Console.WriteLine("SOURCE_CSHARP_SHIM_PASS | "+name); }
+        catch(Exception e) { fail++; Console.Error.WriteLine("SOURCE_CSHARP_SHIM_FAIL | "+name+" | "+e); }
+    }
+    static MapDraft LoadFile(string name, int count, bool global)
+    {
+        string path=Path.Combine("Research","B01-25",name.StartsWith("LD") && name.Contains("NEG") ? "P12":"P11",name+".json");
+        var draft=new MapDraft();
+        string json=File.ReadAllText(path);
+        Need(draft.TryLoad(json,out string error),"TryLoad rejected "+name+": "+error);
+        Need(draft.Items.Count==count,"Count "+name+" expected="+count+" actual="+draft.Items.Count);
+        Need(draft.GlobalFloor==global,"GlobalFloor mismatch "+name);
+        return draft;
+    }
+    static void RotatedScaledSpawn(int yaw,int missingX,int missingZ)
+    {
+        var draft=new MapDraft();
+        Need(draft.Place(MapItemKind.Ground,0,0,0),"initial Ground");
+        Need(draft.Place(MapItemKind.Spawn,0,0,yaw,2,1,1),"scaled Spawn");
+        Need(draft.Place(MapItemKind.Finish,10,10,0),"Finish");
+        Need(draft.TestError()==MissingGround,"missing support not rejected");
+        var before=draft.ToJson();
+        Need(draft.Place(MapItemKind.Ground,missingX,missingZ,0),"missing Ground");
+        Need(draft.TestError()==null,"complete support not accepted");
+        var after=draft.ToJson();
+        Need(draft.Undo() && draft.ToJson()==before && draft.TestError()==MissingGround,
+            "Undo not exact / preflight");
+        Need(draft.Redo() && draft.ToJson()==after && draft.TestError()==null,
+            "Redo not exact / preflight");
+        var roundtrip=new MapDraft();
+        Need(roundtrip.TryLoad(after,out string error),"v2 TryLoad "+error);
+        Need(roundtrip.Spawn.rotation==yaw && roundtrip.Spawn.scaleX==2,
+            "rotation/scale lost");
+        Need(roundtrip.TestError()==null,"roundtrip support lost");
+    }
+    static int Main()
+    {
+        Console.WriteLine("SOURCE_KIND=EXACT_ORIGINAL_CODEX_MAPDRAFT_CS");
+        Console.WriteLine("SOURCE_SHA=231005c6d0351945a8ee6684f3856af118f0e94f");
+        Console.WriteLine("SOURCE_GIT_BLOB=b5f8f395f93972c0ede000701dbbada8fcfcdfdb");
+        Console.WriteLine("ENGINE=DOTNET8_WITH_JSONUTILITY_VECTOR2INT_SHIMS__NOT_UNITY");
+        foreach(var (yaw,x,z) in new[]{(0,1,0),(1,0,-1),(2,-1,0),(3,0,1)})
+        {
+            int y=yaw, dx=x, dz=z;
+            Case("A_ROTATED_SPAWN_YAW_"+(y*90),()=>RotatedScaledSpawn(y,dx,dz));
+        }
+        Case("B_LD01_ORIGINAL_POSITIVE",()=>
+        {
+            var d=LoadFile("LD01",59,false);
+            Need(d.Spawn.x==0 && d.Spawn.z==1,"Spawn LD01");
+            Need(d.Finish.x==12 && d.Finish.z==1,"Finish LD01");
+            Need(d.TestError()==null,"TestError LD01");
+        });
+        Case("B_LD02_ORIGINAL_POSITIVE",()=>
+        {
+            var d=LoadFile("LD02",10,true);
+            Need(d.Spawn.x==0 && d.Spawn.z==5,"Spawn LD02");
+            Need(d.Finish.x==11 && d.Finish.z==5,"Finish LD02");
+            Need(d.TestError()==null,"TestError LD02");
+        });
+        Case("B_LD03_ORIGINAL_POSITIVE",()=>
+        {
+            var d=LoadFile("LD03",45,false);
+            Need(d.Spawn.x==0 && d.Spawn.z==2,"Spawn LD03");
+            Need(d.Finish.x==8 && d.Finish.z==2,"Finish LD03");
+            Need(d.TestError()==null,"TestError LD03");
+        });
+        Case("B_LD01_NEG_PARTIAL_GROUND_PRECHECK_REJECT",()=>
+        {
+            var d=LoadFile("LD01_NEG",58,false);
+            Need(d.TestError()==MissingGround,"Expected underfloor start rejection");
+        });
+        Case("B_LD02_NEG_DUPLICATE_FINISH_TRANSACTIONAL",()=>
+        {
+            var original=LoadFile("LD02",10,true);
+            string prior=original.ToJson();
+            string bad=File.ReadAllText("Research/B01-25/P12/LD02_NEG.json");
+            Need(!original.TryLoad(bad,out string error),"duplicate Finish accepted");
+            Need(error=="Mapa może mieć tylko jeden start i jedną metę.","wrong error: "+error);
+            Need(prior==original.ToJson(),"invalid import mutated existing map");
+        });
+        Case("B_LD03_NEG_CUT_DETOUR_STILL_SANDBOX_VALID",()=>
+        {
+            var d=LoadFile("LD03_NEG",43,false);
+            Need(d.TestError()==null,"Editor TestError should only check Spawn support");
+            Need(d.Spawn.x==0 && d.Spawn.z==2 && d.Finish.x==8 && d.Finish.z==2,
+                "marker drift");
+            // No route pass is asserted. Deleted Ground tiles can break design
+            // even when the editor's basic sandbox preflight succeeds.
+        });
+        Console.WriteLine("ORIGINAL_CSHARP_SHIM_TESTS="+ok+" PASS / "+fail+" FAIL");
+        Console.WriteLine("UNITY_EDITOR_NOT_RUN; PHYSX_NOT_RUN; HUMAN_NOT_RUN; G1_NOT_RUN");
+        return fail==0 ? 0 : 1;
+    }
+}
