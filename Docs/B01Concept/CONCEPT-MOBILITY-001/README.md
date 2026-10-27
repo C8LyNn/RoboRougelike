@@ -42,3 +42,9 @@ Only concept options are complete. **B01-23** measures physical sockets/bounds a
 - Reuse/provenance/licensing: original source shapes in SVG, procedural human-directed vector art with no third-party source art. Repo-wide licensing remains authoritative.
 
 **Next receiver action:** HQ selects MIX/SELECT/REVISE based on this contact sheet, then B01-10/B01-23/B01-30 can draft the approved design and verified tech-art measurements.
+
+## W26 subject-only silhouette improvement (HQ choice still pending)
+
+The original full cards remain useful as annotated briefs; the earlier 64/128 px PNGs shrank **all the card text**, so they could not isolate silhouette recognition. The existing `qa_render.py` now additionally crops only the original artwork on the same standard coordinates for all three variants, produces **six 64px/128px subject-only images** and a `silhouette-review-128-64.png` contact sheet. This changes **preview presentation**, not the original original vectors nor technical dimensions.
+
+See [W26 independent visual risks and proposed blind test](W26_RISK_AND_READABILITY_REVIEW.md) before HQ selection. Automatic raster correctness is a **source image check**, not a user study, not verified camera/gameplay silhouette legibility, and not a vehicle mount/physics certification. Exact final-head executed CI evidence is reported in PR conversation / #287, never inferred from an earlier SHA.
