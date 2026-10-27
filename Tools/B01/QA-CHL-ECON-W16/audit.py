@@ -119,8 +119,8 @@ def main():
     require(pathlib.Path(args.chl).resolve()==actual_chl.resolve(),
        "CHL_SOURCE_NOT_PINNED_285")
     c=inspect_chl_directory(actual_chl)
-    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==12,
-       "CHL_EXPECTED_12_ACTUAL_CSHARP_FILES_MISSING")
+    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==13,
+       "CHL_EXPECTED_13_ACTUAL_CSHARP_FILES_MISSING")
     core=(actual_chl/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
     controller=(actual_chl/"Runtime/CHL003CourseController.cs").read_text(encoding="utf8")
     demo=(actual_chl/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
@@ -145,7 +145,21 @@ def main():
     require('Debug.Log("CHL003_ACTUAL_TRIAL_SUMMARY_CSV\\n" + row);' in demo and
        "public string SummaryCsv()" in metrics,
        "CHL_DIAGNOSTIC_LOGGING_OR_METRICS_CONTRACT_CHANGED")
+    # Updated W26 actor gate is a stateless pure policy. Assert its
+    # genuine forward-full-body criterion, not a generic trigger-only win.
+    crossing=(actual_chl/"Runtime/CHL003GateCrossing.cs").read_text(encoding="utf8")
+    require("public static bool IsForwardFullBodyCrossing(" in crossing and
+       "previousDepth <= 0f && currentDepth > 0f" in crossing and
+       "facingDot >= .5f" in crossing and
+       "localMaxX <= gateMaxX - minimumSideClearance" in crossing,
+       "CHL_W26_GATE_CROSSING_AUTHORITY_CHANGED")
+    # Second source assembly must depend on CHL runtime only, never host R3.
+    import json
+    demo_asm=json.loads((actual_chl/"Demo/B01.CHL003.Demo.asmdef").read_text())
+    require(demo_asm.get("references")==["B01.CHL003.Runtime"],
+       "CHL_W26_DEMO_ASMDEF_HOST_DEPENDENCY")
     c["original_chl_pin"]=receipt["chl_commit"]
+    c["w26_gate_is_stateless_forward_body_only"]=True
     c["core_completed_event_has_durable_activity_id"]=False
     c["event_fires_once_per_attempt_not_once_per_host_run"]=True
     c["controller_retry_alters_configured_rigidbody_pose"]=True

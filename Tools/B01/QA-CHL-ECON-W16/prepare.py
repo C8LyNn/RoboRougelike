@@ -13,23 +13,25 @@ SOURCES = {
     "Assets/R1/R1RunController.cs": "c6d5f3efe4949da68a5c48ec38ef5028af8b8410",
     "Assets/R3/R3VehicleModel.cs": "cdd75fff4923a382b16c430dac1452320eda88f6",
 }
-CHL_PIN = "23d40eb21a7c0db97238516c9e9ec6e708f54998"
+CHL_PIN = "077e692785aff2990a2d72a80fd1db62ac57b0e8"
 CHL_SOURCES = {
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs": "5c736da620487e48131f6d454bcf231ae368b513",
+    "Assets/RoboRougelikeChallenges/CHL003/Demo/B01.CHL003.Demo.asmdef": "cac7e135d03786732e910675bb6b4f795e561081",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseCore.cs": "fa8a12ae71addccc7acee587702bff041bc74d33",
-    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs": "3c1a7a85c781aecc8ecb43862ff9f000bbce557b",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs": "1e51b02cc833acb9dedbd8b6a0177fd4e42381a0",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Gate.cs": "2b9d887b098981578ad150d66feb024389645544",
-    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs": "f0417d5f0de1eb63d8579932d5dad707b0f06980",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs": "2ec5334539cfe3b1108ad2c868e04be7a9b18129",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003ContactMonitor.cs": "f0eaae5b84dcb1b118f175251f71215d635be5a9",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003FinishArbiter.cs": "0cb572a40a4120158c46ab36e312afee5c22de8d",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs": "b5050e3921092a2192d5928f86aec6ca0f208ab6",
-    "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs": "c74455dda6aa6c5210ebcce73330cf296b3597bd",
-    "Assets/RoboRougelikeChallenges/CHL003/Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs": "44ff2df5b906ab82aed6ac8c7002788188beaaea",
-    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs": "ac126bbe00479790fcd7bc3480faec5c0c4b7e88",
+    "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs": "9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs": "972441a5ddff10b7777d9f4f2fc8ade5cc4cc997",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs": "64590d1fcb1faf278e120922a6dbfab23d24976d",
     "Assets/RoboRougelikeChallenges/CHL003/Tests/EditMode/CHL003CoreEditModeTests.cs": "f361800e81f76cd1060d9aaeaca554893e60c2b9",
-    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003PhysicsPlayModeTests.cs": "c979f474dab98ff7a475d1c8021a10e55d8fe2ce",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003PhysicsPlayModeTests.cs": "1c52685ca008b1d19597e3d712cc8eb2b5a6d9d0",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/B01.CHL003.Runtime.asmdef": "28cf327188cc7f17888e889ce096cc38b7f7e534",
     "Assets/RoboRougelikeChallenges/CHL003/Tests/EditMode/B01.CHL003.EditModeTests.asmdef": "740fd4fc6f478149fff6f6ff934204ceb41198b1",
-    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/B01.CHL003.PlayModeTests.asmdef": "29f79be3a6103f2861a98188dc6eda83a04bf5ec",
+    "Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/B01.CHL003.PlayModeTests.asmdef": "5dee14b103ee4b2bea9b2a4378c384822f2671c6",
     "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003_Demo.unity": "2852e6f6a7738bf18d8ec3fdda3626b097549339",
 }
 def blob_id(raw):

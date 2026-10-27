@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 static class Program
 {
-    const string Pin="23d40eb21a7c0db97238516c9e9ec6e708f54998";
+    const string Pin="077e692785aff2990a2d72a80fd1db62ac57b0e8";
     static readonly List<(string Name,string Status,string Detail)> Cases=new();
     static void Check(bool ok,string why){if(!ok)throw new Exception(why);}
     static CHL003CourseCore New(int n=4,int actor=101)
@@ -149,6 +149,30 @@ static class Program
             m.Reset("LIGHT",2,270f,2f,2.3f);
             Check(m.Completions==0 && m.Checkpoints==0 && m.Events.Count==1,
                "retry preserved stale metrics/reward-like event");
+        });
+        Run("C13_w26_forward_fullbody_crossing_is_only_valid_candidate",()=>{
+            Check(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.2f,.2f,-1.0f,1.0f,-.5f,.5f,-2f,2f,-1f,1f,.99f),
+                "legitimate forward envelope rejected");
+            Check(!CHL003GateCrossing.IsForwardFullBodyCrossing(
+                .2f,-.2f,-1f,1f,-.5f,.5f,-2f,2f,-1f,1f,.99f),
+                "reverse crossing accepted");
+        });
+        Run("C14_w26_actor_gate_rejects_side_grazing_and_backwards_facing",()=>{
+            Check(!CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.2f,.2f,-2.1f,1f,-.5f,.5f,-2f,2f,-1f,1f,.99f),
+                "partial wheel/body overhang granted checkpoint");
+            Check(!CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.2f,.2f,-1f,1f,-.5f,.5f,-2f,2f,-1f,1f,-.1f),
+                "backwards facing granted checkpoint");
+        });
+        Run("C15_w26_actor_gate_invalid_floats_fail_closed",()=>{
+            Check(!CHL003GateCrossing.IsForwardFullBodyCrossing(
+                float.NaN,.2f,-1f,1f,-.5f,.5f,-2f,2f,-1f,1f,1f),
+                "NaN accepted");
+            Check(!CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.2f,.2f,-1f,1f,-.5f,.5f,-2f,2f,-1f,1f,1f,float.NegativeInfinity),
+                "infinite clearance accepted");
         });
         int pass=Cases.Count(x=>x.Status=="PASS");
         var result=new{source_pin=Pin,core_source="ACTUAL_CHL_285_CSHARP_DIRECTLY_COMPILED",

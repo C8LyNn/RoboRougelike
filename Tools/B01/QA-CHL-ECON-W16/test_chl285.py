@@ -19,7 +19,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         receipt=json.loads(RECEIPT.read_text(encoding="utf8"))
-        if receipt.get("chl_commit")!="23d40eb21a7c0db97238516c9e9ec6e708f54998":
+        if receipt.get("chl_commit")!="077e692785aff2990a2d72a80fd1db62ac57b0e8":
             raise RuntimeError("PINNED_CHL285_SHA_CHANGED")
         cls.code=[(str(p),p.read_text(encoding="utf8")) for p in sorted(ROOT.rglob("*.cs"))]
         cls.core=(ROOT/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
@@ -27,7 +27,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
         cls.demo=(ROOT/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
 
     def test_16_actual_original_seven_Csharp_files_are_reward_free(self):
-        self.assertEqual(audit.inspect_chl_files(self.code),12)
+        self.assertEqual(audit.inspect_chl_files(self.code),13)
 
     def test_17_runtime_asmdef_has_no_host_references(self):
         obj=json.loads((ROOT/"Runtime/B01.CHL003.Runtime.asmdef").read_text())
@@ -101,6 +101,23 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
         self.assertIn('Debug.Log("CHL003_ACTUAL_TRIAL_EVENTS_CSV',self.demo)
         self.assertNotIn("PlayerPrefs",self.demo)
         self.assertNotIn("File.Write",self.demo)
+
+    def test_29_new_w26_gate_crossing_cannot_write_rewards(self):
+        source=(ROOT/"Runtime/CHL003GateCrossing.cs").read_text(encoding="utf8")
+        self.assertIn("public static bool IsForwardFullBodyCrossing(",source)
+        self.assertIn("facingDot >= .5f",source)
+        self.assertEqual(audit.inspect_chl_files([("CHL003/Runtime/CHL003GateCrossing.cs",source)]),1)
+        mutated=source.replace("public static bool IsForwardFullBodyCrossing(",
+            "public static void Grant(){ VehicleModel.Award(999); }\\npublic static bool IsForwardFullBodyCrossing(",1)
+        self.assertNotEqual(source,mutated)
+        with self.assertRaisesRegex(audit.QAError,"DIRECT_REWARD_WRITE"):
+            audit.inspect_chl_files([("CHL003/Runtime/CHL003GateCrossing.cs",mutated)])
+
+    def test_30_w26_demo_assembly_rejects_host_dependency(self):
+        asm=json.loads((ROOT/"Demo/B01.CHL003.Demo.asmdef").read_text())
+        self.assertEqual(asm["references"],["B01.CHL003.Runtime"])
+        self.assertNotIn("Assembly-CSharp",asm["references"])
+        self.assertNotIn("RoboRougelike.R3",asm["references"])
 
     def test_25_actual_demo_owns_runtime_created_root(self):
         self.assertIn('owned = new GameObject("CHL003_GENERATED_DEMO_ONLY");',self.demo)
