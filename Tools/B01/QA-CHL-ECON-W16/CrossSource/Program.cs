@@ -278,6 +278,47 @@ static class Program
                 "multicast order or commit state changed");
             // This is not a host payout test: only event notification ordering.
         });
+
+        // PASS11 NEW original-source contract: reentrant callbacks change
+        // lifecycle while the old multicast invocation remains in flight.
+        // These observe CHL core only; NO authoritative host rewards or Unity.
+        Run("C22_completed_callback_cancel_notifies_later_receiver_after_abort",()=>{
+            var c=New();int first=0,later=0;
+            CHL003CourseCore.Phase observed=CHL003CourseCore.Phase.Unconfigured;
+            c.Completed+=_=>{
+                first++;
+                c.Cancel(); // host teardown synchronously inside Completed
+                Check(c.State==CHL003CourseCore.Phase.Ready,"reentrant cancel failed");
+            };
+            c.Completed+=_=>{later++;observed=c.State;};
+            Finish(c);
+            Check(first==1&&later==1,"multicast event unexpectedly dropped receiver");
+            Check(observed==CHL003CourseCore.Phase.Ready &&
+                  c.State==CHL003CourseCore.Phase.Ready && c.CheckpointIndex==0,
+                "stale completion was not delivered after cancel reset");
+            Check(!c.EnterFinish(101),"aborted attempt retained finish authority");
+            // An old Completed notification can reach a later observer
+            // after another subscriber has already cancelled the run.
+        });
+        Run("C23_nested_retry_finish_delivers_two_ambiguous_completed_events",()=>{
+            var c=New(3,101);int first=0,later=0;bool nested=false;
+            var timestamps=new List<float>();
+            c.Completed+=_=>{
+                first++;
+                if(nested)return;
+                nested=true;
+                c.Retry(); // new LEGAL attempt inside old Completed callback
+                Finish(c);
+            };
+            c.Completed+=elapsed=>{later++;timestamps.Add(elapsed);};
+            Finish(c);
+            Check(first==2&&later==2,"nested run notification count changed");
+            Check(timestamps.Count==2 && timestamps[0]==timestamps[1] &&
+                  c.State==CHL003CourseCore.Phase.Completed,
+                "elapsed float unexpectedly carries unique reward authority");
+            Check(!c.EnterFinish(101),"duplicate finish after nested run");
+            // Only a host-owned transaction key can distinguish the attempts.
+        });
         int pass=Cases.Count(x=>x.Status=="PASS");
         var result=new{source_pin=Pin,core_source="ACTUAL_CHL_285_CSHARP_DIRECTLY_COMPILED",
           host="DETACHED_TEST_WITNESS_ONLY",unity="NOT_RUN",physx="NOT_RUN",
@@ -288,7 +329,9 @@ static class Program
             "THROWING_SUBSCRIBER_LEAVES_COMPLETED_STATE",
             "RECONFIGURE_RETAINS_OLD_ACTOR_SUBSCRIBERS",
             "THROWING_EVENT_SUBSCRIBER_SUPPRESSES_LATER_OBSERVERS",
-            "GATE_STATE_ADVANCES_BEFORE_CHECKPOINT_NOTIFICATION"},
+            "GATE_STATE_ADVANCES_BEFORE_CHECKPOINT_NOTIFICATION",
+            "COMPLETED_LISTENER_CAN_CANCEL_BEFORE_LATER_OBSERVER",
+            "REENTRANT_RETRY_EMITS_AMBIGUOUS_NESTED_COMPLETIONS"},
           cases=Cases.Select(x=>new{name=x.Name,result=x.Status,detail=x.Detail})};
         string dest=args.Length>0?args[0]:"artifacts/chl-econ/chl-realcore-results.json";
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(dest))!);
