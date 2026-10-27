@@ -68,6 +68,7 @@ def browser_tests(p, html):
         page.close()
     browser.close()
 
+
 def baseline_negative(p, old):
     """Expected-RED original negative fixture: old source must disclose on session-2."""
     assert hashlib.sha256(old).hexdigest() == BASELINE_SHA256, 'not original PASS10 file'
@@ -81,6 +82,7 @@ def baseline_negative(p, old):
     browser.close()
     return {'original_unchanged_sha256':BASELINE_SHA256,'original_old_second_session_leak_reproduced':exposed,
             'verdict':'EXPECTED_RED' if exposed else 'UNEXPECTED_NOT_RED'}
+
 
 def main():
     args=argparse.ArgumentParser()
