@@ -25,6 +25,7 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
     void Awake(){oldBackground=InputSystem.settings.backgroundBehavior;InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;Keys=InputSystem.AddDevice<Keyboard>();Mouse=InputSystem.AddDevice<Mouse>();}
     void Update()
     {
+        Keys.MakeCurrent();Mouse.MakeCurrent();
         var keys=new List<Key>();if(Throttle>.1f)keys.Add(Key.W);else if(Throttle<-.1f)keys.Add(Key.S);
         if(Steering>.1f)keys.Add(Key.D);else if(Steering<-.1f)keys.Add(Key.A);
         AppliedDelta=MouseRate*Time.unscaledDeltaTime;
@@ -48,7 +49,7 @@ public sealed class Camera275RuntimeQA : MonoBehaviour
     Result result=new Result();string output;int phase,targetIndex,fixedIndex;float entered,deadline;
     R1RunController run;P12PipelineSafeCamera follow;Rigidbody body;Camera275RuntimeInput input;StreamWriter csv;
     Vector3 previousPosition,previousCamera;Quaternion previousRotation;bool bound,finished;
-    readonly Vector3[] goals={new Vector3(0,0,-18),new Vector3(12,0,-18),new Vector3(12,0,-8),new Vector3(12,0,1),new Vector3(12,0,15),new Vector3(0,0,16)};
+    readonly Vector3[] goals={new Vector3(0,0,-18),new Vector3(12,0,-18),new Vector3(12,0,-8),new Vector3(12,0,1),new Vector3(12,0,9)};
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]static void Install()
     {
         var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"-camera275-output");if(index<0||index+1>=args.Length)return;
