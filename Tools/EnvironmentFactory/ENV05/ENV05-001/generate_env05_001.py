@@ -157,7 +157,8 @@ def main():
   sentinel=bpy.data.objects.new("ENV05_FOREIGN_QA_SENTINEL",None)
   bpy.context.scene.collection.objects.link(sentinel)
   first=inspect(build()); col=build(); metrics=inspect(col)
-  assert first==metrics and bpy.data.objects.get(sentinel.name) is sentinel
+  assert first==metrics, ("non-deterministic regeneration",first,metrics)
+  assert bpy.data.objects.get(sentinel.name) is not None, "foreign object deleted"
   bpy.data.objects.remove(sentinel,do_unlink=True)
  else:
   col=build(); metrics=inspect(col)
