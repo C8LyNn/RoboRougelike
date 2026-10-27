@@ -45,11 +45,23 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project Tools/B01/B01-62/MapSaveSourceQA/MapSaveSourceQA.csproj -c Release             2>&1 | tee "Tools/B01/B01-62/MapSaveSourceQA/run-${RUNNER_OS}.txt"
+      - name: Verify witness failures make the original-CSharp harness fail closed
+        shell: bash
+        run: |
+          set +e
+          dotnet run --project Tools/B01/B01-62/MapSaveSourceQA/MapSaveSourceQA.csproj -c Release --no-build -- --selftest-failclosed > "Tools/B01/B01-62/MapSaveSourceQA/selftest-${RUNNER_OS}.txt" 2>&1
+          status=$?
+          set -e
+          cat "Tools/B01/B01-62/MapSaveSourceQA/selftest-${RUNNER_OS}.txt"
+          test "$status" -eq 73
+          grep -q 'HARNESS_SELFTEST_FAIL_CLOSED=True' "Tools/B01/B01-62/MapSaveSourceQA/selftest-${RUNNER_OS}.txt"
       - name: Upload original-source evidence (not Unity G1)
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: b01-62-map-save-csharp-${{ matrix.os }}
-          path: Tools/B01/B01-62/MapSaveSourceQA/run-*.txt
+          path: |
+            Tools/B01/B01-62/MapSaveSourceQA/run-*.txt
+            Tools/B01/B01-62/MapSaveSourceQA/selftest-*.txt
           if-no-files-found: warn
           retention-days: 7
