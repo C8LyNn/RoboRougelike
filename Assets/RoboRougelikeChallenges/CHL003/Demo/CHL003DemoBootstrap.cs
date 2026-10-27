@@ -24,6 +24,12 @@ namespace B01.CHL003
         private void Start()
         {
             owned = new GameObject("CHL003_GENERATED_DEMO_ONLY");
+            var sun = new GameObject("CHL003_GRAYBOX_KEY_LIGHT");
+            sun.transform.SetParent(owned.transform);
+            sun.transform.rotation = Quaternion.Euler(52f, -30f, 0f);
+            var lighting = sun.AddComponent<Light>();
+            lighting.type = LightType.Directional;
+            lighting.intensity = 1.35f;
             BuildWorld();
             SelectRig(0);
             var cameraObject = new GameObject("CHL003_DEMO_FOLLOW_CAMERA");
@@ -55,7 +61,15 @@ namespace B01.CHL003
             var obj = Box(label, new Vector3(0f, 2.25f, z),
                 new Vector3(3.5f, 4.5f, .16f), trigger: true);
             var renderer = obj.GetComponent<Renderer>();
-            renderer.enabled = false; // HUD says gate; real physics trigger active
+            renderer.enabled = false; // invisible physics volume; side markers show gates
+            for (int side = -1; side <= 1; side += 2)
+            {
+                var marker = Box(label + "_VISIBLE_POST_" + side,
+                    new Vector3(side * 1.87f, 1.3f, z),
+                    new Vector3(.12f, 2.6f, .12f));
+                // Visual-only markers never obstruct the actual drive lane.
+                marker.GetComponent<Collider>().enabled = false;
+            }
             var result = obj.AddComponent<CHL003Gate>();
             result.Configure(type);
             return result;
