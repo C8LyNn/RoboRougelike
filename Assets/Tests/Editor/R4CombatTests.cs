@@ -147,7 +147,7 @@ public class R4CombatTests
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
         Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
-        Assert.That(Run.GarageBuyWeapon(new Vector3Int(-1,2,0),R4WeaponKind.Heavy),Is.True);
+        Assert.That(Run.GarageBuyWeapon(new Vector3Int(-1,2,0),R4WeaponKind.Automatic),Is.True);
         var damage=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Damage);
         var reload=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Reload);
         Assert.That(Run.VehicleModel.ReceiveBonuses(new[]{damage,reload}),Is.True);
@@ -163,8 +163,8 @@ public class R4CombatTests
         Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
         float end=Time.time+0.17f;yield return Until(()=>Time.time>=end,"Szybkostrzelność");assembly.FireGuns();
         var shots=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None);
-        Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Automatic),Is.EqualTo(2));
-        Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Basic),Is.EqualTo(1));Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Heavy),Is.EqualTo(1));
+        Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Automatic),Is.EqualTo(4));
+        Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Basic),Is.EqualTo(1));
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))
         {
             R1EncounterManager.ClearTransientObjects();var fixture=GameObject.CreatePrimitive(PrimitiveType.Cube);fixture.transform.position=part.Muzzle.position+Vector3.up*5;

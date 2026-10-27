@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T14:19:44.4812454Z",
+    "source":  "5683d5c135b25ff2711e1d6e3d7a92c60919da2d",
+    "stage":  "WEAPON-TYPE-FINAL",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T14:19:22.8301070Z",
+    "phase":  "Build"
+}

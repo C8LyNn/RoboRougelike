@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T14:20:16.8237203Z",
+    "source":  "5683d5c135b25ff2711e1d6e3d7a92c60919da2d",
+    "stage":  "WEAPON-TYPE-FINAL",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "PlayMode",
+                      "-testResults",
+                      "\"PROJECT\\Artifacts\\Local\\FM270-WEAPON-TYPE-FINAL-20261027T141911Z\\PlayMode.xml\"",
+                      "-testFilter",
+                      "\"WeaponTypeLimitTests;R3GarageModelTests;R3ContactAndRewardTests;R4SalvageModelTests;MOVSeriesSalvageTests;PerWeaponReticleTests;B01.CAMERA001.Tests\""
+                  ],
+    "startedUtc":  "2026-10-27T14:20:02.8793624Z",
+    "phase":  "PlayMode"
+}
