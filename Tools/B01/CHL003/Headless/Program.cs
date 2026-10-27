@@ -242,6 +242,51 @@ static class Program
             bool actual=Crossing(-.11f,.12f,lo,hi);
             Check("w17-real-contract-envelope-"+i,expected==actual);
         }
+        // UPSTREAM B01-21 #295: source-measured actual Heavy wheel/chassis
+        // envelope. 8deg yaw can physically clear bridge=3.70m with >=.25m
+        // margin. Old gate=3.50m rejected identical rigidbody. New gate
+        // must match bridge without weakening acceptance policy.
+        static float SourceMeasuredHalfHullWidth(float yawDegrees, bool heavy)
+        {
+            double radians=yawDegrees*Math.PI/180.0;
+            double c=Math.Abs(Math.Cos(radians)),s=Math.Abs(Math.Sin(radians));
+            double centerX=heavy?1.0:.59,centerZ=heavy?1.15:.75;
+            double chassisX=heavy?1.25:.725,chassisZ=heavy?1.7:1.15;
+            double sphereWheelHalf=centerX*c+centerZ*s+.41;
+            double boxChassisHalf=chassisX*c+chassisZ*s;
+            return (float)Math.Max(sphereWheelHalf,boxChassisHalf);
+        }
+        static bool SourceMeasuredGatePass(float gateWidth,float yaw,bool heavy)
+        {
+            float h=SourceMeasuredHalfHullWidth(yaw,heavy);
+            return CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.10f,.10f,-h,h,-2.16f,-.45f,
+                -gateWidth*.5f,gateWidth*.5f,-2.25f,2.25f,1f,
+                minimumSideClearance:.25f);
+        }
+        float oldGateMargin=(3.5f-2f*SourceMeasuredHalfHullWidth(8f,true))*.5f;
+        float bridgeMargin=(3.70f-2f*SourceMeasuredHalfHullWidth(8f,true))*.5f;
+        Check("c1-upstream-negative-heavy8-old-3point5-gate",
+            !SourceMeasuredGatePass(3.5f,8f,true) && oldGateMargin<.25f);
+        Check("c1-new-physical-bridge-heavy8-clearance",
+            SourceMeasuredGatePass(3.70f,8f,true) && bridgeMargin>=.25f);
+        Check("c1-new-physical-bridge-heavy0-clearance",
+            SourceMeasuredGatePass(3.70f,0f,true));
+        Check("c1-new-physical-gate-heavy10-just-clears",
+            SourceMeasuredGatePass(3.70f,10f,true));
+        Check("c1-new-physical-gate-heavy12-still-rejected",
+            !SourceMeasuredGatePass(3.70f,12f,true));
+        Check("c1-new-physical-gate-light30-clears",
+            SourceMeasuredGatePass(3.70f,30f,false));
+        Check("c1-new-gate-prohibits-lateral-overhang",
+            !CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.10f,.10f,-1.60f,1.61f,-2.16f,-.45f,
+                -1.85f,1.85f,-2.25f,2.25f,1f,.25f));
+        Console.WriteLine("CHL003_C1_B01_21_MEASURED_GATE_NEGATIVE_OLD_RED_NEW_GREEN " +
+            "oldMargin="+oldGateMargin.ToString("R",
+                System.Globalization.CultureInfo.InvariantCulture)+
+            " newMargin="+bridgeMargin.ToString("R",
+                System.Globalization.CultureInfo.InvariantCulture));
         Console.WriteLine("CHL003_FINISH_ARBITER_AND_TELEMETRY_CHECKS_COMPLETE");
         Console.WriteLine("CHL003_ACTUAL_CSHARP_CORE PASS="+pass+" FAIL="+fail+
             " NATIVE_UNITY=NOT_RUN");
