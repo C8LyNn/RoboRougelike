@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T07:33:25.2418880Z",
+    "source":  "d9398c3771870cb7b5fa95a6b80d0df7e6ee9f9a",
+    "stage":  "EXIT273-RedHost",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T07:31:33.0312121Z",
+    "phase":  "Compile"
+}

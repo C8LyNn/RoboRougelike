@@ -1,0 +1,7 @@
+{
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "ownedFinalLaunches": 11,
+  "remainingOwnMainOrDirectCrashHandler": [],
+  "checkedUtc": "2026-10-27T08:45:40.8576525Z",
+  "method": "Read-only PID check after recorded native exits; only the eleven final owned launch PIDs and direct crash-handler children are included"
+}

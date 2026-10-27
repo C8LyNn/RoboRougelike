@@ -1,0 +1,11 @@
+{
+  "mode": "RangeReset",
+  "finishedUtc": "2026-10-27T08:11:49.7256008Z",
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "startedUtc": "2026-10-27T08:11:42.2556012Z",
+  "label": "Final",
+  "exitUnsigned": 0,
+  "pid": 53304,
+  "exitHex": "0x00000000",
+  "exitCode": 0
+}

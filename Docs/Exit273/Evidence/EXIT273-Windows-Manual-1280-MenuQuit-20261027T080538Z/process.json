@@ -1,0 +1,11 @@
+{
+  "exitCode": 0,
+  "exitHex": "0x00000000",
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "finishedUtc": "2026-10-27T08:06:09.9043667Z",
+  "mode": "Manual",
+  "exitUnsigned": 0,
+  "pid": 63336,
+  "label": "MenuQuit",
+  "startedUtc": "2026-10-27T08:05:38.1151812Z"
+}

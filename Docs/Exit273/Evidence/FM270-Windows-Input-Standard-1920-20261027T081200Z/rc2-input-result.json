@@ -1,0 +1,116 @@
+{
+    "status": "Passed",
+    "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+    "startedUtc": "2026-10-27T08:12:02.8362403Z",
+    "finishedUtc": "2026-10-27T08:12:09.4834594Z",
+    "width": 1920,
+    "height": 1080,
+    "physicalShots": 8,
+    "rmbNewShots": 0,
+    "maxGroundedWheels": 12,
+    "movedMeters": 17.62143898010254,
+    "turnedDegrees": 50.07620620727539,
+    "checks": [
+        {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+        },
+        {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,076",
+            "passed": true
+        },
+        {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+        },
+        {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+        }
+    ],
+    "errors": []
+}

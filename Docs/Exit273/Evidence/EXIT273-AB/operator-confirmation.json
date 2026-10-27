@@ -1,0 +1,14 @@
+{
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "attribution": "Direct owner report in this chat, 2026-10-27",
+  "cases": [
+    {"step":1,"build":"#272","action":"Alt+F4","human":"PASS","nativeExit":0},
+    {"step":2,"build":"#273 first candidate","action":"Alt+F4","human":"PASS","nativeExit":0},
+    {"step":3,"build":"#273 first candidate","action":"Window X","human":"PASS","nativeExit":0},
+    {"step":4,"build":"#272","action":"Window X","human":"PASS","nativeExit":0},
+    {"step":5,"build":"#273 first candidate 720p","action":"Closed, specific button not independently recorded","human":"CLOSE_CONFIRMED_BUTTON_UNCONFIRMED","nativeExit":0},
+    {"step":6,"build":"#273 first candidate 1080p","action":"Garage -> activity -> Esc -> main menu -> exit","human":"PASS","nativeExit":0}
+  ],
+  "ownerObservation":"No hang or forced termination through Task Manager. Resume and direct pause-menu quit were not separately described.",
+  "scope":"These results belong to the first candidate. Final delta preserves R reset while paused and extends diagnostic fixtures; it does not change the quit implementation. Do not silently assign the old Player binary the final source SHA."
+}

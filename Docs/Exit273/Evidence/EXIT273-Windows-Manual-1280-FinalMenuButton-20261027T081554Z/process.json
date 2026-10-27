@@ -1,0 +1,11 @@
+{
+  "exitHex": "0x00000000",
+  "label": "FinalMenuButton",
+  "finishedUtc": "2026-10-27T08:33:15.0027484Z",
+  "exitUnsigned": 0,
+  "startedUtc": "2026-10-27T08:15:54.6522240Z",
+  "exitCode": 0,
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "mode": "Manual",
+  "pid": 34192
+}

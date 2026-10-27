@@ -31,7 +31,8 @@ namespace RoboRougelike.R1
             var run = R1RunController.Instance;
             if (run == null) return;
             Setup();
-            if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape&&(run.Progress?.State==R1RunState.Combat||run.Progress?.State==R1RunState.TestDrive))
+            bool sessionOverlay = run.Paused || run.QuitRequested;
+            if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape)
             {run.HandleEscape();Event.current.Use();}
             var rawPointer=Event.current.mousePosition;
             var previous = GUI.matrix;
@@ -41,17 +42,22 @@ namespace RoboRougelike.R1
             try
             {
                 Draw(run);
-                if(run.Progress?.State==R1RunState.Garage&&!run.Transitioning)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                if(!sessionOverlay&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
         private void Draw(R1RunController run)
         {
+            if (run.QuitRequested)
+            { Panel(new Rect(0,0,1280,720)); GUI.Label(new Rect(350,300,650,80),"Zamykanie gry…",title); return; }
+            if (run.Paused && run.Progress?.State != R1RunState.TestDrive)
+            { DrawSessionPause(run); return; }
             if (run.Error != null)
             {
                 Panel(new Rect(240, 190, 800, 340));
                 GUI.Label(new Rect(280, 230, 720, 60), "Nie udało się rozpocząć wyprawy", heading);
-                GUI.Label(new Rect(280, 310, 720, 100), run.Error, body); return;
+                GUI.Label(new Rect(280, 310, 720, 100), run.Error, body);
+                if(GUI.Button(new Rect(280,440,720,55),"Wyjdź z gry",button))run.RequestQuit(); return;
             }
             if (run.Progress == null) return;
             var progress = run.Progress;
@@ -94,14 +100,6 @@ namespace RoboRougelike.R1
             Panel(new Rect(0, 0, 1280, 720));
             if (run.Transitioning)
             { GUI.Label(new Rect(360, 310, 600, 80), "Przygotowanie starcia…", title); return; }
-            if (run.Paused)
-            {
-                GUI.Label(new Rect(350, 210, 600, 80), "Pauza", title);
-                if(run.ReactorActive&&GUI.Button(new Rect(350,280,580,38),"Zakończ próbę obrony i wróć do menu",compactButton))run.RestartRun();
-                if (GUI.Button(new Rect(350, 330, 580, 64), "Wznów walkę  [Esc]", button)) run.TogglePause();
-                DrawMovementPause(run);DrawSuspensionPause(run);
-                return;
-            }
             if(progress.State==R1RunState.Salvage){DrawSalvage(run);return;}
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
@@ -124,7 +122,8 @@ namespace RoboRougelike.R1
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
                 if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
-                GUI.Label(new Rect(640,554,550,38),"Trasy • obrona reaktora • generowana arena",small);
+                GUI.Label(new Rect(640,548,300,48),"Trasy • obrona reaktora • generowana arena",small);
+                if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
                 GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM — ogień • Esc — pauza",small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
@@ -154,6 +153,19 @@ namespace RoboRougelike.R1
                 if (GUI.Button(new Rect(160, 535, 500, 70), won ? "Zagraj ponownie  [Enter]" : "Spróbuj ponownie  [Enter]", button)) run.RestartRun();
             }
         }
+
+        private void DrawSessionPause(R1RunController run)
+        {
+            Panel(new Rect(0,0,1280,720));
+            GUI.Label(new Rect(350,130,600,70),"Pauza",title);
+            if(GUI.Button(new Rect(350,220,580,58),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
+            if(GUI.Button(new Rect(350,290,580,58),PauseCaption(run,1,"Powrót do menu głównego"),button))run.RestartRun();
+            if(GUI.Button(new Rect(350,360,580,58),PauseCaption(run,2,"Wyjdź z gry"),button))run.RequestQuit();
+            GUI.Label(new Rect(350,430,580,40),"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
+            DrawMovementPause(run);DrawSuspensionPause(run);
+        }
+        private static string PauseCaption(R1RunController run,int index,string label)
+            => (run.PauseSelection==index?"›  ":"")+label;
 
         private void DrawGarage(R1RunController run)
         {

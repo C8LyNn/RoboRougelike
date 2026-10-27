@@ -1,0 +1,23 @@
+{
+  "width": 1920,
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "visible": true,
+  "uiAutomationAttached": false,
+  "mode": "Manual",
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Manual-1920-PauseQuit-20261027T080610Z\\Player.log\""
+  ],
+  "pid": 50220,
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+  "label": "PauseQuit",
+  "startedUtc": "2026-10-27T08:06:10.0106667Z",
+  "height": 1080
+}

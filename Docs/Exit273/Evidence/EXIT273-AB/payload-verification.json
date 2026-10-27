@@ -1,0 +1,29 @@
+{
+  "status": "EXTRACTED_PAYLOAD_BYTES_PASS_NOT_EXECUTION_PROOF",
+  "builds": [
+    {
+      "label": "BASE",
+      "source": "88b8eed60345c49481648833e1fde6dc1a400258",
+      "archiveSHA256": "eb1057ec877cfaa880a9973880029f51f0848671bc306d7fc6ae652d895867bf",
+      "filesVerified": 213,
+      "assemblySHA256": "c601d1eadceffaec291c1adbd39ed710f3882b4f30de37897ec5321e9c29986f",
+      "unityPlayerSHA256": "bbdf3e73522223ea45c3a54049b716f9da3e632994636734c5d53326aa2c36d0"
+    },
+    {
+      "label": "EXP",
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "archiveSHA256": "718d041f22d4f35f65400040c5360d24967ed6e871575fe9860f1918eb6c2d7c",
+      "filesVerified": 212,
+      "assemblySHA256": "b6eef8cb998b51b77946debfc4a73049e5064a23ab4781f91a4f70b61968f48d",
+      "unityPlayerSHA256": "bbdf3e73522223ea45c3a54049b716f9da3e632994636734c5d53326aa2c36d0"
+    },
+    {
+      "label": "RC2",
+      "source": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "archiveSHA256": "7d35cd1bc823499a8855258e24ed0a0ff1d47e49bd694adb94c031ef8c946de6",
+      "filesVerified": 209,
+      "assemblySHA256": "9250338fa8ff71d153875cea35678f992d1c94461ef4a6c10bfedd978c465910",
+      "unityPlayerSHA256": "bbdf3e73522223ea45c3a54049b716f9da3e632994636734c5d53326aa2c36d0"
+    }
+  ]
+}

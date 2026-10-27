@@ -1,0 +1,124 @@
+{
+  "status": "READY_WITH_DOCUMENTED_ENGINE_LIMITATION",
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "native": [
+    {
+      "mode": "EditMode",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "exitCode": 0,
+      "total": 1208,
+      "passed": 1208,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "mode": "PlayMode",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "exitCode": 0,
+      "total": 474,
+      "passed": 474,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "previousFullFailuresNowPassed": [
+    "MOVSeriesSpecialTests.EmitterDeathRepairAndSecondEmitterCannotResetVehicleCooldown",
+    "R1PlayIntegrationTests.PaidGarageRestoresConstructionAndKeepsEarnedDamageBonus",
+    "RRLW6PointDefenseTests.MountedPointDefenseInterceptsActualRocketUsingItsOriginalHp",
+    "RRLW6ShieldPhysicalTests.DirectionalShieldInterceptsBeforeP12HpAndStopsImmediatelyOnLoss"
+  ],
+  "finalWindows": [
+    {
+      "mode": "Combat",
+      "label": "Final",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Combat-1920-Final-20261027T081122Z"
+    },
+    {
+      "mode": "Garage",
+      "label": "Final",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Garage-1920-Final-20261027T081117Z"
+    },
+    {
+      "mode": "Manual",
+      "label": "FinalMenuButton",
+      "width": 1280,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Manual-1280-FinalMenuButton-20261027T081554Z"
+    },
+    {
+      "mode": "Manual",
+      "label": "FinalPauseButton",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Manual-1920-FinalPauseButton-20261027T083315Z"
+    },
+    {
+      "mode": "Menu",
+      "label": "Final",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Menu-1920-Final-20261027T081112Z"
+    },
+    {
+      "mode": "RangeReset",
+      "label": "Final",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-RangeReset-1920-Final-20261027T081142Z"
+    },
+    {
+      "mode": "Return",
+      "label": "Final",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Return-1920-Final-20261027T081134Z"
+    },
+    {
+      "mode": "Transition",
+      "label": "Final",
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\EXIT273-Windows-Transition-1920-Final-20261027T081129Z"
+    },
+    {
+      "mode": "Input",
+      "label": null,
+      "width": 1280,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T081149Z"
+    },
+    {
+      "mode": "Input",
+      "label": null,
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T081200Z"
+    },
+    {
+      "mode": "Loop",
+      "label": null,
+      "width": 1920,
+      "exitCode": 0,
+      "evidence": "Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T081210Z"
+    }
+  ],
+  "manual": {
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "attribution": "Direct human reply to the final two-window GUI question in this chat, 2026-10-27",
+    "mainMenuQuit": "PASS",
+    "pauseQuit": "PASS",
+    "mainMenuResolution": "1280x720",
+    "pauseResolution": "1920x1080",
+    "reported": "Oba przyciski zamkn\u0119\u0142y gr\u0119 poprawnie",
+    "method": "Real manual clicks in the final extracted retail Player, no UI automation client attached; native process receipts are separate"
+  },
+  "zipSHA256": "5cad21b49974abb588587121393180e2f74b72aff43f5ee61ac0a200d20941b9",
+  "zipBytes": 38590408,
+  "guidCount": 976,
+  "historicalUIACrash": "NOT_PROVEN_FIXED",
+  "physicalGamepad": "NOT_RUN"
+}

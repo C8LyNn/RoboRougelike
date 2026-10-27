@@ -1,0 +1,15 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T08:56:46.8216936Z",
+    "source":  "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage":  "EXIT273-ReleaseFull",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "PlayMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-ReleaseFull-20261027T081029Z\\PlayMode.xml\""
+                  ],
+    "startedUtc":  "2026-10-27T08:54:01.7858773Z",
+    "phase":  "PlayMode"
+}

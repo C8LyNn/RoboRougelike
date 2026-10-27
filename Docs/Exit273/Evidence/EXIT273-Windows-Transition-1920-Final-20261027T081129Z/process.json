@@ -1,0 +1,11 @@
+{
+  "mode": "Transition",
+  "finishedUtc": "2026-10-27T08:11:34.6485123Z",
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "startedUtc": "2026-10-27T08:11:29.9527541Z",
+  "label": "Final",
+  "exitUnsigned": 0,
+  "pid": 41976,
+  "exitHex": "0x00000000",
+  "exitCode": 0
+}

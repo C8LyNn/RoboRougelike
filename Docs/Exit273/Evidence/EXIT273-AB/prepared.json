@@ -1,0 +1,20 @@
+{
+  "date_utc": "2026-10-27T07:55:44.980437+00:00",
+  "exe_sha256": {
+    "BASE": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+    "EXP": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+    "RC2": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8"
+  },
+  "native_qa": "NOT_RUN",
+  "plan_sha256": "4146de4c655d79208ee9143f63aa14b27de809bb6a7d2e7ebd68e0e8ba920690",
+  "run_order": [
+    "BASE",
+    "EXP",
+    "EXP",
+    "BASE",
+    "RC2",
+    "RC2"
+  ],
+  "schema": "b01-60-rc1-shutdown-ab-v1",
+  "status": "PREPARED_NOT_EXECUTED"
+}

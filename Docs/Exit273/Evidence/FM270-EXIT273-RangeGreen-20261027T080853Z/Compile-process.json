@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T08:09:06.5243422Z",
+    "source":  "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage":  "EXIT273-RangeGreen",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T08:08:53.6420362Z",
+    "phase":  "Compile"
+}

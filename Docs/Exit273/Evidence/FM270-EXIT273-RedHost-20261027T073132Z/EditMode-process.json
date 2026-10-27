@@ -1,0 +1,17 @@
+{
+    "exitCode":  2,
+    "finishedUtc":  "2026-10-27T07:33:46.5661629Z",
+    "source":  "d9398c3771870cb7b5fa95a6b80d0df7e6ee9f9a",
+    "stage":  "EXIT273-RedHost",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-RedHost-20261027T073132Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"Exit273PauseTests\""
+                  ],
+    "startedUtc":  "2026-10-27T07:33:25.2959750Z",
+    "phase":  "EditMode"
+}
