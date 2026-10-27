@@ -123,6 +123,46 @@ jobs:
           assert r["unityPhysx"]=="NOT_RUN"
           assert r["thisReportApprovesNoMounts"]
           PYW17
+      - name: W30 reconcile actual R3 block parent 0.52 scale against B01-23 original seven UNIT-PARENT source proxies
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=dc2b3c199e6576f757f5ff6214e41fff444f73a8
+          CODEX=7cfd1276d4708395144668249223d78fb83c3b19
+          PATH_OWNER=Tools/B01/PARTSIZE001/W26Receipt/source_payload_measurements.py
+          git fetch --depth=1 origin "$PIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          git fetch --depth=1 origin "$CODEX"
+          test "$(git rev-parse FETCH_HEAD)" = "$CODEX"
+          test "$(git rev-parse "$PIN:$PATH_OWNER")" = 93930abc9b4af7b597e2ba8310bd66eeead542dc
+          test "$(git rev-parse "$CODEX:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
+          test "$(git rev-parse "$CODEX:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
+          git show "$PIN:$PATH_OWNER" > "$B01_PARTSIZE_PR286_SOURCE/source_payload_measurements.py"
+          echo "B01_PARTSIZE_OWNER_7_PROXY=$B01_PARTSIZE_PR286_SOURCE/source_payload_measurements.py" >> "$GITHUB_ENV"
+          printf 'B01_23_QA_PROXY_SHA=%s\nCODEX_ORIGINAL_R3_SHA=%s\n' "$PIN" "$CODEX" | tee "$B01_PARTSIZE_PR286_SOURCE/W30_PROVENANCE.txt"
+      - name: W30 16 genuine source cross-hierarchy tests + 7x4 yaws reconstructed
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_w30_parent_scale_reconcile.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/W30_SCALE_QA_UNIT_LOG.txt"
+          python3 "$dir/w30_parent_scale_reconcile.py" \
+            --assembly "$B01_PARTSIZE_PINNED_SOURCE/R3VehicleAssembly.cs" \
+            --geometry "$B01_PARTSIZE_PINNED_SOURCE/R41PartGeometry.cs" \
+            --catalog "$B01_PARTSIZE_PR286_SOURCE/PartSizeBaselineCatalog.cs" \
+            --producer "$B01_PARTSIZE_OWNER_7_PROXY" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/W30_R3_PARENT_SCALE_CORRECTION.json"
+          python3 - <<'PYW30'
+          import json,os
+          from pathlib import Path
+          x=json.loads((Path(os.environ['B01_PARTSIZE_PR286_SOURCE'])/'W30_R3_PARENT_SCALE_CORRECTION.json').read_text())
+          assert len(x['rows'])==7 and all(len(r['actualR3ScaledStaticYawCases'])==4 for r in x['rows'])
+          omni=next(r for r in x['rows'] if r['kind']=='OmniDrive')
+          assert omni['b01_23_unitParentSourceCellsXYZ'][1]==[-2,-1,0]
+          assert omni['actualR3ScaledStaticYawCases'][0]['payloadSignedCellsXYZ'][1]==[-1,0]
+          assert x['actualUnity']=='NOT_RUN' and x['g2']=='HOLD'
+          print('CODEX_R3_ACTUAL_PARENT_SCALE_SOURCE_RECONCILIATION_PASS')
+          PYW30
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -146,4 +186,7 @@ jobs:
             /tmp/b01-partsize-pr286/PR286_CSHARP_REAL_SOURCE_REPLAY.txt
             /tmp/b01-partsize-pr286/W17_SIGNED_PLACEMENT_TEST_LOG.txt
             /tmp/b01-partsize-pr286/W17_SIGNED_PLACEMENT_4_YAW.json
+            /tmp/b01-partsize-pr286/W30_PROVENANCE.txt
+            /tmp/b01-partsize-pr286/W30_SCALE_QA_UNIT_LOG.txt
+            /tmp/b01-partsize-pr286/W30_R3_PARENT_SCALE_CORRECTION.json
           retention-days: 30
