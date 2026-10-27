@@ -14,3 +14,5 @@ jobs:
           node-version: '22'
       - name: Execute genuine portable independent CHL design QA fixtures (NOT Unity)
         run: node Docs/B01Design/CHL003_W16/validate.mjs
+      - name: Run NEW W17 six-trial scorecard source-format positive and negative controls (native NOT_RUN)
+        run: node --test Docs/B01Design/CHL003_W16/W17_trial_scorecard.test.mjs
