@@ -19,16 +19,16 @@
   "suggested_box_collider_blender_m": {
     "center": [
       0.0,
-      0.0,
+      -0.04,
       0.47
     ],
     "size": [
       2.46,
-      0.7,
+      0.86,
       0.96
     ]
   },
   "animation": "NOT_APPLICABLE",
   "license": "CC0-1.0; original geometry and script, no third-party models",
-  "source_file_sha256": "1f9a4c24b65c8758e2dd20e8e56d1c4f21983f90a7ed369f9b7a502e91b30a55"
+  "source_file_sha256": "e2f6a152a3fda6311f2cc52a869e3177f13c68de672033e5ef0434f0a1cda155"
 }
