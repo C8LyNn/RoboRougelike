@@ -94,10 +94,14 @@ namespace B01.CHL003.Tests
             bool overlaps = Physics.ComputePenetration(
                 obstacle.GetComponent<Collider>(), obstacle.transform.position,
                 obstacle.transform.rotation, actor.GetComponentInChildren<Collider>(),
-                obstacle.transform.position, obstacle.transform.rotation,
-                out _, out _);
-            // Real Physics API invoked; collision binding must stay nontrigger.
-            Assert.IsFalse(overlaps || obstacle.GetComponent<Collider>().isTrigger);
+                new Vector3(0f, .5f, 1.6f), Quaternion.identity,
+                out var separationDirection, out var separationDistance);
+            // Deliberately sample a physically overlapping, stationary
+            // Rigidbody hull candidate. Unity PhysX must report separation;
+            // a visual-only fake wall or trigger is not an acceptable fixture.
+            Assert.IsTrue(overlaps);
+            Assert.Greater(separationDistance, 0f);
+            Assert.IsFalse(obstacle.GetComponent<Collider>().isTrigger);
             yield return new WaitForFixedUpdate();
             Assert.AreEqual(0, controller.Core.CheckpointIndex);
         }
