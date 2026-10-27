@@ -1,3 +1,7 @@
+## W17 new explicit physical restrictions
+Current CHL demo is rigidbody hull + spheres, NOT WheelCollider with rotating axle motors. Air control is **not** allowed: only supportive physical wheel-ray ground contacts permit drive/steering; no traction in midair. Gate crossing requires forward whole-body footprint and 0.25m lateral clearance; tight yaw may fail closed under conservative world collider AABB envelope. Author/test source exists but whether each rig can complete all six physical crossings and negative samples is **NOT_RUN** in licensed Unity; run real PlayMode12 and EditMode18 before any gameplay claims.
+
+
 # CHL-003 R1 actual limitations
 1. No licensed Unity6.3.14f1 runner available to this producer; native Editor compile, Edit15, Play9, physical game traversal, screenshots and Windows Player are NOT_RUN. .NET core PASS is not Unity PASS.
 2. Demo uses runtime-created primitive graybox and physical Rigidbody boxes/spheres. Ramp ↔ bridge interfaces and actual Light/Heavy traffic cannot be certified until native driving G1. Visual readability requires B01-30 independent review.
