@@ -21,6 +21,7 @@ namespace B01.CHL003
         private int attempt;
         private float nominalWidth, nominalLength;
         private string profile;
+        private Vector3 pausedVelocity, pausedAngularVelocity;
         private readonly CHL003FinishArbiter finishArbiter = new CHL003FinishArbiter();
         private readonly CHL003TrialMetrics metrics = new CHL003TrialMetrics();
         public CHL003CourseCore Core => core;
@@ -94,9 +95,24 @@ namespace B01.CHL003
 
         public void SetPaused(bool paused)
         {
-            if (core == null) return;
-            core.SetPaused(paused);
-            if (paused) finishArbiter.CancelPending();
+            if (core == null || activeActor == null ||
+                core.State != CHL003CourseCore.Phase.Running ||
+                core.Paused == paused) return;
+            if (paused)
+            {
+                pausedVelocity = activeActor.linearVelocity;
+                pausedAngularVelocity = activeActor.angularVelocity;
+                activeActor.isKinematic = true; // real physics pause, not HUD-only
+                core.SetPaused(true);
+                finishArbiter.CancelPending();
+            }
+            else
+            {
+                activeActor.isKinematic = false;
+                activeActor.linearVelocity = pausedVelocity;
+                activeActor.angularVelocity = pausedAngularVelocity;
+                core.SetPaused(false);
+            }
         }
 
         public void Retry()
@@ -104,6 +120,8 @@ namespace B01.CHL003
             if (core == null || activeActor == null) return;
             finishArbiter.Reset();
             core.Retry();
+            if (activeActor.isKinematic) activeActor.isKinematic = false;
+            pausedVelocity = pausedAngularVelocity = Vector3.zero;
             activeActor.linearVelocity = Vector3.zero;
             activeActor.angularVelocity = Vector3.zero;
             activeActor.position = spawnPosition;
