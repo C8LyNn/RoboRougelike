@@ -67,7 +67,8 @@ namespace RoboRougelike.R1
             {
                 var marker=markers[i];var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.ToHudPoint(marker.Viewport,camera.pixelRect,new Vector2(Screen.width,Screen.height));
                 float x=point.x,y=point.y;
-                x=Mathf.Clamp(x,22,1258);y=Mathf.Clamp(y,22,698);
+                // Leave room for the outermost of four brackets and its number.
+                x=Mathf.Clamp(x,46,1234);y=Mathf.Clamp(y,46,674);
                 float radius=8+Mathf.Min(i,3)*4,stroke=2,length=5;
                 GUI.color=marker.Disabled?new Color(.55f,.55f,.55f,.9f):
                     marker.Obstructed||marker.OutOfRange||marker.Offscreen?new Color(1,.7f,.25f,.95f):new Color(.35f,.95f,.95f,.9f);
