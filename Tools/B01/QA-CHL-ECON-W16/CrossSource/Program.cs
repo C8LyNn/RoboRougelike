@@ -174,6 +174,110 @@ static class Program
                 -.2f,.2f,-1f,1f,-.5f,.5f,-2f,2f,-1f,1f,1f,float.NegativeInfinity),
                 "infinite clearance accepted");
         });
+        Run("C16_stale_completed_listener_survives_reconfigure_to_new_actor",()=>{
+            var c=New(4,101);int oldReceiver=0,newReceiver=0;
+            Action<float> stale=_=>oldReceiver++;
+            c.Completed+=stale;
+            Finish(c,101);
+            Check(oldReceiver==1,"old receiver did not observe old actor");
+            // Legal reconfiguration after Completed, but old external listener is not revoked by CHL.
+            c.Configure(4,202);
+            Check(c.State==CHL003CourseCore.Phase.Ready && c.ActorToken==202,
+                "actor reconfigure did not establish ready state");
+            c.Completed+=_=>newReceiver++;
+            Finish(c,202);
+            Check(oldReceiver==2 && newReceiver==1,
+                "reconfigure subscriber retention contract drift");
+            // Receiver MUST unsubscribe old-actor callbacks before reconfigure/rig swap.
+        });
+        Run("C17_failure_notifications_have_no_completed_on_timeout_or_manual_failure",()=>{
+            var c=New();int wins=0,losses=0;
+            var received=new List<CHL003CourseCore.Failure>();
+            c.Completed+=_=>wins++;
+            c.Failed+=failure=>{losses++;received.Add(failure);};
+            c.Configure(4,101,1f);Check(c.Begin(),"begin");
+            c.AdvanceTime(.6f);c.AdvanceTime(.5f);
+            Check(c.State==CHL003CourseCore.Phase.Failed &&
+                  c.LastFailure==CHL003CourseCore.Failure.TimeLimit,
+                  "timeout did not fail");
+            Check(losses==1&&wins==0&&received[0]==CHL003CourseCore.Failure.TimeLimit,
+                "timeout created win or missing loss");
+            Check(!c.Fail(101,CHL003CourseCore.Failure.FellOffCourse),
+                "repeat failure accepted");
+            c.Retry();Check(c.Begin(),"restart");
+            Check(c.Fail(101,CHL003CourseCore.Failure.FellOffCourse),"fall");
+            Check(losses==2&&wins==0 && received[1]==CHL003CourseCore.Failure.FellOffCourse,
+                "manual failure added completion or wrong failure");
+        });
+        Run("C18_throwing_failed_subscriber_suppresses_later_failure_listeners",()=>{
+            var c=New();int later=0,wins=0;
+            c.Completed+=_=>wins++;
+            c.Failed+=_=>throw new InvalidOperationException("first-failure-handler");
+            c.Failed+=_=>later++;
+            Check(c.Begin(),"begin");
+            bool caught=false;
+            try{c.Fail(101,CHL003CourseCore.Failure.FellOffCourse);}
+            catch(InvalidOperationException ex){caught=ex.Message=="first-failure-handler";}
+            Check(caught,"exception did not bubble");
+            Check(c.State==CHL003CourseCore.Phase.Failed &&
+                  c.LastFailure==CHL003CourseCore.Failure.FellOffCourse,
+                "failed state unexpectedly rolled back");
+            Check(later==0 && wins==0,
+                "later failure listener called despite failing earlier multicast delegate");
+            // Catch at event integration boundary, do not treat lack of observer as success.
+        });
+        Run("C19_throwing_checkpoint_subscriber_advances_gate_before_later_listener",()=>{
+            var c=New();int later=0,wins=0;
+            c.Completed+=_=>wins++;
+            c.CheckpointReached+=_=>throw new InvalidOperationException("first-gate-handler");
+            c.CheckpointReached+=_=>later++;
+            Check(c.Begin(),"begin");
+            bool caught=false;
+            try{c.EnterCheckpoint(101,0);}
+            catch(InvalidOperationException ex){caught=ex.Message=="first-gate-handler";}
+            Check(caught,"gate exception not observed");
+            Check(c.State==CHL003CourseCore.Phase.Running &&
+                  c.CheckpointIndex==1 && later==0 && wins==0,
+                "partial observer delivery/gate advanced state drift");
+            Check(!c.EnterCheckpoint(101,0),"repeated index accepted after exception");
+            // Consumer MUST NEVER infer rollback of state from callback exception.
+        });
+        Run("C20_cancelled_reentry_and_old_actor_events_do_not_create_win",()=>{
+            var c=New();int wins=0,loss=0;
+            c.Completed+=_=>wins++;
+            c.Failed+=_=>loss++;
+            Check(c.Begin(),"begin");
+            Check(c.EnterCheckpoint(101,0),"first gate");
+            c.Cancel();
+            Check(c.State==CHL003CourseCore.Phase.Ready &&
+                  c.CheckpointIndex==0 && wins==0 && loss==0,
+                "cancel leaked win/fail or retained CP");
+            c.Configure(4,202);
+            Check(!c.EnterCheckpoint(101,0),"stale actor accepted while ready");
+            Check(c.Begin(),"new actor begin");
+            Check(!c.EnterCheckpoint(101,0),"stale actor accepted after new begin");
+            Check(!c.EnterFinish(101),"old actor finished new run");
+            Check(wins==0&&loss==0,"stale actor/cancel triggered notification");
+            for(int i=0;i<4;i++)Check(c.EnterCheckpoint(202,i),"new actor gate "+i);
+            Check(c.EnterFinish(202),"new actor finish");
+            Check(wins==1 && loss==0,"valid new actor result count");
+        });
+        Run("C21_throwing_completed_subscriber_prevents_later_observer_and_won_state_persists",()=>{
+            var c=New();int later=0,prior=0;
+            c.Completed+=_=>prior++;
+            c.Completed+=_=>throw new InvalidOperationException("receiver-throws");
+            c.Completed+=_=>later++;
+            Check(c.Begin(),"begin");
+            for(int i=0;i<4;i++)Check(c.EnterCheckpoint(101,i),"gate");
+            bool caught=false;
+            try{c.EnterFinish(101);}
+            catch(InvalidOperationException ex){caught=ex.Message=="receiver-throws";}
+            Check(caught,"completed handler did not throw");
+            Check(prior==1 && later==0 &&
+                  c.State==CHL003CourseCore.Phase.Completed,
+                "multicast order or commit state changed");
+            // This is not a host payout test: only event notification ordering.
+        });
         int pass=Cases.Count(x=>x.Status=="PASS");
         var result=new{source_pin=Pin,core_source="ACTUAL_CHL_285_CSHARP_DIRECTLY_COMPILED",
           host="DETACHED_TEST_WITNESS_ONLY",unity="NOT_RUN",physx="NOT_RUN",
@@ -181,7 +285,10 @@ static class Program
           failures=Cases.Count-pass,
           receiver_risks=new[]{"COMPLETED_EMITS_AGAIN_AFTER_RETRY",
             "DUPLICATE_SUBSCRIBER_EMITS_DUPLICATE_CALLBACK",
-            "THROWING_SUBSCRIBER_LEAVES_COMPLETED_STATE"},
+            "THROWING_SUBSCRIBER_LEAVES_COMPLETED_STATE",
+            "RECONFIGURE_RETAINS_OLD_ACTOR_SUBSCRIBERS",
+            "THROWING_EVENT_SUBSCRIBER_SUPPRESSES_LATER_OBSERVERS",
+            "GATE_STATE_ADVANCES_BEFORE_CHECKPOINT_NOTIFICATION"},
           cases=Cases.Select(x=>new{name=x.Name,result=x.Status,detail=x.Detail})};
         string dest=args.Length>0?args[0]:"artifacts/chl-econ/chl-realcore-results.json";
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(dest))!);
