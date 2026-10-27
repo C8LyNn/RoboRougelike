@@ -122,4 +122,30 @@ class PartSizeSourceTests(unittest.TestCase):
             self.assertEqual(len(blob),by_path[path]["bytes"])
         self.assertTrue(p.verify_zip(payload,manifest))
 
+    def test_15_real_demo_scene_has_matching_owned_script_guid(self):
+        root=p.ROOT/"Assets/PARTSIZE001"
+        scene=(root/"Demo/PARTSIZE001_Demo.unity").read_text(encoding="utf8")
+        scene_meta=(root/"Demo/PARTSIZE001_Demo.unity.meta").read_text(encoding="utf8")
+        script_meta=(root/"Runtime/PartSizeDemoEntry.cs.meta").read_text(encoding="utf8")
+        script_guid=re.search(r"(?m)^guid: ([0-9a-f]{32})$",script_meta).group(1)
+        self.assertEqual(scene.count("guid: "+script_guid),1)
+        self.assertIn("SceneRoots:",scene)
+        self.assertIn("PARTSIZE001_DemoSceneRoot",scene)
+        self.assertIn("m_Roots:",scene)
+        self.assertEqual(scene.count("m_GameObject: {fileID: 510000}"),2)
+        self.assertIn("guid: b0123100000000000000000000000017",scene_meta)
+        self.assertNotEqual(script_guid,"b0123100000000000000000000000017")
+        self.assertIn("Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity",self.files)
+        self.assertIn("Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity.meta",self.files)
+
+    def test_16_api_contract_in_complete_package_not_native_pass(self):
+        target="Docs/B01/PARTSIZE001/API.md"
+        self.assertIn(target,self.files)
+        doc=(p.ROOT/target).read_text(encoding="utf8")
+        self.assertIn("PartSizeNativePhysics.Validate(",doc)
+        self.assertIn("PARTSIZE001_Demo.unity",doc)
+        self.assertIn("NATIVE_NOT_RUN",doc)
+        self.assertIn("G2 HOLD",doc)
+        self.assertNotIn("CODEX_READY: PASS",doc)
+
 if __name__=="__main__":unittest.main(verbosity=2)
