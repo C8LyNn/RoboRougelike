@@ -28,6 +28,6 @@ python Tools/B01/PARTSIZE001/test_package_partsize.py
 python Tools/B01/PARTSIZE001/package_partsize.py --out dist/B01-PARTSIZE001-R1-FULL-SOURCE.zip
 ```
 
-**Never copy** `Assets/B01Packages.meta` from a producer into Codex. Existing target root GUID must be preserved; the package includes only its own **`Assets/B01Packages/PARTSIZE001.meta`** and descendants.
+**Never copy** `Assets/B01Packages.meta` from a producer into Codex. Existing target root GUID must be preserved; the package includes only its own **`Assets/PARTSIZE001.meta`** and descendants.
 
 **Next genuinely unfinished gates:** Unity 6000.3.14f1 compile, 17 EditMode / 8 PlayMode original XML/log/exits, actual prefab at 720/1080 screenshot and real PhysX; B01-60 independent test; B01-40 verified installation/rollback on detached target and controlled Codex claim; design choices for sizing moving parts after measurements. No source shell generated ready receipt or positive physics claim.
