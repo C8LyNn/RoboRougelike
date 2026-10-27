@@ -59,14 +59,17 @@ public sealed class MapEditorExpansionTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
         var paletteObject=new GameObject("Map expansion test palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
-        var valid=new Material(Shader.Find("Universal Render Pipeline/Lit"));var invalid=new Material(valid);
-        palette.Valid=valid;palette.Invalid=invalid;
+        var valid=new Material(Shader.Find("Universal Render Pipeline/Lit"));var invalid=new Material(valid);var selection=new Material(valid);
+        palette.Valid=valid;palette.Invalid=invalid;palette.Selection=selection;
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=valid;
         var obj=new GameObject("Map expansion fixture");var world=obj.AddComponent<MapWorld>();
         try
         {
             var draft=new MapDraft();draft.SetGlobalFloor(true);
-            Assert.That(draft.Place(MapItemKind.Ramp,0,0,1,2,2,1),Is.True);world.Build(draft,palette);
+            Assert.That(draft.Place(MapItemKind.Ramp,0,0,1,2,2,1),Is.True);
+            Assert.That(draft.Place(MapItemKind.Platform,3,0,0),Is.True);Assert.That(draft.Place(MapItemKind.Pillar,5,0,0),Is.True);
+            Assert.That(draft.Place(MapItemKind.LowBarrier,7,0,0),Is.True);Assert.That(draft.Place(MapItemKind.Steps,9,0,0),Is.True);
+            world.Build(draft,palette);
             var item=draft.Items[0];world.ShowGhost(item,true,palette);
             var ghost=obj.transform.Find("Widmo edytora map");var real=world.Layout.Find("Ramp");
             Assert.That(ghost,Is.Not.Null);Assert.That(real,Is.Not.Null);
@@ -75,15 +78,18 @@ public sealed class MapEditorExpansionTests
             Assert.That(ghost.GetComponentsInChildren<Collider>().Length,Is.Zero);
             Assert.That(ghost.GetComponent<Renderer>().sharedMaterial,Is.SameAs(valid));
             world.ShowGhost(item,false,palette);Assert.That(ghost.GetComponent<Renderer>().sharedMaterial,Is.SameAs(invalid));
+            world.ShowSelection(item,palette);Assert.That(ghost.GetComponent<Renderer>().sharedMaterial,Is.SameAs(selection));
             Physics.SyncTransforms();Assert.That(Physics.Raycast(new Vector3(100,5,100),Vector3.down,out var hit,10),Is.True);
             Assert.That(hit.collider.name,Is.EqualTo("Podłoże całej mapy"));
             Assert.That(real.GetComponent<MeshCollider>(),Is.Not.Null);
+            foreach(var name in new[]{"Platform","Pillar","LowBarrier","Steps"})
+                Assert.That(world.Layout.Find(name).GetComponentsInChildren<Collider>().Length,Is.GreaterThan(0),name+" requires real collision geometry");
             world.HideGhost();Assert.That(ghost.gameObject.activeSelf,Is.False);
         }
         finally
         {
             UnityEngine.Object.Destroy(obj);for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=null;
-            palette.Valid=null;palette.Invalid=null;UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(valid);UnityEngine.Object.Destroy(invalid);
+            palette.Valid=null;palette.Invalid=null;palette.Selection=null;UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(valid);UnityEngine.Object.Destroy(invalid);UnityEngine.Object.Destroy(selection);
         }
         yield return new ExitPlayMode();
     }

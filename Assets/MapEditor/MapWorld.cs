@@ -101,6 +101,12 @@ namespace RoboRougelike.MapEditor
             ghost.SetActive(true);ApplyTransform(ghost,item);
             foreach(var renderer in ghost.GetComponentsInChildren<Renderer>())renderer.sharedMaterial=valid?palette.Valid:palette.Invalid;
         }
+        public void ShowSelection(MapItem item,R3VisualPalette palette)
+        {
+            if(item==null){HideGhost();return;}
+            ShowGhost(item,true,palette);
+            foreach(var renderer in ghost.GetComponentsInChildren<Renderer>())renderer.sharedMaterial=palette.Selection;
+        }
         public void HideGhost()
         {
             if(ghost!=null){ghost.SetActive(false);Destroy(ghost);ghost=null;}

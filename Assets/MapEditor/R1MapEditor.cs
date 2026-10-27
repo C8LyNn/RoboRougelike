@@ -113,6 +113,19 @@ namespace RoboRougelike.R1
         {if(EditorDraft.SetGlobalFloor(!EditorDraft.GlobalFloor)){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorDraft.GlobalFloor?"Włączono podłoże całej mapy.":"Wyłączono podłoże całej mapy.";}}
         public void SetMapTool(bool select,bool remove)
         {EditorSelect=select;EditorRemove=remove;EditorSelected=null;EditorWorld.HideGhost();}
+        public void SelectMapAt(int x,int z)
+        {
+            EditorSelected=EditorDraft.ItemAt(x,z);
+            if(EditorSelected!=null&&EditorDraft.GlobalFloor&&EditorSelected.kind==MapItemKind.Ground)EditorSelected=null;
+            if(EditorSelected==null)EditorMessage="Na tym polu nie ma elementu.";
+            else{EditorRotation=EditorSelected.rotation;EditorScaleX=EditorSelected.scaleX;EditorScaleY=EditorSelected.scaleY;EditorScaleZ=EditorSelected.scaleZ;EditorMessage="Zaznaczono element. Zmień skalę lub obrót.";}
+            RefreshMapSelection();
+        }
+        void RefreshMapSelection()
+        {
+            if(EditorSelect&&EditorSelected!=null&&EditorDraft.Items.Contains(EditorSelected))EditorWorld.ShowSelection(EditorSelected,palette);
+            else EditorWorld.HideGhost();
+        }
         public void ChangeMapScale(int axis,int direction)
         {
             if(axis<0||axis>2)return;
@@ -125,7 +138,7 @@ namespace RoboRougelike.R1
             {
                 if(EditorSelected==null||!EditorDraft.Items.Contains(EditorSelected)){EditorSelected=null;EditorMessage="Najpierw zaznacz element.";return;}
                 if(!EditorDraft.Resize(EditorSelected,EditorRotation,x,y,z)){EditorMessage="Nie można zmienić skali: pole zajęte lub granica mapy.";return;}
-                EditorWorld.Build(EditorDraft,palette);EditorMessage="Zmieniono skalę zaznaczonego elementu.";
+                EditorWorld.Build(EditorDraft,palette);RefreshMapSelection();EditorMessage="Zmieniono skalę zaznaczonego elementu.";
             }
             EditorScaleX=x;EditorScaleY=y;EditorScaleZ=z;
         }
@@ -136,7 +149,7 @@ namespace RoboRougelike.R1
             {
                 if(EditorSelected==null||!EditorDraft.Items.Contains(EditorSelected)){EditorSelected=null;EditorMessage="Najpierw zaznacz element.";return;}
                 if(!EditorDraft.Resize(EditorSelected,rotation,EditorScaleX,EditorScaleY,EditorScaleZ)){EditorMessage="Nie można obrócić: pole zajęte lub granica mapy.";return;}
-                EditorWorld.Build(EditorDraft,palette);EditorMessage="Obrócono zaznaczony element.";
+                EditorWorld.Build(EditorDraft,palette);RefreshMapSelection();EditorMessage="Obrócono zaznaczony element.";
             }
             EditorRotation=rotation;
         }
@@ -170,7 +183,7 @@ namespace RoboRougelike.R1
                 if(e.control&&e.keyCode==KeyCode.Y){ChangeEditedMap(false);e.Use();return;}
             }
             if(e.type==EventType.MouseUp&&e.button==1)editorOrbit=false;
-            if(virtualPos.x<325||virtualPos.y>615){EditorWorld.HideGhost();return;}
+            if(virtualPos.x<325||virtualPos.y>615){RefreshMapSelection();return;}
             if(e.type==EventType.MouseDown&&e.button==1){editorOrbit=true;e.Use();return;}
             if(e.type==EventType.MouseDrag&&e.button==1&&editorOrbit){EditorWorld.HideGhost();editorYaw+=e.delta.x*.4f;editorPitch=Mathf.Clamp(editorPitch-e.delta.y*.35f,20,85);UpdateEditorCamera();e.Use();return;}
             if(e.type==EventType.ScrollWheel){editorDistance=Mathf.Clamp(editorDistance+e.delta.y*1.2f,8,90);UpdateEditorCamera();e.Use();return;}
@@ -188,7 +201,8 @@ namespace RoboRougelike.R1
             {
                 var cell=MapWorld.Cell(point);
                 if((EditorRemove||EditorSelect)&&hitItem!=null)cell=new Vector2Int(hitItem.x,hitItem.z);
-                if(EditorRemove||EditorSelect)EditorWorld.HideGhost();
+                if(EditorSelect)RefreshMapSelection();
+                else if(EditorRemove)EditorWorld.HideGhost();
                 else
                 {
                     var item=new MapItem{kind=EditorKind,x=cell.x,z=cell.y,rotation=EditorRotation,scaleX=EditorScaleX,scaleY=EditorScaleY,scaleZ=EditorScaleZ};
@@ -199,10 +213,7 @@ namespace RoboRougelike.R1
                 {
                     if(EditorSelect)
                     {
-                        EditorSelected=EditorDraft.ItemAt(cell.x,cell.y);
-                        if(EditorSelected!=null&&EditorDraft.GlobalFloor&&EditorSelected.kind==MapItemKind.Ground)EditorSelected=null;
-                        if(EditorSelected==null)EditorMessage="Na tym polu nie ma elementu.";
-                        else{EditorRotation=EditorSelected.rotation;EditorScaleX=EditorSelected.scaleX;EditorScaleY=EditorSelected.scaleY;EditorScaleZ=EditorSelected.scaleZ;EditorMessage="Zaznaczono element. Zmień skalę lub obrót.";}
+                        SelectMapAt(cell.x,cell.y);
                     }
                     else
                     {
