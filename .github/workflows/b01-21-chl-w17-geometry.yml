@@ -33,12 +33,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git merge-base --is-ancestor 9a947108928d4c2cdfdfbb25cbeb30464439da37 HEAD
-          test "$(git hash-object Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs)" = c74455dda6aa6c5210ebcce73330cf296b3597bd
-          test "$(git hash-object Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs)" = 77e72b87988bdd7e181f649b33e41866bba7083
-          test "$(git hash-object Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs)" = 2ec5334539cfe3b1108ad2c868e04be7a9b18129
-          test "$(git hash-object Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs)" = ac126bbe00479790fcd7bc3480faec5c0c4b7e88
-          test "$(git hash-object Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs)" = 5c736da620487e48131f6d454bcf231ae368b513
+          echo "HEAD=$(git rev-parse HEAD)"
+          echo "PIN=9a947108928d4c2cdfdfbb25cbeb30464439da37"
+          git log -3 --oneline
+          if ! git merge-base --is-ancestor 9a947108928d4c2cdfdfbb25cbeb30464439da37 HEAD; then
+            echo "PRODUCER_ANCESTRY_MISMATCH"; exit 10
+          fi
+          echo "PRODUCER_ANCESTRY_PIN_PASS"
+          while IFS='|' read -r path expected; do
+            actual="$(git hash-object "$path")"
+            echo "SOURCE_BLOB_PIN_CHECK path=$path actual=$actual expected=$expected"
+            if test "$actual" != "$expected"; then
+              echo "SOURCE_BLOB_PIN_MISMATCH_$path"; exit 11
+            fi
+          done <<'BLOB_PINS'
+          Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs|c74455dda6aa6c5210ebcce73330cf296b3597bd
+          Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs|77e72b87988bdd7e181f649b33e41866bba7083e
+          Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs|2ec5334539cfe3b1108ad2c868e04be7a9b18129
+          Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs|ac126bbe00479790fcd7bc3480faec5c0c4b7e88
+          Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs|5c736da620487e48131f6d454bcf231ae368b513
+          BLOB_PINS
           mkdir -p w17-chl-world-source-evidence
           git rev-parse HEAD > w17-chl-world-source-evidence/QA_HEAD.txt
           printf "%s\n" "9a947108928d4c2cdfdfbb25cbeb30464439da37" > w17-chl-world-source-evidence/PINNED_PRODUCER_HEAD.txt
