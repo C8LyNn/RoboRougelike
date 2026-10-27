@@ -13,6 +13,7 @@ expected=[
 "Runtime/CHL003VehicleMotor.cs",
 "Runtime/CHL003ContactMonitor.cs",
 "Runtime/CHL003FinishArbiter.cs",
+"Runtime/CHL003GateCrossing.cs",
 "Runtime/CHL003TrialMetrics.cs",
 "Runtime/B01.CHL003.Runtime.asmdef",
 "Demo/CHL003DemoBootstrap.cs",
@@ -73,8 +74,8 @@ moreEdit=(pkg/"Tests/EditMode/CHL003FinishAndTelemetryEditModeTests.cs").read_te
 morePlay=(pkg/"Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs").read_text()
 editNames += re.findall(r"\[Test\]\s+public void (\w+)\(",moreEdit)
 playNames += re.findall(r"\[UnityTest\]\s+public IEnumerator (\w+)\(",morePlay)
-require(len(editNames)==15 and len(set(editNames))==15, "expected 15 authored Edit NUnit methods")
-require(len(playNames)==9 and len(set(playNames))==9, "expected 9 authored Play UnityTests")
+require(len(editNames)==18 and len(set(editNames))==18, "expected 18 authored Edit NUnit methods")
+require(len(playNames)==12 and len(set(playNames))==12, "expected 12 authored Play UnityTests")
 arbiter=(pkg/"Runtime/CHL003FinishArbiter.cs").read_text()
 metrics=(pkg/"Runtime/CHL003TrialMetrics.cs").read_text()
 monitor=(pkg/"Runtime/CHL003ContactMonitor.cs").read_text()
@@ -95,6 +96,36 @@ require("OnTriggerStay" in (pkg/"Runtime/CHL003Gate.cs").read_text(),
 require("P07_SameNativeCourseLightHeavyThreeRunsEachWithRealContact" in morePlay and
         "P08_FinalCheckpointAndFinishCoLocatedNeverCompleteSameFixedStep" in morePlay,
         "real native physical course acceptance missing")
+# W17 CHL-02 independent forward body plane and wheel-graze negatives
+crossing=(pkg/"Runtime/CHL003GateCrossing.cs").read_text()
+motor=(pkg/"Runtime/CHL003VehicleMotor.cs").read_text()
+for check in ("previousDepth <= 0f", "currentDepth > 0f",
+              "localMinX >= gateMinX + minimumSideClearance",
+              "localMaxX <= gateMaxX - minimumSideClearance",
+              "facingDot >= .5f", "float.IsNaN(n)"):
+    require(check in crossing, "missing CHL-02 real gate guard "+check)
+for check in ("ForwardHullCrossesGate(gate)", "Collider.bounds" if False else
+              "c.bounds", "positionBeforePhysics", "activeActor.position",
+              "IsForwardFullBodyCrossing("):
+    require(check in runtime,"source lost actual collider/crossing input "+check)
+for check in ("Physics.RaycastNonAlloc", "QueryTriggerInteraction.Ignore",
+              "groundHits[i].normal.y < .5f", "c.attachedRigidbody == body",
+              "if (!IsGrounded) return;", "AirborneSteps++"):
+    require(check in motor,"propulsive airborne control not fail closed "+check)
+require("wheelProbes[wheelIndex++] = wheel.transform;" in demo and
+        "GetComponentsInChildren<Collider>()" in demo and
+        "widthMeters: measuredWidth" in demo,"demo must use 4 physical wheel probes and actual collider envelope")
+require("P10_AirborneMotorDoesNotAccelerateOrSteerWithoutRealTerrain" in morePlay
+        and "P11_RealBackwardCrossAndWheelGrazeMustNotScore" in morePlay
+        and "P12_DrivingForceOccursOnlyWhenRealWheelGroundRaySupports" in morePlay,
+        "native actual-physics negative acceptance omitted")
+mutation=crossing.replace("previousDepth <= 0f", "true")
+require(mutation!=crossing and "previousDepth <= 0f" not in mutation,
+        "reverse crossing source mutation RED not detected")
+mutation=motor.replace("if (!IsGrounded) return;", "/* injected airborne thrust */")
+require(mutation!=motor and "if (!IsGrounded) return;" not in mutation,
+        "air thrust source mutation RED not detected")
+
 # Negative mutation: same-step protection absent would be caught.
 mutated=arbiter.replace("fixedStep <= lastCheckpointStep", "false")
 require(mutated!=arbiter and "fixedStep <= lastCheckpointStep" not in mutated,
