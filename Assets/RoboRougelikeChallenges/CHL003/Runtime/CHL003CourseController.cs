@@ -15,6 +15,7 @@ namespace B01.CHL003
         private CHL003Gate[] checkpoints;
         private CHL003Gate finish;
         private Vector3 spawnPosition;
+        private Vector3 positionBeforePhysics;
         private Quaternion spawnRotation;
         private float failBelowY = -3f;
         private long fixedStep;
@@ -63,6 +64,7 @@ namespace B01.CHL003
             checkpoints = (CHL003Gate[])ordered.Clone();
             finish = finishGate;
             spawnPosition = spawnPoint.position;
+            positionBeforePhysics = actor.position;
             spawnRotation = spawnPoint.rotation;
             failBelowY = failureY;
             core = new CHL003CourseCore();
@@ -111,6 +113,7 @@ namespace B01.CHL003
                 activeActor.isKinematic = false;
                 activeActor.linearVelocity = pausedVelocity;
                 activeActor.angularVelocity = pausedAngularVelocity;
+                positionBeforePhysics = activeActor.position;
                 core.SetPaused(false);
             }
         }
@@ -125,6 +128,7 @@ namespace B01.CHL003
             activeActor.linearVelocity = Vector3.zero;
             activeActor.angularVelocity = Vector3.zero;
             activeActor.position = spawnPosition;
+            positionBeforePhysics = spawnPosition;
             activeActor.rotation = spawnRotation;
             activeActor.Sleep();
             Physics.SyncTransforms();
@@ -149,6 +153,58 @@ namespace B01.CHL003
             metrics.RecordCollision(otherName, collision.contactCount, entering);
         }
 
+        private bool ForwardHullCrossesGate(CHL003Gate gate)
+        {
+            if (activeActor == null || gate == null || gate.transform == null)
+                return false;
+            var box = gate.GetComponent<BoxCollider>();
+            if (box == null || !box.enabled || !box.isTrigger)
+                return false;
+            Transform g = gate.transform;
+            Vector3 unit = g.lossyScale;
+            float sx = Mathf.Abs(unit.x), sy = Mathf.Abs(unit.y);
+            float sz = Mathf.Abs(unit.z);
+            if (sx <= 0f || sy <= 0f || sz <= 0f) return false;
+            Vector3 previous = g.InverseTransformPoint(positionBeforePhysics);
+            Vector3 current = g.InverseTransformPoint(activeActor.position);
+            var actorColliders = activeActor.GetComponentsInChildren<Collider>();
+            bool any = false;
+            float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
+            float minY = float.PositiveInfinity, maxY = float.NegativeInfinity;
+            for (int i = 0; i < actorColliders.Length; i++)
+            {
+                Collider c = actorColliders[i];
+                if (c == null || !c.enabled || c.isTrigger ||
+                    !c.gameObject.activeInHierarchy ||
+                    c.attachedRigidbody != activeActor) continue;
+                Bounds worldAabb = c.bounds; // actual COLLIDER bounds, not render mesh
+                if (worldAabb.size.sqrMagnitude <= 0f) continue;
+                // Conservative world AABB corners transformed to the local gate
+                // frame. Yaw can only make this HARDER, never false accept.
+                for (int x=-1;x<=1;x+=2)
+                for (int y=-1;y<=1;y+=2)
+                for (int z=-1;z<=1;z+=2)
+                {
+                    Vector3 corner = worldAabb.center +
+                        Vector3.Scale(worldAabb.extents, new Vector3(x,y,z));
+                    Vector3 v = g.InverseTransformPoint(corner);
+                    minX = Mathf.Min(minX, v.x*sx);
+                    maxX = Mathf.Max(maxX, v.x*sx);
+                    minY = Mathf.Min(minY, v.y*sy);
+                    maxY = Mathf.Max(maxY, v.y*sy);
+                }
+                any = true;
+            }
+            if (!any) return false;
+            return CHL003GateCrossing.IsForwardFullBodyCrossing(
+                previous.z*sz, current.z*sz, minX, maxX, minY, maxY,
+                (box.center.x-box.size.x*.5f)*sx,
+                (box.center.x+box.size.x*.5f)*sx,
+                (box.center.y-box.size.y*.5f)*sy,
+                (box.center.y+box.size.y*.5f)*sy,
+                Vector3.Dot(activeActor.transform.forward,g.forward));
+        }
+
         internal bool ReceiveGate(CHL003Gate gate, Collider collider, int ordinal)
         {
             if (core == null || core.State != CHL003CourseCore.Phase.Running ||
@@ -156,6 +212,11 @@ namespace B01.CHL003
                 !collider.gameObject.activeInHierarchy ||
                 collider.attachedRigidbody != activeActor)
                 return false;
+            // Trigger callbacks ONLY propose candidates. The real actor center
+            // must cross the gate plane forward, and the WHOLE real physics
+            // collider envelope must clear its aperture. Neither reversing
+            // nor a single wheel grazing the volume can score.
+            if (!ForwardHullCrossesGate(gate)) return false;
             int token = activeActor.GetInstanceID();
             if (ReferenceEquals(gate, finish))
             {
@@ -205,6 +266,8 @@ namespace B01.CHL003
         private void FixedUpdate()
         {
             fixedStep++;
+            if (activeActor != null && core != null && !core.Paused)
+                positionBeforePhysics = activeActor.position;
             if (core == null || core.State != CHL003CourseCore.Phase.Running ||
                 activeActor == null || core.Paused) return;
             Vector3 pos = activeActor.position;
