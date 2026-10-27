@@ -1,0 +1,61 @@
+{
+  "newUniqueFocus": "LD01 mandatory barrier topological design defect and three minimal authorable JSONs; source-grounded data checks",
+  "tests": [
+    {
+      "name": "SOURCE_BLOBS_MATCH",
+      "result": "PASS"
+    },
+    {
+      "name": "SOURCE_TYPES_EXIST",
+      "result": "PASS"
+    },
+    {
+      "name": "LD01_SCHEMA",
+      "result": "PASS"
+    },
+    {
+      "name": "LD01_ANY_FLOOR_ROUTE",
+      "result": "PASS"
+    },
+    {
+      "name": "LD01_NO_BARRIER_FREE_FLOOR_ROUTE",
+      "result": "PASS"
+    },
+    {
+      "name": "LD02_SCHEMA",
+      "result": "PASS"
+    },
+    {
+      "name": "LD02_IS_GEOMETRY_ONLY_WITH_FREE_BYPASS",
+      "result": "PASS"
+    },
+    {
+      "name": "LD03_SCHEMA",
+      "result": "PASS"
+    },
+    {
+      "name": "LD03_SAFE_ROUTE",
+      "result": "PASS"
+    },
+    {
+      "name": "LD03_RISK_ROUTE",
+      "result": "PASS"
+    },
+    {
+      "name": "LD03_RISK_BLOCKED_IF_BARRIER_FORBIDDEN",
+      "result": "PASS"
+    },
+    {
+      "name": "LD03_TWO_NONOVERLAP_INTERIORS",
+      "result": "PASS"
+    },
+    {
+      "name": "LD03_SAFE_LONGER",
+      "result": "PASS"
+    }
+  ],
+  "passed": 13,
+  "failed": 0,
+  "evidence": "Original source Git blob matched and real original data fixtures were created in memory (V8); NOT compiled/executed original C# or Unity.",
+  "native": "NOT_RUN"
+}
