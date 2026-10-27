@@ -1,11 +1,11 @@
 {
   "owner": "B01-61",
   "scope": "QA-only; not installed in Codex/game source",
-  "wave": "PASS12",
+  "wave": "PASS13",
   "codex_pr": 310,
   "codex_sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
   "fixture": "B0161CrossFeatureRegressionTests.cs",
-  "fixture_git_blob": "9a1c06f1b9e3d5f0a13daecdb19041538d02075e",
+  "fixture_git_blob": "bcbe8353c7e2a78db0565694ced6afb4397e9987",
   "original_git_blobs": {
     "Assets/R3/R3VehicleModel.cs": "9f1bf190c7535182c6ce375cbfe67f5b2862e811",
     "Assets/MapEditor/R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
@@ -22,5 +22,6 @@
   ],
   "Unity_EditMode": "NOT_RUN",
   "Unity_PlayMode": "NOT_RUN",
-  "Windows_Player": "NOT_RUN"
+  "Windows_Player": "NOT_RUN",
+  "qa_negative": "During actual map-test copy, swap B -> A and damage gun to zero, then check original model A=null,B=Basic, original gun health unchanged, original Scrap and map JSON."
 }
