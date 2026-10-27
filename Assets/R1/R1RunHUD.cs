@@ -222,7 +222,7 @@ namespace RoboRougelike.R1
                 garage.Message=run.GarageRepair(garage.Cell)?"Przywrócono HP części.":"Najpierw odtwórz połączenie z konstrukcją.";
             GUI.enabled=selected!=null;
             if(GUI.Button(new Rect(970,334,280,48),"Zdejmij / usuń utracony plan",compactButton))
-                garage.Message=run.GarageRemove(garage.Cell)?"Żywa część wraca do magazynu; utracony plan usunięty.":"Nie można usunąć rdzenia, mostu lub ostatniego niezbędnego modułu.";
+                garage.Message=run.GarageRemove(garage.Cell)?"Żywa część wraca do magazynu; utracony plan usunięty.":"Nie można usunąć rdzenia ani mostu; sprawdź także miejsce w magazynie.";
             GUI.enabled=true;
             int bulkCost=model.AffordableRepairCost;
             GUI.enabled=bulkCost>0;
@@ -261,8 +261,9 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(615,538,125,44),"Widok ↑",compactButton))garage.Tilt(10);
             if(GUI.Button(new Rect(745,538,125,44),"Widok ↓",compactButton))garage.Tilt(-10);
             Panel(new Rect(345,590,585,115));
-            GUI.Label(new Rect(360,600,555,55),garage.Message,small);
-            GUI.enabled=model.CanDeploy;
+            GUI.Label(new Rect(360,600,555,55),model.CanDeploy?garage.Message:
+                "Możesz budować dalej; nie możesz jeszcze rozpocząć aktywności: "+model.DeployError,small);
+            GUI.enabled=run.MapEditorSession||model.CanDeploy;
             if(run.MapEditorSession){if(GUI.Button(new Rect(360,654,270,40),"Wróć do edytora map",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(360,654,270,40),"Testuj na poligonie",compactButton))run.EnterTestRange();
             GUI.enabled=run.SandboxWorkshop||model.CanDeploy;

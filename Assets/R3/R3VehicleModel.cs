@@ -254,9 +254,8 @@ namespace RoboRougelike.R3
             var part = At(cell);
             if (part == null || part.Kind == R3PartKind.Core) return false;
             var rest = Parts.Where(p => p != part).ToList();
-            if (!rest.Any(p => p.Kind == R3PartKind.Gun) ||
-                !HasMobility(rest,SelectedDrive,false) ||
-                (SelectedDrive!=R3DriveKind.Wheels&&CanDeploy&&!HasMobility(rest,SelectedDrive)) ||
+            // Edits may temporarily be undeployable; keep the core, structure and inventory safe.
+            if ((part.Health>0&&inventory.Count>=InventoryCapacity) ||
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
             Parts.Remove(part); if(part.Health>0)inventory.Add(part); return true;
         }
