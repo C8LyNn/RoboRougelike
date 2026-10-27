@@ -16,8 +16,8 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 SPEC = {
-    'PARTSIZE-001': {'version':'R1','producer':'B01-23','roots':('Assets/B01Packages/PARTSIZE001/', 'Docs/B01/PARTSIZE001/'), 'asset':'Assets/B01Packages/PARTSIZE001/'},
-    'CHL-003': {'version':'R1','producer':'B01-20','roots':('Assets/RoboRougelikeChallenges/CHL003/', 'Docs/B01/CHL003/'), 'asset':'Assets/RoboRougelikeChallenges/CHL003/'},
+    'PARTSIZE-001': {'version':'R1','producer':'B01-23','roots':('Assets/B01Packages/PARTSIZE001/', 'Docs/B01/PARTSIZE001/'), 'asset':'Assets/B01Packages/PARTSIZE001/','root_meta':'Assets/B01Packages/PARTSIZE001.meta'},
+    'CHL-003': {'version':'R1','producer':'B01-20','roots':('Assets/RoboRougelikeChallenges/CHL003/', 'Docs/B01/CHL003/'), 'asset':'Assets/RoboRougelikeChallenges/CHL003/','root_meta':'Assets/RoboRougelikeChallenges/CHL003.meta'},
 }
 STATES = {'DESIGN','IN_PROGRESS','QA','OFFERED_FROZEN','RESERVED_FOR_CODEX_ACK_PENDING','CODEX_CLAIMED','INTEGRATED','RETURNED_FOR_REWORK','REJECTED'}
 BAD_PARTS={'CON','PRN','AUX','NUL',*(f'COM{i}' for i in range(1,10)),*(f'LPT{i}' for i in range(1,10))}
@@ -116,7 +116,7 @@ def verify(archive:Path, receipt:dict, target:dict|None=None, source_tree:dict|N
         key=check_path(path)
         if key in indexed:
             raise GateError('manifest_duplicate_casefold_path')
-        if not any(path.startswith(p) for p in spec['roots']):
+        if path!=spec['root_meta'] and not any(path.startswith(p) for p in spec['roots']):
             raise GateError(f'out_of_owner_scope:{path}')
         if not isinstance(f.get('sha256'),str) or not SHA256.fullmatch(f['sha256']) or type(f.get('bytes')) is not int or f['bytes']<0 or f['bytes']>MAX_ITEM:
             raise GateError(f'invalid_source_hash_or_size:{path}')
@@ -156,7 +156,9 @@ def verify(archive:Path, receipt:dict, target:dict|None=None, source_tree:dict|N
             gitsha=source_tree.get(f['path'])
             if not isinstance(gitsha,str) or blob_sha1(payload[f['path']])!=gitsha:
                 raise GateError(f'source_git_blob_mismatch:{f["path"]}')
-    assets={p:v for p,v in payload.items() if p.startswith(spec['asset'])}
+    if spec['root_meta'] not in payload:
+        raise GateError('missing_package_root_meta:'+spec['root_meta'])
+    assets={p:v for p,v in payload.items() if p.startswith(spec['asset']) or p==spec['root_meta']}
     guid_by_path={}
     guid_to_path={}
     for p,b in assets.items():

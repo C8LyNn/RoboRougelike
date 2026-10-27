@@ -8,8 +8,8 @@ Ask the **producer** for its complete original package ZIP, an **external** froz
 
 | Package | Version | Producer | Allowed ZIP roots |
 |---|---|---|---|
-| PARTSIZE-001 | R1 | B01-23 | `Assets/B01Packages/PARTSIZE001/`, `Docs/B01/PARTSIZE001/` |
-| CHL-003 | R1 | B01-20 | `Assets/RoboRougelikeChallenges/CHL003/`, `Docs/B01/CHL003/` |
+| PARTSIZE-001 | R1 | B01-23 | `Assets/B01Packages/PARTSIZE001/`, **`Assets/B01Packages/PARTSIZE001.meta`**, `Docs/B01/PARTSIZE001/` |
+| CHL-003 | R1 | B01-20 | `Assets/RoboRougelikeChallenges/CHL003/`, **`Assets/RoboRougelikeChallenges/CHL003.meta`**, `Docs/B01/CHL003/` |
 
 These are proposed **receiver intake scope locks** matching the isolated design, not permission to edit either producer's files. If producer uses a different approved root, obtain B01-00 scope decision before modifying the receiver rule; do not silently broaden the allowlist.
 
@@ -26,7 +26,7 @@ The receipt is an external UTF-8 JSON object:
 }
 ```
 
-The example contains placeholders, **not a valid receipt**. Each archive file needs its own complete record including `.meta`, source/tests/docs. No registered payload may be outside the owner roots. Physically present Runtime C#, `.unity` demo, actual EditMode/PlayMode C# tests including a named Negative or Invalid test source, at least the four handoff documents, and (CHL only) at least two separately authored rig `.prefab` assets are mandatory minimum *source* preflight. Their presence is **not proof of functional physics**, two actually different Rigidbody rigs, correct save migration, or native NUnit PASS.
+The example contains placeholders, **not a valid receipt**. Each archive file needs its own complete record including `.meta`, source/tests/docs. The exact Unity package **root folder `.meta` is mandatory**, not only the `.meta` of its child scripts/prefabs; source must maintain the stable root directory GUID. No registered payload may be outside the owner roots. Physically present Runtime C#, `.unity` demo, actual EditMode/PlayMode C# tests including a named Negative or Invalid test source, at least the four handoff documents, and (CHL only) at least two separately authored rig `.prefab` assets are mandatory minimum *source* preflight. Their presence is **not proof of functional physics**, two actually different Rigidbody rigs, correct save migration, or native NUnit PASS.
 
 ## Usage (Windows PowerShell, read-only)
 

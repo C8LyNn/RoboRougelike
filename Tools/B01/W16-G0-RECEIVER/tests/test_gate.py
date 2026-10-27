@@ -33,6 +33,7 @@ def sample(package='PARTSIZE-001'):
     originals=list(p for p in payload if p.startswith('Assets/'))
     for idx,path in enumerate(originals):
         payload[path+'.meta']=(f'fileFormatVersion: 2\nguid: {idx+1:032x}\n').encode()
+    payload[cfg['root_meta']]=('fileFormatVersion: 2\nguid: '+'e'*32+'\n').encode()
     return payload
 
 def build(tmp,payload,package='PARTSIZE-001',state='QA',repack=None):
@@ -200,6 +201,13 @@ class PhysicalSourceGate(unittest.TestCase):
         self.rebuild();self.fails('unresolved_asmdef_reference')
         self.receipt['external_assembly_guids']=[external]
         self.assertEqual(self.check()['declared_external_assembly_guids'],[external])
+    def test_42_root_directory_meta_present_and_counted(self):
+        root_meta=gate.SPEC['PARTSIZE-001']['asset'][:-1]+'.meta'
+        self.assertIn(root_meta,self.data)
+        r=self.check();self.assertGreater(r['unity_guids'],5)
+    def test_43_missing_root_directory_meta_fails_closed(self):
+        root_meta=gate.SPEC['PARTSIZE-001']['asset'][:-1]+'.meta'
+        self.data.pop(root_meta,None);self.rebuild();self.fails('missing_package_root_meta')
     def test_36_invalid_target_index_blocked(self):
         p=next(p for p in self.data if p.endswith('Controller.cs'))
         with self.assertRaisesRegex(gate.GateError,'invalid_target_index_entry'):gate.verify(self.zip,self.receipt,{p:{'sha256':'hello'}})

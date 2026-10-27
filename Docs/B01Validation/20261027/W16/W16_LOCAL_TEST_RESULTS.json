@@ -5,8 +5,8 @@
     "PARTSIZE-001 R1",
     "CHL-003 R1"
   ],
-  "unit_tests": 41,
-  "passed": 41,
+  "unit_tests": 43,
+  "passed": 43,
   "failed": 0,
   "actual_execution": "python stdlib unittest, real synthetic physical ZIPs + temporary true Git commit",
   "source_producer_packages": "NOT_AVAILABLE_YET",
@@ -16,6 +16,7 @@
   "red_fix_green": [
     "one W16 36-case initial RED due frozen check priority; fixed test order and reran 36/36",
     "target case-insensitive conflict fixture added, all 39/39",
-    "added asmdef GUID reference support and two cases; final 41/41 PASS"
+    "added asmdef GUID reference support and two cases; final 41/41 PASS",
+    "after original CI41/41 added two Unity package root-folder .meta regression cases; 2/43 RED initially; fixed allowed path, required meta and GUID scan, distinct fixture GUID; final 43/43 PASS"
   ]
 }
