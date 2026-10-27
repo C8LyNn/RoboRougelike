@@ -1,6 +1,6 @@
 # EXIT273 — normal exit, pause and shutdown QA
 
-Status: **QA IN PROGRESS**. Native full suites and operator GUI results are not yet final. This document will be updated before delivery.
+Status: **READY_WITH_DOCUMENTED_ENGINE_LIMITATION**. Normal quit/pause and the final Windows release are verified. Historical UI Automation-related C0000005 is NOT PROVEN FIXED. No main/develop merge or independent production acceptance.
 
 ## Exact source and preservation
 
@@ -34,9 +34,12 @@ Return uses the existing scene restart/cleanup, with an idempotent guard and can
 | Earlier full EditMode at `2e4bff3` | ABORTED_NOT_A_TEST_RESULT, native -1; controlled cancellation on discovery of the R regression | same stage, intentional-abort.json |
 | Native R-key reproduction `7b5d201` | FAIL 0/1, actual R observed but paused range did not reset | `FM270-EXIT273-RangeRed-20261027T080646Z` |
 | Final `8a294e66` compile/build and focused EditMode | PASS: compile 0, build 0, 4/4 tests, native exit 0 | `FM270-EXIT273-RangeGreen-20261027T080853Z` |
-| Final full EditMode / PlayMode `8a294e66` | RUNNING, no final result asserted | `FM270-EXIT273-ReleaseFull-20261027T081029Z` |
+| Final full EditMode `8a294e66` | PASS 1208/1208, failed 0, skipped 0, native exit 0 | `FM270-EXIT273-ReleaseFull-20261027T081029Z/EditMode.xml` |
+| Final full PlayMode `8a294e66` | PASS 474/474, failed 0, skipped 0, native exit 0 | same stage, PlayMode.xml |
 
 The red failure was a real behavioral assertion, not a compiler failure. Targeted cases exercise garage pause/resume, combat pause/menu cleanup, idempotent shutdown preparation, and the eight pre-existing full-activity regression cases. XML, phase exit receipts and scrubbed compressed logs are collected under `Evidence/` at completion.
+
+Final evidence: [EditMode XML](Evidence/FM270-EXIT273-ReleaseFull-20261027T081029Z/EditMode.xml), [PlayMode XML](Evidence/FM270-EXIT273-ReleaseFull-20261027T081029Z/PlayMode.xml), [native process receipts and logs](Evidence/FM270-EXIT273-ReleaseFull-20261027T081029Z/), [delivery verification](delivery-verification.json). Both suites ran without filters on the same final source. The four earlier failures are individually listed as Passed by the delivery gate; no counts are combined across SHAs.
 
 ## Windows Player evidence so far
 
@@ -64,7 +67,7 @@ Nine automated processes completed, all native exit 0: menu, paused garage, gene
 
 Both final owner GUI trials PASS: explicit main-menu quit at 720p and explicit pause quit at 1080p. Both final native process receipts are 0 / 0x00000000, source 8a294e66. The owner confirmed both buttons closed the game. These were plain retail launches with no diagnostic installer or UI automation attached. See operator-confirmation-final.json and the two FinalMenuButton/FinalPauseButton receipts. Final Windows total is 11/11 clean exits (9 automated, 2 manual); the earlier A/B remains attributed to its actual earlier binary.
 
-The [independent read-only review](code-review.json) found no actionable code issue in the complete change. It did not run tests or assign native/full-suite results. The full native test run remains the authority for suite counts.
+The [independent read-only review](code-review.json) found no actionable code issue in the complete change. It did not run tests or assign native/full-suite results. The completed full native test run is the authority for suite counts. All four failures from the earlier full run in #272 are present by exact name and PASS in this final full XML; delivery-verification.json lists them.
 
 ## Historical crash and GUI verification
 
@@ -73,6 +76,10 @@ Read-only Windows Application Error events again confirm historical `UnityPlayer
 Unity's [official 6000.3.21f1 release notes](https://unity.com/releases/editor/whats-new/6000.3.21f1) explicitly list UUM-146676: a Windows Player shutdown crash after UI Automation interaction. This is a plausible match to the historical evidence. The required `6000.3.14f1` is retained; this change does not claim to patch Unity's native accessibility code. No accessibility service or system setting was disabled.
 
 Both supported computer-use entry points failed before attachment with `failed to write kernel assets` / OS error 3. Thus automated real mouse/X/Alt+F4 reproduction through that helper is NOT_RUN. The earlier owner confirmation that #272 garage and Alt+F4 worked is retained as a human report; no native exit receipt was captured for that earlier confirmation.
+
+The newly recorded manual BASE/EXP comparison did not reproduce Alt+F4 blocking: both old and new builds exited normally, and the new logs used the ordinary NativeClose callback. This is not proof of the cause of the earlier intermittent report. Exact OS-close timing during combat or synchronous scene reload was not independently reproduced through GUI; logical encounter-transition shutdown was actually executed and passed. No normal game process was killed. The one recorded forced cancellation belongs only to an obsolete Editor test run after the R regression was discovered.
+
+[Scoped Windows event summary](Evidence/EXIT273-Environment/current-run-event-summary.json): no new own-game crash event in the recorded interval. [Process-tree check](Evidence/EXIT273-Environment/final-process-tree-check.json): no surviving final main Player or direct crash-handler child. Raw historical OS records and memory dumps remain local; a scoped fault summary is published.
 
 The exact B01-60 #245 recorder at `aa5eedf2c1406b04ad9a496eed82242521d1325a` is staged unchanged under `Tools/Exit273/Staged` with SHA-256 provenance. It validated/extracted three distinct pinned ZIPs and prepared its balanced schedule. BASE now explicitly maps to #272, EXP to this fix, RC2 to the historical #258 artifact; no labels imply unchanged original RC1 semantics. Requested human trials: BASE Alt+F4, EXP Alt+F4, EXP X, BASE X, followed by two new-build quit-button trials. All four BASE/EXP trials completed with actual native exit 0; the owner independently confirmed the requested Alt+F4/X actions. Both EXP logs reached the ordinary NativeClose callback. The two subsequent first-candidate manual processes also exited 0: 720p closure confirmed without separately identifying the button; 1080p garage -> activity -> Esc -> main menu -> exit confirmed. See operator-confirmation.json. The two historical RC2 comparison trials are optional and NOT_RUN unless executed. Do not relabel the complete six-run recorder PASS when only a subset runs.
 
@@ -87,3 +94,7 @@ EXE: `C:\Users\kubap\Desktop\Prototypy\Releases\ROBOROUGELIKE_EXIT273_FINAL_2026
 Manual confirmation: quit from the main menu; relaunch, prepare a vehicle, start an activity, Esc/resume, Esc/menu, then restart an activity and quit from pause. Separately check Alt+F4 and X with the game focused, and relaunch after each exit. Retain Player.log and the process receipt. Return to menu ends the current run; it does not introduce a save-game system.
 
 Rollback: close the new Player and launch the preserved #272 archive/extracted game. The old integration worktree and release bytes have not been overwritten.
+
+## Decision
+
+**READY_WITH_DOCUMENTED_ENGINE_LIMITATION**: visible menu/pause quit, normal native close, repeated starts, full final native suites, final ZIP startup and byte integrity are verified. Historical UIA-triggered native accessibility C0000005 remains **NOT_PROVEN_FIXED**; physical gamepad hardware and the separately timed OS-close race above remain **NOT_RUN**. The main/develop branches are untouched. Draft PR #277 is for review, not automatic merge or production acceptance.
