@@ -1,0 +1,116 @@
+{
+  "task": "B01-25-W62-W65-P12",
+  "source": {
+    "repo": "C8LyNn/RoboRougelike",
+    "unity": "6000.3.14f1",
+    "codexPR": 310,
+    "codexCommit": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "originalMapDraftBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+    "originalMapStorageBlob": "f31a94c16e8cb244e66e39b0ac344b085095b630",
+    "originalMapEditorBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "challengeSourceCommit": "bdd6c69fc9fd519b863e3a9cb217b3cd39404194"
+  },
+  "evidenceKind": "V8 actual GitHub-original JSON parse, metadata, Git blob comparison; original C# source inspected; not original C# execution",
+  "checks": [
+    {
+      "name": "AUTH_01_original_Csharp_Git_blobs",
+      "pass": true
+    },
+    {
+      "name": "AUTH_02_MapStorage_try_path_and_Map_Load",
+      "pass": true
+    },
+    {
+      "name": "AUTH_03_MapDraft_TryLoad_v1_v2",
+      "pass": true
+    },
+    {
+      "name": "AUTH_04_MapDraft_overlap_and_unique_start_finish",
+      "pass": true
+    },
+    {
+      "name": "AUTH_05_TestError_sandbox_only",
+      "pass": true
+    },
+    {
+      "name": "LD01_AUTH_path_blob",
+      "pass": true
+    },
+    {
+      "name": "LD01_POS_original_format",
+      "pass": true
+    },
+    {
+      "name": "LD01_name_safe",
+      "pass": true
+    },
+    {
+      "name": "LD01_NEG_mutation_only",
+      "pass": true
+    },
+    {
+      "name": "LD01_NEG_JSON_parse",
+      "pass": true
+    },
+    {
+      "name": "LD02_AUTH_path_blob",
+      "pass": true
+    },
+    {
+      "name": "LD02_POS_original_format",
+      "pass": true
+    },
+    {
+      "name": "LD02_name_safe",
+      "pass": true
+    },
+    {
+      "name": "LD02_NEG_mutation_only",
+      "pass": true
+    },
+    {
+      "name": "LD02_NEG_JSON_parse",
+      "pass": true
+    },
+    {
+      "name": "LD03_AUTH_path_blob",
+      "pass": true
+    },
+    {
+      "name": "LD03_POS_original_format",
+      "pass": true
+    },
+    {
+      "name": "LD03_name_safe",
+      "pass": true
+    },
+    {
+      "name": "LD03_NEG_mutation_only",
+      "pass": true
+    },
+    {
+      "name": "LD03_NEG_JSON_parse",
+      "pass": true
+    },
+    {
+      "name": "LD01_neg_ground_removed_only",
+      "pass": true
+    },
+    {
+      "name": "LD02_neg_finish_duplicate_no_spatial_object_overlap",
+      "pass": true
+    },
+    {
+      "name": "LD03_neg_all_safe_detour_crossings_removed",
+      "pass": true
+    }
+  ],
+  "total": 23,
+  "passed": 23,
+  "failed": 0,
+  "unity": "NOT_RUN",
+  "dotnet": "NOT_RUN",
+  "nodeScript": "NOT_CREATED",
+  "nativeCHL": "NOT_RUN",
+  "branches": "Source already exists; research only"
+}
