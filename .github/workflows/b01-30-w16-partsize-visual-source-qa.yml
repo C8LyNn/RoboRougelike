@@ -127,14 +127,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PIN=dc2b3c199e6576f757f5ff6214e41fff444f73a8
-          CODEX=7cfd1276d4708395144668249223d78fb83c3b19
+          PIN=60c91b8172229bde9b02042125a79c3ebbfe5faa
+          CODEX=d44fa09c227dffca1c1f8832383bbd80430bba90
           PATH_OWNER=Tools/B01/PARTSIZE001/W26Receipt/source_payload_measurements.py
           git fetch --depth=1 origin "$PIN"
           test "$(git rev-parse FETCH_HEAD)" = "$PIN"
           git fetch --depth=1 origin "$CODEX"
           test "$(git rev-parse FETCH_HEAD)" = "$CODEX"
-          test "$(git rev-parse "$PIN:$PATH_OWNER")" = 93930abc9b4af7b597e2ba8310bd66eeead542dc
+          test "$(git rev-parse "$PIN:$PATH_OWNER")" = 443775bf24a5ab7accea94a1152ef240872d67b1
           test "$(git rev-parse "$CODEX:Assets/R3/R3VehicleAssembly.cs")" = 1b49c7365388694ebffacc5a4f20b3572150577a
           test "$(git rev-parse "$CODEX:Assets/R4_1/R41PartGeometry.cs")" = 76a14de4c347dd3e91b0a37487d804023eab5da1
           git show "$PIN:$PATH_OWNER" > "$B01_PARTSIZE_PR286_SOURCE/source_payload_measurements.py"
