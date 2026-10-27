@@ -47,7 +47,7 @@ namespace RoboRougelike.R1
         void ChangeMovement(R1RunController run,float power,float duration,bool gyro,float height)=>run.ConfigureMovement(power,duration,gyro,height);
         void DrawMovementGarage(R1RunController run)
         {
-            var m=run.VehicleModel;string[] tabs={"Napęd","Moduł","MOV009"};
+            var m=run.VehicleModel;string[] tabs={"Napęd","Moduł","Zawiesz."};
             for(int i=0;i<3;i++)
             {
                 GUI.backgroundColor=settingsTab==i?new Color(.3f,.9f,.9f):Color.white;

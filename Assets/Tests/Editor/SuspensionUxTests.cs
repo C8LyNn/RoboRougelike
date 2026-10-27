@@ -21,6 +21,33 @@ public sealed class SuspensionUxTests
         Assert.That(method,Is.Not.Null);return method.Invoke(null,new object[]{run});
     }
     static T Field<T>(object snapshot,string name)=>(T)snapshot.GetType().GetField(name).GetValue(snapshot);
+    [UnityTest] public IEnumerator RealForceAndPauseAreNotConfusedWithSelectedMode()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
+        foreach(var cell in MOV009ModelTests.Cells(R3VehicleKind.Light))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
+        Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,.1f),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        deadline=Time.realtimeSinceStartup+8;
+        while(!Field<bool>(Capture(run),"Applying")&&Time.realtimeSinceStartup<deadline)yield return null;
+        var live=Capture(run);Assert.That(Field<bool>(live,"Applying"),Is.True,"must be backed by actual force");
+        Assert.That(Field<float>(live,"ForceNewtons"),Is.GreaterThan(0));Assert.That(Field<string>(live,"Status"),Does.Contain("Pracuje"));
+        run.TogglePause();var paused=Capture(run);
+        Assert.That(Field<bool>(paused,"Applying"),Is.False);Assert.That(Field<float>(paused,"ForceNewtons"),Is.Zero);
+        Assert.That(Field<bool>(paused,"CanConfigure"),Is.True);Assert.That(Field<string>(paused,"Status"),Does.Contain("Gotowe"));
+        yield return new ExitPlayMode();
+    }
+    [UnityTest] public IEnumerator CombatPauseShowsControlsAreReadOnly()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);
+        Assert.That(run.StartNextEncounter(),Is.True);Assert.That(run.ChooseRoute(0),Is.True);while(run.Transitioning)yield return null;
+        run.TogglePause();Assert.That(Field<bool>(Capture(run),"CanConfigure"),Is.False);
+        yield return new ExitPlayMode();
+    }
     [UnityTest] public IEnumerator GarageExplainsMissingWorkingOffHoverAndDestroyedModules()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

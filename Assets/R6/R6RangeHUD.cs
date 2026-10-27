@@ -45,7 +45,7 @@ namespace RoboRougelike.R1
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
-            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM — ogień • R — reset • Esc — menu\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Tor MOV009 x≈12 • Cele na północy",small);
+            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM — ogień • R — reset • Esc — menu\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Zawieszenie: porównaj OFF/Assist/Full na torze x≈12 • Cele na północy",small);
         }
         void DrawAimReticle(R1RunController run)
         {
