@@ -25,6 +25,9 @@ namespace RoboRougelike.R1
                 (pad != null && pad.startButton.wasPressedThisFrame))
             { HandleEscape(); return true; }
             if (!Paused) return false;
+            // Preserve the range reset shortcut while the session menu owns other input.
+            if (Progress?.State == R1RunState.TestDrive && keys != null && keys.rKey.wasPressedThisFrame)
+            { ResetTestRange(); return true; }
             if ((keys != null && keys.upArrowKey.wasPressedThisFrame) ||
                 (pad != null && pad.dpad.up.wasPressedThisFrame)) PauseSelection = (PauseSelection + 2) % 3;
             if ((keys != null && keys.downArrowKey.wasPressedThisFrame) ||

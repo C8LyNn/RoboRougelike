@@ -1,4 +1,4 @@
-param([ValidateSet('Menu','Garage','Combat','Transition','Return','RangeLong','Manual')][string]$Mode='Menu',[int]$Width=1280,[int]$Height=720,[string]$Executable='',[string]$Label='')
+param([ValidateSet('Menu','Garage','Combat','Transition','Return','RangeLong','RangeReset','Manual')][string]$Mode='Menu',[int]$Width=1280,[int]$Height=720,[string]$Executable='',[string]$Label='')
 $ErrorActionPreference='Stop'
 $project=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 if(!$Executable){$Executable=Join-Path $project 'Builds/FULL-MERGE270/RoboRougelike.exe'}
@@ -6,6 +6,8 @@ $buildReceipt=Get-ChildItem (Join-Path $project 'Artifacts/Local/FM270-*/Build-p
 if(!$buildReceipt){throw 'Missing native build receipt'}
 $source=(Get-Content -Raw $buildReceipt.FullName | ConvertFrom-Json).source
 if(@(git -C $project diff --name-only $source -- Assets Packages ProjectSettings).Count){throw 'Source differs from built version'}
+$assembly='RoboRougelike_Data/Managed/Assembly-CSharp.dll'
+if((Get-FileHash (Join-Path (Split-Path $Executable) $assembly)).Hash -ne (Get-FileHash (Join-Path $project ('Builds/FULL-MERGE270/'+$assembly))).Hash){throw 'Player assembly differs from built source'}
 $stamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ')
 $run=Join-Path $project ('Artifacts/Local/EXIT273-Windows-'+$Mode+'-'+$Width+'-'+$Label+'-'+$stamp)
 New-Item -ItemType Directory -Path $run | Out-Null

@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace RoboRougelike.R1
 {
@@ -13,7 +15,7 @@ namespace RoboRougelike.R1
         {
             public string method="API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X";
             public string status="Running",mode,startedUtc,finishedUtc,stateAtQuit;
-            public bool applicationQuitReached,quitRequested,transitioning,paused,menuReturned;
+            public bool applicationQuitReached,quitRequested,transitioning,paused,menuReturned,rangeReset;
             public int width,height;public string error;
         }
         string output; readonly Result result=new Result();
@@ -59,7 +61,7 @@ namespace RoboRougelike.R1
                 yield return null;yield return null;Capture("01-garage");
                 if(result.mode!="Garage")
                 {
-                    bool started=result.mode=="RangeLong"?run.EnterTestRange():run.ChooseGeneratedArena();
+                    bool started=(result.mode=="RangeLong"||result.mode=="RangeReset")?run.EnterTestRange():run.ChooseGeneratedArena();
                     if(!started)throw new InvalidOperationException("Activity unavailable");
                     if(result.mode!="Transition")
                     {
@@ -67,6 +69,25 @@ namespace RoboRougelike.R1
                         while(run.Transitioning){if(Time.realtimeSinceStartup>deadline)throw new TimeoutException("Activity transition");yield return null;}
                         yield return new WaitForSecondsRealtime(result.mode=="RangeLong"?185:2);
                         run.TogglePause();Capture("02-paused-activity");yield return new WaitForSecondsRealtime(.3f);
+                        if(result.mode=="RangeReset")
+                        {
+                            int previous=run.Player.GetInstanceID();
+                            var oldBackground=InputSystem.settings.backgroundBehavior;
+                            var keyboard=InputSystem.AddDevice<Keyboard>();
+                            try
+                            {
+                                InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+                                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.R));
+                                yield return null;yield return null;
+                                deadline=Time.realtimeSinceStartup+5;
+                                while(run.Paused||run.Transitioning)
+                                {if(Time.realtimeSinceStartup>deadline)throw new TimeoutException("Paused range R reset");yield return null;}
+                                result.rangeReset=run.Player.GetInstanceID()!=previous&&run.Progress.State==R1RunState.TestDrive;
+                                if(!result.rangeReset)throw new InvalidOperationException("R did not rebuild the range copy");
+                                Capture("03-range-reset");yield return new WaitForSecondsRealtime(.3f);
+                            }
+                            finally {InputSystem.RemoveDevice(keyboard);InputSystem.settings.backgroundBehavior=oldBackground;}
+                        }
                         if(result.mode=="Return")
                         {
                             var old=run;run.RestartRun();deadline=Time.realtimeSinceStartup+20;
