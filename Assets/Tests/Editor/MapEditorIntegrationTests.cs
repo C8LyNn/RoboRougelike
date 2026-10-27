@@ -34,6 +34,13 @@ public sealed class MapEditorIntegrationTests
         for(int z=-3;z<=3;z++)draft.Place(MapItemKind.Ground,0,z,0);
         draft.Place(MapItemKind.Spawn,0,-2,0);draft.Place(MapItemKind.Ramp,0,0,0);draft.Place(MapItemKind.Finish,0,2,0);
         var expected=draft.ToJson();
+        run.SetMapTool(true,false);run.SelectMapAt(0,0);
+        Assert.That(run.EditorSelected.kind,Is.EqualTo(MapItemKind.Ramp));
+        run.ChangeMapScale(2,1);Assert.That(run.EditorSelected.scaleZ,Is.EqualTo(2));
+        run.ChangeMapScale(2,-1);Assert.That(run.EditorSelected.scaleZ,Is.EqualTo(1));
+        run.SetMapTool(false,false);run.ToggleMapFloor();Assert.That(draft.GlobalFloor,Is.True);
+        run.ToggleMapFloor();Assert.That(draft.GlobalFloor,Is.False);
+        Assert.That(draft.ToJson(),Is.EqualTo(expected));
         run.MapEditorGarage();Assert.That(run.MapEditing,Is.False);Assert.That(run.VehicleModel,Is.SameAs(model));
         Assert.That(run.ReturnToMapEditorFromGarage(),Is.True);Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(expected));
         Assert.That(run.TestEditedMap(),Is.True);

@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T19:58:24.0351817Z",
+    "source":  "eb87d88fad30bfb52b79f0c82cd0472a60c5af58",
+    "stage":  "MAPEXPANSION-RC",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "PlayMode",
+                      "-testResults",
+                      "\"PROJECT\\Artifacts\\Local\\FM270-MAPEXPANSION-RC-20261027T195638Z\\PlayMode.xml\"",
+                      "-testFilter",
+                      "\"MapEditorExpansionTests;MapEditorDraftTests;MapEditorIntegrationTests;R6RangeTests;WeaponTypeLimitTests;PerWeaponReticleTests;R3GarageModelTests;R4SalvageModelTests;B01.CAMERA001.Tests\""
+                  ],
+    "startedUtc":  "2026-10-27T19:58:09.2375183Z",
+    "phase":  "PlayMode"
+}

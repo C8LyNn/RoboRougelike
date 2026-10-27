@@ -306,6 +306,7 @@ namespace RoboRougelike.R1
         {
             if (QuitRequested || Transitioning || Progress == null || Progress.State == R1RunState.Ready || RangeDisabled) return;
             Paused = !Paused;
+            if(Paused&&MapEditing)EditorWorld?.HideGhost();
             PauseSelection = 0;
             SetSimulation(!Paused && (Progress.State == R1RunState.Combat || Progress.State == R1RunState.TestDrive));
         }
