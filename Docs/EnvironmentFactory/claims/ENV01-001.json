@@ -1,0 +1,12 @@
+{
+  "id": "ENV01-001",
+  "agent": "ENV01 / Environment Factory — bariera ochronna",
+  "name": "Niska stalowo-betonowa bariera ochronna",
+  "claimed_at_utc": "2026-10-27T09:47:59.973Z",
+  "branch": "feature/rrl-env01-001-protective-barrier-20261027",
+  "base_ref": "develop",
+  "status": "CLAIMED_PENDING_EXPORT",
+  "scope": "Tools/EnvironmentFactory/ENV01/ENV01-001/**",
+  "integration": "FORBIDDEN_PENDING_HQ_ART_REVIEW",
+  "original_work": true
+}
