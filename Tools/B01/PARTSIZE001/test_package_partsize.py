@@ -104,9 +104,8 @@ class PartSizeSourceTests(unittest.TestCase):
         source=p.ROOT/"Assets/B01Packages/PARTSIZE001/Tests"
         edit=(source/"EditMode/PartSize001EditModeTests.cs").read_text()
         play=(source/"PlayMode/PartSize001PlayModeTests.cs").read_text()
-        self.assertEqual(len(re.findall(r"\\[Test\\]",edit))+
-                         len(re.findall(r"\\[TestCase\\(",edit)),17)
-        self.assertEqual(len(re.findall(r"\\[UnityTest\\]",play)),8)
+        self.assertEqual(edit.count("[Test]")+edit.count("[TestCase("),17)
+        self.assertEqual(play.count("[UnityTest]"),8)
         self.assertIn("Physics.ComputePenetration",
             (p.ROOT/"Assets/B01Packages/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text())
 
