@@ -98,6 +98,7 @@ namespace RogueMachine.P12PipelineSafe
         {
             gameplayInputEnabled = active;
             if (active) return;
+            AimFeedback=default;
             moveInput = turnInput = currentSpeed = 0;
             fireHeld = false;
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();
@@ -241,6 +242,8 @@ public float CurrentForwardSpeed =>
             if (moduleSystem != null &&
                 !moduleSystem.WeaponOnline)
             {
+                AimFeedback=default;
+                if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(false);
                 return;
             }
 
@@ -261,6 +264,8 @@ public float CurrentForwardSpeed =>
                 aimPoint
             );
             if (modularAssembly != null) modularAssembly.AimGuns(aimPoint);
+            AimFeedback = RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(
+                modularAssembly,this,aimPoint,LastConsumedAimCollider);
 
             if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(fireHeld);
             if (fireHeld && modularAssembly != null) modularAssembly.FireGuns();
@@ -379,6 +384,8 @@ public float CurrentForwardSpeed =>
         public Vector3 LastConsumedAimPoint {get;private set;}
         public Collider LastConsumedAimCollider {get;private set;}
         public int LastConsumedAimFrame {get;private set;}=-1;
+        public RoboRougelike.WeaponIntegration.RRLAimFeedback.Snapshot AimFeedback {get;private set;}
+        public float PhysicalShellLifetime => projectileLifetime;
         private Vector3 FindAimPoint(bool consumed=false)
         {
             Ray ray =

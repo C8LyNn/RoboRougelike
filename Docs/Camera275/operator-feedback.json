@@ -1,0 +1,9 @@
+{
+  "source": "814525e6829ae046b170a1f961fe6f343d33a852",
+  "binaryReceipt": "Builds/CAM275-Candidate1/receipt.json",
+  "method": "Owner played the actual visible Windows Player with human mouse/keyboard; no diagnostic input installer was activated",
+  "cameraFeel": "OWNER_ACCEPTED_AS_SUFFICIENT: significantly improved, further tweaks may eventually help; wheel rebound became the more noticeable problem",
+  "requestedZoom": "Smooth distance change while camera stays attached to and follows the vehicle; no detached free camera",
+  "qualification": "Feedback precedes the final smooth-zoom/reticle changes. Not acceptance at all five constructions or all FPS targets. No exit code is inferred from this message.",
+  "finalZipManualZoom": "NOT_RUN — the owner will test the delivered build personally"
+}

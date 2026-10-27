@@ -1,0 +1,188 @@
+{
+  "status": "BUILD_VERIFIED_WITH_OPEN_QA_FAILURES",
+  "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+  "generatedUntrackedAssets": [],
+  "reportHead": "71a6fd6e269b15e56539e63a15c253400de056ed",
+  "suites": {
+    "EditMode": {
+      "status": "FAIL",
+      "counts": {
+        "total": 1223,
+        "passed": 1222,
+        "failed": 1,
+        "skipped": 0
+      },
+      "process": {
+        "exitCode": 2,
+        "finishedUtc": "2026-10-27T13:28:37.2855015Z",
+        "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+        "stage": "CAM275-ReleaseFull",
+        "arguments": [
+          "-runTests",
+          "-testPlatform",
+          "EditMode",
+          "-testResults",
+          "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ReleaseFull-20261027T124058Z\\EditMode.xml\""
+        ],
+        "startedUtc": "2026-10-27T12:40:58.3819818Z",
+        "phase": "EditMode"
+      },
+      "failures": [
+        {
+          "name": "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+          "message": "  Expected: less than 1\n  But was:  1.54074383f\n"
+        }
+      ],
+      "baselineMethodCaseCountsPreserved": true
+    },
+    "PlayMode": {
+      "status": "INTERRUPTED_NO_RESULT",
+      "processReceipt": false,
+      "xml": false,
+      "log": true
+    }
+  },
+  "archiveSHA256": "ef1be93d92d530dda606381ad1bcbdc329a74edd4e8332ef3cf2a3c5fe6194d8",
+  "extractedFilesVerified": 213,
+  "shotsPassed": 28,
+  "driveTrials": [
+    {
+      "vehicle": "Heavy",
+      "fps": 120,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 25.735952377319336
+    },
+    {
+      "vehicle": "Heavy",
+      "fps": 30,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 61.94425964355469
+    },
+    {
+      "vehicle": "Heavy",
+      "fps": 60,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 38.89427947998047
+    },
+    {
+      "vehicle": "Light",
+      "fps": 120,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 78.69132995605469
+    },
+    {
+      "vehicle": "Light",
+      "fps": 30,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 84.57772064208984
+    },
+    {
+      "vehicle": "Light",
+      "fps": 60,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 81.09867095947266
+    },
+    {
+      "vehicle": "Standard",
+      "fps": 120,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 56.80389404296875
+    },
+    {
+      "vehicle": "Standard",
+      "fps": 30,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 61.53132247924805
+    },
+    {
+      "vehicle": "Standard",
+      "fps": 60,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 27.17497444152832
+    },
+    {
+      "vehicle": "Tall",
+      "fps": 120,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 63.41190719604492
+    },
+    {
+      "vehicle": "Tall",
+      "fps": 30,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 78.62467193603516
+    },
+    {
+      "vehicle": "Tall",
+      "fps": 60,
+      "status": "Passed",
+      "exitCode": 0,
+      "distance": 67.52095794677734
+    },
+    {
+      "vehicle": "Wide",
+      "fps": 120,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 45.87785720825195
+    },
+    {
+      "vehicle": "Wide",
+      "fps": 30,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 45.651123046875
+    },
+    {
+      "vehicle": "Wide",
+      "fps": 60,
+      "status": "Failed",
+      "exitCode": 1,
+      "distance": 35.48636245727539
+    }
+  ],
+  "drivePassed": 8,
+  "driveFailed": 7,
+  "extractedPlayerChecks": [
+    {
+      "stage": "FM270-Windows-Camera-Heavy-1920-20261027T131102Z",
+      "mode": "Camera",
+      "vehicle": "Heavy",
+      "width": 1920,
+      "exitCode": 0
+    },
+    {
+      "stage": "FM270-Windows-Camera-Wide-1920-20261027T131124Z",
+      "mode": "Camera",
+      "vehicle": "Wide",
+      "width": 1920,
+      "exitCode": 0
+    },
+    {
+      "stage": "FM270-Windows-Input-Standard-1280-20261027T131146Z",
+      "mode": "Input",
+      "vehicle": "Standard",
+      "width": 1280,
+      "exitCode": 0
+    },
+    {
+      "stage": "FM270-Windows-Input-Standard-1920-20261027T131157Z",
+      "mode": "Input",
+      "vehicle": "Standard",
+      "width": 1920,
+      "exitCode": 0
+    }
+  ],
+  "qualification": "Delivery bytes are verified; failed/incomplete native tests and drive trials remain visible. No moving-target, physical gamepad, final human zoom, or historical UIA-crash claim is inferred from this gate."
+}

@@ -33,6 +33,7 @@ namespace RoboRougelike.Weapons.RotarySaw
 
         public RotarySawMotor Motor { get { EnsureInitialized(); return motor; } }
         public bool IsOperational { get { return operational; } }
+        public float ContactRadius => configuration.bladeRadius;
         public bool IsMotorRequested { get { return motorRequested; } }
         public bool OverflowedLastTick { get; private set; }
         public int DamageEventsLastTick { get; private set; }

@@ -1,0 +1,17 @@
+{
+    "exitCode":  2,
+    "finishedUtc":  "2026-10-27T09:23:53.6563191Z",
+    "source":  "d7badbcc478ddff02d55ea730cb3ac4cc7b06a20",
+    "stage":  "CAM275-RedNative",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-RedNative-20261027T092251Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"Camera275NativeTests\""
+                  ],
+    "startedUtc":  "2026-10-27T09:23:31.9871216Z",
+    "phase":  "EditMode"
+}

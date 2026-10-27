@@ -19,6 +19,7 @@ namespace RoboRougelike.Mechanics.Rockets
         private Transform guidanceTarget;
 
         public float NextReadyTime => gate.NextReadyTime;
+        public RocketSpec CurrentSpec => (config ?? new RocketConfig()).Snapshot();
         public bool Operational => operational && isActiveAndEnabled &&
             (!requireAttachedToOwner || (ownerRoot != null && transform.IsChildOf(ownerRoot)));
 

@@ -1,0 +1,79 @@
+{
+  "source": "71a6fd6e269b15e56539e63a15c253400de056ed",
+  "frozenBuildSource": "c61894a6389e43727db42a6dd58f153a496923ee",
+  "frozenGameBytesUnchanged": true,
+  "baseline": "0c7d0ba3d6b5d8ba31f728c3fb650ea79414c4cd",
+  "GUIDs": 983,
+  "missingMeta": [],
+  "duplicateGUIDs": {},
+  "deletedAssets": [],
+  "modifiedExistingMeta": [],
+  "preserved": {
+    "Assets/B01Packages.meta": true,
+    "Packages/manifest.json": true,
+    "Packages/packages-lock.json": true,
+    "ProjectSettings/ProjectVersion.txt": true
+  },
+  "modifiedFiles": [
+    {
+      "path": "Assets/B01Packages/CAMERA001/Runtime/Camera001Rig.cs",
+      "baseSHA256": "4e35d4e2cb13e596ac6eeda9b56f74b27f3bbf83bac09d51d727cba4843d249b",
+      "currentSHA256": "ce239893a11323b871fccdc7ee28c623bf0e99516e64f95f69a9df03fcb1482c"
+    },
+    {
+      "path": "Assets/Pack/P12_PipelineSafeCamera.cs",
+      "baseSHA256": "a28ca45f6906f3cc854a219c8b60251fd0ed25158d53abc5eb36c05a8bcd7f15",
+      "currentSHA256": "4295d78e072505c0793e31ff26775b73cef7bbc3107552e3489858810c3747e4"
+    },
+    {
+      "path": "Assets/Pack/P12_PipelineSafeTankController.cs",
+      "baseSHA256": "52a602425947693bcba6784b4e1e6e2c3962a38ee2a481886691b54dee6bfe1b",
+      "currentSHA256": "2112a39adee69c0eba343a77d2a0e7f522d222fa2bcd7397528dc103d422933b"
+    },
+    {
+      "path": "Assets/R1/FullMergeRuntimeQA.cs",
+      "baseSHA256": "d3a09d92663048b0b8e00e92e3f96a31e8fb63313e1b8aa6a6ee75c1c10a6eee",
+      "currentSHA256": "754aaa49371912f7c174386693ac456e5c6487f711dcc41fed3cf8c1a7d67a67"
+    },
+    {
+      "path": "Assets/R1/R1RunHUD.cs",
+      "baseSHA256": "e1694c6ab55590052e283d5b6ce0c39ccd64666bf99fd252833555ba71e47031",
+      "currentSHA256": "27e4304e030783a838261374f7bba3d226971ca51eea1a57c381b23f0d6e5d95"
+    },
+    {
+      "path": "Assets/R6/R6RangeHUD.cs",
+      "baseSHA256": "019ae64efa9bdc473971d5bd5bd4bae674c6b32670eacfdc21fef060bce52731",
+      "currentSHA256": "bcd9e1bd51ad79eca974bc15b10dceaedc68e0e8a4fdc74cdee5aeeeb909a33e"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/WPN001Shotgun/Runtime/ShotgunModule.cs",
+      "baseSHA256": "92048d318b0052eb1fbe70d8804135c0390cc69d4c5a06952492238cc6c00efb",
+      "currentSHA256": "eba13d52c26088b7a15519e6157a82aa55837f8b0cd7fd0751267c3618d40116"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/WPN002Railgun/Runtime/RailgunModule.cs",
+      "baseSHA256": "e243600ee6db1d69a3e12441ec56e57bb67c55e0597c98be26bb0625e09068a9",
+      "currentSHA256": "02a4197b28b67c67eee443e885c44e6a7fd45e4ac92174a5ccd7ce9d55542d0c"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/WPN004RocketLauncher/Runtime/RocketLauncher.cs",
+      "baseSHA256": "e22dcd71eb9e4200b421c7de87e326693f6a7801d446339c150e3abdad8e4160",
+      "currentSHA256": "418fb77235118ecc9f49cc984705256589705d1e5096b46631b126ceb0753ac1"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs",
+      "baseSHA256": "a29f35e4f169bcc309c7fd68ebb7da5ce7c5a1ccb78405d4a656dcb1e1c158bb",
+      "currentSHA256": "85aab17e6d8da46ccfa06b00d81a382e359591cb983aa658b15f10d9290ede84"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/WPN006EMP/Runtime/EmpEmitter.cs",
+      "baseSHA256": "14f5da078c03424a98bb1e3101153667457b0339755c53e184a9fc273b6df301",
+      "currentSHA256": "f7c8baf7d7628e059a2f859d00b9f12865d0e18c9fd951a79aa6d0dee2e5fa71"
+    },
+    {
+      "path": "Assets/scene 1.unity",
+      "baseSHA256": "f2d5ec5c0d3481285e2a10711e539c92c8e64405b0e2585578ebcb78a209c9d5",
+      "currentSHA256": "ae7500d1f8e34ba360d7898abca4a799e2a0ab9485018b0e241f7f3e9ea0ae91"
+    }
+  ]
+}

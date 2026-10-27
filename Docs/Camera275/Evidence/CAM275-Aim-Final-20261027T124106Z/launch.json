@@ -1,0 +1,21 @@
+{
+    "method":  "Native mouse/LMB on isolated stationary canonical vehicle; actual projectile HP damage. Not human combat.",
+    "source":  "c61894a6389e43727db42a6dd58f153a496923ee",
+    "exe":  "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "pid":  35036,
+    "arguments":  [
+                      "-screen-fullscreen",
+                      "0",
+                      "-screen-width",
+                      "1920",
+                      "-screen-height",
+                      "1080",
+                      "-force-d3d11",
+                      "-logFile",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Aim-Final-20261027T124106Z\\Player.log\"",
+                      "-camera275-aim-output",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Aim-Final-20261027T124106Z\""
+                  ],
+    "startedUtc":  "2026-10-27T12:41:06.9925141Z",
+    "assemblySHA256":  "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a"
+}

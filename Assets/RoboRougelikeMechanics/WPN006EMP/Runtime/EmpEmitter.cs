@@ -41,6 +41,7 @@ namespace RoboRougelike.Mechanics.EMP
         private bool operational = true;
         private struct EmpCandidate { public EmpReceiver Receiver; public float Duration; }
         public float CooldownRemaining => cooldownTimer.Remaining;
+        public float PulseRadius => radius;
         public bool Ready => operational && isActiveAndEnabled && cooldownTimer.Ready;
         public event Action<EmpPulseReport> Pulsed;
 

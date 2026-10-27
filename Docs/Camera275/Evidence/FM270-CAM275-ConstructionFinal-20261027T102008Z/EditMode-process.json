@@ -1,0 +1,17 @@
+{
+    "exitCode":  2,
+    "finishedUtc":  "2026-10-27T10:21:22.2892439Z",
+    "source":  "405c1abff22cbb0df58d32e20babd5930a1309b9",
+    "stage":  "CAM275-ConstructionFinal",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ConstructionFinal-20261027T102008Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"Camera275ConstructionTests\""
+                  ],
+    "startedUtc":  "2026-10-27T10:20:41.5692491Z",
+    "phase":  "EditMode"
+}

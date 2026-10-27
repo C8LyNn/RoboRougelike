@@ -1,0 +1,12 @@
+[
+  {
+    "file": "camera-drive.csv",
+    "rawSHA256": "b08d30499f09349dd3ab2f69847e27b10d42008ad3ecf0cff623d78cdeefd087",
+    "bytes": 865918
+  },
+  {
+    "file": "Player.log",
+    "rawSHA256": "58360ef39271371b51c38b3427cda186fc048c56d15d4577a81c11a398142f30",
+    "bytes": 4989
+  }
+]

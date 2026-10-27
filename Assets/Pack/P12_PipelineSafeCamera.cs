@@ -11,18 +11,28 @@ namespace RogueMachine.P12PipelineSafe
     public class P12PipelineSafeCamera : MonoBehaviour
     {
         [SerializeField] Transform targetRoot,pivot;
-        [SerializeField] float distance=7.8f,minDistance=3,maxDistance=18,mouseSensitivity=.12f,minPitch=18,maxPitch=58,zoomSpeed=.015f;
+        [SerializeField] float distance=7.8f,minDistance=3,maxDistance=45,mouseSensitivity=.12f,minPitch=-5,maxPitch=58,zoomSpeed=.015f;
+        [Header("Camera follow comfort (mouse orbit remains direct)")]
+        [SerializeField,Min(.015f)] float horizontalFollowSeconds=.06f,verticalFollowSeconds=.12f,framingFollowSeconds=.22f;
+        [SerializeField,Min(.015f)] float zoomFollowSeconds=.10f;
         float yaw,pitch=18;
+        float renderedDistance,zoomVelocity;
+        bool zoomInitialized;
         bool cursorLocked=true,gameplayInputEnabled=true;
         Camera001Rig rig;
         public Transform Pivot=>pivot;
         public Transform TargetRoot=>targetRoot;
         public Camera001Rig ReceiverRig=>rig;
+        public float RequestedZoomDistance=>distance;
+        public float SmoothedZoomDistance=>renderedDistance;
         void EnsureRig()
         {
             if(rig!=null)return;
             rig=GetComponent<Camera001Rig>()??gameObject.AddComponent<Camera001Rig>();
             rig.enabled=false;rig.WorldColliderFilter=IsCameraWorld;rig.RequireFullHullFraming=true;rig.ReceiverHullBounds=StableVehicleBounds;
+            rig.ReceiverResponsiveMotion=true;
+            rig.ReceiverHorizontalDamping=horizontalFollowSeconds;rig.ReceiverVerticalDamping=verticalFollowSeconds;rig.ReceiverFramingDamping=framingFollowSeconds;
+            rig.ReceiverZoomMaximum=maxDistance;
         }
         static Bounds StableVehicleBounds(Transform root)
         {
@@ -95,15 +105,17 @@ namespace RogueMachine.P12PipelineSafe
 #endif
             if(escape&&RoboRougelike.R1.R1RunController.Instance==null){cursorLocked=!cursorLocked;ApplyCursor();}
             if(!cursorLocked)return;
-            yaw+=delta.x*mouseSensitivity;pitch=Mathf.Clamp(pitch-delta.y*mouseSensitivity,Mathf.Max(18,minPitch),maxPitch);
-            distance=Mathf.Clamp(distance-scroll*zoomSpeed,minDistance,Mathf.Max(18,maxDistance));
+            yaw+=delta.x*mouseSensitivity;pitch=Mathf.Clamp(pitch-delta.y*mouseSensitivity,minPitch,maxPitch);
+            distance=Mathf.Clamp(distance-scroll*zoomSpeed,minDistance,maxDistance);
         }
         void LateUpdate()
         {
             if(!gameplayInputEnabled||targetRoot==null||pivot==null)return;
             EnsureRig();var body=targetRoot.GetComponent<Rigidbody>();
             rig.ReceiverFollowSpeed=body!=null?body.linearVelocity.magnitude:0;
-            rig.SetOrbit(yaw,Mathf.Max(18,pitch),distance);rig.StepCamera(Time.deltaTime);
+            if(!zoomInitialized){renderedDistance=distance;zoomInitialized=true;}
+            renderedDistance=Mathf.SmoothDamp(renderedDistance,distance,ref zoomVelocity,Mathf.Max(.015f,zoomFollowSeconds),Mathf.Infinity,Time.deltaTime);
+            rig.SetOrbit(yaw,pitch,renderedDistance);rig.StepCamera(Time.deltaTime);
         }
         void ApplyCursor(){Cursor.lockState=cursorLocked?CursorLockMode.Locked:CursorLockMode.None;Cursor.visible=!cursorLocked;}
     }

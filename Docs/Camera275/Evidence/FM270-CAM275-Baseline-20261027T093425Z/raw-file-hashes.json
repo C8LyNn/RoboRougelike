@@ -1,0 +1,12 @@
+[
+  {
+    "file": "Build.log",
+    "rawSHA256": "59ae1e897268a685c8330fe31c1b799bc0d5d53b87ab4780457d0f65a541b594",
+    "bytes": 666950
+  },
+  {
+    "file": "Compile.log",
+    "rawSHA256": "e286db126530b1dbcc0ce3ec142bb07efb2612ed2d7bda5ed54fddd85d336e7c",
+    "bytes": 28287
+  }
+]

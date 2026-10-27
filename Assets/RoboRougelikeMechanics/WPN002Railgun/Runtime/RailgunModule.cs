@@ -24,6 +24,7 @@ namespace RoboRougelike.WPN002Railgun
         [SerializeField] private RailgunConfig configuration = new RailgunConfig();
         private readonly RailgunFireGate gate = new RailgunFireGate();
         public RailgunFireFailure LastFailure { get; private set; }
+        public RailgunSpec CurrentSpec => (configuration ?? new RailgunConfig()).Snapshot();
         public uint SuccessfulShots => gate.SuccessfulShots;
         public float NextReadyTime => gate.NextReadyTime;
         public bool Operational => gate.Operational;

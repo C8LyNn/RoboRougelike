@@ -4,6 +4,7 @@ namespace RoboRougelike.R1
 {
     public sealed partial class R1RunHUD
     {
+        GUIStyle aimCrossStyle,aimCaptionStyle;
         void DrawTestRange(R1RunController run)
         {
             if(run.Transitioning){Panel(new Rect(0,0,1280,720));GUI.Label(new Rect(300,300,700,80),"Przygotowanie poligonu…",title);return;}
@@ -40,10 +41,19 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(940,62,305,38),range.TrainingFireRequested?"Ostrzał WŁĄCZONY":"Ostrzał WYŁĄCZONY",body);
                 GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
             }
-            GUI.Label(new Rect(629,341,32,38),"+",heading);
+            DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
             GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM — ogień • R — reset • Esc — menu\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Tor MOV009 x≈12 • Cele na północy",small);
+        }
+        void DrawAimReticle(R1RunController run)
+        {
+            var feedback=run.Player.Controller.AimFeedback;
+            if(aimCrossStyle==null)aimCrossStyle=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
+            if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
+            aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
+            GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
+            GUI.Label(new Rect(430,382,420,48),feedback.Caption,aimCaptionStyle);
         }
         void DrawFeedback()
         {

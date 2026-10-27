@@ -1,0 +1,847 @@
+{
+    "status": "Passed",
+    "method": "Native queued LMB and mouse aim; real projectiles / P12 HP, isolated stationary clear lane. Not human play or vehicle drive.",
+    "shots": [
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.644046783447266,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 12.1962251663208,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000003238702674934757,
+                "y": 2.0797975063323976,
+                "z": -25.14218521118164
+            },
+            "direction": {
+                "x": 1.0122356997044335e-7,
+                "y": 0.020743096247315408,
+                "z": 0.9997848272323608
+            },
+            "aimPoint": {
+                "x": 0.000004113683644391131,
+                "y": 2.2591018676757814,
+                "z": -16.499998092651368
+            }
+        },
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64201545715332,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 3.3015921115875246,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000002855924776667962,
+                "y": 2.061089515686035,
+                "z": -25.141996383666993
+            },
+            "direction": {
+                "x": -7.787775757606141e-7,
+                "y": -0.0010614875936880708,
+                "z": 0.999999463558197
+            },
+            "aimPoint": {
+                "x": -0.000019449833416729234,
+                "y": 2.030686378479004,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.642398834228519,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 1.2734917402267457,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000030206720111891629,
+                "y": 2.0651440620422365,
+                "z": -25.142004013061525
+            },
+            "direction": {
+                "x": -7.816025799911586e-7,
+                "y": 0.0036643045023083688,
+                "z": 0.9999932646751404
+            },
+            "aimPoint": {
+                "x": -0.000042814379412448034,
+                "y": 2.2800278663635256,
+                "z": 33.5
+            }
+        },
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64217376708985,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 0.9856118559837341,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000003416300387470983,
+                "y": 2.060366153717041,
+                "z": -25.141998291015626
+            },
+            "direction": {
+                "x": 1.1538301691871311e-7,
+                "y": -0.0019044291693717242,
+                "z": 0.9999982118606567
+            },
+            "aimPoint": {
+                "x": 0.000014797931726207025,
+                "y": 1.872509241104126,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.582096099853516,
+            "damage": 24.0,
+            "muzzleError": 0.02797645516693592,
+            "range": 252.0,
+            "pitch": 12.919384956359864,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.4959184527397156,
+                "y": 2.082075834274292,
+                "z": -25.06577491760254
+            },
+            "direction": {
+                "x": -0.057784490287303928,
+                "y": 0.02144976519048214,
+                "z": 0.998098611831665
+            },
+            "aimPoint": {
+                "x": 0.0000063897987274685878,
+                "y": 2.266159772872925,
+                "z": -16.499996185302736
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.56913185119629,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 3.453850269317627,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5325543880462647,
+                "y": 2.06149959564209,
+                "z": -25.064159393310548
+            },
+            "direction": {
+                "x": -0.01864062063395977,
+                "y": -0.0005349183338694274,
+                "z": 0.9998261332511902
+            },
+            "aimPoint": {
+                "x": 0.000008062119377427734,
+                "y": 2.046217441558838,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.56692123413086,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.3662971258163453,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5413508415222168,
+                "y": 2.065333604812622,
+                "z": -25.06404685974121
+            },
+            "direction": {
+                "x": -0.009243111126124859,
+                "y": 0.0035612983629107477,
+                "z": 0.9999509453773499
+            },
+            "aimPoint": {
+                "x": 0.000010445796760905068,
+                "y": 2.2739078998565676,
+                "z": 33.5
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.56566619873047,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.0244507789611817,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5448302626609802,
+                "y": 2.06040096282959,
+                "z": -25.064016342163087
+            },
+            "direction": {
+                "x": -0.005526864435523748,
+                "y": -0.0017091307090595365,
+                "z": 0.9999832510948181
+            },
+            "aimPoint": {
+                "x": 0.00007117228233255446,
+                "y": 1.891939401626587,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.35855770111084,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 14.714515686035157,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000007308840395126026,
+                "y": 2.0885303020477297,
+                "z": -24.85630989074707
+            },
+            "direction": {
+                "x": -3.100246104281723e-8,
+                "y": 0.023189155384898187,
+                "z": 0.9997311234474182
+            },
+            "aimPoint": {
+                "x": 0.000007049704436212778,
+                "y": 2.282358169555664,
+                "z": -16.5
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.359296798706056,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 2.9088950157165529,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000004748528226627968,
+                "y": 2.079099178314209,
+                "z": -24.856124877929689
+            },
+            "direction": {
+                "x": 6.921268891346699e-7,
+                "y": 0.014946830458939076,
+                "z": 0.9998883008956909
+            },
+            "aimPoint": {
+                "x": 0.000024376755391131155,
+                "y": 2.502980947494507,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.35638427734375,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.580464482307434,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000007979341717145871,
+                "y": 2.066098928451538,
+                "z": -24.856027603149415
+            },
+            "direction": {
+                "x": 7.471025469385495e-7,
+                "y": 0.003584702266380191,
+                "z": 0.9999935626983643
+            },
+            "aimPoint": {
+                "x": 0.00005157755367690697,
+                "y": 2.2752890586853029,
+                "z": 33.49998474121094
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.36072540283203,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.6284700632095338,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000003149850272166077,
+                "y": 2.05083966255188,
+                "z": -24.856050491333009
+            },
+            "direction": {
+                "x": 1.9784064875238983e-7,
+                "y": -0.009755536913871766,
+                "z": 0.9999524354934692
+            },
+            "aimPoint": {
+                "x": 0.000022609596271649934,
+                "y": 1.091278076171875,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.65997314453125,
+            "damage": 72.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 12.29219913482666,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5004243850708008,
+                "y": 2.0798680782318117,
+                "z": -25.143617630004884
+            },
+            "direction": {
+                "x": -0.057785287499427798,
+                "y": 0.020824914798140527,
+                "z": 0.9981117844581604
+            },
+            "aimPoint": {
+                "x": 0.000005380588845582679,
+                "y": 2.260211229324341,
+                "z": -16.499996185302736
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.647159576416017,
+            "damage": 18.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 3.3218090534210207,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5340055823326111,
+                "y": 2.061154365539551,
+                "z": -25.142173767089845
+            },
+            "direction": {
+                "x": -0.01864069141447544,
+                "y": -0.0009861047146841884,
+                "z": 0.9998257756233215
+            },
+            "aimPoint": {
+                "x": 0.0000028198951440572275,
+                "y": 2.032905340194702,
+                "z": 3.4999942779541017
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • poza zasięgiem",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64490509033203,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 1.287330985069275,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5420999526977539,
+                "y": 2.0650949478149416,
+                "z": -25.14198112487793
+            },
+            "direction": {
+                "x": -0.009243489243090153,
+                "y": 0.00362803740426898,
+                "z": 0.9999507069587708
+            },
+            "aimPoint": {
+                "x": 0.000016502843209309503,
+                "y": 2.2778608798980715,
+                "z": 33.500030517578128
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • poza zasięgiem",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64369201660156,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 0.9905905723571777,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5452620387077332,
+                "y": 2.060392379760742,
+                "z": -25.142011642456056
+            },
+            "direction": {
+                "x": -0.005526811815798283,
+                "y": -0.0018741036765277386,
+                "z": 0.9999829530715942
+            },
+            "aimPoint": {
+                "x": 0.00007701462163822725,
+                "y": 1.8755238056182862,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.644047737121582,
+            "damage": 62.7724609375,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 12.194544792175293,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000013451328868541169,
+                "y": 2.0798158645629885,
+                "z": -25.142160415649415
+            },
+            "direction": {
+                "x": 1.3309154667240365e-7,
+                "y": 0.020767532289028169,
+                "z": 0.9997843503952026
+            },
+            "aimPoint": {
+                "x": 0.000002495582521078177,
+                "y": 2.259331464767456,
+                "z": -16.499977111816408
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64201545715332,
+            "damage": 57.572265625,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 3.301708698272705,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000032255027235805757,
+                "y": 2.0610885620117189,
+                "z": -25.141996383666993
+            },
+            "direction": {
+                "x": -7.875160008552484e-7,
+                "y": -0.0010623281123116613,
+                "z": 0.999999463558197
+            },
+            "aimPoint": {
+                "x": -0.000019330538634676486,
+                "y": 2.0306615829467775,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64239501953125,
+            "damage": 49.7724609375,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 1.275030493736267,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000013603087154478999,
+                "y": 2.065121650695801,
+                "z": -25.142004013061525
+            },
+            "direction": {
+                "x": 1.1795323473506869e-7,
+                "y": 0.003638544585555792,
+                "z": 0.9999933838844299
+            },
+            "aimPoint": {
+                "x": 0.000008277365850517526,
+                "y": 2.2784945964813234,
+                "z": 33.500003814697269
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64218139648438,
+            "damage": 39.3720703125,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 0.9855319261550903,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000017485738226241666,
+                "y": 2.060368537902832,
+                "z": -25.142004013061525
+            },
+            "direction": {
+                "x": 6.993667511778767e-7,
+                "y": -0.0019026033114641905,
+                "z": 0.9999982118606567
+            },
+            "aimPoint": {
+                "x": 0.00007073561573633924,
+                "y": 1.8726916313171387,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.65990161895752,
+            "damage": 5.6015625,
+            "muzzleError": 0.0,
+            "range": 16.0,
+            "pitch": 12.19455337524414,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5004159212112427,
+                "y": 2.0797882080078127,
+                "z": -25.143564224243165
+            },
+            "direction": {
+                "x": -0.05778481811285019,
+                "y": 0.020726403221488,
+                "z": 0.9981138706207275
+            },
+            "aimPoint": {
+                "x": 0.00000515534566147835,
+                "y": 2.259276866912842,
+                "z": -16.499996185302736
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • poza zasięgiem",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64714241027832,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 16.0,
+            "pitch": 3.3016672134399416,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5340090394020081,
+                "y": 2.061089038848877,
+                "z": -25.142147064208986
+            },
+            "direction": {
+                "x": -0.018641596660017968,
+                "y": -0.0010620546527206898,
+                "z": 0.999825656414032
+            },
+            "aimPoint": {
+                "x": -0.000019449838873697445,
+                "y": 2.0306642055511476,
+                "z": 3.500001907348633
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • poza zasięgiem",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.644935607910159,
+            "damage": 0.0,
+            "muzzleError": 0.01978234015405178,
+            "range": 16.0,
+            "pitch": 1.2749974727630616,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.54207444190979,
+                "y": 2.0651235580444338,
+                "z": -25.142032623291017
+            },
+            "direction": {
+                "x": -0.009243151172995568,
+                "y": 0.0036395268980413677,
+                "z": 0.999950647354126
+            },
+            "aimPoint": {
+                "x": 0.000010435816875542514,
+                "y": 2.2785632610321047,
+                "z": 33.50000762939453
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • poza zasięgiem",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.6436996459961,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 16.0,
+            "pitch": 0.9855777025222778,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5452619194984436,
+                "y": 2.0603671073913576,
+                "z": -25.142011642456056
+            },
+            "direction": {
+                "x": -0.005526758264750242,
+                "y": -0.0019033591961488128,
+                "z": 0.9999828934669495
+            },
+            "aimPoint": {
+                "x": 0.0000821567009552382,
+                "y": 1.8726128339767457,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.64405632019043,
+            "damage": 59.681640625,
+            "muzzleError": 0.0,
+            "range": 163.60000610351563,
+            "pitch": 12.194611549377442,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000004775829893333139,
+                "y": 2.079812526702881,
+                "z": -25.142192840576173
+            },
+            "direction": {
+                "x": -8.345664355147164e-7,
+                "y": 0.02076176553964615,
+                "z": 0.9997844696044922
+            },
+            "aimPoint": {
+                "x": -0.000002438208866806235,
+                "y": 2.2592782974243166,
+                "z": -16.5
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64201545715332,
+            "damage": 59.681640625,
+            "muzzleError": 0.0,
+            "range": 163.60000610351563,
+            "pitch": 3.3016974925994875,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000005380511993280379,
+                "y": 2.0610885620117189,
+                "z": -25.141996383666993
+            },
+            "direction": {
+                "x": 6.631022415604093e-7,
+                "y": -0.001062352443113923,
+                "z": 0.999999463558197
+            },
+            "aimPoint": {
+                "x": 0.000024373093765461817,
+                "y": 2.03066086769104,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64239501953125,
+            "damage": 59.681640625,
+            "muzzleError": 0.01978234015405178,
+            "range": 163.60000610351563,
+            "pitch": 1.2751892805099488,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": -0.000002107926320604747,
+                "y": 2.0651168823242189,
+                "z": -25.141996383666993
+            },
+            "direction": {
+                "x": 7.459198627657315e-7,
+                "y": 0.003635130589827895,
+                "z": 0.9999933838844299
+            },
+            "aimPoint": {
+                "x": 0.00004163459379924461,
+                "y": 2.278289794921875,
+                "z": 33.50000762939453
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64217376708985,
+            "damage": 59.681640625,
+            "muzzleError": 0.0,
+            "range": 163.60000610351563,
+            "pitch": 0.9855874180793762,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000035423176996118856,
+                "y": 2.0603668689727785,
+                "z": -25.142005920410158
+            },
+            "direction": {
+                "x": 7.859281936362095e-7,
+                "y": -0.001904280623421073,
+                "z": 0.9999982118606567
+            },
+            "aimPoint": {
+                "x": 0.00008106797758955508,
+                "y": 1.8725244998931885,
+                "z": 73.49999237060547
+            }
+        }
+    ],
+    "errors": []
+}

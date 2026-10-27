@@ -13322,7 +13322,7 @@ MonoBehaviour:
   pivot: {fileID: 1535048780}
   distance: 7.8
   minDistance: 3
-  maxDistance: 12
+  maxDistance: 45
   mouseSensitivity: 0.12
   minPitch: -5
   maxPitch: 58

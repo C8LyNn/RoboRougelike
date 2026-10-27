@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T10:16:49.1570135Z",
+    "source":  "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "stage":  "CAM275-ReceiverGreen",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T10:16:27.6649445Z",
+    "phase":  "Build"
+}

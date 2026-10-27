@@ -1,0 +1,31 @@
+{
+    "status": "Failed",
+    "vehicle": "Heavy",
+    "startedUtc": "2026-10-27T12:54:13.2020647Z",
+    "finishedUtc": "2026-10-27T12:56:43.2289903Z",
+    "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+    "fps": 120,
+    "width": 1280,
+    "height": 720,
+    "frames": 17938,
+    "groundedFrames": 17919,
+    "ownRayHits": 0,
+    "worldOverlaps": 0,
+    "resets": 5,
+    "distance": 25.735952377319337,
+    "peakAngularStep": 0.0,
+    "peakLinearStep": 0.04601175710558891,
+    "phases": [
+        "waiting",
+        "garage",
+        "stationary",
+        "flat-acceleration",
+        "braking",
+        "sharp-turn",
+        "low-steps"
+    ],
+    "errors": [
+        "System.TimeoutException: Drive fixture phase 3 target 2\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 ",
+        "Insufficient real drive/contact evidence"
+    ]
+}

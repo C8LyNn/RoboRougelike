@@ -1,0 +1,4829 @@
+[
+  {
+    "method": "Native mouse/LMB on isolated stationary canonical vehicle; actual projectile HP damage. Not human combat.",
+    "source": "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Candidate2\\RoboRougelike.exe",
+    "pid": 38692,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      "1920",
+      "-screen-height",
+      "1080",
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Aim-Candidate2-20261027T101835Z\\Player.log\"",
+      "-camera275-aim-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Aim-Candidate2-20261027T101835Z\""
+    ],
+    "startedUtc": "2026-10-27T10:18:35.5807535Z",
+    "assemblySHA256": "2e2ad86728567ceb23a7857da3bf61db555d6491cb776fcb68816407331d781f",
+    "screenshots": [
+      {
+        "file": "Automatic-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          28.869303144290125,
+          37.79812644675926,
+          41.17039110725309
+        ],
+        "nonBlack": true,
+        "sha256": "ff42d007342c5885c3d603b983cc2b88a81bda0984abdcfb55133894f3cdbae9"
+      },
+      {
+        "file": "Basic-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          29.12836226851852,
+          37.82668547453704,
+          41.213084008487655
+        ],
+        "nonBlack": true,
+        "sha256": "d0f97d6439b1f8e6329878e8feea87701cee112e1e3227c889395beec96bcfbd"
+      },
+      {
+        "file": "Heavy-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          29.18232880015432,
+          37.51599633487654,
+          41.19116415895062
+        ],
+        "nonBlack": true,
+        "sha256": "d47f2e386881353cd29909d8f4baa0814d74d348e35c980563c5ed9f737055c7"
+      }
+    ],
+    "process": {
+      "exitCode": 1,
+      "finishedUtc": "2026-10-27T10:19:31.0477734Z",
+      "source": "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+      "pid": 38692,
+      "startedUtc": "2026-10-27T10:18:35.5807535Z",
+      "exitHex": "0x00000001"
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "method": "Native queued LMB and mouse aim; real projectiles / P12 HP, isolated stationary clear lane. Not human play or vehicle drive.",
+        "shots": [
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.65994930267334,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 12.196343421936035,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5004244446754456,
+              "y": 2.079770803451538,
+              "z": -25.143613815307617
+            },
+            "direction": {
+              "x": -0.05778557434678078,
+              "y": 0.020711839199066162,
+              "z": 0.9981141686439514
+            },
+            "aimPoint": {
+              "x": 4.289044227334671e-06,
+              "y": 2.259134292602539,
+              "z": -16.499996185302734
+            }
+          },
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.642017364501953,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 3.301745653152466,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.0772434911341406e-06,
+              "y": 2.0610876083374023,
+              "z": -25.141998291015625
+            },
+            "direction": {
+              "x": -7.823277883289848e-07,
+              "y": -0.0010637666564434767,
+              "z": 0.999999463558197
+            },
+            "aimPoint": {
+              "x": -1.9330200302647427e-05,
+              "y": 2.0306193828582764,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64493942260742,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 1.2750036716461182,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5420714616775513,
+              "y": 2.0651228427886963,
+              "z": -25.142038345336914
+            },
+            "direction": {
+              "x": -0.00924401730298996,
+              "y": 0.003639530623331666,
+              "z": 0.999950647354126
+            },
+            "aimPoint": {
+              "x": -4.329158764448948e-05,
+              "y": 2.2785630226135254,
+              "z": 33.500003814697266
+            }
+          },
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64217376708984,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 0.9855660796165466,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 5.004524609830696e-06,
+              "y": 2.0603671073913574,
+              "z": -25.141992568969727
+            },
+            "direction": {
+              "x": 1.0858620669296215e-07,
+              "y": -0.0019031736301258206,
+              "z": 0.9999982118606567
+            },
+            "aimPoint": {
+              "x": 1.5715702829766087e-05,
+              "y": 1.872633934020996,
+              "z": 73.50000762939453
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.582097053527832,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 12.919280052185059,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.49591681361198425,
+              "y": 2.0820794105529785,
+              "z": -25.065773010253906
+            },
+            "direction": {
+              "x": -0.0577843151986599,
+              "y": 0.021452341228723526,
+              "z": 0.9980985522270203
+            },
+            "aimPoint": {
+              "x": 6.268340257520322e-06,
+              "y": 2.266185760498047,
+              "z": -16.4999942779541
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.56400489807129,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 3.4550392627716064,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 1.8352333199800341e-06,
+              "y": 2.0614829063415527,
+              "z": -25.063997268676758
+            },
+            "direction": {
+              "x": -7.743878427390882e-07,
+              "y": -0.0005524522857740521,
+              "z": 0.9999998211860657
+            },
+            "aimPoint": {
+              "x": -2.0284376660129055e-05,
+              "y": 2.0457029342651367,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.566959381103516,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.3663347959518433,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5413632988929749,
+              "y": 2.065338134765625,
+              "z": -25.064117431640625
+            },
+            "direction": {
+              "x": -0.009243260137736797,
+              "y": 0.003561668796464801,
+              "z": 0.9999509453773499
+            },
+            "aimPoint": {
+              "x": 1.3783671420242172e-05,
+              "y": 2.2739341259002686,
+              "z": 33.499969482421875
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.56414794921875,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.0239965915679932,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 5.300822977005737e-06,
+              "y": 2.060407876968384,
+              "z": -25.064002990722656
+            },
+            "direction": {
+              "x": 6.700766448375362e-07,
+              "y": -0.001700795372016728,
+              "z": 0.9999985694885254
+            },
+            "aimPoint": {
+              "x": 7.134635234251618e-05,
+              "y": 1.8927704095840454,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.374459266662598,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 14.714574813842773,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.48390281200408936,
+              "y": 2.0884833335876465,
+              "z": -24.85821533203125
+            },
+            "direction": {
+              "x": -0.057782284915447235,
+              "y": 0.0231498870998621,
+              "z": 0.9980607628822327
+            },
+            "aimPoint": {
+              "x": 7.526236004196107e-06,
+              "y": 2.282351016998291,
+              "z": -16.499996185302734
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.359281539916992,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 2.911188840866089,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 4.158105639362475e-06,
+              "y": 2.0790600776672363,
+              "z": -24.856130599975586
+            },
+            "direction": {
+              "x": 7.025652166703367e-07,
+              "y": 0.01491252426058054,
+              "z": 0.9998887777328491
+            },
+            "aimPoint": {
+              "x": 2.4082346499199048e-05,
+              "y": 2.5019686222076416,
+              "z": 3.499998092651367
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.35893249511719,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.5805575847625732,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5394421219825745,
+              "y": 2.0660974979400635,
+              "z": -24.856077194213867
+            },
+            "direction": {
+              "x": -0.009242543950676918,
+              "y": 0.0035844368394464254,
+              "z": 0.9999508857727051
+            },
+            "aimPoint": {
+              "x": 5.716993473470211e-05,
+              "y": 2.2752814292907715,
+              "z": 33.49998474121094
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.36072540283203,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.6284128427505493,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": -2.4571804715378676e-06,
+              "y": 2.05083966255188,
+              "z": -24.856035232543945
+            },
+            "direction": {
+              "x": 2.2079686345932714e-07,
+              "y": -0.009753799997270107,
+              "z": 0.9999524354934692
+            },
+            "aimPoint": {
+              "x": 1.9260556655353867e-05,
+              "y": 1.0914490222930908,
+              "z": 73.50001525878906
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.659963607788086,
+            "damage": 72.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 12.292228698730469,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5004187822341919,
+              "y": 2.079871892929077,
+              "z": -25.143606185913086
+            },
+            "direction": {
+              "x": -0.05778490751981735,
+              "y": 0.020825006067752838,
+              "z": 0.9981118440628052
+            },
+            "aimPoint": {
+              "x": 3.5359685170988087e-06,
+              "y": 2.2602157592773438,
+              "z": -16.4999942779541
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64202117919922,
+            "damage": 18.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 3.322187900543213,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 4.365996119304327e-06,
+              "y": 2.0611519813537598,
+              "z": -25.142009735107422
+            },
+            "direction": {
+              "x": -8.439773182544741e-07,
+              "y": -0.0009922004537656903,
+              "z": 0.9999995231628418
+            },
+            "aimPoint": {
+              "x": -1.980722117878031e-05,
+              "y": 2.032733678817749,
+              "z": 3.499998092651367
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Shotgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Shotgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "direction": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "aimPoint": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Aim-Candidate2-20261027T101835Z"
+  },
+  {
+    "method": "Native mouse/LMB on isolated stationary canonical vehicle; actual projectile HP damage. Not human combat.",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "pid": 35036,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      "1920",
+      "-screen-height",
+      "1080",
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Aim-Final-20261027T124106Z\\Player.log\"",
+      "-camera275-aim-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Aim-Final-20261027T124106Z\""
+    ],
+    "startedUtc": "2026-10-27T12:41:06.9925141Z",
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "screenshots": [
+      {
+        "file": "Automatic-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          28.866750578703705,
+          37.79736014660494,
+          41.16603829089506
+        ],
+        "nonBlack": true,
+        "sha256": "e8025f053e20477bd9fcb219b5bb64a5281def41d496e15e6d926e0eaefaa44f"
+      },
+      {
+        "file": "Basic-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          29.125681423611113,
+          37.8257065007716,
+          41.212045717592595
+        ],
+        "nonBlack": true,
+        "sha256": "3b207ed4e792fb8ce242af4af82f0ef44f61c1cc342625c0326b7cf3d5db52b6"
+      },
+      {
+        "file": "BeamCutter-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          28.899132908950616,
+          38.01382571373457,
+          41.49909481095679
+        ],
+        "nonBlack": true,
+        "sha256": "843c12a24768ea38e2a27eb9739360659d0526772624d8617eb3de3580415e69"
+      },
+      {
+        "file": "Heavy-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          29.17990210262346,
+          37.515241608796295,
+          41.19044367283951
+        ],
+        "nonBlack": true,
+        "sha256": "acf45c8c5dd1d172d0c654a56bba17b8dada580f1c73f340c526871cdfdabccc"
+      },
+      {
+        "file": "Railgun-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          28.862293595679013,
+          37.884700520833334,
+          41.49748167438272
+        ],
+        "nonBlack": true,
+        "sha256": "7f0452abbe7158b120378806491dcb15335147be9c814caf051075ab224fadff"
+      },
+      {
+        "file": "RocketLauncher-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          29.188663194444445,
+          37.86186824845679,
+          41.21656491126543
+        ],
+        "nonBlack": true,
+        "sha256": "2fff6d2e39a1715627a08db90fb35aabb89cdd8195befeb340752aec66d5f500"
+      },
+      {
+        "file": "Shotgun-100m.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          29.221681616512345,
+          37.726313175154324,
+          41.17456114969136
+        ],
+        "nonBlack": true,
+        "sha256": "3ae55d4f6b68cabd7ed74435b176907f38c233123f436d1e34259a272af78542"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T12:42:52.8756196Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "pid": 35036,
+      "startedUtc": "2026-10-27T12:41:06.9925141Z",
+      "exitHex": "0x00000000"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued LMB and mouse aim; real projectiles / P12 HP, isolated stationary clear lane. Not human play or vehicle drive.",
+        "shots": [
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.644046783447266,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 12.1962251663208,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.238702674934757e-06,
+              "y": 2.0797975063323975,
+              "z": -25.14218521118164
+            },
+            "direction": {
+              "x": 1.0122356997044335e-07,
+              "y": 0.020743096247315407,
+              "z": 0.9997848272323608
+            },
+            "aimPoint": {
+              "x": 4.113683644391131e-06,
+              "y": 2.2591018676757812,
+              "z": -16.499998092651367
+            }
+          },
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64201545715332,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 3.3015921115875244,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 2.855924776667962e-06,
+              "y": 2.061089515686035,
+              "z": -25.141996383666992
+            },
+            "direction": {
+              "x": -7.787775757606141e-07,
+              "y": -0.0010614875936880708,
+              "z": 0.999999463558197
+            },
+            "aimPoint": {
+              "x": -1.9449833416729234e-05,
+              "y": 2.030686378479004,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.642398834228516,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 1.2734917402267456,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.0206720111891627e-06,
+              "y": 2.0651440620422363,
+              "z": -25.142004013061523
+            },
+            "direction": {
+              "x": -7.816025799911586e-07,
+              "y": 0.0036643045023083687,
+              "z": 0.9999932646751404
+            },
+            "aimPoint": {
+              "x": -4.2814379412448034e-05,
+              "y": 2.2800278663635254,
+              "z": 33.5
+            }
+          },
+          {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64217376708984,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 0.9856118559837341,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.416300387470983e-06,
+              "y": 2.060366153717041,
+              "z": -25.141998291015625
+            },
+            "direction": {
+              "x": 1.1538301691871311e-07,
+              "y": -0.0019044291693717241,
+              "z": 0.9999982118606567
+            },
+            "aimPoint": {
+              "x": 1.4797931726207025e-05,
+              "y": 1.872509241104126,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.582096099853516,
+            "damage": 24.0,
+            "muzzleError": 0.02797645516693592,
+            "range": 252.0,
+            "pitch": 12.919384956359863,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.4959184527397156,
+              "y": 2.082075834274292,
+              "z": -25.06577491760254
+            },
+            "direction": {
+              "x": -0.057784490287303925,
+              "y": 0.02144976519048214,
+              "z": 0.998098611831665
+            },
+            "aimPoint": {
+              "x": 6.3897987274685875e-06,
+              "y": 2.266159772872925,
+              "z": -16.499996185302734
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.56913185119629,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 3.453850269317627,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5325543880462646,
+              "y": 2.06149959564209,
+              "z": -25.064159393310547
+            },
+            "direction": {
+              "x": -0.01864062063395977,
+              "y": -0.0005349183338694274,
+              "z": 0.9998261332511902
+            },
+            "aimPoint": {
+              "x": 8.062119377427734e-06,
+              "y": 2.046217441558838,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.56692123413086,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.3662971258163452,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5413508415222168,
+              "y": 2.065333604812622,
+              "z": -25.06404685974121
+            },
+            "direction": {
+              "x": -0.009243111126124859,
+              "y": 0.0035612983629107475,
+              "z": 0.9999509453773499
+            },
+            "aimPoint": {
+              "x": 1.0445796760905068e-05,
+              "y": 2.2739078998565674,
+              "z": 33.5
+            }
+          },
+          {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.56566619873047,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.0244507789611816,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5448302626609802,
+              "y": 2.06040096282959,
+              "z": -25.064016342163086
+            },
+            "direction": {
+              "x": -0.005526864435523748,
+              "y": -0.0017091307090595365,
+              "z": 0.9999832510948181
+            },
+            "aimPoint": {
+              "x": 7.117228233255446e-05,
+              "y": 1.891939401626587,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.35855770111084,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 14.714515686035156,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 7.308840395126026e-06,
+              "y": 2.0885303020477295,
+              "z": -24.85630989074707
+            },
+            "direction": {
+              "x": -3.100246104281723e-08,
+              "y": 0.023189155384898186,
+              "z": 0.9997311234474182
+            },
+            "aimPoint": {
+              "x": 7.049704436212778e-06,
+              "y": 2.282358169555664,
+              "z": -16.5
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.359296798706055,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 2.9088950157165527,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 4.748528226627968e-06,
+              "y": 2.079099178314209,
+              "z": -24.856124877929688
+            },
+            "direction": {
+              "x": 6.921268891346699e-07,
+              "y": 0.014946830458939075,
+              "z": 0.9998883008956909
+            },
+            "aimPoint": {
+              "x": 2.4376755391131155e-05,
+              "y": 2.502980947494507,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.35638427734375,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.580464482307434,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 7.979341717145871e-06,
+              "y": 2.066098928451538,
+              "z": -24.856027603149414
+            },
+            "direction": {
+              "x": 7.471025469385495e-07,
+              "y": 0.003584702266380191,
+              "z": 0.9999935626983643
+            },
+            "aimPoint": {
+              "x": 5.157755367690697e-05,
+              "y": 2.2752890586853027,
+              "z": 33.49998474121094
+            }
+          },
+          {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.36072540283203,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.6284700632095337,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.149850272166077e-06,
+              "y": 2.05083966255188,
+              "z": -24.856050491333008
+            },
+            "direction": {
+              "x": 1.9784064875238982e-07,
+              "y": -0.009755536913871765,
+              "z": 0.9999524354934692
+            },
+            "aimPoint": {
+              "x": 2.2609596271649934e-05,
+              "y": 1.091278076171875,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.65997314453125,
+            "damage": 72.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 12.29219913482666,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5004243850708008,
+              "y": 2.0798680782318115,
+              "z": -25.143617630004883
+            },
+            "direction": {
+              "x": -0.057785287499427795,
+              "y": 0.020824914798140526,
+              "z": 0.9981117844581604
+            },
+            "aimPoint": {
+              "x": 5.380588845582679e-06,
+              "y": 2.260211229324341,
+              "z": -16.499996185302734
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.647159576416016,
+            "damage": 18.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 3.3218090534210205,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5340055823326111,
+              "y": 2.061154365539551,
+              "z": -25.142173767089844
+            },
+            "direction": {
+              "x": -0.01864069141447544,
+              "y": -0.0009861047146841884,
+              "z": 0.9998257756233215
+            },
+            "aimPoint": {
+              "x": 2.8198951440572273e-06,
+              "y": 2.032905340194702,
+              "z": 3.4999942779541016
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 poza zasi\u0119giem",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64490509033203,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 1.287330985069275,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5420999526977539,
+              "y": 2.0650949478149414,
+              "z": -25.14198112487793
+            },
+            "direction": {
+              "x": -0.009243489243090153,
+              "y": 0.00362803740426898,
+              "z": 0.9999507069587708
+            },
+            "aimPoint": {
+              "x": 1.6502843209309503e-05,
+              "y": 2.2778608798980713,
+              "z": 33.500030517578125
+            }
+          },
+          {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 poza zasi\u0119giem",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64369201660156,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 0.9905905723571777,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5452620387077332,
+              "y": 2.060392379760742,
+              "z": -25.142011642456055
+            },
+            "direction": {
+              "x": -0.005526811815798283,
+              "y": -0.0018741036765277386,
+              "z": 0.9999829530715942
+            },
+            "aimPoint": {
+              "x": 7.701462163822725e-05,
+              "y": 1.8755238056182861,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.644047737121582,
+            "damage": 62.7724609375,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 12.194544792175293,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 1.3451328868541168e-06,
+              "y": 2.0798158645629883,
+              "z": -25.142160415649414
+            },
+            "direction": {
+              "x": 1.3309154667240364e-07,
+              "y": 0.020767532289028168,
+              "z": 0.9997843503952026
+            },
+            "aimPoint": {
+              "x": 2.495582521078177e-06,
+              "y": 2.259331464767456,
+              "z": -16.499977111816406
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64201545715332,
+            "damage": 57.572265625,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 3.301708698272705,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.2255027235805755e-06,
+              "y": 2.0610885620117188,
+              "z": -25.141996383666992
+            },
+            "direction": {
+              "x": -7.875160008552484e-07,
+              "y": -0.0010623281123116612,
+              "z": 0.999999463558197
+            },
+            "aimPoint": {
+              "x": -1.9330538634676486e-05,
+              "y": 2.0306615829467773,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64239501953125,
+            "damage": 49.7724609375,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 1.275030493736267,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 1.3603087154478999e-06,
+              "y": 2.065121650695801,
+              "z": -25.142004013061523
+            },
+            "direction": {
+              "x": 1.1795323473506869e-07,
+              "y": 0.003638544585555792,
+              "z": 0.9999933838844299
+            },
+            "aimPoint": {
+              "x": 8.277365850517526e-06,
+              "y": 2.2784945964813232,
+              "z": 33.500003814697266
+            }
+          },
+          {
+            "weapon": "Railgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64218139648438,
+            "damage": 39.3720703125,
+            "muzzleError": 0.0,
+            "range": 120.0,
+            "pitch": 0.9855319261550903,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 1.7485738226241665e-06,
+              "y": 2.060368537902832,
+              "z": -25.142004013061523
+            },
+            "direction": {
+              "x": 6.993667511778767e-07,
+              "y": -0.0019026033114641905,
+              "z": 0.9999982118606567
+            },
+            "aimPoint": {
+              "x": 7.073561573633924e-05,
+              "y": 1.8726916313171387,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.65990161895752,
+            "damage": 5.6015625,
+            "muzzleError": 0.0,
+            "range": 16.0,
+            "pitch": 12.19455337524414,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5004159212112427,
+              "y": 2.0797882080078125,
+              "z": -25.143564224243164
+            },
+            "direction": {
+              "x": -0.05778481811285019,
+              "y": 0.020726403221488,
+              "z": 0.9981138706207275
+            },
+            "aimPoint": {
+              "x": 5.15534566147835e-06,
+              "y": 2.259276866912842,
+              "z": -16.499996185302734
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 poza zasi\u0119giem",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64714241027832,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 16.0,
+            "pitch": 3.3016672134399414,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5340090394020081,
+              "y": 2.061089038848877,
+              "z": -25.142147064208984
+            },
+            "direction": {
+              "x": -0.018641596660017967,
+              "y": -0.0010620546527206898,
+              "z": 0.999825656414032
+            },
+            "aimPoint": {
+              "x": -1.9449838873697445e-05,
+              "y": 2.0306642055511475,
+              "z": 3.500001907348633
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 poza zasi\u0119giem",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.644935607910156,
+            "damage": 0.0,
+            "muzzleError": 0.01978234015405178,
+            "range": 16.0,
+            "pitch": 1.2749974727630615,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.54207444190979,
+              "y": 2.0651235580444336,
+              "z": -25.142032623291016
+            },
+            "direction": {
+              "x": -0.009243151172995567,
+              "y": 0.0036395268980413675,
+              "z": 0.999950647354126
+            },
+            "aimPoint": {
+              "x": 1.0435816875542514e-05,
+              "y": 2.2785632610321045,
+              "z": 33.50000762939453
+            }
+          },
+          {
+            "weapon": "BeamCutter",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 poza zasi\u0119giem",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.6436996459961,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 16.0,
+            "pitch": 0.9855777025222778,
+            "expectedHit": false,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 0.5452619194984436,
+              "y": 2.0603671073913574,
+              "z": -25.142011642456055
+            },
+            "direction": {
+              "x": -0.005526758264750242,
+              "y": -0.0019033591961488128,
+              "z": 0.9999828934669495
+            },
+            "aimPoint": {
+              "x": 8.21567009552382e-05,
+              "y": 1.8726128339767456,
+              "z": 73.5
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m \u2022 tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.64405632019043,
+            "damage": 59.681640625,
+            "muzzleError": 0.0,
+            "range": 163.60000610351562,
+            "pitch": 12.194611549377441,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 4.775829893333139e-06,
+              "y": 2.079812526702881,
+              "z": -25.142192840576172
+            },
+            "direction": {
+              "x": -8.345664355147164e-07,
+              "y": 0.02076176553964615,
+              "z": 0.9997844696044922
+            },
+            "aimPoint": {
+              "x": -2.438208866806235e-06,
+              "y": 2.2592782974243164,
+              "z": -16.5
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m \u2022 tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64201545715332,
+            "damage": 59.681640625,
+            "muzzleError": 0.0,
+            "range": 163.60000610351562,
+            "pitch": 3.3016974925994873,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 5.380511993280379e-06,
+              "y": 2.0610885620117188,
+              "z": -25.141996383666992
+            },
+            "direction": {
+              "x": 6.631022415604093e-07,
+              "y": -0.001062352443113923,
+              "z": 0.999999463558197
+            },
+            "aimPoint": {
+              "x": 2.4373093765461817e-05,
+              "y": 2.03066086769104,
+              "z": 3.5000038146972656
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m \u2022 tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64239501953125,
+            "damage": 59.681640625,
+            "muzzleError": 0.01978234015405178,
+            "range": 163.60000610351562,
+            "pitch": 1.2751892805099487,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": -2.107926320604747e-06,
+              "y": 2.0651168823242188,
+              "z": -25.141996383666992
+            },
+            "direction": {
+              "x": 7.459198627657315e-07,
+              "y": 0.003635130589827895,
+              "z": 0.9999933838844299
+            },
+            "aimPoint": {
+              "x": 4.163459379924461e-05,
+              "y": 2.278289794921875,
+              "z": 33.50000762939453
+            }
+          },
+          {
+            "weapon": "RocketLauncher",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m \u2022 tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64217376708984,
+            "damage": 59.681640625,
+            "muzzleError": 0.0,
+            "range": 163.60000610351562,
+            "pitch": 0.9855874180793762,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+              "x": 3.5423176996118855e-06,
+              "y": 2.0603668689727783,
+              "z": -25.142005920410156
+            },
+            "direction": {
+              "x": 7.859281936362095e-07,
+              "y": -0.001904280623421073,
+              "z": 0.9999982118606567
+            },
+            "aimPoint": {
+              "x": 8.106797758955508e-05,
+              "y": 1.8725244998931885,
+              "z": 73.49999237060547
+            }
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Aim-Final-20261027T124106Z"
+  },
+  {
+    "pid": 52604,
+    "height": 720,
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Baseline\\RoboRougelike.exe",
+    "source": "5c17227a3e14928653eb4c7ebbed270a5747c9bf",
+    "fps": 60,
+    "width": 1280,
+    "stage": "Baseline",
+    "assemblySHA256": "f46e78833ba1529006abe4b306e3855468d854eade8b054d4ceda1999cc37b7f",
+    "vehicle": "Standard",
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Baseline-Standard-60-20261027T093632Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Baseline-Standard-60-20261027T093632Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      60
+    ],
+    "startedUtc": "2026-10-27T09:36:32.5952389Z",
+    "screenshots": [],
+    "process": {
+      "finishedUtc": "2026-10-27T09:39:09.0131277Z",
+      "startedUtc": "2026-10-27T09:36:32.5952389Z",
+      "exitHex": "0x00000001",
+      "source": "5c17227a3e14928653eb4c7ebbed270a5747c9bf",
+      "exitCode": 1,
+      "pid": 52604
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T09:36:38.3134323Z",
+        "finishedUtc": "2026-10-27T09:39:08.3443368Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1280,
+        "height": 720,
+        "frames": 8970,
+        "groundedFrames": 8883,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 73.36985778808594,
+        "peakAngularStep": 0.2272818237543106,
+        "peakLinearStep": 0.1814960539340973,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "turn"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 5\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <de80ff3949a94efa9c41a99956eed676>:0 "
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Baseline-Standard-60-20261027T093632Z"
+  },
+  {
+    "source": "aa81912aa18f2a90116fb13c71a39876d5493127",
+    "startedUtc": "2026-10-27T09:53:52.8429688Z",
+    "vehicle": "Heavy",
+    "height": 1080,
+    "stage": "Baseline2",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Baseline2\\RoboRougelike.exe",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Baseline2-Heavy-60-20261027T095352Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Baseline2-Heavy-60-20261027T095352Z\"",
+      "-camera275-vehicle",
+      "Heavy",
+      "-camera275-fps",
+      60
+    ],
+    "fps": 60,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "pid": 64016,
+    "assemblySHA256": "8b50834dc807398018f13a8a1d8d424e0d364636ab06c33b9b5cdca0b82be741",
+    "width": 1920,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          38.388831983024694,
+          47.5439347029321,
+          51.242242959104935
+        ],
+        "nonBlack": true,
+        "sha256": "e8d4b4385eee231602ff2d31026b4826ad23d6f9f320240a86bc26a2180386f9"
+      }
+    ],
+    "process": {
+      "exitHex": "0x00000000",
+      "pid": 64016,
+      "exitCode": 0,
+      "startedUtc": "2026-10-27T09:53:52.8429688Z",
+      "finishedUtc": "2026-10-27T09:54:32.0352827Z",
+      "source": "aa81912aa18f2a90116fb13c71a39876d5493127"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Heavy",
+        "startedUtc": "2026-10-27T09:53:56.1914602Z",
+        "finishedUtc": "2026-10-27T09:54:31.3447266Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 2076,
+        "groundedFrames": 2063,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 62.71194076538086,
+        "peakAngularStep": 0.6317980885505676,
+        "peakLinearStep": 0.2029823660850525,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Baseline2-Heavy-60-20261027T095352Z"
+  },
+  {
+    "assemblySHA256": "8b50834dc807398018f13a8a1d8d424e0d364636ab06c33b9b5cdca0b82be741",
+    "startedUtc": "2026-10-27T09:46:25.8325575Z",
+    "pid": 60872,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Baseline2-Standard-60-20261027T094625Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Baseline2-Standard-60-20261027T094625Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      60
+    ],
+    "source": "aa81912aa18f2a90116fb13c71a39876d5493127",
+    "height": 720,
+    "width": 1280,
+    "stage": "Baseline2",
+    "fps": 60,
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Baseline2\\RoboRougelike.exe",
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "vehicle": "Standard",
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          37.736982421875,
+          45.747421875,
+          48.177190755208336
+        ],
+        "nonBlack": true,
+        "sha256": "09d091d125684c46fd034c69f4f5832284d0afebd91d223fda400493a61690ad"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T09:46:25.8325575Z",
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T09:47:09.7696084Z",
+      "exitHex": "0x00000000",
+      "pid": 60872,
+      "source": "aa81912aa18f2a90116fb13c71a39876d5493127"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T09:46:31.9462454Z",
+        "finishedUtc": "2026-10-27T09:47:09.0839453Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1280,
+        "height": 720,
+        "frames": 2193,
+        "groundedFrames": 1838,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 79.19873809814453,
+        "peakAngularStep": 0.7981890439987183,
+        "peakLinearStep": 0.2428266406059265,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Baseline2-Standard-60-20261027T094625Z"
+  },
+  {
+    "source": "814525e6829ae046b170a1f961fe6f343d33a852",
+    "startedUtc": "2026-10-27T09:54:32.0606394Z",
+    "vehicle": "Standard",
+    "height": 720,
+    "stage": "Candidate1",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Candidate1\\RoboRougelike.exe",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Candidate1-Standard-60-20261027T095432Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Candidate1-Standard-60-20261027T095432Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      60
+    ],
+    "fps": 60,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "pid": 56960,
+    "assemblySHA256": "f964966bd8a6c2fa705d4791ed9b3afbf9e79edb89b2e08a40a7edd341727f82",
+    "width": 1280,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          35.65070095486111,
+          42.40464084201389,
+          47.050456814236114
+        ],
+        "nonBlack": true,
+        "sha256": "d707a0253aa48a136e77cc416923b15d8b4752c063df5c6027f2eae61420f61e"
+      }
+    ],
+    "process": {
+      "exitHex": "0x00000000",
+      "pid": 56960,
+      "exitCode": 0,
+      "startedUtc": "2026-10-27T09:54:32.0606394Z",
+      "finishedUtc": "2026-10-27T09:55:32.9664984Z",
+      "source": "814525e6829ae046b170a1f961fe6f343d33a852"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T09:54:37.8792560Z",
+        "finishedUtc": "2026-10-27T09:55:32.2935455Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1280,
+        "height": 720,
+        "frames": 3231,
+        "groundedFrames": 3155,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 65.74883270263672,
+        "peakAngularStep": 0.8108364343643188,
+        "peakLinearStep": 0.6064490675926208,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Candidate1-Standard-60-20261027T095432Z"
+  },
+  {
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "height": 1080,
+    "vehicle": "Standard",
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "startedUtc": "2026-10-27T13:12:07.6639768Z",
+    "width": 1920,
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "fps": 60,
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      60
+    ],
+    "pid": 55192,
+    "stage": "ExtractedRetest",
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          35.584774305555555,
+          42.99103877314815,
+          47.572703028549384
+        ],
+        "nonBlack": true,
+        "sha256": "1edf21e70a9bf8ab027dd21c07c9918082443d076b5a797f7161482f377df76a"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:12:42.6730492Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "pid": 55192,
+      "startedUtc": "2026-10-27T13:12:07.6639768Z",
+      "exitHex": "0x00000000"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T13:12:10.9937661Z",
+        "finishedUtc": "2026-10-27T13:12:41.9936834Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 1830,
+        "groundedFrames": 1722,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 59.543540954589844,
+        "peakAngularStep": 0.6829932928085327,
+        "peakLinearStep": 0.535133957862854,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-ExtractedRetest-Standard-60-20261027T131207Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-120-20261027T125409Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-120-20261027T125409Z\"",
+      "-camera275-vehicle",
+      "Heavy",
+      "-camera275-fps",
+      120
+    ],
+    "startedUtc": "2026-10-27T12:54:09.9328116Z",
+    "vehicle": "Heavy",
+    "fps": 120,
+    "pid": 56372,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T12:54:09.9328116Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:56:43.8931036Z",
+      "pid": 56372
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Heavy",
+        "startedUtc": "2026-10-27T12:54:13.2020647Z",
+        "finishedUtc": "2026-10-27T12:56:43.2289903Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 120,
+        "width": 1280,
+        "height": 720,
+        "frames": 17938,
+        "groundedFrames": 17919,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 25.735952377319336,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.04601175710558891,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 2\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 ",
+          "Insufficient real drive/contact evidence"
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Heavy-120-20261027T125409Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-30-20261027T125019Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-30-20261027T125019Z\"",
+      "-camera275-vehicle",
+      "Heavy",
+      "-camera275-fps",
+      30
+    ],
+    "startedUtc": "2026-10-27T12:50:19.4706354Z",
+    "vehicle": "Heavy",
+    "fps": 30,
+    "pid": 22196,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          35.59439995659722,
+          42.953968098958335,
+          47.548382161458335
+        ],
+        "nonBlack": true,
+        "sha256": "806b3578efebbf9d6cc872774041d747727b14de9c75d9a61f1ebb3a82e4b704"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:50:19.4706354Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:51:35.9267686Z",
+      "pid": 22196
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Heavy",
+        "startedUtc": "2026-10-27T12:50:22.7276837Z",
+        "finishedUtc": "2026-10-27T12:51:35.2169080Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "frames": 2158,
+        "groundedFrames": 2152,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 61.94425964355469,
+        "peakAngularStep": 1.292991280555725,
+        "peakLinearStep": 0.9872323870658875,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Heavy-30-20261027T125019Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1920,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 1080,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-60-20261027T125135Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-60-20261027T125135Z\"",
+      "-camera275-vehicle",
+      "Heavy",
+      "-camera275-fps",
+      60
+    ],
+    "startedUtc": "2026-10-27T12:51:35.9434205Z",
+    "vehicle": "Heavy",
+    "fps": 60,
+    "pid": 24092,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T12:51:35.9434205Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:54:09.9149843Z",
+      "pid": 24092
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Heavy",
+        "startedUtc": "2026-10-27T12:51:39.2065919Z",
+        "finishedUtc": "2026-10-27T12:54:09.2470006Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 8969,
+        "groundedFrames": 8949,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 38.89427947998047,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.09196862578392029,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 3\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 "
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Heavy-60-20261027T125135Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Light-120-20261027T124405Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Light-120-20261027T124405Z\"",
+      "-camera275-vehicle",
+      "Light",
+      "-camera275-fps",
+      120
+    ],
+    "startedUtc": "2026-10-27T12:44:05.1838748Z",
+    "vehicle": "Light",
+    "fps": 120,
+    "pid": 5744,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          36.567159288194446,
+          43.95391384548611,
+          49.173298611111115
+        ],
+        "nonBlack": true,
+        "sha256": "a40a20d23c53d13c79b300be0d31587906c3ac458ffde655c2cd844fc2794559"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:44:05.1838748Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:44:38.0498864Z",
+      "pid": 5744
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Light",
+        "startedUtc": "2026-10-27T12:44:08.4397648Z",
+        "finishedUtc": "2026-10-27T12:44:37.3873870Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 120,
+        "width": 1280,
+        "height": 720,
+        "frames": 3413,
+        "groundedFrames": 3167,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 78.69132995605469,
+        "peakAngularStep": 0.4545638859272003,
+        "peakLinearStep": 0.21546931564807892,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Light-120-20261027T124405Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Light-30-20261027T124253Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Light-30-20261027T124253Z\"",
+      "-camera275-vehicle",
+      "Light",
+      "-camera275-fps",
+      30
+    ],
+    "startedUtc": "2026-10-27T12:42:53.0829609Z",
+    "vehicle": "Light",
+    "fps": 30,
+    "pid": 15996,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          35.888203125,
+          42.88152994791667,
+          47.54751627604167
+        ],
+        "nonBlack": true,
+        "sha256": "1017e1e7501f14a774c3490f2140ba214f537e43384c5dc5749ab978583a5adf"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:42:53.0829609Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:43:28.5438373Z",
+      "pid": 15996
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Light",
+        "startedUtc": "2026-10-27T12:42:56.4183477Z",
+        "finishedUtc": "2026-10-27T12:43:27.8268512Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "frames": 925,
+        "groundedFrames": 859,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 84.57772064208984,
+        "peakAngularStep": 1.4110876321792603,
+        "peakLinearStep": 1.1122791767120361,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Light-30-20261027T124253Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1920,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 1080,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Light-60-20261027T124328Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Light-60-20261027T124328Z\"",
+      "-camera275-vehicle",
+      "Light",
+      "-camera275-fps",
+      60
+    ],
+    "startedUtc": "2026-10-27T12:43:28.5723664Z",
+    "vehicle": "Light",
+    "fps": 60,
+    "pid": 56664,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          35.812270447530864,
+          42.865760030864195,
+          47.522674093364195
+        ],
+        "nonBlack": true,
+        "sha256": "e274512611676ad2221dee74c74b324a4c17ec1ec1835d63b2876b376d524d6c"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:43:28.5723664Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:44:05.1666322Z",
+      "pid": 56664
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Light",
+        "startedUtc": "2026-10-27T12:43:31.8746758Z",
+        "finishedUtc": "2026-10-27T12:44:04.4712487Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 1925,
+        "groundedFrames": 1400,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 81.09867095947266,
+        "peakAngularStep": 0.6999717950820923,
+        "peakLinearStep": 0.5505805611610413,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Light-60-20261027T124328Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Standard-120-20261027T124745Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Standard-120-20261027T124745Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      120
+    ],
+    "startedUtc": "2026-10-27T12:47:45.4436446Z",
+    "vehicle": "Standard",
+    "fps": 120,
+    "pid": 47560,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T12:47:45.4436446Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:50:19.4528652Z",
+      "pid": 47560
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T12:47:48.7596684Z",
+        "finishedUtc": "2026-10-27T12:50:18.7911540Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 120,
+        "width": 1280,
+        "height": 720,
+        "frames": 17941,
+        "groundedFrames": 17924,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 56.80389404296875,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.06603559106588364,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 3\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 "
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Standard-120-20261027T124745Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Standard-30-20261027T124438Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Standard-30-20261027T124438Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      30
+    ],
+    "startedUtc": "2026-10-27T12:44:38.0709301Z",
+    "vehicle": "Standard",
+    "fps": 30,
+    "pid": 66244,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          35.800822482638885,
+          42.523946397569446,
+          47.18769097222222
+        ],
+        "nonBlack": true,
+        "sha256": "011577b8c6eabd2359da6723e492a8dc216d08be31e4e7dfa856efdae2e0bafe"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:44:38.0709301Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:45:11.4253354Z",
+      "pid": 66244
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T12:44:41.3986847Z",
+        "finishedUtc": "2026-10-27T12:45:10.7367351Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "frames": 864,
+        "groundedFrames": 844,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 61.53132247924805,
+        "peakAngularStep": 1.409422516822815,
+        "peakLinearStep": 1.085716962814331,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Standard-30-20261027T124438Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1920,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 1080,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Standard-60-20261027T124511Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Standard-60-20261027T124511Z\"",
+      "-camera275-vehicle",
+      "Standard",
+      "-camera275-fps",
+      60
+    ],
+    "startedUtc": "2026-10-27T12:45:11.4426790Z",
+    "vehicle": "Standard",
+    "fps": 60,
+    "pid": 56068,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T12:45:11.4426790Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:47:45.4227639Z",
+      "pid": 56068
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Standard",
+        "startedUtc": "2026-10-27T12:45:14.7123992Z",
+        "finishedUtc": "2026-10-27T12:47:44.7483822Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 8971,
+        "groundedFrames": 8954,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 5,
+        "distance": 27.17497444152832,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.125579833984375,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 1\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 ",
+          "Insufficient real drive/contact evidence"
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Standard-60-20261027T124511Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-120-20261027T125757Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-120-20261027T125757Z\"",
+      "-camera275-vehicle",
+      "Tall",
+      "-camera275-fps",
+      120
+    ],
+    "startedUtc": "2026-10-27T12:57:57.9477978Z",
+    "vehicle": "Tall",
+    "fps": 120,
+    "pid": 52040,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          34.740404730902775,
+          41.70925021701389,
+          45.765782335069446
+        ],
+        "nonBlack": true,
+        "sha256": "32de25a48fe4abbb825833757e853e304f7530484c0496cd7207b3d5aea9851a"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:57:57.9477978Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:58:28.4772684Z",
+      "pid": 52040
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Tall",
+        "startedUtc": "2026-10-27T12:58:01.3445049Z",
+        "finishedUtc": "2026-10-27T12:58:27.8058370Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 120,
+        "width": 1280,
+        "height": 720,
+        "frames": 3077,
+        "groundedFrames": 3034,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 9,
+        "distance": 63.41190719604492,
+        "peakAngularStep": 0.4034823775291443,
+        "peakLinearStep": 0.3072238564491272,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Tall-120-20261027T125757Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-30-20261027T125643Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-30-20261027T125643Z\"",
+      "-camera275-vehicle",
+      "Tall",
+      "-camera275-fps",
+      30
+    ],
+    "startedUtc": "2026-10-27T12:56:43.9094308Z",
+    "vehicle": "Tall",
+    "fps": 30,
+    "pid": 18404,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          36.64133572048611,
+          43.378751085069446,
+          48.29304470486111
+        ],
+        "nonBlack": true,
+        "sha256": "342efe3a3aff6e6e8c9c8a206342da1e9535f32c5805333706c10958412bdec0"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:56:43.9094308Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:57:23.7708146Z",
+      "pid": 18404
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Tall",
+        "startedUtc": "2026-10-27T12:56:47.1795043Z",
+        "finishedUtc": "2026-10-27T12:57:23.0858369Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "frames": 1055,
+        "groundedFrames": 918,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 9,
+        "distance": 78.62467193603516,
+        "peakAngularStep": 1.438554286956787,
+        "peakLinearStep": 1.0981032848358154,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Tall-30-20261027T125643Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1920,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 1080,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-60-20261027T125723Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-60-20261027T125723Z\"",
+      "-camera275-vehicle",
+      "Tall",
+      "-camera275-fps",
+      60
+    ],
+    "startedUtc": "2026-10-27T12:57:23.7877864Z",
+    "vehicle": "Tall",
+    "fps": 60,
+    "pid": 49792,
+    "screenshots": [
+      {
+        "file": "final-drive.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          34.68315731095679,
+          41.583896604938275,
+          45.67965711805556
+        ],
+        "nonBlack": true,
+        "sha256": "e24d3260b94c067b25371740f255d9e0f17dc14c7058aaff7df24aa51910cf6f"
+      }
+    ],
+    "process": {
+      "startedUtc": "2026-10-27T12:57:23.7877864Z",
+      "exitHex": "0x00000000",
+      "exitCode": 0,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T12:57:57.9285457Z",
+      "pid": 49792
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "vehicle": "Tall",
+        "startedUtc": "2026-10-27T12:57:27.0461828Z",
+        "finishedUtc": "2026-10-27T12:57:57.2528438Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 1771,
+        "groundedFrames": 1726,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 9,
+        "distance": 67.52095794677734,
+        "peakAngularStep": 0.8289740085601807,
+        "peakLinearStep": 0.6416500806808472,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp",
+          "ramp-exit",
+          "orbit-and-max-zoom",
+          "settled"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Tall-60-20261027T125723Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Wide-120-20261027T130336Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Wide-120-20261027T130336Z\"",
+      "-camera275-vehicle",
+      "Wide",
+      "-camera275-fps",
+      120
+    ],
+    "startedUtc": "2026-10-27T13:03:36.6303838Z",
+    "vehicle": "Wide",
+    "fps": 120,
+    "pid": 64664,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T13:03:36.6303838Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T13:06:10.5917498Z",
+      "pid": 64664
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Wide",
+        "startedUtc": "2026-10-27T13:03:39.8909309Z",
+        "finishedUtc": "2026-10-27T13:06:09.9199912Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 120,
+        "width": 1280,
+        "height": 720,
+        "frames": 17891,
+        "groundedFrames": 17886,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 13,
+        "distance": 45.87785720825195,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.06019020080566406,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 3\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 "
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Wide-120-20261027T130336Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1280,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 720,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Wide-30-20261027T125828Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Wide-30-20261027T125828Z\"",
+      "-camera275-vehicle",
+      "Wide",
+      "-camera275-fps",
+      30
+    ],
+    "startedUtc": "2026-10-27T12:58:28.4944045Z",
+    "vehicle": "Wide",
+    "fps": 30,
+    "pid": 53868,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T12:58:28.4944045Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T13:01:02.5428326Z",
+      "pid": 53868
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Wide",
+        "startedUtc": "2026-10-27T12:58:31.7991859Z",
+        "finishedUtc": "2026-10-27T13:01:01.8533593Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 30,
+        "width": 1280,
+        "height": 720,
+        "frames": 4471,
+        "groundedFrames": 4442,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 13,
+        "distance": 45.651123046875,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.24076461791992188,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps",
+          "uneven-and-ramp"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 3\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 "
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Wide-30-20261027T125828Z"
+  },
+  {
+    "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+    "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "width": 1920,
+    "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+    "stage": "Final",
+    "height": 1080,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Wide-60-20261027T130102Z\\Player.log\"",
+      "-camera275-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Wide-60-20261027T130102Z\"",
+      "-camera275-vehicle",
+      "Wide",
+      "-camera275-fps",
+      60
+    ],
+    "startedUtc": "2026-10-27T13:01:02.5609379Z",
+    "vehicle": "Wide",
+    "fps": 60,
+    "pid": 61620,
+    "screenshots": [],
+    "process": {
+      "startedUtc": "2026-10-27T13:01:02.5609379Z",
+      "exitHex": "0x00000001",
+      "exitCode": 1,
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "finishedUtc": "2026-10-27T13:03:36.6144951Z",
+      "pid": 61620
+    },
+    "results": [
+      {
+        "status": "Failed",
+        "vehicle": "Wide",
+        "startedUtc": "2026-10-27T13:01:05.9319777Z",
+        "finishedUtc": "2026-10-27T13:03:35.9593043Z",
+        "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+        "fps": 60,
+        "width": 1920,
+        "height": 1080,
+        "frames": 8946,
+        "groundedFrames": 8923,
+        "ownRayHits": 0,
+        "worldOverlaps": 0,
+        "resets": 13,
+        "distance": 35.48636245727539,
+        "peakAngularStep": 0.0,
+        "peakLinearStep": 0.12030410766601562,
+        "phases": [
+          "waiting",
+          "garage",
+          "stationary",
+          "flat-acceleration",
+          "braking",
+          "sharp-turn",
+          "low-steps"
+        ],
+        "errors": [
+          "System.TimeoutException: Drive fixture phase 3 target 2\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 "
+        ]
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/CAM275-Windows-Final-Wide-60-20261027T130102Z"
+  },
+  {
+    "pid": 60184,
+    "height": 1080,
+    "vehicle": "Heavy",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Camera",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Heavy-1920-20261027T131102Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Heavy-1920-20261027T131102Z\"",
+      "-fm270-mode",
+      "Camera",
+      "-fm270-vehicle",
+      "Heavy"
+    ],
+    "requestedVehicle": "Heavy",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:02.4499648Z",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          38.58211612654321,
+          50.12690055941358,
+          53.96656539351852
+        ],
+        "nonBlack": true,
+        "sha256": "04069e18e8e0c63783476a3c87c503169921eef3dc24297d6cfb8274a27e35f7"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.95691550925926,
+          50.98593557098766,
+          57.622024980709874
+        ],
+        "nonBlack": true,
+        "sha256": "e3263d61926b2433cc7e487f0100bd235bf008fafb72f13ad85afb68de7c81af"
+      },
+      {
+        "file": "02-explicit-part-detachment.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.61672164351852,
+          52.47841435185185,
+          60.074409239969135
+        ],
+        "nonBlack": true,
+        "sha256": "b008c3452bfd3724eca6eef144fd32a08afe7494f9a68503c9e6a19ea9a59516"
+      },
+      {
+        "file": "03-camera-final.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          48.02232301311729,
+          54.90869212962963,
+          61.898598572530865
+        ],
+        "nonBlack": true,
+        "sha256": "ea294ea210968ee663bfaf40da69fa5deccf434a7d7fb536e01af63690089ee5"
+      },
+      {
+        "file": "camera-120.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.27024739583333,
+          54.314858217592594,
+          59.585785108024695
+        ],
+        "nonBlack": true,
+        "sha256": "3a449989eaed49ec5bd348ff399ca5559ca5ddf05ffaa1d90324569661a5e396"
+      },
+      {
+        "file": "camera-240.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.42261043595679,
+          64.86762876157407,
+          75.70940248842592
+        ],
+        "nonBlack": true,
+        "sha256": "cec77205c56cc11de89add0b6b2ac0b328c2db8cd0bf9efb5b5212e1fbd7f949"
+      },
+      {
+        "file": "camera-360.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.53982349537037,
+          58.24863136574074,
+          66.60894097222223
+        ],
+        "nonBlack": true,
+        "sha256": "87db98125677b522a11880473123d98efc15d728863052651b2caa26ae417ff5"
+      },
+      {
+        "file": "camera-480.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.788557581018516,
+          53.41980902777778,
+          61.6208984375
+        ],
+        "nonBlack": true,
+        "sha256": "1ab4a1e9b16c362ec1086b1086d3623e328fb5cf87cd83c8389600b2c0ed4e85"
+      },
+      {
+        "file": "camera-600.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.88997444058642,
+          54.08431857638889,
+          60.784052854938274
+        ],
+        "nonBlack": true,
+        "sha256": "d7d31757d6068d42e2cbb2e82b96f72de0b2630d47c2c94e6fd466ea3ca3830a"
+      },
+      {
+        "file": "camera-720.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.2366333912037,
+          55.935264274691356,
+          62.63792341820988
+        ],
+        "nonBlack": true,
+        "sha256": "7d5590909176a4438945c30838a24b6c3de9bb263d0770ddb06b8b42c2b1a1e6"
+      },
+      {
+        "file": "camera-840.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          46.65358699845679,
+          53.081321855709874,
+          58.467122395833336
+        ],
+        "nonBlack": true,
+        "sha256": "06e562e028d2708ee93859a23275849576b70abd44ee11914cf06a60d01cf904"
+      },
+      {
+        "file": "camera-960.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          48.02322868441358,
+          54.90926793981482,
+          61.89790461033951
+        ],
+        "nonBlack": true,
+        "sha256": "15ae89ed7614973db322b2de8f3a50411d781a1004890d5f421d78e48a3368e1"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:11:24.1560726Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:02.4499648Z",
+      "vehicle": "Heavy",
+      "mode": "Camera"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Camera",
+        "vehicle": "Heavy",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T13:11:05.3571518Z",
+        "finishedUtc": "2026-10-27T13:11:23.4514917Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 978,
+        "contacts": 816,
+        "maxContacts": 12,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 43,
+        "completed": 0,
+        "detachedParts": 1,
+        "enemyShots": 0,
+        "maxAliveEnemies": 0,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 0,
+        "continuousSpeedViolations": 0,
+        "distance": 20.58592414855957,
+        "peakAimError": 7.616281509399414,
+        "settledAimError": 0.0,
+        "peakCameraStep": 5.74437952041626,
+        "peakFrameMs": 34.01620864868164,
+        "meanFrameMs": 16.69161605834961,
+        "maxEnemyMovement": 0.0,
+        "finalPosition": {
+          "x": 0.04344458132982254,
+          "y": 0.6499785780906677,
+          "z": -5.455399513244629
+        },
+        "settledAimObserved": true,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Same garage enters actual test range",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "Zero actual own-hull reticle intersections",
+          "No actual camera/world volume overlap",
+          "Entire actual hull stays in viewport during the open-range orbit",
+          "Real owned physical shots observed",
+          "Actual R6 movement while aiming",
+          "Continuous camera motion respects its declared limit",
+          "Settled muzzle aligns after orbit stops; all transient peaks retained"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Camera-Heavy-1920-20261027T131102Z"
+  },
+  {
+    "pid": 42188,
+    "height": 1080,
+    "vehicle": "Wide",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Camera",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Wide-1920-20261027T131124Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Camera-Wide-1920-20261027T131124Z\"",
+      "-fm270-mode",
+      "Camera",
+      "-fm270-vehicle",
+      "Wide"
+    ],
+    "requestedVehicle": "Wide",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:24.6120191Z",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.374494116512345,
+          48.880759066358024,
+          52.070525655864195
+        ],
+        "nonBlack": true,
+        "sha256": "d7b7865a8a90ead4c21fc234225d2831eb3c07c82facafec0d1efbb48ed94d58"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          41.231684027777774,
+          53.69308786651234,
+          60.64653501157407
+        ],
+        "nonBlack": true,
+        "sha256": "5935a56d8441ef47a82e3c6b537bb99833abf65834ff43b0168f3081fe62cfa3"
+      },
+      {
+        "file": "02-explicit-part-detachment.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.50505449459877,
+          50.789030671296295,
+          57.072446469907405
+        ],
+        "nonBlack": true,
+        "sha256": "7d8cb19c6c11ceef2a613c086991e4fc026c01ba5ca6cd475280e391872ada91"
+      },
+      {
+        "file": "03-camera-final.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.426127507716046,
+          50.29979263117284,
+          52.99534481095679
+        ],
+        "nonBlack": true,
+        "sha256": "3685419cfeacb032893d5efd599c46ed3ea09fe530c82d63fe847a38f3286ca9"
+      },
+      {
+        "file": "camera-120.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          44.76222945601852,
+          55.385776909722225,
+          61.72112895447531
+        ],
+        "nonBlack": true,
+        "sha256": "09a5ec2d5b47b1fe7926d72f1e60157872365ef8f97b908a5a179474331018d7"
+      },
+      {
+        "file": "camera-240.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.89914978780864,
+          60.600556037808644,
+          69.25483362268518
+        ],
+        "nonBlack": true,
+        "sha256": "23838dff904add7acd917b4d2d8b1efbdb08e4c15cd2c1630222787821eb6126"
+      },
+      {
+        "file": "camera-360.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          49.49389708719136,
+          55.649538966049384,
+          62.18452835648148
+        ],
+        "nonBlack": true,
+        "sha256": "fd0cc8d47c88d27debf413512f35d912ea8f551ebbfbace16432c79fe45b5210"
+      },
+      {
+        "file": "camera-480.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.44210792824074,
+          51.01491512345679,
+          57.235326485339506
+        ],
+        "nonBlack": true,
+        "sha256": "ff5c6542b9a31886c6ed7debf476da6719f1aa367d93635d3352bc64453225c5"
+      },
+      {
+        "file": "camera-600.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.47285976080247,
+          51.90856819058642,
+          57.38573398919753
+        ],
+        "nonBlack": true,
+        "sha256": "5ba1e593d993c32d2968dd9c68ea958f404d5db4f20cbc333f9a9514ff1ba10d"
+      },
+      {
+        "file": "camera-720.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.57957272376543,
+          48.31054976851852,
+          49.193676215277776
+        ],
+        "nonBlack": true,
+        "sha256": "cb62d62e4f2dd9a91fa3c750f321c2176499633ab9f9810033d7efac39d67ed0"
+      },
+      {
+        "file": "camera-840.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          43.16797453703704,
+          50.13054205246914,
+          53.3045172646605
+        ],
+        "nonBlack": true,
+        "sha256": "7a522f3817ff8ae840d0445f2ed64bd25d86467814504274341e87afc22b522b"
+      },
+      {
+        "file": "camera-960.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.43163242669753,
+          50.30322868441358,
+          52.99492862654321
+        ],
+        "nonBlack": true,
+        "sha256": "bbea608b8415786b5d9e650e89a4ac35e4b29fe1cfe0b78959478f62fd9f9107"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:11:46.2359587Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:24.6120191Z",
+      "vehicle": "Wide",
+      "mode": "Camera"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Camera",
+        "vehicle": "Wide",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T13:11:27.3744248Z",
+        "finishedUtc": "2026-10-27T13:11:45.5424816Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 979,
+        "contacts": 816,
+        "maxContacts": 4,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 43,
+        "completed": 0,
+        "detachedParts": 1,
+        "enemyShots": 0,
+        "maxAliveEnemies": 0,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 0,
+        "continuousSpeedViolations": 0,
+        "distance": 35.024261474609375,
+        "peakAimError": 15.364490509033203,
+        "settledAimError": 0.0,
+        "peakCameraStep": 4.152501583099365,
+        "peakFrameMs": 31.356603622436523,
+        "meanFrameMs": 16.688871383666992,
+        "maxEnemyMovement": 0.0,
+        "finalPosition": {
+          "x": 0.04947376251220703,
+          "y": 0.6500012874603271,
+          "z": 8.984572410583496
+        },
+        "settledAimObserved": true,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Wide real structural part -1",
+          "Wide real structural part -2",
+          "Wide real structural part -3",
+          "Wide real structural part -4",
+          "Wide real structural part -5",
+          "Wide real structural part -6",
+          "Wide real structural part 1",
+          "Wide real structural part 2",
+          "Wide real structural part 3",
+          "Wide real structural part 4",
+          "Wide real structural part 5",
+          "Wide real structural part 6",
+          "Same garage enters actual test range",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "Zero actual own-hull reticle intersections",
+          "No actual camera/world volume overlap",
+          "Entire actual hull stays in viewport during the open-range orbit",
+          "Real owned physical shots observed",
+          "Actual R6 movement while aiming",
+          "Continuous camera motion respects its declared limit",
+          "Settled muzzle aligns after orbit stops; all transient peaks retained"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Camera-Wide-1920-20261027T131124Z"
+  },
+  {
+    "pid": 56116,
+    "height": 720,
+    "vehicle": "Standard",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1280,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T131146Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T131146Z\""
+    ],
+    "requestedVehicle": "Light",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:46.6786992Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          40.07701388888889,
+          50.93183159722222,
+          54.57451605902778
+        ],
+        "nonBlack": true,
+        "sha256": "58de00c7ce08d950286b312b33211709ac1a701198022bc78f674db28b6c3263"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          52.392489149305554,
+          47.53325520833334,
+          44.67966362847222
+        ],
+        "nonBlack": true,
+        "sha256": "50b2b2756c721aad348033c96e4e01a2b47293f462969f7a91e7c1f37ff6c646"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.16395073784722,
+          46.561527777777776,
+          43.35028103298611
+        ],
+        "nonBlack": true,
+        "sha256": "a9899bafe29b5a4b856c4ed283457d4fb8e55945066d24707f7f71d95636a5ad"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          18.236060112847223,
+          22.471399739583333,
+          26.753370225694443
+        ],
+        "nonBlack": true,
+        "sha256": "3758eef4d71b9545481241b9472e319edbec8192933346040d9404c0c050692b"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          50.91380099826389,
+          46.55045138888889,
+          43.54898654513889
+        ],
+        "nonBlack": true,
+        "sha256": "f93ce2213d16a4b79dc802adb0489a62005d7edd3e3a5134d649e5a1c44e386d"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:11:56.7129617Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:46.6786992Z",
+      "vehicle": "Standard",
+      "mode": "Input"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T13:11:49.4400253Z",
+        "finishedUtc": "2026-10-27T13:11:56.0377863Z",
+        "width": 1280,
+        "height": 720,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.621429443359375,
+        "turnedDegrees": 50.025550842285156,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,026",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Input-Standard-1280-20261027T131146Z"
+  },
+  {
+    "pid": 15720,
+    "height": 1080,
+    "vehicle": "Standard",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T131157Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T131157Z\""
+    ],
+    "requestedVehicle": "Light",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:11:57.1868030Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.382280092592595,
+          51.278256172839505,
+          54.922472993827164
+        ],
+        "nonBlack": true,
+        "sha256": "176e12fe0583307a72de9088c70e2c966d4b6ecec463ebb3a120234b95d6d15b"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.33838927469136,
+          47.47525896990741,
+          44.626237461419755
+        ],
+        "nonBlack": true,
+        "sha256": "b490e0e87b2e6791d5f3e2f2eb7077b09f6b631efcd4e9283d89263c625e9fcd"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.174547646604935,
+          46.57125385802469,
+          43.36459731867284
+        ],
+        "nonBlack": true,
+        "sha256": "10e6ec65175d122b55bc7f767268bbbbf0a1329a46158abe1e30ef2ff2a2b011"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.320396894290123,
+          22.558233989197532,
+          26.83980324074074
+        ],
+        "nonBlack": true,
+        "sha256": "f636c9827ef9995e0e090f2ee2be1da1c7092f6003c9b6cecc96aaad21db245d"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.92831259645062,
+          46.558751929012345,
+          43.5550178433642
+        ],
+        "nonBlack": true,
+        "sha256": "25c085f14ab427049a11e2afb525ad5dc892bc53dffab53961ed5d287d3f7d75"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:12:07.2550871Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:11:57.1868030Z",
+      "vehicle": "Standard",
+      "mode": "Input"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T13:11:59.9613696Z",
+        "finishedUtc": "2026-10-27T13:12:06.5821943Z",
+        "width": 1920,
+        "height": 1080,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.62143898010254,
+        "turnedDegrees": 49.98659133911133,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "49,987",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Input-Standard-1920-20261027T131157Z"
+  },
+  {
+    "pid": 55400,
+    "height": 1080,
+    "vehicle": "Heavy",
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible": true,
+    "width": 1920,
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable": "Builds/CAM275-Final/RoboRougelike.exe",
+    "mode": "Loop",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T130611Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T130611Z\"",
+      "-fm270-mode",
+      "Loop",
+      "-fm270-vehicle",
+      "Heavy"
+    ],
+    "requestedVehicle": "Heavy",
+    "accessibilityClientAttached": false,
+    "assemblySHA256": "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc": "2026-10-27T13:06:11.0550938Z",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.10578800154321,
+          51.463534915123454,
+          55.24599971064815
+        ],
+        "nonBlack": true,
+        "sha256": "72b7f6cee0f8bbe605795431aea67b4825c4a28b34c78ad8547dd063d86073f9"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          16.0109659529321,
+          22.82744212962963,
+          26.241199363425928
+        ],
+        "nonBlack": true,
+        "sha256": "dd1c63458071a5ac7943e22c421d2172589781e9e81d8abd34245efa5df4c603"
+      },
+      {
+        "file": "01-activity-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.165392071759259,
+          14.35429976851852,
+          17.098543113425926
+        ],
+        "nonBlack": true,
+        "sha256": "00dc0ed841192e4ae8d9d3db943d5d9b4d93ce9e7eea4d0715d8aa250bae1c0b"
+      },
+      {
+        "file": "01-activity-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          30.06615547839506,
+          37.59721836419753,
+          42.99415605709876
+        ],
+        "nonBlack": true,
+        "sha256": "205fb6e444bd8ad9534c84e4fcbbdc53a566a9db899329ecd725ca8395a4e418"
+      },
+      {
+        "file": "01-activity-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          39.16391878858025,
+          51.02252700617284,
+          57.960902777777775
+        ],
+        "nonBlack": true,
+        "sha256": "d36a95b63abc63d93a8b93d42988c249e08f3de084dd0ca5f2e3f557c783505b"
+      },
+      {
+        "file": "01-activity-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          53.69076678240741,
+          46.95961516203704,
+          43.08489101080247
+        ],
+        "nonBlack": true,
+        "sha256": "5d3f7bc39e529baf71e946b1be18a3e1bf1512ad517c22fd25225986b5bdc44e"
+      },
+      {
+        "file": "01-activity-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          75.29567274305556,
+          66.31614824459876,
+          51.94049913194444
+        ],
+        "nonBlack": true,
+        "sha256": "e0dd943aca36b75053ece40a0334427a517f67a023c85508a1d4b2451d875c66"
+      },
+      {
+        "file": "02-reward-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.295930266203705,
+          24.466118827160493,
+          29.472779706790124
+        ],
+        "nonBlack": true,
+        "sha256": "5dfa579a4e150e77777a61290ccff8cb00cda73ed91cf0a0a05cf70e8e226dfe"
+      },
+      {
+        "file": "02-reward-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.29997010030864,
+          23.38666473765432,
+          28.453691165123455
+        ],
+        "nonBlack": true,
+        "sha256": "c363187b40ee1ee6ffb0625e8d5b9c84d32200b76be1cc17859be1f97545a18d"
+      },
+      {
+        "file": "02-reward-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.408668981481483,
+          23.491348861882717,
+          28.56681954089506
+        ],
+        "nonBlack": true,
+        "sha256": "c90f269f250783bb8ef4f1420a293001046074308c8b6a1a7911335ba223a6f5"
+      },
+      {
+        "file": "02-reward-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.34287856867284,
+          27.413706114969134,
+          32.45820891203704
+        ],
+        "nonBlack": true,
+        "sha256": "19b2d58a06add2d4cdd30595d0c2bd542ff3740daea0a87247c92368f23e75d7"
+      },
+      {
+        "file": "02-reward-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.174028260030862,
+          27.992210165895063,
+          32.926316550925925
+        ],
+        "nonBlack": true,
+        "sha256": "1637915c3b520f6c5bf5dee09cb4d4950b101c825f64cdb23abb7e826268469f"
+      },
+      {
+        "file": "02-reward-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.374738136574074,
+          27.985625,
+          32.50887201003086
+        ],
+        "nonBlack": true,
+        "sha256": "68f99174832806f962e59b1480895c5d0ecb6c639ffbad14d9a21ef33d0e0e44"
+      },
+      {
+        "file": "03-garage-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.06419849537037,
+          16.28056278935185,
+          21.355521797839508
+        ],
+        "nonBlack": true,
+        "sha256": "20ed93035a4ddda4ecf756a2b16c519b8d12d08f0c91fcacd43f99c222e17e47"
+      },
+      {
+        "file": "03-garage-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.879759355709876,
+          17.248721547067902,
+          22.518912037037037
+        ],
+        "nonBlack": true,
+        "sha256": "efa05310d5c5ab3f0e2efbae3911a6d577868d190cdf6cc845dbfb7d981b541e"
+      },
+      {
+        "file": "03-garage-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          12.5485440779321,
+          17.97527199074074,
+          23.35921971450617
+        ],
+        "nonBlack": true,
+        "sha256": "a14aeb1cb72e4a5caeac4d86cf67b7f58e86d576b8d9436e04932bba85343c3b"
+      },
+      {
+        "file": "03-garage-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.401458333333334,
+          18.00144434799383,
+          22.676332465277778
+        ],
+        "nonBlack": true,
+        "sha256": "e8be9ae9f7afd6c36f0c5b52e02e920ab010dcabf482d62c2ac67f43ddbaedaf"
+      },
+      {
+        "file": "03-garage-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.961345486111112,
+          19.064599729938273,
+          22.91431568287037
+        ],
+        "nonBlack": true,
+        "sha256": "37a8998f73ca0f6027398f81a5d2d2e9221c5677e329878f24c8c78b1c85a43b"
+      },
+      {
+        "file": "04-restart.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757231867283952,
+          28.349658564814813,
+          33.18136429398148
+        ],
+        "nonBlack": true,
+        "sha256": "05bd535053c6dd6c95f4f9200da9fd62a3bf32c1200af201ff60f3b53ca657fe"
+      }
+    ],
+    "process": {
+      "exitCode": 0,
+      "finishedUtc": "2026-10-27T13:09:39.7651252Z",
+      "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+      "startedUtc": "2026-10-27T13:06:11.0550938Z",
+      "vehicle": "Heavy",
+      "mode": "Loop"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Loop",
+        "vehicle": "Heavy",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T13:06:13.8406640Z",
+        "finishedUtc": "2026-10-27T13:09:39.0846576Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 12173,
+        "contacts": 10093,
+        "maxContacts": 12,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 0,
+        "completed": 6,
+        "detachedParts": 0,
+        "enemyShots": 11,
+        "maxAliveEnemies": 2,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 50,
+        "continuousSpeedViolations": 0,
+        "distance": 501.89453125,
+        "peakAimError": 0.0,
+        "settledAimError": 0.0,
+        "peakCameraStep": 0.35928934812545776,
+        "peakFrameMs": 23.95260238647461,
+        "meanFrameMs": 16.671249389648438,
+        "maxEnemyMovement": 6.15022611618042,
+        "finalPosition": {
+          "x": 3.459984554865514e-06,
+          "y": 0.6499907970428467,
+          "z": -22.0001220703125
+        },
+        "settledAimObserved": false,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Garage selects Race: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects TimeAttack: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Escape: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Survival: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Reactor: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Ordinary: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Full six-stage finale",
+          "Restart removes all activity objects"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-Windows-Loop-Heavy-1920-20261027T130611Z"
+  }
+]

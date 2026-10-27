@@ -1,0 +1,32 @@
+{
+    "status": "Passed",
+    "vehicle": "Tall",
+    "startedUtc": "2026-10-27T12:56:47.1795043Z",
+    "finishedUtc": "2026-10-27T12:57:23.0858369Z",
+    "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+    "fps": 30,
+    "width": 1280,
+    "height": 720,
+    "frames": 1055,
+    "groundedFrames": 918,
+    "ownRayHits": 0,
+    "worldOverlaps": 0,
+    "resets": 9,
+    "distance": 78.62467193603516,
+    "peakAngularStep": 1.438554286956787,
+    "peakLinearStep": 1.0981032848358155,
+    "phases": [
+        "waiting",
+        "garage",
+        "stationary",
+        "flat-acceleration",
+        "braking",
+        "sharp-turn",
+        "low-steps",
+        "uneven-and-ramp",
+        "ramp-exit",
+        "orbit-and-max-zoom",
+        "settled"
+    ],
+    "errors": []
+}

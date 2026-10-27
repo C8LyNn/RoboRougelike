@@ -1,0 +1,28 @@
+{
+    "pid":  56116,
+    "height":  720,
+    "vehicle":  "Standard",
+    "exeSHA256":  "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "visible":  true,
+    "width":  1280,
+    "source":  "c61894a6389e43727db42a6dd58f153a496923ee",
+    "executable":  "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_CAMERA275_20261027\\RoboRougelike_CAMERA275_Windows_x64\\RoboRougelike.exe",
+    "mode":  "Input",
+    "args":  [
+                 "-screen-fullscreen",
+                 "0",
+                 "-screen-width",
+                 1280,
+                 "-screen-height",
+                 720,
+                 "-force-d3d11",
+                 "-logFile",
+                 "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T131146Z\\Player.log\"",
+                 "-rc2-input-output",
+                 "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T131146Z\""
+             ],
+    "requestedVehicle":  "Light",
+    "accessibilityClientAttached":  false,
+    "assemblySHA256":  "3442A67274EE665B42E2B16E5122640CDDC6D738BB81CFF813BB9A9160DA301A",
+    "startedUtc":  "2026-10-27T13:11:46.6786992Z"
+}
