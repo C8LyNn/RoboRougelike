@@ -13,9 +13,22 @@
 
 The external script `Run-UnityNative.ps1` DOES NOT stage or edit PARTSIZE sources, never touches Codex's active checkout, does not invoke G2 and refuses a wrong SHA, missing explicit disposable marker, tracked dirty source, wrong Unity project version or missing Editor. It writes immutable input identifiers plus **actual process exit codes**, raw original NUnit `EditMode.xml`/`PlayMode.xml`, corresponding full Editor logs and SHA256 into `receipt.json` OUTSIDE the project.
 
-1. Create a **new detached disposable clone** of the repository, checkout `be2be0e4802bc3f450179901f9ae91c6d84bcb5b`, inspect it and confirm the Unity version `6000.3.14f1`. This clone is **not** the Codex worktree and is not a G0 live-target import test.
-2. In that clone only, create an empty file called `.b01-60-disposable-qa` to permit the safety gate. The licensed Editor executable must be installed on the operator machine.
-3. Run from a separate checkout of THIS read-only QA-only branch (or copy only the script, not Unity source into Codex):
+1. From an **independent authorized QA checkout**, fetch original producer commit `be2be0e4802bc3f450179901f9ae91c6d84bcb5b`, then create a genuine **linked, detached Git worktree** for this source (an ordinary detached clone, attached worktree, or Git folder with forged marker is now rejected). Do **not** create the worktree from Codex's active worktree. Example from a separate QA repository:
+
+```powershell
+git fetch --no-tags origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+git worktree add --detach "C:\QA\PartsizeDisposable" be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+New-Item -ItemType File -Path "C:\QA\PartsizeDisposable\.b01-60-disposable-qa"
+```
+
+2. Verify this is a fresh worktree with a `.git` **file**, registered in `git worktree list --porcelain` as `detached` at the exact SHA, Unity project version `6000.3.14f1`, and **no tracked edits or untracked/ignored files within Unity source roots**. Generated `Library/`, `Temp/`, `Logs/`, `obj/` and `.vs/` cache paths may exist. A used worktree with `.b01-60-disposable-qa.used` cannot run a second native session. Choose an evidence path **outside** the project (neither equal to nor within it; symlinked path components are rejected).
+3. From a separate checkout of THIS read-only QA-only branch, run the operator's **real** PowerShell preflight before any Editor launch. The `-PreflightOnly` switch does not invoke Unity or consume the worktree:
+
+```powershell
+pwsh -File "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1" -UnityEditor "C:\Program Files\Unity\Hub\Editor\6000.3.14f1\Editor\Unity.exe" -ProjectPath "C:\QA\PartsizeDisposable" -EvidenceDir "C:\QA\Evidence\Partsize_be2be0e" -PreflightOnly
+```
+
+After **B01-40 independent OPERATOR_PREFLIGHT_PASS and HQ licensed-operator authorization**, omit `-PreflightOnly` to execute real Unity.
 
 ```powershell
 pwsh -File "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1" -UnityEditor "C:\Program Files\Unity\Hub\Editor\6000.3.14f1\Editor\Unity.exe" -ProjectPath "C:\QA\PartsizeDisposable" -EvidenceDir "C:\QA\Evidence\Partsize_be2be0e"
