@@ -21,9 +21,9 @@ class RealR3HierarchyMismatchQA(unittest.TestCase):
  def test_01_real_original_hierarchy_scale(self):
   self.assertEqual(m.root_scale(self.asm),.52)
  def test_02_actual_original_git_heads(self):
-  self.assertEqual(self.report["inputCodexSourceHead"],"7cfd1276d4708395144668249223d78fb83c3b19")
+  self.assertEqual(self.report["inputCodexSourceHead"],"d44fa09c227dffca1c1f8832383bbd80430bba90")
   self.assertEqual(self.report["inputPartsizeHead"],"be2be0e4802bc3f450179901f9ae91c6d84bcb5b")
-  self.assertEqual(self.report["inputProducerSourceProxyQaHead"],"dc2b3c199e6576f757f5ff6214e41fff444f73a8")
+  self.assertEqual(self.report["inputProducerSourceProxyQaHead"],"60c91b8172229bde9b02042125a79c3ebbfe5faa")
  def test_03_all_real_seven_source_types(self):
   self.assertEqual(tuple(self.rows),m.KINDS)
  def test_04_actual_world_vs_unit_omni_vertical(self):
