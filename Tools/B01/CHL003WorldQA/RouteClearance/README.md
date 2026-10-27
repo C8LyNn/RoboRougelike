@@ -19,9 +19,17 @@ PhysX joints/contact, ramp climb, inability to pitch/roll (both rigid rigs freez
 
 ## Executable and negative tests
 ```sh
+# This B01-21-only QA PR deliberately retains an older Git base.
+# ALWAYS fetch SOURCE BY ORIGINAL B01-20 producer SHA, not the QA worktree.
+producer=077e692785aff2990a2d72a80fd1db62ac57b0e8
+git show "$producer:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" > /tmp/n27-current-demo.cs
+git show "$producer:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs" > /tmp/n27-current-gate.cs
+export B01_21_CURRENT_CHL_DEMO=/tmp/n27-current-demo.cs
+export B01_21_CURRENT_CHL_GATE=/tmp/n27-current-gate.cs
 python3 Tools/B01/CHL003WorldQA/RouteClearance/route_source_qa.py --output /tmp/N27_CHL_ORIGINAL_SOURCE_ROUTE.json
 python3 -m unittest discover -s Tools/B01/CHL003WorldQA/RouteClearance -p 'test_*.py' -v
 ```
+The CI additionally verifies Git SHA-1 for **both** extracted producer blobs before testing. Passing the tool against the older B01-21 QA worktree's default `Assets/` paths is intentionally invalid: it is not the current CHL producer source and will reject mismatched gate width.
 The tests explicitly mutate and reject: obsolete 3.5m gate, moving CP2 or Finish, ramp lowering/increased lip, shift of bridge by1m, final platform shortened, absence of real guard, and altered original source. CI **must** match original producer exact SHA and **original source Git blobs** before compiling source evidence. Emits JSON and sha256, source-only logs, no fake Unity XML.
 
 ## Receiver, dependency and rollback
