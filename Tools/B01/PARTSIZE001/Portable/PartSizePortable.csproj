@@ -8,8 +8,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../../../../Assets/B01Packages/PARTSIZE001/Runtime/PartSizeContract.cs" Link="PartSizeContract.cs" />
-    <Compile Include="../../../../Assets/B01Packages/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs" Link="PartSizeBaselineCatalog.cs" />
+    <Compile Include="../../../../Assets/PARTSIZE001/Runtime/PartSizeContract.cs" Link="PartSizeContract.cs" />
+    <Compile Include="../../../../Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs" Link="PartSizeBaselineCatalog.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 </Project>
