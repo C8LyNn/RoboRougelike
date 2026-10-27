@@ -1,0 +1,16 @@
+{
+  "name": "B01.CHL003.Demo",
+  "rootNamespace": "B01.CHL003",
+  "references": [
+    "B01.CHL003.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
