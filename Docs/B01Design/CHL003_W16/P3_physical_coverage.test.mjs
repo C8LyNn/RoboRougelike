@@ -5,11 +5,14 @@ test('original source required: no fake pass on absent git inputs',()=>{
  assert.ok(dir,'P3_ORIGINAL_DIR required');assert.equal(review(original).status,'PINNED_SOURCE_INSPECTED');
 });
 test('source includes ramp + bridge collision assertions',()=>{
- const x=review(original);assert.equal(x.verifiedBlobs,4);assert.equal(x.inputSha,PRODUCER);
+ const x=review(original);assert.equal(x.verifiedBlobs,5);assert.equal(x.inputSha,PRODUCER);
  assert.equal(x.flags.barrierAssert,false);
 });
-test('P07 has no per-tick actual support proof nor mechanical A/B dynamics comparison',()=>{
- const x=review(original);assert.equal(x.flags.wheelSupportAssert,false);
+test('W26 false-grounded-gap source fix + P15 authored but never native executed',()=>{
+ const x=review(original);assert.equal(x.flags.nearGroundSourceFix,true);
+ assert.equal(x.flags.nativeP15Authored,true);
+ assert.equal(x.findings[0].result,'SOURCE_FIXED_B0160_NEAR_GAP_NATIVE_NOT_RUN');
+ assert.equal(x.flags.wheelSupportAssert,false);
  assert.equal(x.flags.dynamicDifferenceAssert,false);
 });
 test('P14 yaw8 only checks a checkpoint, not Heavy end-to-end',()=>{

@@ -19,9 +19,9 @@ jobs:
           mkdir -p /tmp/b01-w26-original
           git fetch --no-tags --depth=1 origin 077e692785aff2990a2d72a80fd1db62ac57b0e8
           git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs > /tmp/b01-w26-original/chl_cross.cs
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs > /tmp/b01-w26-original/chl_controller.cs
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-w26-original/chl_demo.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs > /tmp/b01-w26-original/chl_cross.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs > /tmp/b01-w26-original/chl_controller.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-w26-original/chl_demo.cs
           git show be2be0e4802bc3f450179901f9ae91c6d84bcb5b:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs > /tmp/b01-w26-original/part_native.cs
           git show be2be0e4802bc3f450179901f9ae91c6d84bcb5b:Assets/PARTSIZE001/Runtime/PartSizeContract.cs > /tmp/b01-w26-original/part_contract.cs
       - name: W26 independent actual Git-blob pinned source audit and 21 acceptance policy fixtures (NOT Unity)
@@ -31,10 +31,11 @@ jobs:
       - name: Export four exact original CHL source inputs (motor, demo, PlayMode P07, telemetry)
         run: |
           mkdir -p /tmp/b01-chl-pass3
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs > /tmp/b01-chl-pass3/motor.cs
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-chl-pass3/demo.cs
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs > /tmp/b01-chl-pass3/play.cs
-          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs > /tmp/b01-chl-pass3/metrics.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs > /tmp/b01-chl-pass3/motor.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-chl-pass3/demo.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs > /tmp/b01-chl-pass3/play.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs > /tmp/b01-chl-pass3/metrics.cs
+          git show 59214ee5fed2f17672ab796a3ddc86201c888d30:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs > /tmp/b01-chl-pass3/window.cs
       - name: Pass 3 original source gameplay COVERAGE falsifiers (Unity NOT_RUN)
         env:
           P3_ORIGINAL_DIR: /tmp/b01-chl-pass3
