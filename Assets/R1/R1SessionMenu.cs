@@ -48,12 +48,17 @@ namespace RoboRougelike.R1
 
         public void RequestQuit()
         {
-            if (!PrepareShutdown("MenuOrShortcut")) return;
+            if (QuitRequested) return;
+            try { PrepareShutdown("MenuOrShortcut"); }
+            catch (System.Exception error) { Debug.LogException(error); }
+            finally
+            {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit(0);
+                Application.Quit(0);
 #endif
+            }
         }
 
         // Native X/Alt+F4 are never vetoed. No waits, process kills or recursive Quit calls.
@@ -61,11 +66,13 @@ namespace RoboRougelike.R1
         {
             if (QuitRequested) return false;
             QuitRequested = true;
-            StopAllCoroutines();
-            SetSimulation(false);
-            Time.timeScale = 1;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            try { StopAllCoroutines(); SetSimulation(false); }
+            finally
+            {
+                Time.timeScale = 1;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
             Debug.Log("[EXIT273] Shutdown prepared: " + source);
             return true;
         }
