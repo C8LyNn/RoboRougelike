@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B01-13 | Human Playtest Scoring — W58 PASS 11</title>
+<style>
+:root{font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:#e9eef8;background:#101725}
+*{box-sizing:border-box}body{margin:0}main{max-width:1100px;margin:auto;padding:24px}
+h1{font-size:1.55rem;margin:0 0 .35rem}h2{font-size:1.12rem;margin:.2rem 0 .6rem}h3{font-size:1rem;margin:.2rem 0 .6rem}
+p{margin:.4rem 0 .85rem}.muted{color:#a8b5cc}.warn{color:#ffdb9d}
+section,.task{background:#192436;border:1px solid #3a4c68;border-radius:12px;padding:16px;margin:13px 0}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+label{display:block;font-weight:600;font-size:.9rem}input,select,textarea,button{font:inherit}input:not([type=checkbox]),select,textarea{background:#0e1828;color:#e9eef8;border:1px solid #63738a;border-radius:6px;width:100%;padding:8px;margin-top:4px}
+textarea{resize:vertical;min-height:60px}input[type=checkbox]{width:18px;height:18px;vertical-align:middle;margin-right:6px}label.check{display:inline-block;margin:8px 12px 5px 0;font-weight:500}
+button{padding:9px 13px;border:1px solid #96b5d1;border-radius:7px;color:#fff;background:#294e78;cursor:pointer}
+button:hover,button:focus-visible{background:#376695;outline:2px solid #bfe2ff;outline-offset:2px}
+button.secondary{background:#263448}.buttonrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.badge{font-size:.79rem;padding:3px 8px;background:#33435d;border-radius:20px;display:inline-block}
+#feedback{padding:11px;border-radius:8px;background:#111a27;min-height:45px;white-space:pre-line}
+.error{border-left:5px solid #ff8b8b!important}.ok{border-left:5px solid #8de6aa!important}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:.85rem}th,td{text-align:left;padding:8px;border-bottom:1px solid #43516b}th{color:#c4d8f2}.scroll{overflow-x:auto}
+.task header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}.prompt{border-left:3px solid #9fbbe1;padding:8px 12px;background:#122038;font-style:italic}
+details{margin:10px 0}summary{cursor:pointer}.small{font-size:.83rem}.danger{color:#f8a5a5}
+@media(max-width:800px){.row{grid-template-columns:1fr 1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:12px}}
+@media(max-width:440px){.row,.grid{grid-template-columns:1fr}.task{padding:11px}h1{font-size:1.3rem}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>B01-13 — karta punktacji playtestu</h1>
+<p class="muted">W58–W61 / PASS 11 · offline · pięć zadań #311 · brak zapisu w chmurze i LocalStorage</p>
+<p class="warn">To jest narzędzie badawcze, nie wynik badania. <strong>TRYB SYNTHETIC</strong> nie oznacza przeprowadzenia sesji z człowiekiem. Wymagana osobna zgoda HQ na prawdziwy playtest.</p></header>
+<section aria-labelledby="session-title"><h2 id="session-title">Sesja i źródło</h2>
+<div class="row">
+<label>Tryb badania<select id="mode"><option value="SYNTHETIC">SYNTHETIC — walidacja formularza</option><option value="HUMAN_APPROVED">HUMAN_APPROVED — tylko po zgodzie HQ</option></select></label>
+<label>Identyfikator uczestnika (pseudonim)<input id="pid" placeholder="P01" autocomplete="off"></label>
+<label>Identyfikator sesji<input id="sid" placeholder="S01" autocomplete="off"></label>
+<label>SHA źródła builda (40 znaków)<input id="buildsha" value="7299dcc5fd63ac042a0ffcd97b69d02fb8744649" spellcheck="false"></label>
+<label>SHA-256 ZIP (64 znaki)<input id="zipsha" value="ec3193bb3ac24398c496ea65ad12aa653321db160a4dc74e8f618e3cc7ad6d1d" spellcheck="false"></label>
+<label>Rozdzielczość<select id="resolution"><option>1920x1080</option><option>1280x720</option><option>390x844</option><option>INNA</option></select></label>
+</div>
+<p class="muted small">SHA i ZIP z PR #310 to dane identyfikacyjne deklarowane przez producenta, nie oznaczenie niezależnego sprawdzenia pobranego pliku.</p>
+<label class="check"><input type="checkbox" id="hq">HQ zatwierdziło zakres sesji</label>
+<label class="check"><input type="checkbox" id="consent">Uczestnik świadomie wyraził zgodę</label>
+<label class="check"><input type="checkbox" id="preflight">Operator zweryfikował ZIP, odizolowane dane i uruchomienie Playera</label>
+</section>
+<div id="tasks"></div>
+<section><h2>Kontrola danych i eksport</h2>
+<p class="muted small">Czas: sekundy od przeczytania zadania do wyniku. Próba: nowa celowa sekwencja działań. Błędy: pomyłki operacyjne lub błędna interpretacja. Zrozumienie: 0 = brak, 1 = częściowe, 2 = mechanizm i konsekwencja. Podpowiedzi: 0–2. W razie wycofania zgody przerwij sesję i nie przechowuj danych niezgodnie z zgodą.</p>
+<div class="buttonrow"><button type="button" id="validate">Waliduj aktualną sesję</button><button type="button" id="save">Dodaj sesję do pamięci</button><button type="button" id="export">Eksportuj CSV</button><button type="button" id="clear" class="secondary">Wyczyść pamięć sesji</button></div>
+<div id="feedback" role="status" aria-live="polite">Brak danych badania.</div>
+<div class="scroll"><table id="summary"><thead><tr><th>Zadanie</th><th>Ważne nieblokowane</th><th>Bez pomocy</th><th>Po pomocy</th><th>FAIL</th><th>Produkt zablokował</th><th>Setup/withdrawn</th><th>Mediana czasu bez pomocy</th></tr></thead><tbody></tbody></table></div>
+<p class="small muted">Przedstawione sumy obejmują wyłącznie rekordy zapisane w pamięci bieżącej karty. Sesji SYNTHETIC i HUMAN_APPROVED nie należy łączyć w analizie rzeczywistych uczestników.</p>
+</section>
+<footer class="muted small">B01-13 · #311, #313 · QA-only, bez zmian Unity/Codexa. CSV rozdzielany przecinkami, wartości escapowane; bez automatycznej synchronizacji.</footer>
+</main>
+<script>
+'use strict';
+const TASKS = [
+ {id:'HPT-T01',label:'Grupy broni',cap:240,fixture:'T01_TWO_HEALTHY_TYPES',prompt:'Na tym poligonie sprawdź, jakie działania bojowe są dostępne. Użyj każdego z nich osobno i opisz, co je uruchamia.',obs:'Dwie sprawne i niezależnie sterowane rodziny uzbrojenia, własny cel poligonu, bez instrukcji LPM/PPM. Po resecie obserwuj użycie obu grup i skutek strzału.'},
+ {id:'HPT-T02',label:'Odkrycie MOV009',cap:240,fixture:'T02_SUSPENSION_HEALTHY',prompt:'Znajdź ustawienia, które zmieniają zachowanie pojazdu na nierównościach. Zmień jedną opcję i powiedz, jaki skutek przewidujesz oraz jaki widzisz.',obs:'Sprawny moduł Suspension, obsługiwany napęd, bez otwartego panelu ustawień. Oddzielnie dokumentuj wybrany tryb i rzeczywiście aktywny efekt.'},
+ {id:'HPT-T03',label:'Krytyczne ostrzeżenia',cap:180,fixture:'T03_NO_GUN_NO_DRIVE',prompt:'Oceń, czy ten pojazd jest gotowy do wyjazdu. Wymień wszystkie zauważone przeszkody.',obs:'Brak działającej broni i mobilności jednocześnie; zwykłe podpowiedzi OFF. Nie ujawniaj nazw braków. Przy znanym D03 ukryty powód kwalifikuj PRODUCT_BLOCKED, nie błąd człowieka.'},
+ {id:'HPT-T04',label:'Edytor i jazda próbna',cap:480,fixture:'T04_EMPTY_ISOLATED_MAP',prompt:'Przygotuj krótką trasę z jedną przeszkodą. Zapisz ją pod nową nazwą, spróbuj przejazdu i wróć do edycji.',obs:'Czysta izolowana mapa z możliwymi Spawn i Finish, sprawny jeżdżący robot, nazwa HPT_<pid>_<sid>, brak konfliktu nazw i nieużywane konto. Brak realnego inventory/save.'},
+ {id:'HPT-T05',label:'Odrzucone umieszczenie',cap:240,fixture:'T05_ONE_INVALID_ONE_VALID',prompt:'Spróbuj umieścić wskazany element w oznaczonym miejscu, a następnie w innym dopuszczalnym miejscu. Opowiedz, na podstawie czego zdecydowałeś, gdzie go umieścić.',obs:'Presety z jedną pewną kolizją/wyjściem poza mapę i jednym poprawnym miejscem. D05 ghost vs footprint to ryzyko produktu; moderator przed sesją potwierdza rzeczywisty układ.'}
+];
+const OUTCOMES=['NOT_RUN','UNAIDED_SUCCESS','ASSISTED_SUCCESS','FAIL','PRODUCT_BLOCKED','BLOCKED_SETUP','WITHDRAWN'];
+const saved=[];
+const el=(id)=>document.getElementById(id);
+const esc=(s)=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function row(t){return `<article class="task" id="${t.id}"><header><h2>${esc(t.id)} — ${esc(t.label)}</h2><span class="badge">limit ${Math.floor(t.cap/60)} min</span></header>
+<p class="prompt">${esc(t.prompt)}</p><details><summary>Informacje tylko dla moderatora</summary><p>${esc(t.obs)}</p></details>
+<div class="grid"><label>Wynik<select data-field="outcome">${OUTCOMES.map(o=>`<option>${o}</option>`).join('')}</select></label>
+<label>Czas (sekundy)<input data-field="duration_seconds" type="number" min="0" max="3600" placeholder="np. 83"></label>
+<label>Próby<input data-field="attempts" type="number" min="0" max="99" placeholder="np. 2"></label>
+<label>Błędy<input data-field="errors" type="number" min="0" max="99" placeholder="np. 1"></label>
+<label>Podpowiedzi<input data-field="help_count" type="number" min="0" max="2" placeholder="np. 0"></label>
+<label>Zrozumienie<select data-field="comprehension_0_2"><option value="">Nieocenione</option><option value="0">0 — brak</option><option value="1">1 — częściowe</option><option value="2">2 — skutek i mechanizm</option></select></label>
+<label>Fixture<input data-field="fixture_id" value="${esc(t.fixture)}"></label>
+<label>Tag produktu / przyczyna<input data-field="incident" placeholder="np. D03 / konkretny powód"></label>
+<label style="grid-column:1/-1">Notatka obserwacji (bez PII)<textarea data-field="note" placeholder="Opis zachowania, bez imion, kontaktów i nagrań"></textarea></label></div></article>`}
+el('tasks').innerHTML=TASKS.map(row).join('');
+function val(id){return el(id).value.trim()}
+function intField(raw,max=3600){if(!/^(0|[1-9]\d*)$/.test(raw))return null;const n=Number(raw);return Number.isSafeInteger(n)&&n<=max?n:null}
+function gather(){return {mode:val('mode'),pid:val('pid'),sid:val('sid'),buildsha:val('buildsha'),zipsha:val('zipsha'),resolution:val('resolution'),hq:el('hq').checked,consent:el('consent').checked,preflight:el('preflight').checked, tasks:TASKS.map(t=>{const a=el(t.id);let get=k=>a.querySelector('[data-field="'+k+'"]').value.trim();return {task_id:t.id,cap:t.cap,outcome:get('outcome'),duration_seconds:get('duration_seconds'),attempts:get('attempts'),errors:get('errors'),help_count:get('help_count'),comprehension_0_2:get('comprehension_0_2'),fixture_id:get('fixture_id'),incident:get('incident'),note:get('note')}})}}
+function validateRecord(r){const issues=[];if(!['SYNTHETIC','HUMAN_APPROVED'].includes(r.mode))issues.push('Niedozwolony tryb');
+if(!/^P\d{2,4}$/.test(r.pid))issues.push('Uczestnik: pseudonim P01…P9999');
+if(!/^S\d{2,4}$/.test(r.sid))issues.push('Sesja: identyfikator S01…S9999');
+if(!/^[0-9a-f]{40}$/i.test(r.buildsha))issues.push('Build SHA musi zawierać 40 znaków HEX');
+if(!/^[0-9a-f]{64}$/i.test(r.zipsha))issues.push('ZIP SHA256 musi zawierać 64 znaki HEX');
+if(r.mode==='HUMAN_APPROVED' && (!r.hq||!r.consent||!r.preflight))issues.push('Badanie z ludźmi wymaga zgody HQ, zgody uczestnika oraz zweryfikowanego, odizolowanego builda');
+if(!Array.isArray(r.tasks)||r.tasks.length!==5||r.tasks.some((t,i)=>t.task_id!==TASKS[i].id))issues.push('Niekompletna lub przestawiona lista pięciu zadań');
+let withdrawn=false;for(const [i,t] of (r.tasks||[]).entries()){const name=t.task_id||'T?';
+if(withdrawn&&t.outcome!=='NOT_RUN')issues.push(name+': po wycofaniu uczestnika kolejne zadania muszą pozostać NOT_RUN');
+if(!OUTCOMES.includes(t.outcome))issues.push(name+': niedozwolony wynik');
+if(!/^[A-Za-z0-9_\-]{3,60}$/.test(t.fixture_id))issues.push(name+': niepoprawny identyfikator fixture');
+if(t.note&&t.note.length>800)issues.push(name+': notatka >800 znaków');
+if(t.incident&&t.incident.length>200)issues.push(name+': przyczyna >200 znaków');
+if(t.outcome==='NOT_RUN'){
+ if([t.duration_seconds,t.attempts,t.errors,t.help_count,t.comprehension_0_2].some(v=>v!==''))issues.push(name+': NOT_RUN musi mieć puste metryki');
+}else{
+ const d=intField(t.duration_seconds),a=intField(t.attempts,99),e=intField(t.errors,99),h=intField(t.help_count,2);
+ if(d===null||a===null||e===null||h===null)issues.push(name+': wymagane liczby całkowite: czas 0–3600, próby/błędy 0–99, podpowiedzi 0–2');
+ if(d!==null&&TASKS[i]&&d>TASKS[i].cap)issues.push(name+': przekroczono limit zadania '+TASKS[i].cap+' s; zakoduj moment zakończenia jako limit, nie nadmiarowy czas');
+ if(['UNAIDED_SUCCESS','ASSISTED_SUCCESS','FAIL'].includes(t.outcome)&&a!==null&&a<1)issues.push(name+': wykonanie wymaga ≥1 próby');
+ if(t.outcome==='UNAIDED_SUCCESS'&&h!==0)issues.push(name+': sukces bez pomocy wymaga 0 podpowiedzi');
+ if(t.outcome==='ASSISTED_SUCCESS'&&h!==null&&h<1)issues.push(name+': sukces po pomocy wymaga co najmniej 1 podpowiedzi');
+ if(['UNAIDED_SUCCESS','ASSISTED_SUCCESS','FAIL','PRODUCT_BLOCKED'].includes(t.outcome)&&!['0','1','2'].includes(t.comprehension_0_2))issues.push(name+': wymagany poziom zrozumienia 0–2');
+ if(['BLOCKED_SETUP','WITHDRAWN'].includes(t.outcome)&&t.comprehension_0_2!=='')issues.push(name+': setup/withdrawn nie może mieć oceny zrozumienia');
+ if(t.outcome==='PRODUCT_BLOCKED'&&t.incident.length<3)issues.push(name+': PRODUCT_BLOCKED wymaga opisu incydentu / defektu');
+ if(t.outcome==='WITHDRAWN')withdrawn=true;
+ }
+ if(!TASKS[i]||t.task_id!==TASKS[i].id)continue;
+}
+return issues}
+function feedback(msg,isError=false){const x=el('feedback');x.textContent=msg;x.className=isError?'error':'ok'}
+function median(vals){if(!vals.length)return '—';const a=[...vals].sort((a,b)=>a-b);const n=a.length;return n%2?String(a[(n-1)/2]):String((a[n/2-1]+a[n/2])/2)}
+function summarize(rows){return TASKS.map(task=>{const a=rows.filter(r=>r.task_id===task.id&&r.mode==='HUMAN_APPROVED');const num=o=>a.filter(r=>r.outcome===o).length;const u=num('UNAIDED_SUCCESS'),as=num('ASSISTED_SUCCESS'),f=num('FAIL'),p=num('PRODUCT_BLOCKED'),bs=num('BLOCKED_SETUP')+num('WITHDRAWN');const times=a.filter(r=>r.outcome==='UNAIDED_SUCCESS').map(r=>Number(r.duration_seconds));return {task_id:task.id,valid_unblocked:u+as+f,unaided:u,assisted:as,fail:f,product_blocked:p,setup_or_withdrawn:bs,median_unaided_seconds:median(times)}})}
+function refresh(){const body=el('summary').querySelector('tbody');body.innerHTML=summarize(saved).map(x=>'<tr>'+[x.task_id,x.valid_unblocked,x.unaided,x.assisted,x.fail,x.product_blocked,x.setup_or_withdrawn,x.median_unaided_seconds].map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')}
+function csvCell(x){let s=String(x??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+function csv(rows){const cols=['mode','pid','sid','buildsha','zipsha','resolution','task_id','outcome','duration_seconds','attempts','errors','help_count','comprehension_0_2','fixture_id','incident','note'];return [cols.join(','),...rows.map(r=>cols.map(k=>csvCell(r[k])).join(','))].join('\r\n')+'\r\n'}
+function download(name,content){const blob=new Blob([content],{type:'text/csv;charset=utf-8'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),500)}
+el('validate').addEventListener('click',()=>{const issues=validateRecord(gather());feedback(issues.length?'WALIDACJA FAIL ('+issues.length+'):\n'+issues.join('\n'):'FORM VALIDATION PASS — tylko kontrola danych, nie test człowieka.',!!issues.length)})
+el('save').addEventListener('click',()=>{const r=gather(),issues=validateRecord(r);if(issues.length)return feedback('Nie zapisano: \n'+issues.join('\n'),true);if(!r.tasks.some(t=>t.outcome!=='NOT_RUN'))return feedback('Nie zapisano: wszystkie zadania NOT_RUN.',true);
+if(saved.some(s=>s.pid===r.pid&&s.sid===r.sid&&s.mode===r.mode))return feedback('Nie zapisano: duplikat uczestnik+sesja+tryb.',true);
+for(const t of r.tasks)saved.push({mode:r.mode,pid:r.pid,sid:r.sid,buildsha:r.buildsha,zipsha:r.zipsha,resolution:r.resolution,...t});
+refresh();feedback('Zapisano 5 rekordów w pamięci tej karty. Tryb: '+r.mode+'. Nie jest to weryfikacja rzeczywistego playtestu.')})
+el('export').addEventListener('click',()=>{if(!saved.length)return feedback('Brak zapisanych danych do eksportu.',true);download('HPT13_results_'+new Date().toISOString().slice(0,10)+'.csv',csv(saved));feedback('Wyeksportowano '+saved.length+' wierszy. Zachowaj plik prywatnie, jeśli zawiera rzeczywiste obserwacje.')})
+el('clear').addEventListener('click',()=>{saved.length=0;refresh();feedback('Wyczyszczono wszystkie zapisane sesje z pamięci aplikacji.')})
+refresh();window.HPT13={TASKS,gather,validateRecord,summarize,csv,saved};
+</script>
+</body></html>
