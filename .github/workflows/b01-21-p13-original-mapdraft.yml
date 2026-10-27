@@ -1,0 +1,75 @@
+name: B01-21 PASS13 Original MapDraft CSharp (NOT Unity)
+on:
+  push:
+    branches: [qa/b01-21-p13-mapdraft-original-csharp]
+  workflow_dispatch:
+jobs:
+  source_csharp_only:
+    name: Original CSharp with Unity shim / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Pin exact original Codex and B01-25 revisions, extract immutable Git objects
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $codex = '231005c6d0351945a8ee6684f3856af118f0e94f'
+          $research = '758662782acd92026b39b09a60d92b7e587a34f9'
+          git fetch --no-tags --depth=1 origin refs/pull/310/head
+          if ($LASTEXITCODE -ne 0 -or (git rev-parse FETCH_HEAD).Trim() -ne $codex) { throw 'CODEX HEAD MOVED OR FETCH FAILED -- FAIL CLOSED' }
+          git fetch --no-tags --depth=30 origin refs/heads/research/b01-25-p11-level-fixtures
+          if ($LASTEXITCODE -ne 0 -or (git rev-parse FETCH_HEAD).Trim() -ne $research) { throw 'B01-25 RESEARCH HEAD MOVED OR FETCH FAILED -- FAIL CLOSED' }
+          $expect = @{
+            'Assets/MapEditor/MapDraft.cs' = 'b5f8f395f93972c0ede000701dbbada8fcfcdfdb'
+          }
+          foreach ($path in $expect.Keys) {
+            $blob = (git rev-parse "${codex}:$path").Trim()
+            if ($LASTEXITCODE -ne 0 -or $blob -ne $expect[$path]) { throw "WRONG ORIGINAL CODEX BLOB: $path $blob" }
+          }
+          $mapPath = Join-Path $env:RUNNER_TEMP 'b0121-mapdraft.zip'
+          git archive --format=zip --output="$mapPath" $codex Assets/MapEditor/MapDraft.cs
+          if ($LASTEXITCODE -ne 0) { throw 'Original CSharp archive failed' }
+          Expand-Archive -LiteralPath "$mapPath" -DestinationPath . -Force
+          $actual = (git hash-object Assets/MapEditor/MapDraft.cs).Trim()
+          if ($actual -ne $expect['Assets/MapEditor/MapDraft.cs']) { throw 'Extracted original CSharp changed!' }
+          $entries = @(
+            'Research/B01-25/P11/LD01.json',
+            'Research/B01-25/P11/LD02.json',
+            'Research/B01-25/P11/LD03.json',
+            'Research/B01-25/P12/LD01_NEG.json',
+            'Research/B01-25/P12/LD02_NEG.json',
+            'Research/B01-25/P12/LD03_NEG.json'
+          )
+          $inputZip = Join-Path $env:RUNNER_TEMP 'b0121-b25-inputs.zip'
+          git archive --format=zip --output="$inputZip" $research -- $entries
+          if ($LASTEXITCODE -ne 0) { throw 'Original B01-25 fixtures archive failed' }
+          Expand-Archive -LiteralPath "$inputZip" -DestinationPath . -Force
+          $expectedBlobs = @{
+            'Research/B01-25/P11/LD01.json' = '85b575691f25520d85f2caf9718d74b881ff32b3'
+            'Research/B01-25/P11/LD02.json' = '71c305077b97015a3a4dad7a5fc64dea59943617'
+            'Research/B01-25/P11/LD03.json' = '94b8af8f1b212fa89a90508e7b3e5a46667fa662'
+            'Research/B01-25/P12/LD01_NEG.json' = 'c32a44fee5b041e0b0021071a13065f5db979ab8'
+            'Research/B01-25/P12/LD02_NEG.json' = '5d4af877f3d45d7e26619922bc2b46538a0d06cd'
+            'Research/B01-25/P12/LD03_NEG.json' = 'c9cf54c663b675f8b70f0494410a67082bbc8640'
+          }
+          foreach ($path in $entries) {
+            $blob = (git hash-object "$path").Trim()
+            if ($LASTEXITCODE -ne 0 -or $blob -ne $expectedBlobs[$path]) { throw "WRONG B01-25 ORIGINAL FIXTURE: $path $blob" }
+          }
+          Write-Output 'EXACT ORIGINAL CODEX CSHARP AND SIX ACTUAL B01-25 JSON GIT BLOBS VERIFIED'
+      - name: Execute actual original MapDraft CSharp (Unity types stubbed, no Unity G1)
+        shell: pwsh
+        run: |
+          dotnet run --project Research/B01-21/P13/MapDraftOriginal.csproj --configuration Release
+          if ($LASTEXITCODE -ne 0) { throw 'ORIGINAL MAPDRAFT CSHARP REGRESSIONS FAILED' }
