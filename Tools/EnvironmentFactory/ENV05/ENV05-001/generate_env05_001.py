@@ -131,6 +131,7 @@ def preview_setup(col):
  scene.render.resolution_x=512; scene.render.resolution_y=512
  scene.render.resolution_percentage=100
  scene.render.image_settings.file_format="PNG"; scene.render.film_transparent=True
+ if scene.world is None: scene.world=bpy.data.worlds.new(PREFIX+"PreviewWorld")
  scene.world.use_nodes=True
  scene.world.node_tree.nodes["Background"].inputs["Color"].default_value=(.42,.47,.55,1)
  scene.world.node_tree.nodes["Background"].inputs["Strength"].default_value=.7
@@ -155,7 +156,9 @@ def main():
  argv=sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else []
  p=argparse.ArgumentParser(); p.add_argument("--out",required=True)
  p.add_argument("--self-test",action="store_true")
+ p.add_argument("--fresh-scene",action="store_true",help="start empty only when explicitly requested by batch caller")
  args=p.parse_args(argv); out=Path(args.out).resolve(); out.mkdir(parents=True,exist_ok=True)
+ if args.fresh_scene: bpy.ops.wm.read_factory_settings(use_empty=True)
  if args.self_test:
   sentinel=bpy.data.objects.new("ENV05_FOREIGN_QA_SENTINEL",None)
   bpy.context.scene.collection.objects.link(sentinel)
