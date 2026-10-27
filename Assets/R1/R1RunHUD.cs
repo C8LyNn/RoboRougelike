@@ -89,7 +89,7 @@ namespace RoboRougelike.R1
                     }
                     }
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
-                    GUI.Label(new Rect(629, 341, 32, 38), "+", heading);
+                    DrawAimReticle(run);
                     GUI.Label(new Rect(24, 676, 900, 26),run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
                         "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM — ogień":
                         "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM — ogień • Kółko — przybliżenie",small);

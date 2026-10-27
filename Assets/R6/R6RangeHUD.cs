@@ -40,10 +40,21 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(940,62,305,38),range.TrainingFireRequested?"Ostrzał WŁĄCZONY":"Ostrzał WYŁĄCZONY",body);
                 GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
             }
-            GUI.Label(new Rect(629,341,32,38),"+",heading);
+            DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
             GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM — ogień • R — reset • Esc — menu\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Tor MOV009 x≈12 • Cele na północy",small);
+        }
+        void DrawAimReticle(R1RunController run)
+        {
+            var feedback=run.Player.Controller.AimFeedback;
+            var previous=GUI.color;
+            GUI.color=feedback.Clear>0?Color.white:new Color(1,.72f,.3f);
+            var cross=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
+            GUI.Label(new Rect(624,344,32,32),"+",cross);
+            GUI.color=previous;
+            var caption=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
+            GUI.Label(new Rect(430,382,420,48),feedback.Caption,caption);
         }
         void DrawFeedback()
         {

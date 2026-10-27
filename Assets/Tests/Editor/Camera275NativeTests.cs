@@ -60,6 +60,28 @@ public sealed class Camera275NativeTests
         Assert.That(follow.ReceiverRig.WorldOverlapAtCamera,Is.False);
         Assert.That(follow.ReceiverRig.ActualOwnHullIntersectsCrosshair,Is.False);
     }
+    [UnityTest]public IEnumerator ScrollZoomIsSmoothAndRemainsAnchoredToVehicle()
+    {
+        var native=new GameObject("CAM275 scroll input").AddComponent<Camera275RuntimeInput>();
+        Vector3 root=run.Player.transform.position;float before=Vector3.Distance(follow.transform.position,follow.ReceiverRig.LastSolution.AimWorld);
+        native.Scroll=new Vector2(0,-2400);
+        yield return null;yield return null;
+        Assert.That(follow.RequestedZoomDistance,Is.GreaterThan(40));
+        Assert.That(follow.SmoothedZoomDistance,Is.LessThan(follow.RequestedZoomDistance),"Wheel changes target distance; rendered distance eases rather than snaps");
+        float first=Vector3.Distance(follow.transform.position,follow.ReceiverRig.LastSolution.AimWorld);
+        Assert.That(first-before,Is.LessThan(1));
+        yield return new WaitForSecondsRealtime(3);
+        Assert.That(Vector3.Distance(follow.transform.position,follow.ReceiverRig.LastSolution.AimWorld),Is.GreaterThan(40));
+        Assert.That(follow.TargetRoot,Is.EqualTo(run.Player.transform));
+        Assert.That(Vector3.Distance(root,run.Player.transform.position),Is.LessThan(.001f));
+        Assert.That(follow.ReceiverRig.ActualOwnHullIntersectsCrosshair,Is.False);
+        native.Scroll=new Vector2(0,2400);yield return null;yield return null;
+        yield return new WaitForSecondsRealtime(3);
+        Assert.That(follow.RequestedZoomDistance,Is.EqualTo(3).Within(.01));
+        Assert.That(follow.TargetRoot,Is.EqualTo(run.Player.transform));
+        Assert.That(follow.ReceiverRig.ActualOwnHullIntersectsCrosshair,Is.False);
+        Object.DestroyImmediate(native.gameObject);
+    }
     [UnityTearDown]public IEnumerator Cleanup()
     {
         if(probe!=null)Object.DestroyImmediate(probe.gameObject);

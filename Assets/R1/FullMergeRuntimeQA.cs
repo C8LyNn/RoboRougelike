@@ -149,7 +149,10 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
             var rig=follow.ReceiverRig;result.frames++;float ms=Time.unscaledDeltaTime*1000;result.meanFrameMs+=(ms-result.meanFrameMs)/result.frames;result.peakFrameMs=Mathf.Max(result.peakFrameMs,ms);
             result.peakCameraStep=Mathf.Max(result.peakCameraStep,rig.LastCameraStepMeters);if(rig.ActualOwnHullIntersectsCrosshair)result.selfRayHits++;if(rig.WorldOverlapAtCamera)result.worldOverlaps++;
             if(rig.ReceiverFramingSaturated)result.saturatedFrames++;
-            if(rig.LastCameraStepMeters>rig.EffectiveContinuousSpeedLimit*Time.deltaTime+.001f)result.continuousSpeedViolations++;
+            // Explicit mouse orbit is responsive, not follow drift. Keep the old
+            // whole-step contract for standalone rigs; measure receiver follow separately.
+            float followStep=rig.ReceiverResponsiveMotion?rig.LastFollowStepMeters:rig.LastCameraStepMeters;
+            if(followStep>rig.EffectiveContinuousSpeedLimit*Time.deltaTime+.001f)result.continuousSpeedViolations++;
             var hull=Camera001Rig.GetHullBounds(body.transform);bool cropped=false;
             foreach(int x in new[]{-1,1})foreach(int y in new[]{-1,1})foreach(int z in new[]{-1,1}){
                 var p=Camera.main.WorldToViewportPoint(hull.center+Vector3.Scale(hull.extents,new Vector3(x,y,z)));

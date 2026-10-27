@@ -29,6 +29,7 @@ namespace RoboRougelike.WPN001Shotgun
         private Vector3[] directions = Array.Empty<Vector3>();
         private ShotgunPelletSpawn[] volley = Array.Empty<ShotgunPelletSpawn>();
         public ShotgunFireFailure LastFailure { get; private set; }
+        public ShotgunSpec CurrentSpec => (configuration ?? new ShotgunConfig()).Snapshot();
         public uint SuccessfulVolleys => gate.SuccessfulVolleys;
         public float NextReadyTime => gate.NextReadyTime;
         public bool Operational => gate.Operational;

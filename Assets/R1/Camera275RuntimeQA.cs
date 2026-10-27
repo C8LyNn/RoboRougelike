@@ -20,9 +20,16 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
     public Mouse Mouse {get;private set;}
     public float Throttle,Steering;
     public bool Fire;
-    public Vector2 MouseRate,AppliedDelta;
+    public Vector2 MouseRate,AppliedDelta,Scroll;
     InputSettings.BackgroundBehavior oldBackground;
-    void Awake(){oldBackground=InputSystem.settings.backgroundBehavior;InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;Keys=InputSystem.AddDevice<Keyboard>();Mouse=InputSystem.AddDevice<Mouse>();}
+#if UNITY_EDITOR
+    InputSettings.EditorInputBehaviorInPlayMode oldRouting;
+#endif
+    void Awake(){oldBackground=InputSystem.settings.backgroundBehavior;InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;Keys=InputSystem.AddDevice<Keyboard>();Mouse=InputSystem.AddDevice<Mouse>();
+#if UNITY_EDITOR
+        oldRouting=InputSystem.settings.editorInputBehaviorInPlayMode;InputSystem.settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+#endif
+    }
     void Update()
     {
         Keys.MakeCurrent();Mouse.MakeCurrent();
@@ -30,9 +37,14 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
         if(Steering>.1f)keys.Add(Key.D);else if(Steering<-.1f)keys.Add(Key.A);
         AppliedDelta=MouseRate*Time.unscaledDeltaTime;
         InputState.Change(Keys,new KeyboardState(keys.ToArray()));
-        InputState.Change(Mouse,new MouseState{delta=AppliedDelta,position=new Vector2(Screen.width/2f,Screen.height/2f)}.WithButton(MouseButton.Left,Fire));
+        InputState.Change(Mouse,new MouseState{delta=AppliedDelta,scroll=Scroll,position=new Vector2(Screen.width/2f,Screen.height/2f)}.WithButton(MouseButton.Left,Fire));
+        Scroll=Vector2.zero;
     }
-    void OnDestroy(){if(Keys!=null&&Keys.added)InputSystem.RemoveDevice(Keys);if(Mouse!=null&&Mouse.added)InputSystem.RemoveDevice(Mouse);InputSystem.settings.backgroundBehavior=oldBackground;}
+    void OnDestroy(){if(Keys!=null&&Keys.added)InputSystem.RemoveDevice(Keys);if(Mouse!=null&&Mouse.added)InputSystem.RemoveDevice(Mouse);InputSystem.settings.backgroundBehavior=oldBackground;
+#if UNITY_EDITOR
+        InputSystem.settings.editorInputBehaviorInPlayMode=oldRouting;
+#endif
+    }
 }
 
 // Opt-in only, same retail executable and canonical drive/input/aim path.

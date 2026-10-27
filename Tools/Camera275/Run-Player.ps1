@@ -19,3 +19,4 @@ Write-Output "CAM275 PLAYER EXIT $code evidence=$run"
 if($code -ne 0){exit 1}
 $result=Get-Content -Raw (Join-Path $run 'camera-result.json') | ConvertFrom-Json
 if($result.status -ne 'Passed'){throw 'Native drive fixture failed'}
+exit 0
