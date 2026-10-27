@@ -105,7 +105,7 @@ class PartSizeSourceTests(unittest.TestCase):
         edit=(source/"EditMode/PartSize001EditModeTests.cs").read_text()
         play=(source/"PlayMode/PartSize001PlayModeTests.cs").read_text()
         self.assertEqual(edit.count("[Test]")+edit.count("[TestCase("),17)
-        self.assertEqual(play.count("[UnityTest]"),8)
+        self.assertEqual(play.count("[UnityTest]"),11)
         self.assertIn("Physics.ComputePenetration",
             (p.ROOT/"Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text())
 
@@ -147,5 +147,22 @@ class PartSizeSourceTests(unittest.TestCase):
         self.assertIn("NATIVE_NOT_RUN",doc)
         self.assertIn("G2 HOLD",doc)
         self.assertNotIn("CODEX_READY: PASS",doc)
+
+    def test_17_authoritative_physx_query_cannot_be_spoofed_by_caller(self):
+        source=(p.ROOT/"Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text()
+        self.assertIn("Physics.OverlapBox(",source)
+        self.assertIn("QueryTriggerInteraction.Ignore",source)
+        self.assertIn('return "INCOMPLETE_EXTERNAL_BROADPHASE"',source)
+        self.assertIn("if(!otherSeen.Contains(discovered))",source)
+        test=(p.ROOT/"Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs").read_text()
+        self.assertIn("W17_LyingCompleteExternalInventoryCannotHideOverlappingBox",test)
+        self.assertIn("W17_IrrelevantExternalListCannotMaskOmittedPenetrator",test)
+
+    def test_18_exposed_grid_face_is_never_typed_socket_approval(self):
+        source=(p.ROOT/"Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text()
+        self.assertIn("ValidateMountSocketAuthority(",source)
+        self.assertIn('return "TYPED_SOCKET_UNVERIFIED"',source)
+        self.assertIn("W17_ExposedGridFaceCannotAuthorizePhysicalMountSocket",
+           (p.ROOT/"Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs").read_text())
 
 if __name__=="__main__":unittest.main(verbosity=2)
