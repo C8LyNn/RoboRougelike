@@ -3,6 +3,7 @@ import json, re,sys,shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 TARGET=Path(sys.argv[1] if len(sys.argv)>1 else Path(__file__).with_name('HPT13-scoring.html'))
+if not TARGET.exists(): TARGET = Path(__file__).resolve().parent.parent/'W58'/'HPT13-scoring.html'  # GitHub checkout layout
 checks=[]
 def check(label,assertion):
     checks.append((label,bool(assertion)))
