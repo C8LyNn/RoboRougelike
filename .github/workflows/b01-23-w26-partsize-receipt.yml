@@ -50,7 +50,7 @@ jobs:
           path: partsize-seven-source-proxies.json
           if-no-files-found: error
           retention-days: 10
-      - name: Execute 12 synthetically generated receipt-parser checks (NOT Unity)
+      - name: Execute 16 receipt-parser tests including new NEG01-03 fail-closed cases (NOT Unity)
         run: python Tools/B01/PARTSIZE001/W26Receipt/test_check_receipt.py
       - name: Inspect REAL immutable producer test files and eleven unknown physical kinds
         run: python Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py source --repo .
