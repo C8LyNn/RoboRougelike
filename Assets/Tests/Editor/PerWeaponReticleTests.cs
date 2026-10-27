@@ -73,6 +73,28 @@ public sealed class PerWeaponReticleTests
         UnityEngine.Object.DestroyImmediate(wall);wall=null;Physics.SyncTransforms();
         Assert.That(Field<bool>(Collect(new Vector3(0,0,250))[0],"OutOfRange"),Is.True,"The basic shell's existing lifetime and speed bound its reach");
     }
+    [Test]public void AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators()
+    {
+        left.Weapon=R4WeaponKind.EmpEmitter;right.Weapon=R4WeaponKind.RotarySaw;
+        var area=Collect(target);Assert.That(area.Count,Is.EqualTo(2));
+        Assert.That(Field<bool>(area[0],"AreaWeapon"),Is.True);Assert.That(Field<bool>(area[1],"AreaWeapon"),Is.True);
+        Assert.That(Field<Vector2>(area[0],"Viewport").x,Is.EqualTo(.5f).Within(.001f),"EMP is radial and tracks the selected point rather than inventing a projectile");
+        Assert.That(Field<Vector2>(area[1],"Viewport").x,Is.GreaterThan(.5f),"Saw indicator uses the blade's real position");
+        left.Weapon=R4WeaponKind.Basic;left.Muzzle.forward=Vector3.back;
+        var away=Collect(target);Assert.That(away.Count,Is.EqualTo(2));
+        Assert.That(Field<bool>(away[0],"Offscreen"),Is.True);
+        Assert.That(Vector2.Distance(Field<Vector2>(away[0],"Viewport"),new Vector2(.5f,.5f)),Is.GreaterThan(.5f));
+    }
+    [Test]public void ViewportMarkersMapCorrectlyToLetterboxedHud()
+    {
+        var type=typeof(R3VehicleAssembly).Assembly.GetType("RoboRougelike.WeaponIntegration.RRLWeaponReticles");
+        Assert.That(type,Is.Not.Null);var map=type.GetMethod("ToHudPoint");Assert.That(map,Is.Not.Null);
+        Vector2 Map(Vector2 viewport,Vector2 screen)=>(Vector2)map.Invoke(null,new object[]{viewport,new Rect(0,0,screen.x,screen.y),screen});
+        Assert.That(Map(new Vector2(.5f,.5f),new Vector2(1280,720)).x,Is.EqualTo(640).Within(.01f));
+        Assert.That(Map(new Vector2(.5f,.5f),new Vector2(1920,1080)).y,Is.EqualTo(360).Within(.01f));
+        var wide=Map(new Vector2(.25f,.5f),new Vector2(2560,1080));
+        Assert.That(wide.x,Is.EqualTo(213.3333f).Within(.02f));Assert.That(wide.y,Is.EqualTo(360).Within(.01f));
+    }
     [TearDown]public void Cleanup()
     {
         if(wall!=null)UnityEngine.Object.DestroyImmediate(wall);

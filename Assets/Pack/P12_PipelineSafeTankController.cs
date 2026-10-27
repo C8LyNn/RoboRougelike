@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if ENABLE_INPUT_SYSTEM
@@ -99,6 +100,7 @@ namespace RogueMachine.P12PipelineSafe
             gameplayInputEnabled = active;
             if (active) return;
             AimFeedback=default;
+            weaponReticles.Clear();
             moveInput = turnInput = currentSpeed = 0;
             fireHeld = false;
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();
@@ -235,7 +237,7 @@ public float CurrentForwardSpeed =>
                 BindWeaponRig();
 
             if (!weaponBound)
-                return;
+            { weaponReticles.Clear(); return; }
 
             EnsureFunctionalModuleSystem();
 
@@ -243,6 +245,7 @@ public float CurrentForwardSpeed =>
                 !moduleSystem.WeaponOnline)
             {
                 AimFeedback=default;
+                weaponReticles.Clear();
                 if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(false);
                 return;
             }
@@ -251,7 +254,7 @@ public float CurrentForwardSpeed =>
                 aimCamera = Camera.main;
 
             if (aimCamera == null)
-                return;
+            { weaponReticles.Clear(); return; }
 
             Vector3 aimPoint =
                 FindAimPoint(true);
@@ -266,6 +269,7 @@ public float CurrentForwardSpeed =>
             if (modularAssembly != null) modularAssembly.AimGuns(aimPoint);
             AimFeedback = RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(
                 modularAssembly,this,aimPoint,LastConsumedAimCollider);
+            RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(aimCamera,modularAssembly,this,aimPoint,weaponReticles);
 
             if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(fireHeld);
             if (fireHeld && modularAssembly != null) modularAssembly.FireGuns();
@@ -385,6 +389,8 @@ public float CurrentForwardSpeed =>
         public Collider LastConsumedAimCollider {get;private set;}
         public int LastConsumedAimFrame {get;private set;}=-1;
         public RoboRougelike.WeaponIntegration.RRLAimFeedback.Snapshot AimFeedback {get;private set;}
+        readonly List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker> weaponReticles = new List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker>(4);
+        public IReadOnlyList<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker> WeaponReticles=>weaponReticles;
         public float PhysicalShellLifetime => projectileLifetime;
         private Vector3 FindAimPoint(bool consumed=false)
         {

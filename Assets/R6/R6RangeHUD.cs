@@ -4,7 +4,8 @@ namespace RoboRougelike.R1
 {
     public sealed partial class R1RunHUD
     {
-        GUIStyle aimCrossStyle,aimCaptionStyle;
+        GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
+        static readonly string[] weaponMarkerNumbers={"1","2","3","4"};
         void DrawTestRange(R1RunController run)
         {
             if(run.Transitioning){Panel(new Rect(0,0,1280,720));GUI.Label(new Rect(300,300,700,80),"Przygotowanie poligonu…",title);return;}
@@ -49,11 +50,38 @@ namespace RoboRougelike.R1
         void DrawAimReticle(R1RunController run)
         {
             var feedback=run.Player.Controller.AimFeedback;
+            DrawWeaponReticles(run.Player.Controller);
             if(aimCrossStyle==null)aimCrossStyle=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
             if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
             aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
             GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
             GUI.Label(new Rect(430,382,420,48),feedback.Caption,aimCaptionStyle);
+        }
+        void DrawWeaponReticles(RogueMachine.P12PipelineSafe.P12PipelineSafeTankController controller)
+        {
+            if(Event.current.type!=EventType.Repaint||Camera.main==null)return;
+            if(weaponMarkerStyle==null)weaponMarkerStyle=new GUIStyle(small){fontSize=12,alignment=TextAnchor.MiddleCenter};
+            var camera=Camera.main;
+            var original=GUI.color;var markers=controller.WeaponReticles;
+            for(int i=0;i<markers.Count;i++)
+            {
+                var marker=markers[i];var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.ToHudPoint(marker.Viewport,camera.pixelRect,new Vector2(Screen.width,Screen.height));
+                float x=point.x,y=point.y;
+                x=Mathf.Clamp(x,22,1258);y=Mathf.Clamp(y,22,698);
+                float radius=8+Mathf.Min(i,3)*4,stroke=2,length=5;
+                GUI.color=marker.Disabled?new Color(.55f,.55f,.55f,.9f):
+                    marker.Obstructed||marker.OutOfRange||marker.Offscreen?new Color(1,.7f,.25f,.95f):new Color(.35f,.95f,.95f,.9f);
+                for(int xi=0;xi<2;xi++)for(int yi=0;yi<2;yi++)
+                {
+                    int sx=xi==0?-1:1,sy=yi==0?-1:1;
+                    float cx=x+sx*radius,cy=y+sy*radius;
+                    GUI.DrawTexture(new Rect(cx-(sx<0?0:length),cy-stroke*.5f,length,stroke),Texture2D.whiteTexture);
+                    GUI.DrawTexture(new Rect(cx-stroke*.5f,cy-(sy<0?0:length),stroke,length),Texture2D.whiteTexture);
+                }
+                float angle=(-45-i*90)*Mathf.Deg2Rad;
+                GUI.Label(new Rect(x+Mathf.Cos(angle)*(radius+13)-10,y+Mathf.Sin(angle)*(radius+13)-10,20,20),weaponMarkerNumbers[Mathf.Min(i,3)],weaponMarkerStyle);
+            }
+            GUI.color=original;
         }
         void DrawFeedback()
         {
@@ -79,7 +107,7 @@ namespace RoboRougelike.R1
                     if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
                     var disrupted=gun.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
                     if(disrupted!=null&&disrupted.IsDisrupted)status=$"EMP {disrupted.RemainingSeconds:0.0}s";
-                    GUI.Label(new Rect(940,232+row*26,305,26),RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
+                    GUI.Label(new Rect(940,232+row*26,305,26),(row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
                 }
                 var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
                 var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
