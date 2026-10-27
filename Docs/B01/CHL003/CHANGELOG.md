@@ -1,4 +1,4 @@
-- **W17:** real forward-root gate plane/full-body collider envelope acceptance (reject reverse/only-wheel edge), actual four-wheel grounding rays prevent artificial airborne force/turn; body dimensions derive Collider.bounds, physically authored E16–E18/P10–P12 and 6400 deterministic source C# negative input cases. Licensed Unity and whole course play still NOT_RUN.
+- **W17:** real forward-root gate plane/full-body collider envelope acceptance (reject reverse/only-wheel edge), actual four-wheel grounding rays prevent artificial airborne force/turn; body dimensions derive Collider.bounds, physically authored E16–E18/P10–P13 and 6400 deterministic source C# negative input cases. Licensed Unity and whole course play still NOT_RUN.
 
 
 # CHL-003 R1
