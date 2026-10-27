@@ -97,7 +97,10 @@ def package_members():
         # Git checkout may write CRLF for our QA text on Windows; archive
         # must stay byte-identical on Windows and Linux. NEVER normalize
         # original pinned Codex R3/R4 Git blobs or their provenance receipt.
-        if not relative.startswith("_pinned/"):
+        if not relative.startswith("_pinned/") or relative=="_pinned/real-source-receipt.json":
+            # Python Path.write_text emits CRLF on Windows for this generated
+            # JSON receipt (19 newline bytes). Canonicalize receipt ONLY;
+            # never modify the two original, Git-blob-pinned Codex sources.
             raw=raw.replace(b"\r\n",b"\n")
         members[f"{ARCHIVE_ROOT}/Weapon302/{relative}"]=raw
     for p,expected in SOURCES.items():
