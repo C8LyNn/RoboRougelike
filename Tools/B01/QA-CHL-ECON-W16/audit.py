@@ -154,7 +154,6 @@ def main():
        "localMaxX <= gateMaxX - minimumSideClearance" in crossing,
        "CHL_W26_GATE_CROSSING_AUTHORITY_CHANGED")
     # Second source assembly must depend on CHL runtime only, never host R3.
-    import json
     demo_asm=json.loads((actual_chl/"Demo/B01.CHL003.Demo.asmdef").read_text())
     require(demo_asm.get("references")==["B01.CHL003.Runtime"],
        "CHL_W26_DEMO_ASMDEF_HOST_DEPENDENCY")
