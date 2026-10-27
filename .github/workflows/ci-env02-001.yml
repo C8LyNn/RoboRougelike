@@ -1,0 +1,38 @@
+name: ENV02-001 static ramp Blender export and QA
+
+on:
+  pull_request:
+    paths:
+      - 'Tools/EnvironmentFactory/ENV02/ENV02-001/**'
+      - '.github/workflows/ci-env02-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blender-static-ramp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install actual Blender and Python dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version
+      - name: Run Blender generator, render and physical exports
+        run: |
+          blender --background --factory-startup --python Tools/EnvironmentFactory/ENV02/ENV02-001/generate_env02_001.py -- --out "$GITHUB_WORKSPACE/build/ENV02-001"
+      - name: Validate real BLEND, GLB, collider and PNG outputs
+        run: |
+          python3 Tools/EnvironmentFactory/ENV02/ENV02-001/qa_env02_001.py "$GITHUB_WORKSPACE/build/ENV02-001"
+          cat "$GITHUB_WORKSPACE/build/ENV02-001/ENV02-001_manifest.json"
+      - name: Upload physical source-derived evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ENV02-001-physical-blender-evidence
+          path: build/ENV02-001/
+          if-no-files-found: warn
+          retention-days: 30
