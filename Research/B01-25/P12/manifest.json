@@ -1,0 +1,134 @@
+{
+  "schema": "B01-25-CHALLENGE-IMPORT-MANIFEST-v1",
+  "status": "RESEARCH_IMPORT_FIXTURES_ONLY__NOT_RUNTIME_CERTIFIED",
+  "source": {
+    "repo": "C8LyNn/RoboRougelike",
+    "unity": "6000.3.14f1",
+    "codexPR": 310,
+    "codexCommit": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "originalMapDraftBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+    "originalMapStorageBlob": "f31a94c16e8cb244e66e39b0ac344b085095b630",
+    "originalMapEditorBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "challengeSourceCommit": "bdd6c69fc9fd519b863e3a9cb217b3cd39404194"
+  },
+  "importPolicy": {
+    "pathFromOriginalSource": "Path.Combine(Application.persistentDataPath,\"Maps\")",
+    "namePattern": "B01_25_LD0X_P12",
+    "fileNameResolution": "MapStorage.TryPath(..., EditorName) => Trim(EditorName)+'.json'",
+    "method": "COPY_INTO_DISPOSABLE_APPLICATION_PERSISTENT_DATA_MAPS_ONLY; SET EditorName; PRESS Wczytaj",
+    "safety": "NO_OVERWRITE; NO_REAL_SAVES; DO_NOT_USE_D02_CASE_OR_WHITESPACE_ALIASES; BACKUP/ISOLATE; OBSERVE_G1_G0"
+  },
+  "challenges": [
+    {
+      "id": "LD01",
+      "path": "Research/B01-25/P11/LD01.json",
+      "gitBlob": "85b575691f25520d85f2caf9718d74b881ff32b3",
+      "version": 2,
+      "mapName": "B01_25_LD01_P12",
+      "destinationFile": "B01_25_LD01_P12.json",
+      "globalFloor": false,
+      "items": 59,
+      "spawn": {
+        "kind": 4,
+        "x": 0,
+        "z": 1,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      },
+      "finish": {
+        "kind": 5,
+        "x": 12,
+        "z": 1,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      },
+      "expected": "ORIGINAL_FORMAT_SCHEMA_VALID__PHYSICS_NOT_RUN",
+      "negative": {
+        "id": "LD01_NEG",
+        "path": "Research/B01-25/P12/LD01_NEG.json",
+        "expectedOriginalCSharpBehavior": {
+          "load": "SUCCESS",
+          "test": "REJECT_NO_GROUND_UNDER_SPAWN"
+        }
+      }
+    },
+    {
+      "id": "LD02",
+      "path": "Research/B01-25/P11/LD02.json",
+      "gitBlob": "71c305077b97015a3a4dad7a5fc64dea59943617",
+      "version": 2,
+      "mapName": "B01_25_LD02_P12",
+      "destinationFile": "B01_25_LD02_P12.json",
+      "globalFloor": true,
+      "items": 10,
+      "spawn": {
+        "kind": 4,
+        "x": 0,
+        "z": 5,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      },
+      "finish": {
+        "kind": 5,
+        "x": 11,
+        "z": 5,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      },
+      "expected": "ORIGINAL_FORMAT_SCHEMA_VALID__PHYSICS_NOT_RUN",
+      "negative": {
+        "id": "LD02_NEG",
+        "path": "Research/B01-25/P12/LD02_NEG.json",
+        "expectedOriginalCSharpBehavior": {
+          "load": "REJECT_DUPLICATE_FINISH",
+          "test": "NOT_REACHED"
+        }
+      }
+    },
+    {
+      "id": "LD03",
+      "path": "Research/B01-25/P11/LD03.json",
+      "gitBlob": "94b8af8f1b212fa89a90508e7b3e5a46667fa662",
+      "version": 2,
+      "mapName": "B01_25_LD03_P12",
+      "destinationFile": "B01_25_LD03_P12.json",
+      "globalFloor": false,
+      "items": 45,
+      "spawn": {
+        "kind": 4,
+        "x": 0,
+        "z": 2,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      },
+      "finish": {
+        "kind": 5,
+        "x": 8,
+        "z": 2,
+        "rotation": 0,
+        "scaleX": 1,
+        "scaleY": 1,
+        "scaleZ": 1
+      },
+      "expected": "ORIGINAL_FORMAT_SCHEMA_VALID__PHYSICS_NOT_RUN",
+      "negative": {
+        "id": "LD03_NEG",
+        "path": "Research/B01-25/P12/LD03_NEG.json",
+        "expectedOriginalCSharpBehavior": {
+          "load": "SUCCESS",
+          "test": "ACCEPT_BUT_SAFE_DETOUR_DISCONNECTED"
+        }
+      }
+    }
+  ]
+}
