@@ -28,7 +28,7 @@ public sealed class Camera275NativeTests
         // A stationary aim fixture, not a substitute for the separate real R6 drive tests.
         run.Player.GetComponent<Rigidbody>().isKinematic=true;
         var range=run.GetComponent<RoboRougelike.R6.R6TestRange>();
-        range.Layout.SetActive(false);
+        range.Layout.gameObject.SetActive(false);
         Field(follow,"yaw",0);Field(follow,"pitch",18);
         yield return new WaitForSecondsRealtime(1);
     }
