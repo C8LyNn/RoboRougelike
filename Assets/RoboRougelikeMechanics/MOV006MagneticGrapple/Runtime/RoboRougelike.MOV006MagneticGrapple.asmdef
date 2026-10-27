@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.MOV006MagneticGrapple",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV006MagneticGrapple",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

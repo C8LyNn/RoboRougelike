@@ -1,0 +1,25 @@
+{
+  "name": "RoboRougelike.MOV003Blink.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV003Blink.Tests",
+  "references": [
+    "RoboRougelike.MOV003Blink"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "RoboRougelike.MOV006MagneticGrapple.EditModeTests",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV006MagneticGrapple.Tests",
+  "references": ["RoboRougelike.MOV006MagneticGrapple"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": ["TestAssemblies"]
+}

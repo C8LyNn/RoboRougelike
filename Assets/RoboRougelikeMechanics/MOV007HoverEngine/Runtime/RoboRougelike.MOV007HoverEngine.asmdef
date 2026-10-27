@@ -1,0 +1,14 @@
+{
+  "name": "RoboRougelike.MOV007HoverEngine",
+  "rootNamespace": "RoboRougelike.Mechanics.MOV007",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

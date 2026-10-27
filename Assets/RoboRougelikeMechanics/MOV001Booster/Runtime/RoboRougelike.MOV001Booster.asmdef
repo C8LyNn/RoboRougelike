@@ -1,0 +1,14 @@
+{
+    "name": "RoboRougelike.MOV001Booster",
+    "rootNamespace": "RoboRougelike.Mechanics.Booster",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
