@@ -6,12 +6,13 @@ physical attachment, camera occlusion, collisions, suspension, movement or playa
 """
 from __future__ import annotations
 from pathlib import Path
+from io import BytesIO
 import hashlib
 import json
 import sys
 import xml.etree.ElementTree as ET
 import cairosvg
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageChops
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "rendered"
@@ -27,6 +28,33 @@ SILHOUETTE_FILES = ["A-wheel.svg", "B-track.svg", "C-omni.svg"]
 SILHOUETTE_COLORS = ("#43cddc", "#efb66a", "#b6a0fa")
 checks = []
 files = []
+
+def strip_reference_overlay(source_svg: bytes) -> bytes:
+    """Remove ONLY the decorative reference-cube group from in-memory SVG for blind tests.
+
+    The original SVG and full technical cards remain untouched. The reference cube
+    and scale labels must still be present on original full annotated art boards.
+    Fail closed if exactly one group containing both two expected direct labels
+    cannot be found. This protects against accidentally stripping a vehicle group.
+    """
+    root = ET.fromstring(source_svg)
+    matched = []
+    for parent in root.iter():
+        for child in list(parent):
+            if child.tag != SVGNS+"g":
+                continue
+            labels = [(node.text or "").strip()
+                      for node in list(child) if node.tag == SVGNS+"text"]
+            if labels == ["0.55 m", "GRID REFERENCE ONLY"]:
+                matched.append((parent,child))
+    if len(matched) != 1:
+        raise ValueError(f"expected exactly one reference overlay, found {len(matched)}")
+    matched[0][0].remove(matched[0][1])
+    remaining = "".join(root.itertext())
+    if "GRID REFERENCE ONLY" in remaining or "0.55 m" in remaining:
+        raise ValueError("reference label remains after exact overlay removal")
+    return ET.tostring(root,encoding="utf-8",xml_declaration=True)
+
 
 def check(name: str, ok: bool, detail: str):
     checks.append({"name":name,"status":"PASS" if ok else "FAIL","detail":detail})
@@ -81,12 +109,35 @@ def main():
                     record(thumb)
             record(dest)
             if file in SILHOUETTE_FILES:
+                # W26 PASS3 defect: the old subject-only crop still contained
+                # the "0.55 m / GRID REFERENCE ONLY" label at global x167/y507
+                # (the SVG card itself is translated by +27,+53).
+                # For blind recognition, render a reference-free ephemeral SVG.
+                clean_svg = strip_reference_overlay(raw)
+                check(file+"-source-reference-detached",
+                      b"GRID REFERENCE ONLY" not in clean_svg and b"0.55 m" not in clean_svg,
+                      "decorative scale legend removed from in-memory blind-test SVG only")
+                subject_render = Image.open(BytesIO(cairosvg.svg2png(bytestring=clean_svg)))
+                subject_render.load()
+                reference_free = subject_render.convert("RGB")
+                # A real pixel regression: prove the label area changed while a
+                # distant representative portion of the vehicle remains exact.
+                legend_region = (155,495,340,532)
+                vehicle_region = (330,280,610,480)
+                legend_changed = ImageChops.difference(
+                    px.crop(legend_region),reference_free.crop(legend_region)).getbbox() is not None
+                same_vehicle = ImageChops.difference(
+                    px.crop(vehicle_region),reference_free.crop(vehicle_region)).getbbox() is None
+                check(file+"-legend-pixels-removed",legend_changed,
+                      f"source-vs-blind PNG nonidentical within label region {legend_region}")
+                check(file+"-vehicle-pixels-identical",same_vehicle,
+                      f"source-vs-blind PNG byte-exact RGB in unaffected vehicle ROI {vehicle_region}")
                 x0, y0, x1, y1 = SILHOUETTE_CROP
                 check(file+"-subject-framing-bounds",
                       (0 <= x0 < x1 <= im.width and 0 <= y0 < y1 <= im.height
                        and x0 > 125 and y0 > 252 and y1 < 550),
                       f"subject-only crop {SILHOUETTE_CROP}; excludes reference cube/header/footer")
-                cropped=px.crop(SILHOUETTE_CROP)
+                cropped=reference_free.crop(SILHOUETTE_CROP)
                 # Proxy for nonempty image data, not shape quality or user recognition.
                 bright=sum(1 for pixel in cropped.getdata() if max(pixel)>=140)
                 check(file+"-subject-not-flat",bright>100,
