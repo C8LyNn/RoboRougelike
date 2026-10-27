@@ -180,7 +180,11 @@ def main():
     scene.render.resolution_y = 540
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
-    scene.world.color = (0.35, 0.35, 0.35)
+    scene.world = bpy.data.worlds.new("ENV03_Preview_World")
+    scene.world.use_nodes = True
+    background = scene.world.node_tree.nodes.get("Background")
+    background.inputs["Color"].default_value = (0.35, 0.38, 0.41, 1.0)
+    background.inputs["Strength"].default_value = 0.75
     scene.view_settings.view_transform = "Standard"
     add_area_light("Preview_Key", (1.3, -2.5, 3.5), 550, 3.0)
     add_area_light("Preview_Fill", (-1.9, 2.2, 2.6), 350, 2.8)
