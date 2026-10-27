@@ -13,14 +13,15 @@ SOURCES = {
     "Assets/R1/R1RunController.cs": "c6d5f3efe4949da68a5c48ec38ef5028af8b8410",
     "Assets/R3/R3VehicleModel.cs": "cdd75fff4923a382b16c430dac1452320eda88f6",
 }
-CHL_PIN = "077e692785aff2990a2d72a80fd1db62ac57b0e8"
+CHL_PIN = "43f8fb6cae682c89d12618d883b387b0bf5bc30d"
 CHL_SOURCES = {
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs": "edfc98c0adb55bf8b092db43d93a15be29e99490",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs": "5c736da620487e48131f6d454bcf231ae368b513",
     "Assets/RoboRougelikeChallenges/CHL003/Demo/B01.CHL003.Demo.asmdef": "cac7e135d03786732e910675bb6b4f795e561081",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseCore.cs": "fa8a12ae71addccc7acee587702bff041bc74d33",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs": "1e51b02cc833acb9dedbd8b6a0177fd4e42381a0",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Gate.cs": "2b9d887b098981578ad150d66feb024389645544",
-    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs": "2ec5334539cfe3b1108ad2c868e04be7a9b18129",
+    "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs": "9b777837179253300cd73cb5e156abe5221bb8d5",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003ContactMonitor.cs": "f0eaae5b84dcb1b118f175251f71215d635be5a9",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003FinishArbiter.cs": "0cb572a40a4120158c46ab36e312afee5c22de8d",
     "Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs": "b5050e3921092a2192d5928f86aec6ca0f208ab6",

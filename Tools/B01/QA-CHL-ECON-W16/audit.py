@@ -119,8 +119,8 @@ def main():
     require(pathlib.Path(args.chl).resolve()==actual_chl.resolve(),
        "CHL_SOURCE_NOT_PINNED_285")
     c=inspect_chl_directory(actual_chl)
-    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==13,
-       "CHL_EXPECTED_13_ACTUAL_CSHARP_FILES_MISSING")
+    require(c["state"]=="STATIC_BOUNDARY_CHECK_PASS" and c["count"]==14,
+       "CHL_EXPECTED_14_ACTUAL_CSHARP_FILES_MISSING")
     core=(actual_chl/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
     controller=(actual_chl/"Runtime/CHL003CourseController.cs").read_text(encoding="utf8")
     demo=(actual_chl/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
@@ -157,6 +157,12 @@ def main():
     demo_asm=json.loads((actual_chl/"Demo/B01.CHL003.Demo.asmdef").read_text())
     require(demo_asm.get("references")==["B01.CHL003.Runtime"],
        "CHL_W26_DEMO_ASMDEF_HOST_DEPENDENCY")
+    wheel=(actual_chl/"Runtime/CHL003WheelSupportWindow.cs").read_text(encoding="utf8")
+    motor=(actual_chl/"Runtime/CHL003VehicleMotor.cs").read_text(encoding="utf8")
+    require("public static bool WithinWheelReach(" in wheel and
+       "NearContactAllowanceMeters = 0.03f" in wheel and
+       "CHL003WheelSupportWindow.WithinWheelReach(" in motor,
+       "CHL_W26_WHEEL_SUPPORT_SOURCE_CHANGE_REQUIRES_REPIN")
     c["original_chl_pin"]=receipt["chl_commit"]
     c["w26_gate_is_stateless_forward_body_only"]=True
     c["core_completed_event_has_durable_activity_id"]=False
