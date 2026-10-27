@@ -109,4 +109,17 @@ class PartSizeSourceTests(unittest.TestCase):
         self.assertIn("Physics.ComputePenetration",
             (p.ROOT/"Assets/B01Packages/PARTSIZE001/Runtime/PartSizeNativePhysics.cs").read_text())
 
+    def test_14_package_bytes_match_frozen_git_blobs_even_on_windows(self):
+        payload,manifest=p.build(self.files,"a"*40)
+        by_path={f["path"]:f for f in manifest["files"]}
+        for path in (
+            "Assets/B01Packages/PARTSIZE001/Runtime/PartSizeContract.cs",
+            "Assets/B01Packages/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs",
+            "Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv"
+        ):
+            blob=p.committed_bytes(path)
+            self.assertEqual(p.sha(blob),by_path[path]["sha256"])
+            self.assertEqual(len(blob),by_path[path]["bytes"])
+        self.assertTrue(p.verify_zip(payload,manifest))
+
 if __name__=="__main__":unittest.main(verbosity=2)
