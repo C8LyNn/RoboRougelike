@@ -1,0 +1,50 @@
+name: B01-40 W42 independent original PARTSIZE operator preflight (no Unity)
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W42/**'
+      - '.github/workflows/b01-40-w42-partsize-independent-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-source-pinned-operator-preflight:
+    name: B01-40 real Git+PowerShell independent negative QA
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch exact original QA operator and producer commits
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 75b9c7902344eab4a012951aa9f578195b6bb943
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          test "$(git rev-parse 75b9c7902344eab4a012951aa9f578195b6bb943:Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1)" = "da575df50d51d5f76776d96e3b5251103b85d923"
+          git show "75b9c7902344eab4a012951aa9f578195b6bb943:Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1" > Tools/B01Validation/W42/owner-original-operator.ps1
+          test "$(git hash-object Tools/B01Validation/W42/owner-original-operator.ps1)" = "da575df50d51d5f76776d96e3b5251103b85d923"
+          echo "B01_40_EXACT_ORIGINAL_OPERATOR_GIT_BLOB_PASS"
+      - name: Parse both actual original owner script and independent audit test
+        shell: pwsh
+        run: |
+          foreach ($p in @("Tools/B01Validation/W42/owner-original-operator.ps1","Tools/B01Validation/W42/verify_original_partsize_operator.ps1")) {
+            $tokens=$null; $errors=$null
+            [System.Management.Automation.Language.Parser]::ParseFile($p,[ref]$tokens,[ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) { $errors | Out-String | Write-Host; throw "B01_40_INDEPENDENT_POWERSHELL_SYNTAX_RED:$p" }
+          }
+          Write-Host "B01_40_TWO_REAL_POWERSHELL_SOURCE_SYNTAX_PASS"
+      - name: Execute original script in independent real Git linked worktree positive and negative scenarios
+        shell: pwsh
+        run: |
+          & "Tools/B01Validation/W42/verify_original_partsize_operator.ps1" -OperatorPath "Tools/B01Validation/W42/owner-original-operator.ps1"
+      - name: Confirm this workflow did not execute Unity or approve G1
+        shell: bash
+        run: |
+          echo "B01-40 source-pinned genuine Git/pwsh preflight only; 17 Unity Edit + 11 Play and PhysX NOT_RUN"
+          echo "No Codex active worktree touched; source G0 preserved; HQ native license decision required"
