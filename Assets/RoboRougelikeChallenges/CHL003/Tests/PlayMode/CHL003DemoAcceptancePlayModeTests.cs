@@ -205,5 +205,22 @@ namespace B01.CHL003.Tests
             Assert.AreEqual(0,demo.Course.Core.CheckpointIndex,
                 "The first gate should not be rewarded by time or ray cast alone");
         }
+
+        [UnityTest]
+        public IEnumerator P13_ElapsedTimeTracksPhysicsTicksNotRenderedFrames()
+        {
+            demo.Motor.SetAxes(0f,0f);
+            yield return new WaitForFixedUpdate();
+            long step0=demo.Course.PhysicsStep;
+            float time0=demo.Course.Core.ElapsedSeconds;
+            // A variable number of rendered frames cannot create phantom
+            // elapsed duration if no fixed simulation step occurred.
+            for (int i=0;i<90;i++) yield return null;
+            long fixedTicks=demo.Course.PhysicsStep-step0;
+            float time=demo.Course.Core.ElapsedSeconds-time0;
+            Assert.Greater(fixedTicks,0);
+            Assert.AreEqual(fixedTicks*Time.fixedDeltaTime,time,.005f,
+                "Trial timing must use exactly physics fixed ticks");
+        }
     }
 }
