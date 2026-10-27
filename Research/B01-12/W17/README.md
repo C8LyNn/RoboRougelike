@@ -19,7 +19,7 @@ Selectable Light (demo 270kg / 2.00m wheel envelope width) and Heavy (demo 1150k
 A short inline, B expanded diagnostic, C compact; compare speed/comprehension, not only aesthetics. Three distinct variants in the SAME single HTML prototype, not three packages.
 
 ## Evidence and scope truth
-2026-10-27: 23/23 headless Chromium/Playwright **UI-interaction smoke PASS**, using injected local HTML content (`page.set_content`) because browser navigation to file:// and 127.0.0.1 was blocked by container policy. Four real browser screenshots (1440×960) and executable `tests/test_smoke.py` are included in the independently downloadable conversation ZIP. Browser screenshots contain synthetic scenarios, not Unity screenshots. **Unity native compile/Editor/PhysX/manual Light+Heavy completions NOT_RUN; human moderated sessions NOT_RUN.**
+2026-10-27: 28/28 headless Chromium/Playwright **UI-interaction smoke PASS**, using injected local HTML content (`page.set_content`) because browser navigation to file:// and 127.0.0.1 was blocked by container policy. Five real browser screenshots (1440×960) and executable `tests/test_smoke.py` are included in the independently downloadable conversation ZIP. Browser screenshots contain synthetic scenarios, not Unity screenshots. **Unity native compile/Editor/PhysX/manual Light+Heavy completions NOT_RUN; human moderated sessions NOT_RUN.**
 
 Verified research references: PARTSIZE PR #286 at `937838662f79c4c441d682d731fa860e4cc3d0f1`; CHL PR #285 at `30c0355a62764eb37798347612564ee51f3b36e1` (captured 2026-10-27; moving HEAD may supersede). There is no source coupling: this standalone HTML doesn't import any Unity code.
 
