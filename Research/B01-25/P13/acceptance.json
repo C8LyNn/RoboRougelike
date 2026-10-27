@@ -1,0 +1,45 @@
+{
+  "format": "B01-25/P13-level-acceptance-v1",
+  "kind": "SOURCE-GROUNDED_DESIGN_CONTRACT_NOT_RUNTIME",
+  "refs": {
+    "codexPr": 310,
+    "sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "blobs": {
+      "MapDraft.cs": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+      "MapWorld.cs": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+      "R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7"
+    },
+    "inheritedP12Commit": "758662782acd92026b39b09a60d92b7e587a34f9",
+    "chlSourceSha": "c7b2a234a286089383503da41883d624fe650551"
+  },
+  "LD01": {
+    "COMPLETE_IN_EDITOR": "actual MapWorld.Finished only on player Rigidbody Finish trigger",
+    "VALIDATED_ROUTE": "NOT_IMPLEMENTED",
+    "CHALLENGE_COMPLETE_PROPOSED": "uninterrupted physical Spawn→obstacle line→Finish, no teleport, no off-floor bypass, rig/map hash and observed active contact",
+    "FAIL_DESIGN_ONLY": "failed mobility, fall/no recovery, >90s research timeout, functional weaponless map blocked by current general DeployError",
+    "REWARD": "NONE_IN_EDITOR",
+    "nativeGate": "Light3 Heavy3 physically across 4 barriers"
+  },
+  "LD02": {
+    "COMPLETE_IN_EDITOR": "Finish touch (not enemy defeat)",
+    "COMBAT_COMPLETE": "NOT_IMPLEMENTED (two enemy defeats need HQ/Codex encounter)",
+    "LOS": "B01-24 SOURCE_RISK; opaque cover fire policy HQ not approved",
+    "FAIL_DESIGN_ONLY": "damage/90s/count kills not represented in map editor",
+    "REWARD": "NONE",
+    "nativeGate": "only cover geometry/drive could be sampled; combat NOT_RUN"
+  },
+  "LD03": {
+    "COMPLETE_IN_EDITOR": "Finish touch alone (neither branch/time recorded)",
+    "VALIDATED_CHOICE": "NOT_IMPLEMENTED",
+    "SHORT": "8 grid moves, LowBarrier(4,2)+Ramp(5,2)",
+    "DETOUR": "12 grid moves, z4/5 width 8m by floor occupancy, 4m-grid topological only",
+    "FAIL_DESIGN_ONLY": "cannot reach finish, >100s hypothetical, one route physically impassable; negative existing LD03_NEG removes both safe detour cells",
+    "REWARD": "no currency/loot; timesavings ONLY after native measurement",
+    "nativeGate": "per branch distinct Light+Heavy real physical trajectory, no synthesized times"
+  },
+  "globalNotes": [
+    "Race/combat fail/win are proposals, not engine API.",
+    "MapWorld MarkFinish is touch-based, no route provenance; HQ SANDBOX_TOUCH policy undecided.",
+    "Obstacle-free grid route test ignores speed/turning radius/physics/jumps."
+  ]
+}
