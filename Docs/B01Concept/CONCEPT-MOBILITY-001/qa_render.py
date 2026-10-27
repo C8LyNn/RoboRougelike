@@ -6,6 +6,7 @@ physical attachment, camera occlusion, collisions, suspension, movement or playa
 """
 from __future__ import annotations
 from pathlib import Path
+import shutil
 from io import BytesIO
 import hashlib
 import json
@@ -26,6 +27,19 @@ SVGNS = "{http://www.w3.org/2000/svg}"
 SILHOUETTE_CROP = (142, 264, 620, 529)
 SILHOUETTE_FILES = ["A-wheel.svg", "B-track.svg", "C-omni.svg"]
 SILHOUETTE_COLORS = ("#43cddc", "#efb66a", "#b6a0fa")
+# Published B01-11 study protocol #292 comment 6447607722. Do not show
+# the private mapping key or source filenames to the participant.
+BLIND_ORDERS = (
+    ("P01",  64, "ABC"),
+    ("P02",  64, "BCA"),
+    ("P03",  64, "CAB"),
+    ("P04",  64, "ACB"),
+    ("P05", 128, "BAC"),
+    ("P06", 128, "CBA"),
+    ("P07", 128, "ABC"),
+    ("P08", 128, "BCA"),
+)
+BLIND_CONCEPT_FILE = {"A": "A-wheel.svg", "B": "B-track.svg", "C": "C-omni.svg"}
 checks = []
 files = []
 
@@ -154,6 +168,68 @@ def main():
                 tile_samples.append((file,previews))
         except Exception as err:
             check(file+"-raster-encoded",False,str(err))
+    # Real blinded human-study preparation: exact published B01-11 eight-person
+    # counterbalance; NO human participants recruited or tested here.
+    # Only publish participant-safe folders to a projected viewer. The key is
+    # intentionally OUTSIDE this folder and must never be opened during study.
+    blind_dir=OUT/"blind-study"
+    blind_dir.mkdir(parents=True,exist_ok=True)
+    by_concept={file.split("-")[0]:previews for file,previews in tile_samples}
+    private_key=[]
+    for participant, side, sequence in BLIND_ORDERS:
+        destdir=blind_dir/participant
+        destdir.mkdir(parents=True,exist_ok=True)
+        session_valid=(len(sequence)==3 and set(sequence)==set(BLIND_CONCEPT_FILE)
+                       and side in (64,128) and set(by_concept)==set(BLIND_CONCEPT_FILE))
+        if not session_valid:
+            check("blind-"+participant+"-balanced",False,"invalid session labels/order/size")
+            continue
+        entries=[]
+        copied_correctly=True
+        names_neutral=True
+        for i,letter in enumerate(sequence,1):
+            source=OUT/BLIND_CONCEPT_FILE[letter].replace(".svg",f"-silhouette-{side}px.png")
+            neutral=destdir/f"stimulus-{i:02}.png"
+            shutil.copyfile(source,neutral)
+            # Identity byte check against the genuine, previously rasterized
+            # corrected stimulus; not a re-illustration or a different variant.
+            copied_correctly &= neutral.read_bytes()==source.read_bytes()
+            names_neutral &= (
+                all(secret not in str(neutral).lower() for secret in ("wheel","track","omni"))
+                and not any(secret in neutral.read_bytes()
+                            for secret in (b"A-wheel",b"B-track",b"C-omni",b"0.55 m")))
+            record(neutral)
+            entries.append({
+                "token":neutral.name,
+                "concept_key":letter,
+                "original_source_file":BLIND_CONCEPT_FILE[letter],
+                "image_sha256":hashlib.sha256(neutral.read_bytes()).hexdigest(),
+                "px_size":side
+            })
+        check("blind-"+participant+"-pixel-identity",copied_correctly,
+              "3 neutral PNGs copied byte-identically from reference-free actual renderer")
+        check("blind-"+participant+"-no-answer-leak",names_neutral,
+              "no wheel/track/omni label in subject folder path, PNG filename or basic byte scan")
+        private_key.append({"participant":participant,"sequence":sequence,
+                            "pixels":side,"stimuli":entries})
+    check("blind-eight-sessions",len(private_key)==8 and
+          sum(item["pixels"]==64 for item in private_key)==4 and
+          sum(item["pixels"]==128 for item in private_key)==4 and
+          sum(len(item["stimuli"]) for item in private_key)==24,
+          "8 disjoint three-image sessions, 4 at 64px + 4 at 128px, 24 files")
+    keyfile=OUT/"facilitator-KEEP_PRIVATE.json"
+    keyfile.write_text(json.dumps({
+        "instruction":"NEVER show this key, parent output directory, or original file names to participants; share only ONE blind-study/Pxx folder at a time; hide app title/path; user study NOT_RUN.",
+        "source":"B01-11 protocol issue #292 comment 6447607722",
+        "concept_art_approval":"HQ_NOT_SELECTED",
+        "responses_recorded":0,
+        "sessions":private_key
+    },indent=2)+"\\n",encoding="utf-8")
+    record(keyfile)
+    check("blind-private-key-separated",keyfile.parent==OUT and
+          keyfile.parent!=blind_dir and keyfile.is_file() and
+          not any(x.name.endswith(".json") for x in blind_dir.rglob("*")),
+          "mapping held outside participant folders; facilitator must protect access")
     # Side-by-side equal-size artwork; separate from full specification-sheet cards.
     if len(tile_samples)==3:
         board=Image.new("RGB",(3*196,260),(8,20,33))
