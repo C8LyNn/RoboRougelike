@@ -28,6 +28,18 @@ jobs:
       - name: Fetch original Codex PR302 physical host+geometry at EXACT SHA (not main)
         shell: bash
         run: git fetch --no-tags --depth=1 origin d44fa09c227dffca1c1f8832383bbd80430bba90
+      - name: Install .NET 8 for ORIGINAL pure C# socket negative fixture (no Unity)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute original producer C# typed-socket method and reject one false-green mutation
+        run: python Tools/B01/PARTSIZE001/W26Receipt/test_socket_authority_original_csharp.py --repo . --out partsize-original-socket-negative.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PARTSIZE-W58-original-socket-negative-${{ matrix.os }}
+          path: partsize-original-socket-negative.json
+          if-no-files-found: error
+          retention-days: 10
       - name: Run 24 actual source and host-scaled static geometry regressions (NOT Unity)
         run: python Tools/B01/PARTSIZE001/W26Receipt/test_source_payload_measurements.py
       - name: Emit seven host-corrected + prior counterfactual source AABB records
