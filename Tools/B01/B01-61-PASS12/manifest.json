@@ -1,0 +1,26 @@
+{
+  "owner": "B01-61",
+  "scope": "QA-only; not installed in Codex/game source",
+  "wave": "PASS12",
+  "codex_pr": 310,
+  "codex_sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+  "fixture": "B0161CrossFeatureRegressionTests.cs",
+  "fixture_git_blob": "9a1c06f1b9e3d5f0a13daecdb19041538d02075e",
+  "original_git_blobs": {
+    "Assets/R3/R3VehicleModel.cs": "9f1bf190c7535182c6ce375cbfe67f5b2862e811",
+    "Assets/MapEditor/R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "Assets/MOV009Integration/MOV009RunController.cs": "b18e888db10c31ca498d1cd875e0d6a5df60e37a",
+    "Assets/R1/R1RunController.cs": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
+    "Assets/Tests/Editor/MapEditorIntegrationTests.cs": "dc767fa9c72a0202bc44f6060b6865f925f18f2c",
+    "Assets/Tests/Editor/WeaponGroupTests.cs": "f2f9d8cdc5f2fbb25a03b01d98a65d440d3e85bc",
+    "Assets/Tests/Editor/SuspensionUxTests.cs": "3a81d7d0f3077c8a79dd31db0ebaba86c2b8ea08",
+    "Assets/Tests/Editor/MOV009ModelTests.cs": "0d5033f44713054ec5019aa755135a525e6ec10a"
+  },
+  "expected_tests": [
+    "DeepCopyPreservesABAndSuspensionButDoesNotShareMutableState",
+    "EditorGarageMapTestReturnPreservesGroupsSuspensionIdsAndScrap"
+  ],
+  "Unity_EditMode": "NOT_RUN",
+  "Unity_PlayMode": "NOT_RUN",
+  "Windows_Player": "NOT_RUN"
+}
