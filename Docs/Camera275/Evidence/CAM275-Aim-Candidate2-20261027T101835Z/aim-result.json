@@ -1,0 +1,847 @@
+{
+    "status": "Failed",
+    "method": "Native queued LMB and mouse aim; real projectiles / P12 HP, isolated stationary clear lane. Not human play or vehicle drive.",
+    "shots": [
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.65994930267334,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 12.196343421936036,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5004244446754456,
+                "y": 2.079770803451538,
+                "z": -25.143613815307618
+            },
+            "direction": {
+                "x": -0.05778557434678078,
+                "y": 0.020711839199066163,
+                "z": 0.9981141686439514
+            },
+            "aimPoint": {
+                "x": 0.000004289044227334671,
+                "y": 2.259134292602539,
+                "z": -16.499996185302736
+            }
+        },
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.642017364501954,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 3.301745653152466,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000030772434911341408,
+                "y": 2.0610876083374025,
+                "z": -25.141998291015626
+            },
+            "direction": {
+                "x": -7.823277883289848e-7,
+                "y": -0.0010637666564434767,
+                "z": 0.999999463558197
+            },
+            "aimPoint": {
+                "x": -0.000019330200302647427,
+                "y": 2.0306193828582765,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.64493942260742,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 1.2750036716461182,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5420714616775513,
+                "y": 2.0651228427886965,
+                "z": -25.142038345336915
+            },
+            "direction": {
+                "x": -0.00924401730298996,
+                "y": 0.003639530623331666,
+                "z": 0.999950647354126
+            },
+            "aimPoint": {
+                "x": -0.00004329158764448948,
+                "y": 2.2785630226135256,
+                "z": 33.500003814697269
+            }
+        },
+        {
+            "weapon": "Basic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.64217376708985,
+            "damage": 40.0,
+            "muzzleError": 0.0,
+            "range": 204.0,
+            "pitch": 0.9855660796165466,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000005004524609830696,
+                "y": 2.0603671073913576,
+                "z": -25.141992568969728
+            },
+            "direction": {
+                "x": 1.0858620669296215e-7,
+                "y": -0.0019031736301258207,
+                "z": 0.9999982118606567
+            },
+            "aimPoint": {
+                "x": 0.000015715702829766087,
+                "y": 1.872633934020996,
+                "z": 73.50000762939453
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.582097053527832,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 12.919280052185059,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.49591681361198428,
+                "y": 2.0820794105529787,
+                "z": -25.065773010253908
+            },
+            "direction": {
+                "x": -0.0577843151986599,
+                "y": 0.021452341228723527,
+                "z": 0.9980985522270203
+            },
+            "aimPoint": {
+                "x": 0.000006268340257520322,
+                "y": 2.266185760498047,
+                "z": -16.4999942779541
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.56400489807129,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 3.4550392627716066,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.0000018352333199800342,
+                "y": 2.0614829063415529,
+                "z": -25.063997268676759
+            },
+            "direction": {
+                "x": -7.743878427390882e-7,
+                "y": -0.0005524522857740521,
+                "z": 0.9999998211860657
+            },
+            "aimPoint": {
+                "x": -0.000020284376660129055,
+                "y": 2.0457029342651369,
+                "z": 3.5000038146972658
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.566959381103519,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.3663347959518433,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5413632988929749,
+                "y": 2.065338134765625,
+                "z": -25.064117431640626
+            },
+            "direction": {
+                "x": -0.009243260137736798,
+                "y": 0.003561668796464801,
+                "z": 0.9999509453773499
+            },
+            "aimPoint": {
+                "x": 0.000013783671420242172,
+                "y": 2.2739341259002687,
+                "z": 33.499969482421878
+            }
+        },
+        {
+            "weapon": "Automatic",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.56414794921875,
+            "damage": 24.0,
+            "muzzleError": 0.0,
+            "range": 252.0,
+            "pitch": 1.0239965915679932,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000005300822977005737,
+                "y": 2.060407876968384,
+                "z": -25.064002990722658
+            },
+            "direction": {
+                "x": 6.700766448375362e-7,
+                "y": -0.001700795372016728,
+                "z": 0.9999985694885254
+            },
+            "aimPoint": {
+                "x": 0.00007134635234251618,
+                "y": 1.8927704095840455,
+                "z": 73.5
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.374459266662598,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 14.714574813842774,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.48390281200408938,
+                "y": 2.0884833335876467,
+                "z": -24.85821533203125
+            },
+            "direction": {
+                "x": -0.057782284915447238,
+                "y": 0.0231498870998621,
+                "z": 0.9980607628822327
+            },
+            "aimPoint": {
+                "x": 0.000007526236004196107,
+                "y": 2.282351016998291,
+                "z": -16.499996185302736
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.359281539916993,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 2.911188840866089,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000004158105639362475,
+                "y": 2.0790600776672365,
+                "z": -24.856130599975587
+            },
+            "direction": {
+                "x": 7.025652166703367e-7,
+                "y": 0.01491252426058054,
+                "z": 0.9998887777328491
+            },
+            "aimPoint": {
+                "x": 0.000024082346499199048,
+                "y": 2.5019686222076418,
+                "z": 3.499998092651367
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 60m",
+            "feedback": "60 m • tor: 1/1",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 58.35893249511719,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.5805575847625733,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5394421219825745,
+                "y": 2.0660974979400636,
+                "z": -24.856077194213868
+            },
+            "direction": {
+                "x": -0.009242543950676918,
+                "y": 0.0035844368394464256,
+                "z": 0.9999508857727051
+            },
+            "aimPoint": {
+                "x": 0.00005716993473470211,
+                "y": 2.2752814292907717,
+                "z": 33.49998474121094
+            }
+        },
+        {
+            "weapon": "Heavy",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 100m",
+            "feedback": "100 m • tor: 1/1",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 98.36072540283203,
+            "damage": 100.0,
+            "muzzleError": 0.0,
+            "range": 144.0,
+            "pitch": 1.6284128427505494,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": -0.0000024571804715378677,
+                "y": 2.05083966255188,
+                "z": -24.856035232543947
+            },
+            "direction": {
+                "x": 2.2079686345932715e-7,
+                "y": -0.009753799997270108,
+                "z": 0.9999524354934692
+            },
+            "aimPoint": {
+                "x": 0.000019260556655353867,
+                "y": 1.0914490222930909,
+                "z": 73.50001525878906
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 10m",
+            "feedback": "10 m • tor: 1/1",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 8.659963607788086,
+            "damage": 72.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 12.292228698730469,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.5004187822341919,
+                "y": 2.079871892929077,
+                "z": -25.143606185913087
+            },
+            "direction": {
+                "x": -0.05778490751981735,
+                "y": 0.020825006067752839,
+                "z": 0.9981118440628052
+            },
+            "aimPoint": {
+                "x": 0.0000035359685170988088,
+                "y": 2.2602157592773439,
+                "z": -16.4999942779541
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Passed",
+            "error": "",
+            "hitCollider": "CAM275 P12 target 30m",
+            "feedback": "30 m • tor: 1/1",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 28.64202117919922,
+            "damage": 18.0,
+            "muzzleError": 0.0,
+            "range": 40.0,
+            "pitch": 3.322187900543213,
+            "expectedHit": true,
+            "cameraOnTarget": true,
+            "origin": {
+                "x": 0.000004365996119304327,
+                "y": 2.0611519813537599,
+                "z": -25.142009735107423
+            },
+            "direction": {
+                "x": -8.439773182544741e-7,
+                "y": -0.0009922004537656904,
+                "z": 0.9999995231628418
+            },
+            "aimPoint": {
+                "x": -0.00001980722117878031,
+                "y": 2.032733678817749,
+                "z": 3.499998092651367
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Shotgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "Shotgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Shotgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "Railgun",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon Railgun\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "BeamCutter",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon BeamCutter\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 10.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 30.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 60.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "weapon": "RocketLauncher",
+            "status": "Failed",
+            "error": "System.InvalidOperationException: Mount actual weapon RocketLauncher\r\n  at Camera275AimQA+<Execute>d__13.MoveNext () [0x0006d] in <43d06941ff594f228cc1725e0515cc47>:0 \r\n  at Camera275AimQA+<Start>d__9.MoveNext () [0x00178] in <43d06941ff594f228cc1725e0515cc47>:0 ",
+            "hitCollider": "",
+            "feedback": "",
+            "requestedDistance": 100.0,
+            "muzzleDistance": 0.0,
+            "damage": 0.0,
+            "muzzleError": 0.0,
+            "range": 0.0,
+            "pitch": 0.0,
+            "expectedHit": false,
+            "cameraOnTarget": false,
+            "origin": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "aimPoint": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        }
+    ],
+    "errors": []
+}

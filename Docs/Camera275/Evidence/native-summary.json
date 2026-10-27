@@ -1,0 +1,1059 @@
+[
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:05:09.5811159Z",
+    "source": "304c92b6c7ad1f4ed61cb42bf1b2218021f5258f",
+    "stage": "CAM275-AimAndZoom",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T10:04:45.2645962Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-AimAndZoom-20261027T100428Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:04:45.2179648Z",
+    "source": "304c92b6c7ad1f4ed61cb42bf1b2218021f5258f",
+    "stage": "CAM275-AimAndZoom",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:04:28.6654927Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-AimAndZoom-20261027T100428Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T10:06:22.0600226Z",
+    "source": "304c92b6c7ad1f4ed61cb42bf1b2218021f5258f",
+    "stage": "CAM275-AimAndZoom",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-AimAndZoom-20261027T100428Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275;FullMergeCameraTests;Exit273PauseTests\""
+    ],
+    "startedUtc": "2026-10-27T10:05:09.6077278Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 15,
+      "passed": 8,
+      "failed": 7,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt100Meters",
+        "result": "Failed",
+        "failure": "System.InvalidOperationException : Remove previous gun"
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt10Meters",
+        "result": "Failed",
+        "failure": "System.NullReferenceException : Object reference not set to an instance of an object"
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt30Meters",
+        "result": "Failed",
+        "failure": "System.InvalidOperationException : Remove previous gun"
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt60Meters",
+        "result": "Failed",
+        "failure": "System.NullReferenceException : Object reference not set to an instance of an object"
+      },
+      {
+        "name": "Camera275AimNativeTests.BeamDoesNotPretendToReach100Meters",
+        "result": "Failed",
+        "failure": "System.InvalidOperationException : Remove previous gun"
+      },
+      {
+        "name": "Camera275NativeTests.MouseOrbitRespondsOnTheRenderedFrameWithoutFollowSpeedLag",
+        "result": "Failed",
+        "failure": "System.NullReferenceException : Object reference not set to an instance of an object"
+      },
+      {
+        "name": "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+        "result": "Failed",
+        "failure": "  Expected: 3 +/- 0.01d\n  But was:  7.80000019f\n"
+      },
+      {
+        "name": "Camera275NativeTests.VisibleLevelTargetAt100MetersCanBePlacedUnderCrosshair",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.CombatPauseReturnsToMenuAndCleansActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.GaragePauseResumesWithoutStartingSimulation",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.RKeyStillResetsPausedTestRange",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.ShutdownPreparationIsIdempotentAndReleasesCursor",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.DelegatedCameraIgnoresTransientDebrisButStillClipsRealWalls",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.FacadeDelegatesToExactlyOneDisabledAutonomousRigAndGarageKeepsPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.OwnRootLevelProjectileIsNotConsumedAsCrosshairTarget",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-AimAndZoom-20261027T100428Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:09:26.6089018Z",
+    "source": "1b87185f3a1c94457a72d2d2c7729943929643a0",
+    "stage": "CAM275-AimAndZoom2",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:09:14.4041399Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-AimAndZoom2-20261027T100914Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:10:28.8448749Z",
+    "source": "1b87185f3a1c94457a72d2d2c7729943929643a0",
+    "stage": "CAM275-AimAndZoom2",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-AimAndZoom2-20261027T100914Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275\""
+    ],
+    "startedUtc": "2026-10-27T10:09:26.6575350Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt100Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt10Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt30Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt60Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.BeamDoesNotPretendToReach100Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275NativeTests.MouseOrbitRespondsOnTheRenderedFrameWithoutFollowSpeedLag",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275NativeTests.VisibleLevelTargetAt100MetersCanBePlacedUnderCrosshair",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-AimAndZoom2-20261027T100914Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:35:34.9308501Z",
+    "source": "5c17227a3e14928653eb4c7ebbed270a5747c9bf",
+    "stage": "CAM275-Baseline",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T09:34:39.6342663Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Baseline-20261027T093425Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:34:39.6012353Z",
+    "source": "5c17227a3e14928653eb4c7ebbed270a5747c9bf",
+    "stage": "CAM275-Baseline",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T09:34:25.2847807Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Baseline-20261027T093425Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:44:44.5645870Z",
+    "source": "aa81912aa18f2a90116fb13c71a39876d5493127",
+    "stage": "CAM275-Baseline2",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T09:44:22.8535673Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Baseline2-20261027T094410Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:44:22.8155226Z",
+    "source": "aa81912aa18f2a90116fb13c71a39876d5493127",
+    "stage": "CAM275-Baseline2",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T09:44:10.9703875Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Baseline2-20261027T094410Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:20:41.5577332Z",
+    "source": "405c1abff22cbb0df58d32e20babd5930a1309b9",
+    "stage": "CAM275-ConstructionFinal",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T10:20:20.1064184Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionFinal-20261027T102008Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:20:20.0637864Z",
+    "source": "405c1abff22cbb0df58d32e20babd5930a1309b9",
+    "stage": "CAM275-ConstructionFinal",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:20:08.2832058Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionFinal-20261027T102008Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T10:21:22.2892439Z",
+    "source": "405c1abff22cbb0df58d32e20babd5930a1309b9",
+    "stage": "CAM275-ConstructionFinal",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ConstructionFinal-20261027T102008Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275ConstructionTests\""
+    ],
+    "startedUtc": "2026-10-27T10:20:41.5692491Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 7,
+      "passed": 2,
+      "failed": 5,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275ConstructionTests.HeavyConstructionSafety",
+        "result": "Failed",
+        "failure": "  Test must actually exercise a collision correction\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.LightConstructionSafety",
+        "result": "Failed",
+        "failure": "  Test must actually exercise a collision correction\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.LosingLastWeaponClearsReticleState",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.StandardConstructionSafety",
+        "result": "Failed",
+        "failure": "  Test must actually exercise a collision correction\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.TallConstructionSafety",
+        "result": "Failed",
+        "failure": "  Test must actually exercise a collision correction\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.WideConstructionSafety",
+        "result": "Failed",
+        "failure": "  Test must actually exercise a collision correction\n  Expected: True\n  But was:  False\n"
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionFinal-20261027T102008Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:11:46.5242236Z",
+    "source": "d6386b6baec04d1bc716fe6093738f4592b0aaeb",
+    "stage": "CAM275-ConstructionRed",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:11:32.8592779Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionRed-20261027T101132Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T10:12:23.1800454Z",
+    "source": "d6386b6baec04d1bc716fe6093738f4592b0aaeb",
+    "stage": "CAM275-ConstructionRed",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ConstructionRed-20261027T101132Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275ConstructionTests\""
+    ],
+    "startedUtc": "2026-10-27T10:11:46.5698295Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 7,
+      "passed": 4,
+      "failed": 3,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275ConstructionTests.HeavyConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.LightConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.LosingLastWeaponClearsReticleState",
+        "result": "Failed",
+        "failure": "  Expected: 0\n  But was:  1\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.StandardConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.TallConstructionSafety",
+        "result": "Failed",
+        "failure": "  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.WideConstructionSafety",
+        "result": "Failed",
+        "failure": "System.NullReferenceException : Object reference not set to an instance of an object"
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionRed-20261027T101132Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:22:59.8994061Z",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "stage": "CAM275-ConstructionRetest",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T10:22:38.4089761Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionRetest-20261027T102225Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:22:38.3639119Z",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "stage": "CAM275-ConstructionRetest",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:22:25.8182598Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionRetest-20261027T102225Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:23:39.3535844Z",
+    "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+    "stage": "CAM275-ConstructionRetest",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ConstructionRetest-20261027T102225Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275ConstructionTests\""
+    ],
+    "startedUtc": "2026-10-27T10:22:59.9084171Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275ConstructionTests.HeavyConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.LightConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.LosingLastWeaponClearsReticleState",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.StandardConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.TallConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.WideConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ConstructionRetest-20261027T102225Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:50:12.3677981Z",
+    "source": "814525e6829ae046b170a1f961fe6f343d33a852",
+    "stage": "CAM275-Green",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T09:49:49.0584044Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Green-20261027T094935Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:49:49.0198596Z",
+    "source": "814525e6829ae046b170a1f961fe6f343d33a852",
+    "stage": "CAM275-Green",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T09:49:35.6430276Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Green-20261027T094935Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:50:43.3107261Z",
+    "source": "814525e6829ae046b170a1f961fe6f343d33a852",
+    "stage": "CAM275-Green",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-Green-20261027T094935Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275NativeTests|FullMergeCameraTests\""
+    ],
+    "startedUtc": "2026-10-27T09:50:12.3773085Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275NativeTests.MouseOrbitRespondsOnTheRenderedFrameWithoutFollowSpeedLag",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275NativeTests.VisibleLevelTargetAt100MetersCanBePlacedUnderCrosshair",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.DelegatedCameraIgnoresTransientDebrisButStillClipsRealWalls",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.FacadeDelegatesToExactlyOneDisabledAutonomousRigAndGarageKeepsPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.OwnRootLevelProjectileIsNotConsumedAsCrosshairTarget",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Green-20261027T094935Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:13:43.3995389Z",
+    "source": "9b88be5813c3f9c8a566e3f51f03050158cd2fb3",
+    "stage": "CAM275-MuzzleRed",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:13:31.3994078Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-MuzzleRed-20261027T101331Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T10:13:58.4190953Z",
+    "source": "9b88be5813c3f9c8a566e3f51f03050158cd2fb3",
+    "stage": "CAM275-MuzzleRed",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-MuzzleRed-20261027T101331Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear\""
+    ],
+    "startedUtc": "2026-10-27T10:13:43.4500876Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear",
+        "result": "Failed",
+        "failure": "  A ray starting inside an obstruction must not advertise a clear muzzle\n  Expected: 0\n  But was:  1\n"
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-MuzzleRed-20261027T101331Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:16:49.1570135Z",
+    "source": "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "stage": "CAM275-ReceiverGreen",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T10:16:27.6649445Z",
+    "phase": "Build",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ReceiverGreen-20261027T101615Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:16:27.6183233Z",
+    "source": "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "stage": "CAM275-ReceiverGreen",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T10:16:15.8564628Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ReceiverGreen-20261027T101615Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T10:18:44.4666226Z",
+    "source": "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "stage": "CAM275-ReceiverGreen",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ReceiverGreen-20261027T101615Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275;B01.CAMERA001;FullMergeCameraTests;Exit273PauseTests\""
+    ],
+    "startedUtc": "2026-10-27T10:16:49.1640360Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 44,
+      "passed": 42,
+      "failed": 2,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt100Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt10Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt30Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.ActualBasicProjectileHitsAt60Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275AimNativeTests.BeamDoesNotPretendToReach100Meters",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.HeavyConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.LightConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.LosingLastWeaponClearsReticleState",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.StandardConstructionSafety",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275ConstructionTests.TallConstructionSafety",
+        "result": "Failed",
+        "failure": "  Tall added cell 6\n  Expected: True\n  But was:  False\n"
+      },
+      {
+        "name": "Camera275ConstructionTests.WideConstructionSafety",
+        "result": "Failed",
+        "failure": "System.NullReferenceException : Object reference not set to an instance of an object"
+      },
+      {
+        "name": "Camera275NativeTests.MouseOrbitRespondsOnTheRenderedFrameWithoutFollowSpeedLag",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Camera275NativeTests.VisibleLevelTargetAt100MetersCanBePlacedUnderCrosshair",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.CombatPauseReturnsToMenuAndCleansActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.GaragePauseResumesWithoutStartingSimulation",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.RKeyStillResetsPausedTestRange",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.ShutdownPreparationIsIdempotentAndReleasesCursor",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.DelegatedCameraIgnoresTransientDebrisButStillClipsRealWalls",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.FacadeDelegatesToExactlyOneDisabledAutonomousRigAndGarageKeepsPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeCameraTests.OwnRootLevelProjectileIsNotConsumedAsCrosshairTarget",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.CallerCannotOverwriteRecordedPreviousTarget",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.CsvRawFloatsRemainInvariantInCommaDecimalLocale",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.InvalidFrameDoesNotMutateRecorder",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.MonotonicFrameAndCsvQuoteEscapeFailClosed",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.NegativeFrameRejectedAndMaxIntFrameCannotWrap",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.RawProvenanceSurvivesCallerSpoofAndIsRecomputable",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.UnchangedTargetWithChangedHitIdIsNotAnAngularJump",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelineTests.UnsafeCameraSampleNeverLabelsRateAsProvenCausality",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualCameraPoseFailureHasPriority",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualOwnRayOrWorldOverlapAlwaysFlagsCamera",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.InvalidZeroDeltaOrCoincidentTargetRejects",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.R12LightHitSwitchRequiresMoreThanOneFrameSlew",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.SafePoseButStableTargetGapIsUnresolvedNotCameraFault",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTransitionTests.StableTargetAndAlignedGunAreNotFalselyBlamed",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001FramingTests.BiggerAndTallerRobotsDemandMoreFramingDistance",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001FramingTests.DifferentResolutionWithSameAspectKeepsGeometry",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001FramingTests.EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001FramingTests.InvalidGeometryAndNonFiniteRequestFailClosed",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001FramingTests.SafeMaximumZoomNeverExceedsConfiguredLimit",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ReceiverGreen-20261027T101615Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T10:18:58.6228660Z",
+    "source": "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "stage": "CAM275-ReceiverGreen",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ReceiverGreen-20261027T101615Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"Camera275;B01.CAMERA001;FullMergeCameraTests;Exit273PauseTests\""
+    ],
+    "startedUtc": "2026-10-27T10:18:44.4847006Z",
+    "phase": "PlayMode",
+    "nunit": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests.NativeRayChangesEnemyToFloorAndRecordsSlewBudget",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001AimTimelinePhysicsTests.RealCameraFinalPoseFlagOutranksTargetRetargetClassification",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM01_Light_720_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM02_Light_1080_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM03_Heavy_720_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM04_Heavy_1080_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM05_Tall_720_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM06_Tall_1080_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM07_Wide_720_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM08_Wide_1080_FinalPose",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.HeavyToLightSwitchClearsPreviousSmoothing",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.IgnoresOwnCollidersWithoutDisablingThem",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "B01.CAMERA001.Tests.Camera001WorldCollisionTests.WorldObstacleShortensCameraSpringArm",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-ReceiverGreen-20261027T101615Z"
+  },
+  {
+    "exitCode": 1,
+    "finishedUtc": "2026-10-27T09:20:34.6699133Z",
+    "source": "c7355204f877faec713a77ae868a9998c4b36147",
+    "stage": "CAM275-Red",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T09:19:26.2465039Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-Red-20261027T091926Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T09:23:31.9395402Z",
+    "source": "d7badbcc478ddff02d55ea730cb3ac4cc7b06a20",
+    "stage": "CAM275-RedNative",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T09:22:51.6527153Z",
+    "phase": "Compile",
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-RedNative-20261027T092251Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T09:23:53.6563191Z",
+    "source": "d7badbcc478ddff02d55ea730cb3ac4cc7b06a20",
+    "stage": "CAM275-RedNative",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-RedNative-20261027T092251Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Camera275NativeTests\""
+    ],
+    "startedUtc": "2026-10-27T09:23:31.9871216Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 2,
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Camera275NativeTests.MouseOrbitRespondsOnTheRenderedFrameWithoutFollowSpeedLag",
+        "result": "Failed",
+        "failure": "  Follow damping must not make the deliberate mouse orbit lag several degrees\n  Expected: less than 1.5f\n  But was:  7.79045105f\n"
+      },
+      {
+        "name": "Camera275NativeTests.VisibleLevelTargetAt100MetersCanBePlacedUnderCrosshair",
+        "result": "Failed",
+        "failure": "  The player must be able to aim at a visible level target 100m away; first floor hit is not that target\n  Expected: <Camera275 stationary aim target 100m (UnityEngine.BoxCollider)>\n  But was:  <P12_Ground (UnityEngine.MeshCollider)>\n"
+      }
+    ],
+    "evidence": "Docs/Camera275/Evidence/FM270-CAM275-RedNative-20261027T092251Z"
+  }
+]

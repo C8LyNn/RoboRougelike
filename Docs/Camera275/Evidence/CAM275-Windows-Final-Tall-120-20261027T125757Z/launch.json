@@ -1,0 +1,30 @@
+{
+  "assemblySHA256": "3442a67274ee665b42e2b16e5122640cddc6d738bb81cff813bb9a9160da301a",
+  "exe": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Builds\\CAM275-Final\\RoboRougelike.exe",
+  "source": "c61894a6389e43727db42a6dd58f153a496923ee",
+  "width": 1280,
+  "method": "Actual Windows Player, native queued input and dynamic R3/R6; not human play",
+  "stage": "Final",
+  "height": 720,
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1280,
+    "-screen-height",
+    720,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-120-20261027T125757Z\\Player.log\"",
+    "-camera275-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Tall-120-20261027T125757Z\"",
+    "-camera275-vehicle",
+    "Tall",
+    "-camera275-fps",
+    120
+  ],
+  "startedUtc": "2026-10-27T12:57:57.9477978Z",
+  "vehicle": "Tall",
+  "fps": 120,
+  "pid": 52040
+}

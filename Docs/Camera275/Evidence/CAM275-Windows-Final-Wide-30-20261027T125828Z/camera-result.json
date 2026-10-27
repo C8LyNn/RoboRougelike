@@ -1,0 +1,31 @@
+{
+    "status": "Failed",
+    "vehicle": "Wide",
+    "startedUtc": "2026-10-27T12:58:31.7991859Z",
+    "finishedUtc": "2026-10-27T13:01:01.8533593Z",
+    "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+    "fps": 30,
+    "width": 1280,
+    "height": 720,
+    "frames": 4471,
+    "groundedFrames": 4442,
+    "ownRayHits": 0,
+    "worldOverlaps": 0,
+    "resets": 13,
+    "distance": 45.651123046875,
+    "peakAngularStep": 0.0,
+    "peakLinearStep": 0.24076461791992188,
+    "phases": [
+        "waiting",
+        "garage",
+        "stationary",
+        "flat-acceleration",
+        "braking",
+        "sharp-turn",
+        "low-steps",
+        "uneven-and-ramp"
+    ],
+    "errors": [
+        "System.TimeoutException: Drive fixture phase 3 target 3\r\n  at Camera275RuntimeQA.Update () [0x0003c] in <8b4f8f4f9cfd44eeb5f5c863a5d601c0>:0 "
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "status": "Passed",
+    "vehicle": "Light",
+    "startedUtc": "2026-10-27T12:44:08.4397648Z",
+    "finishedUtc": "2026-10-27T12:44:37.3873870Z",
+    "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+    "fps": 120,
+    "width": 1280,
+    "height": 720,
+    "frames": 3413,
+    "groundedFrames": 3167,
+    "ownRayHits": 0,
+    "worldOverlaps": 0,
+    "resets": 5,
+    "distance": 78.69132995605469,
+    "peakAngularStep": 0.4545638859272003,
+    "peakLinearStep": 0.21546931564807893,
+    "phases": [
+        "waiting",
+        "garage",
+        "stationary",
+        "flat-acceleration",
+        "braking",
+        "sharp-turn",
+        "low-steps",
+        "uneven-and-ramp",
+        "ramp-exit",
+        "orbit-and-max-zoom",
+        "settled"
+    ],
+    "errors": []
+}

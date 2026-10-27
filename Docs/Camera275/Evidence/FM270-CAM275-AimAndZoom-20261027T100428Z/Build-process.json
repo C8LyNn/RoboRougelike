@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T10:05:09.5811159Z",
+    "source":  "304c92b6c7ad1f4ed61cb42bf1b2218021f5258f",
+    "stage":  "CAM275-AimAndZoom",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T10:04:45.2645962Z",
+    "phase":  "Build"
+}

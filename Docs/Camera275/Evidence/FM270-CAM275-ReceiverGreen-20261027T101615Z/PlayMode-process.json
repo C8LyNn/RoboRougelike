@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T10:18:58.6228660Z",
+    "source":  "69938a0ea14e5ddbd6804e08a8280cd880d7d947",
+    "stage":  "CAM275-ReceiverGreen",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "PlayMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-ReceiverGreen-20261027T101615Z\\PlayMode.xml\"",
+                      "-testFilter",
+                      "\"Camera275;B01.CAMERA001;FullMergeCameraTests;Exit273PauseTests\""
+                  ],
+    "startedUtc":  "2026-10-27T10:18:44.4847006Z",
+    "phase":  "PlayMode"
+}

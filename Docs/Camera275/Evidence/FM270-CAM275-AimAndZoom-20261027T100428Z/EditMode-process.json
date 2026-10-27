@@ -1,0 +1,17 @@
+{
+    "exitCode":  2,
+    "finishedUtc":  "2026-10-27T10:06:22.0600226Z",
+    "source":  "304c92b6c7ad1f4ed61cb42bf1b2218021f5258f",
+    "stage":  "CAM275-AimAndZoom",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-AimAndZoom-20261027T100428Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"Camera275;FullMergeCameraTests;Exit273PauseTests\""
+                  ],
+    "startedUtc":  "2026-10-27T10:05:09.6077278Z",
+    "phase":  "EditMode"
+}

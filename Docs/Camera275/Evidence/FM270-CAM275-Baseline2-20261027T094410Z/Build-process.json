@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T09:44:44.5645870Z",
+    "source":  "aa81912aa18f2a90116fb13c71a39876d5493127",
+    "stage":  "CAM275-Baseline2",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T09:44:22.8535673Z",
+    "phase":  "Build"
+}

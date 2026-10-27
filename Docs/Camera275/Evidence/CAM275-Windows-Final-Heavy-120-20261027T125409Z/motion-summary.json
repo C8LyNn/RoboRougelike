@@ -1,0 +1,21 @@
+{
+  "evidence": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\CAM275-Windows-Final-Heavy-120-20261027T125409Z",
+  "frames": 17938,
+  "elapsed": 149.48776900000001,
+  "medianFPS": 119.9990832070043,
+  "slowFrameMs": 8.35,
+  "uncommandedAngularSpeedRMS": 0.00027100019950975873,
+  "uncommandedAngularSpeedP95": 0.00042849298784830694,
+  "uncommandedAngularSpeedMax": 0.001070974753729165,
+  "cameraVerticalAccelerationRMS": 2.0469211622786156,
+  "bodyVerticalAccelerationRMS": 8.194764557831734,
+  "fitRateRMS": 0.7272876374899352,
+  "freeOrbitYawErrorRMS": 0,
+  "actualYawDegreesPerInputPixel": null,
+  "selfRayFrames": 0,
+  "worldOverlapFrames": 0,
+  "conservativeCornerOffscreenFrames": 0,
+  "projectionQualification": "Derived from final native pose + raw AABB, frozen scene FOV60 and 16:9; unclipped frames only. Conservative bounds, not direct mesh/occlusion measurement.",
+  "resetCountChange": 0.0,
+  "qualification": "Actual native drive trace; not human comfort acceptance. Motion statistics exclude deliberate mouse input/collision and stationary frames as stated."
+}

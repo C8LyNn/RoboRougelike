@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T09:50:43.3107261Z",
+    "source":  "814525e6829ae046b170a1f961fe6f343d33a852",
+    "stage":  "CAM275-Green",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-CAM275-Green-20261027T094935Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"Camera275NativeTests|FullMergeCameraTests\""
+                  ],
+    "startedUtc":  "2026-10-27T09:50:12.3773085Z",
+    "phase":  "EditMode"
+}

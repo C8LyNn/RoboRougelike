@@ -1,0 +1,32 @@
+{
+    "status": "Passed",
+    "vehicle": "Heavy",
+    "startedUtc": "2026-10-27T12:50:22.7276837Z",
+    "finishedUtc": "2026-10-27T12:51:35.2169080Z",
+    "method": "Queued native input, actual R3/R6 physics and final rendered pose. Not human play or subjective comfort acceptance.",
+    "fps": 30,
+    "width": 1280,
+    "height": 720,
+    "frames": 2158,
+    "groundedFrames": 2152,
+    "ownRayHits": 0,
+    "worldOverlaps": 0,
+    "resets": 5,
+    "distance": 61.94425964355469,
+    "peakAngularStep": 1.292991280555725,
+    "peakLinearStep": 0.9872323870658875,
+    "phases": [
+        "waiting",
+        "garage",
+        "stationary",
+        "flat-acceleration",
+        "braking",
+        "sharp-turn",
+        "low-steps",
+        "uneven-and-ramp",
+        "ramp-exit",
+        "orbit-and-max-zoom",
+        "settled"
+    ],
+    "errors": []
+}

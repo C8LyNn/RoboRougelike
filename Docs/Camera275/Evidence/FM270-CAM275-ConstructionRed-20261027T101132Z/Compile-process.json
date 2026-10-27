@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T10:11:46.5242236Z",
+    "source":  "d6386b6baec04d1bc716fe6093738f4592b0aaeb",
+    "stage":  "CAM275-ConstructionRed",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T10:11:32.8592779Z",
+    "phase":  "Compile"
+}
