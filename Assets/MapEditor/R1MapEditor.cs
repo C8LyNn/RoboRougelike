@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using RoboRougelike.MapEditor;
 using RoboRougelike.R3;
@@ -18,6 +19,8 @@ namespace RoboRougelike.R1
         public MapWorld EditorWorld {get;private set;}
         public MapItemKind EditorKind=MapItemKind.Ground;
         public bool EditorRemove;
+        public bool EditorSelect;
+        public MapItem EditorSelected {get;private set;}
         public int EditorRotation;
         public int EditorScaleX=1,EditorScaleY=1,EditorScaleZ=1;
         public string EditorName="Moja mapa",EditorMessage="Wybierz element i kliknij siatkę.";
@@ -101,13 +104,42 @@ namespace RoboRougelike.R1
         public void LoadEditedMap()
         {
             if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path)){EditorMessage="Niepoprawna nazwa mapy.";return;}
-            if(MapStorage.Load(path,EditorDraft,out var error)){EditorWorld.Build(EditorDraft,palette);EditorMessage="Wczytano: "+EditorName;}
+            if(MapStorage.Load(path,EditorDraft,out var error)){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage="Wczytano: "+EditorName;}
             else EditorMessage=error;
         }
         public void ChangeEditedMap(bool undo)
-        {if((undo?EditorDraft.Undo():EditorDraft.Redo())){EditorWorld.Build(EditorDraft,palette);EditorMessage=undo?"Cofnięto zmianę.":"Ponowiono zmianę.";}}
+        {if((undo?EditorDraft.Undo():EditorDraft.Redo())){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=undo?"Cofnięto zmianę.":"Ponowiono zmianę.";}}
         public void ToggleMapFloor()
-        {if(EditorDraft.SetGlobalFloor(!EditorDraft.GlobalFloor)){EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorDraft.GlobalFloor?"Włączono podłoże całej mapy.":"Wyłączono podłoże całej mapy.";}}
+        {if(EditorDraft.SetGlobalFloor(!EditorDraft.GlobalFloor)){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorDraft.GlobalFloor?"Włączono podłoże całej mapy.":"Wyłączono podłoże całej mapy.";}}
+        public void SetMapTool(bool select,bool remove)
+        {EditorSelect=select;EditorRemove=remove;EditorSelected=null;EditorWorld.HideGhost();}
+        public void ChangeMapScale(int axis,int direction)
+        {
+            if(axis<0||axis>2)return;
+            int x=EditorScaleX,y=EditorScaleY,z=EditorScaleZ;
+            if(axis==0)x=Mathf.Clamp(x+direction,1,MapDraft.MaxScale);
+            if(axis==1)y=Mathf.Clamp(y+direction,1,MapDraft.MaxScale);
+            if(axis==2)z=Mathf.Clamp(z+direction,1,MapDraft.MaxScale);
+            if(x==EditorScaleX&&y==EditorScaleY&&z==EditorScaleZ)return;
+            if(EditorSelect)
+            {
+                if(EditorSelected==null||!EditorDraft.Items.Contains(EditorSelected)){EditorSelected=null;EditorMessage="Najpierw zaznacz element.";return;}
+                if(!EditorDraft.Resize(EditorSelected,EditorRotation,x,y,z)){EditorMessage="Nie można zmienić skali: pole zajęte lub granica mapy.";return;}
+                EditorWorld.Build(EditorDraft,palette);EditorMessage="Zmieniono skalę zaznaczonego elementu.";
+            }
+            EditorScaleX=x;EditorScaleY=y;EditorScaleZ=z;
+        }
+        public void RotateMapItem()
+        {
+            int rotation=(EditorRotation+1)%4;
+            if(EditorSelect)
+            {
+                if(EditorSelected==null||!EditorDraft.Items.Contains(EditorSelected)){EditorSelected=null;EditorMessage="Najpierw zaznacz element.";return;}
+                if(!EditorDraft.Resize(EditorSelected,rotation,EditorScaleX,EditorScaleY,EditorScaleZ)){EditorMessage="Nie można obrócić: pole zajęte lub granica mapy.";return;}
+                EditorWorld.Build(EditorDraft,palette);EditorMessage="Obrócono zaznaczony element.";
+            }
+            EditorRotation=rotation;
+        }
         void UpdateEditorCamera()
         {
             if(!MapEditing||Camera.main==null)return;
@@ -133,7 +165,7 @@ namespace RoboRougelike.R1
             Vector2 virtualPos=(raw-new Vector2((Screen.width-1280*scale)*.5f,(Screen.height-720*scale)*.5f))/scale;
             if(e.type==EventType.KeyDown&&string.IsNullOrEmpty(GUI.GetNameOfFocusedControl()))
             {
-                if(e.keyCode==KeyCode.V){EditorRotation=(EditorRotation+1)%4;e.Use();return;}
+                if(e.keyCode==KeyCode.V){RotateMapItem();e.Use();return;}
                 if(e.control&&e.keyCode==KeyCode.Z){ChangeEditedMap(!e.shift);e.Use();return;}
                 if(e.control&&e.keyCode==KeyCode.Y){ChangeEditedMap(false);e.Use();return;}
             }
@@ -147,15 +179,16 @@ namespace RoboRougelike.R1
             if(click){GUI.FocusControl(null);EditorTextFocused=false;}
             var ray=Camera.main.ScreenPointToRay(new Vector2(raw.x,Screen.height-raw.y));
             var hits=Physics.RaycastAll(ray,1000,~0,QueryTriggerInteraction.Ignore);
-            float nearest=float.PositiveInfinity;Vector3 point=default;bool hasPoint=false;
+            float nearest=float.PositiveInfinity;Vector3 point=default;bool hasPoint=false;MapItem hitItem=null;
             foreach(var hit in hits)
                 if(EditorWorld.Layout!=null&&hit.collider.transform.IsChildOf(EditorWorld.Layout)&&hit.distance<nearest)
-                {nearest=hit.distance;point=hit.point;hasPoint=true;}
+                {nearest=hit.distance;point=hit.point;hasPoint=true;hitItem=hit.collider.GetComponentInParent<MapItemReference>()?.Item;}
             if(!hasPoint&&new Plane(Vector3.up,Vector3.zero).Raycast(ray,out float distance)){point=ray.GetPoint(distance);hasPoint=true;}
             if(hasPoint)
             {
                 var cell=MapWorld.Cell(point);
-                if(EditorRemove)EditorWorld.HideGhost();
+                if((EditorRemove||EditorSelect)&&hitItem!=null)cell=new Vector2Int(hitItem.x,hitItem.z);
+                if(EditorRemove||EditorSelect)EditorWorld.HideGhost();
                 else
                 {
                     var item=new MapItem{kind=EditorKind,x=cell.x,z=cell.y,rotation=EditorRotation,scaleX=EditorScaleX,scaleY=EditorScaleY,scaleZ=EditorScaleZ};
@@ -164,9 +197,19 @@ namespace RoboRougelike.R1
                 }
                 if(click)
                 {
-                    bool changed=EditorRemove?EditorDraft.Remove(cell.x,cell.y):EditorDraft.Place(EditorKind,cell.x,cell.y,EditorRotation,EditorScaleX,EditorScaleY,EditorScaleZ);
-                    if(changed){EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
-                    else EditorMessage="Nie można zmienić tego pola.";
+                    if(EditorSelect)
+                    {
+                        EditorSelected=EditorDraft.ItemAt(cell.x,cell.y);
+                        if(EditorSelected!=null&&EditorDraft.GlobalFloor&&EditorSelected.kind==MapItemKind.Ground)EditorSelected=null;
+                        if(EditorSelected==null)EditorMessage="Na tym polu nie ma elementu.";
+                        else{EditorRotation=EditorSelected.rotation;EditorScaleX=EditorSelected.scaleX;EditorScaleY=EditorSelected.scaleY;EditorScaleZ=EditorSelected.scaleZ;EditorMessage="Zaznaczono element. Zmień skalę lub obrót.";}
+                    }
+                    else
+                    {
+                        bool changed=EditorRemove?EditorDraft.Remove(cell.x,cell.y):EditorDraft.Place(EditorKind,cell.x,cell.y,EditorRotation,EditorScaleX,EditorScaleY,EditorScaleZ);
+                        if(changed){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
+                        else EditorMessage="Nie można zmienić tego pola.";
+                    }
                 }
             }
             else EditorWorld.HideGhost();

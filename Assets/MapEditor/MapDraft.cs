@@ -72,11 +72,25 @@ namespace RoboRougelike.MapEditor
             Checkpoint();if(unique!=null)items.Remove(unique);
             items.Add(new MapItem{kind=kind,x=x,z=z,rotation=rotation,scaleX=sx,scaleY=sy,scaleZ=sz});return true;
         }
-        public bool Remove(int x,int z)
+        public MapItem ItemAt(int x,int z)
         {
             var cell=new Vector2Int(x,z);
-            var found=items.LastOrDefault(p=>!Ground(p.kind)&&Footprint(p).Contains(cell))??items.LastOrDefault(p=>Footprint(p).Contains(cell));
-            if(found==null)return false;Checkpoint();items.Remove(found);return true;
+            return items.LastOrDefault(p=>!Ground(p.kind)&&Footprint(p).Contains(cell))??items.LastOrDefault(p=>Footprint(p).Contains(cell));
+        }
+        public bool Resize(MapItem item,int rotation,int sx,int sy,int sz)
+        {
+            if(item==null||!items.Contains(item)||(GlobalFloor&&Ground(item.kind)))return false;
+            var next=item.Copy();next.rotation=((rotation%4)+4)%4;next.scaleX=sx;next.scaleY=sy;next.scaleZ=sz;
+            if(!Valid(next))return false;
+            var cells=new HashSet<Vector2Int>(Footprint(next));
+            if(items.Any(a=>a!=item&&Ground(a.kind)==Ground(item.kind)&&Footprint(a).Any(cells.Contains)))return false;
+            if(item.rotation==next.rotation&&item.scaleX==sx&&item.scaleY==sy&&item.scaleZ==sz)return false;
+            Checkpoint();item.rotation=next.rotation;item.scaleX=sx;item.scaleY=sy;item.scaleZ=sz;return true;
+        }
+        public bool Remove(int x,int z)
+        {
+            var found=ItemAt(x,z);
+            if(found==null||(GlobalFloor&&Ground(found.kind)))return false;Checkpoint();items.Remove(found);return true;
         }
         public bool Undo(){if(!CanUndo)return false;redo.Push(Capture());Restore(undo.Pop());return true;}
         public bool Redo(){if(!CanRedo)return false;undo.Push(Capture());Restore(redo.Pop());return true;}

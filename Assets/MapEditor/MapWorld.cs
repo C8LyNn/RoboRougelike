@@ -38,6 +38,7 @@ namespace RoboRougelike.MapEditor
         {
             var o=new GameObject(item.kind.ToString());o.transform.SetParent(parent,false);
             ApplyTransform(o,item);
+            if(!preview)o.AddComponent<MapItemReference>().Item=item;
             var material=preview?palette.Valid:palette.Parts[0];
             if(item.kind==MapItemKind.Ramp)
             {
@@ -125,4 +126,5 @@ namespace RoboRougelike.MapEditor
         public MapWorld Owner;
         void OnTriggerEnter(Collider other){if(Owner!=null)Owner.MarkFinish(other);}
     }
+    public sealed class MapItemReference : MonoBehaviour { public MapItem Item; }
 }

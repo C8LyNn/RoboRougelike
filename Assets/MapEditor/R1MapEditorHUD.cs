@@ -13,14 +13,15 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(25,58,280,30),"Wybierz element:",small);
             for(int i=0;i<mapNames.Length;i++)
             {
-                int index=i;bool selected=!run.EditorRemove&&(int)run.EditorKind==index;
+                int index=i;bool selected=!run.EditorRemove&&!run.EditorSelect&&(int)run.EditorKind==index;
                 if(GUI.Button(new Rect(25+(i%2)*138,85+(i/2)*38,132,33),(selected?"●  ":"")+mapNames[i],compactButton))
-                {run.EditorKind=(MapItemKind)index;run.EditorRemove=false;GUI.FocusControl(null);}
+                {run.EditorKind=(MapItemKind)index;run.SetMapTool(false,false);GUI.FocusControl(null);}
             }
             GUI.Label(new Rect(25,282,270,22),"Skala elementu:",small);
-            MapScalePicker(25,"X",ref run.EditorScaleX);MapScalePicker(115,"Y",ref run.EditorScaleY);MapScalePicker(205,"Z",ref run.EditorScaleZ);
-            if(GUI.Button(new Rect(25,350,130,35),"Obróć 90° [V]",compactButton)){run.EditorRotation=(run.EditorRotation+1)%4;GUI.FocusControl(null);}
-            if(GUI.Button(new Rect(165,350,130,35),run.EditorRemove?"Usuwanie ✓":"Usuń",compactButton)){run.EditorRemove=!run.EditorRemove;GUI.FocusControl(null);}
+            MapScalePicker(run,25,"X",0,run.EditorScaleX);MapScalePicker(run,115,"Y",1,run.EditorScaleY);MapScalePicker(run,205,"Z",2,run.EditorScaleZ);
+            if(GUI.Button(new Rect(25,350,84,35),"Obróć [V]",compactButton)){run.RotateMapItem();GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(115,350,84,35),run.EditorRemove?"Usuń ✓":"Usuń",compactButton)){run.SetMapTool(false,!run.EditorRemove);GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(205,350,90,35),run.EditorSelect?"Wybór ✓":"Zaznacz",compactButton)){run.SetMapTool(!run.EditorSelect,false);GUI.FocusControl(null);}
             if(GUI.Button(new Rect(25,390,270,35),run.EditorDraft.GlobalFloor?"Podłoga całej mapy: WŁ":"Podłoga całej mapy: WYŁ",compactButton))run.ToggleMapFloor();
             GUI.enabled=run.EditorDraft.CanUndo;if(GUI.Button(new Rect(25,430,130,35),"Cofnij",compactButton))run.ChangeEditedMap(true);
             GUI.enabled=run.EditorDraft.CanRedo;if(GUI.Button(new Rect(165,430,130,35),"Ponów",compactButton))run.ChangeEditedMap(false);GUI.enabled=true;
@@ -35,11 +36,11 @@ namespace RoboRougelike.R1
             Panel(new Rect(340,615,920,88));
             GUI.Label(new Rect(355,624,890,65),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
         }
-        void MapScalePicker(float x,string axis,ref int value)
+        void MapScalePicker(R1RunController run,float x,string axis,int index,int value)
         {
             GUI.Label(new Rect(x,305,85,22),axis+"  ×"+value,small);
-            if(GUI.Button(new Rect(x,325,38,25),"−",compactButton)){value=Mathf.Max(1,value-1);GUI.FocusControl(null);}
-            if(GUI.Button(new Rect(x+42,325,38,25),"+",compactButton)){value=Mathf.Min(MapDraft.MaxScale,value+1);GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(x,325,38,25),"−",compactButton)){run.ChangeMapScale(index,-1);GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(x+42,325,38,25),"+",compactButton)){run.ChangeMapScale(index,1);GUI.FocusControl(null);}
         }
         void DrawMapTest(R1RunController run)
         {
