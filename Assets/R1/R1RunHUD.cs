@@ -93,8 +93,8 @@ namespace RoboRougelike.R1
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
                     DrawAimReticle(run);
                     GUI.Label(new Rect(24, 676, 900, 26),run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
-                        "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM — ogień":
-                        "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM — ogień • Kółko — przybliżenie",small);
+                        "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM/PPM — ogień":
+                        "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM/PPM — ogień • Kółko — przybliżenie",small);
                     DrawFeedback();
                     return;
                 }
@@ -126,7 +126,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
-                GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM — ogień • Esc — pauza",small);
+                GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM/PPM — ogień • Esc — pauza",small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
             {
@@ -252,6 +252,10 @@ namespace RoboRougelike.R1
             if(!run.ReactorPrepared&&!run.SandboxWorkshop){GUI.enabled=run.CanChooseGeneratedArena;
                 if(GUI.Button(new Rect(355,80,280,38),"Generowana arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();GUI.enabled=true;}
             DrawFullActivityGarageActions(run);
+            Panel(new Rect(350,452,560,76));
+            GUI.Label(new Rect(363,458,370,24),"A / LPM: "+WeaponGroupName(model.WeaponGroupA),small);
+            GUI.Label(new Rect(363,485,370,24),"B / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
+            if(GUI.Button(new Rect(740,465,155,48),"Zamień A / B",compactButton))model.SwapWeaponGroups();
             if(GUI.Button(new Rect(355,538,125,44),"Obrót ←",compactButton))garage.Orbit(-25);
             if(GUI.Button(new Rect(485,538,125,44),"Obrót →",compactButton))garage.Orbit(25);
             if(GUI.Button(new Rect(615,538,125,44),"Widok ↑",compactButton))garage.Tilt(10);
@@ -267,6 +271,7 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(!model.CanDeploy)GUI.Label(new Rect(970,650,280,55),model.DeployError,small);
         }
+        private static string WeaponGroupName(R4WeaponKind? kind) => kind.HasValue?R4WeaponDefinition.Get(kind.Value).ShortName:"—";
         private static string PartName(R3PartKind kind) => kind==R3PartKind.Gun?"Broń":R4WeaponDefinition.PartName(kind);
     }
 }

@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T20:23:16.9676629Z",
+    "source":  "a0c50dfb7e25a61c0e55e55b94dea24e8fe68f30",
+    "stage":  "WGROUP-RC",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T20:23:05.7401984Z",
+    "phase":  "Compile"
+}

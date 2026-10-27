@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T20:24:17.9010599Z",
+    "source":  "a0c50dfb7e25a61c0e55e55b94dea24e8fe68f30",
+    "stage":  "WGROUP-RC",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"<WORKSPACE>\\Desktop\\Prototypy\\RoboRougelike-WeaponGroups305\\Artifacts\\Local\\FM270-WGROUP-RC-20261027T202305Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"WeaponGroupTests;R4CombatTests.BothMouseButtonsFireSeparateGroupsAndPauseRequiresRelease;PerWeaponReticleTests;WeaponTypeLimitTests;MapEditorExpansionTests;MapEditorIntegrationTests;RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests;RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests;B01.CAMERA001.Tests.Camera001WorldCollisionTests\""
+                  ],
+    "startedUtc":  "2026-10-27T20:23:38.4562430Z",
+    "phase":  "EditMode"
+}

@@ -86,6 +86,24 @@ namespace RoboRougelike.R3
         public float BoosterThrustNewtons=3000, BoosterDurationSeconds=1;
         public float HoverHeightMeters=1;
         public float GrappleReadyAt;
+        // Assignments follow mounted types, including damaged plans that can be repaired.
+        R4WeaponKind? weaponGroupA, weaponGroupB;
+        public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
+        public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
+        public void SyncWeaponGroups()
+        {
+            var types=Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Take(2).ToList();
+            if(weaponGroupA.HasValue&&!types.Contains(weaponGroupA.Value))weaponGroupA=null;
+            if(weaponGroupB.HasValue&&!types.Contains(weaponGroupB.Value))weaponGroupB=null;
+            foreach(var kind in types)
+            {
+                if(weaponGroupA==kind||weaponGroupB==kind)continue;
+                if(!weaponGroupA.HasValue)weaponGroupA=kind;
+                else if(!weaponGroupB.HasValue)weaponGroupB=kind;
+            }
+        }
+        public void SwapWeaponGroups()
+        { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; }
         public R3GarageEconomy Economy { get; }
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
@@ -103,6 +121,7 @@ namespace RoboRougelike.R3
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
+            SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;
             return copy;
         }
         public void Award(int amount) { Scrap = (int)Math.Min(100000L, Scrap + (long)Math.Max(0, amount)); }

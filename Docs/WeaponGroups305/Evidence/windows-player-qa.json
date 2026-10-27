@@ -1,0 +1,18 @@
+{
+    "status": "PASS",
+    "error": "",
+    "batchMode": true,
+    "menu": true,
+    "garage": true,
+    "mapPersistence": true,
+    "testDrive": true,
+    "actualWheelContact": true,
+    "driveAcrossRamp": true,
+    "finish": true,
+    "returnToEditor": true,
+    "globalFloor": true,
+    "scaledObject": true,
+    "ghost": true,
+    "additionalObjects": true,
+    "maxZ": 9.043984413146973
+}

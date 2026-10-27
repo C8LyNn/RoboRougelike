@@ -35,6 +35,14 @@ namespace RoboRougelike.WeaponIntegration
             return part.Weapon==R4WeaponKind.RocketLauncher||RRLHitRouter.CanHit(collider,owner);
         }
 
+        // Spread numbered labels even when many barrel markers converge at the same point.
+        public static Vector2 LabelOffset(int index)
+        {
+            float angle=Mathf.Max(0,index)*2.399963f;
+            float distance=16+Mathf.Sqrt(Mathf.Max(0,index))*18;
+            return new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*distance;
+        }
+
         public static Vector2 ToHudPoint(Vector2 viewport,Rect pixelRect,Vector2 screen)
         {
             float scale=Mathf.Min(screen.x/1280f,screen.y/720f);

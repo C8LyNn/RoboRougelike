@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="52" result="Passed" total="52" passed="52" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0,9152072">
+  <test-suite type="TestSuite" id="1682" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="474" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.915207" total="52" passed="52" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1030" name="B01.CAMERA001.PlayModeTests.dll" fullname="<WORKSPACE>/Desktop/Prototypy/RoboRougelike-WeaponGroups305/Library/ScriptAssemblies/B01.CAMERA001.PlayModeTests.dll" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.132149" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48804" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1031" name="B01" fullname="B01" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.124165" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1032" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.119021" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1033" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.108034" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1016" name="Camera001WorldCollisionTests" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.094766" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1020" name="CAM01_Light_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM01_Light_720_FinalPose" methodname="CAM01_Light_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="892811918" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.028187" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="CAM02_Light_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM02_Light_1080_FinalPose" methodname="CAM02_Light_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="204270647" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.003160" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="CAM03_Heavy_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM03_Heavy_720_FinalPose" methodname="CAM03_Heavy_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1845098271" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.002902" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="CAM04_Heavy_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM04_Heavy_1080_FinalPose" methodname="CAM04_Heavy_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="631195737" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.002966" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1024" name="CAM05_Tall_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM05_Tall_720_FinalPose" methodname="CAM05_Tall_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1393010553" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.002894" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="CAM06_Tall_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM06_Tall_1080_FinalPose" methodname="CAM06_Tall_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1610824275" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.003087" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="CAM07_Wide_720_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM07_Wide_720_FinalPose" methodname="CAM07_Wide_720_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1792781262" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.003668" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="CAM08_Wide_1080_FinalPose" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM08_Wide_1080_FinalPose" methodname="CAM08_Wide_1080_FinalPose" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1673841150" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.003123" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1028" name="CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration" methodname="CAM09_ContinuousCorridor_NoPivotSnapOrWallPenetration" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="303647845" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.002488" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput" methodname="CAM10_RemovedPart_RecalculatesActualAimWithoutMouseInput" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1987184104" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.001656" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="HeavyToLightSwitchClearsPreviousSmoothing" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.HeavyToLightSwitchClearsPreviousSmoothing" methodname="HeavyToLightSwitchClearsPreviousSmoothing" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1014014420" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.001123" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="IgnoresOwnCollidersWithoutDisablingThem" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.IgnoresOwnCollidersWithoutDisablingThem" methodname="IgnoresOwnCollidersWithoutDisablingThem" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="1435263343" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.001208" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="WorldObstacleShortensCameraSpringArm" fullname="B01.CAMERA001.Tests.Camera001WorldCollisionTests.WorldObstacleShortensCameraSpringArm" methodname="WorldObstacleShortensCameraSpringArm" classname="B01.CAMERA001.Tests.Camera001WorldCollisionTests" runstate="Runnable" seed="927597752" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.001455" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1549" name="RoboRougelike.WPN001Shotgun.PlayModeTests.dll" fullname="<WORKSPACE>/Desktop/Prototypy/RoboRougelike-WeaponGroups305/Library/ScriptAssemblies/RoboRougelike.WPN001Shotgun.PlayModeTests.dll" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.643679" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48804" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1550" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.642382" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1551" name="WPN001Shotgun" fullname="RoboRougelike.WPN001Shotgun" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.641140" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1552" name="Tests" fullname="RoboRougelike.WPN001Shotgun.Tests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.639960" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1553" name="PlayMode" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.638572" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1530" name="ShotgunModulePlayModeTests" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.637344" total="18" passed="18" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1539" name="AmmoRunsOutAfterFirstVolley" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.AmmoRunsOutAfterFirstVolley" methodname="AmmoRunsOutAfterFirstVolley" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="62749556" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.010455" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1536" name="CooldownEventuallyExpires" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.CooldownEventuallyExpires" methodname="CooldownEventuallyExpires" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1012876677" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.000720" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1535" name="CooldownRejectsAnotherShot" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.CooldownRejectsAnotherShot" methodname="CooldownRejectsAnotherShot" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="976633664" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.000443" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1540" name="DeactivatedModuleWillNotFire" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DeactivatedModuleWillNotFire" methodname="DeactivatedModuleWillNotFire" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1202842469" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:30Z" duration="0.000227" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1548" name="DemoPhysicalPelletsDamageDemoTarget" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DemoPhysicalPelletsDamageDemoTarget" methodname="DemoPhysicalPelletsDamageDemoTarget" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1662725383" result="Passed" start-time="2026-10-27 20:24:30Z" end-time="2026-10-27 20:24:31Z" duration="0.598242" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1543" name="DetachedWeaponCannotFireWithoutLifecycleRebind" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DetachedWeaponCannotFireWithoutLifecycleRebind" methodname="DetachedWeaponCannotFireWithoutLifecycleRebind" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1687652687" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000402" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1541" name="DisabledModuleWillNotFire" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DisabledModuleWillNotFire" methodname="DisabledModuleWillNotFire" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1859061667" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000441" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1542" name="DisabledSinkWillNotFire" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.DisabledSinkWillNotFire" methodname="DisabledSinkWillNotFire" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="2114502272" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000276" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1531" name="FiringEmitsEightPellets" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.FiringEmitsEightPellets" methodname="FiringEmitsEightPellets" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="775941192" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000234" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1544" name="InheritVehiclePointVelocity" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.InheritVehiclePointVelocity" methodname="InheritVehiclePointVelocity" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1442860550" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000851" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1546" name="MuzzlePositionUsedNotVehicleCenter" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.MuzzlePositionUsedNotVehicleCenter" methodname="MuzzlePositionUsedNotVehicleCenter" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="330191848" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000820" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1532" name="PelletDamageIsPerPellet" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.PelletDamageIsPerPellet" methodname="PelletDamageIsPerPellet" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="195417311" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000557" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1534" name="PelletForwardFollowsMuzzleRotation" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.PelletForwardFollowsMuzzleRotation" methodname="PelletForwardFollowsMuzzleRotation" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1891262579" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000477" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1533" name="PelletOwnerIdentityIsPreserved" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.PelletOwnerIdentityIsPreserved" methodname="PelletOwnerIdentityIsPreserved" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1020099342" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000438" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1547" name="RecoilImpulseMovesDynamicBodyBackwards" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.RecoilImpulseMovesDynamicBodyBackwards" methodname="RecoilImpulseMovesDynamicBodyBackwards" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="883532358" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.014301" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1538" name="RejectedVolleyDoesNotSpendAmmo" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.RejectedVolleyDoesNotSpendAmmo" methodname="RejectedVolleyDoesNotSpendAmmo" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1482967639" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000353" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1545" name="SeedIsStableAcrossSeparateModules" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.SeedIsStableAcrossSeparateModules" methodname="SeedIsStableAcrossSeparateModules" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1228533550" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000391" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1537" name="ShotSequenceOnlyAdvancesOnSuccessfulShot" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.ShotSequenceOnlyAdvancesOnSuccessfulShot" methodname="ShotSequenceOnlyAdvancesOnSuccessfulShot" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="2025450730" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000254" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1674" name="RoboRougelike.WPN006EMP.PlayModeTests.dll" fullname="<WORKSPACE>/Desktop/Prototypy/RoboRougelike-WeaponGroups305/Library/ScriptAssemblies/RoboRougelike.WPN006EMP.PlayModeTests.dll" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.104282" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48804" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1675" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.103155" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1676" name="Mechanics" fullname="RoboRougelike.Mechanics" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.101959" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1677" name="EMP" fullname="RoboRougelike.Mechanics.EMP" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.100858" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1678" name="Tests" fullname="RoboRougelike.Mechanics.EMP.Tests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.099864" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1652" name="EmpEmitterPhysicsTests" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" testcasecount="21" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.098754" total="21" passed="21" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1655" name="Pulse_ConsumesCooldownAfterSuccess" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_ConsumesCooldownAfterSuccess" methodname="Pulse_ConsumesCooldownAfterSuccess" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="915658993" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.004054" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1667" name="Pulse_DisabledEmitterRefuses" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DisabledEmitterRefuses" methodname="Pulse_DisabledEmitterRefuses" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1541626335" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000267" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1668" name="Pulse_DisabledReceiverIsIgnored" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DisabledReceiverIsIgnored" methodname="Pulse_DisabledReceiverIsIgnored" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="132810212" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000218" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1654" name="Pulse_DisruptsOneEnemy" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DisruptsOneEnemy" methodname="Pulse_DisruptsOneEnemy" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1817535457" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000269" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1657" name="Pulse_DoesNotHitBeyondRange" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_DoesNotHitBeyondRange" methodname="Pulse_DoesNotHitBeyondRange" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1938433422" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000249" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1659" name="Pulse_ExplicitColliderMappingResolvesDisjointHierarchy" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_ExplicitColliderMappingResolvesDisjointHierarchy" methodname="Pulse_ExplicitColliderMappingResolvesDisjointHierarchy" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1378920410" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000463" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1661" name="Pulse_IgnoresAlliesByTeamId" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_IgnoresAlliesByTeamId" methodname="Pulse_IgnoresAlliesByTeamId" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="854289178" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000202" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1660" name="Pulse_IgnoresOwnVehicleByStableId" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_IgnoresOwnVehicleByStableId" methodname="Pulse_IgnoresOwnVehicleByStableId" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="868042417" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000298" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1664" name="Pulse_InsufficientEnergyDoesNotSpendCooldownOrDisrupt" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_InsufficientEnergyDoesNotSpendCooldownOrDisrupt" methodname="Pulse_InsufficientEnergyDoesNotSpendCooldownOrDisrupt" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="589149881" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000538" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1665" name="Pulse_MissingEnergySourceFailsClosed" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_MissingEnergySourceFailsClosed" methodname="Pulse_MissingEnergySourceFailsClosed" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="169946093" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000239" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1658" name="Pulse_OnlyOneHitWithTwoCollidersOnModule" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_OnlyOneHitWithTwoCollidersOnModule" methodname="Pulse_OnlyOneHitWithTwoCollidersOnModule" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="548344501" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000384" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1669" name="Pulse_OverlapBudgetOverflowRefusesBeforeSpending" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_OverlapBudgetOverflowRefusesBeforeSpending" methodname="Pulse_OverlapBudgetOverflowRefusesBeforeSpending" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1627364944" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000823" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1672" name="Pulse_RecordsSuccessEventOnlyForFiredPulse" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_RecordsSuccessEventOnlyForFiredPulse" methodname="Pulse_RecordsSuccessEventOnlyForFiredPulse" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1985195984" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000354" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1662" name="Pulse_RespectsFullResistance" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_RespectsFullResistance" methodname="Pulse_RespectsFullResistance" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="396372466" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000243" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1663" name="Pulse_RespectsPartialResistance" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_RespectsPartialResistance" methodname="Pulse_RespectsPartialResistance" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="240640374" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000235" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1670" name="Pulse_SelfColliderDoesNotBlockVisibility" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_SelfColliderDoesNotBlockVisibility" methodname="Pulse_SelfColliderDoesNotBlockVisibility" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="444470881" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000292" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1666" name="Pulse_SpendsEnergyOnceForMultipleTargets" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_SpendsEnergyOnceForMultipleTargets" methodname="Pulse_SpendsEnergyOnceForMultipleTargets" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="891980560" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000323" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1656" name="Pulse_StopsBehindWall" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_StopsBehindWall" methodname="Pulse_StopsBehindWall" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1234173839" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000296" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1671" name="Pulse_UnknownOcclusionQueryOverflowBlocksHit" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Pulse_UnknownOcclusionQueryOverflowBlocksHit" methodname="Pulse_UnknownOcclusionQueryOverflowBlocksHit" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1533424608" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000329" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1653" name="Receiver_DisableDoesNotLeaveStatusLatched" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Receiver_DisableDoesNotLeaveStatusLatched" methodname="Receiver_DisableDoesNotLeaveStatusLatched" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="780924633" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.000226" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1673" name="Receiver_RecoversAutomaticallyAfterDuration" fullname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests.Receiver_RecoversAutomaticallyAfterDuration" methodname="Receiver_RecoversAutomaticallyAfterDuration" classname="RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests" runstate="Runnable" seed="1885755640" result="Passed" start-time="2026-10-27 20:24:31Z" end-time="2026-10-27 20:24:31Z" duration="0.081196" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: <WORKSPACE>/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

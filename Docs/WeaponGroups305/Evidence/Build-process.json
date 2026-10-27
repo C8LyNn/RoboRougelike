@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T20:23:38.4482294Z",
+    "source":  "a0c50dfb7e25a61c0e55e55b94dea24e8fe68f30",
+    "stage":  "WGROUP-RC",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T20:23:17.0102322Z",
+    "phase":  "Build"
+}

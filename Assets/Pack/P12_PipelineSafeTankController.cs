@@ -50,7 +50,8 @@ namespace RogueMachine.P12PipelineSafe
 
         private float moveInput;
         private float turnInput;
-        private bool fireHeld;
+        private bool fireHeld, secondaryFireHeld;
+        private bool waitForPrimaryRelease, waitForSecondaryRelease;
 
         private float currentSpeed;
 
@@ -102,7 +103,9 @@ namespace RogueMachine.P12PipelineSafe
             AimFeedback=default;
             weaponReticles.Clear();
             moveInput = turnInput = currentSpeed = 0;
-            fireHeld = false;
+            fireHeld = secondaryFireHeld = false;
+            waitForPrimaryRelease = waitForSecondaryRelease = true;
+            if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);
             GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>()?.CancelActions();
             if (rb != null) StopResidualPhysics();
         }
@@ -167,7 +170,7 @@ public float CurrentForwardSpeed =>
         {
             moveInput = 0f;
             turnInput = 0f;
-            fireHeld = false;
+            fireHeld = secondaryFireHeld = false;
             if (!gameplayInputEnabled) return;
 
 #if ENABLE_INPUT_SYSTEM
@@ -192,9 +195,8 @@ public float CurrentForwardSpeed =>
                     turnInput -= 1f;
             }
 
-            fireHeld =
-                Mouse.current != null &&
-                Mouse.current.leftButton.isPressed;
+            bool primaryPressed=Mouse.current != null && Mouse.current.leftButton.isPressed;
+            bool secondaryPressed=Mouse.current != null && Mouse.current.rightButton.isPressed;
 #else
             if (Input.GetKey(KeyCode.W) ||
                 Input.GetKey(KeyCode.UpArrow))
@@ -212,9 +214,13 @@ public float CurrentForwardSpeed =>
                 Input.GetKey(KeyCode.LeftArrow))
                 turnInput -= 1f;
 
-            fireHeld =
-                Input.GetMouseButton(0);
+            bool primaryPressed=Input.GetMouseButton(0);
+            bool secondaryPressed=Input.GetMouseButton(1);
 #endif
+            if(!primaryPressed)waitForPrimaryRelease=false;
+            if(!secondaryPressed)waitForSecondaryRelease=false;
+            fireHeld=primaryPressed&&!waitForPrimaryRelease;
+            secondaryFireHeld=secondaryPressed&&!waitForSecondaryRelease;
         }
 
         private RoboRougelike.R6.R6VehicleDrive drive;
@@ -246,7 +252,7 @@ public float CurrentForwardSpeed =>
             {
                 AimFeedback=default;
                 weaponReticles.Clear();
-                if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(false);
+                if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);
                 return;
             }
 
@@ -271,8 +277,12 @@ public float CurrentForwardSpeed =>
                 modularAssembly,this,aimPoint,LastConsumedAimCollider);
             RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(aimCamera,modularAssembly,this,aimPoint,weaponReticles);
 
-            if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(fireHeld);
-            if (fireHeld && modularAssembly != null) modularAssembly.FireGuns();
+            if(modularAssembly!=null)
+            {
+                modularAssembly.SetGroupTriggers(fireHeld,secondaryFireHeld);
+                if(fireHeld)modularAssembly.FireGroup(false);
+                if(secondaryFireHeld)modularAssembly.FireGroup(true);
+            }
             else if (fireHeld && Time.time >= nextFireTime)
             {
                 nextFireTime =

@@ -44,6 +44,16 @@ public sealed class PerWeaponReticleTests
     }
     static T Field<T>(object marker,string name)=>(T)marker.GetType().GetField(name).GetValue(marker);
 
+    [Test] public void TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets()
+    {
+        var type=typeof(R3VehicleAssembly).Assembly.GetType("RoboRougelike.WeaponIntegration.RRLWeaponReticles");
+        var method=type.GetMethod("LabelOffset",BindingFlags.Public|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null,"Converged weapons need separate label positions");
+        var offsets=new Vector2[12];
+        for(int i=0;i<offsets.Length;i++)offsets[i]=(Vector2)method.Invoke(null,new object[]{i});
+        for(int i=0;i<offsets.Length;i++)for(int j=0;j<i;j++)
+            Assert.That(Vector2.Distance(offsets[i],offsets[j]),Is.GreaterThan(20),$"labels {i+1} and {j+1} overlap");
+    }
     [Test]public void EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns()
     {
         left.Muzzle.forward=(new Vector3(6,0,50)).normalized;right.Muzzle.forward=(new Vector3(-6,0,50)).normalized;

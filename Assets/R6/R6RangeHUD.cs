@@ -5,7 +5,6 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
-        static readonly string[] weaponMarkerNumbers={"1","2","3","4"};
         void DrawTestRange(R1RunController run)
         {
             if(run.MapEditorTesting){DrawMapTest(run);return;}
@@ -46,7 +45,7 @@ namespace RoboRougelike.R1
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));
             DrawFeedback();
-            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM — ogień • R — reset • Esc — menu\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Tor MOV009 x≈12 • Cele na północy",small);
+            GUI.Label(new Rect(34,635,1200,60),"WASD — napęd • Omni/Hover: A/D — bok, Z/C — obrót • LPM/PPM — ogień • R — reset • Esc — menu\nSkoki x≈−12 • Kotwa x≈−25, z≈7 • Slalom pośrodku • Tor MOV009 x≈12 • Cele na północy",small);
         }
         void DrawAimReticle(R1RunController run)
         {
@@ -81,8 +80,9 @@ namespace RoboRougelike.R1
                     GUI.DrawTexture(new Rect(cx-(sx<0?0:length),cy-stroke*.5f,length,stroke),Texture2D.whiteTexture);
                     GUI.DrawTexture(new Rect(cx-stroke*.5f,cy-(sy<0?0:length),stroke,length),Texture2D.whiteTexture);
                 }
-                float angle=(-45-i*90)*Mathf.Deg2Rad;
-                GUI.Label(new Rect(x+Mathf.Cos(angle)*(radius+13)-10,y+Mathf.Sin(angle)*(radius+13)-10,20,20),weaponMarkerNumbers[Mathf.Min(i,3)],weaponMarkerStyle);
+                var offset=RoboRougelike.WeaponIntegration.RRLWeaponReticles.LabelOffset(i);
+                float labelX=Mathf.Clamp(x+offset.x,10,1270),labelY=Mathf.Clamp(y+offset.y,10,710);
+                GUI.Label(new Rect(labelX-10,labelY-10,20,20),(i+1).ToString(),weaponMarkerStyle);
             }
             GUI.color=original;
         }
@@ -94,10 +94,19 @@ namespace RoboRougelike.R1
             if(run?.Player!=null)
             {
                 Panel(new Rect(925,190,335,158));GUI.Label(new Rect(940,195,305,30),"UZBROJENIE",heading);
+                var assembly=run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>();
+                var a=run.VehicleModel.WeaponGroupA;var b=run.VehicleModel.WeaponGroupB;
+                int countA=0,countB=0;
+                foreach(var part in assembly.Parts)
+                    if(part!=null&&part.Kind==RoboRougelike.R3.R3PartKind.Gun&&part.Operational&&part.transform.IsChildOf(assembly.transform))
+                    {if(a==part.Weapon)countA++;if(b==part.Weapon)countB++;}
+                GUI.Label(new Rect(940,228,305,24),$"A / LPM: {WeaponGroupName(a)} ({countA})",small);
+                GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)} ({countB})",small);
                 int row=0;
-                foreach(var gun in run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>().Parts)
+                foreach(var gun in assembly.Parts)
                 {
                     if(gun==null||gun.Kind!=RoboRougelike.R3.R3PartKind.Gun||!gun.Operational||!gun.transform.IsChildOf(run.Player.transform))continue;
+                    if(row>=2)break; // Group counts stay bounded even on large builds.
                     float reload=Mathf.Max(0,gun.NextFireTime-Time.time);
                     var shotgun=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
                     var rail=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
@@ -110,7 +119,7 @@ namespace RoboRougelike.R1
                     if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
                     var disrupted=gun.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
                     if(disrupted!=null&&disrupted.IsDisrupted)status=$"EMP {disrupted.RemainingSeconds:0.0}s";
-                    GUI.Label(new Rect(940,232+row*26,305,26),(row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
+                    GUI.Label(new Rect(940,278+row*26,305,26),(row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
                 }
                 var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
                 var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
