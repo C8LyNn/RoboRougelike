@@ -1,0 +1,51 @@
+{
+  "id": "ENV04-001",
+  "status": "BLENDER_QA_PASS",
+  "blender_version": "4.0.2",
+  "mesh_objects": 28,
+  "triangles": 1200,
+  "materials": [
+    "01_GRAPHITE_POWDERCOAT",
+    "02_BRUSHED_STEEL",
+    "03_SAFETY_AMBER"
+  ],
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "negative_volume_meshes": [],
+  "blender_bounds_min_m": [
+    -0.78,
+    -0.51,
+    0.0
+  ],
+  "blender_bounds_max_m": [
+    0.78,
+    0.51,
+    0.531
+  ],
+  "glb_valid": true,
+  "preview_dimensions": {
+    "preview_front.png": [
+      960,
+      640
+    ],
+    "preview_rear.png": [
+      960,
+      640
+    ]
+  },
+  "sha256": {
+    "generate_env04_001.py": "1cb11a71ed6d70234b3152ec034e73b77d96867e73b13b68d2212d9b07a21558",
+    "qa_env04_001.py": "4b0ee9dcf56107ef185f6f7545434829630757f6fedf15392c5fbe8bb8f9f018",
+    "generated/ENV04-001_industrial_vent_grate.blend": "0f87a1b7386a0c8cb836ffd393b187dd177d523a39a8c3d87cd64e48d4893632",
+    "generated/ENV04-001_industrial_vent_grate.glb": "b69e6466a115bf328e99961df452205c9a51f07f34e1e9ebc2de6a7ddf5f349d",
+    "generated/preview_front.png": "0f49d4d222356a7a33c87f2b70fc30edbb953e7f3132830a2c3d43f1259aeabc",
+    "generated/preview_rear.png": "ee91f6a105c4a200ae4e87acc682f1c0196c67de49ed71570a99ebf2d2215f97",
+    "generated/build_report.json": "0518b4acf60c2d78bcbd3eb9825516dd36385eb8fc6a90516992c1b2b1d71bab"
+  },
+  "license": "CC0-1.0",
+  "animation": "NOT_APPLICABLE",
+  "unity_editmode": "NOT_RUN",
+  "unity_playmode": "NOT_RUN",
+  "windows": "NOT_RUN",
+  "manual_art_review": "PENDING_HQ"
+}
