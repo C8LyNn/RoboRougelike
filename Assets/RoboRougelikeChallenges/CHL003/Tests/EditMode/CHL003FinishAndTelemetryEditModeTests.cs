@@ -86,5 +86,44 @@ namespace B01.CHL003.Tests
             Assert.Throws<ArgumentOutOfRangeException>(()=>
                 m.RecordCollision("BARRIER",-1,true));
         }
+
+        [Test] public void E16_ActualForwardFullHullCrossesGateWithClearance()
+        {
+            Assert.IsTrue(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,.12f,-1.41f,1.41f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+            Assert.IsTrue(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,.12f,-1f,1f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+        }
+
+        [Test] public void E17_ReverseAndWheelOnlyHitDoNotCreditGate()
+        {
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                .15f,-.15f,-1f,1f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,.12f,-1.0f,1.65f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,-.01f,-1f,1f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,.12f,-1f,1f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,-1f));
+        }
+
+        [Test] public void E18_NonFiniteAndApertureVerticalOverflowFailClosed()
+        {
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                float.NaN,.1f,-1f,1f,-2.20f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,.1f,-1f,1f,-2.50f,-.5f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.1f,.1f,-1f,1f,-2.20f,2.7f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+        }
     }
 }
