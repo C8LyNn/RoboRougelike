@@ -1,0 +1,23 @@
+# B01-10 / W26 gameplay checkpoint + physical typed-socket authority audit
+
+**Role:** B01-10 Game Design & Balance. Queue [#297](https://github.com/C8LyNn/RoboRougelike/issues/297), existing QA Draft [#278](https://github.com/C8LyNn/RoboRougelike/pull/278), **not** a third gameplay producer. Owners: B01-20 CHL #285, B01-23 PARTSIZE #286. Absolute no edits to either Unity source or Codex worktree.
+
+## Exact original input
+- CHL #285 **`077e692785aff2990a2d72a80fd1db62ac57b0e8`** original `CHL003GateCrossing`, Controller, Demo: 5 source file Git blob pins for BOTH packages in `W26_source_ownership_review.mjs`; authoritative producer [CI 40489108497](https://github.com/C8LyNn/RoboRougelike/actions/runs/40489108497) source PASS, latest SHA compared at review start.
+- PARTSIZE #286 **`be2be0e4802bc3f450179901f9ae91c6d84bcb5b`** original NativePhysics + PartSizeContract. W17 broadphase independent query `OverlapBox` exists; `ValidateMountSocketAuthority` **always returns `TYPED_SOCKET_UNVERIFIED` for a merely exposed logical face**, which is correct until separate trusted host socket registry.
+- Existing B01-21 [#295](https://github.com/C8LyNn/RoboRougelike/pull/295) **already proved** old 3.50m gate false-reject vs new 3.70m; do not duplicate this fix. B01-60 source checks broadphase previous false accept corrected; never re-report old issue as open.
+
+## W26 decisions: gameplay acceptance contracts, NOT native runtime proof
+
+### CHL CP authority
+A gate trigger is only a candidate. Genuine forward actor **CENTER** plane crossing with facing and enough movement, actual whole actor physical collider envelope (not just Core), correct active checkpoint + actual actor identity, unpaused state, once-per-run credit, future finish after final CP in a DISTINCT physics step and real overlap. Negative scenario IDs `CHL26-02..10`. Success output here always `ELIGIBLE_FOR_NATIVE_PHYSICS_EVIDENCE`, never PASS or reward: real Unity motor/colliders required. [CHL original source](https://github.com/C8LyNn/RoboRougelike/blob/077e692785aff2990a2d72a80fd1db62ac57b0e8/Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs) already implements many of these guards; **do not ask B01-20 to write a duplicate state machine**. Exact missing step is native execution of authored P07, P11, P14 with original XML/logs, not authoring another test class.
+
+### PARTSIZE mounting authority
+The existence of a positive logical adjacency or one physically measured contact point **cannot grant construction placement**. `IsExposedFace` currently only says where the grid is open. Even if the broadphase is source-correct, `TYPED_SOCKET_UNVERIFIED` remains the correct **current** verdict. Future host authority (NOT implemented) must prove **registered structural socket receiver** (not decoration), trusted connected Core, receiver/candidate type, outward normal/orientation, verified physical mating contact area, accurate collider envelope and independently complete physical neighbor survey; collision penetration rejects. If all conditions are hypothesized to hold, future policy emits `READY_FOR_AUTHORIZED_HOST_VALIDATION_NOT_MOUNT_PASS`, never mounting PASS; domain owner Codex/BUILD and HQ decide real host adapter after native G1. Fixture IDs `PART26-01..10`.
+
+**Design conflict resolved:** "cell face open", "solid shape fits logical cells", and "trusted typed structural mount socket accepts new part" are **three different predicates**, never interchangeable. Do not block all legitimate Heavy/Light designs arbitrarily; keep unknown inputs `UNVERIFIED` with specific code, not `INVALID` or green `PASS`.
+
+## Actually executable proof and limits
+`node --test Docs/B01Design/CHL003_W16/W26_source_ownership_review.test.mjs` — checks 21 explicit policy cases, fail-closed and negative tests. In GitHub Actions, the original **five exact original source files** are fetched at immutable SHAs, their **Git blob SHA-1 with real NUL prefix** and exact implemented source anchors are checked independently. It is actual source verification but NOT native Unity import/PlayMode/PhysX/3x3 Light/Heavy gameplay.
+
+**Receiver tasks:** B01-20 owner #285 + B01-60: run licensed Unity same SHA 19 Edit/14 Play including existing reverse/graze, yaw8 and completion; submit full CSV source+Video+XML+exit and original replay; B01-23 owner #286 + B01-60: run 17 Edit/11 Play and explicit exposed-only/socket unknown negative; B01-40 physical G0 for exact SHA and rollback. N27-10 metric analysis **BLOCKED_BY genuine six original Light/Heavy raw CSV**; N29-10 concept design **BLOCKED_BY HQ SELECT** #294. No frozen source edits, merge, G2.

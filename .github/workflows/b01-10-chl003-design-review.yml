@@ -14,5 +14,19 @@ jobs:
           node-version: '22'
       - name: Execute genuine portable independent CHL design QA fixtures (NOT Unity)
         run: node Docs/B01Design/CHL003_W16/validate.mjs
+      - name: Download EXACT pinned original CHL and PARTSIZE source into disposable input only
+        run: |
+          mkdir -p /tmp/b01-w26-original
+          git fetch --no-tags --depth=1 origin 077e692785aff2990a2d72a80fd1db62ac57b0e8
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs > /tmp/b01-w26-original/chl_cross.cs
+          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs > /tmp/b01-w26-original/chl_controller.cs
+          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-w26-original/chl_demo.cs
+          git show be2be0e4802bc3f450179901f9ae91c6d84bcb5b:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs > /tmp/b01-w26-original/part_native.cs
+          git show be2be0e4802bc3f450179901f9ae91c6d84bcb5b:Assets/PARTSIZE001/Runtime/PartSizeContract.cs > /tmp/b01-w26-original/part_contract.cs
+      - name: W26 independent actual Git-blob pinned source audit and 21 acceptance policy fixtures (NOT Unity)
+        env:
+          W26_ORIGINAL_SOURCE_DIR: /tmp/b01-w26-original
+        run: node --test Docs/B01Design/CHL003_W16/W26_source_ownership_review.test.mjs
       - name: Run NEW W17 six-trial scorecard source-format positive and negative controls (native NOT_RUN)
         run: node --test Docs/B01Design/CHL003_W16/W17_trial_scorecard.test.mjs

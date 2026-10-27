@@ -1,0 +1,411 @@
+{
+  "task_id": "N26-10-GAMEPLAY-CP-SOCKET-20261027",
+  "producer_shas": {
+    "CHL": "077e692785aff2990a2d72a80fd1db62ac57b0e8",
+    "PARTSIZE": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b"
+  },
+  "checkpoint": [
+    {
+      "id": "CHL26-01",
+      "rule": "forward whole-body crossing only candidate, not native PASS",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "ELIGIBLE_FOR_NATIVE_PHYSICS_EVIDENCE"
+    },
+    {
+      "id": "CHL26-02",
+      "rule": "detached wheel/foreign Rigidbody",
+      "input": {
+        "lane": "CHL",
+        "sameActor": false,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "WRONG_ACTOR_REJECT"
+    },
+    {
+      "id": "CHL26-03",
+      "rule": "skip CP3 before CP2",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": false,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "WRONG_ORDER_REJECT"
+    },
+    {
+      "id": "CHL26-04",
+      "rule": "pause cannot score",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": true,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "NOT_RUNNING_REJECT"
+    },
+    {
+      "id": "CHL26-05",
+      "rule": "front wheel touch no center cross",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": false,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "DIRECTION_REJECT"
+    },
+    {
+      "id": "CHL26-06",
+      "rule": "reverse crossing",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": false,
+        "fullHullWithinAperture": true,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "DIRECTION_REJECT"
+    },
+    {
+      "id": "CHL26-07",
+      "rule": "partial outside full chassis including wheels",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": false,
+        "finish": false,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "HULL_APERTURE_REJECT"
+    },
+    {
+      "id": "CHL26-08",
+      "rule": "finish before last CP",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": true,
+        "allRequiredGates": false,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "FINISH_PENDING_REJECT"
+    },
+    {
+      "id": "CHL26-09",
+      "rule": "co-located finish same step",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": true,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": false,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "FINISH_PENDING_REJECT"
+    },
+    {
+      "id": "CHL26-10",
+      "rule": "swept finish without actual overlap",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": true,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": false
+      },
+      "expected": "FINISH_PENDING_REJECT"
+    },
+    {
+      "id": "CHL26-11",
+      "rule": "complete + independent physical overlap candidate",
+      "input": {
+        "lane": "CHL",
+        "sameActor": true,
+        "running": true,
+        "paused": false,
+        "correctOrdinal": true,
+        "forwardCenterPlane": true,
+        "facingForward": true,
+        "fullHullWithinAperture": true,
+        "finish": true,
+        "allRequiredGates": true,
+        "separateFinishFixedStep": true,
+        "overlapsPhysicalFinish": true
+      },
+      "expected": "ELIGIBLE_FOR_NATIVE_PHYSICS_EVIDENCE"
+    }
+  ],
+  "socket": [
+    {
+      "id": "PART26-01",
+      "reason": "exposed face is NOT a verified socket",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": false,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "TYPED_SOCKET_UNVERIFIED"
+    },
+    {
+      "id": "PART26-02",
+      "reason": "decoration-only receiver cannot authorize",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": false,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "STRUCTURAL_RECEIVER_INVALID"
+    },
+    {
+      "id": "PART26-03",
+      "reason": "receiver disconnected from trusted core",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": false,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "STRUCTURAL_RECEIVER_INVALID"
+    },
+    {
+      "id": "PART26-04",
+      "reason": "weapon typed muzzle cannot accept arbitrary wheel",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": false,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "SOCKET_INCOMPATIBLE"
+    },
+    {
+      "id": "PART26-05",
+      "reason": "wrong-facing normal",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": false,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "SOCKET_INCOMPATIBLE"
+    },
+    {
+      "id": "PART26-06",
+      "reason": "point touch/edge cannot authorize",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": false,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "SOCKET_CONTACT_UNVERIFIED"
+    },
+    {
+      "id": "PART26-07",
+      "reason": "unmeasured collider cannot mount",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": false,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "PHYSICS_UNVERIFIED"
+    },
+    {
+      "id": "PART26-08",
+      "reason": "missing external registered neighbor",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": false,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "PHYSICS_UNVERIFIED"
+    },
+    {
+      "id": "PART26-09",
+      "reason": "real solid penetration",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": true
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "PHYSICAL_PENETRATION"
+    },
+    {
+      "id": "PART26-10",
+      "reason": "all hypothetical preconditions do not constitute native acceptance",
+      "input": {
+        "lane": "PART",
+        "exposed": true,
+        "authoritativeRegisteredSocket": true,
+        "structuralReceiver": true,
+        "trustedCoreConnected": true,
+        "typeCompatible": true,
+        "normalAligned": true,
+        "contactAreaVerified": true,
+        "measuredColliderEnvelope": true,
+        "completeWorldBroadphase": true,
+        "hasPenetration": false
+      },
+      "expectedCurrent": "TYPED_SOCKET_UNVERIFIED",
+      "expectedFuture": "READY_FOR_AUTHORIZED_HOST_VALIDATION_NOT_MOUNT_PASS"
+    }
+  ],
+  "notes": "All edge fixtures are DESIGN POLICY, not actual Unity native outcomes. PART hypothetical Future is NOT currently implemented."
+}
