@@ -13,7 +13,7 @@ modspec=importlib.util.spec_from_file_location("source_aabb",HERE/"partsize_visu
 geometry=importlib.util.module_from_spec(modspec);modspec.loader.exec_module(geometry)
 audit_spec=importlib.util.spec_from_file_location("pr286_evidence",HERE/"partsize_pr286_delta.py")
 pr286=importlib.util.module_from_spec(audit_spec);audit_spec.loader.exec_module(pr286)
-TESTED=("Wheel","CrawlerTrack","GunHeavy")
+TESTED=("Wheel","CrawlerTrack","GunHeavy","Suspension")
 
 def signed_indices(lo,hi,grid=geometry.GRID):
     if not all(math.isfinite(v) for v in (lo,hi,grid)) or lo>=hi or grid<=0:
@@ -84,8 +84,14 @@ def build(producer,canonical):
     rows=[measure_record(p,q) for p in TESTED for q in range(4)]
     overlaps=[box_neighbor_conflict(p,q)
               for p in ("CrawlerTrack","GunHeavy") for q in range(4)]
-    if not all(not x["positiveOnlyAnchoredExisting1CellFit"] for x in rows):
-        raise ValueError("SOURCE_GEOMETRY_DRIFT: all 12 source-derived mounts formerly outside")
+    conflicts=[x for x in rows if x["part"]!="Suspension"]
+    suspended=[x for x in rows if x["part"]=="Suspension"]
+    if not all(not x["positiveOnlyAnchoredExisting1CellFit"] for x in conflicts):
+        raise ValueError("SOURCE_GEOMETRY_DRIFT: 12 collision payloads formerly outside")
+    if not all(x["positiveOnlyAnchoredExisting1CellFit"] for x in suspended):
+        raise ValueError("SOURCE_GEOMETRY_DRIFT: Suspension static physical collider formerly FIT")
+    if not all(x["signedRenderCellIndexRangesXYZ"]!=x["signedPhysicalCellIndexRangesXYZ"] for x in suspended):
+        raise ValueError("SOURCE_GEOMETRY_DRIFT: Suspension source decorative piston should render outside")
     if not all(x["positiveBoxBoxIntersection"] for x in overlaps):
         raise ValueError("SOURCE_GEOMETRY_DRIFT: expected 8 source box intersection probes")
     return {"schema":"B01-30-W17-3-PLACEMENT-CONFLICTS-1",
@@ -96,18 +102,21 @@ def build(producer,canonical):
         "recommendedNextTest":(
           "convex MeshCollider versus actual neighbor, 4 yaw, PhysX ComputePenetration"
           if p=="Wheel" else
+          "noncolliding piston: Renderer.bounds versus physical collider inventory, four yaw"
+          if p=="Suspension" else
           "actual child BoxCollider versus standard neighbor, 4 yaw, PhysX ComputePenetration"
         )} for p in TESTED],
       "boxNeighborProbes":overlaps,
       "negativeCases":[
         {"id":"W17-WHEEL-OFFSET","scope":"physically enabled Wheel with center root at (0,0,0)",
-         "sourcePredictedSignedCellsQ0":[[-0,0],[0],[0]],
          "expect":"REJECT fake one-cell physical claim; validate actual convex MeshCollider with real neighbor",
          "note":"probe actual signed XYZ record; do not use this descriptive field for geometry"},
         {"id":"W17-TRACK-PLUS_Z","scope":"Track child BoxCollider + neighbor Armor anchored at (0,0,1)",
          "expect":"detect static overlap source rest; native sensor must measure true contact"},
         {"id":"W17-HEAVY_GUN-PLUS_Z","scope":"GunHeavy child BoxCollider + neighbor Armor anchored at (0,0,1)",
          "expect":"detect static overlap and yaw/pitch sweep before authorizing"},
+        {"id":"W17-SUSPENSION-VISUAL_ONLY","scope":"Suspension root Collider plus render-only piston",
+         "expect":"show renderer outside cell but preserve collider-only valid mounting; no decorative BuildSocket"},
         {"id":"W17-BROADPHASE-OMITTED","scope":"two independent overlapping BoxColliders; [] plus completeExternalBroadphase=true",
          "expect":"MUST REJECT by authoritative broadphase rather than relying on caller claim"}],
       "sourcePredictedNotUnityMeasurement":True,
