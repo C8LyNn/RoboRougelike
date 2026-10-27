@@ -8,6 +8,7 @@ using RoboRougelike.R1;
 public sealed class Exit273PauseTests
 {
     R1RunController run;
+    RC2EditorInputProbe probe;
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
@@ -61,8 +62,28 @@ public sealed class Exit273PauseTests
         yield return null;
         Assert.That(R1RunController.Instance, Is.SameAs(previous), "No scene load during shutdown");
     }
+    [UnityTest] public IEnumerator RKeyStillResetsPausedTestRange()
+    {
+        Assert.That(run.EnterTestRange(), Is.True);
+        float deadline=Time.realtimeSinceStartup+15;
+        while(run.Transitioning && Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning, Is.False);
+        int previousPlayer=run.Player.GetInstanceID();
+        run.TogglePause();Assert.That(run.Paused, Is.True);
+        probe=new GameObject("EXIT273 native range R probe").AddComponent<RC2EditorInputProbe>();
+        probe.InjectKey=UnityEngine.InputSystem.Key.R;
+        yield return new WaitForSecondsRealtime(.2f);
+        for(int i=0;i<8&&run.Paused;i++)
+        {if(UnityEditor.EditorApplication.isPaused)UnityEditor.EditorApplication.Step();yield return null;}
+        Assert.That(probe.PressObserved, Is.True, "Native player input must observe R");
+        Assert.That(run.Paused, Is.False, "The pause menu must preserve the range R reset shortcut");
+        while(run.Transitioning && Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Player.GetInstanceID(), Is.Not.EqualTo(previousPlayer));
+        Assert.That(run.Progress.State, Is.EqualTo(R1RunState.TestDrive));
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
+        if(probe!=null)Object.DestroyImmediate(probe.gameObject);
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }
     }
 }

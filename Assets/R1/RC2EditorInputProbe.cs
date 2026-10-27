@@ -12,6 +12,7 @@ public sealed class RC2EditorInputProbe : MonoBehaviour
     InputSettings.EditorInputBehaviorInPlayMode oldRouting;
     public bool Sent {get;private set;}
     public bool PressObserved {get;private set;}
+    public Key InjectKey = Key.Enter;
     void Awake()
     {
         oldBackground=InputSystem.settings.backgroundBehavior;oldRouting=InputSystem.settings.editorInputBehaviorInPlayMode;
@@ -24,8 +25,8 @@ public sealed class RC2EditorInputProbe : MonoBehaviour
     {
         if(Sent)return;
         keyboard=InputSystem.AddDevice<Keyboard>();
-        InputState.Change(keyboard,new KeyboardState(Key.Enter));
-        PressObserved=keyboard.enterKey.wasPressedThisFrame;Sent=true;
+        InputState.Change(keyboard,new KeyboardState(InjectKey));
+        PressObserved=keyboard[InjectKey].wasPressedThisFrame;Sent=true;
     }
     void OnDestroy()
     {
