@@ -106,6 +106,21 @@ namespace B01.PARTSIZE001.Tests
                     at,new Collider[]{a,extra},new Collider[0],true));
         }
 
+        [UnityTest] public IEnumerator OmittedPhysicalChildCannotBypassAuthoritativeInventory()
+        {
+            var d=PartSizeReferenceFixtures.LegacyCube();
+            var a=Make(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                Vector3.one*.52f,out Transform at);
+            var external=new GameObject("unlisted colliding child");
+            external.transform.SetParent(at,false);
+            external.transform.localPosition=new Vector3(.1f,0,0);
+            external.AddComponent<BoxCollider>();
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual("UNREGISTERED_PHYSICAL_COLLIDER",
+                PartSizeNativePhysics.Validate(d,new Cell3(0,0,0),new Cell3(0,0,0),
+                    at,new Collider[]{a},new Collider[0],true));
+        }
+
         [UnityTest] public IEnumerator DemoProducesThreePhysicallyCheckedColorStates()
         {
             var go=new GameObject("PARTSIZE demo native");
