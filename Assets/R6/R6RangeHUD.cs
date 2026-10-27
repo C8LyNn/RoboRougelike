@@ -52,10 +52,11 @@ namespace RoboRougelike.R1
             var feedback=run.Player.Controller.AimFeedback;
             DrawWeaponReticles(run.Player.Controller);
             if(aimCrossStyle==null)aimCrossStyle=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
-            if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.MiddleCenter};
+            if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.UpperLeft};
             aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
             GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
-            GUI.Label(new Rect(430,412,420,48),feedback.Caption,aimCaptionStyle);
+            Panel(new Rect(690,18,225,65));
+            GUI.Label(new Rect(702,25,201,51),feedback.Caption,aimCaptionStyle);
         }
         void DrawWeaponReticles(RogueMachine.P12PipelineSafe.P12PipelineSafeTankController controller)
         {
