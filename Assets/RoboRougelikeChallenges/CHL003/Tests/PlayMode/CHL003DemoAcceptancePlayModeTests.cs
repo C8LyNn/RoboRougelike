@@ -222,5 +222,48 @@ namespace B01.CHL003.Tests
             Assert.AreEqual(fixedTicks*Time.fixedDeltaTime,time,.005f,
                 "Trial timing must use exactly physics fixed ticks");
         }
+
+        [UnityTest]
+        public IEnumerator P14_HeavyYaw8_RealGateMatchesBridgeRatherThanRejectingClearance()
+        {
+            // Upstream B01-21 PR #295 measured real CHL wheel spheres +
+            // chassis: Heavy yaw8 projected width ~3.1205m, so the 3.7m
+            // physical bridge admits >=.25m clearance, while an old 3.5m
+            // checkpoint blocked equivalent alignment despite traversability.
+            // Genuine PhysX negative -> Retry -> positive on SAME Rigidbody.
+            demo.SelectRigForTest(1);
+            demo.enabled = false;
+            Rigidbody body=demo.ActiveVehicle;
+            var trigger=demo.FirstCheckpointTransform.GetComponent<BoxCollider>();
+            Assert.IsNotNull(trigger);
+            Assert.IsTrue(trigger.isTrigger);
+            Assert.AreEqual(3.70f,demo.FirstCheckpointTransform.lossyScale.x,.0001f);
+            demo.Motor.SetAxes(0f,0f);
+            demo.FirstCheckpointTransform.localScale = new Vector3(3.50f,4.5f,.16f);
+            Physics.SyncTransforms();
+            body.position=new Vector3(0f,1.02f,4.0f);
+            body.rotation=Quaternion.Euler(0f,8f,0f);
+            body.linearVelocity=Vector3.forward*8f;
+            body.angularVelocity=Vector3.zero;
+            Physics.SyncTransforms();
+            for(int i=0;i<24;i++)yield return new WaitForFixedUpdate();
+            Assert.AreEqual(0,demo.Course.Core.CheckpointIndex,
+                "OLD physically narrower gate cannot credit yaw8 Heavy full hull");
+
+            demo.RetryForTest();
+            demo.Motor.SetAxes(0f,0f);
+            demo.FirstCheckpointTransform.localScale = new Vector3(3.70f,4.5f,.16f);
+            body.position=new Vector3(0f,1.02f,4.0f);
+            body.rotation=Quaternion.Euler(0f,8f,0f);
+            body.linearVelocity=Vector3.forward*8f;
+            body.angularVelocity=Vector3.zero;
+            Physics.SyncTransforms();
+            for(int i=0;i<24;i++)yield return new WaitForFixedUpdate();
+            Assert.AreEqual(1,demo.Course.Core.CheckpointIndex,
+                "W17 same-bridge-width 3.70m CP0 should credit actual physically" +
+                " forward-cleared Heavy at yaw8 with conservative 0.25m margin");
+            Assert.AreEqual(1,demo.Course.Metrics.Checkpoints);
+            Assert.AreEqual(0,demo.Course.Metrics.Completions);
+        }
     }
 }
