@@ -26,6 +26,8 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - name: Install actual Blender
         run: |
           sudo apt-get update -qq
@@ -53,10 +55,15 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Commit binaries exclusively to own feature branch
-        if: success() && github.event_name == 'push'
+        if: success() && (github.event_name == 'push' || github.event_name == 'pull_request')
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin feature/rrl-env04-001-industrial-vent-grate-20261027
+          if git cat-file -e origin/feature/rrl-env04-001-industrial-vent-grate-20261027:Tools/EnvironmentFactory/ENV04/ENV04-001/generated/SHA256SUMS 2>/dev/null; then
+            echo 'Verified binary outputs already committed on exclusive branch; skip publication.'
+            exit 0
+          fi
           git add -f Tools/EnvironmentFactory/ENV04/ENV04-001/generated/*
           if ! git diff --cached --quiet; then
             git commit -m 'ENV04-001: actual Blender-validated ventilation grate exports'
