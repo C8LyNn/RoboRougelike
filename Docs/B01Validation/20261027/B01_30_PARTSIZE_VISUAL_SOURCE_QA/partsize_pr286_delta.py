@@ -35,6 +35,7 @@ EXPECTED_STABLE_ANCHORS={
  "PartSizeNativePhysics.cs":["public const float MaxPenetrationMeters=.005f;",
   "actual.min.x>=allowed.min.x-MaxPenetrationMeters-WorldBoundsEpsilon",
   "Physics.SyncTransforms();","Physics.ComputePenetration(",
+  "Collider[] nearby=Physics.OverlapBox(","return \"INCOMPLETE_EXTERNAL_BROADPHASE\";",
   "fullExternalBroadphase==null||!completeExternalBroadphase",
   "foreach(var outside in fullExternalBroadphase)","return null;"],
  "PartSizeDemoEntry.cs":["Add(PartSizeReferenceFixtures.LegacyCube()",
@@ -132,7 +133,8 @@ def evaluate(producer_root,canonical_source_root):
       "callerCanPassEmptyListAndCompleteTrue":True,
       "recomputesExternalCandidatesWithPhysicsOverlap":broadphase_recomputed,
       "potentialFalseGreenIfCallerOmitsNeighbor":not broadphase_recomputed,
-      "nativeNeighborMissingNegativeTest":"NOT_AUTHORED_AT_PINNED_SHA",
+      "nativeNeighborMissingNegativeTest":("AUTHORED_NATIVE_NOT_RUN" if \
+      "W17_LyingCompleteExternalInventoryCannotHideOverlappingBox" in srcs["PartSize001PlayModeTests.cs"] else "NOT_AUTHORED"),
       "nativePhysicsExecution":"NOT_RUN"},
    "demo":{"sceneAndPrefabReferToExactMonoScriptGUID":True,
       "sourceSpawnsThreeCasesOnly":True,
