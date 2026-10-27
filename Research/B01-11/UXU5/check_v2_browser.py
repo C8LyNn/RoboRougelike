@@ -6,9 +6,9 @@ import os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-SOURCE_SHA = "c920bd3bba7c3b05173225d6d2148bef08e1f319"
-EXPECTED_SHA256 = "116660582df599d0d337110e8956a81666b3065a868ae882a435151a43df084e"
-EXPECTED_BLOB_SHA1 = "bc17deba3c96307c8179a0ff564b26b3855287ce"
+SOURCE_SHA = "aff203a3d5a66f681d40f0d6810d79b8cad62610"
+EXPECTED_SHA256 = "20daf5c0d63fa9aff22b65d0896fedac78d7dcf81030a4be9be2e1c521bb0124"
+EXPECTED_BLOB_SHA1 = "81f8913159f7a2273d73ab65f2b8d9abdab8d7f9"
 SOURCE = Path(os.getenv("B01_UX_HTML", "/tmp/b01-12-v2-exact.html"))
 OUT = Path(os.getenv("B01_UX_OUT", "Research/B01-11/UXU5/output"))
 OUT.mkdir(parents=True, exist_ok=True)
@@ -144,6 +144,29 @@ def ux05(p):
     check(not p.locator("#dialogWrap").evaluate("(el)=>el.classList.contains('open')"), "Escape did not close modal")
     check(p.locator("#launch").evaluate("(el)=>document.activeElement===el"), "Focus not restored to launcher")
 
+
+def neutral_copy(p):
+    names = [b.inner_text() for b in p.locator("[data-variant]").all()]
+    check(names == ["Wariant A", "Wariant B", "Wariant C"], "A/B/C still disclose leading diagnostic/treatment labels")
+    check(not any(word in " ".join(names).lower() for word in ("minimalny", "diagnostyczny", "naprawa")), "Treatment name primes participant")
+    # Interact, not merely grep static HTML: all three variants remain selectable.
+    for key in ("c", "b", "a"):
+        p.locator(f'[data-variant="{key}"]').click()
+        check(p.locator(f'[data-variant="{key}"]').get_attribute("aria-pressed") == "true", "Variant interaction broken: " + key)
+    p.locator("#tabChl").click()
+    for selector in ("#rigLight", "#rigHeavy"):
+        text_value = p.locator(selector).inner_text()
+        check("Zwrotność: NIEZMIERZONA" in text_value, "Unsupported agility claim or missing disclaimer: " + selector)
+        for priming in ("Zwrotniejszy", "Lepsza zwrotność", "Szybszy", "Wolniejszy"):
+            check(priming.lower() not in text_value.lower(), "Performance marketing still visible: " + priming)
+    p.locator("#rigHeavy").click()
+    check(p.locator("#rigHeavy").get_attribute("aria-pressed") == "true", "Heavy cannot be selected")
+    p.locator("#begin").click()
+    check("RUNNING" in p.locator("#currentState").inner_text(), "Neutral text change broke start")
+    p.locator("#retry").click()
+    check("READY" in p.locator("#currentState").inner_text(), "Neutral text change broke Retry")
+    check("Zwrotność: NIEZMIERZONA" in p.locator("#rigHeavy").inner_text(), "Rig label lost after Retry")
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
     case(browser, "UX-01-UNKNOWN-and-critical", ux01)
@@ -151,10 +174,12 @@ with sync_playwright() as p:
     case(browser, "UX-03-compact-cause", ux03)
     case(browser, "UX-04-CHL-failure", ux04)
     case(browser, "UX-05-retry-rig-a11y", ux05, 390, 844)
+    case(browser, "UX-06-neutral-copy-desktop", neutral_copy, 1440, 960)
+    case(browser, "UX-07-neutral-copy-mobile", neutral_copy, 390, 844)
     browser.close()
 
 receipt = {
-    "agent": "B01-11", "task": "UX.U5-PASS3-BROWSER-INDEPENDENT",
+    "agent": "B01-11", "task": "UX.U5-PASS5-NEW-BLOB-RETEST",
     "source_commit": SOURCE_SHA,
     "html_git_blob_sha1": blob, "html_sha256": hashlib.sha256(data).hexdigest(),
     "scope": "Original exact HTML via real Chromium; JS UI only, no Unity/PhysX, no human participants",
