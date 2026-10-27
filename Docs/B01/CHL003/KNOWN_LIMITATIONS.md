@@ -1,5 +1,5 @@
 ## W17 new explicit physical restrictions
-Current CHL demo is rigidbody hull + spheres, NOT WheelCollider with rotating axle motors. Air control is **not** allowed: only supportive physical wheel-ray ground contacts permit drive/steering; no traction in midair. Gate crossing requires forward whole-body footprint and 0.25m lateral clearance; tight yaw may fail closed under conservative world collider AABB envelope. Author/test source exists but whether each rig can complete all six physical crossings and negative samples is **NOT_RUN** in licensed Unity; run real PlayMode12 and EditMode18 before any gameplay claims.
+Current CHL demo is rigidbody hull + spheres, NOT WheelCollider with rotating axle motors. Air control is **not** allowed: only supportive physical wheel-ray ground contacts permit drive/steering; no traction in midair. Gate crossing requires forward whole-body footprint and 0.25m lateral clearance; tight yaw may fail closed under conservative world collider AABB envelope. Author/test source exists but whether each rig can complete all six physical crossings and negative samples is **NOT_RUN** in licensed Unity; run real PlayMode13 and EditMode18 before any gameplay claims.
 
 
 # CHL-003 R1 actual limitations
