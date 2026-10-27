@@ -257,7 +257,7 @@ def main():
     render_preview(scene, out / 'ENV02-001_view_3q.png',
                    (5.8, -7.5, 5.0), (0, 0, 0.22), 7.5)
     render_preview(scene, out / 'ENV02-001_view_side.png',
-                   (8.0, 0.0, 3.5), (0, 0, 0.22), 6.3)
+                   (8.0, 0.0, 1.0), (0, 0, 0.22), 6.3)
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
     evidence = {
