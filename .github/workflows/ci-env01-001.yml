@@ -7,6 +7,13 @@ on:
       - 'Tools/EnvironmentFactory/ENV01/ENV01-001/README.md'
       - 'Tools/EnvironmentFactory/ENV01/ENV01-001/LICENSE.txt'
       - '.github/workflows/ci-env01-001.yml'
+  pull_request:
+    types: [opened, synchronize]
+    branches: [develop]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/README.md'
+      - '.github/workflows/ci-env01-001.yml'
   workflow_dispatch:
 
 permissions:
