@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Passed" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 20:40:47Z" end-time="2026-10-27 20:40:48Z" duration="0,115245">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1267" result="Passed" start-time="2026-10-27 20:40:47Z" end-time="2026-10-27 20:40:48Z" duration="0.115245" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1576" name="Assembly-CSharp-Editor.dll" fullname="<WORKSPACE>/Desktop/Prototypy/RoboRougelike-Garage307/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="475" result="Passed" start-time="2026-10-27 20:40:47Z" end-time="2026-10-27 20:40:48Z" duration="0.053059" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48020" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1225" name="PerWeaponReticleTests" fullname="PerWeaponReticleTests" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-27 20:40:47Z" end-time="2026-10-27 20:40:48Z" duration="0.045597" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1230" name="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" fullname="PerWeaponReticleTests.AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" methodname="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" classname="PerWeaponReticleTests" runstate="Runnable" seed="1611624586" result="Passed" start-time="2026-10-27 20:40:47Z" end-time="2026-10-27 20:40:48Z" duration="0.023953" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1228" name="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" fullname="PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" methodname="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" classname="PerWeaponReticleTests" runstate="Runnable" seed="1690081966" result="Passed" start-time="2026-10-27 20:40:48Z" end-time="2026-10-27 20:40:48Z" duration="0.001731" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1227" name="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" fullname="PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" methodname="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" classname="PerWeaponReticleTests" runstate="Runnable" seed="853424279" result="Passed" start-time="2026-10-27 20:40:48Z" end-time="2026-10-27 20:40:48Z" duration="0.001128" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1229" name="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" fullname="PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" methodname="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" classname="PerWeaponReticleTests" runstate="Runnable" seed="471185968" result="Passed" start-time="2026-10-27 20:40:48Z" end-time="2026-10-27 20:40:48Z" duration="0.002809" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1231" name="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" fullname="PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" methodname="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" classname="PerWeaponReticleTests" runstate="Runnable" seed="1786244318" result="Passed" start-time="2026-10-27 20:40:48Z" end-time="2026-10-27 20:40:48Z" duration="0.002951" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1226" name="TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets" fullname="PerWeaponReticleTests.TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets" methodname="TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets" classname="PerWeaponReticleTests" runstate="Runnable" seed="1301208690" result="Passed" start-time="2026-10-27 20:40:48Z" end-time="2026-10-27 20:40:48Z" duration="0.001267" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1232" name="ViewportMarkersMapCorrectlyToLetterboxedHud" fullname="PerWeaponReticleTests.ViewportMarkersMapCorrectlyToLetterboxedHud" methodname="ViewportMarkersMapCorrectlyToLetterboxedHud" classname="PerWeaponReticleTests" runstate="Runnable" seed="1889343248" result="Passed" start-time="2026-10-27 20:40:48Z" end-time="2026-10-27 20:40:48Z" duration="0.000932" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: <WORKSPACE>/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
