@@ -85,7 +85,7 @@ public sealed class PerWeaponReticleTests
         Assert.That(Field<bool>(away[0],"Offscreen"),Is.True);
         Assert.That(Vector2.Distance(Field<Vector2>(away[0],"Viewport"),new Vector2(.5f,.5f)),Is.GreaterThan(.5f));
     }
-    [Test]public void RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle()
+    [Test]public void RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris()
     {
         right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
         left.Weapon=R4WeaponKind.RocketLauncher;
@@ -96,8 +96,13 @@ public sealed class PerWeaponReticleTests
         var shell=wall.AddComponent<P17PhysicalShell>();
         typeof(P17PhysicalShell).GetField("ownerRoot",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(shell,root.transform);
         Physics.SyncTransforms();
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.False,
+            "An outgoing own shell should not make the direction indicator jump while firing");
+        UnityEngine.Object.DestroyImmediate(wall);wall=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        wall.transform.position=new Vector3(0,0,10);wall.AddComponent<R3Debris>();
+        wall.GetComponent<Collider>().enabled=true;Physics.SyncTransforms();
         Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.True,
-            "An existing shell is not part of the vehicle hierarchy and the real rocket can collide with it");
+            "Rockets collide with detached solid debris even though ordinary shells ignore it");
     }
     [Test]public void ViewportMarkersMapCorrectlyToLetterboxedHud()
     {
