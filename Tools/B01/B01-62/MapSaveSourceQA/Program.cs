@@ -50,7 +50,7 @@ public static class Program
                 "OBSERVATION" => met ? "SOURCE_WITNESS_OBSERVED" : "SOURCE_WITNESS_NOT_OBSERVED",
                 _ => "INVALID_CATEGORY"
             };
-            if (status is "ORIGINAL_CSHARP_POSITIVE_FAIL" or "INVALID_CATEGORY") unexpected++;
+            if (status is "ORIGINAL_CSHARP_POSITIVE_FAIL" or "SOURCE_WITNESS_NOT_OBSERVED" or "INVALID_CATEGORY") unexpected++;
             Evidence.Add(new { id, category, status });
             Console.WriteLine($"{id}: {status}");
         }
@@ -138,6 +138,13 @@ public static class Program
 
     public static int Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--selftest-failclosed")
+        {
+            Case("SELFTEST-intentionally-false-observation", "OBSERVATION", () => false);
+            bool closed = unexpected == 1;
+            Console.WriteLine("HARNESS_SELFTEST_FAIL_CLOSED=" + closed);
+            return closed ? 73 : 0;
+        }
         if (args.Length == 2 && args[0] == "--stage-and-exit")
             return StageAndExit(args[1]);
         if (args.Length == 2 && args[0] == "--load-in-new-process")
