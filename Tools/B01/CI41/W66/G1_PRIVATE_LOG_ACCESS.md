@@ -4,8 +4,8 @@ Scope: CI-only evidence governance; not approval or implementation of licensed U
 
 ## Actual public CI evidence at pinned SHAs
 - B01-41 source QA: Actions 40593574499 at ac836763ec70ab97bf623619051ae267e697b6ef, 28/28 on each of Windows and Ubuntu; 14-day sanitized test-output archives; native NOT_RUN.
-- B01-61 #315: f31db751dd02228c11427e404862dcb6e3121b5d, Actions 40592587507, 29/29 STATIC source-pin checks; 0 uploaded archives; original NUnit XML and Editor.log absent.
-- B01-62 #316: 3829c12c9f6894c6739483b3ba6155f730882128, Actions 40592675734, Windows and Ubuntu original Codex MapStorage C# with Unity shims; 7-day log ZIP artifacts 12775645292 and 12774254108; D02 KNOWN_DEFECT_RED, native NOT_RUN.
+- B01-61 #315 LATEST: 7dc5d032818de68fcd27e1b425c5fdbdd21bde4e, Actions 40593872240, 33/33 STATIC source checks plus original Codex-targeted NUnit XML read-only audit. Original committed raw XML contains invalid unescaped workspace-redaction tokens and is NOT well-formed before explicit normalization; original targeted 51 Edit+27 Play case counts do NOT prove full-suite G1. Correctly denies full-release gate. 0 uploaded CI artifacts.
+- B01-62 #316 LATEST: 2f6188c3164b49accd5aea38a480beec33c5d527, Actions 40593681545, original Codex MapStorage C# with Unity shims on Win+Ubuntu; 7-day original source-log and selftest ZIP artifacts 12775482037 / 12774992933. Original independent physical archive receiver B01-41 42/42 checks PASS. Windows 4 known D02 RED, Ubuntu 3 RED + 1 OS skip; selftest intentionally exits 73 fail-closed; no Unity G1.
 - CHL producer #285: c7b2a234a286089383503da41883d624fe650551; Actions 40591508332, 21-day original source archive; B01-40 independent SOURCE G0 60/60 PASS; native G1 NOT_RUN.
 - PARTSIZE QA #298: f3a40810a178c11696360c32921872bfacecf21b; NEW parser blob b4ca19bd1b9142a364dbed2fb6bb2dd30f2b53ac fixes NEG01–03. Owner original QA GitHub Actions 40593831331: 16/16 parser fixtures PASS on Windows and Ubuntu. Secure operator PS1 Git blob da575df50d51d5f76776d96e3b5251103b85d923 remains byte-identical. Independent B01-40 NEW-PARSER receiver still required.
 
