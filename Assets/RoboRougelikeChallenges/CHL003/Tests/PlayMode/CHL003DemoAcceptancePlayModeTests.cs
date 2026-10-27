@@ -265,5 +265,59 @@ namespace B01.CHL003.Tests
             Assert.AreEqual(1,demo.Course.Metrics.Checkpoints);
             Assert.AreEqual(0,demo.Course.Metrics.Completions);
         }
+
+        [UnityTest]
+        public IEnumerator P15_B0160NearGroundAirGapNeverAppliesThrustOrYaw()
+        {
+            // SOURCE defect falsifier (B01-60 W26 QA-01): old .95m ray
+            // falsely grounded Light with 0.35m wheel-floor gap.
+            // This uses genuine source scene, gravity and Unity Physics.
+            var body = demo.ActiveVehicle;
+            var floor = GameObject.Find("CHL003_APPROACH_GROUND");
+            Assert.IsNotNull(floor,"Physical ground must exist");
+            var floorCollider = floor.GetComponent<Collider>();
+            var wheels = body.GetComponentsInChildren<SphereCollider>();
+            Assert.AreEqual(4,wheels.Length);
+            demo.Motor.SetAxes(1f, 1f);
+
+            // Both hover offsets are much larger than the explicit 3cm
+            // near-contact tolerance, so any motor acceleration is RED.
+            foreach (float rootY in new[] { 1.28f, 1.34f })
+            {
+                body.position=new Vector3(0f,rootY,2f);
+                body.rotation=Quaternion.identity;
+                body.linearVelocity=Vector3.zero;
+                body.angularVelocity=Vector3.zero;
+                Physics.SyncTransforms();
+                foreach (var wheel in wheels)
+                    Assert.IsFalse(Physics.ComputePenetration(
+                        wheel,wheel.transform.position,wheel.transform.rotation,
+                        floorCollider,floorCollider.transform.position,
+                        floorCollider.transform.rotation,out _,out _),
+                        "Wheels must not physically penetrate floor when suspended");
+                yield return new WaitForFixedUpdate();
+                yield return new WaitForFixedUpdate();
+                Assert.IsFalse(demo.Motor.IsGrounded,
+                    "Air gap should not be interpreted as physical support");
+                Assert.AreEqual(0,demo.Motor.SupportRayCount);
+                Assert.Less(new Vector2(body.linearVelocity.x,
+                    body.linearVelocity.z).magnitude,.02f,
+                    "Suspended rig cannot accelerate horizontally from motor");
+                Assert.Less(Mathf.Abs(body.angularVelocity.y),.02f,
+                    "Suspended rig cannot steer from motor");
+            }
+
+            // Physically touching wheels should still permit propulsion;
+            // regression must not solve false support by banning all thrust.
+            body.position=new Vector3(0f,.93f,2f);
+            body.rotation=Quaternion.identity;
+            body.linearVelocity=Vector3.zero;
+            body.angularVelocity=Vector3.zero;
+            Physics.SyncTransforms();
+            for (int n=0;n<3;n++) yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.Motor.IsGrounded,
+                "Real floor inside wheel radius must grant traction");
+            Assert.Greater(demo.Motor.SupportRayCount,0);
+        }
     }
 }
