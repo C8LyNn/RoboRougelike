@@ -1,0 +1,37 @@
+name: B01-23 W26 PARTSIZE source-pinned native RECEIPT intake — no Unity
+on:
+  push:
+    branches:
+      - 'b01-23/w26-partsize-readonly-native-receipt'
+    paths:
+      - 'Tools/B01/PARTSIZE001/W26Receipt/**'
+      - '.github/workflows/b01-23-w26-partsize-receipt.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  receipt-source-and-negative-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch EXACT original producer Git object only (no source modifications)
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+      - name: Execute 12 synthetically generated receipt-parser checks (NOT Unity)
+        run: python Tools/B01/PARTSIZE001/W26Receipt/test_check_receipt.py
+      - name: Inspect REAL immutable producer test files and eleven unknown physical kinds
+        run: python Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py source --repo .
+      - name: Explicit no-native/no-G2 boundary
+        shell: bash
+        run: |
+          echo 'This was real original Git SOURCE audit + synthetic XML parser QA only.'
+          echo 'Licensed Unity compile, 17 Edit, 11 Play, 11 physical measurements, 720/1080 and independent G1 are NOT_RUN.'
+          echo 'No change to producer #286 and NO OFFERED/G2/CODEX_CLAIMED.'
