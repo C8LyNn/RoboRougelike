@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="62" result="Passed" total="62" passed="62" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 14:19:57Z" end-time="2026-10-27 14:20:01Z" duration="3,3362342">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1239" result="Passed" start-time="2026-10-27 14:19:57Z" end-time="2026-10-27 14:20:01Z" duration="3.336234" total="62" passed="62" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1542" name="Assembly-CSharp-Editor.dll" fullname="PROJECT/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="447" result="Passed" start-time="2026-10-27 14:19:57Z" end-time="2026-10-27 14:20:01Z" duration="3.224452" total="40" passed="40" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="27556" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1162" name="MOVSeriesSalvageTests" fullname="MOVSeriesSalvageTests" classname="MOVSeriesSalvageTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.040499" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1171" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.036775" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1163" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(Booster)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(Booster)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="993181785" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.025470" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1164" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(JumpDrive)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(JumpDrive)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="1145281901" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000366" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1165" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(Blink)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(Blink)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="1597111855" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000229" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1166" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(Gyroscope)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(Gyroscope)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="2007214589" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000214" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1167" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(OmniDrive)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(OmniDrive)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="1963851224" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000209" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1168" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(MagneticGrapple)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(MagneticGrapple)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="1968070134" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000198" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1169" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(HoverEngine)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(HoverEngine)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="1277168197" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000199" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1170" name="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(CrawlerTrack)" fullname="MOVSeriesSalvageTests.ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce(CrawlerTrack)" methodname="ExistingSalvageLedgerRecoversRealKindHealthIdThenMountsAndDismantlesOnce" classname="MOVSeriesSalvageTests" runstate="Runnable" seed="709230746" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000197" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1199" name="PerWeaponReticleTests" fullname="PerWeaponReticleTests" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.026291" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1203" name="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" fullname="PerWeaponReticleTests.AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" methodname="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" classname="PerWeaponReticleTests" runstate="Runnable" seed="607117540" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.013282" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1201" name="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" fullname="PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" methodname="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" classname="PerWeaponReticleTests" runstate="Runnable" seed="767287528" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.001775" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1200" name="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" fullname="PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" methodname="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" classname="PerWeaponReticleTests" runstate="Runnable" seed="1478713422" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.001491" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1202" name="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" fullname="PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" methodname="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" classname="PerWeaponReticleTests" runstate="Runnable" seed="2011421585" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.003037" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1204" name="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" fullname="PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" methodname="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" classname="PerWeaponReticleTests" runstate="Runnable" seed="40996901" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.003050" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1205" name="ViewportMarkersMapCorrectlyToLetterboxedHud" fullname="PerWeaponReticleTests.ViewportMarkersMapCorrectlyToLetterboxedHud" methodname="ViewportMarkersMapCorrectlyToLetterboxedHud" classname="PerWeaponReticleTests" runstate="Runnable" seed="879235116" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000969" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1234" name="R3ContactAndRewardTests" fullname="R3ContactAndRewardTests" classname="R3ContactAndRewardTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.011954" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1237" name="FaceContactsMustBeReciprocalNotJustAdjacent" fullname="R3ContactAndRewardTests.FaceContactsMustBeReciprocalNotJustAdjacent" methodname="FaceContactsMustBeReciprocalNotJustAdjacent" classname="R3ContactAndRewardTests" runstate="Runnable" seed="1558798721" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000409" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1236" name="FinalVictoriesAlsoProvideThreeBonusChoices" fullname="R3ContactAndRewardTests.FinalVictoriesAlsoProvideThreeBonusChoices" methodname="FinalVictoriesAlsoProvideThreeBonusChoices" classname="R3ContactAndRewardTests" runstate="Runnable" seed="1311027480" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.003522" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1241" name="LiveBlockGraphEnforcesContactsAndPreservesInternalSockets" fullname="R3ContactAndRewardTests.LiveBlockGraphEnforcesContactsAndPreservesInternalSockets" methodname="LiveBlockGraphEnforcesContactsAndPreservesInternalSockets" classname="R3ContactAndRewardTests" runstate="Runnable" seed="2129787645" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.001081" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1238" name="MountRejectsMissingPortPair" fullname="R3ContactAndRewardTests.MountRejectsMissingPortPair" methodname="MountRejectsMissingPortPair" classname="R3ContactAndRewardTests" runstate="Runnable" seed="20254693" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000821" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1235" name="OneBonusIsMandatoryAndIndependentOfThreeSalvagedParts" fullname="R3ContactAndRewardTests.OneBonusIsMandatoryAndIndependentOfThreeSalvagedParts" methodname="OneBonusIsMandatoryAndIndependentOfThreeSalvagedParts" classname="R3ContactAndRewardTests" runstate="Runnable" seed="1661659776" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.002548" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1240" name="PortMaskRotatesTogetherWithThePart" fullname="R3ContactAndRewardTests.PortMaskRotatesTogetherWithThePart" methodname="PortMaskRotatesTogetherWithThePart" classname="R3ContactAndRewardTests" runstate="Runnable" seed="1061492053" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000623" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1239" name="TurningBonusOnDifferentAxesRotatesItsFourCellFootprint" fullname="R3ContactAndRewardTests.TurningBonusOnDifferentAxesRotatesItsFourCellFootprint" methodname="TurningBonusOnDifferentAxesRotatesItsFourCellFootprint" classname="R3ContactAndRewardTests" runstate="Runnable" seed="379022144" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.001273" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1242" name="R3GarageModelTests" fullname="R3GarageModelTests" classname="R3GarageModelTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.012460" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1245" name="BuyingChecksConnectivityOccupancyAndFundsAtomically" fullname="R3GarageModelTests.BuyingChecksConnectivityOccupancyAndFundsAtomically" methodname="BuyingChecksConnectivityOccupancyAndFundsAtomically" classname="R3GarageModelTests" runstate="Runnable" seed="523775316" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000650" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1248" name="EmergencyOnlyRebuildsMissingEssentialsAtFullPrice" fullname="R3GarageModelTests.EmergencyOnlyRebuildsMissingEssentialsAtFullPrice" methodname="EmergencyOnlyRebuildsMissingEssentialsAtFullPrice" classname="R3GarageModelTests" runstate="Runnable" seed="1357509880" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.008279" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1247" name="RemovalProtectsCoreEssentialPlanAndConnectedFragments" fullname="R3GarageModelTests.RemovalProtectsCoreEssentialPlanAndConnectedFragments" methodname="RemovalProtectsCoreEssentialPlanAndConnectedFragments" classname="R3GarageModelTests" runstate="Runnable" seed="1320070968" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000337" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1246" name="RepairIsCheaperThanReplacingLostModuleAndDoesNotCreateFreeParts" fullname="R3GarageModelTests.RepairIsCheaperThanReplacingLostModuleAndDoesNotCreateFreeParts" methodname="RepairIsCheaperThanReplacingLostModuleAndDoesNotCreateFreeParts" classname="R3GarageModelTests" runstate="Runnable" seed="1900602634" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000419" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1244" name="RunDamageDoesNotMutateIntactBlueprint" fullname="R3GarageModelTests.RunDamageDoesNotMutateIntactBlueprint" methodname="RunDamageDoesNotMutateIntactBlueprint" classname="R3GarageModelTests" runstate="Runnable" seed="250924757" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000153" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1243" name="ThreeBlueprintsHaveDistinctConnectedGeometryAndMobility" fullname="R3GarageModelTests.ThreeBlueprintsHaveDistinctConnectedGeometryAndMobility" methodname="ThreeBlueprintsHaveDistinctConnectedGeometryAndMobility" classname="R3GarageModelTests" runstate="Runnable" seed="897171627" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.001426" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1284" name="R4SalvageModelTests" fullname="R4SalvageModelTests" classname="R4SalvageModelTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.004022" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1286" name="FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" fullname="R4SalvageModelTests.FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" methodname="FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" classname="R4SalvageModelTests" runstate="Runnable" seed="2126732207" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.002045" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1287" name="RunOwnershipAndLedgerIdsDoNotSurviveNewModel" fullname="R4SalvageModelTests.RunOwnershipAndLedgerIdsDoNotSurviveNewModel" methodname="RunOwnershipAndLedgerIdsDoNotSurviveNewModel" classname="R4SalvageModelTests" runstate="Runnable" seed="2114698897" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000657" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1285" name="SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" fullname="R4SalvageModelTests.SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" methodname="SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" classname="R4SalvageModelTests" runstate="Runnable" seed="1288966892" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000565" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1530" name="WeaponTypeLimitTests" fullname="WeaponTypeLimitTests" classname="WeaponTypeLimitTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-10-27 14:19:57Z" end-time="2026-10-27 14:20:01Z" duration="3.193341" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1540" name="CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" fullname="WeaponTypeLimitTests.CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" methodname="CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" classname="WeaponTypeLimitTests" runstate="Runnable" seed="967701983" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.003054" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1538" name="LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" fullname="WeaponTypeLimitTests.LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" methodname="LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" classname="WeaponTypeLimitTests" runstate="Runnable" seed="925223092" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.001093" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1539" name="RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" fullname="WeaponTypeLimitTests.RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" methodname="RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" classname="WeaponTypeLimitTests" runstate="Runnable" seed="967289761" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000834" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1537" name="ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" fullname="WeaponTypeLimitTests.ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" methodname="ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" classname="WeaponTypeLimitTests" runstate="Runnable" seed="166979305" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:19:55Z" duration="0.000553" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1541" name="TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts" fullname="WeaponTypeLimitTests.TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts" methodname="TwelveGunsPassRealGaragePlacementGateAndProduceTwelveMountedParts" classname="WeaponTypeLimitTests" runstate="Runnable" seed="329552063" result="Passed" start-time="2026-10-27 14:19:55Z" end-time="2026-10-27 14:20:01Z" duration="5.799846" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 140 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 140 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 141 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 141 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 142 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 142 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 143 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 143 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 144 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 144 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 145 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 145 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 146 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 146 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 147 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 147 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 148 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 148 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 149 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 149 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 150 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 150 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1536" name="TwelveIdenticalGunsAreAllowed" fullname="WeaponTypeLimitTests.TwelveIdenticalGunsAreAllowed" methodname="TwelveIdenticalGunsAreAllowed" classname="WeaponTypeLimitTests" runstate="Runnable" seed="281398455" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.001734" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1535" name="TwoTypesPermitRequestedNumberOfGuns" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.006295" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1531" name="TwoTypesPermitRequestedNumberOfGuns(1)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(1)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1270286505" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.002953" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1532" name="TwoTypesPermitRequestedNumberOfGuns(2)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(2)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="474939208" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000490" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1533" name="TwoTypesPermitRequestedNumberOfGuns(4)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(4)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="2130414294" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000514" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1534" name="TwoTypesPermitRequestedNumberOfGuns(12)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(12)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="93506445" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.001004" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1614" name="B01.CAMERA001.EditModeTests.dll" fullname="PROJECT/Library/ScriptAssemblies/B01.CAMERA001.EditModeTests.dll" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.031050" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="27556" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1615" name="B01" fullname="B01" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.029885" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1616" name="CAMERA001" fullname="B01.CAMERA001" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.028857" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1617" name="Tests" fullname="B01.CAMERA001.Tests" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.027881" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1589" name="Camera001AimTimelineTests" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.014704" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1592" name="CallerCannotOverwriteRecordedPreviousTarget" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.CallerCannotOverwriteRecordedPreviousTarget" methodname="CallerCannotOverwriteRecordedPreviousTarget" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1835929340" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.003347" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1599" name="CsvRawFloatsRemainInvariantInCommaDecimalLocale" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.CsvRawFloatsRemainInvariantInCommaDecimalLocale" methodname="CsvRawFloatsRemainInvariantInCommaDecimalLocale" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1863184994" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.002457" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1593" name="InvalidFrameDoesNotMutateRecorder" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.InvalidFrameDoesNotMutateRecorder" methodname="InvalidFrameDoesNotMutateRecorder" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="854350529" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.001205" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1594" name="MonotonicFrameAndCsvQuoteEscapeFailClosed" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.MonotonicFrameAndCsvQuoteEscapeFailClosed" methodname="MonotonicFrameAndCsvQuoteEscapeFailClosed" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1744823289" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000295" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1596" name="NegativeFrameRejectedAndMaxIntFrameCannotWrap" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.NegativeFrameRejectedAndMaxIntFrameCannotWrap" methodname="NegativeFrameRejectedAndMaxIntFrameCannotWrap" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1098290728" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000316" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1597" name="RawProvenanceSurvivesCallerSpoofAndIsRecomputable" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.RawProvenanceSurvivesCallerSpoofAndIsRecomputable" methodname="RawProvenanceSurvivesCallerSpoofAndIsRecomputable" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="65004931" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.001935" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1590" name="RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" methodname="RealQaCoordinatesIdentifyActualTargetJumpAndRateBudget" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1673271578" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000308" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1595" name="SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" methodname="SkippedFramesCannotBeMisclassifiedAsSingleFrameGunSlew" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1537745814" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000618" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1598" name="StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" methodname="StableHitFramesRetainUnresolvedMuzzleLagWithRawCoordinates" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1550718004" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000393" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1591" name="UnchangedTargetWithChangedHitIdIsNotAnAngularJump" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.UnchangedTargetWithChangedHitIdIsNotAnAngularJump" methodname="UnchangedTargetWithChangedHitIdIsNotAnAngularJump" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1363940762" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000230" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1600" name="UnsafeCameraSampleNeverLabelsRateAsProvenCausality" fullname="B01.CAMERA001.Tests.Camera001AimTimelineTests.UnsafeCameraSampleNeverLabelsRateAsProvenCausality" methodname="UnsafeCameraSampleNeverLabelsRateAsProvenCausality" classname="B01.CAMERA001.Tests.Camera001AimTimelineTests" runstate="Runnable" seed="1068235942" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000170" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1601" name="Camera001AimTransitionTests" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.002951" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1605" name="ActualCameraPoseFailureHasPriority" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualCameraPoseFailureHasPriority" methodname="ActualCameraPoseFailureHasPriority" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="515748203" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000207" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1606" name="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" methodname="ActualOwnRayOrWorldOverlapAlwaysFlagsCamera" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1330149484" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000127" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1607" name="InvalidZeroDeltaOrCoincidentTargetRejects" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.InvalidZeroDeltaOrCoincidentTargetRejects" methodname="InvalidZeroDeltaOrCoincidentTargetRejects" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="598715200" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000335" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1602" name="R12LightHitSwitchRequiresMoreThanOneFrameSlew" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.R12LightHitSwitchRequiresMoreThanOneFrameSlew" methodname="R12LightHitSwitchRequiresMoreThanOneFrameSlew" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="588808513" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000158" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1604" name="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.SafePoseButStableTargetGapIsUnresolvedNotCameraFault" methodname="SafePoseButStableTargetGapIsUnresolvedNotCameraFault" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="2104950696" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000115" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1603" name="StableTargetAndAlignedGunAreNotFalselyBlamed" fullname="B01.CAMERA001.Tests.Camera001AimTransitionTests.StableTargetAndAlignedGunAreNotFalselyBlamed" methodname="StableTargetAndAlignedGunAreNotFalselyBlamed" classname="B01.CAMERA001.Tests.Camera001AimTransitionTests" runstate="Runnable" seed="1763480705" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000104" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1608" name="Camera001FramingTests" fullname="B01.CAMERA001.Tests.Camera001FramingTests" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.008765" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1610" name="BiggerAndTallerRobotsDemandMoreFramingDistance" fullname="B01.CAMERA001.Tests.Camera001FramingTests.BiggerAndTallerRobotsDemandMoreFramingDistance" methodname="BiggerAndTallerRobotsDemandMoreFramingDistance" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="490075918" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.001177" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1612" name="DifferentResolutionWithSameAspectKeepsGeometry" fullname="B01.CAMERA001.Tests.Camera001FramingTests.DifferentResolutionWithSameAspectKeepsGeometry" methodname="DifferentResolutionWithSameAspectKeepsGeometry" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="2082091257" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000297" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1609" name="EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" fullname="B01.CAMERA001.Tests.Camera001FramingTests.EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" methodname="EightHundredFortyGeometryAndZoomProposalsDoNotAimThroughOwnVehicle" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1849417715" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.005081" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1613" name="InvalidGeometryAndNonFiniteRequestFailClosed" fullname="B01.CAMERA001.Tests.Camera001FramingTests.InvalidGeometryAndNonFiniteRequestFailClosed" methodname="InvalidGeometryAndNonFiniteRequestFailClosed" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="1937459757" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000385" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1611" name="SafeMaximumZoomNeverExceedsConfiguredLimit" fullname="B01.CAMERA001.Tests.Camera001FramingTests.SafeMaximumZoomNeverExceedsConfiguredLimit" methodname="SafeMaximumZoomNeverExceedsConfiguredLimit" classname="B01.CAMERA001.Tests.Camera001FramingTests" runstate="Runnable" seed="501520232" result="Passed" start-time="2026-10-27 14:20:01Z" end-time="2026-10-27 14:20:01Z" duration="0.000181" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: USER_DIR/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

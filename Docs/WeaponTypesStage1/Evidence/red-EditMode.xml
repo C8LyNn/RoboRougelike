@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="8" result="Failed(Child)" total="8" passed="3" failed="5" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0,0605526">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1237" result="Failed" site="Child" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.060553" total="8" passed="3" failed="5" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1540" name="Assembly-CSharp-Editor.dll" fullname="PROJECT/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="445" result="Failed" site="Child" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.045113" total="8" passed="3" failed="5" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="2608" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1530" name="WeaponTypeLimitTests" fullname="WeaponTypeLimitTests" classname="WeaponTypeLimitTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.041196" total="8" passed="3" failed="5" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1539" name="CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" fullname="WeaponTypeLimitTests.CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" methodname="CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1420260024" result="Failed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.016735" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at WeaponTypeLimitTests.CopyAndDeserializedInvalidDesignCannotDeployOrRestoreThirdType () [0x0002c] in PROJECT\Assets\Tests\Editor\WeaponTypeLimitTests.cs:64
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1537" name="LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" fullname="WeaponTypeLimitTests.LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" methodname="LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1873295170" result="Failed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.000718" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at WeaponTypeLimitTests.LostPlanReservesItsTypeUntilRemovedSoRepairCannotBypassLimit () [0x0003c] in PROJECT\Assets\Tests\Editor\WeaponTypeLimitTests.cs:43
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1538" name="RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" fullname="WeaponTypeLimitTests.RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" methodname="RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted" classname="WeaponTypeLimitTests" runstate="Runnable" seed="154996831" result="Failed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.002834" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at WeaponTypeLimitTests.RecoveredThirdTypeMayBeStoredAndRepairedButNotMounted () [0x00084] in PROJECT\Assets\Tests\Editor\WeaponTypeLimitTests.cs:56
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1536" name="ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" fullname="WeaponTypeLimitTests.ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" methodname="ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1648477869" result="Failed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.000607" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at WeaponTypeLimitTests.ThirdTypeRejectedWithoutSpendingAndAnotherExistingTypeAllowed () [0x00039] in PROJECT\Assets\Tests\Editor\WeaponTypeLimitTests.cs:33
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1535" name="TwoTypesPermitRequestedNumberOfGuns" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.010871" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1531" name="TwoTypesPermitRequestedNumberOfGuns(1)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(1)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1881882883" result="Passed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.007379" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1532" name="TwoTypesPermitRequestedNumberOfGuns(2)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(2)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="848716506" result="Passed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.000537" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1533" name="TwoTypesPermitRequestedNumberOfGuns(4)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(4)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="910751266" result="Passed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.000622" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1534" name="TwoTypesPermitRequestedNumberOfGuns(12)" fullname="WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns(12)" methodname="TwoTypesPermitRequestedNumberOfGuns" classname="WeaponTypeLimitTests" runstate="Runnable" seed="1870011134" result="Failed" start-time="2026-10-27 14:14:52Z" end-time="2026-10-27 14:14:52Z" duration="0.000585" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  gun 5
+  Expected: True
+  But was:  False
+]]></message>
+              <stack-trace><![CDATA[at WeaponTypeLimitTests.TwoTypesPermitRequestedNumberOfGuns (System.Int32 count) [0x0000a] in PROJECT\Assets\Tests\Editor\WeaponTypeLimitTests.cs:24
+]]></stack-trace>
+            </failure>
+            <output><![CDATA[Saving results to: USER_DIR/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
