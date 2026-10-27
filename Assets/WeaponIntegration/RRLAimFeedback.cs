@@ -23,7 +23,7 @@ namespace RoboRougelike.WeaponIntegration
         }
         static readonly RaycastHit[] hits=new RaycastHit[64];
         static readonly Collider[] overlaps=new Collider[64];
-        static float ProjectileRadius(R3MountedPart part)
+        internal static float ProjectileRadius(R3MountedPart part)
         {
             if(part.Weapon==R4WeaponKind.RocketLauncher)return part.GetComponent<RRLRocketBinding>()?.Module?.CurrentSpec.CollisionRadius??0;
             if(part.Weapon==R4WeaponKind.Railgun)return part.GetComponent<RRLRailgunBinding>()?.Module?.CurrentSpec.Radius??0;

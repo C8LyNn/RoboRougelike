@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T13:51:21.7572068Z",
+    "source":  "ddbaa7f5b83bc3c7879a84a6a78753537614842a",
+    "stage":  "RETICLE-RocketRed",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T13:51:10.3409661Z",
+    "phase":  "Compile"
+}

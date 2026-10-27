@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0,0506073">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1226" result="Failed" site="Child" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0.050607" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1527" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Camera275/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="434" result="Failed" site="Child" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0.036749" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="45172" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1199" name="PerWeaponReticleTests" fullname="PerWeaponReticleTests" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0.032223" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1201" name="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" fullname="PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" methodname="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" classname="PerWeaponReticleTests" runstate="Runnable" seed="748472003" result="Failed" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0.017478" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  The game needs individual, real-muzzle reticles for its guns
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at PerWeaponReticleTests.Collect (UnityEngine.Vector3 point) [0x0001a] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:39
+at PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers () [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:61
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1200" name="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" fullname="PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" methodname="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" classname="PerWeaponReticleTests" runstate="Runnable" seed="1713198162" result="Failed" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0.001159" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  The game needs individual, real-muzzle reticles for its guns
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at PerWeaponReticleTests.Collect (UnityEngine.Vector3 point) [0x0001a] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:39
+at PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns () [0x00058] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:50
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1202" name="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" fullname="PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" methodname="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" classname="PerWeaponReticleTests" runstate="Runnable" seed="361367575" result="Failed" start-time="2026-10-27 13:46:15Z" end-time="2026-10-27 13:46:15Z" duration="0.003129" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  The game needs individual, real-muzzle reticles for its guns
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at PerWeaponReticleTests.Collect (UnityEngine.Vector3 point) [0x0001a] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:39
+at PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon () [0x0008a] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:70
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

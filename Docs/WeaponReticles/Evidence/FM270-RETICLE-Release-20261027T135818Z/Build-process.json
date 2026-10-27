@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T13:58:53.5268007Z",
+    "source":  "6cfdb55a20ac6d40c39cc2bcca69f74ec0232cfc",
+    "stage":  "RETICLE-Release",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T13:58:31.0253658Z",
+    "phase":  "Build"
+}

@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T13:54:18.9123754Z",
+    "source":  "9b736e5e8855eae819535f6416ca7de5627d8441",
+    "stage":  "RETICLE-Final",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Final-20261027T135333Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"PerWeaponReticleTests;B01.CAMERA001.Tests\""
+                  ],
+    "startedUtc":  "2026-10-27T13:54:07.6496305Z",
+    "phase":  "EditMode"
+}
