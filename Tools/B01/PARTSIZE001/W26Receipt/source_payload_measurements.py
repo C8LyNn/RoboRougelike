@@ -26,7 +26,8 @@ GRID=.55
 def git_bytes(repo,sha,path,blob):
     obj=subprocess.check_output(["git","-C",str(repo),"rev-parse",sha+":"+path],text=True).strip()
     if obj!=blob: raise ValueError("ORIGINAL_SOURCE_GIT_BLOB_DRIFT:"+path)
-    return subprocess.check_output(["git","-C",str(repo),"show",sha+":"+path],text=True)
+    # Git blob bytes are UTF-8; Windows locale may otherwise decode Polish names as cp1252.
+    return subprocess.check_output(["git","-C",str(repo),"show",sha+":"+path]).decode("utf-8")
 
 def find_one(text,pattern):
     matches=re.findall(pattern,text)
