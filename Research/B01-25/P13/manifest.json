@@ -1,0 +1,45 @@
+{
+  "schema": "B01-25-P13-MINIMAL-EDITOR-DRAFTS-v1",
+  "status": "SOURCE-SHAPED_RESEARCH_FIXTURES__UNITY_NOT_RUN",
+  "source": {
+    "codexPr": 310,
+    "sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "blobs": {
+      "MapDraft.cs": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+      "MapWorld.cs": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+      "R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7"
+    },
+    "inheritedP12Commit": "758662782acd92026b39b09a60d92b7e587a34f9",
+    "chlSourceSha": "c7b2a234a286089383503da41883d624fe650551"
+  },
+  "challengeFiles": [
+    {
+      "id": "LD01",
+      "name": "B01_25_LD01_MIN_P13",
+      "file": "LD01_MIN.json",
+      "objects": 42,
+      "goal": "Drive across a 16m-wide, 4-segment low-barrier line, without any barrier-free FLOOR path",
+      "runtime": "Only finish touch is implemented; successful clearance NOT measured",
+      "risk": "LowBarrier may be physically impassable for given rig; real PhysX/Heavy clearance mandatory"
+    },
+    {
+      "id": "LD02",
+      "name": "B01_25_LD02_MIN_P13",
+      "file": "LD02_MIN.json",
+      "objects": 5,
+      "goal": "Try moving in two-cover geometry sandbox; NOT kill enemies",
+      "runtime": "No enemy spawn, AI, objective count, or combat win",
+      "risk": "GlobalFloor extends ±50 cells and permits bypassing all cover"
+    },
+    {
+      "id": "LD03",
+      "name": "B01_25_LD03_MIN_P13",
+      "file": "LD03_MIN.json",
+      "objects": 35,
+      "goal": "Separate 8-step shortcut with LowBarrier+Ramp vs 12-step detour around them",
+      "runtime": "Only finish touch; no timed win/reward or route certification",
+      "risk": "1-cell short corridor not certified for Heavy; 2-cell detour needs native turning/clearance"
+    }
+  ],
+  "import": "Use disposable Application.persistentDataPath/Maps, copy file to unique <name>.json and load by EditorName; no overwrites (D02)."
+}
