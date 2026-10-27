@@ -1,0 +1,21 @@
+name: B01-61 PASS12 pinned Codex original-source static gate
+on:
+  push:
+    branches: ['qa/b01-61-pass12-cross-feature']
+  pull_request:
+    paths: ['Tools/B01/B01-61-PASS12/**', '.github/workflows/b01-61-pass12-static.yml']
+permissions:
+  contents: read
+jobs:
+  pin-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch exact public Codex PR 310 source
+        run: |
+          git fetch --no-tags --depth=1 origin refs/pull/310/head:refs/remotes/origin/b0161codex310
+          test "$(git rev-parse refs/remotes/origin/b0161codex310)" = "231005c6d0351945a8ee6684f3856af118f0e94f"
+      - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
+        run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
