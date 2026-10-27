@@ -1,0 +1,22 @@
+name: B01-60 W66 original PARTSIZE cross-worktree evidence guard
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/w66_cross_worktree_evidence.py'
+      - '.github/workflows/b01-60-w66-cross-worktree-qa.yml'
+  workflow_dispatch:
+jobs:
+  original-operator-evidence-isolation:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute original owner PowerShell on real detached worktrees without Unity
+        shell: bash
+        run: |
+          python Tools/B01/QA-NATIVE-001/w66_cross_worktree_evidence.py
