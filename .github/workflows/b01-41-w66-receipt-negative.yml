@@ -1,0 +1,44 @@
+name: B01-41 W66 isolated receipt-fixture CI (NO UNITY)
+on:
+  push:
+    branches: ['audit/b01-41-w58-pass11-ci-evidence']
+    paths:
+      - 'Tools/B01/CI41/W58/**'
+      - '.github/workflows/b01-41-w66-receipt-negative.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  receipt-fixtures:
+    name: Isolated original B01-41 parser tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 pinned, no token persistence
+        with:
+          persist-credentials: false
+      - name: Assert exact pre-existing QA-only Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/W58/ci41_evidence.py)" = "966bed50b9e71f76c8ed1c841d7df324f9b93579"
+          test "$(git hash-object Tools/B01/CI41/W58/test_ci41_evidence.py)" = "93d679fb54e56a55b3c8de82c856aacafb491d23"
+          test "$(git hash-object Tools/B01/CI41/W58/observed_ci_20261027.json)" = "97007be953c19bbefd7e0788ed65aad6aea6ecec"
+          echo 'ORIGINAL_QA_BLOBS_PINNED; no production sources fetched'
+      - name: Execute actual Python receipt tests (original QA source, synthetic NUnit only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/CI41/W58 -p test_ci41_evidence.py -v 2>&1 | tee "Tools/B01/CI41/W58/b01-41-receipt-${RUNNER_OS}.txt"
+      - name: Preserve only sanitized QA test trace (not Unity logs or credentials)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4 pinned
+        with:
+          name: B01-41-W66-receipt-${{ matrix.os }}-${{ github.run_id }}
+          path: Tools/B01/CI41/W58/b01-41-receipt-${{ runner.os }}.txt
+          if-no-files-found: warn
+          retention-days: 14
