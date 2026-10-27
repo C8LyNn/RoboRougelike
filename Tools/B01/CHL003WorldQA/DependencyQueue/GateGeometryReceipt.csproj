@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Exactly the REAL B01-20-owned C# production policy, never a copy. -->
+    <Compile Include="../../../../Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs" Link="CHL003GateCrossing.cs"/>
+    <Compile Include="GateGeometryReceipt.cs" />
+  </ItemGroup>
+</Project>
