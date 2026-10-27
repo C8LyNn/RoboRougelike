@@ -1,3 +1,18 @@
+# PASS 4 / W30–W33 — CURRENT PILOT CONTRACT (supersedes historical PASS 3 notes below)
+
+**Study HTML Git blob:** `81f8913159f7a2273d73ab65f2b8d9abdab8d7f9`; SHA256 `20daf5c0d63fa9aff22b65d0896fedac78d7dcf81030a4be9be2e1c521bb0124`. Previous B01-11 independently browser-reviewed source `bc17deba...` is **HISTORICAL** for the newly changed HTML; five prior assertions do not transfer automatically. Existing B01-12 browser regression **70/70 PASS** and 14 new copy/390px tests **PASS** on this current source; B01-11 independent review on new blob **NOT_RUN**.
+
+**Applied B01-11 UX.U5 feedback:** neutral A/B/C treatment names; both CHL Light and Heavy explicitly state `Zwrotność: NIEZMIERZONA`. This removes an unsupported steering advantage cue before participant H3 research, without changing JS behavior, PhysX, assets or runtime.
+
+**Study constraints:**
+- H1 and H3 are eligible for a bounded *exploratory* 8-person moderated pilot, subject to HQ recruitment/consent decision; no final GUI acceptance.
+- H2 is **TEXTUAL REASON CATEGORY comprehension only**. **Do NOT score physical collider overhang recognition**: this prototype has no independent real-collider spatial stimulus and 11 physical categories stay UNKNOWN. Original H2 spatial/25-percentage-point promise requires a different HQ-approved stimulus.
+- Moderator must preselect mock reason and reset scenario **before the subject sees the screen**; subjects must not choose or be shown the injected answers in fixture selector. Use consistent neutral prompt and log fixture, timing, mistakes and false `PHYSICS/SOCKET APPROVED` assumptions.
+- Use updated [anonymous 120-row blank sheet](observations.csv), source-verified [offline CSV gate/validator](study.py), and [existing HTML](../W17/index.html). Fill only genuine observations. Source `bc17de...` values in older instructions below are historical and must not be used for new observations.
+- Honest present status: **0/8 humans, 0/120 observed trials; H1/H2/H3 NOT_RUN**. Unity native/PhysX/sockets/real driving NOT_RUN. Never treat this research as CODEX_READY or G2.
+
+---
+
 # B01-12 UX.U5 source-backed study requests to B01-11 (NOT executed on people)
 
 Source: exact v2 HTML Git blob `bc17deba3c96307c8179a0ff564b26b3855287ce`. Reviewed original independent B01-11 v1 [comment](https://github.com/C8LyNn/RoboRougelike/issues/296#issuecomment-6440580983) and benchmark [#292](https://github.com/C8LyNn/RoboRougelike/issues/292).
