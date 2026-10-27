@@ -176,6 +176,12 @@ def main():
     scene.render.engine = "CYCLES"
     scene.cycles.device = "CPU"
     scene.cycles.samples = 12
+    # Ubuntu's packaged Blender lacks OpenImageDenoiser; disable it explicitly.
+    for layer in scene.view_layers:
+        if hasattr(layer, "cycles"):
+            layer.cycles.use_denoising = False
+    if hasattr(scene.cycles, "use_denoising"):
+        scene.cycles.use_denoising = False
     scene.render.resolution_x = 960
     scene.render.resolution_y = 540
     scene.render.resolution_percentage = 100
