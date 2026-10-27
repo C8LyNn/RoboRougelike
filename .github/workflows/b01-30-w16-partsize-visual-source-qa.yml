@@ -65,6 +65,53 @@ jobs:
           assert not suspension['visualFitsLogicalAABB']
           assert d['G2']=='HOLD'
           PY
+      - name: Fetch exact PR286 full source by immutable SHA (producer files remain untouched)
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=2b27c3255e6979a291652103bbb7dac2f6c425c5
+          git fetch --depth=1 origin "$PIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$PIN"
+          out=/tmp/b01-partsize-pr286
+          mkdir -p "$out"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeContract.cs" > "$out/PartSizeContract.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs" > "$out/PartSizeNativePhysics.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs" > "$out/PartSizeBaselineCatalog.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs" > "$out/PartSizeDemoEntry.cs"
+          git show "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs.meta" > "$out/PartSizeDemoEntry.cs.meta"
+          git show "$PIN:Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs" > "$out/PartSize001PlayModeTests.cs"
+          git show "$PIN:Assets/PARTSIZE001/Tests/EditMode/PartSize001EditModeTests.cs" > "$out/PartSize001EditModeTests.cs"
+          git show "$PIN:Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity" > "$out/PARTSIZE001_Demo.unity"
+          git show "$PIN:Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.prefab" > "$out/PARTSIZE001_Demo.prefab"
+          git show "$PIN:Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv" > "$out/observed_r3_size_matrix.csv"
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeContract.cs")" = 07455919a5544875fee5a78ecbbce36dc6cb49c2
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs")" = 78bd448ada36638670adaa7a19d9c5c2350a02be
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs")" = 6153d1758e800ec5c4210323610b061c06e8ea85
+          test "$(git rev-parse "$PIN:Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs")" = a9c74387a6dd33641dc758de08ee91d3fb6f3871
+          test "$(git rev-parse "$PIN:Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv")" = 663883256a521b385ebd51c53abf72e9fbe6b034
+          printf 'B01-23 PR286 EXACT_SHA=%s\n' "$PIN" | tee "$out/PR286_SOURCE_RECEIPT.txt"
+          sha256sum "$out"/* | tee -a "$out/PR286_SOURCE_RECEIPT.txt"
+          echo "B01_PARTSIZE_PR286_SOURCE=$out" >> "$GITHUB_ENV"
+      - name: Execute read-only producer-vs-Codex source audit and mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          python3 "$dir/test_partsize_pr286_delta.py" -v |& tee "$B01_PARTSIZE_PR286_SOURCE/PR286_DELTA_UNIT_LOG.txt"
+          python3 "$dir/partsize_pr286_delta.py" \
+            --producer "$B01_PARTSIZE_PR286_SOURCE" \
+            --canonical "$B01_PARTSIZE_PINNED_SOURCE" \
+            --output "$B01_PARTSIZE_PR286_SOURCE/PR286_SOURCE_VS_R41_GEOMETRY.json"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual production PARTSIZE C# directly and replay 32 physical envelopes
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Docs/B01Validation/20261027/B01_30_PARTSIZE_VISUAL_SOURCE_QA
+          dotnet run --project "$dir/PR286ContractReplay.csproj" --configuration Release \
+            -- "$B01_PARTSIZE_PR286_SOURCE/PR286_SOURCE_VS_R41_GEOMETRY.json" |& tee "$B01_PARTSIZE_PR286_SOURCE/PR286_CSHARP_REAL_SOURCE_REPLAY.txt"
       - uses: actions/upload-artifact@v4
         with:
           name: B01-30-W16-PARTSIZE-READONLY-32-ORIENTATION-EVIDENCE
@@ -72,4 +119,8 @@ jobs:
             /tmp/b01-partsize-pinned/RECEIPT.txt
             /tmp/b01-partsize-pinned/QA_TEST_LOG.txt
             /tmp/b01-partsize-pinned/PARTSIZE_VISUAL_SOURCE_32_ROWS.json
+            /tmp/b01-partsize-pr286/PR286_SOURCE_RECEIPT.txt
+            /tmp/b01-partsize-pr286/PR286_DELTA_UNIT_LOG.txt
+            /tmp/b01-partsize-pr286/PR286_SOURCE_VS_R41_GEOMETRY.json
+            /tmp/b01-partsize-pr286/PR286_CSHARP_REAL_SOURCE_REPLAY.txt
           retention-days: 30
