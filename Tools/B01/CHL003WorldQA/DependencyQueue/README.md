@@ -1,31 +1,43 @@
-# B01-21 | Reactive Queue C-DQ | exact-original CHL-003 aperture regression
+# B01-21 / DEPENDENCY-AWARE QA: C-DQ / CHL gate current-source response
 
-TASK_ID `B01-21-C-DQ-NEWHEAD-GATE-20261027` | owner `B01-21` | QA_KIND `SOURCE` only.
-Pinned original producer B01-20 [CHL Draft #285](https://github.com/C8LyNn/RoboRougelike/pull/285) **`f4ca318577edbdf4d003ab3e104ac7ec71d83cfe`**. Prior [QA PR #295](https://github.com/C8LyNn/RoboRougelike/pull/295) is a different immutable upstream pin `9a947108...`, therefore its whole-suite acceptance may not be claimed current; only unchanged geometrical values can be carried forward after exact-blob comparison.
+**TASK_ID:** `B01-21-C-DQ-NEWHEAD-GATE-20261027`
+**OWNER:** B01-21 (read-only source support)
+**INPUT_ARTIFACT_URI@SHA:** [B01-20 CHL PR #285](https://github.com/C8LyNn/RoboRougelike/pull/285) original source exact producer `74b6af45d71297c2b1fc50a19152fb6771a5bcf0`; previous historical producer `f4ca318577edbdf4d003ab3e104ac7ec71d83cfe`.
+**REQUIRES:** documented prior [B01-21 W17 QA PR #295](https://github.com/C8LyNn/RoboRougelike/pull/295) source evidence `cadc35dca5e5e8cb2cd6595f7e860b0c898ef8ec` at old producer `9a947108...`, DONE/SOURCE; latest producer source original verified from Git blob SHA. Not dependent on B01-60 or Codex.
+**OWNED_PATHS:** exclusively `Tools/B01/CHL003WorldQA/**` and own B01-21 source QA workflows; no CHL/Partsize/Codex source edit.
+**QA_KIND:** REAL compiled ORIGINAL CHL C# production gate policy, NOT Unity PhysX, wheels or 3×2 traversal.
 
-## REQUIRES (checked, not assumed)
-- C1 producer source+original artifact [run #40486705906](https://github.com/C8LyNn/RoboRougelike/actions/runs/40486705906) `SUCCESS`, same SHA, **24,056/24,056** actual original C# source checks, 58 original ZIP source entries and 57/57 original source hashes, but **Unity native NOT_RUN**.
-- C2 B01-40 exact-source independent ZIP and recipient G0 **NOT_RUN at this head** (historical older SHA G0 cannot carry).
-- C3 B01-60 native 18 Edit/13 Play and 3×Light +3×Heavy authentic full-body motor runs **BLOCKED_BY licensed Unity runner**, not PASS.
-- CHL ownership **B01-20**; no source edits or competing Unity package. This is small independent deterministic feedback before G1.
+## Reactive actual finding: original defect FIXED by exclusive owner (not OPEN)
+B01-20 read source feedback at [PR #295](https://github.com/C8LyNn/RoboRougelike/pull/295) and added [dependency C1 owner receipt](https://github.com/C8LyNn/RoboRougelike/blob/74b6af45d71297c2b1fc50a19152fb6771a5bcf0/Docs/B01/CHL003/DEPENDENCY_C1_HEAVY_YAW8.md). Owner's new original CHL demo `CHL003DemoBootstrap.cs` blob SHA `9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e` **actually widened all four checkpoint and finish trigger volumes from 3.50m to 3.70m**, physically matching the already 3.70m bridge and -12° ramp width; posts now at X±1.97m. Original producer policy class `CHL003GateCrossing.cs` is still immutable Git blob `5c736da620487e48131f6d454bcf231ae368b513`, requiring actual body full-envelope clearance0.25m per side. We are NOT asking B01-20 to fix the prior yaw8 issue again.
 
-## Actually run against real original production C# (NO fake Unity)
-`GateGeometryReceipt.csproj` directly **compiles** the existing real original `Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs` C# without modifications. The analytic caller supplies **source-measured** box/sphere footprint corners (0.82m wheel diameters, Heavy chassis2.50×3.40m wheel centers X±1.0/Z±1.15, Light1.45×2.30m X±.59/Z±.75). The ORIGINAL function rejects/accepts **policy** for explicitly supplied gate-local bounds and plane-crossing signs. This does **NOT** invoke actual Unity `Collider.bounds`, non-kinematic motor, trigger messages or PhysX. CI pins the five original producer Git blobs and runs the real production C# verdicts on Ubuntu+Windows, with separate JSON consumer mutation negatives.
+### Test on actual original production C# policy
+The `GateGeometryReceipt.csproj` compiles *directly* the existing CHL runtime file `Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs` (not a fake copy). The test runner independently reconstructs 2D analytical rigid original wheel/box AABB from original CHL demo geometry (Heavy chassis 2.5×3.4m and wheels diameter.82 at ±1.0/±1.15m; Light chassis1.45×2.30 wheels±.59/±.75). This tests real C# predicate for artificially supplied **ground-truth source-geometric** localMinX/localMaxX; it does **not** invoke Unity Physics, actual `Collider.bounds`, wheels, real OnTriggerEnter or G1.
 
-- Original physical bridge width **3.70m**, **CHL checkpoint trigger aperture width3.50m**, original `CHL003GateCrossing` margin .25m/side.
-- At yaw0° Heavy actual outer envelope2.82m. **Checkpoint allowable lateral center offset = ±0.09m** with guard. Bridge physical allowable center offset at same .25m side reserve = **±0.19m**. Thus center offset **+0.10m on exact straight Heavy**: safe by bridge review reserve, but ORIGINAL production C# `IsForwardFullBodyCrossing` returns **false** with the provided measured geometry. A fixed original gate at CP0=Z5 on 5.40m wide approach ground makes even greater difference.
-- At centered Heavy yaw5°: actual original cuboid+spheres source projection ~3.01285m, gate reserve 0.24358m < required0.25 and bridge reserve0.34358m; ORIGINAL production gate returns false. Heavy allowable angle **~4.65336° at CP aperture** vs **~10.32962° at bridge** for centered vehicle with 0.25m each-side reserve.
-- At yaw8° Heavy bridge side margin ~0.28968m, gate side margin ~0.18968m (also original production predicate rejects). Light still has margin ~0.65136m at checkpoint.
-- This is **a definitive SOURCE-level difference between accepted geometric predicates** and a **native falsifiable gameplay issue candidate**, not direct evidence an actual demo rig got blocked or softlocked. No assertion that the stricter gate is unintended. B01-20/HQ decide whether precision is deliberate, fair/visible and recoverable; if accidental, only producer changes policy/geometry.
+| Original same CHL production method | Historical gate3.50m | Current owner gate3.70m |
+|---|---|---|
+| Heavy straight yaw0°, root center offset **+0.10m** | REJECT (guard per-side minimum only .24m) | **ACCEPT** (.34m) |
+| Heavy centered yaw5° | REJECT | **ACCEPT** |
+| Heavy centered yaw8° | REJECT (.1897m margin) | **ACCEPT** (.2897m margin) |
+| Heavy centered yaw10° | REJECT (.1555m margin) | **ACCEPT** (.2555m margin) |
+| Heavy centered yaw12° | REJECT | **REJECT** (same valid .25m guard still enforced) |
+| Heavy yaw8° offset+0.03m | historical control not needed | **ACCEPT** (.2597m remaining) |
+| Heavy yaw8° offset+0.05m | historical control not needed | **REJECT** (.2397m remaining) |
 
-## Reproduce on pinned immutable stacked QA branch
-```bash
-dotnet run --project Tools/B01/CHL003WorldQA/DependencyQueue/GateGeometryReceipt.csproj -c Release -- /tmp/B01_21_GATE_POLICY_SOURCE.json
-B01_21_CHL_DQ_RECEIPT=/tmp/B01_21_GATE_POLICY_SOURCE.json python3 -m unittest discover -s Tools/B01/CHL003WorldQA/DependencyQueue -p 'test_*.py' -v
+Thus the prior P0 source geometry mismatch is **SOURCE_FIXED**, not NATIVE_ACCEPTED. Gate-aligned bridge has centered Heavy max yaw for 0.25m reserve **10.3296247°**; yaw8 allows only **±0.0397m** center offset, which may be intentional technical driving accuracy. This residual is a **finite and exact new native negative** for B01-60, not a claim any real trial failed.
+
+## Exact execution and outputs
+```sh
+dotnet run --project Tools/B01/CHL003WorldQA/DependencyQueue/GateGeometryReceipt.csproj -c Release -- /tmp/CHL_GATE_CSHARP_SOURCE.json
+B01_21_CHL_DQ_RECEIPT=/tmp/CHL_GATE_CSHARP_SOURCE.json python3 -m unittest discover -s Tools/B01/CHL003WorldQA/DependencyQueue -p 'test_*.py' -v
 ```
-The exact-source Git SHA/blobs upstream provenance stage happens first in GitHub Actions. The output JSON contains every original policy input/verdict and explicit `actualUnity=NOT_RUN`. NO produced Unity package, no fake physical drive or G1 PASS.
+Own CI verifies FIVE original immutable producer file blobs **at the exact current input commit** using `git rev-parse <producer_sha>:path`; source `DemoBootstrap` has new literal `new Vector3(3.70f, 4.5f, .16f)` and visible posts±1.97. The CI then genuinely compiles/calls the original C# policy (**25 source cases** with before/after controls), produces full per-case JSON and runs **15 separate** receipt-integrity tests (one actual genuine receipt, fourteen independent mutants). Runs on GitHub-hosted Ubuntu and Windows. Reporter prohibits claiming `NATIVE_PASS` from pure code. Artifacts contain original tested SHA, source input pin, exact C# log, adversarial verifier log and SHA256 JSON.
 
-## ONE native receiver action (after native licensing)
-Only B01-20/independent B01-60: in disposable licensed Unity6000.3.14f1 on **same exact producer SHA**, drive real Heavy with yaw0° and lateral center offsets 0/+.08/+.10m through the actual CP0/CP2 forward plane, then yaw4°/5°/8° centered, and Light yaw8°; three repeats each condition, capture original CHL `fixedStep, previousDepth, currentDepth, rootX, yaw, actual world Collider.bounds min/max, local gate box, wheel support, CP counter, Retry recoverability, completion, CONTACT CSV, Editor.log/NUnit XML`. No direct `core.EnterCheckpoint` injection or forced Completion. Let genuine real results decide if correction needed; if source head changes, mark this receipt `STALE_INPUT` and re-pin before consuming.
+## Critical producer CI gate (independent of this source test)
+B01-20 current input `74b6af...` source Actions [40488576985](https://github.com/C8LyNn/RoboRougelike/actions/runs/40488576985) actually ran original C# **24,063/24,063 PASS** and printed `CHL003_C1_B01_21_MEASURED_GATE_NEGATIVE_OLD_RED_NEW_GREEN`, **but its overall source workflow FAILED** in full package manifest verification with `RuntimeError: SHA256 manifest stale`. Thus **C1 full source archive candidate is BLOCKED_BY B01-20 exact-HEAD manifest repair** and fresh CI/ZIP; C2 B01-40 latest independent G0 cannot use historical ZIP. Only B01-20 may fix those owned manifest/docs/files. Generic Unity Edit/Play workflows failed activation prerequisite **before Unity launched**, so native Edit19/Play14+3 Light/3 Heavy complete course **NOT_RUN**, C3/B01-60 BLOCKED_BY licensed Unity runner. No OFFERED_FROZEN, no Codex ACK, no merge, no G2.
 
-NEXT_UNBLOCKS: concrete B01-20 acceptance decision & B01-60 targeted negative before C3; **does not** unblock C2/C3/G2 itself. Rollback delete only this QA directory+its own workflow; old CHL source intact.
+## NEXT_UNBLOCKS and finite operator action
+- B01-20: update manifest on own PR #285, run genuine exact-head source CI fully GREEN and publish matching original physical ZIP then notify B01-40 independent C2. Current W22 source design fix already visible; no duplicate gate widening needed.
+- B01-60, only after licensed disposable Unity6000.3.14f1: P14 true **OLD3.5 REJECT → Retry → NEW3.7 ACCEPT** and original whole physical path 3 Light+3 Heavy, contact+time/actual collider bounds XML/log; additional **yaw8+0.05m** offset negative and **yaw8+0.03m** positive; no direct API checkpoint injection or fabricated physics.
+- B01-00: C4 G2 strictly BLOCKED until C2 current physical ZIP G0 and C3 Unity native G1 genuine evidence. This read-only QA receipt itself only unblocks **owner source-rule signoff / finite native test specifications**. If producer changes the exact source, mark our inputs `STALE_INPUT` and recompute.
+
+Rollback: delete only the B01-21 `DependencyQueue` subdirectory and own single CI. No Unity/runtime modifications have been made.

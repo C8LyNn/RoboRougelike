@@ -8,7 +8,7 @@ import os
 import unittest
 from pathlib import Path
 
-HEAD="f4ca318577edbdf4d003ab3e104ac7ec71d83cfe"
+HEAD="74b6af45d71297c2b1fc50a19152fb6771a5bcf0"
 EXPECTED={
  "HEAVY_CENTERED_STRAIGHT_ACCEPT","HEAVY_OFFSET_0_08_ACCEPT",
  "HEAVY_OFFSET_0_10_REJECT","HEAVY_OFFSET_NEG_0_10_REJECT",
@@ -19,6 +19,13 @@ EXPECTED={
  "LIGHT_OFFSET_0_40_ACCEPT","LIGHT_OFFSET_0_55_REJECT",
  "LIGHT_YAW_8_ACCEPT","LIGHT_YAW_30_ACCEPT",
  "HEAVY_NEGATIVE_SIGN_DEPTH_REJECT","HEAVY_GUARD_YAW_LIMITS",
+ "CURRENT_HEAVY_STRAIGHT_OFFSET_0_10_ACCEPT",
+ "CURRENT_HEAVY_CENTERED_YAW_5_ACCEPT",
+ "CURRENT_HEAVY_CENTERED_YAW_8_ACCEPT",
+ "CURRENT_HEAVY_CENTERED_YAW_10_ACCEPT",
+ "CURRENT_HEAVY_CENTERED_YAW_12_REJECT",
+ "CURRENT_HEAVY_YAW_8_OFFSET_0_03_ACCEPT",
+ "CURRENT_HEAVY_YAW_8_OFFSET_0_05_REJECT",
 }
 def verify(d):
     def require(b,key):
@@ -28,14 +35,15 @@ def verify(d):
     require(d.get("originalPolicyOnly") is True,"SOURCE_AUTHORITY")
     require(d.get("actualUnity")=="NOT_RUN" and d.get("physicalDrive")=="NOT_RUN",
             "FAKE_NATIVE_PASS")
-    require(d.get("sourceTestPassed")==18 and d.get("sourceTestFailed")==0 and
-            d.get("total")==18,"SOURCE_TEST_TOTAL")
-    require(d.get("realCHLWidthMeters")==3.5 and d.get("realBridgeWidthMeters")==3.7
+    require(d.get("sourceTestPassed")==25 and d.get("sourceTestFailed")==0 and
+            d.get("total")==25,"SOURCE_TEST_TOTAL")
+    require(d.get("historicalGateWidthMeters")==3.5 and
+            d.get("realCHLWidthMeters")==3.7 and d.get("realBridgeWidthMeters")==3.7
             and d.get("guardEachSideMeters")==.25,"APERTURE_WIDTH_OR_GUARD")
     rows=d.get("results")
-    require(type(rows)==list and len(rows)==18,"ROWS_COUNT")
+    require(type(rows)==list and len(rows)==25,"ROWS_COUNT")
     names=[v.get("test") for v in rows if type(v)==dict]
-    require(len(names)==18 and set(names)==EXPECTED and len(set(names))==18,"MISSING_OR_DUPLICATE_CASES")
+    require(len(names)==25 and set(names)==EXPECTED and len(set(names))==25,"MISSING_OR_DUPLICATE_CASES")
     for row in rows:
         require(row.get("passed") is True and row.get("nativeUnity")=="NOT_RUN",
                 "FORGED_ROW_VERDICT")
@@ -55,6 +63,21 @@ def verify(d):
     rot=by["HEAVY_CENTERED_YAW_5_REJECT"]
     require(rot["sourceResult"] is False and rot["bridgeMarginMeters"]>.25,
             "NEW_YAW_ONLY_CP_REJECTION_NOT_ESTABLISHED")
+    # SOURCE DIFF: independent original B01-20 code, same real CSharp function.
+    require(by["HEAVY_OFFSET_0_10_REJECT"]["sourceResult"] is False and
+            by["CURRENT_HEAVY_STRAIGHT_OFFSET_0_10_ACCEPT"]["sourceResult"] is True,
+            "OWNER_10CM_FIX_NOT_PROVED")
+    require(by["HEAVY_CENTERED_YAW_8_REJECT"]["sourceResult"] is False and
+            by["CURRENT_HEAVY_CENTERED_YAW_8_ACCEPT"]["sourceResult"] is True,
+            "OWNER_YAW8_FIX_NOT_PROVED")
+    require(by["CURRENT_HEAVY_YAW_8_OFFSET_0_05_REJECT"]["sourceResult"] is False and
+            by["CURRENT_HEAVY_YAW_8_OFFSET_0_03_ACCEPT"]["sourceResult"] is True,
+            "REMAINING_NARROW_HEAVY_OFFSET_NOT_PROVED")
+    for row in rows:
+        if "apertureWidthMeters" in row:
+            expected_ap=3.7 if row["test"].startswith("CURRENT_") or row["test"] in (
+              "HEAVY_YAW_8_ON_BRIDGE_POLICY_PASS","HEAVY_YAW_12_ON_BRIDGE_POLICY_REJECT") else 3.5
+            require(row["apertureWidthMeters"]==expected_ap,"CASE_SOURCE_GATE_VERSION")
     guard=by["HEAVY_GUARD_YAW_LIMITS"]
     require(abs(guard["straightGateCenterOffsetLimitMeters"]-.09)<1e-5,"X_OFFSET_LIMIT")
     return True
@@ -92,5 +115,14 @@ class ReceiptMutationTests(unittest.TestCase):
     def test_12_fake_computed_0_09_limit_rejected(self):
         next(x for x in self.d["results"] if x["test"]=="HEAVY_GUARD_YAW_LIMITS")["straightGateCenterOffsetLimitMeters"]=.25
         self.reject()
+
+    def test_13_forged_owner_fix_accept_rejected(self):
+        row=next(x for x in self.d["results"] if x["test"]=="CURRENT_HEAVY_CENTERED_YAW_8_ACCEPT")
+        row["sourceResult"]=False;self.reject()
+    def test_14_fake_new_gate_still_3point5_rejected(self):
+        self.d["realCHLWidthMeters"]=3.5;self.reject()
+    def test_15_current_still_constrains_offset_0point05(self):
+        row=next(x for x in self.d["results"] if x["test"]=="CURRENT_HEAVY_YAW_8_OFFSET_0_05_REJECT")
+        row["sourceResult"]=True;self.reject()
 
 if __name__=="__main__":unittest.main()

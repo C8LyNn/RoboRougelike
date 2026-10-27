@@ -57,7 +57,7 @@ internal static class GateGeometryReceipt
         Rows.Add(new {
             test=id,rig=heavy?"HEAVY":"LIGHT",yawDeg=yaw,centerOffsetMeters=x,
             sourceResult=got,expected,passed=got==expected,
-            projectedWidthMeters=Math.Round(w,6),
+            projectedWidthMeters=Math.Round(w,6),apertureWidthMeters=aperture,
             gateMarginMeters=Math.Round(gateSideReserve,6),
             bridgeMarginMeters=Math.Round(bridgeSideReserve,6),
             requiredMarginMeters=Guard,reasoning,nativeUnity="NOT_RUN"
@@ -88,6 +88,24 @@ internal static class GateGeometryReceipt
         Check("LIGHT_YAW_8_ACCEPT",false,8,0,true,"Actual Light envelope");
         Check("LIGHT_YAW_30_ACCEPT",false,30,0,true,"Actual Light envelope");
         // Backward signed center-depth is asserted separately below.
+        // W22 REACTIVE: original gate/bridge widened to 3.70m in CHL #285 producer
+        // 74b6..., preserve OLD narrow gate as a negative control above.
+        // These 7 NEW cases execute the SAME real production C# method using
+        // actual revised original CHL demo BoxCollider width=3.70m.
+        Check("CURRENT_HEAVY_STRAIGHT_OFFSET_0_10_ACCEPT",true,0,.10,true,
+            "Old gate FALSE; new aligned 3.70m gate TRUE",BridgeWidth);
+        Check("CURRENT_HEAVY_CENTERED_YAW_5_ACCEPT",true,5,0,true,
+            "Old gate FALSE, corrected source gate TRUE",BridgeWidth);
+        Check("CURRENT_HEAVY_CENTERED_YAW_8_ACCEPT",true,8,0,true,
+            "Original reporter negative yaw8 has been SOURCE_FIXED",BridgeWidth);
+        Check("CURRENT_HEAVY_CENTERED_YAW_10_ACCEPT",true,10,0,true,
+            "Near corrected gate limit, geometric pass only",BridgeWidth);
+        Check("CURRENT_HEAVY_CENTERED_YAW_12_REJECT",true,12,0,false,
+            "Gate still protects 0.25m reserve after fix",BridgeWidth);
+        Check("CURRENT_HEAVY_YAW_8_OFFSET_0_03_ACCEPT",true,8,.03,true,
+            "Current yaw8 still 0.039m lateral tolerance",BridgeWidth);
+        Check("CURRENT_HEAVY_YAW_8_OFFSET_0_05_REJECT",true,8,.05,false,
+            "Offset over 0.039m even after fix, finite negative",BridgeWidth);
         // Final guard: previous and current positions backwards or no travel
         // via the ACTUAL policy, independent from scene trigger callback.
         bool backwards=ActualPolicy(true,0,0,GateWidth,.12,-.12);
@@ -106,11 +124,12 @@ internal static class GateGeometryReceipt
             nativeUnity="NOT_RUN"});
         var receipt=new {
           taskId="B01-21-C-DQ-NEWHEAD-GATE-20261027",
-          sourceExactCommit="f4ca318577edbdf4d003ab3e104ac7ec71d83cfe",
+          sourceExactCommit="74b6af45d71297c2b1fc50a19152fb6771a5bcf0",
+          previousGateSourceCommit="f4ca318577edbdf4d003ab3e104ac7ec71d83cfe",
           actualProductionClass="B01.CHL003.CHL003GateCrossing",
           originalPolicyOnly=true, actualUnity="NOT_RUN",physicalDrive="NOT_RUN",
           sourceTestPassed=pass,sourceTestFailed=fail,total=pass+fail,
-          realCHLWidthMeters=GateWidth,realBridgeWidthMeters=BridgeWidth,
+          historicalGateWidthMeters=GateWidth,realCHLWidthMeters=BridgeWidth,realBridgeWidthMeters=BridgeWidth,
           guardEachSideMeters=Guard,results=Rows
         };
         var f=Path.GetFullPath(args[0]);Directory.CreateDirectory(Path.GetDirectoryName(f)!);
