@@ -19,3 +19,14 @@ jobs:
           test "$(git rev-parse refs/remotes/origin/b0161codex310)" = "231005c6d0351945a8ee6684f3856af118f0e94f"
       - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
         run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
+      - name: Inspect REAL committed Codex NUnit XML (targeted cases only)
+        run: |
+          python3 Tools/B01/B01-61-PASS12/audit_original_nunit_xml.py --repo "$PWD" --sha 231005c6d0351945a8ee6684f3856af118f0e94f
+      - name: Confirm full-suite release gate FAILS closed for targeted XML
+        run: |
+          if python3 Tools/B01/B01-61-PASS12/audit_original_nunit_xml.py --repo "$PWD" --sha 231005c6d0351945a8ee6684f3856af118f0e94f --require-full; then
+            echo "::error::Targeted NUnit XML incorrectly accepted as complete release evidence"
+            exit 1
+          else
+            echo "EXPECTED_BLOCK: no full-suite Unity/Player and explicit negative evidence"
+          fi
