@@ -141,6 +141,14 @@ namespace RoboRougelike.R3
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
+        // Mounted wreck plans reserve their type too: rebuilding them must not
+        // turn a legal two-type design into a three-type vehicle. Inventory
+        // parts remain unrestricted until the player actually mounts them.
+        const int MaxWeaponTypes=2;
+        const string WeaponTypeLimitError="Maksymalnie 2 różne typy broni na pojeździe.";
+        HashSet<R4WeaponKind> MountedWeaponTypes() => new HashSet<R4WeaponKind>(
+            Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon));
+        bool InvalidWeaponTypes => MountedWeaponTypes().Count>MaxWeaponTypes;
         public string PlacementError(Vector3Int cell, R3PartKind kind, bool owned=false,
             R4WeaponKind weapon=R4WeaponKind.Basic,Vector3Int rotation=default,
             int contactMask=R3MountingGrid.AllFaces)
@@ -161,7 +169,11 @@ namespace RoboRougelike.R3
             if(footprint.Any(c=>At(c)!=null))return "Zajęte pole obrysu 1×2×2. Utraconą część odtwórz lub usuń jej plan.";
             if(Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
             if(kind==R3PartKind.BonusModule&&!owned)return "Moduły bonusów zdobywa się wyłącznie jako nagrody.";
-            if (kind == R3PartKind.Gun && Parts.Count(p => p.Kind == kind) >= 4) return "Limit 4 broni.";
+            if(kind==R3PartKind.Gun)
+            {
+                var types=MountedWeaponTypes();
+                if(types.Count>MaxWeaponTypes||(types.Count==MaxWeaponTypes&&!types.Contains(weapon)))return WeaponTypeLimitError;
+            }
             if (kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
             if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
             int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
@@ -197,6 +209,7 @@ namespace RoboRougelike.R3
         {
             var part = At(cell); int price = RepairCost(part);
             if (part == null || price <= 0 || Scrap < price) return false;
+            if(part.Kind==R3PartKind.Gun&&InvalidWeaponTypes)return false;
             if (part.Health<=0&&!HasAliveExternalNeighbour(part.Cell,part.Kind,
                 part.RotationQuarterTurns,part.ContactMask))return false;
             if(part.Health<=0&&restorationGate!=null&&!restorationGate(new[]{part}))return false;
@@ -310,6 +323,7 @@ namespace RoboRougelike.R3
         {
             get
             {
+                if(InvalidWeaponTypes)return WeaponTypeLimitError;
                 var alive = Parts.Where(p => p.Health > 0).ToList();
                 if (!alive.Any(p => p.Kind == R3PartKind.Core)) return "Rdzeń zniszczony.";
                 if (!Connected(alive)) return "Konstrukcja zawiera odłączone części.";
@@ -333,6 +347,7 @@ namespace RoboRougelike.R3
         }
         public bool EmergencyRepair()
         {
+            if(InvalidWeaponTypes)return false;
             var plan=EmergencyRepairPlan();
             if(plan==null||plan.Count==0)return false;
             int price=plan.Sum(RepairCost);
@@ -345,7 +360,7 @@ namespace RoboRougelike.R3
         public int EmergencyRepairCost => EmergencyRepairPlan()?.Sum(RepairCost)??0;
         private List<R3PartState> EmergencyRepairPlan()
         {
-            if (CanDeploy || !Parts.Any(p => p.Kind == R3PartKind.Core && p.Health > 0)) return null;
+            if (InvalidWeaponTypes || CanDeploy || !Parts.Any(p => p.Kind == R3PartKind.Core && p.Health > 0)) return null;
             var byCell=Parts.SelectMany(p=>OccupiedCells(p).Select(cell=>new{cell,part=p})).ToDictionary(x=>x.cell,x=>x.part); var core = Parts.Single(p => p.Kind == R3PartKind.Core);
             var previous = new Dictionary<Vector3Int, Vector3Int> { [core.Cell] = core.Cell };
             var costs = new Dictionary<Vector3Int,int> { [core.Cell]=0 };
