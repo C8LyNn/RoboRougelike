@@ -24,6 +24,9 @@ SOURCES={
 }
 CLASSES={"EditMode":"B01.PARTSIZE001.Tests.PartSize001EditModeTests",
          "PlayMode":"B01.PARTSIZE001.Tests.PartSize001PlayModeTests"}
+# EXACT values emitted by the immutable Run-UnityNative.ps1 -assemblyNames switch.
+ASSEMBLIES={"EditMode":"B01.PARTSIZE001.EditModeTests",
+            "PlayMode":"B01.PARTSIZE001.PlayModeTests"}
 EXPECTED={
  "EditMode":{
   "LegacyCubeSourceDimensionsFitOneGridCell":1,
@@ -123,7 +126,7 @@ def check_xml(raw,platform):
         full=c.get("fullname") or ""
         cls=c.get("classname") or ""
         name=c.get("name") or ""
-        if cls!=CLASSES[platform] or not full.startswith(cls+".") or not name:
+        if cls!=CLASSES[platform] or not name or full!=cls+"."+name:
             raise EvidenceError("FOREIGN_OR_MALFORMED_NUNIT_CASE")
         method=name.split("(",1)[0]
         if method not in expected:
@@ -150,8 +153,10 @@ def inspect_receipt(folder):
         data=receipt.get(stage)
         if not isinstance(data,dict):
             return {"status":"NOT_RUN","reason":"MISSING_STAGE_"+stage}
-        if data.get("exit_code")!=0:
-            raise EvidenceError("NONZERO_UNITY_EXIT_"+stage)
+        if type(data.get("exit_code")) is not int or data["exit_code"]!=0:
+            raise EvidenceError("INVALID_OR_NONZERO_UNITY_EXIT_"+stage)
+        if data.get("assembly")!=ASSEMBLIES[stage]:
+            raise EvidenceError("WRONG_NATIVE_TEST_ASSEMBLY_"+stage)
         xml=folder/(stage+".xml")
         log=folder/(stage+".log")
         if not xml.is_file() or not log.is_file():
