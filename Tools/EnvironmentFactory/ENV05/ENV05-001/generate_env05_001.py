@@ -126,6 +126,8 @@ def inspect(col):
 def preview_setup(col):
  scene=bpy.context.scene
  scene.render.engine="CYCLES"; scene.cycles.samples=16
+ scene.cycles.use_denoising=False
+ for layer in scene.view_layers: layer.cycles.use_denoising=False
  scene.render.resolution_x=512; scene.render.resolution_y=512
  scene.render.resolution_percentage=100
  scene.render.image_settings.file_format="PNG"; scene.render.film_transparent=True
