@@ -79,14 +79,20 @@ namespace B01.CHL003
 
         private CHL003Gate Gate(string label, float z, CHL003Gate.GateType type)
         {
+            // The checkpoint/finish APERTURE matches the tightest physical
+            // navigable segment (3.70m bridge/ramp). With the independently
+            // verified .25m body side-clearance policy, a Heavy rig at
+            // yaw 8deg remains physically passable on the bridge AND
+            // checkpoint, while yaw 12deg correctly fails clearance.
+            // Source evidence: B01-21 W17 geometry QA PR #295.
             var obj = Box(label, new Vector3(0f, 2.25f, z),
-                new Vector3(3.5f, 4.5f, .16f), trigger: true);
+                new Vector3(3.70f, 4.5f, .16f), trigger: true);
             var renderer = obj.GetComponent<Renderer>();
             renderer.enabled = false; // invisible physics volume; side markers show gates
             for (int side = -1; side <= 1; side += 2)
             {
                 var marker = Box(label + "_VISIBLE_POST_" + side,
-                    new Vector3(side * 1.87f, 1.3f, z),
+                    new Vector3(side * 1.97f, 1.3f, z),
                     new Vector3(.12f, 2.6f, .12f));
                 // Visual-only markers never obstruct the actual drive lane.
                 marker.GetComponent<Collider>().enabled = false;
