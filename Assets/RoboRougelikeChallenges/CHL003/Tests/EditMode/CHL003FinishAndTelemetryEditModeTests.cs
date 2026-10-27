@@ -125,5 +125,26 @@ namespace B01.CHL003.Tests
                 -.1f,.1f,-1f,1f,-2.20f,2.7f,
                 -1.75f,1.75f,-2.25f,2.25f,1f));
         }
+
+        [Test] public void E19_UpstreamB0121HeavyYaw8OldGateFailsBridgeAlignedGatePasses()
+        {
+            // Exact B01-21 source math of 4 physical sphere wheels
+            // (radius .410, center X±1.0 Z±1.15) and Heavy 2.5x3.4 hull.
+            // This is EditMode analytic contract, not an actual PhysX drive.
+            float r = 8f * UnityEngine.Mathf.Deg2Rad;
+            float c = UnityEngine.Mathf.Abs(UnityEngine.Mathf.Cos(r));
+            float s = UnityEngine.Mathf.Abs(UnityEngine.Mathf.Sin(r));
+            float halfWheel = c*1.0f + s*1.15f + .410f;
+            float halfChassis = c*1.25f + s*1.70f;
+            float h = UnityEngine.Mathf.Max(halfWheel, halfChassis);
+            Assert.Greater((3.70f-2*h)*.5f, .25f);
+            Assert.Less((3.50f-2*h)*.5f, .25f);
+            Assert.IsTrue(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.10f,.10f,-h,h,-2.16f,-.45f,
+                -1.85f,1.85f,-2.25f,2.25f,1f));
+            Assert.IsFalse(CHL003GateCrossing.IsForwardFullBodyCrossing(
+                -.10f,.10f,-h,h,-2.16f,-.45f,
+                -1.75f,1.75f,-2.25f,2.25f,1f));
+        }
     }
 }
