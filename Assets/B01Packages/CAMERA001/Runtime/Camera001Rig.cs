@@ -37,6 +37,9 @@ namespace B01.CAMERA001
         public bool ActualOwnHullIntersectsCrosshair { get; private set; }
         public float LastCameraStepMeters { get; private set; }
         public float LastAimErrorDegrees { get; private set; }
+        public Bounds LastHullBounds {get;private set;}
+        public int SmoothingResetCount {get;private set;}
+        public Vector3 RequestedOrbit => new Vector3(yaw,pitch,requestedDistance);
         // Receiver-only semantic filter (for transient projectiles/wreckage).
         // Null preserves the standalone package policy and its original tests.
         public Func<Collider,bool> WorldColliderFilter {get;set;}
@@ -76,6 +79,7 @@ namespace B01.CAMERA001
 
         public void ResetSmoothing()
         {
+            SmoothingResetCount++;
             velocity = Vector3.zero;
             initialized = false;
         }
@@ -96,6 +100,7 @@ namespace B01.CAMERA001
         {
             if (vehicleRoot == null || attachedCamera == null) return;
             Bounds bounds = ReceiverHullBounds!=null?ReceiverHullBounds(vehicleRoot):GetHullBounds(vehicleRoot);
+            LastHullBounds=bounds;
             var request = new Camera001Framing.Request {
                 HullBounds = bounds,
                 YawDegrees = yaw,
