@@ -1,0 +1,35 @@
+{
+  "package_id": "CHL-003",
+  "revision": "R1",
+  "producer_agent": "B01-20",
+  "owner": "B01-20",
+  "source_issue": 91,
+  "governance_issue": 276,
+  "source_branch": "feature/b01-20-chl003-r1-physics-course-20261027",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_sha": null,
+  "source_sha256_by_path": {},
+  "source_bytes_by_path": {},
+  "physical_zip_sha256": null,
+  "status": "IN_PROGRESS_SOURCE_CI_PENDING_NATIVE_G1_NOT_RUN",
+  "unity_version": "6000.3.14f1",
+  "qa": {
+    "headless": "NOT_RUN",
+    "editmode_native": "NOT_RUN",
+    "playmode_native": "NOT_RUN",
+    "manual_two_rigs": "NOT_RUN",
+    "independent_b01_60": "PENDING",
+    "receiver_b01_40": "PENDING",
+    "codex_g2": "HOLD"
+  },
+  "excluded_paths": [
+    "Assets/R1",
+    "Assets/R3",
+    "Assets/R6",
+    "Assets/Pack",
+    "Assets/B01Packages",
+    "Assets/scene 1.unity",
+    "ProjectSettings"
+  ],
+  "rollback": "Delete CHL003 only in disposable clone after full ownership/GUID preflight; do not remove existing recipient root."
+}
