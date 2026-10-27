@@ -1,3 +1,14 @@
+## W26–W29 PASS 3 / B01-60 near-ground traction false support (producer fix)
+
+Source-confirmed W26 B01-60 QA-01 at producer SHA `077e692785aff2990a2d72a80fd1db62ac57b0e8`: the old `CHL003VehicleMotor.HasRealGroundContact` raycast length was a fixed 0.95 m, although the four physical SphereCollider wheels have 0.41 m world radius. When Light root Y=1.28m, physical wheel-bottom clearance is 0.35m, but the ray origin is 0.90m above floor and 0.95m would hit it; both throttle and steering could be applied despite no wheel contact. QA source-only case was not native reproduced.
+
+Minimal owner fix: actual enabled, nontrigger SphereCollider attached to **the active Rigidbody** must exist. Derive world vertical wheel radius from `SphereCollider.bounds.extents.y`, then limit ground ray length to measured radius + 0.14m origin lift + **0.03m explicit near-contact tolerance**. Actual hit distance must also pass this bound. Non-self, nontrigger hit and upward support normal remain enforced. This does not simulate friction/slip or guarantee a physically contacting solver manifold within 3cm; it prevents egregious 35cm false support. The deliberate 3cm policy is inspectable and may be tightened after actual Unity playtests.
+
+The original .NET8 suite compiles and executes the exact production `CHL003WheelSupportWindow.cs`; source regressions cover old hover 1.28m, floating 1.34m, touching .93m, original spawn 1.02m, 4cm gap and 640 near-contact sweep. EditMode E20 and real PlayMode P15 (both **authored, native NOT_RUN**) reproduce the old false-ground case, require no horizontal thrust/yaw with zero wheel-floor penetration at 0.35/0.41m gap, and require still-grounded behavior when the wheel touches ground. Full suite **20 EditMode /15 PlayMode authored only**. See QA comments at [#285 comment6440627896](https://github.com/C8LyNn/RoboRougelike/pull/285#issuecomment-6440627896) and [#297](https://github.com/C8LyNn/RoboRougelike/issues/297).
+
+This changes original producer SHA and **invalidates old B01-40 C2 source G0** for current-head acceptance; it must be rerun against the newly published manifest/ZIP. Native Unity 6000.3.14f1, six complete Light/Heavy trials, physical contacts, ramp and final platform still NOT_RUN. No new gameplay stream, no Codex/other agent assets, no OFFERED/G2/merge.
+
+
 ## Dynamic dependency C1 — bridge / gate clearance corrected
 
 Upstream independent [B01-21 original-source geometry QA PR #295](https://github.com/C8LyNn/RoboRougelike/pull/295) found Heavy yaw8° width ≈3.1206m, which clears the 3.70m physical bridge by 0.2897m/side but would be rejected by the former 3.50m gate (0.1897m/side) with policy minimum 0.25m. All four CP triggers and Finish now use the *same* 3.70m aperture; visible marker centers ±1.97m. **No weakening of 0.25m strict full-body rule**; Heavy yaw12° stays too close to the edge. Actual original C# HEADLESS RED old/NEW GREEN + source-mutation checks, *real Unity driving NOT_RUN*. See `DEPENDENCY_C1_HEAVY_YAW8.md`. W17 P07 3×Light+3×Heavy remains native pending; E19 and P14 native tests AUTHOR_ONLY.
@@ -7,7 +18,7 @@ Gates require actual root Rigidbody **center plane forward crossing within one p
 
 The standalone motor now has explicitly **NO THRUST OR STEERING IN AIR**; grounded status requires at least one of the four actual wheel probes to raycast a non-trigger, non-self physical surface with supporting normal (>0.5 Y). While airborne Rigidbody gravity and inertia continue, horizontal acceleration is not artificially granted. HUD exposes grounded/airborne steps; runtime computes physical Light/Heavy dimensions from real `Collider.bounds` rather than constants. Do not claim WheelCollider or real R3 mechanical suspension simulation; these are standalone rigid-body physics demo wheels.
 
-W17 authorship: **19 EditMode and 14 PlayMode** native Unity tests (NOT_RUN), including new E16–E18 and P10–P13 forward-full-body, reverse, wheel-graze and airborne traction negatives. The headless suite compiles original source `CHL003GateCrossing.cs` and exercises thousands of physically-dimensional input contracts; it does **not** execute Unity PhysX or native motor tests.
+W17 authorship: **20 EditMode and 15 PlayMode** native Unity tests (NOT_RUN), including new E16–E18 and P10–P13 forward-full-body, reverse, wheel-graze and airborne traction negatives. The headless suite compiles original source `CHL003GateCrossing.cs` and exercises thousands of physically-dimensional input contracts; it does **not** execute Unity PhysX or native motor tests.
 
 
 # B01 / CHL-003 R1 — Complete obstacle-course candidate, QA pending
