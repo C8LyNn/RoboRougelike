@@ -93,7 +93,7 @@ namespace RoboRougelike.R1
                     if(GUI.Button(new Rect(1130,670,125,35),"Pauza",compactButton))run.TogglePause();
                     DrawAimReticle(run);
                     GUI.Label(new Rect(24, 676, 900, 26),run.VehicleModel.SelectedDrive>=R3DriveKind.Omni?
-                        "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM — ogień":
+                        "W/S — jazda • A/D — ruch boczny • Z/C — obrót • Mysz — celowanie • LPM/PPM — ogień":
                         "W/S — jazda • A/D — skręt • Mysz — celowanie • LPM/PPM — ogień • Kółko — przybliżenie",small);
                     DrawFeedback();
                     return;
@@ -126,7 +126,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
-                GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM — ogień • Esc — pauza",small);
+                GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM/PPM — ogień • Esc — pauza",small);
             }
             else if (progress.State == R1RunState.UpgradeChoice)
             {

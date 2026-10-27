@@ -34,7 +34,7 @@ namespace RoboRougelike.R4
             return part.Weapon switch {
                 R4WeaponKind.Shotgun=>$"8 × {9*damageScale:0} obrażeń • 40 m\n{Ammo(12)} salw • T przeładuj",
                 R4WeaponKind.Railgun=>$"Penetracja do 6 części • 120 m\n{Ammo(12)} nabojów • T przeładuj",
-                R4WeaponKind.BeamCutter=>$"{35*damageScale:0} obrażeń/s • 16 m\nWiązka • ciepło • puść LPM, by schłodzić",
+                R4WeaponKind.BeamCutter=>$"{35*damageScale:0} obrażeń/s • 16 m\nWiązka • ciepło • puść przycisk ognia, by schłodzić",
                 R4WeaponKind.RocketLauncher=>$"Wybuch do {60*damageScale:0} obrażeń • 3,2 m\n{Ammo(10)} rakiet • T przeładuj",
                 R4WeaponKind.RotarySaw=>"Kontakt • do 2800 RPM\nTwarde cele blokują; kontroluj ciepło",
                 R4WeaponKind.EmpEmitter=>$"EMP 9 m • zakłócenie do 3 s\nOdnowienie {12*intervalScale:0.0} s • widoczny cel",
