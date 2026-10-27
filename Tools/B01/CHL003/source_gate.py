@@ -101,9 +101,9 @@ require("P07_SameNativeCourseLightHeavyThreeRunsEachWithRealContact" in morePlay
 # QA Draft #295: bridge 3.70m physically admits Heavy yaw8 while old
 # 3.50m CP trigger rejected its entire real Collider.bounds envelope under
 # 0.25m required clearance. Gate opening MUST equal narrowest physical span.
-gate_match=re.search(r'var obj = Box\\(label, new Vector3\\(0f, 2\\.25f, z\\),\\s*new Vector3\\(([\\d.]+)f, 4\\.5f, \\.16f\\)',demo)
-bridge_match=re.search(r'"NARROW_SOLID_BRIDGE".*?new Vector3\\(([\\d.]+)f, \\.60f, 10f\\)',demo,re.S)
-post_match=re.search(r'new Vector3\\(side \\* ([\\d.]+)f, 1\\.3f, z\\)',demo)
+gate_match=re.search(r'var obj = Box\(label, new Vector3\(0f, 2\.25f, z\),\s*new Vector3\(([\d.]+)f, 4\.5f, \.16f\)',demo)
+bridge_match=re.search(r'"NARROW_SOLID_BRIDGE".*?new Vector3\(([\d.]+)f, \.60f, 10f\)',demo,re.S)
+post_match=re.search(r'new Vector3\(side \* ([\d.]+)f, 1\.3f, z\)',demo)
 require(gate_match is not None and bridge_match is not None and
         post_match is not None, "B01-21 original physical gate geometry not found")
 gate_width=float(gate_match.group(1))
