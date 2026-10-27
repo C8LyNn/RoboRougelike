@@ -75,7 +75,7 @@ public sealed class Camera275NativeTests
         Assert.That(follow.TargetRoot,Is.EqualTo(run.Player.transform));
         Assert.That(Vector3.Distance(root,run.Player.transform.position),Is.LessThan(.001f));
         Assert.That(follow.ReceiverRig.ActualOwnHullIntersectsCrosshair,Is.False);
-        native.Scroll=new Vector2(0,2400);yield return null;yield return null;
+        native.Scroll=new Vector2(0,3600);yield return null;yield return null;
         yield return new WaitForSecondsRealtime(3);
         Assert.That(follow.RequestedZoomDistance,Is.EqualTo(3).Within(.01));
         Assert.That(follow.TargetRoot,Is.EqualTo(run.Player.transform));

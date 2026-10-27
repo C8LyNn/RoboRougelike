@@ -69,8 +69,12 @@ public sealed class Camera275AimQA : MonoBehaviour
     {
         if(owner.Progress.State==R1RunState.TestDrive){Require(owner.ReturnFromTestRange(),"Return to workshop");while(owner.Transitioning)yield return null;}
         if(owner.VehicleModel==null)Require(owner.OpenSandboxGarage(),"Open actual workshop");
-        foreach(var gun in owner.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())Require(owner.GarageRemove(gun.Cell),"Remove previous gun");
-        Require(owner.GarageBuyWeapon(new Vector3Int(0,2,0),weapon),"Mount actual weapon "+weapon);
+        // The garage correctly forbids removing the last gun. Install its
+        // replacement first, then remove the old gun through the normal rules.
+        var oldGuns=owner.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        var cell=oldGuns.Any(p=>p.Cell==new Vector3Int(1,2,0))?new Vector3Int(0,2,0):new Vector3Int(1,2,0);
+        Require(owner.GarageBuyWeapon(cell,weapon),"Mount actual weapon "+weapon);
+        foreach(var gun in oldGuns)Require(owner.GarageRemove(gun.Cell),"Remove previous gun");
         yield return null;Require(owner.EnterTestRange(),"Enter actual range");while(owner.Transitioning)yield return null;
         yield return new WaitForSecondsRealtime(.5f);
         var body=owner.Player.GetComponent<Rigidbody>();body.isKinematic=true;

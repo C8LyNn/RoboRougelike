@@ -241,6 +241,8 @@ public float CurrentForwardSpeed =>
             if (moduleSystem != null &&
                 !moduleSystem.WeaponOnline)
             {
+                AimFeedback=default;
+                if(modularAssembly!=null)modularAssembly.SetContinuousFireHeld(false);
                 return;
             }
 

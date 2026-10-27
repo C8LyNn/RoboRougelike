@@ -22,10 +22,13 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
     public bool Fire;
     public Vector2 MouseRate,AppliedDelta,Scroll;
     InputSettings.BackgroundBehavior oldBackground;
+    readonly List<InputDevice> muted=new List<InputDevice>();
 #if UNITY_EDITOR
     InputSettings.EditorInputBehaviorInPlayMode oldRouting;
 #endif
-    void Awake(){oldBackground=InputSystem.settings.backgroundBehavior;InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;Keys=InputSystem.AddDevice<Keyboard>();Mouse=InputSystem.AddDevice<Mouse>();
+    void Awake(){oldBackground=InputSystem.settings.backgroundBehavior;InputSystem.settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        foreach(var device in InputSystem.devices)if(device.enabled&&(device is Keyboard||device is Mouse||device is Gamepad)){muted.Add(device);InputSystem.DisableDevice(device);}
+        Keys=InputSystem.AddDevice<Keyboard>();Mouse=InputSystem.AddDevice<Mouse>();
 #if UNITY_EDITOR
         oldRouting=InputSystem.settings.editorInputBehaviorInPlayMode;InputSystem.settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
 #endif
@@ -41,6 +44,7 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
         Scroll=Vector2.zero;
     }
     void OnDestroy(){if(Keys!=null&&Keys.added)InputSystem.RemoveDevice(Keys);if(Mouse!=null&&Mouse.added)InputSystem.RemoveDevice(Mouse);InputSystem.settings.backgroundBehavior=oldBackground;
+        foreach(var device in muted)if(device.added)InputSystem.EnableDevice(device);
 #if UNITY_EDITOR
         InputSystem.settings.editorInputBehaviorInPlayMode=oldRouting;
 #endif
@@ -155,6 +159,9 @@ public sealed class Camera275RuntimeQA : MonoBehaviour
     void Finish(bool success=true)
     {
         if(finished)return;finished=true;input.Throttle=input.Steering=0;input.MouseRate=Vector2.zero;
+        if(result.ownRayHits>0)result.errors.Add("Actual own-hull reticle intersections: "+result.ownRayHits);
+        if(result.worldOverlaps>0)result.errors.Add("Actual camera/world overlaps: "+result.worldOverlaps);
+        if(result.distance<30||result.groundedFrames<result.frames/2)result.errors.Add("Insufficient real drive/contact evidence");
         result.finishedUtc=DateTime.UtcNow.ToString("o");result.status=success&&result.errors.Count==0?"Passed":"Failed";Save();csv?.Dispose();Application.logMessageReceived-=OnLog;
         Destroy(input);if(result.status=="Passed"&&run!=null)run.RequestQuit();else Application.Quit(1);
     }
