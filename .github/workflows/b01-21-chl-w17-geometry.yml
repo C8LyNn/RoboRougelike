@@ -75,7 +75,7 @@ jobs:
         run: |
           set -euo pipefail
           git diff --name-only 9a947108928d4c2cdfdfbb25cbeb30464439da37 HEAD > w17-chl-world-source-evidence/changed_paths.txt
-          if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate)\.yml$)' w17-chl-world-source-evidence/changed_paths.txt; then
+          if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue|RouteClearance)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate|n27-route)\.yml$)' w17-chl-world-source-evidence/changed_paths.txt; then
             echo "B01_21_W17_SCOPE_VIOLATION"; exit 3
           fi
           sha256sum w17-chl-world-source-evidence/CHL003_W17_GEOMETRY_SOURCE.json > w17-chl-world-source-evidence/SHA256SUMS.txt

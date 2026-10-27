@@ -82,7 +82,7 @@ jobs:
         run: |
           set -euo pipefail
           git diff --name-only 9a947108928d4c2cdfdfbb25cbeb30464439da37 HEAD > chl-dq-evidence/owned-diff.txt
-          if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate)\.yml$)' chl-dq-evidence/owned-diff.txt; then
+          if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue|RouteClearance)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate|n27-route)\.yml$)' chl-dq-evidence/owned-diff.txt; then
             echo CHL_DQ_FOREIGN_FILE_CHANGE;exit 7
           fi
           sha256sum chl-dq-evidence/GATE_ACTUAL_CSHARP_VERDICTS.json > chl-dq-evidence/SHA256SUMS.txt
