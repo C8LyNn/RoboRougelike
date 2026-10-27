@@ -29,5 +29,14 @@ namespace B01.CHL003
             if (HasTrigger && owner != null)
                 owner.ReceiveGate(this, other, ordinal);
         }
+
+        // Real continuing Unity Physics overlap; catches a last checkpoint
+        // accepted while the actor is already inside a co-located finish.
+        // Checkpoint order remains guarded in CourseCore (duplicates ignored).
+        private void OnTriggerStay(Collider other)
+        {
+            if (HasTrigger && owner != null)
+                owner.ReceiveGate(this, other, ordinal);
+        }
     }
 }
