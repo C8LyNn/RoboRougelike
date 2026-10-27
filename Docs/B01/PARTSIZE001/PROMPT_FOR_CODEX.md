@@ -1,0 +1,5 @@
+# COPY-READY — FUTURE CODEX QA-ONLY REQUEST (NOT DISPATCHED)
+
+Code owner is Codex. B01-23 PARTSIZE001 R1 remains independent and NOT CODEX_READY. Do not run this plan on a live integrated checkout or unless B01-00/B01-40 explicitly grants detached native-QA slot and frozen source handoff.
+
+In licensed Unity 6000.3.14f1, create a disposable checkout pinned to the receiver's exact approved HEAD, preserve `Assets/B01Packages.meta`, import independently hashed **complete** `B01-PARTSIZE001-R1-FULL-SOURCE.zip` under `Assets/PARTSIZE001/**` + sibling .meta only. Capture actual Editor compilation, EditMode 17/17 and PlayMode 8/8 XML, process exits and native logs without test substitutions. Exercise `PARTSIZE001_Demo.prefab` in empty URP scene at 1280×720 and 1920×1080, screenshot 2 green+1 intentionally red real BoxCollider state. Reject if mismatch, positive unmeasured part, collision above 0.005m, failed rotation or missing GUIDs. Revert disposable checkout to exact original bytes and report rollback hash. Return QA-only Draft/reproducer, not main/develop merge or live R3 patch. G2 remains HOLD.

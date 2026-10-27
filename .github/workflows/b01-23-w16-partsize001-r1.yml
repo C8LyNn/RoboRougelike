@@ -1,0 +1,55 @@
+name: B01-23 PARTSIZE-001 R1 source and package QA (Unity NOT_RUN)
+on:
+  push:
+    branches:
+      - 'b01-23/w16-partsize001-r1'
+    paths:
+      - 'Assets/PARTSIZE001/**'
+      - 'Assets/PARTSIZE001.meta'
+      - 'Tools/B01/PARTSIZE001/**'
+      - 'Docs/B01/PARTSIZE001/**'
+      - '.github/workflows/b01-23-w16-partsize001-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  partsize-portable-and-package:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preserve original tracked source bytes (no Windows CRLF transformations)
+        shell: bash
+        run: |
+          git config core.autocrlf false
+          git reset --hard HEAD
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual production .NET8 C# geometry and exercise source math invariants
+        run: dotnet run --project Tools/B01/PARTSIZE001/Portable/PartSizePortable.csproj -c Release
+      - name: Execute negative and positive full-source package selftests
+        run: python Tools/B01/PARTSIZE001/test_package_partsize.py
+      - name: Deterministic twice-built physical full Unity-source ZIP, SHA256 and GUID gate
+        shell: bash
+        run: |
+          mkdir -p dist
+          python Tools/B01/PARTSIZE001/package_partsize.py --out dist/B01-PARTSIZE001-R1-FULL-SOURCE.zip | tee dist/PARTSIZE_SOURCE_RECEIPT.json
+          python Tools/B01/PARTSIZE001/package_partsize.py --out dist/PARTSIZE-R1-second.zip >/dev/null
+          cmp dist/B01-PARTSIZE001-R1-FULL-SOURCE.zip dist/PARTSIZE-R1-second.zip
+          rm dist/PARTSIZE-R1-second.zip
+          sha256sum dist/B01-PARTSIZE001-R1-FULL-SOURCE.zip
+      - name: Stage ACTUAL entire source artifact (Linux only; not native Unity)
+        if: matrix.os == 'ubuntu-24.04'
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-PARTSIZE001-R1-W16-full-source-not-native
+          path: |
+            dist/B01-PARTSIZE001-R1-FULL-SOURCE.zip
+            dist/PARTSIZE_SOURCE_RECEIPT.json
+          if-no-files-found: error

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../Assets/PARTSIZE001/Runtime/PartSizeContract.cs" Link="PartSizeContract.cs" />
+    <Compile Include="../../../../Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs" Link="PartSizeBaselineCatalog.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+</Project>
