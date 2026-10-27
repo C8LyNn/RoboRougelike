@@ -1,0 +1,78 @@
+name: B01-21 CHL003 route compatibility QA ONLY (no gameplay package)
+on:
+  push:
+    branches:
+      - "qa/b01-21-chl003-world-routes-20261027"
+    paths:
+      - "Tools/B01/CHL003WorldQA/**"
+      - ".github/workflows/b01-21-chl003-world-qa.yml"
+  pull_request:
+    paths:
+      - "Tools/B01/CHL003WorldQA/**"
+      - ".github/workflows/b01-21-chl003-world-qa.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-pinned-mapgen-source-qa:
+    name: Actual immutable MAPGEN CSharp source QA - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pin unchanged original MAPGEN producer CSharp and Unity math surrogate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 5be31039411f89f17654b1c332f8692883fa03cc HEAD
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs)" = b586a5bfc697bc37edbf98bb936459aeebe694c6
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs)" = 89ff64e12f278f2c9393ad542161a9387e1f4117
+          test "$(git hash-object Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs)" = 4e4bee443a60abb3b284e8c546203096095e12bd
+          test "$(git hash-object Tools/B01/MAPGEN001/Headless/UnitySurrogate.cs)" = 68f30fc4c49db21d90b143cf9bc13d230ad06184
+          mkdir -p chl003-source-qa
+          git rev-parse HEAD > chl003-source-qa/HEAD_SHA.txt
+          echo CHL003_UPSTREAM_PRODUCER_BLOB_PIN=PASS
+      - name: Execute REAL original MAPGEN planner and route validator CSharp; no Unity engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/CHL003WorldQA/CHL003RouteQA.csproj -c Release -- "$PWD/chl003-source-qa/CHL003_world_source.json" | tee chl003-source-qa/mapgen-csharp.log
+          grep -q "CHL003_WORLD_SOURCE_RESULT total=30 pass=30 fail=0 nativeUnity=NOT_RUN" chl003-source-qa/mapgen-csharp.log
+      - name: Execute schema validator and 19 adversarial independent JSON receipt negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/CHL003WorldQA/verify_receipt.py chl003-source-qa/CHL003_world_source.json | tee chl003-source-qa/verify.log
+          CHL003_RECEIPT="$PWD/chl003-source-qa/CHL003_world_source.json" python -m unittest discover -s Tools/B01/CHL003WorldQA -p 'test_*.py' -v 2>&1 | tee chl003-source-qa/mutation-tests.log
+          grep -q 'Ran 19 tests' chl003-source-qa/mutation-tests.log
+          echo CHL003_ACTUAL_MAPGEN_COMPAT_SOURCE_QA=PASS nativeUnity=NOT_RUN CHL_controller=NOT_RUN
+      - name: Capture original hashes, provenance and clear native-not-run
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum chl003-source-qa/CHL003_world_source.json > chl003-source-qa/SHA256SUMS.txt
+          git diff 5be31039411f89f17654b1c332f8692883fa03cc HEAD --name-only > chl003-source-qa/changed_paths.txt
+          if grep -Ev '^(Tools/B01/CHL003WorldQA/|\.github/workflows/b01-21-chl003-world-qa\.yml$)' chl003-source-qa/changed_paths.txt; then
+            echo "CHL003_B01_21_SCOPE_VIOLATION"; exit 2
+          fi
+          echo "CHL003_SCOPE_PASS_NO_RUNTIME_SOURCE_CHANGES"
+      - name: Save source test receipt, original logs and native gap
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chl003-b01-21-world-route-source-qa-${{ matrix.os }}
+          path: chl003-source-qa/
+          if-no-files-found: warn
+          retention-days: 30
