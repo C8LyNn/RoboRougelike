@@ -1,0 +1,13 @@
+{
+  "status": "B01-40_RECEIVER_SOURCE_ONLY",
+  "unity_native": "NOT_RUN",
+  "g2": "HOLD",
+  "files": {
+    "Tools/B01/W16-G0-RECEIVER/gate.py": "c8705fcc2a099a9d40cc2bff7ba072212f4aa90b9384fe37645f2ea0e5e24790",
+    "Tools/B01/W16-G0-RECEIVER/tests/test_gate.py": "9e256ff8e30a70c436a1b4e1740fcbe38e3f3d029da75e42f69f5d0b2f52f0a5",
+    "Tools/B01/W16-G0-RECEIVER/README.md": "878eb0af4fa522ef9f65233296476ce1e6e8af64c697bd1d2ddab9f67de06e48",
+    ".github/workflows/b01-40-w16-two-package-g0.yml": "ab5c9e4b55ff49a3047b71410d205c236fc570bbf4a15f25ba98296de267dbc6",
+    "Docs/B01Validation/20261027/W16/W16_OWNER_SCOPE_AND_ACCEPTANCE.md": "0bf2766d29ef10126ef6b085128c77ea09177257ed1f447abe8808f0361a7483",
+    "Docs/B01Validation/20261027/W16/W16_LOCAL_TEST_RESULTS.json": "13ad7f8f4275ebb39abc3a394cbc4e3244afb441e58e0e2804d42022da2309cb"
+  }
+}

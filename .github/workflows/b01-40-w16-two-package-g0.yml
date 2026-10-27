@@ -1,0 +1,39 @@
+name: B01-40 W16 two-package G0 and freeze gate
+on:
+  push:
+    branches:
+      - audit/b01-40-w16-two-package-g0-20261027
+  pull_request:
+    paths:
+      - 'Tools/B01/W16-G0-RECEIVER/**'
+      - '.github/workflows/b01-40-w16-two-package-g0.yml'
+      - 'Docs/B01Validation/20261027/W16/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  receiver-regression:
+    name: Real temp ZIP+Git evidence tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute positive and adversarial receiver tests (NOT Unity)
+        run: python -m unittest discover -s Tools/B01/W16-G0-RECEIVER/tests -v
+      - name: Compile Python source
+        run: python -m py_compile Tools/B01/W16-G0-RECEIVER/gate.py
+      - name: Assert receipt manifest matches tracked source bytes
+        shell: python
+        run: |
+          import json,hashlib,pathlib
+          p=pathlib.Path('Docs/B01Validation/20261027/W16/W16_TOOL_SHA256.json')
+          records=json.loads(p.read_text())['files']
+          for filename,h in records.items():
+              assert hashlib.sha256(pathlib.Path(filename).read_bytes()).hexdigest()==h,filename
+          print('TOOLKIT_SHA256',len(records),'PASS; native Unity NOT_RUN; G2 HOLD')
