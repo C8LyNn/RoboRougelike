@@ -47,6 +47,10 @@ def inspect_host(run,model):
     require("CheckpointRace?.Won==true" in update and
       "RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed" in update,
       "EXISTING_HOST_COURSE_WIN_PREDICATES_CHANGED")
+    # A different conditional sign is a semantic loss-first bug, even if
+    # all reward calls remain correctly ordered in source text.
+    require(update.count("if (defeat != null)")==1,
+       "HOST_LOSS_PREDICATE_CHANGED")
     first=update.find(gate)
     loss=update.find("if (defeat != null)")
     victory=update.find("else if (Encounter.Cleared")
