@@ -58,19 +58,29 @@ namespace B01.CHL003
             {
                 Transform probe = groundProbes[n];
                 if (probe == null) continue;
-                // Spheres have radius .41m in the standalone demo. Origin
-                // lies just above their center; .95m reaches supporting
-                // bridge/ramp/ground but never fictitious distant terrain.
-                Vector3 origin = probe.position + Vector3.up * .14f;
+                // Only physically present sphere-wheel colliders grant
+                // traction. The old .95m probe falsely supported a wheel
+                // hovering ~.35m above level ground (B01-60 W26 QA-01).
+                SphereCollider wheel = probe.GetComponent<SphereCollider>();
+                if (wheel == null || !wheel.enabled || wheel.isTrigger ||
+                    wheel.attachedRigidbody != body) continue;
+                float physicalRadius = wheel.bounds.extents.y;
+                float rayReach =
+                    CHL003WheelSupportWindow.MaximumCastMeters(physicalRadius);
+                if (rayReach <= 0f) continue;
+                Vector3 origin = probe.position +
+                    Vector3.up * CHL003WheelSupportWindow.OriginLiftMeters;
                 int count = Physics.RaycastNonAlloc(
-                    origin, Vector3.down, groundHits, .95f,
+                    origin, Vector3.down, groundHits, rayReach,
                     Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
                 for (int i = 0; i < count; i++)
                 {
                     Collider c = groundHits[i].collider;
                     if (c == null || c.isTrigger || !c.enabled ||
                         c.attachedRigidbody == body ||
-                        groundHits[i].normal.y < .5f) continue;
+                        groundHits[i].normal.y < .5f ||
+                        !CHL003WheelSupportWindow.WithinWheelReach(
+                            groundHits[i].distance, physicalRadius)) continue;
                     SupportRayCount++;
                     break;
                 }
