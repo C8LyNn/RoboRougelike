@@ -10,6 +10,7 @@ import hashlib
 import importlib.util
 import json
 import math
+import os
 import re
 from pathlib import Path
 
@@ -122,6 +123,7 @@ def evaluate(producer_root,canonical_source_root):
  if not guid or ("guid: "+guid.group(1)) not in scenes or ("guid: "+guid.group(1)) not in prefab:
   raise ValueError("scene/prefab do not reference actual demo component GUID")
  return {"schema":"B01-30-W16-PR286-DELTA-QA-1",
+   "producerPr286ExactHead":os.environ.get("B01_PARTSIZE_PR286_HEAD","UNSET"),
    "producerPR286PinnedOnly":True,"codexSourcePR272PinnedOnly":True,
    "sourcesVerified":stamps,"pr286CatalogKinds":len(listed),
    "physicalUnmeasuredCanonicalKinds":sorted(set(listed)-(WIDE|{"Armor","Core"})),
