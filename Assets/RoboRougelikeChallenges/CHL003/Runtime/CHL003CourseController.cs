@@ -255,17 +255,17 @@ namespace B01.CHL003
             return false;
         }
 
-        private void Update()
-        {
-            if (core == null) return;
-            core.AdvanceTime(Time.deltaTime);
-            if (core.State != CHL003CourseCore.Phase.Running)
-                finishArbiter.CancelPending();
-        }
-
         private void FixedUpdate()
         {
             fixedStep++;
+            // Sole authoritative trial clock: exactly one fixed physics
+            // delta per simulated step, never once per rendered Update frame.
+            // This preserves fair elapsed times at 30/60/144 FPS.
+            if (core != null && core.State == CHL003CourseCore.Phase.Running &&
+                !core.Paused)
+                core.AdvanceTime(Time.fixedDeltaTime);
+            if (core != null && core.State != CHL003CourseCore.Phase.Running)
+                finishArbiter.CancelPending();
             if (activeActor != null && core != null && !core.Paused)
                 positionBeforePhysics = activeActor.position;
             if (core == null || core.State != CHL003CourseCore.Phase.Running ||
