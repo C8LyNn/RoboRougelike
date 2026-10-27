@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T13:59:19.9534497Z",
+    "source":  "6cfdb55a20ac6d40c39cc2bcca69f74ec0232cfc",
+    "stage":  "RETICLE-Release",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "PlayMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Release-20261027T135818Z\\PlayMode.xml\"",
+                      "-testFilter",
+                      "\"PerWeaponReticleTests;B01.CAMERA001.Tests\""
+                  ],
+    "startedUtc":  "2026-10-27T13:59:05.7353791Z",
+    "phase":  "PlayMode"
+}

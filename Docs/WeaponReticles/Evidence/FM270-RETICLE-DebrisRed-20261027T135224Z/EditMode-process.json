@@ -1,0 +1,17 @@
+{
+    "exitCode":  2,
+    "finishedUtc":  "2026-10-27T13:52:48.0984076Z",
+    "source":  "a956e541fe29f2742732a9fa8f3711d741c3ced4",
+    "stage":  "RETICLE-DebrisRed",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-DebrisRed-20261027T135224Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris\""
+                  ],
+    "startedUtc":  "2026-10-27T13:52:36.6432335Z",
+    "phase":  "EditMode"
+}

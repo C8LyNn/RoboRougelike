@@ -1,0 +1,11 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T13:49:16.6180115Z",
+    "source":  "1e4026bed68110fb36d284bfe6af4223a2113678",
+    "stage":  "RETICLE-Green",
+    "arguments":  [
+                      "-quit"
+                  ],
+    "startedUtc":  "2026-10-27T13:49:02.7417263Z",
+    "phase":  "Compile"
+}

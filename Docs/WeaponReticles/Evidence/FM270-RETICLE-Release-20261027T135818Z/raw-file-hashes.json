@@ -1,0 +1,22 @@
+[
+  {
+    "file": "Build.log",
+    "rawSHA256": "967c49fa49e13c54fccfa790199922051b712208a451ed350ea9d26aed304a4e",
+    "bytes": 561361
+  },
+  {
+    "file": "Compile.log",
+    "rawSHA256": "2ebfcdbeb3ff85830b6b2cddcfc817a3e1b9f0b34201a34ecf570e5ef1757e7b",
+    "bytes": 24621
+  },
+  {
+    "file": "EditMode.log",
+    "rawSHA256": "8e5e6a853d1bf2708f605f52ac207d0f776cfec3159f27804b63dd7b437f0dc1",
+    "bytes": 33524
+  },
+  {
+    "file": "PlayMode.log",
+    "rawSHA256": "c3ef439e22f19b7152e8a3274df75cd00c3c273831ef7a242e754d91c2a9dad8",
+    "bytes": 38666
+  }
+]

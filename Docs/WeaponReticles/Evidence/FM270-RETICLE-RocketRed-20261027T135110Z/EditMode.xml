@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 13:51:31Z" end-time="2026-10-27 13:51:31Z" duration="0,0776614">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1229" result="Failed" site="Child" start-time="2026-10-27 13:51:31Z" end-time="2026-10-27 13:51:31Z" duration="0.077661" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1530" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Camera275/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="437" result="Failed" site="Child" start-time="2026-10-27 13:51:31Z" end-time="2026-10-27 13:51:31Z" duration="0.040826" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48476" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1199" name="PerWeaponReticleTests" fullname="PerWeaponReticleTests" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-27 13:51:31Z" end-time="2026-10-27 13:51:31Z" duration="0.035994" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1204" name="RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle" fullname="PerWeaponReticleTests.RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle" methodname="RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle" classname="PerWeaponReticleTests" runstate="Runnable" seed="894808486" result="Failed" start-time="2026-10-27 13:51:31Z" end-time="2026-10-27 13:51:31Z" duration="0.024693" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  An existing shell is not part of the vehicle hierarchy and the real rocket can collide with it
+  Expected: True
+  But was:  False
+]]></message>
+            <stack-trace><![CDATA[at PerWeaponReticleTests.RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle () [0x000eb] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Camera275\Assets\Tests\Editor\PerWeaponReticleTests.cs:99
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

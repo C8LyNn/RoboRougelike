@@ -1,0 +1,339 @@
+[
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:52:36.5961581Z",
+    "source": "a956e541fe29f2742732a9fa8f3711d741c3ced4",
+    "stage": "RETICLE-DebrisRed",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T13:52:24.7706055Z",
+    "phase": "Compile",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-DebrisRed-20261027T135224Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T13:52:48.0984076Z",
+    "source": "a956e541fe29f2742732a9fa8f3711d741c3ced4",
+    "stage": "RETICLE-DebrisRed",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-DebrisRed-20261027T135224Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris\""
+    ],
+    "startedUtc": "2026-10-27T13:52:36.6432335Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "name": "PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris",
+        "message": "  Rockets collide with detached solid debris even though ordinary shells ignore it\n  Expected: True\n  But was:  False\n"
+      }
+    ],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-DebrisRed-20261027T135224Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:54:07.6411258Z",
+    "source": "9b736e5e8855eae819535f6416ca7de5627d8441",
+    "stage": "RETICLE-Final",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T13:53:45.6325317Z",
+    "phase": "Build",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Final-20261027T135333Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:53:45.5934792Z",
+    "source": "9b736e5e8855eae819535f6416ca7de5627d8441",
+    "stage": "RETICLE-Final",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T13:53:33.6946178Z",
+    "phase": "Compile",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Final-20261027T135333Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:54:18.9123754Z",
+    "source": "9b736e5e8855eae819535f6416ca7de5627d8441",
+    "stage": "RETICLE-Final",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Final-20261027T135333Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests;B01.CAMERA001.Tests\""
+    ],
+    "startedUtc": "2026-10-27T13:54:07.6496305Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Final-20261027T135333Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:54:32.6435138Z",
+    "source": "9b736e5e8855eae819535f6416ca7de5627d8441",
+    "stage": "RETICLE-Final",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Final-20261027T135333Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests;B01.CAMERA001.Tests\""
+    ],
+    "startedUtc": "2026-10-27T13:54:18.9303781Z",
+    "phase": "PlayMode",
+    "nunit": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Final-20261027T135333Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:49:42.8304196Z",
+    "source": "1e4026bed68110fb36d284bfe6af4223a2113678",
+    "stage": "RETICLE-Green",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T13:49:16.6600781Z",
+    "phase": "Build",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Green-20261027T134902Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:49:16.6180115Z",
+    "source": "1e4026bed68110fb36d284bfe6af4223a2113678",
+    "stage": "RETICLE-Green",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T13:49:02.7417263Z",
+    "phase": "Compile",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Green-20261027T134902Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:49:54.0413569Z",
+    "source": "1e4026bed68110fb36d284bfe6af4223a2113678",
+    "stage": "RETICLE-Green",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Green-20261027T134902Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests\""
+    ],
+    "startedUtc": "2026-10-27T13:49:42.8379258Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Green-20261027T134902Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:46:05.5363755Z",
+    "source": "44790a224f7d8b283594040e57e6aa7283b0ea73",
+    "stage": "RETICLE-Red",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T13:45:25.6206896Z",
+    "phase": "Compile",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Red-20261027T134525Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T13:46:16.7992263Z",
+    "source": "44790a224f7d8b283594040e57e6aa7283b0ea73",
+    "stage": "RETICLE-Red",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Red-20261027T134525Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests\""
+    ],
+    "startedUtc": "2026-10-27T13:46:05.6420286Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 3,
+      "passed": 0,
+      "failed": 3,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "name": "PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers",
+        "message": "  The game needs individual, real-muzzle reticles for its guns\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns",
+        "message": "  The game needs individual, real-muzzle reticles for its guns\n  Expected: not null\n  But was:  null\n"
+      },
+      {
+        "name": "PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon",
+        "message": "  The game needs individual, real-muzzle reticles for its guns\n  Expected: not null\n  But was:  null\n"
+      }
+    ],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Red-20261027T134525Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:58:53.5268007Z",
+    "source": "6cfdb55a20ac6d40c39cc2bcca69f74ec0232cfc",
+    "stage": "RETICLE-Release",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T13:58:31.0253658Z",
+    "phase": "Build",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Release-20261027T135818Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:58:30.9853042Z",
+    "source": "6cfdb55a20ac6d40c39cc2bcca69f74ec0232cfc",
+    "stage": "RETICLE-Release",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T13:58:19.0955001Z",
+    "phase": "Compile",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Release-20261027T135818Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:59:05.7188578Z",
+    "source": "6cfdb55a20ac6d40c39cc2bcca69f74ec0232cfc",
+    "stage": "RETICLE-Release",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Release-20261027T135818Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests;B01.CAMERA001.Tests\""
+    ],
+    "startedUtc": "2026-10-27T13:58:53.5393089Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Release-20261027T135818Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:59:19.9534497Z",
+    "source": "6cfdb55a20ac6d40c39cc2bcca69f74ec0232cfc",
+    "stage": "RETICLE-Release",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-Release-20261027T135818Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests;B01.CAMERA001.Tests\""
+    ],
+    "startedUtc": "2026-10-27T13:59:05.7353791Z",
+    "phase": "PlayMode",
+    "nunit": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-Release-20261027T135818Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T13:51:21.7572068Z",
+    "source": "ddbaa7f5b83bc3c7879a84a6a78753537614842a",
+    "stage": "RETICLE-RocketRed",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T13:51:10.3409661Z",
+    "phase": "Compile",
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-RocketRed-20261027T135110Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T13:51:32.7746276Z",
+    "source": "ddbaa7f5b83bc3c7879a84a6a78753537614842a",
+    "stage": "RETICLE-RocketRed",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Camera275\\Artifacts\\Local\\FM270-RETICLE-RocketRed-20261027T135110Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"PerWeaponReticleTests.RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle\""
+    ],
+    "startedUtc": "2026-10-27T13:51:21.8048087Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "name": "PerWeaponReticleTests.RocketIndicatorRecognizesAnotherOwnedProjectileAsARealObstacle",
+        "message": "  An existing shell is not part of the vehicle hierarchy and the real rocket can collide with it\n  Expected: True\n  But was:  False\n"
+      }
+    ],
+    "evidence": "Docs/WeaponReticles/Evidence/FM270-RETICLE-RocketRed-20261027T135110Z"
+  }
+]
