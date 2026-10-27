@@ -1,9 +1,13 @@
+## Dynamic dependency C1 — bridge / gate clearance corrected
+
+Upstream independent [B01-21 original-source geometry QA PR #295](https://github.com/C8LyNn/RoboRougelike/pull/295) found Heavy yaw8° width ≈3.1206m, which clears the 3.70m physical bridge by 0.2897m/side but would be rejected by the former 3.50m gate (0.1897m/side) with policy minimum 0.25m. All four CP triggers and Finish now use the *same* 3.70m aperture; visible marker centers ±1.97m. **No weakening of 0.25m strict full-body rule**; Heavy yaw12° stays too close to the edge. Actual original C# HEADLESS RED old/NEW GREEN + source-mutation checks, *real Unity driving NOT_RUN*. See `DEPENDENCY_C1_HEAVY_YAW8.md`. W17 P07 3×Light+3×Heavy remains native pending; E19 and P14 native tests AUTHOR_ONLY.
+
 ## W17 source hardening — CHL-02 forward full-body gate and traction
 Gates require actual root Rigidbody **center plane forward crossing within one physics step**, a facing direction that agrees with gate forward, and the conservative entire actor collision `Collider.bounds` envelope inside the real BoxCollider aperture, preserving 0.25m lateral clearance. Merely touching the trigger with a wheel, driving backward, or moving sideways does NOT score. The controller captures root world position before physics and reads actual post-step Rigidbody position from Unity callbacks; this is not a proxy pass or a route-editor feature. Conservative world AABBs can reject sharp yaw turns; native feasibility remains NOT_RUN.
 
 The standalone motor now has explicitly **NO THRUST OR STEERING IN AIR**; grounded status requires at least one of the four actual wheel probes to raycast a non-trigger, non-self physical surface with supporting normal (>0.5 Y). While airborne Rigidbody gravity and inertia continue, horizontal acceleration is not artificially granted. HUD exposes grounded/airborne steps; runtime computes physical Light/Heavy dimensions from real `Collider.bounds` rather than constants. Do not claim WheelCollider or real R3 mechanical suspension simulation; these are standalone rigid-body physics demo wheels.
 
-W17 authorship: **18 EditMode and 13 PlayMode** native Unity tests (NOT_RUN), including new E16–E18 and P10–P13 forward-full-body, reverse, wheel-graze and airborne traction negatives. The headless suite compiles original source `CHL003GateCrossing.cs` and exercises thousands of physically-dimensional input contracts; it does **not** execute Unity PhysX or native motor tests.
+W17 authorship: **19 EditMode and 14 PlayMode** native Unity tests (NOT_RUN), including new E16–E18 and P10–P13 forward-full-body, reverse, wheel-graze and airborne traction negatives. The headless suite compiles original source `CHL003GateCrossing.cs` and exercises thousands of physically-dimensional input contracts; it does **not** execute Unity PhysX or native motor tests.
 
 
 # B01 / CHL-003 R1 — Complete obstacle-course candidate, QA pending
