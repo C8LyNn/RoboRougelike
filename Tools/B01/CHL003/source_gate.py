@@ -17,6 +17,7 @@ expected=[
 "Runtime/CHL003TrialMetrics.cs",
 "Runtime/B01.CHL003.Runtime.asmdef",
 "Demo/CHL003DemoBootstrap.cs",
+"Demo/B01.CHL003.Demo.asmdef",
 "Demo/CHL003_Demo.unity",
 "Tests/EditMode/B01.CHL003.EditModeTests.asmdef",
 "Tests/PlayMode/B01.CHL003.PlayModeTests.asmdef",
@@ -140,8 +141,18 @@ require(mutated!=arbiter and "fixedStep <= lastCheckpointStep" not in mutated,
         "co-located same-step negative mutation was not detected")
 for mode in ("EditMode","PlayMode"):
     asm=json.loads((pkg/"Tests"/mode/("B01.CHL003."+mode+"Tests.asmdef")).read_text())
-    require(asm["references"]==["B01.CHL003.Runtime"],"wrong asmdef owner")
+    expectedRefs=["B01.CHL003.Runtime"] if mode=="EditMode" else [
+        "B01.CHL003.Runtime","B01.CHL003.Demo"]
+    require(asm["references"]==expectedRefs,"wrong asmdef owner or Demo test visibility")
     require("TestAssemblies" in asm["optionalUnityReferences"],"Unity Test Framework missing")
+demoasm=json.loads((pkg/"Demo/B01.CHL003.Demo.asmdef").read_text())
+require(demoasm["name"]=="B01.CHL003.Demo" and
+        demoasm["references"]==["B01.CHL003.Runtime"],
+        "MonoBehaviour demo has no referenced assembly and native PlayMode cannot compile")
+# Negative regression: a missing Demo ref must fail test assembly graph review.
+brokenRefs=["B01.CHL003.Runtime"]
+require(brokenRefs != expectedRefs,
+        "PlayMode Demo dependency mutation was not detected")
 asm=json.loads((pkg/"Runtime/B01.CHL003.Runtime.asmdef").read_text())
 require(asm["name"]=="B01.CHL003.Runtime" and not asm["references"],
         "runtime must be host-neutral")
