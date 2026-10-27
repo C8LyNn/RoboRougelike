@@ -50,6 +50,35 @@ internal static class Program
             "rotation/scale lost");
         Need(roundtrip.TestError()==null,"roundtrip support lost");
     }
+    static int OriginalDataRoute(MapDraft d, (int x,int z)[] cells, bool allowGeometryObstacles)
+    {
+        Need(cells.Length>=2,"no route cells");
+        Need(d.Spawn.x==cells[0].x && d.Spawn.z==cells[0].z,"route origin not Spawn");
+        Need(d.Finish.x==cells[cells.Length-1].x && d.Finish.z==cells[cells.Length-1].z,
+            "route end not Finish");
+        var ground=new System.Collections.Generic.HashSet<UnityEngine.Vector2Int>(
+            d.Items.Where(p=>p.kind==MapItemKind.Ground).SelectMany(MapDraft.Footprint));
+        var obstacles=new System.Collections.Generic.HashSet<UnityEngine.Vector2Int>(
+            d.Items.Where(p=>p.kind!=MapItemKind.Ground &&
+                             p.kind!=MapItemKind.Spawn && p.kind!=MapItemKind.Finish)
+                   .SelectMany(MapDraft.Footprint));
+        int encountered=0;
+        for(int i=0;i<cells.Length;i++)
+        {
+            var (x,z)=cells[i];
+            Need(Math.Abs(x)<=MapDraft.MaxCoordinate && Math.Abs(z)<=MapDraft.MaxCoordinate,
+                "route cell exceeds source boundary");
+            var p=new UnityEngine.Vector2Int(x,z);
+            Need(d.GlobalFloor || ground.Contains(p),"route cell has no original Ground");
+            if(obstacles.Contains(p)) encountered++;
+            if(i>0)
+                Need(Math.Abs(x-cells[i-1].x)+Math.Abs(z-cells[i-1].z)==1,
+                    "non-contiguous 4-neighbour route witness");
+        }
+        Need(allowGeometryObstacles || encountered==0,"supposed clear corridor meets object footprint");
+        return encountered;
+    }
+
     static int Main()
     {
         Console.WriteLine("SOURCE_KIND=EXACT_ORIGINAL_CODEX_MAPDRAFT_CS");
@@ -104,6 +133,35 @@ internal static class Program
                 "marker drift");
             // No route pass is asserted. Deleted Ground tiles can break design
             // even when the editor's basic sandbox preflight succeeds.
+        });
+        Case("C_LD01_DETOUR_SPAWN_TO_FINISH_SOURCE_GEOMETRY",()=>
+        {
+            var d=LoadFile("LD01",59,false);
+            var points=new System.Collections.Generic.List<(int x,int z)> { (0,1),(0,2),(0,3) };
+            for(int x=1;x<=12;x++) points.Add((x,3));
+            points.Add((12,2));points.Add((12,1));
+            Need(points.Count==17,"LD01 16 transitions expected");
+            Need(OriginalDataRoute(d,points.ToArray(),false)==0,"unexpected obstacles");
+        });
+        Case("C_LD02_GLOBAL_FLOOR_DIRECT_SPATIAL_LANE",()=>
+        {
+            var d=LoadFile("LD02",10,true);
+            var points=Enumerable.Range(0,12).Select(x=>(x,5)).ToArray();
+            Need(OriginalDataRoute(d,points,false)==0,"LD02 centerline obstructed");
+        });
+        Case("C_LD03_TWO_BRANCH_HAZARD_VS_CLEAR_CORRIDOR",()=>
+        {
+            var d=LoadFile("LD03",45,false);
+            var risky=Enumerable.Range(0,9).Select(x=>(x,2)).ToArray();
+            var safe=new System.Collections.Generic.List<(int x,int z)> { (0,2),(0,3),(0,4),(0,5) };
+            for(int x=1;x<=8;x++) safe.Add((x,5));
+            safe.Add((8,4));safe.Add((8,3));safe.Add((8,2));
+            Need(risky.Length==9 && safe.Count==15,"8 vs 14 transitions expected");
+            Need(OriginalDataRoute(d,risky,true)==2,"LD03 risky branch must cross barrier+ramp cells");
+            Need(OriginalDataRoute(d,safe.ToArray(),false)==0,
+                "LD03 clear branch does not avoid obstacle footprints");
+            // This is a 4-neighbour, authoring-level witness using original
+            // C# MapDraft.Items and Footprint; NOT Rigidbody clearance or a route success.
         });
         Console.WriteLine("ORIGINAL_CSHARP_SHIM_TESTS="+ok+" PASS / "+fail+" FAIL");
         Console.WriteLine("UNITY_EDITOR_NOT_RUN; PHYSX_NOT_RUN; HUMAN_NOT_RUN; G1_NOT_RUN");
