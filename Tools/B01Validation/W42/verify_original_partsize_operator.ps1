@@ -39,7 +39,7 @@ function ShouldReject([string]$name,[string]$root,[string]$ev,[string]$reason) {
     catch { $rejected = $_.Exception.Message }
     if (!$rejected.Contains($reason)) { throw "NEGATIVE_NOT_REJECTED:$name need=$reason actual=$rejected" }
     $script:counter++
-    Write-Host "INDEPENDENT_PRE_DENY:$name:$reason"
+    Write-Host "INDEPENDENT_PRE_DENY:${name}:${reason}"
 }
 New-Item -ItemType Directory -Force -Path $base | Out-Null
 try {
