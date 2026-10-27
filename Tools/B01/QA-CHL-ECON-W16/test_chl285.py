@@ -19,7 +19,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         receipt=json.loads(RECEIPT.read_text(encoding="utf8"))
-        if receipt.get("chl_commit")!="bec51e4a66ada534b875ce13f08b83d63f2cd7b8":
+        if receipt.get("chl_commit")!="8c69313b41312f5d027285469c6a2f22958a931f":
             raise RuntimeError("PINNED_CHL285_SHA_CHANGED")
         cls.code=[(str(p),p.read_text(encoding="utf8")) for p in sorted(ROOT.rglob("*.cs"))]
         cls.core=(ROOT/"Runtime/CHL003CourseCore.cs").read_text(encoding="utf8")
@@ -27,7 +27,7 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
         cls.demo=(ROOT/"Demo/CHL003DemoBootstrap.cs").read_text(encoding="utf8")
 
     def test_16_actual_original_seven_Csharp_files_are_reward_free(self):
-        self.assertEqual(audit.inspect_chl_files(self.code),7)
+        self.assertEqual(audit.inspect_chl_files(self.code),10)
 
     def test_17_runtime_asmdef_has_no_host_references(self):
         obj=json.loads((ROOT/"Runtime/B01.CHL003.Runtime.asmdef").read_text())
@@ -82,6 +82,25 @@ class OriginalCHL285NegativeTests(unittest.TestCase):
         self.assertIn("public void Retry()",self.core)
         self.assertNotIn("VictoryEventId",self.core)
         self.assertNotIn("TransactionId",self.core)
+
+    def test_26_new_trial_metrics_only_output_csv_not_r3_credit(self):
+        t=(ROOT/"Runtime/CHL003TrialMetrics.cs").read_text(encoding="utf8")
+        self.assertIn("public string ToCsv()",t)
+        self.assertIn("public void Reset(",t)
+        self.assertNotIn("System.IO",t)
+        self.assertNotIn("VehicleModel",t)
+
+    def test_27_new_finish_arbiter_requires_later_physics_step(self):
+        t=(ROOT/"Runtime/CHL003FinishArbiter.cs").read_text(encoding="utf8")
+        self.assertIn("fixedStep <= queuedStep.Value",t)
+        self.assertIn("stillPhysicallyOverlapping",t)
+        self.assertIn("public void CancelPending()",t)
+
+    def test_28_demo_diagnostic_logging_not_game_persistence(self):
+        self.assertIn('Debug.Log("CHL003_ACTUAL_TRIAL_SUMMARY_CSV',self.demo)
+        self.assertIn('Debug.Log("CHL003_ACTUAL_TRIAL_EVENTS_CSV',self.demo)
+        self.assertNotIn("PlayerPrefs",self.demo)
+        self.assertNotIn("File.Write",self.demo)
 
     def test_25_actual_demo_owns_runtime_created_root(self):
         self.assertIn('owned = new GameObject("CHL003_GENERATED_DEMO_ONLY");',self.demo)
