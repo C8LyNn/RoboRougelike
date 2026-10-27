@@ -15,52 +15,52 @@ class OriginalCodexHostSourceTest(unittest.TestCase):
     def setUpClass(cls):
         if not R1.is_file() or not R3.is_file():
             raise RuntimeError("ACTUAL_FROZEN_HOST_CSHARP_REQUIRED — prepare.py first")
-        cls.run=R1.read_text(encoding="utf8")
-        cls.model=R3.read_text(encoding="utf8")
+        cls.run_source=R1.read_text(encoding="utf8")
+        cls.model_source=R3.read_text(encoding="utf8")
 
     def test_01_unmodified_pinned_real_source_audit(self):
-        r=audit.inspect_host(self.run,self.model)
+        r=audit.inspect_host(self.run_source,self.model_source)
         self.assertEqual(r["host_win_award_calls"],1)
         self.assertFalse(r["host_victory_event_id_journal_in_method"])
 
     def test_02_absent_combat_gate_is_rejected(self):
-        altered=self.run.replace("Progress.State != R1RunState.Combat || Paused) return;",
+        altered=self.run_source.replace("Progress.State != R1RunState.Combat || Paused) return;",
           "Progress.State != R1RunState.Garage || Paused) return;",1)
-        self.assertNotEqual(altered,self.run)
+        self.assertNotEqual(altered,self.run_source)
         with self.assertRaisesRegex(audit.QAError,"HOST_COMBAT_GATE_REMOVED"):
-            audit.inspect_host(altered,self.model)
+            audit.inspect_host(altered,self.model_source)
 
     def test_03_duplicate_credit_award_is_rejected(self):
         old="VehicleModel.Award(LastScrapReward);"
-        altered=self.run.replace(old,old+"\n"+old,1)
-        self.assertNotEqual(altered,self.run)
+        altered=self.run_source.replace(old,old+"\n"+old,1)
+        self.assertNotEqual(altered,self.run_source)
         with self.assertRaisesRegex(audit.QAError,"HOST_REWARD_MISSING_OR_DUPLICATED"):
-            audit.inspect_host(altered,self.model)
+            audit.inspect_host(altered,self.model_source)
 
     def test_04_reversed_loss_condition_is_rejected_as_semantic_failure(self):
         # RED fixture: old scanner only detects changed order, not changed
         # meaning. Add a precise fail-closed predicate check after RED CI.
-        changed=self.run.replace("if (defeat != null)","if (defeat == null)",1)
-        self.assertNotEqual(changed,self.run)
+        changed=self.run_source.replace("if (defeat != null)","if (defeat == null)",1)
+        self.assertNotEqual(changed,self.run_source)
         with self.assertRaisesRegex(audit.QAError,"HOST_LOSS_PREDICATE_CHANGED"):
-            audit.inspect_host(changed,self.model)
+            audit.inspect_host(changed,self.model_source)
 
     def test_05_missing_post_win_salvage_transition_rejected(self):
-        altered=self.run.replace("Progress.OpenSalvage();","/*removed*/",1)
+        altered=self.run_source.replace("Progress.OpenSalvage();","/*removed*/",1)
         with self.assertRaisesRegex(audit.QAError,"HOST_SALVAGE_STAGE_MISSING"):
-            audit.inspect_host(altered,self.model)
+            audit.inspect_host(altered,self.model_source)
 
     def test_06_missing_reward_commit_guard_rejected(self):
-        altered=self.run.replace("Progress?.State!=R1RunState.Salvage",
+        altered=self.run_source.replace("Progress?.State!=R1RunState.Salvage",
             "Progress?.State!=R1RunState.Combat",1)
         with self.assertRaisesRegex(audit.QAError,"HOST_SALVAGE_CONFIRM_UNGUARDED"):
-            audit.inspect_host(altered,self.model)
+            audit.inspect_host(altered,self.model_source)
 
     def test_07_repair_price_baseline_changed_requires_new_pin(self):
-        altered=self.model.replace("part.Health <= 0 ? Price(part.Kind,part.Weapon)",
+        altered=self.model_source.replace("part.Health <= 0 ? Price(part.Kind,part.Weapon)",
                "part.Health <= 0 ? 1",1)
         with self.assertRaisesRegex(audit.QAError,"PINNED_0HP_REPAIR_PRICE_SOURCE_CHANGED"):
-            audit.inspect_host(self.run,altered)
+            audit.inspect_host(self.run_source,altered)
 
 class CHLSourceGateMutationTests(unittest.TestCase):
     def test_08_missing_real_CHL_never_reported_pass(self):
