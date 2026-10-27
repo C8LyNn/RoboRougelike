@@ -1,6 +1,9 @@
+## W17 same-course elapsed-time authority
+CHL003CourseController advances time ONLY once in FixedUpdate via `Time.fixedDeltaTime`; rendering callback Update does not modify timer. P13 verifies measured physics step count vs actual elapsed under varying render frame intervals, P04 was corrected to wait actual fixed steps after unpause. This is authored native Unity acceptance **NOT_RUN**; headless C# source test cannot prove Unity frame scheduling.
+
 ## W17 required physical negatives — native Unity NOT_RUN
 - EditMode E16–E18: real-source coordinate model accepts Light+Heavy full-hull forward crossings but rejects reverse, backside orientation, only-wheel edge grazing, before-center wheel hits, non-finite heights/coordinates, and off-aperture body.
-- PlayMode P10–P12: real scene created by original bootstrap: airborne non-kinematic Rigidbody must NOT gain horizontal or steering velocity from held input, reverse CP0 crossing leaves checkpoint count zero, wheel-only grazing of CP0 leaves zero despite actual real OnTriggerStay, and real wheel ground rays allow body to accelerate by AddForce.
+- PlayMode P10–P13: real scene created by original bootstrap: airborne non-kinematic Rigidbody must NOT gain horizontal or steering velocity from held input, reverse CP0 crossing leaves checkpoint count zero, wheel-only grazing of CP0 leaves zero despite actual real OnTriggerStay, and real wheel ground rays allow body to accelerate by AddForce.
 - Headless source checks include 6400 deterministic width/offset cases plus source mutation sentinels for bypass of forward-only and airborne thrust guards; these are NOT native Unity/PhysX.
 - Full same-course 3x Light+3x Heavy P07 remains mandatory and native NOT_RUN; if traffic fails physical barrier/ramp/bridge, record FAIL, do not label acceptance.
 
@@ -16,7 +19,7 @@ compiles and runs EXACT `Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003Cou
 ## Licensed native Unity mandatory (not executed by producer)
 Open isolated demo in Unity6000.3.14f1 (URP), record actual compile Editor.log/exit and Test Framework:
 - EditMode18 exact E01–E15, including single win/early finish/out of order/multi collider/foreign actor/retry/pause/fall/time limit/bad input.
-- PlayMode12 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
+- PlayMode13 exact P01–P09 real nonkinematic Rigidbody passes four ordered physical triggers and finish, physical obstacle solidity via Physics.ComputePenetration, actual fall/retry, Unity pause time, physically different rig dimensions/mass, foreign actor and three retries.
 - Manual: 2 profiles Light/Heavy (real masses/collider footprints), 3 completed crossing attempts each, HUD and controls both input backends, at least 3 failed falls+retries, off-course/pause, no leaks. Record seed or static scene checksum, elapsed, checkpoint counts, fall/timeouts, bumper/wheel contact, screenshot/video, XML and actual process exits, all on pinned exact commit.
 - If a test is unsupported or fails: actual FAIL/NOT_RUN, no masking, report to B01-20 before source freeze. No G1 without independent B01-60.
 
