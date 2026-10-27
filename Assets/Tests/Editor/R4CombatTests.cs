@@ -142,6 +142,30 @@ public class R4CombatTests
         var cell=Run.Garage.Cell;Run.Garage.Select(new Vector3Int(0,3,1));Run.Garage.Orbit(25);Run.Garage.Tilt(10);yield return null;
         Assert.That(Run.Garage.Cell,Is.Not.EqualTo(cell));
     }
+    [UnityTest] public IEnumerator BothMouseButtonsFireSeparateGroupsAndPauseRequiresRelease()
+    {
+        var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
+        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
+        Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
+        Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Fight");Run.Encounter.SetCombatActive(false);
+        VirtualInput();InputSystem.QueueStateEvent(mouse,new MouseState());yield return null;yield return null;
+        R1EncounterManager.ClearTransientObjects();
+        InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Right));
+        yield return Until(()=>UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Any(p=>p.Weapon==R4WeaponKind.Automatic),"PPM fires B");
+        Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Any(p=>p.Weapon==R4WeaponKind.Basic),Is.False);
+        InputSystem.QueueStateEvent(mouse,new MouseState());yield return null;yield return null;
+        R1EncounterManager.ClearTransientObjects();yield return new WaitForSeconds(.5f);
+        InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left).WithButton(MouseButton.Right));
+        yield return Until(()=>UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Any(p=>p.Weapon==R4WeaponKind.Basic),"LPM fires A");
+        yield return Until(()=>UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Any(p=>p.Weapon==R4WeaponKind.Automatic),"LPM+PPM also fires B");
+        Run.TogglePause();R1EncounterManager.ClearTransientObjects();yield return null;
+        Run.TogglePause();yield return new WaitForSeconds(.5f);
+        Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None),Is.Empty,"held buttons after pause cannot fire");
+        InputSystem.QueueStateEvent(mouse,new MouseState());yield return null;yield return null;
+        InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Right));
+        yield return Until(()=>UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Any(p=>p.Weapon==R4WeaponKind.Automatic),"fresh press fires again");
+        InputSystem.QueueStateEvent(mouse,new MouseState());
+    }
     [UnityTest] public IEnumerator AllWeaponsHaveIndependentCadenceUpgradesAndPhysicalDamage()
     {
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
