@@ -5,7 +5,7 @@
 - Authoritative v2 HTML: [Research/B01-12/W17/index.html](../W17/index.html)
 - **Tested v2 HTML Git blob SHA1:** `bc17deba3c96307c8179a0ff564b26b3855287ce` (exact LF-terminated source).
 - **Research branch:** `research/b01-12-w17-garage-chl-ux`, v2 commit `3dd37d0b63cb647655cccdab7a9a7ac4e9db3179`.
-- **Previous v1 Git blob:** `65b84bdfded69eb56771fc529bbdde33ebab17` is NOT correct; actual previous v1 blob **`65b84bdfded69eb56771fc529b9a4c5cabfd77a5`**. The branch history remains intact.
+- **Previous correct v1 HTML Git blob:** `65b84bdfded69eb56771fc529b9a4c5cabfd77a5` (unchanged preserved original history).
 - **Pinned PARTSIZE input:** #286 `be2be0e4802bc3f450179901f9ae91c6d84bcb5b`.
 - **Pinned CHL input:** #285 `077e692785aff2990a2d72a80fd1db62ac57b0e8`; older queue CHL `f4ca318...` obsolete for native/source readiness.
 - **Reviewed upstream:** B01-11 independently assessed v1 in #296 [comment 6440580983](https://github.com/C8LyNn/RoboRougelike/issues/296#issuecomment-6440580983), and earlier benchmark #292. Its structural 13 assertions are NOT browser/user/Unity testing.
