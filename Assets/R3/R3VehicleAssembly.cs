@@ -157,8 +157,9 @@ namespace RoboRougelike.R3
                 }
             }
             var rig=new GameObject("Turret_Yaw").transform;rig.SetParent(root.transform,false);
-            var primary=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
-            rig.localPosition=(Vector3)primary.Cell*0.55f+Vector3.up*0.31f;
+            var primary=model.Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun);
+            // A garage vehicle may have no guns while its owner is rebuilding.
+            rig.localPosition=primary!=null?(Vector3)primary.Cell*0.55f+Vector3.up*0.31f:Vector3.up*0.31f;
             var pitch=new GameObject("Cannon_Pitch").transform;pitch.SetParent(rig,false);
             var muzzle=new GameObject("Muzzle").transform;muzzle.SetParent(pitch,false);muzzle.localPosition=Vector3.forward*0.85f;
             var pivot=new GameObject("CameraPivot").transform;pivot.SetParent(root.transform,false);pivot.localPosition=Vector3.up*1.5f;

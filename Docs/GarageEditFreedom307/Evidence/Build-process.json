@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T20:37:50.8635996Z",
+    "source":  "6db077254db0b632f06cf70de3e31466b65d5153",
+    "stage":  "GARAGE307-RC",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T20:36:53.8866544Z",
+    "phase":  "Build"
+}

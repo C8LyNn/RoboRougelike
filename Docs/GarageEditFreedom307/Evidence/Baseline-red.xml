@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Failed(Child)" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-27 20:31:29Z" end-time="2026-10-27 20:31:30Z" duration="0,4727049">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1259" result="Failed" site="Child" start-time="2026-10-27 20:31:29Z" end-time="2026-10-27 20:31:30Z" duration="0.472705" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1567" name="Assembly-CSharp-Editor.dll" fullname="<WORKSPACE>/Desktop/Prototypy/RoboRougelike-Garage307/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="467" result="Failed" site="Child" start-time="2026-10-27 20:31:29Z" end-time="2026-10-27 20:31:30Z" duration="0.420245" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="47448" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1083" name="GarageEditFreedomTests" fullname="GarageEditFreedomTests" classname="GarageEditFreedomTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-10-27 20:31:29Z" end-time="2026-10-27 20:31:30Z" duration="0.415677" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1084" name="ModelCanRemoveLastGunAndEveryWheelButCannotDeploy" fullname="GarageEditFreedomTests.ModelCanRemoveLastGunAndEveryWheelButCannotDeploy" methodname="ModelCanRemoveLastGunAndEveryWheelButCannotDeploy" classname="GarageEditFreedomTests" runstate="Runnable" seed="18435908" result="Failed" start-time="2026-10-27 20:31:26Z" end-time="2026-10-27 20:31:26Z" duration="0.015243" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[  removing the last gun is a valid garage edit
+  Expected: True
+  But was:  False
+]]></message>
+            <stack-trace><![CDATA[at GarageEditFreedomTests.ModelCanRemoveLastGunAndEveryWheelButCannotDeploy () [0x00038] in <WORKSPACE>\Desktop\Prototypy\RoboRougelike-Garage307\Assets\Tests\Editor\GarageEditFreedomTests.cs:16
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1085" name="RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved" fullname="GarageEditFreedomTests.RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved" methodname="RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved" classname="GarageEditFreedomTests" runstate="Runnable" seed="398893928" result="Failed" start-time="2026-10-27 20:31:26Z" end-time="2026-10-27 20:31:30Z" duration="3.917657" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  last gun removed with live garage rebuild
+  Expected: True
+  But was:  False
+]]></message>
+            <stack-trace><![CDATA[at GarageEditFreedomTests+<RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved>d__1.MoveNext () [0x000ee] in <WORKSPACE>\Desktop\Prototypy\RoboRougelike-Garage307\Assets\Tests\Editor\GarageEditFreedomTests.cs:32
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: <WORKSPACE>/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

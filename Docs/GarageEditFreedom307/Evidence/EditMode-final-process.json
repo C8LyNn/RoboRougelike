@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T20:43:31.1129925Z",
+    "source":  "a66a65bbff949e3a9054a2ec2e18464cb076c78f",
+    "stage":  "GARAGE307-RETEST",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"<WORKSPACE>\\Desktop\\Prototypy\\RoboRougelike-Garage307\\Artifacts\\Local\\FM270-GARAGE307-RETEST-20261027T204114Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"GarageEditFreedomTests;R3GarageModelTests;MOVSeriesDriveModelTests;MOVSeriesGarageTests;R3GaragePlayTests;WeaponGroupTests;PerWeaponReticleTests;MapEditorIntegrationTests;MapEditorExpansionTests;Exit273PauseTests\""
+                  ],
+    "startedUtc":  "2026-10-27T20:41:14.8774647Z",
+    "phase":  "EditMode"
+}

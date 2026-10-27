@@ -58,11 +58,12 @@ public class R3GarageModelTests
         Assert.That(model.Scrap, Is.EqualTo(32));
         Assert.That(model.Repair(wheel.Cell), Is.False);
     }
-    [Test] public void RemovalProtectsCoreEssentialPlanAndConnectedFragments()
+    [Test] public void RemovalProtectsCoreAndConnectedFragmentsButAllowsMissingGun()
     {
         var model = new R3VehicleModel(Blueprint()); model.Award(20);
         Assert.That(model.Remove(Vector3Int.zero), Is.False);
-        Assert.That(model.Remove(Vector3Int.up), Is.False);
+        Assert.That(model.Remove(Vector3Int.up), Is.True);
+        Assert.That(model.CanDeploy, Is.False);
         Assert.That(model.Buy(Vector3Int.forward, R3PartKind.Armor), Is.True);
         Assert.That(model.Buy(Vector3Int.forward * 2, R3PartKind.Armor), Is.True);
         Assert.That(model.Remove(Vector3Int.forward), Is.False);
