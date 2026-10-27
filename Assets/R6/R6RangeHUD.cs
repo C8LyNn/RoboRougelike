@@ -80,8 +80,9 @@ namespace RoboRougelike.R1
                     GUI.DrawTexture(new Rect(cx-(sx<0?0:length),cy-stroke*.5f,length,stroke),Texture2D.whiteTexture);
                     GUI.DrawTexture(new Rect(cx-stroke*.5f,cy-(sy<0?0:length),stroke,length),Texture2D.whiteTexture);
                 }
-                float angle=(-45-i*90)*Mathf.Deg2Rad;
-                GUI.Label(new Rect(x+Mathf.Cos(angle)*(radius+13)-10,y+Mathf.Sin(angle)*(radius+13)-10,20,20),(i+1).ToString(),weaponMarkerStyle);
+                var offset=RoboRougelike.WeaponIntegration.RRLWeaponReticles.LabelOffset(i);
+                float labelX=Mathf.Clamp(x+offset.x,10,1270),labelY=Mathf.Clamp(y+offset.y,10,710);
+                GUI.Label(new Rect(labelX-10,labelY-10,20,20),(i+1).ToString(),weaponMarkerStyle);
             }
             GUI.color=original;
         }
