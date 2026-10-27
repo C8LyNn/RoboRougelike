@@ -30,7 +30,7 @@ foreach($stage in @("EditMode","PlayMode")){
     if(Test-Path -LiteralPath $xml){Remove-Item -LiteralPath $xml -Force}
     if(Test-Path -LiteralPath $log){Remove-Item -LiteralPath $log -Force}
     # Real Unity NUnit execution; no mock output or guess about results.
-    & $UnityEditor -batchmode -nographics -quit -projectPath $project -runTests -testPlatform $stage -assemblyNames $assembly -testResults $xml -logFile $log
+    & $UnityEditor -batchmode -nographics -projectPath $project -runTests -testPlatform $stage -assemblyNames $assembly -testResults $xml -logFile $log
     $code=$LASTEXITCODE
     if($null -eq $code){$code=900}
     $xmlHash=if(Test-Path -LiteralPath $xml){(Get-FileHash -Algorithm SHA256 -LiteralPath $xml).Hash.ToLowerInvariant()}else{$null}
