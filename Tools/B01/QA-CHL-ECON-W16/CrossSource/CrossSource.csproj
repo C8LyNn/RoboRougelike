@@ -10,5 +10,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="../_pinned/Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseCore.cs" Link="ACTUAL_CHL285_CourseCore.cs" />
+    <Compile Include="../_pinned/Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003FinishArbiter.cs" Link="ACTUAL_CHL285_FinishArbiter.cs" />
+    <Compile Include="../_pinned/Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs" Link="ACTUAL_CHL285_TrialMetrics.cs" />
   </ItemGroup>
 </Project>
