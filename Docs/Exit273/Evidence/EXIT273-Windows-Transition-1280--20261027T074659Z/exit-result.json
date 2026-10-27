@@ -1,0 +1,16 @@
+{
+    "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+    "status": "Passed",
+    "mode": "Transition",
+    "startedUtc": "2026-10-27T07:47:02.4433811Z",
+    "finishedUtc": "2026-10-27T07:47:03.2903258Z",
+    "stateAtQuit": "Combat",
+    "applicationQuitReached": true,
+    "quitRequested": true,
+    "transitioning": true,
+    "paused": false,
+    "menuReturned": false,
+    "width": 1280,
+    "height": 720,
+    "error": ""
+}

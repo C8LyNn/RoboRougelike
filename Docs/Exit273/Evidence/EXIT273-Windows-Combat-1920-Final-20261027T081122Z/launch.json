@@ -1,0 +1,27 @@
+{
+  "pid": 55948,
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "width": 1920,
+  "mode": "Combat",
+  "label": "Final",
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+  "uiAutomationAttached": false,
+  "height": 1080,
+  "visible": true,
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Combat-1920-Final-20261027T081122Z\\Player.log\"",
+    "-exit273-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Combat-1920-Final-20261027T081122Z\"",
+    "-exit273-mode",
+    "Combat"
+  ],
+  "startedUtc": "2026-10-27T08:11:22.7412433Z"
+}

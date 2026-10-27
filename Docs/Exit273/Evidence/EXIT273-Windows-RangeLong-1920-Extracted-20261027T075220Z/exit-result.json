@@ -1,0 +1,16 @@
+{
+    "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+    "status": "Passed",
+    "mode": "RangeLong",
+    "startedUtc": "2026-10-27T07:52:23.4296627Z",
+    "finishedUtc": "2026-10-27T07:55:29.6370254Z",
+    "stateAtQuit": "TestDrive",
+    "applicationQuitReached": true,
+    "quitRequested": true,
+    "transitioning": false,
+    "paused": true,
+    "menuReturned": false,
+    "width": 1920,
+    "height": 1080,
+    "error": ""
+}

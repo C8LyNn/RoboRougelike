@@ -1,0 +1,13 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T08:09:28.5538111Z",
+    "source":  "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage":  "EXIT273-RangeGreen",
+    "arguments":  [
+                      "-quit",
+                      "-executeMethod",
+                      "FullMergeBuild.BuildRelease"
+                  ],
+    "startedUtc":  "2026-10-27T08:09:06.5688952Z",
+    "phase":  "Build"
+}

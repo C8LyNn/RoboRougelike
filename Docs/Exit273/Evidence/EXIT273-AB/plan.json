@@ -1,0 +1,33 @@
+{
+  "builds": {
+    "BASE": {
+      "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_FULL_INTEGRATION_270_20261027\\RoboRougelike_FULL_INTEGRATION_270_Windows_x64.zip",
+      "exe": "RoboRougelike.exe",
+      "sha256": "eb1057ec877cfaa880a9973880029f51f0848671bc306d7fc6ae652d895867bf",
+      "source_sha": "88b8eed60345c49481648833e1fde6dc1a400258"
+    },
+    "EXP": {
+      "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64.zip",
+      "exe": "RoboRougelike.exe",
+      "sha256": "718d041f22d4f35f65400040c5360d24967ed6e871575fe9860f1918eb6c2d7c",
+      "source_sha": "2e4bff3dc49dd578422af136992040806ccbe9fc"
+    },
+    "RC2": {
+      "archive": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\B01_UNIFIED_RC2_20261026\\RoboRougelike_B01_UNIFIED_RC2_Windows_x64.zip",
+      "exe": "RoboRougelike.exe",
+      "sha256": "7d35cd1bc823499a8855258e24ed0a0ff1d47e49bd694adb94c031ef8c946de6",
+      "source_sha": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f"
+    }
+  },
+  "manual_instructions": "Manual operator: compare native Alt+F4 and X on BASE (#272) and EXP (#273); menu Quit is additionally tested on EXP. Historical RC2 is optional, not silently declared executed.",
+  "order": [
+    "BASE",
+    "EXP",
+    "EXP",
+    "BASE",
+    "RC2",
+    "RC2"
+  ],
+  "schema": "b01-60-rc1-shutdown-ab-v1",
+  "unity_version": "6000.3.14f1"
+}

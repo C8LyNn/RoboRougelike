@@ -1,0 +1,11 @@
+{
+  "mode": "Combat",
+  "finishedUtc": "2026-10-27T08:11:29.8487434Z",
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "startedUtc": "2026-10-27T08:11:22.7412433Z",
+  "label": "Final",
+  "exitUnsigned": 0,
+  "pid": 55948,
+  "exitHex": "0x00000000",
+  "exitCode": 0
+}

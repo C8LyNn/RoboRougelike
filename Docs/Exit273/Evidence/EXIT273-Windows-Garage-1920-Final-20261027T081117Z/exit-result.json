@@ -1,0 +1,17 @@
+{
+    "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+    "status": "Passed",
+    "mode": "Garage",
+    "startedUtc": "2026-10-27T08:11:20.8384939Z",
+    "finishedUtc": "2026-10-27T08:11:21.9526729Z",
+    "stateAtQuit": "Garage",
+    "applicationQuitReached": true,
+    "quitRequested": true,
+    "transitioning": false,
+    "paused": true,
+    "menuReturned": false,
+    "rangeReset": false,
+    "width": 1920,
+    "height": 1080,
+    "error": ""
+}

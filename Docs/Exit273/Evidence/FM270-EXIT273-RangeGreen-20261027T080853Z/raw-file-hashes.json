@@ -1,0 +1,17 @@
+[
+  {
+    "file": "Build.log",
+    "rawSHA256": "796706447b76249fdeeab6dbe4b18a93a3e61cfd0508c3d8c006e569f13ff2c5",
+    "bytes": 560955
+  },
+  {
+    "file": "Compile.log",
+    "rawSHA256": "3b2a87dd0b2a74ecc0098849321e0390e3e18476863cef06c33c26b8f86e8a92",
+    "bytes": 24757
+  },
+  {
+    "file": "EditMode.log",
+    "rawSHA256": "1af951ce6c680758193c28f7e0b39c560fbadcd2250ad4bc441371c0f5b39e7d",
+    "bytes": 335584
+  }
+]

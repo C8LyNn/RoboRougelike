@@ -1,0 +1,20 @@
+{
+  "classification": "CLEAN_EXIT_ZERO",
+  "elapsed_seconds": 316.547,
+  "exe_sha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+  "finish_utc": "2026-10-27T08:02:03.874795+00:00",
+  "index": 0,
+  "label": "BASE",
+  "native_exit_hex": "0x00000000",
+  "native_exit_signed": 0,
+  "native_exit_unsigned": 0,
+  "operator_attribution": "EXTERNAL_OPERATOR_REPORTED",
+  "operator_note": "Requested manual operator sequence: BASE Alt+F4, EXP Alt+F4, EXP window X, BASE window X. Actual human confirmation recorded separately.",
+  "plan_sha256": "4146de4c655d79208ee9143f63aa14b27de809bb6a7d2e7ebd68e0e8ba920690",
+  "player_log_bytes": 2483,
+  "player_log_sha256": "433f18297d4f9ba3f279ed94f30451b4a28ac19906afb3755e85e0a078d2dadc",
+  "schema": "b01-60-rc1-shutdown-ab-v1",
+  "start_utc": "2026-10-27T07:56:47.327266+00:00",
+  "timed_out": false,
+  "unity_native": "WINDOWS_PLAYER_EXECUTED_BY_EXTERNAL_OPERATOR"
+}

@@ -1,0 +1,5238 @@
+[
+  {
+    "height": 720,
+    "width": 1280,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+    "label": "",
+    "uiAutomationAttached": false,
+    "startedUtc": "2026-10-27T07:46:51.9376897Z",
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "pid": 52288,
+    "mode": "Combat",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Combat-1280--20261027T074651Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Combat-1280--20261027T074651Z\"",
+      "-exit273-mode",
+      "Combat"
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          14.74386935763889,
+          20.139712456597223,
+          25.19078342013889
+        ],
+        "nonBlack": true,
+        "sha256": "49732bdabb55e5cdfff2c93dfcac44c74e3cb32991bf3a282be2cf486088ca27"
+      },
+      {
+        "file": "02-paused-activity.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          18.672963324652777,
+          23.45158203125,
+          28.113272569444444
+        ],
+        "nonBlack": true,
+        "sha256": "07ca425ffb8ab45e72685250706793529841f0f4447f02f81040862e81b0eb2d"
+      }
+    ],
+    "process": {
+      "label": "",
+      "exitUnsigned": 0,
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:46:51.9376897Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "pid": 52288,
+      "mode": "Combat",
+      "finishedUtc": "2026-10-27T07:46:59.0393218Z"
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Combat",
+        "startedUtc": "2026-10-27T07:46:55.1937416Z",
+        "finishedUtc": "2026-10-27T07:46:58.3840809Z",
+        "stateAtQuit": "Combat",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": true,
+        "menuReturned": false,
+        "width": 1280,
+        "height": 720,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Combat-1280--20261027T074651Z"
+  },
+  {
+    "pid": 55948,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "width": 1920,
+    "mode": "Combat",
+    "label": "Final",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "uiAutomationAttached": false,
+    "height": 1080,
+    "visible": true,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Combat-1920-Final-20261027T081122Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Combat-1920-Final-20261027T081122Z\"",
+      "-exit273-mode",
+      "Combat"
+    ],
+    "startedUtc": "2026-10-27T08:11:22.7412433Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.742567033179013,
+          20.139786361882717,
+          25.19087046682099
+        ],
+        "nonBlack": true,
+        "sha256": "72061a162d72ccc1c642dbd0232f76e3debe1099059b2397762e507b49432b9b"
+      },
+      {
+        "file": "02-paused-activity.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.758046392746913,
+          23.532915702160494,
+          28.19946807484568
+        ],
+        "nonBlack": true,
+        "sha256": "6b480a28b91f64d95fd30928282f385f32fd88a33fdbabd0e753fc4dbd018850"
+      }
+    ],
+    "process": {
+      "mode": "Combat",
+      "finishedUtc": "2026-10-27T08:11:29.8487434Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "startedUtc": "2026-10-27T08:11:22.7412433Z",
+      "label": "Final",
+      "exitUnsigned": 0,
+      "pid": 55948,
+      "exitHex": "0x00000000",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Combat",
+        "startedUtc": "2026-10-27T08:11:25.9960186Z",
+        "finishedUtc": "2026-10-27T08:11:29.1809325Z",
+        "stateAtQuit": "Combat",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": true,
+        "menuReturned": false,
+        "rangeReset": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Combat-1920-Final-20261027T081122Z"
+  },
+  {
+    "height": 720,
+    "width": 1280,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+    "label": "",
+    "uiAutomationAttached": false,
+    "startedUtc": "2026-10-27T07:46:46.8219864Z",
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "pid": 53644,
+    "mode": "Garage",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Garage-1280--20261027T074646Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Garage-1280--20261027T074646Z\"",
+      "-exit273-mode",
+      "Garage"
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "02-paused-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          17.61241427951389,
+          22.547940538194446,
+          27.19711154513889
+        ],
+        "nonBlack": true,
+        "sha256": "be0e64ddbcce2a457f9c526e145f4aa2279b1bb20ee1c54cf18ee819c98f6a50"
+      }
+    ],
+    "process": {
+      "label": "",
+      "exitUnsigned": 0,
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:46:46.8219864Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "pid": 53644,
+      "mode": "Garage",
+      "finishedUtc": "2026-10-27T07:46:51.8555296Z"
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Garage",
+        "startedUtc": "2026-10-27T07:46:50.0802920Z",
+        "finishedUtc": "2026-10-27T07:46:51.2109949Z",
+        "stateAtQuit": "Garage",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": true,
+        "menuReturned": false,
+        "width": 1280,
+        "height": 720,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Garage-1280--20261027T074646Z"
+  },
+  {
+    "pid": 61164,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "width": 1920,
+    "mode": "Garage",
+    "label": "Final",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "uiAutomationAttached": false,
+    "height": 1080,
+    "visible": true,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Garage-1920-Final-20261027T081117Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Garage-1920-Final-20261027T081117Z\"",
+      "-exit273-mode",
+      "Garage"
+    ],
+    "startedUtc": "2026-10-27T08:11:17.5078061Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "02-paused-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.705213638117282,
+          22.64869212962963,
+          27.299129533179013
+        ],
+        "nonBlack": true,
+        "sha256": "0403cbe9ef851137ad851e171856055129c17d94e745831646ed2a3de21c7fa5"
+      }
+    ],
+    "process": {
+      "mode": "Garage",
+      "finishedUtc": "2026-10-27T08:11:22.6251920Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "startedUtc": "2026-10-27T08:11:17.5078061Z",
+      "label": "Final",
+      "exitUnsigned": 0,
+      "pid": 61164,
+      "exitHex": "0x00000000",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Garage",
+        "startedUtc": "2026-10-27T08:11:20.8384939Z",
+        "finishedUtc": "2026-10-27T08:11:21.9526729Z",
+        "stateAtQuit": "Garage",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": true,
+        "menuReturned": false,
+        "rangeReset": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Garage-1920-Final-20261027T081117Z"
+  },
+  {
+    "label": "FinalMenuButton",
+    "uiAutomationAttached": false,
+    "width": 1280,
+    "startedUtc": "2026-10-27T08:15:54.6522240Z",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Manual-1280-FinalMenuButton-20261027T081554Z\\Player.log\""
+    ],
+    "height": 720,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "mode": "Manual",
+    "visible": true,
+    "pid": 34192,
+    "screenshots": [],
+    "process": {
+      "exitHex": "0x00000000",
+      "label": "FinalMenuButton",
+      "finishedUtc": "2026-10-27T08:33:15.0027484Z",
+      "exitUnsigned": 0,
+      "startedUtc": "2026-10-27T08:15:54.6522240Z",
+      "exitCode": 0,
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "mode": "Manual",
+      "pid": 34192
+    },
+    "results": [],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Manual-1280-FinalMenuButton-20261027T081554Z"
+  },
+  {
+    "width": 1280,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "visible": true,
+    "uiAutomationAttached": false,
+    "mode": "Manual",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Manual-1280-MenuQuit-20261027T080538Z\\Player.log\""
+    ],
+    "pid": 63336,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "label": "MenuQuit",
+    "startedUtc": "2026-10-27T08:05:38.1151812Z",
+    "height": 720,
+    "screenshots": [],
+    "process": {
+      "exitCode": 0,
+      "exitHex": "0x00000000",
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "finishedUtc": "2026-10-27T08:06:09.9043667Z",
+      "mode": "Manual",
+      "exitUnsigned": 0,
+      "pid": 63336,
+      "label": "MenuQuit",
+      "startedUtc": "2026-10-27T08:05:38.1151812Z"
+    },
+    "results": [],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Manual-1280-MenuQuit-20261027T080538Z"
+  },
+  {
+    "label": "FinalPauseButton",
+    "uiAutomationAttached": false,
+    "width": 1920,
+    "startedUtc": "2026-10-27T08:33:15.1505408Z",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Manual-1920-FinalPauseButton-20261027T083315Z\\Player.log\""
+    ],
+    "height": 1080,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "mode": "Manual",
+    "visible": true,
+    "pid": 62152,
+    "screenshots": [],
+    "process": {
+      "exitHex": "0x00000000",
+      "label": "FinalPauseButton",
+      "finishedUtc": "2026-10-27T08:33:34.5018539Z",
+      "exitUnsigned": 0,
+      "startedUtc": "2026-10-27T08:33:15.1505408Z",
+      "exitCode": 0,
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "mode": "Manual",
+      "pid": 62152
+    },
+    "results": [],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Manual-1920-FinalPauseButton-20261027T083315Z"
+  },
+  {
+    "width": 1920,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "visible": true,
+    "uiAutomationAttached": false,
+    "mode": "Manual",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Manual-1920-PauseQuit-20261027T080610Z\\Player.log\""
+    ],
+    "pid": 50220,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "label": "PauseQuit",
+    "startedUtc": "2026-10-27T08:06:10.0106667Z",
+    "height": 1080,
+    "screenshots": [],
+    "process": {
+      "exitCode": 0,
+      "exitHex": "0x00000000",
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "finishedUtc": "2026-10-27T08:07:12.9751838Z",
+      "mode": "Manual",
+      "exitUnsigned": 0,
+      "pid": 50220,
+      "label": "PauseQuit",
+      "startedUtc": "2026-10-27T08:06:10.0106667Z"
+    },
+    "results": [],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Manual-1920-PauseQuit-20261027T080610Z"
+  },
+  {
+    "height": 720,
+    "width": 1280,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+    "label": "",
+    "uiAutomationAttached": false,
+    "startedUtc": "2026-10-27T07:46:41.9264458Z",
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "pid": 6948,
+    "mode": "Menu",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Menu-1280--20261027T074641Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Menu-1280--20261027T074641Z\"",
+      "-exit273-mode",
+      "Menu"
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      }
+    ],
+    "process": {
+      "label": "",
+      "exitUnsigned": 0,
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:46:41.9264458Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "pid": 6948,
+      "mode": "Menu",
+      "finishedUtc": "2026-10-27T07:46:46.7369956Z"
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Menu",
+        "startedUtc": "2026-10-27T07:46:45.3475288Z",
+        "finishedUtc": "2026-10-27T07:46:46.0854419Z",
+        "stateAtQuit": "Ready",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": false,
+        "menuReturned": false,
+        "width": 1280,
+        "height": 720,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Menu-1280--20261027T074641Z"
+  },
+  {
+    "pid": 15852,
+    "uiAutomationAttached": false,
+    "mode": "Menu",
+    "height": 1080,
+    "startedUtc": "2026-10-27T07:47:54.6969276Z",
+    "width": 1920,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Menu-1920-Extracted-20261027T074754Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Menu-1920-Extracted-20261027T074754Z\"",
+      "-exit273-mode",
+      "Menu"
+    ],
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "label": "Extracted",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      }
+    ],
+    "process": {
+      "pid": 15852,
+      "mode": "Menu",
+      "finishedUtc": "2026-10-27T07:47:59.4999981Z",
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:47:54.6969276Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "label": "Extracted",
+      "exitUnsigned": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Menu",
+        "startedUtc": "2026-10-27T07:47:58.1198735Z",
+        "finishedUtc": "2026-10-27T07:47:58.8368133Z",
+        "stateAtQuit": "Ready",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": false,
+        "menuReturned": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Menu-1920-Extracted-20261027T074754Z"
+  },
+  {
+    "pid": 59352,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "width": 1920,
+    "mode": "Menu",
+    "label": "Final",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "uiAutomationAttached": false,
+    "height": 1080,
+    "visible": true,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Menu-1920-Final-20261027T081112Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Menu-1920-Final-20261027T081112Z\"",
+      "-exit273-mode",
+      "Menu"
+    ],
+    "startedUtc": "2026-10-27T08:11:12.5491946Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      }
+    ],
+    "process": {
+      "mode": "Menu",
+      "finishedUtc": "2026-10-27T08:11:17.3674930Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "startedUtc": "2026-10-27T08:11:12.5491946Z",
+      "label": "Final",
+      "exitUnsigned": 0,
+      "pid": 59352,
+      "exitHex": "0x00000000",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Menu",
+        "startedUtc": "2026-10-27T08:11:15.9548038Z",
+        "finishedUtc": "2026-10-27T08:11:16.7046301Z",
+        "stateAtQuit": "Ready",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": false,
+        "menuReturned": false,
+        "rangeReset": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Menu-1920-Final-20261027T081112Z"
+  },
+  {
+    "pid": 64576,
+    "uiAutomationAttached": false,
+    "mode": "RangeLong",
+    "height": 1080,
+    "startedUtc": "2026-10-27T07:52:20.0936796Z",
+    "width": 1920,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-RangeLong-1920-Extracted-20261027T075220Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-RangeLong-1920-Extracted-20261027T075220Z\"",
+      "-exit273-mode",
+      "RangeLong"
+    ],
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "label": "Extracted",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.109723186728395,
+          20.581378279320987,
+          26.268284143518517
+        ],
+        "nonBlack": true,
+        "sha256": "62b6d4c457202a71bf8221220d6c04870fbcaa68544ece6046b832aa1caf109b"
+      },
+      {
+        "file": "02-paused-activity.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          31.730097415123456,
+          37.22046344521605,
+          41.40473958333333
+        ],
+        "nonBlack": true,
+        "sha256": "a73b236d0ba59f6e5cf48c1ac32a9fd93203f6979b3fa8d99f6f3a54bcba6dbd"
+      }
+    ],
+    "process": {
+      "pid": 64576,
+      "mode": "RangeLong",
+      "finishedUtc": "2026-10-27T07:55:30.2726590Z",
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:52:20.0936796Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "label": "Extracted",
+      "exitUnsigned": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "RangeLong",
+        "startedUtc": "2026-10-27T07:52:23.4296627Z",
+        "finishedUtc": "2026-10-27T07:55:29.6370254Z",
+        "stateAtQuit": "TestDrive",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": true,
+        "menuReturned": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-RangeLong-1920-Extracted-20261027T075220Z"
+  },
+  {
+    "pid": 53304,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "width": 1920,
+    "mode": "RangeReset",
+    "label": "Final",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "uiAutomationAttached": false,
+    "height": 1080,
+    "visible": true,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-RangeReset-1920-Final-20261027T081142Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-RangeReset-1920-Final-20261027T081142Z\"",
+      "-exit273-mode",
+      "RangeReset"
+    ],
+    "startedUtc": "2026-10-27T08:11:42.2556012Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.109578028549382,
+          20.581241319444445,
+          26.26817853009259
+        ],
+        "nonBlack": true,
+        "sha256": "70f82b63324e2191112b6857afa452314de494cceb3d0fccc2f5646bb0155b67"
+      },
+      {
+        "file": "02-paused-activity.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          31.73009259259259,
+          37.220295138888886,
+          41.404241415895065
+        ],
+        "nonBlack": true,
+        "sha256": "8390d397b81b94680718000922f4f87d2b075207f45b37d50d8c81014f6fde4f"
+      },
+      {
+        "file": "03-range-reset.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.05637731481482,
+          50.937323013117286,
+          57.58956886574074
+        ],
+        "nonBlack": true,
+        "sha256": "9fdce7f858d1193e96b37e58fae1d67384f7e3a9fa1004d835295f99d2c4c9f2"
+      }
+    ],
+    "process": {
+      "mode": "RangeReset",
+      "finishedUtc": "2026-10-27T08:11:49.7256008Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "startedUtc": "2026-10-27T08:11:42.2556012Z",
+      "label": "Final",
+      "exitUnsigned": 0,
+      "pid": 53304,
+      "exitHex": "0x00000000",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "RangeReset",
+        "startedUtc": "2026-10-27T08:11:45.5072800Z",
+        "finishedUtc": "2026-10-27T08:11:49.0676730Z",
+        "stateAtQuit": "TestDrive",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": false,
+        "menuReturned": false,
+        "rangeReset": true,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-RangeReset-1920-Final-20261027T081142Z"
+  },
+  {
+    "height": 720,
+    "width": 1280,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+    "label": "",
+    "uiAutomationAttached": false,
+    "startedUtc": "2026-10-27T07:47:04.1010409Z",
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "pid": 20720,
+    "mode": "Return",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Return-1280--20261027T074704Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Return-1280--20261027T074704Z\"",
+      "-exit273-mode",
+      "Return"
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          14.743854166666667,
+          20.139768880208333,
+          25.190756293402778
+        ],
+        "nonBlack": true,
+        "sha256": "784fbaa5acfafcb52629739782b8609d475e7ad273330a6cb055796586817f68"
+      },
+      {
+        "file": "02-paused-activity.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          18.673046875,
+          23.451549479166665,
+          28.113324652777777
+        ],
+        "nonBlack": true,
+        "sha256": "9aa5ac644a87e4520f5d8f14d2d31549124657a2ede215a29e3fe358f4bc61c1"
+      },
+      {
+        "file": "03-returned-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      }
+    ],
+    "process": {
+      "label": "",
+      "exitUnsigned": 0,
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:47:04.1010409Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "pid": 20720,
+      "mode": "Return",
+      "finishedUtc": "2026-10-27T07:47:11.5827204Z"
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Return",
+        "startedUtc": "2026-10-27T07:47:07.4126055Z",
+        "finishedUtc": "2026-10-27T07:47:10.9316809Z",
+        "stateAtQuit": "Ready",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": false,
+        "menuReturned": true,
+        "width": 1280,
+        "height": 720,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Return-1280--20261027T074704Z"
+  },
+  {
+    "pid": 57532,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "width": 1920,
+    "mode": "Return",
+    "label": "Final",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "uiAutomationAttached": false,
+    "height": 1080,
+    "visible": true,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Return-1920-Final-20261027T081134Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Return-1920-Final-20261027T081134Z\"",
+      "-exit273-mode",
+      "Return"
+    ],
+    "startedUtc": "2026-10-27T08:11:34.7498823Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.742498553240742,
+          20.139714023919755,
+          25.190807773919754
+        ],
+        "nonBlack": true,
+        "sha256": "a88c648f1b1c8731c100d1ea9981e2e2e7e59929c8f89e06657298c2dfd3e0c7"
+      },
+      {
+        "file": "02-paused-activity.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.758093171296295,
+          23.53301552854938,
+          28.199543788580247
+        ],
+        "nonBlack": true,
+        "sha256": "2b914d9f0fef40fdd03de21cccae77ffbf23fc57713d3b9d6d64cb76856650b0"
+      },
+      {
+        "file": "03-returned-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      }
+    ],
+    "process": {
+      "mode": "Return",
+      "finishedUtc": "2026-10-27T08:11:42.1595241Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "startedUtc": "2026-10-27T08:11:34.7498823Z",
+      "label": "Final",
+      "exitUnsigned": 0,
+      "pid": 57532,
+      "exitHex": "0x00000000",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Return",
+        "startedUtc": "2026-10-27T08:11:37.9884963Z",
+        "finishedUtc": "2026-10-27T08:11:41.4956549Z",
+        "stateAtQuit": "Ready",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": false,
+        "paused": false,
+        "menuReturned": true,
+        "rangeReset": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Return-1920-Final-20261027T081134Z"
+  },
+  {
+    "height": 720,
+    "width": 1280,
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Builds\\FULL-MERGE270\\RoboRougelike.exe",
+    "label": "",
+    "uiAutomationAttached": false,
+    "startedUtc": "2026-10-27T07:46:59.1311417Z",
+    "visible": true,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "pid": 51060,
+    "mode": "Transition",
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Transition-1280--20261027T074659Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Transition-1280--20261027T074659Z\"",
+      "-exit273-mode",
+      "Transition"
+    ],
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          14.444527994791667,
+          19.82915798611111,
+          24.86552734375
+        ],
+        "nonBlack": true,
+        "sha256": "e9b4874f21932b7308074b87994d44f49c3fcba74f64c61d2a27c7bea19d59e6"
+      }
+    ],
+    "process": {
+      "label": "",
+      "exitUnsigned": 0,
+      "exitHex": "0x00000000",
+      "startedUtc": "2026-10-27T07:46:59.1311417Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+      "pid": 51060,
+      "mode": "Transition",
+      "finishedUtc": "2026-10-27T07:47:04.0075142Z"
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Transition",
+        "startedUtc": "2026-10-27T07:47:02.4433811Z",
+        "finishedUtc": "2026-10-27T07:47:03.2903258Z",
+        "stateAtQuit": "Combat",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": true,
+        "paused": false,
+        "menuReturned": false,
+        "width": 1280,
+        "height": 720,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Transition-1280--20261027T074659Z"
+  },
+  {
+    "pid": 41976,
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "width": 1920,
+    "mode": "Transition",
+    "label": "Final",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "uiAutomationAttached": false,
+    "height": 1080,
+    "visible": true,
+    "arguments": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Transition-1920-Final-20261027T081129Z\\Player.log\"",
+      "-exit273-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Transition-1920-Final-20261027T081129Z\"",
+      "-exit273-mode",
+      "Transition"
+    ],
+    "startedUtc": "2026-10-27T08:11:29.9527541Z",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.443704668209877,
+          19.82950858410494,
+          24.866121238425926
+        ],
+        "nonBlack": true,
+        "sha256": "7a1a3d8d8ef80b54fa7d79058de64086f3df0c08f8a7d1782db126e4658adea6"
+      }
+    ],
+    "process": {
+      "mode": "Transition",
+      "finishedUtc": "2026-10-27T08:11:34.6485123Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "startedUtc": "2026-10-27T08:11:29.9527541Z",
+      "label": "Final",
+      "exitUnsigned": 0,
+      "pid": 41976,
+      "exitHex": "0x00000000",
+      "exitCode": 0
+    },
+    "results": [
+      {
+        "method": "API-controlled session/shutdown acceptance in real Windows Player; not human GUI or native Alt+F4/X",
+        "status": "Passed",
+        "mode": "Transition",
+        "startedUtc": "2026-10-27T08:11:33.2003434Z",
+        "finishedUtc": "2026-10-27T08:11:33.9901610Z",
+        "stateAtQuit": "Combat",
+        "applicationQuitReached": true,
+        "quitRequested": true,
+        "transitioning": true,
+        "paused": false,
+        "menuReturned": false,
+        "rangeReset": false,
+        "width": 1920,
+        "height": 1080,
+        "error": ""
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/EXIT273-Windows-Transition-1920-Final-20261027T081129Z"
+  },
+  {
+    "startedUtc": "2026-10-27T07:47:59.6247940Z",
+    "visible": true,
+    "width": 1280,
+    "pid": 64728,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "vehicle": "Standard",
+    "requestedVehicle": "Light",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T074759Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T074759Z\""
+    ],
+    "accessibilityClientAttached": false,
+    "height": 720,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "assemblySHA256": "B6EEF8CB998B51B77946DEBFC4A73049E5064A23AB4781F91A4F70B61968F48D",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          40.07737087673611,
+          50.93240885416667,
+          54.57506510416667
+        ],
+        "nonBlack": true,
+        "sha256": "5ed6334355dd761406e6c0d7bafefa050b0870f3323b3f1a660d29a412205708"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.573879123263886,
+          46.73299262152778,
+          43.99062174479167
+        ],
+        "nonBlack": true,
+        "sha256": "b39b624814d5b59376ec8733eeab9d7b080a71bd80cb84aebbdefbc60ab64bc0"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          50.86016167534722,
+          46.18712782118055,
+          42.98079752604167
+        ],
+        "nonBlack": true,
+        "sha256": "4933365d457a5b20e3a858158e3d46965181f91b4ebfca308cdb1fbc8bac651e"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          18.212701822916667,
+          22.455483940972222,
+          26.73580620659722
+        ],
+        "nonBlack": true,
+        "sha256": "d4811671a16ad2b1ffaa97d05422084ac21740c6f3270d3714a8c1e15534b5a0"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          50.834614800347225,
+          46.44908311631944,
+          43.434254557291666
+        ],
+        "nonBlack": true,
+        "sha256": "b0b56843e03cdeb70f38d731b646fb32527c7c36af460f2e927e456458a80391"
+      }
+    ],
+    "process": {
+      "mode": "Input",
+      "vehicle": "Standard",
+      "finishedUtc": "2026-10-27T07:48:09.7237890Z",
+      "startedUtc": "2026-10-27T07:47:59.6247940Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T07:48:02.4202229Z",
+        "finishedUtc": "2026-10-27T07:48:09.0571551Z",
+        "width": 1280,
+        "height": 720,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.621442794799805,
+        "turnedDegrees": 50.01384353637695,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,014",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Input-Standard-1280-20261027T074759Z"
+  },
+  {
+    "pid": 47880,
+    "visible": true,
+    "vehicle": "Standard",
+    "assemblySHA256": "515CABFFFF536DA16CF9DE1E0AC17BC6BDB71035D79E6B17BBF28632E21E84C4",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1280,
+      "-screen-height",
+      720,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T081149Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1280-20261027T081149Z\""
+    ],
+    "height": 720,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "width": 1280,
+    "startedUtc": "2026-10-27T08:11:49.8527064Z",
+    "accessibilityClientAttached": false,
+    "requestedVehicle": "Light",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          22.634573567708333,
+          28.228025173611112,
+          33.058828125
+        ],
+        "nonBlack": true,
+        "sha256": "a33ee90f8f6770906d5d7c1af99d5fb4e3dad54f1a2c40b7710df9a1746b2cd9"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          40.077312282986114,
+          50.9324609375,
+          54.575434027777774
+        ],
+        "nonBlack": true,
+        "sha256": "2a6486f7e43176dae27cc53ffefa149ff6157e40f9e44a78b21e06cf20d3eff5"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          51.57466254340278,
+          46.73278537326389,
+          43.99056857638889
+        ],
+        "nonBlack": true,
+        "sha256": "108c393d035240897c92feb68f32ccf26a506eafa2fd83cde5ba50b1ef3ce55a"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          50.85997612847222,
+          46.186793619791665,
+          42.980861545138886
+        ],
+        "nonBlack": true,
+        "sha256": "e5ba7dbead567443666b0bdd03428c916b4d255e496ba6b51d85505e3769b3fc"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          18.212727864583332,
+          22.45555230034722,
+          26.73587456597222
+        ],
+        "nonBlack": true,
+        "sha256": "86df8a366ba6813baeeb49f22e710867cf2ccf866c5b6515ad65aeb3d47707cf"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1280,
+        "height": 720,
+        "meanRGB": [
+          50.83471788194444,
+          46.44902235243055,
+          43.43407335069445
+        ],
+        "nonBlack": true,
+        "sha256": "0f8d8892199e3d99f73e6cdfa1bca0e46b99ca658da72a82741da7a1f62e7ab4"
+      }
+    ],
+    "process": {
+      "mode": "Input",
+      "exitCode": 0,
+      "startedUtc": "2026-10-27T08:11:49.8527064Z",
+      "finishedUtc": "2026-10-27T08:11:59.9375946Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "vehicle": "Standard"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T08:11:52.6380262Z",
+        "finishedUtc": "2026-10-27T08:11:59.2566921Z",
+        "width": 1280,
+        "height": 720,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.621442794799805,
+        "turnedDegrees": 50.01384353637695,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,014",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Input-Standard-1280-20261027T081149Z"
+  },
+  {
+    "startedUtc": "2026-10-27T07:48:09.8372079Z",
+    "visible": true,
+    "width": 1920,
+    "pid": 24748,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "vehicle": "Standard",
+    "requestedVehicle": "Light",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T074809Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T074809Z\""
+    ],
+    "accessibilityClientAttached": false,
+    "height": 1080,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "assemblySHA256": "B6EEF8CB998B51B77946DEBFC4A73049E5064A23AB4781F91A4F70B61968F48D",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.38198543595679,
+          51.277592110339505,
+          54.92161554783951
+        ],
+        "nonBlack": true,
+        "sha256": "0f6de4f15671bc83dea3c7d7ca35279175bb1188b563844365ee4b0920c57885"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.55497058256173,
+          46.69530478395062,
+          43.94887972608025
+        ],
+        "nonBlack": true,
+        "sha256": "e3ebfeee4eea56062acfdc93ae122a1d85c66042a6c9e0cb0245a5d631d6de20"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.85641493055556,
+          46.185418113425925,
+          42.97953993055555
+        ],
+        "nonBlack": true,
+        "sha256": "9825238b3f9c4fc92934ee4a269ddbc388d48873ca2a572c2f13b0adcc644ebe"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.295948109567902,
+          22.541707658179014,
+          26.82320746527778
+        ],
+        "nonBlack": true,
+        "sha256": "bfef69b03e23b5a55f90b52ac3d5f991d8a2cd09d3dd5ff933da5157dc000bb5"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.849798900462964,
+          46.4617327353395,
+          43.44548369984568
+        ],
+        "nonBlack": true,
+        "sha256": "ca09fe8bdbd6937590b8695326549daa1e542afb2c16e8c187ad7b402ff4eb8a"
+      }
+    ],
+    "process": {
+      "mode": "Input",
+      "vehicle": "Standard",
+      "finishedUtc": "2026-10-27T07:48:19.9015785Z",
+      "startedUtc": "2026-10-27T07:48:09.8372079Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T07:48:12.5998543Z",
+        "finishedUtc": "2026-10-27T07:48:19.2311291Z",
+        "width": 1920,
+        "height": 1080,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.621442794799805,
+        "turnedDegrees": 50.01384353637695,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,014",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Input-Standard-1920-20261027T074809Z"
+  },
+  {
+    "pid": 55120,
+    "visible": true,
+    "vehicle": "Standard",
+    "assemblySHA256": "515CABFFFF536DA16CF9DE1E0AC17BC6BDB71035D79E6B17BBF28632E21E84C4",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "mode": "Input",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T081200Z\\Player.log\"",
+      "-rc2-input-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Input-Standard-1920-20261027T081200Z\""
+    ],
+    "height": 1080,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "width": 1920,
+    "startedUtc": "2026-10-27T08:12:00.0523227Z",
+    "accessibilityClientAttached": false,
+    "requestedVehicle": "Light",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.38267361111111,
+          51.279116030092595,
+          54.9233169367284
+        ],
+        "nonBlack": true,
+        "sha256": "250ffef3399d0a7014168c761ab1f82174e41f2036c6f77e7a49f49f86662a92"
+      },
+      {
+        "file": "02-w-lmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.55984953703704,
+          46.698125964506175,
+          43.9500390625
+        ],
+        "nonBlack": true,
+        "sha256": "8c6c877657f41754a044566a4e7fab5ba6a3847285a015e2d874dde2eef9a92e"
+      },
+      {
+        "file": "03-d-rmb.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.856635802469135,
+          46.18537085262346,
+          42.978707079475306
+        ],
+        "nonBlack": true,
+        "sha256": "e6be94380b0ccf3c50814903342c8213e8bc4f04d7118fcdd6b1b1416bb55514"
+      },
+      {
+        "file": "04-pause.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.295989583333334,
+          22.541695119598767,
+          26.823175636574074
+        ],
+        "nonBlack": true,
+        "sha256": "7c5825166a45c93852f38473fae4f0304c785999475b2ba5dc857bd2fb06062f"
+      },
+      {
+        "file": "05-resumed.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.849757908950615,
+          46.46230082947531,
+          43.44633825231482
+        ],
+        "nonBlack": true,
+        "sha256": "87822ea124a7a069051b14632757e74efe746300aba08babb5618e1a77924b82"
+      }
+    ],
+    "process": {
+      "mode": "Input",
+      "exitCode": 0,
+      "startedUtc": "2026-10-27T08:12:00.0523227Z",
+      "finishedUtc": "2026-10-27T08:12:10.1758689Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "vehicle": "Standard"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "Native queued InputSystem keyboard/mouse through unchanged player input/drive/fire; canonical API activity selection; not OS/human control",
+        "startedUtc": "2026-10-27T08:12:02.8362403Z",
+        "finishedUtc": "2026-10-27T08:12:09.4834594Z",
+        "width": 1920,
+        "height": 1080,
+        "physicalShots": 8,
+        "rmbNewShots": 0,
+        "maxGroundedWheels": 12,
+        "movedMeters": 17.62143898010254,
+        "turnedDegrees": 50.07620620727539,
+        "checks": [
+          {
+            "name": "Original game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Native Enter opened the canonical preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical API selects ordinary activity from the same garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Same robot/model in actual combat",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual player shot has canonical equipped part provenance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "W input drives original R6 through real wheel contacts",
+            "detail": "17,621",
+            "passed": true
+          },
+          {
+            "name": "LMB input fires real owned physical projectiles",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "D input turns actual rigidbody",
+            "detail": "50,076",
+            "passed": true
+          },
+          {
+            "name": "RMB preserves existing base behavior without firing LMB group",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input pauses actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Paused actual rigidbody does not advance",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Escape input resumes actual game",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Active scene materials have supported shaders",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Input-Standard-1920-20261027T081200Z"
+  },
+  {
+    "startedUtc": "2026-10-27T07:48:51.2779824Z",
+    "visible": true,
+    "width": 1920,
+    "pid": 67256,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "vehicle": "Heavy",
+    "requestedVehicle": "Heavy",
+    "mode": "Loop",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T074851Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T074851Z\"",
+      "-fm270-mode",
+      "Loop",
+      "-fm270-vehicle",
+      "Heavy"
+    ],
+    "accessibilityClientAttached": false,
+    "height": 1080,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "assemblySHA256": "B6EEF8CB998B51B77946DEBFC4A73049E5064A23AB4781F91A4F70B61968F48D",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.106516203703706,
+          51.46469473379629,
+          55.24693383487654
+        ],
+        "nonBlack": true,
+        "sha256": "bfc6e86585205dbd5894bc7f01445949113c60fd11aec7280a27f3464c5998a6"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          15.854480613425926,
+          22.680648630401233,
+          26.092476851851853
+        ],
+        "nonBlack": true,
+        "sha256": "f8c7e2b8d5cb356ff51a3cb118f76c028aca19e17ea9a65f148fa2346d62da85"
+      },
+      {
+        "file": "01-activity-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          19.13137104552469,
+          24.021239872685186,
+          27.866029610339506
+        ],
+        "nonBlack": true,
+        "sha256": "90d3cd98f63de7aaff1e622ad7f2f980ccb10f006f57d7d0e2e4a819d269c864"
+      },
+      {
+        "file": "01-activity-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          19.946332947530863,
+          25.093636670524692,
+          29.090434510030864
+        ],
+        "nonBlack": true,
+        "sha256": "caee9a035d56b39b59d570988fb45a934ee39edd504df8016b023274cf4bf76c"
+      },
+      {
+        "file": "01-activity-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.081665219907407,
+          26.503393614969134,
+          30.639626253858026
+        ],
+        "nonBlack": true,
+        "sha256": "a5a98825eafc96b6f6db9bc2ddec56d1c7fbe73309cc5854a14aff42adf75f8f"
+      },
+      {
+        "file": "01-activity-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.273064718364196,
+          39.20657986111111,
+          38.021705246913584
+        ],
+        "nonBlack": true,
+        "sha256": "61bd06863c8b20f16e3995810d2e159cdb4d4a226daa152d21bd6955f86d405d"
+      },
+      {
+        "file": "01-activity-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          75.0144352816358,
+          66.10989969135802,
+          51.80033805941358
+        ],
+        "nonBlack": true,
+        "sha256": "4776e2cbe07876271d68ba8e43d6de96fa85c92790551c454bb9270f25c19b14"
+      },
+      {
+        "file": "02-reward-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.28323929398148,
+          24.443733121141975,
+          29.44901957947531
+        ],
+        "nonBlack": true,
+        "sha256": "051402b5655dcab5ee7c787104ad4e4f59330819f2166eafd52f69fe8f8ed366"
+      },
+      {
+        "file": "02-reward-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.30008391203704,
+          23.39068721064815,
+          28.45817756558642
+        ],
+        "nonBlack": true,
+        "sha256": "c368be4c5588437e18e36d7d59ff155b964837614569a2caacb33e0b87b72104"
+      },
+      {
+        "file": "02-reward-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.40406539351852,
+          23.48494357638889,
+          28.559983121141975
+        ],
+        "nonBlack": true,
+        "sha256": "28d0bb974617c2fa1a1d287bbeb289519d0b050e1c1ff3ebdacfd12034967ec6"
+      },
+      {
+        "file": "02-reward-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.342866994598765,
+          27.413224344135802,
+          32.45867091049383
+        ],
+        "nonBlack": true,
+        "sha256": "9a0022316662d31c8025d79a534cfd50c8ef09f797a25ae339e85dac21226aad"
+      },
+      {
+        "file": "02-reward-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.173996913580247,
+          27.992212577160494,
+          32.92630787037037
+        ],
+        "nonBlack": true,
+        "sha256": "01c43a42293619573f220dd49e667a30399b73c64ed3b48f2323fe232c8470f5"
+      },
+      {
+        "file": "02-reward-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.37480082947531,
+          27.985618730709877,
+          32.508917824074075
+        ],
+        "nonBlack": true,
+        "sha256": "80ca666aaf0292bcba7ddaaf8b0ae70d5e93458ad46756c5a230b1fb1d02c21a"
+      },
+      {
+        "file": "03-garage-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.057260320216049,
+          16.26445987654321,
+          21.33787856867284
+        ],
+        "nonBlack": true,
+        "sha256": "4d581257de21dc7e7869f5eb91ad14ebeb37c163b218dd9624a5f7a68642bbee"
+      },
+      {
+        "file": "03-garage-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.891924189814814,
+          17.264215374228396,
+          22.536947337962964
+        ],
+        "nonBlack": true,
+        "sha256": "bb26ff08c9e0c48023708965d8afb61650b04c8a8ca96cb242694496528d9d01"
+      },
+      {
+        "file": "03-garage-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          12.556802662037038,
+          17.96734375,
+          23.34314429012346
+        ],
+        "nonBlack": true,
+        "sha256": "1d3d3190842d4def0ee2ee4448a11e9c41c63ca1584e77192c869ea78aa6803c"
+      },
+      {
+        "file": "03-garage-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.401525848765433,
+          18.0014168595679,
+          22.67628761574074
+        ],
+        "nonBlack": true,
+        "sha256": "f97f68a3003c7e9cf0e67ea981025bfb8ecad0c77de6c917ff429e7e4505363b"
+      },
+      {
+        "file": "03-garage-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.96133198302469,
+          19.064662905092593,
+          22.914323398919752
+        ],
+        "nonBlack": true,
+        "sha256": "5f6d346f5aefdcb64ba60392d7b0a8de0a8b3d9abaeaced67f44b44774004115"
+      },
+      {
+        "file": "04-restart.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757231867283952,
+          28.349658564814813,
+          33.18136429398148
+        ],
+        "nonBlack": true,
+        "sha256": "05bd535053c6dd6c95f4f9200da9fd62a3bf32c1200af201ff60f3b53ca657fe"
+      }
+    ],
+    "process": {
+      "mode": "Loop",
+      "vehicle": "Heavy",
+      "finishedUtc": "2026-10-27T07:52:19.9887032Z",
+      "startedUtc": "2026-10-27T07:48:51.2779824Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Loop",
+        "vehicle": "Heavy",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T07:48:54.0536586Z",
+        "finishedUtc": "2026-10-27T07:52:19.2937506Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 12174,
+        "contacts": 10093,
+        "maxContacts": 12,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 0,
+        "completed": 6,
+        "detachedParts": 0,
+        "enemyShots": 11,
+        "maxAliveEnemies": 2,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 47,
+        "continuousSpeedViolations": 0,
+        "distance": 501.8929443359375,
+        "peakAimError": 0.0,
+        "settledAimError": 0.0,
+        "peakCameraStep": 0.2864394783973694,
+        "peakFrameMs": 19.095897674560547,
+        "meanFrameMs": 16.669940948486328,
+        "maxEnemyMovement": 6.156406402587891,
+        "finalPosition": {
+          "x": 1.0947133887384553e-05,
+          "y": 0.6499985456466675,
+          "z": -22.000028610229492
+        },
+        "settledAimObserved": false,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Garage selects Race: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects TimeAttack: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Escape: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Survival: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Reactor: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Ordinary: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Full six-stage finale",
+          "Restart removes all activity objects"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Loop-Heavy-1920-20261027T074851Z"
+  },
+  {
+    "pid": 57060,
+    "visible": true,
+    "vehicle": "Heavy",
+    "assemblySHA256": "515CABFFFF536DA16CF9DE1E0AC17BC6BDB71035D79E6B17BBF28632E21E84C4",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "mode": "Loop",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T081210Z\\Player.log\"",
+      "-fm270-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Loop-Heavy-1920-20261027T081210Z\"",
+      "-fm270-mode",
+      "Loop",
+      "-fm270-vehicle",
+      "Heavy"
+    ],
+    "height": 1080,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "width": 1920,
+    "startedUtc": "2026-10-27T08:12:10.3007934Z",
+    "accessibilityClientAttached": false,
+    "requestedVehicle": "Heavy",
+    "screenshots": [
+      {
+        "file": "00-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.10608603395062,
+          51.464084201388886,
+          55.246393229166664
+        ],
+        "nonBlack": true,
+        "sha256": "c5722dafc18c45b66e4cbb8dad147d8c5368fe56098586706097277d8da0dbe9"
+      },
+      {
+        "file": "01-activity-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.326715856481481,
+          16.984226466049382,
+          19.897946084104937
+        ],
+        "nonBlack": true,
+        "sha256": "2d874e8bab401932dca7e263277efc02e694ddf545c0999222791d8eb7682f61"
+      },
+      {
+        "file": "01-activity-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          19.13218894675926,
+          24.021688368055557,
+          27.86659336419753
+        ],
+        "nonBlack": true,
+        "sha256": "b3acf446551fc0d5fda5411eade8d40dc28268941dd64121a86268ce19d1ab45"
+      },
+      {
+        "file": "01-activity-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          19.94476996527778,
+          25.091969039351852,
+          29.08827690972222
+        ],
+        "nonBlack": true,
+        "sha256": "6b86ff19935de807434718154984e3b2532e4e078ca380ce74ee79aaa58b6b0c"
+      },
+      {
+        "file": "01-activity-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.083523341049382,
+          26.506342110339506,
+          30.64434895833333
+        ],
+        "nonBlack": true,
+        "sha256": "a7ff4efe0941ff27827bf151918959762928a56156bd02a90d8d84cfc1f5dc7c"
+      },
+      {
+        "file": "01-activity-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          42.275642843364196,
+          39.209581404320986,
+          38.025158179012344
+        ],
+        "nonBlack": true,
+        "sha256": "03566b61495f357a84e35b3cb404d33ae206702d939d395491e5ae59d459311a"
+      },
+      {
+        "file": "01-activity-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          75.23043595679012,
+          66.25592833719136,
+          51.86701822916667
+        ],
+        "nonBlack": true,
+        "sha256": "6c5f115d7004f405e9f75a272e2d07154e46fff225645bad0ffa0e1d16851a54"
+      },
+      {
+        "file": "02-reward-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          18.283150077160492,
+          24.443631365740742,
+          29.448928433641974
+        ],
+        "nonBlack": true,
+        "sha256": "2afa74b7f6ac409e8368c9f8707550f519afed52949e15a9020cc1cd94db306a"
+      },
+      {
+        "file": "02-reward-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.300112847222223,
+          23.390765335648148,
+          28.458249903549383
+        ],
+        "nonBlack": true,
+        "sha256": "bc817d96114b9141f3da07cbf4b7c556f722526019b7945781caec6f5eddb81d"
+      },
+      {
+        "file": "02-reward-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          17.404401041666667,
+          23.485151427469138,
+          28.560174575617285
+        ],
+        "nonBlack": true,
+        "sha256": "4df6a194d6b3f6f12cd7fbe8c36bccf75a7e83ec32c62ba96e91dd20dfd11b99"
+      },
+      {
+        "file": "02-reward-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.342853973765433,
+          27.41296875,
+          32.458298128858026
+        ],
+        "nonBlack": true,
+        "sha256": "c8d01c5dbec347eb38ea5836d29187a70e48de0fb236619bf4494873d9dda557"
+      },
+      {
+        "file": "02-reward-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.173994502314816,
+          27.99219425154321,
+          32.92628665123457
+        ],
+        "nonBlack": true,
+        "sha256": "84f25ef8476486573b43ca9987072c3234f2db1c7e38ce56b1ddbd3b0b43af34"
+      },
+      {
+        "file": "02-reward-5.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.374801793981483,
+          27.98563705632716,
+          32.508859953703706
+        ],
+        "nonBlack": true,
+        "sha256": "2540c2a29cb1a0f0790c41ffe8ec089d270783277ab8bff59feef74000278b1e"
+      },
+      {
+        "file": "03-garage-0.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.057260802469136,
+          16.26442901234568,
+          21.33784770447531
+        ],
+        "nonBlack": true,
+        "sha256": "62760ed19699c040a22a911ee93d1f0300bc8e64f670b9d2c5accc867b04072b"
+      },
+      {
+        "file": "03-garage-1.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          11.89133101851852,
+          17.263468364197532,
+          22.53617717978395
+        ],
+        "nonBlack": true,
+        "sha256": "422eca94c462331fb73c237aec01f0ecc9a9ab32a4f94c83221b1655c8b4d25d"
+      },
+      {
+        "file": "03-garage-2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          12.55850356867284,
+          17.968390239197532,
+          23.344366319444443
+        ],
+        "nonBlack": true,
+        "sha256": "2d5e1cc7644e68a0ba887bdd78be68071894d07da1eecef6d42e6d1ba15323b0"
+      },
+      {
+        "file": "03-garage-3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.401491608796297,
+          18.001589506172838,
+          22.676352719907406
+        ],
+        "nonBlack": true,
+        "sha256": "aecd6bf4df19a2bdc46ae1932d7598f183b6af4275cee1b285e781f9a64671ed"
+      },
+      {
+        "file": "03-garage-4.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.961331500771605,
+          19.064621913580247,
+          22.914298321759258
+        ],
+        "nonBlack": true,
+        "sha256": "627cc5b974bca19d306d2dd8956cb75081f402241fd7f4054ceb0d74c5803675"
+      },
+      {
+        "file": "04-restart.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757231867283952,
+          28.349658564814813,
+          33.18136429398148
+        ],
+        "nonBlack": true,
+        "sha256": "05bd535053c6dd6c95f4f9200da9fd62a3bf32c1200af201ff60f3b53ca657fe"
+      }
+    ],
+    "process": {
+      "mode": "Loop",
+      "exitCode": 0,
+      "startedUtc": "2026-10-27T08:12:10.3007934Z",
+      "finishedUtc": "2026-10-27T08:15:39.0487753Z",
+      "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+      "vehicle": "Heavy"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "mode": "Loop",
+        "vehicle": "Heavy",
+        "method": "API activity selection/settlement; actual force-driven R3/R6 traversals (NO teleport/velocity writes); combat outcomes explicitly API-controlled after live AI/projectiles. Camera orbit injected, actual consumed aim recorded. NOT human or unassisted gameplay.",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "startedUtc": "2026-10-27T08:12:13.0876537Z",
+        "finishedUtc": "2026-10-27T08:15:38.3714502Z",
+        "width": 1920,
+        "height": 1080,
+        "frames": 12172,
+        "contacts": 10094,
+        "maxContacts": 12,
+        "selfRayHits": 0,
+        "worldOverlaps": 0,
+        "shots": 0,
+        "completed": 6,
+        "detachedParts": 0,
+        "enemyShots": 11,
+        "maxAliveEnemies": 2,
+        "saturatedFrames": 0,
+        "offscreenHullFrames": 47,
+        "continuousSpeedViolations": 0,
+        "distance": 501.87274169921875,
+        "peakAimError": 0.0,
+        "settledAimError": 0.0,
+        "peakCameraStep": 0.4675557613372803,
+        "peakFrameMs": 31.17030143737793,
+        "meanFrameMs": 16.672409057617188,
+        "maxEnemyMovement": 6.142345428466797,
+        "finalPosition": {
+          "x": -2.508504258003086e-05,
+          "y": 0.6500004529953003,
+          "z": -22.00008201599121
+        },
+        "settledAimObserved": false,
+        "checks": [
+          "Vehicle selected",
+          "Actual preparation garage",
+          "Garage selects Race: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects TimeAttack: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Escape: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Survival: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Reactor: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Result returns to same garage",
+          "Actual repair preserves deployment",
+          "Garage selects Ordinary: Przygotuj pojazd. Wybierz tras\u0119, wygenerowan\u0105 aren\u0119 albo obron\u0119 reaktora. Seed pochodzi z menu.",
+          "Activity entered canonical live state",
+          "One delegated camera owner",
+          "Active scene uses supported actual materials",
+          "One canonical model through result",
+          "Canonical bonus and up-to-three salvage once",
+          "Full six-stage finale",
+          "Restart removes all activity objects"
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Loop-Heavy-1920-20261027T081210Z"
+  },
+  {
+    "startedUtc": "2026-10-27T07:48:19.9825565Z",
+    "visible": true,
+    "width": 1920,
+    "pid": 61284,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "vehicle": "Standard",
+    "requestedVehicle": "Heavy",
+    "mode": "Mapgen",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Mapgen-Standard-1920-20261027T074819Z\\Player.log\"",
+      "-rc2-native-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Mapgen-Standard-1920-20261027T074819Z\""
+    ],
+    "accessibilityClientAttached": false,
+    "height": 1080,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "assemblySHA256": "B6EEF8CB998B51B77946DEBFC4A73049E5064A23AB4781F91A4F70B61968F48D",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.10642071759259,
+          51.46440731095679,
+          55.24660976080247
+        ],
+        "nonBlack": true,
+        "sha256": "9a4df181b23209d100112e3789ba8785e748e84623bcbb799378033d1470c61e"
+      },
+      {
+        "file": "02-generated-start.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.647052951388886,
+          62.458755787037035,
+          67.31611062885803
+        ],
+        "nonBlack": true,
+        "sha256": "ac272454974143d85a3b7c94be539d66760ca94caa89ad92dae1ae358b403279"
+      },
+      {
+        "file": "03-real-drive-projectile-damage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          52.93555217978395,
+          61.13134307484568,
+          64.58553433641976
+        ],
+        "nonBlack": true,
+        "sha256": "82b6426a16c812772c0fd5f9ee99b134c87061d2c318649fdf372c446e92d0c0"
+      },
+      {
+        "file": "04-rewards.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          21.48238570601852,
+          27.55831066743827,
+          32.610203993055556
+        ],
+        "nonBlack": true,
+        "sha256": "703703397eb02eb9259f9f05c6f07004dd0ef7f54473a92961c61d0a1e8b111d"
+      },
+      {
+        "file": "05-repaired-mounted-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          40.44778597608025,
+          51.88905960648148,
+          55.258634741512346
+        ],
+        "nonBlack": true,
+        "sha256": "bf0061c074fa47144a370d3ba93dd59c3dbb3f571f9eb5b27221e2d4c64c3ebf"
+      },
+      {
+        "file": "06-regenerated31.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          60.72590518904321,
+          73.05952112268518,
+          78.07399594907407
+        ],
+        "nonBlack": true,
+        "sha256": "d459a7141c7480e8f51363fcbbfd3500706cf23534923cfad156254e58ebf5a6"
+      },
+      {
+        "file": "07-defeat.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          15.797802372685185,
+          21.568857060185184,
+          26.46452594521605
+        ],
+        "nonBlack": true,
+        "sha256": "e50023218b3fd73f0d45fb8deb094abfd610db9eb246f7b2bb257522914c10bc"
+      },
+      {
+        "file": "08-restarted-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      }
+    ],
+    "process": {
+      "mode": "Mapgen",
+      "vehicle": "Standard",
+      "finishedUtc": "2026-10-27T07:48:33.1942555Z",
+      "startedUtc": "2026-10-27T07:48:19.9825565Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc"
+    },
+    "results": [
+      {
+        "status": "Passed",
+        "method": "API-controlled real R3/R6 forces and real AI/player projectiles; explicit core-damage win/loss settlement; NOT human gameplay or an unassisted combat victory",
+        "startedUtc": "2026-10-27T07:48:22.7275306Z",
+        "finishedUtc": "2026-10-27T07:48:32.1105358Z",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "width": 1920,
+        "height": 1080,
+        "contactSamples": 185,
+        "supportedSamples": 185,
+        "maxContacts": 12,
+        "distance": 15.700116157531738,
+        "playerHpLost": 16.3203125,
+        "enemyHpLost": 40.0,
+        "start": {
+          "x": 0.0,
+          "y": 1.0341801643371582,
+          "z": -25.0
+        },
+        "last": {
+          "x": -0.009996498003602028,
+          "y": 0.6500087976455688,
+          "z": -9.684099197387695
+        },
+        "measuredEnvelope": {
+          "x": 4.920000076293945,
+          "y": 2.114000082015991,
+          "z": 4.9199981689453125
+        },
+        "firstHash": "32ffee73e85c3e976aa2acafb834f903abf06c81036e970761be10c9bbdf555a",
+        "secondHash": "d1eae2baa61a18e2afd0b671d9d8e1434646134f245e912b992710b952532835",
+        "checks": [
+          {
+            "name": "Real game menu",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Player-accessible MAPGEN preparation",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Ordinary preparation economy",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Generated activity selected through actual run API",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Seed7 map with legacy floor disabled",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical enemies on source map spawns",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual source Resources shader renders generated arena",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Real R6 grounded force drive",
+            "detail": "distance=15,700, contacts=12",
+            "passed": true
+          },
+          {
+            "name": "Real hostile and player projectile damage",
+            "detail": "playerLost=16,3, enemyLost=40,0",
+            "passed": true
+          },
+          {
+            "name": "Controlled win uses existing salvage and clears generated world",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "One bonus plus real enemy loot claimed",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Rewards return to actual garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical repair after explicit2HP fixture injury",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Recovered module mounted through canonical garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Second generated activity after rewards",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "New seed regenerates map without old root",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual source Resources shader renders generated arena",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Controlled player loss cleans map and restores normal terrain",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Scene restart returns to menu without stale map",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Restart releases owned generated material",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Mapgen-Standard-1920-20261027T074819Z"
+  },
+  {
+    "startedUtc": "2026-10-27T07:48:33.3011314Z",
+    "visible": true,
+    "width": 1920,
+    "pid": 58740,
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "vehicle": "Standard",
+    "requestedVehicle": "Heavy",
+    "mode": "Reactor",
+    "args": [
+      "-screen-fullscreen",
+      "0",
+      "-screen-width",
+      1920,
+      "-screen-height",
+      1080,
+      "-force-d3d11",
+      "-logFile",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Reactor-Standard-1920-20261027T074833Z\\Player.log\"",
+      "-rc2-reactor-output",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-Windows-Reactor-Standard-1920-20261027T074833Z\""
+    ],
+    "accessibilityClientAttached": false,
+    "height": 1080,
+    "exeSHA256": "17AD8B27359B94EAC8D2F44A0052D8789DC3FF5328F44CCB8C2740BE4A375EB8",
+    "assemblySHA256": "B6EEF8CB998B51B77946DEBFC4A73049E5064A23AB4781F91A4F70B61968F48D",
+    "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+    "screenshots": [
+      {
+        "file": "00-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      },
+      {
+        "file": "01-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.232421875,
+          18.914481577932097,
+          23.43355902777778
+        ],
+        "nonBlack": true,
+        "sha256": "a63de4f34d5c0a642e7938c7847c7284ef82105271642937405b5b26f6f353c0"
+      },
+      {
+        "file": "02-first-wave.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          50.95388599537037,
+          51.241630497685186,
+          48.33838734567901
+        ],
+        "nonBlack": true,
+        "sha256": "bc187e90a5147689b578a043517e7c8ce1182e3530d52d140602a99b96ab3141"
+      },
+      {
+        "file": "03-real-ai-damage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.25742476851852,
+          49.22621479552469,
+          47.015184702932096
+        ],
+        "nonBlack": true,
+        "sha256": "e9401e1ab47cf5f1480d93371cd70ff004a3018aa3f79e117b466ef99c420451"
+      },
+      {
+        "file": "04-wave2.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.4379012345679,
+          49.13988908179012,
+          46.93536361882716
+        ],
+        "nonBlack": true,
+        "sha256": "5588f776778a08e4f6a2e31aea62c8a0e1605f8be21ae3c2e4aea4423992d661"
+      },
+      {
+        "file": "04-wave3.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          51.25008728780864,
+          49.207982735339506,
+          47.02425829475309
+        ],
+        "nonBlack": true,
+        "sha256": "caa212797863db069d3d81358326517b931071d52f2efc2918d2f5e8396a32a7"
+      },
+      {
+        "file": "05-defense-won.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.20945457175926,
+          28.04700183256173,
+          32.98074459876543
+        ],
+        "nonBlack": true,
+        "sha256": "bd8db9505fe3c14dd434022c4aa728b6c4dbff70aad329af5969c76db6f96fc7"
+      },
+      {
+        "file": "06-reward-garage.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          16.195889274691357,
+          20.142218846450618,
+          23.81244164737654
+        ],
+        "nonBlack": true,
+        "sha256": "98884f5ac6e59e7d72b1aabfb69459f3131f7ed05b452a295d496b6d6a729fa7"
+      },
+      {
+        "file": "07-standard-fight.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          14.74783130787037,
+          18.850165412808643,
+          22.678896122685185
+        ],
+        "nonBlack": true,
+        "sha256": "0507933317bcf24d24f505e81144639f8c726f7bf2bd7146d1b88c49ae8c73a9"
+      },
+      {
+        "file": "08-reactor-lost.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          13.306788194444444,
+          17.8452734375,
+          22.548803047839506
+        ],
+        "nonBlack": true,
+        "sha256": "2df044e9df3a5763275f3ca668bd12ec3749917f51b9717febdbf53320871750"
+      },
+      {
+        "file": "09-restart-menu.png",
+        "width": 1920,
+        "height": 1080,
+        "meanRGB": [
+          22.757230420524692,
+          28.34967110339506,
+          33.181378761574074
+        ],
+        "nonBlack": true,
+        "sha256": "0ca2dae0487b6b5e0feea6f56101d20e6a8edaa7b3efc8db6858eee0c9385008"
+      }
+    ],
+    "process": {
+      "mode": "Reactor",
+      "vehicle": "Standard",
+      "finishedUtc": "2026-10-27T07:48:51.1586244Z",
+      "startedUtc": "2026-10-27T07:48:33.3011314Z",
+      "exitCode": 0,
+      "source": "2e4bff3dc49dd578422af136992040806ccbe9fc"
+    },
+    "results": [
+      {
+        "method": "Native controlled API/physics: real AI fire, canonical HP, explicit core-damage wave completion, actual reward/garage/restart; NOT human gameplay",
+        "status": "Passed",
+        "startedUtc": "2026-10-27T07:48:36.0540189Z",
+        "finishedUtc": "2026-10-27T07:48:50.1656485Z",
+        "graphics": "Direct3D11 / NVIDIA GeForce RTX 5080",
+        "width": 1920,
+        "height": 1080,
+        "checks": [
+          {
+            "name": "Actual game boot",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual preparation garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No sandbox budget in defense",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Player-reachable defense entry",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Actual600HP reactor and first of3 waves",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Real enemy projectiles damage both targets",
+            "detail": "reactor=571,4399, player=13780->13751,44",
+            "passed": true
+          },
+          {
+            "name": "Actual AI target policy",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Next real wave2",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "No intermediate-wave reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Next real wave3",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Three-wave win settles authored reward once",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Winning objective cleans up",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Existing1bonus/loot settlement",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Rewards reach actual garage",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Return to standard route",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Ordinary fight has no stale objective",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Scene restart clears activity",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Fresh defense after restart",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "New attempt restores only new objective state",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Canonical reactor death loses without reward",
+            "detail": "",
+            "passed": true
+          },
+          {
+            "name": "Loss restart removes objective and shots",
+            "detail": "",
+            "passed": true
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-Windows-Reactor-Standard-1920-20261027T074833Z"
+  }
+]

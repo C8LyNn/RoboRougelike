@@ -1,0 +1,323 @@
+[
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:45:18.0406483Z",
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "stage": "EXIT273-FinalFull",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T07:44:55.3655598Z",
+    "phase": "Build",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-FinalFull-20261027T074441Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:44:55.3255597Z",
+    "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+    "stage": "EXIT273-FinalFull",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T07:44:41.7767876Z",
+    "phase": "Compile",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-FinalFull-20261027T074441Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:41:38.8654877Z",
+    "source": "d9af405c921cfd2485c682c23407b3336b8f1430",
+    "stage": "EXIT273-Green",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T07:40:27.6311148Z",
+    "phase": "Build",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-Green-20261027T074013Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:40:27.5895740Z",
+    "source": "d9af405c921cfd2485c682c23407b3336b8f1430",
+    "stage": "EXIT273-Green",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T07:40:13.4148060Z",
+    "phase": "Compile",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-Green-20261027T074013Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:42:27.9955761Z",
+    "source": "d9af405c921cfd2485c682c23407b3336b8f1430",
+    "stage": "EXIT273-Green",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-Green-20261027T074013Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Exit273PauseTests|FullMergeActivityTests\""
+    ],
+    "startedUtc": "2026-10-27T07:41:38.8729845Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Exit273PauseTests.CombatPauseReturnsToMenuAndCleansActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.GaragePauseResumesWithoutStartingSimulation",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.ShutdownPreparationIsIdempotentAndReleasesCursor",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.ApiControlledFallCannotWinSurvivalInTheVoid",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.ApiControlledRaceCompletionActuallySettlesOnce",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.RaceTimeoutUsesCanonicalLossAndCleansItsMap",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.RaceUsesSameRobotWithoutEmptyEnemyAutoVictoryAndPausesItsClock",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.RoadEnemiesUseActualArenaBoundsAndReallyMoveOutsideOldOriginBox",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.RoadFailureDoesNotRewardAndRestartsWithoutActivityObjects",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.RoadResultUsesOneCanonicalRewardAndAllowsNextActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "FullMergeActivityTests.RoadTimeAttackHasRealSourceWorldAndSharedVehicle",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-Green-20261027T074013Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:42:42.3134198Z",
+    "source": "d9af405c921cfd2485c682c23407b3336b8f1430",
+    "stage": "EXIT273-Green",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "PlayMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-Green-20261027T074013Z\\PlayMode.xml\"",
+      "-testFilter",
+      "\"Exit273PauseTests|FullMergeActivityTests\""
+    ],
+    "startedUtc": "2026-10-27T07:42:28.0160774Z",
+    "phase": "PlayMode",
+    "nunit": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [],
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-Green-20261027T074013Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T08:09:28.5538111Z",
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage": "EXIT273-RangeGreen",
+    "arguments": [
+      "-quit",
+      "-executeMethod",
+      "FullMergeBuild.BuildRelease"
+    ],
+    "startedUtc": "2026-10-27T08:09:06.5688952Z",
+    "phase": "Build",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-RangeGreen-20261027T080853Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T08:09:06.5243422Z",
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage": "EXIT273-RangeGreen",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T08:08:53.6420362Z",
+    "phase": "Compile",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-RangeGreen-20261027T080853Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T08:09:52.2047203Z",
+    "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage": "EXIT273-RangeGreen",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-RangeGreen-20261027T080853Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Exit273PauseTests\""
+    ],
+    "startedUtc": "2026-10-27T08:09:28.5623273Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Exit273PauseTests.CombatPauseReturnsToMenuAndCleansActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.GaragePauseResumesWithoutStartingSimulation",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.RKeyStillResetsPausedTestRange",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.ShutdownPreparationIsIdempotentAndReleasesCursor",
+        "result": "Passed",
+        "failure": null
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-RangeGreen-20261027T080853Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T08:07:03.8624603Z",
+    "source": "7b5d2013c84d0d9e322a9bc1b3e77cbd716fc42b",
+    "stage": "EXIT273-RangeRed",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-RangeRed-20261027T080646Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Exit273PauseTests.RKeyStillResetsPausedTestRange\""
+    ],
+    "startedUtc": "2026-10-27T08:06:46.2096567Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Exit273PauseTests.RKeyStillResetsPausedTestRange",
+        "result": "Failed",
+        "failure": "  The pause menu must preserve the range R reset shortcut\n  Expected: False\n  But was:  True\n"
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-RangeRed-20261027T080646Z"
+  },
+  {
+    "exitCode": -536870911,
+    "finishedUtc": "2026-10-27T07:31:09.0291745Z",
+    "source": "d9398c3771870cb7b5fa95a6b80d0df7e6ee9f9a",
+    "stage": "EXIT273-Red",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T07:29:55.4951022Z",
+    "phase": "Compile",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-Red-20261027T072955Z"
+  },
+  {
+    "exitCode": 0,
+    "finishedUtc": "2026-10-27T07:33:25.2418880Z",
+    "source": "d9398c3771870cb7b5fa95a6b80d0df7e6ee9f9a",
+    "stage": "EXIT273-RedHost",
+    "arguments": [
+      "-quit"
+    ],
+    "startedUtc": "2026-10-27T07:31:33.0312121Z",
+    "phase": "Compile",
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-RedHost-20261027T073132Z"
+  },
+  {
+    "exitCode": 2,
+    "finishedUtc": "2026-10-27T07:33:46.5661629Z",
+    "source": "d9398c3771870cb7b5fa95a6b80d0df7e6ee9f9a",
+    "stage": "EXIT273-RedHost",
+    "arguments": [
+      "-runTests",
+      "-testPlatform",
+      "EditMode",
+      "-testResults",
+      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-RedHost-20261027T073132Z\\EditMode.xml\"",
+      "-testFilter",
+      "\"Exit273PauseTests\""
+    ],
+    "startedUtc": "2026-10-27T07:33:25.2959750Z",
+    "phase": "EditMode",
+    "nunit": {
+      "total": 2,
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0
+    },
+    "cases": [
+      {
+        "name": "Exit273PauseTests.CombatPauseReturnsToMenuAndCleansActivity",
+        "result": "Passed",
+        "failure": null
+      },
+      {
+        "name": "Exit273PauseTests.GaragePauseResumesWithoutStartingSimulation",
+        "result": "Failed",
+        "failure": "  Esc must open the pause menu in the garage\n  Expected: True\n  But was:  False\n"
+      }
+    ],
+    "evidence": "Docs/Exit273/Evidence/FM270-EXIT273-RedHost-20261027T073132Z"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "phase": "EditMode",
+  "reason": "Intentional cancellation after discovering paused range R shortcut interception; full final source must include correction",
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "exitCode": -1,
+  "stage": "EXIT273-FinalFull",
+  "status": "ABORTED_NOT_A_TEST_RESULT",
+  "timeUtc": "2026-10-27T08:06:05.8241516Z"
+}

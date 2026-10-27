@@ -1,0 +1,27 @@
+{
+  "pid": 64576,
+  "uiAutomationAttached": false,
+  "mode": "RangeLong",
+  "height": 1080,
+  "startedUtc": "2026-10-27T07:52:20.0936796Z",
+  "width": 1920,
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1920,
+    "-screen-height",
+    1080,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-RangeLong-1920-Extracted-20261027T075220Z\\Player.log\"",
+    "-exit273-output",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-RangeLong-1920-Extracted-20261027T075220Z\"",
+    "-exit273-mode",
+    "RangeLong"
+  ],
+  "visible": true,
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "label": "Extracted",
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe"
+}

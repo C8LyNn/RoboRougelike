@@ -1,0 +1,11 @@
+{
+  "pid": 64576,
+  "mode": "RangeLong",
+  "finishedUtc": "2026-10-27T07:55:30.2726590Z",
+  "exitHex": "0x00000000",
+  "startedUtc": "2026-10-27T07:52:20.0936796Z",
+  "exitCode": 0,
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "label": "Extracted",
+  "exitUnsigned": 0
+}

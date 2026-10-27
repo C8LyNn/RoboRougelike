@@ -1,0 +1,442 @@
+{
+  "rootCause": "Symbol correlation and known Unity UUM-146676 match; not privately confirmed and not claimed fixed",
+  "historicalFaults": [
+    {
+      "time": "2026-10-25T23:16:47.3156374+01:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-25T23:14:42.9601589+01:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-25T23:07:59.4969238+01:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-25T23:00:56.7831433+01:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-25T22:52:48.8128623+01:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-25T01:56:05.6500718+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T23:47:37.7959198+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T18:11:14.6115322+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T18:00:55.0961795+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T17:54:06.2762358+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T12:55:36.7649099+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T05:17:10.9328664+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-24T05:15:15.539991+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T21:09:26.8489091+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T20:58:32.1539544+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T20:47:58.4431104+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T20:44:25.2751086+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T20:42:13.7878408+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T19:51:36.3185546+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T19:26:40.6820225+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T01:14:40.3484954+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T01:09:23.1493596+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T00:50:47.0578224+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T00:47:30.0224219+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-23T00:40:30.3377433+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T20:04:34.7290549+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T19:52:52.2459273+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T19:52:50.9909601+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b29715"
+    },
+    {
+      "time": "2026-10-22T19:50:05.2702248+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T19:47:48.3744271+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T13:37:31.7026062+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T12:58:45.2612947+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T12:58:44.1419171+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b29715"
+    },
+    {
+      "time": "2026-10-22T12:54:01.4983676+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T12:53:59.8573214+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b29715"
+    },
+    {
+      "time": "2026-10-22T10:21:58.9627118+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T10:10:42.4344381+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T09:46:40.2675114+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-22T09:19:43.8757338+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-21T22:58:37.4965846+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T20:10:40.9745465+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T20:09:26.6332019+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T20:06:36.9288937+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T20:02:43.8358184+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T19:59:24.234016+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T19:56:21.2168388+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T19:54:20.7871032+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T19:52:05.9880635+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T19:49:20.5318079+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T19:48:27.0521609+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T18:36:17.1270125+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T18:28:52.1475552+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T18:28:51.094853+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b29715"
+    },
+    {
+      "time": "2026-10-20T12:11:40.1387827+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T12:10:51.331833+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T12:04:48.2920257+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T11:48:22.4390271+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T03:34:53.8012049+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T03:34:09.0570647+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T03:32:01.1924926+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000c29589"
+    },
+    {
+      "time": "2026-10-20T03:11:50.8273483+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    },
+    {
+      "time": "2026-10-20T02:52:03.2855301+02:00",
+      "eventId": 1000,
+      "module": "UnityPlayer.dll",
+      "exceptionCode": "0xc0000005",
+      "rva": "0x0000000000b1b031"
+    }
+  ],
+  "helper": "Both supported computer-use entry points failed before attaching: failed to write kernel assets, OS error 3",
+  "method": "Read-only own-game Application events; raw messages retained locally",
+  "requiredUnity": "6000.3.14f1"
+}

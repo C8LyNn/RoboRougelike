@@ -1,0 +1,11 @@
+{
+  "label": "",
+  "exitUnsigned": 0,
+  "exitHex": "0x00000000",
+  "startedUtc": "2026-10-27T07:47:04.1010409Z",
+  "exitCode": 0,
+  "source": "2e4bff3dc49dd578422af136992040806ccbe9fc",
+  "pid": 20720,
+  "mode": "Return",
+  "finishedUtc": "2026-10-27T07:47:11.5827204Z"
+}

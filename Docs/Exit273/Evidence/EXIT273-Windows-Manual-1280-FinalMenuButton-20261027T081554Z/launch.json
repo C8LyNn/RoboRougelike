@@ -1,0 +1,23 @@
+{
+  "label": "FinalMenuButton",
+  "uiAutomationAttached": false,
+  "width": 1280,
+  "startedUtc": "2026-10-27T08:15:54.6522240Z",
+  "arguments": [
+    "-screen-fullscreen",
+    "0",
+    "-screen-width",
+    1280,
+    "-screen-height",
+    720,
+    "-force-d3d11",
+    "-logFile",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\EXIT273-Windows-Manual-1280-FinalMenuButton-20261027T081554Z\\Player.log\""
+  ],
+  "height": 720,
+  "source": "8a294e6638d4a82619089c0ab5ad02110847c233",
+  "executable": "C:\\Users\\kubap\\Desktop\\Prototypy\\Releases\\ROBOROUGELIKE_EXIT273_FINAL_20261027\\RoboRougelike_EXIT273_Windows_x64-VerifiedExtract\\RoboRougelike.exe",
+  "mode": "Manual",
+  "visible": true,
+  "pid": 34192
+}

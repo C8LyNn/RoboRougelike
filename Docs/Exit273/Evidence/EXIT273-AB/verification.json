@@ -1,0 +1,53 @@
+{
+  "attribution": "EXTERNAL_OPERATOR_PROVIDED_NATIVE_EVIDENCE_NOT_B01_60_INDEPENDENT_RUN",
+  "cases": [
+    {
+      "classification": "CLEAN_EXIT_ZERO",
+      "exit_hex": "0x00000000",
+      "index": 0,
+      "label": "BASE",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "classification": "CLEAN_EXIT_ZERO",
+      "exit_hex": "0x00000000",
+      "index": 1,
+      "label": "EXP",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "classification": "CLEAN_EXIT_ZERO",
+      "exit_hex": "0x00000000",
+      "index": 2,
+      "label": "EXP",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "classification": "CLEAN_EXIT_ZERO",
+      "exit_hex": "0x00000000",
+      "index": 3,
+      "label": "BASE",
+      "problems": [],
+      "status": "PASS"
+    },
+    {
+      "index": 4,
+      "label": "RC2",
+      "status": "NOT_RUN"
+    },
+    {
+      "index": 5,
+      "label": "RC2",
+      "status": "NOT_RUN"
+    }
+  ],
+  "conclusion": "NOT_PROVEN",
+  "disclaimer": "Same-host matched manual GUI quit only; does not prove cause or full RC readiness.",
+  "g2": "HOLD",
+  "problems": [],
+  "schema": "b01-60-rc1-shutdown-ab-v1",
+  "status": "NOT_RUN"
+}

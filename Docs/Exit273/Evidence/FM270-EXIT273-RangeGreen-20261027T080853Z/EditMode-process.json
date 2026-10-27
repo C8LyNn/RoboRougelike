@@ -1,0 +1,17 @@
+{
+    "exitCode":  0,
+    "finishedUtc":  "2026-10-27T08:09:52.2047203Z",
+    "source":  "8a294e6638d4a82619089c0ab5ad02110847c233",
+    "stage":  "EXIT273-RangeGreen",
+    "arguments":  [
+                      "-runTests",
+                      "-testPlatform",
+                      "EditMode",
+                      "-testResults",
+                      "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Exit273\\Artifacts\\Local\\FM270-EXIT273-RangeGreen-20261027T080853Z\\EditMode.xml\"",
+                      "-testFilter",
+                      "\"Exit273PauseTests\""
+                  ],
+    "startedUtc":  "2026-10-27T08:09:28.5623273Z",
+    "phase":  "EditMode"
+}
