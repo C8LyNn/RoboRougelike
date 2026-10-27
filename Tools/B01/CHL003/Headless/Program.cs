@@ -196,6 +196,52 @@ static class Program
             Throws<ArgumentOutOfRangeException>(()=> {
                 var u=new CHL003TrialMetrics();u.Reset("LIGHT",1,1,1,1);u.Begin();
                 u.RecordPhysics(0,float.NaN,0,0,0);}));
+        // W17: full collider envelope, real gate plane, forward-only CP
+        // policy. Failing examples are exactly the B01-10 CHL-02 report.
+        static bool Crossing(float previous,float current,float minX,float maxX,
+            float facing=1f,float minY=-2.15f,float maxY=-.5f)=>
+            CHL003GateCrossing.IsForwardFullBodyCrossing(
+                previous,current,minX,maxX,minY,maxY,
+                -1.75f,1.75f,-2.25f,2.25f,facing);
+        Check("w17-light-real-forward-crossing",
+            Crossing(-.12f,.12f,-1f,1f));
+        Check("w17-heavy-real-forward-crossing",
+            Crossing(-.2f,.2f,-1.41f,1.41f));
+        Check("w17-reverse-crossing-rejected",
+            !Crossing(.2f,-.2f,-1f,1f));
+        Check("w17-reversed-heading-rejected",
+            !Crossing(-.1f,.1f,-1f,1f,-1f));
+        Check("w17-wheel-graze-right-rejected",
+            !Crossing(-.11f,.11f,-1.0f,1.72f));
+        Check("w17-wheel-graze-left-rejected",
+            !Crossing(-.11f,.11f,-1.72f,1.0f));
+        Check("w17-front-wheel-contact-before-center-rejected",
+            !Crossing(-.23f,-.01f,-1f,1f));
+        Check("w17-sideways-translation-does-not-cross",
+            !Crossing(0f,0f,-1f,1f));
+        Check("w17-zero-time-jitter-not-crossing",
+            !Crossing(-.0001f,.0001f,-1f,1f));
+        Check("w17-hull-below-floor-aperture-rejected",
+            !Crossing(-.10f,.10f,-1f,1f,1f,-2.45f,-.5f));
+        Check("w17-hull-above-aperture-rejected",
+            !Crossing(-.10f,.10f,-1f,1f,1f,-1f,2.50f));
+        Check("w17-no-NaN-or-infinity-accepted",
+            !Crossing(float.NaN,.1f,-1f,1f) &&
+            !Crossing(-.1f,float.PositiveInfinity,-1f,1f));
+        Check("w17-coverage-side-clearance-edge",
+            Crossing(-.1f,.1f,-1.50f,1.50f) &&
+            !Crossing(-.1f,.1f,-1.501f,1.50f));
+        // 6400 reproducible envelope probes; expected analytic truth
+        // independently computed from requirements (not Unity PhysX).
+        for(int i=0;i<6400;i++)
+        {
+            float lateral=(i%80-40)*.05f;
+            float width=.45f+(i/80%80)*.023f;
+            float lo=lateral-width*.5f,hi=lateral+width*.5f;
+            bool expected=lo>=-1.5f&&hi<=1.5f;
+            bool actual=Crossing(-.11f,.12f,lo,hi);
+            Check("w17-real-contract-envelope-"+i,expected==actual);
+        }
         Console.WriteLine("CHL003_FINISH_ARBITER_AND_TELEMETRY_CHECKS_COMPLETE");
         Console.WriteLine("CHL003_ACTUAL_CSHARP_CORE PASS="+pass+" FAIL="+fail+
             " NATIVE_UNITY=NOT_RUN");
