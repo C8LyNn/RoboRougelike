@@ -1,0 +1,96 @@
+name: B01-21 DQ current-head CHL gate actual CSharp source QA
+on:
+  push:
+    branches: [qa/b01-21-chl003-world-w17-20261027]
+    paths:
+      - Tools/B01/CHL003WorldQA/DependencyQueue/**
+      - .github/workflows/b01-21-chl-dq-exact-gate.yml
+  pull_request:
+    paths:
+      - Tools/B01/CHL003WorldQA/DependencyQueue/**
+      - .github/workflows/b01-21-chl-dq-exact-gate.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  current-production-policy:
+    name: Real CHL003GateCrossing CSharp & independent mutations (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify latest ACTUAL frozen-input producer SHA and untouched Git blob identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          pin=74b6af45d71297c2b1fc50a19152fb6771a5bcf0
+          git cat-file -e "${pin}^{commit}"
+          mkdir -p chl-dq-evidence
+          echo "$pin" > chl-dq-evidence/PINNED_CHL_PRODUCER_SHA.txt
+          git rev-parse HEAD > chl-dq-evidence/QA_SOURCE_SHA.txt
+          while IFS='|' read -r path expected; do
+            actual="$(git rev-parse "${pin}:${path}")"
+            echo "CHL_DQ_ACTUAL_PRODUCER_BLOB_CHECK ${path} actual=${actual} expected=${expected}"
+            if test "$actual" != "$expected"; then
+              echo "CHL_DQ_PIN_FAIL"; exit 6
+            fi
+          done <<'END_PINS'
+          Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs|9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e
+          Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs|1e51b02cc833acb9dedbd8b6a0177fd4e42381a0
+          Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs|2ec5334539cfe3b1108ad2c868e04be7a9b18129
+          Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs|5c736da620487e48131f6d454bcf231ae368b513
+          Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs|64590d1fcb1faf278e120922a6dbfab23d24976d
+          END_PINS
+          # Same original production policy class happens to be unchanged from
+          # this QA branch's prior source ancestor; compile this exact blob.
+          test "$(git hash-object Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs)" = 5c736da620487e48131f6d454bcf231ae368b513
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" | grep -Fq 'new Vector3(3.70f, 4.5f, .16f)'
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" | grep -Fq 'new Vector3(3.70f, .60f, 10f)'
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" | grep -Fq 'new Vector3(2.5f, .65f, 3.4f)'
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" | grep -Fq 'new Vector3(.82f, .82f, .82f)'
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" | grep -Fq 'float width = heavy ? 1.0f : .59f;'
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" | grep -Fq 'new Vector3(side * 1.97f, 1.3f, z)'
+          git show "${pin}:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs" | grep -Fq 'minimumSideClearance = .25f'
+          echo "CHL_DQ_LATEST_SOURCE_PIN_AND_GEOMETRY_PASS"
+      - name: Compile and ACTUALLY execute original B01-20 CSharp production gate policy (NO Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/CHL003WorldQA/DependencyQueue/GateGeometryReceipt.csproj -c Release -- "$PWD/chl-dq-evidence/GATE_ACTUAL_CSHARP_VERDICTS.json" | tee chl-dq-evidence/actual-production-policy.log
+          grep -q 'CHL_SOURCE_GATE_EXACT_RESULT PASS=25 FAIL=0 NATIVE_UNITY=NOT_RUN' chl-dq-evidence/actual-production-policy.log
+      - name: Independent receipt schema checks and 14 tampered-receipt negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          B01_21_CHL_DQ_RECEIPT="$PWD/chl-dq-evidence/GATE_ACTUAL_CSHARP_VERDICTS.json" python -m unittest discover -s Tools/B01/CHL003WorldQA/DependencyQueue -p 'test_*.py' -v 2>&1 | tee chl-dq-evidence/receipt-mutation-tests.log
+          grep -q 'Ran 15 tests' chl-dq-evidence/receipt-mutation-tests.log
+          echo "CHL_DQ_ORIGINAL_PRODUCTION_CSHARP_SOURCE_QA_PASS_25_JSON_QA_15_UNITY_NOT_RUN"
+      - name: Scope, sha manifest and no gameplay claim
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only 9a947108928d4c2cdfdfbb25cbeb30464439da37 HEAD > chl-dq-evidence/owned-diff.txt
+          if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue|RouteClearance)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate|n27-route)\.yml$)' chl-dq-evidence/owned-diff.txt; then
+            echo CHL_DQ_FOREIGN_FILE_CHANGE;exit 7
+          fi
+          sha256sum chl-dq-evidence/GATE_ACTUAL_CSHARP_VERDICTS.json > chl-dq-evidence/SHA256SUMS.txt
+          echo CHL_DQ_NO_CHL_RUNTIME_EDITS_NO_NATIVE_G1
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-chl-dq-real-production-csharp-${{ matrix.os }}
+          path: chl-dq-evidence/
+          retention-days: 30
+          if-no-files-found: warn
