@@ -86,12 +86,13 @@ public sealed class MapEditorDraftTests
             int grounded=0;float maximumZ=body.position.z;
             for(int i=0;i<500;i++)
             {
-                yield return new WaitForFixedUpdate();drive.Step(1,0,10,4,90);
+                float previous=Time.fixedTime;while(Time.fixedTime<=previous)yield return null;
+                drive.Step(1,0,10,4,90);
                 if(drive.GroundedWheels>0)grounded++;maximumZ=Mathf.Max(maximumZ,body.position.z);
                 if(i%100==0)Debug.Log($"[MapEditor physics] step={i} position={body.position} velocity={body.linearVelocity} grounded={drive.GroundedWheels} rotation={body.rotation.eulerAngles}");
             }
             Assert.That(grounded,Is.GreaterThan(0),"Real wheels must contact edited terrain");
-            Assert.That(maximumZ,Is.GreaterThan(-6),"Real wheel forces must propel the player vehicle");
+            Assert.That(maximumZ,Is.GreaterThan(2),"Real wheel forces must carry the vehicle across the edited ramp");
         }
         finally
         {
