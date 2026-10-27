@@ -39,6 +39,10 @@ jobs:
           git rev-parse HEAD > n27-route-evidence/QA_EXACT_SHA.txt
           demo=Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs
           gate=Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs
+          motor=Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs
+          git show "$sha:$motor" > n27-route-evidence/CHL003_current_motor.cs
+          test "$(git rev-parse "$sha:$motor")" = 2ec5334539cfe3b1108ad2c868e04be7a9b18129
+          test "$(git hash-object n27-route-evidence/CHL003_current_motor.cs)" = 2ec5334539cfe3b1108ad2c868e04be7a9b18129
           git show "$sha:$demo" > n27-route-evidence/CHL003_current_demo.cs
           git show "$sha:$gate" > n27-route-evidence/CHL003_current_gate.cs
           test "$(git rev-parse "$sha:$demo")" = 9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e
@@ -65,6 +69,17 @@ jobs:
           python -m unittest discover -s Tools/B01/CHL003WorldQA/RouteClearance -p 'test_*.py' -v 2>&1 | tee n27-route-evidence/unittest.log
           grep -q 'Ran 23 tests' n27-route-evidence/unittest.log
           echo "B01_21_N27_TESTS_PASS23_ACTUAL_UNITY_NOT_RUN"
+      - name: PASS3 owner independent map geometry versus real motor probe contact candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/CHL003WorldQA/RouteClearance/motor_ground_differential.py \
+            --demo n27-route-evidence/CHL003_current_demo.cs \
+            --motor n27-route-evidence/CHL003_current_motor.cs \
+            --output n27-route-evidence/CURRENT_MOTOR_MAP_CONTACT_DIFFERENTIAL.json \
+            --selftest 2>&1 | tee n27-route-evidence/motor_map_differential.log
+          grep -q 'Ran 16 tests' n27-route-evidence/motor_map_differential.log
+          grep -q 'B01_21_PASS3_MOTOR_MAP_SOURCE_DIFFERENTIAL_PASS cases=12 tests=16 native=NOT_RUN' n27-route-evidence/motor_map_differential.log
       - name: Check B01-21 ownership and preserve SHA receipt
         shell: bash
         run: |
@@ -73,7 +88,7 @@ jobs:
           if grep -Ev '^(Tools/B01/CHL003WorldQA/(W17|DependencyQueue|RouteClearance)/|\.github/workflows/b01-21-chl-(w17-geometry|dq-exact-gate|n27-route)\.yml$)' n27-route-evidence/changed_paths.txt; then
             echo B01_21_N27_SCOPE_VIOLATION; exit 6
           fi
-          sha256sum n27-route-evidence/CURRENT_N27_CHL_ROUTE.json > n27-route-evidence/SHA256SUMS.txt
+          sha256sum n27-route-evidence/CURRENT_N27_CHL_ROUTE.json n27-route-evidence/CURRENT_MOTOR_MAP_CONTACT_DIFFERENTIAL.json > n27-route-evidence/SHA256SUMS.txt
           echo "B01_21_N27_SOURCE_QA_DONE_NATIVE_NOT_RUN"
       - if: always()
         uses: actions/upload-artifact@v4
