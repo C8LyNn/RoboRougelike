@@ -173,6 +173,13 @@ def check(snapshot):
     require(not codex.intersection(chl),"CHL_CANONICAL_ASSET_PATH_COLLISION")
     require(not codex.intersection(part),"PART_CANONICAL_ASSET_PATH_COLLISION")
     require(not chl.intersection(part),"TWO_PRODUCER_ASSET_PATH_COLLISION")
+    # Unity/Windows can silently collapse case-distinct paths during checkout.
+    allpaths=[(label,path) for label in ("codex","chl","part") for path in paths[label]]
+    by_case={}
+    for label,path in allpaths:
+        folded=path.casefold()
+        require(folded not in by_case,"CASEFOLD_UNITY_ASSET_PATH_COLLISION:"+path)
+        by_case[folded]=(label,path)
     refs={label:set() for label in ("codex","chl","part")}
     meta=metadata(snapshot)
     for label,items in meta.items():
@@ -191,6 +198,15 @@ def check(snapshot):
         require(len(set(items.values()))==len(items),"DUPLICATE_ASMDEF_IN_SOURCE:"+label)
     names=[v for items in ass.values() for v in items.values()]
     require(len(set(names))==len(names),"CROSS_SOURCE_ASMDEF_NAME_COLLISION")
+    available=set(names)
+    for label in ("chl","part"):
+        for path,oid in paths[label].items():
+            if not path.endswith(".asmdef"):continue
+            obj=json.loads(snapshot["data"][oid])
+            for ref in obj.get("references",[]):
+                # Local B01 references must resolve from this exact manifest union.
+                if isinstance(ref,str) and ref.startswith("B01."):
+                    require(ref in available,"OWNER_ASMDEF_REFERENCE_MISSING:"+ref)
     draft=snapshot["data"][PINS["codex_map_draft"][2]].decode("utf-8")
     storage=snapshot["data"][PINS["codex_map_storage"][2]].decode("utf-8")
     require("MaxItems=2000" in draft and
