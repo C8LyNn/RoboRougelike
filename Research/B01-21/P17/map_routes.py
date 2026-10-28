@@ -37,11 +37,11 @@ EXPECTED_COVER_COUNTS = (6, 11, 16)
 
 
 def git_blob(data: bytes) -> str:
-    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\\0" + data).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
 
 
 def stable_json(data) -> str:
-    return json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\\n"
+    return json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
 
 
 def load_original(name: str, path: Path | None = None) -> dict:
@@ -248,7 +248,7 @@ def svg(plan: dict, data: dict) -> str:
                 '</g>',
                 '<text x="56" y="675" font-family="sans-serif" font-size="13" fill="#aebfcd">B01-21 P17 • exact immutable original MAPGEN001 blueprint • standalone route data only</text>',
                 '</svg>'])
-    return "\\n".join(out)+"\\n"
+    return "\n".join(out)+"\n"
 
 
 def render_all() -> dict[str,str]:
