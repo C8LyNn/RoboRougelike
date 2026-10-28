@@ -63,11 +63,16 @@
   "test": {
     "node_runner": "node --test Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.test.mjs",
     "validated_github_original_source_blobs": true,
-    "windows_status": "PENDING",
-    "ubuntu_status": "PENDING",
+    "windows_status": "PASS: 35/35 original Node.js tests; original source/geometry check, SVG and C# vector export PASS",
+    "ubuntu_status": "PASS: 35/35 original Node.js tests; original source/geometry check, SVG and C# vector export PASS",
     "unity": "NOT_RUN",
     "physx": "NOT_RUN",
-    "independent_b01_60": "PENDING"
+    "independent_b01_60": "PENDING",
+    "actual_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743259721",
+    "evidence_artifacts": {
+      "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743259721/artifacts/12840357338",
+      "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743259721/artifacts/12840990176"
+    }
   },
   "constraints": [
     "Exact original source Git blobs fail closed on R5Arena or Spawn API drift.",
@@ -77,7 +82,7 @@
     "Do not infer the actual vehicle collider radius from 2.5m planning allowance."
   ],
   "intake": {
-    "state": "DRAFT_NOT_OFFERED_FOR_FREEZE",
+    "state": "DRAFT_OWNER_SOURCE_TESTED / B01-40_B01-60_PENDING / NOT_OFFERED_FOR_FREEZE",
     "receivers": [
       "B01-40",
       "B01-60",
