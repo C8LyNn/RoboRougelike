@@ -26,6 +26,16 @@ public sealed class Camera275AimNativeTests
     [UnityTest]public IEnumerator ActualBasicProjectileHitsAt30Meters()=>Basic(30);
     [UnityTest]public IEnumerator ActualBasicProjectileHitsAt60Meters()=>Basic(60);
     [UnityTest]public IEnumerator ActualBasicProjectileHitsAt100Meters()=>Basic(100);
+    [UnityTest]public IEnumerator ReplacedAutomaticUsesItsAssignedGroupAndHitsAt30Meters()
+    {
+        var basic=new Camera275AimQA.ShotResult{weapon="Basic",requestedDistance=10};
+        yield return fixture.Execute(run,input,R4WeaponKind.Basic,10,basic);
+        Assert.That(basic.status,Is.EqualTo("Passed"),basic.error);
+        var automatic=new Camera275AimQA.ShotResult{weapon="Automatic",requestedDistance=30};
+        yield return fixture.Execute(run,input,R4WeaponKind.Automatic,30,automatic);
+        Assert.That(automatic.status,Is.EqualTo("Passed"),automatic.error);
+        Assert.That(automatic.damage,Is.GreaterThan(0));
+    }
     [UnityTest]public IEnumerator BeamDoesNotPretendToReach100Meters()
     {
         var result=new Camera275AimQA.ShotResult{weapon="BeamCutter",requestedDistance=100};

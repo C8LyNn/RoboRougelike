@@ -19,14 +19,14 @@ public sealed class Camera275AimQA : MonoBehaviour
 {
     [Serializable]public sealed class ShotResult
     {
-        public string weapon,status="Running",error,hitCollider,feedback;
+        public string weapon,status="Running",error,hitCollider,feedback,fireGroup;
         public float requestedDistance,muzzleDistance,damage,muzzleError,range,pitch;
         public bool expectedHit,cameraOnTarget;
         public Vector3 origin,direction,aimPoint;
     }
     [Serializable]public sealed class Report
     {
-        public string status="Running",method="Native queued LMB and mouse aim; real projectiles / P12 HP, isolated stationary clear lane. Not human play or vehicle drive.";
+        public string status="Running",method="Native queued assigned-group mouse fire and aim; real projectiles / P12 HP, isolated stationary clear lane. Not human play or vehicle drive.";
         public List<ShotResult> shots=new List<ShotResult>();
         public List<string> errors=new List<string>();
     }
@@ -59,7 +59,7 @@ public sealed class Camera275AimQA : MonoBehaviour
                 Save();
             }
         Results.status=Results.shots.All(s=>s.status=="Passed")&&Results.errors.Count==0?"Passed":"Failed";
-        Input.Fire=false;Input.MouseRate=Vector2.zero;Save();Application.logMessageReceived-=Log;Destroy(Input);
+        Input.Fire=false;Input.SecondaryFire=false;Input.MouseRate=Vector2.zero;Save();Application.logMessageReceived-=Log;Destroy(Input);
         if(Results.status=="Passed")run.RequestQuit();else Application.Quit(1);
     }
     void Save()=>File.WriteAllText(Path.Combine(output,"aim-result.json"),JsonUtility.ToJson(Results,true));
@@ -115,7 +115,9 @@ public sealed class Camera275AimQA : MonoBehaviour
         Require(result.cameraOnTarget,"Final camera ray did not hit intended target: "+result.hitCollider);
         Require(result.muzzleError<.15f,"Gun has not converged "+result.muzzleError);
         if(output!=null&&distance==100)ScreenCapture.CaptureScreenshot(Path.Combine(output,weapon+"-100m.png"));
-        native.Fire=true;yield return new WaitForSecondsRealtime(.16f);native.Fire=false;
+        bool primary=owner.VehicleModel.WeaponGroupA==weapon,secondary=owner.VehicleModel.WeaponGroupB==weapon;
+        Require(primary||secondary,"Weapon has no assigned fire group");result.fireGroup=primary?"A/LMB":"B/RMB";
+        native.Fire=primary;native.SecondaryFire=secondary;yield return new WaitForSecondsRealtime(.16f);native.Fire=false;native.SecondaryFire=false;
         float wait=weapon==R4WeaponKind.Shotgun||weapon==R4WeaponKind.BeamCutter?2.3f:distance/Mathf.Max(18,R4WeaponDefinition.Get(weapon).Speed)+.7f;
         yield return new WaitForSecondsRealtime(wait);
         result.damage=10000-hp.CurrentHp;
