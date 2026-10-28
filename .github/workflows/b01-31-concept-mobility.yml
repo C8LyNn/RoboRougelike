@@ -33,6 +33,8 @@ jobs:
         run: python Docs/B01Concept/CONCEPT-MOBILITY-001/qa_selected_part.py
       - name: Verify actual separate A1 layer SVGs, PNG composite and source pixel parity
         run: python Docs/B01Concept/CONCEPT-MOBILITY-001/qa_exported_layers.py
+      - name: Render PASS16 three-view and color treatment original SVG sources
+        run: python Docs/B01Concept/CONCEPT-MOBILITY-001/qa_pass16_visuals.py
       - name: Upload all four actually rendered PNGs, thumbnails, hashes and receipt
         if: always()
         uses: actions/upload-artifact@v4
