@@ -1,0 +1,48 @@
+{
+  "package_id": "B01-61-W02-WHEELWAKE-RECEIVER",
+  "version": "1.0.0",
+  "owner": "B01-61 — independent CODEX REGRESSION QA",
+  "source_path": "Tools/B01/B01-61-P17-W02-WheelWake/run_original_emitter_qa.py",
+  "source_git_blob": "b9db69e5532cc50fa4147c8799cfab46dfbb3530",
+  "producer_pr": 366,
+  "producer_sha": "005e177a6742634add0e3e434ca34647d590f2fd",
+  "original_sources": {
+    "Assets/B0132P17WheelWake/Runtime/WheelWakeProfile.cs": "45949c3c550f048ba8bccfe1071a29edf45d2807",
+    "Assets/B0132P17WheelWake/Runtime/B0132WheelWakeEmitter.cs": "debb9f0fb7803102cfdaa78babb5de0e9a47fba8"
+  },
+  "ownership": [
+    "Tools/B01/B01-61-P17-W02-WheelWake/**",
+    ".github/workflows/b01-61-p17-wave02-wheelwake-receiver.yml"
+  ],
+  "dependences": [
+    "Git with producer SHA fetched",
+    "Python 3.11",
+    "dotnet 8 SDK",
+    "GitHub Actions ubuntu-latest/windows-latest"
+  ],
+  "tested_behavior": [
+    "two original unchanged CSharp files compiled and executed together",
+    "two side-offset particle emitters, rear orientation, world-space, bounded cap",
+    "profile->both emitters per-wheel half-rate distribution",
+    "cruise/drift/brake + 600 deterministic state transitions",
+    "VFX OFF / loss contact / bad speed or slip / invalid mode clear both particles",
+    "OnDisable, reenable, OnDestroy lifecycle clears stale live particles",
+    "two in-memory negative CSharp mutants MUST fail: omitted StopEmittingAndClear; twice emission rate"
+  ],
+  "safety": [
+    "no producer source mutation",
+    "no canonical Assets change",
+    "no CHL/PARTSIZE or Codex writes",
+    "no merge or actual engine output"
+  ],
+  "limitations": [
+    "actual original emitter and profile compiled, but against independent surrogate Unity Component, Shader, Material, GameObject, ParticleSystem; neither native Unity nor real GPU rasterization",
+    "no physic-driven wheel slip or live R3/R6 integration",
+    "producer Unity authored PlayMode 3 cases remain NOT_RUN by B01-61"
+  ],
+  "native_unity": "NOT_RUN",
+  "real_vfx_visual": "NOT_RUN",
+  "independent_g1": "NOT_RUN",
+  "codex_ack": "NOT_RECEIVED",
+  "status": "INDEPENDENT_SOURCE_QA_PENDING_ACTUAL_CI"
+}
