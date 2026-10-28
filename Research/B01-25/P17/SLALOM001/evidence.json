@@ -1,0 +1,61 @@
+{
+  "packageId": "B01-25-SLALOM-001",
+  "version": "R1",
+  "stage": "PRODUCER_SOURCE_CHECKED_NOT_NATIVE",
+  "branch": "research/b01-25-pass17-slalom001",
+  "source": {
+    "codexHeadAtAuthoring": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+    "mapDraftOriginalBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "mapWorldOriginalBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+    "arenaGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+    "manifestGitBlob": "04889e6488fa33d2f45de671011e8b35515c1ffc",
+    "validatorGitBlob": "b1cdbe513f788389a82de5d05792b27e176dbfdc",
+    "htmlGitBlob": "b6833e52bd7aaa106231da1e8c27587eee967ac2",
+    "nodeTestGitBlob": "737d0ba29bba309e912435a387e34b83a0753b91",
+    "svgGitBlob": "990de28e32895f0c417567145fecdfdd7895329f"
+  },
+  "actualExecution": {
+    "environment": "functions.exec isolated V8",
+    "inputs": "Original exact GitHub published bytes; validate-core.mjs original function body (module export stripped only for evaluation), original embedded HTML script executed using fake DOM+Canvas",
+    "baseline": {
+      "checks": 42,
+      "pass": 42,
+      "fail": 0,
+      "items": 360,
+      "referenceSteps": 49,
+      "shortestGridSteps": 41,
+      "minStaticAabbClearanceMeters": 2,
+      "sourcePerimeterRays": "8/8"
+    },
+    "negativeMutations": 7,
+    "negativeExpectedRedRejected": 7,
+    "htmlReplay": {
+      "steps": "49/49",
+      "gates": "4/4",
+      "finished": true,
+      "collisionWallRejected": true,
+      "reset": true,
+      "keyboard": true,
+      "routeToggle": true,
+      "postFinishMovementRejected": true
+    }
+  },
+  "notRun": [
+    "native Unity EditMode",
+    "native Unity PlayMode",
+    "real PhysX Light/Heavy travel",
+    "Windows Player",
+    "Chromium/Playwright original page",
+    "standalone Node CLI test.mjs",
+    "independent B01-40/B01-60"
+  ],
+  "integration": "NOT_IN_GAME",
+  "ownerScope": "Research/B01-25/P17/SLALOM001/**",
+  "knownRisk": "Source-only clearance not physical 3D vehicle envelope; no runtime G1..G4 triggers or combat rewards",
+  "receivers": [
+    "B01-40",
+    "B01-60",
+    "B01-00 -> Codex when queued"
+  ],
+  "policy": "NO_MERGE_NO_G1_NO_G2"
+}

@@ -1,0 +1,308 @@
+{
+  "packageId": "B01-25-SLALOM-001",
+  "version": "R1",
+  "owner": "B01-25",
+  "format": "MapDocument v2",
+  "mapFile": "arena.json",
+  "mapBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+  "sourcePins": {
+    "codexOwnerPR": 310,
+    "codexAtAuthoring": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+    "mapDraftBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "mapWorldBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e"
+  },
+  "dimensions": {
+    "columns": 14,
+    "rows": 18,
+    "cellMeters": 4
+  },
+  "expected": {
+    "items": 360,
+    "ground": 252,
+    "wall": 92,
+    "platform": 4,
+    "pillar": 6,
+    "lowBarrier": 4,
+    "spawn": [
+      7,
+      2
+    ],
+    "finish": [
+      7,
+      15
+    ],
+    "globalFloor": false
+  },
+  "gates": [
+    {
+      "index": 1,
+      "z": 4,
+      "wallMinX": 1,
+      "wallMaxX": 9,
+      "passMinX": 10,
+      "passMaxX": 12,
+      "side": "EAST",
+      "referenceCross": [
+        11,
+        4
+      ]
+    },
+    {
+      "index": 2,
+      "z": 7,
+      "wallMinX": 4,
+      "wallMaxX": 12,
+      "passMinX": 1,
+      "passMaxX": 3,
+      "side": "WEST",
+      "referenceCross": [
+        2,
+        7
+      ]
+    },
+    {
+      "index": 3,
+      "z": 10,
+      "wallMinX": 1,
+      "wallMaxX": 9,
+      "passMinX": 10,
+      "passMaxX": 12,
+      "side": "EAST",
+      "referenceCross": [
+        11,
+        10
+      ]
+    },
+    {
+      "index": 4,
+      "z": 13,
+      "wallMinX": 4,
+      "wallMaxX": 12,
+      "passMinX": 1,
+      "passMaxX": 3,
+      "side": "WEST",
+      "referenceCross": [
+        2,
+        13
+      ]
+    }
+  ],
+  "definition": "Drive from Spawn to Finish through four alternating physical wall openings; gates are analytic design waypoints only, not runtime checkpoint triggers.",
+  "riskReward": "The shorter wall-hugging line may be physically narrower; the longer central-gap reference route increases clearance at the cost of distance. No in-game payout or reward branching is implemented.",
+  "routes": {
+    "reference": {
+      "description": "wider manual driving centerline",
+      "waypoints": [
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          11,
+          4
+        ],
+        [
+          11,
+          5
+        ],
+        [
+          10,
+          5
+        ],
+        [
+          9,
+          5
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ],
+        [
+          10,
+          8
+        ],
+        [
+          11,
+          8
+        ],
+        [
+          11,
+          9
+        ],
+        [
+          11,
+          10
+        ],
+        [
+          11,
+          11
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          9,
+          11
+        ],
+        [
+          8,
+          11
+        ],
+        [
+          7,
+          11
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          2,
+          13
+        ],
+        [
+          2,
+          14
+        ],
+        [
+          3,
+          14
+        ],
+        [
+          4,
+          14
+        ],
+        [
+          5,
+          14
+        ],
+        [
+          6,
+          14
+        ],
+        [
+          7,
+          14
+        ],
+        [
+          7,
+          15
+        ]
+      ],
+      "expectedSteps": 49
+    }
+  },
+  "tested": {
+    "v8": "PENDING",
+    "node": "NOT_RUN",
+    "unity": "NOT_RUN",
+    "player": "NOT_RUN",
+    "qaIndependent": "PENDING"
+  },
+  "integrated": false
+}
