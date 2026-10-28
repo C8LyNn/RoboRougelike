@@ -192,29 +192,34 @@ def install(root,files,source):
         if unsafe:raise Reject("PARTIAL_STAGING_UNSAFE_MANUAL_REVIEW:"+repr(unsafe))
         raise
 
-def read_receipt(root,files):
+def read_receipt(root,files,source=None):
     path=root/RECEIPT
     need(path.is_file() and not path.is_symlink(),"STAGE_RECEIPT_MISSING")
     obj=json.loads(path.read_bytes())
     require=receipt_for(files,obj.get("original_codex_source_check"))
-    need(obj==require,"STAGE_RECEIPT_CHANGED")
+    need(obj==require and (source is None or obj["original_codex_source_check"]==source),
+         "STAGE_RECEIPT_CHANGED")
     return obj
 
-def verify(root,files):
-    read_receipt(root,files)
+def verify(root,files,source=None):
+    read_receipt(root,files,source)
     need(all((root/name).is_file() and not (root/name).is_symlink() and
              digest((root/name).read_bytes())==digest(raw)
              for name,raw in files.items()),"STAGED_FILE_CHANGED_OR_MISSING")
     current={p.relative_to(root).as_posix() for p in (root/PREFIX).rglob("*") if p.is_file()}
     need(current=={n for n in files if n.startswith(PREFIX+"/")},
          "UNTRACKED_FOREIGN_FILES_IN_STAGED_FOLDER")
+    # Do not begin destructive rollback if a third party left even an
+    # EMPTY directory below the staging subtree.
+    current_dirs={p.relative_to(root).as_posix() for p in (root/PREFIX).rglob("*") if p.is_dir()}
+    need(current_dirs=={ROOT,FRAMES},"UNTRACKED_FOREIGN_DIRECTORY_IN_STAGED_FOLDER")
     need(all((root/d).is_dir() and not (root/d).is_symlink()
              for d in (PREFIX,ROOT,FRAMES)),"STAGING_DIRECTORY_DRIFT")
     return {"mode":"DISPOSABLE_STAGE_BYTES_VERIFIED","file_count":len(files),
             "native_unity":"NOT_RUN"}
 
-def rollback(root,files):
-    verify(root,files)
+def rollback(root,files,source=None):
+    verify(root,files,source)
     # No modified/foreign files can be silently deleted. Verify first.
     for name in sorted(files,reverse=True):
         (root/name).unlink()
@@ -238,8 +243,8 @@ def main():
         root=guard_target(args.project)
         if args.mode=="preflight":result=preflight(root,files)
         elif args.mode=="install":result=install(root,files,src)
-        elif args.mode=="verify":result=verify(root,files)
-        else:result=rollback(root,files)
+        elif args.mode=="verify":result=verify(root,files,src)
+        else:result=rollback(root,files,src)
         print(json.dumps({**result,"source":src,"project_marker":MARKER,"package_id":PACKAGE},
                          sort_keys=True))
         return 0
