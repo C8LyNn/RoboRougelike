@@ -7,6 +7,7 @@ occlusion implementation. Standard-library only; deterministic output.
 """
 from __future__ import annotations
 import argparse
+import base64
 import hashlib
 import json
 import math
@@ -318,6 +319,7 @@ def render_all() -> dict[str,str]:
 def main() -> int:
     cli=argparse.ArgumentParser(description=__doc__)
     cli.add_argument("--check",action="store_true",help="check 7 immutable generated outputs before regeneration")
+    cli.add_argument("--emit-base64",action="store_true",help="for first CI materialization of exact generated files")
     args=cli.parse_args()
     data=render_all()
     OUT.mkdir(parents=True,exist_ok=True)
@@ -331,6 +333,8 @@ def main() -> int:
         else:
             path.write_bytes(raw)
             print("MAP_COVER_P17_GENERATED",name)
+        if args.emit_base64:
+            print("MAP_COVER_P17_FILE_B64 | "+name+" | "+base64.b64encode(raw).decode("ascii"))
     print("MAP_COVER_P17_PASS ARENAS=3 OUTPUTS=7 NATIVE_UNITY=NOT_RUN")
     return 0
 
