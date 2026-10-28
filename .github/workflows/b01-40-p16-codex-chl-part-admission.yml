@@ -1,0 +1,51 @@
+name: B01-40 PASS16 changed Codex + CHL/PART original integration admission
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/P16/**'
+      - '.github/workflows/b01-40-p16-codex-chl-part-admission.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-integration:
+    name: B01-40 original Git collision and schema receiver (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch the four exact owner/source commits (never checkout canonical or merge)
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 589b60a912096d1e9917cb0bbac73a53e7543b4f
+          git fetch --no-tags --depth=1 origin c7b2a234a286089383503da41883d624fe650551
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          git fetch --no-tags --depth=1 origin 691c8cb6b0be086d455e530f2531de7f3753a0ba
+      - name: Execute immutable original-source and adversarial integration tests
+        shell: bash
+        run: |
+          python Tools/B01Validation/P16/test_current_codex_packages.py -v
+      - name: Generate real original-source admission manifest
+        shell: bash
+        run: |
+          python -c "import os,pathlib; pathlib.Path(os.environ['RUNNER_TEMP'],'b01-40-p16-receipts').mkdir(parents=True,exist_ok=True)"
+          python Tools/B01Validation/P16/admit_current_codex_packages.py --repo . --out "$(python -c "import os,pathlib; print(pathlib.Path(os.environ['RUNNER_TEMP'],'b01-40-p16-receipts','CODEX-CHL-PART-admission.json'))")"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-P16-current-Codex-CHL-PART-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-40-p16-receipts/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Native and single-writer boundary
+        shell: bash
+        run: |
+          echo 'Source Git blobs, paths, GUID, asmdef and map fixtures only.'
+          echo 'Real Unity compile/PhysX, G1, G2, Codex integration and merge all NOT_RUN.'
