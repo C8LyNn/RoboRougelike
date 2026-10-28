@@ -1,0 +1,73 @@
+name: B01-62 MAPDIFF-001 real map change preview
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Tools/B01/B01-62/MapDiff001/**'
+      - '.github/workflows/b01-62-mapdiff-001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mapdiff:
+    name: Real map geometry diff (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      CODEX_SHA: a2ccd055070a963805cba0779b79f18489f4794f
+      LD02_ARENA_BLOB: e39e2f174984832bd97311c050e3c22fd6fb1175
+      LD02_COVER_BLOB: 8586312b9606d94b088e4e7640c28105e2d6bac1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute original positive and adversarial filesystem regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-62/MapDiff001 -p test_mapdiff.py -v \
+            2>&1 | tee "Tools/B01/B01-62/MapDiff001/tests-$RUNNER_OS.log"
+          grep -q '^OK$' "Tools/B01/B01-62/MapDiff001/tests-$RUNNER_OS.log"
+      - name: Fetch original immutable Codex map content and verify Git objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$CODEX_SHA"
+          b="$(git rev-parse "$CODEX_SHA:Docs/CX08/Fixtures/LD02_ARENA.json")"
+          a="$(git rev-parse "$CODEX_SHA:Docs/CX08/Fixtures/LD02_COVER_CHOICE.json")"
+          test "$b" = "$LD02_ARENA_BLOB"
+          test "$a" = "$LD02_COVER_BLOB"
+          mkdir -p "$RUNNER_TEMP/mapdiff-fixtures"
+          git show "$CODEX_SHA:Docs/CX08/Fixtures/LD02_ARENA.json" > "$RUNNER_TEMP/mapdiff-fixtures/LD02_ARENA.json"
+          git show "$CODEX_SHA:Docs/CX08/Fixtures/LD02_COVER_CHOICE.json" > "$RUNNER_TEMP/mapdiff-fixtures/LD02_COVER_CHOICE.json"
+          echo "ORIGINAL_INPUT_SHA=$CODEX_SHA BEFORE_BLOB=$b AFTER_BLOB=$a"
+      - name: Execute original map delta and generate usable SVG plus JSON outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "Tools/B01/B01-62/MapDiff001/generated"
+          python Tools/B01/B01-62/MapDiff001/mapdiff.py \
+            --before "$RUNNER_TEMP/mapdiff-fixtures/LD02_ARENA.json" \
+            --after "$RUNNER_TEMP/mapdiff-fixtures/LD02_COVER_CHOICE.json" \
+            --out-dir "Tools/B01/B01-62/MapDiff001/generated" \
+            2>&1 | tee "Tools/B01/B01-62/MapDiff001/smoke-$RUNNER_OS.log"
+          python Tools/B01/B01-62/MapDiff001/smoke_ld02.py \
+            --output-dir "Tools/B01/B01-62/MapDiff001/generated" \
+            2>&1 | tee "Tools/B01/B01-62/MapDiff001/accept-$RUNNER_OS.log"
+          grep -q '^MAPDIFF_ORIGINAL_LD02_PASS=' "Tools/B01/B01-62/MapDiff001/accept-$RUNNER_OS.log"
+      - name: Upload generated view and raw logs (not Unity G1)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mapdiff-001-${{ matrix.os }}
+          path: |
+            Tools/B01/B01-62/MapDiff001/generated/mapdiff.json
+            Tools/B01/B01-62/MapDiff001/generated/mapdiff.svg
+            Tools/B01/B01-62/MapDiff001/tests-*.log
+            Tools/B01/B01-62/MapDiff001/smoke-*.log
+            Tools/B01/B01-62/MapDiff001/accept-*.log
+          retention-days: 14
