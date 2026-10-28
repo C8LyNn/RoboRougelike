@@ -11,7 +11,7 @@
   "original_source": "Assets/Pack/P12_PipelineSafeCamera.cs",
   "original_source_blob": "8519938f5734487d0350634cb6d81679a6434d62",
   "new_source": "Tools/B01/B01-61-PASS17-CAMERA/run_original_camera_contract.py",
-  "new_source_blob": "91cc8155e0efca4e4af544d51f6377babf5d9c62",
+  "new_source_blob": "2fa7475b8c8861be02d16b82d0a6296992728846",
   "method_integrity": "6 exact unmodified verbatim source C# methods extracted by strict brace balancer; production source never edited",
   "original_methods": [
     "EnsureRig",
