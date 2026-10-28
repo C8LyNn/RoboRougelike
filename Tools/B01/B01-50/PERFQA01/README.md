@@ -49,19 +49,19 @@ Metadata must identify the immutable original **historical** release source SHA 
 ## PASS15 continuation: original CLI intake & CSV integrity hardening
 
 New actual CLI integration tests cover 119, 120 and 121 seconds, invoking both
-\`presentmon_bridge.py\` and \`analyze_frametimes.py\` in a subprocess; results
+`presentmon_bridge.py` and `analyze_frametimes.py` in a subprocess; results
 remain synthetic QA test controls, **never measured game FPS**. A separate
-original-source defect was reproduced RED: \`csv.DictReader\` silently accepted
+original-source defect was reproduced RED: `csv.DictReader` silently accepted
 a raw row with an undeclared extra cell, and duplicate required headers could
 silently overwrite values. This version fails closed with
-\`MALFORMED_RAW_ROW\` / \`DUPLICATE_RAW_COLUMNS\`, while accepting legitimate
+`MALFORMED_RAW_ROW` / `DUPLICATE_RAW_COLUMNS`, while accepting legitimate
 additional *named* PresentMon columns.
 
 Run on **either** Windows or Linux with Python 3.10+:
 
-\`\`\`sh
+```sh
 python -m unittest -v test_receiver.py test_cli_ingestion.py
-\`\`\`
+```
 
 Source-pinned local Linux test and artifact receipt:
 [evidence/PASS15_LINUX_CLI_QA.json](evidence/PASS15_LINUX_CLI_QA.json).
