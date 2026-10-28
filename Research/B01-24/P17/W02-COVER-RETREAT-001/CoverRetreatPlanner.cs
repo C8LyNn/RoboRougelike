@@ -184,7 +184,7 @@ public static class RetreatPlanner {
                 if(jx<0||jx>=width||jz<0||jz>=width)continue;
                 int next=jz*width+jx;
                 if(!free[next]||closed[next])continue;
-                var a=GridPoint(at,width,step), b=GridPoint(next,width,step);
+                var a=GridPoint(at,width,step); var b=GridPoint(next,width,step);
                 if(!ClearSegment(arena,world,a,b,radius))continue;
                 float candidate=g[at]+Vector2.Distance(a,b);
                 if(candidate+Eps>=g[next])continue;
