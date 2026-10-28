@@ -1,0 +1,80 @@
+{
+  "id": "HPT16-GBC01-R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "game_integrated": false,
+  "native_unity": "NOT_RUN",
+  "human_participants": 0,
+  "source_branch": "research/b01-13-w58-human-scoring",
+  "owned_root": "Research/B01-13/P16/",
+  "game_source_sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "env": "local Linux Python3.13 Chromium Playwright",
+  "tests": {
+    "original_html_chromium": "42/42 PASS",
+    "intake_downloaded_JSON_python": "28/28 PASS",
+    "prior_own_Red": "one actual display/timer bug reproduced then fixed"
+  },
+  "files": {
+    "HPT16-GBC01.html": {
+      "bytes": 18214,
+      "sha256": "e857aa995ccb40568fb7836b31ab52679ed9ae96bca06420e2a88926e8773ef3",
+      "git_blob": "1157b377afec2f8da5f91e11f6355da9e4c12c0a"
+    },
+    "GBC01-protocol.json": {
+      "bytes": 3954,
+      "sha256": "14df365af9b3e17d79b953683921e5564237005ec63962a2e111d7599c2184f0",
+      "git_blob": "8501632ac9f3b0414c3fe216bfdea605895ff045"
+    },
+    "hpt16_intake.py": {
+      "bytes": 7892,
+      "sha256": "9dbd1c9ce73c7e6e4f0bfd95a7421678172a50f4e731eda9e6e17bf5fd22f4f1",
+      "git_blob": "21458788c23860e99f346eae7002a61269920f5f"
+    },
+    "test_gbc01_browser.py": {
+      "bytes": 10268,
+      "sha256": "85c6947132881f4881ecb5cc235daeb3ebcf6d1ff8cd7496adf2345891d8d2b8",
+      "git_blob": "d9731ebf892a689d4604378a7d99f42ab6fd875d"
+    },
+    "test_gbc01_intake.py": {
+      "bytes": 4574,
+      "sha256": "e3a6370466c506a68031ddca5b0d7b5322a46fb21facba58bf09e8f4a1eaff52",
+      "git_blob": "379e770c67a2e3c80e999a01c9bd60cd39f78cc6"
+    },
+    "README.md": {
+      "bytes": 9563,
+      "sha256": "b6391c6744f670341622824bdcb394cb9faebc205a18c55c2011a0dac6c6c3ea",
+      "git_blob": "71428a9b78fbb273948a3467c807d66b43645b64"
+    },
+    "QA_RUN_LOG.txt": {
+      "bytes": 711,
+      "sha256": "f89899a3fbeb5eec24bc0f369a76295129fffee04e20f3641405dd0833ff2b9e",
+      "git_blob": "36da25c72ed628ff8967a2bc152188b8f8c7967b"
+    },
+    "QA_BROWSER_PASS16.json": {
+      "bytes": 2403,
+      "sha256": "0eb4e76003c991d45afa0f79f85f22059eb57277dafd2059aee59f1ee27288eb",
+      "git_blob": "2e6ac828444146c30cf19c7a97262bd7c87eabbe"
+    },
+    "QA_SYNTHETIC_GBC01.json": {
+      "bytes": 1655,
+      "sha256": "ca5e0fe689fc01db5745b9ffc9c5d7c023c7932f955779044d6a531a205329e4",
+      "git_blob": "4e8f637bf56c1bb869b9279df8f0c482091e1091"
+    },
+    "QA_SYNTHETIC_PARTICIPANT_1280.png": {
+      "bytes": 45205,
+      "sha256": "23abe7ca0840c03b507331971a99cbb11a58f16b8fb3517369231a53cf47ca5b",
+      "git_blob": "1c1df90912a38cdbe859e7d97ae585ad1cfabbf4"
+    },
+    "QA_SYNTHETIC_OPERATOR_720.png": {
+      "bytes": 140487,
+      "sha256": "bd2dca34877685e1d7962a3e11cf22de942f841c6b4bb4789c6d4b8f3bdda863",
+      "git_blob": "0d590f6cb1daff18f8683a0185179ecd6cd50549"
+    }
+  },
+  "dependencies": [
+    "HQ GATE D + adult consent + assigned private study operator for any real participant",
+    "Exact authorized Windows Player build binary SHA and real preflight",
+    "No canonical Unity/CHL/PARTSIZE source edits; CV-03/07 existing #79"
+  ],
+  "code_owner_conflicts": "NONE: own Research/B01-13/P16 paths only",
+  "receiver": "B01-00 / Codex #79 for optional non-human preflight, B01-60 only after actual native evidence"
+}
