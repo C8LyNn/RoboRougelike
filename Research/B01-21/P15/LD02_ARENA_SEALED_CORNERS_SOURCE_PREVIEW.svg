@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1010 850" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
 <title id="title">B01-21 corrected LD02 arena: sealed four physical-source wall corners</title>
 <desc id="desc">Original MapDocument v2, 48 by 40 meters. Logical 12 by 10 floor, 36 narrow walls, four 4 by 4 meter solid corner platforms, four pillars, two barriers, spawn grid 2 comma 5, finish grid 9 comma 5. Orthographic source geometry visualization; not actual Unity Collider bounds, not measured vehicle traversal.</desc>
-<rect width="1010" height="850" fill="#151d27"/>
+<rect width="1200" height="850" fill="#151d27"/>
 <text x="70" y="53" fill="#f3f5f8" font-family="sans-serif" font-size="30" font-weight="700">LD02 — SEALED CORNERS</text>
 <text x="72" y="80" fill="#a9b6c5" font-family="sans-serif" font-size="15">Geometry from current MapWorld.cs source · 4 m grid · top-down X/Z · Unity PhysX NOT RUN</text>
 <g id="arena-data" transform="translate(0 0)">
@@ -200,24 +200,24 @@
 <g id="markers" fill="none" stroke-width="5"><g class="spawn-marker" stroke="#51e8d0"><g class="item spawn"><title>Spawn grid=(2,5), yaw=0, scale=1,1,1</title><circle cx="236" cy="416" r="16" /></g></g><g class="finish-marker" stroke="#ffd66d"><g class="item finish"><title>Finish grid=(9,5), yaw=0, scale=1,1,1</title><circle cx="656" cy="416" r="16" /></g></g></g>
 </g>
 <g font-family="sans-serif" fill="#ecf0f2" font-size="16">
-<text x="770" y="147" font-weight="700">World map fixture</text>
-<text x="770" y="175">168 map elements</text>
-<text x="770" y="202">120 Ground</text>
-<text x="770" y="229">36 Wall</text>
-<text x="770" y="256">4 solid corners</text>
-<text x="770" y="283">4 Pillar / 2 Barrier</text>
-<text x="770" y="310">Spawn (2, 5)</text>
-<text x="770" y="337">Finish (9, 5)</text>
-<rect x="771" y="382" width="18" height="18" fill="#eec07d"/>
-<text x="797" y="397" font-size="14">4 × 4 × 4 m corner</text>
-<rect x="771" y="417" width="18" height="8" fill="#d4a579"/>
-<text x="797" y="427" font-size="14">4 × 4 × 0.5 m wall</text>
-<rect x="771" y="456" width="18" height="18" fill="#8094ba"/>
-<text x="797" y="470" font-size="14">Pillar / LowBarrier</text>
-<text x="770" y="547" fill="#93e5cd" font-weight="700">Source analysis</text>
-<text x="770" y="576" font-size="14">Old: 4 × 1.75 m gaps</text>
-<text x="770" y="602" font-size="14">New: 0 m AABB gaps</text>
-<text x="770" y="628" font-size="14">4 → 1 ring components</text>
+<text x="855" y="147" font-weight="700">World map fixture</text>
+<text x="855" y="175">168 map elements</text>
+<text x="855" y="202">120 Ground</text>
+<text x="855" y="229">36 Wall</text>
+<text x="855" y="256">4 solid corners</text>
+<text x="855" y="283">4 Pillar / 2 Barrier</text>
+<text x="855" y="310">Spawn (2, 5)</text>
+<text x="855" y="337">Finish (9, 5)</text>
+<rect x="856" y="382" width="18" height="18" fill="#eec07d"/>
+<text x="882" y="397" font-size="14">4 × 4 × 4 m corner</text>
+<rect x="856" y="417" width="18" height="8" fill="#d4a579"/>
+<text x="882" y="427" font-size="14">4 × 4 × 0.5 m wall</text>
+<rect x="856" y="456" width="18" height="18" fill="#8094ba"/>
+<text x="882" y="470" font-size="14">Pillar / LowBarrier</text>
+<text x="855" y="547" fill="#93e5cd" font-weight="700">Source analysis</text>
+<text x="855" y="576" font-size="14">Old: 4 × 1.75 m gaps</text>
+<text x="855" y="602" font-size="14">New: 0 m AABB gaps</text>
+<text x="855" y="628" font-size="14">4 → 1 ring components</text>
 </g>
 <g font-family="sans-serif" font-size="12" fill="#96a7ba">
 <text x="85" y="800">RESEARCH ONLY · actual Unity collider/vehicle collision must be tested by Codex / B01-60 (CV-05)</text>
