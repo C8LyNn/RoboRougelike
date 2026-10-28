@@ -9,7 +9,7 @@
 - `preview.svg`: real topdown image derived from original JSON.
 - `clearance-preview.html`: completely offline interactive map preview, accessible radius slider 0.5..8m, visual proxy circle, per-stage PASS/BLOCK margin and global proxy verdict, reset. Original JSON and manifest are embedded; no dependencies. It is NOT a Rigidbody, physical Player or robot simulation.
 - `clearance-core.mjs`: reusable source-derived original MapWorld geometry checker and clearance proxy.
-- `test.mjs`: self-contained Node 18+ regression, original Git file SHA1 check, 45 core source predicates, nine negative mutated sources, actual HTML JavaScript run in VM with synthetic DOM/Canvas. Authored, direct Node CLI execution NOT_RUN in this producer context.
+- `test.mjs`: self-contained Node 18+ regression, original Git file SHA1 check, 45 core source predicates, nine negative mutated sources, actual HTML JavaScript run in VM with synthetic DOM/Canvas. Originally authored before an actual native Node invocation. **Now EXECUTED by GitHub Actions on both Windows and Ubuntu**, original standalone `node test.mjs` with real Node 22 on exact source Git blobs; see run 40758466800.
 - `evidence.json`: precise source file Git blobs, actually executed V8 checks and NOT_RUN labels.
 
 ## Tactical geometry and design
@@ -33,7 +33,7 @@ From a clone of the PR head with Node 18+:
 node Research/B01-25/P17/CLEARANCELADDER001/test.mjs
 ```
 
-Expected: original exact `arena.json` Git blob **53eb696950121465befea2855eda4d7268750016**; 45/45 source-space data checks, nine deliberately invalid variants rejected, standalone original HTML inline-script VM test (2.5 and 5.5 radius pass; 6.5 radius fails at L3 and L4, reset/slider functional). Producer executed the exact original validator function and inline HTML JavaScript with DOM/Canvas stubs in V8 (45/45, 9/9, UI PASS), but **did not execute standalone Node CLI or real Chromium**. Genuine Unity / PhysX / Player NOT_RUN.
+Expected: original exact `arena.json` Git blob **53eb696950121465befea2855eda4d7268750016**; 45/45 source-space data checks, nine deliberately invalid variants rejected, standalone original HTML inline-script VM test (2.5 and 5.5 radius pass; 6.5 radius fails at L3 and L4, reset/slider functional). Producer originally executed the exact original validator function and inline HTML JavaScript with DOM/Canvas stubs in V8 (45/45, 9/9, UI PASS), and **later the original standalone `node test.mjs` EXECUTED on BOTH Windows and Ubuntu under actual Node 22** in [GitHub Actions #40758466800](https://github.com/C8LyNn/RoboRougelike/actions/runs/40758466800), tested commit `57b722cc6d76a7625eebe3f332bfaa9af33c4516`, PASS both OS; two original stdout log artifacts. Real Chromium / Unity still NOT_RUN. Genuine Unity / PhysX / Player NOT_RUN.
 
 **Conditional editor import:** after B01-40 / B01-60 independent QA and B01-00 Codex scheduling, use a *disposable* Unity Application.persistentDataPath/Maps profile. Place exact arena.json bytes as `ARENA17_CLEARANCELADDER001.json` ONLY if not already present (never overwrite player maps), set EditorName to ARENA17_CLEARANCELADDER001, Wczytaj. Native PASS demands MapDraft.TryLoad=true, TestError=null, 415 items/kinds above, 8/8 true physical perimeter-wall+corner Platform raycasts, genuine Light/Heavy driving from (9,2) to (9,13) through all four gates, no unexpected escape, collision, softlock. Record actual contact/Collider bounds, turn, physical clearance, Camera trace, XML, logs, exit, exact runtime source SHA and map blob. Any vehicle unable to finish = **physical FAIL**, regardless of proxy result.
 
@@ -41,4 +41,4 @@ Expected: original exact `arena.json` Git blob **53eb696950121465befea2855eda4d7
 
 **Source pins when authored:** Codex #310 be2c4b6ac63e04eff5b046e50641ec8d1da4837f; MapDraft.cs Git blob 0331a54a1545ecd1ea18b616ef13fed113474b8c; MapWorld.cs Git blob 8928908db123b35dcab4b324fe9d3a7a8fceee4e. Codex current SHA may change; do not test on assumed head.
 
-**Gates:** SOURCE_TESTED / NODE_CLI_NOT_RUN / CHROMIUM_NOT_RUN / UNITY_NOT_RUN / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NO_MERGE / NOT_IN_GAME.
+**Gates:** SOURCE_TESTED / **NODE_CLI_WINDOWS+UBUNTU_PASS (run 40758466800)** / CHROMIUM_NOT_RUN / UNITY_NOT_RUN / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NO_MERGE / NOT_IN_GAME. Parallel CI-02/CI-03 Unity workflows on this branch failed at **Require valid Unity activation credentials**, before native tests, not at our Node/map assertions.
