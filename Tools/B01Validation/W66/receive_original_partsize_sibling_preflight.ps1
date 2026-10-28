@@ -42,9 +42,12 @@ try {
   VerifyGit 'linked_two'
   Set-Content -LiteralPath (Join-Path $one '.b01-60-disposable-qa') -Value 'test-only'
   # Genuine two independent registered linked Git producer SHA worktrees.
-  $all=@(& git -C $repo worktree list --porcelain | Out-String)
-  if($all -notmatch [regex]::Escape($one) -or $all -notmatch [regex]::Escape($two)){
-    throw 'WORKTREE_REGISTRY_MISSING_SIBLING'
+  $all=(& git -C $repo worktree list --porcelain | Out-String)
+  $registered=@($all -split '\r?\n' | Where-Object { $_ -match '^worktree ' })
+  if($registered.Count -lt 3){ throw 'WORKTREE_REGISTRY_MISSING_SIBLING' }
+  if(((& git -C $one rev-parse HEAD | Out-String).Trim() -ne $sourceSha) -or
+     ((& git -C $two rev-parse HEAD | Out-String).Trim() -ne $sourceSha)){
+    throw 'WORKTREE_SHA_NOT_PRODUCER_PIN'
   }
   Allow 'out_of_all_source_trees' $outside
   Deny 'own_worktree' (Join-Path $one 'evidence') 'RECEIPT_MUST_BE_OUTSIDE_PROJECT'
