@@ -1,0 +1,71 @@
+{
+  "package_id": "B01-31-A1-EXPLODED-001",
+  "version": "P17-R1",
+  "producer": "B01-31",
+  "scope": "Single approved A1 wheel+support-arm RESEARCH ART; visual decomposition, not mechanics",
+  "authorization": {
+    "decision": "https://github.com/C8LyNn/RoboRougelike/issues/287#issuecomment-6463914298",
+    "variant": "REVISE_A_ONLY",
+    "unit": "SINGLE_ATTACHABLE_PART",
+    "model_job": "NOT_AUTHORIZED",
+    "g_design": "PENDING"
+  },
+  "source_provenance": {
+    "pr": 294,
+    "commit": "7735fdefc22272a34c000716bc70ad94be7703f3",
+    "path": "Docs/B01Concept/CONCEPT-MOBILITY-001/A1-single-wheel-arm.svg",
+    "reference_blob_sha1": "96cc46a7c14f94a45c387e102d5940cb787d2d5c",
+    "self_contained_copy": "A1-approved-reference.svg"
+  },
+  "new_art": {
+    "file": "A1-exploded-assembly.svg",
+    "canvas": [
+      1920,
+      1080
+    ],
+    "group_ids": [
+      "exploded-mount",
+      "exploded-arm",
+      "exploded-damper",
+      "exploded-wheel"
+    ],
+    "parts_per_assembly": 4,
+    "view": "Exploded original-geometry group decomposition; NOT real assembly spacing"
+  },
+  "raster_outputs": {
+    "sheet": "A1-exploded-sheet.png",
+    "cards": [
+      "A1-mount-128.png",
+      "A1-arm-128.png",
+      "A1-damper-128.png",
+      "A1-wheel-128.png"
+    ],
+    "icons": [
+      "A1-mount-64.png",
+      "A1-arm-64.png",
+      "A1-damper-64.png",
+      "A1-wheel-64.png"
+    ],
+    "qa": "render_and_verify.py"
+  },
+  "dependencies": [
+    "Python 3.11+",
+    "CairoSVG 2.8.2",
+    "Pillow 11.3.0"
+  ],
+  "not_proven": [
+    "physical mounting compatibility",
+    "socket dimensions",
+    "wheel radius",
+    "real suspension travel",
+    "axle pivot",
+    "joint axes",
+    "collider/mass",
+    "garage integration",
+    "Unity/PhysX rendering or movement",
+    "human comprehension"
+  ],
+  "status": "ART_RESEARCH_SOURCE_ONLY",
+  "codex_import": "INFO_ONLY; gated by B01-10/30/23 G-DESIGN and separate HQ MODEL_JOB",
+  "rollback": "Delete isolated Docs/B01Concept/P17/A1-EXPLODED-001 folder and own standalone CI file; no changes to game/Assets, original A/B/C, original A1 branch, or existing providers"
+}
