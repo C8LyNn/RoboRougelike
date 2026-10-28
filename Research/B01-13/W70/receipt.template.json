@@ -1,0 +1,28 @@
+{
+  "source_sha": "7299dcc5fd63ac042a0ffcd97b69d02fb8744649",
+  "build_sha": "7299dcc5fd63ac042a0ffcd97b69d02fb8744649",
+  "player_archive_sha256": "ec3193bb3ac24398c496ea65ad12aa653321db160a4dc74e8f618e3cc7ad6d1d",
+  "platform": "Windows x64 Player",
+  "unity_version": "6000.3.14f1",
+  "runtime_status": "NOT_RUN",
+  "cases": {
+    "garage": {
+      "exit_code": null,
+      "command": "RoboRougelike.exe -batchmode -rrl-garage307-qa garage",
+      "json_file": "garage/garage307-player-qa.json",
+      "log_file": "garage/Player.log"
+    },
+    "mov009": {
+      "exit_code": null,
+      "command": "RoboRougelike.exe -batchmode -rrl-suspension-ux-qa mov009",
+      "json_file": "mov009/suspension-ux-player-qa.json",
+      "log_file": "mov009/Player.log"
+    },
+    "editor": {
+      "exit_code": null,
+      "command": "RoboRougelike.exe -batchmode -rrl-map-editor-qa editor",
+      "json_file": "editor/map-editor-player-qa.json",
+      "log_file": "editor/Player.log"
+    }
+  }
+}
