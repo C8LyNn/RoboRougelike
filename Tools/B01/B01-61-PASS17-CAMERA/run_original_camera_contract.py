@@ -74,6 +74,7 @@ namespace UnityEngine {
         public float x,y;
         public Vector2(float a,float b){x=a;y=b;}
         public static Vector2 zero=>new(0,0);
+        public static Vector2 operator *(Vector2 v,float scale)=>new(v.x*scale,v.y*scale);
     }
     public class Rigidbody {public Vector3 linearVelocity;}
     public class Transform {
