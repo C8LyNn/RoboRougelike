@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""B01-60 PASS14 — independent original CHL W66 operator evidence-path safety QA.
+"""B01-60 PASS15 — independent original CHL owner safety RED-to-GREEN receiver.
 
 Imports the exact original B01-20 Python code at immutable QA commit, not a copy
 of its implementation. Two real detached linked Git worktrees, 6 original
@@ -12,9 +12,9 @@ import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
-OWNER_COMMIT = "b9f0458db297fb81e76add00855609b32eb0ef4b"
-OWNER_FILE = "Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py"
-OWNER_BLOB = "42ab146450ea3284d97a9a2bd5434a49fe195ab7"
+OWNER_COMMIT = "9a6acca417524545fbce7ac5962fe0944c5237c6"
+OWNER_FILE = "Tools/B01/QA-CHL003/W66Receipt/chl003_w66_operator.py"
+OWNER_BLOB = "96aec2f870ccc510727048a7208292f781e80c36"
 
 def command(*argv, cwd=None):
     p = subprocess.run([str(x) for x in argv], cwd=cwd, text=True,
@@ -71,9 +71,11 @@ def main():
             ("OUTSIDE_BOTH_ACCEPTED", accepted(own, root / "outputs"), True),
             ("OWN_WORKTREE_REJECTED", accepted(own, own / "evidence"), False),
             ("ANCESTOR_OF_OWN_REJECTED", accepted(own, root), False),
-            ("SIBLING_WORKTREE_ROOT_ACCEPTED_BUG", accepted(own, sibling), True),
-            ("SIBLING_ASSETS_DESCENDANT_ACCEPTED_BUG",
-             accepted(own, sibling / "Assets" / "evidence"), True),
+            ("SIBLING_WORKTREE_ROOT_REJECTED", accepted(own, sibling), False),
+            ("SIBLING_ASSETS_DESCENDANT_REJECTED",
+             accepted(own, sibling / "Assets" / "evidence"), False),
+            ("PRIMARY_SOURCE_ROOT_REJECTED", accepted(own, primary), False),
+            ("SIBLING_PREFIX_OUTSIDE_ACCEPTED", accepted(own, Path(str(sibling)+"-evidence")), True),
             ("NO_SOURCE_FILES_TOUCHED", before == snapshot() and
              all(not (w / "evidence").exists() for w in (own, sibling)), True)
         ]
@@ -88,9 +90,9 @@ def main():
             "native_unity": "NOT_RUN", "native_g1": "NOT_RUN",
             "cases": result,
         }
-        print("B0160_PASS14_CHL_ORIGINAL_JSON=" + json.dumps(output, sort_keys=True))
+        print("B0160_PASS15_CHL_ORIGINAL_JSON=" + json.dumps(output, sort_keys=True))
         if not all(c["pass"] for c in result):
             raise AssertionError("Original CHL path behavior changed; inspect actual cases")
-        print("B0160_PASS14_CHL_RESULT=ORIGINAL_SOURCE_CROSS_WORKTREE_EVIDENCE_GAP_REPRODUCED")
+        print("B0160_PASS15_CHL_RESULT=ORIGINAL_SOURCE_CROSS_WORKTREE_GUARD_GREEN")
 if __name__ == "__main__":
     main()
