@@ -1,0 +1,40 @@
+{
+  "package_id": "R5-PLAN-ISOLATION-QA-001",
+  "version": "P17-R1",
+  "owner": "B01-60",
+  "type": "INDEPENDENT_QA_ORIGINAL_CSHARP_RUNTIME",
+  "source_branch": "qa/b01-60-pass17-r5-plan-isolation-001",
+  "producer_data_owner": "B01-10",
+  "original_producer_sha": "c44f98bb5328848f1d9fc15ed19d6facf3cbee39",
+  "game_code_owner": "Codex",
+  "original_game_sha": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+  "original_files": {
+    "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a",
+    "Assets/R1/R1RunDefinition.cs": "5665e64d3d665c67d352eb5a9809a66fc5136698",
+    "Assets/R3/R3EnemyArchetype.cs": "66cd1ee734b129117b3753d1205469a0496cb673",
+    "Research/B01-10/P17/R5_EncounterDeck_BAL17.json": "762009d1bde7978aeb5c842dd08d2efdddcec646"
+  },
+  "execution": {
+    "project": "Harness.csproj",
+    "input_loader": "run_original.py",
+    "main": "Program.cs",
+    "test_double": "UnityJsonShim.cs",
+    "host": "dotnet8 on Windows2025 and Ubuntu24.04",
+    "expected_seed_count": 128,
+    "determinism": "every stage each seed replay matched",
+    "producer_native_unity": "NOT_RUN",
+    "independent_unity": "NOT_RUN",
+    "strict_negative_cases": 4,
+    "external_offer_object_mutability": "EXPECTED_RISK_PROBE",
+    "external_roster_mutability": "EXPECTED_RISK_PROBE"
+  },
+  "boundaries": [
+    "ONLY Tools/B01/R5-PLAN-ISOLATION-QA-001/** and its own CI workflow",
+    "all Codex original C# and B01-10 JSON fetched exact SHA into temporary external folder, not repo modifications",
+    "fake UnityEngine.JsonUtility marshaling via System.Text.Json IncludeFields; no actual Unity serialization parity guarantee",
+    "detect R5RunPlan Offers internal reference alias, report read-only source defect to Codex; no competing fix"
+  ],
+  "receiver": "B01-40 -> B01-00 -> Codex",
+  "codex_instructions": "Run dotnet8 harness; review result and if status SOURCE_RED_RETURNED_OFFERS_ALIAS_INTERNAL_STATE validate direct Editor Unity on disposable current game SHA; only Codex changes R5RunPlan. Never cherry-pick QA shim into Unity.",
+  "rollback": "close Draft PR; no canonical source changed."
+}
