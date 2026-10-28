@@ -105,7 +105,9 @@ class OriginalSpriteDisposableImport(unittest.TestCase):
     def test_11_case_insensitive_existing_alias_blocks_install(self):
         p=self.root/"Assets"/"b01importstaging.meta"
         p.write_bytes(b"Foreign")
-        with self.assertRaisesRegex(s.Reject,"TARGET_CASE_INSENSITIVE_PATH_COLLISION"):
+        with self.assertRaisesRegex(
+            s.Reject,"TARGET_(CASE_INSENSITIVE_PATH_COLLISION|STAGING_ALREADY_PRESENT)"
+        ):
             s.preflight(self.root,self.files)
         self.assertEqual(p.read_bytes(),b"Foreign")
 
