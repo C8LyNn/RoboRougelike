@@ -12,6 +12,7 @@ $editor=[Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
 if(!(Test-Path -LiteralPath $editor -PathType Leaf)){throw "PWHS_BINARY_NOT_FOUND"}
 $base=Join-Path ([IO.Path]::GetTempPath()) ("partsize_w38_"+[Guid]::NewGuid().ToString("N"))
 $wt=Join-Path $base "linked-disposable"
+$sibling=Join-Path $base "sibling-producer-worktree"
 $attached=Join-Path $base "attached-branch"
 $ordinary=Join-Path $base "ordinary-clone"
 $out=Join-Path $base "outside-evidence"
@@ -46,6 +47,18 @@ try {
     New-Item -ItemType Directory -Path (Join-Path $wt "Temp") -Force | Out-Null
     Set-Content -LiteralPath (Join-Path $wt "Temp/cache.txt") -Value "Unity cache"
     ExpectPass "real_detached_git_worktree_with_cache" $wt $out
+    # PASS14: B01-60 actually reproduced a P0 sibling-worktree receipt
+    # guard bypass with the ORIGINAL operator on Windows and Ubuntu.
+    # Two genuine source-pinned registered detached worktrees are mandatory.
+    & git -C $repo worktree add --quiet --detach $sibling $SOURCE
+    if($LASTEXITCODE -ne 0){throw "CREATE_SIBLING_PRODUCER_NEGATIVE_FAILED"}
+    ExpectReject "evidence_at_sibling_root" $wt $sibling "RECEIPT_OVERLAPS_REGISTERED_WORKTREE"
+    ExpectReject "evidence_inside_sibling_assets" $wt (Join-Path $sibling "Assets/W14-Evidence") "RECEIPT_OVERLAPS_REGISTERED_WORKTREE"
+    ExpectReject "evidence_parent_enclosing_sibling" $wt $base "RECEIPT_OVERLAPS_REGISTERED_WORKTREE"
+    ExpectReject "evidence_inside_registered_primary" $wt (Join-Path $repo "B01-W14-Evidence") "RECEIPT_OVERLAPS_REGISTERED_WORKTREE"
+    ExpectReject "evidence_equal_registered_primary" $wt $repo "RECEIPT_OVERLAPS_REGISTERED_WORKTREE"
+    # False-positive guard: a sibling-prefix name is NOT a descendant.
+    ExpectPass "similar_prefix_outside_all_registered_worktrees" $wt ($sibling+"-evidence")
 
     # Bypass #1: marker and matching HEAD are insufficient without linked
     # worktree provenance (ordinary clone and attached worktree must fail).
@@ -106,6 +119,7 @@ try {
     Write-Host "PARTSIZE_W38_REAL_GIT_POWERSHELL_PREFLIGHT_PASS total=$passed native_Unity=NOT_RUN"
 } finally {
     & git -C $repo worktree remove --force $wt 2>$null | Out-Null
+    & git -C $repo worktree remove --force $sibling 2>$null | Out-Null
     & git -C $repo worktree remove --force $attached 2>$null | Out-Null
     & git -C $repo branch -D $branchName 2>$null | Out-Null
     if(Test-Path -LiteralPath $base){Remove-Item -LiteralPath $base -Recurse -Force}
