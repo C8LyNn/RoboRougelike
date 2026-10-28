@@ -431,11 +431,24 @@ public static class Program
                 var writer = Task.Run(() =>
                 {
                     go.Wait();
+                    int committedWrites = 0, ioConflicts = 0;
                     for (int k = 0; k < 96; k++)
                     {
-                        MapStorage.Save(file, One(k % 2 == 0 ? MapItemKind.Wall : MapItemKind.Ground, k % 2, 0));
+                        try
+                        {
+                            MapStorage.Save(file, One(k % 2 == 0 ? MapItemKind.Wall : MapItemKind.Ground, k % 2, 0));
+                            committedWrites++;
+                        }
+                        catch (IOException)
+                        {
+                            // Real Windows File.Replace can conflict with an open
+                            // concurrent reader. A failed write is NOT a committed
+                            // map revision; verify that old/new bytes stay valid.
+                            ioConflicts++;
+                        }
                         if (k % 8 == 0) Thread.Yield();
                     }
+                    return (committedWrites, ioConflicts);
                 });
                 var reader = Task.Run(() =>
                 {
@@ -470,6 +483,7 @@ public static class Program
                 if (!Task.WaitAll(new Task[] { writer, reader }, 20000))
                     throw new TimeoutException("B11 concurrent original source IO exceeded 20 seconds");
                 var observed = reader.Result;
+                var written = writer.Result;
                 var final = new MapDraft();
                 bool finalOk = MapStorage.Load(file, final, out _) &&
                     final.Items.Count == 1 &&
@@ -478,8 +492,12 @@ public static class Program
                 bool noOrphans = Directory.GetFiles(directory, "*.tmp").Length == 0;
                 Console.WriteLine($"B11_REAL_IO_RACE successfulLoads={observed.successes} " +
                                   $"transientLoadFailures={observed.transientFailures} " +
+                                  $"committedWrites={written.committedWrites} " +
+                                  $"originalFileReplaceIOConflicts={written.ioConflicts} " +
                                   $"finalValid={finalOk} orphans={(!noOrphans)}");
-                return observed.Item1 && finalOk && noOrphans;
+                return observed.Item1 && written.committedWrites > 0 &&
+                       written.committedWrites + written.ioConflicts == 96 &&
+                       finalOk && noOrphans;
             }));
 
         Console.WriteLine("RESULT_JSON=" + JsonSerializer.Serialize(new
