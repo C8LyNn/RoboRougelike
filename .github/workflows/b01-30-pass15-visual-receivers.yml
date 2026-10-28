@@ -67,6 +67,9 @@ jobs:
       - name: Import genuine generated GLB back into Blender and render orthographic contact sheet
         run: |
           blender -b --factory-startup --python-exit-code 1 --python Tools/B01/VisualReceivers/P15/m04_actual_glb_contact.py -- --glb build/B01-30/P15-M04-generated/M04-024.glb --out build/B01-30/P15-M04-lookdev
+      - name: Compose genuinely rendered PNG contact sheet and verify visual change
+        run: |
+          python3 Tools/B01/VisualReceivers/P15/compose_m04_contact_sheet.py build/B01-30/P15-M04-lookdev
       - uses: actions/upload-artifact@v4
         with:
           name: B01-30-P15-M04-original-GLB-real-ortho-views
