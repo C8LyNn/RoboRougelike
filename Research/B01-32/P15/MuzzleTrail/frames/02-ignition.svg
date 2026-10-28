@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">RoboRougelike B01-32 muzzle trail frame 02 IGNITION</title>
+<desc id="desc">Research-only vector keyframe of a modular robotic muzzle trail in IGNITION state. No gameplay, Unity or performance implication.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#091321"/><stop offset=".6" stop-color="#0b1f31"/><stop offset="1" stop-color="#09131d"/></linearGradient>
+ <linearGradient id="metal" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#87969f"/><stop offset=".2" stop-color="#50616e"/><stop offset=".48" stop-color="#202f3c"/><stop offset=".75" stop-color="#52616d"/><stop offset="1" stop-color="#172633"/></linearGradient>
+ <linearGradient id="jet" x1="0" x2="1"><stop stop-color="#b6feff"/><stop offset=".18" stop-color="#27f2ff"/><stop offset=".54" stop-color="#11a7e5" stop-opacity=".68"/><stop offset="1" stop-color="#1289b9" stop-opacity="0"/></linearGradient>
+ <linearGradient id="core" x1="0" x2="1"><stop stop-color="#ffffff"/><stop offset=".4" stop-color="#e4ffff"/><stop offset=".85" stop-color="#7ef3ff" stop-opacity=".8"/><stop offset="1" stop-color="#6bdcef" stop-opacity="0"/></linearGradient>
+ <radialGradient id="haze"><stop stop-color="#19d8fa" stop-opacity=".8"/><stop offset=".55" stop-color="#0d9fbc" stop-opacity=".25"/><stop offset="1" stop-color="#16507a" stop-opacity="0"/></radialGradient>
+ <filter id="softGlow" x="-40%" y="-160%" width="200%" height="420%"><feGaussianBlur stdDeviation="12"/></filter>
+ <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#204157" stroke-width="1" opacity=".35"/></pattern>
+</defs>
+<rect width="1200" height="675" fill="url(#bg)"/>
+<rect x="52" y="80" width="1096" height="500" rx="12" fill="#0b1b29" stroke="#31546b" stroke-width="1.5"/>
+<rect x="53" y="81" width="1094" height="498" fill="url(#grid)" opacity=".6"/>
+<g stroke="#16425e" stroke-width="1" opacity=".65"><path d="M54 333H1147"/><path d="M625 80V580"/></g>
+<circle cx="1005" cy="333" r="87" fill="none" stroke="#4a9bb2" opacity=".25" stroke-dasharray="5 10"/>
+<circle cx="1005" cy="333" r="26" fill="none" stroke="#4a9bb2" opacity=".3"/>
+<path d="M1005 220v28M1005 418v28M890 333h30M1090 333h28" stroke="#4a9bb2" opacity=".35"/>
+<!-- Fixed mechanical profile: an original notional modular cannon, no actual in-game weapon model. -->
+<g>
+ <path d="M84 273 L343 269 L386 288 L519 288 L552 303 L552 366 L519 381 L386 381 L344 397 L84 390Z" fill="url(#metal)" stroke="#a4bfcb" stroke-width="3"/>
+ <path d="M80 300 L340 295 L340 367 L80 361 Z" fill="#263d4b" stroke="#668599" stroke-width="2"/>
+ <path d="M121 303 L121 361 M171 299 L171 364 M221 300 L221 365 M271 298 L271 366" stroke="#98bbca" stroke-width="7" opacity=".6"/>
+ <path d="M355 292H542V374H355Z" fill="#223848" stroke="#708a99" stroke-width="3"/>
+ <path d="M372 304H514V321H372Z M372 341H514V360H372Z" fill="#354f5f"/>
+ <path d="M490 277H569V388H490Z" fill="url(#metal)" stroke="#839baa" stroke-width="3"/>
+ <path d="M552 294H625V372H552Z" fill="#1b3443" stroke="#b4cad4" stroke-width="3"/>
+ <path d="M579 298V370M604 298V370" stroke="#6e899b" stroke-width="5"/>
+ <path d="M623 304H646V362H623Z" fill="#121e2a" stroke="#9dc4ce" stroke-width="3"/>
+ <ellipse cx="645" cy="333" rx="10" ry="29" fill="#06141b" stroke="#67a2b0" stroke-width="3"/>
+ <ellipse cx="646" cy="333" rx="4.5" ry="15" fill="#a2f8ff" opacity="0.80"/>
+ <path d="M402 382L373 443H292L284 423L316 384Z" fill="#213442" stroke="#678597" stroke-width="3"/>
+ <path d="M302 438H373" stroke="#89aaba" stroke-width="5"/>
+ <path d="M386 287L390 266H478L490 287" fill="#1b3746" stroke="#85aab9" stroke-width="2"/>
+ <path d="M392 276H473" stroke="#30e8f8" stroke-width="5" opacity="0.67"/>
+</g>
+<!-- Cosmetic-only source VFX: transparent layers remain isolated from a damage or collision model. -->
+<g>
+  <ellipse cx="723.0" cy="333" rx="185.4" ry="45.7" fill="url(#haze)" opacity="0.69" filter="url(#softGlow)"/>
+  <path d="M 624 323 C 753.2 276.68, 872.9 236.92000000000002, 911 333 C 883.9 428.8, 739.2 394.32, 624 343 Z" fill="url(#jet)" opacity="0.70" filter="url(#softGlow)"/>
+  <path d="M 633 328 C 787.5 318, 918.5 326, 910 333 C 918.5 339, 787.5 349, 633 338 Z" fill="url(#core)" opacity="0.74"/>
+  <path d="M 628 333 L 910 333" stroke="#f8ffff" stroke-linecap="round" stroke-width="5.1" opacity="0.75"/>
+  <g opacity="0.550" fill="none" stroke="#56edff"><ellipse cx="668" cy="333" rx="22.8" ry="75.6" stroke-width="2.1"/><ellipse cx="721" cy="333" rx="15.7" ry="32.8" stroke-width="1.5" stroke-dasharray="8 12"/></g>
+  <g><path d="M 682 284.99 L 700 292.99" stroke="#ecfaff" stroke-width="3.0" opacity="0.516" stroke-linecap="round"/><path d="M 782 325.38 L 813 312.38" stroke="#55e2f9" stroke-width="2.8" opacity="0.464" stroke-linecap="round"/><path d="M 882 365.77 L 926 383.77" stroke="#55e2f9" stroke-width="2.6" opacity="0.413" stroke-linecap="round"/><path d="M 758 309.38 L 815 286.38" stroke="#ecfaff" stroke-width="2.4" opacity="0.361" stroke-linecap="round"/><path d="M 857 349.76 L 927 377.76" stroke="#55e2f9" stroke-width="2.2" opacity="0.310" stroke-linecap="round"/><path d="M 733 293.38 L 753 260.38" stroke="#55e2f9" stroke-width="2.0" opacity="0.258" stroke-linecap="round"/><path d="M 833 333.76 L 866 371.76" stroke="#ecfaff" stroke-width="1.7" opacity="0.206" stroke-linecap="round"/><path d="M 709 374.15 L 755 362.15" stroke="#55e2f9" stroke-width="1.5" opacity="0.155" stroke-linecap="round"/></g>
+ </g>
+<g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" fill="#cce3ed">
+<text x="54" y="45" font-size="17" font-weight="bold" letter-spacing="2">B01-32 / ANIMATION + VFX</text>
+<text x="1147" y="45" text-anchor="end" font-size="13" fill="#779bac">KEYFRAME 02 / 07</text>
+<text x="68" y="121" font-size="13" fill="#7da5b6">CANNON / COSMETIC MUZZLE TRAIL</text>
+<rect x="80" y="515" width="355" height="39" rx="6" fill="#142c3b" stroke="#38dceb"/>
+<circle cx="101" cy="535" r="6" fill="#38f4ff"/>
+<text x="119" y="541" font-size="15" fill="#d8edf4">IGNITION</text>
+<text x="850" y="534" font-size="13" fill="#96b7c2">32%  -  jet emerges</text>
+<text x="54" y="624" font-size="12" fill="#82a8b9">ORIGINAL VECTOR STUDY / RESEARCH ONLY</text>
+<text x="1147" y="624" text-anchor="end" font-size="12" fill="#82a8b9">1200 x 675  /  16:9  /  NO UNITY CLAIM</text>
+</g>
+</svg>

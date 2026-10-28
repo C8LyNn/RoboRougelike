@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>B01-32 muzzle trail / interactive source preview</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Segoe UI,Arial,sans-serif;background:#0a1420;color:#d6e9f2}*{box-sizing:border-box}body{margin:0;max-width:1240px;padding:24px;margin:auto}.tag{font:700 12px ui-monospace,monospace;letter-spacing:2px;color:#79bfca}.heading{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}h1{margin:8px 0 6px;font-size:clamp(22px,3vw,34px)}p{line-height:1.6;color:#9bb9c6}.viewer{background:#0c1b29;border:1px solid #396074;border-radius:12px;overflow:hidden;margin-top:20px}img{width:100%;height:auto;display:block}nav{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:14px 0}button{background:#23455b;color:#e6f7ff;border:1px solid #6692a7;border-radius:6px;padding:12px 15px;cursor:pointer}button:hover,button:focus-visible{outline:2px solid #65f2fa}button[aria-pressed=true]{background:#125a6a;border-color:#44e9f5}input[type=range]{accent-color:#54dbeb;flex:1;min-width:130px}.status{font:600 13px ui-monospace,monospace;color:#b9d4de;min-width:190px}.note{border-top:1px solid #244353;margin-top:26px;padding-top:16px;font-size:13px}code{color:#8de7f0} .small{font-size:13px}
+</style></head><body><div class="heading"><div><div class="tag">B01-32 / ROBO-ROGUELIKE / VFX LOOKDEV</div><h1>Modular muzzle trail</h1><p>Eight original 16:9 SVG keyframes. Toggle live preview or inspect each independently. No shader, particles, engine, hitbox or recoil are implemented.</p></div><span class="tag">RESEARCH ASSET v1</span></div>
+<div class="viewer"><img id="keyframe" src="frames/00-idle.svg" width="1200" height="675" alt="Robot muzzle in inactive visual state"></div>
+<nav aria-label="Sequence playback"><button id="play" type="button" aria-pressed="false">Play sequence</button><button id="off" type="button">VFX OFF</button><button id="prev" type="button" aria-label="Previous frame">←</button><button id="next" type="button" aria-label="Next frame">→</button><input id="seek" type="range" min="0" max="7" step="1" value="0" aria-label="Animation frame"><output class="status" id="status">00 / 07 · IDLE</output></nav>
+<p class="small">Keyboard: <code>Space</code> play/pause, <code>←/→</code> step. <code>VFX OFF</code> sets the standalone inactive frame and stops playback. External SVG frame files can be opened directly and rasterized with CairoSVG.</p><p class="note">Art direction: dark steel barrel, cyan-white discharge, staged ignition→peak→trail→clear. The beam's gameplay telegraph is intentionally out of scope. <strong>Not integrated into the Unity game.</strong></p>
+<script>
+"use strict";
+const frames=[{"file":"frames/00-idle.svg","label":"IDLE / SAFE"},{"file":"frames/01-charge.svg","label":"PRECHARGE"},{"file":"frames/02-ignition.svg","label":"IGNITION"},{"file":"frames/03-peak.svg","label":"PEAK"},{"file":"frames/04-trail.svg","label":"TRAIL"},{"file":"frames/05-decay.svg","label":"DECAY"},{"file":"frames/06-residue.svg","label":"RESIDUE"},{"file":"frames/07-idle.svg","label":"IDLE / RETURN"}];
+const holds=[160,100,100,125,145,160,180,360];
+const image=document.getElementById("keyframe"),seek=document.getElementById("seek"),status=document.getElementById("status"),play=document.getElementById("play");
+let current=0,timer=null;
+function stop(){if(timer!==null)clearTimeout(timer);timer=null;play.textContent="Play sequence";play.setAttribute("aria-pressed","false")}
+function show(i){current=(i+frames.length)%frames.length;image.src=frames[current].file;image.alt="Robot muzzle: "+frames[current].label;seek.value=String(current);status.textContent=String(current).padStart(2,"0")+" / 07 · "+frames[current].label}
+function tick(){show(current===7?0:current+1);timer=setTimeout(tick,holds[current])}
+function start(){if(timer!==null)return;play.textContent="Pause";play.setAttribute("aria-pressed","true");timer=setTimeout(tick,holds[current])}
+play.addEventListener("click",()=>timer===null?start():stop());
+document.getElementById("off").addEventListener("click",()=>{stop();show(0)});
+document.getElementById("prev").addEventListener("click",()=>{stop();show(current-1)});
+document.getElementById("next").addEventListener("click",()=>{stop();show(current+1)});
+seek.addEventListener("input",()=>{stop();show(Number(seek.value))});
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.code==="Space"){e.preventDefault();timer===null?start():stop()}else if(e.key==="ArrowLeft"){e.preventDefault();stop();show(current-1)}else if(e.key==="ArrowRight"){e.preventDefault();stop();show(current+1)}});
+show(0);
+</script></body></html>

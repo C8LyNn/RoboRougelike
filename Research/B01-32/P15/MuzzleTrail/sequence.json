@@ -1,0 +1,65 @@
+{
+  "id": "B01-32-P15-MUZZLETRAIL-001",
+  "kind": "research_only_original_vector_sequence",
+  "version": 1,
+  "source": "original self-contained SVG frames; no existing in-game asset used",
+  "frames": [
+    {
+      "file": "frames/00-idle.svg",
+      "name": "IDLE / SAFE",
+      "holdMs": 160,
+      "intensity": 0,
+      "tailPixels": 0
+    },
+    {
+      "file": "frames/01-charge.svg",
+      "name": "PRECHARGE",
+      "holdMs": 100,
+      "intensity": 0.17,
+      "tailPixels": 45
+    },
+    {
+      "file": "frames/02-ignition.svg",
+      "name": "IGNITION",
+      "holdMs": 100,
+      "intensity": 0.64,
+      "tailPixels": 270
+    },
+    {
+      "file": "frames/03-peak.svg",
+      "name": "PEAK",
+      "holdMs": 125,
+      "intensity": 1,
+      "tailPixels": 450
+    },
+    {
+      "file": "frames/04-trail.svg",
+      "name": "TRAIL",
+      "holdMs": 145,
+      "intensity": 0.72,
+      "tailPixels": 365
+    },
+    {
+      "file": "frames/05-decay.svg",
+      "name": "DECAY",
+      "holdMs": 160,
+      "intensity": 0.32,
+      "tailPixels": 210
+    },
+    {
+      "file": "frames/06-residue.svg",
+      "name": "RESIDUE",
+      "holdMs": 180,
+      "intensity": 0.1,
+      "tailPixels": 92
+    },
+    {
+      "file": "frames/07-idle.svg",
+      "name": "IDLE / RETURN",
+      "holdMs": 360,
+      "intensity": 0,
+      "tailPixels": 0
+    }
+  ],
+  "note": "Timing is an art preview proposal, not game tuning or tested gameplay; no Unity/renderer/performance measurements."
+}
