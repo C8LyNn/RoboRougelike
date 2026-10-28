@@ -50,6 +50,25 @@ jobs:
           python3 Tools/B01/B01-61-PASS15/ld02_cover_choice_vehicle_envelope.py --repo "$PWD"
       - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
         run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
+      - name: Fetch immutable original Codex full Edit Play and targeted retest XML evidence
+        run: |
+          git fetch --no-tags --depth=1 origin 589b60a912096d1e9917cb0bbac73a53e7543b4f
+          test "$(git rev-parse 589b60a912096d1e9917cb0bbac73a53e7543b4f^{commit})" = "589b60a912096d1e9917cb0bbac73a53e7543b4f"
+      - name: Execute strict receipt parser adversarial negative selftests
+        run: python3 Tools/B01/B01-61-PASS16/audit_codex_full_receipts.py --selftest
+      - name: Independently inspect real native original full Unity NUnit XML
+        run: python3 Tools/B01/B01-61-PASS16/audit_codex_full_receipts.py --repo "$PWD"
+      - name: Confirm targeted retest never unlocks the failed full Edit release gate
+        run: |
+          set +e
+          python3 Tools/B01/B01-61-PASS16/audit_codex_full_receipts.py --repo "$PWD" --require-release
+          code=$?
+          set -e
+          if test "$code" -ne 1; then
+            echo "::error::Full Edit failed / incomplete retest wrongly accepted OR parser failed with $code"
+            exit 1
+          fi
+          echo "EXPECTED_HOLD: full Edit remained 15 failed at aa7a and full new 1303-run NOT_RUN"
       - name: Inspect REAL committed Codex NUnit XML (targeted cases only)
         run: |
           python3 Tools/B01/B01-61-PASS12/audit_original_nunit_xml.py --repo "$PWD" --sha 231005c6d0351945a8ee6684f3856af118f0e94f
