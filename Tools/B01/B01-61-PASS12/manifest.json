@@ -1,20 +1,20 @@
 {
   "owner": "B01-61",
   "scope": "QA-only; not installed in Codex/game source",
-  "wave": "PASS14",
+  "wave": "PASS16",
   "codex_pr": 310,
-  "codex_sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+  "codex_sha": "aa7a917f177a9b1f07203868fb7d1d871eb3ee46",
   "fixture": "B0161CrossFeatureRegressionTests.cs",
-  "fixture_git_blob": "c7a0a107148173b055fd4c5d924beccc95b8f93e",
+  "fixture_git_blob": "e52bbdd35f7a5a966a009e30254ab747190052e3",
   "original_git_blobs": {
-    "Assets/R3/R3VehicleModel.cs": "9f1bf190c7535182c6ce375cbfe67f5b2862e811",
-    "Assets/MapEditor/R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "Assets/R3/R3VehicleModel.cs": "8cc68faf89793c3a803e5807594c9faf0df10091",
+    "Assets/MapEditor/R1MapEditor.cs": "2139f2d11b59a7948b9e5922d2964da2",
     "Assets/MOV009Integration/MOV009RunController.cs": "b18e888db10c31ca498d1cd875e0d6a5df60e37a",
     "Assets/R1/R1RunController.cs": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
     "Assets/Tests/Editor/MapEditorIntegrationTests.cs": "dc767fa9c72a0202bc44f6060b6865f925f18f2c",
     "Assets/Tests/Editor/WeaponGroupTests.cs": "f2f9d8cdc5f2fbb25a03b01d98a65d440d3e85bc",
     "Assets/Tests/Editor/SuspensionUxTests.cs": "3a81d7d0f3077c8a79dd31db0ebaba86c2b8ea08",
-    "Assets/Tests/Editor/MOV009ModelTests.cs": "0d5033f44713054ec5019aa755135a525e6ec10a",
+    "Assets/Tests/Editor/MOV009ModelTests.cs": "c843597d885d517fb9b54102f5a13894eb5b8342",
     "Assets/Pack/P12_PipelineSafeCamera.cs": "8519938f5734487d0350634cb6d81679a6434d62"
   },
   "expected_tests": [
@@ -25,5 +25,7 @@
   "Unity_PlayMode": "NOT_RUN",
   "Windows_Player": "NOT_RUN",
   "qa_negative": "During actual map-test copy, swap B -> A and damage gun to zero, then check original model A=null,B=Basic, original gun health unchanged, original Scrap and map JSON.",
-  "qa_camera_negative": "During garage→custom map test→map editor→garage, facade TargetRoot follows current live vehicle only; never stale destroyed test root; camera enabled in garage/test, disabled in editor, delegated Camera001Rig not autonomous."
+  "qa_camera_negative": "During garage→custom map test→map editor→garage, facade TargetRoot follows current live vehicle only; never stale destroyed test root; camera enabled in garage/test, disabled in editor, delegated Camera001Rig not autonomous.",
+  "previous_baseline": "231005c6d0351945a8ee6684f3856af118f0e94f",
+  "codex_game_source_note": "Gameplay source aa7a...; later #310 HEAD may include test-only and documentation commits. Not a native G1 claim."
 }
