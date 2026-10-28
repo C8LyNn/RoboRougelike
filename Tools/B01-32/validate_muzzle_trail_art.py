@@ -74,12 +74,17 @@ for m, pixels in zip(metrics, delta):
     m["plume_pixels_changed_vs_idle"] = pixels
 print(f"RENDER_NEGATIVE_PASS idle_frame07_zero_residual; peak_vs_idle={delta[3]} altered pixels")
 print(f"RENDER_GRADIENT_PASS charge={delta[1]} peak={delta[3]} residue={delta[6]}")
-canvas = Image.new("RGB", (2400, 1350), (8, 17, 27))
+canvas = Image.new("RGB", (2400, 676), (8, 17, 27))
 for i, original in enumerate(images):
     thumb=original.resize((600, 338), Image.Resampling.LANCZOS)
-    canvas.paste(thumb,(i%4*600,i//4*675))
-    # Keep four-by-two large contact views with space for readability
-# second row is at y=675; contact sheet uses 4 columns and 2 rows with vertical room
+    canvas.paste(thumb,(i%4*600,i//4*338))
+# A real 4x2 image board: no blank 337px stripe between rows or bottom.
+assert canvas.size == (2400, 676)
+background = Image.new("RGB", (600, 338), (8, 17, 27))
+for row in range(2):
+    actual_row = canvas.crop((0, row * 338, 600, (row + 1) * 338))
+    assert ImageChops.difference(actual_row, background).getbbox() is not None, ("Blank contact row", row)
+print("CONTACT_SHEET_PASS 4x2 frames, 2400x676, both rows populated")
 canvas.save(OUTPUT / "contact-sheet.png")
 for size in [64, 128]:
     out = images[3].resize((size, round(size * 675 / 1200)), Image.Resampling.LANCZOS)
