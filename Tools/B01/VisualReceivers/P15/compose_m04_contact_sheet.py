@@ -15,6 +15,8 @@ def main():
     receipt=json.loads(receipt_path.read_text())
     assert receipt["actual_imported_pivots"]==4
     assert receipt["real_pose_change_in_imported_animation"] is True
+    assert len(receipt["default_import_moving_pivots"]) >= 1
+    assert len(receipt["default_import_moving_pivots"])+len(receipt["default_import_idle_pivots"])==4
     sheet=Image.new("RGB",(1920,1455),(10,19,32))
     draw=ImageDraw.Draw(sheet)
     font=ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",24)
@@ -34,7 +36,7 @@ def main():
             x,y=col*cellw,83+row*cellh
             sheet.paste(im,(x,y))
             draw.rectangle((x+10,y+10,x+310,y+47),fill=(11,27,44))
-            draw.text((x+21,y+16),f"{label.upper()} / FRAME {frame:03}",
+            draw.text((x+21,y+16),f"{label.upper()} / FRAME {frame:03} / {'REST' if frame == 1 else 'ACTIVE CLIP'}",
                       fill=(224,238,245),font=font)
             outcomes[path.name]={"bytes":path.stat().st_size,
                 "sha256":hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -46,7 +48,7 @@ def main():
         outcomes[f"{label}_frame_difference_bbox"]=list(bb) if bb else None
     draw.text((26,1377),"SOURCE: M04 #196 @ eef02864 · 1 metre/unit · +Z UP · exhaust -Z · no actual collision/Unity acceptance",
               fill=(246,191,122),font=smaller)
-    draw.text((26,1405),"3 views × 2 real imported animation poses. Mount/gimbal visuals only; NOT game physics.",
+    draw.text((26,1405),"3 views × 2 actual imported poses; default clip only, four simultaneous gimbals NOT VERIFIED.",
               fill=(156,192,208),font=smaller)
     path=folder/"M04-024-orthographic-contact-sheet.png"
     sheet.save(path)
