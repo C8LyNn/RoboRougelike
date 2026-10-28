@@ -1,0 +1,824 @@
+{
+  "schema": "B01-25-P16-v1",
+  "datasetVersion": 2,
+  "contentScope": "AUTHORING_ONLY_NO_ENEMY_OR_REWARD_LOGIC",
+  "owningRole": "B01-25",
+  "engine": "Unity 6000.3.14f1 URP",
+  "sourcePins": {
+    "codexPR310": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+    "mapDraftBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "mapWorldBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+    "editorBlob": "2139f2d11b59a7948b9e5922d2964da6f2944da2",
+    "predecessorP15Blob": "8586312b9606d94b088e4e7640c28105e2d6bac1"
+  },
+  "geometryAssumption": "MapWorld Grid4, Walls 4×4×0.5m; Platform kind6 4×4×(1*scaleY) Cube; Corner Platform scaleY4. 2D rectangle intersection for source-derived coverage, not PhysX.",
+  "scenarios": [
+    {
+      "id": "A",
+      "file": "ARENA16_A_COVER_BREACH.json",
+      "preview": "ARENA16_A_COVER_BREACH.svg",
+      "title": "Przełamanie pod osłoną",
+      "footprint": {
+        "cells": [
+          12,
+          10
+        ],
+        "meters": [
+          48,
+          40
+        ]
+      },
+      "sp": [
+        2,
+        5
+      ],
+      "finish": [
+        9,
+        5
+      ],
+      "hypotheticalEnemyWatchpoint": [
+        9,
+        6
+      ],
+      "enemyIsImplemented": false,
+      "rewardIsImplemented": false,
+      "challenge": "Długi objazd daje osłonę przed hipotetycznym ostrzałem, skrót pozwala skrócić ekspozycję czasową. Żaden wróg ani nagroda nie jest uruchomiony w MapEditor.",
+      "routeOptions": [
+        {
+          "name": "exposed",
+          "waypoints": [
+            [
+              2,
+              5
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              4,
+              5
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              6,
+              5
+            ],
+            [
+              7,
+              5
+            ],
+            [
+              8,
+              5
+            ],
+            [
+              9,
+              5
+            ]
+          ],
+          "expected": {
+            "steps": 7,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 0,
+            "interiorPoints": 6
+          }
+        },
+        {
+          "name": "shielded",
+          "waypoints": [
+            [
+              2,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              9,
+              4
+            ],
+            [
+              9,
+              5
+            ]
+          ],
+          "expected": {
+            "steps": 13,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 8,
+            "interiorPoints": 12
+          }
+        }
+      ],
+      "sourceGeometryMetrics": {
+        "id": "A",
+        "kindCounts": {
+          "0": 120,
+          "1": 42,
+          "4": 1,
+          "5": 1,
+          "6": 4,
+          "7": 4,
+          "8": 2
+        },
+        "routeStats": {
+          "exposed": {
+            "steps": 7,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 0,
+            "interiorPoints": 6
+          },
+          "shielded": {
+            "steps": 13,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 8,
+            "interiorPoints": 12
+          }
+        },
+        "rayStats": [
+          {
+            "name": "W",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "E",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "S",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "N",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "SW",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "SE",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "NW",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "NE",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          }
+        ],
+        "openSquares": {
+          "3": 2,
+          "4": 0,
+          "5": 0
+        },
+        "finishReachable": true,
+        "allPositionsUnique": true
+      }
+    },
+    {
+      "id": "B",
+      "file": "ARENA16_B_MANEUVER_LOOP.json",
+      "preview": "ARENA16_B_MANEUVER_LOOP.svg",
+      "title": "Obwodnica i manewr",
+      "footprint": {
+        "cells": [
+          16,
+          12
+        ],
+        "meters": [
+          64,
+          48
+        ]
+      },
+      "sp": [
+        2,
+        5
+      ],
+      "finish": [
+        13,
+        6
+      ],
+      "hypotheticalEnemyWatchpoint": [
+        12,
+        6
+      ],
+      "enemyIsImplemented": false,
+      "rewardIsImplemented": false,
+      "challenge": "Dwa podejścia wokół centralnej wyspy, więcej przestrzeni do manewrowania i osłona o różnym stopniu względem punktu obserwacyjnego. Brak zaprogramowanego wroga.",
+      "routeOptions": [
+        {
+          "name": "north",
+          "waypoints": [
+            [
+              2,
+              5
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              3,
+              8
+            ],
+            [
+              4,
+              8
+            ],
+            [
+              5,
+              8
+            ],
+            [
+              6,
+              8
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              8,
+              8
+            ],
+            [
+              9,
+              8
+            ],
+            [
+              10,
+              8
+            ],
+            [
+              11,
+              8
+            ],
+            [
+              12,
+              8
+            ],
+            [
+              13,
+              8
+            ],
+            [
+              13,
+              7
+            ],
+            [
+              13,
+              6
+            ]
+          ],
+          "expected": {
+            "steps": 16,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 1,
+            "interiorPoints": 15
+          }
+        },
+        {
+          "name": "south",
+          "waypoints": [
+            [
+              2,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              13,
+              3
+            ],
+            [
+              13,
+              4
+            ],
+            [
+              13,
+              5
+            ],
+            [
+              13,
+              6
+            ]
+          ],
+          "expected": {
+            "steps": 16,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 4,
+            "interiorPoints": 15
+          }
+        }
+      ],
+      "sourceGeometryMetrics": {
+        "id": "B",
+        "kindCounts": {
+          "0": 192,
+          "1": 56,
+          "4": 1,
+          "5": 1,
+          "6": 4,
+          "7": 4,
+          "8": 2
+        },
+        "routeStats": {
+          "north": {
+            "steps": 16,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 1,
+            "interiorPoints": 15
+          },
+          "south": {
+            "steps": 16,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 4,
+            "interiorPoints": 15
+          }
+        },
+        "rayStats": [
+          {
+            "name": "W",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "E",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "S",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "N",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "SW",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "SE",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "NW",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "NE",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          }
+        ],
+        "openSquares": {
+          "3": 36,
+          "4": 13,
+          "5": 4
+        },
+        "finishReachable": true,
+        "allPositionsUnique": true
+      }
+    },
+    {
+      "id": "C",
+      "file": "ARENA16_C_RISK_SHORTCUT.json",
+      "preview": "ARENA16_C_RISK_SHORTCUT.svg",
+      "title": "Ryzykowny skrót",
+      "footprint": {
+        "cells": [
+          14,
+          10
+        ],
+        "meters": [
+          56,
+          40
+        ]
+      },
+      "sp": [
+        2,
+        5
+      ],
+      "finish": [
+        11,
+        5
+      ],
+      "hypotheticalEnemyWatchpoint": [
+        10,
+        7
+      ],
+      "enemyIsImplemented": false,
+      "rewardIsImplemented": false,
+      "challenge": "Szybsze przejście przez odsłonięty północny korytarz albo dłuższy objazd na południe w cieniu wewnętrznej ściany. Mechanika bonusu za ryzyko nie istnieje w MapEditor.",
+      "routeOptions": [
+        {
+          "name": "exposed",
+          "waypoints": [
+            [
+              2,
+              5
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              6
+            ],
+            [
+              4,
+              6
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              7,
+              6
+            ],
+            [
+              8,
+              6
+            ],
+            [
+              9,
+              6
+            ],
+            [
+              10,
+              6
+            ],
+            [
+              11,
+              6
+            ],
+            [
+              11,
+              5
+            ]
+          ],
+          "expected": {
+            "steps": 11,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 0,
+            "interiorPoints": 10
+          }
+        },
+        {
+          "name": "shielded",
+          "waypoints": [
+            [
+              2,
+              5
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              5,
+              2
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              2
+            ],
+            [
+              8,
+              2
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              11,
+              4
+            ],
+            [
+              11,
+              5
+            ]
+          ],
+          "expected": {
+            "steps": 15,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 8,
+            "interiorPoints": 14
+          }
+        }
+      ],
+      "sourceGeometryMetrics": {
+        "id": "C",
+        "kindCounts": {
+          "0": 140,
+          "1": 46,
+          "4": 1,
+          "5": 1,
+          "6": 4,
+          "7": 4,
+          "8": 2
+        },
+        "routeStats": {
+          "exposed": {
+            "steps": 11,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 0,
+            "interiorPoints": 10
+          },
+          "shielded": {
+            "steps": 15,
+            "gridValid": true,
+            "centerlineNoSourceBoxIntersection": true,
+            "shadowPoints": 8,
+            "interiorPoints": 14
+          }
+        },
+        "rayStats": [
+          {
+            "name": "W",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "E",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "S",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "N",
+            "expectedKind": 1,
+            "actual": [
+              1,
+              1
+            ]
+          },
+          {
+            "name": "SW",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "SE",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "NW",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          },
+          {
+            "name": "NE",
+            "expectedKind": 6,
+            "actual": [
+              6
+            ]
+          }
+        ],
+        "openSquares": {
+          "3": 20,
+          "4": 6,
+          "5": 0
+        },
+        "finishReachable": true,
+        "allPositionsUnique": true
+      }
+    }
+  ],
+  "native": {
+    "UnityEdit": "NOT_RUN",
+    "UnityPlay": "NOT_RUN",
+    "WindowsPlayer": "NOT_RUN",
+    "LightHeavy": "NOT_RUN"
+  },
+  "codeIntegration": "NOT_IN_CANONICAL_GAME",
+  "cv": "Existing CV-05 only",
+  "independentQA": "PENDING_B01-61 / B01-21"
+}
