@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using B01.PARTSIZE001;
+using B01.P17Rigs;
 
 namespace B01.P17Weakpoints;
 
