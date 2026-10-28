@@ -28,6 +28,14 @@
       "path": "Docs/CX08/Fixtures/LD02_COVER_CHOICE.json",
       "git_blob": "8586312b9606d94b088e4e7640c28105e2d6bac1",
       "expected_items": 173
+    },
+    {
+      "path": "Assets/MapEditor/R1MapEditor.cs",
+      "git_blob": "2139f2d11b59a7948b9e5922d2964da2"
+    },
+    {
+      "path": "Assets/MapEditor/R1MapEditorHUD.cs",
+      "git_blob": "bebfca1cb72703533e7c501653aa071630dabdff"
     }
   ],
   "qa_sources": [
@@ -45,7 +53,7 @@
     },
     {
       "path": "Tools/B01/B01-62/MapSaveSourceQA/CV02_NATIVE_HANDOFF.md",
-      "git_blob": "c0909fc1d623a182a5c7cc2dd0b4d1983e46f253"
+      "git_blob": "3506096cfc785c21f03c1dbb5a0d80536edbf434"
     }
   ],
   "toolchain": {
@@ -111,7 +119,8 @@
     "B11 writer may throw real Windows file sharing IOException during parallel access; observed integrity PASS does not guarantee successful concurrent operation or prove integrated gameplay uses parallel saves.",
     "B05/B06/B07 process termination occurs after separate QA staging, not within original MapStorage.Save or during power loss; no recovery policy has been approved.",
     "D02 source negatives prove only the enumerated cases A01–A04 on exact listed source blobs, not every possible Unicode/filesystem alias, graphical confirmation, or real Player behavior.",
-    "CI-02 and CI-03 native-license preflight failures are not evidence of gameplay test failures; separate independent native G1 requires HQ-authorized legal Unity host."
+    "CI-02 and CI-03 native-license preflight failures are not evidence of gameplay test failures; separate independent native G1 requires HQ-authorized legal Unity host.",
+    "Current Codex editor UI implements a second-click MapOverwritePending confirmation; the headless C# harness verifies API consent, not graphical click/focus behavior or eventual owner UX approval."
   ],
   "next_owner": [
     "Codex — native CV-02 if authentic Unity host and source/build ACK",
