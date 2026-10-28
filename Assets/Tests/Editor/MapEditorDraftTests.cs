@@ -53,7 +53,7 @@ public sealed class MapEditorDraftTests
             Assert.That(MapStorage.TryPath(directory,"../escape",out _),Is.False);
             Assert.That(MapStorage.TryPath(directory,"Tor 1",out var file),Is.True);
             var m=new MapDraft();m.Place(MapItemKind.Ground,0,0,0);MapStorage.Save(file,m);
-            m.Place(MapItemKind.Wall,0,0,2);MapStorage.Save(file,m);
+            m.Place(MapItemKind.Wall,0,0,2);MapStorage.Save(file,m,true);
             var loaded=new MapDraft();Assert.That(MapStorage.Load(file,loaded,out var error),Is.True,error);
             Assert.That(loaded.Items.Count,Is.EqualTo(2));Assert.That(loaded.Items.Single(p=>p.kind==MapItemKind.Wall).rotation,Is.EqualTo(2));
             File.WriteAllText(file,"{bad");Assert.That(MapStorage.Load(file,loaded,out error),Is.False);Assert.That(loaded.Items.Count,Is.EqualTo(2));

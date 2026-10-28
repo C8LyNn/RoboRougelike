@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Failed(Child)" total="7" passed="1" failed="6" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0,1395372">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1282" result="Failed" site="Child" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.139537" total="7" passed="1" failed="6" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1595" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="490" result="Failed" site="Child" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.105757" total="7" passed="1" failed="6" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="18556" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1212" name="MapStorageIntegrityTests" fullname="MapStorageIntegrityTests" classname="MapStorageIntegrityTests" runstate="Runnable" testcasecount="7" result="Failed" site="Child" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.063332" total="7" passed="1" failed="6" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1219" name="ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected" fullname="MapStorageIntegrityTests.ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected" methodname="ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected" classname="MapStorageIntegrityTests" runstate="Runnable" seed="875117698" result="Failed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.038304" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: instance of <System.IO.IOException>
+  But was:  no exception thrown
+]]></message>
+            <stack-trace><![CDATA[at MapStorageIntegrityTests.ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected () [0x0006a] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapStorageIntegrityTests.cs:19
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1218" name="InvalidAndReservedNamesFailBeforeIO" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.006509" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1213" name="InvalidAndReservedNamesFailBeforeIO(&quot; Tor 1 &quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot; Tor 1 &quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1590605378" result="Failed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.001282" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO (System.String name) [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapStorageIntegrityTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1214" name="InvalidAndReservedNamesFailBeforeIO(&quot;CON&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;CON&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1309693950" result="Failed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.000683" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO (System.String name) [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapStorageIntegrityTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1215" name="InvalidAndReservedNamesFailBeforeIO(&quot;nul&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;nul&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1413873087" result="Failed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.000643" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO (System.String name) [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapStorageIntegrityTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1216" name="InvalidAndReservedNamesFailBeforeIO(&quot;COM1&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;COM1&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1981478750" result="Failed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.000655" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO (System.String name) [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapStorageIntegrityTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1217" name="InvalidAndReservedNamesFailBeforeIO(&quot;Lpt9&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;Lpt9&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="2112471345" result="Failed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.000677" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO (System.String name) [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapStorageIntegrityTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+        </test-suite>
+        <test-case id="1220" name="NewValidMapRoundTripsWithoutAliases" fullname="MapStorageIntegrityTests.NewValidMapRoundTripsWithoutAliases" methodname="NewValidMapRoundTripsWithoutAliases" classname="MapStorageIntegrityTests" runstate="Runnable" seed="791098622" result="Passed" start-time="2026-10-28 09:27:02Z" end-time="2026-10-28 09:27:02Z" duration="0.007982" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
