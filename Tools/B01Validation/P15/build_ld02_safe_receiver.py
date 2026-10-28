@@ -194,8 +194,18 @@ def guard_install_root(repo,where):
     ensure(marker.is_file() and not marker.is_symlink() and
            marker.read_text(encoding="ascii")==MARKER_TEXT,
            "EXPLICIT_DISPOSABLE_MAPS_MARKER_REQUIRED")
-    ensure(not any(part.casefold() in ("appdata","persistentdatapath","unityproject","projectsettings","assets")
-                   for part in root.parts),"POSSIBLE_LIVE_UNITY_PATH_DENIED")
+    # Windows Python tempfile roots can legitimately be under AppData/Local/Temp.
+    # Admit ONLY the actual OS temp subtree for an explicitly marked disposable
+    # test root; reject AppData/LocalLow (Unity persistentDataPath), and any
+    # non-temp AppData path. No guessing the user's persistentDataPath.
+    import tempfile
+    parts={part.casefold() for part in root.parts}
+    ensure(not parts.intersection({"persistentdatapath","unityproject","projectsettings","assets","locallow"}),
+           "POSSIBLE_LIVE_UNITY_PATH_DENIED")
+    if "appdata" in parts:
+        temp_root=Path(tempfile.gettempdir()).resolve(strict=True)
+        ensure(temp_root in root.parents and root!=temp_root,
+               "POSSIBLE_LIVE_UNITY_PATH_DENIED")
     return root
 
 def target_paths(root):
