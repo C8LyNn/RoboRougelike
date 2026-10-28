@@ -1,0 +1,64 @@
+name: B01-21 P17 COVER001 actual original MAPGEN static sightline fields (NOT UNITY)
+on:
+  push:
+    branches: [research/b01-21-p17-map-cover-field]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cover_source:
+    name: Source cover/LOS on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin original unchanged prior MAP-ROUTES-001 algorithm and 3 source geometry blobs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $expected = @{
+            'Research/B01-21/P17/map_routes.py' = '5888a7e96a58cabcc32da72cb8f74715b4d6ceb5'
+            'Research/B01-21/P16/generated/AR16_01_OPEN_FLANK.blueprint.json' = 'fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e'
+            'Research/B01-21/P16/generated/AR16_02_SPLIT_DECISION.blueprint.json' = '022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790'
+            'Research/B01-21/P16/generated/AR16_03_DENSE_PRESSURE.blueprint.json' = '1fe7bf8b124d999de75c0fd3cacc85ee62319429'
+          }
+          foreach ($item in $expected.GetEnumerator()) {
+            $got = (git hash-object "$($item.Key)").Trim()
+            if ($LASTEXITCODE -ne 0 -or $got -ne $item.Value) { throw "COVER001_INPUT_SHA_MISMATCH $($item.Key): $got" }
+          }
+          Write-Output 'MAP_COVER_P17_SOURCE_PIN_4_GIT_BLOBS_PASS'
+      - name: Execute 12 real test cases of source geometry, shields and fail-closed inputs
+        shell: pwsh
+        run: |
+          python -m unittest discover -s Research/B01-21/P17/COVER001 -p 'test_cover_field.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'COVER001_SOURCE_TESTS_RED' }
+      - name: Generate or byte-verify actual three new cover maps and SVGs
+        shell: pwsh
+        run: |
+          $generator = 'Research/B01-21/P17/COVER001/cover_field.py'
+          $manifest = 'Research/B01-21/P17/COVER001/generated/manifest.json'
+          if (Test-Path $manifest) {
+            python $generator --check
+            if ($LASTEXITCODE -ne 0) { throw 'COVER001_COMMITTED_ARTIFACT_DRIFT' }
+            python $generator
+          } elseif ('${{ matrix.os }}' -eq 'ubuntu-24.04') {
+            python $generator --emit-base64
+          } else {
+            python $generator
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'COVER001_GENERATION_RED' }
+          python $generator --check
+          if ($LASTEXITCODE -ne 0) { throw 'COVER001_OUTPUT_NON_DETERMINISTIC' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-p17-cover001-${{ matrix.os }}
+          path: Research/B01-21/P17/COVER001/generated/*
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,1915 @@
+{
+  "coordinateFrame": "MAPGEN001 LOCAL XZ, metres, not Unity transformed world",
+  "coverElementCount": 11,
+  "enemySpawnDescriptors": [
+    {
+      "x": -17,
+      "y": 1.25,
+      "z": 25
+    },
+    {
+      "x": 0,
+      "y": 1.25,
+      "z": 25
+    },
+    {
+      "x": 17,
+      "y": 1.25,
+      "z": 25
+    }
+  ],
+  "eyeHeightMeters": 1.25,
+  "historicalHeavyEnvelope": {
+    "clearancePerSide": 0.25,
+    "currentActualRigMeasured": false,
+    "length": 5.8,
+    "width": 5.18
+  },
+  "limitations": {
+    "gameplayAiOrCombatApplied": false,
+    "ignoresCoverDamageAndDynamicObjects": true,
+    "integrated": false,
+    "nativePhysxVehicleAccess": "NOT_RUN",
+    "nativeUnityRaycast": "NOT_RUN",
+    "sourceGeometryOnly": true
+  },
+  "packageId": "B01-21-MAP-COVER-001",
+  "sampleGridStepMetres": 4,
+  "schema": "B01-21-P17-MAP-COVER-001-v1",
+  "seed": 160202,
+  "shelterAnchors": [
+    {
+      "anchorId": "COVER_01",
+      "anchorLocalXZ": {
+        "x": -20,
+        "z": 5
+      },
+      "coverSourceElementOrdinal": 0,
+      "directOcclusionByThisCover": [
+        0
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -16
+        },
+        {
+          "x": -20,
+          "z": -16
+        },
+        {
+          "x": -20,
+          "z": 5
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 50,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": -19.950571,
+        "y": 0.96363866,
+        "z": 10.391045
+      },
+      "sourceCoverSize": {
+        "x": 1.9272773,
+        "y": 1.9272773,
+        "z": 1.9272773
+      },
+      "visibleEnemyDescriptors": [
+        1
+      ]
+    },
+    {
+      "anchorId": "COVER_02",
+      "anchorLocalXZ": {
+        "x": -11,
+        "z": -26
+      },
+      "coverSourceElementOrdinal": 1,
+      "directOcclusionByThisCover": [
+        0,
+        1
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -26
+        },
+        {
+          "x": -11,
+          "z": -26
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 12,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": -10.582794,
+        "y": 1.2614968,
+        "z": -20.760874
+      },
+      "sourceCoverSize": {
+        "x": 2.5229936,
+        "y": 2.5229936,
+        "z": 2.5229936
+      },
+      "visibleEnemyDescriptors": [
+        2
+      ]
+    },
+    {
+      "anchorId": "COVER_03",
+      "anchorLocalXZ": {
+        "x": -10,
+        "z": -16
+      },
+      "coverSourceElementOrdinal": 2,
+      "directOcclusionByThisCover": [
+        0,
+        1
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -16
+        },
+        {
+          "x": -10,
+          "z": -16
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 19,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": -9.577315,
+        "y": 1.4673194,
+        "z": -9.792767
+      },
+      "sourceCoverSize": {
+        "x": 2.9346387,
+        "y": 2.9346387,
+        "z": 2.9346387
+      },
+      "visibleEnemyDescriptors": [
+        2
+      ]
+    },
+    {
+      "anchorId": "COVER_05",
+      "anchorLocalXZ": {
+        "x": -15,
+        "z": 19
+      },
+      "coverSourceElementOrdinal": 4,
+      "directOcclusionByThisCover": [
+        2
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -25
+        },
+        {
+          "x": -6,
+          "z": -16
+        },
+        {
+          "x": -15,
+          "z": -16
+        },
+        {
+          "x": -15,
+          "z": 19
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 59,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": -10.413169,
+        "y": 0.98588663,
+        "z": 19.316933
+      },
+      "sourceCoverSize": {
+        "x": 1.9717733,
+        "y": 1.9717733,
+        "z": 1.9717733
+      },
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ]
+    },
+    {
+      "anchorId": "COVER_06",
+      "anchorLocalXZ": {
+        "x": 10,
+        "z": -25
+      },
+      "coverSourceElementOrdinal": 5,
+      "directOcclusionByThisCover": [
+        1,
+        2
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": 10,
+          "z": -25
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 10,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": 10.136551,
+        "y": 1.0905616,
+        "z": -19.430876
+      },
+      "sourceCoverSize": {
+        "x": 2.1811233,
+        "y": 2.1811233,
+        "z": 2.1811233
+      },
+      "visibleEnemyDescriptors": []
+    },
+    {
+      "anchorId": "COVER_07",
+      "anchorLocalXZ": {
+        "x": 11,
+        "z": -15
+      },
+      "coverSourceElementOrdinal": 6,
+      "directOcclusionByThisCover": [
+        1,
+        2
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": 6,
+          "z": -25
+        },
+        {
+          "x": 6,
+          "z": -15
+        },
+        {
+          "x": 11,
+          "z": -15
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 21,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        1,
+        2
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": 10.880062,
+        "y": 1.3497956,
+        "z": -9.401559
+      },
+      "sourceCoverSize": {
+        "x": 2.6995912,
+        "y": 2.6995912,
+        "z": 2.6995912
+      },
+      "visibleEnemyDescriptors": [
+        0
+      ]
+    },
+    {
+      "anchorId": "COVER_10",
+      "anchorLocalXZ": {
+        "x": 19,
+        "z": -15
+      },
+      "coverSourceElementOrdinal": 9,
+      "directOcclusionByThisCover": [
+        2
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": 19,
+          "z": -25
+        },
+        {
+          "x": 19,
+          "z": -15
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 29,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": 19.41256,
+        "y": 1.2933146,
+        "z": -9.862314
+      },
+      "sourceCoverSize": {
+        "x": 2.5866292,
+        "y": 2.5866292,
+        "z": 2.5866292
+      },
+      "visibleEnemyDescriptors": [
+        1
+      ]
+    },
+    {
+      "anchorId": "COVER_11",
+      "anchorLocalXZ": {
+        "x": 21,
+        "z": 5
+      },
+      "coverSourceElementOrdinal": 10,
+      "directOcclusionByThisCover": [
+        2
+      ],
+      "historicalHeavyAccessTurnHints": [
+        {
+          "x": 0,
+          "z": -25
+        },
+        {
+          "x": 21,
+          "z": -25
+        },
+        {
+          "x": 21,
+          "z": -15
+        },
+        {
+          "x": 24,
+          "z": -15
+        },
+        {
+          "x": 24,
+          "z": -5
+        },
+        {
+          "x": 21,
+          "z": -5
+        },
+        {
+          "x": 21,
+          "z": 5
+        }
+      ],
+      "historicalHeavyReachabilityGridStepsFromStart": 57,
+      "nativePhysxAnd3dCombatLineOfSight": "NOT_RUN",
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "originalEnemyDescriptors": 3,
+      "sourceAabbAndFloorClear": true,
+      "sourceCoverPosition": {
+        "x": 20.799469,
+        "y": 1.262872,
+        "z": 10.310603
+      },
+      "sourceCoverSize": {
+        "x": 2.525744,
+        "y": 2.525744,
+        "z": 2.525744
+      },
+      "visibleEnemyDescriptors": [
+        1
+      ]
+    }
+  ],
+  "sourceBlueprintGitBlob": "022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790",
+  "sourceLayoutId": "AR16_02_SPLIT_DECISION",
+  "sourceMapGenGeometryHash": "5cfc45a3308cf5d15b48ab9fd01eb5ae2c3b292bc44b97d5a158a9dcc870048d",
+  "sourceOcclusionType": "axis-aligned 3D Box vs horizontal finite XZ segment",
+  "sourceOriginalGameCommit": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "visibilityGrid": [
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": -24,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -24,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": -24,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": -24,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": -24,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": -24,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": -24,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -24,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        0
+      ],
+      "x": -24,
+      "z": 8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -24,
+      "z": 12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -24,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -24,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -24,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -20,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -20,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -20,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -20,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -20,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -20,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -20,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": -20,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        0
+      ],
+      "x": -20,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -20,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -20,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -16,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -16,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -16,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -16,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -16,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -16,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -16,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -16,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        0
+      ],
+      "x": -16,
+      "z": 8
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -16,
+      "z": 12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -16,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -16,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -16,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        0
+      ],
+      "x": -12,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -12,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -12,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": -12,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -12,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -8,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -8,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -8,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -8,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -8,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": -4,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": -4,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": -4,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": -4,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 0,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 0,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 0,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 0,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 0,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 0,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 12
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 0,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 4,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 4,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 4,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 4,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 4,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        2
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        1
+      ],
+      "x": 4,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 4,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 4,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 4,
+      "z": 8
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 4,
+      "z": 12
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 4,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 4,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 4,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 8,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 8,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 8,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 8,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 12,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 12,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 12,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 12,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": 16,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        1
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        0,
+        2
+      ],
+      "x": 16,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 16,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 16,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 16,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 16,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 16,
+      "z": 8
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 16,
+      "z": 12
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 16,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 16,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 16,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": 20,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": 20,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 20,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 20,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 20,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 20,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 20,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 20,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 20,
+      "z": 24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0
+      ],
+      "visibleEnemyCount": 2,
+      "visibleEnemyDescriptors": [
+        1,
+        2
+      ],
+      "x": 24,
+      "z": -24
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        2
+      ],
+      "x": 24,
+      "z": -20
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": 24,
+      "z": -16
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": 24,
+      "z": -12
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": 24,
+      "z": -8
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "visibleEnemyCount": 0,
+      "visibleEnemyDescriptors": [],
+      "x": 24,
+      "z": -4
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 24,
+      "z": 0
+    },
+    {
+      "occludedEnemyDescriptors": [
+        0,
+        2
+      ],
+      "visibleEnemyCount": 1,
+      "visibleEnemyDescriptors": [
+        1
+      ],
+      "x": 24,
+      "z": 4
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 24,
+      "z": 16
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 24,
+      "z": 20
+    },
+    {
+      "occludedEnemyDescriptors": [],
+      "visibleEnemyCount": 3,
+      "visibleEnemyDescriptors": [
+        0,
+        1,
+        2
+      ],
+      "x": 24,
+      "z": 24
+    }
+  ],
+  "visibleEnemyCountHistogram": {
+    "0": 7,
+    "1": 35,
+    "2": 39,
+    "3": 44
+  }
+}
