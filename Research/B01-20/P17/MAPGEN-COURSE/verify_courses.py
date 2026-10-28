@@ -24,7 +24,7 @@ def verify(folder):
         assert f["variantId"]==x["variant"] and f["geometryHash"]==x["geometryHash"]
         assert f["sourceSha"]==meta["sourceSha"]
         assert f["nativeUnity"]=="NOT_RUN" and f["physxDrives"]==0
-        seg=f["config"]["Segments"]
+        seg=f["config"]["segments"]
         assert seg in (3,4,5)
         assert len(f["checkpoints"])==seg
         assert f["counts"]["floors"]==seg
