@@ -71,3 +71,26 @@ jobs:
             Tools/B01/B01-62/MapDiff001/smoke-*.log
             Tools/B01/B01-62/MapDiff001/accept-*.log
           retention-days: 14
+
+  compare-artifacts:
+    name: Actual Windows vs Ubuntu raw-byte output parity
+    needs: mapdiff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mapdiff-001-windows-latest
+          path: output/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: mapdiff-001-ubuntu-latest
+          path: output/ubuntu
+      - name: Require exact, not only semantic, artifact identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp output/windows/generated/mapdiff.json output/ubuntu/generated/mapdiff.json
+          cmp output/windows/generated/mapdiff.svg output/ubuntu/generated/mapdiff.svg
+          echo "MAPDIFF_CROSS_OS_BYTE_IDENTICAL=PASS"
+          sha256sum output/windows/generated/mapdiff.json output/ubuntu/generated/mapdiff.json
+          sha256sum output/windows/generated/mapdiff.svg output/ubuntu/generated/mapdiff.svg
