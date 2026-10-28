@@ -46,7 +46,7 @@ internal static class Program {
                     Assert(RetreatPlanner.ClearSegment(m,c.World,site.V,site.V,c.World.ClearanceRadius),site.Id+" overlaps static cover");
             });
             Check(arena.Id+" health-triggered real world route to cover",()=>{
-                var c=Fresh();var start=new Vector2(0,20);
+                var c=Fresh();var m=c.Maps.Single(x=>x.ArenaKind==arena.ArenaKind);var start=new Vector2(0,20);
                 var d=RetreatPlanner.Evaluate(c,arena.ArenaKind,start,.2f,true,true,false);
                 Assert(d.Mode=="RETREAT_TO_COVER",arena.Id+": "+d.Mode+" "+d.Reason);
                 Assert(d.Route.Length>=2 && Eq(d.Route[0],start),"no original start");
