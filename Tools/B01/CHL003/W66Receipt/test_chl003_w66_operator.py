@@ -163,6 +163,21 @@ class OperatorSourceTests(unittest.TestCase):
             with self.assertRaisesRegex(op.ReceiptError,'NATIVE_EXIT_CODE_NOT_INT_ZERO'):
                 op.validate_receipt(p)
 
+    def test_23_cases_under_foreign_assembly_rejected(self):
+        root=ET.fromstring(nunit('EditMode'))
+        expected=root.find('.//test-suite')
+        foreign=ET.SubElement(root,'test-suite',type='Assembly',name='B01.UNRELATED.EditModeTests.dll',result='Passed')
+        for case in list(expected):
+            expected.remove(case)
+            foreign.append(case)
+        with self.assertRaisesRegex(op.ReceiptError,'NUNIT_CASE_OUTSIDE_EXPECTED_ASSEMBLY'):
+            op.validate_xml('EditMode',ET.tostring(root,encoding='unicode'))
+
+    def test_24_any_heavy_narrower_than_light_rejected(self):
+        bad=trial_log().replace('HEAVY,1,1150,2.82,','HEAVY,1,1150,0.01,')
+        with self.assertRaisesRegex(op.ReceiptError,'RIG_FOOTPRINT_IDENTICAL_OR_INVERTED'):
+            op.validate_trials(bad)
+
     def test_20_missing_native_evidence_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)
