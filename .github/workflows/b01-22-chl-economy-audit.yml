@@ -1,0 +1,89 @@
+name: B01-22 W16 read-only CHL ECON boundary audit
+on:
+  push:
+    branches: [audit/b01-22-w16-chl-economy-boundary-qa-20261027]
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-CHL-ECON-W16/**'
+      - '.github/workflows/b01-22-chl-economy-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-pinned-host-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch real pinned Codex R1/R3 and CHL #285 original source blobs
+        run: python Tools/B01/QA-CHL-ECON-W16/prepare.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual immutable CHL #285 CourseCore.cs with .NET8 (not Unity)
+        run: dotnet build Tools/B01/QA-CHL-ECON-W16/CrossSource/CrossSource.csproj -c Release --nologo
+      - name: Execute original CHL285 C# completion-retry vs mock-host boundary negatives
+        run: dotnet run --project Tools/B01/QA-CHL-ECON-W16/CrossSource/CrossSource.csproj -c Release --no-build -- artifacts/chl-econ/chl-realcore-results.json
+      - name: Verify exact PR302 R3+R4 original Git blob hashes
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/prepare.py
+      - name: Compile actual PR302 R3/R4 source with explicitly labeled non-Unity API signatures
+        run: dotnet build Tools/B01/QA-CHL-ECON-W16/Weapon302/RealWeaponEconomyQA.csproj -c Release --nologo
+      - name: Exercise original PR302 recovered weapon malformed enum and loss of physical inventory on exception
+        run: dotnet run --project Tools/B01/QA-CHL-ECON-W16/Weapon302/RealWeaponEconomyQA.csproj -c Release --no-build -- artifacts/chl-econ/weapon302-result.json
+      - name: Compile STRICT original-source wallet/part atomicity security contracts
+        run: dotnet build Tools/B01/QA-CHL-ECON-W16/Weapon302/SecurityContract.csproj -c Release --nologo
+      - name: Verify CURRENT PR303 identical PR302 source still RED for 3 required security contracts (expected failing cases)
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_existing_red.py
+      - name: Build and smoke-test ONE offline ready-to-run original-source Codex reproduction ZIP from pinned R3/R4
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/pack_codex_repro.py --smoke
+      - name: Differential exact Codex PR310 R3/R4 original-source security contracts (3 RED is NOT fixed)
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_codex310_diff.py
+      - name: Run immutable host source mutation and CHL direct-reward gate cases
+        run: python -m unittest discover -s Tools/B01/QA-CHL-ECON-W16 -p "test_*.py" -v
+      - name: Audit original CHL285 source boundaries and actual original Codex host reward ingress
+        run: python Tools/B01/QA-CHL-ECON-W16/audit.py --host Tools/B01/QA-CHL-ECON-W16/_pinned --chl Tools/B01/QA-CHL-ECON-W16/_pinned/Assets/RoboRougelikeChallenges/CHL003 --out artifacts/chl-econ/receipt.json
+      - name: Verify B01-62 Windows map name gate using compiled ORIGINAL Codex MapStorage C# (witness not security GREEN)
+        run: python Tools/B01/QA-CHL-ECON-W16/test_original_mapstorage62.py
+      - name: PASS13 execute 4 new ORIGINAL Codex R3/R4 CSharp economy quote, wallet and batch-atomicity boundaries
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_codex310_econ_bounds.py
+      - name: PASS14 actual ORIGINAL Codex P0 economy security + owner #275 rebuild price diagnostic (expected RED is NOT fixed)
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_codex_owner_economy.py --expect-current-red
+      - name: PASS16 independent strict original Codex new R3 security + 0HP rebuild accepted exact source
+        run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_codex_owner_economy.py --sha 589b60a912096d1e9917cb0bbac73a53e7543b4f --r3-blob 8cc68faf89793c3a803e5807594c9faf0df10091 --r4-blob 502f6d7f70d4e8078260de632ab181f244a4d730 --require-green
+      - name: PASS15 execute ORIGINAL Codex R1 Update terminal reward plus R3/R4 ledger (exception payout KNOWN PRODUCT RED)
+        run: python Tools/B01/QA-CHL-ECON-W16/test_original_r1_reward_terminal.py
+      - name: PASS16 independent complete ORIGINAL changed R4 SalvageLedger and R3 wallet atomic claim/Record
+        run: python Tools/B01/QA-CHL-ECON-W16/verify_pass16_original_r4_salvage.py
+      - name: PASS16 actual ORIGINAL post-fix Codex R1 WinEncounter exception cannot duplicate physical Scrap payout
+        run: python Tools/B01/QA-CHL-ECON-W16/verify_pass16_original_r1_win_fix.py
+      - name: QA-only source file hash manifest and strict scope
+        shell: python
+        run: |
+          import hashlib,json,pathlib,subprocess
+          out=pathlib.Path("artifacts/chl-econ")
+          out.mkdir(parents=True,exist_ok=True)
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
+            if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
+          assert len(files)==24,files
+          assert all(not s.startswith("Assets/") for s in files)
+          manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
+          (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
+            "files":manifest,"native":"NOT_RUN","g2":"HOLD"},indent=2)+"\n")
+          print("OWNED_QA_ONLY_SCOPE_PASS",head,len(files))
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-22-w16-chl-econ-${{ matrix.os }}-qa
+          path: |
+            artifacts/chl-econ/
+            Tools/B01/QA-CHL-ECON-W16/_pinned/receipt.json
+            Tools/B01/QA-CHL-ECON-W16/Weapon302/_pinned/real-source-receipt.json
+          retention-days: 30
