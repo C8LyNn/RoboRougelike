@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+'use strict';
+const assert=require('node:assert/strict');
+const C=require('./core.js');
+let passed=0;const records=[];
+function test(name,fn){try{fn();records.push({name,status:'PASS'});passed++;}catch(err){records.push({name,status:'FAIL',message:String(err)});}}
+function reject(fn){assert.throws(fn);}
+const input={category:'RETICLE_OCCLUSION',severity:'P0',note:'camera obstruction',x:.2,y:.3,w:.2,h:.1};
+const state=C.create(1920,1080,'frame.png'),one=C.add(state,input);
+test('blank starts at zero',()=>assert.equal(state.annotations.length,0));
+test('dimensions',()=>assert.equal(state.width,1920));
+test('id 1 assigned',()=>assert.equal(one.annotations[0].id,1));
+test('next id advances',()=>assert.equal(one.nextId,2));
+test('immutable previous state',()=>assert.equal(state.annotations.length,0));
+test('all categories available',()=>assert.equal(C.CATEGORIES.length,5));
+test('all severities available',()=>assert.equal(C.SEVERITIES.length,3));
+test('counts include first P0',()=>assert.equal(C.summary(one).P0,1));
+test('reticle count',()=>assert.equal(C.summary(one).reticle,1));
+test('remove',()=>assert.equal(C.remove(one,1).annotations.length,0));
+test('remove preserves incremented id',()=>assert.equal(C.remove(one,1).nextId,2));
+test('remove unknown rejected',()=>reject(()=>C.remove(one,4)));
+test('negative width rejected',()=>reject(()=>C.add(state,{...input,w:-1})));
+test('zero height rejected',()=>reject(()=>C.add(state,{...input,h:0})));
+test('NaN rejected',()=>reject(()=>C.add(state,{...input,x:NaN})));
+test('Infinity rejected',()=>reject(()=>C.add(state,{...input,y:Infinity})));
+test('out of bounds rejected',()=>reject(()=>C.add(state,{...input,x:.95,w:.2})));
+test('negative position rejected',()=>reject(()=>C.add(state,{...input,x:-.1})));
+test('wrong category rejected',()=>reject(()=>C.add(state,{...input,category:'INVALID'})));
+test('wrong severity rejected',()=>reject(()=>C.add(state,{...input,severity:'P5'})));
+test('control characters rejected',()=>reject(()=>C.add(state,{...input,note:'x\u0001'})));
+test('length > 200 rejected',()=>reject(()=>C.add(state,{...input,note:'x'.repeat(201)})));
+test('duplicate id rejected',()=>reject(()=>C.validate({...one,annotations:[...one.annotations,one.annotations[0]]})));
+test('file traversal rejected',()=>reject(()=>C.create(10,20,'../x.png')));
+test('invalid dimensions rejected',()=>reject(()=>C.create(0,20,'x.png')));
+test('too large image rejected',()=>reject(()=>C.create(8193,20,'x.png')));
+test('round-trip JSON',()=>assert.deepEqual(C.importJSON(C.exportJSON(one),{width:1920,height:1080}),one));
+test('wrong source dimensions rejected',()=>reject(()=>C.importJSON(C.exportJSON(one),{width:720,height:1080})));
+test('corrupt JSON rejected',()=>reject(()=>C.importJSON('{',{width:1920,height:1080})));
+test('oversized import rejected',()=>reject(()=>C.importJSON('x'.repeat(100001),{width:1920,height:1080})));
+test('type confusion rejected',()=>reject(()=>C.validate({...one,annotations:'fake'})));
+test('XSS payload remains plain text data',()=>{let s=C.add(state,{...input,note:'<img src=x onerror=alert(1)>'});assert.equal(C.importJSON(C.exportJSON(s),{width:1920,height:1080}).annotations[0].note,'<img src=x onerror=alert(1)>');});
+test('empty summary',()=>assert.equal(C.summary(state).total,0));
+test('P1 summary',()=>assert.equal(C.summary(C.add(state,{...input,severity:'P1'})).P1,1));
+test('100 allowed',()=>{let s=state;for(let i=0;i<100;i++)s=C.add(s,input);assert.equal(C.summary(s).total,100);});
+test('101 rejected',()=>{let s=state;for(let i=0;i<100;i++)s=C.add(s,input);reject(()=>C.add(s,input));});
+console.log(JSON.stringify({suite:'FRAME-UX-001 original reducer Node tests',passed,failed:records.length-passed,cases:records},null,2));
+if(passed!==records.length)process.exitCode=1;
