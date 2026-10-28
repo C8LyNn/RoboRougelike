@@ -111,6 +111,18 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Corrected LD02 Git archive failed' }
           Expand-Archive -LiteralPath "$p15Zip" -DestinationPath . -Force
           if ((git hash-object "$p15Path").Trim() -ne $p15Blob) { throw 'Corrected LD02 Git blob mutated during extraction' }
+          $coverCommit = 'ee2bc8a70b870864ce4a40c89cc7c6f28496b932'
+          $coverPath = 'Research/B01-25/P15/LD02_COVER_CHOICE.json'
+          $coverBlob = '21d079d0fe5917554be526aeb0d0d89a35de4c7e'
+          git cat-file -e "${coverCommit}^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'Original B01-25 P15 cover source commit unavailable' }
+          if ((git rev-parse "${coverCommit}:$coverPath").Trim() -ne $coverBlob) { throw 'Original B01-25 P15 cover Git blob changed' }
+          $coverArchive = Join-Path $env:RUNNER_TEMP 'b0121-p15-original-cover.zip'
+          git archive --format=zip --output="$coverArchive" $coverCommit -- $coverPath
+          if ($LASTEXITCODE -ne 0) { throw 'Original B01-25 P15 cover archive failed' }
+          Expand-Archive -LiteralPath "$coverArchive" -DestinationPath . -Force
+          if ((git hash-object "$coverPath").Trim() -ne $coverBlob) { throw 'Original B01-25 P15 cover extracted bytes mutated' }
+          Write-Output 'P15 COVER CHOICE EXACT ORIGINAL GIT JSON BLOB VERIFIED'
           Write-Output 'P15 BOTH ORIGINAL MAPDOCUMENTS AND MAPWORLD SOURCE SHAPE GIT BLOBS VERIFIED'
           Write-Output 'EXACT ORIGINAL CODEX CSHARP AND SIX ACTUAL B01-25 JSON GIT BLOBS VERIFIED'
       - name: Execute actual original MapDraft CSharp (Unity types stubbed, no Unity G1)
