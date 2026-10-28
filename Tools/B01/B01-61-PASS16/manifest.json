@@ -54,5 +54,23 @@
     "original_price_assertion": "before-36",
     "new_price_assertion": "before-13",
     "exact_reason": "one explicit owner test rename after approved cheaper owned-gun rebuild; verifies changed real NUnit test identity rather than silently treating 15/15 as identical code"
+  },
+  "authored_native_fixture": {
+    "path": "Tools/B01/B01-61-PASS16/B0161Pass16InputCameraRegressionTests.cs",
+    "git_blob": "26a89df148f95ecca5e51de77695ed2685079e06",
+    "actual_author_execution": "NOT_RUN",
+    "expected_native_cases": [
+      "HeldPrimaryThroughPauseIsBlockedUntilActualReleaseAndRepress",
+      "MovingVehicleRepositionsActiveCameraWithoutReplacingTargetRoot"
+    ],
+    "expected_editor_scene": "Assets/scene 1.unity",
+    "requirements": "Unity 6000.3.14f1, Input System enabled, authorized disposable batchmode Editor test asm",
+    "pass_conditions": "real virtual Mouse LPM held through actual R1 pause does not auto refire until release/repress; actual camera TargetRoot unchanged and camera follows moved test-range vehicle",
+    "fail_conditions": "spurious firing while held across pause, release fails to unlatch, camera stays stationary or follows stale root"
+  },
+  "source_fixture_pins": {
+    "Assets/Pack/P12_PipelineSafeTankController.cs": "8beeedb4db40b7b33c8f685d7b6aab1247a4b2d7",
+    "Assets/R1/R1RunController.cs": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
+    "Assets/Pack/P12_PipelineSafeCamera.cs": "8519938f5734487d0350634cb6d81679a6434d62"
   }
 }
