@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">RoboRougelike B01-32 part condition overlay ABRADED frame 1</title>
+<desc id="desc">Transparent independent visual overlay for condition ABRADED, phase 1. Graphic only. No condition threshold or damage behavior assigned.</desc>
+<g opacity="0.96" fill="none" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M48 77 L91 54 L115 66 M55 93 L103 65 M68 107 L122 79" stroke="#071622" stroke-width="10" opacity=".66"/>
+ <path d="M48 77 L91 54 L115 66 M55 93 L103 65 M68 107 L122 79" stroke="#aecbd5" stroke-width="3.6"/>
+ <path d="M132 161 L178 134 L193 144 M117 181 L173 146" stroke="#071622" stroke-width="8" opacity=".67"/>
+ <path d="M132 161 L178 134 L193 144 M117 181 L173 146" stroke="#d2eaf0" stroke-width="2.6"/>
+ <path d="M120 117 L137 105 M128 128 L155 110" stroke="#80abba" stroke-width="2.6"/>
+ </g>
+</svg>

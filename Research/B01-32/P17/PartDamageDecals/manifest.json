@@ -1,0 +1,87 @@
+{
+  "package_id": "B01-32-DAMAGE-DECAL-001",
+  "version": "1.0.0",
+  "producer": "B01-32",
+  "purpose": "cosmetic transparent per-part condition overlays; reusable texture output; independent from transient hit/detach VFX",
+  "source_ref": "immutable upon producer handoff; branch art/b01-32-p17-part-damage-state-decals",
+  "target": "Unity 6000.3.14f1 URP via generated PNG atlas or independent PNGs",
+  "source_format": "standalone 256x256 transparent SVG",
+  "stage_order": [
+    "clean",
+    "abraded",
+    "fractured",
+    "critical"
+  ],
+  "frame_order": [
+    0,
+    1,
+    2
+  ],
+  "frame_duration_ms": [
+    160,
+    160,
+    160
+  ],
+  "atlas": {
+    "columns": 3,
+    "rows": 4,
+    "cell_px": 256,
+    "output_px": [
+      768,
+      1024
+    ],
+    "tile_order": "row major (each stage row, each phase column)",
+    "output_png": "part-damage-atlas.png"
+  },
+  "mapping_policy": "Only Codex may bind stages to actual game part condition; NO invented HP thresholds; clean is fully transparent",
+  "unsupported": "No renderer, Unity/URP or gameplay test performed by source author",
+  "stages": [
+    {
+      "name": "clean",
+      "frames": [
+        "frames/clean-0.svg",
+        "frames/clean-1.svg",
+        "frames/clean-2.svg"
+      ],
+      "semantics": "no overlay"
+    },
+    {
+      "name": "abraded",
+      "frames": [
+        "frames/abraded-0.svg",
+        "frames/abraded-1.svg",
+        "frames/abraded-2.svg"
+      ],
+      "semantics": "nonfatal surface scuffs"
+    },
+    {
+      "name": "fractured",
+      "frames": [
+        "frames/fractured-0.svg",
+        "frames/fractured-1.svg",
+        "frames/fractured-2.svg"
+      ],
+      "semantics": "fracture lines"
+    },
+    {
+      "name": "critical",
+      "frames": [
+        "frames/critical-0.svg",
+        "frames/critical-1.svg",
+        "frames/critical-2.svg"
+      ],
+      "semantics": "critical fracture and segmented pulse"
+    }
+  ],
+  "dependencies": [
+    "CairoSVG 2.7.1 and Pillow 11.3 for portable rasterizing",
+    "Playwright Chromium only for functional browser preview QA"
+  ],
+  "authorized_paths": [
+    "Research/B01-32/P17/PartDamageDecals/",
+    "Tools/B01-32/P17/",
+    ".github/workflows/b01-32-p17-decal-raster.yml"
+  ],
+  "integrated": false,
+  "unity_native": "NOT_RUN"
+}
