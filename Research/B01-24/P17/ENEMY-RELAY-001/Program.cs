@@ -98,7 +98,7 @@ internal static class Program
         {
             var c=Fresh();foreach(var seed in new[]{7,31,83,109,202,407})
             {
-                var a=new R5RunPlan(c.Stages,seed), b=new R5RunPlan(c.Stages,seed);
+                var a=new R5RunPlan(c.Stages,seed); var b=new R5RunPlan(c.Stages,seed);
                 Check(Fingerprint(a)==Fingerprint(b),"seed nondeterminism "+seed);
                 Check(a.Count==6,"stage count");
                 for(int stage=0;stage<6;stage++)
@@ -124,7 +124,7 @@ internal static class Program
         });
         Run("generation-does-not-mutate-authored-input-data",() =>
         {
-            var c=Fresh(),before=JsonUtility.ToJson(c);
+            var c=Fresh(); var before=JsonUtility.ToJson(c);
             _=new R5RunPlan(c.Stages,83);
             Check(JsonUtility.ToJson(c)==before,"original recipe mutated");
         });
