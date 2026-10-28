@@ -1,0 +1,40 @@
+name: B01-31 P17 W02 A1 orientation view SVG source QA
+
+on:
+  push:
+    branches:
+      - art/b01-31-p17-w02-a1-view-icons-001
+    paths:
+      - 'Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/**'
+      - '.github/workflows/b01-31-p17-w02-view-icons.yml'
+  pull_request:
+    paths:
+      - 'Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/**'
+      - '.github/workflows/b01-31-p17-w02-view-icons.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  actual-original-source-image-gate:
+    name: Three real SVG view images / original raster QA (NOT UNITY)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned original image renderer
+        run: python -m pip install --disable-pip-version-check 'CairoSVG==2.8.2' 'Pillow==11.3.0'
+      - name: Validate original vectors and render 12 PNG icons plus contact
+        run: python Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/render_verify.py
+      - name: Archive actual PNGs and receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-31-p17-w02-a1-view-icons
+          path: Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/rendered/
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="art-title art-desc">
+<title id="art-title">B01-31 A1 single detachable wheel plus support arm — top view for orientation cues</title>
+<desc id="art-desc">Original top viewpoint artwork. Single provisional A1 module; its mount socket, pivots, suspension travel, mass, geometry and game integration are unmeasured. Non-CAD reference only.</desc>
+<defs>
+<linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a9c3c9"/><stop offset=".4" stop-color="#7597a5"/><stop offset="1" stop-color="#264358"/></linearGradient>
+<radialGradient id="rim"><stop stop-color="#a2d6d1"/><stop offset=".65" stop-color="#568ba1"/><stop offset="1" stop-color="#24465d"/></radialGradient>
+</defs>
+<g id="unit-A1-top" data-authoring-unit="SINGLE_ATTACHABLE_PART" data-geometry-state="CONCEPT_ONLY">
+<g id="part-mount" data-part="mount-proposal" data-physical-status="UNMEASURED">
+<rect x="25" y="99" width="43" height="94" rx="5" fill="url(#steel)" stroke="#d2e4e5" stroke-width="5"/>
+<rect x="36" y="117" width="19" height="56" rx="3" fill="#1c4c56" stroke="#eeb677" stroke-width="3" stroke-dasharray="6 4"/>
+</g>
+<g id="part-arm" data-part="support-arm" data-physical-status="UNMEASURED">
+<path d="M65 97L165 82L190 102L173 118L66 127Z" fill="url(#steel)" stroke="#b8d6dc" stroke-width="5"/>
+<path d="M65 168L167 170L190 190L165 205L66 199Z" fill="#30516a" stroke="#b8d6dc" stroke-width="5"/>
+<path d="M91 130L148 149L92 168" fill="none" stroke="#7ee0d8" stroke-width="6" stroke-linejoin="round"/>
+</g>
+<g id="part-damper" data-part="damper-proposal" data-physical-status="UNMEASURED">
+<path d="M98 131L163 164" stroke="#aec9d0" stroke-width="10" stroke-linecap="round"/>
+<path d="M108 133L113 147L126 139L131 155L145 146" fill="none" stroke="#f4b972" stroke-width="6" stroke-linejoin="round"/>
+<circle cx="98" cy="131" r="7" fill="#183143" stroke="#dcebea" stroke-width="3"/>
+</g>
+<g id="part-wheel" data-part="wheel" data-physical-status="UNMEASURED">
+<path d="M155 60L219 68Q242 141 219 218L155 226Q131 146 155 60Z" fill="#192b3d" stroke="#9eb8c2" stroke-width="7"/>
+<path d="M165 66L198 70V216L165 219Z" fill="#2d4255" stroke="#d5e5e5" stroke-width="3"/>
+<g stroke="#6d8795" stroke-width="8">
+<path d="M157 83L213 90M151 110L217 115M148 139L220 143M150 165L218 173M155 194L216 199"/>
+</g>
+<path d="M179 81L190 82V207L179 208Z" fill="#94c9ca" opacity=".6"/>
+</g>
+</g>
+</svg>
