@@ -1,0 +1,11 @@
+{
+  "stage": "CX-AimFixture",
+  "exitCode": 0,
+  "phase": "Compile",
+  "finishedUtc": "2026-10-28T15:10:34.3750173Z",
+  "arguments": [
+    "-quit"
+  ],
+  "startedUtc": "2026-10-28T15:10:25.2045088Z",
+  "source": "4aec116282eb583fd852469c2bb7dc7e6d85b9e3"
+}

@@ -1,0 +1,13 @@
+{
+  "stage": "CX-AimFixture",
+  "exitCode": 0,
+  "phase": "Build",
+  "finishedUtc": "2026-10-28T15:11:00.1872376Z",
+  "arguments": [
+    "-quit",
+    "-executeMethod",
+    "FullMergeBuild.BuildRelease"
+  ],
+  "startedUtc": "2026-10-28T15:10:34.3928248Z",
+  "source": "4aec116282eb583fd852469c2bb7dc7e6d85b9e3"
+}
