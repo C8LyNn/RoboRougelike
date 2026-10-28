@@ -132,7 +132,7 @@ def check_generated(root):
                 blueprint["packageId"]==presets["packageId"] and
                 blueprint["sourceOwnerSha"]==MAPGEN_SHA and
                 blueprint["sourceRecipe"]=="CombatArena" and
-                blueprint["config"]==preset["config"] and
+                blueprint["config"]=={k[0].lower()+k[1:]:v for k,v in preset["config"].items()} and
                 blueprint["geometryHash"]==row["geometryHash"] and
                 blueprint["nativeUnityPhysics"]=="NOT_RUN",
                 "BLUEPRINT_PROVENANCE_CHANGED")
