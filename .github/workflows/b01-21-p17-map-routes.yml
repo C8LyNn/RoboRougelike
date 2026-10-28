@@ -1,0 +1,56 @@
+name: B01-21 P17 immutable MAPGEN source world route overlays (NOT UNITY)
+on:
+  push:
+    branches: [research/b01-21-p17-map-route-network]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  routes:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin actual exact three original source-generated B01 P16 Git blobs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $expected = @{
+            'Research/B01-21/P16/generated/AR16_01_OPEN_FLANK.blueprint.json' = 'fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e'
+            'Research/B01-21/P16/generated/AR16_02_SPLIT_DECISION.blueprint.json' = '022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790'
+            'Research/B01-21/P16/generated/AR16_03_DENSE_PRESSURE.blueprint.json' = '1fe7bf8b124d999de75c0fd3cacc85ee62319429'
+          }
+          foreach ($item in $expected.GetEnumerator()) {
+            $got = (git hash-object "$($item.Key)").Trim()
+            if ($LASTEXITCODE -ne 0 -or $got -ne $item.Value) { throw "SOURCE_BLOB_CHANGED $($item.Key) got=$got" }
+          }
+          Write-Output 'MAP_ROUTES_P17_ORIGINAL_3_GIT_BLOBS_PASS'
+      - name: Run real positive/negative algorithm unittest on original source-generated geometry
+        shell: pwsh
+        run: |
+          python -m unittest discover -s Research/B01-21/P17 -p 'test_map_routes.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_NEGATIVE_OR_POSITIVE_CASE_RED' }
+      - name: Produce real navigation overlay JSON and render SVGs
+        shell: pwsh
+        run: |
+          if ('${{ matrix.os }}' -eq 'ubuntu-24.04') {
+            python Research/B01-21/P17/map_routes.py --emit-base64
+          } else {
+            python Research/B01-21/P17/map_routes.py
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_GENERATION_RED' }
+          python Research/B01-21/P17/map_routes.py --check
+          if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_GENERATED_OUTPUT_CHANGED_OR_MISSING' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-p17-route-overlays-${{ matrix.os }}
+          path: Research/B01-21/P17/generated/*
+          retention-days: 30
+          if-no-files-found: error
