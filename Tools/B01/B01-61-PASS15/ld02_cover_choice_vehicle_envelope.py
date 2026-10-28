@@ -5,6 +5,7 @@ A conservative axis-aligned, yaw0 primary part-cube envelope is not proof that
 other payloads, suspension, dynamics, or turning clear in real Unity physics.
 """
 import json, math, subprocess, sys, argparse
+from ld02_perimeter_geometry_check import intersects
 CODEX="231005c6d0351945a8ee6684f3856af118f0e94f"
 LEVEL_REF="691c8cb6b0be086d455e530f2531de7f3753a0ba"
 LEVEL_PATH="Research/B01-25/P15/LD02_COVER_CHOICE.json"
@@ -95,6 +96,25 @@ def main():
     fixed={(i["x"],i["z"]) for i in doc["items"] if i["kind"]==6}
     if fixed!=corners:raise ValueError(f"REPAIRED_CORNER_PLATFORM_SET_INVALID:{fixed}")
     solids=[box(i) for i in doc["items"] if i["kind"] in (1,6,7,8)]
+    # NEW P15 input — use exactly the existing source-derived slab/ray predicate
+    # from the previous P14 receiver, no second approximate wall formula.
+    rays={
+      "WEST_MIDDLE":((1.,20.),(-1.,20.)),
+      "EAST_MIDDLE":((43.,20.),(45.,20.)),
+      "SOUTH_MIDDLE":((24.,1.),(24.,-1.)),
+      "NORTH_MIDDLE":((24.,35.),(24.,37.)),
+      "SOUTH_WEST_CORNER":((1.,1.),(1.,-1.)),
+      "SOUTH_EAST_CORNER":((43.,1.),(43.,-1.)),
+      "NORTH_WEST_CORNER":((1.,35.),(1.,37.)),
+      "NORTH_EAST_CORNER":((43.,35.),(43.,37.)),
+    }
+    for label,ray in rays.items():
+        wallhits=sum(intersects(ray,b[:4]) for b in solids if b[4]==1)
+        platformhits=sum(intersects(ray,b[:4]) for b in solids if b[4]==6)
+        wanted=(1,0) if label.endswith("MIDDLE") else (0,1)
+        if (wallhits,platformhits)!=wanted:
+            raise ValueError(f"REPAIRED_P15_COLLIDER_SOURCE_RAY_RED:{label}:{wallhits}/{platformhits}")
+        print(f"PASS_REPAIRED_P15_RAY={label} | wall_AABB_hits={wallhits} | platform_AABB_hits={platformhits}")
     # Original source geometry: body chassis [-length..+length] and
     # wheel center x = ±(width+1); all base cubes half-size 0.52/2.
     # Wheel cylinder's source local axle radius/scale is bounded by body/cube envelope.
@@ -113,7 +133,7 @@ def main():
         _,_,hits=scan(route,solids+[box(fake)],2.46,2.46)
         if not hits:raise ValueError(f"QA_FAIL_OPEN_INJECTED_WALL:{label}")
         print(f"EXPECTED_REJECTION_SYNTHETIC_WALL | route={label} | cell={blocked} | overlap_samples={hits}")
-    print("ORIGINAL_SOURCE_GIT_SHA=VERIFIED | REPAIRED_P15_DATA_GIT_SHA=VERIFIED | CORNER_PLATFORMS=4/4 | STATIC_ROUTE_ENVELOPES=4/4_PASS | INJECTED_NEGATIVES=2/2_REJECTED | UNITY/PHYSX/REAL_VEHICLE=NOT_RUN")
+    print("ORIGINAL_SOURCE_GIT_SHA=VERIFIED | REPAIRED_P15_DATA_GIT_SHA=VERIFIED | NATIVE_RAY_ANALOGUE_8/8=STATIC_PASS | CORNER_PLATFORMS=4/4 | STATIC_ROUTE_ENVELOPES=4/4_PASS | INJECTED_NEGATIVES=2/2_REJECTED | UNITY/PHYSX/REAL_VEHICLE=NOT_RUN")
     return 0
 if __name__=="__main__":
     try:sys.exit(main())
