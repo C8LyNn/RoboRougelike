@@ -40,6 +40,9 @@ jobs:
         run: |
           python3 Tools/B01/B01-61-PASS15/ld02_perimeter_geometry_check.py --repo "$PWD" --owner-fix --require-closed
           echo "B01-61_OWNER_REPAIR_RECEIVER=STATIC_GREEN | UNITY_NATIVE=NOT_RUN"
+      - name: Check newly authored cover-choice Light and Heavy original source envelopes
+        run: |
+          python3 Tools/B01/B01-61-PASS15/ld02_cover_choice_vehicle_envelope.py --repo "$PWD"
       - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
         run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
       - name: Inspect REAL committed Codex NUnit XML (targeted cases only)
