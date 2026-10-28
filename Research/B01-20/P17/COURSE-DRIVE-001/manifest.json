@@ -1,0 +1,78 @@
+{
+  "packageId": "COURSE-DRIVE-001",
+  "revision": "R1",
+  "owner": "B01-20",
+  "type": "INTERACTIVE_STANDALONE_ARCADE_SOURCE_PROTOTYPE_NOT_UNITY",
+  "baseUpstream": {
+    "producerPr": 331,
+    "producerSha": "07d7d271b11ffc70e8e09da0043559fba06b5868",
+    "originalMapgenR341Sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+    "originalGeometryRecipe": "ObstacleCourse",
+    "producerInputs": [
+      {
+        "path": "Research/B01-20/P17/MAPGEN-COURSE/CourseProgram.cs",
+        "gitBlob": "fefab58238082c4fc139aeeb55fb0e18f3fd7076"
+      },
+      {
+        "path": "Research/B01-20/P17/MAPGEN-COURSE/presets.json",
+        "gitBlob": "ed809a8070b53f037afef5eb726cce3dd8bd0299"
+      }
+    ]
+  },
+  "ownedSourceBlobs": {
+    "core.mjs": "1cf95532ece6ae59a033fd5ef9a795d4b33baab5",
+    "core.test.mjs": "f703b7592a37e769ca172d026dea05c159bac417",
+    "viewer-app.js": "e6ce1537059796d41fe179a072c29f31b949f06c",
+    "viewer.template.html": "90d44d5ebf49036d2da0eba0c1c8c8b5e0853f29",
+    "build_viewer.py": "54a62a89cc535ae5473f8188a0b32d747735a08f",
+    "viewer-bundle.test.mjs": "4e843fb19c016b6bc4f0956f0deb0d5fa9bc7d5a",
+    "README.md": "dc6bda5c7a7f6f69f439d1daaa631b058e82fa4d",
+    "workflow:.github/workflows/b01-20-p17-course-drive.yml": "34e949aa536e5d13ebd68f647612e8292281a266",
+    "browser.test.mjs": "c11f48c466afb7fef90ae5ff31de280f0e75f916"
+  },
+  "sourceScope": [
+    "Research/B01-20/P17/COURSE-DRIVE-001/**",
+    ".github/workflows/b01-20-p17-course-drive.yml"
+  ],
+  "outputs": [
+    "p17-source-maps/COURSE-DRIVE-001.html",
+    "p17-source-maps/drive-receipt.json",
+    "p17-source-maps/results.json",
+    "p17-source-maps/P17-COURSE-*-seed-*.json"
+  ],
+  "expectedRealMapCount": 18,
+  "vehicleProfiles": {
+    "Light": {
+      "width": 2.1,
+      "length": 3.2
+    },
+    "Heavy": {
+      "width": 4.5,
+      "length": 5.8
+    }
+  },
+  "tests": "GitHub Actions must execute actual original CSharp map generator then Node core and built HTML tests on both operating systems",
+  "knownLimits": [
+    "2D axis-aligned simplified arcade movement, not real car heading/wheel dynamics",
+    "No Unity Editor/Player or PhysX test",
+    "Ramps treated as obstacles; route follows source flat bypass",
+    "Not integrated into game, save, progression or rewards",
+    "Automated real Chromium headless on Windows/Ubuntu passed; manual human evaluation NOT_RUN"
+  ],
+  "independentQA": "PENDING B01-40 source and B01-60 browser/pose",
+  "codexHandoff": "Preview and evaluation of real original map geometry only, NEVER copy JS into canonical Unity runtime",
+  "status": "NOT_INTEGRATED_NATIVE_UNITY_NOT_RUN_G2_HOLD",
+  "verifiedAuthorCI": {
+    "sourceHead": "a873cbfa81d7043210dde9d83dd89230d2554953",
+    "workflowRun": 40757538051,
+    "windows": "SUCCESS",
+    "ubuntu2404": "SUCCESS",
+    "nodeCore": "42/42 per OS",
+    "bundle": "3/3 per OS",
+    "chromium": "2/2 per OS; 720p 1080p portrait keyboard pause reset Heavy autopilot",
+    "screenshots": 4,
+    "htmlSha256": "a79ee2aeac353da6170d384285ca754634ebf2d1a52c00c9f744c49782e96398",
+    "independentQA": "PENDING",
+    "nativeUnity": "NOT_RUN"
+  }
+}

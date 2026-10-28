@@ -1,0 +1,69 @@
+name: B01-20 PASS17 course-drive original-map arcade preview (NOT UNITY)
+on:
+  push:
+    branches: [b01-20/p17-course-drive-interactive]
+    paths:
+      - 'Research/B01-20/P17/COURSE-DRIVE-001/**'
+      - '.github/workflows/b01-20-p17-course-drive.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-mapgen-drive:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest]
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate 18 real original CSharp MAPGEN obstacle courses
+        shell: bash
+        run: |
+          dotnet run --project Research/B01-20/P17/MAPGEN-COURSE/MapgenCourseP17.csproj --configuration Release -- Research/B01-20/P17/MAPGEN-COURSE/presets.json p17-source-maps
+          python Research/B01-20/P17/MAPGEN-COURSE/verify_courses.py p17-source-maps
+      - name: Execute deterministic arcade movement and collision on real generated maps
+        shell: bash
+        env:
+          P17_BLUEPRINTS_DIR: p17-source-maps
+        run: node --test Research/B01-20/P17/COURSE-DRIVE-001/core.test.mjs
+      - name: Assemble actual standalone HTML with all 18 original geometry layouts
+        shell: bash
+        run: python Research/B01-20/P17/COURSE-DRIVE-001/build_viewer.py p17-source-maps
+      - name: Verify executable embedded HTML JS syntax, map data and no network requirement
+        shell: bash
+        env:
+          P17_BLUEPRINTS_DIR: p17-source-maps
+        run: node --test Research/B01-20/P17/COURSE-DRIVE-001/viewer-bundle.test.mjs
+      - name: Install real Chromium for interaction tests on this matrix OS
+        shell: bash
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            npx playwright install --with-deps chromium
+          else
+            npx playwright install chromium
+          fi
+      - name: Execute real Chromium GUI tests 720p 1080p portrait keyboard and Heavy autopilot
+        shell: bash
+        env:
+          P17_BLUEPRINTS_DIR: p17-source-maps
+        run: node --test Research/B01-20/P17/COURSE-DRIVE-001/browser.test.mjs
+      - name: Upload original generated map input, executable standalone HTML and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-20-p17-course-drive-${{ matrix.os }}
+          path: p17-source-maps/
+          if-no-files-found: warn
+          retention-days: 21
