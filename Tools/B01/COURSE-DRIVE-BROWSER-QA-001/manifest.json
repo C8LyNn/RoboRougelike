@@ -1,0 +1,27 @@
+{
+  "packageId": "B01-60-COURSE-DRIVE-BROWSER-QA-001",
+  "revision": "PASS17-WAVE02-R1",
+  "owner": "B01-60 INDEPENDENT QA & PLAYTEST",
+  "sourcePr": 365,
+  "producerImmutableHead": "1a98ea3e1fc26c889c100aa1f554c804c3a47663",
+  "producerBranch": "b01-20/p17-course-drive-interactive",
+  "producerOriginalBlobIds": {
+    "Research/B01-20/P17/COURSE-DRIVE-001/core.mjs": "1cf95532ece6ae59a033fd5ef9a795d4b33baab5",
+    "Research/B01-20/P17/COURSE-DRIVE-001/viewer-app.js": "79481ff2959f04236e67ce26cbe04c3cf85c7f16",
+    "Research/B01-20/P17/COURSE-DRIVE-001/viewer.template.html": "90d44d5ebf49036d2da0eba0c1c8c8b5e0853f29",
+    "Research/B01-20/P17/COURSE-DRIVE-001/build_viewer.py": "54a62a89cc535ae5473f8188a0b32d747735a08f"
+  },
+  "generatedOriginalCourseDriveHtmlSHA256": "1d35d69e6963e0d45046b0f66951beb78f5378b9a00fd19bce18fda31e328990",
+  "exclusiveChangedPaths": [
+    "Tools/B01/COURSE-DRIVE-BROWSER-QA-001/**",
+    ".github/workflows/b01-60-p17-course-browser.yml"
+  ],
+  "output": "Independent browser receipt JSON and 4 actual Chromium PNG viewport screenshots per CI runner",
+  "run": "python Tools/B01/COURSE-DRIVE-BROWSER-QA-001/browser_qa.py --html p17-source-maps/COURSE-DRIVE-001.html --output qa-receipts/receipt.json --screenshots qa-receipts/screens",
+  "browser": "Playwright Chromium real file:// page",
+  "engineUnity": "NOT_RUN",
+  "manualHuman": "NOT_RUN",
+  "gameIntegration": "NOT_DONE",
+  "headBase": "STAGED_ON_PINNED_B01-20_BRANCH_NOT_MAIN",
+  "merge": "PROHIBITED_UNTIL_OWNER_APPROVAL"
+}
