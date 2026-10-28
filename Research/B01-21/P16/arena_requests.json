@@ -34,12 +34,12 @@
       "seed": 160101,
       "config": {
         "segments": 4,
-        "obstacleDensity": 20,
+        "obstacleDensity": 40,
         "difficulty": 0.2,
         "laneWidth": 16
       },
-      "theme": "Low cover / long sight lines",
-      "note": "First read of sightline and cornering, not a verified enemy AI or reward implementation",
+      "theme": "Open but non-empty side-cover arena",
+      "note": "Source generation must yield nonzero sparse cover; straight centre remains protected",
       "profileAcceptance": [
         "historicalLight",
         "historicalHeavy"
@@ -70,12 +70,12 @@
       "seed": 160303,
       "config": {
         "segments": 4,
-        "obstacleDensity": 85,
+        "obstacleDensity": 100,
         "difficulty": 0.85,
         "laneWidth": 16
       },
-      "theme": "Dense side cover / protected central avenue",
-      "note": "High side-cover occupancy; optional tactical approaches require PhysX and combat-authoring acceptance",
+      "theme": "Full side-cover population around protected central avenue",
+      "note": "Source generator occupies all eligible side cover slots; physical turning remains unmeasured",
       "profileAcceptance": [
         "historicalLight",
         "historicalHeavy"

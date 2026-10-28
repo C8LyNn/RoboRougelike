@@ -12,9 +12,9 @@
 
 | ID | Original recipe | Seed | Density | Difficulty | Design intent |
 | --- | --- | ---: | ---: | ---: | --- |
-| `AR16_01_OPEN_FLANK` | CombatArena | 160101 | 20% | .20 | Exposed approach and long sight lines |
+| `AR16_01_OPEN_FLANK` | CombatArena | 160101 | 40% | .20 | Open approach with some side cover |
 | `AR16_02_SPLIT_DECISION` | CombatArena | 160202 | 55% | .55 | Alternating side cover, protected centre |
-| `AR16_03_DENSE_PRESSURE` | CombatArena | 160303 | 85% | .85 | Dense cover on both sides, protected escape avenue |
+| `AR16_03_DENSE_PRESSURE` | CombatArena | 160303 | 100% | .85 | All eligible side cover slots, protected escape avenue |
 
 Existing original recipe fixes the arena's 64×64m floor, 4 boundaries, 12m central avenue, 3 *descriptors* for enemy spawn and Start=(0,1.25,-25), Finish=(0,1.25,25). **No real enemy AI instance, kill reward, branching mission goal, or Light/Heavy physics guaranteed.** Density influences authored cover probability, not a fixed number of covers.
 
