@@ -4,6 +4,7 @@ on:
     paths:
       - 'Tools/B01/QA-NATIVE-001/p16_receive_codex_cx02_player.py'
       - 'Tools/B01/QA-NATIVE-001/p16_receive_codex_cx03_integrity.py'
+      - 'Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py'
       - '.github/workflows/b01-60-p16-codex-receipts.yml'
   workflow_dispatch:
 jobs:
@@ -24,3 +25,5 @@ jobs:
         run: python Tools/B01/QA-NATIVE-001/p16_receive_codex_cx02_player.py
       - name: Verify real ORIGINAL Codex Unity EditMode CX03 three RED to GREEN evidence
         run: python Tools/B01/QA-NATIVE-001/p16_receive_codex_cx03_integrity.py
+      - name: Verify new ORIGINAL Codex reward-victory atomicity EditMode RED to GREEN
+        run: python Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py
