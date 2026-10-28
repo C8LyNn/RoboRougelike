@@ -31,6 +31,10 @@ def main():
     ck("map test mutates disposable A/B assignment", "run.VehicleModel.SwapWeaponGroups();" in s and "Assert.That(run.VehicleModel.WeaponGroupB,Is.Null);" in s)
     ck("map test mutates disposable owned gun health", "temporaryGun.Health=0;" in s and "Assert.That(temporaryGun.Health,Is.Zero);" in s)
     ck("original owned gun HP restored", "run.VehicleModel.Parts.First(p=>p.Id==gunId).Health,Is.EqualTo(originalGunHealth)" in s)
+    ck("camera target lifecycle assertions", s.count("follow.TargetRoot,Is.SameAs(run.Player.transform)")>=4)
+    ck("map test camera rejects stale disposed root", "follow.TargetRoot,Is.Not.SameAs(mapTestVehicleRoot)" in s)
+    ck("camera active in test and garage, disabled in editor", s.count("follow.enabled,Is.False")>=2 and s.count("follow.enabled,Is.True")>=2)
+    ck("delegated rig not autonomous", s.count("follow.ReceiverRig.enabled,Is.False")>=2)
 
     ck("native unrun declared", all(m[k]=="NOT_RUN" for k in ("Unity_EditMode","Unity_PlayMode","Windows_Player")))
     if not opt.fixture_only:
@@ -41,12 +45,16 @@ def main():
         model=git("-C",opt.repo,"show",sha+":Assets/R3/R3VehicleModel.cs")
         editor=git("-C",opt.repo,"show",sha+":Assets/MapEditor/R1MapEditor.cs")
         susp=git("-C",opt.repo,"show",sha+":Assets/MOV009Integration/MOV009RunController.cs")
+        camera=git("-C",opt.repo,"show",sha+":Assets/Pack/P12_PipelineSafeCamera.cs")
         ck("original group clone", "copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB" in model)
         ck("original suspension clone", "copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset" in model)
         ck("original map test snapshot", "workshopModel=VehicleModel" in editor)
         ck("original map test copy", "VehicleModel=workshopModel.DeepCopy()" in editor)
         ck("original map test restore", "VehicleModel=workshopModel;workshopModel=null" in editor)
         ck("original test suspension API", "Progress.State!=R1RunState.TestDrive" in susp)
+        ck("original camera target public API", "public Transform TargetRoot=>targetRoot" in camera and "public Camera001Rig ReceiverRig=>rig" in camera)
+        ck("original camera scene rebinding on both transitions", editor.count("followCamera.Configure(Player.transform,Player.CameraPivot)")>=2)
+        ck("original camera disabled in map editor", "followCamera.enabled=false" in editor)
     for name,ok in checks: print(("PASS" if ok else "FAIL")+" | "+name)
     print("STATIC_PASS=%d/%d | UNITY_NATIVE=NOT_RUN | CODEX_SHA=%s"%
           (sum(ok for _,ok in checks),len(checks),m["codex_sha"]))
