@@ -1,0 +1,143 @@
+{
+  "schema": "B01-23-PARTSIZE001-P17-SPECIALIST-RIGS-v1",
+  "package_id": "PARTSIZE001-P17-RIGS-R1",
+  "producer": "B01-23",
+  "source_branch": "b01-23/p17-three-specialist-rig-blueprints",
+  "immutable_content_sha_before_manifest": "36deef9862fee776fc1503e68e6d6641af4c2c08",
+  "classification": "THREE_NEW_UNITY_TEXTASSET_RIG_LAYOUTS_SOURCE_TESTED",
+  "state": "DRAFT_SOURCE_CANDIDATE_NOT_OFFERED_NOT_CLAIMED_NOT_INTEGRATED",
+  "upstream": {
+    "frozen_producer_pr": 286,
+    "producer_sha": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "original_contract_git_blob": "07455919a5544875fee5a78ecbbce36dc6cb49c2",
+    "original_catalog_git_blob": "6153d1758e800ec5c4210323610b061c06e8ea85",
+    "read_only_codex_pr": 310,
+    "observed_codex_sha": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+    "note": "Current Codex HEAD must be re-read at eventual integration; never replace its code in this PR."
+  },
+  "new_content": [
+    {
+      "blueprint": "P17-FLANKER-WHEELS",
+      "asset": "Assets/PARTSIZE001/Blueprints/P17/P17_Flanker_Wheels.json",
+      "owners": 14,
+      "guns": 2,
+      "drive": "Wheels",
+      "wheels": 4
+    },
+    {
+      "blueprint": "P17-BULWARK-TRACKS",
+      "asset": "Assets/PARTSIZE001/Blueprints/P17/P17_Bulwark_Tracks.json",
+      "owners": 14,
+      "guns": 2,
+      "drive": "Tracks",
+      "crawler_tracks": 2
+    },
+    {
+      "blueprint": "P17-SKIRMISHER-HOVER",
+      "asset": "Assets/PARTSIZE001/Blueprints/P17/P17_Skirmisher_Hover.json",
+      "owners": 10,
+      "guns": 2,
+      "drive": "Hover",
+      "hover_engines": 2
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/b01-23-pass17-rig-blueprints.yml",
+      "original_git_blob_sha1": "2bcd432f02e69668551ba6fb8f5ff8f95bb023cc"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints.meta",
+      "original_git_blob_sha1": "277f557c51f4348908e64e14b9fc9885b7fc72c2"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17.meta",
+      "original_git_blob_sha1": "00d066a7138a709c91c2fc27846164291e925b27"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17/P17_Bulwark_Tracks.json",
+      "original_git_blob_sha1": "2fe5b441d081ad3590ccbeabf1cbb1f266ec662a"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17/P17_Bulwark_Tracks.json.meta",
+      "original_git_blob_sha1": "d7e2e336eed0f52f161844a48f598ad0ec34be43"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17/P17_Flanker_Wheels.json",
+      "original_git_blob_sha1": "c4778df1db431ed1b51e8fb1e607ae1ede3e1bef"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17/P17_Flanker_Wheels.json.meta",
+      "original_git_blob_sha1": "49942677da06daabc059a11e550a9e37f37b292a"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17/P17_Skirmisher_Hover.json",
+      "original_git_blob_sha1": "4d7b4ab0adfb71fa2c20479eaa7c266687d28fa1"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Blueprints/P17/P17_Skirmisher_Hover.json.meta",
+      "original_git_blob_sha1": "1fe1b221dd5b72deb5eed94bec172c1a573ac89f"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Rigs/check_assets.py",
+      "original_git_blob_sha1": "99109214ccc474bb4b05c62a5941c0753a0ebb2f"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj",
+      "original_git_blob_sha1": "f0ef6fab3bdb4e19bf7a632a4b0c15c3537322cc"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Rigs/Program.cs",
+      "original_git_blob_sha1": "c6fb566b1ba5f138a9977351c56f5e25cb0a85ca"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Rigs/README.md",
+      "original_git_blob_sha1": "528a494b0ff670d09d03a99c24e0191697754350"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Rigs/RigValidator.cs",
+      "original_git_blob_sha1": "988fc31d8633e5429fc4ba377856187e5ee7601c"
+    }
+  ],
+  "tests": {
+    "actual_source_ci_run": 40728626258,
+    "method": "compile unchanged original PartSizeContract + Catalog using actual C# .NET8, new JSON runtime validator and 30 source/mutation checks each Windows2025 and Ubuntu24.04; Python 5 original Unity GUIDs + four negative cases; ASCII independent text previews",
+    "original_source_checks": 30,
+    "native_unity_editor": "NOT_RUN",
+    "real_collider_socket_physx": "NOT_RUN",
+    "windows_player": "NOT_RUN",
+    "independent_B01_60_qa": "PENDING",
+    "independent_B01_40_handoff": "PENDING"
+  },
+  "limitations": [
+    "Source-only integer cell/connectivity validation; actual collider and typed sockets for wheels/guns/tracks/hover remain UNMEASURED.",
+    "Not integrated or playable. Codex must decide mapping into R3VehicleDesign, real runtime GUID allocation, approved Speed/Turn/CoreHP/budget.",
+    "All three designs use existing canonical kinds; no new PartKind or model job authorized.",
+    "Physical placement and actual selected drive/weapon firing require licensed Unity PlayMode and independent QA.",
+    "Existing source producer #286 remains frozen; any true source changes require a separately authorized revision."
+  ],
+  "install": {
+    "owner": "Codex only, after HQ and B01-40 scope approval",
+    "instructions": "Tools/B01/PARTSIZE001/P17Rigs/README.md",
+    "stage_paths": [
+      "Assets/PARTSIZE001/Blueprints.meta",
+      "Assets/PARTSIZE001/Blueprints/P17.meta",
+      "Assets/PARTSIZE001/Blueprints/P17/*.json",
+      "Assets/PARTSIZE001/Blueprints/P17/*.json.meta"
+    ],
+    "reproduce": [
+      "dotnet build Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj -c Release --warnaserror",
+      "dotnet run --project Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj -c Release --no-build -- --selftest",
+      "dotnet run --project Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj -c Release --no-build -- --preview",
+      "python Tools/B01/PARTSIZE001/P17Rigs/check_assets.py"
+    ],
+    "rollback": "Remove ONLY optionally staged new Blueprints TextAssets and corresponding own metas from isolated import branch; never reset Codex or source producer. Preserve original evidence."
+  },
+  "gates": {
+    "G0": "SOURCE_CHECK_ONLY_INDEPENDENT_PENDING",
+    "G1": "NATIVE_NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": "PENDING",
+    "merged": false
+  }
+}
