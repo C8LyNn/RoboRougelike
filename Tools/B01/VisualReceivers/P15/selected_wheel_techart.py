@@ -107,7 +107,7 @@ def main():
     annotated=ET.tostring(annotate,encoding="utf-8",xml_declaration=True)
     (OUT/"A1-annotated-receiver.svg").write_bytes(annotated)
     rgba=emit("A1-annotated-receiver.png",annotated)
-    assert ImageChops.difference(original,rgba).getbbox() is not None
+    assert ImageChops.difference(original.convert('RGB'),rgba.convert('RGB')).getbbox() is not None
     # One actual mounting visual overlap risk test, measured in illustration pixels:
     # overlap of silhouette layers, NOT an actual collision or clearance.
     overlaps={}
