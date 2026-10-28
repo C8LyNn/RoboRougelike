@@ -49,6 +49,7 @@ PROJECT = """<Project Sdk="Microsoft.NET.Sdk">
 </ItemGroup></Project>"""
 SHIMS = """
 namespace UnityEngine {
+ public static class Debug {public static void Log(string msg) {} }
  public class ScriptableObject {}
  [System.AttributeUsage(System.AttributeTargets.Class)]
  public sealed class CreateAssetMenuAttribute:System.Attribute { public string menuName; }
@@ -66,13 +67,14 @@ using System.Collections.Generic;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
+using UnityEngine;
 namespace RoboRougelike.MapSystemR4 { public enum MapR4Status { Completed } }
 namespace RoboRougelike.R1 {
  public sealed class FakeEnemy {public bool IsDefeated;}
- public sealed class FakeAssembly {public int Captures;public void Capture(){Captures++;}}
+ public sealed class R3VehicleAssembly {public int Captures;public void Capture(){Captures++;}}
  public sealed class FakePlayer {
      public string DefeatReason;
-     public readonly FakeAssembly Assembly=new();
+     public readonly R3VehicleAssembly Assembly=new();
      public T GetComponent<T>() where T:class => Assembly as T;
  }
  public sealed class FakeEncounter {
