@@ -95,8 +95,20 @@ def main() -> int:
     for k, (part_id, _) in SHAPES.items():
         old = by_id(src_parts, part_id)
         new = by_id(wrapper, part_id)
-        check(f"{k} exactly original vector group",
-              ET.tostring(old) == ET.tostring(new))
+        # XML serializers retain insignificant tail indentation from source.
+        # Canonicalization strips only whitespace between SVG elements while
+        # retaining every actual vector element, attribute and path value.
+        original_geometry = ET.canonicalize(
+            ET.tostring(old, encoding="unicode"), strip_text=True)
+        extracted_geometry = ET.canonicalize(
+            ET.tostring(new, encoding="unicode"), strip_text=True)
+        check(f"{k} exact canonical original vector geometry",
+              original_geometry == extracted_geometry)
+        mutated = copy.deepcopy(new)
+        mutated.set("data-mutation-negative", "visible-source-change")
+        check(f"{k} mutation-negative detected",
+              ET.canonicalize(ET.tostring(mutated, encoding="unicode"),
+                              strip_text=True) != original_geometry)
         layer = by_id(wrapper, "exploded-" + k)
         check(f"{k} separate transform and source id",
               layer.get("data-source-id") == part_id
