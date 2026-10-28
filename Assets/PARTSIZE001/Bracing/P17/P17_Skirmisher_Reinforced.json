@@ -1,0 +1,205 @@
+{
+  "schema": "B01-PARTSIZE-P17-RIG-BLUEPRINT-v1",
+  "blueprintId": "P17-SKIRMISHER-HOVER-REINFORCED",
+  "displayName": "Skirmisher / hover / Reinforced",
+  "description": "Lekki kadłub, dwa zawieszone moduły hover i dwie lufy do flankowania. Dodatkowe panele pancerza tworzą alternatywne połączenia między modułami.",
+  "selectedDrive": "Hover",
+  "recommendedBaseProfile": "Standard",
+  "sourcePartSizeCommit": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "contentStatus": "GAME_CONTENT_CANDIDATE_NOT_INTEGRATED",
+  "nativePhysicalStatus": "UNMEASURED_COLLIDER_AND_SOCKET",
+  "parts": [
+    {
+      "localId": "P17-SKIRMISHER-HOVER-001",
+      "kind": "Core",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-002",
+      "kind": "Armor",
+      "cell": {
+        "x": 1,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-003",
+      "kind": "Armor",
+      "cell": {
+        "x": -1,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-004",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-005",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "z": -1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-006",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-007",
+      "kind": "HoverEngine",
+      "cell": {
+        "x": 1,
+        "y": -1,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-008",
+      "kind": "HoverEngine",
+      "cell": {
+        "x": -1,
+        "y": -1,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-009",
+      "kind": "Gun",
+      "cell": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": "Basic"
+    },
+    {
+      "localId": "P17-SKIRMISHER-HOVER-010",
+      "kind": "Gun",
+      "cell": {
+        "x": 0,
+        "y": 1,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": "Basic"
+    },
+    {
+      "localId": "P17-BRACE-SKIRMISHER-LOW",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": -1,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BRACE-SKIRMISHER-TOP",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 2,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    }
+  ]
+}
