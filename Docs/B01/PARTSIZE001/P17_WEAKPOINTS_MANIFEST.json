@@ -1,0 +1,120 @@
+{
+  "schema": "B01-23-P17-WEAKPOINTS-001-R1",
+  "package_id": "PARTSIZE001-P17-WEAKPOINTS-R1",
+  "owner": "B01-23",
+  "source_branch": "b01-23/p17-part-weakpoint-sim-r1",
+  "verified_source_sha_before_manifest": "c822e5b0cf3e8442310ee87704b2e4db79dda721",
+  "pr_base_sha": "0978497561c8b6400490235d3e5a401ac32bea2d",
+  "status": "DRAFT_SOURCE_ONLY_GAME_CONTENT_AND_EXECUTABLE_CSHARP_NOT_INTEGRATED",
+  "files": [
+    {
+      "path": ".github/workflows/b01-23-pass17-weakpoints.yml",
+      "git_blob_sha1": "26c5b45da6733f032bb6172e1d87d6af447a8bb5"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Weakpoints.meta",
+      "git_blob_sha1": "63199dfcc53473acd7f550aa2c2c000c770c21c4"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Weakpoints/P17.meta",
+      "git_blob_sha1": "d77d7b437f9db3052bf976dfa94db8d8159ad545"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json",
+      "git_blob_sha1": "eb4ab2e2cd6d4c34b6a014b00b6c86efc472cfda"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json.meta",
+      "git_blob_sha1": "d86feb6e9b2ae0f0a7d95d983f1e93bd97f16f45"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj",
+      "git_blob_sha1": "ebae13e74cfc99dc2e964979b12446fdd4216f88"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Weakpoints/Program.cs",
+      "git_blob_sha1": "3b7521919e2346b03983f7f577b69ad3bfd62800"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Weakpoints/README.md",
+      "git_blob_sha1": "2b93cc7da81a9b846239e7e0c8981ef14aa99937"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Weakpoints/WeakpointEngine.cs",
+      "git_blob_sha1": "a3abe5a24afdd365a5fb162a12b3947fb2f0d10c"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Weakpoints/check_weakpoint_assets.py",
+      "git_blob_sha1": "79d8b968e865971ff57aa2ee093771503907907d"
+    }
+  ],
+  "upstream": {
+    "blueprint_pr": 348,
+    "blueprint_sha": "0978497561c8b6400490235d3e5a401ac32bea2d",
+    "partsize_producer_pr": 286,
+    "producer_sha": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "original_partsize_geometry_blob": "07455919a5544875fee5a78ecbbce36dc6cb49c2",
+    "original_catalog_blob": "6153d1758e800ec5c4210323610b061c06e8ea85",
+    "original_rig_validator_blob": "988fc31d8633e5429fc4ba377856187e5ee7601c",
+    "codex_owner": "Canonical R3 and critical readiness logic untouched"
+  },
+  "deliverable": {
+    "original_source": "Tools/B01/PARTSIZE001/P17Weakpoints/WeakpointEngine.cs",
+    "unity_text_asset": "Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json",
+    "authored_original_part_loss_cases": 38,
+    "rigs": [
+      "P17-FLANKER-WHEELS",
+      "P17-BULWARK-TRACKS",
+      "P17-SKIRMISHER-HOVER"
+    ],
+    "calculation": "One physical owner removal per case; original PartSizeGrid occupancy, six-face source adjacency; BFS from live core; orphan IDs + selected drive + gun survivability",
+    "native_measurements": 0
+  },
+  "test_evidence": {
+    "actual_actions_run": 40743525838,
+    "ubuntu_2404": {
+      "build": "PASS",
+      "actual_executable": "66/66 PASS",
+      "original_data_recomputation": "43/43 PASS",
+      "asset_guid": "3/3 PASS",
+      "asset_negative": "4/4 PASS",
+      "forged_detach_rejection": "PASS",
+      "preview_artifact": "PENDING_FETCH"
+    },
+    "windows_2025": {
+      "build": "PASS",
+      "actual_executable": "66/66 PASS",
+      "original_data_recomputation": "43/43 PASS",
+      "asset_guid": "3/3 PASS",
+      "asset_negative": "4/4 PASS",
+      "forged_detach_rejection": "PASS",
+      "preview_artifact": "PENDING_FETCH"
+    },
+    "unity_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "physx": "NOT_RUN"
+  },
+  "conditions": [
+    "Original frozen PARTSIZE geometry and P17 rig content must be installed at pinned revisions; fresh actual gameplay host SHA required for Codex."
+  ],
+  "known_limits": [
+    "Static logical 6-face graph only, no actual Collider or typed socket contact measured",
+    "No damage, health, Rigidbody detachment, firing, inventory or UI functionality in Unity",
+    "Canonical R3 Connected and CriticalReadinessMessage are already Codex-owned and are not modified",
+    "Cross-module face masks in original P17 source are permissive 63 and not physical approval",
+    "Independent B01-40 and B01-60 QA pending, no Codex ACK"
+  ],
+  "install": {
+    "scope": "Only own new Assets/PARTSIZE001/Weakpoints and folder metas after dependent PR #348 staging; executable source Tools optional diagnostics, not automatically compiled into game",
+    "authority": "B01-00 hands to B01-40/B01-60 before Codex optional claim",
+    "instructions": "Tools/B01/PARTSIZE001/P17Weakpoints/README.md",
+    "rollback": "Remove only P17Weakpoints staged optional data and own meta; never force reset or alter producer, parent rig blueprint, Codex or evidence"
+  },
+  "gates": {
+    "G0": "SOURCE_SELFTEST_PASS_INDEPENDENT_PENDING",
+    "G1": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": "PENDING",
+    "merged": false
+  }
+}

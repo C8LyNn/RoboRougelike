@@ -1,0 +1,459 @@
+{
+  "schema": "B01-P17-WEAKPOINTS-001-v1",
+  "originBlueprintSha": "0978497561c8b6400490235d3e5a401ac32bea2d",
+  "originalPartsizeSha": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "evidenceClass": "SOURCE_LOGICAL_ONLY_UNVERIFIED_PHYSX",
+  "rigs": [
+    {
+      "blueprintId": "P17-FLANKER-WHEELS",
+      "selectedDrive": "Wheels",
+      "originalOwnerCount": 14,
+      "singleBreakCases": [
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-001",
+          "removedKind": "Core",
+          "coreLost": true,
+          "detachedPartIds": [
+            "P17-FLANKER-WHEELS-002",
+            "P17-FLANKER-WHEELS-003",
+            "P17-FLANKER-WHEELS-004",
+            "P17-FLANKER-WHEELS-005",
+            "P17-FLANKER-WHEELS-006",
+            "P17-FLANKER-WHEELS-007",
+            "P17-FLANKER-WHEELS-008",
+            "P17-FLANKER-WHEELS-009",
+            "P17-FLANKER-WHEELS-010",
+            "P17-FLANKER-WHEELS-011",
+            "P17-FLANKER-WHEELS-012",
+            "P17-FLANKER-WHEELS-013",
+            "P17-FLANKER-WHEELS-014"
+          ],
+          "detachedCount": 13,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 0,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-002",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-003",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-004",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-005",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-006",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [
+            "P17-FLANKER-WHEELS-013"
+          ],
+          "detachedCount": 1,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-007",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-008",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-009",
+          "removedKind": "Wheel",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-010",
+          "removedKind": "Wheel",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-011",
+          "removedKind": "Wheel",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-012",
+          "removedKind": "Wheel",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-013",
+          "removedKind": "Gun",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-014",
+          "removedKind": "Gun",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        }
+      ]
+    },
+    {
+      "blueprintId": "P17-BULWARK-TRACKS",
+      "selectedDrive": "Tracks",
+      "originalOwnerCount": 14,
+      "singleBreakCases": [
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-001",
+          "removedKind": "Core",
+          "coreLost": true,
+          "detachedPartIds": [
+            "P17-BULWARK-TRACKS-002",
+            "P17-BULWARK-TRACKS-003",
+            "P17-BULWARK-TRACKS-004",
+            "P17-BULWARK-TRACKS-005",
+            "P17-BULWARK-TRACKS-006",
+            "P17-BULWARK-TRACKS-007",
+            "P17-BULWARK-TRACKS-008",
+            "P17-BULWARK-TRACKS-009",
+            "P17-BULWARK-TRACKS-010",
+            "P17-BULWARK-TRACKS-011",
+            "P17-BULWARK-TRACKS-012",
+            "P17-BULWARK-TRACKS-013",
+            "P17-BULWARK-TRACKS-014"
+          ],
+          "detachedCount": 13,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 0,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-002",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-003",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [
+            "P17-BULWARK-TRACKS-011"
+          ],
+          "detachedCount": 1,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-004",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-005",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-006",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-007",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-008",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [
+            "P17-BULWARK-TRACKS-012"
+          ],
+          "detachedCount": 1,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-009",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-010",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-011",
+          "removedKind": "CrawlerTrack",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-012",
+          "removedKind": "CrawlerTrack",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-013",
+          "removedKind": "Gun",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-014",
+          "removedKind": "Gun",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        }
+      ]
+    },
+    {
+      "blueprintId": "P17-SKIRMISHER-HOVER",
+      "selectedDrive": "Hover",
+      "originalOwnerCount": 10,
+      "singleBreakCases": [
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-001",
+          "removedKind": "Core",
+          "coreLost": true,
+          "detachedPartIds": [
+            "P17-SKIRMISHER-HOVER-002",
+            "P17-SKIRMISHER-HOVER-003",
+            "P17-SKIRMISHER-HOVER-004",
+            "P17-SKIRMISHER-HOVER-005",
+            "P17-SKIRMISHER-HOVER-006",
+            "P17-SKIRMISHER-HOVER-007",
+            "P17-SKIRMISHER-HOVER-008",
+            "P17-SKIRMISHER-HOVER-009",
+            "P17-SKIRMISHER-HOVER-010"
+          ],
+          "detachedCount": 9,
+          "selectedDriveOperable": false,
+          "connectedGunCount": 0,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-002",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [
+            "P17-SKIRMISHER-HOVER-007"
+          ],
+          "detachedCount": 1,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-003",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [
+            "P17-SKIRMISHER-HOVER-008"
+          ],
+          "detachedCount": 1,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-004",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-005",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-006",
+          "removedKind": "Armor",
+          "coreLost": false,
+          "detachedPartIds": [
+            "P17-SKIRMISHER-HOVER-009"
+          ],
+          "detachedCount": 1,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-007",
+          "removedKind": "HoverEngine",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-008",
+          "removedKind": "HoverEngine",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 2,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-009",
+          "removedKind": "Gun",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-010",
+          "removedKind": "Gun",
+          "coreLost": false,
+          "detachedPartIds": [],
+          "detachedCount": 0,
+          "selectedDriveOperable": true,
+          "connectedGunCount": 1,
+          "nativePhysicalStatus": "NOT_RUN"
+        }
+      ]
+    }
+  ]
+}

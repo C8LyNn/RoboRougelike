@@ -1,0 +1,81 @@
+name: B01-23 PASS17 WEAKPOINTS real source graph + Unity TextAsset data (not PhysX)
+on:
+  push:
+    branches: [b01-23/p17-part-weakpoint-sim-r1]
+    paths:
+      - "Assets/PARTSIZE001/Weakpoints/**"
+      - "Assets/PARTSIZE001/Weakpoints.meta"
+      - "Tools/B01/PARTSIZE001/P17Weakpoints/**"
+      - ".github/workflows/b01-23-pass17-weakpoints.yml"
+  workflow_dispatch:
+jobs:
+  original-source-graph:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Pin exact unchanged original producer and prior P17 blueprint Git blobs
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeContract.cs)" = "07455919a5544875fee5a78ecbbce36dc6cb49c2"
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs)" = "6153d1758e800ec5c4210323610b061c06e8ea85"
+          test "$(git rev-parse HEAD:Tools/B01/PARTSIZE001/P17Rigs/RigValidator.cs)" = "988fc31d8633e5429fc4ba377856187e5ee7601c"
+          git merge-base --is-ancestor 0978497561c8b6400490235d3e5a401ac32bea2d HEAD
+      - name: Validate original Unity .meta GUIDs and immutable physical UNKNOWN state
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P17Weakpoints/check_weakpoint_assets.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build genuine frozen PARTSIZE source + P17 original blueprint validator + new weakpoint algorithm
+        shell: bash
+        run: dotnet build Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --warnaserror
+      - name: Execute actual CSharp structural loss tests and 38 committed game-data comparisons
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --no-build -- --selftest
+          dotnet run --project Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --no-build -- --check
+      - name: Reject intentionally corrupted game-data witness; restore original without changing tracked files
+        shell: bash
+        run: |
+          path=Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json
+          cp "$path" p17-original-weakpoints.json
+          python - <<'PY'
+          import json
+          p="Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json"
+          d=json.load(open(p))
+          d["rigs"][0]["singleBreakCases"][1]["detachedCount"]=999
+          with open(p,"w") as f:json.dump(d,f)
+          PY
+          if dotnet run --project Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --no-build -- --check; then
+            echo "FORGED_DETACHMENT_RESULT_FALSE_GREEN"
+            exit 1
+          fi
+          cp p17-original-weakpoints.json "$path"
+          dotnet run --project Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --no-build -- --check
+          test -z "$(git status --porcelain -- Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json)"
+          echo "PASS: TAMPERED_DERIVED_DAMAGE_SCENARIO_REJECTED_AND_ORIGINAL_RESTORED"
+      - name: Generate original physical owner weak-point previews for Codex
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --no-build -- --preview > p17-weakpoint-preview.txt
+          cat p17-weakpoint-preview.txt
+          grep -q P17_WEAKPOINT_PREVIEW_SOURCE_ONLY_UNITY_NOT_RUN p17-weakpoint-preview.txt
+      - name: Reject unsupported CLI
+        shell: bash
+        run: |
+          if dotnet run --project Tools/B01/PARTSIZE001/P17Weakpoints/P17Weakpoints.csproj -c Release --no-build -- --evil; then
+            echo "UNSUPPORTED_CLI_FALSE_GREEN"
+            exit 1
+          fi
+          echo "PASS BAD_CLI_REJECTED"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-p17-weakpoints-${{ matrix.os }}
+          path: p17-weakpoint-preview.txt
+          if-no-files-found: error
