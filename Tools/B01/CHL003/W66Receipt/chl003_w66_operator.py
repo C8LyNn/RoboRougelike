@@ -105,9 +105,14 @@ def validate_xml(stage, xml_text):
     root = ET.fromstring(xml_text)
     require(root.tag == 'test-run' and root.get('result') == 'Passed', 'NUNIT_ROOT_NOT_PASSED')
     assemblies = root.findall(".//test-suite[@type='Assembly']")
-    require(any(Path((s.get('name') or '')).name.replace('.dll', '') == ASSEMBLIES[stage] for s in assemblies),
-            'WRONG_NUNIT_ASSEMBLY')
-    nodes = root.findall('.//test-case')
+    matching = [s for s in assemblies if Path((s.get('name') or '')).name.replace('.dll', '') == ASSEMBLIES[stage]]
+    require(len(matching) == 1, 'WRONG_NUNIT_ASSEMBLY')
+    # A matching but EMPTY assembly must never bless test-cases attached to
+    # an unrelated assembly. Require every reported test-case to belong to
+    # the exact stage assembly selected by the operator.
+    nodes = matching[0].findall('.//test-case')
+    require(len(nodes) == len(root.findall('.//test-case')),
+            'NUNIT_CASE_OUTSIDE_EXPECTED_ASSEMBLY')
     full, expected = set(), ids(stage)
     require(len(nodes) == len(expected), 'NUNIT_CASE_COUNT_MISMATCH')
     for case in nodes:
@@ -144,7 +149,7 @@ def validate_trials(log_text):
     expected = {(p, str(i)) for p in ('LIGHT','HEAVY') for i in (1,2,3)}
     found = {(x.get('profile'), x.get('attempt')) for x in data}
     require(found == expected, 'TRIAL_PROFILE_ATTEMPT_MISMATCH')
-    widths = {}
+    widths = {'LIGHT': [], 'HEAVY': []}
     for d in data:
         def number(name):
             try: val = float(d[name])
@@ -159,8 +164,12 @@ def validate_trials(log_text):
             require(number(name) > minimum, 'TRIAL_INSUFFICIENT_'+name)
         require(number('massKg') == {'LIGHT':270,'HEAVY':1150}[profile], 'TRIAL_WRONG_MASS')
         require(number('elapsedSec') >= 0, 'NEGATIVE_ELAPSED')
-        widths[profile] = number('widthM')
-    require(widths['HEAVY'] > widths['LIGHT'], 'RIG_FOOTPRINT_IDENTICAL_OR_INVERTED')
+        width = number('widthM')
+        require(width > 0, 'TRIAL_INVALID_WIDTH')
+        widths[profile].append(width)
+    # Every Heavy attempt must be wider than every Light attempt, not only
+    # the last row of each profile. A single swapped/corrupt rig fails closed.
+    require(min(widths['HEAVY']) > max(widths['LIGHT']), 'RIG_FOOTPRINT_IDENTICAL_OR_INVERTED')
     return len(data)
 
 def validate_receipt(evidence):
