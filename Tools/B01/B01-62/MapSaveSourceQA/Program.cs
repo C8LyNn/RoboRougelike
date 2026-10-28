@@ -39,12 +39,21 @@ public static class Program
 {
     private static readonly List<object> Evidence = new();
     private static int unexpected;
+    private static int d02Checks;
+    private static int d02RemainingRed;
 
     private static void Case(string id, string category, Func<bool> check)
     {
         try
         {
             bool met = check();
+            if (category == "NEGATIVE" &&
+                (id.StartsWith("A01-") || id.StartsWith("A02-") ||
+                 id.StartsWith("A03-") || id.StartsWith("A04-")))
+            {
+                d02Checks++;
+                if (!met) d02RemainingRed++;
+            }
             string status = category switch
             {
                 "NEGATIVE" => met ? "FIX_ACCEPTANCE_GREEN" : "KNOWN_DEFECT_RED",
@@ -147,6 +156,7 @@ public static class Program
             Console.WriteLine("HARNESS_SELFTEST_FAIL_CLOSED=" + closed);
             return closed ? 73 : 0;
         }
+        bool strictD02 = args.Length == 1 && args[0] == "--require-d02-green";
         if (args.Length == 2 && args[0] == "--stage-and-exit")
             return StageAndExit(args[1]);
         if (args.Length == 2 && args[0] == "--load-in-new-process")
@@ -202,6 +212,20 @@ public static class Program
             MapStorage.TryPath(Path.GetTempPath(), "Tor 1", out var p) &&
             Path.GetFileName(p) == "Tor 1.json" &&
             !MapStorage.TryPath(Path.GetTempPath(), "../escape", out _));
+
+        // A real post-Codex-fix acceptance mode. Unlike baseline evidence collection,
+        // this mode returns NONZERO when D02 is still vulnerable or a test is absent.
+        // It runs only existing A01–A05, not repeated unrelated B cases.
+        if (strictD02)
+        {
+            int requiredChecks = OperatingSystem.IsWindows() ? 4 : 3;
+            bool accepted = d02Checks == requiredChecks && d02RemainingRed == 0 && unexpected == 0;
+            Console.WriteLine("D02_STRICT_GATE=" + (accepted ? "GREEN" : "RED") +
+                              " checked=" + d02Checks + "/" + requiredChecks +
+                              " remainingProductDefects=" + d02RemainingRed +
+                              " harnessErrors=" + unexpected);
+            return accepted ? 0 : 86;
+        }
 
         Case("B01-real-file-v1-load-v2-save-reload", "POSITIVE", () =>
             InTemporaryDirectory(directory =>
