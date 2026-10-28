@@ -1,0 +1,53 @@
+{
+  "package_id": "CI41-PATHPORT-001",
+  "version": "1.0.0",
+  "producer": "B01-41 — CI/CD & TEST AUTOMATION",
+  "project": "C8LyNn/RoboRougelike",
+  "branch": "audit/b01-41-p17-w02-asset-path-portability",
+  "base_main_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "original_game_source_sha": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+  "source_files": {
+    "Tools/B01/CI41/P17W02/pathport.py": "a6afd2150e90019e454e804d1efd6294f70e6949",
+    "Tools/B01/CI41/P17W02/test_pathport.py": "941a1e4519cf1bdb2e0e4e94f413cee33f544a67"
+  },
+  "workflow": ".github/workflows/b01-41-p17w02-asset-path-portability.yml",
+  "real_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759904072",
+  "source_kind": "QA_ONLY_PYTHON_ORIGINAL_GIT_OBJECTS",
+  "tests": {
+    "unit_cases_per_os": 12,
+    "types": [
+      "actual_Git_tree_created_with_invalid_Windows_names",
+      "pure_path_negative_and_positive",
+      "original_Codex_Assets_tree_check",
+      "CLI_exit_and_JSON"
+    ]
+  },
+  "outputs": [
+    "JSON exact commit SHA",
+    "cross-platform filename/casefold/Unicode/device-name findings",
+    "original GitHub Actions Python logs"
+  ],
+  "dependencies": [
+    "Python 3 stdlib",
+    "git",
+    "original commit objects"
+  ],
+  "acceptance": {
+    "independent_B01_40": "PENDING",
+    "independent_B01_60": "PENDING",
+    "codex_ack": "PENDING",
+    "game_integration": "NOT_INTEGRATED",
+    "native_unity": "NOT_RUN",
+    "G1": "NOT_RUN",
+    "G2": "HOLD",
+    "merge": "NO_MERGE"
+  },
+  "install": "Owner-approved optional QA script in CI; require trusted event SHA and keep native game checks",
+  "rollback": "Close unmerged Draft or remove optional CI-only tool; does not change game files",
+  "known_limits": [
+    "No native Unity or Windows Player",
+    "Static Git path analysis only",
+    "Unicode normalization intentionally conservative",
+    "Does not validate GUID/asset content"
+  ]
+}
