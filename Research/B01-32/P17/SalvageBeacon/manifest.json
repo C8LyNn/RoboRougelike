@@ -1,0 +1,87 @@
+{
+  "package_id": "B01-32-SALVAGE-BEACON-001",
+  "version": "1.0.0",
+  "owner": "B01-32",
+  "purpose": "Original cosmetic salvage/reward locator pulse, with no inventory or rarity logic.",
+  "target": "Unity 6000.3.14f1 URP, sprite frame atlas; Codex optional integration only",
+  "src_px": [
+    512,
+    512
+  ],
+  "frame_count": 8,
+  "frame_duration_ms": 120,
+  "loop": true,
+  "atlas": {
+    "columns": 4,
+    "rows": 2,
+    "size_px": [
+      2048,
+      1024
+    ],
+    "tile_px": [
+      512,
+      512
+    ],
+    "top_down": true,
+    "unity_sprite_y": "Unity bottom-origin index = (rows - 1) - source row"
+  },
+  "frames": [
+    {
+      "id": 0,
+      "source": "frames/beacon-0.svg",
+      "column": 0,
+      "row": 0
+    },
+    {
+      "id": 1,
+      "source": "frames/beacon-1.svg",
+      "column": 1,
+      "row": 0
+    },
+    {
+      "id": 2,
+      "source": "frames/beacon-2.svg",
+      "column": 2,
+      "row": 0
+    },
+    {
+      "id": 3,
+      "source": "frames/beacon-3.svg",
+      "column": 3,
+      "row": 0
+    },
+    {
+      "id": 4,
+      "source": "frames/beacon-4.svg",
+      "column": 0,
+      "row": 1
+    },
+    {
+      "id": 5,
+      "source": "frames/beacon-5.svg",
+      "column": 1,
+      "row": 1
+    },
+    {
+      "id": 6,
+      "source": "frames/beacon-6.svg",
+      "column": 2,
+      "row": 1
+    },
+    {
+      "id": 7,
+      "source": "frames/beacon-7.svg",
+      "column": 3,
+      "row": 1
+    }
+  ],
+  "dependencies": [
+    "CairoSVG==2.7.1",
+    "Pillow==11.3.0",
+    "playwright==1.55.0 for browser QA"
+  ],
+  "native_unity": "NOT_RUN",
+  "integrated": false,
+  "role_boundaries": "No rarity, loot, reward, inventory, damage, physics or gameplay systems. No VFX001 edit.",
+  "receiver": "B01-40 independent source receipt → B01-60 visual QA → B01-00 priority → Codex optional import"
+}
