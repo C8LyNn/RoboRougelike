@@ -88,6 +88,7 @@ namespace RoboRougelike.R3
         public float GrappleReadyAt;
         // Assignments follow mounted types, including damaged plans that can be repaired.
         R4WeaponKind? weaponGroupA, weaponGroupB;
+        readonly Dictionary<string,bool> weaponGroupPreference=new Dictionary<string,bool>(StringComparer.Ordinal);
         public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
         public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
         public void SyncWeaponGroups()
@@ -98,12 +99,25 @@ namespace RoboRougelike.R3
             foreach(var kind in types)
             {
                 if(weaponGroupA==kind||weaponGroupB==kind)continue;
-                if(!weaponGroupA.HasValue)weaponGroupA=kind;
+                var remembered=Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind&&
+                    !string.IsNullOrEmpty(p.Id)&&weaponGroupPreference.ContainsKey(p.Id));
+                if(remembered!=null&&weaponGroupPreference[remembered.Id]&&!weaponGroupB.HasValue)weaponGroupB=kind;
+                else if(remembered!=null&&!weaponGroupPreference[remembered.Id]&&!weaponGroupA.HasValue)weaponGroupA=kind;
+                else if(!weaponGroupA.HasValue)weaponGroupA=kind;
                 else if(!weaponGroupB.HasValue)weaponGroupB=kind;
+            }
+            RememberWeaponGroups();
+        }
+        void RememberWeaponGroups()
+        {
+            foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Gun&&!string.IsNullOrEmpty(p.Id)))
+            {
+                if(weaponGroupA==part.Weapon)weaponGroupPreference[part.Id]=false;
+                else if(weaponGroupB==part.Weapon)weaponGroupPreference[part.Id]=true;
             }
         }
         public void SwapWeaponGroups()
-        { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; }
+        { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; RememberWeaponGroups(); }
         public R3GarageEconomy Economy { get; }
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
@@ -122,6 +136,7 @@ namespace RoboRougelike.R3
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
             SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;
+            foreach(var preference in weaponGroupPreference)copy.weaponGroupPreference[preference.Key]=preference.Value;
             return copy;
         }
         public void Award(int amount) { Scrap = (int)Math.Min(100000L, Scrap + (long)Math.Max(0, amount)); }
@@ -323,7 +338,7 @@ namespace RoboRougelike.R3
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);if(!ValidEconomicPart(part))return false;
             int quote=DismantleValue(part);
-            inventory.Remove(part);Award(quote);return true;
+            inventory.Remove(part);weaponGroupPreference.Remove(part.Id);Award(quote);return true;
         }
         public static bool Connected(IEnumerable<R3PartState> parts)
         {
