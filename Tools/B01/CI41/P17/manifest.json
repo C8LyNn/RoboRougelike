@@ -1,0 +1,44 @@
+{
+  "package_id": "CI41-UNITYREF-001",
+  "version": "1.0.0",
+  "owner": "B01-41",
+  "source_branch": "audit/b01-41-p17-unity-serialized-reference-gate",
+  "workflow_scope": "OWNED_QA_ONLY",
+  "native_unity": "NOT_RUN",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "source_inputs": {
+    "original_unity_base": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "original_codex_head": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+    "original_main_reference": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1"
+  },
+  "source_blobs": {
+    "Tools/B01/CI41/P17/unity_ref_gate.py": "ae1d50bb06f654d3d69d4f3d4dc5940b78be36bc",
+    "Tools/B01/CI41/P17/test_unity_ref_gate.py": "852f218e11687cbc0e45e55095062b1231bd935a",
+    ".github/workflows/b01-41-p17-unity-retired-guid.yml": "b798d36f3df16e3a8bc9023be1686b05517dcfff"
+  },
+  "executed_tests": [
+    {
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40727786472",
+      "os": "Windows 2025",
+      "result": "7/7 PASS",
+      "type": "source_git_python"
+    },
+    {
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40727786472",
+      "os": "Ubuntu 24.04",
+      "result": "7/7 PASS",
+      "type": "source_git_python"
+    }
+  ],
+  "known_limits": [
+    "previously_local_guid_only",
+    "textual_unity_yaml_only",
+    "not_fileID_or_package_aware",
+    "no Unity native"
+  ],
+  "code_owner": "Codex-only main game",
+  "independent_qa": "B01-60 pending",
+  "import": "Read-only optional CI script, trusted exact PR SHA inputs; Codex/HQ approval before adoption",
+  "rollback": "Do not merge; close PR/delete QA branch or remove optional tool; no game data migrations"
+}
