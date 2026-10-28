@@ -1,0 +1,48 @@
+{
+  "package_id": "B01-12-GARAGE-BLUEPRINT-001",
+  "version": "1.0.0",
+  "owner": "B01-12 — INTERACTIVE UX PROTOTYPES",
+  "scope": "research-only standalone HTML/Playwright, no Assets/** edits",
+  "source": {
+    "path": "Research/B01-12/P17/garage-blueprint-lab.html",
+    "sha256": "d1732bca3fbc6b42558b742ae841b5372de69183b9f24e1bd60f2c426e28100e",
+    "git_blob": "ada094f5688759e7ea945898c6f7967f9eef8702"
+  },
+  "replay": {
+    "path": "Research/B01-12/P17/replay.py",
+    "sha256": "44cad8dffbbb9a392862d5ee5972e5dbeeb565b431fcec2346982cc691c2310a",
+    "git_blob": "4345165997fae779dec753d02f9c53b71e2ec450"
+  },
+  "dependencies": [
+    "Browser with ES2019+, offline standalone",
+    "Python3 + Playwright 1.57 + Chromium /usr/bin/chromium for QA only"
+  ],
+  "verified": {
+    "chromium_full_author_checks": "157/157 PASS",
+    "chromium_published_replay": "74/74 PASS",
+    "js_errors": 0,
+    "viewports": [
+      [
+        320,
+        720
+      ],
+      [
+        768,
+        1024
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1920,
+        1080
+      ]
+    ]
+  },
+  "native_unity": "NOT_RUN",
+  "independent_qa": "PENDING",
+  "game_integration": "NOT_INTEGRATED",
+  "rollback": "Remove Research/B01-12/P17/**, close draft PR; no migrations",
+  "code_owner": "Codex exclusively integrates canonical garage and run saving"
+}
