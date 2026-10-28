@@ -1,0 +1,269 @@
+{
+  "schema": "B01-PARTSIZE-P17-RIG-BLUEPRINT-v1",
+  "blueprintId": "P17-BULWARK-TRACKS-REINFORCED",
+  "displayName": "Bulwark / dwie gąsienice / Reinforced",
+  "description": "Zwarty kadłub 3×3 z dwiema gąsienicami, dwiema lufami i osłoną rdzenia. Dodatkowe panele pancerza tworzą alternatywne połączenia między modułami.",
+  "selectedDrive": "Tracks",
+  "recommendedBaseProfile": "Heavy",
+  "sourcePartSizeCommit": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "contentStatus": "GAME_CONTENT_CANDIDATE_NOT_INTEGRATED",
+  "nativePhysicalStatus": "UNMEASURED_COLLIDER_AND_SOCKET",
+  "parts": [
+    {
+      "localId": "P17-BULWARK-TRACKS-001",
+      "kind": "Core",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-002",
+      "kind": "Armor",
+      "cell": {
+        "x": -1,
+        "y": 0,
+        "z": -1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-003",
+      "kind": "Armor",
+      "cell": {
+        "x": -1,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-004",
+      "kind": "Armor",
+      "cell": {
+        "x": -1,
+        "y": 0,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-005",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "z": -1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-006",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 0,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-007",
+      "kind": "Armor",
+      "cell": {
+        "x": 1,
+        "y": 0,
+        "z": -1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-008",
+      "kind": "Armor",
+      "cell": {
+        "x": 1,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-009",
+      "kind": "Armor",
+      "cell": {
+        "x": 1,
+        "y": 0,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-010",
+      "kind": "Armor",
+      "cell": {
+        "x": 0,
+        "y": 1,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-011",
+      "kind": "CrawlerTrack",
+      "cell": {
+        "x": -2,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-012",
+      "kind": "CrawlerTrack",
+      "cell": {
+        "x": 2,
+        "y": 0,
+        "z": 0
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-013",
+      "kind": "Gun",
+      "cell": {
+        "x": 0,
+        "y": 1,
+        "z": -1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": "Basic"
+    },
+    {
+      "localId": "P17-BULWARK-TRACKS-014",
+      "kind": "Gun",
+      "cell": {
+        "x": 0,
+        "y": 1,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": "Basic"
+    },
+    {
+      "localId": "P17-BRACE-BULWARK-L",
+      "kind": "Armor",
+      "cell": {
+        "x": -2,
+        "y": 0,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    },
+    {
+      "localId": "P17-BRACE-BULWARK-R",
+      "kind": "Armor",
+      "cell": {
+        "x": 2,
+        "y": 0,
+        "z": 1
+      },
+      "rotationQuarterTurns": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "contactMask": 63,
+      "weapon": null
+    }
+  ]
+}
