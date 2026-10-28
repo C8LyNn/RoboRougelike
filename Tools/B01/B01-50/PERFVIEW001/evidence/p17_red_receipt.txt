@@ -1,0 +1,12 @@
+ORIGINAL_GIT_HEAD=7b69abbfae841ea1d83d9d8ef90caefc0124f3e3
+PROVENANCE_BROWSER_RED_EXIT=1
+{
+  "label": "PLIKI NIEZWERYFIKOWANE NATYWNIE",
+  "stateB": "DEMO — dane syntetyczne (nie pomiar)",
+  "metricsB": 8,
+  "compare": "METADANE ZGODNE — PORÓWNANIE EKSPLORACYJNE\nΔP95 Update +1.80 ms; ΔP99 1.80 ms. Bez kontroli sceny/sterowania nie oznacza to skutku zwiększenia liczby obiektów."
+}
+
+AssertionError: PROVENANCE_LEAK: mixed synthetic and imported session masquerade as non-synthetic
+DIFF_SCENARIO_RED_EXIT=17
+original comparable=true,mismatches=[]

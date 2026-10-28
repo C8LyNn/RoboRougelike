@@ -1,0 +1,8 @@
+demo 1280x720 rendered, no JS errors/no overflow, 8 metrics + 12 rows
+demo -> import only A clears both synthetic captures; no mixed provenance
+demo -> import only B clears demo A; no mixed provenance
+real Chromium file picker import of 3 source-shaped files: 1 session, not native acceptance
+corrupt receipt refused, valid A session remains readable; no browser JS error
+recovery from invalid B to valid B; comparison visible
+demo 1920x1080 rendered, no JS errors/no overflow, 8 metrics + 12 rows
+demo 720x900 rendered, no JS errors/no overflow, 8 metrics + 12 rows

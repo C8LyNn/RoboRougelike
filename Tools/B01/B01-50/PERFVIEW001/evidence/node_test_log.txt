@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: original schema: synthetic positive gives only unverified classification
+ok 1 - original schema: synthetic positive gives only unverified classification
+  ---
+  duration_ms: 25.024803
+  type: 'test'
+  ...
+# Subtest: P95/P99 and binning reflect trace, not invented 60 FPS
+ok 2 - P95/P99 and binning reflect trace, not invented 60 FPS
+  ---
+  duration_ms: 33.340869
+  type: 'test'
+  ...
+# Subtest: missing rows and skipped frame index fail closed
+ok 3 - missing rows and skipped frame index fail closed
+  ---
+  duration_ms: 19.891589
+  type: 'test'
+  ...
+# Subtest: duplicate header and foreign columns rejected
+ok 4 - duplicate header and foreign columns rejected
+  ---
+  duration_ms: 19.225401
+  type: 'test'
+  ...
+# Subtest: malformed CSV quoting fails closed; standard quoted scene accepted
+ok 5 - malformed CSV quoting fails closed; standard quoted scene accepted
+  ---
+  duration_ms: 30.571764
+  type: 'test'
+  ...
+# Subtest: malicious script-looking scene parsed as text, not executed
+ok 6 - malicious script-looking scene parsed as text, not executed
+  ---
+  duration_ms: 20.514461
+  type: 'test'
+  ...
+# Subtest: negative, NaN, Infinity, zeros and time travel rejected
+ok 7 - negative, NaN, Infinity, zeros and time travel rejected
+  ---
+  duration_ms: 37.305449
+  type: 'test'
+  ...
+# Subtest: fake unity, inaccurate build SHA or false profiler fields rejected
+ok 8 - fake unity, inaccurate build SHA or false profiler fields rejected
+  ---
+  duration_ms: 10.639242
+  type: 'test'
+  ...
+# Subtest: incomplete 119-second capture refused even when rows exist
+ok 9 - incomplete 119-second capture refused even when rows exist
+  ---
+  duration_ms: 6.839135
+  type: 'test'
+  ...
+# Subtest: scan row count and invalid counts fail closed
+ok 10 - scan row count and invalid counts fail closed
+  ---
+  duration_ms: 18.35833
+  type: 'test'
+  ...
+# Subtest: changed host/build/game produces explicit incompatible diagnostic
+ok 11 - changed host/build/game produces explicit incompatible diagnostic
+  ---
+  duration_ms: 22.447715
+  type: 'test'
+  ...
+# Subtest: changed scene produces explicit incompatible diagnostic
+ok 12 - changed scene produces explicit incompatible diagnostic
+  ---
+  duration_ms: 27.224621
+  type: 'test'
+  ...
+# Subtest: quantile and CSV parser strictness, no phantom blanks
+ok 13 - quantile and CSV parser strictness, no phantom blanks
+  ---
+  duration_ms: 0.2582
+  type: 'test'
+  ...
+# Subtest: receipt falsified row count and bogus unmeasured metrics blocked
+ok 14 - receipt falsified row count and bogus unmeasured metrics blocked
+  ---
+  duration_ms: 9.608323
+  type: 'test'
+  ...
+# Subtest: different scenario IDs invalidate even matching build/hardware
+ok 15 - different scenario IDs invalidate even matching build/hardware
+  ---
+  duration_ms: 22.976065
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 367.537226
