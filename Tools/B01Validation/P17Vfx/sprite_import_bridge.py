@@ -133,7 +133,7 @@ def make_files(output,manifest,template):
         rgba=Image.open(io.BytesIO(raw)).convert("RGBA")
         require(rgba.size==(256,256),"SPRITE_SIZE_CHANGED:"+name)
         x=frame*256;y=STATES.index(stage)*256
-        require(ImageChops.difference(atlas.crop((x,y,x+256,y+256)),rgba).getbbox() is None,
+        require(atlas.crop((x,y,x+256,y+256)).tobytes()==rgba.tobytes(),
                 "ATLAS_FRAME_PIXEL_PARITY_FAIL:"+name)
         bbox=rgba.getchannel("A").getbbox()
         require((bbox is None)==(stage=="clean"),"ALPHA_VISUAL_STATE_WRONG:"+name)
@@ -218,7 +218,7 @@ def validate_zip(data,existing=None):
         rgba=Image.open(io.BytesIO(files[path])).convert("RGBA")
         x,y,w,h=entry["atlas_rect_top_left"]
         require((w,h)==(256,256) and
-                ImageChops.difference(atlas.crop((x,y,x+w,y+h)),rgba).getbbox() is None,
+                atlas.crop((x,y,x+w,y+h)).tobytes()==rgba.tobytes(),
                 "SOURCE_ATLAS_SPRITE_PIXEL_MISMATCH")
         require((rgba.getchannel("A").getbbox() is None)==entry["alpha_empty"],
                 "SPRITE_ALPHA_METADATA_MISMATCH")
