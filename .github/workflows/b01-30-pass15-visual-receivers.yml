@@ -1,0 +1,78 @@
+name: B01-30 PASS15 original concept and M04 lookdev receivers
+on:
+  pull_request:
+    paths:
+      - "Tools/B01/VisualReceivers/P15/**"
+      - ".github/workflows/b01-30-pass15-visual-receivers.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-wheel-art-receiver:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin immutable original B01-31 SVG source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/294/head
+          git cat-file -e 8709cf27901c4edca1434cbc760dec5db130a3ef^{commit}
+          test "$(git rev-parse 8709cf27901c4edca1434cbc760dec5db130a3ef:Docs/B01Concept/CONCEPT-MOBILITY-001/A1-single-wheel-arm.svg)" = "96cc46a7c14f94a45c387e102d5940cb787d2d5c"
+      - name: CairoSVG / Pillow dependencies and source syntax
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-cairosvg python3-pil
+          python3 -m py_compile Tools/B01/VisualReceivers/P15/selected_wheel_techart.py
+      - name: Render ACTUAL original selected semantic layers and new inspection illustration
+        run: |
+          python3 Tools/B01/VisualReceivers/P15/selected_wheel_techart.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P15-A1-selected-part-real-renders
+          path: build/B01-30/A1-techart/
+          if-no-files-found: error
+          retention-days: 30
+  m04-original-glb-orthographic-receiver:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Get exact producer M04 existing source WITHOUT editing it
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/196/head
+          test "$(git rev-parse FETCH_HEAD)" = "eef02864b106546b200011a2f0286fe7d9a83a1f"
+          test "$(git rev-parse FETCH_HEAD:Tools/ModelFactory/M04/M04-024/generate_m04_024.py)" = "102b2d430260ae4da15fc7dee51f9bd86ccd822c"
+          mkdir -p build/B01-30/P15-M04-original-source
+          git archive eef02864b106546b200011a2f0286fe7d9a83a1f Tools/ModelFactory/M04/M04-024 | tar -x -C build/B01-30/P15-M04-original-source
+      - name: Real Blender and local Pillow dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil
+          blender -b --version | head -3
+          python3 -m py_compile Tools/B01/VisualReceivers/P15/m04_actual_glb_contact.py
+      - name: Export actual owner's unmodified Blender geometry and animation to original GLB
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python build/B01-30/P15-M04-original-source/Tools/ModelFactory/M04/M04-024/generate_m04_024.py -- --out build/B01-30/P15-M04-generated
+          python3 build/B01-30/P15-M04-original-source/Tools/ModelFactory/M04/M04-024/qa_m04_024.py --glb build/B01-30/P15-M04-generated/M04-024.glb --manifest build/B01-30/P15-M04-generated/manifest.json --report build/B01-30/P15-M04-generated/qa.json
+      - name: Import genuine generated GLB back into Blender and render orthographic contact sheet
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python Tools/B01/VisualReceivers/P15/m04_actual_glb_contact.py -- --glb build/B01-30/P15-M04-generated/M04-024.glb --out build/B01-30/P15-M04-lookdev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P15-M04-original-GLB-real-ortho-views
+          path: |
+            build/B01-30/P15-M04-lookdev/
+            build/B01-30/P15-M04-generated/manifest.json
+            build/B01-30/P15-M04-generated/qa.json
+          if-no-files-found: error
+          retention-days: 30
