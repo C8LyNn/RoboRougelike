@@ -43,6 +43,51 @@ const {chromium}=require('playwright-core');
    await check('rectangle coordinates normalized',()=>page.evaluate(()=>{const a=window.FrameUXReview.getState().annotations[0];return a.x>=0&&a.y>=0&&a.x+a.w<=1&&a.y+a.h<=1}));
    await page.locator('#zones').click();
    await check('reference zones toggle',async()=>await page.locator('#zones').getAttribute('aria-pressed')==='false');
+
+   // Actual bytes: generate a real raster PNG and upload it through the original file input.
+   const inputPngBase64=await page.evaluate(()=>{
+    const c=document.createElement('canvas');c.width=640;c.height=360;
+    const g=c.getContext('2d');g.fillStyle='#1374aa';g.fillRect(0,0,640,360);
+    g.fillStyle='#f5b842';g.fillRect(290,150,60,60);
+    return c.toDataURL('image/png').split(',')[1];
+   });
+   const pngBytes=Buffer.from(inputPngBase64,'base64');
+   await page.locator('#imageInput').setInputFiles({name:'native-ui-sample.png',mimeType:'image/png',buffer:pngBytes});
+   await page.waitForFunction(()=>document.querySelector('#imageMeta').textContent.includes('640×360'));
+   await check('real PNG file input updates canvas dimensions',()=>page.evaluate(()=>document.querySelector('#surface').width===640&&document.querySelector('#surface').height===360));
+   await check('real PNG file name retained',async()=>(await page.locator('#imageMeta').innerText()).includes('native-ui-sample.png'));
+   await check('new image clears stale annotations',()=>page.evaluate(()=>window.FrameUXReview.getState().annotations.length===0));
+   await check('uploaded source pixels actually drawn',()=>page.evaluate(()=>{
+     const p=document.querySelector('#surface').getContext('2d').getImageData(10,10,1,1).data;
+     return p[0]===19&&p[1]===116&&p[2]===170;
+   }));
+   // A superficially valid JSON report must fail closed on a DIFFERENT original canvas size.
+   await page.locator('#importInput').setInputFiles({name:'wrong-frame.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(json))});
+   await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('Import odrzucony'));
+   await check('different image dimensions reject imported JSON',async()=>(await page.locator('#status').innerText()).includes('dimensions do not match'));
+   await check('wrong-dimension import preserves current image',()=>page.evaluate(()=>document.querySelector('#surface').width===640&&document.querySelector('#surface').height===360));
+   await check('wrong-dimension import preserves empty records',()=>page.evaluate(()=>window.FrameUXReview.getState().annotations.length===0));
+   await page.locator('#x').fill('0.25');await page.locator('#y').fill('0.3');await page.locator('#w').fill('0.2');await page.locator('#h').fill('0.15');
+   await page.locator('#note').fill('Obscured warning in actual imported frame');
+   await page.locator('#addManual').click();
+   await check('annotate imported PNG, not the mock',()=>page.evaluate(()=>window.FrameUXReview.getState().annotations.length===1&&window.FrameUXReview.getState().width===640));
+   const pngDownloadPromise=page.waitForEvent('download');
+   await page.locator('#exportPNG').click();
+   const exportedPNG=await pngDownloadPromise;
+   const pngOutput=fs.readFileSync(await exportedPNG.path());
+   await check('real PNG export header and 640x360 dimensions',()=>pngOutput.subarray(0,8).equals(Buffer.from('89504e470d0a1a0a','hex'))&&pngOutput.readUInt32BE(16)===640&&pngOutput.readUInt32BE(20)===360);
+   await check('exported PNG preserves original imported pixel data',()=>page.evaluate(async encoded=>{
+     const pic=new Image();pic.src='data:image/png;base64,'+encoded;await pic.decode();
+     const c=document.createElement('canvas');c.width=pic.naturalWidth;c.height=pic.naturalHeight;c.getContext('2d').drawImage(pic,0,0);
+     const p=c.getContext('2d').getImageData(10,10,1,1).data;
+     return p[0]===19&&p[1]===116&&p[2]===170;
+   },pngOutput.toString('base64')));
+   // Invalid MIME must be refused without altering the already loaded image or annotations.
+   await page.locator('#imageInput').setInputFiles({name:'unsupported.txt',mimeType:'text/plain',buffer:Buffer.from('not a picture')});
+   await page.waitForFunction(()=>document.querySelector('#status').textContent.includes('Niepoprawny format'));
+   await check('invalid image MIME rejected',async()=>(await page.locator('#status').innerText()).includes('Niepoprawny format'));
+   await check('invalid image input preserves annotated screenshot',()=>page.evaluate(()=>window.FrameUXReview.getState().annotations.length===1&&document.querySelector('#surface').width===640));
+
    await check('no horizontal page overflow',()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1));
    await check('zero browser errors',()=>jsErrors.length===0);
    await page.close();
