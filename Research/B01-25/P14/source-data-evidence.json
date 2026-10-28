@@ -1,0 +1,59 @@
+{
+  "sourceCommit": "231005c6d0351945a8ee6684f3856af118f0e94f",
+  "sourceBlobs": {
+    "draft": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+    "world": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+    "editor": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7"
+  },
+  "priorFixtureBlob": "0ef8bc8ebcd1899f905ac87524b40fcc45ce9fb9",
+  "kind": "V8 original GitHub CodeX-Csharp-source-read plus new MapDocument v2 data validation; not original C# run",
+  "checks": [
+    {
+      "id": "original_CSharp_Git_identical",
+      "pass": true
+    },
+    {
+      "id": "original_format_has_necessary_kinds",
+      "pass": true
+    },
+    {
+      "id": "local_floor_12x10_120",
+      "pass": true
+    },
+    {
+      "id": "nonoverlapping_40_wall_perimeter",
+      "pass": true
+    },
+    {
+      "id": "all_perimeter_cells_have_a_wall",
+      "pass": true
+    },
+    {
+      "id": "single_markers_are_both_on_ground",
+      "pass": true
+    },
+    {
+      "id": "cover_four_pillars_two_lowbarriers_no_overlap",
+      "pass": true
+    },
+    {
+      "id": "grid_path_spawn_finish_clear_of_solid_obstacles",
+      "pass": true
+    },
+    {
+      "id": "actual_MapWorld_creates_solid_wall_colliders",
+      "pass": true
+    },
+    {
+      "id": "actual_editor_does_not_spawn_two_enemy_encounter",
+      "pass": true
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "native": "NOT_RUN",
+  "topologyOnly": {
+    "reachableSpawnFinish": true,
+    "interiorVisited": 54
+  }
+}
