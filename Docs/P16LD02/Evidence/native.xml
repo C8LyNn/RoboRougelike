@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 16:06:20Z" end-time="2026-10-28 16:06:20Z" duration="0,3834581">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1318" result="Passed" start-time="2026-10-28 16:06:20Z" end-time="2026-10-28 16:06:20Z" duration="0.383458" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1643" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="526" result="Passed" start-time="2026-10-28 16:06:20Z" end-time="2026-10-28 16:06:20Z" duration="0.335944" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="54292" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1115" name="LD02ArenaNativeTests" fullname="LD02ArenaNativeTests" classname="LD02ArenaNativeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-28 16:06:20Z" end-time="2026-10-28 16:06:20Z" duration="0.331194" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1118" name="HeavyCrossesUsingRealWheelForces" fullname="LD02ArenaNativeTests.HeavyCrossesUsingRealWheelForces" methodname="HeavyCrossesUsingRealWheelForces" classname="LD02ArenaNativeTests" runstate="Runnable" seed="214287605" result="Passed" start-time="2026-10-28 16:06:03Z" end-time="2026-10-28 16:06:11Z" duration="7.350681" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 139 structural block(s).
+[LD02 Heavy] step=0 pos=(8.00, 0.68, 20.00) grounded=12
+[LD02 Heavy] step=100 pos=(13.80, 0.65, 20.00) grounded=12
+[LD02 Heavy] step=200 pos=(30.07, 0.72, 20.00) grounded=8
+[LD02 Heavy] end=(34.07, 0.71, 20.02) maximumX=34,07 groundedFrames=221
+]]></output>
+        </test-case>
+        <test-case id="1117" name="LightCrossesUsingRealWheelForces" fullname="LD02ArenaNativeTests.LightCrossesUsingRealWheelForces" methodname="LightCrossesUsingRealWheelForces" classname="LD02ArenaNativeTests" runstate="Runnable" seed="91084004" result="Passed" start-time="2026-10-28 16:06:11Z" end-time="2026-10-28 16:06:17Z" duration="6.493586" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[LD02 Light] step=0 pos=(8.00, 0.68, 20.00) grounded=4
+[LD02 Light] step=100 pos=(19.98, 0.65, 20.00) grounded=4
+[LD02 Light] end=(34.05, 0.77, 20.00) maximumX=34,05 groundedFrames=158
+]]></output>
+        </test-case>
+        <test-case id="1116" name="PerimeterHasEightActualPhysicalColliders" fullname="LD02ArenaNativeTests.PerimeterHasEightActualPhysicalColliders" methodname="PerimeterHasEightActualPhysicalColliders" classname="LD02ArenaNativeTests" runstate="Runnable" seed="670311781" result="Passed" start-time="2026-10-28 16:06:17Z" end-time="2026-10-28 16:06:20Z" duration="2.872539" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
