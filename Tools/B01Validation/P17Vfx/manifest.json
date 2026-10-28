@@ -36,7 +36,7 @@
   "install_authority": "CODEX_ONLY_AFTER_EXPLICIT_ACK_HQ_APPROVAL_AND_INDEPENDENT_QA",
   "native_unity": "NOT_RUN",
   "gates": {
-    "G0": "PENDING_EXECUTED_CI",
+    "G0": "PASS_ORIGINAL_12_RGBA_PIXEL_RASTER_AND_STABLE_UNITY_META_SOURCE_ONLY",
     "G1": "NOT_RUN",
     "G2": "HOLD"
   },
@@ -46,5 +46,20 @@
     "No actual URP overlay GPU, color contrast, 720/1080 screenshot",
     "No HP thresholds, damage-state adapter, detach/unload logic",
     "Source-read GUID scan on pinned historic commits does not assert no collision in future unknown Codex HEAD"
-  ]
+  ],
+  "actual_evidence": {
+    "initial_executed_run_id": 40743859730,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743859730",
+    "source_head_sha": "858c9e967cac10cec3106c7fa12bd53e48ef02d0",
+    "linux_job_id": 123012324716,
+    "windows_job_id": 123012503051,
+    "linux_real_original_svg_renderer": "PASS_12_FRAMES_ATLAS_PARITY_AND_TWO_BYTE_IDENTICAL_BUILD_OUTPUTS",
+    "linux_original_zip_tests": "16/16 PASS",
+    "windows_exact_same_artifact_readback": "16/16 PASS",
+    "artifact_id": 12839349262,
+    "original_inner_zip_sha256": "1662c46ba75736949c7fb1a5ae20dd057bfd69819d4cb74aee2d53c2b10f987c",
+    "zip_members": 30,
+    "importable_assets": "12 REAL PNG and 12 Unity Sprite Single .meta; 3 folder metas",
+    "windows_rendering": "NOT_RUN_READBACK_ONLY"
+  }
 }
