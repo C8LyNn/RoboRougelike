@@ -444,6 +444,46 @@ public static class Program
                        Directory.GetFiles(directory, "*.tmp").Length == 0;
             }));
 
+        // Real 168/173-item Codex LD02 source JSON: no synthetic maps here.
+        // Both original Git blobs are fetched and verified by the Actions job.
+        // This tests existing map-content disk compatibility, not map geometry/PhysX.
+        Case("B13-two-original-LD02-MapDocuments-save-reload", "POSITIVE", () =>
+            InTemporaryDirectory(directory =>
+            {
+                var fixtures = new (string name, int count)[]
+                {
+                    ("LD02_ARENA", 168),
+                    ("LD02_COVER_CHOICE", 173)
+                };
+                foreach (var fixture in fixtures)
+                {
+                    var input = Path.Combine("Tools", "B01", "B01-62",
+                        "MapSaveSourceQA", "Fixtures", fixture.name + ".json");
+                    if (!File.Exists(input)) return false;
+                    var path = Path.Combine(directory, fixture.name + ".json");
+                    File.Copy(input, path);
+                    var source = new MapDraft();
+                    if (!MapStorage.Load(path, source, out string error))
+                    {
+                        Console.WriteLine("B13_LOAD_FAIL=" + fixture.name + " " + error);
+                        return false;
+                    }
+                    if (source.Items.Count != fixture.count || source.Spawn == null ||
+                        source.Finish == null) return false;
+                    string before = source.ToJson();
+                    MapStorage.Save(path, source, overwrite: true);
+                    var after = new MapDraft();
+                    if (!MapStorage.Load(path, after, out error) ||
+                        after.Items.Count != fixture.count ||
+                        !string.Equals(before, after.ToJson(), StringComparison.Ordinal) ||
+                        Directory.GetFiles(directory, "*.tmp").Length != 0)
+                        return false;
+                    Console.WriteLine("B13_ORIGINAL_MAP_VALID=" + fixture.name +
+                        " count=" + fixture.count);
+                }
+                return true;
+            }));
+
         // B11: genuine concurrent OS file I/O using the original MapStorage.Save/Load.
         // This is separate from Windows ReadOnly and exclusive FileShare locks.
         // Each call sees an entire old/new MapDraft or fails without changing its

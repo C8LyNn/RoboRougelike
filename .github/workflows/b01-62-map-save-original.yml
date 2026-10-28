@@ -20,6 +20,8 @@ jobs:
       CODEX_SHA: a2ccd055070a963805cba0779b79f18489f4794f
       STORAGE_BLOB: 790a9683a5d2f3daf81f41e5bfa2f31502d79578
       DRAFT_BLOB: 0331a54a1545ecd1ea18b616ef13fed113474b8c
+      LD02_ARENA_BLOB: e39e2f174984832bd97311c050e3c22fd6fb1175
+      LD02_COVER_BLOB: 8586312b9606d94b088e4e7640c28105e2d6bac1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -47,6 +49,19 @@ jobs:
           git show "${CODEX_SHA}:Assets/MapEditor/MapStorage.cs" > Tools/B01/B01-62/MapSaveSourceQA/Original/MapStorage.cs
           git show "${CODEX_SHA}:Assets/MapEditor/MapDraft.cs" > Tools/B01/B01-62/MapSaveSourceQA/Original/MapDraft.cs
           echo "PINNED ORIGINALS: CODEX=$CODEX_SHA LIVE_PR=$actual STORAGE=$storage DRAFT=$draft"
+      - name: Fetch and independently pin two real Codex LD02 v2 map inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_sha="$CODEX_SHA"
+          arena="$(git rev-parse "${source_sha}:Docs/CX08/Fixtures/LD02_ARENA.json")"
+          cover="$(git rev-parse "${source_sha}:Docs/CX08/Fixtures/LD02_COVER_CHOICE.json")"
+          test "$arena" = "$LD02_ARENA_BLOB"
+          test "$cover" = "$LD02_COVER_BLOB"
+          mkdir -p Tools/B01/B01-62/MapSaveSourceQA/Fixtures
+          git show "${source_sha}:Docs/CX08/Fixtures/LD02_ARENA.json" > Tools/B01/B01-62/MapSaveSourceQA/Fixtures/LD02_ARENA.json
+          git show "${source_sha}:Docs/CX08/Fixtures/LD02_COVER_CHOICE.json" > Tools/B01/B01-62/MapSaveSourceQA/Fixtures/LD02_COVER_CHOICE.json
+          echo "PINNED ORIGINAL MAPS: ARENA=$arena COVER=$cover"
       - name: Compile and execute the actual Codex CSharp source with .NET stubs
         shell: bash
         run: |
