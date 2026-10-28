@@ -6,7 +6,7 @@ stdlib only. Produces source-space player/AI waypoint *suggestions*, NOT
 actual Unity steering, NPC behaviour, PhysX swept collision or loot logic.
 """
 from __future__ import annotations
-import argparse, hashlib, heapq, json, math
+import argparse, base64, hashlib, heapq, json, math
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -281,6 +281,7 @@ def render_all() -> dict[str,str]:
 def main() -> int:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check",action="store_true",help="verify byte-identical generated files")
+    parser.add_argument("--emit-base64",action="store_true",help="CI evidence only: print output bytes as base64")
     args=parser.parse_args()
     data=render_all()
     OUTPUT.mkdir(parents=True,exist_ok=True)
@@ -293,6 +294,8 @@ def main() -> int:
         else:
             path.write_bytes(content.encode("utf-8"))
             print("MAP_ROUTES_P17_GENERATED",name)
+        if args.emit_base64:
+            print("MAP_ROUTES_P17_FILE_B64 | "+name+" | "+base64.b64encode(content.encode("utf-8")).decode("ascii"))
     print("MAP_ROUTES_P17_PASS 3 blueprints, 2 historical envelopes, 3 meaningful alternative lanes each; 18 total routes; PhysX NOT_RUN")
     return 0
 
