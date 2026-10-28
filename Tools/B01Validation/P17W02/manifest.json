@@ -34,7 +34,7 @@
     "byte-verified original staging receipt",
     "preserve foreign preexisting assets and any concurrent foreign modifications/empty subdirectory"
   ],
-  "status": "G0_REAL_CI_PENDING",
+  "status": "G0_REAL_SOURCE_AND_DISPOSABLE_STAGING_ACCEPTED_QA_PENDING",
   "native_unity": "NOT_RUN",
   "independent_B01_60_qa": "PENDING",
   "codex_ack": "PENDING",
@@ -42,5 +42,23 @@
   "G2": "HOLD",
   "merge": "NOT_AUTHORIZED",
   "integration_note": "No changes to actual Codex Assets or gameplay; owner B01-00 orders #79 and Codex alone integrates after ACK/QA",
-  "rollback": "Use --mode rollback on disposable project; refuse changed paths; Codex live integration needs separate authorized backup and verification."
+  "rollback": "Use --mode rollback on disposable project; refuse changed paths; Codex live integration needs separate authorized backup and verification.",
+  "executed_evidence": {
+    "first_final_executable_sha": "0f79432aa1c5e196a34cb1f873bd73a41a6f89dc",
+    "first_successful_source_and_evidence_run_id": 40757237660,
+    "workflow_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40757237660",
+    "windows_job_id": 123059306065,
+    "ubuntu_job_id": 123059306522,
+    "windows_original_binary_and_physical_stage_tests": "22/22 PASS 0 SKIP",
+    "ubuntu_original_binary_and_physical_stage_tests": "22/22 PASS 0 SKIP",
+    "windows_proof_artifact_id": 12847385892,
+    "ubuntu_proof_artifact_id": 12845937682,
+    "original_asset_zip_sha256": "1662c46ba75736949c7fb1a5ae20dd057bfd69819d4cb74aee2d53c2b10f987c",
+    "stage_file_count": 27,
+    "existing_original_codex_meta_guid_values_checked": 1017,
+    "asset_bytes_verified": "PASS BOTH",
+    "foreign_file_preservation": "PASS BOTH",
+    "actual_rollback": "PASS BOTH",
+    "remark": "Manifest-only update after initial exact executable SHA green; current HEAD triggers a new independent CI run."
+  }
 }
