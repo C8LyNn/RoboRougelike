@@ -1,0 +1,86 @@
+{
+  "schema": "B01-21-P16-MAPGEN-REQUESTS-v1",
+  "packageId": "B01-21-MAPGEN-ARENA-P16",
+  "generatedBy": "ORIGINAL_MAPGEN001_MapGenPlanner.MapWorldPolicy",
+  "inputGameCommit": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "sourceBlobs": {
+    "mapGenData": "b586a5bfc697bc37edbf98bb936459aeebe694c6",
+    "planner": "89ff64e12f278f2c9393ad542161a9387e1f4117",
+    "routeValidator": "4e4bee443a60abb3b284e8c546203096095e12bd",
+    "worldPolicy": "bf86ca20712db69a12effde23eb84c76826d50d9",
+    "replayCodec": "ee5d3b96cc4c4d15124a6cbea49a443059892a4e"
+  },
+  "status": "RESEARCH_DATA_ONLY_UNITY_PHYSX_NOT_RUN",
+  "historicalReferenceProfiles": {
+    "light": {
+      "width": 2.98,
+      "length": 3.2,
+      "minTurnRadius": 3,
+      "maxSlopeDegrees": 14
+    },
+    "heavy": {
+      "width": 5.18,
+      "length": 5.8,
+      "minTurnRadius": 6,
+      "maxSlopeDegrees": 10
+    }
+  },
+  "referenceEnvelopeMeasurement": "historical B01 MAPGENWORLD W12 profiles, not new physical measurements of current assembled vehicles",
+  "clearancePerSideMeters": 0.25,
+  "arenas": [
+    {
+      "id": "AR16_01_OPEN_FLANK",
+      "recipe": "CombatArena",
+      "seed": 160101,
+      "config": {
+        "segments": 4,
+        "obstacleDensity": 20,
+        "difficulty": 0.2,
+        "laneWidth": 16
+      },
+      "theme": "Low cover / long sight lines",
+      "note": "First read of sightline and cornering, not a verified enemy AI or reward implementation",
+      "profileAcceptance": [
+        "historicalLight",
+        "historicalHeavy"
+      ],
+      "nativeUnityStatus": "NOT_RUN"
+    },
+    {
+      "id": "AR16_02_SPLIT_DECISION",
+      "recipe": "CombatArena",
+      "seed": 160202,
+      "config": {
+        "segments": 4,
+        "obstacleDensity": 55,
+        "difficulty": 0.55,
+        "laneWidth": 16
+      },
+      "theme": "Moderate side cover / central movement",
+      "note": "Centre avenue stays clear; side cover randomized by original MAPGEN001",
+      "profileAcceptance": [
+        "historicalLight",
+        "historicalHeavy"
+      ],
+      "nativeUnityStatus": "NOT_RUN"
+    },
+    {
+      "id": "AR16_03_DENSE_PRESSURE",
+      "recipe": "CombatArena",
+      "seed": 160303,
+      "config": {
+        "segments": 4,
+        "obstacleDensity": 85,
+        "difficulty": 0.85,
+        "laneWidth": 16
+      },
+      "theme": "Dense side cover / protected central avenue",
+      "note": "High side-cover occupancy; optional tactical approaches require PhysX and combat-authoring acceptance",
+      "profileAcceptance": [
+        "historicalLight",
+        "historicalHeavy"
+      ],
+      "nativeUnityStatus": "NOT_RUN"
+    }
+  ]
+}
