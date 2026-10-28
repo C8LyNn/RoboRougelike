@@ -14,7 +14,8 @@
     "Assets/Tests/Editor/MapEditorIntegrationTests.cs": "dc767fa9c72a0202bc44f6060b6865f925f18f2c",
     "Assets/Tests/Editor/WeaponGroupTests.cs": "f2f9d8cdc5f2fbb25a03b01d98a65d440d3e85bc",
     "Assets/Tests/Editor/SuspensionUxTests.cs": "3a81d7d0f3077c8a79dd31db0ebaba86c2b8ea08",
-    "Assets/Tests/Editor/MOV009ModelTests.cs": "0d5033f44713054ec5019aa755135a525e6ec10a"
+    "Assets/Tests/Editor/MOV009ModelTests.cs": "0d5033f44713054ec5019aa755135a525e6ec10a",
+    "Assets/Pack/P12_PipelineSafeCamera.cs": "8519938f5734487d0350634cb6d81679a6434d62"
   },
   "expected_tests": [
     "DeepCopyPreservesABAndSuspensionButDoesNotShareMutableState",
