@@ -240,10 +240,13 @@ def run(before_path, after_path, output_dir):
     json_body = json.dumps(report, sort_keys=True, indent=2, ensure_ascii=False) + "\n"
     svg_body = svg(before, after, report)
     try:
-        with json_file.open("x", encoding="utf-8") as f:
-            f.write(json_body)
-        with svg_file.open("x", encoding="utf-8") as f:
-            f.write(svg_body)
+        # Binary creation prevents Windows text-mode CRLF rewriting the
+        # output. Identical source inputs must yield identical byte hashes
+        # on Windows and POSIX (not merely semantically equal SVG/JSON).
+        with json_file.open("xb") as f:
+            f.write(json_body.encode("utf-8"))
+        with svg_file.open("xb") as f:
+            f.write(svg_body.encode("utf-8"))
     except OSError:
         if json_file.exists() and not svg_file.exists():
             json_file.unlink()
