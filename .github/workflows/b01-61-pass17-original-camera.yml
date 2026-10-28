@@ -33,6 +33,10 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
           test "$(git rev-parse be2c4b6ac63e04eff5b046e50641ec8d1da4837f:Assets/Pack/P12_PipelineSafeCamera.cs)" = "8519938f5734487d0350634cb6d81679a6434d62"
+      - name: Refuse stale package manifest source hash
+        shell: bash
+        run: |
+          python -c "import json,subprocess; m=json.load(open('Tools/B01/B01-61-PASS17-CAMERA/manifest.json',encoding='utf8')); actual=subprocess.check_output(['git','hash-object',m['new_source']],text=True).strip(); assert actual==m['new_source_blob'], f'manifest original tool SHA drift: {actual}'"
       - name: Execute unmodified camera controller source in both input branches plus negatives
         shell: bash
         run: |
