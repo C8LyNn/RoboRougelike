@@ -1,0 +1,96 @@
+{
+  "package_id": "B01-24-COVER-RETREAT-001",
+  "version": "1.0.0",
+  "owner": "B01-24 ENEMY AI & COMBAT",
+  "type": "optional independently executable C# combat-behavior prototype and original-R5 arena fallback cover data",
+  "branch": "research/b01-24-p17-w02-cover-retreat",
+  "baseline_codex_commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+  "source_deps": [
+    {
+      "path": "Assets/R5/R5Arena.cs",
+      "blob": "fbe1537036910e0dcc2b2c7e502e66848fcd14a5"
+    },
+    {
+      "path": "Assets/Pack/P12_PipelineSafeEnemyTurret.cs",
+      "blob": "ea63a4c19a7bd996450ef6f27845c858be1a5a69"
+    }
+  ],
+  "files": [
+    {
+      "path": "Research/B01-24/P17/W02-COVER-RETREAT-001/cover_sites.json",
+      "blob": "c99e936b5f9b13b60f05c04dc65ef08e6c7990ba"
+    },
+    {
+      "path": "Research/B01-24/P17/W02-COVER-RETREAT-001/CoverRetreatPlanner.cs",
+      "blob": "97f956a0f28f42d65954fb3928eba833dcafecc4"
+    },
+    {
+      "path": "Research/B01-24/P17/W02-COVER-RETREAT-001/Program.cs",
+      "blob": "8c9b413382d34053dbf5d0923b2867c6ca1b1a35"
+    },
+    {
+      "path": "Research/B01-24/P17/W02-COVER-RETREAT-001/CoverRetreatP17.csproj",
+      "blob": "a5df2f6abf08f177945de141a057f1ebddc489e8"
+    },
+    {
+      "path": "Research/B01-24/P17/W02-COVER-RETREAT-001/README.md",
+      "blob": "687180d0e0ce59480d8e2ba6584a3439bad735ba"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-w02-cover-retreat.yml",
+      "blob": "e7735e9f1ee8fac6e3807b9f11529adfa547ee43"
+    }
+  ],
+  "content": {
+    "R5_arenas": 3,
+    "authored_cover_sites": 10,
+    "physical_source_mapped_boxes": 26,
+    "intercept_weapon_aim": false,
+    "actual_steering": false
+  },
+  "controls": {
+    "provisional_HP_enter": 0.35,
+    "provisional_HP_exit": 0.6,
+    "player_representative_position": "(0,-22)",
+    "grid_metres": 2,
+    "clearance_metres": 2
+  },
+  "test": {
+    "build": "PENDING",
+    "windows": "PENDING",
+    "ubuntu": "PENDING",
+    "actual_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40760310652",
+    "unity": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "windows_player": "NOT_RUN",
+    "independent_B01_60": "PENDING",
+    "reported_first_ci_compile_issue": "CS0103 and CS0819, corrected in owner source; awaiting replacement SHA actual executed green"
+  },
+  "ownership": {
+    "all_changes_under_owner_folder_plus_own_workflow": true,
+    "canonical_assets_edited": false,
+    "Codex_ack": "PENDING",
+    "B01_40_intake": "PENDING",
+    "offered_frozen": false,
+    "g1": "NOT_RUN",
+    "g2": "HOLD"
+  },
+  "limitations": [
+    "Pure C# System.Numerics Vector2 advisory pathfinder; not integrated Unity MonoBehaviour or original vehicle physics.",
+    "Actual health or movement control must be supplied by Codex and validated with real 3D collider envelopes.",
+    "Provisional 35%/60% HP thresholds are research defaults, not approved game balance.",
+    "Static R5 arena boxes model solid footprints, no dynamic debris or teammate navigation.",
+    "A* path output does not teleport or apply world forces; Codex owns optional adapter and rollback.",
+    "No duplicate Codex unarmed ram, shooting or line-of-sight suppression rule."
+  ],
+  "handoff": {
+    "producer_review": "B01-24",
+    "independent_review": [
+      "B01-40",
+      "B01-60"
+    ],
+    "inbox": "B01-00 decides #79 priority",
+    "import": "Codex only, isolated checkout, original source blob verify then optional pure planner adapter with native tested real Rigidbody steering",
+    "rollback": "Remove the optional adapter/decision wiring only, preserve unchanged canonical FixedUpdate/ram and original arena source"
+  }
+}
