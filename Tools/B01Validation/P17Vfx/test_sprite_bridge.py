@@ -82,8 +82,8 @@ class RealSourceUnitySpriteImport(unittest.TestCase):
 
     def test_10_wrong_atlas_row_rejected(self):
         path="Reference/codex-sprite-binding.json"
-        d=json.loads(self.files[path]);d["sprites"][1]["atlas_rect_top_left"]=[1,1,256,256]
-        with self.assertRaisesRegex(b.Reject,"SOURCE_ATLAS_SPRITE_PIXEL_MISMATCH"):
+        d=json.loads(self.files[path]);d["sprites"][4]["atlas_rect_top_left"]=[1,1,256,256]
+        with self.assertRaisesRegex(b.Reject,"ATLAS_INDEX_ORDER_MISMATCH"):
             b.validate_zip(self.mutate(path,b.canon(d)))
 
     def test_11_unknown_original_guid_collision_is_rejected(self):
