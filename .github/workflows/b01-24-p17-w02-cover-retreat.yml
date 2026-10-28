@@ -1,0 +1,42 @@
+name: B01-24 P17 W02 low-HP enemy cover retreat source execution (UNITY NOT_RUN)
+on:
+  push:
+    branches: [research/b01-24-p17-w02-cover-retreat]
+    paths:
+      - 'Research/B01-24/P17/W02-COVER-RETREAT-001/**'
+      - '.github/workflows/b01-24-p17-w02-cover-retreat.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/W02-COVER-RETREAT-001/**'
+      - '.github/workflows/b01-24-p17-w02-cover-retreat.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-r5-source-and-retreat-planner:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build independent exact-source-pinned .NET8 combat-cover retreat package
+        shell: bash
+        run: dotnet build Research/B01-24/P17/W02-COVER-RETREAT-001/CoverRetreatP17.csproj -c Release --warnaserror
+      - name: Execute original CSharp tactical route + cover data + negatives
+        shell: bash
+        run: |
+          dotnet run --no-build -c Release --project Research/B01-24/P17/W02-COVER-RETREAT-001/CoverRetreatP17.csproj | tee cover-retreat-original-csharp.txt
+      - name: Archive exact stdout, not native Unity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0124-cover-retreat-original-${{ matrix.os }}
+          path: cover-retreat-original-csharp.txt
+          if-no-files-found: warn
+          retention-days: 21
