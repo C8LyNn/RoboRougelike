@@ -1,0 +1,63 @@
+name: B01-23 W74 original-source 11-kind 4-yaw authoring table (NOT Unity)
+on:
+  push:
+    branches:
+      - b01-23/w74-partsize-receiver-freeze
+    paths:
+      - "Tools/B01/PARTSIZE001/W74Authoring/**"
+      - "Docs/B01/PARTSIZE001/W74_11KIND_4YAW_AUTHORING.csv"
+      - ".github/workflows/b01-23-w74-authoring.yml"
+  workflow_dispatch:
+jobs:
+  exact-source-authoring-table:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch ORIGINAL frozen PARTSIZE and canonical Codex C# Git blobs (no Unity)
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          git fetch --no-tags --depth=1 origin 231005c6d0351945a8ee6684f3856af118f0e94f
+      - name: Regenerate 44 authored static source envelope rows and verify committed CSV
+        shell: bash
+        run: |
+          python Tools/B01/PARTSIZE001/W74Authoring/generate_authoring_table.py --repo . --check
+      - name: Reject original source geometry mutant and wrong output by original module
+        shell: bash
+        run: |
+          python - <<'PY'
+          import importlib.util, pathlib, subprocess, tempfile
+          path=pathlib.Path('Tools/B01/PARTSIZE001/W74Authoring/generate_authoring_table.py')
+          spec=importlib.util.spec_from_file_location('authored_poses',path)
+          mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
+          source=mod.original('.',mod.CODEX_SHA,'Assets/R4_1/R41PartGeometry.cs','76a14de4c347dd3e91b0a37487d804023eab5da1')
+          assert len(mod.source_authored_four(source,.52))==4
+          bad=source.replace('wheel.localScale=new Vector3(1.5f,0.35f,1.5f);',
+                             'wheel.localScale=new Vector3(1.5f,9.35f,1.5f);')
+          assert bad!=source
+          # Fail closed if the authored wheel actual source token vanishes entirely.
+          try:
+              mod.source_authored_four(bad,.52)
+          except ValueError as e:
+              assert 'ORIGINAL_SOURCE_NUMERIC_ANCHOR_MISMATCH' in str(e)
+          else:
+              raise AssertionError('WHEEL_SOURCE_MUTANT_NOT_REJECTED')
+          generated=mod.emit(mod.authoring_rows(
+              mod.original('.',*mod.SOURCE_FILES[0]),
+              source,
+              mod.original('.',*mod.SOURCE_FILES[2])))
+          assert generated.count('\n')==45
+          with tempfile.TemporaryDirectory() as tmp:
+              fake=pathlib.Path(tmp)/'wrong.csv'
+              fake.write_text(generated.replace('UNVERIFIED','FAKE_NATIVE_PASS',1))
+              process=subprocess.run(['python',str(path),'--repo','.','--check','--output',str(fake)],
+                                     capture_output=True,text=True)
+              assert process.returncode!=0 and 'SOURCE_DERIVED_44_ROW_TABLE_DRIFT' in process.stderr
+          print('B01_23_W74_SOURCE_MUTANT_RED_AND_44_ROWS_PASS; native_Unity=NOT_RUN')
+          PY
