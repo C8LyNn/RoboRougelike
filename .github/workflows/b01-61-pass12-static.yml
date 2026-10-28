@@ -50,6 +50,9 @@ jobs:
           python3 Tools/B01/B01-61-PASS15/ld02_cover_choice_vehicle_envelope.py --repo "$PWD"
       - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
         run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
+      - name: Pin current genuine tank pause and camera code and source-check 2 new Unity fixtures
+        run: |
+          python3 Tools/B01/B01-61-PASS16/verify_pass16_fixture.py "$PWD"
       - name: Fetch immutable original Codex full Edit Play and targeted retest XML evidence
         run: |
           git fetch --no-tags --depth=1 origin 589b60a912096d1e9917cb0bbac73a53e7543b4f
