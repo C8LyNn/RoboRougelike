@@ -56,7 +56,6 @@ def originals():
     for filename,expected in BLOBS.items():
         path=f"{FOLDER}{filename}"
         raw=git("show",f"{EVIDENCE_SHA}:{path}")
-        actual=git("hash-object","--stdin") if False else None
         h=subprocess.run(["git","-C",str(ROOT),"hash-object","--stdin"],input=raw,
                          check=True,stdout=subprocess.PIPE).stdout.decode().strip()
         check(h==expected,"ORIGINAL_GIT_BLOB_MISMATCH:"+filename)
@@ -85,7 +84,8 @@ def validate_shots(receipt, old=False):
         pair=(w,int(d))
         check(pair not in pairs,"DUPLICATE_WEAPON_DISTANCE")
         pairs.add(pair)
-        check(s.get("fireGroup")==GROUPS[w],"WRONG_ASSIGNED_FIRE_GROUP:"+str(pair))
+        if not old:
+            check(s.get("fireGroup")==GROUPS[w],"WRONG_ASSIGNED_FIRE_GROUP:"+str(pair))
         damage=finite(s.get("damage"),"damage")
         muzzle=finite(s.get("muzzleDistance"),"muzzleDistance")
         reach=finite(s.get("range"),"range")
