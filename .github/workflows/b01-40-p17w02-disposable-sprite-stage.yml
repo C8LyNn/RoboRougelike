@@ -1,0 +1,73 @@
+name: B01-40 W02 original 12 Unity sprites safe stage and rollback
+on:
+  push:
+    branches: ['b01-40/p17w02-disposable-sprite-stage']
+    paths:
+      - 'Tools/B01Validation/P17W02/**'
+      - '.github/workflows/b01-40-p17w02-disposable-sprite-stage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-disposable-stage:
+    name: Real original VFX ZIP -> disposable Unity Assets -> verified rollback (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch current pinned Codex source commit (no canonical game checkout)
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
+      - name: Download exact successful B01-40 #356 original produced artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: B0140-P17-original-Unity-SpriteSingles
+          path: ${{ runner.temp }}/b0140-original-artifact
+          run-id: 40744186550
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create explicitly marked disposable test root and unrelated sentinel
+        shell: bash
+        run: |
+          python -c "import os,pathlib; p=pathlib.Path(os.environ['RUNNER_TEMP'])/'b0140-disposable-project';(p/'Assets').mkdir(parents=True);(p/'.b0140-disposable-only').write_bytes(b'B0140-P17W02-DISPOSABLE-UNITY-STAGING v1\n');(p/'Assets'/'KEEP-FOREIGN-EXISTING.txt').write_text('FOREIGN_UNTOUCHED')"
+      - name: Original binary SHA-verified source/target preflight
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W02/disposable_sprite_stage.py --repo . --archive "$RUNNER_TEMP/b0140-original-artifact/B0140-PartDamageDecals-UnitySpriteSingles.zip" --project "$RUNNER_TEMP/b0140-disposable-project" --mode preflight
+      - name: Physically stage original 12 Sprite assets and 15 stable Unity metadata
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W02/disposable_sprite_stage.py --repo . --archive "$RUNNER_TEMP/b0140-original-artifact/B0140-PartDamageDecals-UnitySpriteSingles.zip" --project "$RUNNER_TEMP/b0140-disposable-project" --mode install
+          python Tools/B01Validation/P17W02/disposable_sprite_stage.py --repo . --archive "$RUNNER_TEMP/b0140-original-artifact/B0140-PartDamageDecals-UnitySpriteSingles.zip" --project "$RUNNER_TEMP/b0140-disposable-project" --mode verify
+          python -c "import os,pathlib,shutil; r=pathlib.Path(os.environ['RUNNER_TEMP']);d=r/'b0140-stage-proof';d.mkdir();shutil.copyfile(r/'b0140-disposable-project'/'.b0140-p17w02-install-receipt.json',d/'actual-stage-receipt.json')"
+      - name: Run original binary/stage/rollback negative and positive regression suite
+        shell: bash
+        run: |
+          export B0140_ORIGINAL_ARTIFACT="$RUNNER_TEMP/b0140-original-artifact/B0140-PartDamageDecals-UnitySpriteSingles.zip"
+          python Tools/B01Validation/P17W02/test_disposable_sprite_stage.py -v
+      - name: Execute real byte-verified rollback and retain original foreign Assets file
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W02/disposable_sprite_stage.py --repo . --archive "$RUNNER_TEMP/b0140-original-artifact/B0140-PartDamageDecals-UnitySpriteSingles.zip" --project "$RUNNER_TEMP/b0140-disposable-project" --mode rollback
+          python -c "import os,pathlib; r=pathlib.Path(os.environ['RUNNER_TEMP']);p=r/'b0140-disposable-project'/'Assets';assert (p/'KEEP-FOREIGN-EXISTING.txt').read_text()=='FOREIGN_UNTOUCHED';assert not (p/'B01ImportStaging').exists();assert not (p/'B01ImportStaging.meta').exists();assert not (p.parent/'.b0140-p17w02-install-receipt.json').exists();(r/'b0140-stage-proof'/'rollback-checked.txt').write_text('ACTUAL_ORIGINAL_BINARY_STAGE_AND_ROLLBACK_PASS; FOREIGN_ASSET_PRESERVED; UNITY_NATIVE=NOT_RUN\n')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W02-12-sprites-real-stage-proof-${{ matrix.os }}
+          path: ${{ runner.temp }}/b0140-stage-proof/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Explicit native gate boundary
+        shell: bash
+        run: |
+          echo 'Actual original 27 Unity Sprite PNG+meta files were staged then safely removed.'
+          echo 'Unity Editor was NOT run. G1/G2/Codex ACK remain NOT_RUN/HOLD/PENDING.'
