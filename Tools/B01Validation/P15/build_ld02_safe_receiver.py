@@ -161,6 +161,9 @@ def zip_bytes(raw,meta):
         for name,data in ((MAP_MEMBER,raw),("source-manifest.json",serialize(meta))):
             info=zipfile.ZipInfo(name,(1980,1,1,0,0,0))
             info.compress_type=zipfile.ZIP_STORED
+            # ZipInfo defaults create_system to host OS (Windows=0, Unix=3).
+            # Fix it or identical original map bytes yield different ZIP SHA256.
+            info.create_system=3
             info.external_attr=(0o100644<<16)
             z.writestr(info,data)
     return out.getvalue()
