@@ -468,7 +468,7 @@ namespace RogueMachine.P12PipelineSafe
                 core.IsDead)
                 return;
 
-            if (currentTarget == null || !currentTarget.enabled || Time.time >= nextTargetTime)
+            if (!ValidTarget(currentTarget) || Time.time >= nextTargetTime)
             {
                 currentTarget = SelectTargetCollider();
                 nextTargetTime = Time.time + 0.8f;
@@ -677,6 +677,14 @@ namespace RogueMachine.P12PipelineSafe
                 );
         }
 
+        private bool ValidTarget(Collider candidate)
+        {
+            if(candidate==null||!candidate.enabled||!candidate.gameObject.activeInHierarchy||
+                playerRoot==null||!candidate.transform.IsChildOf(playerRoot))return false;
+            var health=candidate.GetComponent<P12PipelineSafeDamageable>();
+            return health==null||!health.IsDead;
+        }
+
         private Collider SelectTargetCollider()
         {
             if (playerRoot == null)
@@ -700,7 +708,7 @@ namespace RogueMachine.P12PipelineSafe
                 Collider collider =
                     module.GetComponent<Collider>();
 
-                if (collider != null && collider.enabled)
+                if (ValidTarget(collider))
                     moduleTargets.Add(collider);
             }
 
@@ -735,8 +743,7 @@ namespace RogueMachine.P12PipelineSafe
 
                 if (damageable != null &&
                     !damageable.IsDead &&
-                    collider != null &&
-                    collider.enabled)
+                    ValidTarget(collider))
                 {
                     blockTargets.Add(collider);
                 }
@@ -746,7 +753,7 @@ namespace RogueMachine.P12PipelineSafe
                 foreach(var hp in playerRoot.GetComponentsInChildren<P12PipelineSafeDamageable>())
                 {
                     var collider=hp.GetComponent<Collider>();
-                    if(!hp.IsDead&&collider!=null&&collider.enabled)blockTargets.Add(collider);
+                    if(!hp.IsDead&&ValidTarget(collider))blockTargets.Add(collider);
                 }
             if(blockTargets.Count==0)return null;
 
@@ -1011,7 +1018,7 @@ namespace RogueMachine.P12PipelineSafe
         private void UpdateVariantWeapons()
         {
             if(playerRoot==null)return;
-            if(currentTarget==null||!currentTarget.enabled||Time.time>=nextTargetTime){currentTarget=SelectTargetCollider();nextTargetTime=Time.time+.8f;}
+            if(!ValidTarget(currentTarget)||Time.time>=nextTargetTime){currentTarget=SelectTargetCollider();nextTargetTime=Time.time+.8f;}
             if(currentTarget==null)return;
             var point=currentTarget.bounds.center;
             foreach(var gun in variantGuns)

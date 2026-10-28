@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0,0676897">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1311" result="Failed" site="Child" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.067690" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1634" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="519" result="Failed" site="Child" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.054337" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="59352" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1001" name="B0124EnemyAiNegativeEditModeTests" fullname="B0124EnemyAiNegativeEditModeTests" classname="B0124EnemyAiNegativeEditModeTests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.049628" total="6" passed="2" failed="4" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1002" name="ActiveLivingEnabledBlock_IsSelectable_PositiveControl" fullname="B0124EnemyAiNegativeEditModeTests.ActiveLivingEnabledBlock_IsSelectable_PositiveControl" methodname="ActiveLivingEnabledBlock_IsSelectable_PositiveControl" classname="B0124EnemyAiNegativeEditModeTests" runstate="Runnable" seed="521955210" result="Passed" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.015875" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1005" name="DeactivateAndReactivateBlock_ReacquiresOnlyWhenActive" fullname="B0124EnemyAiNegativeEditModeTests.DeactivateAndReactivateBlock_ReacquiresOnlyWhenActive" methodname="DeactivateAndReactivateBlock_ReacquiresOnlyWhenActive" classname="B0124EnemyAiNegativeEditModeTests" runstate="Runnable" seed="19501668" result="Failed" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.004461" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected RED on unpatched #310.
+  Expected: null
+  But was:  <Toggled (UnityEngine.BoxCollider)>
+]]></message>
+            <stack-trace><![CDATA[at B0124EnemyAiNegativeEditModeTests.DeactivateAndReactivateBlock_ReacquiresOnlyWhenActive () [0x00035] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\B0124EnemyAiNegativeEditModeTests.cs:110
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1003" name="DisabledCollider_IsNeverSelectable_NegativeControl" fullname="B0124EnemyAiNegativeEditModeTests.DisabledCollider_IsNeverSelectable_NegativeControl" methodname="DisabledCollider_IsNeverSelectable_NegativeControl" classname="B0124EnemyAiNegativeEditModeTests" runstate="Runnable" seed="1298894852" result="Passed" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.000502" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1006" name="InactiveCachedTarget_IsInvalidatedAtNextAiUpdate_Regression" fullname="B0124EnemyAiNegativeEditModeTests.InactiveCachedTarget_IsInvalidatedAtNextAiUpdate_Regression" methodname="InactiveCachedTarget_IsInvalidatedAtNextAiUpdate_Regression" classname="B0124EnemyAiNegativeEditModeTests" runstate="Runnable" seed="553381865" result="Failed" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.003267" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  An inactive cached player part must be dropped before the 0.8-second refresh.
+  Expected: null
+  But was:  <PreviouslyActive (UnityEngine.BoxCollider)>
+]]></message>
+            <stack-trace><![CDATA[at B0124EnemyAiNegativeEditModeTests.InactiveCachedTarget_IsInvalidatedAtNextAiUpdate_Regression () [0x00213] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\B0124EnemyAiNegativeEditModeTests.cs:158
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1004" name="InactiveLivingEnabledBlock_IsNeverSelected_Regression" fullname="B0124EnemyAiNegativeEditModeTests.InactiveLivingEnabledBlock_IsNeverSelected_Regression" methodname="InactiveLivingEnabledBlock_IsNeverSelected_Regression" classname="B0124EnemyAiNegativeEditModeTests" runstate="Runnable" seed="1698958308" result="Failed" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.002774" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Enemy AI must not aim at a live-enabled Collider on an inactive GameObject.
+  Expected: null
+  But was:  <InactiveButAlive (UnityEngine.BoxCollider)>
+]]></message>
+            <stack-trace><![CDATA[at B0124EnemyAiNegativeEditModeTests.InactiveLivingEnabledBlock_IsNeverSelected_Regression () [0x00059] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\B0124EnemyAiNegativeEditModeTests.cs:100
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1007" name="SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy" fullname="B0124EnemyAiNegativeEditModeTests.SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy" methodname="SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy" classname="B0124EnemyAiNegativeEditModeTests" runstate="Explicit" seed="1830089422" result="Failed" start-time="2026-10-28 15:53:09Z" end-time="2026-10-28 15:53:09Z" duration="0.011195" asserts="0">
+          <properties>
+            <property name="_SKIPREASON" value="Enable only after HQ/B01-10 approves opaque solid cover suppressing enemy shots." />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  HQ-policy-conditional: opaque wall must suppress the normal shot.
+  Expected: 0
+  But was:  1
+]]></message>
+            <stack-trace><![CDATA[at B0124EnemyAiNegativeEditModeTests.SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy () [0x0044f] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\B0124EnemyAiNegativeEditModeTests.cs:248
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Destroy may not be called from edit mode! Use DestroyImmediate instead.
+Destroying an object in edit mode destroys it permanently.
+Destroy may not be called from edit mode! Use DestroyImmediate instead.
+Destroying an object in edit mode destroys it permanently.
+B0124 LOS native counts: blocked=1; recovered_delta=1; total_new=2; source=Codex310@231005c6d0351945a8ee6684f3856af118f0e94f
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
