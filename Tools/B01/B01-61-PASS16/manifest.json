@@ -1,0 +1,76 @@
+{
+  "package_id": "B01-61-PASS16-ORIGINAL-NATIVE-RECEIPT",
+  "owner": "B01-61",
+  "scope": "Independent immutable original Unity XML verification only. Does NOT run Unity or install tests.",
+  "game_sha": "aa7a917f177a9b1f07203868fb7d1d871eb3ee46",
+  "evidence_sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "full_edit": "Docs/CXFinal/Evidence/EditMode.xml",
+  "full_play": "Docs/CXFinal/Evidence/PlayMode.xml",
+  "targeted_edit": "Docs/CXFinal/Evidence/retest.xml",
+  "full_edit_process": "Docs/CXFinal/Evidence/EditMode-process.json",
+  "full_play_process": "Docs/CXFinal/Evidence/PlayMode-process.json",
+  "targeted_exit": "Docs/CXFinal/Evidence/retest-exit.txt",
+  "original_git_blobs": {
+    "Docs/CXFinal/Evidence/EditMode.xml": "9b63d9152994cbc47c3cce8f4a151e30fa60eb95",
+    "Docs/CXFinal/Evidence/PlayMode.xml": "e2fed78f63662347fe455aeda05d0ff0830321b5",
+    "Docs/CXFinal/Evidence/retest.xml": "23666b1b538d1e2cbf2cbbf870f1002e54146e71",
+    "Docs/CXFinal/Evidence/EditMode-process.json": "8bdfded67305c2ad78738832cdf61af22c25a1ac",
+    "Docs/CXFinal/Evidence/PlayMode-process.json": "38ddcc761a9142f841972206a7de8d80ccd5a5a4",
+    "Docs/CXFinal/Evidence/retest-exit.txt": "18748286e5b8b4de5db905f87cdfed1a7d48fe60"
+  },
+  "known_outcomes": {
+    "full_edit": {
+      "total": 1303,
+      "passed": 1288,
+      "failed": 15,
+      "skipped": 0,
+      "exit": 2
+    },
+    "full_play": {
+      "total": 474,
+      "passed": 474,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    },
+    "targeted_edit": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    }
+  },
+  "native_unity_by_b0161": "NOT_RUN",
+  "full_edit_after_test_only_patch": "NOT_RUN",
+  "independent_g1": "NOT_RUN",
+  "release_gate": "BLOCKED",
+  "known_renamed_case": {
+    "before": "RRLW2GameplayTests.RealDestroyedEnemyGunIsStoredRebuiltForFullPriceAndMounted",
+    "after": "RRLW2GameplayTests.RealDestroyedEnemyGunIsStoredRebuiltAtDiscountAndMounted",
+    "source_path": "Assets/Tests/Editor/RRLW2GameplayTests.cs",
+    "original_game_test_blob": "3d05a2f6145f6a3ab5307e4f4d18e260e5466e3b",
+    "later_test_only_blob": "81cb6c1ca20cc4b095260f5adedc4395c8e070b0",
+    "original_price_assertion": "before-36",
+    "new_price_assertion": "before-13",
+    "exact_reason": "one explicit owner test rename after approved cheaper owned-gun rebuild; verifies changed real NUnit test identity rather than silently treating 15/15 as identical code"
+  },
+  "authored_native_fixture": {
+    "path": "Tools/B01/B01-61-PASS16/B0161Pass16InputCameraRegressionTests.cs",
+    "git_blob": "26a89df148f95ecca5e51de77695ed2685079e06",
+    "actual_author_execution": "NOT_RUN",
+    "expected_native_cases": [
+      "HeldPrimaryThroughPauseIsBlockedUntilActualReleaseAndRepress",
+      "MovingVehicleRepositionsActiveCameraWithoutReplacingTargetRoot"
+    ],
+    "expected_editor_scene": "Assets/scene 1.unity",
+    "requirements": "Unity 6000.3.14f1, Input System enabled, authorized disposable batchmode Editor test asm",
+    "pass_conditions": "real virtual Mouse LPM held through actual R1 pause does not auto refire until release/repress; actual camera TargetRoot unchanged and camera follows moved test-range vehicle",
+    "fail_conditions": "spurious firing while held across pause, release fails to unlatch, camera stays stationary or follows stale root"
+  },
+  "source_fixture_pins": {
+    "Assets/Pack/P12_PipelineSafeTankController.cs": "8beeedb4db40b7b33c8f685d7b6aab1247a4b2d7",
+    "Assets/R1/R1RunController.cs": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
+    "Assets/Pack/P12_PipelineSafeCamera.cs": "8519938f5734487d0350634cb6d81679a6434d62"
+  }
+}

@@ -1,0 +1,85 @@
+name: B01-61 pinned Codex original-source regression receiver
+on:
+  push:
+    branches: ['qa/b01-61-pass12-cross-feature']
+  pull_request:
+    paths: ['Tools/B01/B01-61-PASS12/**', 'Tools/B01/B01-61-PASS15/**', 'Tools/B01/B01-61-PASS16/**', '.github/workflows/b01-61-pass12-static.yml']
+permissions:
+  contents: read
+jobs:
+  pin-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch original PASS15 and new Codex PASS16 immutable source commits
+        run: |
+          git fetch --no-tags --depth=1 origin 231005c6d0351945a8ee6684f3856af118f0e94f
+          git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+          test "$(git rev-parse aa7a917f177a9b1f07203868fb7d1d871eb3ee46^{commit})" = "aa7a917f177a9b1f07203868fb7d1d871eb3ee46"
+      - name: Fetch exact original B01-25 LD02 data commit
+        run: |
+          git fetch --no-tags --depth=1 origin eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e
+          git cat-file -e eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e^{commit}
+      - name: Independently execute original-data LD02 wall geometry test (EXPECT P1 RED)
+        run: |
+          set +e
+          python3 Tools/B01/B01-61-PASS15/ld02_perimeter_geometry_check.py --repo "$PWD" --require-closed
+          code=$?
+          set -e
+          if test "$code" -ne 1; then
+            echo "::error::Original LD02 geometry expected RED (1) but got $code: changed data or QA harness failure"
+            exit 1
+          fi
+          echo "EXPECTED_PRODUCT_RED: four source-derived corner wall gaps; Unity PhysX NOT_RUN"
+      - name: Fetch immutable original B01-25 new corner repair (reception only)
+        run: |
+          git fetch --no-tags --depth=1 origin f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84
+          test "$(git rev-parse f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84:Research/B01-25/P14/LD02_ARENA.json)" = "e39e2f174984832bd97311c050e3c22fd6fb1175"
+      - name: Receive owner data fix - 4 middle walls and 4 solid corner platforms
+        run: |
+          python3 Tools/B01/B01-61-PASS15/ld02_perimeter_geometry_check.py --repo "$PWD" --owner-fix --require-closed
+          echo "B01-61_OWNER_REPAIR_RECEIVER=STATIC_GREEN | UNITY_NATIVE=NOT_RUN"
+      - name: Fetch B01-25 corrected P15 cover-choice exact original bytes
+        run: |
+          git fetch --no-tags --depth=1 origin 691c8cb6b0be086d455e530f2531de7f3753a0ba
+          test "$(git rev-parse 691c8cb6b0be086d455e530f2531de7f3753a0ba:Research/B01-25/P15/LD02_COVER_CHOICE.json)" = "8586312b9606d94b088e4e7640c28105e2d6bac1"
+      - name: Check newly authored cover-choice Light and Heavy original source envelopes
+        run: |
+          python3 Tools/B01/B01-61-PASS15/ld02_cover_choice_vehicle_envelope.py --repo "$PWD"
+      - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
+        run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
+      - name: Pin current genuine tank pause and camera code and source-check 2 new Unity fixtures
+        run: |
+          python3 Tools/B01/B01-61-PASS16/verify_pass16_fixture.py "$PWD"
+      - name: Fetch immutable original Codex full Edit Play and targeted retest XML evidence
+        run: |
+          git fetch --no-tags --depth=1 origin 589b60a912096d1e9917cb0bbac73a53e7543b4f
+          test "$(git rev-parse 589b60a912096d1e9917cb0bbac73a53e7543b4f^{commit})" = "589b60a912096d1e9917cb0bbac73a53e7543b4f"
+      - name: Execute strict receipt parser adversarial negative selftests
+        run: python3 Tools/B01/B01-61-PASS16/audit_codex_full_receipts.py --selftest
+      - name: Independently inspect real native original full Unity NUnit XML
+        run: python3 Tools/B01/B01-61-PASS16/audit_codex_full_receipts.py --repo "$PWD"
+      - name: Confirm targeted retest never unlocks the failed full Edit release gate
+        run: |
+          set +e
+          python3 Tools/B01/B01-61-PASS16/audit_codex_full_receipts.py --repo "$PWD" --require-release
+          code=$?
+          set -e
+          if test "$code" -ne 1; then
+            echo "::error::Full Edit failed / incomplete retest wrongly accepted OR parser failed with $code"
+            exit 1
+          fi
+          echo "EXPECTED_HOLD: full Edit remained 15 failed at aa7a and full new 1303-run NOT_RUN"
+      - name: Inspect REAL committed Codex NUnit XML (targeted cases only)
+        run: |
+          python3 Tools/B01/B01-61-PASS12/audit_original_nunit_xml.py --repo "$PWD" --sha 231005c6d0351945a8ee6684f3856af118f0e94f
+      - name: Confirm full-suite release gate FAILS closed for targeted XML
+        run: |
+          if python3 Tools/B01/B01-61-PASS12/audit_original_nunit_xml.py --repo "$PWD" --sha 231005c6d0351945a8ee6684f3856af118f0e94f --require-full; then
+            echo "::error::Targeted NUnit XML incorrectly accepted as complete release evidence"
+            exit 1
+          else
+            echo "EXPECTED_BLOCK: no full-suite Unity/Player and explicit negative evidence"
+          fi
