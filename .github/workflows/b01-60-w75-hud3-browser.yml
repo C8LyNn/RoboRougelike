@@ -1,0 +1,31 @@
+name: B01-60 PASS15 original HUD3 dynamic browser QA (NOT UNITY)
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/w75_hud3_dynamic_original_browser.py'
+      - '.github/workflows/b01-60-w75-hud3-browser.yml'
+  workflow_dispatch:
+jobs:
+  real-original-hud3-chromium:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Playwright Chromium
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise pinned original B01-12 HTML controls in real browser
+        run: |
+          python Tools/B01/QA-NATIVE-001/w75_hud3_dynamic_original_browser.py "$RUNNER_TEMP/b01-60-pass15-hud3"
+      - name: Preserve browser screenshots and JSON receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-original-hud3-chromium
+          path: ${{ runner.temp }}/b01-60-pass15-hud3/
+          if-no-files-found: warn
