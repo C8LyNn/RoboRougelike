@@ -60,7 +60,8 @@ class RealSourceUnitySpriteImport(unittest.TestCase):
     def test_06_modified_meta_guid_is_rejected(self):
         path=next(n for n in self.files if n.endswith(".png.meta"))
         original=self.files[path]
-        broken=original.replace(b"guid: ",b"guid: 11111111",1)
+        own=b.stage_guid(path[:-5]).encode()
+        broken=original.replace(own,b"1"*32,1)
         with self.assertRaisesRegex(b.Reject,"NONDETERMINISTIC_SPRITE_META_GUID"):
             b.validate_zip(self.mutate(path,broken))
 
@@ -103,7 +104,7 @@ class RealSourceUnitySpriteImport(unittest.TestCase):
 
     def test_14_missing_second_frame_is_rejected(self):
         f=dict(self.files)
-        f.pop(b.FRAMES+"/B0140-abraded-1.png") if b.FRAMES+"/B0140-abraded-1.png" in f else f.pop(b.FRAMES+"/B0140_abraded-1.png")
+        f.pop(b.FRAMES+"/B0140_abraded-1.png")
         with self.assertRaisesRegex(b.Reject,"ZIP_MEMBER_SET_DRIFT"):
             b.validate_zip(b.package_zip(f))
 
