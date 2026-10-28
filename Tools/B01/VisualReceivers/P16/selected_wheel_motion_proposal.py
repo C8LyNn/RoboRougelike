@@ -117,7 +117,7 @@ def main():
         "all_pose_pngs_distinct":True,
         "contact_png_sha256":hashlib.sha256(pic.read_bytes()).hexdigest(),
         "gates":["MODEL_JOB_NOT_AUTHORIZED","MOUNT_SOCKET_MASS_CLEARANCE_UNMEASURED",
-                 "UNREAL_PHYSX_NOT_RUN","Unity_NOT_RUN"],
+                 "PHYSX_NOT_RUN","Unity_NOT_RUN"],
         "result":"ORIGINAL_SVG_PIVOT_PROPOSAL_RENDER_PASS"
     }
     (OUT/"A1-motion-study-receipt.json").write_text(json.dumps(result,indent=2)+"\n")
