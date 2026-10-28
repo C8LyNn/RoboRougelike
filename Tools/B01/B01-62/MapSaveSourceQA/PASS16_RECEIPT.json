@@ -1,0 +1,131 @@
+{
+  "schema": "b01-62-source-qa-receipt-v1",
+  "package_id": "B01-62-CX04-MAPDATA-D02-QA-R1",
+  "revision": "PASS16-01",
+  "owner": "B01-62 — DATA INTEGRITY & SAVE QA",
+  "purpose": "Independent source-C# and real Windows/Ubuntu file I/O regression of Codex D02, explicit map overwrite consent and two real LD02 authored map JSONs.",
+  "classification": "QA_ONLY_NOT_GAMEPLAY_PACKAGE",
+  "repository": "C8LyNn/RoboRougelike",
+  "branch": "qa/b01-62-p12-original-map-save",
+  "tested_qa_commit": "e393f3f3ece9beefa251e5c1b02f036f50c2b033",
+  "codex_original_pinned_commit": "a2ccd055070a963805cba0779b79f18489f4794f",
+  "current_codex_pr_may_advance": true,
+  "source_inputs": [
+    {
+      "path": "Assets/MapEditor/MapStorage.cs",
+      "git_blob": "790a9683a5d2f3daf81f41e5bfa2f31502d79578"
+    },
+    {
+      "path": "Assets/MapEditor/MapDraft.cs",
+      "git_blob": "0331a54a1545ecd1ea18b616ef13fed113474b8c"
+    },
+    {
+      "path": "Docs/CX08/Fixtures/LD02_ARENA.json",
+      "git_blob": "e39e2f174984832bd97311c050e3c22fd6fb1175",
+      "expected_items": 168
+    },
+    {
+      "path": "Docs/CX08/Fixtures/LD02_COVER_CHOICE.json",
+      "git_blob": "8586312b9606d94b088e4e7640c28105e2d6bac1",
+      "expected_items": 173
+    },
+    {
+      "path": "Assets/MapEditor/R1MapEditor.cs",
+      "git_blob": "2139f2d11b59a7948b9e5922d2964da2"
+    },
+    {
+      "path": "Assets/MapEditor/R1MapEditorHUD.cs",
+      "git_blob": "bebfca1cb72703533e7c501653aa071630dabdff"
+    }
+  ],
+  "qa_sources": [
+    {
+      "path": "Tools/B01/B01-62/MapSaveSourceQA/Program.cs",
+      "git_blob": "8973be0f8f5a2a411bc31e1de5c9ad689dddcba0"
+    },
+    {
+      "path": "Tools/B01/B01-62/MapSaveSourceQA/MapSaveSourceQA.csproj",
+      "git_blob": "eaf28a8d32ddc3b1d722f59e78081d738f8258ad"
+    },
+    {
+      "path": ".github/workflows/b01-62-map-save-original.yml",
+      "git_blob": "4bd611b1e6c5e20b5a21746304d45e6249aa9fd0"
+    },
+    {
+      "path": "Tools/B01/B01-62/MapSaveSourceQA/CV02_NATIVE_HANDOFF.md",
+      "git_blob": "3506096cfc785c21f03c1dbb5a0d80536edbf434"
+    }
+  ],
+  "toolchain": {
+    "runner_os": [
+      "windows-latest",
+      "ubuntu-latest"
+    ],
+    "dotnet": "8.0.x",
+    "unity_engine": "NOT_EXECUTED_BY_B01-62",
+    "unity_api": "Vector2Int / Application / JsonUtility shims",
+    "engine_version_target": "6000.3.14f1"
+  },
+  "actual_evidence": {
+    "workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40721480749",
+    "workflow_conclusion": "SUCCESS",
+    "windows": {
+      "job_id": 122933267041,
+      "executed": 18,
+      "unexpected": 0,
+      "d02_strict_green": "4/4",
+      "b12": "PASS",
+      "b13": "PASS",
+      "source_observations": 3,
+      "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40721480749/artifacts/12830328025"
+    },
+    "ubuntu": {
+      "job_id": 122933266658,
+      "executed": 15,
+      "skipped_windows_only": 3,
+      "unexpected": 0,
+      "d02_strict_green": "3/3",
+      "b12": "PASS",
+      "b13": "PASS",
+      "source_observations": 3,
+      "artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40721480749/artifacts/12831385642"
+    },
+    "ci01": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40721480771",
+    "native_editmode": "NOT_RUN_BY_B01_62",
+    "native_playmode": "NOT_RUN_BY_B01_62",
+    "native_player": "NOT_RUN_BY_B01_62"
+  },
+  "reproducible_commands": [
+    "Fetch the exact Codex PR #310 commit and verify all four listed original Git blobs before extracting to Tools/B01/B01-62/MapSaveSourceQA/{Original,Fixtures}/. Use the pinned workflow for its precise shell commands; never substitute a later PR HEAD without blob verification.",
+    "dotnet run --project Tools/B01/B01-62/MapSaveSourceQA/MapSaveSourceQA.csproj -c Release",
+    "dotnet run --project Tools/B01/B01-62/MapSaveSourceQA/MapSaveSourceQA.csproj -c Release -- --require-d02-green",
+    "Require D02_STRICT_GATE=GREEN and exit 0; for B13 require original both fixture counts 168/173 after original MapStorage.Save/Load."
+  ],
+  "integration": {
+    "game_code_changed_by_b01_62": false,
+    "game_integrated_by_codex": "NOT_CLAIMED",
+    "qa_pr": "https://github.com/C8LyNn/RoboRougelike/pull/316",
+    "qa_pr_draft": true,
+    "merge": "NOT_AUTHORIZED",
+    "independent_b01_60_review": "PENDING",
+    "g0": "QA_SOURCE_PROVENANCE_ONLY",
+    "g1": "NOT_RUN_BY_B01_62",
+    "g2": "HOLD",
+    "codex_inbox": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6455303223",
+    "queue_id": "CV-02"
+  },
+  "known_limitations": [
+    "Original Codex MapStorage/MapDraft C# methods are compiled unchanged with .NET8 UnityEngine/JsonUtility shims; these data and filesystem results do not independently validate native Unity JsonUtility behavior.",
+    "B11 writer may throw real Windows file sharing IOException during parallel access; observed integrity PASS does not guarantee successful concurrent operation or prove integrated gameplay uses parallel saves.",
+    "B05/B06/B07 process termination occurs after separate QA staging, not within original MapStorage.Save or during power loss; no recovery policy has been approved.",
+    "D02 source negatives prove only the enumerated cases A01–A04 on exact listed source blobs, not every possible Unicode/filesystem alias, graphical confirmation, or real Player behavior.",
+    "CI-02 and CI-03 native-license preflight failures are not evidence of gameplay test failures; separate independent native G1 requires HQ-authorized legal Unity host.",
+    "Current Codex editor UI implements a second-click MapOverwritePending confirmation; the headless C# harness verifies API consent, not graphical click/focus behavior or eventual owner UX approval."
+  ],
+  "next_owner": [
+    "Codex — native CV-02 if authentic Unity host and source/build ACK",
+    "B01-60 — independent evidence and licensed G1 acceptance when authorized",
+    "B01-40 — independent package source/provenance receiver if G0/G2 handoff needed"
+  ],
+  "updated": "2026-10-28"
+}
