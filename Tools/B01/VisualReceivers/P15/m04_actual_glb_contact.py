@@ -60,6 +60,22 @@ def main():
                            "mute":q.mute} for q in t.strips]
             } for t in anim.nla_tracks] if anim else []
         }
+    combine_four="--combine-clips" in sys.argv
+    combined_assigned={}
+    if combine_four:
+        # glTF exporter put each gimbal in an independent animation action.
+        # Blender importer leaves all but the first action inactive. Activate
+        # EACH actual original action in a disposable lookdev scene, never the
+        # producer .blend and never any Unity/gameplay files.
+        for pivot in pivots:
+            found=bpy.data.actions.get(f"{pivot.name}Action_{pivot.name}")
+            assert found is not None,(pivot.name,"NO_EXPORTED_GIMBAL_ACTION")
+            animation=pivot.animation_data_create()
+            animation.action=found
+            for track in animation.nla_tracks:
+                track.mute=True
+            combined_assigned[pivot.name]=found.name
+        assert len(combined_assigned)==4
     print("B01_30_M04_ACTUAL_IMPORTED_ACTION_INVENTORY",json.dumps({
         "actions":[a.name for a in bpy.data.actions],
         "pivots":imported_action_map},sort_keys=True))
@@ -106,7 +122,15 @@ def main():
         diagnostics["1"]["pivot_world_euler_degrees"][pivot.name]!=
         diagnostics["31"]["pivot_world_euler_degrees"][pivot.name]]
     changed=bool(moving)
-    assert changed,("GLB default import has no visible pose change - fail closed",diagnostics)
+    assert changed,("GLB imported clips have no visible pose change - fail closed",diagnostics)
+    if combine_four:
+        assert len(moving)==4,("FOUR_INDEPENDENT_GIMBALS_NOT_ACTIVATED",moving,diagnostics)
+        for pivot in pivots:
+            rest=diagnostics["1"]["pivot_world_euler_degrees"][pivot.name]
+            active=diagnostics["31"]["pivot_world_euler_degrees"][pivot.name]
+            axis=0 if pivot.name in ("N01_GIMBAL_PIVOT","N04_GIMBAL_PIVOT") else 1
+            angle=abs(active[axis]-rest[axis])
+            assert 2.0<angle<15.0,(pivot.name,"INCORRECT_IMPORTED_GIMBAL_AXIS_OR_STROKE",angle)
     # Four exported glTF animations are independent clips; the default Blender
     # active timeline may select just one. Name the ACTUAL moving pivot rather
     # than imply this preview proves four simultaneous gimbal movements.
@@ -125,11 +149,14 @@ def main():
        "real_pose_change_in_imported_animation":changed,
        "default_import_moving_pivots":moving,
        "default_import_idle_pivots":idle,
-       "default_import_preview_scope":"SAMPLED_ACTIVE_CLIP_ONLY_NOT_FOUR_SIMULTANEOUS_GIMBALS",
+       "active_clip_mode":"FOUR_EXPORTED_ACTIONS_EXPLICITLY_APPLIED" if combine_four else "ORIGINAL_DEFAULT_IMPORT",
+       "combined_action_assignments":combined_assigned,
+       "default_import_preview_scope":"EXPLICIT_4_CLIP_COMBINATION_BLENDER_ONLY" if combine_four else "SAMPLED_ACTIVE_CLIP_ONLY_NOT_FOUR_SIMULTANEOUS_GIMBALS",
        "four_gimbals_simultaneous_in_game":"NOT_VERIFIED",
        "poses":diagnostics,
        "views":list(views),
        "rendered_png_count":6,
+       "four_animated_pivots_in_actual_blender_import":bool(combine_four and len(moving)==4),
        "status":"SOURCE_GLB_IMPORT_AND_ORTHO_RENDER_PASS",
        "not_run":["Unity","PhysX","URP","native 3D module integration","collision narrowphase"]
     }
