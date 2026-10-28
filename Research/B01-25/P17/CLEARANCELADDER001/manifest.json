@@ -9,7 +9,7 @@
     "mapWorldGitBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e"
   },
   "mapFile": "arena.json",
-  "mapGitBlob": "b83d0120d10023d33f17c96e76ce80e5cde62f29",
+  "mapGitBlob": "53eb696950121465befea2855eda4d7268750016",
   "globalFloor": false,
   "cellMeters": 4,
   "arenaCells": [
@@ -22,11 +22,11 @@
   ],
   "spawn": [
     9,
-    1
+    2
   ],
   "finish": [
     9,
-    14
+    13
   ],
   "expectedKinds": {
     "0": 288,
@@ -86,10 +86,6 @@
   "referencePath": [
     [
       9,
-      1
-    ],
-    [
-      9,
       2
     ],
     [
@@ -135,14 +131,10 @@
     [
       9,
       13
-    ],
-    [
-      9,
-      14
     ]
   ],
-  "referenceSteps": 13,
-  "sourceAabbMinDistanceMeters": 3.75,
+  "referenceSteps": 11,
+  "sourceAabbMinDistanceMeters": 6,
   "physicsPolicy": "Proxy is top-down circle swept at 0.25m against primitive source AABBs. Not actual vehicle footprint/collider/orientation or gameplay feasibility.",
   "design": "Increasingly narrow physical apertures in four rows test vehicle assembly width/maneuver confidence. No checkpoint, enemy, reward or completion rules beyond default Spawn/Finish.",
   "status": {
