@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/W74/ci_health.py)" = 'a386417a3f927257e46f646d8c8afa7bc54e1d8f'
-          test "$(git hash-object Tools/B01/CI41/W78/required_aggregate.py)" = '14b3ce090e0651e25a29ca2a8640ab4fb6f5f131'
+          test "$(git hash-object Tools/B01/CI41/W78/required_aggregate.py)" = '42ea9a2dbd82a96232a761c32a3c1097f14dc716'
           test "$(git hash-object Tools/B01/CI41/W78/test_required_aggregate.py)" = '3f118b23ffaf3df7e2499ce9f1bd5c5e73d40cc0'
           test "$(git hash-object Tools/B01/CI41/W78/observed_real_unlicensed.json)" = '99a26efb447ce80647a370d287f0062e92d81d81'
           test "$(git rev-parse ef03cf7bbd53cc015749e1bbe28557989ca04b58:Tools/B01/CI41/W74/ci_health.py)" = '5c412815413c7886d1933e3a803cf5af5b7df21b'
