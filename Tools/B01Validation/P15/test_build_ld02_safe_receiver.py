@@ -162,6 +162,45 @@ class OriginalRepairedLD02Receiver(unittest.TestCase):
         self.assertFalse((self.test_maps/"Maps"/m.MAP_FILE).exists())
         self.assertTrue((self.stage/m.ARCHIVE).exists())
 
+    def test_16_concurrent_stage_archive_must_not_delete_foreign_file(self):
+        from unittest.mock import patch
+        archive=self.stage/m.ARCHIVE
+        def competing_writer(path,data):
+            path.write_bytes(b"FOREIGN_ARCHIVE")
+            raise FileExistsError("simulated concurrent write")
+        with patch.object(m,"exclusive",side_effect=competing_writer):
+            with self.assertRaises(FileExistsError):
+                m.stage(REPO,self.stage,self.raw,self.meta)
+        self.assertEqual(archive.read_bytes(),b"FOREIGN_ARCHIVE")
+
+    def test_17_concurrent_install_target_must_not_delete_foreign_map(self):
+        from unittest.mock import patch
+        self.marker()
+        target=self.test_maps/"Maps"/m.MAP_FILE
+        def competing_writer(path,data):
+            path.write_bytes(b"FOREIGN_MAP_BYTES")
+            raise FileExistsError("simulated concurrent install")
+        with patch.object(m,"exclusive",side_effect=competing_writer):
+            with self.assertRaises(FileExistsError):
+                m.install(REPO,self.test_maps,self.raw,self.meta)
+        self.assertEqual(target.read_bytes(),b"FOREIGN_MAP_BYTES")
+        self.assertFalse((self.test_maps/m.RECEIPT).exists())
+
+    def test_18_concurrent_stage_manifest_preserved_archive_rolled_back(self):
+        from unittest.mock import patch
+        real=m.exclusive
+        external=self.stage/m.MANIFEST_FILE
+        def competing_writer(path,data):
+            if path==external:
+                path.write_bytes(b"FOREIGN_MANIFEST")
+                raise FileExistsError("concurrent manifest")
+            real(path,data)
+        with patch.object(m,"exclusive",side_effect=competing_writer):
+            with self.assertRaises(FileExistsError):
+                m.stage(REPO,self.stage,self.raw,self.meta)
+        self.assertEqual(external.read_bytes(),b"FOREIGN_MANIFEST")
+        self.assertFalse((self.stage/m.ARCHIVE).exists())
+
 if __name__=="__main__":
     print("B01_40_ORIGINAL_REPAIRED_LD02_SOURCE_SHA="+m.OWNER_SHA+
           " UNITY_NOT_RUN NO_USER_MAPS_TOUCHED",flush=True)
