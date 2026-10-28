@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">A1 garage part — single detachable wheel with support arm — Light UI</title>
+<desc id="desc">Original compact garage icon of the provisionally approved one-wheel plus arm concept, nonmechanical research. No true socket, pivot, collision, suspension behavior or material authorization. Transparent background.</desc>
+<g id="visual-shadow"><ellipse cx="157" cy="216" rx="71" ry="15" fill="#0a283b" opacity=".25"/></g>
+<g id="part-mount-proposal" data-part="mount-proposal" data-physical-status="UNMEASURED">
+<path d="M25 90L60 83L72 104V174L60 194L23 187Z" fill="#52768a" stroke="#173c53" stroke-width="5" stroke-linejoin="round"/>
+<path d="M37 111L55 108V169L37 173Z" fill="#f4bc78" stroke="#b05e20" stroke-dasharray="6 5" stroke-width="3"/>
+<circle cx="31" cy="102" r="4" fill="#c66820" stroke="#173c53" stroke-width="1.2"/>
+<circle cx="31" cy="179" r="4" fill="#c66820" stroke="#173c53" stroke-width="1.2"/>
+</g>
+<g id="part-support-arm" data-part="support-arm" data-physical-status="UNMEASURED">
+<path d="M58 107L137 88L162 105L152 124L66 142Z" fill="#496579" stroke="#173c53" stroke-width="5" stroke-linejoin="round"/>
+<path d="M60 148L140 136L163 157L146 178L58 189Z" fill="#264253" stroke="#173c53" stroke-width="5" stroke-linejoin="round"/>
+<path d="M70 117L138 104" stroke="#14465e" stroke-width="4" stroke-linecap="round"/>
+<path d="M70 177L143 166" stroke="#14465e" stroke-width="3" stroke-linecap="round"/>
+<circle cx="69" cy="123" r="9" fill="#264253" stroke="#173c53" stroke-width="3"/>
+<circle cx="68" cy="169" r="9" fill="#264253" stroke="#173c53" stroke-width="3"/>
+</g>
+<g id="part-damper-visual" data-part="damper-proposal" data-physical-status="UNMEASURED" transform="translate(110 110) rotate(-29)">
+<rect x="-6" y="-27" width="12" height="89" rx="5" fill="#173c53" stroke="#264253" stroke-width="3"/>
+<path d="M-13 -7Q13 -1 -13 7Q13 15 -13 23Q13 31 -13 39Q13 47 -13 55" fill="none" stroke="#b05e20" stroke-width="7" stroke-linecap="round"/>
+<circle cy="-27" r="10" fill="#264253" stroke="#173c53" stroke-width="4"/>
+<circle cy="65" r="10" fill="#264253" stroke="#173c53" stroke-width="4"/>
+</g>
+<g id="part-wheel" data-part="wheel" data-physical-status="UNMEASURED">
+<circle cx="169" cy="139" r="69" fill="#253747" stroke="#193046" stroke-width="6"/>
+<g id="wheel-tread"><path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(0)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(30)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(60)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(90)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(120)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(150)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(180)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(210)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(240)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(270)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(300)" fill="#193046" opacity=".94"/>
+<path d="M-8 -58L-13 -64H13L8 -58Z" transform="translate(169 139) rotate(330)" fill="#193046" opacity=".94"/></g>
+<circle cx="169" cy="139" r="51" fill="#264253" stroke="#14465e" stroke-width="6"/>
+<circle cx="169" cy="139" r="43" fill="#2f8298" stroke="#173c53" stroke-width="4"/>
+<g id="wheel-spokes"><path d="M-8 -21L-12 -39L12 -39L8 -21Z" transform="translate(169 139) rotate(0)" fill="#496579" stroke="#173c53" stroke-width="1.5"/>
+<path d="M-8 -21L-12 -39L12 -39L8 -21Z" transform="translate(169 139) rotate(60)" fill="#496579" stroke="#173c53" stroke-width="1.5"/>
+<path d="M-8 -21L-12 -39L12 -39L8 -21Z" transform="translate(169 139) rotate(120)" fill="#496579" stroke="#173c53" stroke-width="1.5"/>
+<path d="M-8 -21L-12 -39L12 -39L8 -21Z" transform="translate(169 139) rotate(180)" fill="#496579" stroke="#173c53" stroke-width="1.5"/>
+<path d="M-8 -21L-12 -39L12 -39L8 -21Z" transform="translate(169 139) rotate(240)" fill="#496579" stroke="#173c53" stroke-width="1.5"/>
+<path d="M-8 -21L-12 -39L12 -39L8 -21Z" transform="translate(169 139) rotate(300)" fill="#496579" stroke="#173c53" stroke-width="1.5"/></g>
+<circle cx="169" cy="139" r="24" fill="#264253" stroke="#14465e" stroke-width="5"/>
+<circle cx="169" cy="139" r="13" fill="#c66820" stroke="#f9b25d" stroke-width="4"/>
+<circle cx="169" cy="139" r="4" fill="#253747"/>
+</g>
+</svg>
