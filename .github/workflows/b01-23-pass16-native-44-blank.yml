@@ -1,0 +1,27 @@
+name: B01-23 PASS16 native PARTSIZE 44-blank receipt source gate (NO UNITY)
+on:
+  push:
+    branches: [b01-23/pass16-native-partsize-44-blank-receipt]
+    paths:
+      - "Tools/B01/PARTSIZE001/P16NativeReceipt/**"
+      - "Docs/B01/PARTSIZE001/P16_BLANK_NATIVE_44.json"
+      - ".github/workflows/b01-23-pass16-native-44-blank.yml"
+  workflow_dispatch:
+jobs:
+  source-and-template-only:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch EXACT original PARTSIZE immutable producer commit
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+      - name: Regenerate original source-only 44 pose template byte-identically
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P16NativeReceipt/generate_blank_native_44.py --repo . --check
+      - name: Execute original Python template fail-closed source tests (no native Unity)
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P16NativeReceipt/test_blank_native_44.py
