@@ -25,9 +25,22 @@
   ],
   "gameplay_mutations": [],
   "gates": {
-    "G0": "PENDING_SOURCE_VERIFICATION",
-    "G1": "NATIVE_NOT_RUN",
-    "G2": "NOT_OFFERED"
+    "G0": "OWNER_SOURCE_G0_PASS_WIN_UBUNTU_B01_40_INDEPENDENT_PENDING",
+    "G1": "NATIVE_UNITY_NOT_RUN",
+    "G2": "HOLD_NOT_CODEX_READY"
   },
-  "next_owner": "B01-40 independent source intake, Codex only for game integration"
+  "next_owner": "B01-40 independent source intake, Codex only for game integration",
+  "source_checks": {
+    "meta_guid": 17,
+    "prefabs": 3,
+    "scene": 1,
+    "asmdef": 2,
+    "roslyn_syntax": 3,
+    "executed_on": [
+      "ubuntu-24.04",
+      "windows-2022"
+    ],
+    "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40722486516",
+    "kind": "original-source-only"
+  }
 }
