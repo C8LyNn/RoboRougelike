@@ -1,0 +1,110 @@
+{
+  "packageId": "B01-25-CLEARANCELADDER-001",
+  "version": "R1",
+  "branch": "research/b01-25-pass17-clearance-ladder",
+  "producerScope": "Research/B01-25/P17/CLEARANCELADDER001/**",
+  "referenceCode": {
+    "codexPR": 310,
+    "codexSHA": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+    "mapDraftGitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "mapWorldGitBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e"
+  },
+  "exactRemoteSourceBlobs": {
+    "arena.json": "53eb696950121465befea2855eda4d7268750016",
+    "manifest.json": "9605b4cf7c6d40242ec255b0440c6dfc627c1e2c",
+    "clearance-core.mjs": "388b7bd8773e4c992b3eb0fff413e390ddb79375",
+    "clearance-preview.html": "9b64c3c3ee2084330bcfc5d09f03f2f2c8c5df92",
+    "preview.svg": "96dd5ba8592434b726f1483fc479e0b961640fc3",
+    "test.mjs": "60e94b8ada3ad825e85bda6d92649ea3f2a03b24",
+    "README.md": "3bf0a0881f08c646c7f471c4016395d79a545d06"
+  },
+  "actualExecuted": {
+    "runtime": "functions.exec native isolated V8",
+    "usingOriginalGitHubSource": true,
+    "sourceDataPredicates": {
+      "pass": 45,
+      "fail": 0
+    },
+    "negativeMutants": {
+      "expectedRejections": 9,
+      "rejected": 9,
+      "escaped": 0
+    },
+    "originalBrowserJavaScriptWithDomCanvasStubs": {
+      "sourceCompiled": true,
+      "exactEmbeddedData": true,
+      "initialRadius2_5": "PASS_PROXY",
+      "radius5_5": "PASS_PROXY",
+      "radius6_5": "EXPECTED_FAIL_PROXY_L3_L4",
+      "reset": "PASS",
+      "sliderEvent": "PASS"
+    },
+    "staticSourceMetrics": {
+      "mapItems": 415,
+      "perimeterRayProbes": "8/8 PASS",
+      "gateGapMeters": [
+        28,
+        20,
+        16,
+        12
+      ],
+      "minimumCenterlineAabbMeters": 6,
+      "referencePathSteps": 11
+    }
+  },
+  "notExecuted": [
+    "real Chromium/Playwright",
+    "original Unity C# MapDraft.TryLoad",
+    "Unity 6000.3.14f1 Edit/Play tests",
+    "real Light/Heavy PhysX maneuvers",
+    "Windows Player",
+    "human tests",
+    "independent B01-40/B01-60 QA"
+  ],
+  "limitations": [
+    "Level JSON does not include runtime checkpoint progression or reward logic.",
+    "2D source AABB circle is not vehicle/rig clearance proof.",
+    "Codex game SHA is evolving and must be re-pinned before native test."
+  ],
+  "gameIntegration": false,
+  "mergeDone": false,
+  "approval": {
+    "B01_40": "PENDING",
+    "B01_60": "PENDING",
+    "CODEX": "NOT_ACKED"
+  },
+  "status": "SOURCE_DATA_NODE_CLI_WINDOWS_UBUNTU_PASS_INDEPENDENT_QA_PENDING_UNITY_NOT_RUN",
+  "actualNode22": {
+    "testedCommit": "57b722cc6d76a7625eebe3f332bfaa9af33c4516",
+    "runId": 40758466800,
+    "runUrl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40758466800",
+    "tests": "GitHub Actions exact original published test.mjs, node --check original .mjs and clearance-core.mjs",
+    "operatingSystems": [
+      {
+        "os": "windows-latest",
+        "result": "PASS",
+        "jobId": 123063626938,
+        "logArtifactId": 12847725915,
+        "sourceChecks": 45,
+        "negativeRejections": 9,
+        "originalHtmlNodeVm": "PASS"
+      },
+      {
+        "os": "ubuntu-latest",
+        "result": "PASS",
+        "jobId": 123063627207,
+        "logArtifactId": 12847501352,
+        "sourceChecks": 45,
+        "negativeRejections": 9,
+        "originalHtmlNodeVm": "PASS"
+      }
+    ],
+    "nativeUnityExecuted": false,
+    "note": "Source and original input blobs unchanged from source receipt; workflow commit only adds own .github/workflows/b01-25-p17-clearance-ladder.yml. The evidence update itself does not alter map or test inputs."
+  },
+  "ciGates": {
+    "ci01": "SUCCESS",
+    "ci02Edit": "FAIL at Require valid Unity activation credentials, native tests NOT_RUN",
+    "ci03Play": "FAIL at Require valid Unity activation credentials, native tests NOT_RUN"
+  }
+}

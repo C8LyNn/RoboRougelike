@@ -1,0 +1,147 @@
+{
+  "packageId": "B01-25-CLEARANCELADDER-001",
+  "version": "R1",
+  "producer": "B01-25",
+  "mapFormat": 2,
+  "geometrySourcePins": {
+    "codexPR310": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+    "mapDraftGitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "mapWorldGitBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e"
+  },
+  "mapFile": "arena.json",
+  "mapGitBlob": "53eb696950121465befea2855eda4d7268750016",
+  "globalFloor": false,
+  "cellMeters": 4,
+  "arenaCells": [
+    18,
+    16
+  ],
+  "sceneSizeMeters": [
+    72,
+    64
+  ],
+  "spawn": [
+    9,
+    2
+  ],
+  "finish": [
+    9,
+    13
+  ],
+  "expectedKinds": {
+    "0": 288,
+    "1": 105,
+    "4": 1,
+    "5": 1,
+    "6": 4,
+    "7": 8,
+    "8": 8
+  },
+  "gates": [
+    {
+      "id": "L1",
+      "z": 3,
+      "opening": [
+        6,
+        12
+      ],
+      "openCells": 7,
+      "physicalOpeningMeters": 28,
+      "centerClearanceMeters": 14
+    },
+    {
+      "id": "L2",
+      "z": 6,
+      "opening": [
+        7,
+        11
+      ],
+      "openCells": 5,
+      "physicalOpeningMeters": 20,
+      "centerClearanceMeters": 10
+    },
+    {
+      "id": "L3",
+      "z": 9,
+      "opening": [
+        8,
+        11
+      ],
+      "openCells": 4,
+      "physicalOpeningMeters": 16,
+      "centerClearanceMeters": 6
+    },
+    {
+      "id": "L4",
+      "z": 12,
+      "opening": [
+        8,
+        10
+      ],
+      "openCells": 3,
+      "physicalOpeningMeters": 12,
+      "centerClearanceMeters": 6
+    }
+  ],
+  "referencePath": [
+    [
+      9,
+      2
+    ],
+    [
+      9,
+      3
+    ],
+    [
+      9,
+      4
+    ],
+    [
+      9,
+      5
+    ],
+    [
+      9,
+      6
+    ],
+    [
+      9,
+      7
+    ],
+    [
+      9,
+      8
+    ],
+    [
+      9,
+      9
+    ],
+    [
+      9,
+      10
+    ],
+    [
+      9,
+      11
+    ],
+    [
+      9,
+      12
+    ],
+    [
+      9,
+      13
+    ]
+  ],
+  "referenceSteps": 11,
+  "sourceAabbMinDistanceMeters": 6,
+  "physicsPolicy": "Proxy is top-down circle swept at 0.25m against primitive source AABBs. Not actual vehicle footprint/collider/orientation or gameplay feasibility.",
+  "design": "Increasingly narrow physical apertures in four rows test vehicle assembly width/maneuver confidence. No checkpoint, enemy, reward or completion rules beyond default Spawn/Finish.",
+  "status": {
+    "isMapDocumentV2": true,
+    "unityImported": false,
+    "gameIntegrated": false,
+    "nativeVehicleTesting": "NOT_RUN",
+    "independentQA": "PENDING"
+  }
+}
