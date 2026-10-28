@@ -87,10 +87,15 @@ def main():
             scene.render.filepath=str(path)
             bpy.ops.render.render(write_still=True)
             assert path.is_file() and path.stat().st_size>9000,(path,"blank render?")
-    changed=any(
-       diagnostics["1"]["pivot_world_euler_degrees"][pivot.name]!=
-       diagnostics["31"]["pivot_world_euler_degrees"][pivot.name]
-       for pivot in pivots)
+    moving=[pivot.name for pivot in pivots if
+        diagnostics["1"]["pivot_world_euler_degrees"][pivot.name]!=
+        diagnostics["31"]["pivot_world_euler_degrees"][pivot.name]]
+    changed=bool(moving)
+    assert changed,("GLB default import has no visible pose change - fail closed",diagnostics)
+    # Four exported glTF animations are independent clips; the default Blender
+    # active timeline may select just one. Name the ACTUAL moving pivot rather
+    # than imply this preview proves four simultaneous gimbal movements.
+    idle=[pivot.name for pivot in pivots if pivot.name not in moving]
     report={
        "source_model":"M04-024",
        "source_head":"eef02864b106546b200011a2f0286fe7d9a83a1f",
@@ -101,13 +106,16 @@ def main():
        "actual_imported_materials":len(mats),
        "actual_imported_pivots":len(pivots),
        "real_pose_change_in_imported_animation":changed,
+       "default_import_moving_pivots":moving,
+       "default_import_idle_pivots":idle,
+       "default_import_preview_scope":"SAMPLED_ACTIVE_CLIP_ONLY_NOT_FOUR_SIMULTANEOUS_GIMBALS",
+       "four_gimbals_simultaneous_in_game":"NOT_VERIFIED",
        "poses":diagnostics,
        "views":list(views),
        "rendered_png_count":6,
        "status":"SOURCE_GLB_IMPORT_AND_ORTHO_RENDER_PASS",
        "not_run":["Unity","PhysX","URP","native 3D module integration","collision narrowphase"]
     }
-    assert changed,("GLB rest and frame31 no visible gimbal motion - fail closed",diagnostics)
     (out/"M04-original-glb-lookdev.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     print("B01_30_M04_ORIGINAL_GLB_IMPORT_RENDER_PASS",json.dumps(report,sort_keys=True))
 if __name__=="__main__":main()
