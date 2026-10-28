@@ -1,0 +1,54 @@
+{
+  "package_id": "B01-40-P17-MAPGEN-ARENA-RECEIVER-001",
+  "version": "1.0.0",
+  "role": "B01-40 Integration & Build",
+  "source_type": "INDEPENDENT_SOURCE_DATA_RECEIVER_NOT_GAME_RUNTIME",
+  "immutable_owner_inputs": {
+    "producer_original_pr": 326,
+    "producer_original_commit": "66c8988aa06a63036c6abede4c7181c0c7bfd904",
+    "original_unmodified_mapgen_commit": "5be31039411f89f17654b1c332f8692883fa03cc",
+    "original_producer_manifest_git_blob": "194c0faa40b89c1ed8411a95ad3bde4319957d77"
+  },
+  "owned_paths": [
+    "Tools/B01Validation/P17/**",
+    ".github/workflows/b01-40-p17-mapgen-arenas-receiver.yml"
+  ],
+  "deliverables": [
+    "one immutable zip containing 18 original CSharp-generated semantic blueprints",
+    "18 original source-derived SVG previews",
+    "one source-generated HTML gallery",
+    "18 exact runtime MapGenBuilder/MapGenPlanner recipe call parameters",
+    "one independent per-member SHA256 provenance receipt"
+  ],
+  "actual_validation": [
+    "source owner Git SHA+blob 11 paths",
+    "original MapGenData/Planner/RouteValidator and headless surrogate twice pinned",
+    "actual dotnet8 CSharp 36 plan+route original executions and 6 invalid input rejections",
+    "original producer validators of 18 JSON + SVG",
+    "independent 16 negative/positive source/ZIP/rollback tests on Windows+Ubuntu"
+  ],
+  "never_do": [
+    "modify frozen CHL/PARTSIZE",
+    "touch Codex canonical Assets",
+    "import MapBlueprint as MapDocument v2",
+    "declare native Unity pass from headless CSharp",
+    "overwrite existing output dir",
+    "merge main/develop"
+  ],
+  "requirements": [
+    "Git",
+    "Python 3.11+",
+    "dotnet SDK 8.0",
+    "Network only to fetch pinned Git SHA in CI",
+    "No Unity needed"
+  ],
+  "receiver": "Codex and B01-60",
+  "state": "PENDING_REAL_CI_FIRST_NOT_YET_OFFERED",
+  "gates": {
+    "G0": "SOURCE_AND_DETERMINISTIC_STAGING_ONLY",
+    "G1": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "codex_handoff": "Use codex-generate-calls.json to call existing MAPGEN CombatArena API with indicated source-compatible config and seed; do not load diagnostic blueprint directly. Codex to independently validate actual Unity import, PhysX, collision, route, restart on HQ-approved host.",
+  "rollback": "Discard external ZIP, receipt and disposable output directory. No writes to canonical project."
+}
