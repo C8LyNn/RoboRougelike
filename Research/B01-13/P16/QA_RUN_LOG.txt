@@ -1,0 +1,9 @@
+B01-13/PASS16/HPT16-GBC01-R1
+HOST=Linux local Chromium / Python 3.13 (NOT Unity, NOT Windows Player)
+ORIGINAL OWN HTML initial actual negative before own fix:
+RED: operator may enter participant view after actual timer start (button disabled while clock running), exit 1.
+FIX: enable moderator display toggle while measuring (timer remains controlled on operator view).
+GREEN: python3 test_gbc01_browser.py -> REAL_BROWSER_ASSERTIONS=42/42 PASS
+GREEN: python3 test_gbc01_intake.py -> ORIGINAL_BROWSER_JSON_INTAKE=28/28 PASS
+REAL_HUMANS=0. Unity_6000.3.14f1=NOT_RUN. Independent G1=NOT_RUN. Codex integration=NOT_RUN.
+Evidence: QA_BROWSER_PASS16.json + QA_SYNTHETIC_GBC01.json + two named SYNTHETIC screenshots.
