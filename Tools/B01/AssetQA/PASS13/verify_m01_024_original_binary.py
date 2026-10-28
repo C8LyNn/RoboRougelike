@@ -55,6 +55,85 @@ def glb_bounds(raw):
     assert len(out)==51
     return out
 
+
+def obj_triangles(raw):
+    """Actual OBJ indexed triangles in authored -> GLB mesh coordinate frame."""
+    positions=[];out={};name=None
+    for row in raw.decode().splitlines():
+        if row.startswith("o "):
+            name=row[2:]
+            assert name not in out
+            out[name]=[]
+        elif row.startswith("v "):
+            positions.append(tuple(map(float,row.split()[1:])))
+        elif row.startswith("f "):
+            assert name is not None
+            ids=[int(entry.split("/")[0])-1 for entry in row.split()[1:]]
+            assert len(ids)==3 and all(0<=j<len(positions) for j in ids)
+            triangle=[]
+            for j in ids:
+                x,y,z=positions[j];triangle.append((x,z,-y))
+            out[name].append(triangle)
+    assert len(out)==51
+    assert sum(map(len,out.values()))==6508
+    return out
+
+def glb_actual_triangles(raw):
+    """Decode actual GLB float POSITION payload and uint index buffer, not metadata AABB."""
+    assert raw[:4]==b"glTF" and struct.unpack_from("<II",raw,4)==(2,len(raw))
+    jlen,jtype=struct.unpack_from("<II",raw,12)
+    assert jtype==0x4e4f534a
+    gltf=json.loads(raw[20:20+jlen])
+    blob_offset=20+jlen
+    blen,btype=struct.unpack_from("<II",raw,blob_offset)
+    assert btype==0x004e4942 and blob_offset+8+blen==len(raw)
+    blob_offset+=8
+    def accessor(i):
+        a=gltf["accessors"][i]
+        assert "sparse" not in a and "bufferView" in a
+        view=gltf["bufferViews"][a["bufferView"]]
+        assert view.get("buffer",0)==0
+        typ=a["type"];comp=a["componentType"]
+        fmt={5126:"f",5123:"H",5125:"I",5121:"B"}[comp]
+        width={"SCALAR":1,"VEC3":3}[typ]
+        stride=view.get("byteStride",struct.calcsize("<"+fmt)*width)
+        off=blob_offset+view.get("byteOffset",0)+a.get("byteOffset",0)
+        values=[]
+        for idx in range(a["count"]):
+            values.append(struct.unpack_from("<"+fmt*width,raw,off+idx*stride))
+        return values,a
+    mesh_triangles={};actual_counts=0;vertices=0
+    for node in gltf["nodes"]:
+        if "mesh" not in node:continue
+        assert node["name"].startswith("M01_024_")
+        name=node["name"][8:]
+        assert name not in mesh_triangles
+        primitives=gltf["meshes"][node["mesh"]]["primitives"]
+        assert len(primitives)==1
+        primitive=primitives[0]
+        assert primitive.get("mode",4)==4
+        positions,meta=accessor(primitive["attributes"]["POSITION"])
+        assert meta["type"]=="VEC3" and meta["componentType"]==5126
+        ids,imeta=accessor(primitive["indices"])
+        indices=[v[0] for v in ids]
+        assert len(indices)%3==0
+        assert all(0<=i<len(positions) for i in indices)
+        # The original accessor min/max can be forged: verify them against raw floats.
+        posbox=bbox(positions)
+        assert err(posbox,(meta["min"],meta["max"]))<0.000002,(name,"BAD_ACCESSOR_AABB")
+        mesh_triangles[name]=[[positions[indices[i]],positions[indices[i+1]],
+                                positions[indices[i+2]]]
+                               for i in range(0,len(indices),3)]
+        actual_counts+=len(indices)//3
+        vertices+=len(positions)
+    assert len(mesh_triangles)==51
+    assert actual_counts==6508
+    return mesh_triangles,vertices
+
+def triangle_signature(triangle):
+    """Order-independent 0.01mm quantized triangle; counts preserve duplicates."""
+    return tuple(sorted(tuple(round(c,5) for c in pos) for pos in triangle))
+
 def parse_fbx(raw):
     assert raw[:23]==b"Kaydara FBX Binary  \x00\x1a\x00"
     assert struct.unpack_from("<I",raw,23)[0]==7400
@@ -118,6 +197,26 @@ def err(a,b):
 def main():
     raw=load_original()
     objs=obj_vertices(raw["obj"]); glb=glb_bounds(raw["glb"])
+    obj_faces=obj_triangles(raw["obj"])
+    glb_faces,glb_payload_vertices=glb_actual_triangles(raw["glb"])
+    assert set(obj_faces)==set(glb_faces)==set(objs)
+    actual_triangle_total=0
+    for name,expected_faces in obj_faces.items():
+        actual_faces=glb_faces[name]
+        assert len(expected_faces)==len(actual_faces),(name,"TRIANGLE_COUNT_MISMATCH")
+        expected_signatures=sorted(triangle_signature(t) for t in expected_faces)
+        actual_signatures=sorted(triangle_signature(t) for t in actual_faces)
+        assert expected_signatures==actual_signatures,(name,"TRIANGLE_POSITION_MISMATCH")
+        actual_triangle_total+=len(actual_faces)
+    # SYNTHETIC negative: old GLB accessor-minmax-only QA would PASS even
+    # if an internal triangle corner was displaced in the actual binary.
+    witness_name=sorted(glb_faces)[0]
+    forged_triangles=[list(t) for t in glb_faces[witness_name]]
+    forged_triangles[0]=list(forged_triangles[0])
+    tampered=list(forged_triangles[0][0]);tampered[0]+=.002
+    forged_triangles[0][0]=tuple(tampered)
+    assert sorted(triangle_signature(t) for t in forged_triangles)!=sorted(
+        triangle_signature(t) for t in obj_faces[witness_name])
     fbx,models,settings,nodes,compressed=parse_fbx(raw["fbx"])
     assert set(objs)==set(glb)==set(fbx)
     glb_max=max(err(bbox([(x,z,-y) for x,y,z in obj]),glb[k]) for k,obj in objs.items())
@@ -209,6 +308,10 @@ def main():
        "fbx_per_vertex_threshold_m":0.000002,
        "synthetic_hidden_vertex_mutant":hidden_mutation,
        "synthetic_fbx_20mm_negative_control":"EXPECTED_REJECTION",
+       "glb_actual_binary_triangles_verified":actual_triangle_total,
+       "glb_actual_position_entries_decoded":glb_payload_vertices,
+       "glb_actual_payload_triangle_soup_matches_OBJ":True,
+       "synthetic_glb_corner_2mm_negative":"EXPECTED_REJECTION",
        "glb_original_meshes_matching_obj_basis":51,
        "glb_max_aabb_delta_m":glb_max,
        "actual_test_kind":"GIT_ORIGINAL_BINARY_DEFLATE+OBJ_GLB_FBX_SOURCE_QA",
