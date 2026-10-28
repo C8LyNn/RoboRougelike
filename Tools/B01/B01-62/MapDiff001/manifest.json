@@ -5,14 +5,14 @@
   "owner": "B01-62 — DATA INTEGRITY & SAVE QA",
   "category": "NEW_FUNCTIONAL_OFFLINE_AUTHORING_TOOL",
   "branch": "tools/b01-62-p17-mapdiff001",
-  "source_revision_before_manifest": "31234cf121df10c1b26cb73f6683e55b6203588f",
+  "source_revision_before_manifest": "2d3228e80b7767d9d8dfd50f4c7808450d8644c2",
   "owned_paths": [
     "Tools/B01/B01-62/MapDiff001/**",
     ".github/workflows/b01-62-mapdiff-001.yml"
   ],
   "files_original_git_blobs": {
     "Tools/B01/B01-62/MapDiff001/mapdiff.py": "b3c7ebbd69bbc3f9237e3117c5ef0fee4603f113",
-    "Tools/B01/B01-62/MapDiff001/test_mapdiff.py": "b1c1a9056f10a6d8094891948577ed8aa707f442",
+    "Tools/B01/B01-62/MapDiff001/test_mapdiff.py": "14eea3e56d7cc078bc487ad92d388d6eca432042",
     "Tools/B01/B01-62/MapDiff001/smoke_ld02.py": "926ae4f0616850e4b392afff0b7ec55b7eb2e9eb",
     "Tools/B01/B01-62/MapDiff001/README.md": "947c3d526cc96ac5346d4ab7d9023400a2b6eb6d",
     ".github/workflows/b01-62-mapdiff-001.yml": "bdb36bb0b5a7a118f9c4a1246798f29c19c31d9b"
