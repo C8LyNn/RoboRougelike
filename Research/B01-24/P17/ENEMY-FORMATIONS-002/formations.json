@@ -1,0 +1,187 @@
+{
+  "package_id": "B01-24-ENEMY-FORMATIONS-002",
+  "version": "1.0.0",
+  "units": "Unity world metres, X/Z coordinates; Y=0 fixed by receiver",
+  "conservative_vehicle_radius_m": 2.5,
+  "min_separation_m": 7.5,
+  "min_player_separation_m": 27,
+  "source_contract": {
+    "arena_kind": {
+      "SalvageYard": 0,
+      "Wasteland": 1,
+      "Industrial": 2
+    },
+    "spawnCount": "R1EncounterDefinition.SpawnCount: SiegeBoss => 1; other EnemyCount+1",
+    "generator": "R1EncounterManager.Spawn optional Vector3[] spawnPositions; no canonical patch"
+  },
+  "formations": [
+    {
+      "id": "B0124-SCRAP-PINCER",
+      "arena": 0,
+      "theme": "SalvageYard",
+      "intent": "lateral dual pincer with reserve scout",
+      "options": {
+        "1": [
+          [
+            0,
+            19
+          ]
+        ],
+        "2": [
+          [
+            -14,
+            17
+          ],
+          [
+            14,
+            23
+          ]
+        ],
+        "3": [
+          [
+            -14,
+            17
+          ],
+          [
+            14,
+            17
+          ],
+          [
+            0,
+            28
+          ]
+        ],
+        "4": [
+          [
+            -16,
+            17
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            -6,
+            28
+          ],
+          [
+            6,
+            28
+          ]
+        ]
+      }
+    },
+    {
+      "id": "B0124-WASTE-CHASE",
+      "arena": 1,
+      "theme": "Wasteland",
+      "intent": "wide sweep with diagonal pursuit",
+      "options": {
+        "1": [
+          [
+            0,
+            22
+          ]
+        ],
+        "2": [
+          [
+            -20,
+            22
+          ],
+          [
+            18,
+            17
+          ]
+        ],
+        "3": [
+          [
+            -22,
+            20
+          ],
+          [
+            0,
+            27
+          ],
+          [
+            22,
+            20
+          ]
+        ],
+        "4": [
+          [
+            -24,
+            24
+          ],
+          [
+            -8,
+            18
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            24,
+            24
+          ]
+        ]
+      }
+    },
+    {
+      "id": "B0124-INDUSTRIAL-CROSSFIRE",
+      "arena": 2,
+      "theme": "Industrial",
+      "intent": "inner-lane staggered crossfire with rear screen",
+      "options": {
+        "1": [
+          [
+            0,
+            26
+          ]
+        ],
+        "2": [
+          [
+            -9,
+            20
+          ],
+          [
+            9,
+            20
+          ]
+        ],
+        "3": [
+          [
+            -9,
+            20
+          ],
+          [
+            9,
+            20
+          ],
+          [
+            0,
+            30
+          ]
+        ],
+        "4": [
+          [
+            -9,
+            20
+          ],
+          [
+            9,
+            20
+          ],
+          [
+            -9,
+            30
+          ],
+          [
+            9,
+            30
+          ]
+        ]
+      }
+    }
+  ]
+}
