@@ -41,7 +41,10 @@ def main():
         sha=m["codex_sha"]
         ck("pinned Codex commit exists",git("-C",opt.repo,"rev-parse",sha+"^{commit}")==sha)
         for path,expected in m["original_git_blobs"].items():
-            ck("original Git C# blob "+path,git("-C",opt.repo,"rev-parse",sha+":"+path)==expected)
+            actual=git("-C",opt.repo,"rev-parse",sha+":"+path)
+            ck("original Git C# blob "+path,len(expected)==40 and actual==expected)
+            if actual!=expected or len(expected)!=40:
+                print("ORIGINAL_BLOB_MISMATCH | "+path+" | EXPECTED="+expected+" | ACTUAL="+actual)
         model=git("-C",opt.repo,"show",sha+":Assets/R3/R3VehicleModel.cs")
         editor=git("-C",opt.repo,"show",sha+":Assets/MapEditor/R1MapEditor.cs")
         susp=git("-C",opt.repo,"show",sha+":Assets/MOV009Integration/MOV009RunController.cs")
