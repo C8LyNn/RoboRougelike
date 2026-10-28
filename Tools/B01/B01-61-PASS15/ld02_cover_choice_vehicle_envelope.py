@@ -95,7 +95,7 @@ def main():
         rz=length*.55+.26
         for route_name,route in (("EXPOSED",SHORT),("COVER",COVER)):
             dist,pt,hits=scan(route,solids,rx,rz)
-            print(f"{'PASS' if not hits else 'PRODUCT_RED'} | {name} {route_name} | samples={16*(len(route)-1)+len(route)-1} | centerline_body_AABB_half={rx:.2f}x{rz:.2f}m | min_clearance={dist:.3f}m | closest={pt} | overlap_samples={hits}")
+            print(f"{'PASS' if not hits else 'PRODUCT_RED'} | {name} {route_name} | samples={17*(len(route)-1)} | centerline_body_AABB_half={rx:.2f}x{rz:.2f}m | min_clearance={dist:.3f}m | closest={pt} | overlap_samples={hits}")
             if hits:raise ValueError(f"ORIGINAL_ROUTE_BODY_ENVELOPE_OVERLAP:{name}:{route_name}")
     # Two deliberate labelled in-memory QA negatives, never modify B01-25 Git bytes.
     for label,route,blocked in (("EXPOSED",SHORT,(6,5)),("COVER",COVER,(6,2))):
