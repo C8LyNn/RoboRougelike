@@ -1,0 +1,40 @@
+name: B01-40 W66 actual B01-23 parser independent retest (no Unity)
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W66/receive_original_partsize_parser.py'
+      - '.github/workflows/b01-40-w66-owner-parser-independent-retest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-owner-parser-retest:
+    name: Independent actual Python source NEG01-03 and positives (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch exact B01-23 original corrected QA commit and verify original Git blobs
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin f3a40810a178c11696360c32921872bfacecf21b
+          test "$(git rev-parse f3a40810a178c11696360c32921872bfacecf21b:Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py)" = 'b4ca19bd1b9142a364dbed2fb6bb2dd30f2b53ac'
+          test "$(git rev-parse f3a40810a178c11696360c32921872bfacecf21b:Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1)" = 'da575df50d51d5f76776d96e3b5251103b85d923'
+      - name: Actually execute exact owner parser with independent new fail-closed and positive fixtures
+        shell: bash
+        run: |
+          python Tools/B01Validation/W66/receive_original_partsize_parser.py -v
+          echo 'B01_40_ORIGINAL_PARSER_NEG01_NEG02_NEG03_AND_REGRESSION_PASS_PARSER_ONLY'
+      - name: Explicit boundary
+        shell: bash
+        run: |
+          echo 'Synthetic XML/logs only. Actual Unity G1, native PhysX, human Player and G2 NOT RUN.'
+          echo 'No source-package edits; no Handoff OFFERED / CODEX_ACK / merge.'

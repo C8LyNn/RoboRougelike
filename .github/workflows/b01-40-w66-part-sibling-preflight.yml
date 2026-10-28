@@ -1,0 +1,48 @@
+name: B01-40 W66 original PARTSIZE sibling worktree security recheck
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W66/receive_original_partsize_sibling_preflight.ps1'
+      - '.github/workflows/b01-40-w66-part-sibling-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-owner-script:
+    name: Actual PowerShell and real sibling worktrees (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch original fixed QA operator and exact immutable PARTSIZE producer
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 26634727ab2323a982bce893421c88c330be46e8
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          test "$(git rev-parse 26634727ab2323a982bce893421c88c330be46e8:Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1)" = 'bd7bccd2a949d91b1901e3ec01ab93c62874eef4'
+          git show 26634727ab2323a982bce893421c88c330be46e8:Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1 > Tools/B01Validation/W66/original-owner-current.ps1
+          test "$(git hash-object Tools/B01Validation/W66/original-owner-current.ps1)" = 'bd7bccd2a949d91b1901e3ec01ab93c62874eef4'
+      - name: Parse authentic owner PS1 and independent auditor PS1 via PowerShell AST
+        shell: pwsh
+        run: |
+          foreach ($file in @('Tools/B01Validation/W66/original-owner-current.ps1','Tools/B01Validation/W66/receive_original_partsize_sibling_preflight.ps1')) {
+            $tokens=$null; $errors=$null
+            [System.Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
+            if($errors.Count -gt 0){$errors | Out-String | Write-Host; throw 'PS1_SYNTAX_RED'}
+          }
+      - name: Execute original script preflight with two real detached linked source worktrees
+        shell: pwsh
+        run: |
+          & 'Tools/B01Validation/W66/receive_original_partsize_sibling_preflight.ps1' -OperatorPath 'Tools/B01Validation/W66/original-owner-current.ps1'
+      - name: Explicit no-Unity boundary
+        shell: bash
+        run: |
+          echo 'Real original QA-only operator and genuine Git worktrees; Unity Editor not launched, G1 NOT_RUN G2 HOLD'

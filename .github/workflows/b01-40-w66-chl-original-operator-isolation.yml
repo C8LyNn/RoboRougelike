@@ -1,0 +1,58 @@
+name: B01-40 W66 original CHL operator sibling-source isolation witness
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W66/receive_chl_operator_isolation.py'
+      - '.github/workflows/b01-40-w66-chl-original-operator-isolation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-owner-original-source:
+    name: CHL actual owner script security witness (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch exact B01-20 W66 QA operator Git source SHA
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 9a6acca417524545fbce7ac5962fe0944c5237c6
+          test "$(git rev-parse 9a6acca417524545fbce7ac5962fe0944c5237c6:Tools/B01/QA-CHL003/W66Receipt/chl003_w66_operator.py)" = '96aec2f870ccc510727048a7208292f781e80c36'
+      - name: Actually run original script against real sibling detached Git worktrees
+        shell: bash
+        run: |
+          python Tools/B01Validation/W66/receive_chl_operator_isolation.py -v
+          echo 'CHL_REPAIR_INDEPENDENT_RECEIPT: owner original script rejected sibling root and Assets; external positive and 20/15+six synthetic receipt validation'
+      - name: Independently execute ORIGINAL source package gate in separate disposable linked QA checkout
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin c7b2a234a286089383503da41883d624fe650551
+          python - <<'PY'
+          import os, pathlib, subprocess, tempfile
+          owner='9a6acca417524545fbce7ac5962fe0944c5237c6'
+          producer='c7b2a234a286089383503da41883d624fe650551'
+          delta=subprocess.check_output(['git','diff','--name-only',producer,owner],text=True).splitlines()
+          assert delta and all(p.startswith('Tools/B01/QA-CHL003/') or p=='.github/workflows/b01-20-w66-qa-only.yml' for p in delta), delta
+          with tempfile.TemporaryDirectory(prefix='b01_40_chl_package_',dir=os.environ.get('RUNNER_TEMP')) as temp:
+              worktree=pathlib.Path(temp)/'source'
+              subprocess.run(['git','worktree','add','--detach',str(worktree),owner],check=True)
+              try:
+                  cmd=['python',str(worktree/'Tools/B01/CHL003/package_gate.py'),'--verify-zip']
+                  subprocess.run(cmd,cwd=worktree,check=True)
+                  print('B01_40_INDEPENDENT_ORIGINAL_CHL_60_SOURCE_MANIFEST_ZIP_GATE_PASS NATIVE_UNITY_NOT_RUN')
+              finally:
+                  subprocess.run(['git','worktree','remove','--force',str(worktree)],check=True)
+          PY
+      - name: Assert native environment boundary
+        shell: bash
+        run: |
+          echo 'Read-only real Git fixture and actual B01-20 Python code. No Unity launched; G1 NOT_RUN / G2 HOLD.'

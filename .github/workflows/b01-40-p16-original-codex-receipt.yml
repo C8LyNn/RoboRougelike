@@ -1,0 +1,47 @@
+name: B01-40 PASS16 independently inspect original Codex native receipts
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/P16/verify_codex_native_evidence.py'
+      - 'Tools/B01Validation/P16/test_codex_native_evidence.py'
+      - '.github/workflows/b01-40-p16-original-codex-receipt.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  immutable-native-receipt-intake:
+    name: Real Codex NUnit evidence inspection, no Unity (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch exact Codex final game evidence commit
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin 589b60a912096d1e9917cb0bbac73a53e7543b4f
+      - name: Parse original immutable EditMode 1303, PlayMode 474, targeted 15 NUnit cases
+        shell: bash
+        run: python Tools/B01Validation/P16/test_codex_native_evidence.py -v
+      - name: Generate attested source-only receipt, preserve original full EditMode RED
+        shell: bash
+        run: |
+          python -c "import os,pathlib; pathlib.Path(os.environ['RUNNER_TEMP'],'b01-40-p16-codex-evidence').mkdir(parents=True,exist_ok=True)"
+          python Tools/B01Validation/P16/verify_codex_native_evidence.py --repo . --out "$(python -c "import os,pathlib; print(pathlib.Path(os.environ['RUNNER_TEMP'],'b01-40-p16-codex-evidence','CODEX-native-intake-source-only.json'))")"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-P16-original-Codex-evidence-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-40-p16-codex-evidence/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Explicit integration and native boundary
+        shell: bash
+        run: |
+          echo 'Original game receipts inspected: full EditMode on original SHA RED despite 15/15 targeted retest.'
+          echo 'No independent Unity G1, no full suite rerun on newer test-only SHA, no release/G2.'

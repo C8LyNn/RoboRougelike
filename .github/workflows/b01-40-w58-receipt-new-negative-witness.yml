@@ -1,0 +1,39 @@
+name: B01-40 W58 genuinely NEW original PARTSIZE receipt parser security negatives
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W58/**'
+      - '.github/workflows/b01-40-w58-receipt-new-negative-witness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-parser-new-negatives:
+    name: B01-40 original PARTSIZE receipt parser 3 bypass witnesses (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch EXACT unchanged B01-23 QA parser Git object
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 75b9c7902344eab4a012951aa9f578195b6bb943
+          test "$(git rev-parse '75b9c7902344eab4a012951aa9f578195b6bb943:Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py')" = "29f89a72dc73936a6f18f89554f2a70baccc1cfb"
+          echo "PINNED_UNMODIFIED_B01_23_ORIGINAL_PARSER_GIT_BLOB_PASS"
+      - name: Actually execute original parser with 3 NEW negative witnesses and 3 unchanged controls
+        shell: bash
+        run: |
+          python Tools/B01Validation/W58/test_original_partsize_receipt_negatives.py -v
+          echo "W58_ORIGINAL_PARSER_3_NEGATIVE_BYPASSES_REPRODUCED_NOT_SECURE_PASS"
+      - name: Verify no Unity or real G1 was executed
+        shell: bash
+        run: |
+          echo 'Synthetic XML/log and receipt only; read-only owner parser, no native Unity license or G1'
+          echo 'B01-23 original parser owner decides remediation; B01-60 independent native G1 still NOT_RUN'
