@@ -1,0 +1,92 @@
+{
+  "package_id": "B01-24-ENEMY-FORMATIONS-002",
+  "version": "1.0.0",
+  "owner": "B01-24",
+  "branch": "research/b01-24-p17-enemy-formations",
+  "type": "new optional enemy spawn-point game content; explicit nonintegrated R5EncounterManager Spawn positions",
+  "source_game_baseline": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+  "unmodified_game_contract": [
+    {
+      "path": "Assets/R5/R5Arena.cs",
+      "git_blob": "fbe1537036910e0dcc2b2c7e502e66848fcd14a5"
+    },
+    {
+      "path": "Assets/R1/R1EncounterManager.cs",
+      "git_blob": "0a1c36b246c059a8bd9ec93a9d531cbe916b64bf"
+    },
+    {
+      "path": "Assets/R1/R1RunDefinition.cs",
+      "git_blob": "5665e64d3d665c67d352eb5a9809a66fc5136698"
+    },
+    {
+      "path": "Assets/R5/R5RunPlan.cs",
+      "git_blob": "6fde58f1fc621cde6488d9ee81c3510aa729839a"
+    }
+  ],
+  "new_files": [
+    {
+      "path": "Research/B01-24/P17/ENEMY-FORMATIONS-002/formations.json",
+      "git_blob": "4c28b6289f23bcbd82c976bccb1567cbcb847371"
+    },
+    {
+      "path": "Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.mjs",
+      "git_blob": "5d1231249ce15a3ee4de7e5abebc5b0fe7147f8c"
+    },
+    {
+      "path": "Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.test.mjs",
+      "git_blob": "8a84494f5bb77270b8fff1799f382f069c7d7b87"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-enemy-formations.yml",
+      "git_blob": "c1c85f14469159bb6f1815e3814b05c9cbb0ed5d"
+    }
+  ],
+  "content": {
+    "new_formations": 3,
+    "distinct_spawn_layouts": 12,
+    "source_coordinates": 30,
+    "arena_kinds": [
+      0,
+      1,
+      2
+    ],
+    "supported_actual_spawn_counts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "conservative_radius_metres": 2.5,
+    "minimum_spacing_metres": 7.5
+  },
+  "scope": "Research/B01-24/P17/ENEMY-FORMATIONS-002/** plus dedicated workflow only; zero Assets/** mutations",
+  "test": {
+    "node_runner": "node --test Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.test.mjs",
+    "validated_github_original_source_blobs": true,
+    "windows_status": "PENDING",
+    "ubuntu_status": "PENDING",
+    "unity": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "independent_b01_60": "PENDING"
+  },
+  "constraints": [
+    "Exact original source Git blobs fail closed on R5Arena or Spawn API drift.",
+    "Static XZ AABB safety envelope is a conservative screen, not a real prefab bounds or Unity collider scan.",
+    "Motion, turning, line of fire, rigidbody contact, weapon variants, and reward balance are NOT_RUN.",
+    "Use only with opt-in native Codex adapter; existing canonical encounter positions remain unchanged.",
+    "Do not infer the actual vehicle collider radius from 2.5m planning allowance."
+  ],
+  "intake": {
+    "state": "DRAFT_NOT_OFFERED_FOR_FREEZE",
+    "receivers": [
+      "B01-40",
+      "B01-60",
+      "B01-00",
+      "Codex"
+    ],
+    "codex_ack": "PENDING",
+    "merge": false,
+    "g1": "NOT_RUN",
+    "g2": "HOLD"
+  }
+}
