@@ -1,0 +1,74 @@
+name: B01-23 W26 PARTSIZE source-pinned native RECEIPT intake — no Unity
+on:
+  push:
+    branches:
+      - 'b01-23/w26-partsize-readonly-native-receipt'
+    paths:
+      - 'Tools/B01/PARTSIZE001/W26Receipt/**'
+      - '.github/workflows/b01-23-w26-partsize-receipt.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  receipt-source-and-negative-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch EXACT original producer Git object only (no source modifications)
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+      - name: Fetch original Codex PR302 physical host+geometry at EXACT SHA (not main)
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin d44fa09c227dffca1c1f8832383bbd80430bba90
+      - name: Install .NET 8 for ORIGINAL pure C# socket negative fixture (no Unity)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute original producer C# typed-socket method and reject one false-green mutation
+        run: python Tools/B01/PARTSIZE001/W26Receipt/test_socket_authority_original_csharp.py --repo . --out partsize-original-socket-negative.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PARTSIZE-W58-original-socket-negative-${{ matrix.os }}
+          path: partsize-original-socket-negative.json
+          if-no-files-found: error
+          retention-days: 10
+      - name: Run 24 actual source and host-scaled static geometry regressions (NOT Unity)
+        run: python Tools/B01/PARTSIZE001/W26Receipt/test_source_payload_measurements.py
+      - name: Emit seven host-corrected + prior counterfactual source AABB records
+        run: python Tools/B01/PARTSIZE001/W26Receipt/source_payload_measurements.py --repo . --out partsize-seven-source-proxies.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PARTSIZE-W29-seven-static-source-proxies-${{ matrix.os }}
+          path: partsize-seven-source-proxies.json
+          if-no-files-found: error
+          retention-days: 10
+      - name: Execute 16 receipt-parser tests including new NEG01-03 fail-closed cases (NOT Unity)
+        run: python Tools/B01/PARTSIZE001/W26Receipt/test_check_receipt.py
+      - name: Inspect REAL immutable producer test files and eleven unknown physical kinds
+        run: python Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py source --repo .
+      - name: Compile-check native operator script with actual PowerShell parser (no Unity invocation)
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $parseErrors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile('Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1', [ref]$tokens, [ref]$parseErrors) | Out-Null
+          if ($parseErrors.Count -gt 0) { $parseErrors | Out-String | Write-Host; throw 'POWERSHELL_OPERATOR_SYNTAX_RED' }
+          Write-Host 'POWERSHELL_OPERATOR_SOURCE_SYNTAX_PASS; actual licensed Unity NOT_RUN'
+      - name: Exercise actual Git linked-worktree PowerShell operator preflight + negative escape attempts
+        shell: pwsh
+        run: |
+          & 'Tools/B01/PARTSIZE001/W26Receipt/test_native_preflight.ps1'
+      - name: Explicit no-native/no-G2 boundary
+        shell: bash
+        run: |
+          echo 'This was real original Git SOURCE audit + synthetic XML parser QA only.'
+          echo 'Licensed Unity compile, 17 Edit, 11 Play, 11 physical measurements, 720/1080 and independent G1 are NOT_RUN.'
+          echo 'No change to producer #286 and NO OFFERED/G2/CODEX_CLAIMED.'
