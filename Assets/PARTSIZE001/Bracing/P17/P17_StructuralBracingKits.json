@@ -1,0 +1,145 @@
+{
+  "schema": "B01-P17-W02-STRUCTURAL-BRACING-KITS-v1",
+  "packageId": "PARTSIZE001-P17-W02-STRUCTURAL-BRACING-R1",
+  "originalRigBlueprintCommit": "0978497561c8b6400490235d3e5a401ac32bea2d",
+  "originalWeakpointCommit": "098ccdbe8f129253fa4ada52318436b7cc2b4dc4",
+  "originalPartSizeCommit": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "nativePhysicalStatus": "NOT_RUN",
+  "gameIntegrationStatus": "NOT_INTEGRATED",
+  "kits": [
+    {
+      "kitId": "P17-BRACE-FLANKER-ROOFLINK",
+      "baseBlueprintId": "P17-FLANKER-WHEELS",
+      "variantId": "P17-FLANKER-WHEELS-REINFORCED",
+      "title": "Flanker — roof crosslink",
+      "mandatoryParts": [
+        {
+          "localId": "P17-BRACE-FLANKER-001",
+          "kind": "Armor",
+          "cell": {
+            "x": 0,
+            "y": 2,
+            "z": 1
+          },
+          "rotationQuarterTurns": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "contactMask": 63,
+          "weapon": null
+        }
+      ],
+      "expectedMitigations": [
+        {
+          "removedPartId": "P17-FLANKER-WHEELS-006",
+          "previouslyOrphanedPartId": "P17-FLANKER-WHEELS-013"
+        }
+      ]
+    },
+    {
+      "kitId": "P17-BRACE-BULWARK-TRACKLOOPS",
+      "baseBlueprintId": "P17-BULWARK-TRACKS",
+      "variantId": "P17-BULWARK-TRACKS-REINFORCED",
+      "title": "Bulwark — track bypass loops",
+      "mandatoryParts": [
+        {
+          "localId": "P17-BRACE-BULWARK-L",
+          "kind": "Armor",
+          "cell": {
+            "x": -2,
+            "y": 0,
+            "z": 1
+          },
+          "rotationQuarterTurns": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "contactMask": 63,
+          "weapon": null
+        },
+        {
+          "localId": "P17-BRACE-BULWARK-R",
+          "kind": "Armor",
+          "cell": {
+            "x": 2,
+            "y": 0,
+            "z": 1
+          },
+          "rotationQuarterTurns": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "contactMask": 63,
+          "weapon": null
+        }
+      ],
+      "expectedMitigations": [
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-003",
+          "previouslyOrphanedPartId": "P17-BULWARK-TRACKS-011"
+        },
+        {
+          "removedPartId": "P17-BULWARK-TRACKS-008",
+          "previouslyOrphanedPartId": "P17-BULWARK-TRACKS-012"
+        }
+      ]
+    },
+    {
+      "kitId": "P17-BRACE-SKIRMISHER-FRAME",
+      "baseBlueprintId": "P17-SKIRMISHER-HOVER",
+      "variantId": "P17-SKIRMISHER-HOVER-REINFORCED",
+      "title": "Skirmisher — lower rail and roof brace",
+      "mandatoryParts": [
+        {
+          "localId": "P17-BRACE-SKIRMISHER-LOW",
+          "kind": "Armor",
+          "cell": {
+            "x": 0,
+            "y": -1,
+            "z": 0
+          },
+          "rotationQuarterTurns": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "contactMask": 63,
+          "weapon": null
+        },
+        {
+          "localId": "P17-BRACE-SKIRMISHER-TOP",
+          "kind": "Armor",
+          "cell": {
+            "x": 0,
+            "y": 2,
+            "z": 1
+          },
+          "rotationQuarterTurns": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "contactMask": 63,
+          "weapon": null
+        }
+      ],
+      "expectedMitigations": [
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-002",
+          "previouslyOrphanedPartId": "P17-SKIRMISHER-HOVER-007"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-003",
+          "previouslyOrphanedPartId": "P17-SKIRMISHER-HOVER-008"
+        },
+        {
+          "removedPartId": "P17-SKIRMISHER-HOVER-006",
+          "previouslyOrphanedPartId": "P17-SKIRMISHER-HOVER-009"
+        }
+      ]
+    }
+  ]
+}
