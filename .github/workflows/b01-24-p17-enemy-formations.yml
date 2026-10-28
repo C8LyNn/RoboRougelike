@@ -1,0 +1,56 @@
+name: B01-24 P17 original R5 enemy formations (Unity NOT_RUN)
+on:
+  push:
+    branches: [research/b01-24-p17-enemy-formations]
+    paths:
+      - 'Research/B01-24/P17/ENEMY-FORMATIONS-002/**'
+      - '.github/workflows/b01-24-p17-enemy-formations.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/ENEMY-FORMATIONS-002/**'
+      - '.github/workflows/b01-24-p17-enemy-formations.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-r5-geometry-source-gate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test original 3 R5 arenas and imported optional enemy-position API, positives and negatives
+        shell: bash
+        run: |
+          node --test Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.test.mjs | tee enemy-formation-tests.txt
+      - name: Check exact original source blobs, all geometry and actual content
+        shell: bash
+        run: |
+          node Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.mjs --check | tee enemy-formation-check.json
+      - name: Produce three inspectable real-data SVG encounter-spawn previews
+        shell: bash
+        run: |
+          node Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.mjs --svg B0124-SCRAP-PINCER 4 > scrap-pincer.svg
+          node Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.mjs --svg B0124-WASTE-CHASE 4 > wasteland-chase.svg
+          node Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.mjs --svg B0124-INDUSTRIAL-CROSSFIRE 4 > industrial-crossfire.svg
+          node Research/B01-24/P17/ENEMY-FORMATIONS-002/formation_tool.mjs --emit B0124-SCRAP-PINCER 4 > vector3-array.txt
+      - name: Archive source-derived validation + images (not Unity run)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0124-enemy-formations-${{ matrix.os }}
+          path: |
+            enemy-formation-tests.txt
+            enemy-formation-check.json
+            scrap-pincer.svg
+            wasteland-chase.svg
+            industrial-crossfire.svg
+            vector3-array.txt
+          if-no-files-found: warn
+          retention-days: 21
