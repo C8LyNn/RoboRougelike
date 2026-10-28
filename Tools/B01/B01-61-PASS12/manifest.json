@@ -1,11 +1,11 @@
 {
   "owner": "B01-61",
   "scope": "QA-only; not installed in Codex/game source",
-  "wave": "PASS13",
+  "wave": "PASS14",
   "codex_pr": 310,
   "codex_sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
   "fixture": "B0161CrossFeatureRegressionTests.cs",
-  "fixture_git_blob": "bcbe8353c7e2a78db0565694ced6afb4397e9987",
+  "fixture_git_blob": "c7a0a107148173b055fd4c5d924beccc95b8f93e",
   "original_git_blobs": {
     "Assets/R3/R3VehicleModel.cs": "9f1bf190c7535182c6ce375cbfe67f5b2862e811",
     "Assets/MapEditor/R1MapEditor.cs": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
@@ -23,5 +23,6 @@
   "Unity_EditMode": "NOT_RUN",
   "Unity_PlayMode": "NOT_RUN",
   "Windows_Player": "NOT_RUN",
-  "qa_negative": "During actual map-test copy, swap B -> A and damage gun to zero, then check original model A=null,B=Basic, original gun health unchanged, original Scrap and map JSON."
+  "qa_negative": "During actual map-test copy, swap B -> A and damage gun to zero, then check original model A=null,B=Basic, original gun health unchanged, original Scrap and map JSON.",
+  "qa_camera_negative": "During garage→custom map test→map editor→garage, facade TargetRoot follows current live vehicle only; never stale destroyed test root; camera enabled in garage/test, disabled in editor, delegated Camera001Rig not autonomous."
 }
