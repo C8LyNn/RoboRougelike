@@ -36,12 +36,15 @@ def check(repo):
     # No P17 GUID may be reused by any other existing Unity meta file.
     seen=set()
     for file in (repo/"Assets").rglob("*.meta"):
-        guid=parse_guid(file.read_text(encoding="utf-8"))
-        if guid in OWN.values():
-            path=file.relative_to(repo).as_posix()
-            if path not in OWN or OWN[path]!=guid or guid in seen:
-                raise ValueError("GUID_COLLISION_WITH_EXISTING_ASSET:"+path)
-            seen.add(guid)
+        # Do not turn unrelated legacy .meta formatting into a new P17 blocker.
+        # Still inspect every GUID token for collisions with our exact five.
+        matches=GUID.findall(file.read_text(encoding="utf-8"))
+        for guid in matches:
+            if guid in OWN.values():
+                path=file.relative_to(repo).as_posix()
+                if path not in OWN or OWN[path]!=guid or guid in seen:
+                    raise ValueError("GUID_COLLISION_WITH_EXISTING_ASSET:"+path)
+                seen.add(guid)
     if seen!=set(OWN.values()):
         raise ValueError("P17_GUIDS_MISSING_FROM_ASSETS")
     return checked
