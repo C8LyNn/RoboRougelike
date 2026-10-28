@@ -1,0 +1,386 @@
+{
+  "schema": "B01-21-P16-ACTUAL-MAPGEN001-BLUEPRINT-v1",
+  "id": "AR16_03_DENSE_PRESSURE",
+  "recipe": "CombatArena",
+  "seed": 160303,
+  "originalGameSha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "generationVersion": 1,
+  "config": {
+    "segments": 4,
+    "obstacleDensity": 100,
+    "difficulty": 0.85,
+    "laneWidth": 16
+  },
+  "geometryHash": "a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98",
+  "sourceDiagnostics": "MAPGEN001/v1 recipe=CombatArena seed=160303 geometry=a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98 elements=21 guaranteed_clearance=12.00 route=BFS_SPINE_CLEARANCE_OK explored=2430 min_radius=Infinity",
+  "guaranteedClearanceWidthMeters": 12,
+  "sourceBounds": {
+    "center": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "size": {
+      "x": 64,
+      "y": 8,
+      "z": 64
+    }
+  },
+  "start": {
+    "x": 0,
+    "y": 1.25,
+    "z": -25
+  },
+  "finish": {
+    "x": 0,
+    "y": 1.25,
+    "z": 25
+  },
+  "enemySpawnDescriptors": [
+    {
+      "x": -17,
+      "y": 1.25,
+      "z": 25
+    },
+    {
+      "x": 0,
+      "y": 1.25,
+      "z": 25
+    },
+    {
+      "x": 17,
+      "y": 1.25,
+      "z": 25
+    }
+  ],
+  "elements": [
+    {
+      "kind": "Floor",
+      "position": {
+        "x": 0,
+        "y": -0.45,
+        "z": 0
+      },
+      "size": {
+        "x": 64,
+        "y": 0.9,
+        "z": 64
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Boundary",
+      "position": {
+        "x": -32.5,
+        "y": 1.8,
+        "z": 0
+      },
+      "size": {
+        "x": 1,
+        "y": 3.6,
+        "z": 66
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Boundary",
+      "position": {
+        "x": 32.5,
+        "y": 1.8,
+        "z": 0
+      },
+      "size": {
+        "x": 1,
+        "y": 3.6,
+        "z": 66
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Boundary",
+      "position": {
+        "x": 0,
+        "y": 1.8,
+        "z": -32.5
+      },
+      "size": {
+        "x": 66,
+        "y": 3.6,
+        "z": 1
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Boundary",
+      "position": {
+        "x": 0,
+        "y": 1.8,
+        "z": 32.5
+      },
+      "size": {
+        "x": 66,
+        "y": 3.6,
+        "z": 1
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -20.774466,
+        "y": 1.0437673,
+        "z": -9.21893
+      },
+      "size": {
+        "x": 2.0875347,
+        "y": 2.0875347,
+        "z": 2.0875347
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -19.526993,
+        "y": 1.4848151,
+        "z": -0.10634303
+      },
+      "size": {
+        "x": 2.9696302,
+        "y": 2.9696302,
+        "z": 2.9696302
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -19.416967,
+        "y": 1.2408663,
+        "z": 10.05849
+      },
+      "size": {
+        "x": 2.4817326,
+        "y": 2.4817326,
+        "z": 2.4817326
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -9.61993,
+        "y": 1.1770495,
+        "z": -20.042974
+      },
+      "size": {
+        "x": 2.354099,
+        "y": 2.354099,
+        "z": 2.354099
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -11.08715,
+        "y": 1.181811,
+        "z": -9.262798
+      },
+      "size": {
+        "x": 2.363622,
+        "y": 2.363622,
+        "z": 2.363622
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -10.075812,
+        "y": 1.6383138,
+        "z": 1.1185377
+      },
+      "size": {
+        "x": 3.2766275,
+        "y": 3.2766275,
+        "z": 3.2766275
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -9.912235,
+        "y": 0.9198289,
+        "z": 9.892928
+      },
+      "size": {
+        "x": 1.8396578,
+        "y": 1.8396578,
+        "z": 1.8396578
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": -10.155024,
+        "y": 1.516619,
+        "z": 19.262527
+      },
+      "size": {
+        "x": 3.033238,
+        "y": 3.033238,
+        "z": 3.033238
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 10.962594,
+        "y": 1.3932852,
+        "z": -20.92018
+      },
+      "size": {
+        "x": 2.7865703,
+        "y": 2.7865703,
+        "z": 2.7865703
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 10.615672,
+        "y": 1.1361425,
+        "z": -9.450768
+      },
+      "size": {
+        "x": 2.272285,
+        "y": 2.272285,
+        "z": 2.272285
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 10.561113,
+        "y": 1.4494169,
+        "z": -0.41539946
+      },
+      "size": {
+        "x": 2.8988338,
+        "y": 2.8988338,
+        "z": 2.8988338
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 10.039171,
+        "y": 1.4070371,
+        "z": 9.1714115
+      },
+      "size": {
+        "x": 2.8140743,
+        "y": 2.8140743,
+        "z": 2.8140743
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 9.298966,
+        "y": 1.6940949,
+        "z": 21.090029
+      },
+      "size": {
+        "x": 3.3881898,
+        "y": 3.3881898,
+        "z": 3.3881898
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 20.520851,
+        "y": 1.5974476,
+        "z": -9.145115
+      },
+      "size": {
+        "x": 3.1948953,
+        "y": 3.1948953,
+        "z": 3.1948953
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 19.499727,
+        "y": 1.0307221,
+        "z": 0.37268278
+      },
+      "size": {
+        "x": 2.0614443,
+        "y": 2.0614443,
+        "z": 2.0614443
+      },
+      "pitchDegrees": 0
+    },
+    {
+      "kind": "Cover",
+      "position": {
+        "x": 19.47146,
+        "y": 1.106621,
+        "z": 9.39209
+      },
+      "size": {
+        "x": 2.213242,
+        "y": 2.213242,
+        "z": 2.213242
+      },
+      "pitchDegrees": 0
+    }
+  ],
+  "referenceProfiles": {
+    "light": {
+      "measuredPreviously": true,
+      "width": 2.98,
+      "length": 3.2,
+      "minTurnRadius": 3,
+      "maxSlopeDegrees": 14,
+      "clearancePerSideMeters": 0.25,
+      "routePassed": true,
+      "routeCode": "BFS_SPINE_CLEARANCE_OK",
+      "ExploredCells": 2430,
+      "replayReceipt": "MW001R1|0|160303|4|100|0.85|16|2.98|3.2|3|14|0.25|a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98|1|949051e38397aa3de03caeefcba222c1cea3192090fbacff897128c2c0bc6763"
+    },
+    "heavy": {
+      "measuredPreviously": true,
+      "width": 5.18,
+      "length": 5.8,
+      "minTurnRadius": 6,
+      "maxSlopeDegrees": 10,
+      "clearancePerSideMeters": 0.25,
+      "routePassed": true,
+      "routeCode": "BFS_SPINE_CLEARANCE_OK",
+      "ExploredCells": 1898,
+      "replayReceipt": "MW001R1|0|160303|4|100|0.85|16|5.18|5.8|6|10|0.25|a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98|1|fa875ad883bf8545ace80387e601d0af00c3c0465bbd1ed7bc6a1027a97adda2"
+    }
+  },
+  "claims": {
+    "originalCsharpExecutedWithUnityMathShim": true,
+    "actualUnity": false,
+    "physicsCertified": false,
+    "currentAssembledRigMeasured": false,
+    "enemyAiTested": false,
+    "integratedIntoGame": false
+  }
+}

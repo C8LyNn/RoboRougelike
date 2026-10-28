@@ -1,0 +1,44 @@
+{
+  "schema": "B01-21-P16-MAPGEN-PACKAGE-v1",
+  "inputSha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "originalSource": "B01.MAPGEN001.MapGenPlanner\u002BMapGenRouteValidator;B01.MAPGENWORLD001.MapWorldPolicy\u002BMapWorldReplayCodec",
+  "dataRequest": "arena_requests.json",
+  "nativeUnity": "NOT_RUN",
+  "physx": "NOT_RUN",
+  "actualCsharpShimPass": 4,
+  "arenas": [
+    {
+      "id": "AR16_01_OPEN_FLANK",
+      "seed": 160101,
+      "geometryHash": "30fb147b8ea3b4eaa9a7f300fcfa093f55ab0d340ad301c5a659c7e14c7b878c",
+      "covers": 6,
+      "originalElementCount": 11,
+      "blueprintFile": "AR16_01_OPEN_FLANK.blueprint.json",
+      "previewFile": "AR16_01_OPEN_FLANK.svg",
+      "routeLight": "BFS_SPINE_CLEARANCE_OK",
+      "routeHeavy": "BFS_SPINE_CLEARANCE_OK"
+    },
+    {
+      "id": "AR16_02_SPLIT_DECISION",
+      "seed": 160202,
+      "geometryHash": "5cfc45a3308cf5d15b48ab9fd01eb5ae2c3b292bc44b97d5a158a9dcc870048d",
+      "covers": 11,
+      "originalElementCount": 16,
+      "blueprintFile": "AR16_02_SPLIT_DECISION.blueprint.json",
+      "previewFile": "AR16_02_SPLIT_DECISION.svg",
+      "routeLight": "BFS_SPINE_CLEARANCE_OK",
+      "routeHeavy": "BFS_SPINE_CLEARANCE_OK"
+    },
+    {
+      "id": "AR16_03_DENSE_PRESSURE",
+      "seed": 160303,
+      "geometryHash": "a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98",
+      "covers": 16,
+      "originalElementCount": 21,
+      "blueprintFile": "AR16_03_DENSE_PRESSURE.blueprint.json",
+      "previewFile": "AR16_03_DENSE_PRESSURE.svg",
+      "routeLight": "BFS_SPINE_CLEARANCE_OK",
+      "routeHeavy": "BFS_SPINE_CLEARANCE_OK"
+    }
+  ]
+}
