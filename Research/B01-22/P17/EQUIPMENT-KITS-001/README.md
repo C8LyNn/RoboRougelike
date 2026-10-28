@@ -12,3 +12,7 @@ node --test Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs
 ```
 
 The quote is an **offline preview**, not a purchase or reward. Inventory capacity is 200 owned objects in host R3, and allowed vehicle weapon types are <=2. The price snapshot is source-pinned to Codex #310 `aa7a917f177a9b1f07203868fb7d1d871eb3ee46`, R3 blob `8cc68faf89793c3a803e5807594c9faf0df10091`, R4 blob `502f6d7f70d4e8078260de632ab181f244a4d730`. Do not use these prices as runtime authority after a Codex change.
+
+## Wariant 1.0.1 — weryfikacja cen w oryginalnym źródle
+
+`verify_host_source.py` czyta oryginalne pliki C# z podanego commita Codexa przez git show (bez modyfikacji). Weryfikuje enumy, cenniki R3/R4 i oryginalne blob SHA, dodatkowo sprawdza bieżący PR #310 oraz 7 testów negatywnych. Skrypt uruchamia dedykowany CI na Windows i Ubuntu, *nie* wykonuje Unity ani transakcji gry. Status natywnego Unity = NOT_RUN.

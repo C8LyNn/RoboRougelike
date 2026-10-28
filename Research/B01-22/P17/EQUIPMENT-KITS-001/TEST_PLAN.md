@@ -5,3 +5,7 @@
 **Node original files:** `node --test kit_core.test.mjs`, CLI validate/list/quote; Node checkout tests NOT_RUN in producer V8, CI workflow provided for cross-OS execution. For EK08 @wallet240 & inventory197 expect price235, items5, remaining preview5, capacity_ok=false, eligible=false.
 
 **Codex/Unity**: test price with host `model.Price`, check 200 capacity/atomic GUID on actual purchase, inspect garage stock UX, native EditMode and PlayMode and player build ONLY after acceptance. These are NOT_RUN.
+
+## Original host source gate v1.0.1
+
+Po odczycie dokładnego SHA oryginalnego PR #310 i current ref: `python verify_host_source.py --current-ref origin/b01-codex-pr310 --selftest`. Cennik odczytywany z oryginalnego kodu R3/R4, Git blob weryfikowany bezpośrednio. 7 mutacji ma zostać odrzuconych. To niezależny statyczny kontrakt cenowy, **NIE** kompilacja ani native G1 Unity.
