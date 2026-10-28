@@ -25,8 +25,8 @@ jobs:
       - name: Fetch exact B01-20 W66 QA operator Git source SHA
         shell: bash
         run: |
-          git fetch --no-tags --depth=1 origin b9f0458db297fb81e76add00855609b32eb0ef4b
-          test "$(git rev-parse b9f0458db297fb81e76add00855609b32eb0ef4b:Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py)" = '42ab146450ea3284d97a9a2bd5434a49fe195ab7'
+          git fetch --no-tags --depth=1 origin e395b8b1e25b56285e39d4d69cf472af3f3d5ee8
+          test "$(git rev-parse e395b8b1e25b56285e39d4d69cf472af3f3d5ee8:Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py)" = 'e342d882bbce93f8d4c35b225c90f04a2c71ddea'
       - name: Actually run original script against real sibling detached Git worktrees
         shell: bash
         run: |
