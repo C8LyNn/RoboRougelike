@@ -1,0 +1,45 @@
+{
+  "package_id": "B01-40-P16-INTEGRATION-ADMISSION-001",
+  "producer": "B01-40",
+  "classification": "INDEPENDENT_INTEGRATION_QA_TOOL_NOT_GAMEPLAY_SOURCE",
+  "source_commit_refs": {
+    "codex_integrated_candidate": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+    "chl_frozen_producer": "c7b2a234a286089383503da41883d624fe650551",
+    "partsize_frozen_producer": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "b01_25_repaired_arena_owner": "691c8cb6b0be086d455e530f2531de7f3753a0ba",
+    "codex_native_evidence_uploaded": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+    "actual_original_codex_game": "aa7a917f177a9b1f07203868fb7d1d871eb3ee46"
+  },
+  "delivered_sources": [
+    "Tools/B01Validation/P16/admit_current_codex_packages.py",
+    "Tools/B01Validation/P16/test_current_codex_packages.py",
+    "Tools/B01Validation/P16/verify_codex_native_evidence.py",
+    "Tools/B01Validation/P16/test_codex_native_evidence.py"
+  ],
+  "ci": [
+    ".github/workflows/b01-40-p16-codex-chl-part-admission.yml",
+    ".github/workflows/b01-40-p16-original-codex-receipt.yml"
+  ],
+  "scope": [
+    "GUID and .meta collision source admission",
+    "asmdef name/reference and path/case collision",
+    "Codex copied B01-25 corrected LD02 arena and cover choice source blob identity",
+    "Codex two-layer MapDraft and MapStorage source contract",
+    "Exact historic Codex Native NUnit and process JSON evidence nonpromotable RED/GREEN"
+  ],
+  "explicit_exclusions": [
+    "No Unity process started by B01-40",
+    "No compiled or physically tested CHL/PARTSIZE inside canonical Codex project",
+    "No file edits outside Tools/B01Validation/P16 and owned CI",
+    "No new CHL, PARTSIZE or gameplay source package",
+    "No G1/G2, no merge to main/develop, no owner CODEX_ACK"
+  ],
+  "codex_intake": "https://github.com/C8LyNn/RoboRougelike/issues/79",
+  "gates": {
+    "G0": "REQUIRES_REAL_CI_GREEN_FOR_EXACT_OWN_HEAD",
+    "G1": "NOT_RUN_INDEPENDENT_UNITY",
+    "G2": "HOLD_HQ_ONLY"
+  },
+  "qa_reviewer": "B01-60",
+  "when_owner_sha_changes": "Immutable source pins require separate owner SHA intake, do not silently repin or infer safe merge."
+}
