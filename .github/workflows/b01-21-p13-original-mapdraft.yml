@@ -122,6 +122,25 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original B01-25 P15 cover archive failed' }
           Expand-Archive -LiteralPath "$coverArchive" -DestinationPath . -Force
           if ((git hash-object "$coverPath").Trim() -ne $coverBlob) { throw 'Original B01-25 P15 cover extracted bytes mutated' }
+          $ownerCommit = '691c8cb6b0be086d455e530f2531de7f3753a0ba'
+          $ownerP14 = 'Research/B01-25/P14/LD02_ARENA.json'
+          $ownerP15 = 'Research/B01-25/P15/LD02_COVER_CHOICE.json'
+          $ownerP14Blob = 'e39e2f174984832bd97311c050e3c22fd6fb1175'
+          $ownerP15Blob = '8586312b9606d94b088e4e7640c28105e2d6bac1'
+          git cat-file -e "${ownerCommit}^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'B01-25 NEW OWNER FIX IMMUTABLE SHA unavailable' }
+          if ((git rev-parse "${ownerCommit}:$ownerP14").Trim() -ne $ownerP14Blob) { throw 'owner P14 changed from tested corrected map' }
+          if ((git rev-parse "${ownerCommit}:$ownerP15").Trim() -ne $ownerP15Blob) { throw 'owner P15 exact repaired Git blob wrong' }
+          $ownerZip = Join-Path $env:RUNNER_TEMP 'b0121-B25-owner-fixed-P15.zip'
+          git archive --format=zip --output="$ownerZip" $ownerCommit -- $ownerP15
+          if ($LASTEXITCODE -ne 0) { throw 'owner original P15 ZIP git archive failed' }
+          $ownerTmp = Join-Path $env:RUNNER_TEMP 'b0121-B25-owner-fixed'
+          Expand-Archive -LiteralPath "$ownerZip" -DestinationPath "$ownerTmp" -Force
+          $src = Join-Path "$ownerTmp" $ownerP15
+          if ((git hash-object "$src").Trim() -ne $ownerP15Blob) { throw 'owner repaired original source bytes mutated' }
+          Copy-Item -LiteralPath "$src" -Destination 'Research/B01-21/P13/LD02_OWNER_REPAIRED_P15.json'
+          if ((git hash-object 'Research/B01-21/P13/LD02_OWNER_REPAIRED_P15.json').Trim() -ne $ownerP15Blob) { throw 'copied owner repaired input changed' }
+          Write-Output 'B01-25 NEW OWNER P14+P15 IMMUTABLE POST-FIX JSON BLOB GATE PASS'
           Write-Output 'P15 COVER CHOICE EXACT ORIGINAL GIT JSON BLOB VERIFIED'
           Write-Output 'P15 BOTH ORIGINAL MAPDOCUMENTS AND MAPWORLD SOURCE SHAPE GIT BLOBS VERIFIED'
           Write-Output 'EXACT ORIGINAL CODEX CSHARP AND SIX ACTUAL B01-25 JSON GIT BLOBS VERIFIED'

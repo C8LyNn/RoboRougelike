@@ -222,6 +222,7 @@ internal static class Program
         });
         Case("P15_LD02_ORIGINAL_CSHARP_LOAD_AND_PHYSICAL_SOURCE_CORNER_SEALS",LD02ArenaP15Tests.Run);
         Case("P15_COVER_CHOICE_ORIGINAL_CSHARP_ROUTES_SOURCE_LOS",LD02CoverChoiceP15Tests.Run);
+        Case("P15_B0125_OWNER_CHANGED_ORIGINAL_CSHARP_CORNER_FIX",LD02OwnerFixedP15Tests.Run);
         Console.WriteLine("KNOWN_PRODUCT_DEFECTS_REPRODUCED="+knownDefects);
         Console.WriteLine("ORIGINAL_CSHARP_SHIM_TESTS="+ok+" PASS / "+fail+" FAIL");
         Console.WriteLine("UNITY_EDITOR_NOT_RUN; PHYSX_NOT_RUN; HUMAN_NOT_RUN; G1_NOT_RUN");
