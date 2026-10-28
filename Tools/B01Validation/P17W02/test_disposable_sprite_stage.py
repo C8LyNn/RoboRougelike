@@ -174,6 +174,23 @@ class OriginalSpriteDisposableImport(unittest.TestCase):
         with self.assertRaisesRegex(s.Reject,"TARGET_INSIDE_GIT_CHECKOUT"):
             s.guard_target(inner)
 
+    def test_21_foreign_empty_subdir_prevents_destructive_rollback(self):
+        self.staged()
+        extradir=self.root/s.FRAMES/"DO_NOT_TOUCH_EMPTY_DIR"
+        extradir.mkdir()
+        with self.assertRaisesRegex(s.Reject,"UNTRACKED_FOREIGN_DIRECTORY_IN_STAGED_FOLDER"):
+            s.rollback(self.root,self.files,self.source)
+        self.assertTrue(extradir.is_dir())
+        self.assertTrue((self.root/s.RECEIPT).exists())
+
+    def test_22_receipt_origin_mismatch_rejected_against_current_git_source(self):
+        self.staged()
+        spoof=dict(self.source)
+        spoof["codex_asset_paths"]=0
+        with self.assertRaisesRegex(s.Reject,"STAGE_RECEIPT_CHANGED"):
+            s.verify(self.root,self.files,spoof)
+        self.assertTrue((self.root/s.RECEIPT).exists())
+
     def test_20_source_only_boundary_is_explicit_and_never_uses_live_unity_save(self):
         self.staged()
         r=json.loads((self.root/s.RECEIPT).read_bytes())
