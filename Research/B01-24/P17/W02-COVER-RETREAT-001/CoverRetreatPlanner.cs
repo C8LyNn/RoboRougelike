@@ -32,7 +32,7 @@ public sealed class WorldFrame {
     public float GridStep { get; set; }
     public Point2 Player { get; set; } = new();
 }
-public sealed class Point2 {
+public class Point2 {
     public float X { get; set; }
     public float Z { get; set; }
     public Vector2 V => new(X,Z);
