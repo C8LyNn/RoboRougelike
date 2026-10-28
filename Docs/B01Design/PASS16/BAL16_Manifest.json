@@ -1,0 +1,154 @@
+{
+  "packageFamily": "B01-10-PASS16-BALANCE-RESEARCH",
+  "version": "1.0.0",
+  "deliverables": [
+    {
+      "id": "B01-10-BAL16-A",
+      "scope": "read-only source-profile driven abstract combat and build-mass modeling",
+      "canonicalGameplay": false
+    },
+    {
+      "id": "B01-10-BAL16-B",
+      "scope": "read-only source-profile driven abstract wallet/owned-zero-HP-repair planning",
+      "canonicalGameplay": false
+    }
+  ],
+  "provenance": {
+    "codexPr": 310,
+    "codexCommit": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+    "sources": {
+      "Assets/R4/R4WeaponDefinition.cs": "502f6d7f70d4e8078260de632ab181f244a4d730",
+      "Assets/R3/R3VehicleModel.cs": "8cc68faf89793c3a803e5807594c9faf0df10091",
+      "Assets/R3/R3VehicleCatalog.cs": "f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
+      "Assets/R3/R3VehicleAssembly.cs": "49fab51ac993128a9965df38ce32489f493b257a",
+      "Assets/R6/R6VehicleDrive.cs": "6e5991cf263ac64b943dc4ac09a546d65ad2fa45"
+    },
+    "previous65PercentRepairProposal": "SUPERSEDED_NOT_APPROVED; current original code uses 35% for owned 0HP repair with price floor",
+    "previousPass15ArenaWork": "separate, not modified"
+  },
+  "owner": "B01-10 GAME DESIGN & BALANCE",
+  "branch": "design/b01-10-w16-chl003-measurable-acceptance",
+  "project": "C8LyNn/RoboRougelike",
+  "fileScope": "Docs/B01Design/PASS16/**",
+  "sourceFiles": [
+    {
+      "name": "BAL16_A_SourceProfiles.json",
+      "gitBlob": "92d3a23e8e774f0b30cfc58456da3cf29c74ff9f",
+      "bytes": 7018
+    },
+    {
+      "name": "BAL16_A_CombatSimulator.js",
+      "gitBlob": "75e7b87b3d0506175a39f1700afd22dbea0f3930",
+      "bytes": 7025
+    },
+    {
+      "name": "BAL16_B_EconomySimulator.js",
+      "gitBlob": "a670ff050de91f55449725b474afc5f97b16c194",
+      "bytes": 5598
+    },
+    {
+      "name": "BAL16_SourceOnly.test.cjs",
+      "gitBlob": "dfe7ef5094ed125f6026434b95930488fc15ec3b",
+      "bytes": 5669
+    },
+    {
+      "name": "BAL16_A_CombatMatrix.csv",
+      "gitBlob": "b1ddd60a4553d1cf326b3247bc6517a9793f1f96",
+      "bytes": 4612
+    },
+    {
+      "name": "BAL16_B_EconomyMatrix.csv",
+      "gitBlob": "704225c718a477f0df25e1b590f0431b29189bee",
+      "bytes": 1483
+    },
+    {
+      "name": "BAL16_BalanceDashboard.html",
+      "gitBlob": "412bae1c9f02dd839277e67eeb5788a011611be1",
+      "bytes": 27033
+    }
+  ],
+  "executionEvidence": {
+    "profileOriginalSourceSignatureChecks": {
+      "result": "8/8 PASS",
+      "environment": "connector V8 inspection of real fetched C# source; C# NOT executed"
+    },
+    "combatPrechecks": {
+      "result": "9/9 PASS",
+      "environment": "V8 actual authored JS, source input from original fetched JSON"
+    },
+    "economyPrechecks": {
+      "result": "11/11 PASS",
+      "environment": "V8 actual authored JS"
+    },
+    "sourceOnlyRunner": {
+      "result": "30/30 PASS",
+      "environment": "V8 execution of exact authored Node/CommonJS regression source with path/assert/filesystem shims; Node command itself NOT_RUN",
+      "commandForNode": "node Docs/B01Design/PASS16/BAL16_SourceOnly.test.cjs"
+    },
+    "dashboardAdapter": {
+      "result": "14/14 PASS",
+      "environment": "V8 execution of exact remotely fetched committed HTML inline JS with deterministic minimal DOM adapter; Chromium NOT_RUN",
+      "evidence": "date-independent, no real GUI or browser screenshots"
+    },
+    "combatMatrix": {
+      "result": "54/54 produced",
+      "conditions": "3 distinct 2-family combinations × 3 gun counts (2/6/12) × 2 core HP targets (100/180) × 3 synthetic hit chances (.55/.75/1), 32 deterministic seeds each"
+    },
+    "economyMatrix": {
+      "result": "18/18 produced",
+      "conditions": "2/6/12 guns × 3 invented budget starting amounts (120/300/600) × 2 invented reward amounts (0/60), max 3 hypothetical cycles"
+    },
+    "remoteArtifactReadback": {
+      "result": "7/7 files fetched by exact immutable Git source, 6/6 CSV/data checks PASS"
+    },
+    "actualOriginalCSharp": "NOT_RUN",
+    "nativeUnityEdit": "NOT_RUN",
+    "nativeUnityPlay": "NOT_RUN",
+    "windowsPlayer": "NOT_RUN",
+    "physX": "NOT_RUN",
+    "headlessChromium": "NOT_RUN",
+    "humanPlayers": 0,
+    "independentB0160QA": "PENDING"
+  },
+  "designInterpretation": {
+    "observedSourceOnly": [
+      "Basic 40 damage / .38 s / 140 weapon HP / 24 kg / 30 Scrap",
+      "Automatic 12 damage / .12 s / 90 weapon HP / 18 kg / 36 Scrap",
+      "Heavy 100 damage / 1.25 s / 220 weapon HP / 55 kg / 55 Scrap",
+      "Core HP from R3VehicleCatalog: Light 80, Standard 100, Heavy 180",
+      "Modeled standard no-damage baseline mass 728 kg",
+      "0HP Basic/Automatic/Heavy owned part repair quotes 11/13/20 Scrap from Codex current 35% code, not 65% hypothetical"
+    ],
+    "syntheticNotProven": [
+      "Single HP target without per-part destruction, armor, attachment rules, actual projectile travel, aim, LOS or hitboxes",
+      "Shots start at time zero and can create 0s model TTK for six/twelve-gun salvo; not realistic player TTK",
+      "Accuracy .55/.75/1 are test assumptions; not original player accuracy",
+      "2/6/12 mounts hypothetical; 2 family restriction real, but placement collision and sockets not measured",
+      "Weight speed limit only R3VehicleAssembly formula with assumed all parts operational; true acceleration / traction / physics unmeasured",
+      "Wallet starting Scrap/reward per victory invented scenario knobs, never actual R1 configured amount",
+      "Bundle rebuilding atomicity is a planning abstraction only; actual R3 RepairAffordable may partially repair parts",
+      "Advanced six weapon models retain original stats in source data, but native behavior not approximated by damage/interval"
+    ]
+  },
+  "handoff": {
+    "state": "PRODUCER_SOURCE_READY_B01_40_INTAKE_PENDING",
+    "integration": "NOT_INSTALLED",
+    "codeOwner": "CODEX_ONLY",
+    "queue": "CODEX INBOX #79",
+    "acceptance": [
+      "Verify Git blobs of source research files, especially original #310 source and unmodified quoted R3 pricing",
+      "Run self-tests in clean Node22 working copy (command above) and inspect generated matrices",
+      "Open dashboard locally as HTML, evaluate unique-family and invalid-duplicate branch; source-only",
+      "If design policy approved by HQ, Codex runs actual game source native accepted cases on legitimate Unity host; do NOT copy this JS model into canonical Assets or silently adopt pricing/accuracy assumptions",
+      "Independent B01-60 or B01-40 accepts research artifacts separately from any native G1 verdict"
+    ],
+    "blocking": [
+      "HQ has not approved tuning, hit probabilities, damage or rewards from this model",
+      "No physics/mount/collision validation on true 2/6/12 guns",
+      "No independent source receiver or Codex ACK",
+      "Codex full Unity EditMode/PlayMode/Player release and independent G1 are separate"
+    ],
+    "noMerge": true,
+    "noNewGameplayPackage": true
+  }
+}
