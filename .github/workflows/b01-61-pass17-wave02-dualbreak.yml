@@ -1,0 +1,51 @@
+name: B01-61 PASS17 W02 original B01-23 dual-part-loss QA
+
+on:
+  push:
+    branches: ['qa/b01-61-pass17-wave02-dualbreak-qa']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61-P17-W02/**'
+      - '.github/workflows/b01-61-pass17-wave02-dualbreak.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original-csharp-doublebreak:
+    name: Independent B01-23 dual owner loss / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch original immutable producer source commits
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 0978497561c8b6400490235d3e5a401ac32bea2d
+          git fetch --no-tags --depth=1 origin 098ccdbe8f129253fa4ada52318436b7cc2b4dc4
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+      - name: Verify original owner and QA tool SHA then execute actual CSharp and independent oracle
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61-P17-W02/run_dualbreak_qa.py --repo . --output dualbreak_output.json 2>&1 | tee b0161-w02-dualbreak.log
+      - name: Upload original-source QA log and new two-part-loss source-logical dataset
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w02-dualbreak-${{ matrix.os }}
+          path: |
+            b0161-w02-dualbreak.log
+            dualbreak_output.json
+          if-no-files-found: warn

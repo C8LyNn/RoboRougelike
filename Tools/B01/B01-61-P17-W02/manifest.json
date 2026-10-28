@@ -1,0 +1,53 @@
+{
+  "package_id": "B01-61-P17-W02-DUALBREAK-001",
+  "version": "1.0.0",
+  "owner": "B01-61 CODEX REGRESSION QA",
+  "source_blob": "36e33baadd46c77b34d6926319eb3e385d94154e",
+  "driver_blob": "5e69f8fec0a69bc152e3e6814a8e865dca2a0a2a",
+  "owned_paths": [
+    "Tools/B01/B01-61-P17-W02/**",
+    ".github/workflows/b01-61-pass17-wave02-dualbreak.yml"
+  ],
+  "producer_blueprints_commit": "0978497561c8b6400490235d3e5a401ac32bea2d",
+  "producer_weakpoints_commit": "098ccdbe8f129253fa4ada52318436b7cc2b4dc4",
+  "frozen_partsize_commit": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "source_original_unchanged": true,
+  "original_required_blobs": {
+    "Assets/PARTSIZE001/Runtime/PartSizeContract.cs": "07455919a5544875fee5a78ecbbce36dc6cb49c2",
+    "Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs": "6153d1758e800ec5c4210323610b061c06e8ea85",
+    "Tools/B01/PARTSIZE001/P17Rigs/RigValidator.cs": "988fc31d8633e5429fc4ba377856187e5ee7601c",
+    "Assets/PARTSIZE001/Blueprints/P17/P17_Flanker_Wheels.json": "c4778df1db431ed1b51e8fb1e607ae1ede3e1bef",
+    "Assets/PARTSIZE001/Blueprints/P17/P17_Bulwark_Tracks.json": "2fe5b441d081ad3590ccbeabf1cbb1f266ec662a",
+    "Assets/PARTSIZE001/Blueprints/P17/P17_Skirmisher_Hover.json": "4d7b4ab0adfb71fa2c20479eaa7c266687d28fa1",
+    "Assets/PARTSIZE001/Weakpoints/P17/P17_SingleBreakOutcomes.json": "eb4ab2e2cd6d4c34b6a014b00b6c86efc472cfda"
+  },
+  "content_receipt": "227 unordered two-physical-owner loss logical scenarios; three rigs 14C2+14C2+10C2; no source gameplay mutation",
+  "execution_expected": [
+    "Original C# PARTSIZE and rig Validator+QA dual-break actually compiles .NET8",
+    "Exactly 38 single-loss original data semantics grounded",
+    "227 new two-owner structural break scenarios",
+    "227 independent Python BFS oracle comparisons",
+    "4 adversarial in-memory result corruption rejects",
+    "2 original blueprint mutation rejects",
+    "Windows+Ubuntu stdout and downloadable derived JSON CI artifacts"
+  ],
+  "dependencies": [
+    "Git",
+    "Python>=3.11 standard library",
+    "dotnet SDK >=8",
+    "GitHub original immutable source fetch"
+  ],
+  "native_unity": "NOT_RUN",
+  "native_physx": "NOT_RUN",
+  "game_integrated": false,
+  "source_integration": "NOT_INSTALLED",
+  "codex_ack": "NOT_FOUND",
+  "limits": [
+    "Grid cells are only source-logical, not physical sockets/wheel envelope/HP",
+    "Simultaneous pair removal not frame-by-frame sequential detachment or combat",
+    "Pair results are synthetic predictions checked against actual original C# source, not an observed real player run",
+    "Data must not be shipped as installed runtime part-damage without Codex physics review"
+  ],
+  "handoff": "B01-40 verify G0 immutable source and generated JSON hashes; B01-60 independent compare and native if authorized; B01-00 queue priorities; Codex chooses whether to integrate any content",
+  "rollback": "Delete only owned Tools/B01/B01-61-P17-W02/ and .github/workflows/b01-61-pass17-wave02-dualbreak.yml"
+}
