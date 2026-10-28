@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">RoboRougelike B01-32 part condition overlay CRITICAL frame 1</title>
+<desc id="desc">Transparent independent visual overlay for condition CRITICAL, phase 1. Graphic only. No condition threshold or damage behavior assigned.</desc>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="1.00">
+ <path d="M47 91 L77 102 L104 90 L130 123 L157 131 L180 159 L207 168 M104 90 L115 67 L143 55 M130 123 L113 159 L96 172 L80 195 M157 131 L178 104 L198 97 M113 159 L146 181 L155 205" stroke="#05141c" stroke-width="15"/>
+ <path d="M47 91 L77 102 L104 90 L130 123 L157 131 L180 159 L207 168 M104 90 L115 67 L143 55 M130 123 L113 159 L96 172 L80 195 M157 131 L178 104 L198 97 M113 159 L146 181 L155 205" stroke="#fdd3aa" stroke-width="4.8"/>
+ <path d="M55 96 L76 105 M109 98 L127 126 L151 130 M177 156 L200 167" stroke="#fff4c4" stroke-width="1.5"/>
+ </g><g fill="none" stroke="#fc744c" stroke-linecap="round" opacity="1.000">
+ <path d="M128 28 A100 100 0 0 1 227 129" stroke-width="5.50" stroke-dasharray="24 9 10 14"/>
+ <path d="M230 138 A101 101 0 0 1 126 229" stroke-width="5.50" stroke-dasharray="10 16 28 15"/>
+ <path d="M119 229 A101 101 0 0 1 27 130" stroke-width="5.50" stroke-dasharray="27 19 11 15"/>
+ <path d="M28 119 A100 100 0 0 1 119 29" stroke-width="5.50" stroke-dasharray="17 11 29 17"/>
+ <path d="M192 54 L212 74 M44 182 L64 203" stroke-width="6.88"/>
+ </g>
+ <g fill="#fff4da" opacity="0.99"><circle cx="77" cy="102" r="4.8"/><circle cx="156" cy="132" r="5.8"/><circle cx="180" cy="160" r="4.2"/></g>
+</svg>
