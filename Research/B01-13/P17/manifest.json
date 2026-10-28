@@ -1,0 +1,36 @@
+{
+  "package_id": "AIM-OBS001",
+  "version": "R1",
+  "producer": "B01-13 HUMAN PLAYTESTING",
+  "owned_path": "Research/B01-13/P17/",
+  "source_game_sha": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+  "original_hud_git_blob": "adfd3c1a69fc4355e055581a736ce10cccc7ba91",
+  "mode_of_evidence": "SYNTHETIC_BROWSER_ONLY",
+  "test_env": "Linux Chromium real DOM / Playwright; Python screenshot bytes receiver",
+  "native_unity": "NOT_RUN",
+  "human_count": 0,
+  "installed_into_game": false,
+  "files": {
+    "aim_observer.html": {
+      "bytes": 17544,
+      "sha256": "e21cff7a57f1c64324a22a903f299ae03e6ae3a1202fc940d9da42f403b6e965"
+    },
+    "verify_aim_receipt.py": {
+      "bytes": 6274,
+      "sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4"
+    },
+    "test_aim_observer.py": {
+      "bytes": 10704,
+      "sha256": "c7e09d5640b8a48ef95f8d8c1b02a0891fecb3d667af72ccb7caab840392b1c6"
+    },
+    "README.md": {
+      "bytes": 6608,
+      "sha256": "972eaefefd504c07d6f0ec3f30acfd772ef18c4d12d23a41ffba09f47678813b"
+    },
+    "QA_browser.json": {
+      "bytes": 4458,
+      "sha256": "bcdb47c9846f49b74e78404082ae638b0d438c436dde919349fdb07c22c9b8f0"
+    }
+  },
+  "generated_preview_in_local_zip_only": "QA_synthetic_preview.png"
+}
