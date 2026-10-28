@@ -22,7 +22,7 @@ node Research/B01-10/P17Workbench/workbench.test.cjs
 
 Oczekiwany wynik: `BAL17-R5WB001 SOURCE_ONLY 41 PASS / 0 FAIL | NATIVE_UNITY_NOT_RUN`.
 
-Wykonano 41/41 na rzeczywistym silniku JS przez V8 (z rzeczywistym tekstem testu z tool call, przy adapterze modułu Node) i 20/20 kroków UI na oryginalnym JS z opublikowanego `.html` w V8 z deterministycznym adapterem DOM. **Nie uruchomiono procesu Node na checkoutcie, rzeczywistej przeglądarki, Unity ani Windows Player.** Dodatkowo wczytano bez błędów oryginalny wcześniejszy katalog PR #344: 10/10 ofert. Odbiorca powinien sam uruchomić lokalnie prawdziwy Node i przeglądarkę.
+Wykonano 41/41 na rzeczywistym silniku JS przez V8 (z rzeczywistym tekstem testu z tool call, przy adapterze modułu Node) i 20/20 kroków UI na oryginalnym JS z opublikowanego `.html` w V8 z deterministycznym adapterem DOM. **W WAVE01 nie uruchomiono prawdziwego procesu Node ani przeglądarki — tę lukę usunięto podczas WAVE02 poniżej, przez rzeczywiste GitHub Actions.** Unity i Windows Player nadal nie były uruchomione. Dodatkowo wczytano bez błędów oryginalny wcześniejszy katalog PR #344: 10/10 ofert. Odbiorca powinien sam uruchomić lokalnie prawdziwy Node i przeglądarkę.
 
 ## Zgodność z oryginalnym kodem
 
