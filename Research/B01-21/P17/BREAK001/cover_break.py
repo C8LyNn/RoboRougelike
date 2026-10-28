@@ -165,8 +165,17 @@ def scenario(original, b, remove_ordinal):
        "realWheelSweptAndReal3DRaycast":"NOT_RUN",
     }
 
-def derive_plan(name):
-    d=routes.load_original(name)
+def derive_plan(name_or_plan):
+    # The regression suite also passes a deliberately mutated in-memory
+    # blueprint; never silently reload and discard a negative test mutation.
+    if isinstance(name_or_plan,dict):
+        d=name_or_plan
+        name=d.get("id")
+    else:
+        name=name_or_plan
+        d=routes.load_original(name)
+    if name not in MAP_IDS or d.get("id")!=name:
+        raise ValueError("UNKNOWN_OR_MISMATCHED_SOURCE_ARENA")
     b=baseline(d,name)
     allcases=[scenario(d,b,i) for i in range(b["originalCoverCount"])]
     b["coverDestructionCases"]=allcases
