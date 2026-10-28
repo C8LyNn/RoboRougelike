@@ -224,10 +224,13 @@ namespace RoboRougelike.R3
         public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
-            // Lost modules require rebuilding at full purchase cost; damaged ones cost
-            // a fraction of their value proportional to missing durability.
-            return part.Health <= 0 ? Price(part.Kind,part.Weapon) : Math.Max(1,
-                Mathf.CeilToInt((1 - part.Health) * Price(part.Kind,part.Weapon) * 0.35f));
+            // Apply the existing proportional repair rate continuously to owned wrecks.
+            // A one-scrap purchase has no positive, strictly lower integer price;
+            // fail closed instead of giving away an owned part or charging full price.
+            int purchase=Price(part.Kind,part.Weapon);
+            if(part.Health<=0&&purchase<=1)return 0;
+            int quote=Math.Max(1,Mathf.CeilToInt((1-part.Health)*purchase*0.35f));
+            return part.Health<=0?Math.Min(purchase-1,quote):quote;
         }
         public bool Repair(Vector3Int cell)
         {
@@ -373,7 +376,7 @@ namespace RoboRougelike.R3
         {
             if(InvalidWeaponTypes)return false;
             var plan=EmergencyRepairPlan();
-            if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)))return false;
+            if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)||RepairCost(p)<=0))return false;
             int price=plan.Sum(RepairCost);
             if(Scrap<price)return false;
             if(restorationGate!=null&&!restorationGate(plan))return false;

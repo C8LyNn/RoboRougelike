@@ -27,8 +27,9 @@ public class MOVSeriesSalvageTests
         Assert.That(model.Mount(id+"-wreck",new Vector3Int(-1,0,3)),Is.False);
         int fullPrice=kind==R3PartKind.Booster||kind==R3PartKind.HoverEngine?35:
             kind==R3PartKind.Blink?60:kind==R3PartKind.Gyroscope?30:kind==R3PartKind.OmniDrive?40:45;
-        Assert.That(model.RepairCost(model.Inventory.Single()),Is.EqualTo(fullPrice));model.Award(fullPrice);before=model.Scrap;
-        Assert.That(model.RepairInventory(id+"-wreck"),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-fullPrice));
+        int rebuildPrice=Mathf.CeilToInt(fullPrice*.35f);
+        Assert.That(model.RepairCost(model.Inventory.Single()),Is.EqualTo(rebuildPrice));model.Award(fullPrice);before=model.Scrap;
+        Assert.That(model.RepairInventory(id+"-wreck"),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-rebuildPrice));
         Assert.That(model.Inventory.Single().Health,Is.EqualTo(1));Assert.That(model.RepairInventory(id+"-wreck"),Is.False);
         Assert.That(model.Mount(id+"-wreck",new Vector3Int(-1,0,3)),Is.True);Assert.That(wrecks.Claim(model,new[]{id+"-wreck"}),Is.False);
     }

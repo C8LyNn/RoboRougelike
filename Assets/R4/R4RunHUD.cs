@@ -188,8 +188,13 @@ namespace RoboRougelike.R1
             GUI.enabled=garage.HasTarget&&error==null&&selected.Health>0;
             if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))
             {garage.Message=run.GarageMount(selected.Id,garage.Cell,garage.SelectedRotation)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}
-            GUI.enabled=model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
-            if(GUI.Button(new Rect(970,515,280,42),$"{(selected.Health<=0?"Odbuduj":"Napraw")} — {model.RepairCost(selected)} Z",compactButton))run.GarageRepairInventory(selected.Id);
+            int repairQuote=model.RepairCost(selected);
+            GUI.enabled=repairQuote>0&&model.Scrap>=repairQuote;
+            string repairLabel=selected.Health<=0&&repairQuote==0?"Odbudowa niedostępna":
+                selected.Health<=0&&selected.Kind!=R3PartKind.BonusModule?
+                $"Odbuduj: {repairQuote} Z • zakup: {model.Price(selected.Kind,selected.Weapon)} Z":
+                $"{(selected.Health<=0?"Odbuduj":"Napraw")} — {repairQuote} Z";
+            if(GUI.Button(new Rect(970,515,280,42),repairLabel,compactButton))run.GarageRepairInventory(selected.Id);
             GUI.enabled=true;
             if(GUI.Button(new Rect(970,565,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}

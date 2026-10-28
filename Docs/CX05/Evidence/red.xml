@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="7" result="Failed(Child)" total="7" passed="3" failed="4" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0,0510841">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1293" result="Failed" site="Child" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.051084" total="7" passed="3" failed="4" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1609" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="501" result="Failed" site="Child" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.036728" total="7" passed="3" failed="4" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="40736" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1244" name="OwnedRebuildPricingTests" fullname="OwnedRebuildPricingTests" classname="OwnedRebuildPricingTests" runstate="Runnable" testcasecount="7" result="Failed" site="Child" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.032403" total="7" passed="3" failed="4" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1253" name="OneScrapPurchaseHasNoFreeOrFullPriceRebuild" fullname="OwnedRebuildPricingTests.OneScrapPurchaseHasNoFreeOrFullPriceRebuild" methodname="OneScrapPurchaseHasNoFreeOrFullPriceRebuild" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="77401725" result="Failed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.014789" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: 0
+  But was:  1
+]]></message>
+            <stack-trace><![CDATA[at OwnedRebuildPricingTests.OneScrapPurchaseHasNoFreeOrFullPriceRebuild () [0x00044] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\OwnedRebuildPricingTests.cs:32
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1252" name="OrdinaryPartialRepairRetainsExistingPrice" fullname="OwnedRebuildPricingTests.OrdinaryPartialRepairRetainsExistingPrice" methodname="OrdinaryPartialRepairRetainsExistingPrice" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="2096189784" result="Passed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.001645" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1248" name="OwnedDestroyedRebuildCostsLessThanPurchase" fullname="OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase" classname="OwnedRebuildPricingTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.004232" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1245" name="OwnedDestroyedRebuildCostsLessThanPurchase(Armor,5)" fullname="OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase(Armor,5)" methodname="OwnedDestroyedRebuildCostsLessThanPurchase" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="1603934383" result="Failed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.002196" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: greater than 0 and less than 5
+  But was:  5
+]]></message>
+              <stack-trace><![CDATA[at OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase (RoboRougelike.R3.R3PartKind kind, System.Int32 purchase) [0x00036] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\OwnedRebuildPricingTests.cs:14
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1246" name="OwnedDestroyedRebuildCostsLessThanPurchase(Wheel,15)" fullname="OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase(Wheel,15)" methodname="OwnedDestroyedRebuildCostsLessThanPurchase" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="108411781" result="Failed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.000169" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: greater than 0 and less than 15
+  But was:  15
+]]></message>
+              <stack-trace><![CDATA[at OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase (RoboRougelike.R3.R3PartKind kind, System.Int32 purchase) [0x00036] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\OwnedRebuildPricingTests.cs:14
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1247" name="OwnedDestroyedRebuildCostsLessThanPurchase(Gun,30)" fullname="OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase(Gun,30)" methodname="OwnedDestroyedRebuildCostsLessThanPurchase" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="1247824995" result="Failed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.000137" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: greater than 0 and less than 30
+  But was:  30
+]]></message>
+              <stack-trace><![CDATA[at OwnedRebuildPricingTests.OwnedDestroyedRebuildCostsLessThanPurchase (RoboRougelike.R3.R3PartKind kind, System.Int32 purchase) [0x00036] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\OwnedRebuildPricingTests.cs:14
+]]></stack-trace>
+            </failure>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1251" name="OwnedRebuildChargesOnceAndKeepsPhysicalGuid" fullname="OwnedRebuildPricingTests.OwnedRebuildChargesOnceAndKeepsPhysicalGuid" classname="OwnedRebuildPricingTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.001659" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1249" name="OwnedRebuildChargesOnceAndKeepsPhysicalGuid(Wheel)" fullname="OwnedRebuildPricingTests.OwnedRebuildChargesOnceAndKeepsPhysicalGuid(Wheel)" methodname="OwnedRebuildChargesOnceAndKeepsPhysicalGuid" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="1215340974" result="Passed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.001163" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1250" name="OwnedRebuildChargesOnceAndKeepsPhysicalGuid(Gun)" fullname="OwnedRebuildPricingTests.OwnedRebuildChargesOnceAndKeepsPhysicalGuid(Gun)" methodname="OwnedRebuildChargesOnceAndKeepsPhysicalGuid" classname="OwnedRebuildPricingTests" runstate="Runnable" seed="2118957247" result="Passed" start-time="2026-10-28 09:34:27Z" end-time="2026-10-28 09:34:27Z" duration="0.000084" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
