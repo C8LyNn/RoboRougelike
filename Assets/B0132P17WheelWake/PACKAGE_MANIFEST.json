@@ -1,0 +1,47 @@
+{
+  "package_id": "B01-32-WHEELWAKE-001",
+  "version": "1.0.0",
+  "producer": "B01-32",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "art/b01-32-p17-wheelwake-r1",
+  "type": "isolated Unity visual-content prototype with executable pure C# policy",
+  "target_unity": "6000.3.14f1 URP",
+  "runtime": [
+    "Runtime/WheelWakeProfile.cs",
+    "Runtime/B0132WheelWakeEmitter.cs",
+    "Runtime/B0132WheelWakeDemo.cs"
+  ],
+  "assets": [
+    "Prefabs/B0132_DualWheelWake.prefab",
+    "Scenes/B0132_WheelWakeDemo.unity"
+  ],
+  "tests": [
+    "Tests/PlayMode/B0132WheelWakePlayModeTests.cs",
+    "../../Tools/B01-32/P17/WheelWakeChecks/Program.cs"
+  ],
+  "dependencies": [
+    "System (.NET8 independent original policy acceptance)",
+    "UnityEngine",
+    "UnityTestFramework (PlayMode authored)",
+    "URP particle shader optional/fallback"
+  ],
+  "ownership": "Only B01-32 files; canonical game and VFX001 untouched",
+  "integrated": false,
+  "native_unity": "NOT_RUN",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "receiver": "B01-40 scope+GUID -> B01-60 native PlayMode -> B01-00 queue -> Codex optional integration",
+  "required_unity_validation": [
+    "scene imports and Play 720/1080",
+    "prefab script GUID resolves",
+    "original 3 PlayMode tests pass with XML",
+    "actual ParticleSystem URP visibility",
+    "no main vehicle collisions/forces",
+    "effect clear on VFX OFF and loss of wheel contact"
+  ],
+  "limitations": [
+    "No physics changes or real wheel slip inference",
+    "No shader/URP native test",
+    "Unpooled prototype with 128-particle cap per wheel"
+  ]
+}
