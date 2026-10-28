@@ -331,7 +331,10 @@ public static class Program
                         try { MapStorage.Save(file, One(MapItemKind.Wall, 6, 0)); }
                         catch (IOException) { rejected = true; }
                         if (!rejected) return false;
-                        if (!prior.SequenceEqual(File.ReadAllBytes(locked))) return false;
+                        var lockedBytes = new byte[checked((int)locked.Length)];
+                        locked.Position = 0;
+                        locked.ReadExactly(lockedBytes);
+                        if (!prior.SequenceEqual(lockedBytes)) return false;
                     }
                     var reload = new MapDraft();
                     return prior.SequenceEqual(File.ReadAllBytes(file)) &&
