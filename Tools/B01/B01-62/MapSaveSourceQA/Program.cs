@@ -314,6 +314,39 @@ public static class Program
                 return child.exit == 0 && child.output.Contains("FRESH_PROCESS_LOAD=True KIND=Ground");
             }));
 
+        // Real Windows OS file-sharing negative: force File.Replace to fail while
+        // a committed canonical map has an exclusive file handle.
+        // This is a genuine I/O exception path in unmodified MapStorage.Save.
+        if (OperatingSystem.IsWindows())
+        {
+            Case("B09-locked-Windows-canonical-save-fails-without-data-loss", "POSITIVE", () =>
+                InTemporaryDirectory(directory =>
+                {
+                    var file = Path.Combine(directory, "existing.json");
+                    MapStorage.Save(file, One(MapItemKind.Ground));
+                    var prior = File.ReadAllBytes(file);
+                    bool rejected = false;
+                    using (var locked = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        try { MapStorage.Save(file, One(MapItemKind.Wall, 6, 0)); }
+                        catch (IOException) { rejected = true; }
+                        if (!rejected) return false;
+                        if (!prior.SequenceEqual(File.ReadAllBytes(locked))) return false;
+                    }
+                    var reload = new MapDraft();
+                    return prior.SequenceEqual(File.ReadAllBytes(file)) &&
+                           Directory.GetFiles(directory, "*.tmp").Length == 0 &&
+                           MapStorage.Load(file, reload, out _) &&
+                           reload.Items.Count == 1 && reload.Items[0].kind == MapItemKind.Ground;
+                }));
+        }
+        else
+        {
+            Evidence.Add(new { id = "B09-locked-Windows-canonical-save-fails-without-data-loss",
+                               category = "POSITIVE", status = "SKIPPED_NOT_WINDOWS" });
+            Console.WriteLine("B09-locked-Windows-canonical-save-fails-without-data-loss: SKIPPED_NOT_WINDOWS");
+        }
+
         Console.WriteLine("RESULT_JSON=" + JsonSerializer.Serialize(new
         {
             source = "UNMODIFIED_CODEX_CSHARP_WITH_UNITY_SHIM",
