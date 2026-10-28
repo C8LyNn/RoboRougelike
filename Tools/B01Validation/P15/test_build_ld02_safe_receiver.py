@@ -191,7 +191,7 @@ class OriginalRepairedLD02Receiver(unittest.TestCase):
         real=m.exclusive
         external=self.stage/m.MANIFEST_FILE
         def competing_writer(path,data):
-            if path==external:
+            if path.name==m.MANIFEST_FILE:
                 path.write_bytes(b"FOREIGN_MANIFEST")
                 raise FileExistsError("concurrent manifest")
             real(path,data)
