@@ -1,0 +1,71 @@
+{
+  "package_id": "B01-30-MAT-LIGHTBOX-001",
+  "version": "R1",
+  "role": "B01-30 — TECH ART",
+  "branch": "techart/b01-30-p17w02-mat-lightbox-001",
+  "type": "standalone interactive WebGL2 material-lookdev, source-backed actual original tire/alloy textures, no 3D game model",
+  "dependencies": {
+    "original_package": "MAT-A1-001/R1",
+    "original_pr": 336,
+    "source_commit": "171983f85ff41df6ef33b95939cc877ba68e03ca",
+    "original_generator_git_blob": "171d53bc7d5a4840a067af5c934a8fd1c7ad774e",
+    "software": [
+      "Python 3.11",
+      "Pillow 11.3.0",
+      "Playwright 1.56.0",
+      "real Chromium + WebGL2 SwiftShader"
+    ],
+    "inputs": "8 unmodified original 512x512 PNGs (basecolor, normal, metallic_smoothness, occlusion) for tire_rubber and brushed_arm_alloy"
+  },
+  "owned_paths": [
+    "Tools/B01/TechArt/P17W02/MatLightbox001/**",
+    ".github/workflows/b01-30-pass17w02-mat-lightbox.yml"
+  ],
+  "outputs": [
+    "site/index.html",
+    "site/viewer.js",
+    "site/textures/<family>/*.png",
+    "site/site-receipt.json",
+    "screenshots/*.png",
+    "screenshots/browser-receipt.json",
+    "MAT-LIGHTBOX-001-website.zip"
+  ],
+  "features": [
+    "real WebGL2 UV sphere renderer (research fixture, no new MODEL_JOB)",
+    "eight real texture GPU uploads with repeat/mipmaps",
+    "dynamic family change",
+    "normal strength, directional lighting, UV-repeat, exposure sliders",
+    "pointer orbit and reset",
+    "responsive 720x900,1280x720,1920x1080"
+  ],
+  "tests": [
+    "actual PNG exact producer hash match",
+    "WebGL shader program compilation, 8 PNG real load",
+    "3 viewport original WebGL screenshots",
+    "real GPU pixel difference after material/light/UV controls",
+    "mouse orbit changes camera",
+    "reset values",
+    "browser console exception count 0",
+    "missing original PNG negative fail-closed"
+  ],
+  "constraints": [
+    "not actual Unity 6000.3.14f1 URP/PBR shader; approximate directional lighting and gamma",
+    "not actual wheel/arm mesh UV",
+    "A1 final art treatment not approved",
+    "no new 3D MODEL_JOB",
+    "no edits to B01-31 or M04 or Codex game",
+    "no native Unity G1/Physics",
+    "no independent B01-60 acceptance"
+  ],
+  "handoff": {
+    "state": "DRAFT / NOT_OFFERED / NO_CODEX_ACK / NOT_INTEGRATED",
+    "receiver_order": [
+      "B01-40 manifest/scope",
+      "B01-60 independent Chromium visual QA",
+      "B01-00 ordering to #79",
+      "Codex optional approved use"
+    ],
+    "run": "serve generated site over loopback HTTP; open index.html and interact",
+    "rollback": "remove only generated build/B01-30/P17W02-lightbox/; no changes to canonical game files"
+  }
+}
