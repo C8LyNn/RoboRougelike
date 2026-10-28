@@ -65,3 +65,10 @@ python3 Research/B01-11/PASS15/hud3_fix_retest.py /tmp/HUD3-fixed.html
 ```
 
 **Verdict:** both previously independently reproduced **research participant mode** faults now **FIX_VERIFIED at real Chromium/source SHA**. This is **not** a game integration, actual screen-reader user session, HUD third-gun canonical Unity fix, real human preference result, native G1 nor G2. Current Codex #310 original R6RangeHUD still requires Codex ownership and existing CV-06. Garage visual missing Tracks L/R is a **separate** independent prototype issue, unaffected by owner HUD3 change.
+
+## PASS15 continuation — independent GARAGE original-JS receiver
+
+- New executable [garage_functional_source_receiver.js](garage_functional_source_receiver.js), original owner input B01-12 W74 garage commit `ff0a7366bd12222cf0a547c82b7715177fd13aa4`, Git blob `564354278cce2de03cf20a9787e1da88c3bfef05`.
+- Executed published exact JS source in V8 + emulated DOM with unchanged original producer inline JS: **19/19 functional workflow checks GREEN**, **1 new actual presentation criterion RED** (TRACKS both mounted functional/READY, but schematic only exposes wheel left/right, not `trackL` or `trackR`). This is not a Chromium or Unity result.
+- Run after `git fetch origin research/b01-12-w74-garage-readiness`: `node Research/B01-11/PASS15/garage_functional_source_receiver.js .`. Script fails closed when original Git SHA differs, does not edit any files and returns 0 for current expected 19-GREEN +1-diagnostic-RED fixture.
+- **Owner fix:** B01-12 research producer, not B01-11/Codex production. Direct finding: [issue #296/6474012178](https://github.com/C8LyNn/RoboRougelike/issues/296#issuecomment-6474012178).
