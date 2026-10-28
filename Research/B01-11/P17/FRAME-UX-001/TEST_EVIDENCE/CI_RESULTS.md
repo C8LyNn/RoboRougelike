@@ -1,5 +1,13 @@
 # FRAME-UX-001 — actual executed CI proof and correction history
 
+## WAVE02 R2 — positive/negative real original file IO verified
+
+**Original new tests [GitHub Actions #40756832894](https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894) SUCCESS**, exact executable test-script HEAD `506c343ad6af327dac1597c3faf7754050991a3a`. Results: **128/128 actual Chromium UI checks** (32 x 4 screen widths) and **36/36 same original Node reducer tests Ubuntu + 36/36 Windows** — total **200/200 PASS**. [Original machine-readable browser-results JSON artifact #12845832523](https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894/artifacts/12845832523).
+
+New implemented **12 additional checks per viewport**: actual PNG file chooser 640x360, name/dimension and pixel fidelity, clear old annotations on replacement, reject cross-dimension JSON with state unchanged, annotate new uploaded image, download actual PNG and assert PNG signature/dimensions and preserved input pixel, reject unsupported MIME with image/annotation state preserved. These positive/negative cases did execute against the exact app; they are not descriptions of manual testing. Test uses *generated fixture pixels*, **NOT actual RoboRougelike screenshot**. UI app original unchanged, Node core unchanged.
+
+Independent B01-60 approval NOT_RUN; licensed Unity Edit/Play/Windows Player NOT_RUN; no Codex integration/ACK.
+
 ## Verified producer source at GREEN test run
 
 **GitHub Actions [run #40743816824](https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824) → overall SUCCESS** on game-repo branch commit `deb833698f642456b44129b1aa50bb7a5ad31c1e` (source code after fixes). Per-job actual results:

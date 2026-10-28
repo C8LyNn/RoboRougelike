@@ -11,3 +11,8 @@ Import JSON only for an image of identical dimensions. Invalid/out-of-bounds/dup
 
 ## Source & authority
 Owner **B01-11 UX RESEARCH**. This is an isolated source/UI tool under `Research/B01-11/P17/FRAME-UX-001/**`, plus its own `.github/workflows/b01-11-frame-ux.yml`. Main baseline SHA `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`. No modifications to `Assets/**`, Codex #310, CHL, PARTSIZE, B01-12 prototypes, or B01-32 damage atlas. **No merge, Codex ACK, native Unity acceptance, or game integration.**
+
+## PASS17 / WAVE02 receiver hardening — R2
+Exact executable source remained the same UI/reducer. The original browser test source now additionally exercises a real generated **640×360 PNG** upload via the file control, validates its pixel colors in the imported canvas, exports an actual PNG and validates its PNG signature/dimensions/pixels, refuses invalid image MIME, and refuses previously exported 1280×720 annotation JSON on a 640×360 image. All assertions run at all four target viewport sizes. This is **source/browser verification**, not Unity or human research.
+
+**Actual [CI #40756832894 SUCCESS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894): 128/128 Chromium + 36/36 Linux Node + 36/36 Windows Node = 200/200.** Browser [raw JSON artifact #12845832523](https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894/artifacts/12845832523). The existing R1 immutable version remains at commit `7e48964a12cfe3a27a4f0680cc136c34e03252dc`; WAVE02 only adds test coverage and receiver evidence. Independent B01-40 / B01-60 acceptance PENDING.

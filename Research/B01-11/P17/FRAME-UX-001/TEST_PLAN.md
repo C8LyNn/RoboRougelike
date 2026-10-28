@@ -6,3 +6,7 @@
 4. Human readability judgment, native Unity 6000.3.14f1 Editor/Player, real screenshots and actual end-user testing are **NOT_RUN**. A synthetic fixture is only a neutral tool demo; it is not real gameplay evidence.
 
 The first owner-producer V8 run executed 30 positive/negative checks against original in-memory `core.js` with 30/30 PASS. This check is narrower than real committed CI; use GitHub CI logs for final per-platform verdict.
+
+## Wave02 / R2 — executable file IO tests (actual performed)
+Exact original browser test `SOURCE/test_browser.cjs` now performs **32 assertions per viewport** (4 resolutions), including real browser-generated 640×360 raster PNG upload and pixel check, annotated PNG download with signature/IHDR dimensions/pixel identity, mismatched annotation JSON dimension rejection and state persistence, unsupported MIME rejection with preserved annotation state. Not a dry run. **128/128 PASS** in original Chrome on Ubuntu CI [#40756832894](https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894). **36/36 core Node PASS on each of Ubuntu + Windows**. Recorded total **200/200** across the three executed jobs; source SHA `506c343ad6af327dac1597c3faf7754050991a3a`.
+**Native Unity, real game screenshot capture, actual user study and independent QA remain NOT_RUN.**

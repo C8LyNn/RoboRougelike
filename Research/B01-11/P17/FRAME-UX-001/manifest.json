@@ -1,9 +1,9 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-11-P17-FRAME-UX-001",
-  "revision": "R1",
+  "revision": "R2",
   "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
-  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/330",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/367",
   "purpose": "Real local browser screenshot region-annotation UX research tool: safe local file input, normalized regions, priority labels, JSON/PNG export and robust original-source CI tests.",
   "unity_version": "6000.3.14f1 (NOT_RUN; browser research tool, no Unity source)",
   "source_base_branch": "main",
@@ -33,15 +33,15 @@
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/SOURCE/test_browser.cjs",
-      "sha256": "796f5ff078aa52267e238fb3f19264ac7fb3e96e926a17b9c8ebf5fc380fd3d6",
-      "bytes": 4772,
-      "git_blob_sha1": "a1e81d06a8f1b34773966119342797cde46559f2"
+      "sha256": "462b4e8e9d444f8752e420f58529f0c073cc79fe6194ce7e3e2b21fdcb5f9c60",
+      "bytes": 9003,
+      "git_blob_sha1": "4697a57f2f9461874c8095222d6681372e90ff76"
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/README.md",
-      "sha256": "04ea2a19a1e589be1567297a6a78a1cb95e5efe3608e21d4f84952f3dacd0b59",
-      "bytes": 1829,
-      "git_blob_sha1": "6d74900f7f383a63d8303e555930a3252cb0b149"
+      "sha256": "b415ab9bc5d89886daa0ec73fd6cd1817efee9416edf14e4fc794b2b34f638d2",
+      "bytes": 2908,
+      "git_blob_sha1": "e3f22dd97d65cdfd75f11c02732f0dfa98fcfb7b"
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/INSTALL_FOR_CODEX.md",
@@ -51,9 +51,9 @@
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/TEST_PLAN.md",
-      "sha256": "f70e3d6a4bfb668ff1449868c92041dacd75679eecef4f99560ff108f29f5e09",
-      "bytes": 1337,
-      "git_blob_sha1": "3403ce715fcb32cca1d986d921a2f489efa2b280"
+      "sha256": "3ccde32d2a81902b60633cc99bf8c2994d9520f935729685c2427115f0275921",
+      "bytes": 2208,
+      "git_blob_sha1": "0e2dafcd80f54e98a0bc89684ad0486c87988e2c"
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/KNOWN_LIMITATIONS.md",
@@ -63,9 +63,9 @@
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/CHANGELOG.md",
-      "sha256": "8de793f5f4a9babee358432e2d05ed4f629c32c2ef496958e56ba8d4ba836d49",
-      "bytes": 633,
-      "git_blob_sha1": "bb91ba8655bcd3b7ef6096d4a97609dec8a602be"
+      "sha256": "3aa530a03956fb4482f7f517b92de344fa4086b64df9062af3c3e6e60da280e4",
+      "bytes": 1278,
+      "git_blob_sha1": "ee48b79cae34ee947c936341cc1421152e1c6437"
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/QA_B01_60.md",
@@ -75,9 +75,9 @@
     },
     {
       "path": "Research/B01-11/P17/FRAME-UX-001/TEST_EVIDENCE/CI_RESULTS.md",
-      "sha256": "cb9dd36ddc2a5a973df1efcad1962f2f21c5929478a53694398b6118a0647d02",
-      "bytes": 2121,
-      "git_blob_sha1": "82c858b828f752b2222ab2a8c64c7bca979fbaa1"
+      "sha256": "6cf6ed0c5a7b4ab5b884664085fc71d7656ebf8bbe26ecd7ed06371e7269fd5b",
+      "bytes": 3460,
+      "git_blob_sha1": "af55dae6a5c6a555ceb9968fb37f934ce5535db9"
     },
     {
       "path": ".github/workflows/b01-11-frame-ux.yml",
@@ -107,7 +107,7 @@
       "passed": 36,
       "failed": 0,
       "environment": "GitHub Actions Ubuntu-latest Node22 original core.js/test_core.cjs",
-      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824"
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894"
     },
     {
       "name": "Original source 36 adversarial Node22 tests, Windows",
@@ -115,15 +115,15 @@
       "passed": 36,
       "failed": 0,
       "environment": "GitHub Actions windows-latest Node22 original core.js/test_core.cjs",
-      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824"
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894"
     },
     {
-      "name": "Actual browser DOM imports/exports, pointer drag and responsiveness (4x20)",
+      "name": "Original Chromium source-app 32 real UI+image file I/O checks ×4 sizes",
       "status": "PASS",
-      "passed": 80,
+      "passed": 128,
       "failed": 0,
-      "environment": "GitHub Actions Ubuntu headless Google Chrome + playwright-core 1.56.1, 320/720/1280/1920 viewports",
-      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824/artifacts/12840003347"
+      "environment": "GitHub Actions Linux real Chrome + Playwright; 640x360 image fixture, physical file input and download; 320/720/1280/1920 viewport",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40756832894/artifacts/12845832523"
     },
     {
       "name": "Native Unity EditMode/PlayMode/Windows build, human study",
@@ -147,6 +147,12 @@
   ],
   "rollback": "Remove/ignore only Research/B01-11/P17/FRAME-UX-001/** and dedicated .github/workflows/b01-11-frame-ux.yml. No main/develop or Codex worktree changed.",
   "package_transport": "Immutable Git tree via own Draft PR; no ZIP transport required",
-  "status": "PRODUCER_TESTED_SOURCE_AND_BROWSER / G0_SOURCE_SUBMITTED / B01_60_PENDING / G2_HOLD / CODEX_ACK_PENDING",
-  "manifest_note": "files[] hashes every immutable non-manifest payload; this manifest is excluded to avoid self-referential hash."
+  "status": "PRODUCER_TESTED_R2_SOURCE_BROWSER / INDEPENDENT_QA_PENDING / G2_HOLD / CODEX_ACK_PENDING",
+  "manifest_note": "files[] hashes every immutable non-manifest payload; this manifest is excluded to avoid self-referential hash.",
+  "predecessor": {
+    "revision": "R1",
+    "source_sha": "7e48964a12cfe3a27a4f0680cc136c34e03252dc",
+    "pr": "https://github.com/C8LyNn/RoboRougelike/pull/364"
+  },
+  "revision_source_commit": "506c343ad6af327dac1597c3faf7754050991a3a"
 }
