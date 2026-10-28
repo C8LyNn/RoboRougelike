@@ -44,5 +44,15 @@
   "native_unity_by_b0161": "NOT_RUN",
   "full_edit_after_test_only_patch": "NOT_RUN",
   "independent_g1": "NOT_RUN",
-  "release_gate": "BLOCKED"
+  "release_gate": "BLOCKED",
+  "known_renamed_case": {
+    "before": "RRLW2GameplayTests.RealDestroyedEnemyGunIsStoredRebuiltForFullPriceAndMounted",
+    "after": "RRLW2GameplayTests.RealDestroyedEnemyGunIsStoredRebuiltAtDiscountAndMounted",
+    "source_path": "Assets/Tests/Editor/RRLW2GameplayTests.cs",
+    "original_game_test_blob": "3d05a2f6145f6a3ab5307e4f4d18e260e5466e3b",
+    "later_test_only_blob": "81cb6c1ca20cc4b095260f5adedc4395c8e070b0",
+    "original_price_assertion": "before-36",
+    "new_price_assertion": "before-13",
+    "exact_reason": "one explicit owner test rename after approved cheaper owned-gun rebuild; verifies changed real NUnit test identity rather than silently treating 15/15 as identical code"
+  }
 }
