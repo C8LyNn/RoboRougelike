@@ -211,7 +211,12 @@ def validate_zip(data,existing=None):
     if existing is not None:require(not set(guids).intersection(existing),"CODEX_EXISTING_UNITY_GUID_COLLISION")
     atlas=Image.open(io.BytesIO(files["Reference/part-damage-atlas.png"])).convert("RGBA")
     require(atlas.size==(768,1024),"REFERENCE_ATLAS_SIZE_INVALID")
-    for entry in index["sprites"]:
+    for ordinal,entry in enumerate(index["sprites"]):
+        require(entry["state"]==STATES[ordinal//3] and entry["frame"]==ordinal%3 and
+                entry["duration_ms"]==160 and
+                entry["atlas_rect_top_left"]==[(ordinal%3)*256,(ordinal//3)*256,256,256] and
+                entry["atlas_rect_unity_bottom_left"]==[(ordinal%3)*256,(3-ordinal//3)*256,256,256],
+                "ATLAS_INDEX_ORDER_MISMATCH")
         path=entry["sprite_asset_path"]
         require(path in files and entry["sprite_meta_guid"]==stage_guid(path) and
                 entry["png_sha256"]==artifact_sha(files[path]),"SPRITE_INDEX_OR_BYTES_CHANGED")
