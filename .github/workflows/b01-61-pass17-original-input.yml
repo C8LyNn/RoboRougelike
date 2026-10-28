@@ -1,0 +1,48 @@
+name: B01-61 P17 real original Codex CSharp input contract
+
+on:
+  push:
+    branches: ['qa/b01-61-pass17-original-input-latch']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61-PASS17/**'
+      - '.github/workflows/b01-61-pass17-original-input.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original-csharp-input-branches:
+    name: Original P12 CSharp / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exact immutable original Codex gameplay source
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 682dc0c5c13615577334375ffb6c27be5cdebf4a
+          test "$(git rev-parse 682dc0c5c13615577334375ffb6c27be5cdebf4a:Assets/Pack/P12_PipelineSafeTankController.cs)" = "8beeedb4db40b7b33c8f685d7b6aab1247a4b2d7"
+      - name: Execute both original CSharp preprocessor branches and 2 tamper negatives
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61-PASS17/run_original_input_contract.py --repo . 2>&1 | tee b0161-pass17-console.log
+      - name: Upload actual original-source execution receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-p17-csharp-${{ matrix.os }}
+          path: b0161-pass17-console.log
+          if-no-files-found: warn
