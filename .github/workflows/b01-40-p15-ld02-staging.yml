@@ -1,0 +1,54 @@
+name: B01-40 PASS15 original repaired LD02 deterministic staging + rollback
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/P15/**'
+      - '.github/workflows/b01-40-p15-ld02-staging.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-map-safe-stage:
+    name: Actual Git source and disposable file test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch EXACT repaired B01-25 original map and Codex #310 CSharp contracts
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84
+          git fetch --no-tags --depth=1 origin 231005c6d0351945a8ee6684f3856af118f0e94f
+          test "$(git rev-parse f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84:Research/B01-25/P14/LD02_ARENA.json)" = 'e39e2f174984832bd97311c050e3c22fd6fb1175'
+          test "$(git rev-parse 231005c6d0351945a8ee6684f3856af118f0e94f:Assets/MapEditor/MapDraft.cs)" = 'b5f8f395f93972c0ede000701dbbada8fcfcdfdb'
+          test "$(git rev-parse 231005c6d0351945a8ee6684f3856af118f0e94f:Assets/MapEditor/MapStorage.cs)" = 'f31a94c16e8cb244e66e39b0ac344b085095b630'
+      - name: Execute 15 independent original-source and real temporary filesystem tests
+        shell: bash
+        run: python Tools/B01Validation/P15/test_build_ld02_safe_receiver.py -v
+      - name: Enforce explicit mandatory dry-run before any staging
+        shell: bash
+        run: python Tools/B01Validation/P15/build_ld02_safe_receiver.py --repo .
+      - name: Materialize ONE deterministic original-map ZIP + manifest in external runner temp
+        shell: bash
+        run: |
+          python -c "import os,pathlib; pathlib.Path(os.environ['RUNNER_TEMP'],'b01-40-LD02-stage').mkdir(parents=True,exist_ok=True)"
+          python Tools/B01Validation/P15/build_ld02_safe_receiver.py --repo . --stage-to "$(python -c "import os,pathlib;print(pathlib.Path(os.environ['RUNNER_TEMP'],'b01-40-LD02-stage'))")"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-P15-repaired-LD02-stage-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-40-LD02-stage/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Explicit source-only boundary
+        shell: bash
+        run: |
+          echo 'REAL ORIGINAL MAP bytes/ZIP/FS install-rollback passed; no user Unity persistentDataPath touched.'
+          echo 'MapEditor import, PhysX, Windows Player, native Unity G1 and G2 NOT_RUN.'
