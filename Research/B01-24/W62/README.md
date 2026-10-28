@@ -56,3 +56,20 @@ Test class is in the **Editor** assembly and transitions to true Play Mode via `
 PASS13 independent original-source verification: **13/13** exact LD02 original JSON versus newly authored 10 `MapDraft.Place` calls, negative deleted-item mismatch, original MapWorld API/geometry anchors, both `.meta` identities, and QA-only Git diff gates. These are NOT Unity or original C# execution.
 
 **PASS13 separate finding:** [ENEMY-TARGET-INACTIVE-01 #318](https://github.com/C8LyNn/RoboRougelike/issues/318) is independently routed for Codex with a minimal native test contract. HQ/B01-10 still owns whether opaque *static* cover suppresses all enemy normal rounds; do not enable the `[Explicit]` gate without a product decision.
+
+## PASS14 — corrected original-NUnit diagnostic and CV-06 handoff
+
+**QA-only correction (no game-AI changes)** to `B0124EnemyAiNegativeEditModeTests.SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy`: previously, `Assert.That(blockedShotCount, Is.Zero)` executed **before** the recovered-wall step. On the unpatched source a blocked shot can emit a shell and fail immediately, masking whether clearing LOS restores fire. Additionally, that shot advances `nextFireTime`, so a same-frame second call can appear incorrectly broken merely due to cooldown.
+
+The test now:
+1. Fires once with a genuine world `Physics.Raycast`-confirmed static wall; records only new original `P17PhysicalShell` instances as `blockedShotCount`.
+2. Disables only that wall, calls `Physics.SyncTransforms()`, restores **only** cooldown eligibility `nextFireTime=-1`, and invokes original `Update()` again.
+3. Records `recoveredShotDelta = totalNewShells - blockedShotCount` and writes **both observed values** to NUnit `TestContext.WriteLine` with source SHA.
+4. Applies `Assert.Multiple` **after both observations**: require `blockedShotCount == 0` (ONLY after B01-10/HQ approves suppressing opaque direct shots), `recoveredShotDelta == 1` (true recovery).
+5. Removes only newly created shells in `finally`.
+
+This repair is **of the QA test's diagnostic fidelity**, not a Codex gameplay fix. The test remains `[Explicit]`, excluded from ordinary automated runs until HQ approves the cover-fire policy. The disabled/inactive target tests are separate source-risk and are **not** gated by this optional policy.
+
+**Queue ownership:** [CODEX CV-06](https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6455303223) already includes both target-inactive [#318](https://github.com/C8LyNn/RoboRougelike/issues/318) and clear/covered/recovered LOS. **Do not add a duplicate queue item.** On an actually activated authorized Unity host, Codex can import this QA-only branch separately into an isolated disposable checkout, execute its original EditMode fixtures, and append raw `EditMode.xml`, `Editor.log`, exit status and source SHA. For any native collision/cover test include actual `Physics.Raycast` first hit (instance ID, name, distance), turret muzzle `Transform.position`, source map hash, `blockedShotCount`, `recoveredShotDelta` and explicit B01-10/HQ policy. Do not claim the queue is ACKED or that a licensed runner exists until Codex reports it.
+
+**No native test execution occurred during PASS14 authoring** (Unity and C# compiler unavailable). The previous static checks do not become an executed original NUnit PASS.
