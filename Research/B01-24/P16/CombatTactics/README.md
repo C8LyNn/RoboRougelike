@@ -30,3 +30,5 @@ Returns `mode`, `movement {x,z}`, `step`, `choice`, `blocked`, `fireAllowed`, `f
 **Codex acceptance path:** read-only review by B01-40 and B01-60; create a Codex-owned adapter only upon owner acceptance. Extract real live `R6VehicleDrive` mobility fraction and mounted gun online state, true 3D collision/LOS, and approved ram rules; compare actual maneuvers and projectiles with proposed decision output in a disposable Unity scene. Preserve existing `P12_PipelineSafeEnemyTurret` authority and do not merge this research JS into Unity.
 
 **Source freeze:** No immutable `OFFERED` package asserted by B01-24. B01-40 controls source-package intake/freeze; Codex must explicitly acknowledge before `CODEX_CLAIMED`.
+
+**Codex parity:** Existing unarmed ramming is already implemented and native-tested on Codex commit `16c2668104952f1b8db304cc7817b897fb48a9b1` (12/12 targeted Unity PASS). Do not integrate this prototype's matching ramming branch; only evaluate distinct avoidance research. This branch is not installed in the game.
