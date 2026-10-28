@@ -1,0 +1,64 @@
+{
+  "packageId": "MAPGEN-COURSE-P17",
+  "revision": "R1",
+  "type": "RESEARCH_GAME_CONTENT_ONLY_NOT_UNITY_GAMEPLAY_MODULE",
+  "owner": "B01-20",
+  "sourceProducer": {
+    "pr": 237,
+    "sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+    "recipe": "ObstacleCourse",
+    "unity": "6000.3.14f1",
+    "sourceBlobs": {
+      "Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs": "b586a5bfc697bc37edbf98bb936459aeebe694c6",
+      "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs": "89ff64e12f278f2c9393ad542161a9387e1f4117",
+      "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs": "4e4bee443a60abb3b284e8c546203096095e12bd",
+      "Tools/B01/MAPGEN001/Headless/UnitySurrogate.cs": "68f30fc4c49db21d90b143cf9bc13d230ad06184"
+    }
+  },
+  "ownedPaths": [
+    "Research/B01-20/P17/MAPGEN-COURSE/**",
+    ".github/workflows/b01-20-p17-mapgen-course.yml"
+  ],
+  "variants": [
+    "P17-COURSE-A-SLALOM",
+    "P17-COURSE-B-CHICANE",
+    "P17-COURSE-C-ENDURANCE"
+  ],
+  "seeds": [
+    7,
+    31,
+    83,
+    109,
+    202,
+    407
+  ],
+  "profiles": [
+    "Light",
+    "Heavy"
+  ],
+  "expectedSourceCases": 36,
+  "expectedInvalidRejections": 9,
+  "expectedGeneratedBlueprints": 18,
+  "expectedGeneratedSVGs": 18,
+  "outputs": [
+    "p17-course-output/results.json",
+    "p17-course-output/P17-COURSE-*-seed-*.json",
+    "p17-course-output/previews/*.svg",
+    "p17-course-output/gallery.html"
+  ],
+  "evidence": "GitHub Actions per final SHA - see PR",
+  "notRun": [
+    "Unity Editor",
+    "Unity PlayMode",
+    "PhysX vehicle driving",
+    "Windows Player GUI"
+  ],
+  "blockers": [
+    "B01-40 independent source/artifact receiver",
+    "B01-60 independent QA",
+    "Codex explicit scope ACK and native host G1",
+    "HQ G2 approval"
+  ],
+  "install": "Do NOT copy generator/source. On source-confirmed MAPGEN R3.4.1 use MapGenBuilder.Generate(MapRecipe.ObstacleCourse, seed, config, profile) with approved preset fields",
+  "rollback": "Delete only this isolated research packet and generated objects belonging to approved import; never change canonical game or user saves"
+}

@@ -1,0 +1,42 @@
+name: B01-20 P17 Original MAPGEN obstacle course content — source only
+on:
+  push:
+    branches: [b01-20/p17-mapgen-course-content]
+    paths:
+      - 'Research/B01-20/P17/MAPGEN-COURSE/**'
+      - '.github/workflows/b01-20-p17-mapgen-course.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-mapgen-csharp:
+    name: Original CSharp MAPGEN source and 18 course previews / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute original CSharp MAPGEN and generate 18 course blueprints
+        shell: bash
+        run: |
+          dotnet run --project Research/B01-20/P17/MAPGEN-COURSE/MapgenCourseP17.csproj --configuration Release -- Research/B01-20/P17/MAPGEN-COURSE/presets.json p17-course-output
+      - name: Verify every actual original-CSharp blueprint, source routes, checkpoints and seeds
+        shell: bash
+        run: python Research/B01-20/P17/MAPGEN-COURSE/verify_courses.py p17-course-output
+      - name: Render actual original-CSharp geometry to 18 SVG previews and HTML gallery
+        shell: bash
+        run: python Research/B01-20/P17/MAPGEN-COURSE/render_courses.py p17-course-output
+      - name: Archive all real original-source generated outputs, even when a case fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-20-p17-courses-${{ matrix.os }}
+          path: p17-course-output/
+          if-no-files-found: warn
+          retention-days: 21
