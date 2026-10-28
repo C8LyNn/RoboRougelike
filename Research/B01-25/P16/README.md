@@ -1,0 +1,25 @@
+# B01-25 / PASS16 — Trzy areny walki w oryginalnym MapDocument v2
+
+**Dostarczone rzeczywiste pliki:** trzy oryginalne JSON-y kompatybilne z aktualnym edytorem, trzy pochodne renderowalne podglądy SVG, manifest z trasami i rozdziałem implementacji, uruchamialny `verify_scenarios.mjs`. **W żadnym MapDocument nie ma niestandardowych pól**: przeciwnicy, HP, time limits, reward czy punkty testowe poza grą znajdują się tylko w manifeście. Sama obecna gra nie implementuje w edytorze celów „pokonaj przeciwników”, stref nagrody ani premii za trasę. Meta to SANDBOX_TOUCH, nie combat clear.
+
+## Trzy rzeczywiście różne scenariusze
+
+| Arena | Dane | Warianty przejścia | Co jest zaprojektowane i mierzalne |
+|---|---|---|---|
+| **A — Przełamanie pod osłoną** | `ARENA16_A_COVER_BREACH.json`; 12×10 pól | odsłonięty **7** / za osłoną **13** komórek-kroków | bezpośrednie podejście kontra dłuższe zasłonięte; niski zapas wolnego miejsca na manewr |
+| **B — Obwodnica i manewr** | `ARENA16_B_MANEUVER_LOOP.json`; 16×12 pól | północ **16** / południe **16** komórek-kroków | centralna wyspa fizycznych ścian, oddzielne flankowanie; 13 kwadratowych pustych pól manewrowych 4×4 komórki (geometryczna siatka) |
+| **C — Ryzykowny skrót** | `ARENA16_C_RISK_SHORTCUT.json`; 14×10 pól | ryzyko **11** / cień ścian **15** komórek-kroków | dwa korytarze, różne odległości i osłony; ryzyko opisuje ekspozycja hipotetycznego wroga, nie zaprogramowane obrażenia |
+
+Każdy moduł ma lokalny Ground (nie 404×404m GlobalFloor), obwód szczelny według obliczeń źródłowych: cztery `Platform(kind6,scaleY4)` zamiast czterech nieszczelnych cienkich `Wall` na narożnikach. Start i meta pojedyncze, oryginalny grid 4m. Każdy typ części sceny jest już wspierany przez oryginalny `MapWorld.CreateItem`: Ground/Wall/Platform/Pillar/LowBarrier/Spawn/Finish.
+
+## Kryteria odbioru (bez fałszywego natywnego PASS)
+**Dane / Node ≥18:** `node Research/B01-25/P16/verify_scenarios.mjs` uruchomione w klonie repozytorium; sprawdzi wersję, unikalne footprinty, per-kind budżety edytora, pojedyncze start/meta, 8 źródłowych ray-probe Wall/Platform dla każdej mapy, pełne 4-neighbor trasy, odcinki bez kolizji ze źródłowymi AABB oraz deklarowaną liczbę osłoniętych pól. Nie wykonuje oryginalnego C#, `MapDraft.TryLoad`, Unity, Collider.bounds ani PhysX. Osobno **B01-61/B01-21** odbierają te NOWE dokładne JSON SHAs; poprzedni PASS15 nie certyfikuje ich automatycznie.
+
+**Warunki rzeczywistego gameplayu — dopiero CODEX CV-05, po potwierdzeniu aktywowanego Unity:**
+1. Każdą mapę kopiować do **pustego izolowanego** `Application.persistentDataPath/Maps/ARENA16_* .json` (bez spacji przed rozszerzeniem), nie nadpisywać użytkownika; w polu EditorName użyć identycznego basename, nacisnąć Wczytaj. Zapis/odczyt D02 nie może zmodyfikować sąsiedniego pliku.
+2. Native `TryLoad=true`, `TestError=null`; porównać exact blob JSON (plik vs oryginał). Osiem odpowiednich kierunkowych promieni hit Wall w środkach i Platform w narożnikach, `QueryTriggerInteraction.Ignore`; rozbieżność = FAIL z screenshot i Editor.log.
+3. Light i Heavy na działającym zawieszeniu i broni po **jednym realnym przejeździe KAŻDEJ z dwóch tras**; wynik `PASS` tylko gdy nie ma kolizji blokujących, przejście nie wymaga teleportu i osiągnięta jest prawdziwa meta. `FAIL` z `Collider.bounds`, prędkością, pozycją, klatką i momentem utknięcia. Topologiczna wolna komórka **nie jest gwarancją realnego prześwitu**. Silnik nie zapewnia automatycznego pilota trasy; operator prowadzi pojazd ręcznie, świadomie.
+4. Scenariusz A/C: zarejestrować zmianę osłonięcia przy przemieszczaniu z trasy krótkiej na chronioną; porównać `Physics.Raycast` z niezależnego, jawnie pozycjonowanego referencyjnego punktu — nie udawać, że ustawiono przeciwnika. B: przejazd, hamowanie, zawrócenie w 4×4 pustej zatoce; testować stabilność kamery i niehaczenie fizycznego modelu.
+5. **Combat requirements are GATED:** jeśli Codex/HQ zatwierdzi prawdziwy system przeciwników/challenge, dopiero wtedy wprowadzać dwa hostile i nagrody. Obecne hipotetyczne watchpointy z `scenarios.manifest.json` to **projekt**, nie runtime. Warunki przyszłe: wygrana = aktywne cele spełnione + dojazd do Finish, porażka = 0HP / utknięcie bez ratunku, ryzyko/nagroda wymaga polityki HQ i prawdziwego systemu danych. NIE przypisywać obecnemu Finish tej logiki.
+
+**Pochodzenie:** Codex [#310](https://github.com/C8LyNn/RoboRougelike/pull/310) commit `561c223f7f01c1e609548bf1c8c66b5132ec5485`; oryginalny `MapDraft.cs` blob `0331a54a1545ecd1ea18b616ef13fed113474b8c`; `MapWorld.cs` blob `8928908db123b35dcab4b324fe9d3a7a8fceee4e`; `R1MapEditor.cs` blob `2139f2d11b59a7948b9e5922d2964da6f2944da2`. B01-25 własna ścieżka `Research/B01-25/P16/**`, brak `Assets/**`, brak CHL/PARTSIZE, brak merge. Istniejący [CV-05](https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6455303223) to odpowiedni Codex test intake; nie powielać nowego ID. Ostateczny status: `AUTHORING_DATA_READY / NATIVE_NOT_RUN / INTEGRATION_NOT_CONFIRMED / INDEPENDENT_QA_PENDING`.
