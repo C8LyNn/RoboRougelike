@@ -40,3 +40,29 @@ Wykonano 41/41 na rzeczywistym silniku JS przez V8 (z rzeczywistym tekstem testu
 Dodatkowe istniejące testy R5 mogą wymagać dokładnie dwóch opcji na etapie 2 albo innych założeń kampanii. Pusty sześciostopniowy szablon **nie** jest z automatu produkcyjną kampanią. Każdy finalny eksport wymaga osobnego natywnego odbioru.
 
 **PACKAGE_ID** `R5WB001/P17-R1` · **OWNER** B01-10 · **STATUS** `SOURCE_READY / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / UNITY_NOT_RUN`. Brak merge do main/develop, brak zmian w CHL/PARTSIZE/LD02 i innych rolach roju.
+
+
+## WAVE 02 / realne CI na oryginalnym pliku (PASS 17)
+
+Pierwsze 41/41 testów V8 z adapterem zostały uzupełnione **rzeczywistymi testami natywnych procesów Node 22 na Windows i Ubuntu oraz rzeczywistą przeglądarką Chromium**, zamiast nazywania adaptera DOM testem przeglądarki.
+
+**Potwierdzone GitHub Actions** [#40759517141](https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141), źródła przetestowane na commicie `5a341ceceedb5f118392298f07f2728ba6e92b00`, workflow zakończony **SUCCESS**:
+
+| Zadanie | Wynik rzeczywisty |
+| --- | --- |
+| Windows 2025, Node 22, `workbench.test.cjs` | **41 PASS / 0 FAIL** |
+| Ubuntu 24.04, Node 22, `workbench.test.cjs` | **41 PASS / 0 FAIL** |
+| Ubuntu 24.04, Playwright Chromium, `browser.test.cjs` | **27 PASS / 0 FAIL** (po dziewięć na 1280×720, 1920×1080, 720×900) |
+
+**Szczegółowe dowody:** [`QA_W02.json`](QA_W02.json), oryginalne logi workflow, [GitHub Actions artifact #12847242860](https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141) — **trzy rzeczywiste PNG i raport `QA_BROWSER.json`**. Browser test sprawdza otwarcie przez `file://`, przełączenie etapu, dodanie alternatywy, zapis tytułu/nagrody, odmowę zmiany spoza zakresu bez korupcji danych, eksport/reset/reimport JSON, odmowę błędnego JSON, rzeczywiste pobranie pliku przez przeglądarkę, cofnięcie, brak nieobsługiwanych błędów JS i brak poziomego przepełnienia widoku.
+
+Nowy własny workflow `.github/workflows/b01-10-p17-r5-workbench.yml` dotyczy tylko tej paczki; GitHub CI wywołany na zmianach tej paczki nie dotyka kanonicznych plików Codexa. Można również odtworzyć lokalnie:
+```bash
+node Research/B01-10/P17Workbench/workbench.test.cjs
+npm install --no-save --no-package-lock playwright@1.56.1
+npx playwright install chromium
+node Research/B01-10/P17Workbench/browser.test.cjs
+```
+**Uwaga:** powyższe pobranie Playwright dotyczy wyłącznie środowiska QA; sama aplikacja `R5Workbench.html` nadal działa offline. Po edycji wyłącznie manifestu/README nowy SHA PR będzie inny, ale oryginalne źródła `R5WorkbenchCore.js`, `R5Workbench.html`, test Node, Playwright i workflow pozostają tożsame z przetestowanymi Git blob SHA opisanymi w `QA_W02.json`. Nie utożsamiać tego testu z Unity.
+
+**STAN ODBIORU:** Własne realne source/UI tests **GREEN**; **niezależny B01-40/B01-60 QA PENDING**, Codex ACK PENDING, Unity/Windows Player **NOT_RUN**.
