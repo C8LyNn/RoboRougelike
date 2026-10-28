@@ -57,6 +57,7 @@ a{color:#a6e2cf}
 </aside>
 </section>
 </main>
+<output id="selftest" data-status="NOT_RUN" hidden></output>
 <footer><strong>Integracja do gry: NIE.</strong> Unity / PhysX / Player / niezależny G1: NOT_RUN. Korzystaj wyłącznie ze źródłowego manifestu <a href="arena_requests.json">arena_requests.json</a> i <a href="generated/generated_manifest.json">wygenerowanych hashy/replay</a>. Lokalnie otwórz ten HTML z pełnej gałęzi zawierającej katalog <code>generated/</code>.</footer>
 <script>
 "use strict";
@@ -89,6 +90,37 @@ buttons.forEach((b,i)=>{
   });
 });
 window.addEventListener("load",()=>selectArena(0));
+async function sourceViewerSmoke(){
+ const output=document.getElementById("selftest"),errors=[];
+ const img=document.getElementById("large");
+ async function checkImage(){
+   if(img.complete)return img.naturalWidth>0;
+   return await new Promise(resolve=>{
+      const timeout=setTimeout(()=>resolve(false),2000);
+      img.addEventListener("load",()=>{clearTimeout(timeout);resolve(img.naturalWidth>0);},{once:true});
+      img.addEventListener("error",()=>{clearTimeout(timeout);resolve(false);},{once:true});
+   });
+ }
+ for(let i=0;i<variants.length;i++){
+   buttons[i].click();
+   const v=variants[i];
+   if(document.getElementById("seed").textContent!==v.seed||
+      document.getElementById("covers").textContent!==v.covers||
+      document.getElementById("hash").textContent!==v.hash||
+      buttons[i].getAttribute("aria-pressed")!=="true"||
+      !document.getElementById("data").getAttribute("href").endsWith(v.name+".blueprint.json"))
+      errors.push(v.name+"/UI_VALUE");
+   if(!await checkImage())errors.push(v.name+"/SVG_IMAGE_FAILED");
+ }
+ buttons[0].focus();
+ buttons[0].dispatchEvent(new KeyboardEvent("keydown",{key:"ArrowRight",bubbles:true,cancelable:true}));
+ if(document.getElementById("seed").textContent!==variants[1].seed ||
+    document.activeElement!==buttons[1])errors.push("KEYBOARD_ARROW_RIGHT");
+ output.dataset.status=errors.length?"FAIL":"PASS";
+ output.textContent=errors.length?errors.join(";"):"THREE_MAPS_UI_AND_SVG_LOADING_AND_KEYBOARD_PASS";
+}
+if(new URLSearchParams(location.search).get("selftest")==="1")
+ window.addEventListener("load",sourceViewerSmoke);
 </script>
 </body>
 </html>
