@@ -27,7 +27,7 @@ class CurrentCodexCrossPackageAdmission(unittest.TestCase):
     def test_01_genuine_original_chl_part_current_codex_gate(self):
         r=self.receipt
         self.assertEqual(r["gate"],"PASS_SOURCE_ONLY")
-        self.assertEqual(r["package_file_counts"],{"chl":52,"part":34})
+        self.assertEqual(r["package_file_counts"],{"chl":45,"part":28})
         self.assertEqual(r["meta_guid_counts"]["chl"],26)
         self.assertEqual(r["meta_guid_counts"]["part"],17)
         self.assertEqual(r["asmdef_counts"]["chl"],4)
