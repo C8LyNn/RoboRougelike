@@ -81,21 +81,19 @@ def validate_blank(data):
     cases=data.get("measurements")
     if not isinstance(cases,list) or len(cases)!=44:
         raise ValueError("NOT_44_NATIVE_POSES")
-    ids=set()
-    for row in cases:
-        if not isinstance(row,dict) or row["case_id"] in ids:
-            raise ValueError("DUPLICATE_OR_INVALID_CASE")
-        ids.add(row["case_id"])
-        if row.get("native_status")!="NOT_RUN":
-            raise ValueError("UNAUTHORIZED_FAKE_NATIVE_RESULT")
-        if any(v is not None for k,v in row.items() if
-                k.startswith("actual_") or k.endswith("_sha256") or
-                k in ("unity_nunit_case_name","unity_exit_code","screenshot_sha256","physical_failure_reason")):
-            raise ValueError("ORIGINAL_NATIVE_EVIDENCE_WAS_NOT_RUN")
     if data.get("producer_source_sha")!=PART_SHA or data.get("qa_operator_source_sha")!=OPERATOR_SHA:
         raise ValueError("SOURCE_VERSION_NOT_PINNED")
+    if data.get("catalog_git_blob")!=CATALOG_BLOB or data.get("unity_version_required")!="6000.3.14f1":
+        raise ValueError("NATIVE_INTAKE_CONTRACT_MISMATCH")
+    if data.get("native_case_count")!=44 or data.get("evidence_origin")!="BLANK_SOURCE_TEMPLATE_NOT_A_UNITY_EXECUTION":
+        raise ValueError("FALSE_NATIVE_EVIDENCE_PROVENANCE")
     if data.get("gates")!={"G0":"SOURCE_ONLY","G1":"NOT_RUN","G2":"HOLD"}:
         raise ValueError("MUST_NOT_CLAIM_NATIVE_ACCEPTANCE")
+    if data.get("schema")!="B01-PARTSIZE-NATIVE-44-INTAKE-v1" or data.get("owner")!="B01-23" or data.get("intended_native_qa")!="B01-60":
+        raise ValueError("NATIVE_INTAKE_OWNER_SCHEMA_MISMATCH")
+    expected=[blank_row(k,y) for k in KINDS for y in YAWS]
+    if cases!=expected:
+        raise ValueError("POSE_LIST_OR_NATIVE_NULL_FIELDS_CHANGED")
     return True
 
 def build_template_dummy():
