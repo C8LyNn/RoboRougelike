@@ -1,0 +1,14 @@
+{
+    "status": "PASS",
+    "error": "",
+    "method": "API-controlled victory, save, restart and resume; not human play",
+    "separateSlot": true,
+    "saved": true,
+    "restarted": true,
+    "loaded": true,
+    "ids": true,
+    "balance": true,
+    "damage": true,
+    "repeatedLoadRejected": true,
+    "nextFight": true
+}
