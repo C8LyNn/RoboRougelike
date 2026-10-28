@@ -1,0 +1,67 @@
+name: B01-30 PASS17 original UnityPackage URP receiver
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/TechArt/P17/unity-material-import/**'
+      - '.github/workflows/b01-30-pass17-unitymaterial-import.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-png-to-genuine-unitypackage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin MAT-A1-001 exact immutable original generator and authoring commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/336/head
+          test "$(git rev-parse FETCH_HEAD)" = "171983f85ff41df6ef33b95939cc877ba68e03ca"
+          test "$(git rev-parse FETCH_HEAD:Tools/B01/TechArt/P17/materials/generate_materials.py)" = "171d53bc7d5a4840a067af5c934a8fd1c7ad774e"
+          mkdir -p build/B01-30/MAT-IMPORT-001-stage
+          git archive FETCH_HEAD Tools/B01/TechArt/P17/materials/generate_materials.py | tar -x -C build/B01-30/MAT-IMPORT-001-stage
+      - name: Real original pixel generator, Python binary verification and C# compiler
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-pil mono-mcs
+          python3 --version
+          mcs --version
+          python3 -m py_compile Tools/B01/TechArt/P17/unity-material-import/build_unitypackage.py Tools/B01/TechArt/P17/unity-material-import/verify_unitypackage.py
+      - name: Execute original MAT-A1-001 producer from exact source
+        run: |
+          python3 build/B01-30/MAT-IMPORT-001-stage/Tools/B01/TechArt/P17/materials/generate_materials.py --size 512 --out build/B01-30/MAT-IMPORT-001-original
+      - name: Build REAL Unity .unitypackage from original texture PNG binaries
+        run: |
+          python3 Tools/B01/TechArt/P17/unity-material-import/build_unitypackage.py --original build/B01-30/MAT-IMPORT-001-original --out build/B01-30/MAT-IMPORT-001
+      - name: Independently decode actual Unity package archive, source bytes, GUIDs, and negative mutants
+        run: |
+          python3 Tools/B01/TechArt/P17/unity-material-import/verify_unitypackage.py --original build/B01-30/MAT-IMPORT-001-original --built build/B01-30/MAT-IMPORT-001
+      - name: Compile ORIGINAL C# importer and execute real semantics using explicit Unity API shims
+        shell: bash
+        run: |
+          set -euo pipefail
+          mcs -define:UNITY_EDITOR -out:build/B01-30/MAT-IMPORT-001/InstallerShimTests.exe \
+            Tools/B01/TechArt/P17/unity-material-import/MatA1Installer.cs \
+            Tools/B01/TechArt/P17/unity-material-import/test_installer_mono.cs
+          mono build/B01-30/MAT-IMPORT-001/InstallerShimTests.exe
+      - name: Generate a second independent UNITYPACKAGE and prove identical bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/TechArt/P17/unity-material-import/build_unitypackage.py --original build/B01-30/MAT-IMPORT-001-original --out build/B01-30/MAT-IMPORT-001-replay
+          cmp build/B01-30/MAT-IMPORT-001/B01-30-MAT-IMPORT-001-R1.unitypackage build/B01-30/MAT-IMPORT-001-replay/B01-30-MAT-IMPORT-001-R1.unitypackage
+          echo B01_30_MAT_IMPORT_REAL_BINARY_REPLAY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17-MAT-IMPORT-001-original-UnityPackage
+          path: |
+            build/B01-30/MAT-IMPORT-001/B01-30-MAT-IMPORT-001-R1.unitypackage
+            build/B01-30/MAT-IMPORT-001/MAT-IMPORT-001-receipt.json
+            build/B01-30/MAT-IMPORT-001/MAT-IMPORT-001-verified.json
+          if-no-files-found: error
+          retention-days: 30

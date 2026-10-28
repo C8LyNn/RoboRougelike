@@ -1,0 +1,54 @@
+{
+  "package_id": "B01-30-MAT-IMPORT-001",
+  "version": "R1",
+  "owner": "B01-30",
+  "scope": "isolated, actually generated native Unity .unitypackage and optional C# Editor importer for pre-existing MAT-A1-001 source PNGs",
+  "branch": "feature/b01-30-pass17-urp-material-import-receiver",
+  "source_dependency": {
+    "owner_pr": 336,
+    "commit": "171983f85ff41df6ef33b95939cc877ba68e03ca",
+    "generator_blob": "171d53bc7d5a4840a067af5c934a8fd1c7ad774e",
+    "input_format": "eight 512x512 original RGBA PNGs"
+  },
+  "file_ownership": [
+    "Tools/B01/TechArt/P17/unity-material-import/**",
+    ".github/workflows/b01-30-pass17-unitymaterial-import.yml"
+  ],
+  "outputs": {
+    "package": "build/B01-30/MAT-IMPORT-001/B01-30-MAT-IMPORT-001-R1.unitypackage",
+    "unity_asset_scope": "Assets/B0130MATPack01/**",
+    "embedded_png_count": 8,
+    "embedded_editor_installers": 1,
+    "embedded_instructions": 1,
+    "generated_materials_after_menu": 2
+  },
+  "requirements": [
+    "Python3 standard library",
+    "original MAT-A1 generator source",
+    "Pillow for source PNG contact sheet",
+    "Mono MCS test/shims for offline compile",
+    "Unity Editor 6000.3.14f1 plus URP Lit only for future native acceptance"
+  ],
+  "quality_gate": [
+    "verify actual byte identity against original 8 PNGs",
+    "tar member count and scope",
+    "stable GUIDs and matching .meta",
+    "mutated source PNG, meta GUID, missing asset expected rejection",
+    "original C# compiled/executed with Unity API shims",
+    "deterministic binary reproduction"
+  ],
+  "state": "DRAFT_NOT_OFFERED_NOT_INTEGRATED",
+  "not_run": [
+    "actual Unity package import",
+    "actual Unity URP shader compilation",
+    "real 3D mesh lookdev",
+    "B01-60 independent G1"
+  ],
+  "receivers": [
+    "B01-40",
+    "B01-60",
+    "B01-00",
+    "Codex after explicit claim"
+  ],
+  "rollback": "delete only Assets/B0130MATPack01 after restoring references; builder removes only build/B01-30/MAT-IMPORT-001*"
+}
