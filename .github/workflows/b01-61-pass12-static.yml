@@ -3,7 +3,7 @@ on:
   push:
     branches: ['qa/b01-61-pass12-cross-feature']
   pull_request:
-    paths: ['Tools/B01/B01-61-PASS12/**', '.github/workflows/b01-61-pass12-static.yml']
+    paths: ['Tools/B01/B01-61-PASS12/**', 'Tools/B01/B01-61-PASS15/**', '.github/workflows/b01-61-pass12-static.yml']
 permissions:
   contents: read
 jobs:
