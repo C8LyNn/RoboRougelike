@@ -1,0 +1,28 @@
+{
+  "packageId": "MAPGEN-ARENA-P16",
+  "schemaVersion": 1,
+  "originalMapgenOwnerCommit": "5be31039411f89f17654b1c332f8692883fa03cc",
+  "originalMapgenRecipe": "CombatArena",
+  "requiredUnityVersion": "6000.3.14f1",
+  "profiles": ["Light", "Heavy"],
+  "variants": [
+    {
+      "id": "P16-ARENA-A-OPEN",
+      "label": "Otwarte flanki — swobodne objeżdżanie",
+      "config": {"Segments":4, "ObstacleDensity":25, "Difficulty":0.25, "LaneWidth":16.0},
+      "seeds": [7,31,83,109,202,407]
+    },
+    {
+      "id": "P16-ARENA-B-COVER",
+      "label": "Boczne osłony — średni dystans",
+      "config": {"Segments":4, "ObstacleDensity":60, "Difficulty":0.55, "LaneWidth":16.0},
+      "seeds": [7,31,83,109,202,407]
+    },
+    {
+      "id": "P16-ARENA-C-DENSE",
+      "label": "Gęste skrzydła — ryzykowne flankowanie",
+      "config": {"Segments":4, "ObstacleDensity":90, "Difficulty":0.85, "LaneWidth":16.0},
+      "seeds": [7,31,83,109,202,407]
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "package_id": "MAPGEN-ARENA-P16",
+  "status": "RESEARCH_DATA_SOURCE_CSHARP_TESTED_NOT_INTEGRATED",
+  "owner": "B01-20",
+  "revision": "P16-R1",
+  "original_mapgen_producer": {
+    "pull_request": 237,
+    "immutable_sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+    "recipe": "CombatArena",
+    "unity_version": "6000.3.14f1",
+    "source_files": [
+      {
+        "path": "Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs",
+        "git_blob": "b586a5bfc697bc37edbf98bb936459aeebe694c6"
+      },
+      {
+        "path": "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs",
+        "git_blob": "89ff64e12f278f2c9393ad542161a9387e1f4117"
+      },
+      {
+        "path": "Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs",
+        "git_blob": "4e4bee443a60abb3b284e8c546203096095e12bd"
+      },
+      {
+        "path": "Tools/B01/MAPGEN001/Headless/UnitySurrogate.cs",
+        "role": "HEADLESS_ONLY_NO_NATIVE_UNITY",
+        "git_blob": "68f30fc4c49db21d90b143cf9bc13d230ad06184"
+      }
+    ]
+  },
+  "package_source_parent_commit": "c255ad1443925d77c5c34560ead7b3d1db901ac8",
+  "package_files": [
+    {
+      "path": "Research/B01-20/P16/MAPGEN-ARENA/presets.json",
+      "git_blob": "5a0c8f0ce1f7226261352e9200cd2b5a64ce19c3"
+    },
+    {
+      "path": "Research/B01-20/P16/MAPGEN-ARENA/ArenaProgram.cs",
+      "git_blob": "0e71b9c3be6c608d78924caa20b58c6c76d585fe"
+    },
+    {
+      "path": "Research/B01-20/P16/MAPGEN-ARENA/MapgenArenaP16.csproj",
+      "git_blob": "138d1a8d4654f6d7b3907cb152ebab643385ebeb"
+    },
+    {
+      "path": "Research/B01-20/P16/MAPGEN-ARENA/validate_blueprints.py",
+      "git_blob": "51e378637336efaff05a26995c7ba23136388af6"
+    },
+    {
+      "path": "Research/B01-20/P16/MAPGEN-ARENA/render_arenas.py",
+      "git_blob": "73daece38c1bdfc9eb0143dff7af9ff45568b2c1"
+    },
+    {
+      "path": "Research/B01-20/P16/MAPGEN-ARENA/README.md",
+      "git_blob": "ac25034b017fb9d401ef038f182832e274160e7b"
+    },
+    {
+      "path": ".github/workflows/b01-20-p16-mapgen-arena.yml",
+      "git_blob": "c9db464e32e38df82b464d84a6617271076b2b5f"
+    }
+  ],
+  "three_variants": [
+    {
+      "id": "P16-ARENA-A-OPEN",
+      "density": 25,
+      "difficulty": 0.25
+    },
+    {
+      "id": "P16-ARENA-B-COVER",
+      "density": 60,
+      "difficulty": 0.55
+    },
+    {
+      "id": "P16-ARENA-C-DENSE",
+      "density": 90,
+      "difficulty": 0.85
+    }
+  ],
+  "seeds": [
+    7,
+    31,
+    83,
+    109,
+    202,
+    407
+  ],
+  "profiles": [
+    "Light",
+    "Heavy"
+  ],
+  "source_receipt": {
+    "actual_CSharp_original_planner_route_calls": 36,
+    "exported_blueprints": 18,
+    "unique_geometry_hashes": 18,
+    "original_planner_negative_inputs_rejected": 6,
+    "exported_SVG_previews": 18,
+    "HTML_gallery": true,
+    "mean_cover_blocks_by_variant": [
+      4.83,
+      9.33,
+      14.5
+    ],
+    "github_actions_run": 40722913643,
+    "windows_artifact": 12832225913,
+    "ubuntu_artifact": 12832075474,
+    "evidence_type": "ORIGINAL_CSHARP_WITH_HEADLESS_UNITY_MATH_SURROGATE",
+    "native_unity": "NOT_RUN",
+    "physx_drives": 0
+  },
+  "independent_qa": {
+    "B01_40": "PENDING",
+    "B01_60": "PENDING"
+  },
+  "codex_receive": {
+    "inbox_issue": 79,
+    "actual_generator_integration": "NOT_CLAIMED",
+    "manual_requirement": "Only after approval reproduce exact recipe/config/seed in approved Unity project; validate Light/Heavy physical runs and collision; no MapDocument-v2 import",
+    "g0": "PENDING_INDEPENDENT",
+    "g1": "NOT_RUN",
+    "g2": "HOLD"
+  }
+}
