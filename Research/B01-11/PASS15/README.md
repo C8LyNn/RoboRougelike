@@ -51,3 +51,17 @@ node Research/B01-11/PASS15/garage_functional_source_receiver.js .
 **Owner B01-12 minimal acceptance after fix:** with drive = Tracks, both tracks 100HP, schematics must visually distinguish each installed left/right track and its HP from wheels/Omni/Hover. Damage Track R to 0HP must change its *visual* state as well as the already-correct `CRITICAL_MOBILITY` card; swapping drive Wheels ↔ Tracks must keep actual mounted state without lying about active drive. Owner can choose responsive substitution or two additional accessible cells rather than enlarging the fixed 3×3 grid; verify **320/720/1080** in genuine Chromium after changing the exact source SHA. The V8 source predicate for original missing-track cells must be updated if a semantically equivalent alternate schematic is chosen.
 
 No edits to B01-12 files, Codex `Assets/**`, CHL or PARTSIZE. **Native Unity and human participants NOT_RUN.** Current 320–1920 original research HUD3 browser defects still await B01-12 fix and changed SHA; previous 64/64 positive +12/12 EXPECTED_RED not rerun.
+
+## PASS15 continuation / cycle 3 — HUD3 owner's real changed source FIX VERIFIED in Chromium
+
+**NEW owner HTML commit:** [`f7169efa7291641fbae7f5e81a224adc586d56f8`](https://github.com/C8LyNn/RoboRougelike/blob/f7169efa7291641fbae7f5e81a224adc586d56f8/Research/B01-12/W70/HUD3-overflow.html), original Git blob **`e73b57e52ca0706bcf739340f5b06dd66b55e104`**, SHA256 **`df857d206855437608ac94421a354ef9112366e0ac91d120ac03d772bb5a6884`**. Verified **exact source string equality against GitHub connector** and independently reconstructed exact 12,710 bytes from earlier hash-verified 12,443-byte source using only the two actual owner diff replacements (CSS `.participant #coverage{display:none!important}` and truthful `#participantHelp` assignment based on actual disclosure visibility). Reconstructed **Git blob SHA-1 matches the original GitHub blob byte-for-byte**. No B01-12 source modified by receiver.
+
+**Independent real browser run:** published [`hud3_fix_retest.py`](hud3_fix_retest.py) on the immutable exact new HTML with **Chromium `144.0.7559.96` + Python Playwright `1.57.0`**, at 320/720/1280/1920 CSS px. **76/76 browser checks PASS; 12/12 former participant-blinding/help RED → GREEN**, 0 JS errors. Original F1/F2 later guns priorities, group alerts and B disclosure keyboard behavior remain GREEN. Genuine 320, 720, 1280 browser screenshots were captured from **this exact new original source**; zipped private/local evidence (6 files, CRC PASS), not a GitHub Actions or Unity artifact.
+
+```sh
+# Git object new owner fix must be available locally:
+git show f7169efa7291641fbae7f5e81a224adc586d56f8:Research/B01-12/W70/HUD3-overflow.html >/tmp/HUD3-fixed.html
+python3 Research/B01-11/PASS15/hud3_fix_retest.py /tmp/HUD3-fixed.html
+```
+
+**Verdict:** both previously independently reproduced **research participant mode** faults now **FIX_VERIFIED at real Chromium/source SHA**. This is **not** a game integration, actual screen-reader user session, HUD third-gun canonical Unity fix, real human preference result, native G1 nor G2. Current Codex #310 original R6RangeHUD still requires Codex ownership and existing CV-06. Garage visual missing Tracks L/R is a **separate** independent prototype issue, unaffected by owner HUD3 change.
