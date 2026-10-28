@@ -1,0 +1,58 @@
+name: B01-41 P17 Unity serialized retired GUID references (SOURCE ONLY)
+on:
+  push:
+    branches: ['audit/b01-41-p17-unity-serialized-reference-gate']
+    paths:
+      - 'Tools/B01/CI41/P17/**'
+      - '.github/workflows/b01-41-p17-unity-retired-guid.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-serialized-guid-guard:
+    name: Unity GUID source integrity (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin exact original B01-41 test tool Git blobs and Unity main
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17/unity_ref_gate.py)" = 'ae1d50bb06f654d3d69d4f3d4dc5940b78be36bc'
+          test "$(git hash-object Tools/B01/CI41/P17/test_unity_ref_gate.py)" = 'd3a8834cd68c9f2ae90a4a57979cddb278ba53ac'
+          git cat-file -e '5f06af81e2dd9d877e4300259bb3dd008cb9c9d1^{commit}'
+          echo 'SOURCE_ONLY_CI41_P17_ORIGINAL_QA_BLOBS_PINNED'
+      - name: Fetch exact original Codex Unity source without modifying game
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=200 origin '+refs/pull/310/head:refs/remotes/origin/ci41-p17-codex'
+          git cat-file -e '682dc0c5c13615577334375ffb6c27be5cdebf4a^{commit}'
+          echo 'CODEX_ORIGINAL_COMMIT_AVAILABLE_FOR_READ_ONLY_UNITY_YAML_QA'
+      - name: Execute genuine original-Git reference deletion and repair tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17 -p test_unity_ref_gate.py -v 2>&1 | tee "Tools/B01/CI41/P17/result-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_GIT_DELETED_SCRIPT_STILL_REFERENCED_BY_UNCHANGED_SCENE=RED' "Tools/B01/CI41/P17/result-${RUNNER_OS}.txt"
+          grep -q 'REMOVED_SCRIPT_WITH_CLEANED_SCENE=PASS' "Tools/B01/CI41/P17/result-${RUNNER_OS}.txt"
+          grep -q 'META_RELOCATION_PRESERVE_GUID=PASS' "Tools/B01/CI41/P17/result-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_MAIN_TO_CODEX_ASSET_HANDOFF_NO_RETIRED_LOCAL_GUID_DANGLING=PASS' "Tools/B01/CI41/P17/result-${RUNNER_OS}.txt"
+          echo 'CI41_UNITYREF_001_SOURCE_ONLY_PASS; NATIVE_UNITY=NOT_RUN; G1=HOLD'
+      - name: Upload only original source-test log (not Unity evidence)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-P17-UNITYREF-${{ matrix.os }}
+          path: Tools/B01/CI41/P17/result-${{ runner.os }}.txt
+          if-no-files-found: warn
+          retention-days: 14
