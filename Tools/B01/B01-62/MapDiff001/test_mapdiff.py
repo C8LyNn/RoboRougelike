@@ -35,7 +35,7 @@ class PhysicalMapDiffTests(unittest.TestCase):
         return m.run(self.a, self.b, self.out)
 
     def test_A01_original_bytes_remain_unmodified(self):
-        before, after = doc([item()]), doc([item(1, 2)])
+        before, after = doc([item()]), doc([item(), item(1, 2)])
         report = self.compare(before, after)
         self.assertEqual(before, self.a.read_bytes())
         self.assertEqual(after, self.b.read_bytes())
