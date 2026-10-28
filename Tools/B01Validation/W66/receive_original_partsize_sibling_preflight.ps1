@@ -16,12 +16,12 @@ $two=Join-Path $base 'producer-two'
 $outside=Join-Path $base 'external-receipts'
 $counter=0
 function VerifyGit([string]$what){
-  if($LASTEXITCODE -ne 0){throw "GIT_FAILED:$what:$LASTEXITCODE"}
+  if($LASTEXITCODE -ne 0){throw "GIT_FAILED:${what}:$LASTEXITCODE"}
 }
 function Allow([string]$name,[string]$evidence){
   $out=(& $operator -UnityEditor $fakeUnity -ProjectPath $one -EvidenceDir $evidence -PreflightOnly *>&1 | Out-String)
   if($out -notmatch 'PARTSIZE_DISPOSABLE_PREFLIGHT_PASS' -or $out -notmatch 'G1 NOT_RUN'){
-    throw "UNEXPECTED_POSITIVE_REFUSAL:$name:$out"
+    throw "UNEXPECTED_POSITIVE_REFUSAL:${name}:$out"
   }
   $script:counter++
   Write-Host "INDEPENDENT_W66_ALLOW:$name"
@@ -32,7 +32,7 @@ function Deny([string]$name,[string]$evidence,[string]$reason){
   catch { $err=$_.Exception.Message }
   if(!$err.Contains($reason)){throw "SIBLING_NEGATIVE_FAIL_OPEN:$name need=$reason got=$err"}
   $script:counter++
-  Write-Host "INDEPENDENT_W66_DENY:$name:$reason"
+  Write-Host "INDEPENDENT_W66_DENY:${name}:$reason"
 }
 New-Item -ItemType Directory -Path $base -Force | Out-Null
 try {
