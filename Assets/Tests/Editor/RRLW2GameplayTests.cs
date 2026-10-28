@@ -41,7 +41,7 @@ public class RRLW2GameplayTests
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0,1,2}),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Assert.That(run.StartNextEncounter(),Is.True);yield return Until(()=>run.Progress.State==R1RunState.Route,"Next route");
     }
-    [UnityTest] public IEnumerator RealDestroyedEnemyGunIsStoredRebuiltForFullPriceAndMounted()
+    [UnityTest] public IEnumerator RealDestroyedEnemyGunIsStoredRebuiltAtDiscountAndMounted()
     {
         yield return Combat();var enemy=run.Encounter.Enemies[0];
         enemy.WeaponBlock.ApplyDamage(100000,enemy.WeaponBlock.transform.position,Vector3.up);
@@ -52,7 +52,7 @@ public class RRLW2GameplayTests
         Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(3));Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==wreck.Id).Health,Is.Zero);
         var cell=new Vector3Int(1,2,0);int before=run.VehicleModel.Scrap;
         Assert.That(run.GarageMount(wreck.Id,cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));
-        Assert.That(run.GarageRepairInventory(wreck.Id),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-36));
+        Assert.That(run.GarageRepairInventory(wreck.Id),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-13));
         Assert.That(run.GarageRepairInventory(wreck.Id),Is.False);Assert.That(run.GarageMount(wreck.Id,cell),Is.True);
         var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wreck.Id);
         Assert.That(mounted.Damageable.CurrentHp,Is.EqualTo(mounted.Damageable.MaxHp));

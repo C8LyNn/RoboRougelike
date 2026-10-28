@@ -65,7 +65,7 @@ public class R4CombatTests
         int before=Run.VehicleModel.Scrap;Assert.That(RRLW2TestFlow.Claim(Run,new[]{gun.Id}),Is.True);
         Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==gun.Id).Health,Is.Zero);
         int after=Run.VehicleModel.Scrap;Assert.That(after,Is.GreaterThan(before));Assert.That(Run.GarageMount(gun.Id,new Vector3Int(1,2,0)),Is.False);
-        Assert.That(Run.GarageRepairInventory(gun.Id),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after-36));
+        Assert.That(Run.GarageRepairInventory(gun.Id),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after-13));
         after=Run.VehicleModel.Scrap;
         Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.False);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after));

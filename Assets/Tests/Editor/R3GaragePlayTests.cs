@@ -134,9 +134,9 @@ public class R3GaragePlayTests
         Assert.That(Run.VehicleModel.At(armorCell).Health,Is.EqualTo(0.75f).Within(0.01));
         Assert.That(Run.GarageRepair(Vector3Int.zero),Is.True);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-1));
-        Assert.That(Run.GarageRepair(wheelCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-16));
+        Assert.That(Run.GarageRepair(wheelCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-7));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(12));
-        Assert.That(Run.GarageRepair(armorCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-17));
+        Assert.That(Run.GarageRepair(armorCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-8));
         Assert.That(Run.GarageBuy(new Vector3Int(0,2,-2),R3PartKind.Armor),Is.True,Run.VehicleModel.PlacementError(new Vector3Int(0,2,-2),R3PartKind.Armor));
         Assert.That(Run.GarageBuy(new Vector3Int(1,2,0),R3PartKind.Gun),Is.True);
         Assert.That(Run.GarageBuy(new Vector3Int(0,0,4),R3PartKind.Wheel,new Vector3Int(0,1,0)),Is.True);
@@ -206,7 +206,7 @@ public class R3GaragePlayTests
         assembly.Capture();int scrap=Run.VehicleModel.Scrap;
         Assert.That(Run.StartNextEncounter(),Is.False);
         Assert.That(Run.GarageEmergencyRepair(),Is.True);
-        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap-60));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap-23));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(2));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));
         Assert.That(Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health<=0),Is.EqualTo(10));
         foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))

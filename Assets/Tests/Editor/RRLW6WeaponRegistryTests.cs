@@ -36,7 +36,7 @@ public class RRLW6WeaponRegistryTests
         Assert.That(recovered.Ammo,Is.EqualTo(5));Assert.That(recovered.Health,Is.Zero);
         model.Award(45);int before=model.Scrap;
         Assert.That(model.RepairInventory(recovered.Id),Is.True);
-        Assert.That(model.Scrap,Is.EqualTo(before-45));
+        Assert.That(model.Scrap,Is.EqualTo(before-16));
         var copy=model.DeepCopy().Inventory.Single();
         Assert.That(copy.Id,Is.EqualTo("real-shotgun"));Assert.That(copy.Weapon,Is.EqualTo(R4WeaponKind.Shotgun));
         Assert.That(copy.Health,Is.EqualTo(1));Assert.That(copy.Ammo,Is.EqualTo(5));
