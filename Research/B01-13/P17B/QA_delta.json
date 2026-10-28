@@ -1,0 +1,176 @@
+{
+  "package": "AIM-DELTA001/R1",
+  "source": "aim_delta.py",
+  "original_dependency": "AIM-OBS001/R1 GitHub Draft #349 verifier SHA256 8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
+  "environment": "real Chromium Linux Playwright / Python Pillow, synthetically generated original bytes",
+  "human_count": 0,
+  "unity": "NOT_RUN",
+  "tests": [
+    {
+      "case": "cli_verified_original_receiver",
+      "pass": true
+    },
+    {
+      "case": "cli_structural_status",
+      "pass": true
+    },
+    {
+      "case": "output_was_written",
+      "pass": true
+    },
+    {
+      "case": "private_output_0600",
+      "pass": true
+    },
+    {
+      "case": "four_real_image_pairs",
+      "pass": true
+    },
+    {
+      "case": "original_private_images_embedded",
+      "pass": true
+    },
+    {
+      "case": "both_sha_printed",
+      "pass": true
+    },
+    {
+      "case": "delta_positive_numeric",
+      "pass": true
+    },
+    {
+      "case": "no_unsafe_note_in_html",
+      "pass": true
+    },
+    {
+      "case": "privacy_warning_rendered",
+      "pass": true
+    },
+    {
+      "case": "network_blocking_CSP",
+      "pass": true
+    },
+    {
+      "case": "no_auto_gameplay_pass",
+      "pass": true
+    },
+    {
+      "case": "chromium_renders_images",
+      "pass": true
+    },
+    {
+      "case": "first_case_shows",
+      "pass": true
+    },
+    {
+      "case": "other_cases_hidden",
+      "pass": true
+    },
+    {
+      "case": "eight_original_image_objects",
+      "pass": true
+    },
+    {
+      "case": "before_after_dimensions",
+      "pass": true
+    },
+    {
+      "case": "marker_default_visible",
+      "pass": true
+    },
+    {
+      "case": "marker_R_T_exist",
+      "pass": true
+    },
+    {
+      "case": "impact_case_shows_three_each",
+      "pass": true
+    },
+    {
+      "case": "scenario_switch_visually",
+      "pass": true
+    },
+    {
+      "case": "scenario_first_hidden_after_switch",
+      "pass": true
+    },
+    {
+      "case": "annotations_toggle_off",
+      "pass": true
+    },
+    {
+      "case": "annotations_toggle_on",
+      "pass": true
+    },
+    {
+      "case": "1280_no_horizontal_scroll",
+      "pass": true
+    },
+    {
+      "case": "1280_original_image_marker_alignment",
+      "pass": true
+    },
+    {
+      "case": "720_no_horizontal_scroll",
+      "pass": true
+    },
+    {
+      "case": "720_original_image_marker_alignment",
+      "pass": true
+    },
+    {
+      "case": "320_no_horizontal_scroll",
+      "pass": true
+    },
+    {
+      "case": "320_original_image_marker_alignment",
+      "pass": true
+    },
+    {
+      "case": "no_JS_runtime_errors",
+      "pass": true
+    },
+    {
+      "case": "no_external_requests",
+      "pass": true
+    },
+    {
+      "case": "repeat_write_rejected",
+      "pass": true
+    },
+    {
+      "case": "missing_privacy_confirmation_rejected",
+      "pass": true
+    },
+    {
+      "case": "wrong_after_zip_rejected",
+      "pass": true
+    },
+    {
+      "case": "same_session_rejected",
+      "pass": true
+    },
+    {
+      "case": "human_embed_refused",
+      "pass": true
+    },
+    {
+      "case": "mismatched_AB_groups_rejected",
+      "pass": true
+    },
+    {
+      "case": "altered_image_dimensions_rejected",
+      "pass": true
+    },
+    {
+      "case": "untrusted_receiver_SHA_rejected",
+      "pass": true
+    },
+    {
+      "case": "no_partial_output_after_reject",
+      "pass": true
+    }
+  ],
+  "pass": 41,
+  "fail": 0
+}
