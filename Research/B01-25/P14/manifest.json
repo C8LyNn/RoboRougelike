@@ -1,0 +1,37 @@
+{
+  "schema": "B01-25-P14-bounded-LD02",
+  "source": {
+    "codex": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "draftBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+    "worldBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+    "editorBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "oldLD02MINCommit": "167f0e4b09b866c4a46787c434ea9ec97b223595",
+    "oldLD02MINBlob": "0ef8bc8ebcd1899f905ac87524b40fcc45ce9fb9"
+  },
+  "fixture": {
+    "path": "Research/B01-25/P14/LD02_ARENA.json",
+    "name": "B01_25_LD02_ARENA_P14",
+    "fileName": "B01_25_LD02_ARENA_P14.json",
+    "version": 2,
+    "globalFloor": false,
+    "gridMeters": 4,
+    "widthCells": 12,
+    "depthCells": 10,
+    "ground": 120,
+    "perimeterWalls": 40,
+    "pillars": 4,
+    "lowBarriers": 2,
+    "spawn": [
+      2,
+      5
+    ],
+    "finish": [
+      9,
+      5
+    ],
+    "totalItems": 168
+  },
+  "status": "DATA_READY__UNITY_NOT_RUN",
+  "noOverwrites": true,
+  "cvQueue": "CV-05 existing; addendum only"
+}
