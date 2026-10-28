@@ -43,6 +43,26 @@
         "latest full EditMode retest",
         "independent native Unity G1"
       ]
+    },
+    {
+      "code": "P16_REWARD_ATOMICITY",
+      "script": "Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py",
+      "game_before_sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+      "game_after_sha": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+      "game_controller_original_before_blob": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
+      "game_controller_original_after_blob": "3db48a98faba36e124f13aef543f6a89e7c49147",
+      "source_files": [
+        "Docs/P16Reward/Evidence/red.xml",
+        "Docs/P16Reward/Evidence/red-exit.txt",
+        "Docs/P16Reward/Evidence/regression.xml",
+        "Docs/P16Reward/Evidence/regression-exit.txt"
+      ],
+      "accepted_observation": "Original Unity EditMode invalid-reward-catalog one-case FAIL exit2 → 32/32 targeted regressions PASS exit0 on changed Codex game R1 controller, including reward and valid-kind positive controls",
+      "not_verified": [
+        "ordinary human gameplay",
+        "full post-change EditMode suite",
+        "B01-60 native Unity G1"
+      ]
     }
   ],
   "workflow": ".github/workflows/b01-60-p16-codex-receipts.yml",
