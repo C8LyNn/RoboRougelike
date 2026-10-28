@@ -1,0 +1,84 @@
+name: B01-40 P17 original VFX 12 Unity sprite imports
+on:
+  push:
+    branches: ['b01-40/p17-vfx-sprite-import-bridge']
+    paths:
+      - 'Tools/B01Validation/P17Vfx/**'
+      - '.github/workflows/b01-40-p17-vfx-sprite-import.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-art-import-pack:
+    name: Real B01-32 original SVG to 12 transparent Unity Sprites
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original producer exact render dependencies
+        run: python -m pip install "CairoSVG==2.7.1" "Pillow==11.3.0"
+      - name: Fetch original B01-32, original main Unity importer and Codex current source
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1
+          git fetch --no-tags --depth=1 origin 829ac8da9db83a49865d24fa05a5143f59d4b83f
+          git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
+      - name: Actually execute original 12-SVG pixel renderer, generate 12 import-ready PNG/.meta pairs
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17Vfx/sprite_import_bridge.py --repo . --out "$RUNNER_TEMP/b0140-vfx-real"
+      - name: Independently test real original PNG, alpha, metadata, immutable GUID and negative mutations
+        shell: bash
+        run: |
+          export B0140_P17_ARTIFACT="$RUNNER_TEMP/b0140-vfx-real/B0140-PartDamageDecals-UnitySpriteSingles.zip"
+          python Tools/B01Validation/P17Vfx/test_sprite_bridge.py -v
+          python Tools/B01Validation/P17Vfx/sprite_import_bridge.py --repo . --verify-zip "$B0140_P17_ARTIFACT"
+      - name: Generate again in separate temporary checkout and confirm fully reproducible artifact bytes
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17Vfx/sprite_import_bridge.py --repo . --out "$RUNNER_TEMP/b0140-vfx-repeat"
+          cmp "$RUNNER_TEMP/b0140-vfx-real/B0140-PartDamageDecals-UnitySpriteSingles.zip" "$RUNNER_TEMP/b0140-vfx-repeat/B0140-PartDamageDecals-UnitySpriteSingles.zip"
+          sha256sum "$RUNNER_TEMP/b0140-vfx-real/B0140-PartDamageDecals-UnitySpriteSingles.zip"
+          echo 'REAL ORIGINAL RENDER TWICE BYTE IDENTICAL; UNITY=NOT_RUN'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0140-P17-original-Unity-SpriteSingles
+          path: ${{ runner.temp }}/b0140-vfx-real/
+          if-no-files-found: error
+          retention-days: 14
+  independent-windows-readback:
+    name: Windows actual original render artifact and Unity-meta readback
+    needs: original-art-import-pack
+    runs-on: windows-2025
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pixel decoder (no Windows re-render claim)
+        run: python -m pip install "Pillow==11.3.0"
+      - name: Fetch exact original art and Codex source objects
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1
+          git fetch --no-tags --depth=1 origin 829ac8da9db83a49865d24fa05a5143f59d4b83f
+          git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0140-P17-original-Unity-SpriteSingles
+          path: ${{ runner.temp }}/b0140-vfx-real
+      - name: Execute independent real PNG pixels and Unity import metadata checks on Windows
+        shell: bash
+        run: |
+          export B0140_P17_ARTIFACT="$RUNNER_TEMP/b0140-vfx-real/B0140-PartDamageDecals-UnitySpriteSingles.zip"
+          python Tools/B01Validation/P17Vfx/test_sprite_bridge.py -v
+          python Tools/B01Validation/P17Vfx/sprite_import_bridge.py --repo . --verify-zip "$B0140_P17_ARTIFACT"
+          echo 'WINDOWS ACTUAL ORIGINAL ARTIFACT RECEIVER PASS; NATIVE UNITY/URP=NOT_RUN'
