@@ -1,0 +1,67 @@
+{
+  "schema": "B01-package-manifest/1.0",
+  "package_id": "MAPSAFE-001",
+  "version": "R1",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "role": "Offline map-editor backup and recovery utility",
+  "branch": "tools/b01-62-p17-mapsafe001",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/347",
+  "predecessor_source_commit": "ecc0ef82c629437dfa993eb2a5a717e39e668687",
+  "path_scope": "Tools/B01/B01-62/MapSafe001/** and .github/workflows/b01-62-mapsafe-001.yml only",
+  "file_git_blobs": {
+    "Tools/B01/B01-62/MapSafe001/mapsafe.py": "7748b554ce75a4988a7e4099845dc82d5d6c48e4",
+    "Tools/B01/B01-62/MapSafe001/test_mapsafe.py": "7bfb95906bb588cca89b1a0eb5e0bdbc5ad4c7ec",
+    "Tools/B01/B01-62/MapSafe001/smoke_ld02.py": "2f80b6ebaad0bf5407aaf3042e049ac47d75030c",
+    "Tools/B01/B01-62/MapSafe001/README.md": "6685d189cc656cf417d5f6979f7d9ee64040ec49",
+    ".github/workflows/b01-62-mapsafe-001.yml": "d8c30c300b41d503e8bb4dec5a8c1b63ad5e1d34"
+  },
+  "external_origins": {
+    "codex_pr": "https://github.com/C8LyNn/RoboRougelike/pull/310",
+    "immutable_map_fixture_commit": "a2ccd055070a963805cba0779b79f18489f4794f",
+    "real_json_git_blobs": {
+      "LD02_ARENA.json": "e39e2f174984832bd97311c050e3c22fd6fb1175",
+      "LD02_COVER_CHOICE.json": "8586312b9606d94b088e4e7640c28105e2d6bac1"
+    },
+    "original_item_counts": [
+      168,
+      173
+    ]
+  },
+  "dependencies": [
+    "Python 3.11+ standard library",
+    "Local Windows NTFS or POSIX filesystem with same-volume hardlink",
+    "Two existing distinct operator-selected directories Maps and Vault"
+  ],
+  "features": [
+    "Backup immutable-id snapshot with SHA-256",
+    "Verify and list snapshots",
+    "No-clobber atomic restore when file missing",
+    "Explicit SHA-matched replacement when existing",
+    "Automatic forensic undo snapshot before replace",
+    "Fail-closed filename/schema/symlink checks"
+  ],
+  "test_receipt": {
+    "test_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40728663412",
+    "status": "PENDING_FINAL_RUN",
+    "independent_unity": "NOT_RUN",
+    "game_player": "NOT_RUN",
+    "human_gui": "NOT_RUN"
+  },
+  "handoff": {
+    "producer": "B01-62",
+    "source_receiver": "B01-40",
+    "independent_quality": "B01-60",
+    "gameplay_integration": "Codex only",
+    "code_import": "Copy Tools/B01/B01-62/MapSafe001 into isolated workspace. Execute python mapsafe.py directly; do not move into Assets or hook into run-save automatically.",
+    "rollback": "Delete only the scoped tool folder and workflow. Never delete user vault snapshots automatically.",
+    "codex_inbox": "https://github.com/C8LyNn/RoboRougelike/issues/79",
+    "gating": "G0 candidate; G1 licensed Unity NOT_RUN; no merge, G2 HOLD"
+  },
+  "limitations": [
+    "Offline only: do not run while Unity/Player edits map",
+    "Conservative Json validator, not UnityEngine.JsonUtility",
+    "No whole-run save or safe concurrent game writes",
+    "No GUI/Windows Player validation, no automatic rollback from in-game game",
+    "No CODEX_ACK claimed"
+  ]
+}
