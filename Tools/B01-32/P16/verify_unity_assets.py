@@ -15,7 +15,7 @@ assert not manifest["gameplay_mutations"]
 print("MANIFEST_PASS package id, isolation and no native claims")
 
 all_meta = list(pack.rglob("*.meta"))
-assert len(all_meta) == 16, f"Expected 16 package .meta including folders; got {len(all_meta)}"
+assert len(all_meta) == 17, f"Expected 17 package .meta including folders; got {len(all_meta)}"
 guid_map={}
 for item in all_meta:
     source=item.read_text(encoding="utf8")
@@ -82,5 +82,5 @@ assert "AddComponent<Rigidbody>" not in gameplay+showcase
 assert all(k not in gameplay+showcase for k in ["R1RunController","R4SalvageLedger","Vfx001R6LiveBridge","ApplyDamageResolved("])
 assert all(k in gameplay for k in ["CreateHit()","CreateDetached()","CreateWarning()","private void OnDisable() => StopVisuals()"])
 print("ASSEMBLIES_AND_BOUNDARY_PASS 2 asmdefs, 3 authored UnityTests, visual-only C# constraints")
-print("SOURCE_G0_PASS 16/16 original metas, 3/3 original prefab YAML, 1/1 real scene YAML, 2 asmdefs, 3 authored UnityTests")
+print("SOURCE_G0_PASS 17/17 original metas, 3/3 original prefab YAML, 1/1 real scene YAML, 2 asmdefs, 3 authored UnityTests")
 print("UNITY_NATIVE_NOT_RUN C# APIs / actual scene import / rendered particles / PlayMode not executed")
