@@ -1,0 +1,43 @@
+{
+  "package_id": "AIM-DELTA001",
+  "version": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "owned_paths": "Research/B01-13/P17B/**",
+  "stacked_base_pr": 349,
+  "stacked_base_sha": "4ef06698e2ed6ada5e05b1a3e0a96b1c6aff5906",
+  "parent_receiver_git_blob": "70f93467fef1d5782ec4e5cbd6a8a98af6fd0b00",
+  "parent_receiver_sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
+  "source_game_dependency": "physical source-anchored AIM-OBS001 receipts, runtime SHA provided by operator",
+  "dependencies": [
+    "Python 3.11+",
+    "Pillow",
+    "original pinned P17 receiver; Chromium+Playwright for tests"
+  ],
+  "tests": {
+    "actual_original_receiver_and_browser": "41/41 PASS",
+    "python_compile": "PASS",
+    "unity": "NOT_RUN",
+    "win_player_gui": "NOT_RUN",
+    "human_participants": 0
+  },
+  "output_contains_full_private_images": true,
+  "game_integrated": false,
+  "files": {
+    "aim_delta.py": {
+      "sha256": "d81a746cfda958597070be465a50d122d76854ab2f70668a79933ad78b507750",
+      "bytes": 11008
+    },
+    "test_aim_delta.py": {
+      "sha256": "9256f8834c55608ebefe33cf3eedc95a7c659633db2a3c76f8a51c9eefbe3616",
+      "bytes": 9644
+    },
+    "QA_delta.json": {
+      "sha256": "edab9e3679ef1d9961a68a2b574d3f9f61de1e92c13890edb5476dc6a0c5fab0",
+      "bytes": 3452
+    },
+    "README.md": {
+      "sha256": "0c7936dfd123c2182faaa10123632bc24dc8e2a3ea3717ad47f4c25fcae6b373",
+      "bytes": 6058
+    }
+  }
+}
