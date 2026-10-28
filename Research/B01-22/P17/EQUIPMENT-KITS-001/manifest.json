@@ -1,0 +1,103 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-22-EQUIPMENT-KITS-001",
+  "revision": "1.0.0",
+  "owner": "B01-22",
+  "issue": 330,
+  "purpose": "10 source-pinned garage equipment offer datasets, offline quote/validation",
+  "unity_version": "6000.3.14f1",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": null,
+  "dependency_package_ids": [],
+  "files": [
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json",
+      "sha256": "2f831b0762a5624846ad3212c09b5a57d59a51d86b77a9c8d98663f414597e2c",
+      "bytes": 5676
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.mjs",
+      "sha256": "61a961d0de690a169db66a8d4a6c3cf21d52ea7760ca34fcce4c922f3f8d2ecb",
+      "bytes": 3104
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs",
+      "sha256": "5ad56cf02a9c74cf88659b1b36a5b87cc5217fa0178f8f64630c395c5b1bdade",
+      "bytes": 924
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs",
+      "sha256": "f4adc0e5ff76ccb564e0f939a7350b6430e6cf45a1b591febac39592d8a1c819",
+      "bytes": 2222
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/README.md",
+      "sha256": "51933f188310d37464bacc1a179e19fcbfe86c608307fe95ddecd891adc1a009",
+      "bytes": 1207
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/INSTALL_FOR_CODEX.md",
+      "sha256": "f5ce365e21dee2306dba1f746e21c2d8b430035134a91956f726d1a79f145dbf",
+      "bytes": 1250
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/KNOWN_LIMITATIONS.md",
+      "sha256": "3282d1e64e295fd1f22fb61d45d43f1f8c31b124205b10e9af90fdab9406bf1e",
+      "bytes": 748
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_PLAN.md",
+      "sha256": "b63b840108835a1c81be1dbaa88f1a6134c9be6644cc67a8bd613694f5ce9c00",
+      "bytes": 827
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/CHANGELOG.md",
+      "sha256": "9d308d5fb9fafe13a1377a724803de9bad333e5120263b5d8cc98ca36bfd22c3",
+      "bytes": 329
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_EVIDENCE/v8-direct.json",
+      "sha256": "beda168cdc4778700de1927f28f5ee8f2821ebce176af5b456363210945b3463",
+      "bytes": 1913
+    }
+  ],
+  "possible_conflicts": [
+    "future Codex-owned garage stock adapter only"
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex main reward/run/save",
+    "CHL/PARTSIZE/ECON protected source"
+  ],
+  "source_license": "B01 original data and source; published R3/R4 enum/price provenance in catalog.json",
+  "tests": [
+    {
+      "name": "in-process V8 exact exported functions",
+      "status": "PASS",
+      "count": 26,
+      "evidence": "TEST_EVIDENCE/v8-direct.json"
+    },
+    {
+      "name": "Node CLI and test suite checkout",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "Unity 6000.3.14f1 native",
+      "status": "NOT_RUN"
+    }
+  ],
+  "qa_b01_60": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "limitations": [
+    "No in-game store integration",
+    "No physical auto-mount",
+    "Prices require recheck against Codex host"
+  ],
+  "rollback": "Do not import or remove staged EK01-EK10; canonical game source unchanged"
+}

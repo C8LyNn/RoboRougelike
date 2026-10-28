@@ -1,0 +1,23 @@
+name: B01-22 P17 equipment kits data QA
+on:
+  push:
+    branches: ['b01-22/p17-equipment-kits-001']
+    paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
+  pull_request:
+    paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
+permissions:
+  contents: read
+jobs:
+  node-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs
+      - run: node Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs validate
+      - run: node Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs list

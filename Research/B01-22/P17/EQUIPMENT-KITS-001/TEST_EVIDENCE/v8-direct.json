@@ -1,0 +1,113 @@
+{
+  "environment": "functions.exec V8 isolate; not Node or Unity",
+  "test_method": "direct execution of exact serialized exported functions",
+  "status": "PASS",
+  "passed": 26,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "10-valid",
+      "status": "PASS"
+    },
+    {
+      "name": "EK01-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK02-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK03-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK04-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK05-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK06-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK07-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK08-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK09-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "EK10-quote",
+      "status": "PASS"
+    },
+    {
+      "name": "no-spend",
+      "status": "PASS"
+    },
+    {
+      "name": "capacity-block",
+      "status": "PASS"
+    },
+    {
+      "name": "capacity-edge",
+      "status": "PASS"
+    },
+    {
+      "name": "negative-wallet",
+      "status": "PASS"
+    },
+    {
+      "name": "fraction-wallet",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown-kit",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate-kit",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown-part",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown-weapon",
+      "status": "PASS"
+    },
+    {
+      "name": "three-weapons",
+      "status": "PASS"
+    },
+    {
+      "name": "price-tamper",
+      "status": "PASS"
+    },
+    {
+      "name": "forbidden-core",
+      "status": "PASS"
+    },
+    {
+      "name": "non-gun-weapon",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate-row",
+      "status": "PASS"
+    },
+    {
+      "name": "oversize",
+      "status": "PASS"
+    }
+  ]
+}
