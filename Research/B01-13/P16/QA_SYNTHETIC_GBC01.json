@@ -1,0 +1,57 @@
+{
+  "schema": "B01-13/PASS16/GBC01/session-v1",
+  "mode": "SYNTHETIC",
+  "pid": "P01",
+  "sid": "S01",
+  "buildsha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "zipsha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "protocol_schema": "B01-13/PASS16/GBC01/protocol-v1",
+  "source": {
+    "codex_pr": 310,
+    "codex_head": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+    "source_files": {
+      "Assets/R1/R1RunHUD.cs": "1c76e1cc6b393b14450b30dbce75c731c5d95dbe",
+      "Assets/R3/R3VehicleModel.cs": "8cc68faf89793c3a803e5807594c9faf0df10091",
+      "Assets/R6/R6RangeController.cs": "cc7082e54306fdd0a5506f07e5d419cadd24c292",
+      "Assets/R3/R3GarageView.cs": "fb6f4f21c2f3953e43e1a7b223ef5110dbcc26c1",
+      "Assets/R6/R6RangeHUD.cs": "adfd3c1a69fc4355e055581a736ce10cccc7ba91"
+    }
+  },
+  "created_at": "2026-10-28T15:59:22.040Z",
+  "consent_witness": {
+    "gate": "",
+    "host": "",
+    "consent": "",
+    "facilitator": "",
+    "operator_attestation": true
+  },
+  "tasks": [
+    {
+      "task_id": "G01",
+      "outcome": "UNAIDED_SUCCESS",
+      "elapsed_ms": 345,
+      "errors": 0,
+      "help_count": 0,
+      "comment": "",
+      "configured_minutes": 3
+    },
+    {
+      "task_id": "B02",
+      "outcome": "ASSISTED_SUCCESS",
+      "elapsed_ms": 215,
+      "errors": 0,
+      "help_count": 2,
+      "comment": "",
+      "configured_minutes": 6
+    },
+    {
+      "task_id": "C03",
+      "outcome": "PRODUCT_BLOCKED",
+      "elapsed_ms": 166,
+      "errors": 0,
+      "help_count": 0,
+      "comment": "Brak możliwego powrotu do garażu w izolowanej kopii testowej",
+      "configured_minutes": 6
+    }
+  ]
+}
