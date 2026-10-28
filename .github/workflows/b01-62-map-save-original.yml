@@ -17,9 +17,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     env:
-      CODEX_SHA: 231005c6d0351945a8ee6684f3856af118f0e94f
-      STORAGE_BLOB: f31a94c16e8cb244e66e39b0ac344b085095b630
-      DRAFT_BLOB: b5f8f395f93972c0ede000701dbbada8fcfcdfdb
+      CODEX_SHA: a2ccd055070a963805cba0779b79f18489f4794f
+      STORAGE_BLOB: 790a9683a5d2f3daf81f41e5bfa2f31502d79578
+      DRAFT_BLOB: 0331a54a1545ecd1ea18b616ef13fed113474b8c
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -55,7 +55,7 @@ jobs:
           cat "Tools/B01/B01-62/MapSaveSourceQA/selftest-${RUNNER_OS}.txt"
           test "$status" -eq 73
           grep -q 'HARNESS_SELFTEST_FAIL_CLOSED=True' "Tools/B01/B01-62/MapSaveSourceQA/selftest-${RUNNER_OS}.txt"
-      - name: Verify post-fix D02 acceptance gate rejects pinned unfixed original source
+      - name: Require all D02 source negatives GREEN on exact new Codex original
         shell: bash
         run: |
           set +e
@@ -63,10 +63,9 @@ jobs:
           status=$?
           set -e
           cat "Tools/B01/B01-62/MapSaveSourceQA/d02-strict-${RUNNER_OS}.txt"
-          # This is a negative CONTROL on the known vulnerable pinned original,
-          # NOT a product test PASS or assertion that D02 has been fixed.
-          test "$status" -eq 86
-          grep -q 'D02_STRICT_GATE=RED' "Tools/B01/B01-62/MapSaveSourceQA/d02-strict-${RUNNER_OS}.txt"
+          # This branch pins the actual new Codex source: RED must FAIL CI.
+          test "$status" -eq 0
+          grep -q 'D02_STRICT_GATE=GREEN' "Tools/B01/B01-62/MapSaveSourceQA/d02-strict-${RUNNER_OS}.txt"
       - name: Upload original-source evidence (not Unity G1)
         uses: actions/upload-artifact@v4
         if: always()

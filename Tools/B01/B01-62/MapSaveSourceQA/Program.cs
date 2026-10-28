@@ -1,4 +1,4 @@
-// B01-62 QA-ONLY: compile unmodified Codex #310 MapStorage.cs + MapDraft.cs.
+// B01-62 QA-ONLY: compile unmodified exact pinned Codex #310 MapStorage.cs + MapDraft.cs.
 // UnityEngine shim is limited to Vector2Int/Application/JsonUtility; Unity itself is NOT run.
 using System;
 using System.Collections.Generic;
@@ -241,7 +241,7 @@ public static class Program
                 if (loaded.GlobalFloor || loaded.Items.Count != 3 ||
                     loaded.Items.Any(p => p.scaleX != 1 || p.scaleY != 1 || p.scaleZ != 1))
                     return false;
-                MapStorage.Save(file, loaded);
+                MapStorage.Save(file, loaded, overwrite: true);
                 using var document = JsonDocument.Parse(File.ReadAllText(file));
                 if (document.RootElement.GetProperty("version").GetInt32() != 2) return false;
                 var roundtrip = new MapDraft();
@@ -282,7 +282,7 @@ public static class Program
             {
                 var file = Path.Combine(directory, "good.json");
                 MapStorage.Save(file, One(MapItemKind.Ground));
-                MapStorage.Save(file, One(MapItemKind.Wall, 4, 0));
+                MapStorage.Save(file, One(MapItemKind.Wall, 4, 0), overwrite: true);
                 var loaded = new MapDraft();
                 return MapStorage.Load(file, loaded, out _) &&
                        loaded.Items.Count == 1 && loaded.Items[0].kind == MapItemKind.Wall &&
@@ -354,7 +354,7 @@ public static class Program
                     bool rejected = false;
                     using (var locked = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
                     {
-                        try { MapStorage.Save(file, One(MapItemKind.Wall, 6, 0)); }
+                        try { MapStorage.Save(file, One(MapItemKind.Wall, 6, 0), overwrite: true); }
                         catch (IOException) { rejected = true; }
                         if (!rejected) return false;
                         var lockedBytes = new byte[checked((int)locked.Length)];
@@ -392,7 +392,7 @@ public static class Program
                     string outcome = "RETURNED_WITHOUT_EXCEPTION";
                     try
                     {
-                        try { MapStorage.Save(file, One(MapItemKind.Wall, 7, 0)); }
+                        try { MapStorage.Save(file, One(MapItemKind.Wall, 7, 0), overwrite: true); }
                         catch (IOException ex) { rejected = true; outcome = ex.GetType().Name; }
                         catch (UnauthorizedAccessException ex) { rejected = true; outcome = ex.GetType().Name; }
                         Console.WriteLine("B10_ORIGINAL_SAVE_OUTCOME=" + outcome);
@@ -418,6 +418,32 @@ public static class Program
             Console.WriteLine("B10-readonly-Windows-canonical-save-rejects-data-loss: SKIPPED_NOT_WINDOWS");
         }
 
+        // Post-fix direct file API contract: a committed map cannot be silently
+        // overwritten without explicit overwrite:true; explicit consent still works.
+        Case("B12-original-save-requires-explicit-overwrite-consent", "POSITIVE", () =>
+            InTemporaryDirectory(directory =>
+            {
+                if (!MapStorage.TryPath(directory, "B12 Consent", out string path))
+                    return false;
+                var original = One(MapItemKind.Ground);
+                MapStorage.Save(path, original);
+                byte[] before = File.ReadAllBytes(path);
+                bool denied = false;
+                try { MapStorage.Save(path, One(MapItemKind.Wall, 1, 0)); }
+                catch (IOException) { denied = true; }
+                if (!denied || !before.SequenceEqual(File.ReadAllBytes(path)) ||
+                    Directory.GetFiles(directory, "*.tmp").Length != 0)
+                    return false;
+                MapStorage.Save(path, One(MapItemKind.Wall, 1, 0), overwrite: true);
+                byte[] after = File.ReadAllBytes(path);
+                var reread = new MapDraft();
+                return !after.SequenceEqual(before) &&
+                       MapStorage.Load(path, reread, out _) &&
+                       reread.Items.Count == 1 &&
+                       reread.Items[0].kind == MapItemKind.Wall &&
+                       Directory.GetFiles(directory, "*.tmp").Length == 0;
+            }));
+
         // B11: genuine concurrent OS file I/O using the original MapStorage.Save/Load.
         // This is separate from Windows ReadOnly and exclusive FileShare locks.
         // Each call sees an entire old/new MapDraft or fails without changing its
@@ -436,7 +462,7 @@ public static class Program
                     {
                         try
                         {
-                            MapStorage.Save(file, One(k % 2 == 0 ? MapItemKind.Wall : MapItemKind.Ground, k % 2, 0));
+                            MapStorage.Save(file, One(k % 2 == 0 ? MapItemKind.Wall : MapItemKind.Ground, k % 2, 0), overwrite: true);
                             committedWrites++;
                         }
                         catch (IOException)
