@@ -73,6 +73,12 @@ def validate_nunit(raw,expected_total,expected_failed,root_result):
     require(CORE.issubset(results),"CORE_CASE_MISSING")
     return results
 
+def change_case_to_skipped(raw):
+    root=ET.fromstring(raw)
+    first=root.find('.//test-case')
+    first.set('result','Skipped')
+    return ET.tostring(root,encoding='utf-8')
+
 def main():
     inputs=originals()
     require(inputs["red-exit.txt"].strip()==b"2","BEFORE_NOT_RED_EXIT")
@@ -89,8 +95,7 @@ def main():
     trials=[
         ("truncate",lambda raw:raw[:100]),
         ("wrong_root_green",lambda raw:raw.replace(b'result="Passed"',b'result="Failed"',1)),
-        ("skipped_case",lambda raw:raw.replace(b'result="Passed"',b'result="Skipped"',1)
-         if False else raw.replace(b'passed="42"',b'passed="41"',1)),
+        ("skipped_case",change_case_to_skipped),
         ("missing_case",lambda raw:raw.replace(b'total="42"',b'total="41"',1)),
         ("duplicate_fullname",lambda raw:raw.replace(
             b'fullname="InvalidWeaponTransactionTests.LedgerRejectsMixedInvalidEquipmentAtomically"',
