@@ -10,9 +10,9 @@ import subprocess
 import tempfile
 import unittest
 
-OWNER_COMMIT="b9f0458db297fb81e76add00855609b32eb0ef4b"
+OWNER_COMMIT="e395b8b1e25b56285e39d4d69cf472af3f3d5ee8"
 OWNER_PATH="Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py"
-OWNER_GIT_BLOB="42ab146450ea3284d97a9a2bd5434a49fe195ab7"
+OWNER_GIT_BLOB="e342d882bbce93f8d4c35b225c90f04a2c71ddea"
 
 def git(*args):
     return subprocess.check_output(["git",*args],stderr=subprocess.PIPE).decode().strip()
