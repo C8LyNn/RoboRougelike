@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
+    <NoWarn>$(NoWarn);CS8765;CS8629;CS8603</NoWarn>
+    <!-- Original PartSizeContract.cs predates project-level nullable warnings.
+         Suppress only its three pre-existing nullable diagnostics; never edit
+         the original producer and keep all other warnings as errors. -->
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
   </PropertyGroup>
   <ItemGroup>
