@@ -57,9 +57,22 @@
     "No Unity Editor/Player or PhysX test",
     "Ramps treated as obstacles; route follows source flat bypass",
     "Not integrated into game, save, progression or rewards",
-    "Browser GUI interaction not claimed tested until independently executed"
+    "Automated real Chromium headless on Windows/Ubuntu passed; manual human evaluation NOT_RUN"
   ],
   "independentQA": "PENDING B01-40 source and B01-60 browser/pose",
   "codexHandoff": "Preview and evaluation of real original map geometry only, NEVER copy JS into canonical Unity runtime",
-  "status": "NOT_INTEGRATED_NATIVE_UNITY_NOT_RUN_G2_HOLD"
+  "status": "NOT_INTEGRATED_NATIVE_UNITY_NOT_RUN_G2_HOLD",
+  "verifiedAuthorCI": {
+    "sourceHead": "a873cbfa81d7043210dde9d83dd89230d2554953",
+    "workflowRun": 40757538051,
+    "windows": "SUCCESS",
+    "ubuntu2404": "SUCCESS",
+    "nodeCore": "42/42 per OS",
+    "bundle": "3/3 per OS",
+    "chromium": "2/2 per OS; 720p 1080p portrait keyboard pause reset Heavy autopilot",
+    "screenshots": 4,
+    "htmlSha256": "a79ee2aeac353da6170d384285ca754634ebf2d1a52c00c9f744c49782e96398",
+    "independentQA": "PENDING",
+    "nativeUnity": "NOT_RUN"
+  }
 }
