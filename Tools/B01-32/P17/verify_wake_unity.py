@@ -35,8 +35,8 @@ Loader.add_multi_constructor("tag:unity3d.com,2011:",
     lambda loader,suffix,node: loader.construct_mapping(node,deep=True))
 def read_unity(path):
     raw=path.read_text(encoding="utf8")
-    raw=raw.replace("%TAG !u! tag:unity3d.com,2011:\\n","")
-    raw=re.sub(r"(?m)^--- !u!","%TAG !u! tag:unity3d.com,2011:\\n--- !u!",raw)
+    raw=raw.replace("%TAG !u! tag:unity3d.com,2011:\n","")
+    raw=re.sub(r"(?m)^--- !u!","%TAG !u! tag:unity3d.com,2011:\n--- !u!",raw)
     return list(yaml.load_all(raw,Loader=Loader))
 def script_guid(name):
     s=(P/"Runtime"/(name+".cs.meta")).read_text(encoding="utf8")
