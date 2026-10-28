@@ -201,6 +201,16 @@ class OriginalRepairedLD02Receiver(unittest.TestCase):
         self.assertEqual(external.read_bytes(),b"FOREIGN_MANIFEST")
         self.assertFalse((self.stage/m.ARCHIVE).exists())
 
+    def test_19_zip_portable_creator_system_and_metadata(self):
+        import io
+        with zipfile.ZipFile(io.BytesIO(m.zip_bytes(self.raw,self.meta))) as z:
+            self.assertEqual(len(z.infolist()),2)
+            for info in z.infolist():
+                self.assertEqual(info.create_system,3)  # Cross-OS stable, not Windows default 0
+                self.assertEqual(info.date_time,(1980,1,1,0,0,0))
+                self.assertEqual(info.compress_type,zipfile.ZIP_STORED)
+                self.assertEqual(info.external_attr >> 16,0o100644)
+
 if __name__=="__main__":
     print("B01_40_ORIGINAL_REPAIRED_LD02_SOURCE_SHA="+m.OWNER_SHA+
           " UNITY_NOT_RUN NO_USER_MAPS_TOUCHED",flush=True)
