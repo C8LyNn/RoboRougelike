@@ -1,0 +1,14 @@
+{
+  "schema": "B01-13/PASS15/INTAKE/v1",
+  "form_html_git_blob": "d9ebb3dfc54f8e3e7e2992949b1852275ffef2a0",
+  "mode": "SYNTHETIC",
+  "build_sha": "7299dcc5fd63ac042a0ffcd97b69d02fb8744649",
+  "zip_sha256": "ec3193bb3ac24398c496ea65ad12aa653321db160a4dc74e8f618e3cc7ad6d1d",
+  "hq_gate_reference": null,
+  "host_preflight_reference": null,
+  "facilitator_id": null,
+  "sessions": [
+    {"pid": "P01", "sid": "S01", "consent_state": null, "consent_reference": null},
+    {"pid": "P02", "sid": "S01", "consent_state": null, "consent_reference": null}
+  ]
+}
