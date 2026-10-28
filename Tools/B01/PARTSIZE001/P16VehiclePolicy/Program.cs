@@ -35,8 +35,8 @@ internal static class Program
         passed++;
         Console.WriteLine("PASS " + name);
     }
-    private static void Eq<T>(string name, T actual, T expected) where T : IEquatable<T> =>
-        Check(name, () => actual.Equals(expected));
+    private static void Eq<T>(string name, T actual, T expected) =>
+        Check(name, () => EqualityComparer<T>.Default.Equals(actual, expected));
 
     public static int Main(string[] args)
     {
