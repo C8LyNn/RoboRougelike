@@ -1,0 +1,31 @@
+name: B01-32 P15 render original muzzle trail vectors (NOT Unity)
+on:
+  push:
+    branches:
+      - qa/b01-32-w66-vfx-pool-disable-playmode
+    paths:
+      - Research/B01-32/P15/MuzzleTrail/**
+      - Tools/B01-32/validate_muzzle_trail_art.py
+      - .github/workflows/b01-32-muzzle-trail-render.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render-original-svg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install actual vector rasterizers and pixel inspectors
+        run: python -m pip install --disable-pip-version-check "cairosvg==2.7.1" "Pillow==11.3.0"
+      - name: Parse and rasterize original SVG files; compare inactive and peak pixels
+        run: python Tools/B01-32/validate_muzzle_trail_art.py build/b01-32-p15-art
+      - name: Archive rendered individual PNG frames and contact sheet
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-32-p15-original-vfx-art-preview
+          path: build/b01-32-p15-art/
+          if-no-files-found: error
+          retention-days: 30
