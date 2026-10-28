@@ -28,6 +28,9 @@ jobs:
       - name: Read back all 18 exported actual original CSharp blueprints
         shell: bash
         run: python Research/B01-20/P16/MAPGEN-ARENA/validate_blueprints.py p16-arena-output
+      - name: Render actual CSharp blueprints to SVG and inspection gallery
+        shell: bash
+        run: python Research/B01-20/P16/MAPGEN-ARENA/render_arenas.py p16-arena-output
       - name: Archive original-source generated arena blueprints and receipt
         if: always()
         uses: actions/upload-artifact@v4
