@@ -96,7 +96,7 @@ def main():
         "g2":"HOLD",
         "independent_receiver":"B01-40/B01-60 source safety accepted historical same operator blob; this is author-run CLI dry-run, not a native receiver acceptance"
     }
-    output.write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+    output.write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n",encoding="utf-8",newline="\n")
     print("CHL_P16_ORIGINAL_OPERATOR_CLI_DRYRUN_PASS=5 SOURCE_SHA="+OWNER_SHA+" NATIVE_UNITY=NOT_RUN")
     print("RECEIPT_SHA256="+hashlib.sha256(output.read_bytes()).hexdigest())
     return 0
