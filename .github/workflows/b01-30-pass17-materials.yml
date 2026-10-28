@@ -1,0 +1,49 @@
+name: B01-30 PASS17 MAT-A1-001 real generated URP texture PNGs
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/TechArt/P17/materials/**'
+      - '.github/workflows/b01-30-pass17-materials.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  generate-and-verify-original-PNGs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Pillow for actual raster image preview and byte-level verification
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-pil
+          python3 --version
+          python3 -m py_compile Tools/B01/TechArt/P17/materials/generate_materials.py Tools/B01/TechArt/P17/materials/verify_materials.py
+      - name: Produce two actual 512 x 512 PBR material sets and rendered sheet
+        run: |
+          python3 Tools/B01/TechArt/P17/materials/generate_materials.py --size 512 --out build/B01-30/MAT-A1-001
+      - name: Independently decode and verify eight original PNGs, metadata, tiling and synthetic negatives
+        run: |
+          python3 Tools/B01/TechArt/P17/materials/verify_materials.py --input build/B01-30/MAT-A1-001
+      - name: Re-run generator independently and compare actual source bytes (determinism gate)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/TechArt/P17/materials/generate_materials.py --size 512 --out build/B01-30/MAT-A1-001-replay
+          cmp build/B01-30/MAT-A1-001/material-manifest.json build/B01-30/MAT-A1-001-replay/material-manifest.json
+          for profile in tire_rubber brushed_arm_alloy; do
+            for map in basecolor normal metallic_smoothness occlusion; do
+              name="$profile"_"$map".png
+              cmp "build/B01-30/MAT-A1-001/$profile/$name" "build/B01-30/MAT-A1-001-replay/$profile/$name"
+            done
+          done
+          cmp build/B01-30/MAT-A1-001/MAT-A1-001-map-contact-sheet.png build/B01-30/MAT-A1-001-replay/MAT-A1-001-map-contact-sheet.png
+          echo B01_30_MAT_A1_REPLAY_8_MAPS_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17-MAT-A1-001-REAL-PBR-PNG-ASSETS
+          path: build/B01-30/MAT-A1-001/
+          if-no-files-found: error
+          retention-days: 30
