@@ -22,12 +22,13 @@
   "ownedSourceBlobs": {
     "core.mjs": "1cf95532ece6ae59a033fd5ef9a795d4b33baab5",
     "core.test.mjs": "f703b7592a37e769ca172d026dea05c159bac417",
-    "viewer-app.js": "79481ff2959f04236e67ce26cbe04c3cf85c7f16",
+    "viewer-app.js": "e6ce1537059796d41fe179a072c29f31b949f06c",
     "viewer.template.html": "90d44d5ebf49036d2da0eba0c1c8c8b5e0853f29",
     "build_viewer.py": "54a62a89cc535ae5473f8188a0b32d747735a08f",
     "viewer-bundle.test.mjs": "4e843fb19c016b6bc4f0956f0deb0d5fa9bc7d5a",
     "README.md": "dc6bda5c7a7f6f69f439d1daaa631b058e82fa4d",
-    "workflow:.github/workflows/b01-20-p17-course-drive.yml": "2953f8a71297b64613a6ad57a38745fb12d3754f"
+    "workflow:.github/workflows/b01-20-p17-course-drive.yml": "34e949aa536e5d13ebd68f647612e8292281a266",
+    "browser.test.mjs": "c11f48c466afb7fef90ae5ff31de280f0e75f916"
   },
   "sourceScope": [
     "Research/B01-20/P17/COURSE-DRIVE-001/**",

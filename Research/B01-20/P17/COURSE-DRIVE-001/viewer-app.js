@@ -21,6 +21,9 @@ let selected,player;
 function restart(){
  selected=byKey.get(course.value);
  player=createState(selected,profile.value);
+ // Reset the fixed-step accumulator: no carryover from the previous course.
+ acc=0;
+ last=performance.now();
  pause.textContent="Pauza";
  status.textContent="START";
 }

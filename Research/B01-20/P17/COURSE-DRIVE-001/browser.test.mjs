@@ -70,10 +70,10 @@ test("P17 genuine browser keyboard/control/canvas smoke at 720p and 1080p", {tim
    assert.equal(paused2.z,paused.z,"pause must freeze movement");
    await page.locator("#pause").click();
    await page.locator("#reset").click();
-   await waitStep(page);
+   await page.waitForFunction(()=>document.querySelector("#status")?.textContent.startsWith("CHECKPOINT 0/"),null,{timeout:5000});
    const reset=parse(await page.locator("#status").innerText());
    assert.ok(Math.abs(reset.z-start.z)<.01 && Math.abs(reset.x-start.x)<.01);
-   assert.ok(reset.t<.3,"reset must clear timer");
+   assert.ok(reset.t<=.2,"reset must reset timer promptly; actual="+reset.t);
    await page.selectOption("#profile","Heavy");
    await waitStep(page);
    assert.match(await page.locator("#caption").innerText(),/Profil Heavy/);
