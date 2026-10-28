@@ -54,6 +54,21 @@ def safe_output(project, evidence):
     pr, ev = Path(project).resolve(strict=True), Path(evidence).resolve(strict=False)
     require(ev != pr and pr not in ev.parents, 'EVIDENCE_IN_PROJECT_NOT_RUN')
     require(pr != ev and ev not in pr.parents, 'EVIDENCE_ANCESTOR_OF_PROJECT_NOT_RUN')
+    # Protect every registered checkout, not only the currently tested one.
+    # Evidence inside the primary repository or another detached worktree
+    # would silently contaminate source from a different producer.
+    registered = []
+    for line in run_git(pr, 'worktree', 'list', '--porcelain').splitlines():
+        if line.startswith('worktree '):
+            candidate = Path(line[len('worktree '):]).resolve(strict=True)
+            require(candidate not in registered, 'DUPLICATE_REGISTERED_WORKTREE_NOT_RUN')
+            registered.append(candidate)
+    require(pr in registered, 'PROJECT_NOT_IN_REGISTERED_WORKTREES_NOT_RUN')
+    for candidate in registered:
+        require(ev != candidate and candidate not in ev.parents,
+                'EVIDENCE_IN_REGISTERED_WORKTREE_NOT_RUN')
+        require(ev not in candidate.parents,
+                'EVIDENCE_ANCESTOR_OF_REGISTERED_WORKTREE_NOT_RUN')
     return pr, ev
 
 def registered_detached(project, expected_sha):

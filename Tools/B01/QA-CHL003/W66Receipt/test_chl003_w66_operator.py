@@ -56,6 +56,8 @@ class OperatorSourceTests(unittest.TestCase):
         run('git','-C',str(cls.repo),'commit','-m','QA-only test fixture')
         cls.commit=run('git','-C',str(cls.repo),'rev-parse','HEAD')
         run('git','-C',str(cls.repo),'worktree','add','--detach',str(cls.worktree),cls.commit)
+        cls.sibling = cls.root/'registered-sibling'
+        run('git','-C',str(cls.repo),'worktree','add','--detach',str(cls.sibling),cls.commit)
 
     @classmethod
     def tearDownClass(cls):
@@ -83,6 +85,18 @@ class OperatorSourceTests(unittest.TestCase):
     def test_06_evidence_parent_of_project_rejected(self):
         with self.assertRaisesRegex(op.ReceiptError,'EVIDENCE_ANCESTOR_OF_PROJECT'):
             op.safe_output(self.worktree,self.root)
+
+    def test_25_other_registered_worktree_root_rejected(self):
+        with self.assertRaisesRegex(op.ReceiptError,'EVIDENCE_IN_REGISTERED_WORKTREE'):
+            op.safe_output(self.worktree, self.sibling)
+
+    def test_26_other_registered_worktree_assets_subdir_rejected(self):
+        with self.assertRaisesRegex(op.ReceiptError,'EVIDENCE_IN_REGISTERED_WORKTREE'):
+            op.safe_output(self.worktree, self.sibling/'Assets'/'NativeOutput')
+
+    def test_27_external_similar_prefix_is_allowed(self):
+        evidence = self.root/'registered-sibling-outside-evidence'
+        self.assertEqual(op.safe_output(self.worktree, evidence)[1], evidence.resolve())
 
     def test_07_dirty_tracked_file_rejected(self):
         p=self.worktree/'README.txt'
