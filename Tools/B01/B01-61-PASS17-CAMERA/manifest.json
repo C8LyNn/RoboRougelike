@@ -1,0 +1,51 @@
+{
+  "package_id": "B01-61-P17-CAMERA-STATE",
+  "version": "1.0.0",
+  "role": "B01-61",
+  "owner_scope": [
+    "Tools/B01/B01-61-PASS17-CAMERA/**",
+    ".github/workflows/b01-61-pass17-original-camera.yml"
+  ],
+  "producer": "B01-61 CODEX REGRESSION QA",
+  "codex_reference_sha": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+  "original_source": "Assets/Pack/P12_PipelineSafeCamera.cs",
+  "original_source_blob": "8519938f5734487d0350634cb6d81679a6434d62",
+  "new_source": "Tools/B01/B01-61-PASS17-CAMERA/run_original_camera_contract.py",
+  "new_source_blob": "2fa7475b8c8861be02d16b82d0a6296992728846",
+  "method_integrity": "6 exact unmodified verbatim source C# methods extracted by strict brace balancer; production source never edited",
+  "original_methods": [
+    "EnsureRig",
+    "SetGameplayInputEnabled",
+    "Configure",
+    "Update",
+    "LateUpdate",
+    "ApplyCursor"
+  ],
+  "behaviors": [
+    "Zoom min=3/max=45 clamp",
+    "160-frame convergence (small delta and variable dt)",
+    "No camera step when input disabled",
+    "Resume ResetSmoothing exactly once",
+    "No camera step with missing pivot",
+    "Target root identity remains stable across toggle",
+    "2,400 deterministic zoom/orbit/steps frames per compiler-branch",
+    "in-memory broken zoom clamp mutation rejection"
+  ],
+  "runtime": "dotnet 8 C# on Windows and Ubuntu, minimal Unity and rig API shims",
+  "dependencies": [
+    "git",
+    "python3.11",
+    "dotnet SDK 8"
+  ],
+  "actual_unity": "NOT_RUN",
+  "full_camera_rendering": "NOT_RUN",
+  "gameplay_source_changes": "NONE",
+  "limitations": [
+    "Original methods use a simulated Unity Mathf.SmoothDamp, Transform, Camera001Rig; not a real Unity camera or physics run",
+    "Tests only P12 facade state, zoom and rig-step orchestration; not screen pixels/occlusion/aim hit",
+    "Only source SHA pinned; Codex changes require new read-only receipt/revision",
+    "Synthetic mutated C# run is intentional FAIL; positive source run PASS needed"
+  ],
+  "handoff": "Independent B01-40 scope audit then B01-60 original Git + runner reproduction; Codex optional operator on disposable checkout; B01-00 controls queue #79 and G1/G2",
+  "rollback": "Remove the owned Tools/B01/B01-61-PASS17-CAMERA directory and its dedicated workflow; no game files touched"
+}
