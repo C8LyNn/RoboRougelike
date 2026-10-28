@@ -57,9 +57,11 @@ def execute(site,out):
                 errors=[]
                 page.on("pageerror",lambda e:errors.append(str(e)))
                 page.goto(root,wait_until="networkidle")
-                page.wait_for_function("window.lightboxQA && window.lightboxQA.ready",timeout=30000)
+                page.wait_for_function(
+                    "window.lightboxQA && (window.lightboxQA.ready || window.lightboxQA.error !== null)",
+                    timeout=30000)
                 actual=page.evaluate("window.lightboxQA")
-                assert actual["error"] is None,actual
+                assert actual["error"] is None, ("ORIGINAL_WEBGL_STARTUP_FAILED",actual)
                 assert actual["frames"]>=1 and len(actual["loaded"])==8
                 assert page.locator("#renderState").inner_text().startswith("WEBGL2 DRAW PASS")
                 assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 2")
