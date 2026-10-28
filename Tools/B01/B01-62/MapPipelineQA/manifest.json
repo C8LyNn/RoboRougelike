@@ -1,0 +1,74 @@
+{
+  "schema": "B01-62-INDEPENDENT-QA-RECEIPT-v1",
+  "package_id": "MAPPIPE-RECEIVER-001",
+  "version": "R1",
+  "wave": "PASS17 WAVE02",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "kind": "REAL_EXECUTABLE_CROSS_PACKAGE_RECEIVER_NOT_GAMEPLAY",
+  "branch": "qa/b01-62-p17-wave02-mappipe-receiver",
+  "sources": {
+    "Tools/B01/B01-62/MapPipelineQA/receiver.py": "2363a0d110bedba9f192ccbb0f8ff55e4df371db",
+    "Tools/B01/B01-62/MapPipelineQA/test_receiver.py": "60806e70ec01ae02fdf1bc32142cecce93355bb8",
+    "Tools/B01/B01-62/MapPipelineQA/README.md": "c8fa3e68278e58696d721fa23027724dbe0e47d7",
+    ".github/workflows/b01-62-mappipe-receiver.yml": "328cd7b7bb8c04940157c3819d73d4a36a64b5b3"
+  },
+  "original_unchanged_dependencies": [
+    {
+      "producer": "B01-62 MAPSAFE-001",
+      "draft_pr": 347,
+      "commit": "956115a26fc1987f78b6bb64c00df4bf46d5756b",
+      "path": "Tools/B01/B01-62/MapSafe001/mapsafe.py",
+      "blob": "7748b554ce75a4988a7e4099845dc82d5d6c48e4"
+    },
+    {
+      "producer": "B01-62 MAPDIFF-001",
+      "draft_pr": 351,
+      "commit": "9bd0caf2ada19ccf887496eee2c72fc5acbfad73",
+      "path": "Tools/B01/B01-62/MapDiff001/mapdiff.py",
+      "blob": "674dbb09460421d0af48d9f614f7f68bd01c5c18"
+    },
+    {
+      "producer": "B01-25 SLALOM-001",
+      "draft_pr": 346,
+      "commit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "path": "Research/B01-25/P17/SLALOM001/arena.json",
+      "blob": "013f5fe2058e76233f580a439e8402c0fe09f124"
+    }
+  ],
+  "expected_original_slalom": {
+    "totalItems": 360,
+    "ground": 252,
+    "barriers": 4,
+    "removeTestItem": {
+      "kind": 8,
+      "x": 6,
+      "z": 6
+    },
+    "changedFootprintCells": 1
+  },
+  "execution": {
+    "ci": "PENDING",
+    "native_unity": "NOT_RUN",
+    "game_player": "NOT_RUN",
+    "human": "NOT_RUN"
+  },
+  "owned_paths": [
+    "Tools/B01/B01-62/MapPipelineQA/**",
+    ".github/workflows/b01-62-mappipe-receiver.yml"
+  ],
+  "handoff": {
+    "receiver": "B01-40 SOURCE/G0 then B01-60 independent QA",
+    "codex_route": "B01-00 #79",
+    "code_merged": false,
+    "game_integrated": false,
+    "ack": "PENDING",
+    "import": "copy isolated receiver only, run against three exact original Git blobs",
+    "rollback": "delete only scoped receiver and workflow, preserve original map and vault"
+  },
+  "constraints": [
+    "Only offline user-facing CLI; no actual Unity JsonUtility or Player validation",
+    "No concurrent live-game compare-and-swap guarantee",
+    "Cannot infer vehicle collision or traversability from one removed barrier",
+    "No original producer source modified"
+  ]
+}
