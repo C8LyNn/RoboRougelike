@@ -1,0 +1,76 @@
+{
+  "package_id": "B01-31-A1-VIEW-ICONS-001",
+  "version": "P17-W02-R1",
+  "owner": "B01-31 CONCEPT ART",
+  "authority": {
+    "hq_decision": "https://github.com/C8LyNn/RoboRougelike/issues/287#issuecomment-6463914298",
+    "g_concept": "REVISE_A_ONLY",
+    "subject": "ONE_WHEEL_PLUS_SUPPORT_ARM",
+    "authoring_unit": "SINGLE_ATTACHABLE_PART",
+    "scope": "ORIGINAL_2D_RESEARCH_ART",
+    "g_design": "PENDING",
+    "model_job": "NOT_AUTHORIZED"
+  },
+  "previous_package": {
+    "id": "B01-31-A1-GARAGE-ICON-001/P17-R1",
+    "pr": 358,
+    "sha": "0ba2c638ae7a95ce24f92066ad1811853da69c4e",
+    "difference": "Previous package has one perspective x 3 COLOR THEMES; new packet offers 3 distinct VIEWPOINT compositions in ONE visual palette."
+  },
+  "approved_source": {
+    "pr": 294,
+    "commit": "7735fdefc22272a34c000716bc70ad94be7703f3",
+    "a1_git_blob": "96cc46a7c14f94a45c387e102d5940cb787d2d5c",
+    "fidelity": "original simplified drawings of same one selected subject, not identical CAD geometry"
+  },
+  "assets": [
+    {
+      "view": "face",
+      "path": "A1-orientation-face.svg",
+      "git_blob_sha1": "3b18e0b2e02c550bdd667fe16f9c8501b88c4520"
+    },
+    {
+      "view": "side",
+      "path": "A1-orientation-side.svg",
+      "git_blob_sha1": "9037da9ae1a44776475437b1c968a74ea84bbf9a"
+    },
+    {
+      "view": "top",
+      "path": "A1-orientation-top.svg",
+      "git_blob_sha1": "8adb61ccdc4bd1a4dc962579184a83a7a8564236"
+    }
+  ],
+  "png_sizes": [
+    48,
+    96,
+    192,
+    384
+  ],
+  "generator": "render_verify.py",
+  "output": "rendered/A1-orientation-{view}-{size}.png, rendered/A1-orientation-contact.png, rendered/receipt.json",
+  "semantics": [
+    "mount-proposal",
+    "support-arm",
+    "damper-proposal",
+    "wheel"
+  ],
+  "known_limits": [
+    "no real physical front/side/top engineering projection",
+    "socket dimensions unknown",
+    "wheel radius unknown",
+    "pivot/clearance unmeasured",
+    "mass unknown",
+    "no approved gameplay or game UI configuration",
+    "no 3D MODEL_JOB",
+    "Unity/PhysX not run",
+    "human readability not measured"
+  ],
+  "receiver_order": [
+    "B01-40 source/scope and reproducibility",
+    "B01-60 independent source QA",
+    "B01-12 optional contextual visual review",
+    "B01-00 CODEX INBOX gating"
+  ],
+  "install_policy": "Review source and generated PNGs in disposable checkout only. Do not add to canonical Assets or replace UI without B01-00/Codex approval. NOT_OFFERED.",
+  "rollback": "Remove Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/** and .github/workflows/b01-31-p17-w02-view-icons.yml from disposable checkout; no previous PR source is touched."
+}
