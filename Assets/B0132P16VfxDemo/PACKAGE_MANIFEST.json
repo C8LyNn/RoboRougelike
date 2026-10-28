@@ -1,0 +1,33 @@
+{
+  "PACKAGE_ID": "B0132-VFX-P16-R1",
+  "producer": "B01-32",
+  "source_branch": "art/b01-32-p16-vfx-demonstrator",
+  "receiver_baseline": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "unity_target": "6000.3.14f1 URP",
+  "integrated": false,
+  "native_unity_status": "NOT_RUN",
+  "assets": {
+    "scene": "Scenes/B0132_P16_VfxDemo.unity",
+    "prefabs": [
+      "Prefabs/B0132_ProjectileHit.prefab",
+      "Prefabs/B0132_PartDetached.prefab",
+      "Prefabs/B0132_CriticalWarning.prefab"
+    ],
+    "runtime": [
+      "Runtime/B0132Effect.cs",
+      "Runtime/B0132Showcase.cs"
+    ],
+    "tests": "Tests/PlayMode/B0132EffectPlayModeTests.cs"
+  },
+  "dependencies": [
+    "UnityEngine",
+    "Unity Test Framework for native tests"
+  ],
+  "gameplay_mutations": [],
+  "gates": {
+    "G0": "PENDING_SOURCE_VERIFICATION",
+    "G1": "NATIVE_NOT_RUN",
+    "G2": "NOT_OFFERED"
+  },
+  "next_owner": "B01-40 independent source intake, Codex only for game integration"
+}
