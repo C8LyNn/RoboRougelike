@@ -124,8 +124,8 @@
 <rect x="438.5" y="50.5" width="35" height="35" fill="#222e38" stroke="#3c4b56" stroke-width="0.65"/>
 <polyline points="132,212 132,248 132,284 132,320 168,320 204,320 240,320 276,320 312,320 348,320 384,320 420,320 420,284 420,248 420,212 384,212" fill="none" stroke="#49c5e5" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".9" stroke-dasharray="5 4"/>
 <polyline points="132,212 168,212 204,212 240,212 276,212 312,212 348,212 384,212" fill="none" stroke="#ef9370" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".9" />
-<rect x="57.75" y="374" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
-<rect x="453.75" y="374" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
+<rect x="42" y="374" width="36" height="36" rx="2" fill="#b5cad5" stroke="#ffffff" stroke-width="1.2"/>
+<rect x="438" y="374" width="36" height="36" rx="2" fill="#b5cad5" stroke="#ffffff" stroke-width="1.2"/>
 <rect x="57.75" y="338" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
 <rect x="453.75" y="338" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
 <rect x="57.75" y="302" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
@@ -142,8 +142,8 @@
 <rect x="453.75" y="122" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
 <rect x="57.75" y="86" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
 <rect x="453.75" y="86" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
-<rect x="57.75" y="50" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
-<rect x="453.75" y="50" width="4.5" height="36" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
+<rect x="42" y="50" width="36" height="36" rx="2" fill="#b5cad5" stroke="#ffffff" stroke-width="1.2"/>
+<rect x="438" y="50" width="36" height="36" rx="2" fill="#b5cad5" stroke="#ffffff" stroke-width="1.2"/>
 <rect x="78" y="389.75" width="36" height="4.5" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
 <rect x="78" y="65.75" width="36" height="4.5" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
 <rect x="114" y="389.75" width="36" height="4.5" rx="1" fill="#c5beaa" stroke="#f2e5c7" stroke-width=".6"/>
