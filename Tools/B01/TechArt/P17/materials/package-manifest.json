@@ -1,0 +1,67 @@
+{
+  "schema": "b01-30-techart-package-v1",
+  "package_id": "B01-30-MAT-A1-001",
+  "version": "R1",
+  "owner": "B01-30",
+  "scope": "isolated original procedural 2D PBR surface textures for approved provisional A1 one-wheel-plus-support-arm direction; not a new 3D MODEL_JOB",
+  "branch": "feature/b01-30-pass17-a1-pbr-materials",
+  "draft_pr": "PENDING",
+  "art_decision": "https://github.com/C8LyNn/RoboRougelike/issues/287#issuecomment-6463914298",
+  "producer_sources": [
+    "Tools/B01/TechArt/P17/materials/generate_materials.py",
+    "Tools/B01/TechArt/P17/materials/verify_materials.py"
+  ],
+  "outputs_expected": {
+    "materials": [
+      "tire_rubber",
+      "brushed_arm_alloy"
+    ],
+    "textures_per_material": 4,
+    "format": "RGBA PNG",
+    "dimensions": [
+      512,
+      512
+    ],
+    "all_files": "GitHub Actions output artifact only, not tracked generated binaries",
+    "name_format": "{material}_{basecolor|normal|metallic_smoothness|occlusion}.png"
+  },
+  "dependencies": {
+    "runtime": "Python 3.10+ standard library for pixel generation",
+    "preview_and_QA": "Pillow image decoding",
+    "CI": "Ubuntu24.04 python3-pil; no Unity license required"
+  },
+  "import_contract": {
+    "shader": "Universal Render Pipeline/Lit",
+    "wrap": "Repeat",
+    "texture_type": {
+      "basecolor": "Default, sRGB=true",
+      "normal": "Normal map, sRGB=false",
+      "metallic_smoothness": "Default, sRGB=false; R metallic and A smoothness",
+      "occlusion": "Default, sRGB=false; G occlusion"
+    },
+    "target_slots": {
+      "basecolor": "Base Map",
+      "normal": "Normal Map",
+      "metallic_smoothness": "Metallic Map (URP Lit, alpha smoothness)",
+      "occlusion": "Occlusion Map"
+    },
+    "custom_geometry_required": true
+  },
+  "provenance": "Original mathematically generated textures; no downloaded images, no copied B01-31 pixels",
+  "limitations": [
+    "A1 concept original silhouette G-CONCEPT provisional only",
+    "Material palette not approved as final art",
+    "Not UV baked to an actual mesh; no texture density proof",
+    "No physical material or part model or actual garage import",
+    "No native Unity 6000.3.14f1 G1/URP visual G1",
+    "No model job, no merge or runtime code change"
+  ],
+  "release_state": "DRAFT / NOT_OFFERED / NOT_MERGED / CODEX_ACK_PENDING",
+  "rollback": "remove generated candidate PNG folder and unassign/revert any eventual material slot changes; no canonical game changes in this PR",
+  "next_receivers": [
+    "B01-40 source/hand-off review",
+    "B01-60 independent QA",
+    "B01-00 approval/order then Codex optional import"
+  ],
+  "readme": "Tools/B01/TechArt/P17/materials/README.md"
+}
