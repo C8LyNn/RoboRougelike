@@ -1,0 +1,75 @@
+{
+  "schema": "B01-23-P16-PARTSIZE-44-BLANK-INTAKE-v1",
+  "owner": "B01-23",
+  "version": "P16-NATIVE-INKE-R1",
+  "classification": "QA_SOURCE_ONLY_TEMPLATE_NON_UNITY_NON_GAMEPLAY",
+  "status": "SOURCE_TESTED_DRAFT_NOT_OFFERED",
+  "branch": "b01-23/pass16-native-partsize-44-blank-receipt",
+  "verified_content_base_commit": "653a2206c4235595b1e92bab4ad05f0682e6ba42",
+  "original_inputs": {
+    "producer_pr286_sha": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "original_catalog_git_blob": "6153d1758e800ec5c4210323610b061c06e8ea85",
+    "independent_operator_qa_pr298_sha": "26634727ab2323a982bce893421c88c330be46e8"
+  },
+  "source_files": [
+    {
+      "path": "Tools/B01/PARTSIZE001/P16NativeReceipt/generate_blank_native_44.py",
+      "git_blob_sha1": "2295d5e67d41cf33f9fbfe9d23c108a014c0e73d"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P16NativeReceipt/test_blank_native_44.py",
+      "git_blob_sha1": "128d52de29bbf078ce94d4d77e09bf5ff3ac80c7"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P16NativeReceipt/README.md",
+      "git_blob_sha1": "b7a5e8f2f7107b741b9134c5fff83801f558ea6d"
+    },
+    {
+      "path": "Docs/B01/PARTSIZE001/P16_BLANK_NATIVE_44.json",
+      "git_blob_sha1": "fc2870b0bc3314f637bc0bda900e754b3c99e87e"
+    },
+    {
+      "path": ".github/workflows/b01-23-pass16-native-44-blank.yml",
+      "git_blob_sha1": "88e3b29ab610e7c338a788a2a2ed8e4d10c726d7"
+    }
+  ],
+  "actual_executed": {
+    "github_actions_run": 40721709119,
+    "windows_2025": "17/17_PYTHON_ORIGINAL_POSITIVE_NEGATIVE_PASS",
+    "ubuntu_2404": "17/17_PYTHON_ORIGINAL_POSITIVE_NEGATIVE_PASS",
+    "exact_source_template_rows": "44/44_VERIFIED_BLANK",
+    "real_native_unity_measurements": "0/44_NOT_RUN",
+    "unity_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "windows_player": "NOT_RUN"
+  },
+  "dependencies": [
+    "Authoritative producer exact Git source commit available",
+    "Python3 + Git for template verification",
+    "HQ legally licensed Windows Unity 6000.3.14f1 separate operator for actual future G1",
+    "B01-60 independent actual PhysX measurements and original logs"
+  ],
+  "limitations": [
+    "All 44 physical fields null; no measured bounds/socket/penetration",
+    "Validator intentionally rejects any filled G1 record: it validates blank identity only",
+    "Use original #298 receipt parser and independent B01-40 raw evidence receiver for real licensed sessions",
+    "No Unity model/scene copied or modified by this branch"
+  ],
+  "integration": {
+    "existing_codex_queue": "CV-10",
+    "issue": 79,
+    "codex_ack": false,
+    "producer_offered": false,
+    "game_integrated": false,
+    "rule": "THIS TEMPLATE MUST NEVER BE INTERPRETED AS A NATIVE PASS OR AUTO-IMPORTED INTO CANONICAL GAME"
+  },
+  "rollback": {
+    "scope": "Only new optional Tools/Docs/QA branch. No canonical or producer mutation.",
+    "action": "Leave frozen #286/#298 untouched; close/unpublish this draft without merge; do not remove real independent evidence."
+  },
+  "gates": {
+    "G0": "PENDING_INDEPENDENT_SOURCE_REVIEW",
+    "G1": "NOT_RUN",
+    "G2": "HOLD"
+  }
+}
