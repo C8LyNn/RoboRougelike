@@ -135,6 +135,24 @@ def main():
     options.sort()
     candidate=options[0]
     assert candidate[0]<0.00001, ("FAIL CLOSED: original FBX mesh basis cannot be reconciled",candidate)
+    # PASS14: close a real QA false-negative: identical mesh AABBs do NOT imply
+    # matching internal vertices. Check every original per-mesh vertex directly.
+    order,signs,scale=candidate[1],candidate[2],candidate[3]
+    vertex_deltas={}
+    for key,source_vertices in objs.items():
+        transformed=[tuple(scale*signs[i]*p[order[i]] for i in range(3))
+                     for p in source_vertices]
+        actual=fbx[key]
+        assert len(transformed)==len(actual),(key,"VERTEX_COUNT_MISMATCH")
+        # The Blender OBJ and FBX writers may reorder vertex indices; compare
+        # whole point clouds independently of order (duplicates preserved).
+        transformed=sorted(transformed)
+        actual=sorted(actual)
+        max_difference=max(abs(a-b) for expected,found in zip(transformed,actual)
+                           for a,b in zip(expected,found))
+        vertex_deltas[key]=max_difference
+        assert max_difference<0.000002,(key,"PER_VERTEX_MESH_MISMATCH",max_difference)
+    vertex_max=max(vertex_deltas.values())
     # Clearly labelled SYNTHETIC falsifier: shift one original FBX submesh 20mm
     # and ensure the source-mesh reconciliation would reject the corruption.
     witness=sorted(objs)[0]
@@ -159,6 +177,9 @@ def main():
            "max_aabb_delta_m":candidate[0],"permutation":candidate[1],
            "signs":candidate[2],"unit_scale":candidate[3]},
        "fbx_raw_mesh_global_match_10um":candidate[0]<0.00001,
+       "fbx_original_meshes_matching_each_vertex":len(vertex_deltas),
+       "fbx_max_per_vertex_difference_m":vertex_max,
+       "fbx_per_vertex_threshold_m":0.000002,
        "synthetic_fbx_20mm_negative_control":"EXPECTED_REJECTION",
        "glb_original_meshes_matching_obj_basis":51,
        "glb_max_aabb_delta_m":glb_max,
