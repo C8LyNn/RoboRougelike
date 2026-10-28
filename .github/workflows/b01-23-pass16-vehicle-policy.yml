@@ -1,0 +1,35 @@
+name: B01-23 PASS16 standalone vehicle loss and ram policy (NOT Unity)
+on:
+  push:
+    branches:
+      - b01-23/pass16-vehicle-recovery-prototype
+    paths:
+      - "Tools/B01/PARTSIZE001/P16VehiclePolicy/**"
+      - ".github/workflows/b01-23-pass16-vehicle-policy.yml"
+  workflow_dispatch:
+jobs:
+  actual-pure-csharp:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile original B01-23 policy with warnings as errors
+        shell: bash
+        run: dotnet build Tools/B01/PARTSIZE001/P16VehiclePolicy/P16VehiclePolicy.csproj --configuration Release --warnaserror
+      - name: Run 46 actual C# checks against original policy (not a Unity shim)
+        shell: bash
+        run: dotnet run --project Tools/B01/PARTSIZE001/P16VehiclePolicy/P16VehiclePolicy.csproj --configuration Release --no-build -- --selftest
+      - name: Reject invalid operator/unknown CLI invocation
+        shell: bash
+        run: |
+          if dotnet run --project Tools/B01/PARTSIZE001/P16VehiclePolicy/P16VehiclePolicy.csproj --configuration Release --no-build -- --unexpected-cli; then
+            echo 'INVALID_CLI_FALSE_GREEN'
+            exit 1
+          fi
+          echo 'B01_23_P16_INVALID_CLI_REJECTED; UNITY_NOT_RUN'
