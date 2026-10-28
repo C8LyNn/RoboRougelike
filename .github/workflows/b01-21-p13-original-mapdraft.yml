@@ -69,6 +69,22 @@ jobs:
             $blob = (git hash-object "$path").Trim()
             if ($LASTEXITCODE -ne 0 -or $blob -ne $expectedBlobs[$path]) { throw "WRONG B01-25 ORIGINAL FIXTURE: $path $blob" }
           }
+          $fixtureCommit = '01c0a267a13c97da7cc5e74d20a6222624d44230'
+          $fixtureFile = 'Research/B01-21/P14/CV05_D06_GlobalFloor_2000Ground.json'
+          $fixtureBlob = '4a8efed0b4dc688cb4cb541868f61fbf5500c446'
+          git fetch --no-tags --depth=30 origin refs/heads/research/b01-21-p14-cv05-d06-fixture
+          if ($LASTEXITCODE -ne 0) { throw 'CV05 fixture branch fetch failed' }
+          git cat-file -e "${fixtureCommit}^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'CV05 immutable fixture commit unavailable' }
+          $repoBlob = (git rev-parse "${fixtureCommit}:$fixtureFile").Trim()
+          if ($LASTEXITCODE -ne 0 -or $repoBlob -ne $fixtureBlob) { throw 'CV05 wrong pinned fixture Git blob' }
+          $fixtureZip = Join-Path $env:RUNNER_TEMP 'b0121-cv05-d06.zip'
+          git archive --format=zip --output="$fixtureZip" $fixtureCommit -- $fixtureFile
+          if ($LASTEXITCODE -ne 0) { throw 'CV05 exact fixture archive failure' }
+          Expand-Archive -LiteralPath "$fixtureZip" -DestinationPath . -Force
+          $extractedBlob = (git hash-object "$fixtureFile").Trim()
+          if ($LASTEXITCODE -ne 0 -or $extractedBlob -ne $fixtureBlob) { throw 'CV05 actual fixture byte mutation' }
+          Write-Output 'EXACT PUBLISHED CV-05 D06 ORIGINAL 2000-GROUND JSON FILE GIT BLOB VERIFIED'
           Write-Output 'EXACT ORIGINAL CODEX CSHARP AND SIX ACTUAL B01-25 JSON GIT BLOBS VERIFIED'
       - name: Execute actual original MapDraft CSharp (Unity types stubbed, no Unity G1)
         shell: pwsh

@@ -84,16 +84,13 @@ internal static class Program
     // rendering those per-cell Ground objects. No MapDraft C# modified.
     static MapDraft MakeD06FullGroundDraft()
     {
-        var document = new MapDocument();
-        for (int x=-25;x<25;x++)
-            for (int z=-20;z<20;z++)
-                document.items.Add(new MapItem { kind=MapItemKind.Ground,x=x,z=z });
-        Need(document.items.Count==MapDraft.MaxItems,"D06 fixture count");
-        var draft = new MapDraft();
-        Need(draft.TryLoad(UnityEngine.JsonUtility.ToJson(document),out var error),
-            "D06 source TryLoad rejected fixture: "+error);
-        Need(draft.Items.Count==MapDraft.MaxItems,"D06 loaded source count");
-        Need(draft.SetGlobalFloor(true),"D06 enable GlobalFloor");
+        // Load the exact published original Git JSON bytes, not a generated mirror.
+        string file=File.ReadAllText("Research/B01-21/P14/CV05_D06_GlobalFloor_2000Ground.json");
+        var draft=new MapDraft();
+        Need(draft.TryLoad(file,out var error),"D06 exact fixture TryLoad rejected: "+error);
+        Need(draft.Items.Count==MapDraft.MaxItems,"D06 actual fixture count");
+        Need(draft.GlobalFloor,"D06 published fixture must have GlobalFloor ON");
+        Need(draft.Items.All(p=>p.kind==MapItemKind.Ground),"D06 original fixture has unexpected item kind");
         return draft;
     }
     static int knownDefects;
