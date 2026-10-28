@@ -1,0 +1,37 @@
+name: B01-20 P16 CHL operator original CLI release-safe dry-run (NATIVE NOT RUN)
+on:
+  push:
+    branches: [b01-20/p16-chl-operator-dryrun]
+    paths:
+      - 'Tools/B01/QA-CHL003/ReleaseReceipt/**'
+      - '.github/workflows/b01-20-p16-chl-dryrun.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-cli-preflight:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run exact original W66 operator CLI in real detached source Git worktrees, NEVER Unity
+        shell: bash
+        run: |
+          python Tools/B01/QA-CHL003/ReleaseReceipt/dryrun_chl_release.py "$RUNNER_TEMP/b01-chl-p16-preflight.json"
+      - name: Upload original operator exit-code and source path evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p16-chl-original-cli-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-chl-p16-preflight.json
+          if-no-files-found: error
+          retention-days: 21
