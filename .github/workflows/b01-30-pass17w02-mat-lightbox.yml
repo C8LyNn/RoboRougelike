@@ -1,0 +1,67 @@
+name: B01-30 PASS17 W02 Original PBR WebGL2 Lightbox
+on:
+  pull_request:
+    paths:
+      - "Tools/B01/TechArt/P17W02/MatLightbox001/**"
+      - ".github/workflows/b01-30-pass17w02-mat-lightbox.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-material-webgl2-preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reuse exact ORIGINAL MAT-A1-001 source without modifying it
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/336/head
+          test "$(git rev-parse FETCH_HEAD)" = "171983f85ff41df6ef33b95939cc877ba68e03ca"
+          test "$(git rev-parse FETCH_HEAD:Tools/B01/TechArt/P17/materials/generate_materials.py)" = "171d53bc7d5a4840a067af5c934a8fd1c7ad774e"
+          mkdir -p build/B01-30/P17W02-source
+          git archive FETCH_HEAD Tools/B01/TechArt/P17/materials/generate_materials.py | tar -x -C build/B01-30/P17W02-source
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install real Chromium Playwright + image decoder
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check "Pillow==11.3.0" "playwright==1.56.0"
+          python -m playwright install --with-deps chromium
+          python -m py_compile Tools/B01/TechArt/P17W02/MatLightbox001/*.py
+      - name: Generate actual immutable original eight MAT-A1 source PNGs
+        run: |
+          python build/B01-30/P17W02-source/Tools/B01/TechArt/P17/materials/generate_materials.py --size 512 --out build/B01-30/P17W02-original
+      - name: Produce actual WebGL2 site with byte-exact original PBR sources
+        run: |
+          python Tools/B01/TechArt/P17W02/MatLightbox001/build_site.py --original build/B01-30/P17W02-original --out build/B01-30/P17W02-lightbox/site
+      - name: Execute Chromium WebGL2 shaderball from exact real assets on three viewports
+        run: |
+          python Tools/B01/TechArt/P17W02/MatLightbox001/test_browser.py --site build/B01-30/P17W02-lightbox/site --out build/B01-30/P17W02-lightbox/screenshots
+      - name: Validate original PNG hashes still unchanged and produce reviewable offline ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,hashlib,pathlib,zipfile
+          root=pathlib.Path("build/B01-30/P17W02-lightbox")
+          doc=json.loads((root/"site"/"site-receipt.json").read_text())
+          for x in doc["files"]:
+              assert hashlib.sha256((root/"site"/x["path"]).read_bytes()).hexdigest()==x["sha256"]
+          zipfile.ZipFile(root/"MAT-LIGHTBOX-001-website.zip","w",zipfile.ZIP_DEFLATED).close()
+          with zipfile.ZipFile(root/"MAT-LIGHTBOX-001-website.zip","w",zipfile.ZIP_DEFLATED) as z:
+              for f in sorted((root/"site").rglob("*")):
+                  if f.is_file():z.write(f,"site/"+f.relative_to(root/"site").as_posix())
+          print("MAT_LIGHTBOX_REAL_ORIGINAL_ASSETS_AND_ZIP_PASS",len(doc["files"]))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17W02-MAT-LIGHTBOX-001-real-Chromium-preview
+          path: build/B01-30/P17W02-lightbox/
+          if-no-files-found: error
+          retention-days: 30
