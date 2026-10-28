@@ -13,8 +13,15 @@ def convert_bytes(raw,scenario,run,minimum_ms=120000):
     reader=csv.DictReader(io.StringIO(s))
     required={'Application','ProcessID','SwapChainAddress','MsBetweenDisplayChange'}
     if not reader.fieldnames or not required.issubset(reader.fieldnames): raise ValueError('MISSING_RAW_PRESENTMON_COLUMNS')
+    if len(reader.fieldnames) != len(set(reader.fieldnames)): raise ValueError('DUPLICATE_RAW_COLUMNS')
     pid=set();swap=set();out=[];elapsed=0.0;ignored=0
     for row in reader:
+        # DictReader otherwise hides trailing undeclared cells under key None,
+        # and may silently return missing declared cells as None. Neither is
+        # acceptable for raw evidence intake. Legitimate extra *named* raw
+        # PresentMon columns remain supported.
+        if None in row or any(value is None for value in row.values()):
+            raise ValueError('MALFORMED_RAW_ROW')
         if row.get('Application','').strip().lower()!='roborougelike.exe': raise ValueError('FOREIGN_PROCESS')
         pid.add(row['ProcessID'].strip());swap.add(row['SwapChainAddress'].strip())
         duration=row['MsBetweenDisplayChange'].strip()

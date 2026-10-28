@@ -1,0 +1,40 @@
+{
+  "role": "B01-50",
+  "wave": "PASS15_W74-W77_CONTINUATION",
+  "parent_commit": "39b4afd85f131a01ae13d44390aaef4a22286b7e",
+  "actual_host": {
+    "os": "Linux",
+    "arch": "x86_64",
+    "python": "3.13.5",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41"
+  },
+  "source_sha256": {
+    "analyze_frametimes.py": "9808a341e6dfecdf76fb5bb9de7683908013cf0e1f2ba6c55a14813c57811728",
+    "presentmon_bridge.py": "3bfcf7c8776e8f69831e0352eff6c08a1d071cb210e09fe211988ff087e7e385",
+    "test_receiver.py": "99aa923fb19f9f9a4e4dd15658ce75dc3b59ea706e49809280550f32ca0627f6",
+    "test_cli_ingestion.py": "794fdca2471c008d46efb1598372a8a33baa842901205f8bc2b7e8456d72c302"
+  },
+  "original_red": {
+    "command": "python3 -m unittest -v test_cli_ingestion.RawToFinalJsonCLITests.test_malformed_extra_undeclared_cell_must_be_rejected test_cli_ingestion.RawToFinalJsonCLITests.test_duplicate_required_header_must_be_rejected",
+    "source": "original unchanged GitHub PR #321 bridge blob 6002289df6982dd1fe32555eb7152ec6744efc5b",
+    "executed": 2,
+    "failed": 2,
+    "reason": "malformed row and duplicate required header actually accepted as if structurally valid"
+  },
+  "patched_green": {
+    "command": "python3 -m unittest -v test_receiver.py test_cli_ingestion.py",
+    "executed": 15,
+    "passed": 15,
+    "failed": 0,
+    "cli_ingestion_cases": 6
+  },
+  "boundary": {
+    "s119": "REJECTED_NONZERO_NO_NORMALIZED_FILE",
+    "s120": "BOTH_CLI_PROGRAMS_ACCEPTED_METADATA_ARTIFICIAL",
+    "s121": "BOTH_CLI_PROGRAMS_ACCEPTED_METADATA_ARTIFICIAL"
+  },
+  "provenance": "Synthetic fixture rows and dummy metadata ONLY; no Windows/Unity/Player/PresentMon actual capture. Windows tests NOT_RUN. runtime_pass=false; G1/G2 unchanged.",
+  "windows_execution": "NOT_RUN",
+  "game_frames_measured": 0,
+  "game_source_changes": 0
+}

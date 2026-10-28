@@ -44,3 +44,27 @@ Metadata must identify the immutable original **historical** release source SHA 
 - PASS15 adds only the 121-second explicit positive to the published portable regression test, with historical inputs and failure behavior preserved.
 
 **Source ownership:** B01-50 profiling QA only. Codex game code / CHL-003 / PARTSIZE sources are untouched; no new gameplay package, merge, release, G0/G1/G2 transition or Codex acknowledgment is implied.
+
+
+## PASS15 continuation: original CLI intake & CSV integrity hardening
+
+New actual CLI integration tests cover 119, 120 and 121 seconds, invoking both
+\`presentmon_bridge.py\` and \`analyze_frametimes.py\` in a subprocess; results
+remain synthetic QA test controls, **never measured game FPS**. A separate
+original-source defect was reproduced RED: \`csv.DictReader\` silently accepted
+a raw row with an undeclared extra cell, and duplicate required headers could
+silently overwrite values. This version fails closed with
+\`MALFORMED_RAW_ROW\` / \`DUPLICATE_RAW_COLUMNS\`, while accepting legitimate
+additional *named* PresentMon columns.
+
+Run on **either** Windows or Linux with Python 3.10+:
+
+\`\`\`sh
+python -m unittest -v test_receiver.py test_cli_ingestion.py
+\`\`\`
+
+Source-pinned local Linux test and artifact receipt:
+[evidence/PASS15_LINUX_CLI_QA.json](evidence/PASS15_LINUX_CLI_QA.json).
+**Windows run is NOT_RUN** and requires a separate genuine Windows runner;
+the portable test itself is not a cross-platform PASS. Do not modify shared
+GitHub Actions workflows from the B01-50 specialist scope.
