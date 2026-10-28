@@ -1,0 +1,43 @@
+name: B01-24 P17 original-R5 enemy relay catalog (Unity NOT_RUN)
+on:
+  push:
+    branches:
+      - research/b01-24-p17-encounter-catalog
+    paths:
+      - 'Research/B01-24/P17/ENEMY-RELAY-001/**'
+      - '.github/workflows/b01-24-p17-enemy-relay.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/ENEMY-RELAY-001/**'
+      - '.github/workflows/b01-24-p17-enemy-relay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-r5-source-contract:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual unchanged R5RunPlan, R1RunDefinition and R3EnemyArchetype CSharp
+        shell: bash
+        run: dotnet build Research/B01-24/P17/ENEMY-RELAY-001/EnemyRelayP17.csproj -c Release --warnaserror
+      - name: Execute actual source validator on 10 optional enemy encounters, 6 original seeds and negatives
+        shell: bash
+        run: |
+          dotnet run --no-build -c Release --project Research/B01-24/P17/ENEMY-RELAY-001/EnemyRelayP17.csproj | tee relay-source-receipt.txt
+      - name: Upload direct runner output (not Unity evidence)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0124-p17-relay-source-${{ matrix.os }}
+          path: relay-source-receipt.txt
+          if-no-files-found: warn
+          retention-days: 14
