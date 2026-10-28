@@ -220,20 +220,36 @@ public sealed class B0124EnemyAiNegativeEditModeTests
 
         try
         {
+            // Exercise BOTH branches before asserting. On the original
+            // friendly-only gate, the blocked case can be RED; throwing
+            // immediately would hide the recovery observation.
             Method("Update").Invoke(enemy, null);
             int blockedShotCount = 0;
             foreach (var shell in UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))
                 if (!preexisting.Contains(shell.GetInstanceID())) blockedShotCount++;
-            // Expected RED on the current friendly-only fire gate.
-            Assert.That(blockedShotCount, Is.Zero, "Opaque wall must suppress normal fire when HQ policy chooses BLOCK.");
+
             wall.SetActive(false);
             Physics.SyncTransforms();
+            // Restore only cooldown eligibility. A blocked shot on unpatched
+            // source may have consumed the cooldown; without this reset,
+            // the next instant Update() would not test recovered LOS at all.
+            Field("nextFireTime", -1f);
             Method("Update").Invoke(enemy, null);
-            int recoveredShotCount = 0;
+            int totalNewShells = 0;
             foreach (var shell in UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None))
-                if (!preexisting.Contains(shell.GetInstanceID())) recoveredShotCount++;
-            Assert.That(recoveredShotCount, Is.EqualTo(1),
-                "Clear LOS must allow the next legally ready normal shot.");
+                if (!preexisting.Contains(shell.GetInstanceID())) totalNewShells++;
+            int recoveredShotDelta = totalNewShells - blockedShotCount;
+
+            TestContext.WriteLine(
+                $"B0124 LOS native counts: blocked={blockedShotCount}; recovered_delta={recoveredShotDelta}; " +
+                $"total_new={totalNewShells}; source=Codex310@231005c6d0351945a8ee6684f3856af118f0e94f");
+            Assert.Multiple(() =>
+            {
+                Assert.That(blockedShotCount, Is.Zero,
+                    "HQ-policy-conditional: opaque wall must suppress the normal shot.");
+                Assert.That(recoveredShotDelta, Is.EqualTo(1),
+                    "After restoring cooldown, clearing the wall should permit one new shot.");
+            });
         }
         finally
         {
