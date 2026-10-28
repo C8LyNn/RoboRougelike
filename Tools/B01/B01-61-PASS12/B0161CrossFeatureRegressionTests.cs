@@ -14,6 +14,7 @@ using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.Mechanics.MOV009;
+using RogueMachine.P12PipelineSafe;
 
 public sealed class B0161CrossFeatureRegressionTests
 {
@@ -68,6 +69,14 @@ public sealed class B0161CrossFeatureRegressionTests
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
         Assert.That(run.OpenMapEditor(),Is.True);
         run.MapEditorGarage();
+        var follow=Object.FindFirstObjectByType<P12PipelineSafeCamera>();
+        Assert.That(follow,Is.Not.Null,"Actual scene camera facade must exist");
+        Assert.That(follow.enabled,Is.True,"Garage return must enable its camera");
+        Assert.That(follow.TargetRoot,Is.SameAs(run.Player.transform),
+            "Garage camera must follow the live garage vehicle, not destroyed source");
+        Assert.That(follow.ReceiverRig,Is.Not.Null);
+        Assert.That(follow.ReceiverRig.enabled,Is.False,
+            "The original facade owns the only pose update; rig is not autonomous");
         var garageModel=run.VehicleModel;
         Assert.That(garageModel,Is.Not.Null);
         Assert.That(run.GarageBuy(MOV009ModelTests.Cells(R3VehicleKind.Light)[0],R3PartKind.Suspension),Is.True);
@@ -81,6 +90,7 @@ public sealed class B0161CrossFeatureRegressionTests
         var scrap=garageModel.Scrap;
         var partIds=garageModel.Parts.Select(p=>p.Id).OrderBy(id=>id).ToArray();
         Assert.That(run.ReturnToMapEditorFromGarage(),Is.True);
+        Assert.That(follow.enabled,Is.False,"Editor should not leave gameplay camera active");
 
         var draft=run.EditorDraft;
         for(int z=-3;z<=3;z++)Assert.That(draft.Place(MapItemKind.Ground,0,z,0),Is.True);
@@ -94,6 +104,11 @@ public sealed class B0161CrossFeatureRegressionTests
         while(run.Transitioning&&Time.realtimeSinceStartup<limit)yield return null;
         Assert.That(run.Transitioning,Is.False);
         Assert.That(run.MapEditorTesting,Is.True);
+        Assert.That(follow.enabled,Is.True,"Map test must re-enable camera after transition");
+        Assert.That(follow.TargetRoot,Is.SameAs(run.Player.transform),
+            "Map-test camera must point at newly built disposable vehicle");
+        Assert.That(follow.ReceiverRig.enabled,Is.False);
+        var mapTestVehicleRoot=run.Player.transform;
         Assert.That(run.VehicleModel,Is.Not.SameAs(garageModel));
         Assert.That(run.VehicleModel.WeaponGroupA,Is.Null);
         Assert.That(run.VehicleModel.WeaponGroupB,Is.EqualTo(R4WeaponKind.Basic));
@@ -124,6 +139,11 @@ public sealed class B0161CrossFeatureRegressionTests
         while(run.Transitioning&&Time.realtimeSinceStartup<limit)yield return null;
         Assert.That(run.Transitioning,Is.False);
         Assert.That(run.MapEditing,Is.True);
+        Assert.That(follow.enabled,Is.False,"Editor must disable gameplay following on return");
+        Assert.That(follow.TargetRoot,Is.SameAs(run.Player.transform),
+            "Restored workshop vehicle must replace map-test camera target");
+        Assert.That(follow.TargetRoot,Is.Not.SameAs(mapTestVehicleRoot),
+            "Camera cannot keep following destroyed disposable map-test root");
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
         Assert.That(run.VehicleModel,Is.SameAs(garageModel));
         Assert.That(run.VehicleModel.WeaponGroupA,Is.Null);
@@ -136,6 +156,9 @@ public sealed class B0161CrossFeatureRegressionTests
         Assert.That(run.VehicleModel.Parts.Select(p=>p.Id).OrderBy(id=>id).ToArray(),Is.EqualTo(partIds));
         Assert.That(run.EditorDraft.ToJson(),Is.EqualTo(mapBefore));
         run.MapEditorGarage();
+        Assert.That(follow.enabled,Is.True);
+        Assert.That(follow.TargetRoot,Is.SameAs(run.Player.transform));
+        Assert.That(follow.ReceiverRig.enabled,Is.False);
         Assert.That(run.Player.gameObject.activeInHierarchy,Is.True);
         Assert.That(run.Player.GetComponent<R3VehicleAssembly>(),Is.Not.Null);
     }
