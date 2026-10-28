@@ -1,0 +1,7 @@
+# CX-05 — Owned wreck rebuild quote
+
+Base `65090f4e4c67bb72ac04ec4e6153c18b07133484`. A 0HP owned item now uses the existing proportional 35% repair calculation at its 100% missing-health boundary (not a new 65% policy). For prices 5/15/30 this yields 2/6/11 scrap respectively; existing partially damaged repair quotes remain unchanged. Transaction retains GUID and debits once. Existing emergency-repair plans reject invalid or zero quotes before any HP or wallet mutation. Purchase price 1 has no positive integer strictly below purchase price; rebuilding is explicitly unavailable, not free or full-price. Garage inventory displays owned rebuild quote and purchase price where the item is purchasable.
+
+Unity 6000.3.14f1, Windows: initial new tests 4 RED/3 GREEN, exit 2; targeted final suite 89/89 PASS, zero skipped, exit 0, including zero funds, duplicate charge, same GUID, 1-scrap guard, emergency, existing garage, guns and MOV009. This uses original Unity runtime code and actual Unity NUnit; XML and exit in Evidence, full Editor logs local `Artifacts/Local/CX05/`. Historical assertions expecting full-price wrecks were updated to match the owner-required new behavior.
+
+The 35% choice reuses the pre-existing rate rather than asserting a newly HQ-approved economy coefficient; B01-10/HQ may review balance. Delayed/free rebuild orders and run-safety policy are not implemented. B01-22 independent original-source tests, B01-60 independent native G1, GUI/readability and Windows Player remain NOT_RUN. No main/develop merge.

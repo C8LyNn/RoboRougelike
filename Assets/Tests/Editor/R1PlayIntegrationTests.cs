@@ -371,9 +371,13 @@ public class R1PlayIntegrationTests
         var follow = Object.FindFirstObjectByType<P12PipelineSafeCamera>();
         follow.enabled = false;
         var camera = Camera.main;
-        InputSystem.QueueStateEvent(mouse, new MouseState().WithButton(MouseButton.Left));
         for (int stage = 0; stage < 6; stage++)
         {
+            // The real pause/transition guard requires a release before the next press.
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return null;yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState().WithButton(MouseButton.Left));
+            yield return null;
             P12PipelineSafeEnemyTurret enemy = null;
             Rigidbody body = null;
             Vector3 previous = Vector3.zero, velocity = Vector3.zero;

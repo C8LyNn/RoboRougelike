@@ -217,11 +217,13 @@ namespace RoboRougelike.R1
         {
             Transitioning = true; Paused = false; SetSimulation(false);
             Encounter.Clear();
-            if(roadRequested)playerSpawn=ActivateRoadWorld();
+            if(ld02Requested)playerSpawn=ActivateLD02Arena();
+            else if(roadRequested)playerSpawn=ActivateRoadWorld();
             else if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
             else {Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;}
-            if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,playerRotation);
-            else Player.MoveTo(playerSpawn,playerRotation);
+            var encounterRotation=ld02Requested?Quaternion.Euler(0,90,0):playerRotation;
+            if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,encounterRotation);
+            else Player.MoveTo(playerSpawn,encounterRotation);
             Player.Controller.SetGameplayInputEnabled(false);
             followCamera.Configure(Player.transform, Player.CameraPivot);
             // Start() builds the structure and initializes cloned module references while time is paused.
@@ -233,7 +235,7 @@ namespace RoboRougelike.R1
             if(raceRequested)BeginCheckpointRace();
             else if(roadRequested)BeginRoadChallenge();
             else if(reactorRequested)BeginReactorActivity();
-            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,mapgenRequested?GeneratedWorld.EnemySpawns:null);
+            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,ld02Requested?LD02EnemySpawns:mapgenRequested?GeneratedWorld.EnemySpawns:null);
             yield return null;
             Transitioning = false; SetSimulation(true);
             Debug.Log("[R1] Starcie " + (Progress.EncounterIndex + 1) + ": przeciwników=" + Encounter.AliveCount);
@@ -268,10 +270,23 @@ namespace RoboRougelike.R1
             else if (Encounter.Cleared||CheckpointRace?.Won==true||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
             {
                 Player.GetComponent<R3VehicleAssembly>().Capture();
+                // The victory transition validates and creates its offers first.
+                // A malformed catalog must never pay the wallet while the run
+                // remains in Combat, where Update would pay it again next frame.
+                try
+                {
+                    if(!Progress.WinEncounter(Definition.Upgrades,Plan.UpgradeRandom(Progress.EncounterIndex)))return;
+                }
+                catch(System.InvalidOperationException problem)
+                {
+                    Error="Nie można rozliczyć nagrody: "+problem.Message;
+                    SetSimulation(false);
+                    Debug.LogWarning("[R1] "+Error);
+                    return;
+                }
                 LastScrapReward=Definition.Encounters[Progress.EncounterIndex].ScrapReward;
                 VehicleModel.Award(LastScrapReward);
                 EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
-                Progress.WinEncounter(Definition.Upgrades, Plan.UpgradeRandom(Progress.EncounterIndex));
                 Progress.OpenSalvage();
                 OpenRecoveryWindow();
                 SetSimulation(false);

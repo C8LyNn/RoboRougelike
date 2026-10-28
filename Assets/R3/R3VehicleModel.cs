@@ -88,6 +88,7 @@ namespace RoboRougelike.R3
         public float GrappleReadyAt;
         // Assignments follow mounted types, including damaged plans that can be repaired.
         R4WeaponKind? weaponGroupA, weaponGroupB;
+        readonly Dictionary<string,bool> weaponGroupPreference=new Dictionary<string,bool>(StringComparer.Ordinal);
         public R4WeaponKind? WeaponGroupA { get { SyncWeaponGroups(); return weaponGroupA; } }
         public R4WeaponKind? WeaponGroupB { get { SyncWeaponGroups(); return weaponGroupB; } }
         public void SyncWeaponGroups()
@@ -98,12 +99,25 @@ namespace RoboRougelike.R3
             foreach(var kind in types)
             {
                 if(weaponGroupA==kind||weaponGroupB==kind)continue;
-                if(!weaponGroupA.HasValue)weaponGroupA=kind;
+                var remembered=Parts.FirstOrDefault(p=>p.Kind==R3PartKind.Gun&&p.Weapon==kind&&
+                    !string.IsNullOrEmpty(p.Id)&&weaponGroupPreference.ContainsKey(p.Id));
+                if(remembered!=null&&weaponGroupPreference[remembered.Id]&&!weaponGroupB.HasValue)weaponGroupB=kind;
+                else if(remembered!=null&&!weaponGroupPreference[remembered.Id]&&!weaponGroupA.HasValue)weaponGroupA=kind;
+                else if(!weaponGroupA.HasValue)weaponGroupA=kind;
                 else if(!weaponGroupB.HasValue)weaponGroupB=kind;
+            }
+            RememberWeaponGroups();
+        }
+        void RememberWeaponGroups()
+        {
+            foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Gun&&!string.IsNullOrEmpty(p.Id)))
+            {
+                if(weaponGroupA==part.Weapon)weaponGroupPreference[part.Id]=false;
+                else if(weaponGroupB==part.Weapon)weaponGroupPreference[part.Id]=true;
             }
         }
         public void SwapWeaponGroups()
-        { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; }
+        { SyncWeaponGroups(); var old=weaponGroupA; weaponGroupA=weaponGroupB; weaponGroupB=old; RememberWeaponGroups(); }
         public R3GarageEconomy Economy { get; }
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
@@ -122,6 +136,7 @@ namespace RoboRougelike.R3
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
             SyncWeaponGroups();copy.weaponGroupA=weaponGroupA;copy.weaponGroupB=weaponGroupB;
+            foreach(var preference in weaponGroupPreference)copy.weaponGroupPreference[preference.Key]=preference.Value;
             return copy;
         }
         public void Award(int amount) { Scrap = (int)Math.Min(100000L, Scrap + (long)Math.Max(0, amount)); }
@@ -157,7 +172,12 @@ namespace RoboRougelike.R3
                 }
             return false;
         }
-        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => Math.Max(1,
+        public static bool ValidEconomicKind(R3PartKind kind,R4WeaponKind weapon) =>
+            Enum.IsDefined(typeof(R3PartKind),kind) &&
+            (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) &&
+            !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
+        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
@@ -218,11 +238,14 @@ namespace RoboRougelike.R3
         }
         public int RepairCost(R3PartState part)
         {
-            if (part == null || part.Health >= 1f) return 0;
-            // Lost modules require rebuilding at full purchase cost; damaged ones cost
-            // a fraction of their value proportional to missing durability.
-            return part.Health <= 0 ? Price(part.Kind,part.Weapon) : Math.Max(1,
-                Mathf.CeilToInt((1 - part.Health) * Price(part.Kind,part.Weapon) * 0.35f));
+            if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
+            // Apply the existing proportional repair rate continuously to owned wrecks.
+            // A one-scrap purchase has no positive, strictly lower integer price;
+            // fail closed instead of giving away an owned part or charging full price.
+            int purchase=Price(part.Kind,part.Weapon);
+            if(part.Health<=0&&purchase<=1)return 0;
+            int quote=Math.Max(1,Mathf.CeilToInt((1-part.Health)*purchase*0.35f));
+            return part.Health<=0?Math.Min(purchase-1,quote):quote;
         }
         public bool Repair(Vector3Int cell)
         {
@@ -265,7 +288,7 @@ namespace RoboRougelike.R3
             var batch=recovered.ToArray();
             if(inventory.Count+batch.Length>InventoryCapacity)return false;
             if(batch.Any(p=>p==null||float.IsNaN(p.Health)||float.IsInfinity(p.Health)||p.Health<0||p.Health>1||
-                !Enum.IsDefined(typeof(R3PartKind),p.Kind)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+                !ValidEconomicKind(p.Kind,p.Weapon)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
@@ -310,11 +333,12 @@ namespace RoboRougelike.R3
             if(part==null||cost<=0||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
-        public int DismantleValue(R3PartState part) => part==null?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
+        public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
         public bool Dismantle(string id)
         {
-            var part=inventory.FirstOrDefault(p=>p.Id==id);if(part==null)return false;
-            inventory.Remove(part);Award(DismantleValue(part));return true;
+            var part=inventory.FirstOrDefault(p=>p.Id==id);if(!ValidEconomicPart(part))return false;
+            int quote=DismantleValue(part);
+            inventory.Remove(part);weaponGroupPreference.Remove(part.Id);Award(quote);return true;
         }
         public static bool Connected(IEnumerable<R3PartState> parts)
         {
@@ -352,6 +376,37 @@ namespace RoboRougelike.R3
             }
         }
         public bool CanDeploy => DeployError == null;
+        // Critical garage warnings use only live parts physically connected to
+        // the live core. They do not change the existing deployment policy.
+        public string CriticalReadinessMessage
+        {
+            get
+            {
+                var alive=Parts.Where(p=>p!=null&&p.Health>0).ToList();
+                var core=alive.FirstOrDefault(p=>p.Kind==R3PartKind.Core);
+                var cells=new Dictionary<Vector3Int,R3PartState>();
+                foreach(var part in alive)foreach(var cell in OccupiedCells(part))cells.TryAdd(cell,part);
+                var visited=new HashSet<Vector3Int>();var queue=new Queue<Vector3Int>();
+                if(core!=null){visited.Add(core.Cell);queue.Enqueue(core.Cell);}
+                while(queue.Count>0)
+                {
+                    var current=queue.Dequeue();
+                    foreach(var direction in Neighbours)
+                    {
+                        var next=current+direction;
+                        if(cells.TryGetValue(next,out var other)&&!visited.Contains(next)&&
+                            R3MountingGrid.Compatible(cells[current],other,direction))
+                        {visited.Add(next);queue.Enqueue(next);}
+                    }
+                }
+                var operational=visited.Select(c=>cells[c]).Distinct().ToArray();
+                bool noWeapon=!operational.Any(p=>p.Kind==R3PartKind.Gun&&ValidEconomicKind(p.Kind,p.Weapon));
+                bool noDrive=!HasMobility(operational,SelectedDrive);
+                if(noWeapon&&noDrive)return "Brak sprawnej broni • Brak sprawnego napędu.";
+                if(noWeapon)return "Brak sprawnej broni.";
+                return noDrive?"Brak sprawnego napędu.":null;
+            }
+        }
         public static bool HasMobility(IEnumerable<R3PartState> source,R3DriveKind drive,bool healthy=true)
         {
             var parts=source.Where(p=>!healthy||p.Health>0);
@@ -367,7 +422,7 @@ namespace RoboRougelike.R3
         {
             if(InvalidWeaponTypes)return false;
             var plan=EmergencyRepairPlan();
-            if(plan==null||plan.Count==0)return false;
+            if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)||RepairCost(p)<=0))return false;
             int price=plan.Sum(RepairCost);
             if(Scrap<price)return false;
             if(restorationGate!=null&&!restorationGate(plan))return false;

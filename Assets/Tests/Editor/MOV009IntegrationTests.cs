@@ -138,12 +138,12 @@ public class MOV009IntegrationTests
         foreach(var cell in MOV009ModelTests.Cells(R3VehicleKind.Light))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.First(p=>p.Kind==R3PartKind.Suspension);var cellToRepair=part.Cell;string id=part.Id;
         part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.zero);assembly.Capture();
-        Assert.That(run.GarageRepair(cellToRepair),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(475));
+        Assert.That(run.GarageRepair(cellToRepair),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(491));
         Assert.That(run.Player.GetComponent<MOV009VehicleAdapter>().OperationalSupports,Is.EqualTo(4));
         Assert.That(run.GarageRemove(cellToRepair),Is.True);Assert.That(run.VehicleModel.Inventory.Single().Id,Is.EqualTo(id));
         Assert.That(run.Player.GetComponent<MOV009VehicleAdapter>().OperationalSupports,Is.EqualTo(3));
         Assert.That(run.GarageMount(id,cellToRepair),Is.True);Assert.That(run.VehicleModel.Inventory,Is.Empty);
-        Assert.That(run.Player.GetComponent<MOV009VehicleAdapter>().OperationalSupports,Is.EqualTo(4));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(475));
+        Assert.That(run.Player.GetComponent<MOV009VehicleAdapter>().OperationalSupports,Is.EqualTo(4));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(491));
         yield return null;
     }
     [UnityTest] public IEnumerator RaisedSuspensionCanStillHitTheRangeCoreWithARealProjectile()

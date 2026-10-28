@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="25" result="Passed" total="25" passed="25" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 09:44:10Z" end-time="2026-10-28 09:44:11Z" duration="0,4860525">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1302" result="Passed" start-time="2026-10-28 09:44:10Z" end-time="2026-10-28 09:44:11Z" duration="0.486053" total="25" passed="25" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1622" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="510" result="Passed" start-time="2026-10-28 09:44:10Z" end-time="2026-10-28 09:44:11Z" duration="0.405561" total="25" passed="25" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="44180" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1203" name="MapEditorDraftTests" fullname="MapEditorDraftTests" classname="MapEditorDraftTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-28 09:43:51Z" end-time="2026-10-28 09:44:01Z" duration="10.348353" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1208" name="ActualGeometrySupportsRealR6WheelDrivenVehicle" fullname="MapEditorDraftTests.ActualGeometrySupportsRealR6WheelDrivenVehicle" methodname="ActualGeometrySupportsRealR6WheelDrivenVehicle" classname="MapEditorDraftTests" runstate="Runnable" seed="59909596" result="Passed" start-time="2026-10-28 09:43:48Z" end-time="2026-10-28 09:44:01Z" duration="12.918619" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[MapEditor physics] step=0 position=(0.00, 0.66, -12.00) velocity=(0.00, -0.78, 0.00) grounded=4 rotation=(0.00, 0.00, 0.00)
+[MapEditor physics] step=100 position=(0.00, 1.28, 0.34) velocity=(-0.03, 2.41, 9.78) grounded=4 rotation=(343.65, 0.09, 359.98)
+[MapEditor physics] step=200 position=(0.15, 0.73, 20.19) velocity=(0.27, -0.41, 10.10) grounded=2 rotation=(357.29, 0.06, 357.49)
+[MapEditor physics] step=300 position=(0.10, -15.45, 40.19) velocity=(-0.04, -17.70, 10.03) grounded=0 rotation=(71.66, 0.31, 0.68)
+[MapEditor physics] step=400 position=(0.01, -70.59, 60.27) velocity=(-0.04, -37.32, 10.03) grounded=0 rotation=(43.28, 179.05, 179.19)
+]]></output>
+        </test-case>
+        <test-case id="1205" name="BuildRotateRemoveUndoRedoAndUniqueMarkers" fullname="MapEditorDraftTests.BuildRotateRemoveUndoRedoAndUniqueMarkers" methodname="BuildRotateRemoveUndoRedoAndUniqueMarkers" classname="MapEditorDraftTests" runstate="Runnable" seed="822698865" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:01Z" duration="0.003452" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1206" name="JsonLoadIsTransactionalAndTestsRequireSpawnFinishAndGround" fullname="MapEditorDraftTests.JsonLoadIsTransactionalAndTestsRequireSpawnFinishAndGround" methodname="JsonLoadIsTransactionalAndTestsRequireSpawnFinishAndGround" classname="MapEditorDraftTests" runstate="Runnable" seed="1596832802" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:01Z" duration="0.001786" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1207" name="LocalFileRoundTripAndNameValidation" fullname="MapEditorDraftTests.LocalFileRoundTripAndNameValidation" methodname="LocalFileRoundTripAndNameValidation" classname="MapEditorDraftTests" runstate="Runnable" seed="473859482" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:01Z" duration="0.013133" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1204" name="RuntimeMapDraftExistsForInGameEditing" fullname="MapEditorDraftTests.RuntimeMapDraftExistsForInGameEditing" methodname="RuntimeMapDraftExistsForInGameEditing" classname="MapEditorDraftTests" runstate="Runnable" seed="1184402488" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:01Z" duration="0.000260" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1209" name="MapEditorExpansionTests" fullname="MapEditorExpansionTests" classname="MapEditorExpansionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-28 09:44:04Z" end-time="2026-10-28 09:44:04Z" duration="0.306367" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1213" name="ExistingObjectCanBeResizedAndBlockedResizeIsAtomic" fullname="MapEditorExpansionTests.ExistingObjectCanBeResizedAndBlockedResizeIsAtomic" methodname="ExistingObjectCanBeResizedAndBlockedResizeIsAtomic" classname="MapEditorExpansionTests" runstate="Runnable" seed="1559173463" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:01Z" duration="0.000837" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1210" name="FullFloorCanBeUndoneRedoneAndSaved" fullname="MapEditorExpansionTests.FullFloorCanBeUndoneRedoneAndSaved" methodname="FullFloorCanBeUndoneRedoneAndSaved" classname="MapEditorExpansionTests" runstate="Runnable" seed="1835945076" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:01Z" duration="0.001106" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1214" name="GhostMatchesScaledRealGeometryAndFloorHasCollider" fullname="MapEditorExpansionTests.GhostMatchesScaledRealGeometryAndFloorHasCollider" methodname="GhostMatchesScaledRealGeometryAndFloorHasCollider" classname="MapEditorExpansionTests" runstate="Runnable" seed="2146111008" result="Passed" start-time="2026-10-28 09:44:01Z" end-time="2026-10-28 09:44:04Z" duration="2.827641" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+        </test-case>
+        <test-case id="1212" name="OldMapsLoadAtUnitScaleAndNewScaleRoundTrips" fullname="MapEditorExpansionTests.OldMapsLoadAtUnitScaleAndNewScaleRoundTrips" methodname="OldMapsLoadAtUnitScaleAndNewScaleRoundTrips" classname="MapEditorExpansionTests" runstate="Runnable" seed="2116227229" result="Passed" start-time="2026-10-28 09:44:04Z" end-time="2026-10-28 09:44:04Z" duration="0.002549" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1211" name="ScaleOccupiesRotatedCellsAndRemovesFromCoveredCell" fullname="MapEditorExpansionTests.ScaleOccupiesRotatedCellsAndRemovesFromCoveredCell" methodname="ScaleOccupiesRotatedCellsAndRemovesFromCoveredCell" classname="MapEditorExpansionTests" runstate="Runnable" seed="463479652" result="Passed" start-time="2026-10-28 09:44:04Z" end-time="2026-10-28 09:44:04Z" duration="0.001015" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1215" name="MapEditorIntegrationTests" fullname="MapEditorIntegrationTests" classname="MapEditorIntegrationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.447775" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1216" name="MenuEditorGarageVehicleTestAndReturnPreserveMap" fullname="MapEditorIntegrationTests.MenuEditorGarageVehicleTestAndReturnPreserveMap" methodname="MenuEditorGarageVehicleTestAndReturnPreserveMap" classname="MapEditorIntegrationTests" runstate="Runnable" seed="881142225" result="Passed" start-time="2026-10-28 09:44:04Z" end-time="2026-10-28 09:44:07Z" duration="3.416263" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1217" name="MapHiddenFloorCapacityTests" fullname="MapHiddenFloorCapacityTests" classname="MapHiddenFloorCapacityTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.014977" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1218" name="HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear" fullname="MapHiddenFloorCapacityTests.HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear" methodname="HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear" classname="MapHiddenFloorCapacityTests" runstate="Runnable" seed="1027117431" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.010704" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1221" name="LatestB01LevelDataStillLoadsAndRoundTrips" fullname="MapHiddenFloorCapacityTests.LatestB01LevelDataStillLoadsAndRoundTrips" classname="MapHiddenFloorCapacityTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.003464" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1219" name="LatestB01LevelDataStillLoadsAndRoundTrips(&quot;LD02_ARENA.json&quot;,168)" fullname="MapHiddenFloorCapacityTests.LatestB01LevelDataStillLoadsAndRoundTrips(&quot;LD02_ARENA.json&quot;,168)" methodname="LatestB01LevelDataStillLoadsAndRoundTrips" classname="MapHiddenFloorCapacityTests" runstate="Runnable" seed="1546920904" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.001835" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1220" name="LatestB01LevelDataStillLoadsAndRoundTrips(&quot;LD02_COVER_CHOICE.json&quot;,173)" fullname="MapHiddenFloorCapacityTests.LatestB01LevelDataStillLoadsAndRoundTrips(&quot;LD02_COVER_CHOICE.json&quot;,173)" methodname="LatestB01LevelDataStillLoadsAndRoundTrips" classname="MapHiddenFloorCapacityTests" runstate="Runnable" seed="1255283686" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.001155" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1222" name="MapStorageIntegrityTests" fullname="MapStorageIntegrityTests" classname="MapStorageIntegrityTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-10-28 09:44:10Z" end-time="2026-10-28 09:44:11Z" duration="0.378761" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1229" name="ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected" fullname="MapStorageIntegrityTests.ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected" methodname="ExistingMapIsNotSilentlyOverwrittenAndCaseAliasIsRejected" classname="MapStorageIntegrityTests" runstate="Runnable" seed="542160942" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.014576" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1231" name="ExplicitOverwriteReplacesOnlyTheConfirmedExactFile" fullname="MapStorageIntegrityTests.ExplicitOverwriteReplacesOnlyTheConfirmedExactFile" methodname="ExplicitOverwriteReplacesOnlyTheConfirmedExactFile" classname="MapStorageIntegrityTests" runstate="Runnable" seed="567228875" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.009564" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1228" name="InvalidAndReservedNamesFailBeforeIO" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.004817" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1223" name="InvalidAndReservedNamesFailBeforeIO(&quot; Tor 1 &quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot; Tor 1 &quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="2072523595" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.001151" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1224" name="InvalidAndReservedNamesFailBeforeIO(&quot;CON&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;CON&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="878255903" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.000678" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1225" name="InvalidAndReservedNamesFailBeforeIO(&quot;nul&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;nul&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1020602934" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.000673" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1226" name="InvalidAndReservedNamesFailBeforeIO(&quot;COM1&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;COM1&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="664625384" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.000624" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1227" name="InvalidAndReservedNamesFailBeforeIO(&quot;Lpt9&quot;)" fullname="MapStorageIntegrityTests.InvalidAndReservedNamesFailBeforeIO(&quot;Lpt9&quot;)" methodname="InvalidAndReservedNamesFailBeforeIO" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1754658632" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.000605" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="1232" name="LoadAlsoRejectsCaseAliasWithoutChangingDraft" fullname="MapStorageIntegrityTests.LoadAlsoRejectsCaseAliasWithoutChangingDraft" methodname="LoadAlsoRejectsCaseAliasWithoutChangingDraft" classname="MapStorageIntegrityTests" runstate="Runnable" seed="149080916" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.002086" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1233" name="NativeJsonV1LoadsAndSavesAsV2" fullname="MapStorageIntegrityTests.NativeJsonV1LoadsAndSavesAsV2" methodname="NativeJsonV1LoadsAndSavesAsV2" classname="MapStorageIntegrityTests" runstate="Runnable" seed="374798555" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.005429" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1230" name="NewValidMapRoundTripsWithoutAliases" fullname="MapStorageIntegrityTests.NewValidMapRoundTripsWithoutAliases" methodname="NewValidMapRoundTripsWithoutAliases" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1225334969" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:07Z" duration="0.002174" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1234" name="RealEditorRequiresExplicitSecondSaveForOverwrite" fullname="MapStorageIntegrityTests.RealEditorRequiresExplicitSecondSaveForOverwrite" methodname="RealEditorRequiresExplicitSecondSaveForOverwrite" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1764916284" result="Passed" start-time="2026-10-28 09:44:07Z" end-time="2026-10-28 09:44:11Z" duration="3.267843" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

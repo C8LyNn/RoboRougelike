@@ -24,6 +24,9 @@ namespace RoboRougelike.R1
         public int EditorRotation;
         public int EditorScaleX=1,EditorScaleY=1,EditorScaleZ=1;
         public string EditorName="Moja mapa",EditorMessage="Wybierz element i kliknij siatkę.";
+        string pendingMapOverwrite;
+        public bool MapOverwritePending => pendingMapOverwrite!=null;
+        public void CancelMapOverwrite(){pendingMapOverwrite=null;}
         public bool EditorTextFocused;
         GameObject editorGrid,editorGround;
         Vector3 editorCenter;
@@ -33,7 +36,7 @@ namespace RoboRougelike.R1
         public bool OpenMapEditor()
         {
             if(Progress?.State!=R1RunState.Ready||!OpenSandboxGarage())return false;
-            MapEditorSession=true;EditorDraft=new MapDraft();EditorWorld=gameObject.AddComponent<MapWorld>();
+            pendingMapOverwrite=null;MapEditorSession=true;EditorDraft=new MapDraft();EditorWorld=gameObject.AddComponent<MapWorld>();
             editorGround=GameObject.Find("P12_Ground");MakeEditorGrid();return ReturnToMapEditorFromGarage();
         }
         void MakeEditorGrid()
@@ -97,12 +100,20 @@ namespace RoboRougelike.R1
         }
         public void SaveEditedMap()
         {
-            if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path)){EditorMessage="Nazwa: litery, cyfry, spacja, - lub _.";return;}
-            try{MapStorage.Save(path,EditorDraft);EditorMessage="Zapisano: "+EditorName;}
-            catch(Exception e){EditorMessage="Nie udało się zapisać: "+e.Message;}
+            try
+            {
+                if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path))
+                {pendingMapOverwrite=null;EditorMessage="Niepoprawna lub kolidująca nazwa mapy.";return;}
+                bool overwrite=System.IO.File.Exists(path);
+                if(overwrite&&pendingMapOverwrite!=path)
+                {pendingMapOverwrite=path;EditorMessage="Mapa istnieje. Kliknij ponownie Zapisz, aby ją nadpisać.";return;}
+                pendingMapOverwrite=null;MapStorage.Save(path,EditorDraft,overwrite);EditorMessage="Zapisano: "+EditorName;
+            }
+            catch(Exception e){pendingMapOverwrite=null;EditorMessage="Nie udało się zapisać: "+e.Message;}
         }
         public void LoadEditedMap()
         {
+            pendingMapOverwrite=null;
             if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path)){EditorMessage="Niepoprawna nazwa mapy.";return;}
             if(MapStorage.Load(path,EditorDraft,out var error)){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage="Wczytano: "+EditorName;}
             else EditorMessage=error;

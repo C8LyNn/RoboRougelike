@@ -23,7 +23,7 @@ public class RRLW6RailgunModelTests
         ledger.Record("rail-enemy",new[]{new R4SalvageItem("rail-id","enemy rail",R3PartKind.Gun,kind,0,4)});
         Assert.That(ledger.Claim(model,new[]{"rail-id"}),Is.True);model.Award(500);int before=model.Scrap;
         Assert.That(model.RepairInventory("rail-id"),Is.True);
-        Assert.That(model.Scrap,Is.EqualTo(before-R4WeaponDefinition.Get(kind).Price));
+        Assert.That(model.Scrap,Is.EqualTo(before-23));
         var copy=model.DeepCopy().Inventory.Single();Assert.That(copy.Weapon,Is.EqualTo(kind));
         Assert.That(copy.Ammo,Is.EqualTo(4));Assert.That(copy.Health,Is.EqualTo(1));
     }

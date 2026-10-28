@@ -90,7 +90,7 @@ public class RRLW2ModelTests
         Assert.That(m.Inventory.Count,Is.EqualTo(2));Assert.That(p.Stats.Damage,Is.EqualTo(1));
         Assert.That(p.State,Is.EqualTo(R1RunState.Won));Assert.That(p.LeaveGarage(),Is.False);
     }
-    [TestCase(0f,30)][TestCase(.01f,11)][TestCase(.25f,8)][TestCase(.5f,6)][TestCase(.99f,1)][TestCase(1f,0)]
+    [TestCase(0f,11)][TestCase(.01f,11)][TestCase(.25f,8)][TestCase(.5f,6)][TestCase(.99f,1)][TestCase(1f,0)]
     public void RepairQuotesUseRealPriceAndCondition(float hp,int price)
     {
         var m=Model();m.Parts[1].Health=hp;Assert.That(m.RepairCost(m.Parts[1]),Is.EqualTo(price));
@@ -100,17 +100,17 @@ public class RRLW2ModelTests
     [Test] public void DestroyedInventoryCannotMountUntilPaidRebuildAndCannotChargeTwice()
     {
         var m=Model();Assert.That(m.ReceiveSalvage(new[]{new R3PartState(default,R3PartKind.Gun,0){Id="wreck"}}),Is.True);
-        Assert.That(m.Mount("wreck",Vector3Int.forward),Is.False);m.Award(29);
-        Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Scrap,Is.EqualTo(29));
+        Assert.That(m.Mount("wreck",Vector3Int.forward),Is.False);m.Award(10);
+        Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Scrap,Is.EqualTo(10));
         m.Award(1);Assert.That(m.RepairInventory("wreck"),Is.True);Assert.That(m.Scrap,Is.Zero);
         Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Inventory.Single().Health,Is.EqualTo(1));
         Assert.That(m.Mount("wreck",Vector3Int.forward),Is.True);
     }
     [Test] public void EmergencyRebuildCannotBeFreeOrPartiallySpendWhenUnaffordable()
     {
-        var m=Model();m.Parts[1].Health=0;m.Parts[2].Health=0;m.Award(44);
-        Assert.That(m.EmergencyRepair(),Is.False,"Full rebuild of gun30 + wheel15 needs45 scrap.");
-        Assert.That(m.Scrap,Is.EqualTo(44));Assert.That(m.Parts[1].Health,Is.Zero);Assert.That(m.Parts[2].Health,Is.Zero);
+        var m=Model();m.Parts[1].Health=0;m.Parts[2].Health=0;m.Award(16);
+        Assert.That(m.EmergencyRepair(),Is.False,"Discounted rebuild of gun and wheel needs 17 scrap.");
+        Assert.That(m.Scrap,Is.EqualTo(16));Assert.That(m.Parts[1].Health,Is.Zero);Assert.That(m.Parts[2].Health,Is.Zero);
         m.Award(1);Assert.That(m.EmergencyRepair(),Is.True);Assert.That(m.Scrap,Is.Zero);
         Assert.That(m.Parts[1].Health,Is.EqualTo(1));Assert.That(m.Parts[2].Health,Is.EqualTo(1));
         Assert.That(m.EmergencyRepair(),Is.False);
@@ -119,10 +119,10 @@ public class RRLW2ModelTests
     {
         var m=Model();m.Parts[1].Health=0;m.Parts[2].Health=0;m.Award(50);
         var property=typeof(R3VehicleModel).GetProperty("EmergencyRepairCost");Assert.That(property,Is.Not.Null);
-        Assert.That(property.GetValue(m),Is.EqualTo(45));m.EmergencyRepair();Assert.That(m.Scrap,Is.EqualTo(5));
+        Assert.That(property.GetValue(m),Is.EqualTo(17));m.EmergencyRepair();Assert.That(m.Scrap,Is.EqualTo(33));
         m.Parts[1].Health=.5f;m.Parts[2].Health=.5f;
         var bulk=typeof(R3VehicleModel).GetProperty("AffordableRepairCost");Assert.That(bulk,Is.Not.Null);
-        Assert.That(bulk.GetValue(m),Is.EqualTo(3));m.RepairAffordable();Assert.That(m.Scrap,Is.EqualTo(2));
+        Assert.That(bulk.GetValue(m),Is.EqualTo(9));m.RepairAffordable();Assert.That(m.Scrap,Is.EqualTo(24));
     }
     [Test] public void ThreatIncludesTheActuallySpawnedNormalEscort()
     {

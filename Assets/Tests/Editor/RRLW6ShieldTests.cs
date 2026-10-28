@@ -58,7 +58,7 @@ public class RRLW6ShieldPhysicalTests
         target.Damageable.ApplyDamage(40,target.transform.position,Vector3.back);
         Assert.That(target.Damageable.CurrentHp,Is.EqualTo(before-80));
         assembly.Capture();int scrap=model.Scrap;
-        Assert.That(model.Repair(part.Cell),Is.True);Assert.That(model.Scrap,Is.EqualTo(scrap-60));
+        Assert.That(model.Repair(part.Cell),Is.True);Assert.That(model.Scrap,Is.EqualTo(scrap-21));
         var restored=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(150,1,100),Quaternion.identity);
         var again=restored.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==part.Id).GetComponent<DirectionalShieldGenerator>();
         Assert.That(again.Charge,Is.EqualTo(60).Within(.001),"Rebuild cannot farm a full new shield charge");

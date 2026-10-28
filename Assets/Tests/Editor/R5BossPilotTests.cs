@@ -38,7 +38,9 @@ public class R5BossPilotTests
         }
         var boss=Run.Encounter.Enemies.First();var body=boss.GetComponent<Rigidbody>();var camera=Camera.main;
         UnityEngine.Object.FindFirstObjectByType<P12PipelineSafeCamera>().enabled=false;
-        InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));
+        // Respect the real transition guard before the boss-fight trigger press.
+        InputSystem.QueueStateEvent(mouse,new MouseState());yield return null;yield return null;
+        InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));yield return null;
         Vector3 previous=body.position,velocity=Vector3.zero;float start=Time.realtimeSinceStartup,deadline=start+150;
         int peakShells=0;long peakMemory=0;
         while(Run.Progress.State==R1RunState.Combat&&Time.realtimeSinceStartup<deadline)

@@ -53,9 +53,9 @@ public class R3GarageModelTests
         Assert.That(wheel.Health, Is.EqualTo(1));
         Assert.That(model.Scrap, Is.EqualTo(47));
         wheel.Health = 0;
-        Assert.That(model.RepairCost(wheel), Is.EqualTo(15));
+        Assert.That(model.RepairCost(wheel), Is.EqualTo(6));
         Assert.That(model.Repair(wheel.Cell), Is.True);
-        Assert.That(model.Scrap, Is.EqualTo(32));
+        Assert.That(model.Scrap, Is.EqualTo(41));
         Assert.That(model.Repair(wheel.Cell), Is.False);
     }
     [Test] public void RemovalProtectsCoreAndConnectedFragmentsButAllowsMissingGun()
@@ -70,7 +70,7 @@ public class R3GarageModelTests
         Assert.That(model.Remove(Vector3Int.forward * 2), Is.True);
         Assert.That(model.Scrap, Is.EqualTo(10), "Usuwanie nie produkuje waluty.");
     }
-    [Test] public void EmergencyOnlyRebuildsMissingEssentialsAtFullPrice()
+    [Test] public void EmergencyOnlyRebuildsMissingEssentialsAtDiscountedQuote()
     {
         var model = new R3VehicleModel(Blueprint());
         Assert.That(model.EmergencyRepair(), Is.False);
@@ -81,7 +81,7 @@ public class R3GarageModelTests
         Assert.That(model.Parts[1].Health, Is.EqualTo(1f));
         Assert.That(model.Parts[2].Health, Is.EqualTo(1f));
         Assert.That(model.Parts[0].Health, Is.EqualTo(1));
-        Assert.That(model.Scrap, Is.Zero);
+        Assert.That(model.Scrap, Is.EqualTo(28));
         Assert.That(model.EmergencyRepair(), Is.False);
     }
 }

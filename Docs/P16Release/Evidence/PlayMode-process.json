@@ -1,0 +1,15 @@
+{
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Suspension309\\Artifacts\\Local\\FM270-PASS16-20261028T160723Z\\PlayMode.xml\""
+  ],
+  "source": "9ebc2df0508b5ff3cbe561d3170093994241658e",
+  "finishedUtc": "2026-10-28T16:10:37.8894088Z",
+  "stage": "PASS16",
+  "phase": "PlayMode",
+  "exitCode": 0,
+  "startedUtc": "2026-10-28T16:07:53.3638494Z"
+}

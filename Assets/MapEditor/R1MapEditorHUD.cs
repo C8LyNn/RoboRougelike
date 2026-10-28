@@ -26,9 +26,10 @@ namespace RoboRougelike.R1
             GUI.enabled=run.EditorDraft.CanUndo;if(GUI.Button(new Rect(25,430,130,35),"Cofnij",compactButton))run.ChangeEditedMap(true);
             GUI.enabled=run.EditorDraft.CanRedo;if(GUI.Button(new Rect(165,430,130,35),"Ponów",compactButton))run.ChangeEditedMap(false);GUI.enabled=true;
             GUI.Label(new Rect(25,475,70,25),"Nazwa:",small);GUI.SetNextControlName("map-name");
-            run.EditorName=GUI.TextField(new Rect(95,472,200,30),run.EditorName,64);
+            string previousName=run.EditorName;run.EditorName=GUI.TextField(new Rect(95,472,200,30),run.EditorName,64);
+            if(run.EditorName!=previousName)run.CancelMapOverwrite();
             run.EditorTextFocused=GUI.GetNameOfFocusedControl()=="map-name";
-            if(GUI.Button(new Rect(25,510,130,35),"Zapisz",compactButton)){run.SaveEditedMap();GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(25,510,130,35),run.MapOverwritePending?"Potwierdź zapis":"Zapisz",compactButton)){run.SaveEditedMap();GUI.FocusControl(null);}
             if(GUI.Button(new Rect(165,510,130,35),"Wczytaj",compactButton)){run.LoadEditedMap();GUI.FocusControl(null);}
             if(GUI.Button(new Rect(25,550,270,40),"Testuj mapę",button)){GUI.FocusControl(null);run.TestEditedMap();}
             if(GUI.Button(new Rect(25,595,270,35),"Dostosuj pojazd w garażu",compactButton))run.MapEditorGarage();

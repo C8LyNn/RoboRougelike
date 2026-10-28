@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0,0493588">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1297" result="Failed" site="Child" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0.049359" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1614" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="505" result="Failed" site="Child" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0.036109" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="23052" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1044" name="CriticalGarageWarningsTests" fullname="CriticalGarageWarningsTests" classname="CriticalGarageWarningsTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0.031526" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1046" name="DestroyedGunAndOneWheelSideBothWarn" fullname="CriticalGarageWarningsTests.DestroyedGunAndOneWheelSideBothWarn" methodname="DestroyedGunAndOneWheelSideBothWarn" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="468253685" result="Failed" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0.014323" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Garage needs a combined, always-visible functional readiness warning
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at CriticalGarageWarningsTests.Warnings (RoboRougelike.R3.R3VehicleModel model) [0x00016] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\CriticalGarageWarningsTests.cs:11
+at CriticalGarageWarningsTests.DestroyedGunAndOneWheelSideBothWarn () [0x00097] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\CriticalGarageWarningsTests.cs:27
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1045" name="NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed" fullname="CriticalGarageWarningsTests.NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed" methodname="NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="1045462905" result="Failed" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0.006045" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Garage needs a combined, always-visible functional readiness warning
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at CriticalGarageWarningsTests.Warnings (RoboRougelike.R3.R3VehicleModel model) [0x00016] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\CriticalGarageWarningsTests.cs:11
+at CriticalGarageWarningsTests.NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed () [0x000b8] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\CriticalGarageWarningsTests.cs:19
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1047" name="OperationalVehicleHasNoCriticalWarning" fullname="CriticalGarageWarningsTests.OperationalVehicleHasNoCriticalWarning" methodname="OperationalVehicleHasNoCriticalWarning" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="247928186" result="Failed" start-time="2026-10-28 09:37:22Z" end-time="2026-10-28 09:37:22Z" duration="0.000233" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Garage needs a combined, always-visible functional readiness warning
+  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at CriticalGarageWarningsTests.Warnings (RoboRougelike.R3.R3VehicleModel model) [0x00016] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\CriticalGarageWarningsTests.cs:11
+at CriticalGarageWarningsTests.OperationalVehicleHasNoCriticalWarning () [0x0000c] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\CriticalGarageWarningsTests.cs:30
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

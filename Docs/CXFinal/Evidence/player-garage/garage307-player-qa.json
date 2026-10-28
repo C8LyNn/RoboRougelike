@@ -1,0 +1,16 @@
+{
+    "status": "PASS",
+    "error": "",
+    "batchMode": true,
+    "garage": true,
+    "removedGun": true,
+    "removedAllWheels": true,
+    "blockedStart": true,
+    "protectedCore": true,
+    "noPhantomShot": true,
+    "restoredSameParts": true,
+    "unchangedScrap": true,
+    "validDeployment": true,
+    "enteredCombat": true,
+    "removedWheels": 12
+}

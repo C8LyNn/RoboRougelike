@@ -19,7 +19,7 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
     public Keyboard Keys {get;private set;}
     public Mouse Mouse {get;private set;}
     public float Throttle,Steering;
-    public bool Fire;
+    public bool Fire,SecondaryFire;
     public Vector2 MouseRate,AppliedDelta,Scroll;
     InputSettings.BackgroundBehavior oldBackground;
     readonly List<InputDevice> muted=new List<InputDevice>();
@@ -40,7 +40,7 @@ public sealed class Camera275RuntimeInput : MonoBehaviour
         if(Steering>.1f)keys.Add(Key.D);else if(Steering<-.1f)keys.Add(Key.A);
         AppliedDelta=MouseRate*Time.unscaledDeltaTime;
         InputState.Change(Keys,new KeyboardState(keys.ToArray()));
-        InputState.Change(Mouse,new MouseState{delta=AppliedDelta,scroll=Scroll,position=new Vector2(Screen.width/2f,Screen.height/2f)}.WithButton(MouseButton.Left,Fire));
+        InputState.Change(Mouse,new MouseState{delta=AppliedDelta,scroll=Scroll,position=new Vector2(Screen.width/2f,Screen.height/2f)}.WithButton(MouseButton.Left,Fire).WithButton(MouseButton.Right,SecondaryFire));
         Scroll=Vector2.zero;
     }
     void OnDestroy(){if(Keys!=null&&Keys.added)InputSystem.RemoveDevice(Keys);if(Mouse!=null&&Mouse.added)InputSystem.RemoveDevice(Mouse);InputSystem.settings.backgroundBehavior=oldBackground;

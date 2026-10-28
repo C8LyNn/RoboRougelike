@@ -164,7 +164,7 @@ public class RRLW34EffectsTests
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);
         var state=run.VehicleModel.Parts.Single(p=>p.Id==id);Assert.That(state.Health,Is.Zero);
         run.VehicleModel.Award(100);int before=run.VehicleModel.Scrap;
-        Assert.That(run.GarageRepair(state.Cell),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-60));
+        Assert.That(run.GarageRepair(state.Cell),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-21));
         Assert.That(run.GarageRemove(state.Cell),Is.True);Assert.That(run.GarageMount(id,new Vector3Int(1,2,0)),Is.True);
         Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Operational,Is.True);
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(expected.Damage));Assert.That(run.ActiveStats.Hull,Is.EqualTo(expected.Hull));

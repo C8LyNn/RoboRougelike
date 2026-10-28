@@ -38,7 +38,7 @@ public class MOVSeriesModelTests
         for(int i=1;i<limit;i++)Assert.That(model.Buy(Cell(i),kind),Is.True);
         scrap=model.Scrap;Assert.That(model.Buy(Cell(limit),kind),Is.False);
         Assert.That(model.Scrap,Is.EqualTo(scrap));Assert.That(model.Parts.Count(p=>p.Kind==kind),Is.EqualTo(limit));
-        part.Health=0;Assert.That(model.RepairCost(part),Is.EqualTo(price));
+        part.Health=0;Assert.That(model.RepairCost(part),Is.EqualTo(Mathf.CeilToInt(price*.35f)));
     }
     [Test] public void ExistingNumericKindsArePreservedAndUnknownStillRejected()
     {

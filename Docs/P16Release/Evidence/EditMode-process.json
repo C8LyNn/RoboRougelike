@@ -1,0 +1,17 @@
+{
+  "source": "9ebc2df0508b5ff3cbe561d3170093994241658e",
+  "exitCode": 0,
+  "stage": "PASS16-Edit",
+  "finishedUtc": "2026-10-28T16:11:46.7114076Z",
+  "phase": "EditMode",
+  "startedUtc": "2026-10-28T16:11:00.5198311Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Suspension309\\Artifacts\\Local\\FM270-PASS16-Edit-20261028T161100Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"VictoryRewardAtomicityTests;UnarmedEnemyRammingTests;LD02ArenaNativeTests;B0124EnemyAiNegativeEditModeTests.ActiveLivingEnabledBlock_IsSelectable_PositiveControl;B0124EnemyAiNegativeEditModeTests.DeactivateAndReactivateBlock_ReacquiresOnlyWhenActive;B0124EnemyAiNegativeEditModeTests.DisabledCollider_IsNeverSelectable_NegativeControl;B0124EnemyAiNegativeEditModeTests.InactiveCachedTarget_IsInvalidatedAtNextAiUpdate_Regression;B0124EnemyAiNegativeEditModeTests.InactiveLivingEnabledBlock_IsNeverSelected_Regression;B0124EnemyAiNegativeEditModeTests.VariantWeaponUpdate_InvalidatesInactiveCachedTarget\""
+  ]
+}

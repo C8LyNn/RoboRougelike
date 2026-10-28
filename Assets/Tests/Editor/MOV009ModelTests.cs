@@ -30,7 +30,7 @@ public class MOV009ModelTests
         Assert.That(model.Mount(id,cell),Is.True);Assert.That(model.Inventory,Is.Empty);
         Assert.That(model.Mount(id,cell),Is.False);Assert.That(model.Scrap,Is.EqualTo(money));
         Assert.That(model.At(cell).Id,Is.EqualTo(id));
-        model.At(cell).Health=0;Assert.That(model.RepairCost(model.At(cell)),Is.EqualTo(25));
+        model.At(cell).Health=0;Assert.That(model.RepairCost(model.At(cell)),Is.EqualTo(9));
     }
     [Test] public void NinthSuspensionCannotConsumeMoneyOrCreateAnItem()
     {

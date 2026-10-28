@@ -58,7 +58,9 @@ namespace RoboRougelike.MapEditor
             var p=new MapItem{kind=kind,x=x,z=z,rotation=((rotation%4)+4)%4,scaleX=sx,scaleY=sy,scaleZ=sz};
             if(!Valid(p)||(Ground(kind)&&GlobalFloor))return false;
             var unique=(kind==MapItemKind.Spawn||kind==MapItemKind.Finish)?items.FirstOrDefault(a=>a.kind==kind):null;
-            if(unique==null&&items.Count>=MaxItems)return false;
+            // Saved floor tiles can be hidden by global floor; reserve a separate
+            // bounded budget for floor and objects so hidden tiles cannot lock editing.
+            if(unique==null&&items.Count(a=>Ground(a.kind)==Ground(kind))>=MaxItems)return false;
             var cells=new HashSet<Vector2Int>(Footprint(p));
             return !items.Any(a=>a!=unique&&Ground(a.kind)==Ground(kind)&&Footprint(a).Any(cells.Contains));
         }
@@ -99,7 +101,9 @@ namespace RoboRougelike.MapEditor
         {
             error=null;MapDocument doc;
             try{doc=JsonUtility.FromJson<MapDocument>(json);}catch(Exception e){error="Niepoprawny JSON: "+e.Message;return false;}
-            if(doc==null||(doc.version!=1&&doc.version!=2)||doc.items==null||doc.items.Count>MaxItems){error="Niepoprawny format lub wersja mapy.";return false;}
+            if(doc==null||(doc.version!=1&&doc.version!=2)||doc.items==null||doc.items.Count>MaxItems*2||
+                doc.items.Count(p=>p!=null&&Ground(p.kind))>MaxItems||
+                doc.items.Count(p=>p!=null&&!Ground(p.kind))>MaxItems){error="Niepoprawny format lub wersja mapy.";return false;}
             var floor=new HashSet<Vector2Int>();var objects=new HashSet<Vector2Int>();int spawns=0,finishes=0;
             foreach(var p in doc.items)
             {

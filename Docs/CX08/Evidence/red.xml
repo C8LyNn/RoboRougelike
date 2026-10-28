@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 09:42:33Z" end-time="2026-10-28 09:42:33Z" duration="0,0494318">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1300" result="Failed" site="Child" start-time="2026-10-28 09:42:33Z" end-time="2026-10-28 09:42:33Z" duration="0.049432" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1619" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="508" result="Failed" site="Child" start-time="2026-10-28 09:42:33Z" end-time="2026-10-28 09:42:33Z" duration="0.034830" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="43988" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1217" name="MapHiddenFloorCapacityTests" fullname="MapHiddenFloorCapacityTests" classname="MapHiddenFloorCapacityTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-28 09:42:33Z" end-time="2026-10-28 09:42:33Z" duration="0.029799" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1218" name="HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear" fullname="MapHiddenFloorCapacityTests.HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear" methodname="HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear" classname="MapHiddenFloorCapacityTests" runstate="Runnable" seed="1154956188" result="Failed" start-time="2026-10-28 09:42:33Z" end-time="2026-10-28 09:42:33Z" duration="0.019888" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  hidden floor cannot exhaust obstacle capacity
+  Expected: True
+  But was:  False
+]]></message>
+            <stack-trace><![CDATA[at MapHiddenFloorCapacityTests.HiddenFloorTilesDoNotConsumeObjectCapacityOrDisappear () [0x00052] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\MapHiddenFloorCapacityTests.cs:19
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -18,7 +18,7 @@ public class MOVSeriesDriveModelTests
         Assert.That(m.Inventory.Count,Is.EqualTo(4));int scrap=m.Scrap;
         foreach(var p in m.Parts.Where(p=>p.Kind==kind))p.Health=0;
         Assert.That(m.CanDeploy,Is.False);Assert.That(m.EmergencyRepair(),Is.True);Assert.That(m.CanDeploy,Is.True);
-        Assert.That(m.Scrap,Is.EqualTo(scrap-(drive==R3DriveKind.Tracks?90:drive==R3DriveKind.Omni?40:35)));Assert.That(m.Parts.Count(p=>p.Kind==kind&&p.Health>0),Is.EqualTo(required));
+        Assert.That(m.Scrap,Is.EqualTo(scrap-(drive==R3DriveKind.Tracks?32:drive==R3DriveKind.Omni?14:13)));Assert.That(m.Parts.Count(p=>p.Kind==kind&&p.Health>0),Is.EqualTo(required));
         Assert.That(m.Parts.Where(p=>p.Kind==kind&&p.Health>0).All(p=>p.Health==1f),Is.True);
         var last=m.Parts.First(p=>p.Kind==kind&&p.Health>0);Assert.That(m.Remove(last.Cell),Is.True);Assert.That(m.CanDeploy,Is.False);
     }
