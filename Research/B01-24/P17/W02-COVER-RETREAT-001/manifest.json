@@ -56,15 +56,19 @@
     "clearance_metres": 2
   },
   "test": {
-    "build": "PENDING",
-    "windows": "PENDING",
-    "ubuntu": "PENDING",
+    "build": "PASS .NET8 Release --warnaserror on Windows2025 and Ubuntu24.04",
+    "windows": "32/32 ACTUAL original C# source tests PASS, 0 FAIL",
+    "ubuntu": "32/32 ACTUAL original C# source tests PASS, 0 FAIL",
     "actual_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40760310652",
     "unity": "NOT_RUN",
     "physx": "NOT_RUN",
     "windows_player": "NOT_RUN",
     "independent_B01_60": "PENDING",
-    "reported_first_ci_compile_issue": "CS0103 and CS0819, corrected in owner source; awaiting replacement SHA actual executed green"
+    "reported_first_ci_compile_issue": "Original author test compile RED (CS0103 and CS0819) in first run #40760158747; repaired in src commits c6bc2f0 and 00f5ed0, direct Windows/Ubuntu new SHA #40760310652 GREEN",
+    "evidence_artifacts": {
+      "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40760310652/artifacts/12846639174",
+      "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40760310652/artifacts/12847339730"
+    }
   },
   "ownership": {
     "all_changes_under_owner_folder_plus_own_workflow": true,
