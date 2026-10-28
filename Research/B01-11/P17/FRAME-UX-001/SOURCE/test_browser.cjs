@@ -30,6 +30,7 @@ const {chromium}=require('playwright-core');
    await page.locator('#annotations li button').click();
    await check('removal in UI',async()=>await page.locator('#annotations li').count()===0);
    await page.locator('#importInput').setInputFiles({name:'review.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(json))});
+   await page.locator('#annotations li').first().waitFor({state:'visible',timeout:5000});
    await check('reimport returns annotation',async()=>await page.locator('#annotations li').count()===1);
    await page.locator('#importInput').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{"notSchema":true}')});
    await check('malformed schema rejected',async()=>(await page.locator('#status').innerText()).includes('odrzucony'));
