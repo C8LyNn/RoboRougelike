@@ -1,0 +1,38 @@
+name: B01-20 P16 source-only three MAPGEN arena variants (UNITY NOT RUN)
+on:
+  push:
+    branches: [b01-20/p16-mapgen-arena-presets]
+    paths:
+      - 'Research/B01-20/P16/MAPGEN-ARENA/**'
+      - '.github/workflows/b01-20-p16-mapgen-arena.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mapgen-original-csharp:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute original MapGenPlanner and MapGenRouteValidator 3 variants x 6 seeds x two profiles
+        shell: bash
+        run: |
+          dotnet run --project Research/B01-20/P16/MAPGEN-ARENA/MapgenArenaP16.csproj --configuration Release -- Research/B01-20/P16/MAPGEN-ARENA/presets.json p16-arena-output
+      - name: Read back all 18 exported actual original CSharp blueprints
+        shell: bash
+        run: python Research/B01-20/P16/MAPGEN-ARENA/validate_blueprints.py p16-arena-output
+      - name: Archive original-source generated arena blueprints and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p16-mapgen-original-${{ matrix.os }}
+          path: p16-arena-output/
+          if-no-files-found: error
+          retention-days: 21
