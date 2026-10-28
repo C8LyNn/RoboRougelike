@@ -17,7 +17,7 @@ Ran **actual original HTML bytes** under local **Chromium 144.0.7559.96 + Python
 To reproduce using an existing local Git clone with B01-11 receiver branch, first obtain the immutable B01-12 source commit (no change to active game):
 
 ```bash
-git fetch origin research/b01-12-w50-d03-critical-feedback
+git fetch origin research/b01-12-w70-hud3-overflow
 git show 862bff8c876f977859dc0a1ebd6e8a507046310f:Research/B01-12/W70/HUD3-overflow.html > /tmp/HUD3-original.html
 python3 -m pip install playwright==1.57.0
 python3 Research/B01-11/PASS15/hud3_receiver_pass15.py /tmp/HUD3-original.html
