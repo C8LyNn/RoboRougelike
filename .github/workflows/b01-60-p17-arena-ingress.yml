@@ -1,0 +1,32 @@
+name: B01-60 PASS17 original arena ingress independent QA (NOT UNITY)
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/ARENA-INGRESS-QA-001/**'
+      - '.github/workflows/b01-60-p17-arena-ingress.yml'
+  workflow_dispatch:
+jobs:
+  independent-source-blueprint-gate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute original 3 independent arena input geometry + conservative heavy/light 1m BFS
+        shell: bash
+        run: |
+          python Tools/B01/ARENA-INGRESS-QA-001/arena_ingress_gate.py --output "$RUNNER_TEMP/b01-60-p17-ingress-receipt.json"
+      - name: Preserve exact original blueprint QA receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-p17-arena-ingress-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-60-p17-ingress-receipt.json
+          if-no-files-found: error

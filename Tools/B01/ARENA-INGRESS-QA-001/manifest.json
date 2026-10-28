@@ -1,0 +1,59 @@
+{
+  "schema": "B01-QA-PACKAGE-MANIFEST-1",
+  "package_id": "ARENA-INGRESS-QA-001",
+  "version": "P17-R1",
+  "producer": "B01-60",
+  "purpose": "Independent original 3-layout CombatArena ingest validation before Codex staging",
+  "owner_scope": [
+    "Tools/B01/ARENA-INGRESS-QA-001/**",
+    ".github/workflows/b01-60-p17-arena-ingress.yml"
+  ],
+  "source_data_owner": "B01-21",
+  "producer_immutable_sha": "a71eda99a260f807ae8cfea71348e75ff4f6c65a",
+  "original_codex_game_sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "original_planner_path": "Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs",
+  "original_planner_git_blob": "89ff64e12f278f2c9393ad542161a9387e1f4117",
+  "inputs": [
+    {
+      "id": "AR16_01_OPEN_FLANK",
+      "seed": 160101,
+      "covers": 6,
+      "blob": "fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e"
+    },
+    {
+      "id": "AR16_02_SPLIT_DECISION",
+      "seed": 160202,
+      "covers": 11,
+      "blob": "022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790"
+    },
+    {
+      "id": "AR16_03_DENSE_PRESSURE",
+      "seed": 160303,
+      "covers": 16,
+      "blob": "1fe7bf8b124d999de75c0fd3cacc85ee62319429"
+    }
+  ],
+  "original_data_script": "Tools/B01/ARENA-INGRESS-QA-001/arena_ingress_gate.py",
+  "run": "python Tools/B01/ARENA-INGRESS-QA-001/arena_ingress_gate.py --output /tmp/b0160-p17.json",
+  "extra_gate": "Original planner includes (0,1.25,25) as both Finish and central enemy spawn descriptor; overlap is policy HOLD, not proven gameplay failure",
+  "acceptance": {
+    "mandatory": [
+      "3 genuine original SHA-pinned JSONs",
+      "all standalone structural checks",
+      "Light/Heavy independently conservative BFS 6/6",
+      "21 synthetic corruption inputs rejected",
+      "no source mutated"
+    ],
+    "policy_gate": "HOLD until B01-00/HQ/Codex decides whether enemy descriptors may occupy Finish"
+  },
+  "status": {
+    "unity": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "native_gameplay": "NOT_RUN",
+    "test_against_current_vehicle": "NOT_RUN",
+    "game_integrated": false,
+    "merge_authorized": false
+  },
+  "codex_install": "NO AUTOMATIC IMPORT. Run read-only script first; if approved, B01-40 handles staging of ORIGINAL B01-21 source map data, Codex maps schema to canonical integration. Never import synthetic corrected in-memory map.",
+  "rollback": "Close Draft PR or delete independent QA folder/workflow only; no changes to any original game, owner maps, save data or persistentDataPath."
+}
