@@ -1,0 +1,80 @@
+{
+  "schema": "B01-23-P16-VEHICLE-SAFETY-PROTOTYPE-v1",
+  "owner": "B01-23",
+  "type": "TOOLS_ONLY_RESEARCH_AND_EXECUTABLE_STANDALONE_CSHARP",
+  "source_branch": "b01-23/pass16-vehicle-recovery-prototype",
+  "verified_content_base_commit": "25868b92a609325b5a488b305c1c57cdf812b37a",
+  "version": "P16-R1",
+  "status": "SOURCE_TESTED_NOT_OFFERED_NOT_INTEGRATED",
+  "source_files": [
+    {
+      "path": "Tools/B01/PARTSIZE001/P16VehiclePolicy/VehicleSafetyPolicy.cs",
+      "git_blob_sha1": "2920a7c6c42126e257a9622a2c9802951500b640"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P16VehiclePolicy/Program.cs",
+      "git_blob_sha1": "9c6d2834c282c5faf799d52df3c5f49beebf754e"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P16VehiclePolicy/P16VehiclePolicy.csproj",
+      "git_blob_sha1": "709da50377cd79ef738c4a739794b285ba81f3d9"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P16VehiclePolicy/README.md",
+      "git_blob_sha1": "1634fb9652ddf0bffe0f351f92664826178ff106"
+    },
+    {
+      "path": ".github/workflows/b01-23-pass16-vehicle-policy.yml",
+      "git_blob_sha1": "a790ec67f297f82fd528159f433f65620789efe9"
+    }
+  ],
+  "read_only_references": {
+    "partsize_producer_pr286": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "native_receipt_qa_pr298": "26634727ab2323a982bce893421c88c330be46e8",
+    "integrated_codex_pr310_observed": "a2ccd055070a963805cba0779b79f18489f4794f"
+  },
+  "test_evidence": {
+    "run": 40720912204,
+    "windows_2025": "46/46_ACTUAL_CSHARP_PASS",
+    "ubuntu_2404": "46/46_ACTUAL_CSHARP_PASS",
+    "build_release": "SUCCESS_BOTH_OS",
+    "invalid_cli": "EXPECTED_REJECTION_BOTH_OS",
+    "unity_editor": "NOT_RUN",
+    "unity_physx": "NOT_RUN",
+    "windows_player": "NOT_RUN"
+  },
+  "file_scope": [
+    "Tools/B01/PARTSIZE001/P16VehiclePolicy/**",
+    ".github/workflows/b01-23-pass16-vehicle-policy.yml"
+  ],
+  "owner_boundaries": [
+    "No edits to Assets/** or Codex canonical R3/R6/weapon/camera/garage files",
+    "No changes to frozen producer #286 or QA-native operator #298",
+    "B01-24 remains owner of enemy AI and target logic",
+    "Research prototype only; new Unity production stream requires explicit HQ/Codex scope acceptance"
+  ],
+  "dependencies": [
+    ".NET SDK 8 for deterministic console execution",
+    "Human-authorized physics sensor snapshot is required for any future Unity adapter",
+    "Drive/ram thresholds require B01-10 and HQ game-balance approval"
+  ],
+  "limitations": [
+    "No actual moving vehicle, projectile, PhysX, socket or sensor observations",
+    "Forward-only ally/obstacle samples; no reverse safety sensing",
+    "No Unity scenes, asmdefs, .meta files or B01-60 native G1",
+    "No assertion of actual ram hit, damage, AI behavior or asset integration"
+  ],
+  "codex_intake": {
+    "queue_issue": 79,
+    "ack": "PENDING",
+    "install": "DO_NOT_INSTALL_RESEARCH_TOOLS_IN_CANONICAL_GAME",
+    "condition": "B01-00/HQ ownership decision; Codex explicit scoped claim; B01-40/60 independent review",
+    "risk": "Approved host adapter must map trusted part states and genuine sensors, not simulated flags",
+    "rollback": "Do not merge. Discard only detached research branch; leave canonical and producer files unchanged"
+  },
+  "gates": {
+    "G0": "PENDING_INDEPENDENT_ACCEPTANCE",
+    "G1": "NOT_RUN",
+    "G2": "HOLD"
+  }
+}
