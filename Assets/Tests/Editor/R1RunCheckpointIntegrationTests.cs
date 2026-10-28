@@ -33,6 +33,8 @@ public sealed class R1RunCheckpointIntegrationTests
         Assert.That(run.ConfirmRewards(new[]{loot.Id},new[]{0}),Is.True);yield return null;
         var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
         Assert.That(run.GarageRemove(gun.Cell),Is.True);yield return null;
+        var wheel=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Wheel);
+        Assert.That(run.GarageRemove(wheel.Cell),Is.True);yield return null;
         var armor=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Armor);
         string armorId=armor.Id;armor.Damageable.ApplyDamage(10,armor.transform.position,Vector3.zero);
         var ids=run.VehicleModel.Parts.Select(p=>p.Id).Concat(run.VehicleModel.Inventory.Select(p=>p.Id)).OrderBy(x=>x).ToArray();
@@ -51,6 +53,7 @@ public sealed class R1RunCheckpointIntegrationTests
         Assert.That(run.LoadRunCheckpoint(),Is.False,"Cannot load again over an active run");
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(balance));
         Assert.That(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),Is.True);
+        Assert.That(run.GarageMount(wheel.Id,wheel.Cell,wheel.RotationQuarterTurns),Is.True,"Restored factory wheel retains its mounting rules");
         yield return null;Assert.That(run.ChooseLD02Arena(),Is.True);while(run.Transitioning)yield return null;
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }

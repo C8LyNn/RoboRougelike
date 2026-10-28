@@ -73,7 +73,11 @@ namespace RoboRougelike.R1
             report.damage=run.VehicleModel.Parts.Single(p=>p.Id==armorId).Health<1;
             report.repeatedLoadRejected=!run.LoadRunCheckpoint();
             Require(report.ids&&report.balance&&report.damage&&report.repeatedLoadRejected,"preserved state and duplicate-load safety");
-            report.nextFight=run.ChooseLD02Arena();Require(report.nextFight,"start next fight after loading");
+            Require(run.ChooseLD02Arena(),"request next fight after loading");
+            deadline=Time.realtimeSinceStartup+45;
+            while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+            report.nextFight=!run.Transitioning&&run.Progress.State==R1RunState.Combat&&run.Encounter.AliveCount>0;
+            Require(report.nextFight,"next fight actually starts after loading");
         }
     }
 }
