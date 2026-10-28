@@ -156,7 +156,7 @@ class OriginalSpriteDisposableImport(unittest.TestCase):
             with self.assertRaisesRegex(s.Reject,"CURRENT_CODEX_GIT_UNAVAILABLE"):
                 s.original_codex_source_guard(REPO,self.guids)
 
-    def test_18_cleanup_second_time_fails_without touching_existing_files(self):
+    def test_18_cleanup_second_time_fails_without_touching_existing_files(self):
         self.staged()
         s.rollback(self.root,self.files)
         with self.assertRaisesRegex(s.Reject,"STAGE_RECEIPT_MISSING"):
