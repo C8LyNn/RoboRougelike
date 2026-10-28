@@ -153,6 +153,33 @@ def main():
         vertex_deltas[key]=max_difference
         assert max_difference<0.000002,(key,"PER_VERTEX_MESH_MISMATCH",max_difference)
     vertex_max=max(vertex_deltas.values())
+    # PASS14 SYNTHETIC negative: move a real interior vertex without modifying
+    # any AABB extrema; this mutation used to pass the old bounding-box-only QA.
+    hidden_mutation=None
+    for key,points in sorted(fbx.items()):
+        lo,hi=bbox(points)
+        for index,p in enumerate(points):
+            for axis in range(3):
+                if p[axis]>lo[axis]+0.005 and p[axis]<hi[axis]-0.005:
+                    forged_vertices=list(points)
+                    moved=list(p);moved[axis]+=0.002
+                    forged_vertices[index]=tuple(moved)
+                    if bbox(forged_vertices)!=bbox(points):
+                        continue
+                    old_box_test_passes=True  # extrema are byte-identical
+                    new_vertex_test_rejects=(
+                        max(abs(a-b) for expected,found in zip(sorted(points),sorted(forged_vertices))
+                            for a,b in zip(expected,found)) > 0.000002
+                    )
+                    assert old_box_test_passes and new_vertex_test_rejects
+                    hidden_mutation={"mesh":key,"vertex_index":index,
+                                     "axis":axis,"delta_m":0.002,
+                                     "old_AABB_detector":"FALSE_GREEN",
+                                     "new_vertex_detector":"EXPECTED_REJECTION"}
+                    break
+            if hidden_mutation:break
+        if hidden_mutation:break
+    assert hidden_mutation is not None,"CANNOT_RUN_INTERIOR_VERTEX_NEGATIVE"
     # Clearly labelled SYNTHETIC falsifier: shift one original FBX submesh 20mm
     # and ensure the source-mesh reconciliation would reject the corruption.
     witness=sorted(objs)[0]
@@ -180,6 +207,7 @@ def main():
        "fbx_original_meshes_matching_each_vertex":len(vertex_deltas),
        "fbx_max_per_vertex_difference_m":vertex_max,
        "fbx_per_vertex_threshold_m":0.000002,
+       "synthetic_hidden_vertex_mutant":hidden_mutation,
        "synthetic_fbx_20mm_negative_control":"EXPECTED_REJECTION",
        "glb_original_meshes_matching_obj_basis":51,
        "glb_max_aabb_delta_m":glb_max,
