@@ -1,0 +1,19 @@
+{
+  "package_id": "B01-12-SNAPGRID-001",
+  "version": "R1",
+  "owner": "B01-12 Interactive UX Prototypes",
+  "scope": [
+    "Research/B01-12/P17W02/SnapGrid001/**"
+  ],
+  "html_sha256": "22a52bc5adbf1f767d8d74919f2414fcc74d3800c67e08dd1a50a4e1425a107d",
+  "test_sha256": "8305cae1fd6d1c7fc8cbf224dce711a3a0cad4d6f8271477596bcc5ac80cb57b",
+  "source_size": 14662,
+  "dependencies": {
+    "browser": "offline modern Chromium or other recent browser",
+    "test": "Python >=3.10, playwright, installed Chromium"
+  },
+  "nativeUnity": "NOT_RUN",
+  "gameIntegrated": false,
+  "ownerConflicts": "none; Research-only",
+  "acceptance": "B01-40 review source hashes/rollback then B01-60 independent Chromium; B01-00 orders Codex intake"
+}
