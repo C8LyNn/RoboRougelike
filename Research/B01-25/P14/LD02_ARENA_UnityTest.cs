@@ -1,5 +1,5 @@
 // B01-25 PASS14 optional original-code-targeting native Unity fixture.
-// AUTHORED/NOT_COMPILED/NOT_RUN. Codex owns adoption and execution.
+// REVISED AFTER ORIGINAL CORNER SOURCE-RED. AUTHORED/NOT_COMPILED/NOT_RUN. Codex owns adoption and execution.
 // Copy immutable LD02_ARENA.json into disposable Application.persistentDataPath/Maps
 // as B01_25_LD02_ARENA_P14.json before running in approved licensed Unity 6000.3.14f1.
 using System.Collections;
@@ -14,7 +14,7 @@ using RoboRougelike.R3;
 
 public sealed class B0125LD02ArenaNativeAcceptance
 {
-    [UnityTest] public IEnumerator OriginalMapWorld_CreatesFourSolidPerimeterWallColliders()
+    [UnityTest] public IEnumerator OriginalMapWorld_SealsFourMiddleWallsAndFourCornerPlatforms()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         yield return new EnterPlayMode();
@@ -25,7 +25,8 @@ public sealed class B0125LD02ArenaNativeAcceptance
         Assert.That(draft.TestError(),Is.Null);
         Assert.That(draft.GlobalFloor,Is.False);
         Assert.That(draft.Items.Count(o=>o.kind==MapItemKind.Ground),Is.EqualTo(120));
-        Assert.That(draft.Items.Count(o=>o.kind==MapItemKind.Wall),Is.EqualTo(40));
+        Assert.That(draft.Items.Count(o=>o.kind==MapItemKind.Wall),Is.EqualTo(36));
+        Assert.That(draft.Items.Count(o=>o.kind==MapItemKind.Platform),Is.EqualTo(4));
 
         var paletteGo=new GameObject("B0125 Arena Palette");
         var palette=paletteGo.AddComponent<R3VisualPalette>();
@@ -44,6 +45,10 @@ public sealed class B0125LD02ArenaNativeAcceptance
             AssertWall(new Vector3(40,1.5f,20),Vector3.right,"east");
             AssertWall(new Vector3(24,1.5f,4),Vector3.back,"south");
             AssertWall(new Vector3(24,1.5f,32),Vector3.forward,"north");
+            AssertCorner(new Vector3(1,1.5f,-3),Vector3.forward,"southwest");
+            AssertCorner(new Vector3(43,1.5f,-3),Vector3.forward,"southeast");
+            AssertCorner(new Vector3(1,1.5f,39),Vector3.back,"northwest");
+            AssertCorner(new Vector3(43,1.5f,39),Vector3.back,"northeast");
         }
         finally
         {
@@ -52,6 +57,14 @@ public sealed class B0125LD02ArenaNativeAcceptance
             UnityEngine.Object.Destroy(material);
         }
         yield return new ExitPlayMode();
+    }
+    static void AssertCorner(Vector3 origin,Vector3 direction,string side)
+    {
+        Assert.That(Physics.Raycast(origin,direction,out var hit,8f,~0,QueryTriggerInteraction.Ignore),Is.True,side);
+        var tagged=hit.collider.GetComponentInParent<MapItemReference>();
+        Assert.That(tagged,Is.Not.Null,side);
+        Assert.That(tagged.Item.kind,Is.EqualTo(MapItemKind.Platform),side+" actual generated solid corner block");
+        Assert.That(hit.collider.isTrigger,Is.False,side+" is not a trigger");
     }
     static void AssertWall(Vector3 origin,Vector3 direction,string side)
     {
