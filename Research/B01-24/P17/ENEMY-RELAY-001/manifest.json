@@ -1,0 +1,84 @@
+{
+  "package_id": "B01-24-ENEMY-RELAY-001",
+  "version": "1.0.0",
+  "type": "optional game-content data; R5Catalog six-stage alternate encounter campaign",
+  "producer": "B01-24 — ENEMY AI & COMBAT SYSTEMS",
+  "branch": "research/b01-24-p17-encounter-catalog",
+  "base_game_commit": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+  "source_contract": {
+    "R5RunPlan": {
+      "path": "Assets/R5/R5RunPlan.cs",
+      "blob": "6fde58f1fc621cde6488d9ee81c3510aa729839a"
+    },
+    "R1EncounterDefinition": {
+      "path": "Assets/R1/R1RunDefinition.cs",
+      "blob": "5665e64d3d665c67d352eb5a9809a66fc5136698"
+    },
+    "R3EnemyArchetype": {
+      "path": "Assets/R3/R3EnemyArchetype.cs",
+      "blob": "66cd1ee734b129117b3753d1205469a0496cb673"
+    },
+    "existing_catalog": {
+      "path": "Assets/Resources/R5/Encounters.json",
+      "blob": "d44eaf6386f0dfb38e3cfe72415a67492180e489"
+    }
+  },
+  "new_paths": [
+    {
+      "path": "Research/B01-24/P17/ENEMY-RELAY-001/Encounters-Relay.json",
+      "blob": "6f787b296b3b0547152196d887e57b1f87c33de5"
+    },
+    {
+      "path": "Research/B01-24/P17/ENEMY-RELAY-001/Program.cs",
+      "blob": "228f7dddd459e55df1ead2b0e55d85323f2419a6"
+    },
+    {
+      "path": "Research/B01-24/P17/ENEMY-RELAY-001/UnityTestStubs.cs",
+      "blob": "d96ddc5e98c2ffed105add1a14194eb298a539be"
+    },
+    {
+      "path": "Research/B01-24/P17/ENEMY-RELAY-001/EnemyRelayP17.csproj",
+      "blob": "b0c422cb996d006315452d8113f4e0d630138ad2"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-enemy-relay.yml",
+      "blob": "e34069bec035d8b92da34e1706a6f6a628005460"
+    }
+  ],
+  "content_summary": {
+    "stages": 6,
+    "unique_encounters": 10,
+    "original_R5_schema": true,
+    "enemy_count_min": 1,
+    "enemy_count_max": 3,
+    "includes_elite_gunner": true,
+    "includes_elite_bruiser": true,
+    "includes_boss": true,
+    "includes_original_mandatory_normal_escort": true
+  },
+  "integration_plan": {
+    "approach": "Codex can install only after explicit ACK, in isolated game checkout by replacing the contents (not .meta) of Assets/Resources/R5/Encounters.json; original catalog must remain recoverable.",
+    "verification": "Actual Unity Resources.Load<R5Catalog> via R1RunController.Start, R5RunPlan.Validate, six-stage garage/route selection, physical enemy spawn/variant behavior, rewards and replay across seeds.",
+    "rollback": "Restore only original Encounters.json bytes from pre-import backup/Git after confirming no uncommitted local edits; retain original .meta GUID. Do not overwrite user modifications.",
+    "codex_scope": "exclusive runtime integration and gameplay balance authority"
+  },
+  "tests": {
+    "source_runner": "dotnet run --project Research/B01-24/P17/ENEMY-RELAY-001/EnemyRelayP17.csproj -c Release",
+    "ci_workflow": "b01-24-p17-enemy-relay.yml",
+    "native_unity": "NOT_RUN",
+    "native_windows_player": "NOT_RUN",
+    "independent_b01_60": "PENDING",
+    "original_source_compiler_windows_ubuntu": "PASS 17/17 on each OS; actual unchanged R5RunPlan/R1RunDefinition/R3EnemyArchetype source, headless Unity annotations and JSON adapter",
+    "original_source_actions": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40727808486",
+    "initial_test_harness_compilation_error": "CS0819 on first Windows source runner, corrected by B01-24; final source runner 17/17 on each OS."
+  },
+  "limitations": [
+    "Alternative optional catalog, not applied to main game. Original six-stage campaign remains unchanged.",
+    "Headless tests use exact original C# logic but a limited System.Text.Json surrogate, not Unity JsonUtility.",
+    "Three authored enemies actually spawn four due to mandatory Scout escort; SiegeBoss spawns one.",
+    "R1LD02Arena.CanChooseLD02Arena rejects routes with SpawnCount > 3; our three-roster options should not be offered as LD02.",
+    "New difficulty, scrap payouts, variants and titles require Codex native playtest/HQ balance acceptance before shipping.",
+    "No code changed under Assets/**, CHL-003 or PARTSIZE; no merge, no CODEX_ACK."
+  ],
+  "state": "DRAFT_PR_338 / ORIGINAL_CSHARP_SOURCE_TESTED / CODEX_ACK_PENDING / G1_UNITY_NOT_RUN / G2_HOLD"
+}

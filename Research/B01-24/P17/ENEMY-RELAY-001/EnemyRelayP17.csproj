@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs"/>
+    <Compile Include="UnityTestStubs.cs"/>
+    <Compile Include="../../../../Assets/R5/R5RunPlan.cs" Link="Original/R5RunPlan.cs"/>
+    <Compile Include="../../../../Assets/R1/R1RunDefinition.cs" Link="Original/R1RunDefinition.cs"/>
+    <Compile Include="../../../../Assets/R3/R3EnemyArchetype.cs" Link="Original/R3EnemyArchetype.cs"/>
+    <None Include="Encounters-Relay.json" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="../../../../Assets/Resources/R5/Encounters.json" Link="Existing-Encounters.json" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,314 @@
+{
+  "Stages": [
+    {
+      "Options": [
+        {
+          "Id": "b0124-relay-scout",
+          "Title": "Zwiad przy przekaźniku",
+          "Arena": 0,
+          "Roster": [
+            0
+          ],
+          "Variants": [
+            0
+          ],
+          "EnemyCount": 1,
+          "HealthMultiplier": 0.78,
+          "DamageMultiplier": 0.38,
+          "FireIntervalMultiplier": 1.75,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.4,
+          "PreferredDistance": 11,
+          "StrafeStrength": 0.55,
+          "ThreatBudget": 12,
+          "ScrapReward": 72,
+          "RewardJitter": 2,
+          "Loot": "Lekki zwiad i standardowa osłona",
+          "Rule": "Zniszcz wszystkie rdzenie"
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "b0124-relay-pincer",
+          "Title": "Kleszcze z pustkowi",
+          "Arena": 1,
+          "Roster": [
+            0,
+            3
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "HealthMultiplier": 0.9,
+          "DamageMultiplier": 0.46,
+          "FireIntervalMultiplier": 1.6,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 3.15,
+          "PreferredDistance": 11,
+          "StrafeStrength": 0.72,
+          "ThreatBudget": 22,
+          "ScrapReward": 100,
+          "RewardJitter": 4,
+          "Loot": "Mobilny osaczający i eskorta",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "AlternativeRoster": [
+            3,
+            0
+          ]
+        },
+        {
+          "Id": "b0124-relay-breach",
+          "Title": "Przełamanie złomowiska",
+          "Arena": 0,
+          "Roster": [
+            1,
+            0
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "HealthMultiplier": 1.05,
+          "DamageMultiplier": 0.47,
+          "FireIntervalMultiplier": 1.7,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.55,
+          "PreferredDistance": 9,
+          "StrafeStrength": 0.28,
+          "ThreatBudget": 22,
+          "ScrapReward": 101,
+          "RewardJitter": 4,
+          "Loot": "Szturmowiec i strzelec eskortowy",
+          "Rule": "Zniszcz wszystkie rdzenie"
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "b0124-relay-crosslane",
+          "Title": "Przestrzał między halami",
+          "Arena": 2,
+          "Roster": [
+            2,
+            3
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "HealthMultiplier": 1.06,
+          "DamageMultiplier": 0.49,
+          "FireIntervalMultiplier": 1.55,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 3.1,
+          "PreferredDistance": 16,
+          "StrafeStrength": 0.6,
+          "ThreatBudget": 26,
+          "ScrapReward": 117,
+          "RewardJitter": 5,
+          "Loot": "Strzelec z mobilnym osaczającym",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "AlternativeRoster": [
+            2,
+            0
+          ]
+        },
+        {
+          "Id": "b0124-relay-scrapwall",
+          "Title": "Ściana złomu",
+          "Arena": 0,
+          "Roster": [
+            1,
+            2
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "HealthMultiplier": 1.22,
+          "DamageMultiplier": 0.5,
+          "FireIntervalMultiplier": 1.65,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.3,
+          "PreferredDistance": 8,
+          "StrafeStrength": 0.2,
+          "ThreatBudget": 26,
+          "ScrapReward": 117,
+          "RewardJitter": 5,
+          "Loot": "Szturmowiec i ciężki strzelec",
+          "Rule": "Zniszcz wszystkie rdzenie"
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "b0124-relay-dualgun",
+          "Title": "Punkt ogniowy elite",
+          "Arena": 2,
+          "Roster": [
+            2,
+            0
+          ],
+          "Variants": [
+            2,
+            0
+          ],
+          "EnemyCount": 2,
+          "HealthMultiplier": 1.12,
+          "DamageMultiplier": 0.53,
+          "FireIntervalMultiplier": 1.65,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.3,
+          "PreferredDistance": 18,
+          "StrafeStrength": 0.23,
+          "ThreatBudget": 35,
+          "ScrapReward": 133,
+          "RewardJitter": 5,
+          "Loot": "Elitarny strzelec z dwiema bateriami",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "AlternativeRoster": [
+            2,
+            3
+          ]
+        },
+        {
+          "Id": "b0124-relay-bruiser",
+          "Title": "Osłona bastionu",
+          "Arena": 0,
+          "Roster": [
+            1,
+            3
+          ],
+          "Variants": [
+            1,
+            0
+          ],
+          "EnemyCount": 2,
+          "HealthMultiplier": 1.16,
+          "DamageMultiplier": 0.56,
+          "FireIntervalMultiplier": 1.65,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.65,
+          "PreferredDistance": 9,
+          "StrafeStrength": 0.4,
+          "ThreatBudget": 35,
+          "ScrapReward": 136,
+          "RewardJitter": 5,
+          "Loot": "Elitarny szturmowiec i osaczający",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "AlternativeRoster": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "b0124-relay-shieldline",
+          "Title": "Szturm przekaźników",
+          "Arena": 2,
+          "Roster": [
+            0,
+            2,
+            3
+          ],
+          "Variants": [
+            0,
+            0,
+            0
+          ],
+          "EnemyCount": 3,
+          "HealthMultiplier": 1.18,
+          "DamageMultiplier": 0.54,
+          "FireIntervalMultiplier": 1.6,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 3.25,
+          "PreferredDistance": 11,
+          "StrafeStrength": 0.68,
+          "ThreatBudget": 40,
+          "ScrapReward": 153,
+          "RewardJitter": 6,
+          "Loot": "Cztery wrogie jednostki ze wsparciem osłon",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "AlternativeRoster": [
+            3,
+            2,
+            0
+          ]
+        },
+        {
+          "Id": "b0124-relay-battery",
+          "Title": "Ostatnia bateria",
+          "Arena": 1,
+          "Roster": [
+            1,
+            2,
+            3
+          ],
+          "Variants": [
+            0,
+            2,
+            0
+          ],
+          "EnemyCount": 3,
+          "HealthMultiplier": 1.25,
+          "DamageMultiplier": 0.56,
+          "FireIntervalMultiplier": 1.65,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.85,
+          "PreferredDistance": 13,
+          "StrafeStrength": 0.55,
+          "ThreatBudget": 40,
+          "ScrapReward": 157,
+          "RewardJitter": 6,
+          "Loot": "Działa elitarne i mobilna obstawa",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "AlternativeRoster": [
+            0,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "b0124-relay-siege",
+          "Title": "Zamknięcie sieci",
+          "Arena": 1,
+          "Roster": [
+            1
+          ],
+          "Variants": [
+            3
+          ],
+          "EnemyCount": 1,
+          "HealthMultiplier": 1.17,
+          "DamageMultiplier": 0.47,
+          "FireIntervalMultiplier": 1.75,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 1.55,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.18,
+          "ThreatBudget": 28,
+          "ScrapReward": 182,
+          "RewardJitter": 8,
+          "Loot": "Oblężnik z dwiema niezależnymi bateriami",
+          "Rule": "Zniszcz wszystkie rdzenie"
+        }
+      ]
+    }
+  ]
+}
