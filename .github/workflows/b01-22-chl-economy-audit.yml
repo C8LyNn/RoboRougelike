@@ -55,6 +55,8 @@ jobs:
         run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_codex310_econ_bounds.py
       - name: PASS14 actual ORIGINAL Codex P0 economy security + owner #275 rebuild price diagnostic (expected RED is NOT fixed)
         run: python Tools/B01/QA-CHL-ECON-W16/Weapon302/verify_codex_owner_economy.py --expect-current-red
+      - name: PASS15 execute ORIGINAL Codex R1 Update terminal reward plus R3/R4 ledger (exception payout KNOWN PRODUCT RED)
+        run: python Tools/B01/QA-CHL-ECON-W16/test_original_r1_reward_terminal.py
       - name: QA-only source file hash manifest and strict scope
         shell: python
         run: |
@@ -64,7 +66,7 @@ jobs:
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
           files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
             if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
-          assert len(files)==21,files
+          assert len(files)==22,files
           assert all(not s.startswith("Assets/") for s in files)
           manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
           (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
