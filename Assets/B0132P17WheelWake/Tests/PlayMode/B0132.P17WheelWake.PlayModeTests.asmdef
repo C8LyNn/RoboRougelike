@@ -1,0 +1,19 @@
+{
+  "name": "B0132.P17WheelWake.PlayModeTests",
+  "rootNamespace": "RoboRougelike.B0132P17.Tests",
+  "references": [
+    "B0132.P17WheelWake.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

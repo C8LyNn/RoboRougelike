@@ -1,0 +1,48 @@
+name: B01-32 PASS17 WheelWake exact-original CSharp + Unity source G0 (NOT native)
+on:
+  push:
+    branches:
+      - art/b01-32-p17-wheelwake-r1
+    paths:
+      - Assets/B0132P17WheelWake/**
+      - Assets/B0132P17WheelWake.meta
+      - Tools/B01-32/P17/WheelWakeChecks/**
+      - Tools/B01-32/P17/WheelWakeSyntax/**
+      - Tools/B01-32/P17/verify_wake_unity.py
+      - .github/workflows/b01-32-p17-wheelwake-source.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-source:
+    name: original code+GUID / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Parse Unity scene/prefab and GUID references from original repository
+        run: |
+          python -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+          python Tools/B01-32/P17/verify_wake_unity.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and execute the ACTUAL WheelWakeProfile.cs (not a mock)
+        run: dotnet run --configuration Release --project Tools/B01-32/P17/WheelWakeChecks/WheelWakeChecks.csproj
+      - name: Actual Roslyn parse for 4 original CSharp files including MonoBehaviours and UnityTests
+        run: dotnet run --configuration Release --project Tools/B01-32/P17/WheelWakeSyntax/WheelWakeSyntax.csproj
+      - name: Build original source ZIP and verify all extracted bytes
+        run: python Tools/B01-32/P17/build_wake_handoff.py build/B01-32-P17
+      - name: Save inspectable physical package and SHA-256 receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-32-WHEELWAKE-001-SOURCE-${{ matrix.os }}
+          path: build/B01-32-P17/
+          if-no-files-found: error
+          retention-days: 30
