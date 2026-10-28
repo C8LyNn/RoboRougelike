@@ -32,7 +32,7 @@ PREFIXES={"chl":"Assets/RoboRougelikeChallenges","part":"Assets/PARTSIZE001"}
 EXPECTED_META={"chl":26,"part":17}
 EXPECTED_ASMDEF={"chl":4,"part":3}
 CORNER_CELLS={(0,0),(0,9),(11,0),(11,9)}
-GUID=re.compile(rb"(?m)^guid:\s*([0-9a-f]{32})\s*$")
+GUID=re.compile(rb"(?m)^guid:[ \t]*([0-9a-f]{32})[ \t]*$")
 
 class Reject(ValueError):
     pass
