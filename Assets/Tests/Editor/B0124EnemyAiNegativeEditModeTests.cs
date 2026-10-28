@@ -249,7 +249,7 @@ public sealed class B0124EnemyAiNegativeEditModeTests
             TestContext.WriteLine(
                 $"B0124 LOS native counts: blocked={blockedShotCount}; recovered_delta={recoveredShotDelta}; " +
                 $"total_new={totalNewShells}; source=Codex310@231005c6d0351945a8ee6684f3856af118f0e94f");
-            // Unity's bundled NUnit lacks Assert.Multiple (actual Codex
+            // Unity's bundled NUnit lacks multi-assert support (actual Codex
             // native compile CS0117 on our previous test blob). Retain both
             // observations and report both failures through ONE supported
             // Assert.That after both source Update calls have completed.
