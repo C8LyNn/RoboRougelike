@@ -1,0 +1,15 @@
+# B01-25 PASS14 — bounded LD02 cover arena / CV-05 addendum only
+
+## Original design flaw and fix within B01-25-owned data
+The [P13 LD02_MIN](https://github.com/C8LyNn/RoboRougelike/blob/167f0e4b09b866c4a46787c434ea9ec97b223595/Research/B01-25/P13/LD02_MIN.json) used `globalFloor=true`. Original `MapWorld.Build()` produces full 101×101 cells (404 m per side), allowing players to bypass the nominal 48×40 m cover site. NEW `LD02_ARENA.json` explicitly authors **120 local Ground cells, 40 solid-perimeter Wall items, four Pillars, two LowBarriers, one Spawn and Finish (168 items total)**. No new Unity code, no extra producer package, no enemy mission.
+
+## CV-05 engine validation request (not a new CV-ID)
+1. Confirm Codex original `#310@231005c6d0351945a8ee6684f3856af118f0e94f` or name exact changed SHA/branch before test. Use legitimately licensed Unity 6000.3.14f1 environment only if available; otherwise report `NOT_RUN`. Independent B01-60 G1 is separately HQ gated.
+2. Download exact `LD02_ARENA.json` Git blob from manifest and **copy** into an empty disposable `Application.persistentDataPath/Maps/B01_25_LD02_ARENA_P14.json`, never overwrite actual user maps (D02). Launch supported map editor, enter `EditorName=B01_25_LD02_ARENA_P14`, press **Wczytaj** (not external-file picker).
+3. **Original input test:** `MapDraft.TryLoad` accepts map with no duplicate non-Ground footprint, `TestError` null, counts 120 Ground,40 Wall,4 Pillar,2 LowBarrier,1 Spawn and 1 Finish; `globalFloor=false`. FAIL on any actual loader error or changed data.
+4. **Original geometry native test (optional authored QA only):** `LD02_ARENA_UnityTest.cs` invokes original `MapWorld.Build` and four Unity Physics horizontal raycasts to left/right/top/bottom wall colliders. PASS 4/4 real solid nontrigger Wall hits; FAIL missing wall/collider or hit another object. Do not label compiled or run until Codex does so and returns genuine NUnit XML, Editor.log, process code, source and data blob.
+5. **Real Player trial:** actual Light and Heavy enter arena, approach each boundary at normal drive forces; record current position, speed, collider contact and any wall bypass; separately drive through central cover to touch Finish. PASS only if neither vehicle escapes via missing seams, both can move around cover and physical walls stop normal travel; FAIL if escape/overlap or no physically reachable Finish. Capture complete player log and screenshots/recordings. Actual native trials remain `NOT_RUN`.
+6. **Combat condition remains UNSUPPORTED:** no two enemy spawns, kill/win logic, LOS policy, rewards. `MapWorld.Finished` is only sandbox trigger touch; do not count as combat clear or mission reward. B01-24/Codex owns enemy system, HQ decides LOS/finish rule.
+7. Expected failure separation: source parse FAIL ≠ 4-ray collider FAIL ≠ true vehicle physical escape FAIL ≠ absent two-kill mission. Preserve exact claims and raw evidence.
+
+**Owners:** B01-25 designs map; B01-21 validates geometry/fit; B01-60 independently reviews genuine native evidence; Codex sole integration owner. **Current state:** DATA_READY / UNITY_NOT_RUN / CV-05 QUEUED / G1_NOT_RUN.
