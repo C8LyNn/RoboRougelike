@@ -1,0 +1,100 @@
+name: B01-62 original producer MAPSAFE MAPDIFF SLALOM receiver
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Tools/B01/B01-62/MapPipelineQA/**'
+      - '.github/workflows/b01-62-mappipe-receiver.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-source-receiver:
+    name: Original source cross-package receiver (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      MAPSAFE_SHA: 956115a26fc1987f78b6bb64c00df4bf46d5756b
+      MAPDIFF_SHA: 9bd0caf2ada19ccf887496eee2c72fc5acbfad73
+      SLALOM_SHA: f565e250659692541d672cdab108c4cfb8cfdd31
+      MAPSAFE_BLOB: 7748b554ce75a4988a7e4099845dc82d5d6c48e4
+      MAPDIFF_BLOB: 674dbb09460421d0af48d9f614f7f68bd01c5c18
+      SLALOM_BLOB: 013f5fe2058e76233f580a439e8402c0fe09f124
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch three immutable real owner inputs with Git blob provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$MAPSAFE_SHA"
+          git fetch --no-tags origin "$MAPDIFF_SHA"
+          git fetch --no-tags origin "$SLALOM_SHA"
+          a="$(git rev-parse "$MAPSAFE_SHA:Tools/B01/B01-62/MapSafe001/mapsafe.py")"
+          b="$(git rev-parse "$MAPDIFF_SHA:Tools/B01/B01-62/MapDiff001/mapdiff.py")"
+          c="$(git rev-parse "$SLALOM_SHA:Research/B01-25/P17/SLALOM001/arena.json")"
+          test "$a" = "$MAPSAFE_BLOB"
+          test "$b" = "$MAPDIFF_BLOB"
+          test "$c" = "$SLALOM_BLOB"
+          mkdir -p "$RUNNER_TEMP/mappipe-original"
+          git show "$MAPSAFE_SHA:Tools/B01/B01-62/MapSafe001/mapsafe.py" > "$RUNNER_TEMP/mappipe-original/mapsafe.py"
+          git show "$MAPDIFF_SHA:Tools/B01/B01-62/MapDiff001/mapdiff.py" > "$RUNNER_TEMP/mappipe-original/mapdiff.py"
+          git show "$SLALOM_SHA:Research/B01-25/P17/SLALOM001/arena.json" > "$RUNNER_TEMP/mappipe-original/arena.json"
+          echo "MAPPIPE_INPUTS=$RUNNER_TEMP/mappipe-original" >> "$GITHUB_ENV"
+          echo "PINNED_REAL_ORIGINALS=PASS MAPSAFE=$a MAPDIFF=$b SLALOM=$c"
+      - name: Run real subprocess and adversarial input receiver tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-62/MapPipelineQA -p test_receiver.py -v \
+            2>&1 | tee "Tools/B01/B01-62/MapPipelineQA/tests-$RUNNER_OS.log"
+          grep -Eq '^OK( \((skipped=[0-9]+)\))?$' "Tools/B01/B01-62/MapPipelineQA/tests-$RUNNER_OS.log"
+      - name: Materialize original CLI evidence and SVG for Codex receiver
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Tools/B01/B01-62/MapPipelineQA/artifacts
+          python Tools/B01/B01-62/MapPipelineQA/receiver.py \
+            --source-dir "$MAPPIPE_INPUTS" \
+            --out-dir Tools/B01/B01-62/MapPipelineQA/artifacts \
+            2>&1 | tee "Tools/B01/B01-62/MapPipelineQA/receipt-$RUNNER_OS.log"
+          grep -q '^MAPPIPE_ORIGINAL_OWNER_CLIS_PASS=' \
+            "Tools/B01/B01-62/MapPipelineQA/receipt-$RUNNER_OS.log"
+      - name: Upload two actual physical artifacts and raw original logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: map-pipeline-receiver-${{ matrix.os }}
+          path: |
+            Tools/B01/B01-62/MapPipelineQA/artifacts/**
+            Tools/B01/B01-62/MapPipelineQA/tests-*.log
+            Tools/B01/B01-62/MapPipelineQA/receipt-*.log
+          retention-days: 14
+  cross-os-parity:
+    name: Verify exact-byte owner receiver outputs Windows and Ubuntu
+    needs: real-source-receiver
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: map-pipeline-receiver-ubuntu-latest
+          path: output/ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: map-pipeline-receiver-windows-latest
+          path: output/windows
+      - name: Byte-for-byte comparison and physical SHA256 proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          find output -type f -print
+          cmp output/windows/artifacts/receipt.json output/ubuntu/artifacts/receipt.json
+          cmp output/windows/artifacts/controlled-change.svg output/ubuntu/artifacts/controlled-change.svg
+          echo "MAPPIPE_OWNER_CROSS_OS_BYTE_IDENTICAL=PASS"
+          sha256sum output/windows/artifacts/receipt.json output/ubuntu/artifacts/receipt.json
+          sha256sum output/windows/artifacts/controlled-change.svg output/ubuntu/artifacts/controlled-change.svg
