@@ -1,0 +1,60 @@
+name: B01-10 P17 W02 R5 Workbench Node and real Chromium
+on:
+  push:
+    branches:
+      - design/b01-10-pass17-r5-workbench
+    paths:
+      - 'Research/B01-10/P17Workbench/**'
+      - '.github/workflows/b01-10-p17-r5-workbench.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Research/B01-10/P17Workbench/**'
+      - '.github/workflows/b01-10-p17-r5-workbench.yml'
+permissions:
+  contents: read
+concurrency:
+  group: b01-10-r5wb-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-test:
+    name: R5 source / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run actual original Node CLI against original JS
+        run: node Research/B01-10/P17Workbench/workbench.test.cjs
+  real-chromium:
+    name: Actual Chromium UI / 720p 1080p portrait
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser test dependency
+        run: npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Install real Chromium and Linux system dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Run real browser, download, multi-viewport and screenshots
+        env:
+          B01_10_BROWSER_SHOTS: ${{ runner.temp }}/b01-10-r5wb-screens
+        run: node Research/B01-10/P17Workbench/browser.test.cjs
+      - name: Upload screenshots and machine-readable QA output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-10-r5wb001-real-chromium-${{ github.run_id }}
+          path: ${{ runner.temp }}/b01-10-r5wb-screens/
+          if-no-files-found: warn
+          retention-days: 14
