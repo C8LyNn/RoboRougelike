@@ -61,6 +61,8 @@ jobs:
         run: python Tools/B01/QA-CHL-ECON-W16/test_original_r1_reward_terminal.py
       - name: PASS16 independent complete ORIGINAL changed R4 SalvageLedger and R3 wallet atomic claim/Record
         run: python Tools/B01/QA-CHL-ECON-W16/verify_pass16_original_r4_salvage.py
+      - name: PASS16 actual ORIGINAL post-fix Codex R1 WinEncounter exception cannot duplicate physical Scrap payout
+        run: python Tools/B01/QA-CHL-ECON-W16/verify_pass16_original_r1_win_fix.py
       - name: QA-only source file hash manifest and strict scope
         shell: python
         run: |
@@ -70,7 +72,7 @@ jobs:
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
           files=[s for s in subprocess.check_output(["git","ls-files"],text=True).splitlines()
             if s.startswith("Tools/B01/QA-CHL-ECON-W16/") or s==".github/workflows/b01-22-chl-economy-audit.yml"]
-          assert len(files)==23,files
+          assert len(files)==24,files
           assert all(not s.startswith("Assets/") for s in files)
           manifest=[{"path":s,"sha256":hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest()} for s in files]
           (out/"qa-manifest.json").write_text(json.dumps({"head":head,"qa_only":True,
