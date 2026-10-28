@@ -4,7 +4,7 @@
 
 ## Inputs / exact source identity
 
-- **Owner:** B01-12; original HTML: `Research/B01-12/W70/HUD3-overflow.html`, research branch `research/b01-12-w70-hud3-overflow`, Git blob **`1caee60184a918d1690a67e363acfc8b213bfe9b`** at observed commit `862bff8c876f977859dc0a1ebd6e8a507046310f` (source status checked before run). The branch `research/b01-12-w74-garage-readiness` also contains the **same** original HUD3 blob as of this test. This is not a revised B01-12 source; source owner must publish the fix first.
+- **Owner:** B01-12; original HTML: `Research/B01-12/W70/HUD3-overflow.html`, research branch `research/b01-12-w70-hud3-overflow`, Git blob **`1caee60184a918d1690a67e363acfc8b213bfe9b`** at observed commit `862bff8c876f977859dc0a1ebd6e8a507046310f` (source status checked before run). The branch `research/b01-12-w74-garage-readiness` contained the **same** original HUD3 blob when the baseline was tested. **Later B01-12 published a real revised HUD3, Git blob `e73b57e52ca0706bcf739340f5b06dd66b55e104`, independently re-tested below.**
 - **Codex game #310:** `231005c6d0351945a8ee6684f3856af118f0e94f`. Its Unity HUD and physics are **not** exercised by this test.
 - **Existing independent B01-11 findings already known:** treatment label A/B visible to participants and incorrect “rozwinąć” hint on A F0 (issue #296 comment `6464206638`); report but do not relabel them as new bugs.
 - **NEW B01-13 P15 observation:** after moderator `#resolveA` changes fixture F1 and closes P01 session, entering synthetic P02 session without a fixture change **retains the prior mutated weapon state** despite the selected F1 scenario being the same. This may bias A/B comparability. Owner correction suggestion: on **each participant-mode entry**, restore a copy of the selected immutable fixture and collapse expansion, or require an explicit protected operator reset before opening a new session. Do not decide owner design unilaterally.
@@ -31,7 +31,7 @@ Use `--accept-known-red` only to execute diagnostics with exit 0 while keeping `
 
 `--out` directory receives `HUD3_B01-13_RECEIVER_SYNTHETIC.json` with every named positive/failure and 720px original browser screenshots `HUD3_A_F1_720_SYNTHETIC.png` / `HUD3_B_F1_720_SYNTHETIC.png`. Never substitute screenshots for player experience or claim source PASS when JSON has failures.
 
-Once **B01-12 publishes an actual revised HTML blob**, pass **exact new Git blob SHA** using `--expected-git-blob`, repeat the *same tests* and let B01-11 independently recheck its separate treatment-label A/F0 failures. No source-writing to B01-12 or Codex. No G0/G1/G2 approval. No real participants (0).
+For subsequent **B01-12-published changes**, pass the **exact new Git blob** via `--expected-git-blob` and rerun the *same* unchanged receiver; do not update pass thresholds to disguise remaining RED. B01-11 may independently retest its separate original concerns. No source-writing to B01-12 or Codex. No G0/G1/G2 approval. No real participants (0).
 
 ## Exit semantics and scope
 
@@ -40,3 +40,21 @@ Once **B01-12 publishes an actual revised HTML blob**, pass **exact new Git blob
 - `2`: source byte/expected Git blob mismatch or runtime error, **no valid assessment**.
 
 No real recruitment/participant sessions without explicit HQ GATE D consent, private storage and authorized Windows Player operator. HUD3 itself is a browser *research* stimulus, not integrated into RoboRougelike.
+
+## Actual independent changed-source receipt — B01-12 revised HUD3
+
+**Source owner changed real original HTML while B01-13 testing was underway.** Re-fetched owner branch `research/b01-12-w70-hud3-overflow`: original published file Git blob **`e73b57e52ca0706bcf739340f5b06dd66b55e104`**, 12,710 original bytes. Reconstructed its source *byte-for-byte* from a diff to previous original and verified identical calculated Git blob, then reran the **same actual Chromium receiver** (no condition edits):
+
+```bash
+python3 Research/B01-13/W74/hud3_participant_flow.py \
+  --html Research/B01-12/W70/HUD3-overflow.html \
+  --expected-git-blob e73b57e52ca0706bcf739340f5b06dd66b55e104 \
+  --out /tmp/b01-13-hud3-revised
+# Actual exit 3 (research stimulus still NOT accepted); 58/61 PASS, three RED.
+```
+
+**Two prior B01-11 original defects now independently GREEN on this new owner source:** treatment A/B labels excluded from participant viewport and truthful A/F0 instruction when expand does not exist. Exactly **9 previously failing width-condition checks became PASS** (3 widths × two labels + F0 help). Owner change **did not** reset the selected fixture on participant-session entry, so the new B01-13 cross-session finding remains RED at **320, 720, 1280 px**.
+
+**Reproduce remaining RED:** choose `F1`, mode `B`, enter participant, observe A heat/B jam; `Escape` ends participant display; as moderator click `Usuń alarm w grupie A` (this mutates the temporary weapon state), then check participant again **without changing the F1 select field**. The incoming session still displays the altered A status although scenario selector still reads F1. Workaround for *synthetic QA only* is a brand-new browser context or forcing F0→F1 before every entry; **not an owner fix**. B01-12 should decide whether to perform guaranteed fresh scenario initialization on each new participant session or expose an explicit mandatory setup/reset step. B01-13 can independently re-run same receiver after an actual new source SHA; don't modify B01-12's branch.
+
+Detailed JSON source measurements and genuine 720px screenshots are in the conversation ZIP handoff, under `revised_evidence/`. **0 human participants**, no actual gameplay Unity Player, no approval inferred from browser PASS.
