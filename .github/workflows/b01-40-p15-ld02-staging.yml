@@ -30,7 +30,7 @@ jobs:
           test "$(git rev-parse f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84:Research/B01-25/P14/LD02_ARENA.json)" = 'e39e2f174984832bd97311c050e3c22fd6fb1175'
           test "$(git rev-parse 231005c6d0351945a8ee6684f3856af118f0e94f:Assets/MapEditor/MapDraft.cs)" = 'b5f8f395f93972c0ede000701dbbada8fcfcdfdb'
           test "$(git rev-parse 231005c6d0351945a8ee6684f3856af118f0e94f:Assets/MapEditor/MapStorage.cs)" = 'f31a94c16e8cb244e66e39b0ac344b085095b630'
-      - name: Execute 18 independent original-source and real temporary filesystem tests
+      - name: Execute 19 independent original-source and real temporary filesystem tests
         shell: bash
         run: python Tools/B01Validation/P15/test_build_ld02_safe_receiver.py -v
       - name: Enforce explicit mandatory dry-run before any staging
