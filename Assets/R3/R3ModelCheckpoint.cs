@@ -28,7 +28,10 @@ namespace RoboRougelike.R3
         static R3PartState SavePart(R3PartState source,float now)
         {
             var copy=source.Copy();copy.DeviceReadyAt=Remaining(copy.DeviceReadyAt,now);
-            copy.ReloadReadyAt=Remaining(copy.ReloadReadyAt,now);
+            // A positive deadline is also the marker that a reload is pending.
+            // An inventory gun may expire while it has no active binding to
+            // finish that reload. Preserve the marker until remount refreshes it.
+            copy.ReloadReadyAt=copy.ReloadReadyAt>0?Mathf.Max(.0001f,copy.ReloadReadyAt-now):0;
             if(float.IsPositiveInfinity(copy.DefenseRechargeAge))copy.DefenseRechargeAge=float.MaxValue;
             return copy;
         }
