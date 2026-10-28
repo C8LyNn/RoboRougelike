@@ -175,12 +175,15 @@ def stage(repo,destination,raw,meta):
     a=root/ARCHIVE;b=root/MANIFEST_FILE
     ensure(not a.exists() and not b.exists() and not a.is_symlink() and not b.is_symlink(),
            "STAGING_OUTPUT_ALREADY_EXISTS")
+    created_a=created_b=False
     try:
-        exclusive(a,z)
-        exclusive(b,serialize(meta))
+        exclusive(a,z);created_a=True
+        exclusive(b,serialize(meta));created_b=True
     except Exception:
-        if a.exists():a.unlink()
-        if b.exists():b.unlink()
+        # A concurrent writer may create one of these paths after our guard.
+        # Never unlink bytes we did not create, even during failed rollback.
+        if created_b and b.exists():b.unlink()
+        if created_a and a.exists():a.unlink()
         raise
     with zipfile.ZipFile(a,"r") as check:
         ensure(check.namelist()==[MAP_MEMBER,"source-manifest.json"],"STAGING_MEMBER_MISMATCH")
@@ -232,13 +235,15 @@ def install(repo,where,raw,meta):
     ensure(not file.exists() and not file.is_symlink(),"REFUSING_MAP_OVERWRITE")
     made_dir=not folder.exists()
     if made_dir:folder.mkdir()
+    created_map=created_receipt=False
     try:
-        exclusive(file,raw)
+        exclusive(file,raw);created_map=True
         exclusive(receipt,serialize({"format":"B01-40-LD02-DISPOSABLE-RECEIPT-v1",
                           "map_member":MAP_MEMBER,"map_sha256":sha256(raw),
-                          "source_commit":OWNER_SHA,"source_blob":MAP_BLOB}))
+                          "source_commit":OWNER_SHA,"source_blob":MAP_BLOB}));created_receipt=True
     except Exception:
-        if file.exists() and file.read_bytes()==raw:file.unlink()
+        if created_receipt and receipt.exists():receipt.unlink()
+        if created_map and file.exists() and file.read_bytes()==raw:file.unlink()
         if made_dir and not any(folder.iterdir()):folder.rmdir()
         raise
     ensure(file.read_bytes()==raw,"DISPOSABLE_INSTALL_READBACK_FAILED")
