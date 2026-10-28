@@ -1,0 +1,30 @@
+PASS15 B01-13: 29/29 checks PASS; ACTUAL Chromium + original CSV; SYNTHETIC only, 0 human
+01 PASS true published original HTML Git blob
+02 PASS browser accepted SYNTHETIC P01
+03 PASS browser accepted SYNTHETIC P02
+04 PASS actual original browser CSV has 10 rows
+05 PASS actual original browser still no remote requests
+06 PASS real CLI verify source-to-evidence succeeds
+07 PASS original browser CSV structurally accepted
+08 PASS browser memory revoked P01
+09 PASS confirmed exported CSV not touched by browser (known gap)
+10 PASS old exported CSV STILL contains P01 (RED baseline)
+11 PASS stale export fails closed once withdrawal is recorded
+12 PASS real CLI verify rejects stale exported CSV
+13 PASS real CLI revoke performs local rewrite
+14 PASS new intake deletes P01 rows from original CSV
+15 PASS other participant P02 is preserved
+16 PASS withdrawn session removed from external consent ledger
+17 PASS post-rewrite verified with original SHA
+18 PASS repeated withdrawal idempotent
+19 PASS rejected rewrite without explicit operator confirmation
+20 PASS reattached withdrawn participant cannot pass
+21 PASS rewritten original browser export cannot pass tombstone
+22 PASS repeat cleanup restores valid structural receipt
+23 PASS tampered actual source HTML fails blob pin
+24 PASS unmatched game build SHA denied
+25 PASS mere browser consent checkbox does not prove external HQ approval
+26 PASS synthetic original CSV cannot masquerade as HUMAN_APPROVED
+27 PASS malformed CSV rejected
+28 PASS withdrawal independent of stale approval field
+29 PASS after removing every participant only original header remains
