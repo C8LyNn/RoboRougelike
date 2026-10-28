@@ -1,0 +1,75 @@
+{
+  "package_id": "B01-31-CM001-A1-PASS16-RESEARCH",
+  "revision": "P16-R1",
+  "producer": "B01-31",
+  "authorization": {
+    "hq_issue": "https://github.com/C8LyNn/RoboRougelike/issues/287#issuecomment-6463914298",
+    "g_concept": "PROVISIONAL_APPROVED",
+    "authoring_unit": "SINGLE_ATTACHABLE_PART",
+    "subject": "ONE_WHEEL_PLUS_SUPPORT_ARM",
+    "b_c": "PARKED",
+    "model_job": "NOT_AUTHORIZED",
+    "unity_package": "NOT_AUTHORIZED"
+  },
+  "original_approved_source": {
+    "path": "A1-single-wheel-arm.svg",
+    "git_blob_sha1": "96cc46a7c14f94a45c387e102d5940cb787d2d5c"
+  },
+  "new_visual_art": [
+    {
+      "path": "A1-three-direction-study.svg",
+      "git_blob_sha1": "c50af016067114b49abd972e7363d3394575ae2e",
+      "purpose": "side, wheel-face, top conceptual appearance; not engineering orthographic"
+    },
+    {
+      "path": "A1-color-treatment-study.svg",
+      "git_blob_sha1": "a57924999e8a888476a25c392d19dcf18c548f7d",
+      "purpose": "two color-only treatments of exact same approved part silhouette"
+    }
+  ],
+  "unchanged_semantic_layers": [
+    {
+      "path": "A1-layer-wheel.svg",
+      "git_blob_sha1": "6a042f681723014c18e3a41ad3ccc963bffdec3c"
+    },
+    {
+      "path": "A1-layer-arm.svg",
+      "git_blob_sha1": "d878dee48dac9a32fc30ed288383770d096888a5"
+    },
+    {
+      "path": "A1-layer-mount.svg",
+      "git_blob_sha1": "2677579cfa83a0199c1c6c438ca4f663a2f69179"
+    },
+    {
+      "path": "A1-layer-damper.svg",
+      "git_blob_sha1": "eaf2d03e4ec968fbc9150b977187b69d41d06cf8"
+    }
+  ],
+  "intended_receiver": "B01-30 TECH_ART, B01-10 design, B01-23 PARTSIZE consultation; HQ approval required before any model job",
+  "known_unknowns": [
+    "metric dimensions",
+    "mass",
+    "mount/socket standard",
+    "wheel axle true pivot",
+    "suspension kinematics/travel",
+    "clearance/swept collider",
+    "material parameters",
+    "mechanical validation",
+    "gameplay balance"
+  ],
+  "requirements": [
+    "visual source Git SHA and preview PNG",
+    "source-art semantic group remains unchanged",
+    "both visual variants are research-only",
+    "real raster CI receipt from qa_pass16_visuals.py"
+  ],
+  "not_run": [
+    "Unity Editor",
+    "Unity PhysX",
+    "Blender",
+    "model export",
+    "actual player study"
+  ],
+  "status": "ART_PRODUCTION_RESEARCH_ONLY_G_DESIGN_PENDING",
+  "codex_receipt": "INFO_ONLY_NOT_OFFERED_NOT_INTEGRATED"
+}
