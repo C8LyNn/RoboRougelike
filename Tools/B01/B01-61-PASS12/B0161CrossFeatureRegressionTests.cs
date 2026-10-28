@@ -1,5 +1,6 @@
 // B01-61 / PASS 12 / QA-ONLY, ORIGINALLY AUTHORED IN PASS 11.
-// Source base: Codex PR #310 @ 231005c6d0351945a8ee6684f3856af118f0e94f
+// PASS16 source base: Codex PR #310 gameplay @ aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+// Previous PASS14 static baseline: 231005c6d0351945a8ee6684f3856af118f0e94f
 // Not compiled or executed in Unity by B01-61: native test status NOT_RUN.
 // Install only in an authorized isolated copy under an appropriate Editor test assembly.
 // Do not add to Codex's canonical branch/worktree without the Codex owner.
