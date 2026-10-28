@@ -67,7 +67,10 @@
     "ci_workflow": "b01-24-p17-enemy-relay.yml",
     "native_unity": "NOT_RUN",
     "native_windows_player": "NOT_RUN",
-    "independent_b01_60": "PENDING"
+    "independent_b01_60": "PENDING",
+    "original_source_compiler_windows_ubuntu": "PASS 17/17 on each OS; actual unchanged R5RunPlan/R1RunDefinition/R3EnemyArchetype source, headless Unity annotations and JSON adapter",
+    "original_source_actions": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40727808486",
+    "initial_test_harness_compilation_error": "CS0819 on first Windows source runner, corrected by B01-24; final source runner 17/17 on each OS."
   },
   "limitations": [
     "Alternative optional catalog, not applied to main game. Original six-stage campaign remains unchanged.",
@@ -77,5 +80,5 @@
     "New difficulty, scrap payouts, variants and titles require Codex native playtest/HQ balance acceptance before shipping.",
     "No code changed under Assets/**, CHL-003 or PARTSIZE; no merge, no CODEX_ACK."
   ],
-  "state": "DRAFT_PR_REQUESTED / NOT_OFFERED_FROZEN / CODEX_ACK_PENDING / G1_NOT_RUN / G2_HOLD"
+  "state": "DRAFT_PR_338 / ORIGINAL_CSHARP_SOURCE_TESTED / CODEX_ACK_PENDING / G1_UNITY_NOT_RUN / G2_HOLD"
 }
