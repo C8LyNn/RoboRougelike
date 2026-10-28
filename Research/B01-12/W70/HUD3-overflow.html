@@ -11,7 +11,7 @@
 <div class="layout"><aside id="moderator" class="panel moderator"><h2>Panel moderatora</h2><label for="fixture">Scenariusz</label><select class="control" id="fixture"><option value="F0">F0 — 2 × READY</option><option value="F1" selected>F1 — 6: A Beam HEAT, B Saw JAM</option><option value="F2">F2 — 12: A EMP, B RELOAD</option><option value="F3">F3 — uszkodzone HP0</option><option value="F4">F4 — 12 × READY</option><option value="F5">F5 — dwa alerty w A</option><option value="F6">F6 — zamiana grup A/B</option><option value="F7">F7 — usuwanie jednego alarmu</option><option value="F8">F8 — 0 broni</option></select>
 <label>Wariant</label><div class="chips" role="group" aria-label="Wybór wariantu"><button id="modeA" type="button" aria-pressed="true">A — kategorie</button><button id="modeB" type="button" aria-pressed="false">B — rozwijanie</button></div>
 <div class="stack" style="margin-top:14px"><button type="button" id="swap">Zamień grupy A ↔ B</button><button type="button" id="resolveA">Usuń alarm w grupie A</button><button type="button" id="resolveB">Usuń alarm w grupie B</button><label class="toggle"><input type="checkbox" id="participant">Tryb uczestnika (bez panelu)</label></div>
-<p class="muted" style="font-size:13px">Przed obserwacją wybierz wariant i scenariusz. Wciśnij Escape, aby wrócić. Testy z ludźmi wymagają osobnej zgody.</p></aside>
+<p class="muted" role="status" aria-live="polite" id="resolveMessage"></p><p class="muted" style="font-size:13px">Przed obserwacją wybierz wariant i scenariusz. Wciśnij Escape, aby wrócić. Testy z ludźmi wymagają osobnej zgody.</p></aside>
 <section class="panel hud" id="hudRegion" tabindex="-1" aria-label="Obszar stanu uzbrojenia"><div class="hudtop"><h2 style="margin:0">Stan uzbrojenia</h2><span class="pill" id="total">—</span></div><p id="participantHelp" class="muted">Dane dwóch grup uzbrojenia; część informacji można rozwinąć.</p><div class="groups" id="groups" aria-live="polite"></div>
 <div class="detail"><h3>Priorytetowe statusy · maks. 2</h3><div id="topRows"></div><button id="expand" type="button" class="disclose" aria-expanded="false" aria-controls="overflow" hidden>Pokaż wszystkie stany dział</button><div id="overflow" class="extra" hidden></div><p class="summary" id="coverage"></p></div><footer class="brief">Badanie dwóch sposobów podawania szczegółów ponad dwoma wierszami. Zawsze widoczne alerty obu grup są wspólne dla A i B.</footer></section></div></main>
 <script>
@@ -67,12 +67,17 @@ extra.hidden=mode!=='B'||!opened||hidden.length===0;
 extra.innerHTML=`<h3>Wszystkie stany poza dwoma wierszami (${hidden.length})</h3><ul>${hidden.map(p=>`<li>${esc(p.group)} / ${p.group==='A'?'LPM':'PPM'} · ${esc(title(p))}: <code>${esc(DISPLAY[p.status])}</code></li>`).join('')}</ul>`;
 $('modeA').setAttribute('aria-pressed',String(mode==='A'));$('modeB').setAttribute('aria-pressed',String(mode==='B'));
 }
-function setFixture(id){parts=fix[id].map(p=>({...p}));opened=false;render()}
+function setFixture(id){parts=fix[id].map(p=>({...p}));opened=false;$('resolveMessage').textContent='';render()}
 function setMode(m){mode=m;opened=false;render()}
 $('fixture').addEventListener('change',e=>setFixture(e.target.value));
 $('modeA').onclick=()=>setMode('A');$('modeB').onclick=()=>setMode('B');
 $('swap').onclick=()=>{parts.forEach(p=>p.group=p.group==='A'?'B':'A');opened=false;render()};
-for(const g of ['A','B'])$('resolve'+g).onclick=()=>{const p=parts.filter(p=>p.group===g&&p.status!=='READY').sort(cmp)[0];if(p)p.status='READY';opened=false;render()};
+for(const g of ['A','B'])$('resolve'+g).onclick=()=>{
+const target=parts.filter(p=>p.group===g&&p.status!=='READY'&&p.status!=='DESTROYED').sort(cmp)[0];
+if(target){target.status='READY';$('resolveMessage').textContent=`Usunięto symulowany blokujący stan czasowy w grupie ${g}.`}
+else if(parts.some(p=>p.group===g&&p.status==='DESTROYED')){$('resolveMessage').textContent=`Grupa ${g}: działko 0 HP wymaga jawnej odbudowy. Usunięcie alarmu nie naprawia części.`}
+else{$('resolveMessage').textContent=`Grupa ${g}: brak stanów czasowych do usunięcia.`}
+opened=false;render()};
 $('expand').onclick=()=>{opened=!opened;render();$('expand').focus()};
 $('participant').onchange=e=>{document.body.classList.toggle('participant',e.target.checked);opened=false;render();if(e.target.checked)$('hudRegion').focus()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.body.classList.contains('participant')){$('participant').checked=false;document.body.classList.remove('participant');opened=false;render();$('participant').focus()}else if(opened){opened=false;render();$('expand').focus()}}});
