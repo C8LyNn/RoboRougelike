@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B01-32 salvage beacon animation preview</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,Segoe UI,Arial,sans-serif;background:#08141d;color:#dbecf1;margin:0;padding:24px}
+main{max-width:1060px;margin:auto}h1{font-size:clamp(25px,4vw,37px);margin:10px 0}
+.sub{color:#a4bfca;line-height:1.5}.layout{display:grid;grid-template-columns:minmax(300px,1.35fr) minmax(270px,.9fr);gap:20px;margin:24px 0}
+.preview{background:radial-gradient(circle at 50% 38%,#314a56,#10202d 60%,#080e19);border:1px solid #425a69;min-height:410px;border-radius:16px;display:grid;place-items:center;position:relative;overflow:hidden}
+.orb{position:relative;width:min(70vw,440px);aspect-ratio:1}.orb img{width:100%;height:100%;display:block}
+.orb img[hidden]{display:none}
+.pad{position:absolute;left:15%;right:15%;bottom:3%;height:18%;border-radius:50%;background:radial-gradient(ellipse,#65d2d9a0,#254e6700 72%);filter:blur(10px)}
+.controls{border:1px solid #334f60;border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:16px}
+button{border:1px solid #618595;color:#edfaff;background:#244456;padding:13px;border-radius:9px;cursor:pointer;font-weight:600}
+button[aria-pressed="true"]{background:#0b6d75;border-color:#6aefec}
+button:focus-visible,input:focus-visible{outline:3px solid #ffd87e;outline-offset:2px}
+.group{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#frame{width:100%;accent-color:#7ce4e5}
+#status{font:13px ui-monospace,Consolas,monospace;color:#b7eceb}
+.small{font-size:13px;color:#b3c5cc}
+@media(max-width:720px){body{padding:14px}.layout{grid-template-columns:1fr}.preview{min-height:320px}.orb{width:min(80vw,340px)}}
+</style></head><body><main><small>PASS 17 / B01-32 / ANIMATION & VFX</small>
+<h1>Salvage / Reward Beacon</h1>
+<p class="sub">Oryginalny animowany efekt lokalizatora nagrody. Jest to warstwa kosmetyczna — nie generuje nagrody, nie zmienia ekonomii ani nie obsługuje podnoszenia części.</p>
+<section class="layout">
+<div class="preview"><div class="pad" aria-hidden="true"></div><div class="orb"><img id="beacon" src="frames/beacon-0.svg" alt="Przezroczysta animacja lokalizatora nagrody" width="512" height="512"></div></div>
+<div class="controls">
+ <div class="group"><button id="play" aria-pressed="false">Odtwarzaj</button><button id="off" aria-pressed="false">VFX OFF</button></div>
+ <label for="frame">Klatka źródłowa (0–7)</label><input id="frame" type="range" min="0" max="7" step="1" value="0">
+ <div class="group"><button id="previous">Poprzednia</button><button id="next">Następna</button></div>
+ <output id="status" aria-live="polite">Frame 0 / VFX ON / Paused</output>
+ <p class="small">Skróty: Spacja — Play/Pause, strzałki lewo/prawo — klatka. Podgląd pokazuje prawdziwe zewnętrzne pliki SVG.</p>
+</div>
+</section>
+<p class="small">Codex może zaimportować atlas PNG lub osiem osobnych klatek jako Sprite po zatwierdzeniu wizualizacji. Brak przypisania do istniejących stanów gry.</p></main>
+<script>
+"use strict";
+const img=document.getElementById("beacon"),play=document.getElementById("play"),
+ off=document.getElementById("off"),slider=document.getElementById("frame"),status=document.getElementById("status");
+let index=0,enabled=true,timer=null;
+function stop(){if(timer!==null)clearInterval(timer);timer=null;play.setAttribute("aria-pressed","false");play.textContent="Odtwarzaj"}
+function draw(){img.src="frames/beacon-"+index+".svg";img.hidden=!enabled;slider.value=String(index);
+ off.setAttribute("aria-pressed",String(!enabled));
+ status.textContent="Frame "+index+" / VFX "+(enabled?"ON":"OFF")+" / "+(timer===null?"Paused":"Playing")}
+function advance(step){index=(index+step+8)%8;draw()}
+function start(){if(timer!==null||!enabled)return;play.setAttribute("aria-pressed","true");play.textContent="Pauza";timer=setInterval(()=>advance(1),120);draw()}
+play.onclick=()=>timer===null?start(): (stop(),draw());
+off.onclick=()=>{enabled=!enabled;if(!enabled)stop();draw()};
+slider.oninput=()=>{stop();index=Number(slider.value);draw()};
+document.getElementById("previous").onclick=()=>{stop();advance(-1)};
+document.getElementById("next").onclick=()=>{stop();advance(1)};
+document.addEventListener("keydown",e=>{if(["INPUT","BUTTON"].includes(e.target.tagName))return;
+ if(e.code==="Space"){e.preventDefault();timer===null?start():(stop(),draw())}
+ if(e.code==="ArrowRight"){e.preventDefault();stop();advance(1)}
+ if(e.code==="ArrowLeft"){e.preventDefault();stop();advance(-1)}});
+draw();
+</script></body></html>

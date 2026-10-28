@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="title desc">
+<title id="title">B01-32 salvage reward locator pulse frame 6</title>
+<desc id="desc">Original transparent cosmetic loop of one salvage/reward beacon: metallic hexagonal core, cyan emitting ring and golden radial markers. No item rarity, economy or pickup behavior.</desc>
+<defs>
+ <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#5fe2ed" stop-opacity="0.270"/><stop offset="57%" stop-color="#42c9df" stop-opacity=".14"/><stop offset="100%" stop-color="#52c7cf" stop-opacity="0"/></radialGradient>
+ <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ecf7eb"/><stop offset=".38" stop-color="#7897a6"/><stop offset=".69" stop-color="#314d60"/><stop offset="1" stop-color="#f1dda0"/></linearGradient>
+</defs>
+<circle cx="256" cy="256" r="192" fill="url(#coreGlow)"/>
+<g fill="none" stroke-linecap="round" opacity="0.410">
+<circle cx="256" cy="256" r="148" stroke="#60e0e6" stroke-width="6" stroke-dasharray="52 18 20 40 13 20 22 60" transform="rotate(270 256 256)"/>
+<circle cx="256" cy="256" r="131" stroke="#cee4e5" stroke-width="2.4" stroke-dasharray="9 16" transform="rotate(-162 256 256)"/>
+<circle cx="256" cy="256" r="117" stroke="#e5c57c" stroke-width="2.8" stroke-dasharray="26 44 12 35" transform="rotate(-202.5 256 256)"/>
+</g>
+<g><path d="M256.00 100.00 L256.00 78.00" stroke="#e7dca8" stroke-width="9" stroke-linecap="round" opacity="0.68"/>
+<path d="M366.31 145.69 L381.87 130.13" stroke="#8bebf1" stroke-width="6" stroke-linecap="round" opacity="0.68"/>
+<path d="M412.00 256.00 L434.00 256.00" stroke="#e7dca8" stroke-width="9" stroke-linecap="round" opacity="0.68"/>
+<path d="M366.31 366.31 L381.87 381.87" stroke="#8bebf1" stroke-width="6" stroke-linecap="round" opacity="0.68"/>
+<path d="M256.00 412.00 L256.00 434.00" stroke="#e7dca8" stroke-width="9" stroke-linecap="round" opacity="0.68"/>
+<path d="M145.69 366.31 L130.13 381.87" stroke="#8bebf1" stroke-width="6" stroke-linecap="round" opacity="0.68"/>
+<path d="M100.00 256.00 L78.00 256.00" stroke="#e7dca8" stroke-width="9" stroke-linecap="round" opacity="0.95"/>
+<path d="M145.69 145.69 L130.13 130.13" stroke="#8bebf1" stroke-width="6" stroke-linecap="round" opacity="0.68"/></g>
+<g transform="translate(256 256) scale(0.910) translate(-256 -256)">
+ <path d="M256 163 L336 207 L336 302 L256 348 L176 302 L176 207 Z" fill="#112533" stroke="#96bec8" stroke-width="13" stroke-linejoin="round"/>
+ <path d="M256 179 L320 216 L320 292 L256 329 L192 292 L192 216 Z" fill="url(#metal)" stroke="#233b49" stroke-width="9" stroke-linejoin="round"/>
+ <path d="M256 199 L304 227 L304 283 L256 311 L208 283 L208 227 Z" fill="#122e3c" stroke="#e0efe5" stroke-width="3.8"/>
+ <path d="M256 205 L289 256 L256 305 L223 256 Z" fill="#46c7d3" fill-opacity=".33" stroke="#b8f4eb" stroke-width="5.5"/>
+ <path d="M256 219 L276 256 L256 293 L236 256 Z" fill="#a4f4e1" opacity="0.560"/>
+ <path d="M182 254 L211 254 M301 254 L331 254 M256 172 L256 203 M256 307 L256 339" fill="none" stroke="#f1d793" stroke-width="7" stroke-linecap="round"/>
+ <circle cx="256" cy="256" r="9" fill="#fef3c6" opacity="0.75"/>
+</g>
+<g fill="none" stroke="#c4f5ec" stroke-width="4" stroke-linecap="round" opacity="0.290">
+<path d="M236 91 L256 76 L276 91" transform="rotate(270 256 256)"/>
+<path d="M236 421 L256 436 L276 421" transform="rotate(270 256 256)"/>
+</g>
+</svg>
