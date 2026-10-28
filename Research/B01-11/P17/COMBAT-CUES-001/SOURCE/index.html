@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboRougelike — ImpactLens / isolated combat UX sample</title>
+<style>
+:root{color-scheme:dark;--bg:#10151d;--pane:#1c2632;--ink:#ecf2f8;--muted:#abb7c7;--line:#405065;--accent:#77d7e6;--warning:#f6c36e;--critical:#ff8d94;--okay:#94dec0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,Segoe UI,sans-serif}main{max-width:1040px;margin:auto;padding:24px}h1{font-size:1.65rem;margin:0}h2{font-size:1.1rem;margin:0 0 12px}p{margin:6px 0 14px;color:var(--muted)}.tag{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.toolbar button,.toolbar select{font:inherit;background:#263749;border:1px solid #6c8395;border-radius:8px;color:var(--ink);padding:9px 13px;cursor:pointer}.toolbar button:focus-visible,.toolbar select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.toolbar button:disabled{opacity:.45;cursor:default}.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}.panel{border:1px solid var(--line);border-radius:14px;background:var(--pane);padding:20px;min-width:0}.robot{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,minmax(88px,1fr));gap:9px;max-width:470px;margin:12px auto}.part{border-radius:10px;border:2px solid #566b7c;background:#2a3c4e;padding:10px;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-width:0}.part.empty{visibility:hidden}.part.hit{border-color:var(--warning)}.part.broken{border-color:var(--critical);background:#4a2d37}.part strong{font-size:.9rem;overflow-wrap:anywhere}.part small{color:var(--muted)}.meter{height:8px;background:#101820;border-radius:8px;overflow:hidden;margin-top:9px}.meter div{height:100%;background:var(--okay);width:100%;transition:width .15s}.part.broken .meter div{background:var(--critical)}.part.hit .meter div{background:var(--warning)}.chip{font-size:.84rem;display:inline-block;border:1px solid #6d8796;border-radius:20px;padding:2px 10px}.status{display:flex;gap:7px;flex-wrap:wrap}.notice{margin:0 0 14px;padding:12px 14px;background:#253947;border-left:4px solid var(--accent);min-height:100px}.notice.critical{border-color:var(--critical)}.notice.warning{border-color:var(--warning)}.notice .kind{font-size:.78rem;font-weight:700;letter-spacing:.07em}.notice h3{font-size:1.12rem;margin:3px 0}.notice p{color:var(--ink);margin:3px 0}.history{list-style:none;padding:0;margin:0;max-height:330px;overflow:auto}.history li{padding:9px 10px;border-bottom:1px solid var(--line);font-size:.88rem}.history li:first-child{background:#2a3b4d}.history time{font-variant-numeric:tabular-nums;color:var(--muted);margin-right:8px}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}.keyline{font-size:.87rem}.explain{font-size:.83rem;color:var(--muted);margin-top:12px}.compact .history{max-height:150px}.compact .part{padding:7px}.compact .notice p{display:none}.view-only{color:var(--muted);font-size:.82rem}
+@media(max-width:720px){main{padding:12px}.layout{grid-template-columns:1fr}.panel{padding:14px}.robot{grid-template-rows:repeat(3,80px);gap:6px}.part{padding:7px}.part strong{font-size:.78rem}.toolbar{gap:7px}.toolbar button,.toolbar select{flex:1;min-width:100px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body><main>
+<div class="tag">B01-11 · PASS 17 · COMBAT-CUES-001 · NIE JEST GRĄ UNITY</div>
+<h1>ImpactLens — czytelność zniszczeń robota</h1>
+<p>Odizolowany, sterowalny prototyp feedbacku bojowego. Pokazuje obrażenia modułów, utratę grupy broni, ostrzeżenie o sojuszniczym trafieniu i priorytet komunikatów.</p>
+<div class="toolbar" role="group" aria-label="Sterowanie symulacją">
+<label for="scenario" class="sr-only">Scenariusz</label><select id="scenario" aria-label="Scenariusz"><option value="duel">Pojedynek</option><option value="friendly">Friendly fire</option><option value="collapse">Awaria rdzenia</option></select>
+<button id="next" type="button">Następne zdarzenie (N)</button><button id="all" type="button">Odtwórz całość</button><button id="reset" type="button">Reset (R)</button><button id="density" type="button" aria-pressed="false">Widok kompaktowy</button>
+</div>
+<div class="layout" id="workspace">
+<section class="panel" aria-labelledby="robotTitle"><h2 id="robotTitle">Moduły pojazdu</h2><div class="status"><span class="chip" id="weaponStatus">Broń A: sprawna</span><span class="chip" id="coreStatus">Rdzeń: sprawny</span></div><div class="robot" id="robot" aria-label="Schemat części robota"></div><p class="explain">Schemat jest abstrakcyjny, nie przedstawia rzeczywistych hitboxów ani kolizji. HP to przykładowe dane UX.</p></section>
+<section class="panel" aria-labelledby="feedTitle"><h2 id="feedTitle">Sygnały walki</h2><div class="notice" id="notice" role="status" aria-live="polite" aria-atomic="true"><span class="kind" id="noticeKind">GOTOWOŚĆ</span><h3 id="noticeTitle">Oczekiwanie na zdarzenie</h3><p id="noticeDescription">Wybierz Następne zdarzenie, aby przejrzeć sekwencję.</p></div><div class="keyline" id="progress" aria-live="off">Zdarzenie 0 z 0</div><h2 style="margin-top:18px">Historia</h2><ol class="history" id="history" aria-label="Historia zdarzeń"></ol><p class="view-only">Sterowanie klawiaturą: N — następny krok, R — reset. Przycisk pozostaje dostępny bez skrótów.</p></section>
+</div>
+</main>
+<script>
+'use strict';
+const BASE_PARTS = [
+ {id:'wheelL',name:'Lewe koło',max:100,hp:100,slot:3,group:null},
+ {id:'weaponA',name:'Broń A',max:80,hp:80,slot:1,group:'A'},
+ {id:'core',name:'Rdzeń',max:120,hp:120,slot:4,group:null},
+ {id:'armor',name:'Osłona',max:100,hp:100,slot:5,group:null},
+ {id:'wheelR',name:'Prawe koło',max:100,hp:100,slot:7,group:null}
+];
+const SCENARIOS = {
+ duel:[
+  {id:'d1',type:'hit',part:'armor',amount:28,source:'enemy'},
+  {id:'d2',type:'hit',part:'weaponA',amount:40,source:'enemy'},
+  {id:'d3',type:'hit',part:'weaponA',amount:50,source:'enemy'},
+  {id:'d4',type:'hit',part:'wheelL',amount:100,source:'enemy'},
+  {id:'d5',type:'hit',part:'core',amount:25,source:'enemy'}],
+ friendly:[
+  {id:'f1',type:'hit',part:'armor',amount:20,source:'ally'},
+  {id:'f2',type:'hit',part:'weaponA',amount:90,source:'ally'},
+  {id:'f3',type:'blocked',part:'core',amount:0,source:'ally'},
+  {id:'f4',type:'hit',part:'core',amount:20,source:'enemy'}],
+ collapse:[
+  {id:'c1',type:'hit',part:'wheelR',amount:40,source:'enemy'},
+  {id:'c2',type:'hit',part:'core',amount:75,source:'enemy'},
+  {id:'c3',type:'hit',part:'core',amount:60,source:'enemy'},
+  {id:'c4',type:'hit',part:'armor',amount:20,source:'enemy'}]
+};
+function start(scenario='duel') {if(!Object.hasOwn(SCENARIOS,scenario)) throw Error('unknown scenario');return {parts:BASE_PARTS.map(p=>({...p})),events:[],nextIndex:0,scenario,coreLost:false};}
+function step(state,event){
+ if(!event || typeof event.id!=='string'||!event.id||!['hit','blocked'].includes(event.type)||!['enemy','ally'].includes(event.source)) throw Error('invalid event');
+ if(state.events.some(e=>e.id===event.id)) throw Error('duplicate event id');
+ if(!Number.isFinite(event.amount)||event.amount<0||(event.type==='hit'&&event.amount===0)||(event.type==='blocked'&&event.amount!==0)) throw Error('invalid damage');
+ const index=state.parts.findIndex(p=>p.id===event.part);if(index<0) throw Error('unknown part');
+ const parts=state.parts.map(p=>({...p}));const p=parts[index];const before=p.hp;
+ if(event.type==='hit') p.hp=Math.max(0,before-event.amount);
+ const destroyed=before>0&&p.hp===0;const coreLost=parts.find(x=>x.id==='core').hp===0;
+ let level='info',kind='TRAFIENIE',title='',description='';
+ if(event.type==='blocked'){kind='ZABLOKOWANO';title='Trafienie zablokowane';description='Brak obrażeń modułu '+p.name+'.';}
+ else if(destroyed&&p.id==='core'){level='critical';kind='RDZEŃ';title='Rdzeń zniszczony';description='Pojazd utracił rdzeń. Wynik walki ustala wyłącznie system gry.';}
+ else if(destroyed&&p.group){level='critical';kind='BROŃ';title='Grupa broni '+p.group+' niedostępna';description=p.name+' ma 0 HP. Nie można użyć tej grupy.';}
+ else if(destroyed){level='warning';kind='MODUŁ';title=p.name+' zniszczone';description='Moduł ma 0 HP. Sprawdź możliwości pojazdu.';}
+ else{title=p.name+': '+p.hp+'/'+p.max+' HP';description='Obrażenia: '+Math.min(before,event.amount)+' HP.';}
+ if(event.source==='ally') {if(level==='info')level='warning';kind=event.type==='blocked'?'OSŁONA / SOJUSZNIK':'SOJUSZNIK / '+kind;description='Źródło: sojusznik. '+description;}
+ const result={id:event.id,part:p.id,kind,level,title,description,hpBefore:before,hpAfter:p.hp,source:event.source,destroyed};
+ return {...state,parts,events:[...state.events,result],nextIndex:state.nextIndex+1,coreLost};
+}
+let current=start();
+const $=id=>document.getElementById(id);
+function render(){
+ const bySlot=new Map(current.parts.map(p=>[p.slot,p]));const last=current.events.at(-1);
+ $('robot').replaceChildren();for(let slot=0;slot<9;slot++){
+  const p=bySlot.get(slot);const div=document.createElement('div');div.className='part'+(!p?' empty':'')+(p&&p.hp===0?' broken':'')+(p&&last?.part===p.id&&p.hp>0?' hit':'');
+  if(p){const name=document.createElement('strong');name.textContent=p.name;const small=document.createElement('small');small.textContent=p.hp+' / '+p.max+' HP';const meter=document.createElement('div');meter.className='meter';const bar=document.createElement('div');bar.style.width=(p.hp/p.max*100)+'%';meter.append(bar);div.append(name,small,meter);div.setAttribute('aria-label',p.name+', '+p.hp+' z '+p.max+' HP');}
+  $('robot').append(div);
+ }
+ const weapon=current.parts.find(p=>p.group==='A');const core=current.parts.find(p=>p.id==='core');$('weaponStatus').textContent='Broń A: '+(weapon.hp>0?'sprawna':'NIEDOSTĘPNA');$('coreStatus').textContent='Rdzeń: '+(core.hp>0?'sprawny':'ZNISZCZONY');
+ $('notice').className='notice'+(last&&last.level!=='info'?' '+last.level:'');$('noticeKind').textContent=last?.kind||'GOTOWOŚĆ';$('noticeTitle').textContent=last?.title||'Oczekiwanie na zdarzenie';$('noticeDescription').textContent=last?.description||'Wybierz Następne zdarzenie, aby przejrzeć sekwencję.';
+ const count=SCENARIOS[current.scenario].length;$('progress').textContent='Zdarzenie '+current.nextIndex+' z '+count;$('next').disabled=current.nextIndex===count;$('all').disabled=current.nextIndex===count;
+ $('history').replaceChildren();[...current.events].reverse().forEach((ev,i)=>{const li=document.createElement('li');const time=document.createElement('time');time.textContent='#'+(current.events.length-i);li.append(time,document.createTextNode(ev.kind+' · '+ev.title));$('history').append(li);});
+}
+function next(){const e=SCENARIOS[current.scenario][current.nextIndex];if(e){current=step(current,e);render();}}
+function reset(){current=start($('scenario').value);render();}
+$('next').addEventListener('click',next);$('all').addEventListener('click',()=>{while(current.nextIndex<SCENARIOS[current.scenario].length)current=step(current,SCENARIOS[current.scenario][current.nextIndex]);render();});$('reset').addEventListener('click',reset);$('scenario').addEventListener('change',reset);$('density').addEventListener('click',()=>{let active=$('workspace').classList.toggle('compact');$('density').setAttribute('aria-pressed',String(active));$('density').textContent=active?'Widok szczegółowy':'Widok kompaktowy';});
+document.addEventListener('keydown',event=>{if(event.altKey||event.ctrlKey||event.metaKey||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(event.key.toLowerCase()==='n'){event.preventDefault();next();}if(event.key.toLowerCase()==='r'){event.preventDefault();reset();}});
+render();
+window.ImpactLens={start,step,getState:()=>current,scenarios:SCENARIOS};
+</script>
+</body></html>
