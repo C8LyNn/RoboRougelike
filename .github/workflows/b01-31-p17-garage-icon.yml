@@ -1,0 +1,40 @@
+name: B01-31 P17 original A1 garage icon raster QA
+
+on:
+  push:
+    branches:
+      - art/b01-31-p17-a1-garage-icons-001
+    paths:
+      - 'Docs/B01Concept/P17/A1-GARAGE-ICON-001/**'
+      - '.github/workflows/b01-31-p17-garage-icon.yml'
+  pull_request:
+    paths:
+      - 'Docs/B01Concept/P17/A1-GARAGE-ICON-001/**'
+      - '.github/workflows/b01-31-p17-garage-icon.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-icon-raster:
+    name: Original A1 theme SVGs and actual 48-384px transparent PNGs (not Unity)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact original raster dependencies
+        run: python -m pip install --disable-pip-version-check 'CairoSVG==2.8.2' 'Pillow==11.3.0'
+      - name: Execute original vector-source, theme, contrast and mutation QA
+        run: python Docs/B01Concept/P17/A1-GARAGE-ICON-001/render_verify.py
+      - name: Archive actual PNG icons and hash/CRC receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-31-p17-a1-garage-icons
+          path: Docs/B01Concept/P17/A1-GARAGE-ICON-001/rendered/
+          if-no-files-found: error
+          retention-days: 30
