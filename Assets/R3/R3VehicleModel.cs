@@ -157,7 +157,12 @@ namespace RoboRougelike.R3
                 }
             return false;
         }
-        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => Math.Max(1,
+        public static bool ValidEconomicKind(R3PartKind kind,R4WeaponKind weapon) =>
+            Enum.IsDefined(typeof(R3PartKind),kind) &&
+            (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) &&
+            !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
+        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
@@ -218,7 +223,7 @@ namespace RoboRougelike.R3
         }
         public int RepairCost(R3PartState part)
         {
-            if (part == null || part.Health >= 1f) return 0;
+            if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
             // Lost modules require rebuilding at full purchase cost; damaged ones cost
             // a fraction of their value proportional to missing durability.
             return part.Health <= 0 ? Price(part.Kind,part.Weapon) : Math.Max(1,
@@ -265,7 +270,7 @@ namespace RoboRougelike.R3
             var batch=recovered.ToArray();
             if(inventory.Count+batch.Length>InventoryCapacity)return false;
             if(batch.Any(p=>p==null||float.IsNaN(p.Health)||float.IsInfinity(p.Health)||p.Health<0||p.Health>1||
-                !Enum.IsDefined(typeof(R3PartKind),p.Kind)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+                !ValidEconomicKind(p.Kind,p.Weapon)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
@@ -310,11 +315,12 @@ namespace RoboRougelike.R3
             if(part==null||cost<=0||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
-        public int DismantleValue(R3PartState part) => part==null?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
+        public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
         public bool Dismantle(string id)
         {
-            var part=inventory.FirstOrDefault(p=>p.Id==id);if(part==null)return false;
-            inventory.Remove(part);Award(DismantleValue(part));return true;
+            var part=inventory.FirstOrDefault(p=>p.Id==id);if(!ValidEconomicPart(part))return false;
+            int quote=DismantleValue(part);
+            inventory.Remove(part);Award(quote);return true;
         }
         public static bool Connected(IEnumerable<R3PartState> parts)
         {
@@ -367,7 +373,7 @@ namespace RoboRougelike.R3
         {
             if(InvalidWeaponTypes)return false;
             var plan=EmergencyRepairPlan();
-            if(plan==null||plan.Count==0)return false;
+            if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)))return false;
             int price=plan.Sum(RepairCost);
             if(Scrap<price)return false;
             if(restorationGate!=null&&!restorationGate(plan))return false;

@@ -51,12 +51,14 @@ namespace RoboRougelike.R4
         {
             if(Closed||string.IsNullOrWhiteSpace(enemyId)||enemies.Contains(enemyId)||equipment==null)return false;
             var batch=equipment.ToArray();
-            if(batch.Any(p=>p==null||string.IsNullOrWhiteSpace(p.Id)||ids.Contains(p.Id)||p.Kind==R3PartKind.Core)||
+            if(batch.Any(p=>p==null||string.IsNullOrWhiteSpace(p.Id)||ids.Contains(p.Id)||p.Kind==R3PartKind.Core||
+                !R3VehicleModel.ValidEconomicPart(p.ToPart()))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
             enemies.Add(enemyId);foreach(var item in batch){ids.Add(item.Id);items.Add(item);}return true;
         }
         public int PreviewScrap(R3VehicleModel model,IEnumerable<string> selected)
         {
+            if(model==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return 0;
             var keep=new HashSet<string>(selected??Array.Empty<string>());
             return items.Where(p=>!keep.Contains(p.Id)).Sum(p=>p.Recoverable?model.DismantleValue(p.ToPart()):1);
         }
@@ -68,7 +70,7 @@ namespace RoboRougelike.R4
         }
         private bool ClaimPrepared(R3VehicleModel model,IEnumerable<string> selected,R3PartState bonus)
         {
-            if(Closed||model==null||selected==null)return false;
+            if(Closed||model==null||selected==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return false;
             var chosen=selected.ToArray();var keep=new HashSet<string>(chosen);
             if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
             var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>p.ToPart()).ToArray();

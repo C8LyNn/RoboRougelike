@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Failed(Child)" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0,0503774">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1274" result="Failed" site="Child" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.050377" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1585" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="482" result="Failed" site="Child" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.032659" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="49328" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1095" name="InvalidWeaponTransactionTests" fullname="InvalidWeaponTransactionTests" classname="InvalidWeaponTransactionTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.028566" total="4" passed="1" failed="3" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1099" name="HealthyValidTransactionsPreserveGuidAndChargeOnce" fullname="InvalidWeaponTransactionTests.HealthyValidTransactionsPreserveGuidAndChargeOnce" methodname="HealthyValidTransactionsPreserveGuidAndChargeOnce" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="246104053" result="Passed" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.013483" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1098" name="LedgerRejectsMixedInvalidEquipmentAtomically" fullname="InvalidWeaponTransactionTests.LedgerRejectsMixedInvalidEquipmentAtomically" methodname="LedgerRejectsMixedInvalidEquipmentAtomically" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="1573169042" result="Failed" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.004014" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at InvalidWeaponTransactionTests.LedgerRejectsMixedInvalidEquipmentAtomically () [0x00023] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\InvalidWeaponTransactionTests.cs:30
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1096" name="RejectsMixedInvalidSalvageWithoutGrantingOwnership" fullname="InvalidWeaponTransactionTests.RejectsMixedInvalidSalvageWithoutGrantingOwnership" methodname="RejectsMixedInvalidSalvageWithoutGrantingOwnership" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="1832538721" result="Failed" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.000303" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: False
+  But was:  True
+]]></message>
+            <stack-trace><![CDATA[at InvalidWeaponTransactionTests.RejectsMixedInvalidSalvageWithoutGrantingOwnership () [0x00029] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\InvalidWeaponTransactionTests.cs:14
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-case id="1097" name="RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation" fullname="InvalidWeaponTransactionTests.RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation" methodname="RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="1680921720" result="Failed" start-time="2026-10-28 09:23:51Z" end-time="2026-10-28 09:23:51Z" duration="0.001328" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: No Exception to be thrown
+  But was:  <System.ArgumentOutOfRangeException: Specified argument was out of the range of valid values.
+Parameter name: kind
+  at RoboRougelike.R4.R4WeaponDefinition.Get (RoboRougelike.R4.R4WeaponKind kind) [0x0001b] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\R4\R4WeaponDefinition.cs:47 
+  at RoboRougelike.R3.R3VehicleModel.Price (RoboRougelike.R3.R3PartKind kind, RoboRougelike.R4.R4WeaponKind weapon) [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\R3\R3VehicleModel.cs:160 
+  at RoboRougelike.R3.R3VehicleModel.RepairCost (RoboRougelike.R3.R3PartState part) [0x00012] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\R3\R3VehicleModel.cs:224 
+  at RoboRougelike.R3.R3VehicleModel.RepairInventory (System.String id) [0x00025] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\R3\R3VehicleModel.cs:309 
+  at InvalidWeaponTransactionTests+<>c__DisplayClass3_0.<RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation>b__0 () [0x00000] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\InvalidWeaponTransactionTests.cs:22 
+  at NUnit.Framework.Constraints.ThrowsConstraint+GenericInvocationDescriptor`1[T].Invoke () [0x00000] in <f577cd9686154d6ab10efd7e65e64366>:0 
+  at NUnit.Framework.Constraints.ThrowsConstraint+ExceptionInterceptor.Intercept (System.Object invocation) [0x00041] in <f577cd9686154d6ab10efd7e65e64366>:0 >
+]]></message>
+            <stack-trace><![CDATA[at InvalidWeaponTransactionTests.RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation () [0x00074] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-Suspension309\Assets\Tests\Editor\InvalidWeaponTransactionTests.cs:22
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
