@@ -67,7 +67,14 @@ def marker(point,label,width,height):
     return f'<b class="mark {label}" style="left:{100*point["x"]/width:.8f}%;top:{100*point["y"]/height:.8f}%" title="{label} ({point["x"]},{point["y"]})" aria-label="{label} ({point["x"]},{point["y"]})">{label[0].upper()}</b>'
 
 def panel(frame,image_path):
+    # The upstream receiver checked this file earlier, but files can change after
+    # that check (editor/sync/replace). Bind the ACTUAL bytes embedded in the
+    # private HTML to the independently verified receipt, not merely its path.
+    need(image_path.is_file() and not image_path.is_symlink(),
+         'IMAGE_CHANGED_AFTER_VERIFICATION: missing or linked screenshot')
     img=image_path.read_bytes()
+    need(hashlib.sha256(img).hexdigest()==frame['image']['sha256'],
+         'IMAGE_CHANGED_AFTER_VERIFICATION: embedded bytes differ from verified receipt')
     mime=IMAGE_MIME[image_path.suffix.lower()]
     w,h=frame['image']['width'],frame['image']['height']
     data=base64.b64encode(img).decode('ascii')

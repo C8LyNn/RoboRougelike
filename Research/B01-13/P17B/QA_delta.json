@@ -1,5 +1,5 @@
 {
-  "package": "AIM-DELTA001/R1",
+  "package": "AIM-DELTA001/R2",
   "source": "aim_delta.py",
   "original_dependency": "AIM-OBS001/R1 GitHub Draft #349 verifier SHA256 8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
   "environment": "real Chromium Linux Playwright / Python Pillow, synthetically generated original bytes",
@@ -169,8 +169,32 @@
     {
       "case": "no_partial_output_after_reject",
       "pass": true
+    },
+    {
+      "case": "original_gate_accepts_unmodified_image_pair",
+      "pass": true
+    },
+    {
+      "case": "test_mutation_changes_physical_before_sha",
+      "pass": true
+    },
+    {
+      "case": "post_gate_before_image_mutation_rejected",
+      "pass": true
+    },
+    {
+      "case": "post_gate_after_image_mutation_rejected",
+      "pass": true
+    },
+    {
+      "case": "post_gate_symlink_substitution_rejected",
+      "pass": true
+    },
+    {
+      "case": "restored_unmodified_png_render_passes",
+      "pass": true
     }
   ],
-  "pass": 41,
+  "pass": 47,
   "fail": 0
 }

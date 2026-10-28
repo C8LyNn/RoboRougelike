@@ -1,6 +1,6 @@
 {
   "package_id": "AIM-DELTA001",
-  "version": "R1",
+  "version": "R2",
   "owner": "B01-13 HUMAN PLAYTESTING",
   "owned_paths": "Research/B01-13/P17B/**",
   "stacked_base_pr": 349,
@@ -14,30 +14,33 @@
     "original pinned P17 receiver; Chromium+Playwright for tests"
   ],
   "tests": {
-    "actual_original_receiver_and_browser": "41/41 PASS",
+    "actual_original_receiver_and_browser": "47/47 PASS (includes real post-verification PNG mutation RED→GREEN)",
     "python_compile": "PASS",
     "unity": "NOT_RUN",
     "win_player_gui": "NOT_RUN",
-    "human_participants": 0
+    "human_participants": 0,
+    "published_parent_browser": "59/59 PASS (exact #349 Git blob 3f745d1fbd49e02a3cd10886f33c1d3baad72856)"
   },
   "output_contains_full_private_images": true,
   "game_integrated": false,
   "files": {
     "aim_delta.py": {
-      "sha256": "d81a746cfda958597070be465a50d122d76854ab2f70668a79933ad78b507750",
-      "bytes": 11008
+      "sha256": "d73c41304469f31e04e8191c9aa144ea0bf88c38d11f7c83240c16554d470921",
+      "bytes": 11543
     },
     "test_aim_delta.py": {
-      "sha256": "9256f8834c55608ebefe33cf3eedc95a7c659633db2a3c76f8a51c9eefbe3616",
-      "bytes": 9644
+      "sha256": "b821d288539a416e08194410b7d335bc5c8df891da4a1b4d6170324f0d07d190",
+      "bytes": 12431
     },
     "QA_delta.json": {
-      "sha256": "edab9e3679ef1d9961a68a2b574d3f9f61de1e92c13890edb5476dc6a0c5fab0",
-      "bytes": 3452
+      "sha256": "05ef6c5cc20bf07373762b047a19590dbf82f15d426af9b5bafad125c4b07c54",
+      "bytes": 3991
     },
     "README.md": {
-      "sha256": "0c7936dfd123c2182faaa10123632bc24dc8e2a3ea3717ad47f4c25fcae6b373",
-      "bytes": 6058
+      "sha256": "68b47a8d46243e84b3e375ed63dc4ceaf0b1c68d3cd86e258e74013ccf9a8045",
+      "bytes": 8437
     }
-  }
+  },
+  "historical_r1_commit": "e1cebe2f877fc4de67968f3d5006d2a326482206",
+  "wave02_source_red": "R1 originally embedded a modified PNG after original receiver accepted earlier bytes; R2 verifies bytes at embed point"
 }

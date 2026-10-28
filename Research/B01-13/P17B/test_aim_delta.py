@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Real original receiver + real Chromium AIM-DELTA001 positive/negative gates (synthetic images only)."""
 from __future__ import annotations
-import json, tempfile, hashlib, subprocess, sys
+import json, tempfile, hashlib, subprocess, sys, importlib.util
 from pathlib import Path
 from PIL import Image, ImageDraw
 from playwright.sync_api import sync_playwright
@@ -115,7 +115,51 @@ def run():
         forged=t/'forged_receiver.py';forged.write_bytes(RECEIVER.read_bytes()+b'\n# altered\n')
         reject('untrusted_receiver_SHA_rejected',argv(outfile=t/'tamper.html',receiver=forged,extra=('--confirm-private-embedded-images',)))
         check('no_partial_output_after_reject',not (t/'tamper.html').exists())
-    report={'package':'AIM-DELTA001/R1','source':'aim_delta.py','original_dependency':'AIM-OBS001/R1 GitHub Draft #349 verifier SHA256 8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4','environment':'real Chromium Linux Playwright / Python Pillow, synthetically generated original bytes','human_count':0,'unity':'NOT_RUN','tests':checks,'pass':sum(x['pass'] for x in checks),'fail':sum(not x['pass'] for x in checks)}
+        # WAVE02 original-source TOCTOU negative: mutate PHYSICAL PNG bytes only
+        # AFTER both original-image gates have passed but BEFORE embedding HTML.
+        # Prior R1 emitted the changed PNG unverified (reproduced SOURCE_RED).
+        spec=importlib.util.spec_from_file_location('aim_delta_r2_original',SOURCE)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        info=module.load_pair(br,old,ar,new,OLD_GAME,OLD_ZIP,NEW_GAME,NEW_ZIP,RECEIVER)
+        check('original_gate_accepts_unmodified_image_pair',len(info['pairs'])==4)
+        from PIL import ImageDraw as Draw
+        from PIL import Image as PILImage
+        before_png=old/'CLOSE_STATIC.png';original_before=before_png.read_bytes()
+        with PILImage.open(before_png) as pic:
+            modified=pic.copy()
+        Draw.Draw(modified).rectangle((16,16,60,60),fill=(255,18,36))
+        modified.save(before_png)
+        check('test_mutation_changes_physical_before_sha',hashlib.sha256(before_png.read_bytes()).hexdigest()!=hashlib.sha256(original_before).hexdigest())
+        try:
+            module.render(info);rejected_before=False
+        except module.DeltaError as e:
+            rejected_before='IMAGE_CHANGED_AFTER_VERIFICATION' in str(e)
+        check('post_gate_before_image_mutation_rejected',rejected_before)
+        before_png.write_bytes(original_before)
+        info=module.load_pair(br,old,ar,new,OLD_GAME,OLD_ZIP,NEW_GAME,NEW_ZIP,RECEIVER)
+        after_png=new/'FAR_STATIC.png';original_after=after_png.read_bytes()
+        with PILImage.open(after_png) as pic:
+            changed=pic.copy()
+        Draw.Draw(changed).rectangle((22,22,70,70),fill=(12,255,48))
+        changed.save(after_png)
+        try:
+            module.render(info);rejected_after=False
+        except module.DeltaError as e:
+            rejected_after='IMAGE_CHANGED_AFTER_VERIFICATION' in str(e)
+        check('post_gate_after_image_mutation_rejected',rejected_after)
+        after_png.write_bytes(original_after)
+        # A file replaced with a symlink after gate must also fail closed.
+        info=module.load_pair(br,old,ar,new,OLD_GAME,OLD_ZIP,NEW_GAME,NEW_ZIP,RECEIVER)
+        before_png.unlink()
+        before_png.symlink_to(old/'FAR_STATIC.png')
+        try:
+            module.render(info);rejected_symlink=False
+        except module.DeltaError as e:
+            rejected_symlink='IMAGE_CHANGED_AFTER_VERIFICATION' in str(e)
+        check('post_gate_symlink_substitution_rejected',rejected_symlink)
+        before_png.unlink();before_png.write_bytes(original_before)
+        check('restored_unmodified_png_render_passes',module.render(module.load_pair(br,old,ar,new,OLD_GAME,OLD_ZIP,NEW_GAME,NEW_ZIP,RECEIVER)).count('data:image/png;base64,')==8)
+    report={'package':'AIM-DELTA001/R2','source':'aim_delta.py','original_dependency':'AIM-OBS001/R1 GitHub Draft #349 verifier SHA256 8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4','environment':'real Chromium Linux Playwright / Python Pillow, synthetically generated original bytes','human_count':0,'unity':'NOT_RUN','tests':checks,'pass':sum(x['pass'] for x in checks),'fail':sum(not x['pass'] for x in checks)}
     (HERE/'QA_delta.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     print('AIM-DELTA001',report['pass'],'/',len(checks),'PASS; human=0 Unity=NOT_RUN');return report['fail']==0
 
