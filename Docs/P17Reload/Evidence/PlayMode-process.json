@@ -1,15 +1,15 @@
 {
+  "startedUtc": "2026-10-28T23:27:06.8520912Z",
+  "stage": "P17ReloadFinal",
   "phase": "PlayMode",
-  "stage": "P17CorrectedPlay",
   "arguments": [
     "-runTests",
     "-testPlatform",
     "PlayMode",
     "-testResults",
-    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-FinalPlay\\Artifacts\\Local\\FM270-P17CorrectedPlay-20261028T223418Z\\PlayMode.xml\""
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-Reload\\Artifacts\\Local\\FM270-P17ReloadFinal-20261028T223035Z\\PlayMode.xml\""
   ],
-  "startedUtc": "2026-10-28T22:34:18.3105616Z",
-  "finishedUtc": "2026-10-28T22:38:35.6838350Z",
-  "source": "203a0805251ed28293888e43f2d49f0df63767c6",
-  "exitCode": 0
+  "exitCode": -1,
+  "finishedUtc": "2026-10-28T23:28:21.8332737Z",
+  "source": "203a0805251ed28293888e43f2d49f0df63767c6"
 }

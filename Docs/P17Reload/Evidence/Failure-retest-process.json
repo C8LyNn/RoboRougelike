@@ -1,0 +1,17 @@
+{
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-28T23:28:16.6190756Z",
+  "stage": "P17CorrectedFailureRetest",
+  "source": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "exitCode": 0,
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-FinalPlay\\Artifacts\\Local\\FM270-P17CorrectedFailureRetest-20261028T232741Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle;MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies\""
+  ],
+  "startedUtc": "2026-10-28T23:27:41.1458318Z"
+}
