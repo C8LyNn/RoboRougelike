@@ -57,7 +57,7 @@ def main():
             check("real_pristine_sibling_linked_worktree",
                   module.registered_detached(sibling, PRODUCER) == sibling.resolve())
             external = temp / "private-evidence-outside-all-worktrees"
-            check("outside_all_worktrees_allowed", module.safe_output(first, external)[1] == external)
+            check("outside_all_worktrees_allowed", module.safe_output(first, external)[1] == external.resolve(strict=False))
             for title, path, token in [
                 ("own_worktree_root_DENIED", first, "EVIDENCE_IN_PROJECT"),
                 ("own_worktree_child_DENIED", first / "Assets" / "records", "EVIDENCE_IN_PROJECT"),
