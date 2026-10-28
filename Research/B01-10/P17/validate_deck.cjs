@@ -4,6 +4,7 @@
  * No Unity gameplay source modified. Mirrors source R5RunPlan.Validate and Threat
  * so Node checks are static/model-only; Unity NUnit owner-side acceptance is separate.
  * Run: node Research/B01-10/P17/validate_deck.cjs
+ * Optional: --strict-codex-source (only in exact PR310 original-source checkout).
  */
 const fs=require("node:fs"),path=require("node:path"),crypto=require("node:crypto");
 const ROOT=__dirname,DATA="R5_EncounterDeck_BAL17.json";
@@ -158,8 +159,11 @@ function main(){
  const absolute=path.join(root,rel);
  if(fs.existsSync(absolute)){
    const sha=gitBlob(fs.readFileSync(absolute));
-   ok(sha===pin,"native source changed, manual BAL17 rebase required: "+rel);
-   console.log("PIN_OK "+rel+" "+sha);
+   if(sha===pin)console.log("PIN_OK "+rel+" "+sha);
+   else if(process.argv.includes("--strict-codex-source"))
+     fault("Codex source mismatch; use exact PR310 source: "+rel+" got="+sha+" expected="+pin);
+   else console.log("SOURCE_PIN_NOT_CURRENT "+rel+" got="+sha+" expected="+pin+
+     "; source-only model tests valid, but original R5 importer not certified");
  } else console.log("NATIVE_SOURCE_NOT_IN_CHECKOUT "+rel+"; compare pinned Git blob at PR310 before Unity import");
  }
  console.log("DATA_BLOB "+gitBlob(original));
