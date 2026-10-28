@@ -1,0 +1,85 @@
+{
+  "schema": "b01-60-native-plan-v1",
+  "source_sha": "5be31039411f89f17654b1c332f8692883fa03cc",
+  "target_sha": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+  "source_files": {},
+  "test_filter": "B01.MAPGEN001.Tests",
+  "required_stages": [
+    "Compile",
+    "EditMode",
+    "PlayMode",
+    "Player720",
+    "Player1080"
+  ],
+  "required_nunit": {
+    "EditMode": [
+      "DifferentRecipesDoNotAliasEachOther",
+      "HundredSeedsGenerateDeterministicallyAndKeepClearance(CombatArena)",
+      "HundredSeedsGenerateDeterministicallyAndKeepClearance(ObstacleCourse)",
+      "ObstacleCourseHasContinuousFloorOverlapAndCentreClearOfSolidObstacles",
+      "OutOfRangeConfigAndImpossibleVehicleFailClosed",
+      "AnArenaWallThroughTheWholeRouteFailsClosed",
+      "ArenaCoverPositionsVaryAndStayPlayableForBothProfiles",
+      "ArtificiallySharpWaypointFailsSweptRouteOrTurnRadius",
+      "BlockedAndOverlappingEnemySpawnsAreRejected",
+      "CentralPitCannotPassOnlyFourCornerFootprintProbe",
+      "CourseDifficultyChangesOptionalRampPitchWithoutBreakingHeavyRoute",
+      "ExtremeValidCourseConfigsStayTraversableAcrossHundredSeeds",
+      "HeavyRoverCannotStartWithRearHangingPastFloor",
+      "HundredSeedsPassReferenceVehicleSweepsAndConnectivity(CombatArena)",
+      "HundredSeedsPassReferenceVehicleSweepsAndConnectivity(ObstacleCourse)",
+      "LongNinetyDegreePolylineNeedsRealisticFilletRoom",
+      "PlannerRejectsNonFiniteSlopeConfiguration",
+      "R32NarrowLightSideRampsNeverBlockReferenceSpine(2)",
+      "R32NarrowLightSideRampsNeverBlockReferenceSpine(12)",
+      "R32NarrowLightSideRampsNeverBlockReferenceSpine(14)",
+      "R32NarrowLightSideRampsNeverBlockReferenceSpine(22)",
+      "R32NarrowLightSideRampsNeverBlockReferenceSpine(28)",
+      "RampBeyondVehicleSlopeCapabilityIsRejected",
+      "UnsupportedStartReportsStartBlockedBeforeRouteSampling"
+    ],
+    "PlayMode": [
+      "Arena_Seed7_Light_CubePhysics",
+      "Arena_Seed7_Heavy_CubePhysics",
+      "Arena_Seed31_Light_CubePhysics",
+      "Arena_Seed31_Heavy_CubePhysics",
+      "Arena_Seed83_Light_CubePhysics",
+      "Arena_Seed83_Heavy_CubePhysics",
+      "Course_Seed7_Light_CubePhysics",
+      "Course_Seed7_Heavy_CubePhysics",
+      "Course_Seed31_Light_CubePhysics",
+      "Course_Seed31_Heavy_CubePhysics",
+      "Course_Seed83_Light_CubePhysics",
+      "Course_Seed83_Heavy_CubePhysics"
+    ]
+  },
+  "screenshots": {
+    "Player720": [
+      "Arena-720.png",
+      "Course-720.png"
+    ],
+    "Player1080": [
+      "Arena-1080.png",
+      "Course-1080.png"
+    ]
+  },
+  "required_functional": {
+    "Player720": [
+      "R6-Arena-7-Light",
+      "R6-Arena-7-Heavy",
+      "R6-Course-7-Light",
+      "R6-Course-7-Heavy"
+    ],
+    "Player1080": [
+      "R6-Arena-31-Light",
+      "R6-Arena-31-Heavy",
+      "R6-Course-31-Light",
+      "R6-Course-31-Heavy",
+      "R6-Arena-83-Light",
+      "R6-Arena-83-Heavy",
+      "R6-Course-83-Light",
+      "R6-Course-83-Heavy"
+    ]
+  },
+  "profile": "MAPGEN_R6_FULL"
+}

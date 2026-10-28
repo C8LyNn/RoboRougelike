@@ -1,0 +1,29 @@
+name: B01-60 PASS16 original Codex native receipts independent source QA (NOT UNITY)
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/p16_receive_codex_cx02_player.py'
+      - 'Tools/B01/QA-NATIVE-001/p16_receive_codex_cx03_integrity.py'
+      - 'Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py'
+      - '.github/workflows/b01-60-p16-codex-receipts.yml'
+  workflow_dispatch:
+jobs:
+  immutable-codex-receipt-readonly:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify real ORIGINAL Codex Windows Player CX02 7 by 4 shots and strict history
+        run: python Tools/B01/QA-NATIVE-001/p16_receive_codex_cx02_player.py
+      - name: Verify real ORIGINAL Codex Unity EditMode CX03 three RED to GREEN evidence
+        run: python Tools/B01/QA-NATIVE-001/p16_receive_codex_cx03_integrity.py
+      - name: Verify new ORIGINAL Codex reward-victory atomicity EditMode RED to GREEN
+        run: python Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py

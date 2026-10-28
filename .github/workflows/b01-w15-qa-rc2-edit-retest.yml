@@ -1,0 +1,42 @@
+name: B01-60 W15 RC2 split-SHA receipt checks (NOT Unity)
+on:
+  push:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/**'
+      - '.github/workflows/b01-w15-qa-rc2-edit-retest.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/**'
+      - '.github/workflows/b01-w15-qa-rc2-edit-retest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  split-sha-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Run 16 fail-closed synthetic tests (NO Unity)
+        working-directory: Tools/B01/QA-NATIVE-001
+        run: python -m unittest -v test_rc2_edit_retest_gate.py
+      - name: Deterministic full QA-source ZIP and SHA256 gate
+        shell: bash
+        run: |
+          python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/W15_QA_SOURCE.zip --report Artifacts/B01-60/W15_SHA256.json
+          python Tools/B01/QA-NATIVE-001/package.py --repo . --out Artifacts/B01-60/W15_QA_SOURCE_repeat.zip --report Artifacts/B01-60/W15_SHA256_repeat.json
+          python -c 'import json; from pathlib import Path; p=Path("Artifacts/B01-60"); a=json.loads((p/"W15_SHA256.json").read_text()); b=json.loads((p/"W15_SHA256_repeat.json").read_text()); assert a["sha256"]==b["sha256"]'
+      - name: Upload QA-only source and hash evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-60-W15-RC2-EDIT-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            Artifacts/B01-60/W15_QA_SOURCE.zip
+            Artifacts/B01-60/W15_SHA256.json
+          if-no-files-found: error

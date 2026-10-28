@@ -1,0 +1,89 @@
+{
+  "schema": "B01_QA_RECEIPT_MANIFEST_V1",
+  "package_id": "B01-60-P16-CODEX-NATIVE-RECEIPT-RECEIVER",
+  "kind": "QA_ONLY_IMMUTABLE_ORIGINAL_RECEIPT",
+  "source_owner": "Codex",
+  "qa_owner": "B01-60",
+  "canonical_pr": "https://github.com/C8LyNn/RoboRougelike/pull/310",
+  "original_receipt_sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "native_player_build_source_sha": "4aec116282eb583fd852469c2bb7dc7e6d85b9e3",
+  "targets": [
+    {
+      "code": "CX02",
+      "script": "Tools/B01/QA-NATIVE-001/p16_receive_codex_cx02_player.py",
+      "source_files": [
+        "Docs/CX02AimFixture/Evidence/corrected-player.json",
+        "Docs/CX02AimFixture/Evidence/corrected-player.log.gz",
+        "Docs/CX02AimFixture/Evidence/corrected-player-exit.txt",
+        "Docs/CX02AimFixture/Evidence/compile-process.json",
+        "Docs/CX02AimFixture/Evidence/build-process.json",
+        "Docs/CX02AimFixture/Evidence/initial-player.json",
+        "Docs/CX02AimFixture/Evidence/initial-player-exit.txt"
+      ],
+      "accepted_observation": "28 weapon-distance cases; 23 damage hits, 5 range misses, assigned A/B fire group and actual native process exit 0; previous seven fixture failures retained; 6 malformed fixture rejection tests",
+      "not_verified": [
+        "moving targets",
+        "camera jitter while driving",
+        "interactive GUI",
+        "independent native Unity"
+      ]
+    },
+    {
+      "code": "CX03",
+      "script": "Tools/B01/QA-NATIVE-001/p16_receive_codex_cx03_integrity.py",
+      "source_files": [
+        "Docs/CX03/Evidence/red.xml",
+        "Docs/CX03/Evidence/red-exit.txt",
+        "Docs/CX03/Evidence/regression.xml",
+        "Docs/CX03/Evidence/regression-exit.txt"
+      ],
+      "accepted_observation": "Original NUnit 3/4 failed before; 42/42 passed after including three exact original invalid-kind failures; exit codes 2→0, five altered XML rejection controls",
+      "not_verified": [
+        "raw full Editor.log not tracked in this evidence folder",
+        "latest full EditMode retest",
+        "independent native Unity G1"
+      ]
+    },
+    {
+      "code": "P16_REWARD_ATOMICITY",
+      "script": "Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py",
+      "game_before_sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+      "game_after_sha": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+      "game_controller_original_before_blob": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
+      "game_controller_original_after_blob": "3db48a98faba36e124f13aef543f6a89e7c49147",
+      "source_files": [
+        "Docs/P16Reward/Evidence/red.xml",
+        "Docs/P16Reward/Evidence/red-exit.txt",
+        "Docs/P16Reward/Evidence/regression.xml",
+        "Docs/P16Reward/Evidence/regression-exit.txt"
+      ],
+      "accepted_observation": "Original Unity EditMode invalid-reward-catalog one-case FAIL exit2 → 32/32 targeted regressions PASS exit0 on changed Codex game R1 controller, including reward and valid-kind positive controls",
+      "not_verified": [
+        "ordinary human gameplay",
+        "full post-change EditMode suite",
+        "B01-60 native Unity G1"
+      ]
+    }
+  ],
+  "workflow": ".github/workflows/b01-60-p16-codex-receipts.yml",
+  "source_authorization": "B01-60 independently receives frozen Codex artifacts; never edits or executes Codex active worktree",
+  "gates": {
+    "read_only_original_evidence": true,
+    "independent_native_unity": "NOT_RUN",
+    "game_integration": "NOT_OFFERED",
+    "full_editmode": "NOT_ACCEPTED_ON_TARGETED_RETEST_ALONE",
+    "release": "HOLD",
+    "merges": "NONE"
+  },
+  "dependencies": [
+    "git",
+    "python 3.11",
+    "access to immutable GitHub commit SHA"
+  ],
+  "codex_intake": "Original Windows Unity/Player outputs remain Codex-provided; future new game/source SHA requires new exact evidence and independent revalidation. Do not treat the source receiver as engine execution.",
+  "limitations": [
+    "Git evidence can establish exact provenance and internal consistency, not that screenshots/human playtests occurred.",
+    "No Unity 6000.3.14f1 was launched by B01-60.",
+    "No original full post-fix Unity EditMode sweep is certified by this package."
+  ]
+}

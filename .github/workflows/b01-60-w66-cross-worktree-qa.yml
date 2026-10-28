@@ -1,0 +1,27 @@
+name: B01-60 original PARTSIZE and CHL cross-worktree evidence guards
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/QA-NATIVE-001/w66_cross_worktree_evidence.py'
+      - 'Tools/B01/QA-NATIVE-001/w70_chl_original_cross_worktree_qa.py'
+      - '.github/workflows/b01-60-w66-cross-worktree-qa.yml'
+  workflow_dispatch:
+jobs:
+  original-operator-evidence-isolation:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute original PARTSIZE owner PowerShell on real detached worktrees without Unity
+        shell: bash
+        run: |
+          python Tools/B01/QA-NATIVE-001/w66_cross_worktree_evidence.py
+      - name: Execute original CHL owner Python on real detached worktrees without Unity
+        shell: bash
+        run: |
+          python Tools/B01/QA-NATIVE-001/w70_chl_original_cross_worktree_qa.py

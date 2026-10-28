@@ -1,0 +1,26 @@
+{
+  "schema": "b01-60-rc1-shutdown-ab-v1",
+  "unity_version": "6000.3.14f1",
+  "manual_instructions": "For every row on the SAME Windows PC: open visible game menu, click/press exactly the same UI Exit method (prefer Alt+F4), do not terminate via Task Manager, record any startup/UI failure in the operator note.",
+  "order": ["BASE", "EXP", "EXP", "BASE", "RC2", "RC2"],
+  "builds": {
+    "BASE": {
+      "archive": "C:\\QA\\Inputs\\RoboRougelike_B01_RC1_BASE_Windows_x64.zip",
+      "sha256": "457ec2020375e18c4599d832dc028eed7900f8cf5d603765c9e417fd80a8ca90",
+      "source_sha": "4c9236a4cdc27814ea2e7679872ec4a524150cc8",
+      "exe": "RoboRougelike.exe"
+    },
+    "EXP": {
+      "archive": "C:\\QA\\Inputs\\RoboRougelike_B01_RC1_MAPGEN_EXPERIMENTAL_Windows_x64.zip",
+      "sha256": "722be56b98db0abe1517ec1d018b6f4d6ecbf0a46ea172d198f8294a7edc8cca",
+      "source_sha": "86eb7bb77e6bfc7787f781ea1ccda547b8a4f643",
+      "exe": "RoboRougelike.exe"
+    },
+    "RC2": {
+      "archive": "C:\\QA\\Inputs\\RoboRougelike_B01_UNIFIED_RC2_Windows_x64.zip",
+      "sha256": "7d35cd1bc823499a8855258e24ed0a0ff1d47e49bd694adb94c031ef8c946de6",
+      "source_sha": "46b42f62d591ad4aeb9dbfdeda9997044c6b5e1f",
+      "exe": "RoboRougelike.exe"
+    }
+  }
+}
