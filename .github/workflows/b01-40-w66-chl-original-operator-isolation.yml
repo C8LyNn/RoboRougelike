@@ -1,0 +1,38 @@
+name: B01-40 W66 original CHL operator sibling-source isolation witness
+on:
+  push:
+    branches:
+      - 'audit/b01-40-w16-two-package-g0-20261027'
+    paths:
+      - 'Tools/B01Validation/W66/receive_chl_operator_isolation.py'
+      - '.github/workflows/b01-40-w66-chl-original-operator-isolation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-owner-original-source:
+    name: CHL actual owner script security witness (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch exact B01-20 W66 QA operator Git source SHA
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin b9f0458db297fb81e76add00855609b32eb0ef4b
+          test "$(git rev-parse b9f0458db297fb81e76add00855609b32eb0ef4b:Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py)" = '42ab146450ea3284d97a9a2bd5434a49fe195ab7'
+      - name: Actually run original script against real sibling detached Git worktrees
+        shell: bash
+        run: |
+          python Tools/B01Validation/W66/receive_chl_operator_isolation.py -v
+          echo 'RED_SOURCE_WITNESS: sibling worktree root and Assets accepted as evidence output, B01-20 fix required'
+      - name: Assert native environment boundary
+        shell: bash
+        run: |
+          echo 'Read-only real Git fixture and actual B01-20 Python code. No Unity launched; G1 NOT_RUN / G2 HOLD.'
