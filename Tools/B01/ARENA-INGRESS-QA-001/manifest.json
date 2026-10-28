@@ -41,7 +41,7 @@
       "3 genuine original SHA-pinned JSONs",
       "all standalone structural checks",
       "Light/Heavy independently conservative BFS 6/6",
-      "18 synthetic corruption inputs rejected",
+      "21 synthetic corruption inputs rejected",
       "no source mutated"
     ],
     "policy_gate": "HOLD until B01-00/HQ/Codex decides whether enemy descriptors may occupy Finish"
