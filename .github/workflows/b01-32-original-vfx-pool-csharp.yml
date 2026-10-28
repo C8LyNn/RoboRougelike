@@ -1,0 +1,34 @@
+name: B01-32 original VFX pool CSharp witness (NOT Unity)
+on:
+  push:
+    branches:
+      - qa/b01-32-w66-vfx-pool-disable-playmode
+    paths:
+      - Tools/B01-32/VfxPoolOriginalCSharp/**
+      - .github/workflows/b01-32-original-vfx-pool-csharp.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-contract:
+    name: Original VfxPoolManager CSharp / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify original immutable Git blobs (must be actual Codex game CSharp, not copied)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Assets/RoboRougelikePackages/VFX001/Runtime/Common/VfxPoolManager.cs)" = "9a328f10c99e963d36f1dca7a06835d60290f262"
+          test "$(git hash-object Assets/RoboRougelikePackages/VFX001/Runtime/Common/VfxBudgetPolicy.cs)" = "8399da8337226bc2475ae96db5f6049286a1f388"
+          test "$(git hash-object Assets/RoboRougelikePackages/VFX001/Runtime/Common/VfxEvent.cs)" = "4d6e096151d7d622bfbd5d840576f0b0bf3abde0"
+          echo "ORIGINAL_CSHARP_GIT_BLOBS=3/3 EXACT_PINNED"
+      - name: Compile and execute ORIGINAL CSharp under minimal Unity API shims — not Unity
+        run: dotnet run --configuration Release --project Tools/B01-32/VfxPoolOriginalCSharp/VfxPoolOriginalCSharp.csproj
