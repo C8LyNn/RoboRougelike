@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""B01-60 W66: run ORIGINAL PARTSIZE preflight against two real linked Git worktrees.
+"""B01-60 W70: independent RED-to-GREEN on ORIGINAL PARTSIZE owner preflight.
 
 No Unity invocation. -PreflightOnly uses a non-executable placeholder file.
 Original PowerShell Git blob must be exact; no producer or Codex changes.
@@ -12,8 +12,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 PART_SHA = "be2be0e4802bc3f450179901f9ae91c6d84bcb5b"
-OP_SHA = "63fd1f082661a6549ccf85c9af2d75a5ea989602"
-PS_BLOB = "da575df50d51d5f76776d96e3b5251103b85d923"
+OP_SHA = "26634727ab2323a982bce893421c88c330be46e8"
+PS_BLOB = "bd7bccd2a949d91b1901e3ec01ab93c62874eef4"
 PS_PATH = "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1"
 
 def command(*args, cwd=None, check=True):
@@ -69,15 +69,20 @@ def main():
                           "RECEIPT_MUST_BE_OUTSIDE_PROJECT" in (denied.stderr + denied.stdout),
                           "exit": denied.returncode})
             other_root = invoke(script, fake_unity, own, sibling)
-            cases.append({"name": "SIBLING_SOURCE_ROOT_INCORRECTLY_ACCEPTED",
-                          "pass": other_root.returncode == 0 and
-                          "PARTSIZE_DISPOSABLE_PREFLIGHT_PASS" in other_root.stdout,
+            cases.append({"name": "SIBLING_SOURCE_ROOT_NOW_REJECTED",
+                          "pass": other_root.returncode != 0 and
+                          "RECEIPT_OVERLAPS_REGISTERED_WORKTREE" in (other_root.stderr+other_root.stdout),
                           "exit": other_root.returncode})
             other_child = invoke(script, fake_unity, own, sibling / "Assets" / "evidence")
-            cases.append({"name": "SIBLING_ASSETS_DESCENDANT_INCORRECTLY_ACCEPTED",
-                          "pass": other_child.returncode == 0 and
-                          "PARTSIZE_DISPOSABLE_PREFLIGHT_PASS" in other_child.stdout,
+            cases.append({"name": "SIBLING_ASSETS_DESCENDANT_NOW_REJECTED",
+                          "pass": other_child.returncode != 0 and
+                          "RECEIPT_OVERLAPS_REGISTERED_WORKTREE" in (other_child.stderr+other_child.stdout),
                           "exit": other_child.returncode})
+            sibling_prefix = invoke(script, fake_unity, own, Path(str(sibling)+"-evidence"))
+            cases.append({"name": "SIMILAR_NAME_NOT_SIBLING_DESCENDANT_ACCEPTED",
+                          "pass": sibling_prefix.returncode == 0 and
+                          "PARTSIZE_DISPOSABLE_PREFLIGHT_PASS" in sibling_prefix.stdout,
+                          "exit": sibling_prefix.returncode})
             after = [snapshot(w) for w in (own, sibling)]
             cases.append({"name": "BOTH_SOURCE_WORKTREES_CLEAN_AFTER_PREFLIGHT",
                           "pass": before == after and
@@ -90,15 +95,15 @@ def main():
                        "source_sha": PART_SHA, "operator_sha": OP_SHA,
                        "operator_git_blob": actual_blob,
                        "unity": "NOT_RUN", "native_g1": "NOT_RUN",
-                       "repro": "CROSS_WORKTREE_EVIDENCE_ISOLATION_GAP",
+                       "repro": "CROSS_WORKTREE_EVIDENCE_ISOLATION_RED_TO_GREEN",
                        "cases": cases}
-            print("B01_60_W66_JSON=" + json.dumps(receipt, sort_keys=True))
+            print("B01_60_W70_JSON=" + json.dumps(receipt, sort_keys=True))
             if not all(c["pass"] for c in cases):
                 raise SystemExit("UNEXPECTED_TEST_RESULT; inspect original script/preflight")
         finally:
             for worktree in (own, sibling):
                 git("worktree", "remove", "--force", worktree)
-    print("B01_60_W66_RESULT=SOURCE_PREFLIGHT_GAP_REPRODUCED; UNITY_NOT_RUN; NO_SOURCE_MUTATION")
+    print("B01_60_W70_RESULT=OWNER_CROSS_WORKTREE_GUARD_GREEN; UNITY_NOT_RUN; NO_SOURCE_MUTATION")
 
 if __name__ == "__main__":
     main()
