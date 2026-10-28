@@ -1,0 +1,152 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-FRAME-UX-001",
+  "revision": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/330",
+  "purpose": "Real local browser screenshot region-annotation UX research tool: safe local file input, normalized regions, priority labels, JSON/PNG export and robust original-source CI tests.",
+  "unity_version": "6000.3.14f1 (NOT_RUN; browser research tool, no Unity source)",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": null,
+  "dependency_package_ids": [],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/SOURCE/core.js",
+      "sha256": "902bff8f59ee8c2bf821654b01ac938419112926640354b85e36072203fe8943",
+      "bytes": 3769,
+      "git_blob_sha1": "fa2c5c62952ceb30735baa5e3f379d193b0525af"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/SOURCE/index.html",
+      "sha256": "0e7c7bb4885be2083457f6795232b7b594b4cd51928484cb14a939f8488acef6",
+      "bytes": 12485,
+      "git_blob_sha1": "6dc7306b8e1374b64df08c7eb2ec028d2d9619d0"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/SOURCE/test_core.cjs",
+      "sha256": "56985d33485203b576db52bfd73b7dbc5eeb625162b4999492c28d40b28c6892",
+      "bytes": 3821,
+      "git_blob_sha1": "fbc6495ee9f64e3d5013bdc381cfa5fe3cf3c770"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/SOURCE/test_browser.cjs",
+      "sha256": "796f5ff078aa52267e238fb3f19264ac7fb3e96e926a17b9c8ebf5fc380fd3d6",
+      "bytes": 4772,
+      "git_blob_sha1": "a1e81d06a8f1b34773966119342797cde46559f2"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/README.md",
+      "sha256": "04ea2a19a1e589be1567297a6a78a1cb95e5efe3608e21d4f84952f3dacd0b59",
+      "bytes": 1829,
+      "git_blob_sha1": "6d74900f7f383a63d8303e555930a3252cb0b149"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/INSTALL_FOR_CODEX.md",
+      "sha256": "6ccf59e13c1e510910661ac1ba904cd19ce05eb5f36c2a7845ead24d4f1baa4b",
+      "bytes": 1385,
+      "git_blob_sha1": "de1218830d330244420e84367e03c15c7eaf0b7e"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/TEST_PLAN.md",
+      "sha256": "f70e3d6a4bfb668ff1449868c92041dacd75679eecef4f99560ff108f29f5e09",
+      "bytes": 1337,
+      "git_blob_sha1": "3403ce715fcb32cca1d986d921a2f489efa2b280"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/KNOWN_LIMITATIONS.md",
+      "sha256": "fac87746c10042785df80a97d7e68fd6d2076b06ff83cec24703b3c734b4ff47",
+      "bytes": 1131,
+      "git_blob_sha1": "3ae342ea7a112a5ad13d39c8637daca03ff2bdbf"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/CHANGELOG.md",
+      "sha256": "8de793f5f4a9babee358432e2d05ed4f629c32c2ef496958e56ba8d4ba836d49",
+      "bytes": 633,
+      "git_blob_sha1": "bb91ba8655bcd3b7ef6096d4a97609dec8a602be"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/QA_B01_60.md",
+      "sha256": "768f19f84a8b519ac9acbeabf5db2172a56044eb157ccd5a51b8a24bb173d826",
+      "bytes": 595,
+      "git_blob_sha1": "fa93110a5305741588a7fa88d98430ce16bcec9f"
+    },
+    {
+      "path": "Research/B01-11/P17/FRAME-UX-001/TEST_EVIDENCE/CI_RESULTS.md",
+      "sha256": "cb9dd36ddc2a5a973df1efcad1962f2f21c5929478a53694398b6118a0647d02",
+      "bytes": 2121,
+      "git_blob_sha1": "82c858b828f752b2222ab2a8c64c7bca979fbaa1"
+    },
+    {
+      "path": ".github/workflows/b01-11-frame-ux.yml",
+      "sha256": "ec60bfbcb5eb80b0b9ab286fe3f9ebcafdfa6713984eb70807e30a158a9a3980",
+      "bytes": 1549,
+      "git_blob_sha1": "be919ee34f38e8bdbbdd9cd9d3e5d623ca9b4a8e"
+    }
+  ],
+  "possible_conflicts": [
+    "No active Codex source conflicts; optional future actual Unity screenshot review requires authoritative screenshot evidence from Codex."
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex gameplay branches",
+    "Research/B01-12/**",
+    "Research/B01-11/P17/COMBAT-CUES-001/**",
+    "CHL/**",
+    "PARTSIZE/**"
+  ],
+  "source_license_provenance": [
+    "Original B01-11 self-authored implementation and synthetic test background; no external image assets or stock images. Playwright-core only runtime test dependency (not bundled)."
+  ],
+  "tests": [
+    {
+      "name": "Original source 36 adversarial Node22 tests, Linux",
+      "status": "PASS",
+      "passed": 36,
+      "failed": 0,
+      "environment": "GitHub Actions Ubuntu-latest Node22 original core.js/test_core.cjs",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824"
+    },
+    {
+      "name": "Original source 36 adversarial Node22 tests, Windows",
+      "status": "PASS",
+      "passed": 36,
+      "failed": 0,
+      "environment": "GitHub Actions windows-latest Node22 original core.js/test_core.cjs",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824"
+    },
+    {
+      "name": "Actual browser DOM imports/exports, pointer drag and responsiveness (4x20)",
+      "status": "PASS",
+      "passed": 80,
+      "failed": 0,
+      "environment": "GitHub Actions Ubuntu headless Google Chrome + playwright-core 1.56.1, 320/720/1280/1920 viewports",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743816824/artifacts/12840003347"
+    },
+    {
+      "name": "Native Unity EditMode/PlayMode/Windows build, human study",
+      "status": "NOT_RUN",
+      "passed": 0,
+      "failed": 0,
+      "environment": "No licensed Unity runner or human study commissioned",
+      "evidence_url": null
+    }
+  ],
+  "qa_b01_60": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "limitations": [
+    "No actual screenshot evidence included, synthetic placeholder clearly labelled",
+    "Human manual annotations only; no automatic UX verdict",
+    "JSON metadata dimension-gated, screenshot SHA must be tracked externally",
+    "Not game-integrated, Unity native G1 NOT_RUN"
+  ],
+  "rollback": "Remove/ignore only Research/B01-11/P17/FRAME-UX-001/** and dedicated .github/workflows/b01-11-frame-ux.yml. No main/develop or Codex worktree changed.",
+  "package_transport": "Immutable Git tree via own Draft PR; no ZIP transport required",
+  "status": "PRODUCER_TESTED_SOURCE_AND_BROWSER / G0_SOURCE_SUBMITTED / B01_60_PENDING / G2_HOLD / CODEX_ACK_PENDING",
+  "manifest_note": "files[] hashes every immutable non-manifest payload; this manifest is excluded to avoid self-referential hash."
+}
