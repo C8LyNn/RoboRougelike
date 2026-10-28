@@ -1,0 +1,61 @@
+{
+  "source_sha": "de160a630326752e43fefb33861230058f4e813a",
+  "original_source": "REAL_GITHUB_ACTIONS_RUN_JOB_METADATA_NOT_EDITOR_PROOF",
+  "source_links": {
+    "EditMode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40656682311",
+    "PlayMode": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40656682300"
+  },
+  "paths": [
+    "Docs/B01Concept/CONCEPT-MOBILITY-001/A1-single-wheel-arm.svg"
+  ],
+  "observed": {
+    "EditMode": {
+      "mode": "EditMode",
+      "run_id": 40656682311,
+      "source_sha": "de160a630326752e43fefb33861230058f4e813a",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Validate project before launching Unity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Require valid Unity activation credentials",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Unity 6000.3.14f1 EditMode",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Require nonempty, fully passing executed test cases",
+          "conclusion": "skipped"
+        }
+      ]
+    },
+    "PlayMode": {
+      "mode": "PlayMode",
+      "run_id": 40656682300,
+      "source_sha": "de160a630326752e43fefb33861230058f4e813a",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Validate project before launching Unity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Require valid Unity activation credentials",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Unity 6000.3.14f1 PlayMode",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Require nonempty, fully passing executed test cases",
+          "conclusion": "skipped"
+        }
+      ]
+    }
+  }
+}
