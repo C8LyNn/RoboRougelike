@@ -17,6 +17,21 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin refs/pull/310/head:refs/remotes/origin/b0161codex310
           test "$(git rev-parse refs/remotes/origin/b0161codex310)" = "231005c6d0351945a8ee6684f3856af118f0e94f"
+      - name: Fetch exact original B01-25 LD02 data commit
+        run: |
+          git fetch --no-tags --depth=1 origin eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e
+          git cat-file -e eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e^{commit}
+      - name: Independently execute original-data LD02 wall geometry test (EXPECT P1 RED)
+        run: |
+          set +e
+          python3 Tools/B01/B01-61-PASS15/ld02_perimeter_geometry_check.py --repo "$PWD" --require-closed
+          code=$?
+          set -e
+          if test "$code" -ne 1; then
+            echo "::error::Original LD02 geometry expected RED (1) but got $code: changed data or QA harness failure"
+            exit 1
+          fi
+          echo "EXPECTED_PRODUCT_RED: four source-derived corner wall gaps; Unity PhysX NOT_RUN"
       - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
         run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
       - name: Inspect REAL committed Codex NUnit XML (targeted cases only)
