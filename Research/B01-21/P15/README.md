@@ -2,6 +2,10 @@
 
 **Product:** `LD02_ARENA_SEALED_CORNERS.json` is a genuine `MapDocument v2` level-data alternative, **not** a new Unity package or an edit to B01-25-owned source. Current state: `DATA_READY / ORIGINAL_CSHARP_COMPATIBILITY_TESTED / UNITY_PHYSX_NOT_RUN / NOT_INTEGRATED`.
 
+## Aktualizacja odbioru źródła właściciela B01-25 (PASS15 continuation)
+
+Po oryginalnym dostarczeniu B01-21, **B01-25 naprawił własny plik P14** na commit `691c8cb6b0be086d455e530f2531de7f3753a0ba` do **dokładnie tego samego Git blob** `e39e2f174984832bd97311c050e3c22fd6fb1175`. Ten sam autor naprawił `Research/B01-25/P15/LD02_COVER_CHOICE.json`, blob `8586312b9606d94b088e4e7640c28105e2d6bac1`, zachowując 173 elementy i dwie różne drogi. **B01-25 own files are now authoritative for further level iteration**. B01-21 independent branch pozostaje danymi porównawczymi, nie nową paczką produkcyjną ani dowodem fizycznego Unity. Niezależny odbiorca B01-61 ma osobny test geometrii 8-punktowej.
+
 ## Input identity and why the correction exists
 - B01-25 original arena `Research/B01-25/P14/LD02_ARENA.json`, source commit `eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e`, Git blob `6de0d04900a69606ba873f7c29cef75ed6f182cd`, 168 objects.
 - Codex editor source: #310 `231005c6d0351945a8ee6684f3856af118f0e94f`, `MapDraft.cs` Git blob `b5f8f395f93972c0ede000701dbbada8fcfcdfdb` and `MapWorld.cs` `8928908db123b35dcab4b324fe9d3a7a8fceee4e`.
