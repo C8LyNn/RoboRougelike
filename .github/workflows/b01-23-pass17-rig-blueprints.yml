@@ -24,6 +24,9 @@ jobs:
           test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeContract.cs)" = "07455919a5544875fee5a78ecbbce36dc6cb49c2"
           test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs)" = "6153d1758e800ec5c4210323610b061c06e8ea85"
           git merge-base --is-ancestor be2be0e4802bc3f450179901f9ae91c6d84bcb5b HEAD
+      - name: Validate all five original Unity GUIDs, importer and 4 adversarial cases
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P17Rigs/check_assets.py
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
