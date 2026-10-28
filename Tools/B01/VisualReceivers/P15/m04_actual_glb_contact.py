@@ -49,6 +49,21 @@ def main():
     assert len(meshes)>=75,(len(meshes),"GLB import missing meshes")
     assert len(pivots)==4,(len(pivots),"GLB import missing animation pivot nodes")
     assert len(mats)>=8,(len(mats),"GLB lost material slots")
+    imported_action_map={}
+    for pivot in pivots:
+        anim=pivot.animation_data
+        imported_action_map[pivot.name]={
+            "active_action":anim.action.name if anim and anim.action else None,
+            "nla_tracks":[{
+                "name":t.name,"mute":t.mute,
+                "strips":[{"name":q.name,"action":q.action.name if q.action else None,
+                           "mute":q.mute} for q in t.strips]
+            } for t in anim.nla_tracks] if anim else []
+        }
+    print("B01_30_M04_ACTUAL_IMPORTED_ACTION_INVENTORY",json.dumps({
+        "actions":[a.name for a in bpy.data.actions],
+        "pivots":imported_action_map},sort_keys=True))
+
     scene=bpy.context.scene
     scene.render.engine="BLENDER_WORKBENCH"
     scene.render.resolution_x=640
@@ -105,6 +120,8 @@ def main():
        "actual_imported_meshes":len(meshes),
        "actual_imported_materials":len(mats),
        "actual_imported_pivots":len(pivots),
+       "actual_imported_actions":[a.name for a in bpy.data.actions],
+       "actual_imported_action_map":imported_action_map,
        "real_pose_change_in_imported_animation":changed,
        "default_import_moving_pivots":moving,
        "default_import_idle_pivots":idle,
