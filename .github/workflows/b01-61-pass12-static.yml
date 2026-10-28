@@ -32,6 +32,14 @@ jobs:
             exit 1
           fi
           echo "EXPECTED_PRODUCT_RED: four source-derived corner wall gaps; Unity PhysX NOT_RUN"
+      - name: Fetch immutable original B01-25 new corner repair (reception only)
+        run: |
+          git fetch --no-tags --depth=1 origin f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84
+          test "$(git rev-parse f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84:Research/B01-25/P14/LD02_ARENA.json)" = "e39e2f174984832bd97311c050e3c22fd6fb1175"
+      - name: Receive owner data fix: 4 middle walls + 4 solid corner platforms (STATIC GREEN)
+        run: |
+          python3 Tools/B01/B01-61-PASS15/ld02_perimeter_geometry_check.py --repo "$PWD" --owner-fix --require-closed
+          echo "B01-61_OWNER_REPAIR_RECEIVER=STATIC_GREEN | UNITY_NATIVE=NOT_RUN"
       - name: Check 2 fixtures and original Git CSharp blobs (no Unity)
         run: python3 Tools/B01/B01-61-PASS12/verify.py --repo "$PWD"
       - name: Inspect REAL committed Codex NUnit XML (targeted cases only)
