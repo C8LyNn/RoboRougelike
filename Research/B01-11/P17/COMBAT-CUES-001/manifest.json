@@ -1,0 +1,119 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-COMBAT-CUES-001",
+  "revision": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/330",
+  "purpose": "Original standalone interactive combat HUD damage-readability demonstrator with deterministic source logic and original Chromium integration tests (research prototype, not game-integrated).",
+  "unity_version": "6000.3.14f1 (NOT_RUN; no Unity package)",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": null,
+  "dependency_package_ids": [],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/SOURCE/index.html",
+      "sha256": "307cd083d40348f73b4721cf89d27a12a70c6945c40f717f296e2db3687737c6",
+      "bytes": 12111,
+      "git_blob_sha1": "9d6d5cb726827cbc782c1c754fe6243a83493ab9"
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/SOURCE/test_browser.py",
+      "sha256": "dd66130ee312b807891e189ba1f1fd4ac119203149224bbe4e9cc7e9f99017ae",
+      "bytes": 4508,
+      "git_blob_sha1": "6dfb6096e525b27ce453263768fd13580ed3c81b"
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/README.md",
+      "sha256": "c60e1c2348fd6a332432904b3ec6535a819cd291e8434f1ba2925b6748922c05",
+      "bytes": 1770
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/INSTALL_FOR_CODEX.md",
+      "sha256": "bbaf1dc8a238ac44c02c716b7c22c02746b42e92fc3720c1a16199595db94072",
+      "bytes": 1479
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/TEST_PLAN.md",
+      "sha256": "997d08a4c40bb74d9682e8476de298ae5f76d7a928c4fac7bffd31ecb76abb40",
+      "bytes": 1061
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/KNOWN_LIMITATIONS.md",
+      "sha256": "a28666b5af2e396265a126042932957b8b275714520000eede462e8c20366153",
+      "bytes": 995
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/CHANGELOG.md",
+      "sha256": "df4041e39d290bc3fd5dfb285cdb735c2325304fc8fe51248ba91b808955b1fc",
+      "bytes": 449
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/QA_B01_60.md",
+      "sha256": "7c2339c229d06f9ff525975a0f9fe8aefe806fad09cb4cccd887e8327ab67e23",
+      "bytes": 575
+    },
+    {
+      "path": "Research/B01-11/P17/COMBAT-CUES-001/TEST_EVIDENCE/browser-results.json",
+      "sha256": "e3f525b4e69a6638dc35ee0fbbb0f3440696c3eee9c22d9ebea7271b55ce0ebe",
+      "bytes": 6381
+    }
+  ],
+  "possible_conflicts": [
+    "Future adaptation of presentation cues to canonical R3/R4 combat HUD requires sole-owner Codex acceptance; no current owned file overlap."
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Assets/R3/**",
+    "Assets/R4/**",
+    "Assets/R1/**",
+    "CHL-003/**",
+    "PARTSIZE-001/**",
+    "Research/B01-12/**",
+    "codex/*"
+  ],
+  "source_license_provenance": [
+    {
+      "origin": "B01-11 original self-authored demonstration, no third-party art/assets/code",
+      "license": "Project-controlled original code"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Actual HTML/JS browser+UI regression at 320x720,720x960,1280x800,1920x1080",
+      "status": "PASS",
+      "passed": 80,
+      "failed": 0,
+      "environment": "Local Linux Python 3.13 + Playwright + Chromium headless; page.set_content of exact original HTML",
+      "evidence": "Research/B01-11/P17/COMBAT-CUES-001/TEST_EVIDENCE/browser-results.json"
+    },
+    {
+      "name": "Unity 6000.3.14f1 native compile/edit/play/Windows Player",
+      "status": "NOT_RUN",
+      "environment": "No licensed Unity runner available",
+      "evidence": null
+    },
+    {
+      "name": "Human usability study",
+      "status": "NOT_RUN",
+      "environment": "No participants recruited",
+      "evidence": null
+    }
+  ],
+  "qa_b01_60": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "limitations": [
+    "Standalone browser prototype only, no authoritative game damage or Unity bindings",
+    "One mock weapon family, five parts, three hardcoded synthetic traces",
+    "Browser scripted checks are not human usability or native engine checks"
+  ],
+  "rollback": "Delete/ignore only Research/B01-11/P17/COMBAT-CUES-001/**; no edits to Assets or Codex worktree.",
+  "package_transport": "immutable Git commit of Draft PR branch, no ZIP transport required",
+  "status": "PRODUCER_TESTED_BROWSER_ONLY / G0_SOURCE_SUBMITTED / G1_UNITY_NOT_RUN / G2_HOLD / CODEX_ACK_PENDING",
+  "manifest_note": "files[] enumerates every package payload except this manifest itself, to avoid circular hashes."
+}
