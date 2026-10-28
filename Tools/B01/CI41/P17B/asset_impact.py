@@ -140,6 +140,11 @@ def impact(repo: Path, base: str, head: str) -> dict:
     unmapped = set()
     for item in changed:
         path = item[:-5] if item.endswith(".meta") else item
+        # Unity tracks folder .meta files, but folders do not occur as blobs
+        # in 'git ls-tree -r'. Their GUIDs are not smoke-test roots.
+        if item.endswith(".meta") and path not in new and any(
+                asset.startswith(path + "/") for asset in new):
+            continue
         if path not in new:
             removed.add(path)
         elif path not in path_to_guid:
