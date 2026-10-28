@@ -1,0 +1,43 @@
+name: B01-25 P17 CLEARANCELADDER original-source Node receiver (NOT UNITY)
+on:
+  push:
+    branches:
+      - research/b01-25-pass17-clearance-ladder
+    paths:
+      - 'Research/B01-25/P17/CLEARANCELADDER001/**'
+      - '.github/workflows/b01-25-p17-clearance-ladder.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-data-and-html-js:
+    name: Original Node source test - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 8
+    steps:
+      - name: Checkout actual package commit
+        uses: actions/checkout@v4
+      - name: Setup Node 22 (pure built-in modules only)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute exactly published source test (sha-pinned input, negative mutations, original HTML VM)
+        shell: bash
+        run: |
+          set -o pipefail
+          node --version
+          node --check Research/B01-25/P17/CLEARANCELADDER001/test.mjs
+          node --check Research/B01-25/P17/CLEARANCELADDER001/clearance-core.mjs
+          node Research/B01-25/P17/CLEARANCELADDER001/test.mjs 2>&1 | tee b01-25-clearanceladder-${{ matrix.os }}.log
+      - name: Preserve actual original-source receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-clearanceladder-node-${{ matrix.os }}
+          path: b01-25-clearanceladder-${{ matrix.os }}.log
+          if-no-files-found: warn
+          retention-days: 21
