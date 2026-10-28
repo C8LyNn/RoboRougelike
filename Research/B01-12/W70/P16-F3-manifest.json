@@ -1,0 +1,29 @@
+{
+  "schema": "B01_RESEARCH_ARTIFACT_V1",
+  "package_id": "B01-12-P16-HUD3-F3-REPAIR-002",
+  "owner": "B01-12",
+  "source": {
+    "path": "Research/B01-12/W70/HUD3-overflow.html",
+    "commit": "534d493d97c11a5419b414c9892fcab39e159b91",
+    "git_blob": "b85469bfd23fc6e5f934275915a1e0b133f5bcca",
+    "sha256": "df14924250626a8275091df16dba9d9ed0c5f875695417ca9adc9fe2e3cf8c03"
+  },
+  "test": {
+    "path": "Research/B01-12/W70/test_f3.py",
+    "git_blob": "423854ac79b4b5cb65972c416df14aec547387eb",
+    "sha256": "e820ac27ef6587b90e18787ddb6351d7042a7d85951d81073ad0cd53b139e836",
+    "actual_chromium": "33/33 PASS",
+    "javascript_errors": 0
+  },
+  "input": {
+    "previous_git_blob": "e73b57e52ca0706bcf739340f5b06dd66b55e104",
+    "independent_defect": "B01-60 #296 comment 6464403917, real Chromium RED F3 DESTROYED healed via resolveA"
+  },
+  "behavior": "resolve A/B clears only recoverable simulated combat statuses, never DESTROYED 0HP. Shows explicit rebuild-required message. Actual game reconstruction and economy not modeled.",
+  "integration": "NOT_INTEGRATED",
+  "native_tests": "NOT_RUN",
+  "human_tests": "0",
+  "codex_cv_existing": "CV-06",
+  "owner_receiver": "B01-60 must retest exact new blob",
+  "safety": "No production Assets edits, no CHL/PARTSIZE, no merge/G2"
+}
