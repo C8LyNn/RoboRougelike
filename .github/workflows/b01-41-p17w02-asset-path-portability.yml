@@ -1,0 +1,68 @@
+name: B01-41 P17 W02 cross-platform Unity asset path portability (NO UNITY)
+on:
+  push:
+    branches: ['audit/b01-41-p17-w02-asset-path-portability']
+    paths:
+      - 'Tools/B01/CI41/P17W02/**'
+      - '.github/workflows/b01-41-p17w02-asset-path-portability.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-git-path-portability:
+    name: Real Git tree portability (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact immutable tool/test Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W02/pathport.py)" = 'a6afd2150e90019e454e804d1efd6294f70e6949'
+          test "$(git hash-object Tools/B01/CI41/P17W02/test_pathport.py)" = '941a1e4519cf1bdb2e0e4e94f413cee33f544a67'
+          git cat-file -e '5f06af81e2dd9d877e4300259bb3dd008cb9c9d1^{commit}'
+          echo 'PINNED_ORIGINAL_SOURCE_FILES_AND_MAIN_GIT_TREE'
+      - name: Fetch read-only original Codex Unity game SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=300 origin '+refs/pull/310/head:refs/remotes/origin/ci41-w02-codex'
+          git cat-file -e 'be2c4b6ac63e04eff5b046e50641ec8d1da4837f^{commit}'
+          echo 'ORIGINAL_CODEX_SHA_AVAILABLE_NO_CROSS_WORKTREE_CHANGES'
+      - name: Run original cross-platform Git-object and source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W02 -p test_pathport.py -v 2>&1 | tee "Tools/B01/CI41/P17W02/test-${RUNNER_OS}.txt"
+          grep -q 'ACTUAL_GIT_OBJECTS_CON_AND_CASEFOLD_COLLISION_RED_NO_WINDOWS_CHECKOUT' "Tools/B01/CI41/P17W02/test-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_MAIN_AND_CODEX_GIT_SOURCE_TREES_ACTUALLY_SCANNED' "Tools/B01/CI41/P17W02/test-${RUNNER_OS}.txt"
+          echo 'ORIGINAL_GIT_OBJECT_ADVERSARIAL_REGRESSION_COMPLETE; UNITY=NOT_RUN'
+      - name: Write original Codex source portability receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W02/pathport.py --repo . --commit be2c4b6ac63e04eff5b046e50641ec8d1da4837f > "Tools/B01/CI41/P17W02/codex-${RUNNER_OS}.json"
+          "$PY" -m json.tool "Tools/B01/CI41/P17W02/codex-${RUNNER_OS}.json" > /dev/null
+          grep -q '"native_unity": "NOT_RUN"' "Tools/B01/CI41/P17W02/codex-${RUNNER_OS}.json"
+          grep -q '"status": "PASS_PORTABLE_ASSET_PATHS"' "Tools/B01/CI41/P17W02/codex-${RUNNER_OS}.json"
+          echo 'ORIGINAL_CODEX_TRACKED_ASSETS_PORTABILITY_SOURCE_GATE_PASS_NOT_G1'
+      - name: Upload original Git/Python findings (NOT Unity result)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-P17-W02-PATHPORT-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W02/test-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W02/codex-${{ runner.os }}.json
+          if-no-files-found: warn
+          retention-days: 14
