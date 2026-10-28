@@ -102,6 +102,9 @@ internal static class ArenaBuild
     }
     static void Emit(string name,string content)
     {
+        // Cross-platform artifact contract: Windows/Unix write the same UTF-8 bytes.
+        // Text rendering is source-derived; no automatic per-OS newline drift.
+        content=content.Replace("\r\n","\n").Replace("\r","\n");
         string path=Dir+"/"+name;
         if(File.Exists(path))
         {
