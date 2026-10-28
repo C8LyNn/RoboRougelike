@@ -355,7 +355,7 @@ public static class Program
         // The original MapStorage.Save code executes without modification.
         if (OperatingSystem.IsWindows())
         {
-            Case("B10-readonly-Windows-canonical-save-rejects-data-loss", "NEGATIVE", () =>
+            Case("B10-readonly-Windows-canonical-save-rejects-data-loss", "POSITIVE", () =>
                 InTemporaryDirectory(directory =>
                 {
                     var file = Path.Combine(directory, "readonly-map.json");
@@ -388,7 +388,7 @@ public static class Program
         else
         {
             Evidence.Add(new { id = "B10-readonly-Windows-canonical-save-rejects-data-loss",
-                               category = "NEGATIVE", status = "SKIPPED_NOT_WINDOWS" });
+                               category = "POSITIVE", status = "SKIPPED_NOT_WINDOWS" });
             Console.WriteLine("B10-readonly-Windows-canonical-save-rejects-data-loss: SKIPPED_NOT_WINDOWS");
         }
 
