@@ -38,16 +38,23 @@ jobs:
           mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
           source=mod.original('.',mod.CODEX_SHA,'Assets/R4_1/R41PartGeometry.cs','76a14de4c347dd3e91b0a37487d804023eab5da1')
           assert len(mod.source_authored_four(source,.52))==4
+          # Numeric changes are ALLOWED as new authored geometry but MUST
+          # change the derived result; not a parser rejection by themselves.
           bad=source.replace('wheel.localScale=new Vector3(1.5f,0.35f,1.5f);',
                              'wheel.localScale=new Vector3(1.5f,9.35f,1.5f);')
           assert bad!=source
-          # Fail closed if the authored wheel actual source token vanishes entirely.
+          wheel_before=mod.source_authored_four(source,.52)['Wheel']
+          wheel_after=mod.source_authored_four(bad,.52)['Wheel']
+          assert wheel_before!=wheel_after, 'SOURCE_GEOMETRY_MUTANT_FALSE_GREEN'
+          # Broken original source token must instead fail closed.
+          missing=source.replace('wheel.localScale=', 'wheel.injectedScale=')
+          assert missing!=source
           try:
-              mod.source_authored_four(bad,.52)
+              mod.source_authored_four(missing,.52)
           except ValueError as e:
               assert 'ORIGINAL_SOURCE_NUMERIC_ANCHOR_MISMATCH' in str(e)
           else:
-              raise AssertionError('WHEEL_SOURCE_MUTANT_NOT_REJECTED')
+              raise AssertionError('WHEEL_SOURCE_MISSING_ANCHOR_NOT_REJECTED')
           generated=mod.emit(mod.authoring_rows(
               mod.original('.',*mod.SOURCE_FILES[0]),
               source,
