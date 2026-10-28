@@ -1,7 +1,9 @@
 BROWSER PASS: demo 1280x720 rendered, no JS errors/no overflow, 8 metrics + 12 rows
+BROWSER PASS: demo -> import only A clears both synthetic captures; no mixed provenance
+BROWSER PASS: demo -> import only B clears demo A; no mixed provenance
 BROWSER PASS: real Chromium file picker import of 3 source-shaped files: 1 session, not native acceptance
 BROWSER PASS: corrupt receipt refused, valid A session remains readable; no browser JS error
 BROWSER PASS: recovery from invalid B to valid B; comparison visible
 BROWSER PASS: demo 1920x1080 rendered, no JS errors/no overflow, 8 metrics + 12 rows
 BROWSER PASS: demo 720x900 rendered, no JS errors/no overflow, 8 metrics + 12 rows
-BROWSER CASES: 6
+BROWSER CASES: 8

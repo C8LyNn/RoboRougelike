@@ -2,67 +2,83 @@
   "executed": {
     "UnityEditor": "NOT_RUN",
     "WindowsPlayer": "NOT_RUN",
-    "chromium_browser": "6/6 PASS",
-    "node_logic": "14/14 PASS",
+    "chromium_browser": "8/8 PASS",
+    "node_logic": "15/15 PASS",
     "real_FPS_GPU_CPU_GC": "NOT_MEASURED"
   },
   "files": {
     "README.md": {
-      "bytes": 6129,
-      "sha256": "e6288d53b2fd70387bf3bb54a8f623c9abcac4ec8ccf8a86b9a5bf3f3402738d"
+      "bytes": 6444,
+      "sha256": "068afe73703a4933107629056540d549976daee999429720a4b689e323917477"
     },
     "app.mjs": {
-      "bytes": 5917,
-      "sha256": "ec3c144b730b68ee3555c5baf7ecb2bfe8646629fa0152b028cf92a1c704baac"
+      "bytes": 6277,
+      "sha256": "040ea88b010dc97e9cf64428a38e2409d6a6fa5b4102f89aed343551fd645dcd"
     },
     "bundle.py": {
       "bytes": 1360,
       "sha256": "0969033d7e37f50d518ec8747c34ea432373b9c1b5e0693a6f31e5b74faccc34"
     },
     "core.mjs": {
-      "bytes": 8779,
-      "sha256": "bdefb6134e0edf2409a3081516f71cb1bbe00d2e1931a2a034e3e52e803eba2f"
+      "bytes": 8791,
+      "sha256": "0cf05a5543633a8f1199851b29fac5474cdaaea0120a8a05183729496ed79a86"
     },
     "evidence/browser_log.txt": {
-      "bytes": 436,
-      "sha256": "1a8a65c8210b61203de16738fb83fc51ec8bb7ad8f3bb5c553edd155ecde4cfe"
+      "bytes": 567,
+      "sha256": "d2aa739bd06a0e64fdf033b32b7f6d4e9ee9cf51e989f79804d48cd6a5c62bdf"
     },
     "evidence/browser_test_log.txt": {
-      "bytes": 537,
-      "sha256": "133efaecb40dea19eb47ba5a04063997bd1766174feabb1f057829ea7013bbf5"
+      "bytes": 696,
+      "sha256": "7f9d056f0f19f4ca7130c4106cb29bab286498656b809cc552dd5e02e20e4b9e"
     },
     "evidence/node_test_log.txt": {
-      "bytes": 2741,
-      "sha256": "9cf4231b65e2060ecac2fd8275541a50267cdb1d178ae3df90003dc6c977c62f"
+      "bytes": 2936,
+      "sha256": "bf8a0dd321e2a99c62fc964ff02fd4c0cac71157e2d1f0af5a88f8d28df30c26"
+    },
+    "evidence/p17_green_receipt.txt": {
+      "bytes": 76,
+      "sha256": "562c138127efa2677760a822eaff8b9b1915c0b125a5ab11d78c03efcf76ff21"
+    },
+    "evidence/p17_red_receipt.txt": {
+      "bytes": 557,
+      "sha256": "5a01dc70baa64622101a90f71b98fc9742b3899ad51017fe8cff2ab4e2ffd27a"
     },
     "index.html": {
       "bytes": 4188,
       "sha256": "7f9912c7460ca7ab0428d91ea598396c151174a908146fb4bb7da11b5fbc8f95"
     },
     "perfview-standalone.html": {
-      "bytes": 24222,
-      "sha256": "1c2cce03fc0719674fa49f298dd33ff69a03d52cbf70de67bc73e37b9e629f56"
+      "bytes": 24594,
+      "sha256": "9bda2db13efa1e01996f7cf061aee1f09b535de0ade89237f789c4e2f65070b3"
     },
     "style.css": {
       "bytes": 5513,
       "sha256": "9134f23c6d89bbdacf98f835cd6101098a4c821b9a03bf518b78371d92c2751f"
     },
     "tests/browser_e2e.py": {
-      "bytes": 4434,
-      "sha256": "8354a4282ecdf8e302ab04326f80f379c30bc763d5399f2319be3a3855a1a09f"
+      "bytes": 5448,
+      "sha256": "81decfce534c092711932783189dadf9765c10aa45a1fd6dafe0b11d26cba9ec"
     },
     "tests/core.test.mjs": {
-      "bytes": 5341,
-      "sha256": "ebe0e0d8375e78118ccd0378eec67af663570dfbc8a8c73d208ccb7efff5b186"
+      "bytes": 5763,
+      "sha256": "c4f30274c92efcb5122096e3646a13282cdd262e1d644fa5e580f075ace037d7"
     }
   },
   "game_code_changes": false,
   "owner": "B01-50",
   "package_id": "B01-50-PERFVIEW-001",
+  "recovery": {
+    "fixes": [
+      "demo/live provenance mixing",
+      "different scenario comparison"
+    ],
+    "from": "PERFVIEW-001/R1@7b69abbfae841ea1d83d9d8ef90caefc0124f3e3",
+    "native_unity": "NOT_RUN"
+  },
   "source_dependency": {
     "PR328_HEAD": "b5fc00428f6f663016e1525da556afbfe775facb",
     "PR328_live_recorder_blob": "7112a748d0ca560403d91b166481088b8db85932",
     "PR328_live_validator_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82"
   },
-  "version": "R1"
+  "version": "R2"
 }

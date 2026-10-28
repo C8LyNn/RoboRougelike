@@ -45,6 +45,19 @@ def main():
             page.screenshot(path=str(EVIDENCE/f'demo_{width}x{height}.png'),full_page=True)
             successes.append(f'demo {width}x{height} rendered, no JS errors/no overflow, 8 metrics + 12 rows')
             if width==1280:
+                # Original R1 provenance leak RED: demo A+B; replacing ONLY A
+                # marked both as non-demo while retaining synthetic B.
+                page.locator('#filesA').set_input_files(fixture)
+                expect(page.locator('.metric')).to_have_count(4,timeout=10000)
+                assert page.locator('#stateB').inner_text()=='Nie zaimportowano'
+                assert page.get_by_text('PLIKI NIEZWERYFIKOWANE NATYWNIE').is_visible()
+                assert 'DEMO' not in page.locator('#provenance').inner_text()
+                successes.append('demo -> import only A clears both synthetic captures; no mixed provenance')
+                page.locator('#demo').click()
+                page.locator('#filesB').set_input_files(fixture)
+                expect(page.locator('.metric')).to_have_count(4,timeout=10000)
+                assert page.locator('#stateA').inner_text()=='Nie zaimportowano'
+                successes.append('demo -> import only B clears demo A; no mixed provenance')
                 page.locator('#reset').click()
                 assert page.locator('#analysis').is_hidden()
                 page.locator('#filesA').set_input_files(fixture)

@@ -155,7 +155,7 @@ function analyzeCapture(receiptText, frameText, objectText) {
 }
 function compare(a, b) {
   assert(a && b, 'compare: need two sessions');
-  const keys = ['gameSha', 'buildSha', 'unity', 'os', 'cpu', 'gpu'];
+  const keys = ['gameSha', 'buildSha', 'unity', 'os', 'cpu', 'gpu', 'scenario'];
   const changed = keys.filter(k => a[k] !== b[k]);
   if (a.scenes.join('|') !== b.scenes.join('|')) changed.push('scenes');
   return {comparable:changed.length === 0, mismatches:changed,
@@ -189,10 +189,17 @@ const num=(x,precision=1)=>Number.isFinite(x)?x.toFixed(precision):'—';
 function state(id,txt,okay){const el=doc(`state${id}`);el.textContent=txt;el.className='file-state '+(okay===true?'good':okay===false?'bad':'');}
 function color(id){return id==='A'?'#96eccb':'#a9abff';}
 async function loadFiles(id,list){
+  // A synthetic demo is a sealed two-session fixture. Importing even one real
+  // file selection discards BOTH demo sessions so demo B cannot masquerade as real.
+  if(synthetic){
+    captures.A=null;captures.B=null;synthetic=false;
+    state('A','Nie zaimportowano');state('B','Nie zaimportowano');render();
+  }
   const names=['receipt.json','frames.csv','objects.csv'];
   try{
-    const map=new Map([...list].map(file=>[file.name,file]));
-    if(map.size!==3||names.some(n=>!map.has(n)))throw new Error('Wskaż dokładnie trzy pliki: receipt.json, frames.csv, objects.csv');
+    const supplied=[...list];
+    const map=new Map(supplied.map(file=>[file.name,file]));
+    if(supplied.length!==3||map.size!==3||names.some(n=>!map.has(n)))throw new Error('Wskaż dokładnie trzy pliki: receipt.json, frames.csv, objects.csv');
     for(const n of names)if(map.get(n).size>6_000_000)throw new Error('Plik za duży: '+n);
     const [rec,frame,obj]=await Promise.all(names.map(n=>map.get(n).text()));
     captures[id]=analyzeCapture(rec,frame,obj);synthetic=false;
@@ -203,8 +210,8 @@ async function loadFiles(id,list){
 doc('filesA').addEventListener('change',e=>loadFiles('A',e.target.files));
 doc('filesB').addEventListener('change',e=>loadFiles('B',e.target.files));
 doc('demo').addEventListener('click',()=>{
-  captures.A=analyzeCapture(...makeSyntheticCapture({scenario:'DEMO_SYNTHETIC_A',slow:0,shots:0}));
-  captures.B=analyzeCapture(...makeSyntheticCapture({scenario:'DEMO_SYNTHETIC_B',slow:1.8,shots:64}));
+  captures.A=analyzeCapture(...makeSyntheticCapture({scenario:'DEMO_SYNTHETIC',slow:0,shots:0}));
+  captures.B=analyzeCapture(...makeSyntheticCapture({scenario:'DEMO_SYNTHETIC',slow:1.8,shots:64}));
   synthetic=true;state('A','DEMO — dane syntetyczne (nie pomiar)',true);
   state('B','DEMO — dane syntetyczne (nie pomiar)',true);
   doc('error').textContent='';render();

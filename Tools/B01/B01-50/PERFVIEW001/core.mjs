@@ -120,7 +120,7 @@ export function analyzeCapture(receiptText, frameText, objectText) {
 }
 export function compare(a, b) {
   assert(a && b, 'compare: need two sessions');
-  const keys = ['gameSha', 'buildSha', 'unity', 'os', 'cpu', 'gpu'];
+  const keys = ['gameSha', 'buildSha', 'unity', 'os', 'cpu', 'gpu', 'scenario'];
   const changed = keys.filter(k => a[k] !== b[k]);
   if (a.scenes.join('|') !== b.scenes.join('|')) changed.push('scenes');
   return {comparable:changed.length === 0, mismatches:changed,

@@ -66,3 +66,12 @@ test('receipt falsified row count and bogus unmeasured metrics blocked',()=>{
  let a=replaceJson(original(),r=>r.frame_rows=600);fails(()=>analyzeCapture(...a),/row count mismatch/);
  let b=replaceJson(original(),r=>r.classification='NATIVE_ACCEPTED');fails(()=>analyzeCapture(...b),/unsupported capture classification/);
 });
+
+test('different scenario IDs invalidate even matching build/hardware',()=>{
+ const a=analyzeCapture(...makeSyntheticCapture({scenario:'G02_GUNS2'}));
+ const b=analyzeCapture(...makeSyntheticCapture({scenario:'G02_GUNS12'}));
+ const result=compare(a,b);
+ assert.equal(result.comparable,false);
+ assert.deepEqual(result.mismatches,['scenario']);
+ assert.equal(result.status,'CONTEXT_DIFFERS_NO_PERFORMANCE_INFERENCE');
+});
