@@ -1,0 +1,51 @@
+{
+  "packageId": "MAPGEN-COURSE-P17",
+  "schemaVersion": 1,
+  "sourceSha": "5be31039411f89f17654b1c332f8692883fa03cc",
+  "recipe": "ObstacleCourse",
+  "unityVersion": "6000.3.14f1",
+  "seeds": [
+    7,
+    31,
+    83,
+    109,
+    202,
+    407
+  ],
+  "profiles": [
+    "Light",
+    "Heavy"
+  ],
+  "variants": [
+    {
+      "id": "P17-COURSE-A-SLALOM",
+      "description": "Krotki tor: czytelny slalom i jedna rampa",
+      "config": {
+        "Segments": 3,
+        "ObstacleDensity": 40,
+        "Difficulty": 0.25,
+        "LaneWidth": 16
+      }
+    },
+    {
+      "id": "P17-COURSE-B-CHICANE",
+      "description": "Sredni tor: czestsze przeszkody i zmiany osi jazdy",
+      "config": {
+        "Segments": 4,
+        "ObstacleDensity": 65,
+        "Difficulty": 0.55,
+        "LaneWidth": 20
+      }
+    },
+    {
+      "id": "P17-COURSE-C-ENDURANCE",
+      "description": "Dluzszy tor: gesty uklad, podwyzszona trudnosc i przestrzen dla Heavy",
+      "config": {
+        "Segments": 5,
+        "ObstacleDensity": 90,
+        "Difficulty": 0.85,
+        "LaneWidth": 24
+      }
+    }
+  ]
+}
