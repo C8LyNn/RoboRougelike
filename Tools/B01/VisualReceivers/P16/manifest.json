@@ -1,0 +1,60 @@
+{
+  "schema": "B01-30-TECHART-RESEARCH-RECEIPT-v1",
+  "package_id": "B01-30-TECHART-P16-RESEARCH-R1",
+  "owner": "B01-30",
+  "source_branch": "audit/b01-30-w26-cm001-contrast-occlusion",
+  "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/299",
+  "status": "RESEARCH_READY_NOT_OFFERED_NOT_INTEGRATED",
+  "gameplay_source_edit": false,
+  "model_job_authorized": false,
+  "original_inputs": [
+    {
+      "asset": "B01-31 CM001 A1 single wheel support arm original SVG",
+      "producer_pr": 294,
+      "exact_source_commit": "8709cf27901c4edca1434cbc760dec5db130a3ef",
+      "git_blob_sha1": "96cc46a7c14f94a45c387e102d5940cb787d2d5c",
+      "source_path": "Docs/B01Concept/CONCEPT-MOBILITY-001/A1-single-wheel-arm.svg"
+    },
+    {
+      "asset": "M04-024 original quad-vector-nozzle Blender generator",
+      "producer_pr": 196,
+      "exact_source_commit": "eef02864b106546b200011a2f0286fe7d9a83a1f",
+      "git_blob_sha1": "102b2d430260ae4da15fc7dee51f9bd86ccd822c",
+      "source_path": "Tools/ModelFactory/M04/M04-024/generate_m04_024.py"
+    }
+  ],
+  "outputs": [
+    {
+      "kind": "APPROVED_RESEARCH_2D_MOTION_STUDY",
+      "source": "Tools/B01/VisualReceivers/P16/selected_wheel_motion_proposal.py",
+      "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40720288734/artifacts/12829353559",
+      "actual_status": "SOURCE_RASTER_PASS",
+      "owner_notes": "-12,0,+12 degree geometry is illustrative screen-space only"
+    },
+    {
+      "kind": "ORIGINAL_M04_FOUR_INDEPENDENT_ACTION_VISUAL_RECEIVER",
+      "source": "Tools/B01/VisualReceivers/P15/m04_actual_glb_contact.py",
+      "contact_sheet_source": "Tools/B01/VisualReceivers/P15/compose_m04_contact_sheet.py",
+      "artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40720573781/artifacts/12829374562",
+      "actual_status": "BLENDER4_0_2_ORIGINAL_GLB_IMPORT_FOUR_ACTIONS_PASS",
+      "owner_notes": "Explicitly assign four original imported actions for Blender preview; no M04 producer edits"
+    }
+  ],
+  "workflow": ".github/workflows/b01-30-pass16-motion-art.yml",
+  "executed_evidence": {
+    "A1_preliminary_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40720288734",
+    "M04_four_action_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40720573781",
+    "native_unity": "NOT_RUN",
+    "independent_qa": "PENDING_BY_ROLE",
+    "same_worktree_merge": "NOT_PERFORMED"
+  },
+  "blocked_gates": [
+    "G_DESIGN_APPROVAL_FOR_REAL_3D_PIVOTS_MOUNT_MASS_TRAVEL",
+    "MODEL_JOB_NOT_AUTHORIZED",
+    "M04_ACTUAL_UNITY_IMPORT_AND_4_CLIP_GAMEPLAY_NOT_RUN",
+    "NO_MERGE_RELEASE_AUTHORIZATION"
+  ],
+  "readme": "Tools/B01/VisualReceivers/P16/README.md",
+  "receive_instruction": "Use only as inspected B01-30 research reference. Do not import as playable asset, install into Codex canonical Assets, claim G1/G2, OFFERED, CODEX_CLAIMED or merge. HQ must approve MODEL_JOB/G-DESIGN and producer supply actual model before gameplay integration.",
+  "rollback": "Delete generated build/B01-30/P16-* temporary output; repository production sources are unchanged and no canonical project files were edited."
+}
