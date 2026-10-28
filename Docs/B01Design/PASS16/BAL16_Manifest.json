@@ -24,7 +24,12 @@
       "Assets/R6/R6VehicleDrive.cs": "6e5991cf263ac64b943dc4ac09a546d65ad2fa45"
     },
     "previous65PercentRepairProposal": "SUPERSEDED_NOT_APPROVED; current original code uses 35% for owned 0HP repair with price floor",
-    "previousPass15ArenaWork": "separate, not modified"
+    "previousPass15ArenaWork": "separate, not modified",
+    "latestReadOnlySourceComparison": {
+      "latestCodexPrHeadAtReadback": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+      "verifiedAllFiveSourceBlobsUnchanged": true,
+      "note": "Codex PR advanced after profile snapshot. All 5 source files used by the simulator were independently re-fetched and Git blobs were IDENTICAL at this newer head. This does not certify full native tests or future code stability."
+    }
   },
   "owner": "B01-10 GAME DESIGN & BALANCE",
   "branch": "design/b01-10-w16-chl003-measurable-acceptance",
