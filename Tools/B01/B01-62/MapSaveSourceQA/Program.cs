@@ -350,6 +350,48 @@ public static class Program
             Console.WriteLine("B09-locked-Windows-canonical-save-fails-without-data-loss: SKIPPED_NOT_WINDOWS");
         }
 
+        // Windows filesystem negative distinct from B09's FileShare.None lock:
+        // verify a ReadOnly-flagged committed map is never silently replaced.
+        // The original MapStorage.Save code executes without modification.
+        if (OperatingSystem.IsWindows())
+        {
+            Case("B10-readonly-Windows-canonical-save-rejects-data-loss", "NEGATIVE", () =>
+                InTemporaryDirectory(directory =>
+                {
+                    var file = Path.Combine(directory, "readonly-map.json");
+                    MapStorage.Save(file, One(MapItemKind.Ground));
+                    byte[] prior = File.ReadAllBytes(file);
+                    File.SetAttributes(file, File.GetAttributes(file) | FileAttributes.ReadOnly);
+                    bool rejected = false;
+                    string outcome = "RETURNED_WITHOUT_EXCEPTION";
+                    try
+                    {
+                        try { MapStorage.Save(file, One(MapItemKind.Wall, 7, 0)); }
+                        catch (IOException ex) { rejected = true; outcome = ex.GetType().Name; }
+                        catch (UnauthorizedAccessException ex) { rejected = true; outcome = ex.GetType().Name; }
+                        Console.WriteLine("B10_ORIGINAL_SAVE_OUTCOME=" + outcome);
+                        bool preserved = prior.SequenceEqual(File.ReadAllBytes(file));
+                        bool noTemp = Directory.GetFiles(directory, "*.tmp").Length == 0;
+                        var reloaded = new MapDraft();
+                        bool oldReloads = MapStorage.Load(file, reloaded, out _) &&
+                                          reloaded.Items.Count == 1 &&
+                                          reloaded.Items[0].kind == MapItemKind.Ground;
+                        return rejected && preserved && noTemp && oldReloads;
+                    }
+                    finally
+                    {
+                        if (File.Exists(file))
+                            File.SetAttributes(file, File.GetAttributes(file) & ~FileAttributes.ReadOnly);
+                    }
+                }));
+        }
+        else
+        {
+            Evidence.Add(new { id = "B10-readonly-Windows-canonical-save-rejects-data-loss",
+                               category = "NEGATIVE", status = "SKIPPED_NOT_WINDOWS" });
+            Console.WriteLine("B10-readonly-Windows-canonical-save-rejects-data-loss: SKIPPED_NOT_WINDOWS");
+        }
+
         Console.WriteLine("RESULT_JSON=" + JsonSerializer.Serialize(new
         {
             source = "UNMODIFIED_CODEX_CSHARP_WITH_UNITY_SHIM",
