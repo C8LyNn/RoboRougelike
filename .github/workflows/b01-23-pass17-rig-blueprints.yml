@@ -1,0 +1,58 @@
+name: B01-23 PASS17 Specialist Rig Blueprints (source/CSharp, NOT Unity)
+on:
+  push:
+    branches: [b01-23/p17-three-specialist-rig-blueprints]
+    paths:
+      - "Assets/PARTSIZE001/Blueprints/**"
+      - "Tools/B01/PARTSIZE001/P17Rigs/**"
+      - ".github/workflows/b01-23-pass17-rig-blueprints.yml"
+  workflow_dispatch:
+jobs:
+  source-compiled-blueprint-content:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fail closed if original PARTSIZE CSharp or catalog drifted
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeContract.cs)" = "07455919a5544875fee5a78ecbbce36dc6cb49c2"
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs)" = "6153d1758e800ec5c4210323610b061c06e8ea85"
+          git merge-base --is-ancestor be2be0e4802bc3f450179901f9ae91c6d84bcb5b HEAD
+      - name: Validate all five original Unity GUIDs, importer and 4 adversarial cases
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P17Rigs/check_assets.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build original PartSizeGrid and new rig validator with warnings as errors
+        shell: bash
+        run: dotnet build Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj --configuration Release --warnaserror
+      - name: Execute source-compiled actual specialist rig and mutation tests
+        shell: bash
+        run: dotnet run --project Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj -c Release --no-build -- --selftest
+      - name: Render inspectable logical robot layer previews (not Unity)
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj -c Release --no-build -- --preview > p17-rig-previews.txt
+          cat p17-rig-previews.txt
+          grep -q "P17_PREVIEW_SOURCE_ONLY_NOGAME_NATIVE_NOT_RUN" p17-rig-previews.txt
+      - name: Invalid command must be rejected
+        shell: bash
+        run: |
+          if dotnet run --project Tools/B01/PARTSIZE001/P17Rigs/P17Rigs.csproj -c Release --no-build -- --unsupported; then
+            echo "INVALID_CLI_FALSE_GREEN"
+            exit 1
+          fi
+          echo "PASS INVALID_CLI_REJECTED"
+      - name: Upload original deterministic source-based layout preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: P17-rig-layer-preview-${{ matrix.os }}
+          path: p17-rig-previews.txt
+          if-no-files-found: error
