@@ -1,0 +1,121 @@
+{
+  "packageId": "B01-25-P16-ARENAS-3-R1",
+  "status": "AUTHORING_DATA_READY_SOURCE_GEOMETRY_TESTED_NOT_INTEGRATED",
+  "baseCommit": "37dfd25a59ffa5561c2eafb05174a1f99d9fd4f3",
+  "inputGame": {
+    "CodexPR": 310,
+    "commit": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+    "MapDraftGitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "MapWorldGitBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e"
+  },
+  "assets": [
+    {
+      "id": "A",
+      "file": "ARENA16_A_COVER_BREACH.json",
+      "sha": "a7a54de169f3a88411f6857b2dac84b67203b688",
+      "expected": "a7a54de169f3a88411f6857b2dac84b67203b688",
+      "items": 174,
+      "counts": {
+        "0": 120,
+        "1": 42,
+        "4": 1,
+        "5": 1,
+        "6": 4,
+        "7": 4,
+        "8": 2
+      },
+      "routes": {
+        "exposed": {
+          "steps": 7,
+          "shadow": 0
+        },
+        "shielded": {
+          "steps": 13,
+          "shadow": 8
+        }
+      },
+      "remoteByteContentVerified": true,
+      "exactCountsVerified": true,
+      "actualItemCount": 174
+    },
+    {
+      "id": "B",
+      "file": "ARENA16_B_MANEUVER_LOOP.json",
+      "sha": "bc19cb5f27c0b271df6f9f3b06563a491b2f6ad5",
+      "expected": "bc19cb5f27c0b271df6f9f3b06563a491b2f6ad5",
+      "items": 260,
+      "counts": {
+        "0": 192,
+        "1": 56,
+        "4": 1,
+        "5": 1,
+        "6": 4,
+        "7": 4,
+        "8": 2
+      },
+      "routes": {
+        "north": {
+          "steps": 16,
+          "shadow": 1
+        },
+        "south": {
+          "steps": 16,
+          "shadow": 4
+        }
+      },
+      "remoteByteContentVerified": true,
+      "exactCountsVerified": true,
+      "actualItemCount": 260
+    },
+    {
+      "id": "C",
+      "file": "ARENA16_C_RISK_SHORTCUT.json",
+      "sha": "897009a83326b84dc3dbfb95ad681f52ffb4fe49",
+      "expected": "897009a83326b84dc3dbfb95ad681f52ffb4fe49",
+      "items": 198,
+      "counts": {
+        "0": 140,
+        "1": 46,
+        "4": 1,
+        "5": 1,
+        "6": 4,
+        "7": 4,
+        "8": 2
+      },
+      "routes": {
+        "exposed": {
+          "steps": 11,
+          "shadow": 0
+        },
+        "shielded": {
+          "steps": 15,
+          "shadow": 8
+        }
+      },
+      "remoteByteContentVerified": true,
+      "exactCountsVerified": true,
+      "actualItemCount": 198
+    }
+  ],
+  "tests": {
+    "actualRun1": "V8-source+actual-MapDocument-original-blobs; A/B/C: all routes centerline and 8 collider AABB rays valid, shadow counts and open area measured; P16 creator tool execution",
+    "actualRun2": "python /tmp/verify_b0125_p16.py via container local offline Python: 3/3 exact reconstructed original Git-blob SHA1 matches real remote published blobs; counts/unique/corners validated",
+    "actualRun3": "python /tmp/b0125_p16_independent.py via container local offline Python: 60/60 assertions PASS; 8/8 original source-derived perimeter rays each scene; 3/3 deliberately corrupted four-corner thin-Wall negatives rejected, route length and shadow counts",
+    "sourceScriptInRepo": "Research/B01-25/P16/verify_scenarios.mjs is authored and published; its direct Node CLI execution was NOT_RUN in this session; portable command: node Research/B01-25/P16/verify_scenarios.mjs",
+    "originalCSharpExecution": "NOT_RUN",
+    "unityEdit": "NOT_RUN",
+    "unityPlay": "NOT_RUN",
+    "windowsPlayer": "NOT_RUN",
+    "lightHeavyPhysical": "NOT_RUN",
+    "human": "NOT_RUN"
+  },
+  "knownLimitations": [
+    "Grid-path and 2D source AABB centerline are not Physics.Raycast or chassis wheel clearance.",
+    "B01-21 mapgen seeds are not used in these deterministic hand-authored maps.",
+    "Enemy watchpoints, objectives, rewards are manifest proposals only; MapDocument v2 has no combat AI objectives.",
+    "No CODEX_ACK/Unity import/integrated game claim. CV-05 existing queue. Independent B01-61/B01-21 receiver still pending.",
+    "P0 save protections require isolated test profile."
+  ],
+  "independentQA": "PENDING",
+  "integrated": false
+}
