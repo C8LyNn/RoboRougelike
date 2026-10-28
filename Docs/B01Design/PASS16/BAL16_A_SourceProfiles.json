@@ -1,0 +1,232 @@
+{
+  "schema": "B01-10-PASS16-ORIGINAL-BALANCE-PROFILES/v1",
+  "packageId": "B01-10-BAL16-A",
+  "status": "ORIGINAL_SOURCE_NUMBERS_RESEARCH_ONLY",
+  "verifiedCodex": {
+    "pr": 310,
+    "sha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+    "sourceBlobs": {
+      "Assets/R4/R4WeaponDefinition.cs": "502f6d7f70d4e8078260de632ab181f244a4d730",
+      "Assets/R3/R3VehicleModel.cs": "8cc68faf89793c3a803e5807594c9faf0df10091",
+      "Assets/R3/R3VehicleCatalog.cs": "f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
+      "Assets/R3/R3VehicleAssembly.cs": "49fab51ac993128a9965df38ce32489f493b257a",
+      "Assets/R6/R6VehicleDrive.cs": "6e5991cf263ac64b943dc4ac09a546d65ad2fa45"
+    }
+  },
+  "limits": {
+    "mountedWeaponFamilies": 2,
+    "sourceModel": "R3VehicleModel.MountedWeaponTypes/CheckPlacement",
+    "barrelsPhysicallyMounted": "NO_SOURCE_GLOBAL_MAX; AUTHORING_COLLISION_REQUIRED",
+    "noGameplayMutation": true
+  },
+  "weaponProfiles": [
+    {
+      "id": "Basic",
+      "displayName": "Działo podstawowe",
+      "damage": 40,
+      "intervalSeconds": 0.38,
+      "projectileSpeedMps": 34,
+      "diameterMeters": 0.2,
+      "projectileMass": 1.8,
+      "mountedMassKg": 24,
+      "partHp": 140,
+      "buyScrap": 30,
+      "analysisMode": "SIMPLE_INTERVAL_PROJECTILE"
+    },
+    {
+      "id": "Automatic",
+      "displayName": "Karabin automatyczny",
+      "damage": 12,
+      "intervalSeconds": 0.12,
+      "projectileSpeedMps": 42,
+      "diameterMeters": 0.1,
+      "projectileMass": 0.6,
+      "mountedMassKg": 18,
+      "partHp": 90,
+      "buyScrap": 36,
+      "analysisMode": "SIMPLE_INTERVAL_PROJECTILE"
+    },
+    {
+      "id": "Heavy",
+      "displayName": "Ciężka armata",
+      "damage": 100,
+      "intervalSeconds": 1.25,
+      "projectileSpeedMps": 24,
+      "diameterMeters": 0.3,
+      "projectileMass": 5,
+      "mountedMassKg": 55,
+      "partHp": 220,
+      "buyScrap": 55,
+      "analysisMode": "SIMPLE_INTERVAL_PROJECTILE"
+    },
+    {
+      "id": "Shotgun",
+      "displayName": "WPN-001 Shotgun",
+      "damage": 9,
+      "intervalSeconds": 0.85,
+      "projectileSpeedMps": 58,
+      "diameterMeters": 0.1,
+      "projectileMass": 0.2,
+      "mountedMassKg": 28,
+      "partHp": 140,
+      "buyScrap": 45,
+      "analysisMode": "NATIVE_SPECIAL_BEHAVIOR_REQUIRED"
+    },
+    {
+      "id": "Railgun",
+      "displayName": "WPN-002 Railgun",
+      "damage": 65,
+      "intervalSeconds": 2.4,
+      "projectileSpeedMps": 85,
+      "diameterMeters": 0.15,
+      "projectileMass": 0.3,
+      "mountedMassKg": 44,
+      "partHp": 180,
+      "buyScrap": 65,
+      "analysisMode": "NATIVE_SPECIAL_BEHAVIOR_REQUIRED"
+    },
+    {
+      "id": "BeamCutter",
+      "displayName": "WPN-003 Beam Cutter",
+      "damage": 35,
+      "intervalSeconds": 0.02,
+      "projectileSpeedMps": 0,
+      "diameterMeters": 0.065,
+      "projectileMass": 0,
+      "mountedMassKg": 30,
+      "partHp": 130,
+      "buyScrap": 55,
+      "analysisMode": "NATIVE_SPECIAL_BEHAVIOR_REQUIRED"
+    },
+    {
+      "id": "RocketLauncher",
+      "displayName": "WPN-004 Rocket Launcher",
+      "damage": 60,
+      "intervalSeconds": 1.7,
+      "projectileSpeedMps": 18,
+      "diameterMeters": 0.24,
+      "projectileMass": 1,
+      "mountedMassKg": 38,
+      "partHp": 160,
+      "buyScrap": 60,
+      "analysisMode": "NATIVE_SPECIAL_BEHAVIOR_REQUIRED"
+    },
+    {
+      "id": "RotarySaw",
+      "displayName": "WPN-005 Rotary Saw",
+      "damage": 52,
+      "intervalSeconds": 0.02,
+      "projectileSpeedMps": 0,
+      "diameterMeters": 1.8,
+      "projectileMass": 0,
+      "mountedMassKg": 25,
+      "partHp": 130,
+      "buyScrap": 50,
+      "analysisMode": "NATIVE_SPECIAL_BEHAVIOR_REQUIRED"
+    },
+    {
+      "id": "EmpEmitter",
+      "displayName": "WPN-006 EMP Emitter",
+      "damage": 0,
+      "intervalSeconds": 12,
+      "projectileSpeedMps": 0,
+      "diameterMeters": 0,
+      "projectileMass": 0,
+      "mountedMassKg": 30,
+      "partHp": 140,
+      "buyScrap": 65,
+      "analysisMode": "NATIVE_SPECIAL_BEHAVIOR_REQUIRED"
+    }
+  ],
+  "vehicleDesigns": [
+    {
+      "id": "Light",
+      "widthHalf": 1,
+      "lengthHalf": 2,
+      "layers": 1,
+      "wheels": 4,
+      "coreHp": 80,
+      "designSpeed": 10,
+      "designTurnSpeed": 105,
+      "armorCount": 14,
+      "gunCount": 1,
+      "baselineMassKg": 192
+    },
+    {
+      "id": "Standard",
+      "widthHalf": 2,
+      "lengthHalf": 3,
+      "layers": 2,
+      "wheels": 12,
+      "coreHp": 100,
+      "designSpeed": 7.5,
+      "designTurnSpeed": 82,
+      "armorCount": 69,
+      "gunCount": 1,
+      "baselineMassKg": 728
+    },
+    {
+      "id": "Heavy",
+      "widthHalf": 3,
+      "lengthHalf": 4,
+      "layers": 2,
+      "wheels": 12,
+      "coreHp": 180,
+      "designSpeed": 5.5,
+      "designTurnSpeed": 60,
+      "armorCount": 125,
+      "gunCount": 1,
+      "baselineMassKg": 1176
+    }
+  ],
+  "economy": {
+    "repairQuote": "health>=1 -> 0; health<1 -> max(1, ceil((1-health)*Price*0.35)); health<=0 -> min(Price-1,quote) when Price>1, else 0",
+    "dismantleQuote": "floor(Price*0.25*clamp01(health))",
+    "sourceRate35Pct": 0.35,
+    "sourceDismantle25Pct": 0.25,
+    "sourceMaxWallet": 100000,
+    "assumeNoIncomeFromWhatIf": true
+  },
+  "mobility": {
+    "source": "R3VehicleAssembly.TuneChassis",
+    "originalMassPolicy": "source original = Model.Design.Parts.Sum(R4WeaponDefinition.PartMass)",
+    "actualMassPolicy": "source actual = operational mounted R6VehicleDrive.PartMass() sum; simplified all-parts-alive profile assumes R4 mass per part",
+    "weightFactorClamp": [
+      0.65,
+      1.15
+    ],
+    "wheelBonusClamp": [
+      0.8,
+      1.15
+    ],
+    "wheelDeltaBonus": 0.025,
+    "sourceR6MassMin": 20,
+    "physicalAccelerationNotModeled": true
+  },
+  "simulation": {
+    "targetHpChoices": [
+      80,
+      100,
+      180,
+      220
+    ],
+    "maxSeconds": 30,
+    "precisionHitProbabilities": [
+      0.55,
+      0.75,
+      1
+    ],
+    "trialSeeds": 32,
+    "weaponIntervalScale": 1,
+    "damageScale": 1,
+    "defaultAccuracy": 0.75,
+    "explicitAssumptions": [
+      "Only Basic, Automatic and Heavy simple bullets evaluated. Native reload/jam/EMP/beam/saw/rail/shotgun/rocket logic excluded.",
+      "Shots initialized at t=0 and repeated by nominal interval; per-gun deterministic Bernoulli hit based on seeded PRNG; 1 projectile hit = full nominal damage to one abstract target HP pool.",
+      "No per-part destruction, damage falloff, projectile flight, aim trajectory, blocked contacts, reload/overheat, movement, teammate collision, angular momentum or actual Unity frame execution.",
+      "2/6/12 gun mounting is a hypothetical arithmetic comparison; not a valid blueprint/mount or fit guarantee.",
+      "Weight-sensitive max speed uses original TuneChassis clamp only under all parts operational and unchanged wheels; not a traction/accelerometer measure.",
+      "Price, Health, Mass, Damage and interval are actual exact original source literals, not design tuning approvals."
+    ]
+  }
+}

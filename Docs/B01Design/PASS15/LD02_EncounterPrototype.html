@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LD02 — prototyp zasad starcia B01-10</title>
+<style>
+:root {font-family:system-ui,-apple-system,sans-serif;color-scheme:dark;background:#101821;color:#edf5f9}
+* {box-sizing:border-box}
+body{margin:0;max-width:1190px;margin-inline:auto;padding:20px}
+header{margin-bottom:16px}
+h1{font-size:1.7rem;margin:0 0 .4rem}h2{font-size:1.15rem;margin:0 0 .65rem}
+p{line-height:1.5}
+small,.sub{color:#9fc0c9}
+.notice{border-left:3px solid #f8c56c;background:#252922;padding:12px;margin:12px 0;line-height:1.5}
+.layout{display:grid;grid-template-columns:minmax(280px,1.4fr) minmax(260px,1fr);gap:15px;align-items:start}
+section{border:1px solid #304451;border-radius:12px;background:#172632;padding:16px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:2px;width:100%;margin:14px 0 8px}
+.cell{aspect-ratio:1;min-width:0;display:flex;align-items:center;justify-content:center;border-radius:3px;background:#28414a;font-size:clamp(9px,1.2vw,15px);font-weight:650}
+.cell.wall{background:#69747e}.cell.corner{background:#8b8d94}.cell.pillar{background:#ac7f56}.cell.barrier{background:#be8e3f}.cell.route{box-shadow:inset 0 0 0 2px #47d3c4}.cell.spawn{background:#196b5e}.cell.finish{background:#5b3e88}.cell.route.spawn,.cell.route.finish{outline:1px solid #47d3c4}
+.legend{font-size:.78rem;line-height:1.65;color:#c9dde4}.legend b{display:inline-block;padding:0 5px;border-radius:3px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+label{display:inline-flex;align-items:center;gap:7px;font-size:.9rem}
+select{border-radius:6px;padding:7px;background:#0f202a;color:inherit;border:1px solid #5a7180}
+button{border:1px solid #477182;background:#1a4854;color:#f2fdff;border-radius:7px;padding:10px 12px;font:inherit;cursor:pointer}
+button:hover:not(:disabled){background:#216677}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #f4ce75;outline-offset:2px}
+button:disabled{opacity:.32;cursor:not-allowed}
+button.primary{background:#136b64;border-color:#1aa995}
+button.danger{background:#6c343d;border-color:#a94f5b}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;margin-top:12px}
+.kv dt{color:#a7c6cd}.kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.status{border:1px solid #456673;background:#0d1d25;border-radius:8px;padding:12px;min-height:75px;margin-top:12px;line-height:1.4}
+#error{color:#ffd89b;min-height:1.5em}
+details{margin-top:12px;color:#b6cdd3}summary{cursor:pointer}
+footer{margin-top:18px;font-size:.8rem;color:#aec6cd}
+@media(max-width:760px){body{padding:10px}.layout{grid-template-columns:1fr}section{padding:12px}.cell{font-size:10px}}
+</style>
+</head>
+<body>
+<header>
+<h1>LD02 — dwa podejścia, dwa cele</h1>
+<p class="sub">B01-10 • interaktywny prototyp zasad, zbudowany na naprawionej mapie B01-25. Otwarty przejazd 28 m albo osłonięty objazd 44 m.</p>
+<div class="notice"><strong>RESEARCH ONLY — NIE JEST TO GRA UNITY.</strong> Obrażenia za podejście (18/7 HP), dwa cele i ich eliminacja są wyłącznie testowymi regułami. W oryginalnym edytorze <code>MapWorld.Finished</code> oznacza tylko dotknięcie mety podczas jazdy próbnej. Brak prawdziwych przeciwników, zasięgu widzenia, nagród, fizyki Light/Heavy i zapisu progresji.</div>
+</header>
+<div class="layout">
+<section aria-label="Mapa i wybór podejścia">
+<h2>Mapa LD02 — 12 × 10 pól</h2>
+<div class="grid" id="map" role="img" aria-label="Autorska mapa: obwód, osłony, start i meta. Szmaragdowe ramki pokazują aktualnie wybraną trasę."></div>
+<div class="legend">
+<b style="background:#196b5e">S</b> Start
+<b style="background:#5b3e88">F</b> Meta
+<b style="background:#69747e">■</b> Ściana
+<b style="background:#8b8d94">■</b> Narożnik naprawiony
+<b style="background:#ac7f56">●</b> Filar
+<b style="background:#be8e3f">▰</b> Niska osłona
+</div>
+<p class="sub">Pola tras to centra komórek (siatka 4 m). Przejezdność pojazdu oraz ochrona przez osłony nie zostały zmierzone w PhysX.</p>
+<h2>Wybór podejścia</h2>
+<div class="bar">
+<button id="openRoute">Otwarta: 28 m, −18 HP*</button>
+<button id="coverRoute">Objazd: 44 m, −7 HP*</button>
+</div>
+<small>*Hipotetyczne koszty do testowania decyzji, nie zaimplementowane obrażenia w RoboRougelike.</small>
+</section>
+<section aria-label="Sterowanie i wynik próby">
+<h2>Konfiguracja robota</h2>
+<div class="bar">
+<label>Rodziny broni
+<select id="families"><option value="1">1 — tylko A</option><option value="2" selected>2 — A oraz B</option><option value="3">3 — niedozwolone</option></select>
+</label>
+<label>Liczba luf
+<select id="barrels"><option>2</option><option selected>6</option><option>12</option><option>14</option></select></label>
+<label><input type="checkbox" checked id="drive"> Sprawny wybrany napęd</label>
+</div>
+<div class="bar"><button class="primary" id="start">Rozpocznij próbę</button><button id="reset">Ponów / reset</button></div>
+<dl class="kv">
+<dt>Stan</dt><dd id="phase"></dd>
+<dt>Trasa</dt><dd id="route"></dd>
+<dt>Punkty HP</dt><dd id="hp"></dd>
+<dt>Wrogowie wyeliminowani</dt><dd id="kills"></dd>
+<dt>Dystans po siatce</dt><dd id="distance"></dd>
+<dt>Nagroda / Złom</dt><dd id="scrap">0</dd>
+</dl>
+<h2>Akcje walki</h2>
+<div class="bar">
+<button id="fireA">Strzel A / LPM</button>
+<button id="fireB">Strzel B / PPM</button>
+<button id="hit">Otrzymaj 35 obrażeń</button>
+<button id="sameFrame">Obrażenia krytyczne + 2 eliminacje (1 klatka)</button>
+</div>
+<h2>Meta i zakończenie</h2>
+<div class="bar"><button class="primary" id="finish">Dotknij mety</button><button class="danger" id="abort">Przerwij próbę</button></div>
+<div class="status" aria-live="polite" role="status">
+<div id="message"></div><strong id="error"></strong>
+</div>
+<details><summary>Techniczne granice prototypu</summary>
+<p>Stan jest lokalny w pamięci przeglądarki i deterministyczny. Nie zapisuje danych i nie wysyła żądań. Brak prawdziwej broni, cooldownów, ekonomii, fizyki, nowych eventów Unity i importowanego formatu encounter. Nawet wygrana wyświetlona tutaj nie oznacza nagrody ani zakończenia misji w grze.</p>
+</details>
+</section>
+</div>
+<footer>Źródło poziomu B01-25: <code>f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84</code> / blob <code>e39e2f174984832bd97311c050e3c22fd6fb1175</code>. Naprawione narożniki = 4 Platform, a nie zweryfikowane kolizje w Unity. Wszystkie zmiany kodu źródłowego gry należą wyłącznie do Codexa.</footer>
+<script>
+/* B01-10 PASS15 — LD02 prototype-only rule engine.
+ * Research, NOT Unity R1RunController or a Codex gameplay integration.
+ * No real enemy spawning, no player physics, no salvage or Scrap awards.
+ * Browser: window.LD02Encounter; Node/validator: globalThis.LD02Encounter.
+ * Config is exactly LD02_EncounterRuleset_R1.json; no external libraries.
+ */
+(function(root) {
+  "use strict";
+  const validNames = new Set(["Basic", "Automatic", "Heavy", "Shotgun", "Railgun",
+    "BeamCutter", "RocketLauncher", "RotarySaw", "EmpEmitter"]);
+
+  function cloneLoadout(value) {
+    const x = value || {};
+    return {
+      types: Array.isArray(x.types) ? x.types.slice() : ["Basic","Automatic"],
+      barrels: x.barrels === undefined ? 6 : x.barrels,
+      functionalDrive: x.functionalDrive === undefined ? true : !!x.functionalDrive
+    };
+  }
+  function validateLoadout(input) {
+    const l = cloneLoadout(input);
+    if (!l.functionalDrive) return "no-selected-drive";
+    if (l.types.length === 0) return "no-functional-weapon";
+    if (l.types.length > 2) return "max-2-families";
+    if (l.types.some(x => !validNames.has(x))) return "invalid-weapon-family";
+    if (new Set(l.types).size !== l.types.length) return "duplicate-family";
+    if (!Number.isInteger(l.barrels) || l.barrels < l.types.length) return "invalid-barrel-count";
+    return null;
+  }
+  function initial(loadout) {
+    return {
+      phase: "setup", loadout: cloneLoadout(loadout), route: null,
+      hp: 100, kills: 0, remaining: 2, gridSteps: 0, scrap: 0,
+      lastError: null, message: "Wybierz konfigurację i rozpocznij próbę.",
+      events: 0
+    };
+  }
+  function advance(state, event, config) {
+    const s = { ...state, loadout: cloneLoadout(state.loadout), lastError: null, events: state.events + 1 };
+    const e = event || {};
+    if (e.type === "retry") return initial(s.loadout);
+    if (e.type === "loadout") {
+      if (s.phase !== "setup") { s.lastError = "loadout-locked"; return s; }
+      s.loadout = cloneLoadout(e.value);
+      s.message = "Zmieniono konfigurację prototypu.";
+      return s;
+    }
+    if (e.type === "start") {
+      if (s.phase !== "setup") { s.lastError = "already-started"; return s; }
+      const error = validateLoadout(s.loadout);
+      if (error) { s.lastError = error; s.message = "Start odmówiony: " + error; return s; }
+      s.phase = "approach";
+      s.message = "Wybierz trasę: krótszą otwartą lub dłuższy objazd.";
+      return s;
+    }
+    if (e.type === "abort") {
+      if (["approach", "combat", "extract"].includes(s.phase)) {
+        s.phase = "lost"; s.message = "Próba przerwana, wybierz PONÓW.";
+      } else s.lastError = "not-running";
+      return s;
+    }
+    if (e.type === "route") {
+      if (s.phase !== "approach") { s.lastError = "route-not-available"; return s; }
+      const route = config.scenario.routes.find(x => x.id === e.id);
+      if (!route) { s.lastError = "unknown-route"; return s; }
+      s.route = route.id;
+      s.gridSteps = route.nominalMeters / config.scenario.gridMeters;
+      s.hp = Math.max(0, s.hp - route.prototypeExposureDamage);
+      s.phase = s.hp === 0 ? "lost" : "combat";
+      s.message = "Podejście " + route.label + " — hipotetyczne obrażenia " +
+        route.prototypeExposureDamage + " HP; eliminuj cele E1/E2.";
+      return s;
+    }
+    if (e.type === "frame" || e.type === "hit") {
+      if (s.phase !== "combat" && s.phase !== "extract") {
+        s.lastError = "no-active-combat"; return s;
+      }
+      const amount = e.type === "hit" ? e.damage : e.damage;
+      const count = e.type === "frame" ? (e.defeated === undefined ? 0 : e.defeated) : 0;
+      if (!Number.isInteger(amount) || amount < 0 ||
+          !Number.isInteger(count) || count < 0) {
+        s.lastError = "invalid-frame"; return s;
+      }
+      // Mirrors published R1 defeat-before-victory precedence as a PROTOTYPE contract.
+      s.hp = Math.max(0, s.hp - amount);
+      if (s.hp === 0) {
+        s.phase = "lost";
+        s.message = "PORAŻKA: uszkodzenie ma pierwszeństwo w tej samej klatce.";
+        return s;
+      }
+      const killed = Math.min(s.remaining, count);
+      s.kills += killed;
+      s.remaining -= killed;
+      if (s.remaining === 0) s.phase = "extract";
+      s.message = killed ? "Cele wyeliminowane: " + s.kills + "/2" :
+        "Otrzymano " + amount + " obrażeń.";
+      return s;
+    }
+    if (e.type === "fire") {
+      if (s.phase !== "combat") { s.lastError = "fire-not-available"; return s; }
+      if (e.group !== "A" && e.group !== "B") {
+        s.lastError = "invalid-fire-group"; return s;
+      }
+      if (e.group === "B" && s.loadout.types.length < 2) {
+        s.lastError = "missing-group-b"; return s;
+      }
+      s.remaining -= 1;
+      s.kills += 1;
+      s.phase = s.remaining === 0 ? "extract" : "combat";
+      s.message = "Zgrupowanie " + e.group + ": cel " + s.kills + "/2. " +
+        (s.phase === "extract" ? "Można dotknąć mety." : "Drugi cel pozostaje.");
+      return s;
+    }
+    if (e.type === "finish") {
+      if (s.phase === "extract" && s.hp > 0 && s.kills === 2) {
+        s.phase = "won";
+        s.message = "WYGRANA BADAWCZA: 2/2 cele i meta. Złom: 0.";
+      } else {
+        s.lastError = "objectives-not-clear";
+        s.message = "META NIE ZALICZA STARĆ: najpierw 2/2 cele.";
+      }
+      return s;
+    }
+    s.lastError = "unknown-event";
+    return s;
+  }
+  root.LD02Encounter = Object.freeze({ initial, advance, validateLoadout });
+})(globalThis);
+
+const rules = {"schema":"B01-10-encounter-research/v1","assetId":"LD02_ARENA_ENCOUNTER_P15_R1","status":"RESEARCH_ONLY_SOURCE_AND_PLAYER_NOT_RUN","currentGame":{"codexPr":310,"sha":"231005c6d0351945a8ee6684f3856af118f0e94f","sourceR1RunControllerBlob":"a675950028ce01a9ef450ad57dd5b524ab838b2f","sourceR3VehicleModelBlob":"9f1bf190c7535182c6ce375cbfe67f5b2862e811","sourceMapDraftBlob":"b5f8f395f93972c0ede000701dbbada8fcfcdfdb"},"sourceMap":{"owner":"B01-25","path":"Research/B01-25/P14/LD02_ARENA.json","commit":"f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84","gitBlobSha1":"e39e2f174984832bd97311c050e3c22fd6fb1175","version":2,"globalFloor":false,"expectedItems":168,"expectedCorners":[{"kind":6,"x":0,"z":0},{"kind":6,"x":11,"z":0},{"kind":6,"x":0,"z":9},{"kind":6,"x":11,"z":9}]},"authorities":{"MapDraft.TryLoad":"MapDocument v2 ground, wall, platform, cover, unique Spawn/Finish","MapWorld.Finished":"SANDBOX_TOUCH_ONLY player Rigidbody collider; no run reward or encounter victory by finish alone","R1RunController.Update":"checks player defeat before genuine Encounter.Cleared/CheckpointRace/Won/RoadChallenge completed; only game-owned R1 victory grants rewards","R3VehicleModel":"at most 2 mounted distinct R4WeaponKind families; no artificial max-four physical barrel cap; selected functional drive required for deployment","CHL-003":"separate frozen isolated checkpoint package; NOT present in this map/editor sandbox or called by this design asset"},"scenario":{"name":"LD02 — dwa podejścia do osłon","playerGoal":"prototype: defeat exactly two simulated targets and reach extraction; actual custom Unity map does not currently implement this combined objective","startCell":[2,5],"finishCell":[9,5],"gridMeters":4,"routes":[{"id":"OPEN","label":"Otwarty przejazd","waypoints":[[2,5],[3,5],[4,5],[5,5],[6,5],[7,5],[8,5],[9,5]],"nominalMeters":28,"prototypeExposureDamage":18,"intent":"7 grid edges, shortest; exposure/damage is candidate-only"},{"id":"COVER","label":"Osłonięty objazd","waypoints":[[2,5],[2,4],[2,3],[3,3],[4,3],[5,3],[6,3],[7,3],[8,3],[9,3],[9,4],[9,5]],"nominalMeters":44,"prototypeExposureDamage":7,"intent":"11 grid edges, longer northern passage near existing pillars; actual cover/LOS is unverified"}],"prototypeOnly":{"enemyIds":["E1","E2"],"enemyCount":2,"playerStartHp":100,"ammo":"ABSTRACT_UNLIMITED_FOR_PROTOTYPE","targetDamagePerShot":"ONE ABSTRACT TARGET DEFEATED PER SHOT","rewardScrap":0,"killGateBeforeFinish":true,"resetAllowedAfterTerminal":true,"exitOrAbortAlwaysAvailable":true,"concurrentDamagePrecedesKill":true,"barrelExamples":[2,6,12],"maxWeaponFamilies":2}},"tests":{"positive":[{"id":"POS01_OPEN_TWO_KILLS","actionSequence":["start","route:OPEN","fire:A","fire:A","finish"],"expectPhase":"won","expectKills":2,"expectHp":82},{"id":"POS02_COVER_TWELVE_GUNS","actionSequence":["start","route:COVER","fire:B","fire:A","finish"],"expectPhase":"won","expectKills":2,"expectHp":93}],"negative":[{"id":"NEG01_FINISH_EARLY","actionSequence":["start","route:OPEN","finish"],"expectPhase":"combat","expectKills":0,"expectScrap":0},{"id":"NEG02_DAMAGE_WINS_RACE","actionSequence":["start","route:COVER","frame:999:2","finish"],"expectPhase":"lost","expectKills":0,"expectScrap":0},{"id":"NEG03_THIRD_FAMILY","actionSequence":["start"],"loadout":{"types":["Basic","Automatic","Heavy"],"barrels":12,"functionalDrive":true},"expectPhase":"setup","expectError":"max-2-families"}]},"proposed_unimplemented":["LD02 arena encounter-spawner adapter for two enemy instances E1/E2; NOT in MapDocument v2","Combined kill-then-finish win condition; current original MapWorld.Finished is only editor TestDrive touch","Route exposure value 18 versus 7 HP is hypothetical training feedback, not actual Enemy AI LOS/cover damage balance","Physical route traversability for both Light/Heavy, enemy placement, cover-induced line of sight, timing and reward economy","Persistent mission state, reset-from-checkpoint, ammo/cooldown, 2/6/12 gun group-specific firing and saved proof","Currency reward and salvage are intentionally disabled in prototype; only Codex may integrate via original R1 victory transaction"],"delivery":{"owner":"B01-10","scope":"Docs/B01Design/PASS15/** only","codexExistingQueue":"CV-05","unity":"NOT_RUN","actualPlayer":"NOT_RUN","nativeGate":"NOT_CLAIMED","dataValidation":"6/6 SOURCE-DATA CHECKS EXECUTED IN CONNECTOR V8; no original Unity"}};
+const mapObjects = [[6,0,0],[6,11,0],[1,0,1],[1,11,1],[1,0,2],[1,11,2],[1,0,3],[1,11,3],[1,0,4],[1,11,4],[1,0,5],[1,11,5],[1,0,6],[1,11,6],[1,0,7],[1,11,7],[1,0,8],[1,11,8],[6,0,9],[6,11,9],[1,1,0],[1,1,9],[1,2,0],[1,2,9],[1,3,0],[1,3,9],[1,4,0],[1,4,9],[1,5,0],[1,5,9],[1,6,0],[1,6,9],[1,7,0],[1,7,9],[1,8,0],[1,8,9],[1,9,0],[1,9,9],[1,10,0],[1,10,9],[7,3,2],[7,3,7],[7,8,2],[7,8,7],[8,5,4],[8,6,6],[4,2,5],[5,9,5]];
+const E = globalThis.LD02Encounter;
+const $ = id => document.getElementById(id);
+let state = E.initial();
+function act(event) { state = E.advance(state,event,rules); render(); }
+function selectedLoadout() {
+  const n = Number($("families").value);
+  return {types:["Basic","Automatic","Heavy"].slice(0,n),barrels:Number($("barrels").value),functionalDrive:$("drive").checked};
+}
+$("start").addEventListener("click",()=>{act({type:"loadout",value:selectedLoadout()});act({type:"start"});});
+$("reset").addEventListener("click",()=>act({type:"retry"}));
+$("openRoute").addEventListener("click",()=>act({type:"route",id:"OPEN"}));
+$("coverRoute").addEventListener("click",()=>act({type:"route",id:"COVER"}));
+$("fireA").addEventListener("click",()=>act({type:"fire",group:"A"}));
+$("fireB").addEventListener("click",()=>act({type:"fire",group:"B"}));
+$("hit").addEventListener("click",()=>act({type:"hit",damage:35}));
+$("sameFrame").addEventListener("click",()=>act({type:"frame",damage:999,defeated:2}));
+$("finish").addEventListener("click",()=>act({type:"finish"}));
+$("abort").addEventListener("click",()=>act({type:"abort"}));
+const markers = new Map([[1,["wall","■"]],[6,["corner","■"]],[7,["pillar","●"]],[8,["barrier","▰"]],[4,["spawn","S"]],[5,["finish","F"]]]);
+function drawMap() {
+  const ids = new Set((rules.scenario.routes.find(r=>r.id===state.route)?.waypoints||[]).map(v=>v.join(",")));
+  const parts = new Map(mapObjects.map(([kind,x,z])=>[x+","+z,kind]));
+  const fragment = document.createDocumentFragment();
+  for(let z=0;z<10;z++)for(let x=0;x<12;x++){
+    const elem=document.createElement("div");const key=x+","+z;const item=markers.get(parts.get(key));
+    elem.className="cell"+(item?" "+item[0]:"")+(ids.has(key)?" route":"");
+    elem.textContent=item?item[1]:"";
+    elem.title=(item?item[0]:"podłoże")+" ("+key+")";
+    fragment.append(elem);
+  }
+  $("map").replaceChildren(fragment);
+}
+function render() {
+  $("phase").textContent=state.phase;
+  $("route").textContent=state.route||"brak";
+  $("hp").textContent=state.hp+" / 100";
+  $("kills").textContent=state.kills+" / 2";
+  $("distance").textContent=(state.gridSteps*4)+" m (siatka)";
+  $("scrap").textContent=String(state.scrap);
+  $("message").textContent=state.message;
+  $("error").textContent=state.lastError?("Odmowa: "+state.lastError):"";
+  const setup=state.phase==="setup",approach=state.phase==="approach",fight=state.phase==="combat";
+  for(const k of ["families","barrels","drive"])$(k).disabled=!setup;
+  $("start").disabled=!setup;
+  $("openRoute").disabled=$("coverRoute").disabled=!approach;
+  $("fireA").disabled=!fight;
+  $("fireB").disabled=!fight||state.loadout.types.length<2;
+  $("hit").disabled=$("sameFrame").disabled=!(fight||state.phase==="extract");
+  $("finish").disabled=!(fight||state.phase==="extract");
+  $("abort").disabled=!["approach","combat","extract"].includes(state.phase);
+  drawMap();
+}
+render();
+</script>
+</body>
+</html>

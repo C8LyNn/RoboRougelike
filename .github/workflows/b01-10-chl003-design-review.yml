@@ -1,0 +1,45 @@
+name: B01-10 CHL003 Design Acceptance Review
+on:
+  pull_request:
+    paths:
+      - 'Docs/B01Design/CHL003_W16/**'
+      - '.github/workflows/b01-10-chl003-design-review.yml'
+jobs:
+  review-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute genuine portable independent CHL design QA fixtures (NOT Unity)
+        run: node Docs/B01Design/CHL003_W16/validate.mjs
+      - name: Download EXACT pinned original CHL and PARTSIZE source into disposable input only
+        run: |
+          mkdir -p /tmp/b01-w26-original
+          git fetch --no-tags --depth=1 origin 077e692785aff2990a2d72a80fd1db62ac57b0e8
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003GateCrossing.cs > /tmp/b01-w26-original/chl_cross.cs
+          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003CourseController.cs > /tmp/b01-w26-original/chl_controller.cs
+          git show 077e692785aff2990a2d72a80fd1db62ac57b0e8:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-w26-original/chl_demo.cs
+          git show be2be0e4802bc3f450179901f9ae91c6d84bcb5b:Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs > /tmp/b01-w26-original/part_native.cs
+          git show be2be0e4802bc3f450179901f9ae91c6d84bcb5b:Assets/PARTSIZE001/Runtime/PartSizeContract.cs > /tmp/b01-w26-original/part_contract.cs
+      - name: W26 independent actual Git-blob pinned source audit and 21 acceptance policy fixtures (NOT Unity)
+        env:
+          W26_ORIGINAL_SOURCE_DIR: /tmp/b01-w26-original
+        run: node --test Docs/B01Design/CHL003_W16/W26_source_ownership_review.test.mjs
+      - name: Export four exact original CHL source inputs (motor, demo, PlayMode P07, telemetry)
+        run: |
+          mkdir -p /tmp/b01-chl-pass3
+          git fetch --no-tags --depth=1 origin 2355bff6026e22443b164aa9de816c27d3a289e9
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003VehicleMotor.cs > /tmp/b01-chl-pass3/motor.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs > /tmp/b01-chl-pass3/demo.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Tests/PlayMode/CHL003DemoAcceptancePlayModeTests.cs > /tmp/b01-chl-pass3/play.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003TrialMetrics.cs > /tmp/b01-chl-pass3/metrics.cs
+          git show 2355bff6026e22443b164aa9de816c27d3a289e9:Assets/RoboRougelikeChallenges/CHL003/Runtime/CHL003WheelSupportWindow.cs > /tmp/b01-chl-pass3/window.cs
+      - name: Pass 3 original source gameplay COVERAGE falsifiers (Unity NOT_RUN)
+        env:
+          P3_ORIGINAL_DIR: /tmp/b01-chl-pass3
+        run: node --test Docs/B01Design/CHL003_W16/P3_physical_coverage.test.mjs
+      - name: Run NEW W17 six-trial scorecard source-format positive and negative controls (native NOT_RUN)
+        run: node --test Docs/B01Design/CHL003_W16/W17_trial_scorecard.test.mjs

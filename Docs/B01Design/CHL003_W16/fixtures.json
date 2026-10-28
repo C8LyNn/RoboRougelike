@@ -1,0 +1,1313 @@
+{
+  "contractId": "CHL003_B01-10_W16_DESIGN_QA_R1",
+  "explanation": "Static thought-experiment fixtures; no Rigidbody/PhysX/native success claims. They test necessary gameplay acceptance invariants only.",
+  "scenarios": [
+    {
+      "id": "WIDTH-01",
+      "type": "width",
+      "input": {
+        "rigWidthM": 2.98,
+        "mainWidthM": 3.48,
+        "optionalWidthM": null,
+        "advertisesOptional": false
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_ONLY"
+      }
+    },
+    {
+      "id": "WIDTH-02",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 5.68,
+        "optionalWidthM": null,
+        "advertisesOptional": false
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_ONLY"
+      }
+    },
+    {
+      "id": "WIDTH-03",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 5.67,
+        "optionalWidthM": null,
+        "advertisesOptional": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MANDATORY_ROUTE_TOO_NARROW"
+      }
+    },
+    {
+      "id": "WIDTH-04",
+      "type": "width",
+      "input": {
+        "rigWidthM": 2.98,
+        "mainWidthM": 3.4,
+        "optionalWidthM": null,
+        "advertisesOptional": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MANDATORY_ROUTE_TOO_NARROW"
+      }
+    },
+    {
+      "id": "WIDTH-05",
+      "type": "width",
+      "input": {
+        "rigWidthM": 2.98,
+        "mainWidthM": 6.2,
+        "optionalWidthM": 3.7,
+        "advertisesOptional": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_ONLY"
+      }
+    },
+    {
+      "id": "WIDTH-06",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 6.2,
+        "optionalWidthM": 3.7,
+        "advertisesOptional": false
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "MAIN_VALID_OPTIONAL_BYPASS"
+      }
+    },
+    {
+      "id": "WIDTH-07",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 6.2,
+        "optionalWidthM": 3.7,
+        "advertisesOptional": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "OPTIONAL_ROUTE_MISADVERTISED"
+      }
+    },
+    {
+      "id": "WIDTH-08",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 5.5,
+        "optionalWidthM": 3.7,
+        "advertisesOptional": false
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "MANDATORY_ROUTE_TOO_NARROW"
+      }
+    },
+    {
+      "id": "WIDTH-09",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 6.1,
+        "optionalWidthM": 5.68,
+        "advertisesOptional": true
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_ONLY"
+      }
+    },
+    {
+      "id": "WIDTH-10",
+      "type": "width",
+      "input": {
+        "rigWidthM": 5.18,
+        "mainWidthM": 6.1,
+        "optionalWidthM": 5.5,
+        "advertisesOptional": true
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "OPTIONAL_ROUTE_MISADVERTISED"
+      }
+    },
+    {
+      "id": "GATE-01",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_EVENT_ONLY"
+      }
+    },
+    {
+      "id": "GATE-02",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "part-explosion",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "FOREIGN_ACTOR"
+      }
+    },
+    {
+      "id": "GATE-03",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 0,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "STALE_GENERATION"
+      }
+    },
+    {
+      "id": "GATE-04",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": true,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "PAUSED"
+      }
+    },
+    {
+      "id": "GATE-05",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 3,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "WRONG_CHECKPOINT_ORDER"
+      }
+    },
+    {
+      "id": "GATE-06",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": true,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "DUPLICATE_CONTACT"
+      }
+    },
+    {
+      "id": "GATE-07",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.006944444444444444,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "BAD_PHYSICS_TIMESTEP"
+      }
+    },
+    {
+      "id": "GATE-08",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "NO_FORWARD_PLANE_CROSSING"
+      }
+    },
+    {
+      "id": "GATE-09",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.9
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.98
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "NO_FORWARD_PLANE_CROSSING"
+      }
+    },
+    {
+      "id": "GATE-10",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 5.6,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "HULL_OUTSIDE_GATE_WIDTH"
+      }
+    },
+    {
+      "id": "GATE-11",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 4
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "HEIGHT_EXCLUDES_RIG"
+      }
+    },
+    {
+      "id": "GATE-12",
+      "type": "crossing",
+      "input": {
+        "phase": "Ready",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "NOT_RUNNING"
+      }
+    },
+    {
+      "id": "GATE-13",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 3.7,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 2.98,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "PASS",
+        "code": "GEOMETRY_EVENT_ONLY"
+      }
+    },
+    {
+      "id": "GATE-14",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 0,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 0,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 3.7,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "HULL_OUTSIDE_GATE_WIDTH"
+      }
+    },
+    {
+      "id": "GATE-15",
+      "type": "crossing",
+      "input": {
+        "phase": "Running",
+        "observedActorId": "robot-A",
+        "authorizedActorId": "robot-A",
+        "eventGeneration": 1,
+        "activeGeneration": 1,
+        "paused": false,
+        "checkpointIndex": 2,
+        "expectedIndex": 2,
+        "alreadyCredited": false,
+        "dt": 0.02,
+        "before": {
+          "x": 1,
+          "y": 2.5,
+          "z": 9.92
+        },
+        "after": {
+          "x": 1,
+          "y": 2.5,
+          "z": 10.15
+        },
+        "gate": {
+          "x": 0,
+          "z": 10,
+          "widthM": 6.2,
+          "yBottom": 0,
+          "yTop": 5
+        },
+        "rigWidthM": 5.18,
+        "rigHeightM": 3.8
+      },
+      "expected": {
+        "status": "REJECT",
+        "code": "HULL_OUTSIDE_GATE_WIDTH"
+      }
+    },
+    {
+      "id": "STATE-01",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Completed",
+        "index": 3,
+        "elapsed": 0,
+        "gen": 0,
+        "emissions": 1,
+        "ignored": 0,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-02",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Running",
+        "index": 0,
+        "elapsed": 0,
+        "gen": 0,
+        "emissions": 0,
+        "ignored": 1,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-03",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Running",
+        "index": 1,
+        "elapsed": 0,
+        "gen": 0,
+        "emissions": 0,
+        "ignored": 2,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-04",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Completed",
+        "index": 3,
+        "elapsed": 0,
+        "gen": 0,
+        "emissions": 1,
+        "ignored": 2,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-05",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "decorative",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Completed",
+        "index": 3,
+        "elapsed": 0,
+        "gen": 0,
+        "emissions": 1,
+        "ignored": 1,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-06",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "pause"
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "resume"
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Running",
+        "index": 1,
+        "elapsed": 0.04,
+        "gen": 0,
+        "emissions": 0,
+        "ignored": 2,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-07",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "fall"
+          },
+          {
+            "op": "retry"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Ready",
+        "index": 0,
+        "elapsed": 0,
+        "gen": 1,
+        "emissions": 0,
+        "ignored": 1,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-08",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "fall"
+          },
+          {
+            "op": "retry"
+          },
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 1
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 1
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 1
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 1
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Completed",
+        "index": 3,
+        "elapsed": 0,
+        "gen": 1,
+        "emissions": 1,
+        "ignored": 1,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-09",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": 0.04,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "tick",
+            "dt": 0.02
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Failed",
+        "index": 0,
+        "elapsed": 0.04,
+        "gen": 0,
+        "emissions": 0,
+        "ignored": 1,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-10",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          },
+          {
+            "op": "retry"
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Ready",
+        "index": 0,
+        "elapsed": 0,
+        "gen": 1,
+        "emissions": 1,
+        "ignored": 0,
+        "reason": null
+      }
+    },
+    {
+      "id": "STATE-11",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 2,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Invalid",
+        "index": 0,
+        "elapsed": 0,
+        "gen": 0,
+        "emissions": 0,
+        "ignored": 0,
+        "reason": "BAD_CHECKPOINT_COUNT"
+      }
+    },
+    {
+      "id": "STATE-12",
+      "type": "session",
+      "input": {
+        "actorId": "robot-A",
+        "checkpointCount": 3,
+        "limitSeconds": null,
+        "events": [
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 0
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 0
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 0
+          },
+          {
+            "op": "retry"
+          },
+          {
+            "op": "begin"
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 0,
+            "generation": 1
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 1,
+            "generation": 1
+          },
+          {
+            "op": "hit",
+            "actor": "robot-A",
+            "checkpoint": 2,
+            "generation": 1
+          },
+          {
+            "op": "finish",
+            "actor": "robot-A",
+            "generation": 1
+          }
+        ]
+      },
+      "expected": {
+        "phase": "Completed",
+        "index": 3,
+        "elapsed": 0,
+        "gen": 1,
+        "emissions": 2,
+        "ignored": 0,
+        "reason": null
+      }
+    }
+  ]
+}

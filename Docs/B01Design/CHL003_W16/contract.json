@@ -1,0 +1,57 @@
+{
+  "id": "CHL003_B01-10_W16_DESIGN_QA_R1",
+  "role": "B01-10 DESIGN AND BALANCE",
+  "classification": "REVIEW_ONLY_SUPPORT_OF_CHL003_PRODUCER_B01-20_NOT_THIRD_PACKAGE",
+  "sourceIssue": 91,
+  "governanceIssue": 276,
+  "sourceProducer": "B01-20",
+  "targetUnity": "6000.3.14f1",
+  "sampleRigs": {
+    "Light": {
+      "measuredWidthM": 2.98,
+      "heightM": 2.1
+    },
+    "Heavy": {
+      "measuredWidthM": 5.18,
+      "heightM": 3.8
+    }
+  },
+  "sampleOnly": "Illustrative actual measured widths from MAPGEN R6 context; heights are TEST FIXTURES, not certified current physical bounds; CHL producer must measure own rigs",
+  "clearanceEachSideM": 0.25,
+  "requiredMainWidthsM": {
+    "Light": 3.48,
+    "Heavy": 5.68
+  },
+  "mandatoryRoute": "EVERY advertised supported rig must complete required checkpoints via one physically driveable route, no required optional shortcut, no unavoidable fall/penalty due to width alone",
+  "optionalRoute": "Optional narrow bridge may serve Light; Heavy must retain an equivalent scoring-eligible main route. Geometric width acceptance is necessary, NOT sufficient for physical completion",
+  "checkpoints": {
+    "min": 3,
+    "max": 5,
+    "ordered": true,
+    "singleCreditPerCheckpointPerRun": true,
+    "positiveTravelDirection": "Z",
+    "hullMustBeWithinGate": true,
+    "eventGenerationRequired": true,
+    "actorIdentityRequired": true
+  },
+  "timer": {
+    "authority": "FixedUpdate 50Hz",
+    "fixedDeltaSeconds": 0.02,
+    "pausedNoAccrual": true,
+    "limitDisabledByDefault": true,
+    "deadlineTie": "TIMEOUT"
+  },
+  "finish": "Exactly one Completed emission per run and only after all checkpoints crossed in order",
+  "retries": "Retry clears index/elapsed/trigger dedup, increments generation; old collision callbacks ignored; no rewards or economy side effects",
+  "inputScope": "DESIGN ACCEPTANCE: does not implement Unity course, PhysX Rigidbody movement, trigger handlers, host adapter or rewards",
+  "evidence": {
+    "portableFixtureTests": "RUN_AT_SOURCE_COMMIT_WITH_NODE_CI",
+    "UnityCompile": "NOT_RUN",
+    "UnityEditMode": "NOT_RUN",
+    "UnityPlayMode": "NOT_RUN",
+    "physicalLightHeavy": "NOT_RUN",
+    "manualHuman": "NOT_RUN",
+    "independentB0160": "NOT_RUN",
+    "G2": "HOLD"
+  }
+}

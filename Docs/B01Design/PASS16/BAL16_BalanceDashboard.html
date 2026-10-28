@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboRougelike / BAL16 — laboratorium balansu</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color-scheme:dark;color:#eaf1f8;background:#0d141f}
+*{box-sizing:border-box}body{margin:0 auto;max-width:1250px;padding:22px}
+h1{font-size:clamp(1.45rem,3vw,2.1rem);margin:0 0 8px}
+h2{margin:0 0 12px;font-size:1.1rem}p{line-height:1.5}
+small,.sub{color:#aabccc;font-size:.87rem}
+.warning{border:1px solid #9a783b;background:#282317;padding:12px 15px;border-radius:10px;margin:15px 0}
+main{display:grid;grid-template-columns:310px minmax(0,1fr);gap:15px}
+section{border:1px solid #2c4058;background:#13212f;border-radius:12px;padding:16px;min-width:0}
+label{display:flex;flex-direction:column;gap:6px;margin:9px 0;font-size:.87rem;color:#b9cedd}
+select,input{font:inherit;width:100%;padding:9px;border:1px solid #647a8f;border-radius:7px;background:#142c3b;color:#f5fcff}
+button{padding:11px 15px;margin-top:11px;border-radius:8px;border:0;background:#19b49d;color:#071b19;font:inherit;font-weight:750;cursor:pointer;width:100%}
+button:hover{background:#42d7bf}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #ffe69c;outline-offset:2px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.metric{border:1px solid #334961;border-radius:10px;padding:10px;background:#172b3b}
+.metric strong{display:block;font-size:1.4rem;font-variant-numeric:tabular-nums}
+.metric span{font-size:.75rem;color:#bcd0dc}
+table{border-collapse:collapse;width:100%;font-size:.83rem}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid #314658}
+td{font-variant-numeric:tabular-nums}
+th{white-space:nowrap;color:#d9e6f0}
+tr:hover{background:#1a3447}
+.scroll{overflow-x:auto}
+.bar{display:inline-block;height:8px;border-radius:5px;background:#26c5af;min-width:2px;vertical-align:middle}
+.badge{display:inline-block;color:#ffdc9a;font-size:.73rem}
+#errors{min-height:18px;color:#ffa9a9}
+details{margin:17px 0;color:#c6d6e0}
+@media(max-width:800px){body{padding:10px}main{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+<h1>RoboRougelike — laboratorium balansu</h1>
+<p class="sub">B01-10 • PASS 16 • 2 rodziny broni • HP • masa • obrażenia • koszty zakupu i napraw • deterministyczne seedy</p>
+<div class="warning"><strong>Model badawczy, nie wynik z gry.</strong> Trzy bronie: Basic, Automatic i Heavy; pozostałe sześć ma odrębne mechaniki. Porównania 2/6/12 dział nie gwarantują fizycznego montażu. Cel jest jedną abstrakcyjną pulą HP; bez pocisków, trafień w części, fizyki, uzbrojenia specjalnego i AI. Szybkość to wyłącznie projekcja formuły masy z kodu, a nie zmierzony ruch.</div>
+</header>
+<main>
+<section aria-label="Konfiguracja symulatora">
+<h2>Parametry badania</h2>
+<label>Projekt kadłuba
+<select id="chassis"><option>Light</option><option selected>Standard</option><option>Heavy</option></select></label>
+<label>Rodzina A
+<select id="gunA"><option selected>Basic</option><option>Automatic</option><option>Heavy</option></select></label>
+<label>Rodzina B
+<select id="gunB"><option>Basic</option><option selected>Automatic</option><option>Heavy</option></select></label>
+<label>Liczba zamontowanych broni (po połowie na rodzinę)
+<select id="barrels"><option selected>2</option><option>6</option><option>12</option></select></label>
+<label>HP celu (porównanie bez pancerza)
+<select id="target"><option>80</option><option>100</option><option selected>180</option><option>220</option></select></label>
+<label>Szansa trafienia w modelu (nie rzeczywisty accuracy)
+<select id="accuracy"><option value="0.55">55%</option><option value="0.75" selected>75%</option><option value="1">100%</option></select></label>
+<label>Hipotetyczny budżet Złomu
+<select id="wallet"><option>60</option><option>120</option><option selected>300</option><option>600</option></select></label>
+<label>Hipotetyczna premia Złomu po zwycięstwie
+<select id="reward"><option selected>0</option><option>30</option><option>60</option></select></label>
+<button id="calculate">Przelicz zestaw i porównanie</button>
+<div id="errors" role="alert" aria-live="assertive"></div>
+<details>
+<summary>Dokładna proweniencja danych</summary>
+<p class="sub">Codex PR #310 @ 589b60a912096d1e9917cb0bbac73a53e7543b4f. R4WeaponDefinition: 502f6d7f70d4e8078260de632ab181f244a4d730. R3VehicleModel: 8cc68faf89793c3a803e5807594c9faf0df10091. 0HP odbudowa — stawka 35%, nie dawna propozycja 65%.</p>
+</details>
+</section>
+<section aria-label="Wyniki symulacji">
+<h2>Wybrany zestaw — wynik 32 powtarzalnych seedów</h2>
+<div class="metrics">
+<div class="metric"><strong id="outTtk">–</strong><span>Mediana TTK [s], próba modelowa</span></div>
+<div class="metric"><strong id="outDps">–</strong><span>Idealne DPS (100% trafień)</span></div>
+<div class="metric"><strong id="outHp">–</strong><span>HP wszystkich dział, nie wspólny pasek</span></div>
+<div class="metric"><strong id="outMass">–</strong><span>Masa całego robota [kg], przybliżenie</span></div>
+<div class="metric"><strong id="outSpeed">–</strong><span>Limit prędkości z formuły [m/s]</span></div>
+<div class="metric"><strong id="outBuy">–</strong><span>Koszt wszystkich dział [Złom]</span></div>
+<div class="metric"><strong id="outRepair">–</strong><span>Odbudowa wszystkich dział z 0 HP [Złom]</span></div>
+<div class="metric"><strong id="outBudget">–</strong><span>Możliwa liczba pełnych napraw (maks. 3)</span></div>
+<div class="metric"><strong id="outRate">–</strong><span>Odsetek eliminacji w 32 próbach</span></div>
+</div>
+<h2>Porównanie 2/6/12 luf — te same rodziny broni</h2>
+<div class="scroll"><table>
+<thead><tr><th>Luf</th><th>TTK med.</th><th>DPS</th><th>Masa [kg]</th><th>Model prędkości</th><th>Zakup</th><th>Naprawa 0 HP</th><th>Budżet</th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+<p class="sub">TTK=0 s oznacza eliminację przez hipotetyczną salwę w chwili startu (t=0), a nie prawdziwy natychmiastowy kill w Unity. Sumowanie HP luf nie oznacza wytrzymałości rdzenia.</p>
+<h2>Analiza kosztu i ryzyka</h2>
+<div id="riskNotes" class="sub" aria-live="polite"></div>
+</section>
+</main>
+<footer><small>Źródłowe dane są osadzone lokalnie. Zero sieci, automatycznych płatności, zmian w grze i produkcyjnych zapisów. Reset z poziomu strony nie modyfikuje RoboRougelike.</small></footer>
+<script>
+/* B01-10 BAL16-A v1: deterministic research combat/equipment simulator.
+   No canonical game implementation; data values come from BAL16_A_SourceProfiles.json.
+   Shots and HP outcomes are SYNTHETIC. No collision, aim, armor, ammo or PhysX.
+   Use browser global BAL16A, or module.exports when run through Node CommonJS. */
+(function (root) {
+"use strict";
+const own = Object.prototype.hasOwnProperty;
+function ensure(condition, message) { if(!condition) throw new Error(message); }
+const get=(data,id)=>{const x=data.weaponProfiles.find(p=>p.id===id);ensure(x,"unknown weapon family "+id);return x;};
+function quote(data, p, health) {
+  ensure(Number.isInteger(p)&&p>0&&Number.isFinite(health)&&health>=0&&health<=1,"bad quote");
+  if(health===1)return 0;
+  if(health===0&&p<=1)return 0;
+  const q=Math.max(1,Math.ceil((1-health)*p*data.economy.sourceRate35Pct-1e-12));
+  return health===0?Math.min(p-1,q):q;
+}
+function verifyLoadout(data, build) {
+  ensure(data&&Array.isArray(data.weaponProfiles),"missing source profile");
+  ensure(build&&Array.isArray(build.weapons),"missing gun list");
+  ensure(build.weapons.length>=1&&build.weapons.length<=data.limits.mountedWeaponFamilies,"two mounted weapon families maximum");
+  ensure(new Set(build.weapons.map(x=>x.id)).size===build.weapons.length,"duplicated family");
+  const chassis=data.vehicleDesigns.find(v=>v.id===build.chassis);
+  ensure(chassis,"unknown chassis");
+  let total=0;
+  for(const item of build.weapons) {
+    const w=get(data,item.id);
+    ensure(w.analysisMode==="SIMPLE_INTERVAL_PROJECTILE","native special gun behavior not modeled");
+    ensure(Number.isInteger(item.count)&&item.count>=1,"invalid gun count");
+    total+=item.count;
+  }
+  ensure(total<=24,"simulator guard: max 24 virtual guns, NOT a game cap");
+  return {chassis,gunCount:total};
+}
+function modelBuild(data, build) {
+ const {chassis,gunCount}=verifyLoadout(data,build);
+ const guns=build.weapons.map(x=>({profile:get(data,x.id),count:x.count}));
+ // Explicit modeling assumption: base design has one Basic Gun, which is
+ // replaced by the first selected gun, and all extra guns are added without
+ // altering armor/wheel positions or verifying mounting fit.
+ const mass=chassis.baselineMassKg-get(data,"Basic").mountedMassKg+
+   guns.reduce((sum,x)=>sum+x.profile.mountedMassKg*x.count,0);
+ const weight=Math.max(data.mobility.weightFactorClamp[0],
+                 Math.min(data.mobility.weightFactorClamp[1],
+                 Math.sqrt(chassis.baselineMassKg/Math.max(1,mass))));
+ const wheelBonus=1; // same stock wheel count as base design
+ const buy=guns.reduce((sum,x)=>sum+x.count*x.profile.buyScrap,0);
+ const zeroRepair=guns.reduce((sum,x)=>sum+x.count*quote(data,x.profile.buyScrap,0),0);
+ const halfRepair=guns.reduce((sum,x)=>sum+x.count*quote(data,x.profile.buyScrap,.5),0);
+ const intactDismantle=guns.reduce((sum,x)=>sum+x.count*Math.floor(x.profile.buyScrap*.25),0);
+ const nominalDps=guns.reduce((sum,x)=>sum+x.count*x.profile.damage/x.profile.intervalSeconds,0);
+ const installedGunHp=guns.reduce((sum,x)=>sum+x.count*x.profile.partHp,0);
+ return {id:build.weapons.map(x=>x.id+"x"+x.count).join("+"),
+  chassis:chassis.id,gunCount,families:build.weapons.length,coreHp:chassis.coreHp,
+  gunHpSumNotSharedPool:installedGunHp,gunMassKg:mass-chassis.baselineMassKg+get(data,"Basic").mountedMassKg,
+  modeledTotalMassKg:mass,baselineMassKg:chassis.baselineMassKg,
+  modeledWeightFactor:weight,modeledSpeedLimitMps:chassis.designSpeed*weight*wheelBonus,
+  buyAllGunsScrap:buy,repairAllGuns0HpScrap:zeroRepair,repairAllGuns50PctHpScrap:halfRepair,
+  dismantleIntactAllGunsScrap:intactDismantle,nominalIdealDps:nominalDps,
+  scope:"ORIGINAL_PROFILES_WITH_SYNTHETIC_HITS_AND_FULLY_OPERATIONAL_MASS"};
+}
+function rng(seed) {
+ let value=(Number(seed)>>>0)||0x9e3779b9;
+ return ()=>{value^=value<<13;value^=value>>>17;value^=value<<5;return (value>>>0)/4294967296;};
+}
+function simulateFight(data,build,options={}) {
+ verifyLoadout(data,build);
+ const chance=options.accuracy===undefined?data.simulation.defaultAccuracy:options.accuracy;
+ const target=options.targetHp===undefined?180:options.targetHp;
+ const maxTime=options.maxSeconds===undefined?data.simulation.maxSeconds:options.maxSeconds;
+ ensure(Number.isFinite(chance)&&chance>=0&&chance<=1,"invalid accuracy");
+ ensure(Number.isFinite(target)&&target>0,"invalid target HP");
+ ensure(Number.isFinite(maxTime)&&maxTime>=0&&maxTime<=120,"invalid duration");
+ const guns=[];
+ for(const family of build.weapons)for(let i=0;i<family.count;i++)
+   guns.push({kind:family.id,profile:get(data,family.id),next:0,shots:0});
+ const roll=rng(options.seed??1);
+ let hp=target,shots=0,hits=0,damage=0,last=0;
+ for(let iter=0;iter<150000;iter++){
+   let next=Infinity;
+   for(const gun of guns)if(gun.next<next)next=gun.next;
+   if(next>maxTime+1e-8||!Number.isFinite(next))break;
+   for(const gun of guns){
+     if(gun.next>next+1e-8)continue;
+     shots++;gun.shots++;
+     if(roll()<chance){
+       hits++;const dealt=Math.min(hp,gun.profile.damage);
+       hp-=dealt;damage+=dealt;
+     }
+     gun.next=+(gun.next+gun.profile.intervalSeconds).toFixed(8);
+     if(hp<=0){last=next;return {killed:true,ttkSeconds:+last.toFixed(4),
+       hpRemaining:0,shots,hits,damageDealt:damage,seed:options.seed??1};}
+   }
+ }
+ return {killed:false,ttkSeconds:null,hpRemaining:hp,shots,hits,damageDealt:damage,seed:options.seed??1};
+}
+function quantile(xs,q) {
+ if(xs.length===0)return null;
+ const sorted=xs.slice().sort((a,b)=>a-b),at=(sorted.length-1)*q;
+ const lo=Math.floor(at),hi=Math.ceil(at);
+ return +(sorted[lo]+(sorted[hi]-sorted[lo])*(at-lo)).toFixed(4);
+}
+function runTrials(data,build,options={}) {
+ let count=options.trials??data.simulation.trialSeeds;
+ ensure(Number.isInteger(count)&&count>=1&&count<=128,"trials out of bound");
+ const starts=options.firstSeed??1;ensure(Number.isInteger(starts),"seed must be integer");
+ const results=Array.from({length:count},(_,i)=>simulateFight(data,build,{...options,seed:starts+i}));
+ const killed=results.filter(x=>x.killed);
+ const ttk=killed.map(x=>x.ttkSeconds);
+ return {...modelBuild(data,build),targetHp:options.targetHp??180,
+   assumedAccuracy:options.accuracy??data.simulation.defaultAccuracy,
+   trials:count,killRate:killed.length/count,
+   ttkMedianSeconds:quantile(ttk,.5),ttkP10Seconds:quantile(ttk,.1),
+   ttkP90Seconds:quantile(ttk,.9),timeoutTrials:count-killed.length,
+   exampleSeed1:results[0],units:"HP, kg, m/s, Scrap, seconds; no native shooting"};
+}
+function candidateBuilds(chassis="Standard") {
+ const choices=[["Basic","Automatic"],["Basic","Heavy"],["Automatic","Heavy"]];
+ const counts=[2,6,12];
+ return choices.flatMap(pair=>counts.map(n=>({
+   chassis,weapons:[{id:pair[0],count:n/2},{id:pair[1],count:n/2}]
+ })));
+}
+const api=Object.freeze({get,quote,verifyLoadout,modelBuild,simulateFight,runTrials,candidateBuilds});
+root.BAL16A=api;
+if(typeof module!=="undefined"&&module.exports)module.exports=api;
+})(typeof globalThis==="object"?globalThis:this);
+
+/* B01-10 BAL16-B: independent budget/repair sensitivity simulator.
+ * Research-only wallet model. This is NOT R3VehicleModel and does not call
+ * R1RunController, R1 economy, or any Unity code. No rules changed.
+ * "all pieces repaired atomically" is a planning what-if, NOT the original
+ * R3 RepairAffordable behavior (it may repair only affordable parts).
+ */
+(function(root) {
+ "use strict";
+ function check(p,msg){if(!p)throw new Error(msg);}
+ function price(data,id){const w=data.weaponProfiles.find(x=>x.id===id);check(w,"unknown gun");return w.buyScrap;}
+ function quote(data,id,hpFraction) {
+   const p=price(data,id);
+   check(Number.isFinite(hpFraction)&&hpFraction>=0&&hpFraction<=1,"health out of [0,1]");
+   if(hpFraction===1)return 0;
+   if(hpFraction===0&&p<=1)return 0;
+   const q=Math.max(1,Math.ceil((1-hpFraction)*p*.35-1e-12));
+   return hpFraction===0?Math.min(p-1,q):q;
+ }
+ function budget(data,build) {
+   check(build&&Array.isArray(build.weapons),"missing build");
+   check(build.weapons.length>=1&&build.weapons.length<=2,"max 2 families");
+   const kinds=new Set();
+   let buy=0,rehab0=0,repairHalf=0,salvageFull=0,gunHp=0,guns=0;
+   for(const part of build.weapons){
+     check(!kinds.has(part.id),"duplicate family");kinds.add(part.id);
+     check(Number.isInteger(part.count)&&part.count>0,"invalid count");
+     const p=price(data,part.id),w=data.weaponProfiles.find(x=>x.id===part.id);
+     check(w.analysisMode==="SIMPLE_INTERVAL_PROJECTILE","special behavior not modeled for this bundle");
+     guns+=part.count;buy+=part.count*p;rehab0+=part.count*quote(data,part.id,0);
+     repairHalf+=part.count*quote(data,part.id,.5);
+     salvageFull+=part.count*Math.floor(p*.25);gunHp+=part.count*w.partHp;
+   }
+   check(guns<=24,"simulator safety max 24, NOT an in-game cap");
+   return {buy,rehab0,repairHalf,salvageFull,gunHp,guns,kindCount:kinds.size,
+     note:"Quotes are source-derived; player ownership, adjacency and operation are NOT simulated"};
+ }
+ function createLedger(data,build,startingScrap=0) {
+   check(Number.isInteger(startingScrap)&&startingScrap>=0&&startingScrap<=data.economy.sourceMaxWallet,"wallet invalid");
+   const b=budget(data,build);
+   const state={scrap:startingScrap,owned:false,health:1,repaired:0,
+     receivedRewards:[],events:[],failed:0};
+   function tx(kind,amount,accepted,reason){
+     const record={kind,amount:accepted?amount:0,accepted,reason,balance:state.scrap};
+     state.events.push(record);if(!accepted)state.failed++;
+     return record;
+   }
+   function buy(){
+     if(state.owned)return tx("buy",0,false,"already-owned");
+     if(state.scrap<b.buy)return tx("buy",0,false,"insufficient-scrap");
+     state.scrap-=b.buy;state.owned=true;return tx("buy",-b.buy,true,"new-items-planning");
+   }
+   function award(eventId,amount){
+     check(typeof eventId==="string"&&eventId.length>0&&eventId.length<=64,"bad eventId");
+     check(Number.isInteger(amount)&&amount>=0,"negative/fractional reward");
+     if(state.receivedRewards.includes(eventId))return tx("reward",0,false,"duplicate-event");
+     state.receivedRewards.push(eventId);
+     const previous=state.scrap;
+     state.scrap=Math.min(data.economy.sourceMaxWallet,state.scrap+amount);
+     return tx("reward",state.scrap-previous,true,"synthetic-income-not-R1");
+   }
+   function setCondition(health) {
+     check(Number.isFinite(health)&&health>=0&&health<=1,"health invalid");
+     if(!state.owned)return tx("damage",0,false,"not-owned");
+     state.health=health;return tx("damage",0,true,"abstract-health-assumption");
+   }
+   function repair(){
+     if(!state.owned)return tx("repair",0,false,"not-owned");
+     if(state.health===1)return tx("repair",0,false,"already-intact");
+     const cost=state.health<=0?b.rehab0:state.health===.5?b.repairHalf:
+       build.weapons.reduce((sum,x)=>sum+x.count*quote(data,x.id,state.health),0);
+     if(cost<=0)return tx("repair",0,false,"invalid-price");
+     if(state.scrap<cost)return tx("repair",0,false,"insufficient-scrap");
+     state.scrap-=cost;state.health=1;state.repaired++;
+     return tx("repair",-cost,true,"all-guns-what-if-bundle-only");
+   }
+   function snapshot(){return {
+     scrap:state.scrap,owned:state.owned,health:state.health,
+     repairs:state.repaired,failed:state.failed,
+     rewards:state.receivedRewards.slice(),events:state.events.map(x=>({...x})),
+     initialScrap:startingScrap,quote:b
+   };}
+   return Object.freeze({buy,award,setCondition,repair,snapshot});
+ }
+ function runCycles(data,build,{startingScrap=300,perWinScrap=0,cycles=3,healthAfterWin=0}={}) {
+   check(Number.isInteger(cycles)&&cycles>=1&&cycles<=25,"cycles invalid");
+   check(Number.isInteger(perWinScrap)&&perWinScrap>=0,"income invalid");
+   const x=createLedger(data,build,startingScrap);
+   const purchase=x.buy();
+   let completed=0,repairFailures=0;
+   if(purchase.accepted)for(let i=0;i<cycles;i++){
+     x.award("synthetic-win-"+i,perWinScrap);
+     x.setCondition(healthAfterWin);
+     const r=x.repair();
+     if(!r.accepted){repairFailures++;break;}
+     completed++;
+   }
+   return {build:build.weapons.map(w=>w.id+"x"+w.count).join("+"),startingScrap,
+     perWinScrap,cyclesRequested:cycles,cyclesWithPaidRepairs:completed,repairFailures,
+     purchaseAccepted:purchase.accepted,...x.snapshot(),
+     engine:"research-only abstract wallet; NOT source R1 rewards / garage ownership / atomicity"};
+ }
+ root.BAL16B=Object.freeze({quote,budget,createLedger,runCycles});
+ if(typeof module!=="undefined"&&module.exports)module.exports=root.BAL16B;
+})(typeof globalThis==="object"?globalThis:this);
+
+const sourceData={"schema":"B01-10-PASS16-ORIGINAL-BALANCE-PROFILES/v1","packageId":"B01-10-BAL16-A","status":"ORIGINAL_SOURCE_NUMBERS_RESEARCH_ONLY","verifiedCodex":{"pr":310,"sha":"589b60a912096d1e9917cb0bbac73a53e7543b4f","sourceBlobs":{"Assets/R4/R4WeaponDefinition.cs":"502f6d7f70d4e8078260de632ab181f244a4d730","Assets/R3/R3VehicleModel.cs":"8cc68faf89793c3a803e5807594c9faf0df10091","Assets/R3/R3VehicleCatalog.cs":"f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584","Assets/R3/R3VehicleAssembly.cs":"49fab51ac993128a9965df38ce32489f493b257a","Assets/R6/R6VehicleDrive.cs":"6e5991cf263ac64b943dc4ac09a546d65ad2fa45"}},"limits":{"mountedWeaponFamilies":2,"sourceModel":"R3VehicleModel.MountedWeaponTypes/CheckPlacement","barrelsPhysicallyMounted":"NO_SOURCE_GLOBAL_MAX; AUTHORING_COLLISION_REQUIRED","noGameplayMutation":true},"weaponProfiles":[{"id":"Basic","displayName":"Działo podstawowe","damage":40,"intervalSeconds":0.38,"projectileSpeedMps":34,"diameterMeters":0.2,"projectileMass":1.8,"mountedMassKg":24,"partHp":140,"buyScrap":30,"analysisMode":"SIMPLE_INTERVAL_PROJECTILE"},{"id":"Automatic","displayName":"Karabin automatyczny","damage":12,"intervalSeconds":0.12,"projectileSpeedMps":42,"diameterMeters":0.1,"projectileMass":0.6,"mountedMassKg":18,"partHp":90,"buyScrap":36,"analysisMode":"SIMPLE_INTERVAL_PROJECTILE"},{"id":"Heavy","displayName":"Ciężka armata","damage":100,"intervalSeconds":1.25,"projectileSpeedMps":24,"diameterMeters":0.3,"projectileMass":5,"mountedMassKg":55,"partHp":220,"buyScrap":55,"analysisMode":"SIMPLE_INTERVAL_PROJECTILE"},{"id":"Shotgun","displayName":"WPN-001 Shotgun","damage":9,"intervalSeconds":0.85,"projectileSpeedMps":58,"diameterMeters":0.1,"projectileMass":0.2,"mountedMassKg":28,"partHp":140,"buyScrap":45,"analysisMode":"NATIVE_SPECIAL_BEHAVIOR_REQUIRED"},{"id":"Railgun","displayName":"WPN-002 Railgun","damage":65,"intervalSeconds":2.4,"projectileSpeedMps":85,"diameterMeters":0.15,"projectileMass":0.3,"mountedMassKg":44,"partHp":180,"buyScrap":65,"analysisMode":"NATIVE_SPECIAL_BEHAVIOR_REQUIRED"},{"id":"BeamCutter","displayName":"WPN-003 Beam Cutter","damage":35,"intervalSeconds":0.02,"projectileSpeedMps":0,"diameterMeters":0.065,"projectileMass":0,"mountedMassKg":30,"partHp":130,"buyScrap":55,"analysisMode":"NATIVE_SPECIAL_BEHAVIOR_REQUIRED"},{"id":"RocketLauncher","displayName":"WPN-004 Rocket Launcher","damage":60,"intervalSeconds":1.7,"projectileSpeedMps":18,"diameterMeters":0.24,"projectileMass":1,"mountedMassKg":38,"partHp":160,"buyScrap":60,"analysisMode":"NATIVE_SPECIAL_BEHAVIOR_REQUIRED"},{"id":"RotarySaw","displayName":"WPN-005 Rotary Saw","damage":52,"intervalSeconds":0.02,"projectileSpeedMps":0,"diameterMeters":1.8,"projectileMass":0,"mountedMassKg":25,"partHp":130,"buyScrap":50,"analysisMode":"NATIVE_SPECIAL_BEHAVIOR_REQUIRED"},{"id":"EmpEmitter","displayName":"WPN-006 EMP Emitter","damage":0,"intervalSeconds":12,"projectileSpeedMps":0,"diameterMeters":0,"projectileMass":0,"mountedMassKg":30,"partHp":140,"buyScrap":65,"analysisMode":"NATIVE_SPECIAL_BEHAVIOR_REQUIRED"}],"vehicleDesigns":[{"id":"Light","widthHalf":1,"lengthHalf":2,"layers":1,"wheels":4,"coreHp":80,"designSpeed":10,"designTurnSpeed":105,"armorCount":14,"gunCount":1,"baselineMassKg":192},{"id":"Standard","widthHalf":2,"lengthHalf":3,"layers":2,"wheels":12,"coreHp":100,"designSpeed":7.5,"designTurnSpeed":82,"armorCount":69,"gunCount":1,"baselineMassKg":728},{"id":"Heavy","widthHalf":3,"lengthHalf":4,"layers":2,"wheels":12,"coreHp":180,"designSpeed":5.5,"designTurnSpeed":60,"armorCount":125,"gunCount":1,"baselineMassKg":1176}],"economy":{"repairQuote":"health>=1 -> 0; health<1 -> max(1, ceil((1-health)*Price*0.35)); health<=0 -> min(Price-1,quote) when Price>1, else 0","dismantleQuote":"floor(Price*0.25*clamp01(health))","sourceRate35Pct":0.35,"sourceDismantle25Pct":0.25,"sourceMaxWallet":100000,"assumeNoIncomeFromWhatIf":true},"mobility":{"source":"R3VehicleAssembly.TuneChassis","originalMassPolicy":"source original = Model.Design.Parts.Sum(R4WeaponDefinition.PartMass)","actualMassPolicy":"source actual = operational mounted R6VehicleDrive.PartMass() sum; simplified all-parts-alive profile assumes R4 mass per part","weightFactorClamp":[0.65,1.15],"wheelBonusClamp":[0.8,1.15],"wheelDeltaBonus":0.025,"sourceR6MassMin":20,"physicalAccelerationNotModeled":true},"simulation":{"targetHpChoices":[80,100,180,220],"maxSeconds":30,"precisionHitProbabilities":[0.55,0.75,1],"trialSeeds":32,"weaponIntervalScale":1,"damageScale":1,"defaultAccuracy":0.75,"explicitAssumptions":["Only Basic, Automatic and Heavy simple bullets evaluated. Native reload/jam/EMP/beam/saw/rail/shotgun/rocket logic excluded.","Shots initialized at t=0 and repeated by nominal interval; per-gun deterministic Bernoulli hit based on seeded PRNG; 1 projectile hit = full nominal damage to one abstract target HP pool.","No per-part destruction, damage falloff, projectile flight, aim trajectory, blocked contacts, reload/overheat, movement, teammate collision, angular momentum or actual Unity frame execution.","2/6/12 gun mounting is a hypothetical arithmetic comparison; not a valid blueprint/mount or fit guarantee.","Weight-sensitive max speed uses original TuneChassis clamp only under all parts operational and unchanged wheels; not a traction/accelerometer measure.","Price, Health, Mass, Damage and interval are actual exact original source literals, not design tuning approvals."]}};
+const $=id=>document.getElementById(id);
+function param(){return {
+chassis:$("chassis").value,
+a:$("gunA").value,b:$("gunB").value,n:Number($("barrels").value),
+hp:Number($("target").value),accuracy:Number($("accuracy").value),
+wallet:Number($("wallet").value),reward:Number($("reward").value)};}
+function compare(p,n) {
+const build={chassis:p.chassis,weapons:[{id:p.a,count:n/2},{id:p.b,count:n/2}]};
+const result=globalThis.BAL16A.runTrials(sourceData,build,{accuracy:p.accuracy,targetHp:p.hp,trials:32,firstSeed:101});
+const wallet=globalThis.BAL16B.runCycles(sourceData,build,{startingScrap:p.wallet,perWinScrap:p.reward,cycles:3,healthAfterWin:0});
+return {result,wallet};
+}
+function display(){
+try{
+ $("errors").textContent="";
+ const p=param(),main=compare(p,p.n),r=main.result,w=main.wallet;
+ const fmt=(v,d=1)=>v===null?"nie osiągnięto":Number(v).toFixed(d);
+ const values={outTtk:fmt(r.ttkMedianSeconds,2),outDps:fmt(r.nominalIdealDps),
+ outHp:r.gunHpSumNotSharedPool,outMass:fmt(r.modeledTotalMassKg),
+ outSpeed:fmt(r.modeledSpeedLimitMps,2),outBuy:r.buyAllGunsScrap,
+ outRepair:r.repairAllGuns0HpScrap,outBudget:w.cyclesWithPaidRepairs+"/3",
+ outRate:fmt(100*r.killRate)+"%"};
+ for(const [id,value] of Object.entries(values))$(id).textContent=String(value);
+ const tbody=$("rows");tbody.replaceChildren();
+ for(const n of [2,6,12]){
+  const x=compare(p,n),s=x.result,t=x.wallet,values=[
+  n,fmt(s.ttkMedianSeconds,2),fmt(s.nominalIdealDps,1),
+  fmt(s.modeledTotalMassKg,0),fmt(s.modeledSpeedLimitMps,2),
+  s.buyAllGunsScrap,s.repairAllGuns0HpScrap,
+  t.purchaseAccepted?t.cyclesWithPaidRepairs+" pełnych":"nie stać"];
+  const tr=document.createElement("tr");
+  for(const value of values){const td=document.createElement("td");td.textContent=String(value);tr.append(td);}
+  tbody.append(tr);
+ }
+ $("riskNotes").textContent=
+   "Założenie symulatora: "+r.gunCount+" dział, "+r.families+
+   " rodziny, hipotetyczna skuteczność "+Math.round(100*p.accuracy)+"%, "+
+   r.trials+" powtórzenia. "+(w.purchaseAccepted?
+   "Przy budżecie "+p.wallet+" Złomu zakup jest możliwy w modelu, a pełne odbudowy: "+w.cyclesWithPaidRepairs+"/3.":
+   "Budżet "+p.wallet+" Złomu nie wystarcza na wszystkie nowe działa.")+
+   " Weryfikacja ułożenia części, realnego DPS i finansowania kampanii wymaga Codexa i Unity.";
+}catch(e){$("errors").textContent="Nie można policzyć: "+e.message;}
+}
+$("calculate").addEventListener("click",display);
+display();
+</script>
+</body>
+</html>

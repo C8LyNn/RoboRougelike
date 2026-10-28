@@ -1,0 +1,159 @@
+{
+  "schema": "b01-10-game-design-balance-profile/v1",
+  "profileId": "ECON-0HP-OWNED-REBUILD-65-P14",
+  "status": "PROPOSED_FOR_HQ_APPROVAL_NOT_GAME_CONFIG_NOT_INTEGRATED",
+  "owner": "B01-10 Game Design & Balance",
+  "source": {
+    "canonicalCodexPr": 310,
+    "commit": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "modelBlob": "9f1bf190c7535182c6ce375cbfe67f5b2862e811",
+    "weaponDefinitionBlob": "502f6d7f70d4e8078260de632ab181f244a4d730",
+    "issue": 275
+  },
+  "scope": {
+    "appliesTo": "physically owned 0HP part/retained wreck plan, same physical item",
+    "excludes": [
+      "buying newly created items",
+      "unowned parts",
+      "live-part (>0 HP) proportional repairs",
+      "new delayed-rebuild queue policy",
+      "destroyed invalid enum/weapon ownership P0; must fail closed first",
+      "automatic reward or credits"
+    ],
+    "authority": "Existing R3VehicleModel.Price(part.Kind,part.Weapon) supplies purchase price; item IDs and part state remain unchanged."
+  },
+  "proposal": {
+    "ratio": 0.65,
+    "rounding": "ceil-to-integer-scrap",
+    "formulaForPriceAtLeast2": "min(P-1,max(1,ceil(P*0.65)))",
+    "specialPurchasePrice1": "DECISION_REQUIRED: positive rebuild price cannot be strictly cheaper than P=1; current RepairCost==0 means no repair transaction. Codex/HQ explicitly choose free-rebuild entitlement with separate API or exception; never silently set zero and leave a 0HP item unrepairable.",
+    "quoteRequirement": "Before invoking repair show owned ID/condition, PURCHASE price P, REBUILD price Q, savings P-Q, sufficient/insufficient Scrap. Preserve quote consistency if buy price changes during same UI interaction.",
+    "transactionRequirement": "If funds/validity/ownership/structural gate denies rebuild, no item, Scrap, ownership or group state may mutate. Successful rebuild charges exactly Q once; same ID restored to HP=1 and correct location/inventory.",
+    "economicSafety": "No free repeated payout or value creation via rebuild->dismantle->buy loops; do not implement loaner or delayed queue without HQ authority.",
+    "temporaryPartialDamage": "Retain existing >0HP RepairCost formula pending separate balance tuning."
+  },
+  "representativePrices": [
+    {
+      "id": "Armor",
+      "purchaseScrap": 5,
+      "proposedRebuildScrap": 4,
+      "savingScrap": 1,
+      "source": "R3GarageEconomy.Price(Armor)"
+    },
+    {
+      "id": "Wheel",
+      "purchaseScrap": 15,
+      "proposedRebuildScrap": 10,
+      "savingScrap": 5,
+      "source": "R3GarageEconomy.Price(Wheel)"
+    },
+    {
+      "id": "BasicGun",
+      "purchaseScrap": 30,
+      "proposedRebuildScrap": 20,
+      "savingScrap": 10,
+      "source": "R4WeaponDefinition.Basic.Price"
+    },
+    {
+      "id": "AutomaticGun",
+      "purchaseScrap": 36,
+      "proposedRebuildScrap": 24,
+      "savingScrap": 12,
+      "source": "R4WeaponDefinition.Automatic.Price"
+    },
+    {
+      "id": "HeavyGun",
+      "purchaseScrap": 55,
+      "proposedRebuildScrap": 36,
+      "savingScrap": 19,
+      "source": "R4WeaponDefinition.Heavy.Price"
+    },
+    {
+      "id": "Shotgun",
+      "purchaseScrap": 45,
+      "proposedRebuildScrap": 30,
+      "savingScrap": 15,
+      "source": "R4WeaponDefinition.Shotgun.Price"
+    },
+    {
+      "id": "Railgun",
+      "purchaseScrap": 65,
+      "proposedRebuildScrap": 43,
+      "savingScrap": 22,
+      "source": "R4WeaponDefinition.Railgun.Price"
+    },
+    {
+      "id": "BeamCutter",
+      "purchaseScrap": 55,
+      "proposedRebuildScrap": 36,
+      "savingScrap": 19,
+      "source": "R4WeaponDefinition.BeamCutter.Price"
+    },
+    {
+      "id": "RocketLauncher",
+      "purchaseScrap": 60,
+      "proposedRebuildScrap": 39,
+      "savingScrap": 21,
+      "source": "R4WeaponDefinition.RocketLauncher.Price"
+    },
+    {
+      "id": "RotarySaw",
+      "purchaseScrap": 50,
+      "proposedRebuildScrap": 33,
+      "savingScrap": 17,
+      "source": "R4WeaponDefinition.RotarySaw.Price"
+    },
+    {
+      "id": "EmpEmitter",
+      "purchaseScrap": 65,
+      "proposedRebuildScrap": 43,
+      "savingScrap": 22,
+      "source": "R4WeaponDefinition.EmpEmitter.Price"
+    },
+    {
+      "id": "PointDefense",
+      "purchaseScrap": 70,
+      "proposedRebuildScrap": 46,
+      "savingScrap": 24,
+      "source": "R3GarageEconomy.Price(PointDefense)"
+    }
+  ],
+  "scenarioAcceptance": [
+    {
+      "id": "P14-ECON-A",
+      "steps": "Owned Wheel 0HP, P=15, Scrap=10; quote and repair once",
+      "pass": "Q=10, saving=5, restored original ID at full HP, Scrap goes to 0"
+    },
+    {
+      "id": "P14-ECON-B",
+      "steps": "Owned Gun Basic 0HP, P=30, Scrap=19; attempt rebuild",
+      "pass": "Rebuild rejected, no mutation; quote 20; purchase 30"
+    },
+    {
+      "id": "P14-ECON-C",
+      "steps": "Owned Gun Basic 0HP, P=30, Scrap=20; repair twice",
+      "pass": "First repair charges 20 exactly once and restores original ID; second repair charges 0 and returns no positive transaction"
+    },
+    {
+      "id": "P14-ECON-D",
+      "steps": "0HP owned weapon enum invalid or duplicate ID; attempt price, rebuild, salvage and dismantle",
+      "pass": "Fail closed, no inventory/Scrap mutation, no reward; existing CV-01 takes priority"
+    },
+    {
+      "id": "P14-ECON-E",
+      "steps": "Mounted 0HP retained gun plan under selected A/B and two-family cap",
+      "pass": "Same type/family and physical ID preserved; no third-family bypass, no phantom gun"
+    },
+    {
+      "id": "P14-ECON-F",
+      "steps": "0 Scrap with 0HP owned part",
+      "pass": "User can view Q but no mutation; no invented free loaner, no dead-end fix unless RUN-SAFETY HQ-approved"
+    }
+  ],
+  "provenance": {
+    "nativeUnity": "NOT_RUN",
+    "originalCSharp": "NOT_EXECUTED_BY_B01-10",
+    "pricingFixtureValidation": "12/12 DECLARATIVE PRICE INVARIANTS locally evaluated in V8 for this profile, NOT game or original C# tests",
+    "designDecision": "HQ_APPROVAL_PENDING"
+  }
+}

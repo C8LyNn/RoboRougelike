@@ -1,0 +1,33 @@
+{
+  "contractId": "CHL003_B01-10_W16_DESIGN_QA_R1",
+  "role": "B01-10",
+  "classification": "DESIGN_QA_ONLY_NOT_NEW_PRODUCER_PACKAGE",
+  "testResult": {
+    "contractId": "CHL003_B01-10_W16_DESIGN_QA_R1",
+    "total": 37,
+    "passed": 37,
+    "failed": 0,
+    "domainCounts": {
+      "width": 10,
+      "crossing": 15,
+      "session": 12
+    },
+    "negativeMutations": 3,
+    "errors": [],
+    "verdict": "PASS",
+    "execution": "V8 JS tested same functions serialized to Node ESM; GitHub Node CI required independently",
+    "UnityEditMode": "NOT_RUN",
+    "UnityPlayMode": "NOT_RUN",
+    "physicalDrive": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "runCommand": "node Docs/B01Design/CHL003_W16/validate.mjs",
+  "pin": "Standalone deterministic sample oracle, no Unity gameplay, no physical vehicles",
+  "activeProduction": [
+    "PARTSIZE-001 B01-23",
+    "CHL-003 B01-20"
+  ],
+  "codexAcknowledgedCHL": false,
+  "unityNative": "NOT_RUN",
+  "G2": "HOLD"
+}

@@ -1,0 +1,301 @@
+{
+  "schema": "B01-10-LD02-ARENA-PLAYER-DECISION-CARD-v1",
+  "cardId": "B01-10-P15-LD02-A4-FLANK-OR-CENTER",
+  "status": "DESIGN_CONTENT_SOURCE_CHECKED_ENGINE_NOT_RUN",
+  "importMode": "SIDECAR_DESIGN_ACCEPTANCE_NOT_A_MAPDOCUMENT_NOT_UNITY_IMPORTABLE",
+  "designer": "B01-10 / GAME DESIGN & BALANCE",
+  "mapOwner": "B01-25 / LEVEL & CHALLENGE DESIGN",
+  "source": {
+    "path": "Research/B01-25/P14/LD02_ARENA.json",
+    "commit": "f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84",
+    "gitBlobSha1": "e39e2f174984832bd97311c050e3c22fd6fb1175",
+    "format": "original Codex MapDocument v2",
+    "currentGamePr": 310,
+    "currentGameSha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "mapDraftGitBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
+    "mapWorldGitBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
+    "mapEditorGitBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "previousBrokenMapBlob": "6de0d04900a69606ba873f7c29cef75ed6f182cd"
+  },
+  "playerDecision": {
+    "type": "ROUTE_CHOICE",
+    "framing": "Player can aim for direct open center lane or spend extra travel distance to travel near side pillars; choice is spatial only until enemy placement/LOS/cover use is approved",
+    "supportedNow": "Original custom map sandbox TestDrive and MapWorld.Finished touch, with no enemies, rewards, checkpoint witness, time bonus, route verifier or new game logic",
+    "choices": [
+      {
+        "id": "CENTER",
+        "pathCells": [
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            9,
+            5
+          ]
+        ],
+        "centerlineGridSteps": 7,
+        "nominalCenterlineMeters": 28,
+        "designIntent": "Shortest travel via x=2..9,z=5; near two offset LowBarriers at (5,4) and (6,6); cannot infer player exposure without actual enemies"
+      },
+      {
+        "id": "NORTH_FLANK",
+        "pathCells": [
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            8,
+            3
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            5
+          ]
+        ],
+        "centerlineGridSteps": 11,
+        "nominalCenterlineMeters": 44,
+        "designIntent": "Longer alternate approach via z=3 near Pillars (3,2),(8,2); intended cover-adjacent option, but no known enemy LOS or physical clearance certificate"
+      },
+      {
+        "id": "SOUTH_FLANK",
+        "pathCells": [
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            2,
+            8
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            5,
+            8
+          ],
+          [
+            6,
+            8
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            9,
+            7
+          ],
+          [
+            9,
+            6
+          ],
+          [
+            9,
+            5
+          ]
+        ],
+        "centerlineGridSteps": 13,
+        "nominalCenterlineMeters": 52,
+        "designIntent": "Longest alternate via z=8 near Pillars (3,7),(8,7); distinct path, only theoretical grid footprint checked"
+      }
+    ],
+    "choiceGate": "Center path must be visibly faster in cell-distance budget while flank paths remain genuine drive options for BOTH Light and Heavy after native testing; no forced optimal path or loot bonus is assumed"
+  },
+  "mapFacts": {
+    "version": 2,
+    "globalFloor": false,
+    "groundCells": 120,
+    "perimeterWallItems": 36,
+    "pillarItems": 4,
+    "lowBarrierItems": 2,
+    "spawn": [
+      2,
+      5
+    ],
+    "finish": [
+      9,
+      5
+    ],
+    "totalItems": 168,
+    "gridMeters": 4,
+    "expectedFloorSizeMeters": [
+      48,
+      40
+    ],
+    "geometryProvenance": "B01-25 owner corrected 4 old 1.75m corner gaps using original MapItemKind.Platform (kind6, scaleY4); source footprint/route verified only, real PhysX swept collision, Heavy clearance and LOS remain NOT_RUN",
+    "cornerPlatformItems": 4
+  },
+  "nativeAcceptance": {
+    "existingQueue": "CV-05",
+    "actualExecution": "NOT_RUN",
+    "preconditions": [
+      "Codex or authorized operator confirms actual licensed Unity 6000.3.14f1 and exact integrated game SHA",
+      "Use unique disposable MapStorage path; never overwrite user map while D02 unresolved",
+      "Load original input blob through MapDraft.TryLoad + TestError and MapWorld.Build; capture clean per-attempt seed/rig/body identity",
+      "For positive route observations use actual input-controlled Light/Heavy Rigidbody; do not teleport, directly move transforms or invoke Finish callback in place of driving"
+    ],
+    "tests": [
+      {
+        "id": "P15-LD02-POS01-CENTER",
+        "kind": "positive",
+        "steps": [
+          "From imported Spawn(2,5), place original eligible Light rig and then separately Heavy rig in clean TestDrive",
+          "Drive forward and steer from (2,5) through the authored centerline cells toward Finish(9,5); do not teleport; drive cell centers are guides, not forced trigger logic",
+          "Capture exact Rigidbody position/time/video, physical contacts, finish event and no mission rewards"
+        ],
+        "pass": [
+          "Both physically distinct rigs reach Finish by actual continuous motion without passing through solid Pillar/LowBarrier/Wall/Platform colliders",
+          "MapWorld.Finished becomes true only on original player attached Rigidbody trigger overlap",
+          "No campaign Scrap award, upgrade acquisition, enemy-kill or Encounter.Cleared claim from custom map sandbox"
+        ],
+        "fail": [
+          "Either rig cannot physically reach Finish along claimed central choice in reproducible native trials",
+          "Observed collision escape or Finish accepted without qualifying player Rigidbody",
+          "Any sandbox finish touch alone grants actual campaign win/reward"
+        ]
+      },
+      {
+        "id": "P15-LD02-POS02-FLANKS",
+        "kind": "positive",
+        "steps": [
+          "Using identical original map, restart separate full test drives with Light and Heavy rigs; no mutable gameplay changes",
+          "For each rig attempt NORTH_FLANK via z=3 and SOUTH_FLANK via z=8 as distinct authored corridor choices; drive by real inputs, no scripted teleport",
+          "Record 4 full traces, physical side clearance/turns, route identifier, contacts and reached Finish"
+        ],
+        "pass": [
+          "Each declared branch can be attempted without an object-cell overlap in original source data and can be physically traversed by both rigs after native proof",
+          "Both routes lead to actual player Finish trigger and do not bypass enclosed perimeter",
+          "Do not assert flank safety or enemy LOS benefit without actual opponent/fire experiments"
+        ],
+        "fail": [
+          "Light or Heavy repeatedly jams on a necessary turn/obstacle for either declared playable flank",
+          "Vehicle escapes perimeter, penetrates a wall or cannot reach Finish while following required branch",
+          "Claims of measured handling speed / safety based solely on grid path length"
+        ]
+      },
+      {
+        "id": "P15-LD02-NEG03-FOREIGN-COLLIDER",
+        "kind": "negative",
+        "steps": [
+          "Load same LD02_ARENA and start TestDrive with valid original Player, ensure Finished=false",
+          "Move a separate non-player Rigidbody/collider into Finish volume using actual Unity physics, while the Player remains outside and inactive Finish contact is not possible",
+          "Observe MapWorld.Finished and original VehicleModel.Scrap / Progress.State, then separately confirm a real player child collider can set Finished"
+        ],
+        "pass": [
+          "Non-player Rigidbody touch does NOT mark Finish and does NOT trigger WinEncounter, Scrap or salvage",
+          "Real current-player attached Rigidbody trigger may set MapWorld.Finished for sandbox touch only; this is not a route verification",
+          "Negative has real source-pinned NUnit XML/Editor.log/exit evidence if executed"
+        ],
+        "fail": [
+          "Unrelated collider sets Finished=true",
+          "Foreign touch pays campaign reward or changes Progress to Won",
+          "Missing original runtime evidence is mislabeled as test PASS"
+        ]
+      }
+    ],
+    "minimumNativeEvidence": [
+      "Exact map Git blob and game/test SHA",
+      "Per-rig Light/Heavy masses and dimensions/assembly IDs, attempt IDs and control/motion logs",
+      "Original Unity EditMode or PlayMode raw XML and Editor.log, command, process exit code",
+      "Windows Player original video/screenshots and body traces, distinct source vs physics results"
+    ],
+    "nativeUnityGate": "NOT_RUN; CV-05 existing covers bounded map and real Light/Heavy, no duplicate ticket"
+  },
+  "policy": {
+    "approvedNow": "SANDBOX_TOUCH_ONLY_ORIGINAL_SOURCE",
+    "open": [
+      "HQ decides whether future combat mode requires 2 kills before Finish",
+      "HQ decides explicit cover/LOS suppression mechanic and risk/reward scoring",
+      "HQ chooses SANDBOX_TOUCH vs optional native route verification; not silently changed here"
+    ],
+    "prohibitedClaims": [
+      "Not an importable encounter objective in current Unity",
+      "No campaign enemy spawns, reward/time bonus, cover-fire benefit, two-kill win",
+      "No guarantee Heavy turning/swept passability or native wall seam seal"
+    ]
+  }
+}
