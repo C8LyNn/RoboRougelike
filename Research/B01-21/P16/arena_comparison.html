@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B01-21 · MAPGEN P16 · Porównywarka aren</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#101820;color:#ecf3f8}
+*{box-sizing:border-box}body{margin:0;line-height:1.45}
+header,main,footer{max-width:1250px;margin:auto;padding:24px}
+h1{font-size:clamp(1.35rem,3vw,2rem);margin:0 0 7px}
+h2{font-size:1.12rem;margin:0 0 8px}
+p{margin:8px 0}.muted{color:#b1c3d0}.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#81cfbb}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.pick{background:#1b2a35;border:2px solid #476071;color:inherit;border-radius:13px;text-align:left;padding:12px;cursor:pointer}
+.pick[aria-pressed="true"]{border-color:#65dbbe;background:#213a3d}
+.pick:focus-visible{outline:3px solid #fbd777;outline-offset:3px}
+.pick img{width:100%;aspect-ratio:1020/720;object-fit:contain;background:#0f1820;border-radius:7px}
+.pick strong{display:block;font-size:.96rem;margin:6px 0}
+.pick small{display:block;color:#a3bac8}
+.preview{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,1fr);gap:20px;background:#192934;border:1px solid #3e5665;border-radius:15px;padding:20px}
+.preview img{width:100%;border-radius:8px;background:#101820}
+aside{min-width:0}.hash{overflow-wrap:anywhere;font-family:ui-monospace,monospace;font-size:12px;color:#bed1dc}
+.stat{margin:12px 0;padding:9px 0;border-bottom:1px solid #405465}
+.status{color:#a9dfcf;font-weight:650}
+footer{font-size:12px;color:#a5b8c6}
+a{color:#a6e2cf}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.pick{display:grid;grid-template-columns:38% 1fr;gap:12px;align-items:center}.pick img{grid-row:1/3}.preview{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">B01-21 / PASS 16 / MAPGEN001 · źródła, nie natywny Unity</div>
+<h1>Trzy areny. Jeden oryginalny generator.</h1>
+<p class="muted">Wybierz wariant, porównaj osłony i geometrię wygenerowaną przez faktyczny <code>MapGenPlanner.Plan</code>. Seed i hash są powtarzalne. Przejazd fizyczny, AI i faktyczny build gry wymagają osobnych testów.</p>
+</header>
+<main>
+<section class="grid" aria-label="Wybór wariantu areny" id="variants">
+<button class="pick" type="button" data-i="0" aria-pressed="true"><img src="generated/AR16_01_OPEN_FLANK.svg" alt="Rzut areny z 6 osłonami"><strong>01 — Otwarta</strong><small>Seed 160101 · 6 osłon</small></button>
+<button class="pick" type="button" data-i="1" aria-pressed="false"><img src="generated/AR16_02_SPLIT_DECISION.svg" alt="Rzut areny z 11 osłonami"><strong>02 — Podzielona</strong><small>Seed 160202 · 11 osłon</small></button>
+<button class="pick" type="button" data-i="2" aria-pressed="false"><img src="generated/AR16_03_DENSE_PRESSURE.svg" alt="Rzut areny z 16 osłonami"><strong>03 — Gęsta</strong><small>Seed 160303 · 16 osłon</small></button>
+</section>
+<section class="preview" aria-label="Szczegóły wybranego wariantu">
+<div><img id="large" src="generated/AR16_01_OPEN_FLANK.svg" alt="Pełnowymiarowy rzut pierwszej areny z oryginalnego generatora"></div>
+<aside aria-live="polite">
+<div class="eyebrow">Wybrana konfiguracja</div>
+<h2 id="name">AR16_01_OPEN_FLANK</h2>
+<p class="stat">Seed: <strong id="seed">160101</strong></p>
+<p class="stat">Zagęszczenie parametryczne: <strong id="density">40%</strong></p>
+<p class="stat">Liczba brył Cover: <strong id="covers">6</strong></p>
+<p class="stat">Wymiary / bezpieczna aleja z kodu: <strong>64 × 64 m / 12 m</strong></p>
+<p class="stat">Źródłowy test trasy Light/Heavy: <span class="status">BFS_SPINE_CLEARANCE_OK</span></p>
+<p class="muted">GeometryHash (64 znaki):</p><div class="hash" id="hash">30fb147b8ea3b4eaa9a7f300fcfa093f55ab0d340ad301c5a659c7e14c7b878c</div>
+<p><a id="data" href="generated/AR16_01_OPEN_FLANK.blueprint.json">Otwórz oryginalny blueprint JSON</a></p>
+<p><a id="svg" href="generated/AR16_01_OPEN_FLANK.svg">Otwórz oryginalny podgląd SVG</a></p>
+<p class="muted">To wizualizacja danych źródłowych, nie test jazdy. Historyczne wymiary Light/Heavy są jedynie profilami referencyjnymi; nowe pojazdy wymagają pomiaru.</p>
+</aside>
+</section>
+</main>
+<footer><strong>Integracja do gry: NIE.</strong> Unity / PhysX / Player / niezależny G1: NOT_RUN. Korzystaj wyłącznie ze źródłowego manifestu <a href="arena_requests.json">arena_requests.json</a> i <a href="generated/generated_manifest.json">wygenerowanych hashy/replay</a>. Lokalnie otwórz ten HTML z pełnej gałęzi zawierającej katalog <code>generated/</code>.</footer>
+<script>
+"use strict";
+const variants=[
+  {name:"AR16_01_OPEN_FLANK",seed:"160101",density:"40%",covers:"6",hash:"30fb147b8ea3b4eaa9a7f300fcfa093f55ab0d340ad301c5a659c7e14c7b878c",alt:"Otwarta arena MAPGEN z sześcioma osłonami"},
+  {name:"AR16_02_SPLIT_DECISION",seed:"160202",density:"55%",covers:"11",hash:"5cfc45a3308cf5d15b48ab9fd01eb5ae2c3b292bc44b97d5a158a9dcc870048d",alt:"Arena o średniej liczbie jedenastu osłon"},
+  {name:"AR16_03_DENSE_PRESSURE",seed:"160303",density:"100%",covers:"16",hash:"a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98",alt:"Gęsta arena MAPGEN z szesnastoma osłonami"}
+];
+const buttons=Array.from(document.querySelectorAll(".pick"));
+function selectArena(i){
+  if(!Number.isInteger(i)||i<0||i>=variants.length)return;
+  const v=variants[i],url="generated/"+v.name;
+  for(let j=0;j<buttons.length;j++)buttons[j].setAttribute("aria-pressed",String(i===j));
+  document.getElementById("large").src=url+".svg";
+  document.getElementById("large").alt=v.alt;
+  document.getElementById("name").textContent=v.name;
+  document.getElementById("seed").textContent=v.seed;
+  document.getElementById("density").textContent=v.density;
+  document.getElementById("covers").textContent=v.covers;
+  document.getElementById("hash").textContent=v.hash;
+  document.getElementById("data").href=url+".blueprint.json";
+  document.getElementById("svg").href=url+".svg";
+}
+buttons.forEach((b,i)=>{
+  b.addEventListener("click",()=>selectArena(i));
+  b.addEventListener("keydown",e=>{
+    if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;
+    const j=(i+(e.key==="ArrowRight"?1:variants.length-1))%variants.length;
+    e.preventDefault();buttons[j].focus();selectArena(j);
+  });
+});
+window.addEventListener("load",()=>selectArena(0));
+</script>
+</body>
+</html>
