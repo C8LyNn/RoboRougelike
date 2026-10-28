@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1010 850" role="img" aria-labelledby="title desc">
+<title id="title">B01-21 corrected LD02 arena: sealed four physical-source wall corners</title>
+<desc id="desc">Original MapDocument v2, 48 by 40 meters. Logical 12 by 10 floor, 36 narrow walls, four 4 by 4 meter solid corner platforms, four pillars, two barriers, spawn grid 2 comma 5, finish grid 9 comma 5. Orthographic source geometry visualization; not actual Unity Collider bounds, not measured vehicle traversal.</desc>
+<rect width="1010" height="850" fill="#151d27"/>
+<text x="70" y="53" fill="#f3f5f8" font-family="sans-serif" font-size="30" font-weight="700">LD02 — SEALED CORNERS</text>
+<text x="72" y="80" fill="#a9b6c5" font-family="sans-serif" font-size="15">Geometry from current MapWorld.cs source · 4 m grid · top-down X/Z · Unity PhysX NOT RUN</text>
+<g id="arena-data" transform="translate(0 0)">
+<g id="ground" fill="#344553" stroke="#465c6d" stroke-width=".9"><g class="item ground"><title>Ground grid=(0,0), yaw=0, scale=1,1,1</title><rect x="86" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,1), yaw=0, scale=1,1,1</title><rect x="86" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,2), yaw=0, scale=1,1,1</title><rect x="86" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,3), yaw=0, scale=1,1,1</title><rect x="86" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,4), yaw=0, scale=1,1,1</title><rect x="86" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,5), yaw=0, scale=1,1,1</title><rect x="86" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,6), yaw=0, scale=1,1,1</title><rect x="86" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,7), yaw=0, scale=1,1,1</title><rect x="86" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,8), yaw=0, scale=1,1,1</title><rect x="86" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(0,9), yaw=0, scale=1,1,1</title><rect x="86" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,0), yaw=0, scale=1,1,1</title><rect x="146" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,1), yaw=0, scale=1,1,1</title><rect x="146" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,2), yaw=0, scale=1,1,1</title><rect x="146" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,3), yaw=0, scale=1,1,1</title><rect x="146" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,4), yaw=0, scale=1,1,1</title><rect x="146" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,5), yaw=0, scale=1,1,1</title><rect x="146" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,6), yaw=0, scale=1,1,1</title><rect x="146" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,7), yaw=0, scale=1,1,1</title><rect x="146" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,8), yaw=0, scale=1,1,1</title><rect x="146" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(1,9), yaw=0, scale=1,1,1</title><rect x="146" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,0), yaw=0, scale=1,1,1</title><rect x="206" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,1), yaw=0, scale=1,1,1</title><rect x="206" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,2), yaw=0, scale=1,1,1</title><rect x="206" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,3), yaw=0, scale=1,1,1</title><rect x="206" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,4), yaw=0, scale=1,1,1</title><rect x="206" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,5), yaw=0, scale=1,1,1</title><rect x="206" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,6), yaw=0, scale=1,1,1</title><rect x="206" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,7), yaw=0, scale=1,1,1</title><rect x="206" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,8), yaw=0, scale=1,1,1</title><rect x="206" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(2,9), yaw=0, scale=1,1,1</title><rect x="206" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,0), yaw=0, scale=1,1,1</title><rect x="266" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,1), yaw=0, scale=1,1,1</title><rect x="266" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,2), yaw=0, scale=1,1,1</title><rect x="266" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,3), yaw=0, scale=1,1,1</title><rect x="266" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,4), yaw=0, scale=1,1,1</title><rect x="266" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,5), yaw=0, scale=1,1,1</title><rect x="266" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,6), yaw=0, scale=1,1,1</title><rect x="266" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,7), yaw=0, scale=1,1,1</title><rect x="266" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,8), yaw=0, scale=1,1,1</title><rect x="266" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(3,9), yaw=0, scale=1,1,1</title><rect x="266" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,0), yaw=0, scale=1,1,1</title><rect x="326" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,1), yaw=0, scale=1,1,1</title><rect x="326" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,2), yaw=0, scale=1,1,1</title><rect x="326" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,3), yaw=0, scale=1,1,1</title><rect x="326" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,4), yaw=0, scale=1,1,1</title><rect x="326" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,5), yaw=0, scale=1,1,1</title><rect x="326" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,6), yaw=0, scale=1,1,1</title><rect x="326" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,7), yaw=0, scale=1,1,1</title><rect x="326" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,8), yaw=0, scale=1,1,1</title><rect x="326" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(4,9), yaw=0, scale=1,1,1</title><rect x="326" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,0), yaw=0, scale=1,1,1</title><rect x="386" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,1), yaw=0, scale=1,1,1</title><rect x="386" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,2), yaw=0, scale=1,1,1</title><rect x="386" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,3), yaw=0, scale=1,1,1</title><rect x="386" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,4), yaw=0, scale=1,1,1</title><rect x="386" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,5), yaw=0, scale=1,1,1</title><rect x="386" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,6), yaw=0, scale=1,1,1</title><rect x="386" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,7), yaw=0, scale=1,1,1</title><rect x="386" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,8), yaw=0, scale=1,1,1</title><rect x="386" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(5,9), yaw=0, scale=1,1,1</title><rect x="386" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,0), yaw=0, scale=1,1,1</title><rect x="446" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,1), yaw=0, scale=1,1,1</title><rect x="446" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,2), yaw=0, scale=1,1,1</title><rect x="446" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,3), yaw=0, scale=1,1,1</title><rect x="446" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,4), yaw=0, scale=1,1,1</title><rect x="446" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,5), yaw=0, scale=1,1,1</title><rect x="446" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,6), yaw=0, scale=1,1,1</title><rect x="446" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,7), yaw=0, scale=1,1,1</title><rect x="446" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,8), yaw=0, scale=1,1,1</title><rect x="446" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(6,9), yaw=0, scale=1,1,1</title><rect x="446" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,0), yaw=0, scale=1,1,1</title><rect x="506" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,1), yaw=0, scale=1,1,1</title><rect x="506" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,2), yaw=0, scale=1,1,1</title><rect x="506" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,3), yaw=0, scale=1,1,1</title><rect x="506" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,4), yaw=0, scale=1,1,1</title><rect x="506" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,5), yaw=0, scale=1,1,1</title><rect x="506" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,6), yaw=0, scale=1,1,1</title><rect x="506" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,7), yaw=0, scale=1,1,1</title><rect x="506" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,8), yaw=0, scale=1,1,1</title><rect x="506" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(7,9), yaw=0, scale=1,1,1</title><rect x="506" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,0), yaw=0, scale=1,1,1</title><rect x="566" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,1), yaw=0, scale=1,1,1</title><rect x="566" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,2), yaw=0, scale=1,1,1</title><rect x="566" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,3), yaw=0, scale=1,1,1</title><rect x="566" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,4), yaw=0, scale=1,1,1</title><rect x="566" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,5), yaw=0, scale=1,1,1</title><rect x="566" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,6), yaw=0, scale=1,1,1</title><rect x="566" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,7), yaw=0, scale=1,1,1</title><rect x="566" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,8), yaw=0, scale=1,1,1</title><rect x="566" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(8,9), yaw=0, scale=1,1,1</title><rect x="566" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,0), yaw=0, scale=1,1,1</title><rect x="626" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,1), yaw=0, scale=1,1,1</title><rect x="626" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,2), yaw=0, scale=1,1,1</title><rect x="626" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,3), yaw=0, scale=1,1,1</title><rect x="626" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,4), yaw=0, scale=1,1,1</title><rect x="626" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,5), yaw=0, scale=1,1,1</title><rect x="626" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,6), yaw=0, scale=1,1,1</title><rect x="626" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,7), yaw=0, scale=1,1,1</title><rect x="626" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,8), yaw=0, scale=1,1,1</title><rect x="626" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(9,9), yaw=0, scale=1,1,1</title><rect x="626" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,0), yaw=0, scale=1,1,1</title><rect x="686" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,1), yaw=0, scale=1,1,1</title><rect x="686" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,2), yaw=0, scale=1,1,1</title><rect x="686" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,3), yaw=0, scale=1,1,1</title><rect x="686" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,4), yaw=0, scale=1,1,1</title><rect x="686" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,5), yaw=0, scale=1,1,1</title><rect x="686" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,6), yaw=0, scale=1,1,1</title><rect x="686" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,7), yaw=0, scale=1,1,1</title><rect x="686" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,8), yaw=0, scale=1,1,1</title><rect x="686" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(10,9), yaw=0, scale=1,1,1</title><rect x="686" y="626" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,0), yaw=0, scale=1,1,1</title><rect x="746" y="86" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,1), yaw=0, scale=1,1,1</title><rect x="746" y="146" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,2), yaw=0, scale=1,1,1</title><rect x="746" y="206" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,3), yaw=0, scale=1,1,1</title><rect x="746" y="266" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,4), yaw=0, scale=1,1,1</title><rect x="746" y="326" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,5), yaw=0, scale=1,1,1</title><rect x="746" y="386" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,6), yaw=0, scale=1,1,1</title><rect x="746" y="446" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,7), yaw=0, scale=1,1,1</title><rect x="746" y="506" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,8), yaw=0, scale=1,1,1</title><rect x="746" y="566" width="60" height="60" rx="0" /></g>
+<g class="item ground"><title>Ground grid=(11,9), yaw=0, scale=1,1,1</title><rect x="746" y="626" width="60" height="60" rx="0" /></g></g>
+<g id="grid" stroke="#6f8190" stroke-width=".5" opacity=".52"><line x1="86" y1="86" x2="86" y2="686"/>
+<line x1="146" y1="86" x2="146" y2="686"/>
+<line x1="206" y1="86" x2="206" y2="686"/>
+<line x1="266" y1="86" x2="266" y2="686"/>
+<line x1="326" y1="86" x2="326" y2="686"/>
+<line x1="386" y1="86" x2="386" y2="686"/>
+<line x1="446" y1="86" x2="446" y2="686"/>
+<line x1="506" y1="86" x2="506" y2="686"/>
+<line x1="566" y1="86" x2="566" y2="686"/>
+<line x1="626" y1="86" x2="626" y2="686"/>
+<line x1="686" y1="86" x2="686" y2="686"/>
+<line x1="746" y1="86" x2="746" y2="686"/>
+<line x1="806" y1="86" x2="806" y2="686"/>
+<line x1="86" y1="86" x2="806" y2="86"/>
+<line x1="86" y1="146" x2="806" y2="146"/>
+<line x1="86" y1="206" x2="806" y2="206"/>
+<line x1="86" y1="266" x2="806" y2="266"/>
+<line x1="86" y1="326" x2="806" y2="326"/>
+<line x1="86" y1="386" x2="806" y2="386"/>
+<line x1="86" y1="446" x2="806" y2="446"/>
+<line x1="86" y1="506" x2="806" y2="506"/>
+<line x1="86" y1="566" x2="806" y2="566"/>
+<line x1="86" y1="626" x2="806" y2="626"/>
+<line x1="86" y1="686" x2="806" y2="686"/></g>
+<g id="walls" fill="#d4a579"><g class="item wall"><title>Wall grid=(0,1), yaw=90, scale=1,1,1</title><rect x="112.25" y="146" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,1), yaw=90, scale=1,1,1</title><rect x="772.25" y="146" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,2), yaw=90, scale=1,1,1</title><rect x="112.25" y="206" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,2), yaw=90, scale=1,1,1</title><rect x="772.25" y="206" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,3), yaw=90, scale=1,1,1</title><rect x="112.25" y="266" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,3), yaw=90, scale=1,1,1</title><rect x="772.25" y="266" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,4), yaw=90, scale=1,1,1</title><rect x="112.25" y="326" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,4), yaw=90, scale=1,1,1</title><rect x="772.25" y="326" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,5), yaw=90, scale=1,1,1</title><rect x="112.25" y="386" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,5), yaw=90, scale=1,1,1</title><rect x="772.25" y="386" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,6), yaw=90, scale=1,1,1</title><rect x="112.25" y="446" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,6), yaw=90, scale=1,1,1</title><rect x="772.25" y="446" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,7), yaw=90, scale=1,1,1</title><rect x="112.25" y="506" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,7), yaw=90, scale=1,1,1</title><rect x="772.25" y="506" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(0,8), yaw=90, scale=1,1,1</title><rect x="112.25" y="566" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(11,8), yaw=90, scale=1,1,1</title><rect x="772.25" y="566" width="7.5" height="60" /></g>
+<g class="item wall"><title>Wall grid=(1,0), yaw=0, scale=1,1,1</title><rect x="146" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(1,9), yaw=0, scale=1,1,1</title><rect x="146" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(2,0), yaw=0, scale=1,1,1</title><rect x="206" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(2,9), yaw=0, scale=1,1,1</title><rect x="206" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(3,0), yaw=0, scale=1,1,1</title><rect x="266" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(3,9), yaw=0, scale=1,1,1</title><rect x="266" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(4,0), yaw=0, scale=1,1,1</title><rect x="326" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(4,9), yaw=0, scale=1,1,1</title><rect x="326" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(5,0), yaw=0, scale=1,1,1</title><rect x="386" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(5,9), yaw=0, scale=1,1,1</title><rect x="386" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(6,0), yaw=0, scale=1,1,1</title><rect x="446" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(6,9), yaw=0, scale=1,1,1</title><rect x="446" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(7,0), yaw=0, scale=1,1,1</title><rect x="506" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(7,9), yaw=0, scale=1,1,1</title><rect x="506" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(8,0), yaw=0, scale=1,1,1</title><rect x="566" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(8,9), yaw=0, scale=1,1,1</title><rect x="566" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(9,0), yaw=0, scale=1,1,1</title><rect x="626" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(9,9), yaw=0, scale=1,1,1</title><rect x="626" y="652.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(10,0), yaw=0, scale=1,1,1</title><rect x="686" y="112.25" width="60" height="7.5" /></g>
+<g class="item wall"><title>Wall grid=(10,9), yaw=0, scale=1,1,1</title><rect x="686" y="652.25" width="60" height="7.5" /></g></g>
+<g id="solid-corner-blocks" fill="#eec07d" stroke="#fff1bb" stroke-width="1.8"><g class="item platform"><title>Platform grid=(0,0), yaw=0, scale=1,4,1</title><rect x="86" y="86" width="60" height="60" /></g>
+<g class="item platform"><title>Platform grid=(11,0), yaw=0, scale=1,4,1</title><rect x="746" y="86" width="60" height="60" /></g>
+<g class="item platform"><title>Platform grid=(0,9), yaw=0, scale=1,4,1</title><rect x="86" y="626" width="60" height="60" /></g>
+<g class="item platform"><title>Platform grid=(11,9), yaw=0, scale=1,4,1</title><rect x="746" y="626" width="60" height="60" /></g></g>
+<g id="cover" fill="#8094ba"><g class="item pillar"><title>Pillar grid=(3,2), yaw=0, scale=1,1,1</title><circle cx="296" cy="236" r="11.25"/></g>
+<g class="item pillar"><title>Pillar grid=(3,7), yaw=0, scale=1,1,1</title><circle cx="296" cy="536" r="11.25"/></g>
+<g class="item pillar"><title>Pillar grid=(8,2), yaw=0, scale=1,1,1</title><circle cx="596" cy="236" r="11.25"/></g>
+<g class="item pillar"><title>Pillar grid=(8,7), yaw=0, scale=1,1,1</title><circle cx="596" cy="536" r="11.25"/></g>
+<g class="item lowbarrier"><title>LowBarrier grid=(5,4), yaw=0, scale=1,1,1</title><rect x="386" y="352.25" width="60" height="7.5" /></g>
+<g class="item lowbarrier"><title>LowBarrier grid=(6,6), yaw=0, scale=1,1,1</title><rect x="446" y="472.25" width="60" height="7.5" /></g></g>
+<g id="route" fill="none" stroke="#7eead3" stroke-width="2.5" stroke-dasharray="11 8" opacity=".85"><path d="M 236 416 L 656 416"/></g>
+<g id="markers" fill="none" stroke-width="5"><g class="spawn-marker" stroke="#51e8d0"><g class="item spawn"><title>Spawn grid=(2,5), yaw=0, scale=1,1,1</title><circle cx="236" cy="416" r="16" /></g></g><g class="finish-marker" stroke="#ffd66d"><g class="item finish"><title>Finish grid=(9,5), yaw=0, scale=1,1,1</title><circle cx="656" cy="416" r="16" /></g></g></g>
+</g>
+<g font-family="sans-serif" fill="#ecf0f2" font-size="16">
+<text x="770" y="147" font-weight="700">World map fixture</text>
+<text x="770" y="175">168 map elements</text>
+<text x="770" y="202">120 Ground</text>
+<text x="770" y="229">36 Wall</text>
+<text x="770" y="256">4 solid corners</text>
+<text x="770" y="283">4 Pillar / 2 Barrier</text>
+<text x="770" y="310">Spawn (2, 5)</text>
+<text x="770" y="337">Finish (9, 5)</text>
+<rect x="771" y="382" width="18" height="18" fill="#eec07d"/>
+<text x="797" y="397" font-size="14">4 × 4 × 4 m corner</text>
+<rect x="771" y="417" width="18" height="8" fill="#d4a579"/>
+<text x="797" y="427" font-size="14">4 × 4 × 0.5 m wall</text>
+<rect x="771" y="456" width="18" height="18" fill="#8094ba"/>
+<text x="797" y="470" font-size="14">Pillar / LowBarrier</text>
+<text x="770" y="547" fill="#93e5cd" font-weight="700">Source analysis</text>
+<text x="770" y="576" font-size="14">Old: 4 × 1.75 m gaps</text>
+<text x="770" y="602" font-size="14">New: 0 m AABB gaps</text>
+<text x="770" y="628" font-size="14">4 → 1 ring components</text>
+</g>
+<g font-family="sans-serif" font-size="12" fill="#96a7ba">
+<text x="85" y="800">RESEARCH ONLY · actual Unity collider/vehicle collision must be tested by Codex / B01-60 (CV-05)</text>
+<text x="85" y="822">Source B01-25 P14 blob 6de0d049 → corrected B01-21 blob e39e2f17 · four corner entries only</text>
+</g>
+</svg>
