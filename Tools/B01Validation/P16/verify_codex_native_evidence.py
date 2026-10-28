@@ -72,7 +72,7 @@ def evaluate(data):
     play,play_counts,play_failures=run_info(data["PlayMode.xml"])
     targeted,tgt_counts,tgt_failures=run_info(data["retest.xml"])
     need(ful_counts=={"total":1303,"passed":1288,"failed":15,"skipped":0} and
-         full=="Failed" and len(full_failures)==15,
+         full in ("Failed","Failed(Child)") and len(full_failures)==15,
          "HISTORICAL_FULL_EDITOR_RED_NOT_PRESERVED")
     need(play_counts=={"total":474,"passed":474,"failed":0,"skipped":0} and
          play=="Passed" and not play_failures,
