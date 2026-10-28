@@ -31,7 +31,7 @@ const vs=[
 " fTangent=normalize(rot*tangent);",
 " fUV=uv;",
 " fViewPos=p;",
-" gl_Position=vec4(p.x*.78/aspect,p.y*.78,p.z*.09,1.);",
+" gl_Position=vec4(p.x*.78/aspect,p.y*.78,-p.z*.09,1.);",
 "}"
 ].join("\n");
 const fs=[
