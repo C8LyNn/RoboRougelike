@@ -85,15 +85,31 @@ def strict_audit(root):
     actual_failed={n for n,v in old.items() if v=="Failed"}
     actual_targeted=set(targeted)
     if actual_failed!=actual_targeted:
-        print("ORIGINAL_FULL_FAILURES_NOT_SAME_AS_TARGETED_CASES",file=sys.stderr)
-        print(f"MISSING_IN_TARGETED={sorted(actual_failed-actual_targeted)}",file=sys.stderr)
-        print(f"ADDITIONAL_IN_TARGETED={sorted(actual_targeted-actual_failed)}",file=sys.stderr)
-        raise EvidenceError("TARGETED_RERUN_NOT_EXACT_SET_OF_15_ORIGINAL_FAILURES")
+        # There is exactly one real Codex-authorized test rename: originally
+        # 36 (full purchase) assertion, now 13 (owner-discount) assertion.
+        # Do not silently normalize arbitrary name changes: require exact
+        # original game-test and later test-only Git blobs AND two asserted costs.
+        c=m["known_renamed_case"]
+        before,after=c["before"],c["after"]
+        if actual_failed-actual_targeted!={before} or actual_targeted-actual_failed!={after}:
+            raise EvidenceError(f"UNSUPPORTED_TEST_CASE_RENAME:missing={sorted(actual_failed-actual_targeted)};additional={sorted(actual_targeted-actual_failed)}")
+        original_test=original(root,m["game_sha"],c["source_path"],c["original_game_test_blob"]).decode()
+        later_test=original(root,ref,c["source_path"],c["later_test_only_blob"]).decode()
+        if (before.split(".")[-1] not in original_test or
+            after.split(".")[-1] not in later_test or
+            "Is.EqualTo("+c["original_price_assertion"]+")" not in original_test or
+            "Is.EqualTo("+c["new_price_assertion"]+")" not in later_test):
+            raise EvidenceError("SOURCE_UNSUPPORTED_TEST_RENAME_OR_PRICE_ASSERTION")
+        normalized_failed=(actual_failed-{before})|{after}
+        if normalized_failed!=actual_targeted:raise EvidenceError("RENAME_NOT_ONE_TO_ONE")
+        print(f"EXACT_OWNER_TEST_RENAME_VERIFIED=1/1 | original={before} | later={after} | original_price={c['original_price_assertion']} | later_price={c['new_price_assertion']}")
+    else:
+        print("ALL_FAILED_CASE_NAMES_MATCHED_WITHOUT_RENAME")
     if any(v!="Passed" for v in targeted.values()):raise EvidenceError("TARGETED_RUN_HAS_NON_PASSING_CASE")
     if data[m["targeted_exit"]].decode().strip()!="0":
         raise EvidenceError("TARGETED_NATIVE_EXIT_NOT_ZERO")
     if len(play)!=474:raise EvidenceError("PLAYMODE_FULL_NOT_EXACT")
-    print("TARGETED_15_EQUALS_ORIGINAL_FAILED_15=YES | TARGETED_ACTUALLY_EXECUTED=YES | TARGETED_GITHUB_BYTES_STRICT=YES")
+    print("TARGETED_15_MATCH_ORIGINAL_FAILED_15_WITH_EXACT_IMMUTABLE_RENAME_MAP=YES | TARGETED_ACTUALLY_EXECUTED=YES | TARGETED_GITHUB_BYTES_STRICT=YES")
     print("IMPORTANT: targeted 15 PASS does not replace full 1303 EditMode run on test-only patched SHA")
     print(f"PASS16_ORIGINAL_EVIDENCE=VERIFIED | EDIT_FULL=RED_1288/1303 | PLAY_FULL=GREEN_474/474 | EDIT_TARGETED=GREEN_15/15 | B01-61_NATIVE_EXECUTION=NOT_RUN | FULL_EDIT_AFTER_TEST_PATCH=NOT_RUN | G1_G2=HOLD")
 
