@@ -7,14 +7,15 @@
   "mapOwner": "B01-25 / LEVEL & CHALLENGE DESIGN",
   "source": {
     "path": "Research/B01-25/P14/LD02_ARENA.json",
-    "commit": "eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e",
-    "gitBlobSha1": "6de0d04900a69606ba873f7c29cef75ed6f182cd",
+    "commit": "f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84",
+    "gitBlobSha1": "e39e2f174984832bd97311c050e3c22fd6fb1175",
     "format": "original Codex MapDocument v2",
     "currentGamePr": 310,
     "currentGameSha": "231005c6d0351945a8ee6684f3856af118f0e94f",
     "mapDraftGitBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
     "mapWorldGitBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
-    "mapEditorGitBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7"
+    "mapEditorGitBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
+    "previousBrokenMapBlob": "6de0d04900a69606ba873f7c29cef75ed6f182cd"
   },
   "playerDecision": {
     "type": "ROUTE_CHOICE",
@@ -188,7 +189,7 @@
     "version": 2,
     "globalFloor": false,
     "groundCells": 120,
-    "perimeterWallItems": 40,
+    "perimeterWallItems": 36,
     "pillarItems": 4,
     "lowBarrierItems": 2,
     "spawn": [
@@ -205,7 +206,8 @@
       48,
       40
     ],
-    "geometryProvenance": "Actual map JSON kinds and cell locations inspected, but native PhysX swept collision, vehicle clearance and LOS unmeasured"
+    "geometryProvenance": "B01-25 owner corrected 4 old 1.75m corner gaps using original MapItemKind.Platform (kind6, scaleY4); source footprint/route verified only, real PhysX swept collision, Heavy clearance and LOS remain NOT_RUN",
+    "cornerPlatformItems": 4
   },
   "nativeAcceptance": {
     "existingQueue": "CV-05",
@@ -226,7 +228,7 @@
           "Capture exact Rigidbody position/time/video, physical contacts, finish event and no mission rewards"
         ],
         "pass": [
-          "Both physically distinct rigs reach Finish by actual continuous motion without passing through solid Pillar/LowBarrier/Wall colliders",
+          "Both physically distinct rigs reach Finish by actual continuous motion without passing through solid Pillar/LowBarrier/Wall/Platform colliders",
           "MapWorld.Finished becomes true only on original player attached Rigidbody trigger overlap",
           "No campaign Scrap award, upgrade acquisition, enemy-kill or Encounter.Cleared claim from custom map sandbox"
         ],
