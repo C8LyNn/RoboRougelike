@@ -1,0 +1,51 @@
+using System.Collections;
+using NUnit.Framework;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.TestTools;
+using RoboRougelike.R1;
+using RoboRougelike.R3;
+using RoboRougelike.MOVSeries;
+using RoboRougelike.Mechanics.MOV007;
+
+public sealed class P17LD02DriveQA
+{
+    R1RunController run;
+    [UnitySetUp] public IEnumerator Setup()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
+        Assert.That(run.PrepareUnifiedRun(),Is.True);run.VehicleModel.Award(1000);yield return null;
+    }
+    IEnumerator TestDrive(R3PartKind part,R3DriveKind mode)
+    {
+        if(mode==R3DriveKind.Tracks)
+        {
+            foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})
+                Assert.That(run.GarageBuy(new Vector3Int(x,0,z),R3PartKind.HoverEngine),Is.True);
+            foreach(int x in new[]{-2,2})foreach(int z in new[]{-3,3})
+                Assert.That(run.GarageBuy(new Vector3Int(x,0,z),R3PartKind.Suspension),Is.True);
+            foreach(int x in new[]{-3,3})Assert.That(run.GarageBuy(new Vector3Int(x,0,-3),part),Is.True);
+        }
+        else foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})
+            Assert.That(run.GarageBuy(new Vector3Int(x,0,z),part),Is.True,$"install {part} {x},{z}");
+        Assert.That(run.ConfigureDrive(mode),Is.True);Assert.That(run.ChooseLD02Arena(),Is.True);
+        while(run.Transitioning)yield return null;run.Encounter.SetCombatActive(false);
+        var player=run.Player;var body=player.GetComponent<Rigidbody>();var drive=player.GetComponent<MOVSeriesVehicleAdapter>();
+        player.Controller.enabled=false;var start=body.position;int supported=0;
+        for(int i=0;i<150;i++)
+        {
+            float previous=Time.fixedTime;while(Time.fixedTime<=previous)yield return null;
+            drive.SetDriveInput(new Vector2(0,1),0);
+            var hover=player.GetComponent<HoverVehicleController>();if(hover!=null&&hover.LastSupportedPodCount>0)supported++;
+        }
+        Debug.Log($"[LD02 {mode}] start={start} end={body.position} supported={supported}");
+        Assert.That(Vector2.Distance(new Vector2(start.x,start.z),new Vector2(body.position.x,body.position.z)),Is.GreaterThan(.3f),"horizontal physical movement on LD02");
+        if(mode==R3DriveKind.Hover)Assert.That(supported,Is.GreaterThan(0),"hover pods must physically detect the map");
+    }
+    [UnityTest] public IEnumerator HoverUsesActualArenaSurface()=>TestDrive(R3PartKind.HoverEngine,R3DriveKind.Hover);
+    [UnityTest] public IEnumerator OmniUsesActualArenaSurface()=>TestDrive(R3PartKind.OmniDrive,R3DriveKind.Omni);
+    [UnityTest] public IEnumerator TracksUseActualArenaSurface()=>TestDrive(R3PartKind.CrawlerTrack,R3DriveKind.Tracks);
+    [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+}

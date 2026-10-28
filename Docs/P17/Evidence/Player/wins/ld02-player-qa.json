@@ -1,0 +1,14 @@
+{
+    "status": "PASS",
+    "error": "",
+    "mode": "wins",
+    "method": "API-controlled victory/defeat; enemy physical projectile; not human gameplay",
+    "batchMode": true,
+    "garage": true,
+    "enemyShot": true,
+    "loss": false,
+    "partIdsPreserved": true,
+    "battles": 2,
+    "wins": 2,
+    "rewards": 2
+}

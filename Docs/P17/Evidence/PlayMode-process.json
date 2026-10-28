@@ -1,0 +1,15 @@
+{
+  "phase": "PlayMode",
+  "exitCode": 0,
+  "finishedUtc": "2026-10-28T22:15:53.2356848Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "PlayMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-Save\\Artifacts\\Local\\FM270-P17SaveFinal-20261028T221233Z\\PlayMode.xml\""
+  ],
+  "startedUtc": "2026-10-28T22:13:08.8059348Z",
+  "source": "e605d4a874117ab9f5315b96bcf490e22e0589d5",
+  "stage": "P17SaveFinal"
+}
