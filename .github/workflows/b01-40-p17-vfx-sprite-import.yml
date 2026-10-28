@@ -25,6 +25,7 @@ jobs:
       - name: Fetch original B01-32, original main Unity importer and Codex current source
         shell: bash
         run: |
+          git fetch --no-tags --depth=1 origin 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1
           git fetch --no-tags --depth=1 origin 829ac8da9db83a49865d24fa05a5143f59d4b83f
           git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
       - name: Actually execute original 12-SVG pixel renderer, generate 12 import-ready PNG/.meta pairs
@@ -67,6 +68,7 @@ jobs:
       - name: Fetch exact original art and Codex source objects
         shell: bash
         run: |
+          git fetch --no-tags --depth=1 origin 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1
           git fetch --no-tags --depth=1 origin 829ac8da9db83a49865d24fa05a5143f59d4b83f
           git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
       - uses: actions/download-artifact@v4
