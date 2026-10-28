@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+ <EnableDefaultCompileItems>false</EnableDefaultCompileItems><Nullable>disable</Nullable>
+ <ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Program.cs"/>
+  <Compile Include="UnityMathShim.cs"/>
+  <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs" Link="OriginalMapGenData.cs"/>
+  <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs" Link="OriginalMapGenPlanner.cs"/>
+  <Compile Include="../../../Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs" Link="OriginalMapGenRouteValidator.cs"/>
+  <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs" Link="OriginalMapWorldContract.cs"/>
+  <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs" Link="OriginalMapWorldPolicy.cs"/>
+  <Compile Include="../../../Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldReplayCodec.cs" Link="OriginalMapWorldReplayCodec.cs"/>
+ </ItemGroup>
+</Project>
