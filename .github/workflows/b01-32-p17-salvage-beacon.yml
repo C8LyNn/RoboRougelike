@@ -1,0 +1,35 @@
+name: B01-32 Wave02 ORIGINAL Salvage Beacon RGBA render + Chromium (NOT UNITY)
+on:
+  push:
+    branches:
+      - art/b01-32-p17-salvage-beacon-r1
+    paths:
+      - Research/B01-32/P17/SalvageBeacon/**
+      - Tools/B01-32/P17/SalvageBeacon/**
+      - .github/workflows/b01-32-p17-salvage-beacon.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-vector-art-and-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install the physical original SVG raster/PNG test and browser tools
+        run: python -m pip install --disable-pip-version-check "CairoSVG==2.7.1" "Pillow==11.3.0" "playwright==1.55.0"
+      - name: Render actual original SVG frames to RGBA atlas and inspect pixel parity
+        run: python Tools/B01-32/P17/SalvageBeacon/render.py build/b01-32-p17-salvage
+      - name: Install real headless Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Execute original viewer controls and 720/1080 screenshots
+        run: python Tools/B01-32/P17/SalvageBeacon/test_browser.py build/b01-32-p17-salvage
+      - name: Publish physical 8 frames, RGBA atlas, SHA receipts, preview and screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-32-P17-SALVAGE-BEACON-RENDER
+          path: build/b01-32-p17-salvage/
+          retention-days: 30
+          if-no-files-found: error
