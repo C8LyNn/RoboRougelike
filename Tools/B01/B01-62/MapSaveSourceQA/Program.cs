@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -391,6 +393,70 @@ public static class Program
                                category = "POSITIVE", status = "SKIPPED_NOT_WINDOWS" });
             Console.WriteLine("B10-readonly-Windows-canonical-save-rejects-data-loss: SKIPPED_NOT_WINDOWS");
         }
+
+        // B11: genuine concurrent OS file I/O using the original MapStorage.Save/Load.
+        // This is separate from Windows ReadOnly and exclusive FileShare locks.
+        // Each call sees an entire old/new MapDraft or fails without changing its
+        // previously loaded in-memory state; no guarantee about which revision wins.
+        Case("B11-concurrent-original-save-load-no-torn-map", "POSITIVE", () =>
+            InTemporaryDirectory(directory =>
+            {
+                string file = Path.Combine(directory, "concurrent.json");
+                MapStorage.Save(file, One(MapItemKind.Ground));
+                using var go = new ManualResetEventSlim(false);
+                var writer = Task.Run(() =>
+                {
+                    go.Wait();
+                    for (int k = 0; k < 96; k++)
+                    {
+                        MapStorage.Save(file, One(k % 2 == 0 ? MapItemKind.Wall : MapItemKind.Ground, k % 2, 0));
+                        if (k % 8 == 0) Thread.Yield();
+                    }
+                });
+                var reader = Task.Run(() =>
+                {
+                    go.Wait();
+                    var draft = new MapDraft();
+                    int successes = 0, transientFailures = 0;
+                    for (int k = 0; k < 1024; k++)
+                    {
+                        string before = draft.ToJson();
+                        bool loaded = MapStorage.Load(file, draft, out string error);
+                        if (loaded)
+                        {
+                            successes++;
+                            if (draft.Items.Count != 1 ||
+                                (draft.Items[0].kind != MapItemKind.Ground &&
+                                 draft.Items[0].kind != MapItemKind.Wall))
+                                return (false, successes, transientFailures);
+                        }
+                        else
+                        {
+                            transientFailures++;
+                            // Even under transient filesystem contention, Load must
+                            // not replace the existing in-memory draft with partial JSON.
+                            if (draft.ToJson() != before)
+                                return (false, successes, transientFailures);
+                        }
+                        if (k % 16 == 0) Thread.Yield();
+                    }
+                    return (successes > 0, successes, transientFailures);
+                });
+                go.Set();
+                if (!Task.WaitAll(new Task[] { writer, reader }, 20000))
+                    throw new TimeoutException("B11 concurrent original source IO exceeded 20 seconds");
+                var observed = reader.Result;
+                var final = new MapDraft();
+                bool finalOk = MapStorage.Load(file, final, out _) &&
+                    final.Items.Count == 1 &&
+                    (final.Items[0].kind == MapItemKind.Ground ||
+                     final.Items[0].kind == MapItemKind.Wall);
+                bool noOrphans = Directory.GetFiles(directory, "*.tmp").Length == 0;
+                Console.WriteLine($"B11_REAL_IO_RACE successfulLoads={observed.successes} " +
+                                  $"transientLoadFailures={observed.transientFailures} " +
+                                  $"finalValid={finalOk} orphans={(!noOrphans)}");
+                return observed.Item1 && finalOk && noOrphans;
+            }));
 
         Console.WriteLine("RESULT_JSON=" + JsonSerializer.Serialize(new
         {
