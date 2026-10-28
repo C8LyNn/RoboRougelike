@@ -31,15 +31,22 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin '+refs/pull/310/head:refs/remotes/origin/b01-62-codex-310'
           actual="$(git rev-parse refs/remotes/origin/b01-62-codex-310)"
-          test "$actual" = "$CODEX_SHA"
+          # Fetch exact immutable input even when Codex pushes unrelated later commits.
+          git fetch --no-tags origin "$CODEX_SHA"
+          git cat-file -e "${CODEX_SHA}^{commit}"
           storage="$(git rev-parse "${CODEX_SHA}:Assets/MapEditor/MapStorage.cs")"
           draft="$(git rev-parse "${CODEX_SHA}:Assets/MapEditor/MapDraft.cs")"
+          storageLive="$(git rev-parse "${actual}:Assets/MapEditor/MapStorage.cs")"
+          draftLive="$(git rev-parse "${actual}:Assets/MapEditor/MapDraft.cs")"
           test "$storage" = "$STORAGE_BLOB"
           test "$draft" = "$DRAFT_BLOB"
+          # New PR HEAD is allowed only when BOTH owned original API blobs agree.
+          test "$storageLive" = "$STORAGE_BLOB"
+          test "$draftLive" = "$DRAFT_BLOB"
           mkdir -p Tools/B01/B01-62/MapSaveSourceQA/Original
           git show "${CODEX_SHA}:Assets/MapEditor/MapStorage.cs" > Tools/B01/B01-62/MapSaveSourceQA/Original/MapStorage.cs
           git show "${CODEX_SHA}:Assets/MapEditor/MapDraft.cs" > Tools/B01/B01-62/MapSaveSourceQA/Original/MapDraft.cs
-          echo "PINNED ORIGINALS: CODEX=$actual STORAGE=$storage DRAFT=$draft"
+          echo "PINNED ORIGINALS: CODEX=$CODEX_SHA LIVE_PR=$actual STORAGE=$storage DRAFT=$draft"
       - name: Compile and execute the actual Codex CSharp source with .NET stubs
         shell: bash
         run: |
