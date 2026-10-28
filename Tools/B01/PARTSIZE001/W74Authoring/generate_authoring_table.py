@@ -16,7 +16,7 @@ import subprocess
 import sys
 
 HERE=Path(__file__).resolve().parent
-sys.path.insert(0,str(HERE.parents[2] / "W26Receipt"))
+sys.path.insert(0,str(HERE.parents[0] / "W26Receipt"))
 # Reuses the ACCEPTED seven-kind original-source primitive extraction, not a
 # second approximate implementation or change to frozen QA #298.
 from source_payload_measurements import source_parameters, classify, fitted_host_row, KINDS
@@ -60,15 +60,15 @@ def source_authored_four(geom,scale):
         raise ValueError("DECORATIVE_SUSPENSION_NOT_CONFIRMED")
     if "if(kind!=R3PartKind.Gun)return null;" not in geom or "bool heavy=weapon==R4WeaponKind.Heavy" not in geom:
         raise ValueError("BASIC_GUN_VARIANT_SOURCE_DRIFT")
-    wpos=unique_number(geom,r"wheel\\.localPosition=new Vector3\\(0,(-?[\\d.]+)f,0\\)")
-    wx,wy,wz=unique_number(geom,r"wheel\\.localScale=new Vector3\\(([\\d.]+)f,([\\d.]+)f,([\\d.]+)f\\)")
-    tx,ty,tz=unique_number(geom,r"device\\.localScale=new Vector3\\(([\\d.]+)f,([\\d.]+)f,([\\d.]+)f\\);\\s*}\\s*if\\(kind==R3PartKind\\.OmniDrive\\)")
-    tpos=unique_number(geom,r"if\\(kind==R3PartKind\\.CrawlerTrack\\)\\s*\\{device\\.localPosition=Vector3\\.down\\*([\\d.]+)f;")
-    ppos=unique_number(geom,r"piston\\.localPosition=new Vector3\\(0,(-?[\\d.]+)f,0\\)")
-    px,py,pz=unique_number(geom,r"piston\\.localScale=new Vector3\\(([\\d.]+)f,([\\d.]+)f,([\\d.]+)f\\)")
-    gunpivot=unique_number(geom,r"pivot\\.localPosition=Vector3\\.up\\*([\\d.]+)f;")
-    gunpos=unique_number(geom,r"barrel\\.localPosition=Vector3\\.forward\\*\\(heavy\\?[\\d.]+f:([\\d.]+)f\\);")
-    gx,gy,gz=unique_number(geom,r"automatic\\?new Vector3\\([\\d.]+f,[\\d.]+f,[\\d.]+f\\):new Vector3\\(([\\d.]+)f,([\\d.]+)f,([\\d.]+)f\\);")
+    wpos=unique_number(geom,r"wheel\.localPosition=new Vector3\(0,(-?[\d.]+)f,0\)")
+    wx,wy,wz=unique_number(geom,r"wheel\.localScale=new Vector3\(([\d.]+)f,([\d.]+)f,([\d.]+)f\)")
+    tx,ty,tz=unique_number(geom,r"device\.localScale=new Vector3\(([\d.]+)f,([\d.]+)f,([\d.]+)f\);\s*}\s*if\(kind==R3PartKind\.OmniDrive\)")
+    tpos=unique_number(geom,r"if\(kind==R3PartKind\.CrawlerTrack\)\s*\{device\.localPosition=Vector3\.down\*([\d.]+)f;")
+    ppos=unique_number(geom,r"piston\.localPosition=new Vector3\(0,(-?[\d.]+)f,0\)")
+    px,py,pz=unique_number(geom,r"piston\.localScale=new Vector3\(([\d.]+)f,([\d.]+)f,([\d.]+)f\)")
+    gunpivot=unique_number(geom,r"pivot\.localPosition=Vector3\.up\*([\d.]+)f;")
+    gunpos=unique_number(geom,r"barrel\.localPosition=Vector3\.forward\*\(heavy\?[\d.]+f:([\d.]+)f\);")
+    gx,gy,gz=unique_number(geom,r"automatic\?new Vector3\([\d.]+f,[\d.]+f,[\d.]+f\):new Vector3\(([\d.]+)f,([\d.]+)f,([\d.]+)f\);")
     # (local primitive center, local half extents), nominal Unity primitives.
     items={
       "Wheel":((0,wpos,0),(wy,wx/2,wz/2),"SOURCE_WHEEL_CYLINDER_MESH_CONVEX_NOT_PHYSX"),
