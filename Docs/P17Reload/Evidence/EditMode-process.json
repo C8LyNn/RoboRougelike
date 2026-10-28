@@ -1,0 +1,15 @@
+{
+  "startedUtc": "2026-10-28T22:31:51.7349454Z",
+  "stage": "P17ReloadFinal",
+  "phase": "EditMode",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-Reload\\Artifacts\\Local\\FM270-P17ReloadFinal-20261028T223035Z\\EditMode.xml\""
+  ],
+  "exitCode": 2,
+  "finishedUtc": "2026-10-28T23:27:06.6294133Z",
+  "source": "203a0805251ed28293888e43f2d49f0df63767c6"
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 22:28:48Z" end-time="2026-10-28 22:28:48Z" duration="0,4344195">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1330" result="Failed" site="Child" start-time="2026-10-28 22:28:48Z" end-time="2026-10-28 22:28:48Z" duration="0.434420" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1659" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-P17-Reload/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="538" result="Failed" site="Child" start-time="2026-10-28 22:28:48Z" end-time="2026-10-28 22:28:48Z" duration="0.384495" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="68044" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1053" name="CheckpointReloadExpiryTests" fullname="CheckpointReloadExpiryTests" classname="CheckpointReloadExpiryTests" runstate="Runnable" testcasecount="1" result="Failed" site="Child" start-time="2026-10-28 22:28:48Z" end-time="2026-10-28 22:28:48Z" duration="0.379424" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1054" name="UnmountedExpiredReloadCompletesAfterRestoreAndRemount" fullname="CheckpointReloadExpiryTests.UnmountedExpiredReloadCompletesAfterRestoreAndRemount" methodname="UnmountedExpiredReloadCompletesAfterRestoreAndRemount" classname="CheckpointReloadExpiryTests" runstate="Runnable" seed="97554767" result="Failed" start-time="2026-10-28 22:28:45Z" end-time="2026-10-28 22:28:48Z" duration="3.145900" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  An expired reload must finish when the owned gun is remounted
+  Expected: 12
+  But was:  0
+]]></message>
+            <stack-trace><![CDATA[at CheckpointReloadExpiryTests+<UnmountedExpiredReloadCompletesAfterRestoreAndRemount>d__1.MoveNext () [0x002f9] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-P17-Reload\Assets\Tests\Editor\CheckpointReloadExpiryTests.cs:38
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Reload QA] parts=20 null=0
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
