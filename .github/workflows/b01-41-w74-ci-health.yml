@@ -1,0 +1,69 @@
+name: B01-41 W74 CI-HEALTH-001 original diff policy (NO UNITY)
+on:
+  push:
+    branches: ['audit/b01-41-w58-pass11-ci-evidence']
+    paths:
+      - 'Tools/B01/CI41/W74/**'
+      - '.github/workflows/b01-41-w74-ci-health.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prove-required-check-risk:
+    name: Original Git / CI fail-closed policy source QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin original main workflows and own QA blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse refs/remotes/origin/main)" = '5f06af81e2dd9d877e4300259bb3dd008cb9c9d1'
+          test "$(git hash-object Tools/B01/CI41/W74/ci_health.py)" = '5c412815413c7886d1933e3a803cf5af5b7df21b'
+          test "$(git hash-object Tools/B01/CI41/W74/test_ci_health.py)" = 'd296a6dbf348ec362405c92441dcaa63051ea145'
+          test "$(git rev-parse 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1:.github/workflows/ci-02-editmode.yml)" = '6c6b06819daa6154e3ecd6cccff2e6147b952cfd'
+          test "$(git rev-parse 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1:.github/workflows/ci-03-playmode.yml)" = '4a323a569d9a51a274132b3acab934f191128c5b'
+          echo 'ORIGINAL_CI02_CI03_AND_QA_BLOBS_IMMUTABLY_PINNED'
+      - name: Fetch exact original CHL producer diff to test actual Assets change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=16 origin '+refs/pull/285/head:refs/remotes/origin/ci41-original-chl'
+          test "$(git rev-parse refs/remotes/origin/ci41-original-chl)" = 'c7b2a234a286089383503da41883d624fe650551'
+          git cat-file -e '2355bff6026e22443b164aa9de816c27d3a289e9^{commit}'
+          git cat-file -e 'fb9e7b8b6d844bcac0351a3d7fb8f51cb2c45892^{commit}'
+          git cat-file -e 'ba104561e833fb8914979a5d2f4c2d2baa4ea792^{commit}'
+          echo 'ORIGINAL_CHL_AND_QA_GIT_HISTORY_FETCHED'
+      - name: Execute three original-diff adversarial checks and static risk guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s Tools/B01/CI41/W74 -p test_ci_health.py -v 2>&1 | tee Tools/B01/CI41/W74/ci-health-original-results.txt
+          grep -q 'ORIGINAL_QA_ONLY_DIFF=QA_ONLY_NON_NATIVE_NOT_G1' Tools/B01/CI41/W74/ci-health-original-results.txt
+          grep -q 'ORIGINAL_CHL_ASSETS_SOURCE=NATIVE_REQUIRED_FAIL_CLOSED' Tools/B01/CI41/W74/ci-health-original-results.txt
+          grep -q 'MIXED_OR_UNRECOGNIZED_OR_EMPTY_DIFF=NATIVE_REQUIRED_FAIL_CLOSED' Tools/B01/CI41/W74/ci-health-original-results.txt
+      - name: Store explicit native-unrequired vs required machine-readable receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/CI41/W74/ci_health.py --repo . --base fb9e7b8b6d844bcac0351a3d7fb8f51cb2c45892 --head ba104561e833fb8914979a5d2f4c2d2baa4ea792 --audit-original-ci > Tools/B01/CI41/W74/qa-only-receipt.json
+          python3 Tools/B01/CI41/W74/ci_health.py --repo . --base 2355bff6026e22443b164aa9de816c27d3a289e9 --head c7b2a234a286089383503da41883d624fe650551 --audit-original-ci > Tools/B01/CI41/W74/native-required-receipt.json
+          grep -q '"classification": "QA_ONLY"' Tools/B01/CI41/W74/qa-only-receipt.json
+          grep -q '"classification": "NATIVE_REQUIRED"' Tools/B01/CI41/W74/native-required-receipt.json
+          grep -q '"G1": "NOT_RUN"' Tools/B01/CI41/W74/native-required-receipt.json
+          echo 'CI_HEALTH_001_ORIGINAL_GIT_DIFF_PROOF_PASS; NATIVE_UNITY=NOT_RUN'
+      - name: Preserve sanitized proof of CI semantics, not Unity evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-41-W74-CI-HEALTH
+          path: |
+            Tools/B01/CI41/W74/ci-health-original-results.txt
+            Tools/B01/CI41/W74/qa-only-receipt.json
+            Tools/B01/CI41/W74/native-required-receipt.json
+          if-no-files-found: warn
+          retention-days: 14
