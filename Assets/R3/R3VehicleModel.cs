@@ -361,6 +361,37 @@ namespace RoboRougelike.R3
             }
         }
         public bool CanDeploy => DeployError == null;
+        // Critical garage warnings use only live parts physically connected to
+        // the live core. They do not change the existing deployment policy.
+        public string CriticalReadinessMessage
+        {
+            get
+            {
+                var alive=Parts.Where(p=>p!=null&&p.Health>0).ToList();
+                var core=alive.FirstOrDefault(p=>p.Kind==R3PartKind.Core);
+                var cells=new Dictionary<Vector3Int,R3PartState>();
+                foreach(var part in alive)foreach(var cell in OccupiedCells(part))cells.TryAdd(cell,part);
+                var visited=new HashSet<Vector3Int>();var queue=new Queue<Vector3Int>();
+                if(core!=null){visited.Add(core.Cell);queue.Enqueue(core.Cell);}
+                while(queue.Count>0)
+                {
+                    var current=queue.Dequeue();
+                    foreach(var direction in Neighbours)
+                    {
+                        var next=current+direction;
+                        if(cells.TryGetValue(next,out var other)&&!visited.Contains(next)&&
+                            R3MountingGrid.Compatible(cells[current],other,direction))
+                        {visited.Add(next);queue.Enqueue(next);}
+                    }
+                }
+                var operational=visited.Select(c=>cells[c]).Distinct().ToArray();
+                bool noWeapon=!operational.Any(p=>p.Kind==R3PartKind.Gun&&ValidEconomicKind(p.Kind,p.Weapon));
+                bool noDrive=!HasMobility(operational,SelectedDrive);
+                if(noWeapon&&noDrive)return "Brak sprawnej broni • Brak sprawnego napędu.";
+                if(noWeapon)return "Brak sprawnej broni.";
+                return noDrive?"Brak sprawnego napędu.":null;
+            }
+        }
         public static bool HasMobility(IEnumerable<R3PartState> source,R3DriveKind drive,bool healthy=true)
         {
             var parts=source.Where(p=>!healthy||p.Health>0);

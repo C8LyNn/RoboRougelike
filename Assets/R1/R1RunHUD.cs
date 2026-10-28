@@ -262,7 +262,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(745,538,125,44),"Widok ↓",compactButton))garage.Tilt(-10);
             Panel(new Rect(345,590,585,115));
             GUI.Label(new Rect(360,600,555,55),model.CanDeploy?garage.Message:
-                "Możesz budować dalej; nie możesz jeszcze rozpocząć aktywności: "+model.DeployError,small);
+                "Możesz budować dalej; aktywność niedostępna.\n"+(model.CriticalReadinessMessage??model.DeployError),small);
             GUI.enabled=run.MapEditorSession||model.CanDeploy;
             if(run.MapEditorSession){if(GUI.Button(new Rect(360,654,270,40),"Wróć do edytora map",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(360,654,270,40),"Testuj na poligonie",compactButton))run.EnterTestRange();
