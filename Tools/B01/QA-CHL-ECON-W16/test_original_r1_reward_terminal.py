@@ -115,6 +115,7 @@ namespace RoboRougelike.R1 {
      public FakeRace CheckpointRace;
      public FakeRoad RoadChallenge;
      public int LastScrapReward,EarnedScrap,DefeatedEnemies;
+     public string Error;
      public int RecoveryWindows,SimulationStops,ReactorClears,FullClears,ArenaClears;
      public bool ReadSessionInput()=>false;
      public void MapEditorTick(){}
