@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -45,6 +45,20 @@ jobs:
         env:
           P17_BLUEPRINTS_DIR: p17-source-maps
         run: node --test Research/B01-20/P17/COURSE-DRIVE-001/viewer-bundle.test.mjs
+      - name: Install real Chromium for interaction tests on this matrix OS
+        shell: bash
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            npx playwright install --with-deps chromium
+          else
+            npx playwright install chromium
+          fi
+      - name: Execute real Chromium GUI tests 720p 1080p portrait keyboard and Heavy autopilot
+        shell: bash
+        env:
+          P17_BLUEPRINTS_DIR: p17-source-maps
+        run: node --test Research/B01-20/P17/COURSE-DRIVE-001/browser.test.mjs
       - name: Upload original generated map input, executable standalone HTML and receipt
         if: always()
         uses: actions/upload-artifact@v4
