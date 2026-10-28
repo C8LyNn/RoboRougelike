@@ -181,25 +181,47 @@ def inspect(arena,expected_id,expected_seed,expected_covers,strict_finish=False)
             "native_unity":"NOT_RUN","independent_physics":"NOT_RUN"}
 
 def mutate_test(arena,kind,identity):
+    """Reject distinct deliberately invalid inputs, including a direct BFS obstruction.
+
+    Match the exact rejection reason: a generic unrelated failure cannot
+    accidentally certify a specialised safety check.
+    """
     bad=copy.deepcopy(arena)
-    if kind=="blocked_start":
-        bad["elements"].append({"kind":"Cover","position":{"x":0,"y":1,"z":-25},
-                                "size":{"x":4,"y":2,"z":4},"pitchDegrees":0})
+    expected={
+        "blocked_start":"CENTER_AVENUE_COVER_VIOLATION",
+        "blocked_finish":"CENTER_AVENUE_COVER_VIOLATION",
+        "wrong_sha":"ORIGINAL_GAME_SHA_MISMATCH",
+        "duplicate_enemy":"DUPLICATE_ENEMY_SPAWN",
+        "broken_boundary":"OPEN_OR_UNEXPECTED_BOUNDARY",
+        "nonfinite_size":"NONFINITE_element_size_x",
+        "blocked_route_bfs":"NO_CONSERVATIVE_4_NEIGHBOR_ROUTE_Heavy",
+    }
+    if kind in ("blocked_start","blocked_finish"):
+        cover=next(e for e in bad["elements"] if e["kind"]=="Cover")
+        cover["position"]={"x":0,"y":2,"z":-25 if kind=="blocked_start" else 25}
+        cover["size"]={"x":4,"y":4,"z":4}
     elif kind=="wrong_sha":
         bad["originalGameSha"]="bad-source"
     elif kind=="duplicate_enemy":
         bad["enemySpawnDescriptors"][1]=copy.deepcopy(bad["enemySpawnDescriptors"][0])
     elif kind=="broken_boundary":
-        bad["elements"]=[e for e in bad["elements"] if
-                         not(e["kind"]=="Boundary" and e["position"]["x"]==-32.5)]
+        wall=next(e for e in bad["elements"] if
+                  e["kind"]=="Boundary" and e["position"]["x"]==-32.5)
+        wall["position"]["x"]=-31.5
     elif kind=="nonfinite_size":
-        bad["elements"][-1]["size"]["x"]=float("nan")
-    elif kind=="blocked_finish":
-        bad["elements"].append({"kind":"Cover","position":{"x":0,"y":1,"z":25},
-                                "size":{"x":4,"y":2,"z":4},"pitchDegrees":0})
+        next(e for e in bad["elements"] if e["kind"]=="Cover")["size"]["x"]=float("nan")
+    elif kind=="blocked_route_bfs":
+        cover=next(e for e in bad["elements"] if e["kind"]=="Cover")
+        cover["position"]={"x":0,"y":2,"z":0}
+        cover["size"]={"x":64,"y":4,"z":2}
     else: raise RuntimeError(kind)
-    try:inspect(bad,*identity)
-    except Reject:return
+    try:
+        if kind=="blocked_route_bfs":bfs(bad,"Heavy")
+        else:inspect(bad,*identity)
+    except Reject as exc:
+        need(str(exc)==expected[kind],
+             "WRONG_MUTATION_FAILURE_"+kind+":"+str(exc))
+        return
     raise AssertionError("MUTATION_NOT_REJECTED:"+kind)
 
 def main():
@@ -225,7 +247,8 @@ def main():
         record=inspect(arena,*identity)
         rejected=[]
         for kind in ("blocked_start","blocked_finish","wrong_sha",
-                     "duplicate_enemy","broken_boundary","nonfinite_size"):
+                     "duplicate_enemy","broken_boundary","nonfinite_size",
+                     "blocked_route_bfs"):
             mutate_test(arena,kind,identity);rejected.append(kind)
         try:inspect(arena,*identity,strict_finish=True)
         except Reject as ex:
@@ -254,7 +277,7 @@ def main():
       "input_blueprint_git_blobs":{k:v[0] for k,v in INPUTS.items()},
       "original_arena_count":len(results),"structural_acceptance":"PASS",
       "separate_conservative_bfs_pairs_passed":len(results)*len(REFERENCE_PROFILES),
-      "synthetic_negative_mutations_denied":len(results)*6,
+      "synthetic_negative_mutations_denied":len(results)*7,
       "original_finish_enemy_descriptor_overlaps":sum(len(a["finish_spawn_overlap"]) for a in results),
       "deployment_gate":"HOLD_HQ_POLICY_AND_NATIVE_UNITY",
       "method":"Original Git blueprint bytes + independent AABB and 1m 4-neighbor BFS; NOT Unity/PhysX",
