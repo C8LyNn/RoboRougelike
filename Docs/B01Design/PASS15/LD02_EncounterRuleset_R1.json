@@ -1,0 +1,273 @@
+{
+  "schema": "B01-10-encounter-research/v1",
+  "assetId": "LD02_ARENA_ENCOUNTER_P15_R1",
+  "status": "RESEARCH_ONLY_SOURCE_AND_PLAYER_NOT_RUN",
+  "currentGame": {
+    "codexPr": 310,
+    "sha": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "sourceR1RunControllerBlob": "a675950028ce01a9ef450ad57dd5b524ab838b2f",
+    "sourceR3VehicleModelBlob": "9f1bf190c7535182c6ce375cbfe67f5b2862e811",
+    "sourceMapDraftBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb"
+  },
+  "sourceMap": {
+    "owner": "B01-25",
+    "path": "Research/B01-25/P14/LD02_ARENA.json",
+    "commit": "f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84",
+    "gitBlobSha1": "e39e2f174984832bd97311c050e3c22fd6fb1175",
+    "version": 2,
+    "globalFloor": false,
+    "expectedItems": 168,
+    "expectedCorners": [
+      {
+        "kind": 6,
+        "x": 0,
+        "z": 0
+      },
+      {
+        "kind": 6,
+        "x": 11,
+        "z": 0
+      },
+      {
+        "kind": 6,
+        "x": 0,
+        "z": 9
+      },
+      {
+        "kind": 6,
+        "x": 11,
+        "z": 9
+      }
+    ]
+  },
+  "authorities": {
+    "MapDraft.TryLoad": "MapDocument v2 ground, wall, platform, cover, unique Spawn/Finish",
+    "MapWorld.Finished": "SANDBOX_TOUCH_ONLY player Rigidbody collider; no run reward or encounter victory by finish alone",
+    "R1RunController.Update": "checks player defeat before genuine Encounter.Cleared/CheckpointRace/Won/RoadChallenge completed; only game-owned R1 victory grants rewards",
+    "R3VehicleModel": "at most 2 mounted distinct R4WeaponKind families; no artificial max-four physical barrel cap; selected functional drive required for deployment",
+    "CHL-003": "separate frozen isolated checkpoint package; NOT present in this map/editor sandbox or called by this design asset"
+  },
+  "scenario": {
+    "name": "LD02 — dwa podejścia do osłon",
+    "playerGoal": "prototype: defeat exactly two simulated targets and reach extraction; actual custom Unity map does not currently implement this combined objective",
+    "startCell": [
+      2,
+      5
+    ],
+    "finishCell": [
+      9,
+      5
+    ],
+    "gridMeters": 4,
+    "routes": [
+      {
+        "id": "OPEN",
+        "label": "Otwarty przejazd",
+        "waypoints": [
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            5
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            9,
+            5
+          ]
+        ],
+        "nominalMeters": 28,
+        "prototypeExposureDamage": 18,
+        "intent": "7 grid edges, shortest; exposure/damage is candidate-only"
+      },
+      {
+        "id": "COVER",
+        "label": "Osłonięty objazd",
+        "waypoints": [
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            8,
+            3
+          ],
+          [
+            9,
+            3
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            9,
+            5
+          ]
+        ],
+        "nominalMeters": 44,
+        "prototypeExposureDamage": 7,
+        "intent": "11 grid edges, longer northern passage near existing pillars; actual cover/LOS is unverified"
+      }
+    ],
+    "prototypeOnly": {
+      "enemyIds": [
+        "E1",
+        "E2"
+      ],
+      "enemyCount": 2,
+      "playerStartHp": 100,
+      "ammo": "ABSTRACT_UNLIMITED_FOR_PROTOTYPE",
+      "targetDamagePerShot": "ONE ABSTRACT TARGET DEFEATED PER SHOT",
+      "rewardScrap": 0,
+      "killGateBeforeFinish": true,
+      "resetAllowedAfterTerminal": true,
+      "exitOrAbortAlwaysAvailable": true,
+      "concurrentDamagePrecedesKill": true,
+      "barrelExamples": [
+        2,
+        6,
+        12
+      ],
+      "maxWeaponFamilies": 2
+    }
+  },
+  "tests": {
+    "positive": [
+      {
+        "id": "POS01_OPEN_TWO_KILLS",
+        "actionSequence": [
+          "start",
+          "route:OPEN",
+          "fire:A",
+          "fire:A",
+          "finish"
+        ],
+        "expectPhase": "won",
+        "expectKills": 2,
+        "expectHp": 82
+      },
+      {
+        "id": "POS02_COVER_TWELVE_GUNS",
+        "actionSequence": [
+          "start",
+          "route:COVER",
+          "fire:B",
+          "fire:A",
+          "finish"
+        ],
+        "expectPhase": "won",
+        "expectKills": 2,
+        "expectHp": 93
+      }
+    ],
+    "negative": [
+      {
+        "id": "NEG01_FINISH_EARLY",
+        "actionSequence": [
+          "start",
+          "route:OPEN",
+          "finish"
+        ],
+        "expectPhase": "combat",
+        "expectKills": 0,
+        "expectScrap": 0
+      },
+      {
+        "id": "NEG02_DAMAGE_WINS_RACE",
+        "actionSequence": [
+          "start",
+          "route:COVER",
+          "frame:999:2",
+          "finish"
+        ],
+        "expectPhase": "lost",
+        "expectKills": 0,
+        "expectScrap": 0
+      },
+      {
+        "id": "NEG03_THIRD_FAMILY",
+        "actionSequence": [
+          "start"
+        ],
+        "loadout": {
+          "types": [
+            "Basic",
+            "Automatic",
+            "Heavy"
+          ],
+          "barrels": 12,
+          "functionalDrive": true
+        },
+        "expectPhase": "setup",
+        "expectError": "max-2-families"
+      }
+    ]
+  },
+  "proposed_unimplemented": [
+    "LD02 arena encounter-spawner adapter for two enemy instances E1/E2; NOT in MapDocument v2",
+    "Combined kill-then-finish win condition; current original MapWorld.Finished is only editor TestDrive touch",
+    "Route exposure value 18 versus 7 HP is hypothetical training feedback, not actual Enemy AI LOS/cover damage balance",
+    "Physical route traversability for both Light/Heavy, enemy placement, cover-induced line of sight, timing and reward economy",
+    "Persistent mission state, reset-from-checkpoint, ammo/cooldown, 2/6/12 gun group-specific firing and saved proof",
+    "Currency reward and salvage are intentionally disabled in prototype; only Codex may integrate via original R1 victory transaction"
+  ],
+  "delivery": {
+    "owner": "B01-10",
+    "scope": "Docs/B01Design/PASS15/** only",
+    "codexExistingQueue": "CV-05",
+    "unity": "NOT_RUN",
+    "actualPlayer": "NOT_RUN",
+    "nativeGate": "NOT_CLAIMED",
+    "dataValidation": "6/6 SOURCE-DATA CHECKS EXECUTED IN CONNECTOR V8; no original Unity"
+  }
+}
