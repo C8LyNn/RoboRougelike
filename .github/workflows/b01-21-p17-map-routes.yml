@@ -37,14 +37,15 @@ jobs:
         run: |
           python -m unittest discover -s Research/B01-21/P17 -p 'test_map_routes.py' -v
           if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_NEGATIVE_OR_POSITIVE_CASE_RED' }
+      - name: Require full git-committed overlays to reproduce without rewrite
+        shell: pwsh
+        run: |
+          python Research/B01-21/P17/map_routes.py --check
+          if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_COMMITTED_OUTPUT_DRIFT' }
       - name: Produce real navigation overlay JSON and render SVGs
         shell: pwsh
         run: |
-          if ('${{ matrix.os }}' -eq 'ubuntu-24.04') {
-            python Research/B01-21/P17/map_routes.py --emit-base64
-          } else {
-            python Research/B01-21/P17/map_routes.py
-          }
+          python Research/B01-21/P17/map_routes.py
           if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_GENERATION_RED' }
           python Research/B01-21/P17/map_routes.py --check
           if ($LASTEXITCODE -ne 0) { throw 'MAP_ROUTES_P17_GENERATED_OUTPUT_CHANGED_OR_MISSING' }
