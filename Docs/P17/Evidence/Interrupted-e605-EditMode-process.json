@@ -1,0 +1,15 @@
+{
+  "source": "e605d4a874117ab9f5315b96bcf490e22e0589d5",
+  "exitCode": -1,
+  "stage": "P17FinalEdit",
+  "phase": "EditMode",
+  "startedUtc": "2026-10-28T22:15:58.0452556Z",
+  "finishedUtc": "2026-10-28T22:30:26.2347442Z",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-Save\\Artifacts\\Local\\FM270-P17FinalEdit-20261028T221557Z\\EditMode.xml\""
+  ]
+}

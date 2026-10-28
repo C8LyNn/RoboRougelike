@@ -5,6 +5,12 @@ using UnityEngine;
 
 namespace RoboRougelike.R1
 {
+    [Serializable] public sealed class R1ProgressCheckpoint
+    {
+        public int encounterIndex,completed;
+        public float hull,damage,fireInterval,mobility,core;
+        public string[] acquired;
+    }
     public enum R1RunState { Ready, Combat, UpgradeChoice, Won, Lost, Garage, Salvage, Route, TestDrive }
 
     public sealed class R1RunStats
@@ -15,6 +21,14 @@ namespace RoboRougelike.R1
         public float Mobility { get; private set; } = 1;
         public float Core { get; private set; } = 1;
         public R1RunStats Copy() => new R1RunStats {Hull=Hull,Damage=Damage,FireInterval=FireInterval,Mobility=Mobility,Core=Core};
+        internal static bool TryRestore(R1ProgressCheckpoint c,out R1RunStats stats)
+        {
+            stats=null;
+            bool In(float x,float a,float b)=>!float.IsNaN(x)&&!float.IsInfinity(x)&&x>=a&&x<=b;
+            if(c==null||!In(c.hull,1,3)||!In(c.damage,1,3)||!In(c.fireInterval,.35f,1)||
+                !In(c.mobility,1,2)||!In(c.core,1,4))return false;
+            stats=new R1RunStats{Hull=c.hull,Damage=c.damage,FireInterval=c.fireInterval,Mobility=c.mobility,Core=c.core};return true;
+        }
         public void Apply(R1UpgradeDefinition upgrade)
         {
             if(upgrade!=null)Apply(upgrade.Effect,upgrade.Amount);
@@ -49,6 +63,23 @@ namespace RoboRougelike.R1
         private R1RunState afterSalvage;
         private readonly bool routes;
         public R1RunProgress(int total = 3, bool useRoutes = false) { TotalEncounters = Math.Max(3, total); routes=useRoutes; }
+        public R1ProgressCheckpoint MakeGarageCheckpoint()
+        {
+            if(State!=R1RunState.Garage)return null;
+            return new R1ProgressCheckpoint{encounterIndex=EncounterIndex,completed=CompletedEncounters,
+                hull=Stats.Hull,damage=Stats.Damage,fireInterval=Stats.FireInterval,mobility=Stats.Mobility,core=Stats.Core,
+                acquired=acquired.ToArray()};
+        }
+        public static bool TryRestoreGarage(R1ProgressCheckpoint data,int total,out R1RunProgress progress)
+        {
+            progress=null;
+            if(data==null||total<3||data.completed<0||data.completed>=total||data.encounterIndex!=data.completed||
+                data.acquired==null||data.acquired.Length!=data.completed||data.acquired.Any(s=>string.IsNullOrWhiteSpace(s)||s.Length>256)||
+                !R1RunStats.TryRestore(data,out var stats))return false;
+            var p=new R1RunProgress(total,true){State=R1RunState.Garage,EncounterIndex=data.encounterIndex,
+                CompletedEncounters=data.completed,Stats=stats,DefeatReason=""};
+            p.acquired.AddRange(data.acquired);progress=p;return true;
+        }
         public bool Start()
         {
             if (State != R1RunState.Ready && State != R1RunState.Won && State != R1RunState.Lost) return false;

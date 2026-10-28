@@ -122,6 +122,8 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
+                if(GUI.Button(new Rect(450,548,170,38),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
+                if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(90,545,340,24),run.RunSaveMessage,small);
                 if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
@@ -253,6 +255,8 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(355,80,280,38),"Generowana arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();GUI.enabled=true;}
             if(!run.ReactorPrepared&&!run.SandboxWorkshop){GUI.enabled=run.CanChooseLD02Arena;
                 if(GUI.Button(new Rect(355,168,280,38),"Arena LD02 • walka",compactButton))run.ChooseLD02Arena();GUI.enabled=true;}
+            if(!run.ReactorPrepared&&!run.SandboxWorkshop&&!run.MapEditorSession)
+                if(GUI.Button(new Rect(650,168,265,38),"Zapisz wyprawę",compactButton))run.SaveRunCheckpoint();
             DrawFullActivityGarageActions(run);
             Panel(new Rect(350,452,560,76));
             GUI.Label(new Rect(363,458,370,24),"A / LPM: "+WeaponGroupName(model.WeaponGroupA),small);

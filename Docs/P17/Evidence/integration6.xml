@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 22:12:08Z" end-time="2026-10-28 22:12:09Z" duration="0,9289287">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1329" result="Passed" start-time="2026-10-28 22:12:08Z" end-time="2026-10-28 22:12:09Z" duration="0.928929" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1657" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-P17-Save/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="537" result="Passed" start-time="2026-10-28 22:12:08Z" end-time="2026-10-28 22:12:09Z" duration="0.869024" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="70400" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1314" name="R1RunCheckpointIntegrationTests" fullname="R1RunCheckpointIntegrationTests" classname="R1RunCheckpointIntegrationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-28 22:12:08Z" end-time="2026-10-28 22:12:09Z" duration="0.852089" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1316" name="CorruptOrUnsupportedSaveCannotChangeTheReadyRun" fullname="R1RunCheckpointIntegrationTests.CorruptOrUnsupportedSaveCannotChangeTheReadyRun" methodname="CorruptOrUnsupportedSaveCannotChangeTheReadyRun" classname="R1RunCheckpointIntegrationTests" runstate="Runnable" seed="1587378810" result="Passed" start-time="2026-10-28 22:12:02Z" end-time="2026-10-28 22:12:05Z" duration="3.497404" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1315" name="SaveAfterVictoryRestoresGarageWithoutDuplicatingPartsOrReward" fullname="R1RunCheckpointIntegrationTests.SaveAfterVictoryRestoresGarageWithoutDuplicatingPartsOrReward" methodname="SaveAfterVictoryRestoresGarageWithoutDuplicatingPartsOrReward" classname="R1RunCheckpointIntegrationTests" runstate="Runnable" seed="1945806019" result="Passed" start-time="2026-10-28 22:12:05Z" end-time="2026-10-28 22:12:09Z" duration="3.816259" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=1; złom z demontażu=33
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 19 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 19 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 19 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 19 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 18 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 18 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 18 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 18 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 18 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 18 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 19 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 19 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1348" name="R3ModelCheckpointTests" fullname="R3ModelCheckpointTests" classname="R3ModelCheckpointTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-28 22:12:09Z" end-time="2026-10-28 22:12:09Z" duration="0.006233" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1350" name="DuplicateOwnedIdAndInvalidHealthAreRejectedWithoutProducingAModel" fullname="R3ModelCheckpointTests.DuplicateOwnedIdAndInvalidHealthAreRejectedWithoutProducingAModel" methodname="DuplicateOwnedIdAndInvalidHealthAreRejectedWithoutProducingAModel" classname="R3ModelCheckpointTests" runstate="Runnable" seed="1323966049" result="Passed" start-time="2026-10-28 22:12:09Z" end-time="2026-10-28 22:12:09Z" duration="0.001484" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1351" name="GroupPreferenceSurvivesSaveWhileGunIsInInventory" fullname="R3ModelCheckpointTests.GroupPreferenceSurvivesSaveWhileGunIsInInventory" methodname="GroupPreferenceSurvivesSaveWhileGunIsInInventory" classname="R3ModelCheckpointTests" runstate="Runnable" seed="1146410155" result="Passed" start-time="2026-10-28 22:12:09Z" end-time="2026-10-28 22:12:09Z" duration="0.001281" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1349" name="JsonRoundTripPreservesOwnedIdsConditionInventoryAndResources" fullname="R3ModelCheckpointTests.JsonRoundTripPreservesOwnedIdsConditionInventoryAndResources" methodname="JsonRoundTripPreservesOwnedIdsConditionInventoryAndResources" classname="R3ModelCheckpointTests" runstate="Runnable" seed="1811356868" result="Passed" start-time="2026-10-28 22:12:09Z" end-time="2026-10-28 22:12:09Z" duration="0.002272" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

@@ -59,7 +59,7 @@ namespace RoboRougelike.R3
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
             R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45, _=>ArmorCost };
     }
-    public sealed class R3VehicleModel
+    public sealed partial class R3VehicleModel
     {
         public const int InventoryCapacity=200;
         public R3VehicleDesign Design { get; }
