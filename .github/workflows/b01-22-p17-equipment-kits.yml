@@ -1,0 +1,34 @@
+name: B01-22 P17 equipment kits data QA
+on:
+  push:
+    branches: ['b01-22/p17-equipment-kits-001']
+    paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
+  pull_request:
+    paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
+permissions:
+  contents: read
+jobs:
+  node-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: node --test Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs
+      - run: node Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs validate
+      - run: node Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs list
+      - run: python -m unittest discover -s Research/B01-22/P17/EQUIPMENT-KITS-001 -p test_stage_kit_payload.py -v
+      - run: python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --verify-only
+      - name: Fetch exact original Codex host commit (read-only)
+        run: git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+      - name: Fetch latest published Codex PR 310 (read-only)
+        run: git fetch --no-tags --depth=1 origin refs/pull/310/head:refs/remotes/origin/b01-codex-pr310
+      - name: Real original C# price/enum source gate + 7 negatives
+        run: python Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py --current-ref origin/b01-codex-pr310 --selftest

@@ -1,0 +1,124 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-22-EQUIPMENT-KITS-001",
+  "revision": "1.0.2",
+  "owner": "B01-22",
+  "issue": 330,
+  "purpose": "10 source-pinned garage equipment offer datasets, offline quote/validation",
+  "unity_version": "6000.3.14f1",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": null,
+  "dependency_package_ids": [],
+  "files": [
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json",
+      "sha256": "2f831b0762a5624846ad3212c09b5a57d59a51d86b77a9c8d98663f414597e2c",
+      "bytes": 5676
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.mjs",
+      "sha256": "61a961d0de690a169db66a8d4a6c3cf21d52ea7760ca34fcce4c922f3f8d2ecb",
+      "bytes": 3104
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs",
+      "sha256": "5ad56cf02a9c74cf88659b1b36a5b87cc5217fa0178f8f64630c395c5b1bdade",
+      "bytes": 924
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs",
+      "sha256": "f4adc0e5ff76ccb564e0f939a7350b6430e6cf45a1b591febac39592d8a1c819",
+      "bytes": 2222
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/README.md",
+      "sha256": "6f8f28d322f130968aa1595a503760bcc489e433d577b0d84529fea31567f7e5",
+      "bytes": 2414
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/INSTALL_FOR_CODEX.md",
+      "sha256": "da782475cbfb0e4c86ebd72971d3828ce5e7b6d3b7ca462c1589144528860ec9",
+      "bytes": 2070
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/KNOWN_LIMITATIONS.md",
+      "sha256": "3282d1e64e295fd1f22fb61d45d43f1f8c31b124205b10e9af90fdab9406bf1e",
+      "bytes": 748
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_PLAN.md",
+      "sha256": "17fec996a3f7dd29eb59e82580483590d3eeb8a0d6b9c0916b5d37f5d54dd048",
+      "bytes": 1780
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/CHANGELOG.md",
+      "sha256": "6273051913fddf7bdde088055fa14505c4102b820675f39ba7af2e0ad9928db9",
+      "bytes": 963
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_EVIDENCE/v8-direct.json",
+      "sha256": "beda168cdc4778700de1927f28f5ee8f2821ebce176af5b456363210945b3463",
+      "bytes": 1913
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py",
+      "sha256": "e059c0e371493ce0da140333f9d533ccf1785b3b79870d732825a3a8445be050",
+      "bytes": 4986
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py",
+      "sha256": "fe49701432cac3869f7268c9d6b812cff508157eefc33e14863c5652b7a06b1f",
+      "bytes": 8813
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/test_stage_kit_payload.py",
+      "sha256": "a969a8300b8a2c0f1b6929deba5e58b006a05669b93a392f41f3e531aa728580",
+      "bytes": 6932
+    }
+  ],
+  "possible_conflicts": [
+    "future Codex-owned garage stock adapter only"
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex main reward/run/save",
+    "CHL/PARTSIZE/ECON protected source"
+  ],
+  "source_license": "B01 original data and source; published R3/R4 enum/price provenance in catalog.json",
+  "tests": [
+    {
+      "name": "v1.0.1 original Node 26/26 each OS plus 7 original-source negatives",
+      "status": "PASS",
+      "tested_sha": "1dd5c79c685f25a214995d9c9dc6561277978f81",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743472433"
+    },
+    {
+      "name": "v1.0.2 original Python staging 18 tests and Node 26 tests",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "name": "Unity native EditMode and PlayMode",
+      "status": "NOT_RUN",
+      "reason": "Unity activation credentials unavailable"
+    }
+  ],
+  "qa_b01_60": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "limitations": [
+    "No in-game store integration",
+    "No physical auto-mount",
+    "Prices require recheck against Codex host",
+    "Source-provenance workflow G0 to be executed and acknowledged by receiver",
+    "B01-40 and B01-60 independent acceptance pending",
+    "Only staging data; no canonical host transaction or code changes",
+    "B01-40 and B01-60 independent QA pending"
+  ],
+  "rollback": "Do not import or remove staged EK01-EK10; canonical game source unchanged"
+}
