@@ -1,0 +1,36 @@
+{
+  "layouts": [
+    {
+      "coverCount": 6,
+      "geometryHash": "30fb147b8ea3b4eaa9a7f300fcfa093f55ab0d340ad301c5a659c7e14c7b878c",
+      "id": "AR16_01_OPEN_FLANK",
+      "routes": 6,
+      "seed": 160101
+    },
+    {
+      "coverCount": 11,
+      "geometryHash": "5cfc45a3308cf5d15b48ab9fd01eb5ae2c3b292bc44b97d5a158a9dcc870048d",
+      "id": "AR16_02_SPLIT_DECISION",
+      "routes": 6,
+      "seed": 160202
+    },
+    {
+      "coverCount": 16,
+      "geometryHash": "a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98",
+      "id": "AR16_03_DENSE_PRESSURE",
+      "routes": 6,
+      "seed": 160303
+    }
+  ],
+  "nativeUnity": "NOT_RUN",
+  "numberOfDistinctProfileLaneRoutes": 18,
+  "numberOfUniqueLayouts": 3,
+  "originalMAPGENSourceGameSha": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "physx": "NOT_RUN",
+  "schema": "B01-21-P17-MAP-ROUTES-001-MANIFEST-v1",
+  "sourceBlueprintGitBlobs": {
+    "AR16_01_OPEN_FLANK": "fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e",
+    "AR16_02_SPLIT_DECISION": "022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790",
+    "AR16_03_DENSE_PRESSURE": "1fe7bf8b124d999de75c0fd3cacc85ee62319429"
+  }
+}
