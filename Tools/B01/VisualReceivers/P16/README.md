@@ -9,7 +9,7 @@
 
 ## Reproduction and required original inputs
 
-Execute only in a **disposable independent repository checkout**, not a live Codex gameplay worktree. Dependencies: Git, Python 3, CairoSVG/Pillow; for M04, actual Blender 4.x, NumPy, EGL/Mesa/Xvfb for headless render. Workflow [.github/workflows/b01-30-pass16-motion-art.yml](../../../../../.github/workflows/b01-30-pass16-motion-art.yml) includes all exact executable steps, source-blob pins, fail-closed tests and artifact uploads.
+Execute only in a **disposable independent repository checkout**, not a live Codex gameplay worktree. Dependencies: Git, Python 3, CairoSVG/Pillow; for M04, actual Blender 4.x, NumPy, EGL/Mesa/Xvfb for headless render. Workflow [.github/workflows/b01-30-pass16-motion-art.yml](../../../../.github/workflows/b01-30-pass16-motion-art.yml) includes all exact executable steps, source-blob pins, fail-closed tests and artifact uploads.
 
 A1 source: B01-31 #294 original commit 8709cf27901c4edca1434cbc760dec5db130a3ef; Git blob 96cc46a7c14f94a45c387e102d5940cb787d2d5c. Fetch owner PR #294 and run Python file Tools/B01/VisualReceivers/P16/selected_wheel_motion_proposal.py. Outputs: build/B01-30/P16-A1-motion-proposal/.
 
