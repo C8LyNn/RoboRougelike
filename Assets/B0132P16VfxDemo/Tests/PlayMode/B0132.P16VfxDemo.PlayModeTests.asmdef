@@ -1,0 +1,19 @@
+{
+  "name": "B0132.P16VfxDemo.PlayModeTests",
+  "rootNamespace": "RoboRougelike.B0132P16.Tests",
+  "references": [
+    "B0132.P16VfxDemo.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
