@@ -1,0 +1,50 @@
+name: B01-61 W02 original producer WHEELWAKE independent CSharp receiver
+on:
+  push:
+    branches: ['qa/b01-61-p17-wave02-wheelwake-receiver']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61-P17-W02-WheelWake/**'
+      - '.github/workflows/b01-61-p17-wave02-wheelwake-receiver.yml'
+permissions:
+  contents: read
+jobs:
+  original-emitter-integration:
+    name: Original B01-32 WheelWake emitter / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch immutable B01-32 WHEELWAKE producer SHA and verify both Git CSharp blobs
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 005e177a6742634add0e3e434ca34647d590f2fd
+          test "$(git rev-parse 005e177a6742634add0e3e434ca34647d590f2fd:Assets/B0132P17WheelWake/Runtime/WheelWakeProfile.cs)" = "45949c3c550f048ba8bccfe1071a29edf45d2807"
+          test "$(git rev-parse 005e177a6742634add0e3e434ca34647d590f2fd:Assets/B0132P17WheelWake/Runtime/B0132WheelWakeEmitter.cs)" = "debb9f0fb7803102cfdaa78babb5de0e9a47fba8"
+      - name: Require source-manifest current Git SHA
+        shell: bash
+        run: |
+          python -c "import json,subprocess; m=json.load(open('Tools/B01/B01-61-P17-W02-WheelWake/manifest.json',encoding='utf8')); assert subprocess.check_output(['git','hash-object',m['source_path']],text=True).strip()==m['source_git_blob']"
+      - name: Execute actual producer original emitter and two synthetic negative CSharp mutations
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61-P17-W02-WheelWake/run_original_emitter_qa.py --repo . 2>&1 | tee b0161-w02-wheelwake.log
+      - name: Preserve independent QA actual command exit and original-source logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w02-wheelwake-${{ matrix.os }}
+          path: b0161-w02-wheelwake.log
+          if-no-files-found: warn
