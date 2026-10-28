@@ -115,6 +115,22 @@ class ActualGitSourceGateTests(unittest.TestCase):
             self.assertEqual(report["status"], "SOURCE_SCOPE_FAIL_CLOSED")
         print("UNKNOWN_STALE_EMPTY_OR_NONANCESTOR_GIT_SOURCE=REJECTED")
 
+    def test_07_current_codex_original_AI_Assets_delta_still_native_required(self):
+        # Separate real owner successor to the initially tested game commit.
+        # This is an ORIGINAL Git source-diff classification only, NOT an AI
+        # compile/Unity/PhysX test or proof that its gameplay logic works.
+        source = "a2ccd055070a963805cba0779b79f18489f4794f"
+        target = "16c2668104952f1b8db304cc7817b897fb48a9b1"
+        paths = gate.original_diff(ROOT, source, target)
+        self.assertIn("Assets/Pack/P12_PipelineSafeEnemyTurret.cs", paths)
+        self.assertIn("Assets/Tests/Editor/UnarmedEnemyRammingTests.cs", paths)
+        code, receipt = call_cli(source, target)
+        self.assertEqual(code, 2)
+        self.assertEqual(receipt["source"]["head_sha"], target)
+        self.assertEqual(receipt["decision"]["scope"], "NATIVE_REQUIRED")
+        self.assertEqual(receipt["decision"]["native_g1"], "NOT_RUN")
+        print("LATEST_CODEX_ORIGINAL_ENEMY_AI_CHANGE=NATIVE_REQUIRED")
+
     def test_06_untrusted_observed_data_cannot_force_G1_on_actual_game(self):
         fake = {
             "EditMode": {"mode": "EditMode", "source_sha": CODEX_AFTER,

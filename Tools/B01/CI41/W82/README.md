@@ -3,7 +3,7 @@
 ## What is actually delivered
 
 - `git_verified_required_gate.py` — validates two **exact 40-character Git commit IDs**, requires ancestor relationship, reads full original `git diff --no-renames --name-only -z`, rejects empty/unavailable history or a forged claimed file list; passes the verified paths to the existing W78 native-status aggregate.
-- `test_git_verified_required_gate.py` — executes original pinned pre-fix W78 Python from **original Git bytes** to reproduce false QA-only classification, then executes new exact-Git gate against **actual Codex `231005c6... → a2ccd055...` commits** and validates six fail-closed/positive cases on Windows and Ubuntu.
+- `test_git_verified_required_gate.py` — executes original pinned pre-fix W78 Python from **original Git bytes** to reproduce false QA-only classification, then executes new exact-Git gate against **actual Codex `231005c6... → a2ccd055...` commits** and validates seven fail-closed/positive cases on Windows and Ubuntu, including an additional later Codex AI source delta `a2ccd055... → 16c26681...`.
 - Existing `W78/required_aggregate.py` CLI was **patched in place**, not left as a bypass: it now REQUIRES `--repo --base --head`, checks source identity, and resolves file changes from the same original Git commit diff. Old `--input` alone fails. The underlying `evaluate()` remains a policy-only function, not an independent source provenance authority.
 
 **This is CI-only tooling; never Unity G1, G2, gameplay code, merge, integration or an authenticated GitHub required check.** The external HQ/CI owner must authorize adoption into shared workflows, and trusted base/head SHA **MUST come from the actual GitHub PR/event**, not from a submitter choosing a convenient ancestry interval.

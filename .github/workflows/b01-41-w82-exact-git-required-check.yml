@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/W82/git_verified_required_gate.py)" = '17d40a3234696670b71a0821cf08fcfba3e3e45e'
-          test "$(git hash-object Tools/B01/CI41/W82/test_git_verified_required_gate.py)" = '707f2942fa55461e37120f32b5107d3d87864581'
+          test "$(git hash-object Tools/B01/CI41/W82/test_git_verified_required_gate.py)" = '732d75a65ce45a22e6b5a5a529eedb9e48cfb68f'
           test "$(git rev-parse 6fa53271bd8a2fec81cf0aab94556c8c53cfbf0f:Tools/B01/CI41/W78/required_aggregate.py)" = '42ea9a2dbd82a96232a761c32a3c1097f14dc716'
           echo 'QA_FIX_AND_ORIGINAL_PRE_FIX_SOURCE_GIT_BLOBS_PINNED'
       - name: Fetch actual original Codex game commit lineage without writing gameplay
@@ -37,6 +37,7 @@ jobs:
           git fetch --no-tags --depth=80 origin '+refs/pull/310/head:refs/remotes/origin/ci41-pass16-codex'
           git cat-file -e '231005c6d0351945a8ee6684f3856af118f0e94f^{commit}'
           git cat-file -e 'a2ccd055070a963805cba0779b79f18489f4794f^{commit}'
+          git cat-file -e '16c2668104952f1b8db304cc7817b897fb48a9b1^{commit}'
           test "$(git diff --no-renames --name-only 231005c6d0351945a8ee6684f3856af118f0e94f a2ccd055070a963805cba0779b79f18489f4794f -- | grep -c '^Assets/')" -gt 4
           echo 'EXACT_ORIGINAL_CODEX_GAME_SHA_DIFF_FETCHED; UNITY_TESTS_NOT_STARTED'
       - name: Real original immutable source negative to repaired fail-closed on both OS
@@ -48,6 +49,7 @@ jobs:
           grep -q 'ORIGINAL_PRIOR_W78_FORGED_QA_PATHS_ON_CODEX_GAME_ACCEPTED_RED' "Tools/B01/CI41/W82/source-git-${RUNNER_OS}.txt"
           grep -q 'ACTUAL_CODEX_ASSETS_OLD_TO_NEW_SHA=NATIVE_REQUIRED_BLOCKING_GREEN_FIXED' "Tools/B01/CI41/W82/source-git-${RUNNER_OS}.txt"
           grep -q 'FORGED_QA_ONLY_CHANGED_PATHS=REJECTED_FAIL_CLOSED' "Tools/B01/CI41/W82/source-git-${RUNNER_OS}.txt"
+          grep -q 'LATEST_CODEX_ORIGINAL_ENEMY_AI_CHANGE=NATIVE_REQUIRED' "Tools/B01/CI41/W82/source-git-${RUNNER_OS}.txt"
           echo 'P16_ORIGINAL_GIT_SCOPE_GUARD_PASS; NATIVE_UNITY=NOT_RUN'
       - name: Upload sanitized original Git decision evidence
         if: always()
