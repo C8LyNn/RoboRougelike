@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="32" result="Passed" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-28 15:51:13Z" end-time="2026-10-28 15:51:13Z" duration="0,5033005">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1305" result="Passed" start-time="2026-10-28 15:51:13Z" end-time="2026-10-28 15:51:13Z" duration="0.503301" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1627" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-Suspension309/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="513" result="Passed" start-time="2026-10-28 15:51:13Z" end-time="2026-10-28 15:51:13Z" duration="0.425063" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="54988" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1101" name="InvalidWeaponTransactionTests" fullname="InvalidWeaponTransactionTests" classname="InvalidWeaponTransactionTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.027564" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1105" name="HealthyValidTransactionsPreserveGuidAndChargeOnce" fullname="InvalidWeaponTransactionTests.HealthyValidTransactionsPreserveGuidAndChargeOnce" methodname="HealthyValidTransactionsPreserveGuidAndChargeOnce" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="1279169259" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.014252" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1104" name="LedgerRejectsMixedInvalidEquipmentAtomically" fullname="InvalidWeaponTransactionTests.LedgerRejectsMixedInvalidEquipmentAtomically" methodname="LedgerRejectsMixedInvalidEquipmentAtomically" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="445633798" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.001628" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1102" name="RejectsMixedInvalidSalvageWithoutGrantingOwnership" fullname="InvalidWeaponTransactionTests.RejectsMixedInvalidSalvageWithoutGrantingOwnership" methodname="RejectsMixedInvalidSalvageWithoutGrantingOwnership" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="854186366" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.000256" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1103" name="RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation" fullname="InvalidWeaponTransactionTests.RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation" methodname="RejectsRepairAndDismantleOfCorruptedOwnedGunWithoutMutation" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="202545452" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.000921" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1106" name="UnaffordableRepairLeavesOwnershipHealthAndWalletIntact" fullname="InvalidWeaponTransactionTests.UnaffordableRepairLeavesOwnershipHealthAndWalletIntact" methodname="UnaffordableRepairLeavesOwnershipHealthAndWalletIntact" classname="InvalidWeaponTransactionTests" runstate="Runnable" seed="1704303282" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.000234" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1295" name="R1RunModelTests" fullname="R1RunModelTests" classname="R1RunModelTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.011551" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1299" name="LossClearsOffersAndNewRunDoesNotInheritBonuses" fullname="R1RunModelTests.LossClearsOffersAndNewRunDoesNotInheritBonuses" methodname="LossClearsOffersAndNewRunDoesNotInheritBonuses" classname="R1RunModelTests" runstate="Runnable" seed="1908060040" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.004871" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1300" name="ModifiersActuallyChangeStatsAndStayWithinBounds" fullname="R1RunModelTests.ModifiersActuallyChangeStatsAndStayWithinBounds" methodname="ModifiersActuallyChangeStatsAndStayWithinBounds" classname="R1RunModelTests" runstate="Runnable" seed="1257160200" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.000979" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1301" name="RepeatedWinCannotAdvancePastUnchosenReward" fullname="R1RunModelTests.RepeatedWinCannotAdvancePastUnchosenReward" methodname="RepeatedWinCannotAdvancePastUnchosenReward" classname="R1RunModelTests" runstate="Runnable" seed="1090075646" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.000249" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1296" name="RunStartsWithCleanProgressAndThreeEncounters" fullname="R1RunModelTests.RunStartsWithCleanProgressAndThreeEncounters" methodname="RunStartsWithCleanProgressAndThreeEncounters" classname="R1RunModelTests" runstate="Runnable" seed="1349733669" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.000247" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1298" name="ThirdVictoryOffersOneLastPhysicalBonusBeforeCompletion" fullname="R1RunModelTests.ThirdVictoryOffersOneLastPhysicalBonusBeforeCompletion" methodname="ThirdVictoryOffersOneLastPhysicalBonusBeforeCompletion" classname="R1RunModelTests" runstate="Runnable" seed="1642249684" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.001761" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1297" name="VictoryOffersThreeUniqueChoicesAndOnlyOneCanBeApplied" fullname="R1RunModelTests.VictoryOffersThreeUniqueChoicesAndOnlyOneCanBeApplied" methodname="VictoryOffersThreeUniqueChoicesAndOnlyOneCanBeApplied" classname="R1RunModelTests" runstate="Runnable" seed="1155510385" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:46Z" duration="0.001541" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1587" name="RewardRC2IntegrationTests" fullname="RewardRC2IntegrationTests" classname="RewardRC2IntegrationTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-10-28 15:51:09Z" end-time="2026-10-28 15:51:10Z" duration="0.420229" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1592" name="FourthOrOwnedSelectionCannotMutateCanonicalRewardState" fullname="RewardRC2IntegrationTests.FourthOrOwnedSelectionCannotMutateCanonicalRewardState" methodname="FourthOrOwnedSelectionCannotMutateCanonicalRewardState" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="775795217" result="Passed" start-time="2026-10-28 15:50:46Z" end-time="2026-10-28 15:50:49Z" duration="3.293021" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=42
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1593" name="FullInventoryRefusalKeepsTheSameWindowAndCanRetry" fullname="RewardRC2IntegrationTests.FullInventoryRefusalKeepsTheSameWindowAndCanRetry" methodname="FullInventoryRefusalKeepsTheSameWindowAndCanRetry" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1572248785" result="Passed" start-time="2026-10-28 15:50:49Z" end-time="2026-10-28 15:50:53Z" duration="3.515066" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=42
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1588" name="KilledEnemyDropsUseCanonicalPhysicalIds" fullname="RewardRC2IntegrationTests.KilledEnemyDropsUseCanonicalPhysicalIds" methodname="KilledEnemyDropsUseCanonicalPhysicalIds" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="2100740383" result="Passed" start-time="2026-10-28 15:50:53Z" end-time="2026-10-28 15:50:56Z" duration="3.498984" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1591" name="LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" fullname="RewardRC2IntegrationTests.LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" methodname="LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1255909011" result="Passed" start-time="2026-10-28 15:50:56Z" end-time="2026-10-28 15:51:00Z" duration="3.360553" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=3; złom z demontażu=27
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1590" name="NoRecoveryWindowBeforeAuthenticatedVictory" fullname="RewardRC2IntegrationTests.NoRecoveryWindowBeforeAuthenticatedVictory" methodname="NoRecoveryWindowBeforeAuthenticatedVictory" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="2094578229" result="Passed" start-time="2026-10-28 15:51:00Z" end-time="2026-10-28 15:51:03Z" duration="3.268496" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1594" name="RawServiceCannotBypassTheControllerSettlementBoundary" fullname="RewardRC2IntegrationTests.RawServiceCannotBypassTheControllerSettlementBoundary" methodname="RawServiceCannotBypassTheControllerSettlementBoundary" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="977174299" result="Passed" start-time="2026-10-28 15:51:03Z" end-time="2026-10-28 15:51:06Z" duration="3.326176" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=42
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1589" name="SlotIdentityIsStableAcrossRepeatedSalvageBinding" fullname="RewardRC2IntegrationTests.SlotIdentityIsStableAcrossRepeatedSalvageBinding" methodname="SlotIdentityIsStableAcrossRepeatedSalvageBinding" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1827802043" result="Passed" start-time="2026-10-28 15:51:06Z" end-time="2026-10-28 15:51:10Z" duration="3.475153" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1475" name="RRLW34RewardTests" fullname="RRLW34RewardTests" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.039472" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1492" name="FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" fullname="RRLW34RewardTests.FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" methodname="FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" classname="RRLW34RewardTests" runstate="Runnable" seed="1398648072" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.012248" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1488" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.005435" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1485" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;nan&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;nan&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="1496220447" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.002431" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1486" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;infinite&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;infinite&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="1077258146" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001037" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1487" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;effect&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;effect&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="170357818" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001002" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1491" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.007509" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1489" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts(196,True)" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts(196,True)" methodname="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" seed="1878954937" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.003560" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1490" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts(197,False)" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts(197,False)" methodname="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" seed="1208262371" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.003409" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1480" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.008452" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1476" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(0,9)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(0,9)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="904796654" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.003497" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1477" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(1,6)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(1,6)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="1760390702" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001508" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1478" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(2,5)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(2,5)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="975948927" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001309" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1479" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(3,4)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(3,4)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="2116322211" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001146" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1484" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.004151" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1481" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(0)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(0)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="45914927" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001375" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1482" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(2)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(2)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="1726133640" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001028" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1483" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(3)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(3)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="213692439" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:10Z" duration="0.001062" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1603" name="VictoryRewardAtomicityTests" fullname="VictoryRewardAtomicityTests" classname="VictoryRewardAtomicityTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-28 15:51:13Z" end-time="2026-10-28 15:51:13Z" duration="0.393956" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1604" name="InvalidRewardCatalogCannotAwardScrapOrRepeatVictory" fullname="VictoryRewardAtomicityTests.InvalidRewardCatalogCannotAwardScrapOrRepeatVictory" methodname="InvalidRewardCatalogCannotAwardScrapOrRepeatVictory" classname="VictoryRewardAtomicityTests" runstate="Runnable" seed="93483883" result="Passed" start-time="2026-10-28 15:51:10Z" end-time="2026-10-28 15:51:13Z" duration="3.568215" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 83 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R1] Nie można rozliczyć nagrody: Wymagane są co najmniej trzy różne ulepszenia.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

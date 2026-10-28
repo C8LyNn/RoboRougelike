@@ -268,10 +268,23 @@ namespace RoboRougelike.R1
             else if (Encounter.Cleared||CheckpointRace?.Won==true||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
             {
                 Player.GetComponent<R3VehicleAssembly>().Capture();
+                // The victory transition validates and creates its offers first.
+                // A malformed catalog must never pay the wallet while the run
+                // remains in Combat, where Update would pay it again next frame.
+                try
+                {
+                    if(!Progress.WinEncounter(Definition.Upgrades,Plan.UpgradeRandom(Progress.EncounterIndex)))return;
+                }
+                catch(System.InvalidOperationException problem)
+                {
+                    Error="Nie można rozliczyć nagrody: "+problem.Message;
+                    SetSimulation(false);
+                    Debug.LogWarning("[R1] "+Error);
+                    return;
+                }
                 LastScrapReward=Definition.Encounters[Progress.EncounterIndex].ScrapReward;
                 VehicleModel.Award(LastScrapReward);
                 EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
-                Progress.WinEncounter(Definition.Upgrades, Plan.UpgradeRandom(Progress.EncounterIndex));
                 Progress.OpenSalvage();
                 OpenRecoveryWindow();
                 SetSimulation(false);
