@@ -27,11 +27,18 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/W74/ci_health.py)" = 'a386417a3f927257e46f646d8c8afa7bc54e1d8f'
-          test "$(git hash-object Tools/B01/CI41/W78/required_aggregate.py)" = '42ea9a2dbd82a96232a761c32a3c1097f14dc716'
-          test "$(git hash-object Tools/B01/CI41/W78/test_required_aggregate.py)" = '3f118b23ffaf3df7e2499ce9f1bd5c5e73d40cc0'
+          test "$(git hash-object Tools/B01/CI41/W78/required_aggregate.py)" = '9d5a6feffb2b0b9cf8db2dca8b0d457b8c46df98'
+          test "$(git hash-object Tools/B01/CI41/W78/test_required_aggregate.py)" = '68afe40deb2c802a9fd983a1bf25dbc07acddaa9'
           test "$(git hash-object Tools/B01/CI41/W78/observed_real_unlicensed.json)" = '99a26efb447ce80647a370d287f0062e92d81d81'
           test "$(git rev-parse ef03cf7bbd53cc015749e1bbe28557989ca04b58:Tools/B01/CI41/W74/ci_health.py)" = '5c412815413c7886d1933e3a803cf5af5b7df21b'
           echo 'CURRENT_ORIGINAL_GITHUB_CI_OBSERVATION_AND_CLASSIFIER_BLOBS_PINNED'
+      - name: Fetch original Codex lineage for exact commit diff tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=80 origin '+refs/pull/310/head:refs/remotes/origin/ci41-w78-codex'
+          git cat-file -e '231005c6d0351945a8ee6684f3856af118f0e94f^{commit}'
+          git cat-file -e 'a2ccd055070a963805cba0779b79f18489f4794f^{commit}'
       - name: Run actual Python aggregate acceptance tests (SYNTHETIC native candidate clearly labeled)
         shell: bash
         run: |

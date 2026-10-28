@@ -17,6 +17,7 @@ sys.path.insert(0, str(HERE.parent / "W74"))
 sys.path.insert(0, str(HERE))
 import ci_health
 import required_aggregate as a
+sys.path.insert(0, str(HERE.parent / 'W82'))
 
 ROOT = HERE.parents[3]  # repo root
 QA_BASE = "fb9e7b8b6d844bcac0351a3d7fb8f51cb2c45892"
@@ -127,35 +128,59 @@ class RequiredCheckAggregateTests(unittest.TestCase):
             self.assertEqual(out["state"], "UNITY_RELEVANT_BLOCKED_NO_LICENSE", path)
         print("NEW_W74_PROTECTED_OPERATORS_CANNOT_BYPASS_AGGREGATE")
 
-    def test_07_actual_cli_exit_codes_for_original_blocked_and_scope_only(self):
-        x = original()
-        with tempfile.TemporaryDirectory() as d:
-            p = Path(d) / "input.json"
-            p.write_text(json.dumps(x), encoding="utf-8")
-            proc = subprocess.run([sys.executable, str(HERE / "required_aggregate.py"), "--input", str(p)],
+    def test_07_new_cli_rejects_real_codex_diff_and_allows_verified_own_qa(self):
+        import git_verified_required_gate as git_gate
+        qa_base = "fb9e7b8b6d844bcac0351a3d7fb8f51cb2c45892"
+        qa_head = "ba104561e833fb8914979a5d2f4c2d2baa4ea792"
+        game_base = "231005c6d0351945a8ee6684f3856af118f0e94f"
+        game_head = "a2ccd055070a963805cba0779b79f18489f4794f"
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "input.json"
+            qa = {"paths": git_gate.original_diff(ROOT, qa_base, qa_head),
+                  "source_sha": qa_head}
+            p.write_text(json.dumps(qa), encoding="utf-8")
+            common = [sys.executable, str(HERE / "required_aggregate.py"),
+                      "--input", str(p), "--repo", str(ROOT)]
+            proc = subprocess.run(common + ["--base", qa_base, "--head", qa_head],
+                                  capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertEqual(json.loads(proc.stdout)["state"], "QA_ONLY_NOT_REQUIRED")
+            self.assertEqual(json.loads(proc.stdout)["native_g1"], "NOT_RUN")
+            # The exact same claimed QA-only changed paths are a forgery
+            # when used with a real Codex commit that touched Assets/**.
+            qa["source_sha"] = game_head
+            p.write_text(json.dumps(qa), encoding="utf-8")
+            proc = subprocess.run(common + ["--base", game_base, "--head", game_head],
                                   capture_output=True, text=True)
             self.assertEqual(proc.returncode, 2)
-            self.assertEqual(json.loads(proc.stdout)["state"], "UNITY_RELEVANT_BLOCKED_NO_LICENSE")
-            x["paths"] = ["Tools/B01/CI41/W78/required_aggregate.py"]
-            x.pop("observed")
-            p.write_text(json.dumps(x), encoding="utf-8")
-            proc = subprocess.run([sys.executable, str(HERE / "required_aggregate.py"), "--input", str(p)],
-                                  capture_output=True, text=True)
-            self.assertEqual(proc.returncode, 0)
-            self.assertEqual(json.loads(proc.stdout)["native_g1"], "NOT_RUN")
+            self.assertEqual(json.loads(proc.stdout)["state"], "INVALID_INPUT_FAIL_CLOSED")
+            # Legacy --input-only invocation must now fail (not a green skip).
+            proc = subprocess.run(common, capture_output=True, text=True)
+            self.assertNotEqual(proc.returncode, 0)
+        print("W78_ACTUAL_CLI_IMMUTABLE_GIT_REQUIRED_QA_GREEN_GAME_FORGERY_RED")
 
-    def test_08_cli_never_promotes_fake_native_receipt_to_success(self):
+    def test_08_synthetic_native_receipt_requires_source_identity_and_manual_QA(self):
+        import git_verified_required_gate as git_gate
+        game_base = "231005c6d0351945a8ee6684f3856af118f0e94f"
+        game_head = "a2ccd055070a963805cba0779b79f18489f4794f"
         x = synthetic_native_candidate()
-        with tempfile.TemporaryDirectory() as d:
-            p = Path(d) / "synthetic.json"
+        x["paths"] = git_gate.original_diff(ROOT, game_base, game_head)
+        x["source_sha"] = game_head
+        for mode, job in x["observed"].items():
+            job["source_sha"] = game_head
+            job["native_evidence"]["source_sha"] = game_head
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "synthetic.json"
             p.write_text(json.dumps(x), encoding="utf-8")
-            proc = subprocess.run([sys.executable, str(HERE / "required_aggregate.py"), "--input", str(p)],
+            proc = subprocess.run([sys.executable, str(HERE / "required_aggregate.py"),
+                                   "--input", str(p), "--repo", str(ROOT),
+                                   "--base", game_base, "--head", game_head],
                                   capture_output=True, text=True)
-            self.assertEqual(proc.returncode, 3)
-            out = json.loads(proc.stdout)
-            self.assertEqual(out["state"], "NATIVE_EXECUTED")
-            self.assertFalse(out["is_actual_native_proof"])
-            self.assertEqual(out["native_g1"], "PENDING_INDEPENDENT_B01_60")
+            self.assertEqual(proc.returncode, 3, proc.stderr)
+            result = json.loads(proc.stdout)
+            self.assertEqual(result["state"], "NATIVE_EXECUTED")
+            self.assertFalse(result["is_actual_native_proof"])
+            self.assertEqual(result["native_g1"], "PENDING_INDEPENDENT_B01_60")
             print("SYNTHETIC_NATIVE_CLAIM_CANNOT_RETURN_GREEN_EXIT_CODE")
 
 

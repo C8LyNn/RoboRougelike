@@ -42,23 +42,34 @@ def call_cli(base, head, *, claim=None, observed=None):
 
 class ActualGitSourceGateTests(unittest.TestCase):
     def test_01_original_prior_W78_forged_paths_real_codex_sha_fail_open(self):
-        # This real existing file Git blob is unchanged; don't substitute a
-        # stand-in implementation of the older W78 parser.
-        old = ROOT / "Tools/B01/CI41/W78/required_aggregate.py"
-        blob = subprocess.run(["git", "-C", str(ROOT), "rev-parse",
-                               OLD_W78 + ":Tools/B01/CI41/W78/required_aggregate.py"],
-                              capture_output=True, text=True, check=True).stdout.strip()
-        self.assertEqual(blob, "42ea9a2dbd82a96232a761c32a3c1097f14dc716")
+        # Run the ORIGINAL IMMUTABLE PRE-FIX SOURCE BYTES, not the now-patched
+        # W78 public CLI. This preserves the RED reproduction after fixing W78.
+        import contextlib
+        import io
+        import types
+        from unittest.mock import patch
+        original = subprocess.run(["git", "-C", str(ROOT), "show",
+            OLD_W78 + ":Tools/B01/CI41/W78/required_aggregate.py"],
+            capture_output=True, check=True).stdout
+        original_sha = subprocess.run(["git", "-C", str(ROOT), "rev-parse",
+            OLD_W78 + ":Tools/B01/CI41/W78/required_aggregate.py"],
+            capture_output=True, check=True, text=True).stdout.strip()
+        self.assertEqual(original_sha, "42ea9a2dbd82a96232a761c32a3c1097f14dc716")
+        prior = types.ModuleType("p16_immutable_prior_w78")
+        prior.__file__ = str(ROOT / "Tools/B01/CI41/W78/required_aggregate.py")
+        exec(compile(original, "original_unchanged_prior_W78.py", "exec"), prior.__dict__)
         with tempfile.TemporaryDirectory() as tmp:
             receipt = Path(tmp) / "forged.json"
             receipt.write_text(json.dumps({
                 "source_sha": CODEX_AFTER,
                 "paths": ["Tools/B01/CI41/W74/ci_health.py"]
             }), encoding="utf-8")
-            out = subprocess.run([sys.executable, str(old), "--input", str(receipt)],
-                                 capture_output=True, text=True)
-            self.assertEqual(out.returncode, 0, out.stderr)
-            self.assertEqual(json.loads(out.stdout)["state"], "QA_ONLY_NOT_REQUIRED")
+            out = io.StringIO()
+            with patch.object(sys, "argv", ["legacy", "--input", str(receipt)]):
+                with contextlib.redirect_stdout(out):
+                    code = prior.main()
+            self.assertEqual(code, 0)
+            self.assertEqual(json.loads(out.getvalue())["state"], "QA_ONLY_NOT_REQUIRED")
         print("ORIGINAL_PRIOR_W78_FORGED_QA_PATHS_ON_CODEX_GAME_ACCEPTED_RED")
 
     def test_02_new_actual_codex_original_git_diff_requires_unity(self):

@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/W82/git_verified_required_gate.py)" = '17d40a3234696670b71a0821cf08fcfba3e3e45e'
-          test "$(git hash-object Tools/B01/CI41/W82/test_git_verified_required_gate.py)" = '10f9625a752d5153167ff993d43dc891584d571c'
+          test "$(git hash-object Tools/B01/CI41/W82/test_git_verified_required_gate.py)" = '707f2942fa55461e37120f32b5107d3d87864581'
           test "$(git rev-parse 6fa53271bd8a2fec81cf0aab94556c8c53cfbf0f:Tools/B01/CI41/W78/required_aggregate.py)" = '42ea9a2dbd82a96232a761c32a3c1097f14dc716'
           echo 'QA_FIX_AND_ORIGINAL_PRE_FIX_SOURCE_GIT_BLOBS_PINNED'
       - name: Fetch actual original Codex game commit lineage without writing gameplay

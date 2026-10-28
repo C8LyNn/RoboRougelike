@@ -124,17 +124,30 @@ def evaluate(paths: list[str], source_sha: str, observed: dict | None = None) ->
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="Fail-closed CI aggregate; NO native launch")
-    p.add_argument("--input", required=True, help="JSON with paths/source_sha/observed")
+    p = argparse.ArgumentParser(description="Exact-Git scope aggregate; NO native launch")
+    p.add_argument("--input", required=True, help="Untrusted job observation JSON")
+    p.add_argument("--repo", default=".")
+    p.add_argument("--base", required=True, help="Verified exact event base 40-hex Git SHA")
+    p.add_argument("--head", required=True, help="Verified exact event head 40-hex Git SHA")
     a = p.parse_args()
     try:
         obj = json.loads(Path(a.input).read_text("utf-8"))
-        result = evaluate(obj["paths"], obj["source_sha"], obj.get("observed"))
+        # Import lazily: W82 also imports our pure evaluate() above.
+        # CLI is NEVER permitted to trust the sender's paths list.
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "W82"))
+        from git_verified_required_gate import evaluate_verified, ScopeGateError
+        if obj.get("source_sha") != a.head:
+            raise ScopeGateError("OBSERVED_SOURCE_SHA_MISMATCH")
+        result = evaluate_verified(
+            Path(a.repo).resolve(strict=True), a.base, a.head,
+            obj.get("observed"), obj.get("paths"))["decision"]
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["state"] == "QA_ONLY_NOT_REQUIRED" else (
             3 if result["state"] == "NATIVE_EXECUTED" else 2)
-        # Nonzero for even NATIVE_EXECUTED: no auto successful required check.
-    except (KeyError, ValueError, TypeError, OSError) as err:
+        # Even structural native candidates exit nonzero until independent G1.
+    except Exception as err:
+        # Security-sensitive CLI: any malformed observation or Git failure
+        # must never be interpreted as an exempt/green required check.
         print(json.dumps({"state": "INVALID_INPUT_FAIL_CLOSED", "native_g1": "NOT_RUN",
                           "error": str(err)}, sort_keys=True))
         return 2
