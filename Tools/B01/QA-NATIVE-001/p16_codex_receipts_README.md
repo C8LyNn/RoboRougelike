@@ -7,6 +7,7 @@
 ```sh
 python Tools/B01/QA-NATIVE-001/p16_receive_codex_cx02_player.py
 python Tools/B01/QA-NATIVE-001/p16_receive_codex_cx03_integrity.py
+python Tools/B01/QA-NATIVE-001/p16_receive_codex_reward_atomicity.py
 ```
 
 Both scripts require only Git and Python 3.11. They fetch pinned exact original Git objects, verify original Git blob identities and reject unexpected/missing/malformed evidence. The optional negative tests corrupt **in-memory copies of receipt data**, not original Codex game, not the Windows Player binaries and not original Unity results. For cross-platform execution, inspect `.github/workflows/b01-60-p16-codex-receipts.yml`.
@@ -18,6 +19,10 @@ The original pre-fix fixture contained 28 positions, 7 false-negative outcomes f
 ## Recipient CX-03 — original Unity integrity regression XML
 
 Original `red.xml` (Unity EditMode) has 4 executed cases: **three failing invalid-kind atomic transactions** and one valid control; original process exit 2. Corrected `regression.xml` has **42/42 Passed**, including the original three cases, zero skipped and exit 0. Strict raw XML, complete suite summary, exact three named RED identities, fullname-class-name consistency and unique tests are required; five receipt mutations must be refused. This validates **the recorded Unity outputs**, not an independent execution on B01-60's machine or an independent 42-test gameplay re-run.
+
+## Recipient P16Reward — newly changed real Codex game R1 reward atomicity
+
+A NEW Codex original production source change `Assets/R1/R1RunController.cs` old Git blob `a6759500...` @`589b60a...` → new blob `3db48a...` @`561c223...` addresses the distinct B01-22 observed **invalid three-choice reward catalog**: old controller could pay 80 scrap before failure, potentially repeatedly, while state stayed Combat. Recorded Windows Unity EditMode original `Docs/P16Reward/Evidence/red.xml` one case RED (exit 2), new `regression.xml` **32/32 Passed**, including target `VictoryRewardAtomicityTests.InvalidRewardCatalogCannotAwardScrapOrRepeatVictory` and three separate original positive controls, exit 0. The third script pins both game C# blobs and the raw XML/exit Git blobs and rejects five adversarial receipt mutations. This is not a direct gameplay simulation and does not verify full post-fix EditMode or ordinary-player reachability. B01-22 is the independent economy producer/owner; B01-60 independently receives the **recorded engine evidence**, not its source implementation.
 
 ## Gating and limitations
 
