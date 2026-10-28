@@ -6,14 +6,14 @@ other payloads, suspension, dynamics, or turning clear in real Unity physics.
 """
 import json, math, subprocess, sys, argparse
 CODEX="231005c6d0351945a8ee6684f3856af118f0e94f"
-LEVEL_REF="f6d6886f45b1766f9b7a9c2975e1bd1deb3fdb84"
+LEVEL_REF="691c8cb6b0be086d455e530f2531de7f3753a0ba"
 LEVEL_PATH="Research/B01-25/P15/LD02_COVER_CHOICE.json"
 PIN={
  "Assets/MapEditor/MapWorld.cs":"8928908db123b35dcab4b324fe9d3a7a8fceee4e",
  "Assets/R3/R3VehicleAssembly.cs":"49fab51ac993128a9965df38ce32489f493b257a",
  "Assets/R3/R3VehicleCatalog.cs":"f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
  "Assets/R4_1/R41PartGeometry.cs":"76a14de4c347dd3e91b0a37487d804023eab5da1",
- LEVEL_PATH:"21d079d0fe5917554be526aeb0d0d89a35de4c7e",
+ LEVEL_PATH:"8586312b9606d94b088e4e7640c28105e2d6bac1",
 }
 SHORT=[(2,5),(3,5),(4,5),(5,5),(6,5),(7,5),(8,5),(9,5)]
 COVER=[(2,5),(2,4),(2,3),(2,2),(3,2),(4,2),(5,2),(6,2),
@@ -33,10 +33,14 @@ def box(item):
         if item["rotation"]==0: rx,rz=2.,.25
         elif item["rotation"]==1:rx,rz=.25,2.
         else:raise ValueError("UNSUPPORTED_WALL_ROTATION")
+    elif k==6:rx=rz=2.
     elif k==7:rx=rz=.75
     elif k==8:rx,rz=2.,.25
     else:raise ValueError(f"UNSUPPORTED_SOLID_KIND {k}")
-    if any(item[p]!=1 for p in ("scaleX","scaleY","scaleZ")):
+    if k==6:
+        if (item["rotation"],item["scaleX"],item["scaleY"],item["scaleZ"])!=(0,1,4,1):
+            raise ValueError("UNSUPPORTED_REPAIRED_CORNER_PLATFORM")
+    elif any(item[p]!=1 for p in ("scaleX","scaleY","scaleZ")):
         raise ValueError("UNSUPPORTED_SOLID_SCALE")
     return (x-rx,x+rx,z-rz,z+rz,k)
 def gap(x,z,rx,rz,b):
@@ -68,6 +72,7 @@ def main():
       "public const float Grid=4f;",
       "case MapItemKind.Wall:position=new Vector3(0,2,0);scale=new Vector3(Grid,4,.5f);",
       "case MapItemKind.Pillar:position=new Vector3(0,2,0);scale=new Vector3(1.5f,2,1.5f);",
+      "case MapItemKind.Platform:position=new Vector3(0,.5f,0);scale=new Vector3(4,1,4);",
       "case MapItemKind.LowBarrier:position=new Vector3(0,.5f,0);scale=new Vector3(4,1,.5f);",
       "o.transform.rotation=Quaternion.Euler(0,item.rotation*90,0);"],"MapWorld")
     check(assembly,[
@@ -83,9 +88,13 @@ def main():
     doc=json.loads(read(root,LEVEL_REF,LEVEL_PATH))
     if (doc["version"]!=2 or doc["globalFloor"] is not False
             or len(doc["items"])!=173):raise ValueError("UNEXPECTED_P15_MAP_FORMAT")
-    counts={k:sum(i["kind"]==k for i in doc["items"]) for k in (0,1,4,5,7,8)}
-    if counts!={0:120,1:45,4:1,5:1,7:4,8:2}:raise ValueError(f"WRONG_LEVEL_KINDS {counts}")
-    solids=[box(i) for i in doc["items"] if i["kind"] in (1,7,8)]
+    counts={k:sum(i["kind"]==k for i in doc["items"]) for k in (0,1,4,5,6,7,8)}
+    if counts!={0:120,1:41,4:1,5:1,6:4,7:4,8:2}:
+        raise ValueError(f"WRONG_REPAIRED_LEVEL_KINDS {counts}")
+    corners={(0,0),(11,0),(0,9),(11,9)}
+    fixed={(i["x"],i["z"]) for i in doc["items"] if i["kind"]==6}
+    if fixed!=corners:raise ValueError(f"REPAIRED_CORNER_PLATFORM_SET_INVALID:{fixed}")
+    solids=[box(i) for i in doc["items"] if i["kind"] in (1,6,7,8)]
     # Original source geometry: body chassis [-length..+length] and
     # wheel center x = ±(width+1); all base cubes half-size 0.52/2.
     # Wheel cylinder's source local axle radius/scale is bounded by body/cube envelope.
@@ -104,7 +113,7 @@ def main():
         _,_,hits=scan(route,solids+[box(fake)],2.46,2.46)
         if not hits:raise ValueError(f"QA_FAIL_OPEN_INJECTED_WALL:{label}")
         print(f"EXPECTED_REJECTION_SYNTHETIC_WALL | route={label} | cell={blocked} | overlap_samples={hits}")
-    print("ORIGINAL_SOURCE_GIT_SHA=VERIFIED | P15_DATA_GIT_SHA=VERIFIED | STATIC_ROUTE_ENVELOPES=4/4_PASS | INJECTED_NEGATIVES=2/2_REJECTED | UNITY/PHYSX/REAL_VEHICLE=NOT_RUN")
+    print("ORIGINAL_SOURCE_GIT_SHA=VERIFIED | REPAIRED_P15_DATA_GIT_SHA=VERIFIED | CORNER_PLATFORMS=4/4 | STATIC_ROUTE_ENVELOPES=4/4_PASS | INJECTED_NEGATIVES=2/2_REJECTED | UNITY/PHYSX/REAL_VEHICLE=NOT_RUN")
     return 0
 if __name__=="__main__":
     try:sys.exit(main())
