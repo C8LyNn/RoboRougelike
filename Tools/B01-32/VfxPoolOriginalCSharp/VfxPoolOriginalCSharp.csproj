@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="UnityStubs.cs" />
+    <Compile Include="../../../Assets/RoboRougelikePackages/VFX001/Runtime/Common/VfxPoolManager.cs" Link="Original/VfxPoolManager.cs" />
+    <Compile Include="../../../Assets/RoboRougelikePackages/VFX001/Runtime/Common/VfxBudgetPolicy.cs" Link="Original/VfxBudgetPolicy.cs" />
+    <Compile Include="../../../Assets/RoboRougelikePackages/VFX001/Runtime/Common/VfxEvent.cs" Link="Original/VfxEvent.cs" />
+  </ItemGroup>
+</Project>
