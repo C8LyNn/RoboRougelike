@@ -66,7 +66,10 @@ namespace RoboRougelike.R3
                 data.wheels==null||data.groups==null||data.mounted.Length>2000||data.inventory.Length>InventoryCapacity||
                 data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||data.scrap>100000||
                 !Enum.IsDefined(typeof(R3DriveKind),data.drive)||!Enum.IsDefined(typeof(ActiveSuspensionSupportMode),data.suspensionMode)||
-                !Finite(data.suspensionHeight)||!Finite(data.boosterThrust)||!Finite(data.boosterDuration)||!Finite(data.hoverHeight)||
+                !Finite(data.suspensionHeight)||data.suspensionHeight<-.35f||data.suspensionHeight>.35f||
+                !Finite(data.boosterThrust)||data.boosterThrust<500||data.boosterThrust>6000||
+                !Finite(data.boosterDuration)||data.boosterDuration<.2f||data.boosterDuration>2||
+                !Finite(data.hoverHeight)||data.hoverHeight<.7f||data.hoverHeight>1.6f||
                 !Finite(data.grappleRemaining)||data.grappleRemaining<0)return false;
             var all=data.mounted.Concat(data.inventory).ToArray();
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||

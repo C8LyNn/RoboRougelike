@@ -32,5 +32,18 @@ public sealed class R3ModelCheckpointTests
         data=source.MakeCheckpoint(0);data.mounted[0].Health=float.NaN;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,null,0,out restored,out _),Is.False);
         Assert.That(restored,Is.Null);
+        data=source.MakeCheckpoint(0);data.hoverHeight=1e30f;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,null,0,out restored,out _),Is.False);
+    }
+    [Test] public void GroupPreferenceSurvivesSaveWhileGunIsInInventory()
+    {
+        var source=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var gun=source.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        source.SwapWeaponGroups();Assert.That(source.WeaponGroupB,Is.EqualTo(gun.Weapon));
+        Assert.That(source.Remove(gun.Cell),Is.True);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(source.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,null,0,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Mount(gun.Id,gun.Cell,gun.RotationQuarterTurns),Is.True);
+        Assert.That(restored.WeaponGroupA,Is.Null);Assert.That(restored.WeaponGroupB,Is.EqualTo(gun.Weapon));
     }
 }
