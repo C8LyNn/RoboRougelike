@@ -153,8 +153,8 @@ def validate_map(snapshot,key,expected_items,expected_wall):
         layer=floor if kind==0 else other
         require(not occupied.intersection(layer),"MAP_SAME_LAYER_OVERLAP")
         layer.update(occupied);counts[kind]+=1
-        if kind==6 and (x,z) in CORNER_CELLS and rot==0 and
-                item["scaleX"]==item["scaleZ"]==1 and item["scaleY"]==4:
+        if (kind==6 and (x,z) in CORNER_CELLS and rot==0 and
+                item["scaleX"]==item["scaleZ"]==1 and item["scaleY"]==4):
             corners.add((x,z))
     require(corners==CORNER_CELLS,"KNOWN_COVER_CORNER_GAP_REGRESSION")
     require(counts[0]==120 and counts[1]==expected_wall and counts[6]==4 and
