@@ -1,0 +1,50 @@
+{
+  "package_id": "B01-40-P17-DECAL-SPRITE-BRIDGE-001",
+  "version": "1.0.0",
+  "role": "B01-40 — INTEGRATION & BUILD",
+  "owner_branch": "b01-40/p17-vfx-sprite-import-bridge",
+  "type": "ORIGINAL_ART_TO_UNITY_SPRITE_IMPORT_STAGING",
+  "original_art": {
+    "owner": "B01-32",
+    "pr": 340,
+    "immutable_sha": "829ac8da9db83a49865d24fa05a5143f59d4b83f",
+    "original_render_blob_sha": "4a2b785fc2a460deea495aa38443d1cdd079cd97",
+    "original_manifest_blob_sha": "7f3e2cdbe06300cf4ee641659b6f9b8132a51ad5"
+  },
+  "importer_template": {
+    "base_commit": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+    "original_template_meta_blob_sha": "0f2cab05ff467a6889a91c7fa17c485696f52ea0"
+  },
+  "collision_scan": {
+    "codex_readonly_commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+    "current_live_codex_must_be_rescanned": "YES_BY_CODEX"
+  },
+  "owned_paths": [
+    "Tools/B01Validation/P17Vfx/**",
+    ".github/workflows/b01-40-p17-vfx-sprite-import.yml"
+  ],
+  "real_created_output": [
+    "12 full resolution 256x256 transparent RGBA PNG rendered from original SVG",
+    "12 Unity Sprite Single TextureImporter .png.meta stable GUID",
+    "3 Unity folder metas",
+    "Original 768x1024 RGBA atlas reference and per-pixel parity",
+    "CodeX frame to art-state 160ms binding JSON, no HP policy",
+    "Source byte and payload SHA256 receipt",
+    "Deterministic ZIP with 30 members"
+  ],
+  "game_install_root": "Assets/B01ImportStaging/B0140DamageDecals",
+  "install_authority": "CODEX_ONLY_AFTER_EXPLICIT_ACK_HQ_APPROVAL_AND_INDEPENDENT_QA",
+  "native_unity": "NOT_RUN",
+  "gates": {
+    "G0": "PENDING_EXECUTED_CI",
+    "G1": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "rollback": "No game install by B01-40; discard external output zip. Codex must only remove newly imported staged paths and metas following source snapshot.",
+  "known_limits": [
+    "Unity 6000.3.14f1 importer/YAML compatibility not natively validated",
+    "No actual URP overlay GPU, color contrast, 720/1080 screenshot",
+    "No HP thresholds, damage-state adapter, detach/unload logic",
+    "Source-read GUID scan on pinned historic commits does not assert no collision in future unknown Codex HEAD"
+  ]
+}
