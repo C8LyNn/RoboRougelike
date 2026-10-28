@@ -1,0 +1,55 @@
+{
+  "package_id": "B01-61-P17-INPUT-LATCH",
+  "version": "1.0.0",
+  "owner": "B01-61",
+  "producer_scope": "QA-only isolated original C# compiler/execution test; no canonical Assets edits",
+  "source_path": "Tools/B01/B01-61-PASS17/run_original_input_contract.py",
+  "source_git_blob": "55d74193deb7547005a835ac39b8d38bffbedc11",
+  "game_commit": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+  "original_codex_path": "Assets/Pack/P12_PipelineSafeTankController.cs",
+  "original_codex_blob": "8beeedb4db40b7b33c8f685d7b6aab1247a4b2d7",
+  "extracted_methods": [
+    "public void SetGameplayInputEnabled(bool active)",
+    "private void Update()"
+  ],
+  "dependencies": [
+    "Python 3.11+",
+    "Git, with pinned original Codex commit fetched",
+    "dotnet SDK 8.0, no external NuGet packages"
+  ],
+  "test_execution_matrix": [
+    ".NET 8 / ENABLE_INPUT_SYSTEM disabled, original unmodified C#",
+    " .NET 8 / ENABLE_INPUT_SYSTEM enabled, original unmodified C#",
+    " .NET 8 / both variants with deliberate in-memory safety guard corruption expected reject"
+  ],
+  "source_contract": "original methods extracted verbatim from immutable Codex SHA; only dependency shims are synthetic",
+  "no_modifications": [
+    "Assets/**",
+    ".github/workflows/ci-02*",
+    ".github/workflows/ci-03*",
+    "CHL-003",
+    "PARTSIZE",
+    "main",
+    "develop",
+    "Codex integrated worktree"
+  ],
+  "import": "optional QA tool; run python Tools/B01/B01-61-PASS17/run_original_input_contract.py --repo . after fetching GAME_SHA and installing dotnet 8",
+  "rollback": "remove isolated Tools/B01/B01-61-PASS17 directory and .github/workflows/b01-61-pass17-original-input.yml only; no game files to undo",
+  "native_unity": "NOT_RUN",
+  "windows_player": "NOT_RUN",
+  "game_integrated": false,
+  "independent_b0160_g1": "NOT_RUN",
+  "primary_coverage": [
+    "A/B trigger release across pause/resume, independent release/repress",
+    "physically held RMB while LPM changes and vice versa",
+    "2,400 frame deterministic seeded input/enable state permutations",
+    "movement keys survive fire-safety gating",
+    "both native legacy Input and ENABLE_INPUT_SYSTEM preprocessor branches",
+    "in-memory broken latch mutation detected, no source edit"
+  ],
+  "limits": [
+    "Original extracted C# under .NET lightweight Unity stubs, NOT actual Unity/Physics/weapon projectile damage",
+    "Tests the controller input read and state latches, not late fire/camera/real-world vehicle dynamics",
+    "No native source mutation or integration authority"
+  ]
+}
