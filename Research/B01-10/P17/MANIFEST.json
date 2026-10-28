@@ -1,0 +1,122 @@
+{
+  "packageId": "BAL17-R5-ENCOUNTER-DECK",
+  "version": "1.0.0",
+  "producer": "B01-10 — GAME DESIGN & BALANCE",
+  "sourceBranch": "design/b01-10-pass17-r5-encounter-deck",
+  "dispatch": "https://github.com/C8LyNn/RoboRougelike/issues/330",
+  "sourceScope": "Research/B01-10/P17/**",
+  "contentType": "READY_TO_IMPORT_EXISTING_R5CATALOG_JSON_RESEARCH_BRANCH_ONLY",
+  "production": {
+    "gameFormat": "UnityEngine.JsonUtility/RoboRougelike.R5.R5Catalog",
+    "stages": 6,
+    "offers": 10,
+    "optionalRouteStages": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "uniqueBossAtStage": 6,
+    "originalEnumsOnly": true,
+    "canonicalAssetsModified": false,
+    "existingEncountersOverwritten": false
+  },
+  "sourcePinned": {
+    "gamePr": 310,
+    "gameCommit": "682dc0c5c13615577334375ffb6c27be5cdebf4a",
+    "originalGitBlobs": {
+      "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a",
+      "Assets/R1/R1RunDefinition.cs": "5665e64d3d665c67d352eb5a9809a66fc5136698",
+      "Assets/R3/R3EnemyArchetype.cs": "66cd1ee734b129117b3753d1205469a0496cb673",
+      "Assets/R1/R1EncounterManager.cs": "0a1c36b246c059a8bd9ec93a9d531cbe916b64bf",
+      "Assets/Resources/R5/Encounters.json": "d44eaf6386f0dfb38e3cfe72415a67492180e489"
+    },
+    "integrationGameHeadMayAdvance": true,
+    "mainSourceDivergenceObserved": {
+      "Assets/R5/R5RunPlan.cs": "dfd691f6d0011812637e0a2e43a3cd117307aa92"
+    },
+    "notes": "Do not confuse main's old R5 blob with the Codex original that owns this schema."
+  },
+  "payloadFiles": {
+    "R5_EncounterDeck_BAL17.json": {
+      "gitBlob": "762009d1bde7978aeb5c842dd08d2efdddcec646",
+      "utf8Chars": 8008
+    },
+    "validate_deck.cjs": {
+      "gitBlob": "9a42af43e251d24c135ce0160f6eee00d99f3682",
+      "utf8Chars": 10786
+    },
+    "B0110Bal17R5EncounterDeckNativeTests.cs": {
+      "gitBlob": "f1942fcf94657ffe7662557f27b6469572b446ef",
+      "utf8Chars": 4396
+    },
+    "BAL17_ThreatPreview.csv": {
+      "gitBlob": "87074c22e7b221a7d7ad0d388d918307e31adcb8",
+      "utf8Chars": 1115
+    },
+    "README.md": {
+      "gitBlob": "a94a952b141025eb1c129baac2f15bd272b372f5",
+      "utf8Chars": 5921
+    }
+  },
+  "actualTests": {
+    "sourceValidatorOriginalCommittedJS": {
+      "status": "PASS",
+      "result": "22/22",
+      "environment": "V8 executes exact committed validator exports on original fetched JSON with module adapters; NOT an on-disk Node process"
+    },
+    "schemaAndThreat": {
+      "status": "PASS",
+      "result": "10/10 source-format candidates, 6 stages, 10 risk-separated routes"
+    },
+    "negativeCases": {
+      "status": "PASS",
+      "result": "14/14 adversarial mutation rejections"
+    },
+    "numericPreview": {
+      "status": "PASS",
+      "result": "10 output rows from same exact validator"
+    },
+    "originalUnityNUnit": {
+      "status": "NOT_RUN",
+      "authoredCases": 9
+    },
+    "originalCSharp": {
+      "status": "NOT_RUN"
+    },
+    "windowsPlayer": {
+      "status": "NOT_RUN"
+    },
+    "physicalSpawn": {
+      "status": "NOT_RUN"
+    },
+    "humanPlayer": {
+      "status": "NOT_RUN"
+    }
+  },
+  "nativeAcceptance": {
+    "receiver": "B01-40 source/Git intake; B01-60 independent QA; Codex sole runtime integration",
+    "cmd": "node Research/B01-10/P17/validate_deck.cjs",
+    "strictCmd": "node Research/B01-10/P17/validate_deck.cjs --strict-codex-source",
+    "expectedNode": "22/22 PASS; strict code SHA only in checkout of pinned Codex original R5",
+    "unity": "Import via disposable original R5/Encounters.json content swap with .meta retained; compile/run 9 authored NUnit Editor cases; actual R1/R5 playable run separately.",
+    "rollback": "Restore original exact Resources/R5/Encounters.json bytes, keep .meta GUID, remove only copied editor fixture, git diff clean.",
+    "noApprovalImplied": true
+  },
+  "governance": {
+    "canonicalCodexOnly": true,
+    "ownerFilesUntouched": [
+      "Assets/**",
+      "Assets/Resources/R5/Encounters.json",
+      ".github/**",
+      "CHL-003",
+      "PARTSIZE-001",
+      "B01-20/21/24/25"
+    ],
+    "noMerge": true,
+    "noG1": true,
+    "noG2": true,
+    "thirdGameplayCodePackage": false
+  },
+  "status": "SOURCE_OFFERED_DRAFT_PR_READY / SOURCE_ONLY_PASS / UNITY_NOT_RUN / CODEX_ACK_PENDING"
+}
