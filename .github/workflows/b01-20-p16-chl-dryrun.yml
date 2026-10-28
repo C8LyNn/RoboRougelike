@@ -1,0 +1,63 @@
+name: B01-20 P16 CHL operator original CLI release-safe dry-run (NATIVE NOT RUN)
+on:
+  push:
+    branches: [b01-20/p16-chl-operator-dryrun]
+    paths:
+      - 'Tools/B01/QA-CHL003/ReleaseReceipt/**'
+      - '.github/workflows/b01-20-p16-chl-dryrun.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-cli-preflight:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run exact original W66 operator CLI in real detached source Git worktrees, NEVER Unity
+        shell: bash
+        run: |
+          python Tools/B01/QA-CHL003/ReleaseReceipt/dryrun_chl_release.py "$RUNNER_TEMP/b01-chl-p16-preflight.json"
+      - name: Upload original operator exit-code and source path evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p16-chl-original-cli-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-chl-p16-preflight.json
+          if-no-files-found: error
+          retention-days: 21
+
+  receipt-cross-os-parity:
+    needs: [original-cli-preflight]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: 'p16-chl-original-cli-*'
+          path: receipt-artifacts
+          merge-multiple: false
+      - name: Require byte-identical ORIGINAL CLI receipts from Windows and Ubuntu
+        shell: bash
+        run: |
+          set -euo pipefail
+          win=receipt-artifacts/p16-chl-original-cli-windows-latest/b01-chl-p16-preflight.json
+          linux=receipt-artifacts/p16-chl-original-cli-ubuntu-latest/b01-chl-p16-preflight.json
+          test -s "$win"
+          test -s "$linux"
+          wsha=$(sha256sum "$win" | cut -d' ' -f1)
+          lsha=$(sha256sum "$linux" | cut -d' ' -f1)
+          echo "WINDOWS_RECEIPT_SHA256=$wsha"
+          echo "UBUNTU_RECEIPT_SHA256=$lsha"
+          test "$wsha" = "$lsha"
+          cmp "$win" "$linux"
+          echo "CHL_P16_ORIGINAL_CLI_CROSS_OS_RECEIPT_IDENTICAL=PASS NATIVE_UNITY=NOT_RUN"
