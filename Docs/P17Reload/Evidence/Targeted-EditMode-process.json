@@ -1,0 +1,17 @@
+{
+  "stage": "P17CorrectedTarget",
+  "phase": "EditMode",
+  "finishedUtc": "2026-10-28T22:40:31.8874439Z",
+  "source": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "arguments": [
+    "-runTests",
+    "-testPlatform",
+    "EditMode",
+    "-testResults",
+    "\"C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-P17-FinalPlay\\Artifacts\\Local\\FM270-P17CorrectedTarget-20261028T223911Z\\EditMode.xml\"",
+    "-testFilter",
+    "\"LD02RunIntegrationTests;LD02ArenaNativeTests;MapgenRC1IntegrationTests;CheckpointReloadExpiryTests;R1RunCheckpointIntegrationTests;R3ModelCheckpointTests\""
+  ],
+  "exitCode": 0,
+  "startedUtc": "2026-10-28T22:39:11.2018092Z"
+}

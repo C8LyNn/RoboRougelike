@@ -6,7 +6,7 @@ Gameplay/build source `203a0805251ed28293888e43f2d49f0df63767c6`, branch `featur
 
 The checkpoint source `e605d4a8` lost an expired positive reload deadline for an owned weapon stored in inventory. An actual R3 railgun was restored, remounted and driven through `RRLRailgunBinding`; the pre-fix test produced 0/12 rounds (RED, `red4.xml`, exit 2). The first three development attempts had test-fixture initialization errors and are not counted as the gameplay reproduction. The fix preserves the pending reload marker until the existing binding processes it. This changes neither magazine capacity nor balancing.
 
-Native Unity final targeted checkpoint + reload tests: 6/6 PASS, exit 0 (`green.xml`). This includes real weapon binding, save/load, damage, IDs, wallet, corruption, version, group assignment and remount. Windows Player **specific expired-reload case NOT_RUN**; the existing save/restart/resume Player scenario passed.
+Native Unity final targeted checkpoint + reload tests: 6/6 PASS, exit 0 (`green.xml`). On the exact final source `203a0805`, a broader LD02, MAPGEN, checkpoint and reload regression passed 20/20, exit 0 (`Targeted-EditMode.xml`). This includes real weapon binding, save/load, damage, IDs, wallet, corruption, version, group assignment and remount. Windows Player **specific expired-reload case NOT_RUN**; the existing save/restart/resume Player scenario passed.
 
 ## Corrected candidate
 
@@ -25,4 +25,5 @@ Extract the whole archive and run `RoboRougelike/RoboRougelike.exe`. Choose a ro
 ## Safety note
 
 An early checkpoint test lost its temporary path during Unity domain reload and wrote an identified test-generated checkpoint into the actual game data path. It was moved intact to `C:\Users\kubap\Desktop\Prototypy\RoboRougelike-P17-Save\Artifacts\Local\P17Save\misdirected-test-checkpoint.json`. Whether a pre-existing checkpoint was overwritten cannot be established. Later tests assert an isolated test path.
+
 
