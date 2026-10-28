@@ -56,6 +56,8 @@ def source_authored_four(geom,scale):
         raise ValueError("WHEEL_CONVEX_MESHCOLLIDER_SOURCE_ANCHOR_DRIFT")
     if "var tire=wheel.gameObject.AddComponent<MeshCollider>();" not in geom or "tire.convex=true;" not in geom:
         raise ValueError("WHEEL_MESH_COLLIDER_SOURCE_DRIFT")
+    if "wheel.localRotation=Quaternion.Euler(0,0,90);" not in geom:
+        raise ValueError("WHEEL_ORIENTATION_SOURCE_DRIFT")
     if 'Primitive(PrimitiveType.Cylinder,block,material,false,"Tłok aktywnego zawieszenia")' not in geom:
         raise ValueError("DECORATIVE_SUSPENSION_NOT_CONFIRMED")
     if "if(kind!=R3PartKind.Gun)return null;" not in geom or "bool heavy=weapon==R4WeaponKind.Heavy" not in geom:
@@ -103,7 +105,16 @@ def pose_cells(lo,hi):
 
 def authoring_rows(catalog,geom,assembly):
     expected=['"'+k+'"' for k in KINDS_11]
-    if any(k not in catalog for k in expected) or 'return PartSizeReferenceFixtures.Unmeasured(canonicalKind,' not in catalog:
+    canon=re.search(r'CanonicalNames = \{([\s\S]*?)\};',catalog)
+    wide=re.search(r'new\[\]\{([\s\S]*?)\}',catalog)
+    if not canon or not wide:
+        raise ValueError("PARTSIZE_CANONICAL_FOOTPRINT_CATALOG_DRIFT")
+    names=re.findall(r'"([^"]+)"',canon.group(1))
+    wide_names=set(re.findall(r'"([^"]+)"',wide.group(1)))
+    if (len(names)!=19 or len(set(names))!=19 or set(KINDS_11)-set(names)
+        or len(wide_names)!=6 or wide_names.intersection(KINDS_11)
+        or 'new Cell3(1,1,1));' not in catalog
+        or 'return PartSizeReferenceFixtures.Unmeasured(canonicalKind,' not in catalog):
         raise ValueError("PARTSIZE_11_UNMEASURED_OR_CANONICAL_SOURCE_CHANGED")
     required=("item.transform.localScale=Vector3.one*0.52f;",
       "item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);",
