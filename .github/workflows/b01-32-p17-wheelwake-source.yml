@@ -37,3 +37,12 @@ jobs:
         run: dotnet run --configuration Release --project Tools/B01-32/P17/WheelWakeChecks/WheelWakeChecks.csproj
       - name: Actual Roslyn parse for 4 original CSharp files including MonoBehaviours and UnityTests
         run: dotnet run --configuration Release --project Tools/B01-32/P17/WheelWakeSyntax/WheelWakeSyntax.csproj
+      - name: Build original source ZIP and verify all extracted bytes
+        run: python Tools/B01-32/P17/build_wake_handoff.py build/B01-32-P17
+      - name: Save inspectable physical package and SHA-256 receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-32-WHEELWAKE-001-SOURCE-${{ matrix.os }}
+          path: build/B01-32-P17/
+          if-no-files-found: error
+          retention-days: 30
