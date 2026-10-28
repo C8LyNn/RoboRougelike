@@ -1,0 +1,295 @@
+{
+  "schema": "B01-PARTSIZE-RECEIVER-FREEZE-v1",
+  "produced_by": "B01-23",
+  "wave": "W74-W77 PASS15",
+  "scope": "Exact source-only QA receiver evidence package, NOT Unity gameplay production/offer/G1",
+  "repository": "C8LyNn/RoboRougelike",
+  "frozen_receiver": {
+    "pr": 298,
+    "git_commit": "26634727ab2323a982bce893421c88c330be46e8",
+    "branch": "b01-23/w26-partsize-readonly-native-receipt",
+    "status": "INDEPENDENT_SOURCE_RECEIVER_PASS",
+    "files": [
+      {
+        "path": ".github/workflows/b01-23-w26-partsize-receipt.yml",
+        "git_blob_sha1": "e61aa778e0ab108fcd16db3bfba83f8d47db6a8f"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py",
+        "git_blob_sha1": "b4ca19bd1b9142a364dbed2fb6bb2dd30f2b53ac"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/README.md",
+        "git_blob_sha1": "3f83b9f463652374e6aa5cb8efc3c0d3a329867b"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1",
+        "git_blob_sha1": "bd7bccd2a949d91b1901e3ec01ab93c62874eef4"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/source_payload_measurements.py",
+        "git_blob_sha1": "443775bf24a5ab7accea94a1152ef240872d67b1"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/test_check_receipt.py",
+        "git_blob_sha1": "96c481c2ec04bf6f486f9305ebe26a0f6ff6ca9f"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/test_native_preflight.ps1",
+        "git_blob_sha1": "aa30299d0858c99de017a20b72325551b4bc7964"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/test_socket_authority_original_csharp.py",
+        "git_blob_sha1": "33ac683378949083264b587be98fffadf5280bcd"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/test_source_payload_measurements.py",
+        "git_blob_sha1": "9ab65b940e9fcb704c6ab0b0158d9d0cd3e1b946"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/W26Receipt/W58_11KINDS_4YAW_NATIVE_QA.md",
+        "git_blob_sha1": "aee99dcb4e87fe5b264acc75291531031c375c71"
+      }
+    ]
+  },
+  "producer": {
+    "pr": 286,
+    "git_commit": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "status": "SOURCE_G0_ONLY; NOT_OFFERED",
+    "original_inner_zip_sha256": "05b86bf90ba2b1a71ce32b081b91e2f24793ea81cb00f2025757c5c017d95f54",
+    "files": [
+      {
+        "path": "Assets/PARTSIZE001.meta",
+        "git_blob_sha1": "613b401213ace8316407558ed75346d733214c31"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Demo.meta",
+        "git_blob_sha1": "2d812f70d8273420cf0ec59c25f853da83bc9928"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.prefab",
+        "git_blob_sha1": "5259ebe8b923292a20cbfcf2cd048784e3f0dbb8"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.prefab.meta",
+        "git_blob_sha1": "424e699e6dbdea0f8a4c67ff38990a50ac308420"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity",
+        "git_blob_sha1": "3af24440f74ed4f56e6ea96dc4d31b15d287ca04"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Demo/PARTSIZE001_Demo.unity.meta",
+        "git_blob_sha1": "221c08dfffebaaf68842e5b929b14e4de8e4c878"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime.meta",
+        "git_blob_sha1": "cf23f523dac5bf44c3524f3f3cbf4408bde061d1"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/B01.PARTSIZE001.Runtime.asmdef",
+        "git_blob_sha1": "90b80cf81b42da927285448c8ad12c5f7cbfe4e4"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/B01.PARTSIZE001.Runtime.asmdef.meta",
+        "git_blob_sha1": "2d919c2d770f32684933298238adc3b284d1bacf"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs",
+        "git_blob_sha1": "6153d1758e800ec5c4210323610b061c06e8ea85"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs.meta",
+        "git_blob_sha1": "83a3f62f5882b7cab537b0bc133cc29a57c565ad"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeContract.cs",
+        "git_blob_sha1": "07455919a5544875fee5a78ecbbce36dc6cb49c2"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeContract.cs.meta",
+        "git_blob_sha1": "1babe7e5c2db0a317f9777de0a5304a40bdbe78d"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs",
+        "git_blob_sha1": "a9c74387a6dd33641dc758de08ee91d3fb6f3871"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeDemoEntry.cs.meta",
+        "git_blob_sha1": "90fbd1aa294fb30b6fac85c774fa287ec130d32b"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs",
+        "git_blob_sha1": "44c507eba175029fb2750acbcac44119c1d97001"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Runtime/PartSizeNativePhysics.cs.meta",
+        "git_blob_sha1": "528835776715464477195518f86f4277c9543feb"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests.meta",
+        "git_blob_sha1": "ef06c54434261a6a040b3a69d2adf7f81150cef5"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/EditMode.meta",
+        "git_blob_sha1": "75a39d758e791657752b1c0501fd6f2cbaf85b55"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/EditMode/B01.PARTSIZE001.EditModeTests.asmdef",
+        "git_blob_sha1": "47294308a3df4a5fe4645cc4036d3f1f1d823003"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/EditMode/B01.PARTSIZE001.EditModeTests.asmdef.meta",
+        "git_blob_sha1": "d6caa5a86b9eb232240a6877645c4b07f475b28b"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/EditMode/PartSize001EditModeTests.cs",
+        "git_blob_sha1": "7e6261c84ddc98a5a005c16c5bb3a85ec4df853d"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/EditMode/PartSize001EditModeTests.cs.meta",
+        "git_blob_sha1": "604bf42e92d9799a437b56b9d00dc92ee2992f23"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/PlayMode.meta",
+        "git_blob_sha1": "60d9ed841d61e8791e26baabffbbaae0536a247e"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/PlayMode/B01.PARTSIZE001.PlayModeTests.asmdef",
+        "git_blob_sha1": "f25f413db49af8eb9b896f45812495a6240d76c8"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/PlayMode/B01.PARTSIZE001.PlayModeTests.asmdef.meta",
+        "git_blob_sha1": "21883fe0943ac03cadc10e3f56d3afc2fab535f1"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs",
+        "git_blob_sha1": "b8add79ea3fe98c55273d8226af0c4dc2f8ce1e9"
+      },
+      {
+        "path": "Assets/PARTSIZE001/Tests/PlayMode/PartSize001PlayModeTests.cs.meta",
+        "git_blob_sha1": "20e4eab9accdbc29edbc34138a4b258d88f083b4"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/API.md",
+        "git_blob_sha1": "0aa2bd4308ec2228541d71aef39180dc831f43b7"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/CHANGELOG.md",
+        "git_blob_sha1": "81a432f26fe30d3ab4e832c06999cb7637eaa174"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/INSTALL_FOR_CODEX.md",
+        "git_blob_sha1": "53836592724b9a54a4d6bc8fb53f179fc819c435"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/KNOWN_LIMITATIONS.md",
+        "git_blob_sha1": "9436112325eb1e00f78a62f4df5ac46041ac98dc"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/observed_r3_size_matrix.csv",
+        "git_blob_sha1": "663883256a521b385ebd51c53abf72e9fbe6b034"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/PROMPT_FOR_CODEX.md",
+        "git_blob_sha1": "5bb40940fe418d7dc210908dd1036372e9920cc1"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/README.md",
+        "git_blob_sha1": "e6941d056cf21fa16696cbcc1130b465e04b5f57"
+      },
+      {
+        "path": "Docs/B01/PARTSIZE001/TEST_PLAN.md",
+        "git_blob_sha1": "558f52200d6ed6ec60a72bdb3d9f4577c50568a2"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/package_partsize.py",
+        "git_blob_sha1": "8a361e1947ceb7235b20bccccb550a2988e8077f"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/Portable/PartSizePortable.csproj",
+        "git_blob_sha1": "d1ed65ebe60b7a9c6a2057b7c35be25e08225041"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/Portable/Program.cs",
+        "git_blob_sha1": "ca02e70055e7aa1278d3f5d66ed3cc7bd3fe18ee"
+      },
+      {
+        "path": "Tools/B01/PARTSIZE001/test_package_partsize.py",
+        "git_blob_sha1": "82a33a0cd90087137c386485a8a81861bc5b171a"
+      }
+    ]
+  },
+  "independent_acceptance": [
+    {
+      "role": "B01-40",
+      "scope": "Corrected original Python parser NEG01-03",
+      "run": 40653960667,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "result": "SUCCESS",
+      "tests_per_platform": 10
+    },
+    {
+      "role": "B01-40",
+      "scope": "Original corrected PowerShell Git cross-worktree guard",
+      "run": 40654528336,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "result": "SUCCESS",
+      "tests_per_platform": 6
+    }
+  ],
+  "owner_source_ci": {
+    "run": 40653865774,
+    "result": "SUCCESS",
+    "platforms": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "real_git_pwsh_preflight_per_platform": "20/20",
+    "original_extracted_csharp_per_platform": "328/328",
+    "parser_per_platform": "16/16",
+    "source_static_per_platform": "24/24"
+  },
+  "native_status": {
+    "unity_version": "6000.3.14f1",
+    "authored_editmode": 17,
+    "authored_playmode": 11,
+    "actual_native_editmode": "NOT_RUN",
+    "actual_native_playmode": "NOT_RUN",
+    "physical_11_kinds_x_4_yaws": "44/44 NOT_RUN",
+    "codex_validation_queue": "CV-10",
+    "independent_g1": "HOLD",
+    "g2": "HOLD",
+    "licensed_host": "NOT_CONFIRMED"
+  },
+  "rollback": {
+    "scope": "ONLY a source-pinned, registered, detached PARTSIZE disposable linked Git worktree. Never the Codex checkout, producer source or independent raw evidence.",
+    "instructions_file": "Docs/B01/PARTSIZE001/W74_SAFE_ROLLBACK.md",
+    "preconditions": [
+      "Verify source exact SHA, .git file, detached registered Git worktree, explicit disposable marker, no tracked/untracked source edit",
+      "Preserve evidence stored outside ALL registered worktree roots; do not delete raw Unity XML/logs",
+      "Use clean `git worktree remove` ONLY after guards; no --force, no git clean and never delete an unknown path"
+    ],
+    "fail_closed": "If any precondition cannot be verified, leave checkout and original evidence intact for independent review."
+  },
+  "governance": {
+    "frozen_qa_pr298_sha": "26634727ab2323a982bce893421c88c330be46e8",
+    "do_not_modify_frozen_operator": true,
+    "independent_test_not_native_g1": true,
+    "offered": false,
+    "codex_ack": false,
+    "merge": false
+  },
+  "links": [
+    "https://github.com/C8LyNn/RoboRougelike/pull/298#issuecomment-6463941312",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40653865774",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40653960667",
+    "https://github.com/C8LyNn/RoboRougelike/actions/runs/40654528336"
+  ]
+}
