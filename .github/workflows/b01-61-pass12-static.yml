@@ -40,6 +40,10 @@ jobs:
         run: |
           python3 Tools/B01/B01-61-PASS15/ld02_perimeter_geometry_check.py --repo "$PWD" --owner-fix --require-closed
           echo "B01-61_OWNER_REPAIR_RECEIVER=STATIC_GREEN | UNITY_NATIVE=NOT_RUN"
+      - name: Fetch B01-25 corrected P15 cover-choice exact original bytes
+        run: |
+          git fetch --no-tags --depth=1 origin 691c8cb6b0be086d455e530f2531de7f3753a0ba
+          test "$(git rev-parse 691c8cb6b0be086d455e530f2531de7f3753a0ba:Research/B01-25/P15/LD02_COVER_CHOICE.json)" = "8586312b9606d94b088e4e7640c28105e2d6bac1"
       - name: Check newly authored cover-choice Light and Heavy original source envelopes
         run: |
           python3 Tools/B01/B01-61-PASS15/ld02_cover_choice_vehicle_envelope.py --repo "$PWD"
