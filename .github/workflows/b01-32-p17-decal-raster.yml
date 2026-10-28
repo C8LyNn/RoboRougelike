@@ -1,0 +1,35 @@
+name: B01-32 P17 real transparent damage decal texture atlas (NOT UNITY)
+on:
+  push:
+    branches:
+      - art/b01-32-p17-part-damage-state-decals
+    paths:
+      - Research/B01-32/P17/PartDamageDecals/**
+      - Tools/B01-32/P17/**
+      - .github/workflows/b01-32-p17-decal-raster.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-art-raster-and-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install actual vector renderer, pixel inspector and browser test libraries
+        run: python -m pip install --disable-pip-version-check "CairoSVG==2.7.1" "Pillow==11.3.0" "playwright==1.55.0"
+      - name: Render and physically compare original 12 transparent frames and 768x1024 RGBA atlas
+        run: python Tools/B01-32/P17/render_art.py build/b01-32-p17
+      - name: Install real supported headless Chromium for browser evidence
+        run: python -m playwright install --with-deps chromium
+      - name: Exercise source viewer in real Chromium (720 and 1080)
+        run: python Tools/B01-32/P17/test_viewer.py build/b01-32-p17
+      - name: Upload actual rendered Unity PNG textures and immutable render receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-32-P17-DAMAGE-DECAL-001-PNG
+          path: build/b01-32-p17/
+          if-no-files-found: error
+          retention-days: 30
