@@ -1,0 +1,284 @@
+{
+  "schema": "B01-24-COVER-RETREAT-001-v1",
+  "gameSource": {
+    "commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+    "arenaPath": "Assets/R5/R5Arena.cs",
+    "arenaBlob": "fbe1537036910e0dcc2b2c7e502e66848fcd14a5",
+    "enemyPath": "Assets/Pack/P12_PipelineSafeEnemyTurret.cs",
+    "enemyBlob": "ea63a4c19a7bd996450ef6f27845c858be1a5a69"
+  },
+  "world": {
+    "minX": -39,
+    "maxX": 39,
+    "minZ": -39,
+    "maxZ": 39,
+    "clearanceRadius": 2,
+    "gridStep": 2,
+    "player": {
+      "x": 0,
+      "z": -22
+    }
+  },
+  "dataPolicy": "Provisional optional retreat cover sites; NOT approved game balance/AI behavior; no game Assets modifications",
+  "maps": [
+    {
+      "id": "B0124-SALVAGE-SHELTER",
+      "arenaKind": 0,
+      "description": "Retreat behind press or wreck; static R5 SalvageYard",
+      "coverSites": [
+        {
+          "id": "PRESS-W",
+          "x": -14,
+          "z": 9
+        },
+        {
+          "id": "PRESS-E",
+          "x": 14,
+          "z": 9
+        },
+        {
+          "id": "WRECK-W",
+          "x": -26,
+          "z": 22
+        },
+        {
+          "id": "WRECK-E",
+          "x": 26,
+          "z": 22
+        }
+      ],
+      "obstacles": [
+        {
+          "id": "N-wall",
+          "x": 0,
+          "z": 42,
+          "w": 86,
+          "h": 2
+        },
+        {
+          "id": "S-wall",
+          "x": 0,
+          "z": -42,
+          "w": 86,
+          "h": 2
+        },
+        {
+          "id": "W-wall",
+          "x": -42,
+          "z": 0,
+          "w": 2,
+          "h": 82
+        },
+        {
+          "id": "E-wall",
+          "x": 42,
+          "z": 0,
+          "w": 2,
+          "h": 82
+        },
+        {
+          "id": "press-W",
+          "x": -10,
+          "z": 0,
+          "w": 3,
+          "h": 5
+        },
+        {
+          "id": "wreck-W",
+          "x": -21,
+          "z": 13,
+          "w": 5,
+          "h": 2
+        },
+        {
+          "id": "low-W",
+          "x": -20,
+          "z": -13,
+          "w": 4,
+          "h": 3
+        },
+        {
+          "id": "press-E",
+          "x": 10,
+          "z": 0,
+          "w": 3,
+          "h": 5
+        },
+        {
+          "id": "wreck-E",
+          "x": 21,
+          "z": 13,
+          "w": 5,
+          "h": 2
+        },
+        {
+          "id": "low-E",
+          "x": 20,
+          "z": -13,
+          "w": 4,
+          "h": 3
+        }
+      ]
+    },
+    {
+      "id": "B0124-WASTE-ROCK",
+      "arenaKind": 1,
+      "description": "Retreat behind west/east rock; static R5 Wasteland",
+      "coverSites": [
+        {
+          "id": "ROCK-W",
+          "x": -32,
+          "z": -1
+        },
+        {
+          "id": "ROCK-E",
+          "x": 31,
+          "z": 15
+        }
+      ],
+      "obstacles": [
+        {
+          "id": "N-wall",
+          "x": 0,
+          "z": 42,
+          "w": 86,
+          "h": 2
+        },
+        {
+          "id": "S-wall",
+          "x": 0,
+          "z": -42,
+          "w": 86,
+          "h": 2
+        },
+        {
+          "id": "W-wall",
+          "x": -42,
+          "z": 0,
+          "w": 2,
+          "h": 82
+        },
+        {
+          "id": "E-wall",
+          "x": 42,
+          "z": 0,
+          "w": 2,
+          "h": 82
+        },
+        {
+          "id": "rock-W",
+          "x": -26,
+          "z": -5,
+          "w": 4,
+          "h": 6
+        },
+        {
+          "id": "rock-E",
+          "x": 26,
+          "z": 8,
+          "w": 6,
+          "h": 3
+        }
+      ]
+    },
+    {
+      "id": "B0124-INDUSTRIAL-HALL",
+      "arenaKind": 2,
+      "description": "Retreat around industrial hall obstacles; static R5 Industrial",
+      "coverSites": [
+        {
+          "id": "HALL-S-W",
+          "x": -25,
+          "z": 1
+        },
+        {
+          "id": "HALL-S-E",
+          "x": 25,
+          "z": 1
+        },
+        {
+          "id": "HALL-N-W",
+          "x": -26,
+          "z": 19
+        },
+        {
+          "id": "HALL-N-E",
+          "x": 26,
+          "z": 19
+        }
+      ],
+      "obstacles": [
+        {
+          "id": "N-wall",
+          "x": 0,
+          "z": 42,
+          "w": 86,
+          "h": 2
+        },
+        {
+          "id": "S-wall",
+          "x": 0,
+          "z": -42,
+          "w": 86,
+          "h": 2
+        },
+        {
+          "id": "W-wall",
+          "x": -42,
+          "z": 0,
+          "w": 2,
+          "h": 82
+        },
+        {
+          "id": "E-wall",
+          "x": 42,
+          "z": 0,
+          "w": 2,
+          "h": 82
+        },
+        {
+          "id": "hall-0",
+          "x": -17,
+          "z": -7,
+          "w": 10,
+          "h": 9
+        },
+        {
+          "id": "hall-1",
+          "x": 17,
+          "z": -7,
+          "w": 10,
+          "h": 9
+        },
+        {
+          "id": "hall-2",
+          "x": -17,
+          "z": 7,
+          "w": 10,
+          "h": 9
+        },
+        {
+          "id": "hall-3",
+          "x": 17,
+          "z": 7,
+          "w": 10,
+          "h": 9
+        },
+        {
+          "id": "link-W",
+          "x": -31,
+          "z": 0,
+          "w": 3,
+          "h": 14
+        },
+        {
+          "id": "link-E",
+          "x": 31,
+          "z": 0,
+          "w": 3,
+          "h": 14
+        }
+      ]
+    }
+  ]
+}
