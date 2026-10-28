@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="LD02ArenaP15Tests.cs" />
     <Compile Include="UnityShim.cs" />
     <Compile Include="../../../Assets/MapEditor/MapDraft.cs" Link="OriginalCodexMapDraft.cs" />
   </ItemGroup>

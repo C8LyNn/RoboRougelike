@@ -85,6 +85,33 @@ jobs:
           $extractedBlob = (git hash-object "$fixtureFile").Trim()
           if ($LASTEXITCODE -ne 0 -or $extractedBlob -ne $fixtureBlob) { throw 'CV05 actual fixture byte mutation' }
           Write-Output 'EXACT PUBLISHED CV-05 D06 ORIGINAL 2000-GROUND JSON FILE GIT BLOB VERIFIED'
+          $arenaCommit = 'eecdc5ab9f20cad2f47dd7a139c9cb96981d0c3e'
+          $arenaPath = 'Research/B01-25/P14/LD02_ARENA.json'
+          $arenaBlob = '6de0d04900a69606ba873f7c29cef75ed6f182cd'
+          $worldBlob = (git rev-parse "${codex}:Assets/MapEditor/MapWorld.cs").Trim()
+          if ($LASTEXITCODE -ne 0 -or $worldBlob -ne '8928908db123b35dcab4b324fe9d3a7a8fceee4e') { throw 'CODEX MAPWORLD PHYSICAL SHAPE SOURCE CHANGED' }
+          git cat-file -e "${arenaCommit}^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'B01-25 P14 ARENA immutable source commit unavailable' }
+          if ((git rev-parse "${arenaCommit}:$arenaPath").Trim() -ne $arenaBlob) { throw 'B01-25 P14 ARENA ORIGINAL BLOB WRONG' }
+          $arenaZip = Join-Path $env:RUNNER_TEMP 'b0121-arena-old.zip'
+          git archive --format=zip --output="$arenaZip" $arenaCommit -- $arenaPath
+          if ($LASTEXITCODE -ne 0) { throw 'Arena original Git archive failed' }
+          Expand-Archive -LiteralPath "$arenaZip" -DestinationPath . -Force
+          if ((git hash-object "$arenaPath").Trim() -ne $arenaBlob) { throw 'Extracted original arena asset changed' }
+          $p15Commit = '3fd57dacc34b0fe34b813037de2fa4bdea6252cd'
+          $p15Path = 'Research/B01-21/P15/LD02_ARENA_SEALED_CORNERS.json'
+          $p15Blob = 'e39e2f174984832bd97311c050e3c22fd6fb1175'
+          git fetch --no-tags --depth=5 origin refs/heads/research/b01-21-pass15-ld02-sealed-corners
+          if ($LASTEXITCODE -ne 0) { throw 'Corrected LD02 source fixture branch fetch failed' }
+          git cat-file -e "${p15Commit}^{commit}"
+          if ($LASTEXITCODE -ne 0) { throw 'Corrected LD02 exact source commit unavailable' }
+          if ((git rev-parse "${p15Commit}:$p15Path").Trim() -ne $p15Blob) { throw 'Corrected LD02 expected original Git blob mismatch' }
+          $p15Zip = Join-Path $env:RUNNER_TEMP 'b0121-arena-corrected.zip'
+          git archive --format=zip --output="$p15Zip" $p15Commit -- $p15Path
+          if ($LASTEXITCODE -ne 0) { throw 'Corrected LD02 Git archive failed' }
+          Expand-Archive -LiteralPath "$p15Zip" -DestinationPath . -Force
+          if ((git hash-object "$p15Path").Trim() -ne $p15Blob) { throw 'Corrected LD02 Git blob mutated during extraction' }
+          Write-Output 'P15 BOTH ORIGINAL MAPDOCUMENTS AND MAPWORLD SOURCE SHAPE GIT BLOBS VERIFIED'
           Write-Output 'EXACT ORIGINAL CODEX CSHARP AND SIX ACTUAL B01-25 JSON GIT BLOBS VERIFIED'
       - name: Execute actual original MapDraft CSharp (Unity types stubbed, no Unity G1)
         shell: pwsh
