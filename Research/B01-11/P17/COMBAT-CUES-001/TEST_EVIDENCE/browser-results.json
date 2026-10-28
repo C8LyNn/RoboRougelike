@@ -1,0 +1,328 @@
+{
+  "environment": "Chromium headless via Playwright (local Linux)",
+  "total": 80,
+  "passed": 80,
+  "failed": 0,
+  "tests": [
+    {
+      "test": "320x720/no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/initial state",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/parts initial",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/step HP",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/weapon destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/critical alert",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/compact toggle",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/reset restores hp",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/friendly-fire attribution",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/all steps reached",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/end next disabled",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/core destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/no overflow",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/duplicate event",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/unknown part",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/negative damage",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/blocked nonzero",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/state immutability",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/damage capped at 0",
+      "status": "PASS"
+    },
+    {
+      "test": "320x720/still no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/initial state",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/parts initial",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/step HP",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/weapon destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/critical alert",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/compact toggle",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/reset restores hp",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/friendly-fire attribution",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/all steps reached",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/end next disabled",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/core destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/no overflow",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/duplicate event",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/unknown part",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/negative damage",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/blocked nonzero",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/state immutability",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/damage capped at 0",
+      "status": "PASS"
+    },
+    {
+      "test": "720x960/still no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/initial state",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/parts initial",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/step HP",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/weapon destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/critical alert",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/compact toggle",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/reset restores hp",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/friendly-fire attribution",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/all steps reached",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/end next disabled",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/core destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/no overflow",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/duplicate event",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/unknown part",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/negative damage",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/blocked nonzero",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/state immutability",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/damage capped at 0",
+      "status": "PASS"
+    },
+    {
+      "test": "1280x800/still no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/no JS exception",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/initial state",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/parts initial",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/step HP",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/weapon destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/critical alert",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/compact toggle",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/reset restores hp",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/friendly-fire attribution",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/all steps reached",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/end next disabled",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/core destroyed",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/no overflow",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/duplicate event",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/unknown part",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/negative damage",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/blocked nonzero",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/state immutability",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/damage capped at 0",
+      "status": "PASS"
+    },
+    {
+      "test": "1920x1080/still no JS exception",
+      "status": "PASS"
+    }
+  ]
+}
