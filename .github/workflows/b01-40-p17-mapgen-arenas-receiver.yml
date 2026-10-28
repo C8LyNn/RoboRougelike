@@ -1,0 +1,56 @@
+name: B01-40 PASS17 18 original MAPGEN arenas Codex handoff
+on:
+  push:
+    branches:
+      - 'b01-40/p17-mapgen-preset-handoff'
+    paths:
+      - 'Tools/B01Validation/P17/**'
+      - '.github/workflows/b01-40-p17-mapgen-arenas-receiver.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pinned-real-arenas:
+    name: 18 original CSharp layouts + safe portable delivery (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exactly pinned B01-20 P16 author + original MAPGEN R3.4.1 Git objects
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 66c8988aa06a63036c6abede4c7181c0c7bfd904
+          git fetch --no-tags --depth=1 origin 5be31039411f89f17654b1c332f8692883fa03cc
+      - name: Generate actual original CSharp arenas, independent readback, 18 SVG and Codex delivery ZIP
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17/receive_mapgen_arenas.py --repo . --out "$(python -c "import os,pathlib;print(pathlib.Path(os.environ['RUNNER_TEMP'])/'b0140_p17_output')")"
+      - name: Execute 16 original delivered ZIP and mutation-negative acceptance tests
+        shell: bash
+        run: |
+          export B01_40_P17_OUTPUT="$(python -c "import os,pathlib;print(pathlib.Path(os.environ['RUNNER_TEMP'])/'b0140_p17_output')")"
+          python Tools/B01Validation/P17/test_p17_package.py -v
+      - name: Print real archive SHA256 and verify all 41 members
+        shell: bash
+        run: |
+          python -c "import os,json,pathlib,zipfile; p=pathlib.Path(os.environ['RUNNER_TEMP'])/'b0140_p17_output';d=json.loads((p/'receiver-receipt.json').read_text(encoding='utf-8'));a=p/'B01-40-P17-MAPGEN-ARENAS-CODEX.zip';z=zipfile.ZipFile(a);assert len(z.namelist())==41;print('P17_ORIGINAL_CSHARP_DATA_ZIP_SHA256='+d['archive_sha256']);print('P17_SOURCE_ONLY=TRUE UNITY_NATIVE=NOT_RUN')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-P17-18-MAPGEN-ARENAs-${{ matrix.os }}
+          path: ${{ runner.temp }}/b0140_p17_output/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Boundary
+        shell: bash
+        run: |
+          echo 'Original 18 MAPGEN CSharp blueprints + source-derived previews, NON-Unity staging.'
+          echo 'No Assets modifications, no direct MapDocument v2 load, no Unity G1, no G2 and no merge.'
