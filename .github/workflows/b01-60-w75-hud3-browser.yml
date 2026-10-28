@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'Tools/B01/QA-NATIVE-001/w75_hud3_dynamic_original_browser.py'
+      - 'Tools/B01/QA-NATIVE-001/w75_garage_focus_original_browser.py'
       - '.github/workflows/b01-60-w75-hud3-browser.yml'
   workflow_dispatch:
 jobs:
@@ -22,6 +23,16 @@ jobs:
       - name: Exercise pinned original B01-12 HTML controls in real browser
         run: |
           python Tools/B01/QA-NATIVE-001/w75_hud3_dynamic_original_browser.py "$RUNNER_TEMP/b01-60-pass15-hud3"
+      - name: Compare original B01-12 garage keyboard focus before and after owner source fix
+        run: |
+          python Tools/B01/QA-NATIVE-001/w75_garage_focus_original_browser.py "$RUNNER_TEMP/b01-60-pass15-garage"
+      - name: Preserve garage original browser RED-to-GREEN source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-original-garage-focus-before-after
+          path: ${{ runner.temp }}/b01-60-pass15-garage/
+          if-no-files-found: warn
       - name: Preserve browser screenshots and JSON receipt
         if: always()
         uses: actions/upload-artifact@v4
