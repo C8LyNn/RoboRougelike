@@ -1,0 +1,64 @@
+{
+  "arenas": [
+    {
+      "data": "AR16_01_OPEN_FLANK.cover.json",
+      "seed": 160101,
+      "sourceClearSamplePoints": 145,
+      "sourceCoverElements": 6,
+      "sourceLayoutId": "AR16_01_OPEN_FLANK",
+      "sourceMapGenGeometryHash": "30fb147b8ea3b4eaa9a7f300fcfa093f55ab0d340ad301c5a659c7e14c7b878c",
+      "sourceSelfOccludingHeavyReachableAnchors": 4,
+      "svg": "AR16_01_OPEN_FLANK.cover.svg",
+      "visibleEnemyCountHistogram": {
+        "0": 0,
+        "1": 18,
+        "2": 35,
+        "3": 92
+      }
+    },
+    {
+      "data": "AR16_02_SPLIT_DECISION.cover.json",
+      "seed": 160202,
+      "sourceClearSamplePoints": 125,
+      "sourceCoverElements": 11,
+      "sourceLayoutId": "AR16_02_SPLIT_DECISION",
+      "sourceMapGenGeometryHash": "5cfc45a3308cf5d15b48ab9fd01eb5ae2c3b292bc44b97d5a158a9dcc870048d",
+      "sourceSelfOccludingHeavyReachableAnchors": 8,
+      "svg": "AR16_02_SPLIT_DECISION.cover.svg",
+      "visibleEnemyCountHistogram": {
+        "0": 7,
+        "1": 35,
+        "2": 39,
+        "3": 44
+      }
+    },
+    {
+      "data": "AR16_03_DENSE_PRESSURE.cover.json",
+      "seed": 160303,
+      "sourceClearSamplePoints": 99,
+      "sourceCoverElements": 16,
+      "sourceLayoutId": "AR16_03_DENSE_PRESSURE",
+      "sourceMapGenGeometryHash": "a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98",
+      "sourceSelfOccludingHeavyReachableAnchors": 9,
+      "svg": "AR16_03_DENSE_PRESSURE.cover.svg",
+      "visibleEnemyCountHistogram": {
+        "0": 12,
+        "1": 39,
+        "2": 30,
+        "3": 18
+      }
+    }
+  ],
+  "dependencyRoutePackageHead": "1971c819a99947553d7f28a104aa9601374b3b69",
+  "inGame": false,
+  "independentQA": "PENDING",
+  "nativeUnity": "NOT_RUN",
+  "originalBlueprintGitBlobs": {
+    "AR16_01_OPEN_FLANK": "fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e",
+    "AR16_02_SPLIT_DECISION": "022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790",
+    "AR16_03_DENSE_PRESSURE": "1fe7bf8b124d999de75c0fd3cacc85ee62319429"
+  },
+  "originalGameSourceSHA": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "packageId": "B01-21-MAP-COVER-001",
+  "schema": "B01-21-P17-MAP-COVER-001-MANIFEST-v1"
+}
