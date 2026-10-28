@@ -1,0 +1,81 @@
+{
+  "packageId": "R5WB001/P17-W02-RECEIPT",
+  "producer": "B01-10 GAME DESIGN & BALANCE",
+  "verificationKind": "ACTUAL_GITHUB_RUN_NOT_NATIVE_UNITY",
+  "githubActions": {
+    "workflow": "B01-10 P17 W02 R5 Workbench Node and real Chromium",
+    "runId": 40759517141,
+    "runUrl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141",
+    "conclusion": "success",
+    "commitSha": "5a341ceceedb5f118392298f07f2728ba6e92b00",
+    "attempt": 1
+  },
+  "jobs": [
+    {
+      "jobId": 123067320990,
+      "platform": "ubuntu-24.04",
+      "runtime": "Node 22",
+      "command": "node Research/B01-10/P17Workbench/workbench.test.cjs",
+      "observed": "41 PASS / 0 FAIL",
+      "conclusion": "success",
+      "actual": true
+    },
+    {
+      "jobId": 123067320665,
+      "platform": "windows-2025",
+      "runtime": "Node 22",
+      "command": "node Research/B01-10/P17Workbench/workbench.test.cjs",
+      "observed": "41 PASS / 0 FAIL",
+      "conclusion": "success",
+      "actual": true
+    },
+    {
+      "jobId": 123067320529,
+      "platform": "ubuntu-24.04",
+      "runtime": "Chromium via Playwright 1.56.1 / actual browser",
+      "command": "node Research/B01-10/P17Workbench/browser.test.cjs",
+      "observed": "27 PASS / 0 FAIL",
+      "conclusion": "success",
+      "actual": true,
+      "viewports": [
+        "1280x720",
+        "1920x1080",
+        "720x900"
+      ],
+      "casesPerViewport": 9
+    }
+  ],
+  "artifacts": {
+    "artifactId": 12847242860,
+    "name": "b01-10-r5wb001-real-chromium-40759517141",
+    "sourceRunUrl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141",
+    "files": [
+      "r5wb001_1280x720.png",
+      "r5wb001_1920x1080.png",
+      "r5wb001_720x900.png",
+      "QA_BROWSER.json"
+    ],
+    "artifactSizeBytes": 900097
+  },
+  "qaScope": "Producer self-test only; not B01-60 independent QA. Browser screenshots are actual Playwright Chromium captures; no game or Unity screenshots",
+  "nativeCSharp": "NOT_RUN",
+  "unityEditor": "NOT_RUN",
+  "unityPlayMode": "NOT_RUN",
+  "windowsPlayer": "NOT_RUN",
+  "physX": "NOT_RUN",
+  "codexAck": "PENDING",
+  "independentB0160": "PENDING",
+  "notes": [
+    "Original code tests were executed in both operating systems and 3-viewport UI tests in real Chromium.",
+    "The previous V8 adapter 41/41 + 20/20 remain separate, less strong preliminary validation.",
+    "All tested code files were present in run head; documentation-only updates after that head require unchanged original Git blobs to prove applicability.",
+    "This verifies the offline authoring app, not whether exported decks pass original Unity JsonUtility or full run validation."
+  ],
+  "sourceGitBlobs": {
+    "Research/B01-10/P17Workbench/R5WorkbenchCore.js": "73755a31a2c8ff937d47476f5cf5ae402e7fc5fd",
+    "Research/B01-10/P17Workbench/R5Workbench.html": "1ec85c696edaacf66553ab46590f091a6c8721a8",
+    "Research/B01-10/P17Workbench/workbench.test.cjs": "f02a8ca55cc3dda0146db98af51cf89e19afdfdf",
+    "Research/B01-10/P17Workbench/browser.test.cjs": "cf51ab91bf32543e6557cfd648eff1efa4270dfe",
+    ".github/workflows/b01-10-p17-r5-workbench.yml": "b87dc9ba2cadaf562a88a3cccc5ab6e6701e1d39"
+  }
+}
