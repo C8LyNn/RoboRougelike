@@ -1,0 +1,69 @@
+{
+  "package_id": "B01-31-A1-GARAGE-ICON-001",
+  "version": "P17-R1",
+  "owner": "B01-31",
+  "authority": {
+    "decision": "https://github.com/C8LyNn/RoboRougelike/issues/287#issuecomment-6463914298",
+    "subject": "ONE_WHEEL_PLUS_SUPPORT_ARM",
+    "unit": "SINGLE_ATTACHABLE_PART",
+    "scope": "2D CONCEPT ART / EDITORIAL UI GRAPHIC",
+    "G_DESIGN": "PENDING",
+    "MODEL_JOB": "NOT_AUTHORIZED"
+  },
+  "source_reference": {
+    "source_pr": 294,
+    "source_commit": "7735fdefc22272a34c000716bc70ad94be7703f3",
+    "original_svg_git_blob_sha1": "96cc46a7c14f94a45c387e102d5940cb787d2d5c",
+    "fidelity": "Simplified independent original graphic reflecting approved A1 subject; NOT vector-geometry copy, engineering art or mount dimensional source"
+  },
+  "vector_assets": [
+    {
+      "variant": "dark",
+      "svg": "A1-garage-icon-dark.svg",
+      "sha1": "580da9675ee43694f1dafe78c18de6bd94b5dde9",
+      "background_for_preview": "#0c1b2d"
+    },
+    {
+      "variant": "light",
+      "svg": "A1-garage-icon-light.svg",
+      "sha1": "d6229741f6a892875492fd258f97ebae0cc42d0f",
+      "background_for_preview": "#f2f4f6"
+    },
+    {
+      "variant": "mono",
+      "svg": "A1-garage-icon-mono.svg",
+      "sha1": "37098d46de3ad20d80d04075199004333daeb82c",
+      "background_for_preview": "#0c1b2d"
+    }
+  ],
+  "sizes_px": [
+    48,
+    96,
+    192,
+    384
+  ],
+  "expected_png_count": 12,
+  "color_purpose": "Visual theme alternatives for future garage inventory cards, not approved statuses, prices, rarity, materials or mechanical state",
+  "semantics": [
+    "mount-proposal",
+    "support-arm",
+    "damper-proposal",
+    "wheel"
+  ],
+  "test_command": "python Docs/B01Concept/P17/A1-GARAGE-ICON-001/render_verify.py",
+  "outputs": "rendered/A1-icon-{theme}-{size}.png; rendered/A1-UI-contact.png; rendered/receipt.json",
+  "QA_boundaries": {
+    "native_unity": "NOT_RUN",
+    "human_recognition": "NOT_RUN",
+    "actual_game_integration": "NO",
+    "physics": "NOT_RUN"
+  },
+  "import": "In disposable checkout run render_verify.py; B01-12 may review PNG references; only Codex plus HQ can integrate approved assets. No game Assets files modified.",
+  "rollback": "Delete only Docs/B01Concept/P17/A1-GARAGE-ICON-001 and .github/workflows/b01-31-p17-garage-icon.yml from disposable checkout; no main/develop changes.",
+  "receivers": [
+    "B01-40",
+    "B01-60",
+    "B01-12",
+    "B01-30"
+  ]
+}
