@@ -1,0 +1,67 @@
+name: B01-62 MAPSAFE-001 offline map backup/restore
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Tools/B01/B01-62/MapSafe001/**'
+      - '.github/workflows/b01-62-mapsafe-001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mapsafe:
+    name: MAPSAFE physical disk tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      CODEX_SHA: a2ccd055070a963805cba0779b79f18489f4794f
+      LD02_ARENA: e39e2f174984832bd97311c050e3c22fd6fb1175
+      LD02_COVER: 8586312b9606d94b088e4e7640c28105e2d6bac1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Original Python CLI filesystem positive and negative regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-62/MapSafe001 -p test_mapsafe.py -v \
+            2>&1 | tee "Tools/B01/B01-62/MapSafe001/tests-$RUNNER_OS.txt"
+          grep -q '^OK$' "Tools/B01/B01-62/MapSafe001/tests-$RUNNER_OS.txt"
+      - name: Fetch exact original Codex map data, fail on unexpected SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/pull/310/head:refs/remotes/origin/mapsafe-pr310'
+          git fetch --no-tags origin "$CODEX_SHA"
+          arena="$(git rev-parse "$CODEX_SHA:Docs/CX08/Fixtures/LD02_ARENA.json")"
+          cover="$(git rev-parse "$CODEX_SHA:Docs/CX08/Fixtures/LD02_COVER_CHOICE.json")"
+          test "$arena" = "$LD02_ARENA"
+          test "$cover" = "$LD02_COVER"
+          mkdir -p "$RUNNER_TEMP/mapsafe-fixtures"
+          git show "$CODEX_SHA:Docs/CX08/Fixtures/LD02_ARENA.json" > "$RUNNER_TEMP/mapsafe-fixtures/LD02_ARENA.json"
+          git show "$CODEX_SHA:Docs/CX08/Fixtures/LD02_COVER_CHOICE.json" > "$RUNNER_TEMP/mapsafe-fixtures/LD02_COVER_CHOICE.json"
+          echo "PINNED_CODEX=$CODEX_SHA ARENA=$arena COVER=$cover"
+      - name: Backup and restore actual 168 and 173-item LD02 documents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-62/MapSafe001/smoke_ld02.py \
+            --fixtures "$RUNNER_TEMP/mapsafe-fixtures" \
+            --output "Tools/B01/B01-62/MapSafe001/real-LD02-$RUNNER_OS.json" \
+            2>&1 | tee "Tools/B01/B01-62/MapSafe001/smoke-$RUNNER_OS.txt"
+          grep -q '^MAPSAFE_ORIGINAL_LD02_PASS=' "Tools/B01/B01-62/MapSafe001/smoke-$RUNNER_OS.txt"
+      - name: Archive exact tool evidence (not Unity)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mapsafe-001-${{ matrix.os }}
+          path: |
+            Tools/B01/B01-62/MapSafe001/tests-*.txt
+            Tools/B01/B01-62/MapSafe001/smoke-*.txt
+            Tools/B01/B01-62/MapSafe001/real-LD02-*.json
+          retention-days: 14
