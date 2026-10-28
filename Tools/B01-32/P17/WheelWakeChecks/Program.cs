@@ -60,8 +60,9 @@ for(int i=0;i<2048;i++)
     Verify(a.RatePerSecond==b.RatePerSecond && a.ParticleLifetime==b.ParticleLifetime
         && a.ParticleSize==b.ParticleSize && a.ParticleSpeed==b.ParticleSpeed
         && a.Alpha==b.Alpha, "determinism vector "+i);
-    Verify(a.Visible && a.RatePerSecond <= 100f && a.ParticleSize<1f
-        && a.ParticleLifetime<2f && a.Alpha<=1f,"bound vector "+i);
+    Verify(a.Visible == (speed > .35f), "low-speed emission cutoff vector "+i);
+    Verify(!a.Visible || (a.RatePerSecond <= 100f && a.ParticleSize<1f
+        && a.ParticleLifetime<2f && a.Alpha<=1f),"visible sample bound vector "+i);
 }
 Console.WriteLine("SWEEP_PASS 2048/2048 exact original input vectors, repeatable and bounded");
 Console.WriteLine("ORIGINAL_CPPROFILE_EXEC_PASS "+checks+"/"+checks+" assertions; Unity native remains NOT_RUN");
