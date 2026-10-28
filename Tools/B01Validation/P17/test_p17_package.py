@@ -139,11 +139,12 @@ class SourceGeneratedArenaDelivery(unittest.TestCase):
         self.assertEqual(receipt["G2"],"HOLD")
 
     def test_14_wrong_real_owner_git_blob_must_be_denied(self):
-        with self.assertRaisesRegex(m.Reject,"SOURCE_BLOB_BYTES_INVALID"):
-            self.assertNotEqual(m.blob_sha(b"tampered fixture"),
-                                m.ORIGINAL[0][1]) or (_ for _ in ()).throw(
-                                    m.Reject("SOURCE_BLOB_BYTES_INVALID"))
-        # Source immutable check is independently called in test_01.
+        from unittest.mock import patch
+        path,correct=m.ORIGINAL[0]
+        self.assertNotEqual(correct,"0"*40)
+        with patch.object(m,"ORIGINAL",[(path,"0"*40)]+m.ORIGINAL[1:]):
+            with self.assertRaisesRegex(m.Reject,"PINNED_SOURCE_DRIFT"):
+                m.verify_pinned_source(REPO)
 
     def test_15_encoded_traversal_name_rejected_without_repacking(self):
         with self.assertRaisesRegex(m.Reject,"UNSAFE_ZIP_MEMBER"):
