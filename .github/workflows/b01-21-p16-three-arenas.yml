@@ -1,0 +1,52 @@
+name: B01-21 P16 MAPGEN original CSharp three real arenas (NOT Unity)
+on:
+  push:
+    branches: [research/b01-21-pass16-mapgen-three-arenas]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original_source_mapgen:
+    name: Original MAPGEN CSharp source preflight / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify unchanged immutable original MAPGEN001/MAPGENWORLD001 CSharp source
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $original='589b60a912096d1e9917cb0bbac73a53e7543b4f'
+          $expect=@{
+            'Assets/B01Packages/MAPGEN001/Runtime/MapGenData.cs'='b586a5bfc697bc37edbf98bb936459aeebe694c6'
+            'Assets/B01Packages/MAPGEN001/Runtime/MapGenPlanner.cs'='89ff64e12f278f2c9393ad542161a9387e1f4117'
+            'Assets/B01Packages/MAPGEN001/Runtime/MapGenRouteValidator.cs'='4e4bee443a60abb3b284e8c546203096095e12bd'
+            'Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldContract.cs'='ee33a3e6099bce54d43dc2cde8d26a23c0c45574'
+            'Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldPolicy.cs'='bf86ca20712db69a12effde23eb84c76826d50d9'
+            'Assets/B01Packages/MAPGENWORLD001/Runtime/MapWorldReplayCodec.cs'='ee5d3b96cc4c4d15124a6cbea49a443059892a4e'
+          }
+          foreach($entry in $expect.GetEnumerator()){
+            $actual=(git hash-object "$($entry.Key)").Trim()
+            if ($LASTEXITCODE -ne 0 -or $actual -ne $entry.Value) { throw "WRONG_IMMUTABLE_ORIGINAL_SOURCE $($entry.Key) got=$actual" }
+          }
+          Write-Output 'MAPGEN_P16_PINNED_ORIGINAL_SIX_CSHARP_BLOBS_VERIFIED'
+          Write-Output "MAPGEN_P16_BASE_GAME_SHA=$original"
+      - name: Run actual original MAPGEN and MapWorld CSharp planner, route, seed, replay
+        shell: pwsh
+        run: |
+          dotnet run --project Research/B01-21/P16/MapgenArenas.csproj -c Release
+          if ($LASTEXITCODE -ne 0) { throw 'MAPGEN_P16_ACTUAL_ORIGINAL_CSHARP_RED' }
+      - name: Upload exactly generated geometry snapshots, preview SVGs, replay manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-p16-arenas-${{ matrix.os }}
+          path: Research/B01-21/P16/generated/*
+          if-no-files-found: error
+          retention-days: 30
