@@ -192,13 +192,23 @@ public static class Program
             Case("A04-Windows-casefold-overwrite", "NEGATIVE", () =>
                 InTemporaryDirectory(directory =>
                 {
-                    if (!MapStorage.TryPath(directory, "Tor Case", out var upper) ||
-                        !MapStorage.TryPath(directory, "tor case", out var lower))
-                        throw new Exception("Positive names rejected");
+                    if (!MapStorage.TryPath(directory, "Tor Case", out var upper))
+                        throw new Exception("Valid canonical name rejected");
                     MapStorage.Save(upper!, One(MapItemKind.Ground, 0, 0));
-                    string committed = File.ReadAllText(upper!);
-                    MapStorage.Save(lower!, One(MapItemKind.Wall, 1, 0));
-                    return File.ReadAllText(upper!) == committed;
+                    byte[] committed = File.ReadAllBytes(upper!);
+                    // A case-fold alias must not pass the public path validator.
+                    if (MapStorage.TryPath(directory, "tor case", out _)) return false;
+                    // Also check direct API callers cannot bypass TryPath by using
+                    // overwrite:true on a forged path. This must fail BEFORE I/O.
+                    bool rejected = false;
+                    try
+                    {
+                        MapStorage.Save(Path.Combine(directory, "tor case.json"),
+                            One(MapItemKind.Wall, 1, 0), overwrite: true);
+                    }
+                    catch (IOException) { rejected = true; }
+                    return rejected && committed.SequenceEqual(File.ReadAllBytes(upper!)) &&
+                           Directory.GetFiles(directory, "*.tmp").Length == 0;
                 }));
         }
         else
