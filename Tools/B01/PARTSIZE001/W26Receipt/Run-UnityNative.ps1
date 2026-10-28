@@ -68,10 +68,15 @@ if($LASTEXITCODE -ne 0){throw "GIT_WORKTREE_REGISTRY_UNAVAILABLE"}
 $entries=(($worktreeListing -join [Environment]::NewLine) -split '(?:\r?\n){2,}')
 if($entries.Count -lt 2){throw "NO_INDEPENDENT_PRIMARY_WORKTREE"}
 $confirmed=$false
+$registeredRoots=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
 foreach($entry in $entries){
     $lines=$entry -split '\r?\n'
     if($lines.Count -lt 3 -or !$lines[0].StartsWith('worktree ')){continue}
     $entryRoot=[IO.Path]::GetFullPath($lines[0].Substring(9)).TrimEnd([IO.Path]::DirectorySeparatorChar,[IO.Path]::AltDirectorySeparatorChar)
+    # Registered siblings (including primary) are real source checkouts,
+    # not safe output directories. Fail closed on any linked path alias.
+    Assert-NoLinkedPathComponents $entryRoot
+    [void]$registeredRoots.Add($entryRoot)
     if($entryRoot.Equals($project,[StringComparison]::OrdinalIgnoreCase)){
         if(!($lines -contains 'detached') -or !($lines -contains ("HEAD "+$ExpectedSHA))){
             throw "GIT_WORKTREE_REGISTRY_NOT_DETACHED_AT_SOURCE"
@@ -80,6 +85,19 @@ foreach($entry in $entries){
     }
 }
 if(!$confirmed){throw "PROJECT_NOT_REGISTERED_DISPOSABLE_WORKTREE"}
+if($registeredRoots.Count -lt 2){throw "GIT_WORKTREE_REGISTRY_INCOMPLETE"}
+# P0: an apparently external EvidenceDir can be INSIDE ANOTHER
+# registered worktree, or enclose it. Both must be rejected BEFORE Unity.
+# Use the existing canonical/reparse-checked paths and separator boundaries.
+foreach($otherRoot in $registeredRoots){
+    if($evidence.Equals($otherRoot,[StringComparison]::OrdinalIgnoreCase) -or
+       $evidence.StartsWith($otherRoot+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase) -or
+       $evidence.StartsWith($otherRoot+[IO.Path]::AltDirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase) -or
+       $otherRoot.StartsWith($evidence+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase) -or
+       $otherRoot.StartsWith($evidence+[IO.Path]::AltDirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){
+        throw "RECEIPT_OVERLAPS_REGISTERED_WORKTREE:$otherRoot"
+    }
+}
 $dirty=(& git -C $project status --porcelain --untracked-files=no | Out-String).Trim()
 if($LASTEXITCODE -ne 0 -or $dirty){throw "REFUSING_TRACKED_DIRTY_PROJECT"}
 # Reject all noncache untracked project files, including extra Unity source.
