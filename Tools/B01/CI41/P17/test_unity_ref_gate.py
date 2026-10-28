@@ -108,6 +108,7 @@ class BaseUnityFixture(unittest.TestCase):
             gate.check(self.repo, "main", self.base)
         with self.assertRaises(gate.GateError):
             gate.check(self.repo, "0" * 40, self.base)
+        self.put("Assets/README.asset", "%YAML 1.1\\n--- !u!114 &1\\n")
         head = self.commit("newer")
         with self.assertRaises(gate.GateError):
             gate.check(self.repo, head, self.base)
@@ -121,11 +122,11 @@ class BaseUnityFixture(unittest.TestCase):
         self.assertTrue(run.startswith(b"%YAML"))
         self.assertIn(b"m_Script: {fileID: 11500000, guid:", run)
         self.assertIn(b"guid:", gate.read_blob(REPO, MAIN_SHA, "Assets/Resources/R1/Run.asset.meta"))
-        outcome = gate.check(REPO, MAIN_SHA, CODEX_SHA)
+        outcome = gate.check(REPO, "231005c6d0351945a8ee6684f3856af118f0e94f", CODEX_SHA)
         # An actual broken reference would be a real integration blocker.
         self.assertEqual(outcome["status"], "PASS_NO_DANGLING_RETIRED_LOCAL_GUID", outcome)
         self.assertEqual(outcome["g1"], "NOT_RUN")
-        print("ORIGINAL_MAIN_TO_CODEX_ASSET_HANDOFF_NO_RETIRED_LOCAL_GUID_DANGLING=PASS")
+        print("ORIGINAL_CODEX_OLD_TO_NEW_ASSET_HANDOFF_NO_RETIRED_GUID_DANGLING=PASS")
 
 
 if __name__ == "__main__":
