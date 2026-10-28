@@ -1,0 +1,162 @@
+{
+  "schema": "B01-23-P17-W02-STRUCTURAL-BRACING-MANIFEST-v1",
+  "package_id": "PARTSIZE001-P17-W02-STRUCTURAL-BRACING-R1",
+  "owner": "B01-23",
+  "source_branch": "b01-23/p17-w02-structural-bracing-r1",
+  "verified_file_set_sha_before_manifest": "17ed65a04ed99549d57223135216e5a3c0b26674",
+  "status": "DRAFT_NEW_GAME_CONTENT_SOURCE_VERIFIED_NOT_INSTALLED",
+  "read_only_upstream": {
+    "partsize_producer_pr286": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "p17_rig_pr348": "0978497561c8b6400490235d3e5a401ac32bea2d",
+    "p17_weakpoint_pr361": "098ccdbe8f129253fa4ada52318436b7cc2b4dc4",
+    "independent_B01_61_prior_receipt_pr373": "f8fafc87c3b815bf06942649d38c8034abfbde48",
+    "original_partsize_contract_git_blob": "07455919a5544875fee5a78ecbbce36dc6cb49c2",
+    "original_partsize_catalog_git_blob": "6153d1758e800ec5c4210323610b061c06e8ea85",
+    "original_P17_rig_validator_git_blob": "988fc31d8633e5429fc4ba377856187e5ee7601c",
+    "original_P17_weakpoint_engine_git_blob": "a3abe5a24afdd365a5fb162a12b3947fb2f0d10c"
+  },
+  "original_files": [
+    {
+      "path": ".github/workflows/b01-23-p17-wave02-bracing.yml",
+      "git_blob_sha1": "51fc8db70b18d8b587fd8b569020c2b88b7ca265"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing.meta",
+      "git_blob_sha1": "4c55946b3623dc5eeb003267120b54c70ef81adc"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17.meta",
+      "git_blob_sha1": "041721c8ca141eccde7a6c8488b27bfc5db423ac"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_Bulwark_Reinforced.json",
+      "git_blob_sha1": "8b00e5da047a22bc23644639e3292c447dd6b335"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_Bulwark_Reinforced.json.meta",
+      "git_blob_sha1": "db00bb565ca0e60d237caa0a2719357ecf2c62de"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_Flanker_Reinforced.json",
+      "git_blob_sha1": "7259e3454b2f7dd72ca66de83673c143075a807f"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_Flanker_Reinforced.json.meta",
+      "git_blob_sha1": "355d74ba783df457d176cb62acf980b5886f1ff4"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_Skirmisher_Reinforced.json",
+      "git_blob_sha1": "edf332a66645c5ea4374b1957d2cc1a7d356e4d2"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_Skirmisher_Reinforced.json.meta",
+      "git_blob_sha1": "ff7a9e2a567840a020b1dceec42d7ee651b62d23"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_StructuralBracingKits.json",
+      "git_blob_sha1": "9b3d2403e7f6e32ea6e20f9f5bb0a83b859bc6e1"
+    },
+    {
+      "path": "Assets/PARTSIZE001/Bracing/P17/P17_StructuralBracingKits.json.meta",
+      "git_blob_sha1": "1a195e371c3106b2e059781248b0a50c8963bb92"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Bracing/BracingEngine.cs",
+      "git_blob_sha1": "fe1b49ac0f22cb30a901bed8754c6f08ab8af624"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Bracing/check_bracing_assets.py",
+      "git_blob_sha1": "d68cb8302521665300bae2bb64a5f8d61a1f720f"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj",
+      "git_blob_sha1": "b1512ad5707a6e0cb37baf41d289e3ec162435dc"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Bracing/Program.cs",
+      "git_blob_sha1": "f05fffdc51b9e41d24bc64f916965be304af46bf"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Bracing/README.md",
+      "git_blob_sha1": "c914a2cffc3e1741d0ce7eb79614199b4191ff56"
+    }
+  ],
+  "new_gameplay_content": {
+    "unity_text_assets": 4,
+    "unity_meta": 6,
+    "original_brace_kit_catalog": "Assets/PARTSIZE001/Bracing/P17/P17_StructuralBracingKits.json",
+    "kit_count": 3,
+    "new_physical_armor_owners": 5,
+    "source_derived_predicted_mitigations": 6,
+    "new_rigs": [
+      {
+        "kind": "P17-FLANKER-WHEELS-REINFORCED",
+        "owner_count": 15,
+        "new_armor": 1
+      },
+      {
+        "kind": "P17-BULWARK-TRACKS-REINFORCED",
+        "owner_count": 16,
+        "new_armor": 2
+      },
+      {
+        "kind": "P17-SKIRMISHER-HOVER-REINFORCED",
+        "owner_count": 12,
+        "new_armor": 2
+      }
+    ]
+  },
+  "executed_tests": {
+    "actions_run": 40758643339,
+    "source_CI_head": "02a65877801e14c83f37ff918dc46a40f3504862",
+    "windows_2025": {
+      "original_CSharp_build": "PASS",
+      "CSharp_selftest": "75/75 PASS",
+      "compiled_variant_compare": "65/65 PASS",
+      "unity_meta": "6/6 PASS",
+      "asset_negative": "4/4 PASS",
+      "intentionally_forged_variant": "REJECTED_AND_RESTORED"
+    },
+    "ubuntu_2404": {
+      "original_CSharp_build": "PASS",
+      "CSharp_selftest": "75/75 PASS",
+      "compiled_variant_compare": "65/65 PASS",
+      "unity_meta": "6/6 PASS",
+      "asset_negative": "4/4 PASS",
+      "intentionally_forged_variant": "REJECTED_AND_RESTORED"
+    },
+    "unity_editor": "NOT_RUN",
+    "unity_physx": "NOT_RUN",
+    "windows_player": "NOT_RUN"
+  },
+  "dependencies": [
+    "After P17 #348 and #361 source data are staged in legally licensed isolated integration branch",
+    "No new asset MODEL_JOB: only existing Armor parts",
+    "No economy/unlock or R3 source changes authorized",
+    "B01-40 source review and B01-60 independent native QA required before B01-00 CODEX INBOX offer",
+    "Codex alone can decide game-runtime import and creates fresh actual runtime GUIDs"
+  ],
+  "limits": [
+    "All source P17 single-break deltas are *logical* 63-mask six-face graph; cannot prove actual mount sockets or collider clearance",
+    "Native collision/terrain/roof/body clearance, wheel/track/hover motions and actual player combat NOT_RUN",
+    "No actual Unity gameplay scene or prefab, no integrated selecting buttons, no changes to canonical game",
+    "No independent B01-40/60 verdict for this new W02 package yet, no Codex ack",
+    "No source claim of game balance HP, mass, currency or unlock"
+  ],
+  "handoff": {
+    "code_owner": "B01-23",
+    "reviewers": "B01-40 source G0; B01-60 independently native G1",
+    "decision": "B01-00 coordinates CODEX INBOX #79, after QA",
+    "codex_integration": "PENDING_ACK_NOT_INTEGRATED",
+    "guide": "Tools/B01/PARTSIZE001/P17Bracing/README.md",
+    "install": "Stage new Assets/PARTSIZE001/Bracing/P17 JSON+metas ONLY in Codex-approved isolated branch",
+    "rollback": "Remove ONLY newly staged Bracing JSON and dedicated Unity metas; preserve all previous PRs, frozen producer, Codex source, raw evidence"
+  },
+  "gates": {
+    "G0": "OWNER_SOURCE_PASS_INDEPENDENT_PENDING",
+    "G1": "NOT_RUN",
+    "G2": "HOLD",
+    "merges": false,
+    "code_ack": false
+  }
+}
