@@ -67,6 +67,42 @@ class CIHealthSourceTests(unittest.TestCase):
         self.assertEqual(h.classify(["Assets/R3/R3VehicleModel.cs"])["G1"], "NOT_RUN")
         print("EVENT_PATH_FILTER_RISK_NOT_TREATED_AS_NATIVE_TEST_PASS")
 
+
+    def test_07_original_fail_open_to_new_fail_closed_critical_operators(self):
+        # Directly execute the PRE-FIX ORIGINAL immutable Git source, not a reimplementation.
+        import types
+        old_blob = h.git(ROOT, "rev-parse", "ef03cf7bbd53cc015749e1bbe28557989ca04b58:Tools/B01/CI41/W74/ci_health.py").decode().strip()
+        self.assertEqual(old_blob, "5c412815413c7886d1933e3a803cf5af5b7df21b")
+        pre = types.ModuleType("original_b01_41_ci_health_prior")
+        exec(compile(h.git(ROOT, "show", "ef03cf7bbd53cc015749e1bbe28557989ca04b58:Tools/B01/CI41/W74/ci_health.py"),
+                     "original_unchanged_before_bugfix.py", "exec"), pre.__dict__)
+        critical_paths = [
+            "Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py",
+            "Tools/B01/PARTSIZE001/W26Receipt/Run-UnityNative.ps1",
+            "Tools/B01/PARTSIZE001/W26Receipt/check_receipt.py",
+            "Docs/B01/CHL003/manifest.json",
+            "Docs/B01Validation/provenance-receiver.md",
+            ".github/workflows/b01-chl003-w66-source-pin.yml",
+        ]
+        for path in critical_paths:
+            self.assertEqual(pre.classify([path])["classification"], "QA_ONLY", path)
+            decision = h.classify([path])
+            self.assertEqual(decision["classification"], "NATIVE_REQUIRED", path)
+            self.assertEqual(decision["credential_gate_when_unavailable"], "FAIL_CLOSED")
+            self.assertEqual(decision["G1"], "NOT_RUN")
+        print("P0_ORIGINAL_QA_ALLOWLIST_FAIL_OPEN_REPRODUCED_THEN_FIXED=6")
+
+    def test_08_original_b01_41_paths_remain_non_native(self):
+        for path in (
+            "Tools/B01/CI41/W74/ci_health.py",
+            "Tools/B01/CI41/W78/required_aggregate.py",
+            ".github/workflows/b01-41-w74-ci-health.yml",
+        ):
+            self.assertEqual(h.classify([path])["classification"], "QA_ONLY")
+        self.assertEqual(h.classify([".github/workflows/b01-23-w26-partsize-receipt.yml"])["classification"],
+                         "NATIVE_REQUIRED")
+        print("B01_41_OWN_QA_STILL_ALLOWED_AND_OTHER_OWNERS_FAIL_CLOSED")
+
     def test_06_conservative_git_ref_validation(self):
         with self.assertRaises(ValueError):
             h.original_git_paths(ROOT, "main", QA_HEAD)

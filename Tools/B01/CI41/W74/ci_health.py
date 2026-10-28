@@ -18,8 +18,8 @@ ORIGINAL_CI_BLOBS = {
     ".github/workflows/ci-02-editmode.yml": "6c6b06819daa6154e3ecd6cccff2e6147b952cfd",
     ".github/workflows/ci-03-playmode.yml": "4a323a569d9a51a274132b3acab934f191128c5b",
 }
-QA_PREFIXES = ("Tools/B01/", "Docs/B01/", "Docs/B01Validation/")
-QA_WORKFLOW = re.compile(r"^\.github/workflows/b01-[a-z0-9-]+\.ya?ml$")
+QA_PREFIXES = ("Tools/B01/CI41/",)
+QA_WORKFLOW = re.compile(r"^\.github/workflows/b01-41-[a-z0-9-]+\.ya?ml$")
 
 
 def git(repo: str | Path, *args: str) -> bytes:
@@ -34,6 +34,8 @@ def safe_qa_path(path: str) -> bool:
         return False
     if path.startswith("/") or any(s in ("", ".", "..") for s in path.split("/")):
         return False
+    # Only B01-41-owned non-game audit tools may bypass native activation.
+    # B01-20/B01-23 operators and producer manifests gate G1/G0 and MUST NOT bypass.
     if path.startswith(QA_PREFIXES):
         return True
     return QA_WORKFLOW.fullmatch(path) is not None

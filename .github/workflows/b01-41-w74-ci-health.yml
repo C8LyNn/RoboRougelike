@@ -23,8 +23,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse refs/remotes/origin/main)" = '5f06af81e2dd9d877e4300259bb3dd008cb9c9d1'
-          test "$(git hash-object Tools/B01/CI41/W74/ci_health.py)" = '5c412815413c7886d1933e3a803cf5af5b7df21b'
-          test "$(git hash-object Tools/B01/CI41/W74/test_ci_health.py)" = 'd296a6dbf348ec362405c92441dcaa63051ea145'
+          test "$(git hash-object Tools/B01/CI41/W74/ci_health.py)" = 'a386417a3f927257e46f646d8c8afa7bc54e1d8f'
+          test "$(git hash-object Tools/B01/CI41/W74/test_ci_health.py)" = '7d0aac36037290a3da581519d4fcd03fd56dd576'
           test "$(git rev-parse 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1:.github/workflows/ci-02-editmode.yml)" = '6c6b06819daa6154e3ecd6cccff2e6147b952cfd'
           test "$(git rev-parse 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1:.github/workflows/ci-03-playmode.yml)" = '4a323a569d9a51a274132b3acab934f191128c5b'
           echo 'ORIGINAL_CI02_CI03_AND_QA_BLOBS_IMMUTABLY_PINNED'
