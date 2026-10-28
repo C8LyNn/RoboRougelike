@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title description">
+<title id="title">A1-EXPLODED-001 — Single wheel plus suspension arm; separated concept parts</title>
+<desc id="description">New exploded layout built from exact approved A1 vector source groups. The mounting interface, damper, arm and wheel are spatially separated for visual review; implied fit, pivot, suspension motion and distances are NOT engineering approved.</desc>
+<defs>
+<linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#111c2f"/><stop offset=".53" stop-color="#0c1525"/><stop offset="1" stop-color="#080e1c"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#186f77" stop-opacity=".22"/><stop offset="1" stop-color="#186f77" stop-opacity="0"/></radialGradient>
+<linearGradient id="metal" x1="0" x2=".78" y1=".1" y2="1"><stop stop-color="#97aebd"/><stop offset=".19" stop-color="#6e869a"/><stop offset=".54" stop-color="#34465c"/><stop offset=".8" stop-color="#182b41"/><stop offset="1" stop-color="#102033"/></linearGradient>
+<linearGradient id="arm" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#8197ac"/><stop offset=".19" stop-color="#526a7f"/><stop offset=".6" stop-color="#2b4358"/><stop offset="1" stop-color="#17283c"/></linearGradient>
+<linearGradient id="tire" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#333e50"/><stop offset=".22" stop-color="#162132"/><stop offset=".53" stop-color="#0d1726"/><stop offset=".78" stop-color="#344456"/><stop offset="1" stop-color="#101927"/></linearGradient>
+<linearGradient id="tread" x1="0" x2=".9" y1=".2" y2=".8"><stop stop-color="#475366"/><stop offset=".35" stop-color="#283445"/><stop offset="1" stop-color="#0d1725"/></linearGradient>
+<radialGradient id="rim"><stop stop-color="#9bc4c7"/><stop offset=".25" stop-color="#425b6e"/><stop offset=".72" stop-color="#203347"/><stop offset=".95" stop-color="#788d9c"/><stop offset="1" stop-color="#1b2e42"/></radialGradient>
+<linearGradient id="copper" x1="0" x2="1" y1="0" y2=".4"><stop stop-color="#ffe1a1"/><stop offset=".38" stop-color="#f6af51"/><stop offset=".76" stop-color="#ba672b"/><stop offset="1" stop-color="#784221"/></linearGradient>
+<pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse"><path d="M54 0H0V54" fill="none" stroke="#70b8c7" stroke-width="1" opacity=".055"/></pattern>
+<filter id="shadow" x="-40%" y="-40%" width="190%" height="200%"><feGaussianBlur stdDeviation="24"/></filter>
+<clipPath id="wheel-outer-clip"><ellipse cx="1159" cy="533" rx="190" ry="247"/></clipPath>
+</defs>
+<defs>
+<linearGradient id="p17-background" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#15283d"/><stop offset=".55" stop-color="#0e1b2d"/><stop offset="1" stop-color="#071323"/></linearGradient>
+<pattern id="p17-grid" width="45" height="45" patternUnits="userSpaceOnUse"><path d="M45 0H0V45" stroke="#6896ab" stroke-width=".8" fill="none" opacity=".13"/></pattern>
+</defs>
+<g id="background"><rect width="1920" height="1080" fill="url(#p17-background)"/><rect width="1920" height="1080" fill="url(#p17-grid)"/>
+<circle cx="970" cy="610" r="445" fill="#224357" opacity=".07"/>
+<path d="M70 157H1850M70 892H1850" stroke="#88bfcd" stroke-opacity=".23" stroke-width="2"/></g>
+<g id="sheet-head" font-family="DejaVu Sans,Arial,sans-serif"><rect x="69" y="49" width="7" height="72" rx="3" fill="#e8a964"/>
+<text x="103" y="74" fill="#6fd9d7" font-size="19" font-weight="bold" letter-spacing="2">B01-31 · A1-EXPLODED-001 / P17 · ORIGINAL VECTOR ASSEMBLY STUDY</text>
+<text x="103" y="123" fill="#f3f8f7" font-size="38" font-weight="bold">ONE DETACHABLE WHEEL + SUPPORT ARM</text>
+<rect x="1484" y="63" width="361" height="42" rx="21" fill="#244b46" stroke="#77cab2" stroke-width="2"/>
+<text x="1664" y="91" fill="#e0f6e9" font-size="17" font-weight="bold" text-anchor="middle">G-CONCEPT / PROVISIONAL</text></g>
+<g id="concept-explosion-lines" fill="none" stroke="#80a7b4" stroke-width="3" stroke-dasharray="9 13" opacity=".62">
+<path d="M345 590L551 591"/><path d="M1121 576L1336 576"/><path d="M797 394L827 481"/>
+</g>
+<g id="concept-explosion-unknown-markers" font-family="DejaVu Sans,Arial,sans-serif">
+<circle cx="447" cy="589" r="17" fill="#0a1c2c" stroke="#e9a769" stroke-width="3"/>
+<text x="447" y="595" text-anchor="middle" font-size="16" fill="#f5bb7d">?</text>
+<circle cx="1240" cy="576" r="17" fill="#0a1c2c" stroke="#e9a769" stroke-width="3"/>
+<text x="1240" y="582" text-anchor="middle" font-size="16" fill="#f5bb7d">?</text>
+</g>
+<g id="exploded-subject" data-unit="SINGLE_ATTACHABLE_PART_RESEARCH" data-assembly-validation="NOT_RUN">
+<g id="exploded-mount" data-source-id="part-mount-proposal" data-part="mount" data-physical-status="UNMEASURED" transform="translate(255 587) scale(1.15) translate(-336 -535)"><g id="part-mount-proposal" data-part="mount-proposal" data-status="DESIGN_PROPOSAL_UNKNOWN">
+<path d="M247 443L294 411L427 449L377 481Z" fill="#7c8998" stroke="#bfd0d8" stroke-width="4"/>
+<path d="M247 443L377 481L374 628L249 588Z" fill="#22374b" stroke="#b0bdc8" stroke-width="5"/>
+<path d="M377 481L427 449L425 588L374 628Z" fill="#13283b" stroke="#566d80" stroke-width="4"/>
+<path d="M275 475L343 493L341 579L273 558Z" fill="#12283c" stroke="#5b8794" stroke-width="3" stroke-dasharray="9 7"/>
+<path d="M294 498L327 509L326 553L295 544Z" fill="#3b766e" fill-opacity=".4" stroke="#8be4d2" stroke-width="3" stroke-dasharray="6 5"/>
+<g fill="#ffbd69" stroke="#52351e" stroke-width="2"><circle cx="272" cy="463" r="7"/><circle cx="354" cy="485" r="7"/><circle cx="269" cy="575" r="7"/><circle cx="352" cy="604" r="7"/></g></g></g>
+<g id="exploded-arm" data-source-id="part-support-arm" data-part="arm" data-physical-status="UNMEASURED" transform="translate(868 619) scale(1.05) translate(-670 -530)"><g id="part-support-arm" data-part="support-arm" data-status="CONCEPT_ONLY">
+<path d="M598 458L737 330" fill="none" stroke="#142639" stroke-width="34" stroke-linecap="round"/>
+<path d="M598 458L737 330" fill="none" stroke="#68879b" stroke-width="19" stroke-linecap="round"/>
+<path d="M596 455L737 327" fill="none" stroke="#b1c7c5" stroke-opacity=".6" stroke-width="4"/>
+<path d="M398 463L530 427L939 503L966 536L554 503L412 526Z" fill="url(#arm)" stroke="#9aafbd" stroke-width="5" stroke-linejoin="round"/>
+<path d="M411 526L554 503L966 536L943 574L536 566L406 585Z" fill="#1c3148" stroke="#5a8499" stroke-width="4"/>
+<path d="M410 585L539 563L935 609L960 659L542 642L394 648Z" fill="url(#metal)" stroke="#9dafb9" stroke-width="5"/>
+<path d="M536 566L935 612" fill="none" stroke="#c2dfdf" stroke-opacity=".32" stroke-width="5"/>
+<path d="M534 445L912 513" stroke="#b4cad2" opacity=".4" stroke-width="5"/>
+<path d="M528 613L917 638" stroke="#061729" opacity=".8" stroke-width="10"/>
+<path d="M578 503L875 557L864 597L565 552Z" fill="#101e30" stroke="#748e9e" stroke-width="3"/>
+<path d="M603 518L839 558" stroke="#4bc2c2" stroke-opacity=".7" stroke-width="5"/>
+<g fill="#132638" stroke="#d5e7e9" stroke-width="5"><ellipse cx="432" cy="505" rx="26" ry="38"/><ellipse cx="437" cy="603" rx="26" ry="34"/><ellipse cx="905" cy="556" rx="32" ry="41"/></g>
+<g fill="url(#copper)"><ellipse cx="433" cy="503" rx="12" ry="19"/><ellipse cx="438" cy="602" rx="12" ry="17"/><ellipse cx="903" cy="552" rx="13" ry="20"/></g>
+</g></g>
+<g id="exploded-damper" data-source-id="part-damper-visual" data-part="damper" data-physical-status="UNMEASURED" transform="translate(792 295) scale(0.82) translate(-677 -454)"><g id="part-damper-visual" data-part="damper-proposal" data-status="CONCEPT_ONLY" transform="translate(677 454) rotate(42)">
+<path d="M-21 -140H21L28 -109H-28Z" fill="#7a8d9e" stroke="#c6d5dd" stroke-width="4"/>
+<rect x="-22" y="-112" width="44" height="254" rx="18" fill="#172e43" stroke="#66899a" stroke-width="4"/>
+<rect x="-12" y="-112" width="24" height="255" rx="10" fill="#a3b4b8"/>
+<path d="M-28 -78H28V-57H-28ZM-28 95H28V118H-28Z" fill="url(#copper)" stroke="#79512c" stroke-width="2"/>
+<path d="M-22 -49Q34 -38 -22 -26Q34 -14 -22 -2Q34 10 -22 22Q34 34 -22 46Q34 58 -22 71Q34 83 -22 96" fill="none" stroke="#edaa56" stroke-width="11" stroke-linecap="round"/>
+<path d="M-22 -49Q34 -38 -22 -26Q34 -14 -22 -2Q34 10 -22 22Q34 34 -22 46Q34 58 -22 71Q34 83 -22 96" fill="none" stroke="#ffe2a4" stroke-width="3" opacity=".9"/>
+<ellipse cx="0" cy="-141" rx="25" ry="20" fill="#193249" stroke="#e8bf81" stroke-width="7"/>
+<ellipse cx="0" cy="143" rx="25" ry="20" fill="#193249" stroke="#e8bf81" stroke-width="7"/></g></g>
+<g id="exploded-wheel" data-source-id="part-wheel" data-part="wheel" data-physical-status="UNMEASURED" transform="translate(1569 568) scale(0.94) translate(-1159 -533)"><g id="part-wheel" data-part="wheel" data-status="CONCEPT_ONLY">
+<ellipse cx="1028" cy="517" rx="189" ry="247" fill="#0d1523" stroke="#597184" stroke-width="7"/>
+<path d="M1002 280C875 301 827 390 822 517C820 647 882 742 1023 765L1155 782C1032 765 991 651 989 526C987 401 1036 304 1155 287Z" fill="url(#tread)" stroke="#5c7283" stroke-width="7"/>
+<path d="M1008 290C889 312 856 407 851 516C852 638 906 727 1003 746" fill="none" stroke="#a8b0b8" stroke-opacity=".5" stroke-width="11"/>
+<g id="wheel-tread-blocks" stroke="#0d1929" stroke-width="7" fill="#546575" opacity=".86"><path d="M915.6 314l60 15 -17 24 -57 -13Z"/><path d="M903.1 348l60 15 -17 24 -57 -13Z"/><path d="M892.1 382l60 15 -17 24 -57 -13Z"/><path d="M882.7 416l60 15 -17 24 -57 -13Z"/><path d="M875.2 450l60 15 -17 24 -57 -13Z"/><path d="M869.6 484l60 15 -17 24 -57 -13Z"/><path d="M866.4 518l60 15 -17 24 -57 -13Z"/><path d="M867.0 552l60 15 -17 24 -57 -13Z"/><path d="M871.0 586l60 15 -17 24 -57 -13Z"/><path d="M877.2 620l60 15 -17 24 -57 -13Z"/><path d="M885.3 654l60 15 -17 24 -57 -13Z"/><path d="M895.2 688l60 15 -17 24 -57 -13Z"/><path d="M906.6 722l60 15 -17 24 -57 -13Z"/></g><ellipse cx="1159" cy="533" rx="190" ry="247" fill="url(#tire)" stroke="#8da1ae" stroke-width="7"/>
+<ellipse cx="1160" cy="533" rx="169" ry="229" fill="none" stroke="#05101d" stroke-width="13"/>
+<g id="wheel-sidewall-treads" clip-path="url(#wheel-outer-clip)" fill="none" stroke="#627685" stroke-width="11" opacity=".55"><path d="M1333.00 533.00L1345.00 533.00"/><path d="M1309.69 641.50L1320.08 654.50"/><path d="M1246.00 720.93L1252.00 743.44"/><path d="M1159.00 750.00L1159.00 776.00"/><path d="M1072.00 720.93L1066.00 743.44"/><path d="M1008.31 641.50L997.92 654.50"/><path d="M985.00 533.00L973.00 533.00"/><path d="M1008.31 424.50L997.92 411.50"/><path d="M1072.00 345.07L1066.00 322.56"/><path d="M1159.00 316.00L1159.00 290.00"/><path d="M1246.00 345.07L1252.00 322.56"/><path d="M1309.69 424.50L1320.08 411.50"/></g><ellipse cx="1159" cy="533" rx="142" ry="184" fill="url(#rim)" stroke="#d6d8d2" stroke-width="9"/>
+<ellipse cx="1160" cy="533" rx="127" ry="167" fill="#1e3548" stroke="#8da6b3" stroke-width="4"/>
+<g id="wheel-radial-spokes" fill="url(#metal)" stroke="#8eafbc" stroke-width="3"><path d="M1153.5 487.3L1143.9 388.5L1174.1 388.5L1164.5 487.3Z"/><path d="M1185.6 503.8L1244.3 443.1L1259.4 478.4L1191.1 516.5Z"/><path d="M1191.1 549.5L1259.4 587.6L1244.3 622.9L1185.6 562.2Z"/><path d="M1164.5 578.7L1174.1 677.5L1143.9 677.5L1153.5 578.7Z"/><path d="M1132.4 562.2L1073.7 622.9L1058.6 587.6L1126.9 549.5Z"/><path d="M1126.9 516.5L1058.6 478.4L1073.7 443.1L1132.4 503.8Z"/></g><ellipse cx="1159" cy="533" rx="47" ry="63" fill="#0c1c2e" stroke="#a8d6d3" stroke-width="10"/>
+<ellipse cx="1159" cy="533" rx="26" ry="37" fill="url(#copper)" stroke="#eddbba" stroke-width="5"/>
+<ellipse cx="1159" cy="533" rx="8" ry="12" fill="#172d43"/>
+<g fill="#edbf7a" stroke="#28384a" stroke-width="2"><ellipse cx="1259.0" cy="533.0" rx="8" ry="10"/><ellipse cx="1209.0" cy="650.8" rx="8" ry="10"/><ellipse cx="1109.0" cy="650.8" rx="8" ry="10"/><ellipse cx="1059.0" cy="533.0" rx="8" ry="10"/><ellipse cx="1109.0" cy="415.2" rx="8" ry="10"/><ellipse cx="1209.0" cy="415.2" rx="8" ry="10"/></g><path d="M1087 306Q1006 396 1006 522" fill="none" stroke="#dceef2" stroke-width="9" opacity=".18"/>
+<path d="M1295 366Q1353 525 1298 686" fill="none" stroke="#050e1e" stroke-width="10" opacity=".5"/>
+</g></g>
+</g>
+<g id="part-labels" font-family="DejaVu Sans,Arial,sans-serif">
+<g id="label-mount"><rect x="103" y="825" width="370" height="59" rx="9" fill="#112638" stroke="#f1b16e" stroke-opacity=".65" stroke-width="2"/>
+<text x="117" y="850" font-size="18" font-weight="bold" fill="#f1b16e">01 / MOUNT INTERFACE</text>
+<text x="117" y="871" font-size="12" fill="#c1d2d9">DESIGN PROPOSAL / UNKNOWN</text></g>
+<g id="label-arm"><rect x="775" y="815" width="370" height="59" rx="9" fill="#112638" stroke="#7ed7d6" stroke-opacity=".65" stroke-width="2"/>
+<text x="789" y="840" font-size="18" font-weight="bold" fill="#7ed7d6">02 / SUPPORT ARM</text>
+<text x="789" y="861" font-size="12" fill="#c1d2d9">GEOMETRY / PIVOT UNVERIFIED</text></g>
+<g id="label-damper"><rect x="900" y="194" width="400" height="59" rx="9" fill="#112638" stroke="#f0b77d" stroke-opacity=".65" stroke-width="2"/>
+<text x="914" y="219" font-size="18" font-weight="bold" fill="#f0b77d">03 / DAMPER</text>
+<text x="914" y="240" font-size="12" fill="#c1d2d9">STROKE AND FORCE UNKNOWN</text></g>
+<g id="label-wheel"><rect x="1440" y="829" width="370" height="59" rx="9" fill="#112638" stroke="#94dce0" stroke-opacity=".65" stroke-width="2"/>
+<text x="1454" y="854" font-size="18" font-weight="bold" fill="#94dce0">04 / DRIVE WHEEL</text>
+<text x="1454" y="875" font-size="12" fill="#c1d2d9">HUB / AXLE UNMEASURED</text></g>
+<path d="M326 567L330 500" fill="none" stroke="#f1b16e" stroke-width="2" stroke-dasharray="5 7"/>
+</g>
+<g id="information-footer" font-family="DejaVu Sans,Arial,sans-serif">
+<text x="79" y="940" font-size="19" font-weight="bold" fill="#e9c28c">DETACHED VISUAL STUDY — NOT A MECHANICAL ASSEMBLY INSTRUCTION</text>
+<text x="79" y="973" font-size="16" fill="#b9d1db">Original source groups are reused unchanged. Spacing and guide lines are illustrative and do not define sockets, contact, joint axes or clearances.</text>
+<text x="79" y="1007" font-size="16" fill="#b9d1db">No measured units, PartSize footprint, kinematics, travel, collider, mass, material properties or gameplay behavior. No MODEL_JOB approval.</text>
+<text x="79" y="1044" font-size="14" fill="#79b4bc">SOURCE: approved A1 Git blob 96cc46a7c14f94a45c387e102d5940cb787d2d5c · B/C PARKED · G-DESIGN PENDING · UNITY / PHYSX NOT RUN</text>
+</g>
+</svg>
