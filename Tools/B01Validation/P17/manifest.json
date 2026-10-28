@@ -43,12 +43,28 @@
     "No Unity needed"
   ],
   "receiver": "Codex and B01-60",
-  "state": "PENDING_REAL_CI_FIRST_NOT_YET_OFFERED",
+  "state": "G0_SOURCE_DATA_READY_INDEPENDENT_QA_PENDING_NOT_OFFERED",
   "gates": {
-    "G0": "SOURCE_AND_DETERMINISTIC_STAGING_ONLY",
+    "G0": "PASS_GIT_ORIGINAL_DOTNET8_WINDOWS_AND_UBUNTU_16_OF_16_EACH",
     "G1": "NOT_RUN",
     "G2": "HOLD"
   },
   "codex_handoff": "Use codex-generate-calls.json to call existing MAPGEN CombatArena API with indicated source-compatible config and seed; do not load diagnostic blueprint directly. Codex to independently validate actual Unity import, PhysX, collision, route, restart on HQ-approved host.",
-  "rollback": "Discard external ZIP, receipt and disposable output directory. No writes to canonical project."
+  "rollback": "Discard external ZIP, receipt and disposable output directory. No writes to canonical project.",
+  "actual_executed": {
+    "workflow_run": 40727850110,
+    "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40727850110",
+    "ubuntu_job": 122955843156,
+    "windows_job": 122955843335,
+    "ubuntu_artifact_id": 12833411779,
+    "windows_artifact_id": 12834525373,
+    "tests_pass_per_os": 16,
+    "actual_original_csharp_planner_route": 36,
+    "original_input_negative_rejections": 6,
+    "generated_blueprints": 18,
+    "generated_svg": 18,
+    "zip_member_count": 41,
+    "inner_delivery_zip_sha256_windows_and_ubuntu": "3e2783fdbbd835aed853b523ac927ee751897d2e0e400eb7672b23a10f0359e5",
+    "test_environment": "dotnet8 original MAPGEN source with surrogate math, no Unity"
+  }
 }
