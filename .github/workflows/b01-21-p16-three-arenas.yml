@@ -50,3 +50,37 @@ jobs:
           path: Research/B01-21/P16/generated/*
           if-no-files-found: error
           retention-days: 30
+
+  inspectable_arena_browser:
+    name: Browser inspection of three actual generated SVGs / Ubuntu Chromium
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run real Chromium DOM and SVG-loading test with keyboard navigation
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          if [[ -z "$chrome" ]]; then
+            echo "BROWSER_NOT_RUN: Chrome/Chromium executable absent"; exit 2
+          fi
+          source="file://$GITHUB_WORKSPACE/Research/B01-21/P16/arena_comparison.html?selftest=1"
+          "$chrome" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --allow-file-access-from-files --virtual-time-budget=10000 --dump-dom "$source" > "$RUNNER_TEMP/mapgen-p16-dom.html" 2> "$RUNNER_TEMP/chrome-stderr.log"
+          grep -q 'data-status="PASS"' "$RUNNER_TEMP/mapgen-p16-dom.html" || {
+            grep -o -E '<output id="selftest"[^<]*' "$RUNNER_TEMP/mapgen-p16-dom.html" || true
+            echo "BROWSER_ORIGINAL_GENERATED_SVG_OR_KEYBOARD_FAILURE"; exit 3
+          }
+          mkdir -p Research/B01-21/P16/browser-evidence
+          cp "$RUNNER_TEMP/mapgen-p16-dom.html" Research/B01-21/P16/browser-evidence/DOM.html
+          "$chrome" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --allow-file-access-from-files --window-size=1280,720 --screenshot=Research/B01-21/P16/browser-evidence/arena-720.png "file://$GITHUB_WORKSPACE/Research/B01-21/P16/arena_comparison.html"
+          "$chrome" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --allow-file-access-from-files --window-size=1920,1080 --screenshot=Research/B01-21/P16/browser-evidence/arena-1080.png "file://$GITHUB_WORKSPACE/Research/B01-21/P16/arena_comparison.html"
+          echo 'MAPGEN_P16_CHROMIUM_DOM_3_SELECTED_SVG_LOAD_KEYBOARD_PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-p16-browser-preview
+          path: Research/B01-21/P16/browser-evidence/*
+          if-no-files-found: error
+          retention-days: 30
