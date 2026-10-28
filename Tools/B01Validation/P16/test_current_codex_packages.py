@@ -46,6 +46,7 @@ class CurrentCodexCrossPackageAdmission(unittest.TestCase):
     def test_03_clashing_source_path_fails_closed(self):
         x=self.mutated()
         existing=next(p for p in x["paths"]["codex"] if p.endswith(".meta"))
+        x["paths"]["part"].pop(next(iter(x["paths"]["part"])))
         x["paths"]["part"][existing]=x["paths"]["codex"][existing]
         with self.assertRaisesRegex(g.Reject,"PART_CANONICAL_ASSET_PATH_COLLISION"):
             g.check(x)
@@ -53,6 +54,7 @@ class CurrentCodexCrossPackageAdmission(unittest.TestCase):
     def test_04_case_only_win_path_collision_fails_closed(self):
         x=self.mutated()
         existing=next(p for p in x["paths"]["codex"] if p.endswith(".meta"))
+        x["paths"]["part"].pop(next(iter(x["paths"]["part"])))
         x["paths"]["part"][existing.swapcase()]=x["paths"]["codex"][existing]
         with self.assertRaisesRegex(g.Reject,"CASEFOLD_UNITY_ASSET_PATH_COLLISION"):
             g.check(x)
