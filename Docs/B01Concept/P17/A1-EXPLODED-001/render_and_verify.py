@@ -149,6 +149,9 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "A1-P17-receipt.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    for item in checks:
+        if item["status"] == "FAIL":
+            print("FAILED_CHECK: " + item["check"])
     print(json.dumps({"status": manifest["status"],
                       "pass": manifest["checks_pass"],
                       "fail": manifest["checks_fail"],
