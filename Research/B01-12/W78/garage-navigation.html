@@ -60,7 +60,7 @@ const definitions={gun:{name:'Broń',label:'Broń',role:'weapon'},left:{name:'Ko
 const order=Object.keys(definitions);
 const prices={gun:30,left:15,right:15,trackL:45,trackR:45,omni:40,hover:35};
 const categories={all:order,weapon:['gun'],mobility:['left','right','trackL','trackR','omni','hover'],structure:[]};
-let parts={},owned={},disconnected=false,category='all',wallet=250,spent=0;
+let parts={},owned={},storedHP={},disconnected=false,category='all',wallet=250,spent=0;
 const nameFor=k=>definitions[k].name;
 const repairQuote=k=>Math.ceil(prices[k]*0.35);
 function drawCategories(){for(const b of $('categories').querySelectorAll('[data-category]'))b.setAttribute('aria-pressed',String(b.dataset.category===category));
@@ -69,8 +69,8 @@ $('categoryIntro').textContent=labels[category];}
 function showStructure(){const card=document.createElement('article');card.className='part part-structure';card.id='coreOverview';
 const h=document.createElement('h3');h.textContent='Rdzeń · 100 HP (przykładowy)';const p=document.createElement('p');p.className='small';p.textContent='Rdzeń nie jest przedmiotem handlu w tym demonstratorze. Stan połączenia sprawdzisz w panelu ostrzeżeń.';card.append(h,p);return card;}
 
-function reset(p){parts=Object.fromEntries(order.map(k=>[k,null]));wallet=250;spent=0;owned=Object.fromEntries(order.map(k=>[k,false]));$('drive').value='wheels';disconnected=p==='disconnected';$('connection').checked=disconnected;$('tips').checked=false;
-if(p==='weapon'||p==='ready'){parts.gun=100}if(p==='mobility'||p==='ready'){parts.left=100;parts.right=100}if(p==='zero'){parts.gun=0;parts.left=100;parts.right=0}if(p==='disconnected'){parts.gun=100;parts.left=100;parts.right=100}for(const k of order)owned[k]=parts[k]!==null;$('outcome').textContent='';render();}
+function reset(p){parts=Object.fromEntries(order.map(k=>[k,null]));wallet=250;spent=0;owned=Object.fromEntries(order.map(k=>[k,false]));storedHP=Object.fromEntries(order.map(k=>[k,null]));$('drive').value='wheels';disconnected=p==='disconnected';$('connection').checked=disconnected;$('tips').checked=false;
+if(p==='weapon'||p==='ready'){parts.gun=100}if(p==='mobility'||p==='ready'){parts.left=100;parts.right=100}if(p==='zero'){parts.gun=0;parts.left=100;parts.right=0}if(p==='disconnected'){parts.gun=100;parts.left=100;parts.right=100}for(const k of order){owned[k]=parts[k]!==null;storedHP[k]=parts[k];}$('outcome').textContent='';render();}
 function functional(k){return parts[k]!==null&&parts[k]>0}
 function mobile(){const d=$('drive').value;if(d==='wheels')return functional('left')&&functional('right');if(d==='tracks')return functional('trackL')&&functional('trackR');return functional(d)}
 function issues(){const result=[];if(disconnected)result.push({key:'structure',code:'CRITICAL_STRUCTURE',title:'Konstrukcja: odłączona część',action:'Przyłącz wszystkie części przed uruchomieniem.'});if(!functional('gun'))result.push({key:'weapon',code:'CRITICAL_WEAPON',title:'Broń: brak sprawnej broni',action:parts.gun===0?'Napraw broń 0 HP lub zainstaluj sprawny moduł.':'Zainstaluj i utrzymuj broń o HP powyżej zera.'});if(!mobile()){const d=$('drive').value,desc=d==='wheels'?'Koła: lewe i prawe muszą mieć HP powyżej zera.':d==='tracks'?'Gąsienice: lewa i prawa muszą mieć HP powyżej zera.':d==='omni'?'Zainstaluj sprawny moduł Omni.':'Zainstaluj sprawny silnik Hover.';result.push({key:'mobility',code:'CRITICAL_MOBILITY',title:'Mobilność: brak sprawnego wybranego napędu',action:desc});}return result;}
@@ -87,13 +87,13 @@ $('categories').addEventListener('click',e=>{const btn=e.target.closest('button[
 $('categories').addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp'].includes(e.key))return;const buttons=[...$('categories').querySelectorAll('button')];const pos=buttons.findIndex(b=>b.dataset.category===category),next=buttons[(pos+(e.key==='ArrowRight'||e.key==='ArrowDown'?1:buttons.length-1))%buttons.length];e.preventDefault();next.click();next.focus();});
 $('partControls').addEventListener('click',e=>{const btn=e.target.closest('button[data-action]');if(!btn||btn.disabled)return;
 const {key,action}=btn.dataset;let feedback='';if(action==='toggle'){
- if(parts[key]!==null){parts[key]=null;feedback=`${nameFor(key)}: zdjęto do magazynu, bez zwrotu złomu.`;}
- else if(owned[key]){parts[key]=100;feedback=`${nameFor(key)}: ponowny montaż z magazynu, bez dopłaty.`;}
+ if(parts[key]!==null){storedHP[key]=parts[key];parts[key]=null;feedback=`${nameFor(key)}: zdjęto do magazynu z zachowaniem HP, bez zwrotu złomu.`;}
+ else if(owned[key]){parts[key]=storedHP[key]??100;feedback=`${nameFor(key)}: ponowny montaż z magazynu (${parts[key]} HP), bez naprawy.`;}
  else if(wallet<prices[key]){feedback=`Za mało złomu na ${nameFor(key)}: potrzeba ${prices[key]}, dostępne ${wallet}.`;}
- else{wallet-=prices[key];spent+=prices[key];owned[key]=true;parts[key]=100;feedback=`Kupiono i zamontowano ${nameFor(key)} za ${prices[key]} złomu.`;}}
- else if(action==='damage'){parts[key]=0;feedback=`${nameFor(key)}: stan testowy 0 HP, wymaga naprawy.`;}
+ else{wallet-=prices[key];spent+=prices[key];owned[key]=true;parts[key]=100;storedHP[key]=100;feedback=`Kupiono i zamontowano ${nameFor(key)} za ${prices[key]} złomu.`;}}
+ else if(action==='damage'){parts[key]=0;storedHP[key]=0;feedback=`${nameFor(key)}: stan testowy 0 HP, wymaga naprawy.`;}
  else if(action==='repair'){const cost=repairQuote(key);if(wallet<cost){feedback=`Za mało złomu na naprawę ${nameFor(key)}: potrzeba ${cost}, dostępne ${wallet}.`;}
- else{wallet-=cost;spent+=cost;parts[key]=100;feedback=`Naprawiono ${nameFor(key)} za ${cost} złomu.`;}}
+ else{wallet-=cost;spent+=cost;parts[key]=100;storedHP[key]=100;feedback=`Naprawiono ${nameFor(key)} za ${cost} złomu.`;}}
  $('outcome').textContent=feedback;render();
  const nextAction=action==='damage'?'repair':action==='repair'?'damage':'toggle';$('partControls').querySelector(`button[data-key="${key}"][data-action="${nextAction}"]`)?.focus();});
 $('preset').addEventListener('change',e=>reset(e.target.value));$('drive').addEventListener('change',()=>{render();$('outcome').textContent=''});$('tips').addEventListener('change',render);$('connection').addEventListener('change',e=>{disconnected=e.target.checked;render()});
