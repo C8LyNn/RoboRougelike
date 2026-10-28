@@ -1,0 +1,68 @@
+{
+  "executed": {
+    "UnityEditor": "NOT_RUN",
+    "WindowsPlayer": "NOT_RUN",
+    "chromium_browser": "6/6 PASS",
+    "node_logic": "14/14 PASS",
+    "real_FPS_GPU_CPU_GC": "NOT_MEASURED"
+  },
+  "files": {
+    "README.md": {
+      "bytes": 6129,
+      "sha256": "e6288d53b2fd70387bf3bb54a8f623c9abcac4ec8ccf8a86b9a5bf3f3402738d"
+    },
+    "app.mjs": {
+      "bytes": 5917,
+      "sha256": "ec3c144b730b68ee3555c5baf7ecb2bfe8646629fa0152b028cf92a1c704baac"
+    },
+    "bundle.py": {
+      "bytes": 1360,
+      "sha256": "0969033d7e37f50d518ec8747c34ea432373b9c1b5e0693a6f31e5b74faccc34"
+    },
+    "core.mjs": {
+      "bytes": 8779,
+      "sha256": "bdefb6134e0edf2409a3081516f71cb1bbe00d2e1931a2a034e3e52e803eba2f"
+    },
+    "evidence/browser_log.txt": {
+      "bytes": 436,
+      "sha256": "1a8a65c8210b61203de16738fb83fc51ec8bb7ad8f3bb5c553edd155ecde4cfe"
+    },
+    "evidence/browser_test_log.txt": {
+      "bytes": 537,
+      "sha256": "133efaecb40dea19eb47ba5a04063997bd1766174feabb1f057829ea7013bbf5"
+    },
+    "evidence/node_test_log.txt": {
+      "bytes": 2741,
+      "sha256": "9cf4231b65e2060ecac2fd8275541a50267cdb1d178ae3df90003dc6c977c62f"
+    },
+    "index.html": {
+      "bytes": 4188,
+      "sha256": "7f9912c7460ca7ab0428d91ea598396c151174a908146fb4bb7da11b5fbc8f95"
+    },
+    "perfview-standalone.html": {
+      "bytes": 24222,
+      "sha256": "1c2cce03fc0719674fa49f298dd33ff69a03d52cbf70de67bc73e37b9e629f56"
+    },
+    "style.css": {
+      "bytes": 5513,
+      "sha256": "9134f23c6d89bbdacf98f835cd6101098a4c821b9a03bf518b78371d92c2751f"
+    },
+    "tests/browser_e2e.py": {
+      "bytes": 4434,
+      "sha256": "8354a4282ecdf8e302ab04326f80f379c30bc763d5399f2319be3a3855a1a09f"
+    },
+    "tests/core.test.mjs": {
+      "bytes": 5341,
+      "sha256": "ebe0e0d8375e78118ccd0378eec67af663570dfbc8a8c73d208ccb7efff5b186"
+    }
+  },
+  "game_code_changes": false,
+  "owner": "B01-50",
+  "package_id": "B01-50-PERFVIEW-001",
+  "source_dependency": {
+    "PR328_HEAD": "b5fc00428f6f663016e1525da556afbfe775facb",
+    "PR328_live_recorder_blob": "7112a748d0ca560403d91b166481088b8db85932",
+    "PR328_live_validator_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82"
+  },
+  "version": "R1"
+}

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B01-50 • PERFVIEW-001 — Analiza śladów gry</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#e9edf5;background:#0b1018;font-synthesis:none}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 800px 350px at 55% -160px,#1f3345 0%,transparent 90%),#0b1018}.shell{max-width:1500px;margin:auto;padding:0 34px}.topbar{height:80px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #29323e}.brand{display:flex;align-items:center;gap:14px;letter-spacing:.13em}.brandicon{background:#a5ebcd;color:#091713;border-radius:9px;font-size:23px;width:43px;height:43px;display:grid;place-items:center}.brand span span{display:block}.brand small{display:block;color:#99afbd;font-size:10px;letter-spacing:.22em;margin-top:5px}.status{font-size:11px;letter-spacing:.13em;font-weight:700;color:#b5dec9;border:1px solid #355347;border-radius:8px;padding:9px 13px}.intro{max-width:960px;padding:56px 0 30px}.eyebrow{color:#92d5bf;font-size:11px;font-weight:800;letter-spacing:.17em}.intro h1{font-size:clamp(30px,4.5vw,59px);letter-spacing:-.055em;margin:12px 0 12px;line-height:1.06}.dot{color:#adf7cc}.intro p{color:#b3c2ce;font-size:15px;line-height:1.7;max-width:800px}.warning{border-left:3px solid #e8ad6c;background:#25251e;padding:14px 18px;color:#e5cbaa;font-size:13px;line-height:1.6;margin-top:23px;border-radius:0 8px 8px 0}.warning code,.footer-notes code{background:#303840;padding:2px 5px;border-radius:4px}.import-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.import-card{background:#151d28;border:1px solid #324050;border-radius:12px;padding:20px;min-width:0}.import-top{display:flex;align-items:center;gap:15px;margin-bottom:17px}.tone{display:grid;place-items:center;width:43px;height:43px;border-radius:8px;font-weight:900;font-size:21px}.tone.a{background:#173a33;color:#9debc9}.tone.b{background:#2a2c53;color:#b6bbff}.import-top b{display:block;font-size:15px}.import-top small{display:block;color:#8da0b4;font-size:12px;margin-top:5px}.import-card label{display:block;color:#a8bad0;font-size:12px;margin-bottom:7px}.import-card input{display:block;width:100%;font-size:13px;color:#b8cbdb}.import-card input::file-selector-button{background:#283747;color:#d5e4ee;border:1px solid #4b6176;border-radius:7px;padding:9px 11px;margin-right:10px;cursor:pointer}.file-state{display:block;font-size:12px;color:#9bacbf;margin-top:14px;min-height:17px}.file-state.good{color:#96e0b8}.file-state.bad{color:#f3a2a2}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0 35px}button{font-weight:750;border-radius:8px;padding:12px 17px;cursor:pointer;font-size:13px}button.primary{background:#a4ebcf;border:1px solid #a4ebcf;color:#102b24}button.secondary{background:#1d2835;border:1px solid #47586d;color:#cbd7e5}.error{color:#ffb3a9;font-size:12px}.sectionhead,.panel-head{display:flex;align-items:center;justify-content:space-between;gap:16px}.sectionhead{margin:20px 0 22px}.sectionhead h2{font-size:30px;margin:8px 0 0;letter-spacing:-.03em}.pill{border:1px solid #b49452;color:#eecf88;background:#37311f;font-size:10px;font-weight:800;letter-spacing:.07em;border-radius:100px;padding:9px 12px;text-align:center}.pill.synthetic{border-color:#8376b5;color:#cbbfff;background:#28223a}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{background:#17212c;border:1px solid #2c3b49;padding:17px;border-radius:11px;min-height:125px}.metric .name{color:#8da7b8;font-size:11px;text-transform:uppercase;letter-spacing:.09em}.metric .value{font-size:27px;font-weight:800;margin-top:14px;letter-spacing:-.04em}.metric .secondary-value{font-size:11px;color:#a2b3c6;margin-top:5px}.comparison{margin:17px 0 22px;border:1px solid #374b5e;background:#1a2834;padding:16px;border-radius:10px;font-size:13px;line-height:1.55}.comparison.warn{border-color:#7a5442;background:#352a25;color:#e9c5b7}.comparison b{display:block;margin-bottom:5px}.viz-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.panel{border:1px solid #2c3b49;background:#141d27;border-radius:12px;padding:18px;min-width:0}.panel h3{margin:0;color:#e8f0f9;font-size:15px}.panel-head span{color:#8fa1b5;font-size:11px;text-align:right}.panel canvas{width:100%;height:auto;margin-top:15px}.legend{display:flex;gap:17px;color:#adbdcb;font-size:12px}.line{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:5px}.line.a{background:#96eccb}.line.b{background:#a9abff}.muted{color:#84919e}.data-row{margin-top:17px}.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap;margin-top:15px}th,td{text-align:left;padding:10px;border-bottom:1px solid #293948}th{color:#8ca5b6;font-weight:600}td{color:#dce7f1}.footer-notes{font-size:12px;line-height:1.7;color:#acbdcb;border:1px solid #303c48;border-radius:9px;padding:17px;margin:18px 0 40px}footer{border-top:1px solid #253240;color:#668195;font-size:10px;letter-spacing:.1em;padding:24px 0 35px}@media(max-width:900px){.shell{padding:0 20px}.viz-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.intro{padding-top:38px}}@media(max-width:620px){.shell{padding:0 14px}.import-grid{grid-template-columns:1fr}.topbar{height:67px}.status{font-size:9px}.intro{padding-top:30px}.intro h1{font-size:34px}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sectionhead{align-items:flex-start;flex-direction:column}.sectionhead h2{font-size:25px}.metric .value{font-size:23px}}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar"><div class="brand"><span class="brandicon">▦</span><span><b>ROBOROUGELIKE</b><small>PERFVIEW / B01-50</small></span></div><span class="status">OFFLINE · READ ONLY</span></header>
+<main>
+<section class="intro"><div class="eyebrow">PERFVIEW-001 · R1 / BROWSER TOOL</div><h1>Wydajność pod kontrolą<span class="dot">.</span></h1><p>Porównaj dwa rzeczywiste ślady liczby części, pocisków i przeciwników. Panel czyta pliki w przeglądarce — niczego nie wysyła do serwera i nie modyfikuje gry.</p><div class="warning"><b>Uwaga pomiarowa:</b> wykres przedstawia <code>Time.unscaledDeltaTime</code>, <strong>nie</strong> czas wyświetlenia klatki, FPS z PresentMon, CPU Main/Render ani GPU. Bez oryginalnych logów i poświadczenia hosta wyniki pozostają wyłącznie diagnostyczne.</div></section>
+<section class="import-grid" aria-label="Import sesji">
+ <div class="import-card" id="importA"><div class="import-top"><span class="tone a">A</span><div><b>Sesja bazowa</b><small>receipt.json + frames.csv + objects.csv</small></div></div><label for="filesA">Wybierz komplet plików A</label><input type="file" id="filesA" multiple accept=".csv,.json" aria-label="Trzy pliki sesji bazowej"><span id="stateA" class="file-state">Nie zaimportowano</span></div>
+ <div class="import-card" id="importB"><div class="import-top"><span class="tone b">B</span><div><b>Sesja porównawcza</b><small>receipt.json + frames.csv + objects.csv</small></div></div><label for="filesB">Wybierz komplet plików B</label><input type="file" id="filesB" multiple accept=".csv,.json" aria-label="Trzy pliki sesji porównawczej"><span id="stateB" class="file-state">Nie zaimportowano</span></div>
+</section>
+<div class="actions"><button id="demo" class="primary">Załaduj przykład syntetyczny</button><button id="reset" class="secondary">Wyczyść dane</button><span id="error" class="error" role="alert" aria-live="polite"></span></div>
+<section id="analysis" class="analysis" hidden aria-live="polite">
+<div class="sectionhead"><div><div class="eyebrow">ODCZYT</div><h2>Obserwacja sesji</h2></div><span id="provenance" class="pill">PLIKI NIEZWERYFIKOWANE NATYWNIE</span></div>
+<div class="metric-grid" id="metrics"></div>
+<div class="comparison" id="comparison"></div>
+<div class="viz-grid">
+ <article class="panel"><div class="panel-head"><h3>P95 odstępu Update / 10 s</h3><span>ms · niżej = lepiej</span></div><canvas id="frameChart" width="860" height="360" role="img" aria-label="Wykres p95 unscaledDeltaTime"></canvas><div class="legend"><span><i class="line a"></i> A</span><span><i class="line b"></i> B</span></div></article>
+ <article class="panel"><div class="panel-head"><h3>Obiekty w aktywnej scenie</h3><span>zliczenia / 10 s</span></div><canvas id="countChart" width="860" height="360" role="img" aria-label="Wykres części, pocisków i przeciwników"></canvas><div class="legend"><span><i class="line a"></i> Części A</span><span><i class="line b"></i> Części B</span><span class="muted">Dodatkowe typy w tabeli</span></div></article>
+</div>
+<div class="data-row"><article class="panel"><h3>Przebieg obciążenia</h3><div class="table-scroll"><table><thead><tr><th>Okno</th><th>P95 A</th><th>P95 B</th><th>Części A/B</th><th>Pociski A/B</th><th>Wrogowie A/B</th></tr></thead><tbody id="timeline"></tbody></table></div></article></div>
+<div class="footer-notes"><b>Ograniczenia:</b> skaner liczy wybrane typy obiektów i może nie obejmować wszystkich efektów. Wysokie <code>scan_ms</code> jest narzutem samego pomiaru. Dopasowany SHA/build/host nie dowodzi kontroli eksperymentu; wykrycie zmiany warunków blokuje wnioski porównawcze. Wszystkie pliki są przetwarzane lokalnie.</div>
+</section>
+</main>
+<footer>PERFVIEW-001 · B01-50 · NIE JEST TO BUILT-IN UNITY PROFILER ANI ZATWIERDZENIE WYDAJNOŚCI GRY</footer>
+</div>
+<script>
+// B01-50 PERFVIEW-001 R1: offline inspection of original PERFSCALING-001 live receipts.
+// All displayed metrics are Unity Time.unscaledDeltaTime, NOT PresentMon displayed FPS.
+// No network, no storage, no access to game runtime, no engine acceptance inference.
+const FRAME_FIELDS = ['frame_index', 'elapsed_ms', 'delta_ms'];
+const OBJECT_FIELDS = ['elapsed_ms', 'scene', 'active_parts', 'active_projectiles', 'active_enemies', 'rigidbodies', 'scan_ms'];
+const CLASSIFICATION = 'GAME_FRAME_TIME_REVIEW_REQUIRED_NOT_DISPLAY_PRESENTMON_OR_NATIVE_PERF_PASS';
+const SHA40 = /^[0-9a-f]{40}$/i, SHA64 = /^[0-9a-f]{64}$/i;
+
+function assert(ok, message) { if (!ok) throw new Error(message); }
+function finiteNumber(value, label, positive = false) {
+  assert(typeof value === 'string' || typeof value === 'number', `${label}: unsupported type`);
+  assert(value !== '' && value !== null, `${label}: empty`);
+  const n = Number(value);
+  assert(Number.isFinite(n) && (positive ? n > 0 : n >= 0), `${label}: nonfinite or negative`);
+  return n;
+}
+function uintString(value, label) {
+  assert(typeof value === 'string' && /^(0|[1-9][0-9]*)$/.test(value), `${label}: invalid count`);
+  const n = Number(value);
+  assert(Number.isSafeInteger(n), `${label}: overflow`);
+  return n;
+}
+function parseCsv(source, header, maxRows = 30000) {
+  assert(typeof source === 'string' && source.length <= 6_000_000, 'CSV: missing or >6MB');
+  if (source.charCodeAt(0) === 0xFEFF) source = source.slice(1);
+  let rows = [], field = '', cells = [], quoted = false, closed = false;
+  const pushCell = () => { cells.push(field); field = ''; closed = false; };
+  const pushRow = () => {
+    pushCell();
+    assert(cells.length === header.length, 'CSV: missing/extra cells');
+    rows.push(cells); cells = [];
+    assert(rows.length <= maxRows + 1, 'CSV: too many rows');
+  };
+  for (let i = 0; i < source.length; i++) {
+    const c = source[i];
+    if (quoted) {
+      if (c === '"') { if (source[i + 1] === '"') {field += '"'; i++;} else {quoted = false; closed = true;} }
+      else field += c;
+    } else if (c === '"') { assert(!closed && field === '', 'CSV: malformed quote'); quoted = true; }
+    else if (c === ',') pushCell();
+    else if (c === '\r' || c === '\n') {
+      if (c === '\r' && source[i + 1] === '\n') i++;
+      pushRow();
+    } else { assert(!closed, 'CSV: characters after quote'); field += c; }
+  }
+  assert(!quoted, 'CSV: unclosed quote');
+  if (field.length || cells.length) pushRow();
+  assert(rows.length >= 2, 'CSV: missing data');
+  assert(rows[0].every((c, i) => c === header[i]), 'CSV: unexpected/duplicate header');
+  return rows.slice(1).map(row => Object.fromEntries(header.map((key, i) => [key, row[i]])));
+}
+function quantile(vals, p) {
+  assert(vals.length > 0, 'quantile: empty');
+  const a = [...vals].sort((x, y) => x - y), v = (a.length - 1) * p;
+  const lo = Math.floor(v), hi = Math.ceil(v);
+  return a[lo] + (a[hi] - a[lo]) * (v - lo);
+}
+function mean(arr) { return arr.reduce((a, b) => a + b, 0) / arr.length; }
+
+function analyzeCapture(receiptText, frameText, objectText) {
+  assert(typeof receiptText === 'string' && receiptText.length < 50000, 'receipt: missing or >50KB');
+  let receipt;
+  try { receipt = JSON.parse(receiptText); } catch { throw new Error('receipt: invalid JSON'); }
+  assert(receipt && !Array.isArray(receipt) && typeof receipt === 'object', 'receipt: invalid object');
+  assert(receipt.classification === CLASSIFICATION, 'receipt: unsupported capture classification');
+  assert(receipt.unity_version === '6000.3.14f1', 'receipt: unsupported Unity version');
+  assert(receipt.capture_complete === true && finiteNumber(receipt.observed_capture_seconds, 'capture seconds') >= 120, 'receipt: incomplete capture');
+  assert(SHA40.test(receipt.game_sha), 'receipt: invalid game SHA');
+  assert(SHA64.test(receipt.build_zip_sha256), 'receipt: invalid build SHA256');
+  assert(typeof receipt.scenario_id === 'string' && receipt.scenario_id.length > 0 && receipt.scenario_id.length <= 128, 'receipt: scenario');
+  for (const p of ['cpu', 'gpu', 'os']) assert(typeof receipt[p] === 'string' && receipt[p].trim(), `receipt: missing ${p}`);
+  assert(receipt.profiler_main_render_gpu_gc === 'NOT_MEASURED', 'receipt: false profiler counters');
+  const rawFrames = parseCsv(frameText, FRAME_FIELDS), rawObjects = parseCsv(objectText, OBJECT_FIELDS, 300);
+  assert(rawFrames.length === receipt.frame_rows && rawFrames.length >= 120, 'frames: receipt row count mismatch');
+  assert(rawObjects.length === receipt.object_scans && rawObjects.length >= 90, 'objects: receipt scan count mismatch');
+  let last = -1;
+  const frames = rawFrames.map((row, idx) => {
+    assert(uintString(row.frame_index, 'frame index') === idx, 'frames: non-sequential frame index');
+    const t = finiteNumber(row.elapsed_ms, 'frame elapsed'), dt = finiteNumber(row.delta_ms, 'frame delta', true);
+    assert(t > last && t < 120000, 'frames: nonmonotonic/out-of-range time'); last = t;
+    return {t, dt};
+  });
+  last = -1;
+  const objects = rawObjects.map(row => {
+    const t = finiteNumber(row.elapsed_ms, 'scan elapsed'), scan = finiteNumber(row.scan_ms, 'scan duration');
+    assert(t > last && t < 120000, 'objects: nonmonotonic/out-of-range time'); last = t;
+    assert(row.scene && row.scene.length <= 256, 'objects: missing scene');
+    return {t, scene:row.scene, parts:uintString(row.active_parts,'parts'),
+      shots:uintString(row.active_projectiles,'projectiles'),
+      enemies:uintString(row.active_enemies,'enemies'),
+      rigidbodies:uintString(row.rigidbodies,'rigidbodies'), scan};
+  });
+  const deltas = frames.map(f=>f.dt);
+  const timeline = Array.from({length: 12}, (_, i) => {
+    const lo = i * 10000, hi = (i + 1) * 10000;
+    const fs = frames.filter(f => f.t >= lo && f.t < hi).map(f=>f.dt);
+    const os = objects.filter(o => o.t >= lo && o.t < hi);
+    return {from: i * 10, to: (i + 1) * 10, count:fs.length,
+      p95:fs.length ? quantile(fs,.95) : null,
+      parts:os.length ? mean(os.map(o=>o.parts)) : null,
+      shots:os.length ? mean(os.map(o=>o.shots)) : null,
+      enemies:os.length ? mean(os.map(o=>o.enemies)) : null,
+      scans:os.length};
+  });
+  return {
+    scenario:receipt.scenario_id, gameSha:receipt.game_sha, buildSha:receipt.build_zip_sha256,
+    unity:receipt.unity_version, os:receipt.os, cpu:receipt.cpu, gpu:receipt.gpu,
+    scenes:[...new Set(objects.map(o=>o.scene))], frames:frames.length, scans:objects.length,
+    captureSeconds:receipt.observed_capture_seconds,
+    p50:quantile(deltas,.5), p95:quantile(deltas,.95), p99:quantile(deltas,.99),
+    updateFpsEstimate:1000/mean(deltas),
+    over33:deltas.filter(x=>x>33.3).length,
+    maxScanMs:Math.max(...objects.map(x=>x.scan)),
+    meanParts:mean(objects.map(x=>x.parts)), meanShots:mean(objects.map(x=>x.shots)),
+    meanEnemies:mean(objects.map(x=>x.enemies)), timeline,
+    classification:'FILE_STRUCTURE_VALIDATED_ONLY_NATIVE_PROVENANCE_NOT_VERIFIED',
+    metric:'UNITY_UNSCALED_DELTA_NOT_DISPLAYED_FRAME_TIME',
+    profiler:'CPU_MAIN_RENDER_GPU_GC_NOT_MEASURED'
+  };
+}
+function compare(a, b) {
+  assert(a && b, 'compare: need two sessions');
+  const keys = ['gameSha', 'buildSha', 'unity', 'os', 'cpu', 'gpu'];
+  const changed = keys.filter(k => a[k] !== b[k]);
+  if (a.scenes.join('|') !== b.scenes.join('|')) changed.push('scenes');
+  return {comparable:changed.length === 0, mismatches:changed,
+    // Only exploratory relative differences. These are NOT performance conclusions.
+    p95DeltaMs:b.p95-a.p95, p99DeltaMs:b.p99-a.p99,
+    partDelta:b.meanParts-a.meanParts, shotDelta:b.meanShots-a.meanShots,
+    enemyDelta:b.meanEnemies-a.meanEnemies,
+    status:changed.length ? 'CONTEXT_DIFFERS_NO_PERFORMANCE_INFERENCE' : 'MATCHED_METADATA_ONLY_NOT_CONTROLLED_AB_EXPERIMENT'};
+}
+function makeSyntheticCapture({scenario='SYNTHETIC_A',slow=0,shots=0}={}) {
+  const frames = [FRAME_FIELDS.join(',')], objects=[OBJECT_FIELDS.join(',')];
+  const count=7200;
+  for(let i=0; i<count; i++){
+    const t=(i*120000/count), dt=16.4+slow+((i%90)===0?18:0);
+    frames.push(`${i},${t.toFixed(6)},${dt.toFixed(3)}`);
+  }
+  for(let i=0;i<120;i++) objects.push(`${i*1000},Arena,${24+(i>60?48:0)},${shots+(i>50?32:0)},${i>25?8:0},${32+(i>60?48:0)},0.03`);
+  const receipt={classification:CLASSIFICATION, game_sha:'a'.repeat(40),
+    build_zip_sha256:'b'.repeat(64),unity_version:'6000.3.14f1',
+    scenario_id:scenario,capture_complete:true,observed_capture_seconds:120.01,
+    profiler_main_render_gpu_gc:'NOT_MEASURED',cpu:'SYNTHETIC ONLY',gpu:'SYNTHETIC ONLY',
+    os:'SYNTHETIC ONLY',frame_rows:count,object_scans:120};
+  return [JSON.stringify(receipt),frames.join('\n')+'\n',objects.join('\n')+'\n'];
+}
+
+
+const doc=id=>document.getElementById(id);
+const captures={A:null,B:null};
+let synthetic=false;
+const num=(x,precision=1)=>Number.isFinite(x)?x.toFixed(precision):'—';
+function state(id,txt,okay){const el=doc(`state${id}`);el.textContent=txt;el.className='file-state '+(okay===true?'good':okay===false?'bad':'');}
+function color(id){return id==='A'?'#96eccb':'#a9abff';}
+async function loadFiles(id,list){
+  const names=['receipt.json','frames.csv','objects.csv'];
+  try{
+    const map=new Map([...list].map(file=>[file.name,file]));
+    if(map.size!==3||names.some(n=>!map.has(n)))throw new Error('Wskaż dokładnie trzy pliki: receipt.json, frames.csv, objects.csv');
+    for(const n of names)if(map.get(n).size>6_000_000)throw new Error('Plik za duży: '+n);
+    const [rec,frame,obj]=await Promise.all(names.map(n=>map.get(n).text()));
+    captures[id]=analyzeCapture(rec,frame,obj);synthetic=false;
+    state(id,`Zaimportowano ${captures[id].frames} klatek · ${captures[id].scans} skanów`,true);
+    doc('error').textContent='';render();
+  }catch(e){captures[id]=null;state(id,e.message,false);doc('error').textContent='Błąd '+id+': '+e.message;render();}
+}
+doc('filesA').addEventListener('change',e=>loadFiles('A',e.target.files));
+doc('filesB').addEventListener('change',e=>loadFiles('B',e.target.files));
+doc('demo').addEventListener('click',()=>{
+  captures.A=analyzeCapture(...makeSyntheticCapture({scenario:'DEMO_SYNTHETIC_A',slow:0,shots:0}));
+  captures.B=analyzeCapture(...makeSyntheticCapture({scenario:'DEMO_SYNTHETIC_B',slow:1.8,shots:64}));
+  synthetic=true;state('A','DEMO — dane syntetyczne (nie pomiar)',true);
+  state('B','DEMO — dane syntetyczne (nie pomiar)',true);
+  doc('error').textContent='';render();
+});
+doc('reset').addEventListener('click',()=>{captures.A=captures.B=null;synthetic=false;doc('filesA').value='';doc('filesB').value='';state('A','Nie zaimportowano');state('B','Nie zaimportowano');doc('error').textContent='';render();});
+function createMetric(title,val,description){const m=document.createElement('div');m.className='metric';const h=document.createElement('div');h.className='name';h.textContent=title;const v=document.createElement('div');v.className='value';v.textContent=val;const d=document.createElement('div');d.className='secondary-value';d.textContent=description;m.append(h,v,d);return m;}
+function chart(canvas,as,bs,field,unit){
+  const ctx=canvas.getContext('2d');const w=canvas.width,h=canvas.height;
+  ctx.clearRect(0,0,w,h);const left=51,right=20,top=20,bottom=43;
+  const values=[...as,...bs].map(r=>r?.[field]).filter(Number.isFinite);const topVal=Math.max(1,...values)*1.18;
+  ctx.lineWidth=1;ctx.font='13px system-ui';ctx.fillStyle='#91a7b9';
+  for(let i=0;i<=4;i++){
+    const y=top+(h-top-bottom)*(i/4);ctx.strokeStyle='#2b3847';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillText(num(topVal*(1-i/4),1),5,y+4);
+  }
+  for(let i=0;i<12;i+=2){let x=left+(w-left-right)*(i/11);ctx.fillText(`${i*10}s`,x-10,h-13);}
+  for(const [arr,id] of [[as,'A'],[bs,'B']]){
+    ctx.strokeStyle=color(id);ctx.lineWidth=3;ctx.beginPath();let started=false;
+    arr.forEach((r,i)=>{const val=r?.[field];if(!Number.isFinite(val)){started=false;return;}const x=left+(w-left-right)*(i/11),y=top+(h-top-bottom)*(1-val/topVal);if(started)ctx.lineTo(x,y);else ctx.moveTo(x,y);started=true;});ctx.stroke();
+  }
+  ctx.fillStyle='#778d9f';ctx.fillText(unit,w-right-40,12);
+}
+function appendRow(table, a,b,i){let tr=document.createElement('tr');let items=[`${i*10}–${(i+1)*10}s`,num(a?.p95),num(b?.p95),`${num(a?.parts,0)} / ${num(b?.parts,0)}`,`${num(a?.shots,0)} / ${num(b?.shots,0)}`,`${num(a?.enemies,0)} / ${num(b?.enemies,0)}`];for(const t of items){const td=document.createElement('td');td.textContent=t;tr.append(td);}table.append(tr);}
+function render(){
+ const a=captures.A,b=captures.B;doc('analysis').hidden=!(a||b);if(!a&&!b)return;
+ doc('provenance').textContent=synthetic?'DEMO — WYŁĄCZNIE SYNTETYCZNE':'PLIKI NIEZWERYFIKOWANE NATYWNIE';doc('provenance').className='pill'+(synthetic?' synthetic':'');
+ const metrics=doc('metrics');metrics.replaceChildren();
+ for(const [label,session] of [['A',a],['B',b]])if(session){
+   metrics.append(createMetric(`${label} · P95 Update`,num(session.p95,2)+' ms',session.scenario));
+   metrics.append(createMetric(`${label} · P99 Update`,num(session.p99,2)+' ms','nie DisplayChange'));
+   metrics.append(createMetric(`${label} · Części`,num(session.meanParts,1),'średnia z ok. 1 Hz'));
+   metrics.append(createMetric(`${label} · Obiekty pocisków`,num(session.meanShots,1),`wrogowie ${num(session.meanEnemies,1)}`));
+ }
+ const c=doc('comparison');c.replaceChildren();c.className='comparison';
+ let heading=document.createElement('b'),desc=document.createElement('div');
+ if(!a||!b){heading.textContent='Wczytaj drugą sesję, aby porównać.';desc.textContent='Panel działa również w trybie pojedynczej sesji.';}
+ else {const result=compare(a,b);
+   heading.textContent=result.comparable?'METADANE ZGODNE — PORÓWNANIE EKSPLORACYJNE':'WARUNKI RÓŻNIĄ SIĘ — NIE WYCIĄGAJ WNIOSKÓW';
+   desc.textContent=result.comparable?`ΔP95 Update ${result.p95DeltaMs>=0?'+':''}${num(result.p95DeltaMs,2)} ms; ΔP99 ${num(result.p99DeltaMs,2)} ms. Bez kontroli sceny/sterowania nie oznacza to skutku zwiększenia liczby obiektów.`:`Różne: ${result.mismatches.join(', ')}. Traktuj wyniki tylko jako osobne obserwacje.`;
+   if(!result.comparable)c.classList.add('warn');
+ }
+ c.append(heading,desc);
+ const empty=Array.from({length:12},()=>null);const at=a?.timeline||empty,bt=b?.timeline||empty;
+ chart(doc('frameChart'),at,bt,'p95','ms');chart(doc('countChart'),at,bt,'parts','szt.');
+ const table=doc('timeline');table.replaceChildren();for(let i=0;i<12;i++)appendRow(table,at[i],bt[i],i);
+}
+render();
+
+</script>
+</body>
+</html>

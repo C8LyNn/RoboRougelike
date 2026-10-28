@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: original schema: synthetic positive gives only unverified classification
+ok 1 - original schema: synthetic positive gives only unverified classification
+  ---
+  duration_ms: 32.226807
+  type: 'test'
+  ...
+# Subtest: P95/P99 and binning reflect trace, not invented 60 FPS
+ok 2 - P95/P99 and binning reflect trace, not invented 60 FPS
+  ---
+  duration_ms: 34.362434
+  type: 'test'
+  ...
+# Subtest: missing rows and skipped frame index fail closed
+ok 3 - missing rows and skipped frame index fail closed
+  ---
+  duration_ms: 18.61534
+  type: 'test'
+  ...
+# Subtest: duplicate header and foreign columns rejected
+ok 4 - duplicate header and foreign columns rejected
+  ---
+  duration_ms: 23.71219
+  type: 'test'
+  ...
+# Subtest: malformed CSV quoting fails closed; standard quoted scene accepted
+ok 5 - malformed CSV quoting fails closed; standard quoted scene accepted
+  ---
+  duration_ms: 36.855047
+  type: 'test'
+  ...
+# Subtest: malicious script-looking scene parsed as text, not executed
+ok 6 - malicious script-looking scene parsed as text, not executed
+  ---
+  duration_ms: 12.487623
+  type: 'test'
+  ...
+# Subtest: negative, NaN, Infinity, zeros and time travel rejected
+ok 7 - negative, NaN, Infinity, zeros and time travel rejected
+  ---
+  duration_ms: 37.011482
+  type: 'test'
+  ...
+# Subtest: fake unity, inaccurate build SHA or false profiler fields rejected
+ok 8 - fake unity, inaccurate build SHA or false profiler fields rejected
+  ---
+  duration_ms: 11.740271
+  type: 'test'
+  ...
+# Subtest: incomplete 119-second capture refused even when rows exist
+ok 9 - incomplete 119-second capture refused even when rows exist
+  ---
+  duration_ms: 6.082243
+  type: 'test'
+  ...
+# Subtest: scan row count and invalid counts fail closed
+ok 10 - scan row count and invalid counts fail closed
+  ---
+  duration_ms: 16.015461
+  type: 'test'
+  ...
+# Subtest: changed host/build/game produces explicit incompatible diagnostic
+ok 11 - changed host/build/game produces explicit incompatible diagnostic
+  ---
+  duration_ms: 19.407681
+  type: 'test'
+  ...
+# Subtest: changed scene produces explicit incompatible diagnostic
+ok 12 - changed scene produces explicit incompatible diagnostic
+  ---
+  duration_ms: 20.824529
+  type: 'test'
+  ...
+# Subtest: quantile and CSV parser strictness, no phantom blanks
+ok 13 - quantile and CSV parser strictness, no phantom blanks
+  ---
+  duration_ms: 0.611551
+  type: 'test'
+  ...
+# Subtest: receipt falsified row count and bogus unmeasured metrics blocked
+ok 14 - receipt falsified row count and bogus unmeasured metrics blocked
+  ---
+  duration_ms: 14.735375
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 354.101656
