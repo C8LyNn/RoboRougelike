@@ -23,7 +23,8 @@
       },
       {
         "path": "Tools/B01/MAPGEN001/Headless/UnitySurrogate.cs",
-        "role": "HEADLESS_ONLY_NO_NATIVE_UNITY"
+        "role": "HEADLESS_ONLY_NO_NATIVE_UNITY",
+        "git_blob": "68f30fc4c49db21d90b143cf9bc13d230ad06184"
       }
     ]
   },
