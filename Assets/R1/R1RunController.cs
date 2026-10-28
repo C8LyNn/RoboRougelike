@@ -217,11 +217,13 @@ namespace RoboRougelike.R1
         {
             Transitioning = true; Paused = false; SetSimulation(false);
             Encounter.Clear();
-            if(roadRequested)playerSpawn=ActivateRoadWorld();
+            if(ld02Requested)playerSpawn=ActivateLD02Arena();
+            else if(roadRequested)playerSpawn=ActivateRoadWorld();
             else if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
             else {Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;}
-            if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,playerRotation);
-            else Player.MoveTo(playerSpawn,playerRotation);
+            var encounterRotation=ld02Requested?Quaternion.Euler(0,90,0):playerRotation;
+            if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,encounterRotation);
+            else Player.MoveTo(playerSpawn,encounterRotation);
             Player.Controller.SetGameplayInputEnabled(false);
             followCamera.Configure(Player.transform, Player.CameraPivot);
             // Start() builds the structure and initializes cloned module references while time is paused.
@@ -233,7 +235,7 @@ namespace RoboRougelike.R1
             if(raceRequested)BeginCheckpointRace();
             else if(roadRequested)BeginRoadChallenge();
             else if(reactorRequested)BeginReactorActivity();
-            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,mapgenRequested?GeneratedWorld.EnemySpawns:null);
+            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,ld02Requested?LD02EnemySpawns:mapgenRequested?GeneratedWorld.EnemySpawns:null);
             yield return null;
             Transitioning = false; SetSimulation(true);
             Debug.Log("[R1] Starcie " + (Progress.EncounterIndex + 1) + ": przeciwników=" + Encounter.AliveCount);

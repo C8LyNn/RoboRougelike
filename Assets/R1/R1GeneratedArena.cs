@@ -75,6 +75,7 @@ namespace RoboRougelike.R1
         }
         void ClearGeneratedArena()
         {
+            ClearLD02Arena();
             if(generatedArena!=null)generatedArena.ClearWorld();
             if(generatedLegacyFloor!=null)generatedLegacyFloor.SetActive(generatedFloorWasActive);
             if(generatedLegacyLayout!=null)generatedLegacyLayout.SetActive(generatedLayoutWasActive);
