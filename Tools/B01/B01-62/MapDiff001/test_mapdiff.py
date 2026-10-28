@@ -155,6 +155,27 @@ class PhysicalMapDiffTests(unittest.TestCase):
         self.assertEqual("{http://www.w3.org/2000/svg}svg", xml.getroot().tag)
         self.assertIn("addedItems", loaded)
 
+    def test_A12_export_bytes_use_portable_lf_only(self):
+        self.compare(doc([item(1, 1)]), doc([item(7, 1)]))
+        for file in (self.out / "mapdiff.json", self.out / "mapdiff.svg"):
+            raw = file.read_bytes()
+            self.assertNotIn(b"\r\n", raw)
+            self.assertIn(b"\n", raw)
+            self.assertTrue(raw.endswith(b"\n"))
+
+    def test_A13_same_inputs_replay_identical_raw_bytes(self):
+        import hashlib
+        self.files(doc([item(1, 1)]), doc([item(7, 1)]))
+        m.run(self.a, self.b, self.out)
+        first = [hashlib.sha256((self.out / file).read_bytes()).hexdigest()
+                 for file in ("mapdiff.json", "mapdiff.svg")]
+        replay = self.out.parent / "replay"
+        replay.mkdir()
+        m.run(self.a, self.b, replay)
+        second = [hashlib.sha256((replay / file).read_bytes()).hexdigest()
+                  for file in ("mapdiff.json", "mapdiff.svg")]
+        self.assertEqual(first, second)
+
     def test_A11_no_missing_source_files_silently_created(self):
         self.a.write_bytes(doc())
         with self.assertRaises(m.InvalidMap):
