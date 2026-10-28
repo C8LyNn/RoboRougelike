@@ -40,11 +40,19 @@ UnityLoader.add_multi_constructor("tag:unity3d.com,2011:",unity_node)
 
 actor_guid=re.search(r"(?m)^guid: ([0-9a-f]{32})$", (pack/"Runtime/B0132Effect.cs.meta").read_text()).group(1)
 show_guid=re.search(r"(?m)^guid: ([0-9a-f]{32})$", (pack/"Runtime/B0132Showcase.cs.meta").read_text()).group(1)
+def read_unity_documents(path):
+    # Unity writes %TAG once for the whole .unity/.prefab stream; YAML 1.1
+    # parsers (PyYAML) reset tag handles per document. Normalize only IN MEMORY.
+    raw=path.read_text(encoding="utf8")
+    raw=raw.replace("%TAG !u! tag:unity3d.com,2011:\n","")
+    raw=re.sub(r"(?m)^--- !u!", "%TAG !u! tag:unity3d.com,2011:\n--- !u!", raw)
+    return list(yaml.load_all(raw, Loader=UnityLoader))
+
 objects=[]
 prefab_names=["ProjectileHit","PartDetached","CriticalWarning"]
 for kind, name in enumerate(prefab_names):
     path=pack/f"Prefabs/B0132_{name}.prefab"
-    docs=list(yaml.load_all(path.read_text(encoding="utf8"), Loader=UnityLoader))
+    docs=read_unity_documents(path)
     assert len(docs)==3, f"{name}: expected real GameObject, Transform and MonoBehaviour"
     game,transform,behavior=docs
     assert "GameObject" in game and "Transform" in transform and "MonoBehaviour" in behavior
@@ -57,7 +65,7 @@ for kind, name in enumerate(prefab_names):
     objects.append(name)
     print(f"PREFAB_YAML_PASS {name} real source mode={kind}")
 scene=pack/"Scenes/B0132_P16_VfxDemo.unity"
-docs=list(yaml.load_all(scene.read_text(encoding="utf8"), Loader=UnityLoader))
+docs=read_unity_documents(scene)
 assert len(docs)==4, f"Scene objects expected GameObject, Transform, Host and SceneRoots: {len(docs)}"
 assert docs[0]["GameObject"]["m_Name"].startswith("B01-32 PASS16")
 assert docs[2]["MonoBehaviour"]["m_Script"]["guid"]==show_guid
