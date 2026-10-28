@@ -1,0 +1,86 @@
+{
+  "schema": "B01_RESEARCH_ARTIFACT_V1",
+  "package_id": "B01-12-P16-GARAGE-NAV-001",
+  "owner": "B01-12",
+  "game_integration": "NOT_INTEGRATED",
+  "branch": "research/b01-12-p16-garage-navigation",
+  "source": {
+    "path": "Research/B01-12/W78/garage-navigation.html",
+    "sha256": "7548c18a86ef07736d551ba24c587f3842206705c80fbc41353ab1c0450dc4e4",
+    "git_blob": "55e340df2d5d27981b02bf3b518d3c01a8c31be1",
+    "author_commit": "f5a7acd396a748a62b36222de9109d43ab02f8e3"
+  },
+  "tests": {
+    "replay": {
+      "path": "Research/B01-12/W78/replay.py",
+      "sha256": "e151ef13b37da48a13b61dacb650e9bf4a5b8e06607b55ba6428838096b0e8f6",
+      "git_blob": "c74c8b6e9314af38490915c148f682b3864bfc93",
+      "actual_chromium": {
+        "pass": 32,
+        "total": 32,
+        "js_errors": 0
+      }
+    },
+    "full_local": {
+      "path": "test_navigation.py in user-evidence ZIP only",
+      "actual_chromium": {
+        "pass": 117,
+        "total": 117,
+        "js_errors": 0
+      },
+      "viewports": [
+        "320x720",
+        "768x1024",
+        "1280x720",
+        "1920x1080"
+      ]
+    }
+  },
+  "input": {
+    "previous_research_blob": "c9fb2cf145546bb70c3b0ecad23ddeca38faae3f",
+    "codex_game_head_observed": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+    "codex_R3VehicleModel_blob": "8cc68faf89793c3a803e5807594c9faf0df10091",
+    "price_model": "demo base prices and ceil(35 percent cost) for 0 HP only"
+  },
+  "capabilities": [
+    "category browsing",
+    "filter without deinstallation",
+    "part purchase",
+    "per-part persistent inventory HP",
+    "zero-HP repair cost",
+    "two simultaneous critical warnings tips OFF",
+    "track left-right visual switching",
+    "keyboard nav and focus",
+    "viewport 720p/1080p"
+  ],
+  "prohibitions": [
+    "No merge to main/develop",
+    "No modifications to Codex game Assets",
+    "No CHL/PARTSIZE source changes",
+    "No Unity/PhysX/G1/G2 claims",
+    "No simulated people claims"
+  ],
+  "native_qa": {
+    "status": "NOT_RUN",
+    "existing_codex_queue": [
+      "CV-03",
+      "CV-07"
+    ],
+    "codex_ack": "NOT_CONFIRMED"
+  },
+  "review": {
+    "b01_11": "PENDING independent research receiver",
+    "codex": "PENDING optional study/implementation decision"
+  },
+  "limitations": [
+    "isolated HTML, no Unity",
+    "budget 250 is synthetic research fixture",
+    "slot inventory not canonical game API",
+    "no geometry, physics or actual progression"
+  ],
+  "dependencies": [
+    "B01-11 independent browser UX acceptance",
+    "Codex owns canonical GUI integration",
+    "actual Unity environment and HQ G1 requirements unchanged"
+  ]
+}
