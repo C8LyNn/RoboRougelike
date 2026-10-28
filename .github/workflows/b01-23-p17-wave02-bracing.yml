@@ -1,0 +1,82 @@
+name: B01-23 P17 WAVE02 Reinforced Robot Bracing (actual CSharp sources; Unity NOT RUN)
+on:
+  push:
+    branches: [b01-23/p17-w02-structural-bracing-r1]
+    paths:
+      - "Assets/PARTSIZE001/Bracing/**"
+      - "Assets/PARTSIZE001/Bracing.meta"
+      - "Tools/B01/PARTSIZE001/P17Bracing/**"
+      - ".github/workflows/b01-23-p17-wave02-bracing.yml"
+  workflow_dispatch:
+jobs:
+  original-source-bracing:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check all immutable original producer rig weakpoint Git blobs
+        shell: bash
+        run: |
+          git merge-base --is-ancestor 098ccdbe8f129253fa4ada52318436b7cc2b4dc4 HEAD
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeContract.cs)" = "07455919a5544875fee5a78ecbbce36dc6cb49c2"
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs)" = "6153d1758e800ec5c4210323610b061c06e8ea85"
+          test "$(git rev-parse HEAD:Tools/B01/PARTSIZE001/P17Rigs/RigValidator.cs)" = "988fc31d8633e5429fc4ba377856187e5ee7601c"
+          test "$(git rev-parse HEAD:Tools/B01/PARTSIZE001/P17Weakpoints/WeakpointEngine.cs)" = "a3abe5a24afdd365a5fb162a12b3947fb2f0d10c"
+      - name: Check 6 actual Unity GUIDs and 3 real JSON kits without Unity
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P17Bracing/check_bracing_assets.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile actual original PARTSIZE, rig, weakpoint and NEW bracing CSharp
+        shell: bash
+        run: dotnet build Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --warnaserror
+      - name: Run actual structural reinforcement CSharp and 6 mitigation checks
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --no-build -- --selftest
+          dotnet run --project Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --no-build -- --check
+      - name: Reject forged reinforcement contents and restore original
+        shell: bash
+        run: |
+          path=Assets/PARTSIZE001/Bracing/P17/P17_Flanker_Reinforced.json
+          cp "$path" p17-bracing-original.json
+          python - <<'PY'
+          import json
+          p="Assets/PARTSIZE001/Bracing/P17/P17_Flanker_Reinforced.json"
+          x=json.load(open(p))
+          x["parts"][-1]["cell"]["x"]=7
+          with open(p,"w") as out:json.dump(x,out)
+          PY
+          if dotnet run --project Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --no-build -- --check; then
+            echo "FALSIFIED_BRACING_VARIANT_ACCEPTED"
+            exit 1
+          fi
+          cp p17-bracing-original.json "$path"
+          dotnet run --project Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --no-build -- --check
+          test -z "$(git status --porcelain -- "$path")"
+          echo "PASS FORGED_VARIANT_REJECTED_ROLLBACK_GIT_CLEAN"
+      - name: Generate inspectable six goal improvements original CSharp
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --no-build -- --preview > p17-w02-bracing-preview.txt
+          cat p17-w02-bracing-preview.txt
+          grep -q B01_23_BRACING_PREVIEW_SOURCE_ONLY_UNITY_PHYSX_NOT_RUN p17-w02-bracing-preview.txt
+      - name: Reject invalid CLI
+        shell: bash
+        run: |
+          if dotnet run --project Tools/B01/PARTSIZE001/P17Bracing/P17Bracing.csproj -c Release --no-build -- --evil; then
+            echo BAD_CLI_FALSE_GREEN
+            exit 1
+          fi
+          echo PASS INVALID_CLI_REJECTED
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-23-P17-W02-Bracing-${{ matrix.os }}
+          path: p17-w02-bracing-preview.txt
+          if-no-files-found: error
