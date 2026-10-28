@@ -1,12 +1,13 @@
 {
-  "schema": "B01-25-P14-bounded-LD02",
+  "schema": "B01-25-P14-bounded-LD02-SEALED-CORNERS-v2",
   "source": {
     "codex": "231005c6d0351945a8ee6684f3856af118f0e94f",
     "draftBlob": "b5f8f395f93972c0ede000701dbbada8fcfcdfdb",
     "worldBlob": "8928908db123b35dcab4b324fe9d3a7a8fceee4e",
     "editorBlob": "c92e120d9bc3ce26b3eac68cafdfeea4bacefad7",
     "oldLD02MINCommit": "167f0e4b09b866c4a46787c434ea9ec97b223595",
-    "oldLD02MINBlob": "0ef8bc8ebcd1899f905ac87524b40fcc45ce9fb9"
+    "oldLD02MINBlob": "0ef8bc8ebcd1899f905ac87524b40fcc45ce9fb9",
+    "oldBrokenLD02Blob": "6de0d04900a69606ba873f7c29cef75ed6f182cd"
   },
   "fixture": {
     "path": "Research/B01-25/P14/LD02_ARENA.json",
@@ -18,7 +19,7 @@
     "widthCells": 12,
     "depthCells": 10,
     "ground": 120,
-    "perimeterWalls": 40,
+    "perimeterWalls": 36,
     "pillars": 4,
     "lowBarriers": 2,
     "spawn": [
@@ -29,9 +30,11 @@
       9,
       5
     ],
-    "totalItems": 168
+    "totalItems": 168,
+    "cornerPlatforms": 4
   },
-  "status": "DATA_READY__UNITY_NOT_RUN",
+  "status": "SOURCE_AABB_CORNER_CLOSED__UNITY_NOT_RUN",
   "noOverwrites": true,
-  "cvQueue": "CV-05 existing; addendum only"
+  "cvQueue": "CV-05 existing; addendum only",
+  "witness": "B01-61 old corner 4/4 known RED, replacement Platform scaleY4 source AABB 8/8 wall-middle+corner intersections on 2m XY probes; zero Unity execution"
 }
