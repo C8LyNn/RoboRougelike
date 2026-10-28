@@ -1,0 +1,57 @@
+{
+  "schema": "B01_PACKAGE_MANIFEST_V1",
+  "package_id": "MAPDIFF-001",
+  "version": "R1",
+  "owner": "B01-62 — DATA INTEGRITY & SAVE QA",
+  "category": "NEW_FUNCTIONAL_OFFLINE_AUTHORING_TOOL",
+  "branch": "tools/b01-62-p17-mapdiff001",
+  "source_revision_before_manifest": "74fea6bb8fd509ae83a1ed72aae9301d7545a8b7",
+  "owned_paths": [
+    "Tools/B01/B01-62/MapDiff001/**",
+    ".github/workflows/b01-62-mapdiff-001.yml"
+  ],
+  "files_original_git_blobs": {
+    "Tools/B01/B01-62/MapDiff001/mapdiff.py": "674dbb09460421d0af48d9f614f7f68bd01c5c18",
+    "Tools/B01/B01-62/MapDiff001/test_mapdiff.py": "66ce686d4219dac1caf0a221f0e3a9c8df06ef68",
+    "Tools/B01/B01-62/MapDiff001/smoke_ld02.py": "926ae4f0616850e4b392afff0b7ec55b7eb2e9eb",
+    "Tools/B01/B01-62/MapDiff001/README.md": "947c3d526cc96ac5346d4ab7d9023400a2b6eb6d",
+    ".github/workflows/b01-62-mapdiff-001.yml": "5f799d9d27c2d9759a3225c53234a75bb25fed35"
+  },
+  "dependencies": [
+    "Python 3.11+ standard library",
+    "Existing MapDocument v1/v2 JSON inputs",
+    "Separate existing output directory"
+  ],
+  "original_codex_source": {
+    "repo_pr": "https://github.com/C8LyNn/RoboRougelike/pull/310",
+    "pinned_commit": "a2ccd055070a963805cba0779b79f18489f4794f",
+    "mapdraft_original_git_blob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "ld02_arena_git_blob": "e39e2f174984832bd97311c050e3c22fd6fb1175",
+    "ld02_cover_choice_git_blob": "8586312b9606d94b088e4e7640c28105e2d6bac1",
+    "original_items": [
+      168,
+      173
+    ]
+  },
+  "outputs": [
+    "Deterministic mapdiff.json with byte+semantic SHA-256 and full item/cell diff",
+    "Standalone visually usable mapdiff.svg three-panel footprint-aware comparison",
+    "Cross-OS raw binary byte-identical comparison gate for JSON and SVG outputs"
+  ],
+  "test_run": "NEW_DUAL_OS_22_TESTS_PLUS_CROSS_OS_PARITY_EXPECTED_TO_EXECUTE",
+  "limitations": [
+    "Read-only static map preview, not Unity/PhysX",
+    "Rejects unsupported JSON and symlinks",
+    "No in-game save or whole-run editing",
+    "MAPSAFE snapshot manifests must be verified separately",
+    "Native Unity G1 NOT_RUN"
+  ],
+  "receivers": [
+    "B01-40 provenance",
+    "B01-60 independent QA",
+    "Codex conditional external authoring usage"
+  ],
+  "import": "Copy Tools/B01/B01-62/MapDiff001 only; run python mapdiff.py --before A --after B --out-dir existing-separated-folder; no Unity import.",
+  "rollback": "Delete this isolated source directory and its scoped workflow; keep original maps and exported outputs.",
+  "release": "DRAFT_ONLY_NO_MERGE_CODEX_ACK_PENDING_G1_NOT_RUN_G2_HOLD"
+}
