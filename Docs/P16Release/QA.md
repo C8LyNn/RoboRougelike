@@ -15,7 +15,7 @@ Branch `feature/mov009-ux-309`; gameplay and build source `9ebc2df0508b5ff3cbe56
 ## Changes and remaining work
 
 - DONE: invalid victory catalog no longer repeatedly awards currency when the victory transition fails (`a2ccd055`); reproduction involved a deliberately corrupted catalog, not an assertion of normal reachability.
-- DONE: enemy targeting rejects disabled, inactive, detached and dead parts (`561c223f`). Original external B01-24 test needed an NUnit compatibility adaptation; its exact source is preserved. A policy-conditional cover test was unintentionally run and failed: shots can pass its opaque-wall fixture. The approved cover/LOS contract and a production fix remain unresolved; see `Docs/P16AI/QA.md`.
+- DONE: enemy targeting rejects disabled, inactive, detached and dead parts (`561c223f`). Original external B01-24 test needed an NUnit compatibility adaptation; its exact source is preserved. A policy-conditional cover test was unintentionally run and failed: an enemy fires toward an occluded target; this test did not establish whether its projectile passes through the wall. The approved cover/LOS contract and a production fix remain unresolved; see `Docs/P16AI/QA.md`.
 - DONE: unarmed mobile enemies physically approach and contact the player using existing R6 forces (`16c26681`); destroyed wheels cannot provide artificial propulsion, solid walls still block. No new ramming damage rule.
 - PARTIAL: LD02 perimeter and Light/Heavy straight traversal passed (`9ebc2df0`); enemy spawn envelopes, combat, obstacle/cover interactions, reward transitions and Player rendering are NOT_RUN. LD02 is not exposed in the game. See `Docs/P16LD02/QA.md`.
 - NOT_STARTED: durable save/load of an entire run. Maps can be saved and vehicle state survives the current in-memory run, but closing the game does not persist a complete expedition. A safe implementation must preserve unique part IDs, ownership/condition, progress and rewards without duplication.
@@ -25,3 +25,4 @@ Branch `feature/mov009-ux-309`; gameplay and build source `9ebc2df0508b5ff3cbe56
 ## Windows test package
 
 [Download on Google Drive](https://drive.google.com/file/d/12TTBYNQ1BXZGZ9w3dTtOoYTZhl1j2Sxf/view?usp=drivesdk); 39,624,084 bytes; SHA-256 `f6fe17e6951260ad9cd9749c355dda37dec7ac1926d8aa2af971fd8489738505`. Local: `C:\Users\kubap\Desktop\Prototypy\Releases\RoboRougelike_PASS16_9ebc2df0\RoboRougelike_PASS16_Windows_x64.zip`. Extract the whole archive and start `RoboRougelike/RoboRougelike.exe`. Test garage, map-editor save/test/return, suspension, two fire groups and combat. This is a test build, not a claim that all PASS 16 work is complete.
+
