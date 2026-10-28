@@ -32,3 +32,16 @@ jobs:
           dotnet-version: "8.0.x"
       - name: Parse exact CSharp with Roslyn (no Unity API compilation)
         run: dotnet run --configuration Release --project Tools/B01-32/P16/SourceSyntax/SourceSyntax.csproj
+      - name: Generate SHA-256 of all actual scene/prefab sources
+        run: python Tools/B01-32/P16/build_source_receipt.py build/b01-32-p16
+      - name: Upload physical standalone Unity assets and original hashes
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0132-P16-VFX-SOURCE-${{ matrix.os }}
+          path: |
+            Assets/B0132P16VfxDemo.meta
+            Assets/B0132P16VfxDemo/
+            build/b01-32-p16/SOURCE_SHA256.json
+            build/b01-32-p16/SOURCE_SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
