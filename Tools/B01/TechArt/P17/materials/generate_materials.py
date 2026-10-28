@@ -36,7 +36,8 @@ def height(profile: str, x: int, y: int, size: int) -> float:
         # Fine, entirely periodic material microstructure, not a UV-specific part.
         return (0.50 + 0.11 * math.sin(TAU * 37 * v)
                 + 0.045 * math.sin(TAU * 51 * v)
-                + 0.025 * math.sin(TAU * 5 * u))
+                + 0.025 * math.sin(TAU * 5 * u)
+                + 0.080 * math.sin(TAU * (17 * u + 3 * v)))
     raise ValueError("Unknown authored material: " + profile)
 
 
