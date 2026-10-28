@@ -55,10 +55,26 @@ jobs:
               assert 'ORIGINAL_SOURCE_NUMERIC_ANCHOR_MISMATCH' in str(e)
           else:
               raise AssertionError('WHEEL_SOURCE_MISSING_ANCHOR_NOT_REJECTED')
+          catalogue=mod.original('.',*mod.SOURCE_FILES[0])
+          logical_drift=catalogue.replace('new Cell3(1,1,1));','new Cell3(2,1,1));')
+          assert logical_drift!=catalogue
+          try:
+              mod.authoring_rows(logical_drift,source,mod.original('.',*mod.SOURCE_FILES[2]))
+          except ValueError as e:
+              assert 'PARTSIZE_11_UNMEASURED_OR_CANONICAL_SOURCE_CHANGED' in str(e)
+          else:
+              raise AssertionError('LOGICAL_SIZE_DRIFT_NOT_REJECTED')
+          bad_axis=source.replace('wheel.localRotation=Quaternion.Euler(0,0,90);',
+                                  'wheel.localRotation=Quaternion.Euler(0,0,0);')
+          assert bad_axis!=source
+          try:
+              mod.source_authored_four(bad_axis,.52)
+          except ValueError as e:
+              assert 'WHEEL_ORIENTATION_SOURCE_DRIFT' in str(e)
+          else:
+              raise AssertionError('WHEEL_AXIS_DRIFT_NOT_REJECTED')
           generated=mod.emit(mod.authoring_rows(
-              mod.original('.',*mod.SOURCE_FILES[0]),
-              source,
-              mod.original('.',*mod.SOURCE_FILES[2])))
+              catalogue,source,mod.original('.',*mod.SOURCE_FILES[2])))
           assert generated.count('\n')==45
           with tempfile.TemporaryDirectory() as tmp:
               fake=pathlib.Path(tmp)/'wrong.csv'
