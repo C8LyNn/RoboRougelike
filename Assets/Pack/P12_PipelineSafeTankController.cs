@@ -243,7 +243,7 @@ public float CurrentForwardSpeed =>
                 BindWeaponRig();
 
             if (!weaponBound)
-            { weaponReticles.Clear(); return; }
+            { AimFeedback=default;weaponReticles.Clear();if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);return; }
 
             EnsureFunctionalModuleSystem();
 
@@ -260,7 +260,7 @@ public float CurrentForwardSpeed =>
                 aimCamera = Camera.main;
 
             if (aimCamera == null)
-            { weaponReticles.Clear(); return; }
+            { AimFeedback=default;weaponReticles.Clear();if(modularAssembly!=null)modularAssembly.SetGroupTriggers(false,false);return; }
 
             Vector3 aimPoint =
                 FindAimPoint(true);
