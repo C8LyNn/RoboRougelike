@@ -1,0 +1,46 @@
+name: B01-11 FRAME-UX-001 isolated review tool
+on:
+  push:
+    branches: [research/b01-11-pass17-frame-ux-001]
+  pull_request:
+    paths:
+      - 'Research/B01-11/P17/FRAME-UX-001/**'
+      - '.github/workflows/b01-11-frame-ux.yml'
+permissions:
+  contents: read
+jobs:
+  core:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run original reducer adversarial tests
+        run: node Research/B01-11/P17/FRAME-UX-001/SOURCE/test_core.cjs
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright browser client only
+        run: npm install --no-save --no-package-lock --ignore-scripts playwright-core@1.56.1
+      - name: Inspect available browser
+        run: command -v google-chrome || command -v chromium
+      - name: Run original real DOM browser tests (4 viewport sizes)
+        run: node Research/B01-11/P17/FRAME-UX-001/SOURCE/test_browser.cjs > frame-ux-browser-results.json
+      - name: Print browser test record
+        if: always()
+        run: cat frame-ux-browser-results.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frame-ux-browser-evidence
+          path: frame-ux-browser-results.json
+          if-no-files-found: warn

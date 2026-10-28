@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRAME-UX-001 · RoboRougelike screenshot review</title>
+<style>
+:root{color-scheme:dark;--bg:#111820;--panel:#1b2835;--line:#435a69;--text:#e8f2f6;--muted:#bacad5;--accent:#8cdde9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 system-ui,Segoe UI,sans-serif}main{max-width:1140px;margin:auto;padding:20px}h1{margin:4px 0 8px;font-size:1.6rem}h2{font-size:1.04rem;margin:0 0 10px}p{color:var(--muted);margin:6px 0 14px}.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:.76rem;color:var(--accent)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}.tools{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0}.tools>*{flex:0 1 auto}button,input,select,textarea{font:inherit}button,select,input[type=file],input[type=number],textarea{border:1px solid #6d899a;background:#243649;color:var(--text);border-radius:7px;padding:8px;max-width:100%}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}button:disabled{opacity:.5}label{font-size:.9rem;display:grid;gap:5px}.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:15px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.fields input,.fields select{width:100%}.canvas-outer{position:relative;border:1px solid #7e99aa;background:#0c141c;border-radius:8px;overflow:hidden}canvas{width:100%;height:auto;display:block;touch-action:none;cursor:crosshair}small{color:var(--muted)}.annotations{padding:0;list-style:none;max-height:310px;overflow:auto}.annotations li{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.88rem}.annotations li span{flex:1;min-width:0;overflow-wrap:anywhere}.annotations li button{padding:5px 8px}.full{grid-column:1/-1}.status{padding:10px 0;min-height:22px;color:var(--accent)}.note{border-left:3px solid #e4bb75;padding:9px;background:#2c3640}.sr-only{position:absolute;clip:rect(0,0,0,0);height:1px;width:1px;overflow:hidden}
+@media(max-width:800px){main{padding:10px}.layout{grid-template-columns:1fr}.panel{padding:12px}.tools>*{flex:1 1 130px;min-width:0}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.tools>*{flex:1 1 100%;min-width:0}.tools input[type=file]{width:100%;min-width:0}.fields{grid-template-columns:1fr}}
+</style></head>
+<body><main><div class="eyebrow">B01-11 · PASS17 · FRAME-UX-001 · niezależne narzędzie badawcze</div>
+<h1>FrameUX — adnotacje do zrzutów gry</h1>
+<p>Dodaj lokalny zrzut ekranu, zaznacz przeciągnięciem problem z czytelnością celownika/HUD, przypisz priorytet i wyeksportuj reprodukowalny JSON lub PNG. Nic nie jest wysyłane do serwera.</p>
+<div class="tools">
+<label>Obraz PNG/JPG/WebP (maks. 12 MB) <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+<label>Import istniejących adnotacji JSON <input id="importInput" type="file" accept=".json,application/json"></label>
+<button id="reset" type="button">Wyczyść adnotacje</button><button id="zones" type="button" aria-pressed="true">Wyłącz ramkę referencyjną</button>
+<button id="exportJSON" type="button">Pobierz JSON</button><button id="exportPNG" type="button">Pobierz PNG</button>
+</div>
+<div class="layout">
+<section class="panel" aria-label="Obraz z obszarami adnotacji">
+<h2>Obraz i obszary problemów</h2><div class="canvas-outer"><canvas id="surface" width="1280" height="720" aria-label="Zrzut ekranu z adnotacjami. Aby dodać obszar klawiaturą, użyj formularza po prawej."></canvas></div>
+<p id="imageMeta">SYNTETYCZNY PRZYKŁAD 1280×720 (nie kadr z gry Unity)</p>
+<p class="note">Prostokąty i granice 5% są wyłącznie narzędziem pomiarowym; nie oznaczają docelowego układu UI gry.</p>
+</section>
+<section class="panel" aria-labelledby="formHeader"><h2 id="formHeader">Nowy problem czytelności</h2>
+<div class="fields">
+<label class="full">Kategoria<select id="category"><option value="RETICLE_OCCLUSION">Zasłonięcie celownika</option><option value="TEXT_OVERLAP">Nachodzący tekst</option><option value="LOW_CONTRAST">Niski kontrast</option><option value="HIDDEN_WARNING">Ukryte ostrzeżenie</option><option value="OTHER">Inny problem</option></select></label>
+<label>Priorytet<select id="severity"><option value="P0">P0 krytyczny</option><option value="P1" selected>P1 ważny</option><option value="P2">P2 drobny</option></select></label>
+<label>X (0–1)<input id="x" type="number" min="0" max="1" step=".01" value=".35"></label>
+<label>Y (0–1)<input id="y" type="number" min="0" max="1" step=".01" value=".35"></label>
+<label>Szerokość<input id="w" type="number" min=".001" max="1" step=".01" value=".30"></label>
+<label>Wysokość<input id="h" type="number" min=".001" max="1" step=".01" value=".12"></label>
+<label class="full">Opis (do 200 znaków)<textarea id="note" maxlength="200" rows="2" placeholder="Co jest zasłonięte lub nieczytelne?"></textarea></label>
+<button id="addManual" type="button" class="full">Dodaj obszar z pól formularza</button>
+</div>
+<div class="status" id="status" role="status" aria-live="polite">Gotowe do oceny zrzutu.</div>
+<h2>Lista adnotacji</h2><p id="summary">0 problemów</p><ul class="annotations" id="annotations" aria-label="Dodane problemy"></ul>
+</section></div>
+</main><script src="core.js"></script><script>
+'use strict';
+const Core=window.FrameUXCore,$=id=>document.getElementById(id);
+const canvas=$('surface'),ctx=canvas.getContext('2d');let image=null,showZones=true,dragStart=null,preview=null;
+let state=Core.create(1280,720);
+const COLORS={P0:'#ff7c8a',P1:'#ffc973',P2:'#8edbe8'};
+function announce(message){$('status').textContent=message;}
+function drawFixture(){
+ const g=ctx.createLinearGradient(0,0,canvas.width,canvas.height);g.addColorStop(0,'#1b303f');g.addColorStop(1,'#334d54');
+ ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);
+ ctx.fillStyle='#4c5c62';ctx.fillRect(0,520,canvas.width,200);
+ ctx.fillStyle='#73828c';ctx.fillRect(170,390,320,180);ctx.fillRect(750,310,200,210);
+ ctx.strokeStyle='#dce7f0';ctx.lineWidth=3;const x=canvas.width/2,y=canvas.height/2;ctx.beginPath();ctx.moveTo(x-25,y);ctx.lineTo(x-8,y);ctx.moveTo(x+8,y);ctx.lineTo(x+25,y);ctx.moveTo(x,y-25);ctx.lineTo(x,y-8);ctx.moveTo(x,y+8);ctx.lineTo(x,y+25);ctx.stroke();
+ ctx.fillStyle='#e6e9e4';ctx.font='20px system-ui';ctx.fillText('SYNTHETIC TEST FRAME — NOT UNITY',24,38);ctx.fillText('HP 120/120',26,680);ctx.fillText('WEAPON A',1040,680);
+}
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);if(image)ctx.drawImage(image,0,0,canvas.width,canvas.height);else drawFixture();
+ if(showZones){ctx.save();ctx.strokeStyle='rgba(127,220,239,.7)';ctx.setLineDash([12,8]);ctx.lineWidth=Math.max(2,canvas.width/640);ctx.strokeRect(canvas.width*.05,canvas.height*.05,canvas.width*.9,canvas.height*.9);ctx.restore();}
+ function rect(a,previewMode=false){ctx.save();ctx.strokeStyle=COLORS[a.severity]||COLORS.P1;ctx.fillStyle=(a.severity==='P0'?'rgba(255,124,138,.15)':a.severity==='P1'?'rgba(255,201,115,.15)':'rgba(142,219,232,.15)');ctx.lineWidth=Math.max(2,canvas.width/500);const x=a.x*canvas.width,y=a.y*canvas.height,w=a.w*canvas.width,h=a.h*canvas.height;ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);if(!previewMode){ctx.fillStyle=ctx.strokeStyle;ctx.font=Math.max(14,canvas.width/60)+'px sans-serif';ctx.fillText('#'+a.id+' '+a.severity,x+4,Math.max(15,y-5));}ctx.restore();}
+ state.annotations.forEach(a=>rect(a));if(preview)rect({...preview,severity:$('severity').value},true);
+}
+function list(){
+ $('annotations').replaceChildren();
+ for(const a of state.annotations){const li=document.createElement('li'),span=document.createElement('span'),btn=document.createElement('button');span.textContent='#'+a.id+' '+a.severity+' '+a.category+' — '+(a.note||'(bez opisu)');btn.type='button';btn.textContent='Usuń';btn.setAttribute('aria-label','Usuń adnotację '+a.id);btn.addEventListener('click',()=>{try{state=Core.remove(state,a.id);refresh();announce('Usunięto #'+a.id);}catch(e){announce(e.message);}});li.append(span,btn);$('annotations').append(li);}
+ const s=Core.summary(state);$('summary').textContent=s.total+' problemów · P0 '+s.P0+' / P1 '+s.P1+' / P2 '+s.P2;draw();
+}
+function refresh(){list();}
+function addRect(rect){try{state=Core.add(state,{category:$('category').value,severity:$('severity').value,note:$('note').value,...rect});refresh();announce('Dodano problem #'+(state.nextId-1));return true;}catch(e){announce('Odrzucono: '+e.message);return false;}}
+function readNumbers(){return {x:Number($('x').value),y:Number($('y').value),w:Number($('w').value),h:Number($('h').value)};}
+$('addManual').addEventListener('click',()=>addRect(readNumbers()));
+function relativePosition(e){const r=canvas.getBoundingClientRect();return {x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))};}
+canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;dragStart=relativePosition(e);canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{if(!dragStart)return;const p=relativePosition(e);preview={x:Math.min(dragStart.x,p.x),y:Math.min(dragStart.y,p.y),w:Math.abs(dragStart.x-p.x),h:Math.abs(dragStart.y-p.y)};draw();});
+canvas.addEventListener('pointerup',e=>{if(!dragStart)return;const p=relativePosition(e);const r={x:Math.min(dragStart.x,p.x),y:Math.min(dragStart.y,p.y),w:Math.abs(dragStart.x-p.x),h:Math.abs(dragStart.y-p.y)};dragStart=null;preview=null;if(r.w>=.008&&r.h>=.008){Object.entries(r).forEach(([key,val])=>$(key).value=val.toFixed(4));addRect(r);}else{announce('Zaznacz obszar większy niż 0,8% szerokości i wysokości.');draw();}});
+canvas.addEventListener('pointercancel',()=>{dragStart=null;preview=null;draw();});
+$('reset').addEventListener('click',()=>{state=Core.create(canvas.width,canvas.height,state.imageName);refresh();announce('Wyczyszczono adnotacje.');});
+$('zones').addEventListener('click',()=>{showZones=!showZones;$('zones').setAttribute('aria-pressed',String(showZones));$('zones').textContent=showZones?'Wyłącz ramkę referencyjną':'Włącz ramkę referencyjną';draw();});
+function save(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+$('exportJSON').addEventListener('click',()=>{save(new Blob([Core.exportJSON(state)],{type:'application/json'}),'frame-ux-review.json');announce('Wyeksportowano JSON ('+state.annotations.length+' obszarów, bez zawartości obrazu).');});
+$('exportPNG').addEventListener('click',()=>{draw();canvas.toBlob(blob=>{if(blob){save(blob,'frame-ux-annotated.png');announce('Wyeksportowano adnotowany PNG.');}else announce('Nie można wyeksportować PNG.');},'image/png');});
+$('imageInput').addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>12*1024*1024){announce('Niepoprawny format lub plik przekracza 12 MB.');return;}const url=URL.createObjectURL(file),pic=new Image();pic.onload=()=>{URL.revokeObjectURL(url);if(pic.naturalWidth>8192||pic.naturalHeight>8192){announce('Obraz przekracza 8192 px.');return;}image=pic;canvas.width=pic.naturalWidth;canvas.height=pic.naturalHeight;state=Core.create(canvas.width,canvas.height,file.name.slice(0,150).replace(/[\\/]/g,'_'));$('imageMeta').textContent='Lokalny obraz: '+canvas.width+'×'+canvas.height+'; '+state.imageName;refresh();announce('Wczytano obraz lokalnie. Poprzednie adnotacje wyczyszczone.');};pic.onerror=()=>{URL.revokeObjectURL(url);announce('Nie można odczytać obrazu.');};pic.src=url;});
+$('importInput').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>100000)throw Error('JSON jest zbyt duży');state=Core.importJSON(await file.text(),{width:canvas.width,height:canvas.height});refresh();announce('Wczytano '+state.annotations.length+' adnotacji z JSON.');}catch(err){announce('Import odrzucony: '+err.message);}});
+refresh();
+window.FrameUXReview={getState:()=>state,draw,addRect,reset:()=>$('reset').click()};
+</script></body></html>
