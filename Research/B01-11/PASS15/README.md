@@ -34,3 +34,20 @@ The **actual independent, original executable first run** covered F0/F1/F2/F3/F8
 **One expected change from owner:** Research HTML in existing B01-12 branch should show variant-neutral participant language and only true available controls, with new Git blob. Then B01-11 changes its now-expected-RED assertions to required GREEN on the new source. No premature winner, code merge or G1 claim.
 
 **Production boundary:** Canonical Codex #310 old `231005c6d0351945a8ee6684f3856af118f0e94f` 2-row HUD is still not fixed by this research. Unity native 720p/1080p visual is already [CV-06](https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6455303223) and remains NOT_RUN. Human participants = 0 / no HQ authorization. B01-11 only owns these `Research/B01-11/PASS15/**` source artifacts.
+
+## PASS15 continuation / cycle 2 — independent garage functional-state source receiver
+
+Source: [B01-12 garage-readiness.html](https://github.com/C8LyNn/RoboRougelike/blob/ff0a7366bd12222cf0a547c82b7715177fd13aa4/Research/B01-12/W74/garage-readiness.html), exact **producer Git blob** `564354278cce2de03cf20a9787e1da88c3bfef05` at commit `ff0a7366bd12222cf0a547c82b7715177fd13aa4`. Do not substitute HEAD silently.
+
+**New executable:** [garage_functional_source_receiver.js](garage_functional_source_receiver.js), standalone Node `git show`/SHA-pin version, plus `verifyAndRun` for embedded exact original JS runtime inspection.
+
+```sh
+# With both immutable Git commits available in the same disposable local repo:
+node Research/B01-11/PASS15/garage_functional_source_receiver.js .
+```
+
+**Actually executed:** fetched the actual producer original HTML source via GitHub; ran its untouched inline `<script>` in a V8 runtime against an intentionally **emulated DOM**, including real original event handlers for part mount/damage/repair, wheel/track/hover switching, tips OFF/ON, disconnect, blocked start and editor return. **19/19 functional logic assertions GREEN**. The single additional schematic visualization assertion **EXPECTED RED**: when both Track L/R are mounted, selected and functional, source renders the system as `READY` but `#schematic` has only `data-piece` IDs `gun, left, core, right, omni, hover` and no trackL/trackR representation at all. The player has track **controls** in the list but no corresponding presence/HP visual on the 3×3 schematic. This is a new, source-confirmed **research prototype** visual mismatch (not canonical Unity). It is not asserted as a browser screenshot, human finding, or new Codex game bug.
+
+**Owner B01-12 minimal acceptance after fix:** with drive = Tracks, both tracks 100HP, schematics must visually distinguish each installed left/right track and its HP from wheels/Omni/Hover. Damage Track R to 0HP must change its *visual* state as well as the already-correct `CRITICAL_MOBILITY` card; swapping drive Wheels ↔ Tracks must keep actual mounted state without lying about active drive. Owner can choose responsive substitution or two additional accessible cells rather than enlarging the fixed 3×3 grid; verify **320/720/1080** in genuine Chromium after changing the exact source SHA. The V8 source predicate for original missing-track cells must be updated if a semantically equivalent alternate schematic is chosen.
+
+No edits to B01-12 files, Codex `Assets/**`, CHL or PARTSIZE. **Native Unity and human participants NOT_RUN.** Current 320–1920 original research HUD3 browser defects still await B01-12 fix and changed SHA; previous 64/64 positive +12/12 EXPECTED_RED not rerun.
