@@ -56,8 +56,8 @@
     },
     "QA_SYNTHETIC_GBC01.json": {
       "bytes": 1655,
-      "sha256": "ca5e0fe689fc01db5745b9ffc9c5d7c023c7932f955779044d6a531a205329e4",
-      "git_blob": "4e8f637bf56c1bb869b9279df8f0c482091e1091"
+      "sha256": "cabe93aea9cfdfd8a4e58c4961b51759e005740058d1ebb27e53b4b703809d19",
+      "git_blob": "b14b672d47be618882f92801fda832f782e91601"
     },
     "QA_SYNTHETIC_PARTICIPANT_1280.png": {
       "bytes": 45205,
