@@ -14,7 +14,7 @@ assert manifest["native_unity_status"] == "NOT_RUN"
 assert not manifest["gameplay_mutations"]
 print("MANIFEST_PASS package id, isolation and no native claims")
 
-all_meta = list(pack.rglob("*.meta"))
+all_meta = [pack.with_suffix(".meta")] + list(pack.rglob("*.meta"))
 assert len(all_meta) == 17, f"Expected 17 package .meta including folders; got {len(all_meta)}"
 guid_map={}
 for item in all_meta:
