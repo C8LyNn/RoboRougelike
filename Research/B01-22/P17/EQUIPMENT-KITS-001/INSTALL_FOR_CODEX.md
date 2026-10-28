@@ -7,3 +7,10 @@
 5. No edits to canonical `Assets/**`, frozen ECON #252/#263, LEGENDARY #242, CHL, PARTSIZE or live Codex workspace are proposed by this PR.
 
 **Rollback:** remove staged EK01–EK10 catalog entries from Codex's future integration branch; leave all existing owned item GUIDs untouched. Nothing in current game needs rollback because this data-only PR is isolated.
+
+## WAVE02 / safe receiver 1.0.2
+
+1. Checkout pinned PR commit and run `stage_kit_payload.py --verify-only` + Node/Python tests.
+2. Execute `python stage_kit_payload.py --stage /EXISTING_PARENT/NEW_EMPTY_DESTINATION`; rejects a previously existing target. Read 10 flattened `offers.json` equipment stocks, price snapshot, `receipt.json` SHA256 checksums.
+3. Codex is sole owner of any actual R3 wallet / GUID / inventory or mounting integration; no host gameplay is changed by this source. Recheck current Codex original R3/R4 enum/prices before import.
+4. Rollback only staged directory with `python stage_kit_payload.py --rollback /EXISTING_PARENT/NEW_EMPTY_DESTINATION`. Any staged mutation or extra user file blocks deletion; manually inspect. This rollback does not undo any separate future Codex-side integration.

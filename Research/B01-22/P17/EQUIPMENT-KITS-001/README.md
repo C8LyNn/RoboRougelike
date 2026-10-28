@@ -16,3 +16,14 @@ The quote is an **offline preview**, not a purchase or reward. Inventory capacit
 ## Wariant 1.0.1 — weryfikacja cen w oryginalnym źródle
 
 `verify_host_source.py` czyta oryginalne pliki C# z podanego commita Codexa przez git show (bez modyfikacji). Weryfikuje enumy, cenniki R3/R4 i oryginalne blob SHA, dodatkowo sprawdza bieżący PR #310 oraz 7 testów negatywnych. Skrypt uruchamia dedykowany CI na Windows i Ubuntu, *nie* wykonuje Unity ani transakcji gry. Status natywnego Unity = NOT_RUN.
+
+## WAVE02 / v1.0.2 — rzeczywisty safe intake
+
+`stage_kit_payload.py` sprawdza SHA-256 i rozmiar każdego z 13 oryginalnych plików manifestu, waliduje 10 kitów, a następnie tworzy w nowym pustym folderze `catalog.json`, flatten `offers.json` i odporny na zmiany `receipt.json`. Refuses overwrites, symlinks and modified rollback data. No wallet, R3 inventory, save or Unity Assets are written.
+
+```
+python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --verify-only
+python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --stage /tmp/NEW-CODEX-INTAKE
+python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --rollback /tmp/NEW-CODEX-INTAKE
+python -m unittest discover -s Research/B01-22/P17/EQUIPMENT-KITS-001 -p test_stage_kit_payload.py -v
+```

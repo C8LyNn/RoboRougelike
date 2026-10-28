@@ -1,7 +1,7 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-22-EQUIPMENT-KITS-001",
-  "revision": "1.0.1",
+  "revision": "1.0.2",
   "owner": "B01-22",
   "issue": 330,
   "purpose": "10 source-pinned garage equipment offer datasets, offline quote/validation",
@@ -35,13 +35,13 @@
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/README.md",
-      "sha256": "d6ca832426f682912db179ee2ce1d98b70d5488082c215c5126ca7ec6d299c7a",
-      "bytes": 1626
+      "sha256": "6f8f28d322f130968aa1595a503760bcc489e433d577b0d84529fea31567f7e5",
+      "bytes": 2414
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/INSTALL_FOR_CODEX.md",
-      "sha256": "f5ce365e21dee2306dba1f746e21c2d8b430035134a91956f726d1a79f145dbf",
-      "bytes": 1250
+      "sha256": "da782475cbfb0e4c86ebd72971d3828ce5e7b6d3b7ca462c1589144528860ec9",
+      "bytes": 2070
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/KNOWN_LIMITATIONS.md",
@@ -50,13 +50,13 @@
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_PLAN.md",
-      "sha256": "43e06ba627656c45afa493fcc07ccd6f6307dd72f885e325e54071a08be7881c",
-      "bytes": 1208
+      "sha256": "17fec996a3f7dd29eb59e82580483590d3eeb8a0d6b9c0916b5d37f5d54dd048",
+      "bytes": 1780
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/CHANGELOG.md",
-      "sha256": "6af419dfa1efe78135fb5f4579a4805e840038437b93d32a860aab1af3c2a37d",
-      "bytes": 628
+      "sha256": "6273051913fddf7bdde088055fa14505c4102b820675f39ba7af2e0ad9928db9",
+      "bytes": 963
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_EVIDENCE/v8-direct.json",
@@ -67,6 +67,16 @@
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py",
       "sha256": "e059c0e371493ce0da140333f9d533ccf1785b3b79870d732825a3a8445be050",
       "bytes": 4986
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py",
+      "sha256": "fe49701432cac3869f7268c9d6b812cff508157eefc33e14863c5652b7a06b1f",
+      "bytes": 8813
+    },
+    {
+      "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/test_stage_kit_payload.py",
+      "sha256": "a969a8300b8a2c0f1b6929deba5e58b006a05669b93a392f41f3e531aa728580",
+      "bytes": 6932
     }
   ],
   "possible_conflicts": [
@@ -80,14 +90,13 @@
   "source_license": "B01 original data and source; published R3/R4 enum/price provenance in catalog.json",
   "tests": [
     {
-      "name": "previous revision 1.0.0 actual Node tests Windows and Ubuntu",
+      "name": "v1.0.1 original Node 26/26 each OS plus 7 original-source negatives",
       "status": "PASS",
-      "count": "26/26 per OS",
-      "tested_sha": "0f058dd4f50f1ab2988f088fcb67a3c807c53397",
-      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40727646415"
+      "tested_sha": "1dd5c79c685f25a214995d9c9dc6561277978f81",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743472433"
     },
     {
-      "name": "1.0.1 published source pin/mutant and Node tests",
+      "name": "v1.0.2 original Python staging 18 tests and Node 26 tests",
       "status": "NOT_RUN",
       "evidence": null
     },
@@ -107,7 +116,9 @@
     "No physical auto-mount",
     "Prices require recheck against Codex host",
     "Source-provenance workflow G0 to be executed and acknowledged by receiver",
-    "B01-40 and B01-60 independent acceptance pending"
+    "B01-40 and B01-60 independent acceptance pending",
+    "Only staging data; no canonical host transaction or code changes",
+    "B01-40 and B01-60 independent QA pending"
   ],
   "rollback": "Do not import or remove staged EK01-EK10; canonical game source unchanged"
 }
