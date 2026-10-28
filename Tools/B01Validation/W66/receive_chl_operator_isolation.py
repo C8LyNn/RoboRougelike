@@ -10,9 +10,9 @@ import subprocess
 import tempfile
 import unittest
 
-OWNER_COMMIT="e395b8b1e25b56285e39d4d69cf472af3f3d5ee8"
-OWNER_PATH="Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py"
-OWNER_GIT_BLOB="e342d882bbce93f8d4c35b225c90f04a2c71ddea"
+OWNER_COMMIT="9a6acca417524545fbce7ac5962fe0944c5237c6"
+OWNER_PATH="Tools/B01/QA-CHL003/W66Receipt/chl003_w66_operator.py"
+OWNER_GIT_BLOB="96aec2f870ccc510727048a7208292f781e80c36"
 
 def git(*args):
     return subprocess.check_output(["git",*args],stderr=subprocess.PIPE).decode().strip()
@@ -66,23 +66,61 @@ class ActualCHLOperatorIsolation(unittest.TestCase):
         with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_IN_PROJECT"):
             OWNER.safe_output(self.one,self.one/"evidence")
 
-    def test_04_sibling_source_worktree_root_currently_not_rejected(self):
-        # This is a genuine current-owner-script RED witness, not an expected
-        # security PASS: preflight permits evidence to be written into another
-        # registered source worktree, a gap pending B01-20 remediation.
-        _,target=OWNER.safe_output(self.one,self.two)
-        self.assertEqual(target,self.two.resolve())
-        print("SOURCE_DEFECT_REPRODUCED=CHL_EVIDENCE_SIBLING_WORKTREE_ROOT_ACCEPTED")
+    def test_04_sibling_source_worktree_root_is_rejected_after_owner_fix(self):
+        with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_IN_REGISTERED_WORKTREE"):
+            OWNER.safe_output(self.one,self.two)
 
-    def test_05_sibling_source_unity_assets_subfolder_currently_not_rejected(self):
-        target=self.two/"Assets"/"evidence"
+    def test_05_sibling_source_assets_is_rejected_after_owner_fix(self):
+        with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_IN_REGISTERED_WORKTREE"):
+            OWNER.safe_output(self.one,self.two/"Assets"/"receipts")
+
+    def test_05b_sibling_source_parent_alias_is_rejected(self):
+        with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_ANCESTOR_OF_REGISTERED_WORKTREE"):
+            OWNER.safe_output(self.one,self.root)
+
+    def test_05c_similarly_named_sibling_prefix_is_allowed(self):
+        target=self.root/"producer-B-different"/"evidence"
         _,actual=OWNER.safe_output(self.one,target)
         self.assertEqual(actual,target.resolve())
-        print("SOURCE_DEFECT_REPRODUCED=CHL_EVIDENCE_SIBLING_ASSETS_ACCEPTED")
 
     def test_06_parent_of_current_project_denied(self):
         with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_ANCESTOR_OF_PROJECT"):
             OWNER.safe_output(self.one,self.root)
+
+    def test_07_exact_20_15_authored_nunit_ids(self):
+        self.assertEqual(len(OWNER.ids("EditMode")),20)
+        self.assertEqual(len(OWNER.ids("PlayMode")),15)
+        self.assertIn("B01.CHL003.Tests.CHL003FinishAndTelemetryEditModeTests.E20_B0160NearGroundFalseSupportRejectsHoveringWheel",OWNER.ids("EditMode"))
+        self.assertIn("B01.CHL003.Tests.CHL003DemoAcceptancePlayModeTests.P15_B0160NearGroundAirGapNeverAppliesThrustOrYaw",OWNER.ids("PlayMode"))
+
+    @staticmethod
+    def synthetic_trial_rows(broken=False):
+        header="profile,attempt,massKg,widthM,lengthM,elapsedSec,state,physicsSamples,collisionEntries,contactPoints,barrierPoints,rampPoints,bridgePoints,groundPoints,falls,checkpoints,completions,peakSpeedMps,travelMeters,minHeightM,maxHeightM"
+        lines=[]
+        for profile,mass,width in (("LIGHT",270,2.0),("HEAVY",1150,2.82)):
+            for attempt in range(1,4):
+                w=0.01 if broken and profile=="HEAVY" and attempt==1 else width
+                values=(profile,attempt,mass,w,2.3,7.2,"Completed",400,7,23,0,3,5,15,0,4,1,8.2,42.7,0,2.3)
+                lines.extend(("CHL003_NATIVE_REAL_TRIAL "+header,",".join(map(str,values))))
+        return "\n".join(lines)+"\n"
+
+    def test_08_synthetic_six_trial_structure_control_only(self):
+        self.assertEqual(OWNER.validate_trials(self.synthetic_trial_rows()),6)
+
+    def test_09_heavy_attempt_one_incorrect_hull_is_rejected(self):
+        with self.assertRaisesRegex(OWNER.ReceiptError,"RIG_FOOTPRINT_IDENTICAL_OR_INVERTED"):
+            OWNER.validate_trials(self.synthetic_trial_rows(broken=True))
+
+    def test_07b_foreign_nunit_assembly_cases_rejected(self):
+        import xml.etree.ElementTree as ET
+        root=ET.Element("test-run",result="Passed")
+        expected=ET.SubElement(root,"test-suite",type="Assembly",name=OWNER.ASSEMBLIES["EditMode"]+".dll")
+        foreign=ET.SubElement(root,"test-suite",type="Assembly",name="OTHER.FOREIGN.dll")
+        for full in OWNER.ids("EditMode"):
+            cls,name=full.rsplit(".",1)
+            ET.SubElement(foreign,"test-case",classname=cls,name=name,fullname=full,result="Passed")
+        with self.assertRaisesRegex(OWNER.ReceiptError,"NUNIT_CASE_OUTSIDE_EXPECTED_ASSEMBLY"):
+            OWNER.validate_xml("EditMode",ET.tostring(root,encoding="unicode"))
 
     def test_07_wrong_source_sha_refused(self):
         with self.assertRaisesRegex(OWNER.ReceiptError,"WRONG_SOURCE_SHA"):
@@ -90,5 +128,5 @@ class ActualCHLOperatorIsolation(unittest.TestCase):
 
 if __name__=="__main__":
     print("CHL_ORIGINAL_OPERATOR_GIT_BLOB="+OWNER_GIT_BLOB+
-          " NATIVE_UNITY=NOT_RUN SIBLING_TEST=KNOWN_RED_WITNESS",flush=True)
+          " NATIVE_UNITY=NOT_RUN SIBLING_GUARD=EXPECTED_GREEN_NEW_OWNER_SHA",flush=True)
     unittest.main(verbosity=2)
