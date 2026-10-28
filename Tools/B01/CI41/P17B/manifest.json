@@ -1,0 +1,51 @@
+{
+  "package_id": "CI41-ASSETIMPACT-001",
+  "version": "1.0.0",
+  "owner": "B01-41",
+  "branch": "audit/b01-41-p17-asset-impact-trace",
+  "source_kind": "SOURCE_ONLY_CI_TOOL_NOT_GAMEPLAY",
+  "runtime": "Python 3 stdlib + git",
+  "inputs": {
+    "base": "a2ccd055070a963805cba0779b79f18489f4794f",
+    "head": "16c2668104952f1b8db304cc7817b897fb48a9b1",
+    "lineage": "original Codex PR #310"
+  },
+  "owned_paths": [
+    "Tools/B01/CI41/P17B/asset_impact.py",
+    "Tools/B01/CI41/P17B/test_asset_impact.py",
+    "Tools/B01/CI41/P17B/manifest.json",
+    "Tools/B01/CI41/P17B/README.md",
+    ".github/workflows/b01-41-p17b-asset-impact.yml"
+  ],
+  "immutable_source_blobs": {
+    "Tools/B01/CI41/P17B/asset_impact.py": "8214f5f5f3f0298ca39815e1f86075401d2bf659",
+    "Tools/B01/CI41/P17B/test_asset_impact.py": "0356714cf844b31c7d73628c5a3fe401e0f22c26"
+  },
+  "dependencies": {
+    "engine_format": "Unity 6000.3.14f1 serialized text; no engine run",
+    "native_gameplay": "Codex exclusively",
+    "native_qa": "B01-60 independent pending",
+    "integration": "B01-40 B01-00 HQ approval"
+  },
+  "execution": {
+    "expected_unit_tests_per_os": 9,
+    "actual_unity": "NOT_RUN",
+    "G1": "HOLD",
+    "G2": "HOLD",
+    "game_integration": "NOT_INTEGRATED"
+  },
+  "outputs": [
+    "affected_scenes",
+    "affected_prefabs",
+    "via shortest GUID dependency chain",
+    "machine readable original source report"
+  ],
+  "limits": [
+    "static local Assets GUID graph only",
+    "runtime/C# semantic refs not included",
+    "deleted/unmapped fail closed",
+    "native verification required"
+  ],
+  "import": "Run read-only CLI on exact trusted Git PR SHA inputs; optional CI adoption requires HQ/Codex approval",
+  "rollback": "Close Draft or delete isolated tool; no game file changes"
+}

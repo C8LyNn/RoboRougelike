@@ -48,11 +48,23 @@ jobs:
           grep -q 'DELETED_ASSET_REQUIRES_SEPARATE_RETIREMENT_QA_FAIL_CLOSED' "Tools/B01/CI41/P17B/result-${RUNNER_OS}.txt"
           grep -q 'REAL_CODEX_ENEMY_AI_SHA_ORIGINAL_ASSET_IMPACT_SCAN_PASS' "Tools/B01/CI41/P17B/result-${RUNNER_OS}.txt"
           echo 'CI41_ASSETIMPACT_001_EXECUTED_SOURCE_TESTS_PASS; NATIVE_UNITY=NOT_RUN; G1=HOLD'
+      - name: Generate real Codex source asset-impact receipt JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17B/asset_impact.py --repo . --base a2ccd055070a963805cba0779b79f18489f4794f --head 16c2668104952f1b8db304cc7817b897fb48a9b1 > "Tools/B01/CI41/P17B/original-codex-${RUNNER_OS}.json"
+          "$PY" -m json.tool "Tools/B01/CI41/P17B/original-codex-${RUNNER_OS}.json" > /dev/null
+          grep -q '"status": "PASS_IMPACT_GRAPH_COMPUTED"' "Tools/B01/CI41/P17B/original-codex-${RUNNER_OS}.json"
+          grep -q '"native_unity": "NOT_RUN"' "Tools/B01/CI41/P17B/original-codex-${RUNNER_OS}.json"
+          echo 'ORIGINAL_CODEX_ASSET_IMPACT_RECEIPT_GENERATED_NOT_NATIVE_G1'
       - name: Publish original Python Git test trace only
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: CI41-P17B-ASSETIMPACT-${{ matrix.os }}
-          path: Tools/B01/CI41/P17B/result-${{ runner.os }}.txt
+          path: |
+            Tools/B01/CI41/P17B/result-${{ runner.os }}.txt
+            Tools/B01/CI41/P17B/original-codex-${{ runner.os }}.json
           if-no-files-found: warn
           retention-days: 14
