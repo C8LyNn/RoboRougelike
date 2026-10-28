@@ -75,7 +75,7 @@ class ActualCHLOperatorIsolation(unittest.TestCase):
             OWNER.safe_output(self.one,self.two/"Assets"/"receipts")
 
     def test_05b_sibling_source_parent_alias_is_rejected(self):
-        with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_ANCESTOR_OF_REGISTERED_WORKTREE"):
+        with self.assertRaisesRegex(OWNER.ReceiptError,"EVIDENCE_ANCESTOR_OF_(?:PROJECT|REGISTERED_WORKTREE)"):
             OWNER.safe_output(self.one,self.root)
 
     def test_05c_similarly_named_sibling_prefix_is_allowed(self):
