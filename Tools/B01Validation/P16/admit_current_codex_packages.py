@@ -169,7 +169,7 @@ def check(snapshot):
     codex=set(paths["codex"])
     chl=set(paths["chl"])
     part=set(paths["part"])
-    require(len(chl)==52 and len(part)==34,"PACKAGE_NEW_UNRECEIVED_SOURCE_CHANGE")
+    require(len(chl)==45 and len(part)==28,"PACKAGE_NEW_UNRECEIVED_SOURCE_CHANGE")
     require(not codex.intersection(chl),"CHL_CANONICAL_ASSET_PATH_COLLISION")
     require(not codex.intersection(part),"PART_CANONICAL_ASSET_PATH_COLLISION")
     require(not chl.intersection(part),"TWO_PRODUCER_ASSET_PATH_COLLISION")
