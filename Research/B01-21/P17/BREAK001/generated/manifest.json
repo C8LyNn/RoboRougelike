@@ -1,0 +1,46 @@
+{
+  "arenas": [
+    {
+      "arenaId": "AR16_01_OPEN_FLANK",
+      "json": "AR16_01_OPEN_FLANK.break.json",
+      "sourceCoverCount": 6,
+      "stateCount": 6,
+      "statesWithVisibilityIncrease": 6,
+      "totalNewlyVisiblePairsAcrossSingleCoverWhatIfs": 67
+    },
+    {
+      "arenaId": "AR16_02_SPLIT_DECISION",
+      "json": "AR16_02_SPLIT_DECISION.break.json",
+      "sourceCoverCount": 11,
+      "stateCount": 11,
+      "statesWithVisibilityIncrease": 10,
+      "totalNewlyVisiblePairsAcrossSingleCoverWhatIfs": 117
+    },
+    {
+      "arenaId": "AR16_03_DENSE_PRESSURE",
+      "json": "AR16_03_DENSE_PRESSURE.break.json",
+      "sourceCoverCount": 16,
+      "stateCount": 16,
+      "statesWithVisibilityIncrease": 12,
+      "totalNewlyVisiblePairsAcrossSingleCoverWhatIfs": 112
+    }
+  ],
+  "generatedFiles": [
+    "AR16_01_OPEN_FLANK.break.json",
+    "AR16_02_SPLIT_DECISION.break.json",
+    "AR16_03_DENSE_PRESSURE.break.json",
+    "cover_break_viewer.html"
+  ],
+  "integrated": false,
+  "nativeUnity": "NOT_RUN",
+  "originalMAPGENGameSHA": "589b60a912096d1e9917cb0bbac73a53e7543b4f",
+  "playerBuild": "NOT_RUN",
+  "schema": "B01-21-MAP-BREAK-001-MANIFEST-v1",
+  "sourceBlueprintGitBlobs": {
+    "AR16_01_OPEN_FLANK": "fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e",
+    "AR16_02_SPLIT_DECISION": "022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790",
+    "AR16_03_DENSE_PRESSURE": "1fe7bf8b124d999de75c0fd3cacc85ee62319429"
+  },
+  "sourceCover001Commit": "454cd190639ba6ce3600ceed5f4fbd97fff298c2",
+  "testScope": "SOURCE_ONLY"
+}
