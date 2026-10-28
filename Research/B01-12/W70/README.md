@@ -31,9 +31,9 @@ A participant-only mode hides all preset/variant/repair answers and moderator co
 
 ## ACTUAL producer browser QA
 
-Original same source HTML tested on **headless Chromium 144.0.7559.96** with Python Playwright 1.57.0. **126/126 genuine browser assertions PASS; 0 page JS exceptions**. Screens: **320, 720, 1280, 1920 CSS px**; real DOM, Tab/Space/Escape, `aria-expanded`, `body.aria_snapshot()`, overflow, fixture state changes and categories in both collapsed/expanded variants. Additional negative: **injected DOM mutation deliberately removed all group reasons and restored first-two READY rows**, causing the exact third+ problem to become inaccessible; original renderer immediately restored both causes. This is a **controlled negative mutation**, not a claim of an observed original Unity FAIL.
+Original same source HTML tested on **headless Chromium 144.0.7559.96** with Python Playwright 1.57.0. **134/134 genuine browser assertions PASS; 0 page JS exceptions**. Screens: **320, 720, 1280, 1920 CSS px**; real DOM, Tab/Shift+Tab/Enter/Space/Escape, `aria-expanded`, `body.aria_snapshot()`, overflow, fixture state changes and categories in both collapsed/expanded variants. Additional negative: **injected DOM mutation deliberately removed all group reasons and restored first-two READY rows**, causing the exact third+ problem to become inaccessible; original renderer immediately restored both causes. This is a **controlled negative mutation**, not a claim of an observed original Unity FAIL.
 
-The full source test `test_hud3.py`, original-machine JSON `results.json`, the HTML and authentic 4 Chromium PNG screenshots are in the **conversation-local** PASS14 evidence ZIP. The ZIP is **not** a GitHub Actions artifact and cannot by itself substantiate an independent B01-11 QA verdict. The repository contains the original immutable HTML and this replay procedure.
+The full source test `test_hud3.py`, original-machine JSON `results.json`, the HTML and authentic 6 Chromium PNG screenshots are in the **conversation-local** PASS14 evidence ZIP. The ZIP is **not** a GitHub Actions artifact and cannot by itself substantiate an independent B01-11 QA verdict. The repository contains the original immutable HTML and this replay procedure.
 
 ### Reproduce independent browser inspection
 
