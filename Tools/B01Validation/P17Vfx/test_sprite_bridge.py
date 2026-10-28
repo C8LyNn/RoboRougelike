@@ -42,7 +42,7 @@ class RealSourceUnitySpriteImport(unittest.TestCase):
                 img=Image.open(io.BytesIO(self.files[n]))
                 self.assertEqual(img.size,(256,256))
                 self.assertEqual(img.mode,"RGBA")
-                if "-clean-" in n:self.assertIsNone(img.getchannel("A").getbbox())
+                if "/B0140_clean-" in n:self.assertIsNone(img.getchannel("A").getbbox())
                 else:self.assertIsNotNone(img.getchannel("A").getbbox())
 
     def test_04_original_stage_mapping_no_invented_hp_thresholds(self):
