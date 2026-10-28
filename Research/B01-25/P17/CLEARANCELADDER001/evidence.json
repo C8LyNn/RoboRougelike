@@ -53,7 +53,6 @@
     }
   },
   "notExecuted": [
-    "node test.mjs actual CLI process",
     "real Chromium/Playwright",
     "original Unity C# MapDraft.TryLoad",
     "Unity 6000.3.14f1 Edit/Play tests",
@@ -74,5 +73,38 @@
     "B01_60": "PENDING",
     "CODEX": "NOT_ACKED"
   },
-  "status": "RESEARCH_GAME_CONTENT_PUBLISHED__SOURCE_V8_VERIFIED__NATIVE_NOT_RUN"
+  "status": "SOURCE_DATA_NODE_CLI_WINDOWS_UBUNTU_PASS_INDEPENDENT_QA_PENDING_UNITY_NOT_RUN",
+  "actualNode22": {
+    "testedCommit": "57b722cc6d76a7625eebe3f332bfaa9af33c4516",
+    "runId": 40758466800,
+    "runUrl": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40758466800",
+    "tests": "GitHub Actions exact original published test.mjs, node --check original .mjs and clearance-core.mjs",
+    "operatingSystems": [
+      {
+        "os": "windows-latest",
+        "result": "PASS",
+        "jobId": 123063626938,
+        "logArtifactId": 12847725915,
+        "sourceChecks": 45,
+        "negativeRejections": 9,
+        "originalHtmlNodeVm": "PASS"
+      },
+      {
+        "os": "ubuntu-latest",
+        "result": "PASS",
+        "jobId": 123063627207,
+        "logArtifactId": 12847501352,
+        "sourceChecks": 45,
+        "negativeRejections": 9,
+        "originalHtmlNodeVm": "PASS"
+      }
+    ],
+    "nativeUnityExecuted": false,
+    "note": "Source and original input blobs unchanged from source receipt; workflow commit only adds own .github/workflows/b01-25-p17-clearance-ladder.yml. The evidence update itself does not alter map or test inputs."
+  },
+  "ciGates": {
+    "ci01": "SUCCESS",
+    "ci02Edit": "FAIL at Require valid Unity activation credentials, native tests NOT_RUN",
+    "ci03Play": "FAIL at Require valid Unity activation credentials, native tests NOT_RUN"
+  }
 }
