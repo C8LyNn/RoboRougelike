@@ -31,3 +31,5 @@ jobs:
       - name: Fail-closed direct selftest route (NO UNITY)
         working-directory: Tools/B01/QA-CHL003/W66Receipt
         run: python chl003_w66_operator.py --preflight-only --selftest
+      - name: Frozen original CHL source manifest and physical ZIP verification (NOT UNITY)
+        run: python Tools/B01/CHL003/package_gate.py --verify-zip
