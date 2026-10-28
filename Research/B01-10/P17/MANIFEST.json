@@ -118,5 +118,5 @@
     "noG2": true,
     "thirdGameplayCodePackage": false
   },
-  "status": "DRAFT_PR_PENDING / SOURCE_ONLY_PASS / UNITY_NOT_RUN / CODEX_ACK_PENDING"
+  "status": "SOURCE_OFFERED_DRAFT_PR_READY / SOURCE_ONLY_PASS / UNITY_NOT_RUN / CODEX_ACK_PENDING"
 }
