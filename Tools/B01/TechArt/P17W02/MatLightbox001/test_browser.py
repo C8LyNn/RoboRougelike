@@ -71,8 +71,16 @@ def execute(site,out):
                 page.locator("#viewer").screenshot(path=str(tire))
                 screenshots.append(tire)
                 with Image.open(tire) as image:
-                    assert image.width>250 and image.height>250
-                    assert max(ImageStat.Stat(image.convert("RGB")).stddev)>10
+                    rgb=image.convert("RGB")
+                    center=rgb.getpixel((rgb.width//2,rgb.height//2))
+                    corner=rgb.getpixel((5,5))
+                    std=ImageStat.Stat(rgb).stddev
+                    print("MAT_LIGHTBOX_ACTUAL_SPHERE_PIXELS",{"viewport":suffix,
+                        "center":center,"corner":corner,"stddev":std},flush=True)
+                    assert rgb.width>250 and rgb.height>250
+                    assert sum(abs(center[i]-corner[i]) for i in range(3))>40, (
+                        "NO_VISIBLE_ORIGINAL_GPU_SPHERE",center,corner)
+                    assert max(std)>3,("FLAT_ORIGINAL_GPU_IMAGE",std)
                 cases.append(f"{suffix}: actual nonflat 3D sphere image PASS")
                 # Original independent material switch changes actual GPU pixels
                 page.select_option("#family","brushed_arm_alloy")
