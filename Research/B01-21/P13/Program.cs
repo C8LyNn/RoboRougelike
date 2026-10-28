@@ -79,6 +79,44 @@ internal static class Program
         return encountered;
     }
 
+    // D06 exact original-source repro. 2000 individual Ground tiles are retained
+    // under GlobalFloor and count toward MaxItems even though MapWorld skips
+    // rendering those per-cell Ground objects. No MapDraft C# modified.
+    static MapDraft MakeD06FullGroundDraft()
+    {
+        var document = new MapDocument();
+        for (int x=-25;x<25;x++)
+            for (int z=-20;z<20;z++)
+                document.items.Add(new MapItem { kind=MapItemKind.Ground,x=x,z=z });
+        Need(document.items.Count==MapDraft.MaxItems,"D06 fixture count");
+        var draft = new MapDraft();
+        Need(draft.TryLoad(UnityEngine.JsonUtility.ToJson(document),out var error),
+            "D06 source TryLoad rejected fixture: "+error);
+        Need(draft.Items.Count==MapDraft.MaxItems,"D06 loaded source count");
+        Need(draft.SetGlobalFloor(true),"D06 enable GlobalFloor");
+        return draft;
+    }
+    static int knownDefects;
+    static void KnownDefect(string name, Action checkFailingContract)
+    {
+        try
+        {
+            checkFailingContract();
+            fail++;
+            Console.Error.WriteLine("KNOWN_DEFECT_UNEXPECTED_GREEN_REBASE_REQUIRED | "+name);
+        }
+        catch (InvalidOperationException e)
+        {
+            knownDefects++;
+            Console.WriteLine("KNOWN_PRODUCT_DEFECT_RED_CONFIRMED | "+name+" | "+e.Message);
+        }
+        catch (Exception e)
+        {
+            fail++;
+            Console.Error.WriteLine("KNOWN_DEFECT_FIXTURE_ERROR_NOT_A_PRODUCT_REPRO | "+name+" | "+e);
+        }
+    }
+
     static int Main()
     {
         Console.WriteLine("SOURCE_KIND=EXACT_ORIGINAL_CODEX_MAPDRAFT_CS");
@@ -163,6 +201,29 @@ internal static class Program
             // This is a 4-neighbour, authoring-level witness using original
             // C# MapDraft.Items and Footprint; NOT Rigidbody clearance or a route success.
         });
+        KnownDefect("D06_GLOBALFLOOR_HIDDEN_2000_GROUND_PREVENTS_SPAWN",() =>
+        {
+            var d=MakeD06FullGroundDraft();
+            Need(d.GlobalFloor,"GlobalFloor unexpectedly OFF");
+            Need(d.Items.Count==2000,"different cap state");
+            Need(!d.Remove(-25,-20),"hidden ground unexpectedly editable");
+            Need(d.Place(MapItemKind.Spawn,30,30,0),
+                "D06: valid visible free-cell Spawn rejected because 2000 hidden Ground consume MaxItems");
+        });
+        Case("D06_WORKAROUND_TWO_SLOTS_FOR_SPAWN_AND_FINISH",() =>
+        {
+            var d=MakeD06FullGroundDraft();
+            Need(d.SetGlobalFloor(false),"toggle OFF for cleanup");
+            Need(d.Remove(-25,-20),"remove retained Ground #1");
+            Need(d.Remove(-25,-19),"remove retained Ground #2");
+            Need(d.Items.Count==1998,"expected 2 spare entries");
+            Need(d.SetGlobalFloor(true),"toggle GlobalFloor ON again");
+            Need(d.Place(MapItemKind.Spawn,30,30,0),"start after removing old Ground");
+            Need(d.Place(MapItemKind.Finish,31,31,0),"finish after freeing second slot");
+            Need(d.Items.Count==2000 && d.TestError()==null,
+                "full-floor Draft should be test-drive eligible after manual workaround");
+        });
+        Console.WriteLine("KNOWN_PRODUCT_DEFECTS_REPRODUCED="+knownDefects);
         Console.WriteLine("ORIGINAL_CSHARP_SHIM_TESTS="+ok+" PASS / "+fail+" FAIL");
         Console.WriteLine("UNITY_EDITOR_NOT_RUN; PHYSX_NOT_RUN; HUMAN_NOT_RUN; G1_NOT_RUN");
         return fail==0 ? 0 : 1;
