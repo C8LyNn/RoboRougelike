@@ -163,6 +163,12 @@ public sealed class B0124EnemyAiNegativeEditModeTests
     [Explicit("Enable only after HQ/B01-10 approves opaque solid cover suppressing enemy shots.")]
     public void SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy()
     {
+        // NUnit [Explicit] alone DOES NOT protect a Unity -testFilter that
+        // matches an entire fixture: Codex actually executed this unapproved
+        // policy case during PASS16, and it failed as a policy assertion.
+        // Keep a second runtime opt-in independent of filter selection.
+        if (Environment.GetEnvironmentVariable("B0124_HQ_COVER_POLICY") != "BLOCK_DIRECT_FIRE")
+            Assert.Ignore("No HQ/B01-10 approval for BLOCK_DIRECT_FIRE; do not execute conditional LOS assertion.");
         // This calls the ORIGINAL enemy Update/FirePhysicalShell, not a JS mirror.
         // It is opt-in because suppression versus intentional cover fire is HQ policy.
         var coreObj = Own(GameObject.CreatePrimitive(PrimitiveType.Cube));
@@ -243,13 +249,13 @@ public sealed class B0124EnemyAiNegativeEditModeTests
             TestContext.WriteLine(
                 $"B0124 LOS native counts: blocked={blockedShotCount}; recovered_delta={recoveredShotDelta}; " +
                 $"total_new={totalNewShells}; source=Codex310@231005c6d0351945a8ee6684f3856af118f0e94f");
-            Assert.Multiple(() =>
-            {
-                Assert.That(blockedShotCount, Is.Zero,
-                    "HQ-policy-conditional: opaque wall must suppress the normal shot.");
-                Assert.That(recoveredShotDelta, Is.EqualTo(1),
-                    "After restoring cooldown, clearing the wall should permit one new shot.");
-            });
+            // Unity's bundled NUnit lacks Assert.Multiple (actual Codex
+            // native compile CS0117 on our previous test blob). Retain both
+            // observations and report both failures through ONE supported
+            // Assert.That after both source Update calls have completed.
+            Assert.That(blockedShotCount == 0 && recoveredShotDelta == 1, Is.True,
+                $"HQ-policy-conditional solid-cover direct fire: blocked={blockedShotCount} (expected 0); " +
+                $"recovered_delta={recoveredShotDelta} (expected 1).");
         }
         finally
         {
