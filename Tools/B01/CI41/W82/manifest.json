@@ -1,0 +1,40 @@
+{
+  "package_id": "CI41-GITSCOPE-001",
+  "version": "1.0.0",
+  "role": "B01-41",
+  "kind": "QA_ONLY_CI_TOOL_NOT_GAME_PACKAGE",
+  "base_commit": "6fa53271bd8a2fec81cf0aab94556c8c53cfbf0f",
+  "fixed_snapshot_commit": "5c619b39491d60256806e3171066e81e16604130",
+  "source_files": {
+    "Tools/B01/CI41/W82/git_verified_required_gate.py": "17d40a3234696670b71a0821cf08fcfba3e3e45e",
+    "Tools/B01/CI41/W78/required_aggregate.py": "9d5a6feffb2b0b9cf8db2dca8b0d457b8c46df98",
+    "Tools/B01/CI41/W82/test_git_verified_required_gate.py": "707f2942fa55461e37120f32b5107d3d87864581",
+    "Tools/B01/CI41/W78/test_required_aggregate.py": "68afe40deb2c802a9fd983a1bf25dbc07acddaa9"
+  },
+  "original_inputs": {
+    "original_W78_before": "6fa53271bd8a2fec81cf0aab94556c8c53cfbf0f",
+    "original_W78_blob": "42ea9a2dbd82a96232a761c32a3c1097f14dc716",
+    "original_codex_before": "231005c6d0351945a8ee6684f3856af118f0e94f",
+    "original_codex_after": "a2ccd055070a963805cba0779b79f18489f4794f"
+  },
+  "test_workflows": [
+    ".github/workflows/b01-41-w78-required-check-aggregate.yml",
+    ".github/workflows/b01-41-w82-exact-git-required-check.yml"
+  ],
+  "historical_completed_test_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40721252642",
+  "test_type": "ORIGINAL_GIT_SOURCE_PYTHON_DUAL_OS_NO_UNITY",
+  "state": {
+    "native_unity": "NOT_RUN",
+    "G1": "HOLD",
+    "G2": "HOLD",
+    "game_integration": "NOT_INTEGRATED",
+    "shared_ci_workflows": "UNCHANGED"
+  },
+  "external_permissions": {
+    "shared_ci": "HQ_ORIGINAL_OWNER_APPROVAL_REQUIRED",
+    "codex": "EXCLUSIVE_GAME_OWNER",
+    "h_q_native": "SEPARATE_LICENSED_OPERATOR_REQUIRED"
+  },
+  "next_receiver": "B01-40/B01-60 independent on exact changed head",
+  "codex_inbox": 79
+}
