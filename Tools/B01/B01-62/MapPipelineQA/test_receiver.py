@@ -103,10 +103,13 @@ class MapPipelineTests(unittest.TestCase):
         self.assertEqual(1,len(a["items"])-len(b["items"]))
         self.assertEqual(3,sum(i["kind"]==8 for i in b["items"]))
         self.assertEqual(4,sum(i["kind"]==8 for i in a["items"]))
-        self.assertEqual(a["items"][:b["items"].index(next(
-            i for i in b["items"] if i["kind"]==4))],
-            b["items"][:b["items"].index(next(
-            i for i in b["items"] if i["kind"]==4))])
+        from collections import Counter
+        encode = lambda items: Counter(json.dumps(i,sort_keys=True) for i in items)
+        gone = list((encode(a["items"]) - encode(b["items"])).elements())
+        added = list((encode(b["items"]) - encode(a["items"])).elements())
+        self.assertEqual(1,len(gone))
+        self.assertEqual((8,6,6),tuple(json.loads(gone[0])[k] for k in ("kind","x","z")))
+        self.assertEqual([],added)
         self.assertEqual(raw,(self.sources/"arena.json").read_bytes())
 
 if __name__ == "__main__":
