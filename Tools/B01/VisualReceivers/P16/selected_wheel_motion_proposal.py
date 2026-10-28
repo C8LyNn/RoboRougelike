@@ -9,12 +9,14 @@ import hashlib
 import io
 import json
 import math
+import sys
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 import cairosvg
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageStat
 
+sys.path.insert(0,str(Path(__file__).resolve().parents[1] / "P15"))
 import selected_wheel_techart as origin
 
 NS="{http://www.w3.org/2000/svg}"
