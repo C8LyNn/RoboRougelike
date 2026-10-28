@@ -1,0 +1,53 @@
+name: B01-41 W78 required-check aggregate original CI evidence (NOT UNITY)
+on:
+  push:
+    branches: ['audit/b01-41-w58-pass11-ci-evidence']
+    paths:
+      - 'Tools/B01/CI41/W78/**'
+      - '.github/workflows/b01-41-w78-required-check-aggregate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  required-check-policy:
+    name: Required-check negative acceptance (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Pin real pre-fix, repaired classifier and observed CI original blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/W74/ci_health.py)" = 'a386417a3f927257e46f646d8c8afa7bc54e1d8f'
+          test "$(git hash-object Tools/B01/CI41/W78/required_aggregate.py)" = '14b3ce090e0651e25a29ca2a8640ab4fb6f5f131'
+          test "$(git hash-object Tools/B01/CI41/W78/test_required_aggregate.py)" = '3f118b23ffaf3df7e2499ce9f1bd5c5e73d40cc0'
+          test "$(git hash-object Tools/B01/CI41/W78/observed_real_unlicensed.json)" = '99a26efb447ce80647a370d287f0062e92d81d81'
+          test "$(git rev-parse ef03cf7bbd53cc015749e1bbe28557989ca04b58:Tools/B01/CI41/W74/ci_health.py)" = '5c412815413c7886d1933e3a803cf5af5b7df21b'
+          echo 'CURRENT_ORIGINAL_GITHUB_CI_OBSERVATION_AND_CLASSIFIER_BLOBS_PINNED'
+      - name: Run actual Python aggregate acceptance tests (SYNTHETIC native candidate clearly labeled)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/W78 -p test_required_aggregate.py -v 2>&1 | tee "Tools/B01/CI41/W78/aggregate-${RUNNER_OS}.txt"
+          grep -q 'QA_ONLY_NOT_REQUIRED=NON_NATIVE_SCOPE_ONLY_NOT_G1' "Tools/B01/CI41/W78/aggregate-${RUNNER_OS}.txt"
+          grep -q 'REAL_GH_CI02_CI03_ACTIVATION_FAILURE=BLOCKED_NO_LICENSE' "Tools/B01/CI41/W78/aggregate-${RUNNER_OS}.txt"
+          grep -q 'NATIVE_EXECUTED_SYNTHETIC_INPUT=STRUCTURAL_CLAIM_ONLY_G1_NOT_CERTIFIED' "Tools/B01/CI41/W78/aggregate-${RUNNER_OS}.txt"
+          grep -q 'SYNTHETIC_NATIVE_CLAIM_CANNOT_RETURN_GREEN_EXIT_CODE' "Tools/B01/CI41/W78/aggregate-${RUNNER_OS}.txt"
+          echo 'B01_41_W78_AGGREGATE_SOURCE_VALIDATED_ONLY; NATIVE_UNITY=NOT_RUN; G1=HOLD'
+      - name: Preserve sanitized test execution trace (NOT Unity XML)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-41-W78-${{ matrix.os }}
+          path: Tools/B01/CI41/W78/aggregate-${{ runner.os }}.txt
+          if-no-files-found: warn
+          retention-days: 14
