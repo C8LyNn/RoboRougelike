@@ -1,0 +1,7 @@
+# CX-08 — Hidden floor tile capacity
+
+Base `46e0965cc587b5da8b8d83d4431e7a23e1507d3a`. Existing map floor tiles remain preserved when global floor is enabled. Floor tiles and non-floor objects now have separate limits of 2000 each, so hidden floor cannot silently exhaust the object budget. Loading enforces both individual caps and a total 4000 cap. Undo/redo and toggling global floor preserve previous tiles. This deliberately allows up to 4000 stored elements (2000 per layer), rather than removing any hidden user data.
+
+Native Unity 6000.3.14f1 on Windows: initial high-capacity native JSON fixture RED 0/1, exit 2; final targeted editor/storage/integration suite 25/25 PASS, exit 0. Includes 2000 saved hidden floor items, placement, JSON roundtrip, toggling and undo/redo, and real R6 map test from existing regression. The exact corrected B01-25 LD02 sources `691c8cb6b0be086d455e530f2531de7f3753a0ba`, Git blobs `e39e2f174984832bd97311c050e3c22fd6fb1175` and `8586312b9606d94b088e4e7640c28105e2d6bac1`, are copied unmodified in Fixtures; both loaded via actual Unity JsonUtility, validated spawn/finish and round-tripped. This is data compatibility, not native perimeter PhysX or light/heavy traversal acceptance. XML/exit in Evidence; local logs `Artifacts/Local/CX08/`.
+
+Independent B01-21/25/61/60 tests, Windows Player GUI, full-capacity performance, B01-25 arena 8-ray and physical traversal all NOT_RUN. Independent G1/G2 and main/develop merge not claimed.
