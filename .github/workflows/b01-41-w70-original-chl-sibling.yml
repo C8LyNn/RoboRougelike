@@ -1,0 +1,49 @@
+name: B01-41 W70 original CHL sibling-worktree guard witness (NO UNITY)
+on:
+  push:
+    branches: ['audit/b01-41-w58-pass11-ci-evidence']
+    paths:
+      - 'Tools/B01/CI41/W70/**'
+      - '.github/workflows/b01-41-w70-original-chl-sibling.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-chl-linked-worktrees:
+    name: Original CHL W66 operator P0 witness (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Fetch exact ORIGINAL B01-20 operator and CHL producer commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin '+refs/pull/285/head:refs/remotes/origin/CI41_CHL_PRODUCER'
+          git fetch --no-tags --depth=1 origin '+refs/heads/b01-20/qa-w66-chl003-operator-source-pin:refs/remotes/origin/CI41_CHL_OPERATOR'
+          test "$(git rev-parse refs/remotes/origin/CI41_CHL_PRODUCER)" = 'c7b2a234a286089383503da41883d624fe650551'
+          test "$(git rev-parse refs/remotes/origin/CI41_CHL_OPERATOR)" = 'b9f0458db297fb81e76add00855609b32eb0ef4b'
+          test "$(git rev-parse b9f0458db297fb81e76add00855609b32eb0ef4b:Tools/B01/CHL003/W66Receipt/chl003_w66_operator.py)" = '42ab146450ea3284d97a9a2bd5434a49fe195ab7'
+          echo 'TWO_ORIGINAL_PRODUCER_AND_OPERATOR_GIT_OBJECTS_PINNED'
+      - name: Execute original CHL operator on two REAL registered Git worktrees, no Unity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/W70/check_original_chl_sibling_worktree.py --repo "$PWD" 2>&1 | tee "Tools/B01/CI41/W70/original-chl-sibling-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_CHL_W66_OPERATOR_CROSS_WORKTREE_P0_FAIL_OPEN_REPRODUCED=TRUE' "Tools/B01/CI41/W70/original-chl-sibling-${RUNNER_OS}.txt"
+          echo 'THIS IS A PRODUCT OPERATOR SOURCE BUG REPRO, NOT A FIX AND NOT NATIVE UNITY'
+      - name: Archive only sanitized source preflight output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-41-CHL-W70-original-guard-${{ matrix.os }}-${{ github.run_id }}
+          path: Tools/B01/CI41/W70/original-chl-sibling-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
