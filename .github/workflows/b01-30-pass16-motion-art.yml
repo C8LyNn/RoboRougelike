@@ -1,0 +1,90 @@
+name: B01-30 PASS16 actual selected A1 motion art research
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/VisualReceivers/P16/**'
+      - '.github/workflows/b01-30-pass16-motion-art.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  approved-a1-motion-proposal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin actual B01-31 approved single-part concept source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/294/head
+          git cat-file -e 8709cf27901c4edca1434cbc760dec5db130a3ef^{commit}
+          test "$(git rev-parse 8709cf27901c4edca1434cbc760dec5db130a3ef:Docs/B01Concept/CONCEPT-MOBILITY-001/A1-single-wheel-arm.svg)" = "96cc46a7c14f94a45c387e102d5940cb787d2d5c"
+      - name: Install isolated 2D source-backed SVG raster tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-cairosvg python3-pil
+          python3 -m py_compile Tools/B01/VisualReceivers/P16/selected_wheel_motion_proposal.py
+      - name: Actual research-only 2D frame render and contact-sheet test
+        run: |
+          python3 Tools/B01/VisualReceivers/P16/selected_wheel_motion_proposal.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P16-actual-selected-A1-motion-art
+          path: build/B01-30/P16-A1-motion-proposal/
+          if-no-files-found: error
+          retention-days: 30
+
+  original-m04-four-clip-animated-preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin model author's actual immutable M04 generator
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/196/head
+          test "$(git rev-parse FETCH_HEAD)" = "eef02864b106546b200011a2f0286fe7d9a83a1f"
+          test "$(git rev-parse FETCH_HEAD:Tools/ModelFactory/M04/M04-024/generate_m04_024.py)" = "102b2d430260ae4da15fc7dee51f9bd86ccd822c"
+          mkdir -p build/B01-30/P16-M04-source
+          git archive FETCH_HEAD Tools/ModelFactory/M04/M04-024 | tar -x -C build/B01-30/P16-M04-source
+      - name: Provide actual Blender 4.x and software rendered geometry
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil libegl1 libgl1-mesa-dri libopengl0 xvfb
+          python3 -m py_compile Tools/B01/VisualReceivers/P15/m04_actual_glb_contact.py Tools/B01/VisualReceivers/P15/compose_m04_contact_sheet.py
+      - name: Run original immutable M04 Blender model generator and binary GLB QA
+        run: |
+          blender -b --factory-startup --python-exit-code 1 --python build/B01-30/P16-M04-source/Tools/ModelFactory/M04/M04-024/generate_m04_024.py -- --out build/B01-30/P16-M04-generated
+          python3 build/B01-30/P16-M04-source/Tools/ModelFactory/M04/M04-024/qa_m04_024.py --glb build/B01-30/P16-M04-generated/M04-024.glb --manifest build/B01-30/P16-M04-generated/manifest.json --report build/B01-30/P16-M04-generated/qa.json
+      - name: Apply FOUR original glTF actions to real Blender-imported independent gimbals
+        run: |
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a blender -b --factory-startup --python-exit-code 1 --python Tools/B01/VisualReceivers/P15/m04_actual_glb_contact.py -- --glb build/B01-30/P16-M04-generated/M04-024.glb --out build/B01-30/P16-M04-four-clips --combine-clips
+          python3 Tools/B01/VisualReceivers/P15/compose_m04_contact_sheet.py build/B01-30/P16-M04-four-clips
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/B01-30/P16-M04-four-clips/M04-original-glb-lookdev.json')
+          x=json.loads(p.read_text())
+          assert x['four_animated_pivots_in_actual_blender_import'] is True
+          assert len(x['combined_action_assignments'])==4
+          assert len(x['default_import_idle_pivots'])==0
+          assert len(x['render_file_proof'])>=10
+          print('B01-30 PASS16 actual original four independent GLB gimbal actions PASS',x['combined_action_assignments'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P16-M04-four-original-GLB-gimbal-animations
+          path: |
+            build/B01-30/P16-M04-four-clips/
+            build/B01-30/P16-M04-generated/manifest.json
+            build/B01-30/P16-M04-generated/qa.json
+          if-no-files-found: error
+          retention-days: 30

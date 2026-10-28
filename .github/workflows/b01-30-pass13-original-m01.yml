@@ -1,0 +1,37 @@
+name: B01-30 PASS13 original M01 binary receipt (NOT UNITY)
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/AssetQA/PASS13/**'
+      - '.github/workflows/b01-30-pass13-original-m01.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-m01-binaries:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch original M01 source and enforce exact owner commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/227/head
+          test "$(git rev-parse FETCH_HEAD)" = "b27d210bb598e738c6dd979686706b5fc29b73ed"
+          python3 -V
+      - name: Execute ONLY original immutable OBJ FBX GLB binary checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/B01/AssetQA/PASS13/verify_m01_024_original_binary.py
+          python3 Tools/B01/AssetQA/PASS13/verify_m01_024_original_binary.py | tee B01_30_PASS13_ORIGINAL_M01_BINARY_QA.json
+      - name: Upload genuine original-source receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-30-pass13-original-m01-binary-qa
+          path: B01_30_PASS13_ORIGINAL_M01_BINARY_QA.json
+          retention-days: 14

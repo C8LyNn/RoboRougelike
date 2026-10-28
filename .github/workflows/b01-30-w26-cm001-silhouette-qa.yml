@@ -1,0 +1,100 @@
+name: B01-30 W26 CM001 grayscale/occlusion QA only
+on:
+  pull_request:
+    paths:
+      - 'Docs/B01Validation/20261027/B01_30_W26_CM001_SILHOUETTE_QA/**'
+      - '.github/workflows/b01-30-w26-cm001-silhouette-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-image-stress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pin actual latest producer art SHA and unchanged original SVG blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          pin=3efd76bb2eaa319282a51ad588f8f4176d0cc33b
+          git fetch --depth=1 origin "$pin"
+          test "$(git rev-parse FETCH_HEAD)" = "$pin"
+          base=Docs/B01Concept/CONCEPT-MOBILITY-001
+          test "$(git rev-parse "$pin:$base/A-wheel.svg")" = b85bbb014a10eee7aab5e165d8772f68672a84bf
+          test "$(git rev-parse "$pin:$base/B-track.svg")" = bc618f99884aa55e7eff3fda9c232db2112c596f
+          test "$(git rev-parse "$pin:$base/C-omni.svg")" = 0ec85328b1eb740f9fae8769e8cc4754b9f50c87
+      - name: Retrieve original published B01-31 raster artifact 12723984143
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/cm001-source /tmp/cm001-evidence
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/12723984143/zip" > /tmp/cm001-publisher.zip
+          unzip -q /tmp/cm001-publisher.zip -d /tmp/cm001-source
+          test -f /tmp/cm001-source/A-wheel.png
+          test -f /tmp/cm001-source/B-track.png
+          test -f /tmp/cm001-source/C-omni.png
+          sha256sum /tmp/cm001-source/{A-wheel,B-track,C-omni}.png | tee /tmp/cm001-evidence/pinned_inputs.txt
+          echo B01_CM001_RENDER_DIR=/tmp/cm001-source >> "$GITHUB_ENV"
+      - name: Pin current producer corrected BLIND silhouettes (reference overlay removed)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          HEAD=7a1416d3e10ee720d9d28931a3c268f95e2bba15
+          git fetch --depth=1 origin "$HEAD"
+          test "$(git rev-parse FETCH_HEAD)" = "$HEAD"
+          base=Docs/B01Concept/CONCEPT-MOBILITY-001
+          test "$(git rev-parse "$HEAD:$base/A-wheel.svg")" = b85bbb014a10eee7aab5e165d8772f68672a84bf
+          test "$(git rev-parse "$HEAD:$base/B-track.svg")" = bc618f99884aa55e7eff3fda9c232db2112c596f
+          test "$(git rev-parse "$HEAD:$base/C-omni.svg")" = 0ec85328b1eb740f9fae8769e8cc4754b9f50c87
+          mkdir -p /tmp/cm001-blind
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/12739939008/zip" > /tmp/cm001-blind.zip
+          unzip -q /tmp/cm001-blind.zip -d /tmp/cm001-blind
+          test -f /tmp/cm001-blind/A-wheel-silhouette-64px.png
+          test -f /tmp/cm001-blind/C-omni-silhouette-128px.png
+          echo B01_CM001_BLIND_DIR=/tmp/cm001-blind >> "$GITHUB_ENV"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 20 original-image tests + 64px and 128px visual stress artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install 'Pillow==11.3.0'
+          d=Docs/B01Validation/20261027/B01_30_W26_CM001_SILHOUETTE_QA
+          python "$d/test_silhouette_stress.py" -v 2>&1 | tee /tmp/cm001-evidence/tests.log
+          python "$d/silhouette_stress.py" --source "$B01_CM001_RENDER_DIR" --output /tmp/cm001-evidence/derived
+          python "$d/test_tech_art_hypotheses.py" -v 2>&1 | tee /tmp/cm001-evidence/tech-art-tests.log
+          python "$d/tech_art_hypotheses.py" --source "$B01_CM001_RENDER_DIR" --output /tmp/cm001-evidence/derived
+          python "$d/test_blind_reference_free_qa.py" -v 2>&1 | tee /tmp/cm001-evidence/producer-blind-tests.log
+          python "$d/blind_reference_free_qa.py" --source "$B01_CM001_BLIND_DIR" --output /tmp/cm001-evidence/derived/current_producer_reference_free_stress.json
+          python - <<'PY_ART'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/cm001-evidence/derived/tech_art_receipt.json')
+          t=json.loads(p.read_text())
+          assert t['producerPR294Head']=='3efd76bb2eaa319282a51ad588f8f4176d0cc33b'
+          assert t['engineeringStates']['HQSelected']=='PENDING'
+          assert t['engineeringStates']['allTypedSockets']=='UNKNOWN_NOT_MEASURED'
+          assert t['engineeringStates']['unityNative']=='NOT_RUN'
+          assert len(t['variants'])==3
+          assert all(len(v['imageMarkers'])==4 for v in t['variants'])
+          print('CM001_TECH_ART_PRESELECTION_ONLY_ANNOTATED_ART_PASS')
+          PY_ART
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('/tmp/cm001-evidence/derived/receipt.json').read_text())
+          assert r['HQdecision']=='PENDING' and r['Unity']=='NOT_RUN' and r['humanUserStudy']=='NOT_RUN'
+          assert len(r['results'])==3
+          print('ACTUAL_SOURCE_IMAGE_STRESS_PASS / VISUAL_HUMAN_NOT_RUN')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W26-CM001-INDEPENDENT-GRAY-OCCLUSION
+          path: /tmp/cm001-evidence/
+          retention-days: 30
