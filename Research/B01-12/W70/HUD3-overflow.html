@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B01-12 — Status uzbrojenia (badanie UX)</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;--bg:#0b1421;--panel:#172438;--stroke:#34465d;--light:#f4f6fb;--muted:#cad5e6;--alert:#ffcc8e;--red:#ffa6ab;--ok:#9ce0b4;--focus:#9ddcff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#203653,#0b1421 65%);color:var(--light);min-height:100vh}main{max-width:1150px;margin:auto;padding:24px 16px 60px}h1{font-size:clamp(20px,2.2vw,30px);margin:0 0 8px}h2{font-size:20px;margin:0 0 12px}h3{font-size:16px;margin:0 0 10px}p{line-height:1.5}.muted,small{color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:16px}.panel{background:#152235;border:1px solid var(--stroke);border-radius:14px;padding:17px;min-width:0;box-shadow:0 8px 25px #0002}header{margin-bottom:16px}.tag{color:#b7dfff;font-size:12px;letter-spacing:.12em;text-transform:uppercase}label{display:block;margin:12px 0 6px;font-weight:700}.control{width:100%;background:#0c1a2b;border:1px solid #7791ab;color:#fff;border-radius:8px;padding:11px;font:inherit;min-height:44px}button{background:#243e5d;color:#fff;border:1px solid #8299b3;border-radius:8px;padding:11px 13px;min-height:44px;font:inherit;cursor:pointer}button:hover{background:#365273}button[aria-pressed=true]{background:#265775;border-color:#a4e4ff;font-weight:750}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.stack{display:grid;gap:9px}.toggle{display:flex;gap:10px;align-items:center;padding:9px;background:#0c1a2b;border-radius:9px;font-size:14px}.toggle input{width:20px;height:20px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chips button{flex:1}.hudtop{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.pill{background:#10263f;border:1px solid #50749a;border-radius:100px;padding:6px 10px;font-size:12px;white-space:nowrap}.groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.group{border:1px solid #56748f;background:#0f2033;border-radius:10px;padding:13px;min-width:0}.group .heading{font-size:18px;font-weight:800}.numbers{margin:7px 0;color:var(--light);font-variant-numeric:tabular-nums;font-weight:650}.reason{background:#3b2932;border:1px solid #ab7180;color:#ffe9de;border-radius:6px;padding:7px 9px;margin-top:7px;font-size:13px;line-height:1.45;overflow-wrap:anywhere}.reason.ok{background:#193a36;border-color:#669c8e;color:#c9ffe0}.grouplabel{color:#bfd6f0;margin:5px 0 0;font-size:13px}.detail{margin-top:14px}.slot{border:1px solid #54708a;border-left:5px solid var(--alert);background:#102337;border-radius:8px;margin:9px 0;padding:12px;display:grid;gap:5px}.slot.ready{border-left-color:var(--ok)}.slot strong{font-size:14px}.slot span{color:#dbe4f0;font-size:13px}.slot code,.extra code{color:#fff3cd}.none{font-size:14px;color:var(--muted)}.disclose{width:100%;text-align:left;margin-top:12px;background:#25405e;border:1px solid #92b4d3}.disclose[hidden]{display:none}.extra{padding:12px;border-radius:10px;margin-top:9px;background:#0e1c2e;border:1px solid #56748f}.extra[hidden]{display:none}.extra ul{margin:0;padding-left:18px}.extra li{margin:7px 0;overflow-wrap:anywhere;font-size:14px}.summary{font-size:13px;color:#cbd7e6;margin-top:10px}footer{font-size:12px;color:#b7c9dc;margin-top:15px}#participantHelp{display:none}.participant .moderator,.participant .brief{display:none!important}.participant .layout{grid-template-columns:minmax(0,1fr)}.participant #participantHelp{display:block}.participant .panel.hud{min-height:280px}#hudRegion:focus{outline:0}
+@media(max-width:720px){.layout{grid-template-columns:minmax(0,1fr)}.groups{grid-template-columns:minmax(0,1fr)}main{padding:12px 10px 45px}.panel{padding:13px}h1{font-size:22px}.hudtop{flex-wrap:wrap}.chips button{flex-basis:45%}}
+@media(max-width:350px){.pill{white-space:normal}.hudtop{display:block}.group .heading{font-size:16px}}
+</style></head><body><main>
+<header class="brief"><div class="tag">B01-12 · badawczy demonstrator, nie UI gry</div><h1>Alerty broni: dwa warianty prezentacji</h1><p class="muted">Odrębny prototyp oparty na ograniczeniu dwóch wierszy statusu. Nie uruchamia Unity, nie zmienia gry i nie reprezentuje wyników użytkowników.</p></header>
+<div class="layout"><aside id="moderator" class="panel moderator"><h2>Panel moderatora</h2><label for="fixture">Scenariusz</label><select class="control" id="fixture"><option value="F0">F0 — 2 × READY</option><option value="F1" selected>F1 — 6: A Beam HEAT, B Saw JAM</option><option value="F2">F2 — 12: A EMP, B RELOAD</option><option value="F3">F3 — uszkodzone HP0</option><option value="F4">F4 — 12 × READY</option><option value="F5">F5 — dwa alerty w A</option><option value="F6">F6 — zamiana grup A/B</option><option value="F7">F7 — usuwanie jednego alarmu</option><option value="F8">F8 — 0 broni</option></select>
+<label>Wariant</label><div class="chips" role="group" aria-label="Wybór wariantu"><button id="modeA" type="button" aria-pressed="true">A — kategorie</button><button id="modeB" type="button" aria-pressed="false">B — rozwijanie</button></div>
+<div class="stack" style="margin-top:14px"><button type="button" id="swap">Zamień grupy A ↔ B</button><button type="button" id="resolveA">Usuń alarm w grupie A</button><button type="button" id="resolveB">Usuń alarm w grupie B</button><label class="toggle"><input type="checkbox" id="participant">Tryb uczestnika (bez panelu)</label></div>
+<p class="muted" style="font-size:13px">Przed obserwacją wybierz wariant i scenariusz. Wciśnij Escape, aby wrócić. Testy z ludźmi wymagają osobnej zgody.</p></aside>
+<section class="panel hud" id="hudRegion" tabindex="-1" aria-label="Obszar stanu uzbrojenia"><div class="hudtop"><h2 style="margin:0">Stan uzbrojenia</h2><span class="pill" id="total">—</span></div><p id="participantHelp" class="muted">Dane dwóch grup uzbrojenia; część informacji można rozwinąć.</p><div class="groups" id="groups" aria-live="polite"></div>
+<div class="detail"><h3>Priorytetowe statusy · maks. 2</h3><div id="topRows"></div><button id="expand" type="button" class="disclose" aria-expanded="false" aria-controls="overflow" hidden>Pokaż wszystkie stany dział</button><div id="overflow" class="extra" hidden></div><p class="summary" id="coverage"></p></div><footer class="brief">Badanie dwóch sposobów podawania szczegółów ponad dwoma wierszami. Zawsze widoczne alerty obu grup są wspólne dla A i B.</footer></section></div></main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const DISPLAY={READY:'GOTOWA',HEAT:'PRZEGRZANIE',JAM:'ZACIĘCIE',EMP:'EMP',RELOAD:'PRZEŁADOWANIE',COOLDOWN:'CHŁODZENIE',EMPTY:'BRAK AMUNICJI',DESTROYED:'USZKODZONA / 0 HP'};
+const level=s=>s==='DESTROYED'||['HEAT','JAM','EMP','EMPTY'].includes(s)?0:['RELOAD','COOLDOWN'].includes(s)?1:2;
+const mk=(id,g,type,status='READY')=>({id,group:g,type,status});
+const fix={
+F0:[mk(1,'A','Beam'),mk(2,'B','Saw')],
+F1:[mk(1,'A','Beam'),mk(2,'B','Saw'),mk(3,'A','Beam'),mk(4,'B','Saw'),mk(5,'A','Beam','HEAT'),mk(6,'B','Saw','JAM')],
+F2:Array.from({length:12},(_,i)=>mk(i+1,i%2?'B':'A',i%2?'Rocket':'Beam',i===8?'EMP':i===9?'RELOAD':'READY')),
+F3:[mk(1,'A','Beam','DESTROYED')],
+F4:Array.from({length:12},(_,i)=>mk(i+1,i%2?'B':'A','Beam')),
+F5:[mk(1,'A','Beam'),mk(2,'B','Saw'),mk(3,'A','Beam','HEAT'),mk(4,'B','Saw'),mk(5,'A','Beam','EMP'),mk(6,'B','Saw')],
+F6:[mk(1,'A','Beam'),mk(2,'B','Saw'),mk(3,'A','Beam'),mk(4,'B','Saw'),mk(5,'A','Beam','HEAT'),mk(6,'B','Saw','JAM')],
+F7:[mk(1,'A','Beam'),mk(2,'B','Saw'),mk(3,'A','Beam','HEAT'),mk(4,'B','Saw','JAM')],
+F8:[]};
+let parts=[],mode='A',opened=false;
+const cmp=(a,b)=>level(a.status)-level(b.status)||a.id-b.id;
+const blocked=s=>s!=='READY';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const title=p=>`#${p.id} ${p.type}`;
+function priorityRows(items){
+ const groupA=items.filter(x=>x.group==='A'&&blocked(x.status)).sort(cmp);
+ const groupB=items.filter(x=>x.group==='B'&&blocked(x.status)).sort(cmp);
+ let out=[];
+ if(groupA.length&&groupB.length){out=[groupA[0],groupB[0]]}
+ else{out=items.filter(x=>blocked(x.status)).sort(cmp).slice(0,2)}
+ for(const p of [...items].sort(cmp)){if(out.length>=2)break;if(!out.includes(p))out.push(p)}
+ return out.sort(cmp);
+}
+function summarize(group){
+ const xs=parts.filter(p=>p.group===group),operational=xs.filter(p=>p.status!=='DESTROYED').length,fireable=xs.filter(p=>p.status==='READY').length,nonfire=xs.filter(p=>blocked(p.status));
+ const reasons=Object.entries(nonfire.reduce((a,p)=>{const key=DISPLAY[p.status];a[key]=(a[key]||0)+1;return a},{})).sort((a,b)=>a[0].localeCompare(b[0],'pl'));
+ return {group,assigned:xs.length,operational,fireable,nonfire,reasons};
+}
+function drawGroup(g){const {group,assigned,operational,fireable,nonfire,reasons}=g;
+const status=nonfire.length?reasons.map(([reason,count])=>`<div class="reason">${esc(reason)}: ${count}</div>`).join(''):'<div class="reason ok">Brak alarmów</div>';
+return `<article class="group" aria-label="Grupa ${group}"><div class="heading">${group} / ${group==='A'?'LPM':'PPM'}</div><div class="numbers">Przypisane: ${assigned} · Sprawne: ${operational} · Mogą teraz strzelać: ${fireable}</div><div class="grouplabel">Nie mogą teraz strzelać: ${nonfire.length}</div>${status}</article>`;}
+function row(p){return `<div class="slot ${p.status==='READY'?'ready':''}" data-gun-id="${p.id}" data-status="${p.status}"><strong>${p.group} / ${p.group==='A'?'LPM':'PPM'} · ${esc(title(p))}</strong><span>${esc(DISPLAY[p.status])} · ${level(p.status)===0?'P0 NIE MOŻE STRZELAĆ':level(p.status)===1?'P1 WZNAWIA GOTOWOŚĆ':'P2 GOTOWA'}</span></div>`}
+function render(){const totals=['A','B'].map(summarize);const top=priorityRows(parts),hidden=parts.filter(p=>!top.includes(p)).sort((a,b)=>a.group.localeCompare(b.group)||cmp(a,b));
+$('total').textContent=`${parts.length} przypisanych · ${parts.filter(p=>p.status==='READY').length} może strzelać`;
+$('groups').innerHTML=totals.map(drawGroup).join('');
+$('topRows').innerHTML=top.length?top.map(row).join(''):'<p class="none">Brak zamontowanej broni — 0/0 w obu grupach.</p>';
+$('coverage').textContent=mode==='A'?'A: stałe alerty grup + dwa priorytetowe wiersze.':`B: stałe alerty grup + dwa wiersze; dodatkowych dział: ${hidden.length}.`;
+const button=$('expand'),extra=$('overflow');
+button.hidden=mode==='A'||hidden.length===0;
+button.textContent=`${opened?'Ukryj':'Pokaż'} wszystkie stany dział (${hidden.length} poza dwoma wierszami)`;
+button.setAttribute('aria-expanded',String(mode==='B'&&opened&&hidden.length>0));
+extra.hidden=mode!=='B'||!opened||hidden.length===0;
+extra.innerHTML=`<h3>Wszystkie stany poza dwoma wierszami (${hidden.length})</h3><ul>${hidden.map(p=>`<li>${esc(p.group)} / ${p.group==='A'?'LPM':'PPM'} · ${esc(title(p))}: <code>${esc(DISPLAY[p.status])}</code></li>`).join('')}</ul>`;
+$('modeA').setAttribute('aria-pressed',String(mode==='A'));$('modeB').setAttribute('aria-pressed',String(mode==='B'));
+}
+function setFixture(id){parts=fix[id].map(p=>({...p}));opened=false;render()}
+function setMode(m){mode=m;opened=false;render()}
+$('fixture').addEventListener('change',e=>setFixture(e.target.value));
+$('modeA').onclick=()=>setMode('A');$('modeB').onclick=()=>setMode('B');
+$('swap').onclick=()=>{parts.forEach(p=>p.group=p.group==='A'?'B':'A');opened=false;render()};
+for(const g of ['A','B'])$('resolve'+g).onclick=()=>{const p=parts.filter(p=>p.group===g&&p.status!=='READY').sort(cmp)[0];if(p)p.status='READY';opened=false;render()};
+$('expand').onclick=()=>{opened=!opened;render();$('expand').focus()};
+$('participant').onchange=e=>{document.body.classList.toggle('participant',e.target.checked);opened=false;render();if(e.target.checked)$('hudRegion').focus()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.body.classList.contains('participant')){$('participant').checked=false;document.body.classList.remove('participant');opened=false;render();$('participant').focus()}else if(opened){opened=false;render();$('expand').focus()}}});
+setFixture('F1');
+})();
+</script></body></html>
