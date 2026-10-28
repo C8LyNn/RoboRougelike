@@ -571,11 +571,14 @@ namespace RogueMachine.P12PipelineSafe
             float distance = toward.magnitude;
             if (distance < 0.01f) return;
             toward /= distance;
+            // A mobile enemy with no working gun can still physically ram the
+            // player. Keep the original R6 wheel solver and ally/world avoidance.
+            bool ramming=!WeaponOnline;
             if(profiled&&Time.time>=nextStrafeChange&&Time.time>=navigationUntil)
             { strafeDirection=-strafeDirection;nextStrafeChange=Time.time+(Archetype==R3EnemyArchetype.Flanker?2:4.5f); }
             Vector3 sideways = Vector3.Cross(Vector3.up, toward) * strafeDirection;
-            float approach = Mathf.Clamp((distance - preferredDistance) / 3, -1, 1);
-            Vector3 desired = (toward * approach + sideways * strafeStrength).normalized;
+            float approach = ramming?1:Mathf.Clamp((distance - preferredDistance) / 3, -1, 1);
+            Vector3 desired = (toward * approach + sideways * (ramming?0:strafeStrength)).normalized;
             var encounter=RoboRougelike.R1.R1RunController.Instance?.Encounter;
             if(encounter!=null)
                 foreach(var other in encounter.Enemies)
@@ -590,28 +593,28 @@ namespace RogueMachine.P12PipelineSafe
             if(wheelFactor<=0)return;
             float step = moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor) * Time.fixedDeltaTime;
             float clearance = Mathf.Max(step + 0.08f, 1.4f);
-            if (!CanMove(desired, clearance))
+            if (!CanMove(desired, clearance,ramming))
             {
                 // Keep a wall-parallel escape direction across periodic combat strafing changes.
                 var normal=lastMoveNormal;
                 var tangent=Time.time<navigationUntil?obstacleTangent:Vector3.Cross(Vector3.up,normal).normalized;
                 if(Time.time>=navigationUntil&&Vector3.Dot(tangent,desired)<0)tangent=-tangent;
-                if(!CanMove(tangent,step+.08f))
+                if(!CanMove(tangent,step+.08f,ramming))
                 {
                     tangent=Vector3.Cross(Vector3.up,normal).normalized;
                     if(Vector3.Dot(tangent,desired)<0)tangent=-tangent;
-                    if(!CanMove(tangent,step+.08f))tangent=-tangent;
+                    if(!CanMove(tangent,step+.08f,ramming))tangent=-tangent;
                 }
-                desired=CanMove(tangent,step+.08f)?tangent:normal;
+                desired=CanMove(tangent,step+.08f,ramming)?tangent:normal;
                 obstacleTangent=desired;navigationUntil=Time.time+1.1f;
             }
-            else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f))desired=obstacleTangent;
+            else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,ramming))desired=obstacleTangent;
             Vector3 next = movementBody.position + desired * step;
             if((next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0))desired.x=0;
             if((next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0))desired.z=0;
             if(desired.sqrMagnitude<0.001f)desired=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
             desired.Normalize();
-            if (!CanMove(desired, step + 0.08f)) return;
+            if (!CanMove(desired, step + 0.08f,ramming)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)drive.StepWorld(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor));
@@ -629,7 +632,7 @@ namespace RogueMachine.P12PipelineSafe
             return false;
         }
 
-        private bool CanMove(Vector3 direction, float distance)
+        private bool CanMove(Vector3 direction, float distance,bool allowPlayerContact=false)
         {
             int count = Physics.BoxCastNonAlloc(movementBody.position + Vector3.up * 0.75f,
                 movementHalfExtents, direction, movementHits, Quaternion.identity, distance,
@@ -639,6 +642,7 @@ namespace RogueMachine.P12PipelineSafe
                 var hit = movementHits[i].collider;
                 if (hit == null || hit.transform.IsChildOf(transform) ||
                     hit.GetComponent<P17PhysicalShell>() != null) continue;
+                if(allowPlayerContact&&playerRoot!=null&&hit.transform.IsChildOf(playerRoot))continue;
                 // Ignore the flat ground, but avoid walls, live vehicles, and loose debris.
                 if (hit.bounds.max.y < 0.12f) continue;
                 lastMoveNormal=Vector3.ProjectOnPlane(movementHits[i].normal,Vector3.up).normalized;
