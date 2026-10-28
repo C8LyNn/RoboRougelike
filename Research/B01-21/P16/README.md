@@ -30,6 +30,17 @@ Each successful original planner run writes **seven inspectable files** into `ge
 
 **Strict evidence classification:** `ACTUAL_ORIGINAL_MAPGEN_CSHARP_WITH_UNITY_MATH_SHIM` is source-level preflight. It does NOT mean Unity loaded the scene, applied BoxCollider/MeshCollider, visually rendered URP, ran PhysX wheel clearance, spawned actual enemy AI or produced G1/G2 certification. The route validator itself explicitly cautions that the checked 4-neighbour grid and spline cannot prove swept-wheel traversal.
 
+## Actual PASS16 production receipt
+
+Three genuinely generated **different** originals are committed under `generated/`; no hand-drawn placeholder:
+- `AR16_01_OPEN_FLANK` / seed 160101 / config density 40%, difficulty 0.20 / **6** source `Cover` elements / geometry `30fb147b8ea3b4eaa9a7f300fcfa093f55ab0d340ad301c5a659c7e14c7b878c`.
+- `AR16_02_SPLIT_DECISION` / seed 160202 / density 55%, difficulty 0.55 / **11** `Cover` / geometry `5cfc45a3308cf5d15b48ab9fd01eb5ae2c3b292bc44b97d5a158a9dcc870048d`.
+- `AR16_03_DENSE_PRESSURE` / seed 160303 / density 100%, difficulty 0.85 / **16** `Cover` / geometry `a797f6fc20a6be9da0e0eb7cc316d1bf3f67ca8ca42362a9bb2f990c635d1b98`.
+
+**Producer-run correction:** the first sparse attempt at 20% happened to produce 0 cover pieces and 85% was only 12. Instead of counting that as successful differentiation, B01-21 changed **only owned request parameters** (40%/100%) and regenerated every source-derived output. The final 6 / 11 / 16 steps are real original MAPGEN geometry, not nominal density values. Also corrected a real local exporter Windows CRLF/Ubuntu LF byte drift by normalizing generated text; these exact seven final committed files were proven **identical across both OS outputs** and **byte-identical after re-running against the committed files**.
+
+**Inspect locally without Unity:** [arena_comparison.html](arena_comparison.html) is a standalone working keyboard-accessible browser preview which loads exactly the three generated source SVG files and their blueprint JSON links. Buttons select variants; arrow keys switch selection; actual seed/config/geometry hash and cover counts update. A real automated headless Chromium DOM/image/keyboard self-check executes when opened with `?selftest=1`; the repo's [GitHub Actions workflow](../../../../.github/workflows/b01-21-p16-three-arenas.yml) records 720p and 1080p screenshots as artifacts. Browser acceptance is **not** Unity/PhysX acceptance.
+
 ## Codex native receiver (join existing CV-05 / MAPGEN queue, no duplicate task)
 
 1. On an HQ-approved host running actual licensed Unity 6000.3.14f1, exact game/build SHA documented, take a disposable isolated scene; use the current legitimate `MapGenBuilder` and `MapGenWorldAdapter.TryGenerate` with these seed/config pairs and a **fresh measured current rig envelope**, not the historical widths by assumption. Verify original `MapGenPlanner.Plan` geometry hash against committed blueprint **only if the envelope-independent same generator version has not changed**. If changed, STOP/REBASE; do not claim old geometry result.
