@@ -58,7 +58,8 @@ def main():
                     cases.append({"width":width,"version":label,"test":name,
                         "observed":got,"expected":expected,
                         "status":("GREEN_AFTER_FIX" if label=="after" and matched else
-                                  "EXPECTED_RED_BEFORE_FIX" if label=="before" and matched else
+                                  "EXPECTED_RED_BEFORE_FIX" if label=="before" and not expected and matched else
+                                  "BASELINE_CONTROL_PASS" if label=="before" and expected and matched else
                                   "UNEXPECTED_FAIL")})
                 def focus(key,action):
                     return page.evaluate("""([key,action])=>{
