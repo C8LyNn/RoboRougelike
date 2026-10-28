@@ -1,0 +1,39 @@
+name: B01-30 PASS16 actual selected A1 motion art research
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/VisualReceivers/P16/**'
+      - '.github/workflows/b01-30-pass16-motion-art.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  approved-a1-motion-proposal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin actual B01-31 approved single-part concept source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/294/head
+          git cat-file -e 8709cf27901c4edca1434cbc760dec5db130a3ef^{commit}
+          test "$(git rev-parse 8709cf27901c4edca1434cbc760dec5db130a3ef:Docs/B01Concept/CONCEPT-MOBILITY-001/A1-single-wheel-arm.svg)" = "96cc46a7c14f94a45c387e102d5940cb787d2d5c"
+      - name: Install isolated 2D source-backed SVG raster tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y python3-cairosvg python3-pil
+          python3 -m py_compile Tools/B01/VisualReceivers/P16/selected_wheel_motion_proposal.py
+      - name: Actual research-only 2D frame render and contact-sheet test
+        run: |
+          python3 Tools/B01/VisualReceivers/P16/selected_wheel_motion_proposal.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P16-actual-selected-A1-motion-art
+          path: build/B01-30/P16-A1-motion-proposal/
+          if-no-files-found: error
+          retention-days: 30
