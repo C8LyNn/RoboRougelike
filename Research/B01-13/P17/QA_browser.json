@@ -1,0 +1,247 @@
+{
+  "package": "AIM-OBS001/R1",
+  "original_html_git_blob": "3f745d1fbd49e02a3cd10886f33c1d3baad72856",
+  "environment": "real Linux Chromium / Playwright",
+  "human_participants": 0,
+  "unity_native": "NOT_RUN",
+  "tests": [
+    {
+      "case": "real_original_git_blob_40",
+      "pass": true
+    },
+    {
+      "case": "initial_empty_session",
+      "pass": true
+    },
+    {
+      "case": "schema_declared",
+      "pass": true
+    },
+    {
+      "case": "four_cases_declared",
+      "pass": true
+    },
+    {
+      "case": "no_image_save_blocked",
+      "pass": true
+    },
+    {
+      "case": "image_loaded",
+      "pass": true
+    },
+    {
+      "case": "image_size_native",
+      "pass": true
+    },
+    {
+      "case": "two_points_allow_save",
+      "pass": true
+    },
+    {
+      "case": "wrong_zip_rejected",
+      "pass": true
+    },
+    {
+      "case": "wrong_zip_error",
+      "pass": true
+    },
+    {
+      "case": "first_frame_saved",
+      "pass": true
+    },
+    {
+      "case": "native_coordinates",
+      "pass": true
+    },
+    {
+      "case": "click_mapping",
+      "pass": true
+    },
+    {
+      "case": "image_sha256_correct",
+      "pass": true
+    },
+    {
+      "case": "no_screenshot_bytes_in_record",
+      "pass": true
+    },
+    {
+      "case": "lock_zip_after_first_frame",
+      "pass": true
+    },
+    {
+      "case": "duplicate_case_denied",
+      "pass": true
+    },
+    {
+      "case": "duplicate_error_visible",
+      "pass": true
+    },
+    {
+      "case": "frame_FAR_STATIC",
+      "pass": true
+    },
+    {
+      "case": "frame_OCCLUDED",
+      "pass": true
+    },
+    {
+      "case": "frame_ZOOM_MOVING",
+      "pass": true
+    },
+    {
+      "case": "export_unlocked",
+      "pass": true
+    },
+    {
+      "case": "input_A_is_LMB",
+      "pass": true
+    },
+    {
+      "case": "input_B_is_RMB",
+      "pass": true
+    },
+    {
+      "case": "impact_point_optional",
+      "pass": true
+    },
+    {
+      "case": "impact_distance_measured",
+      "pass": true
+    },
+    {
+      "case": "outcome_not_inferred",
+      "pass": true
+    },
+    {
+      "case": "export_filename",
+      "pass": true
+    },
+    {
+      "case": "export_schema",
+      "pass": true
+    },
+    {
+      "case": "export_exact_game_sha",
+      "pass": true
+    },
+    {
+      "case": "export_exact_zip_sha",
+      "pass": true
+    },
+    {
+      "case": "export_frames_four",
+      "pass": true
+    },
+    {
+      "case": "export_no_image_pixels",
+      "pass": true
+    },
+    {
+      "case": "export_image_hash",
+      "pass": true
+    },
+    {
+      "case": "receiver_real_images",
+      "pass": true
+    },
+    {
+      "case": "receiver_fake_game_sha_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_wrong_fire_group_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_fake_image_sha_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_fake_dimensions_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_traversal_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_wrong_geometry_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_duplicate_case_rejected",
+      "pass": true
+    },
+    {
+      "case": "receiver_forged_human_ref_rejected",
+      "pass": true
+    },
+    {
+      "case": "export_no_human_consent_claim",
+      "pass": true
+    },
+    {
+      "case": "mode_no_human",
+      "pass": true
+    },
+    {
+      "case": "withdraw_in_memory_purges",
+      "pass": true
+    },
+    {
+      "case": "withdraw_tombstone_client",
+      "pass": true
+    },
+    {
+      "case": "withdraw_export_disabled",
+      "pass": true
+    },
+    {
+      "case": "download_copy_retained_explicitly",
+      "pass": true
+    },
+    {
+      "case": "reset_new_session",
+      "pass": true
+    },
+    {
+      "case": "reset_unlock_build",
+      "pass": true
+    },
+    {
+      "case": "human_refs_visible",
+      "pass": true
+    },
+    {
+      "case": "human_missing_refs_denied",
+      "pass": true
+    },
+    {
+      "case": "human_missing_refs_error",
+      "pass": true
+    },
+    {
+      "case": "720_no_overflow",
+      "pass": true
+    },
+    {
+      "case": "320_no_overflow",
+      "pass": true
+    },
+    {
+      "case": "320_marker_matches_scaled_image",
+      "pass": true
+    },
+    {
+      "case": "no_js_errors",
+      "pass": true
+    },
+    {
+      "case": "no_external_network",
+      "pass": true
+    }
+  ],
+  "pass": 59,
+  "fail": 0
+}
