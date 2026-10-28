@@ -1,0 +1,316 @@
+{
+  "Stages": [
+    {
+      "Options": [
+        {
+          "Id": "bal17_s1_warmup",
+          "Title": "Wrota złomowiska",
+          "Arena": 0,
+          "Roster": [
+            0
+          ],
+          "Variants": [
+            0
+          ],
+          "EnemyCount": 1,
+          "ScrapReward": 75,
+          "Risk": "Niskie",
+          "Loot": "Lekka broń i koła",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 0.75,
+          "DamageMultiplier": 0.3,
+          "FireIntervalMultiplier": 1.9,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 1.6,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 0
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "bal17_s2_mobile",
+          "Title": "Mobilna eskorta",
+          "Arena": 1,
+          "Roster": [
+            0,
+            3
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "ScrapReward": 100,
+          "Risk": "Wysokie",
+          "Loot": "Mobilność i pancerz",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 0.85,
+          "DamageMultiplier": 0.4,
+          "FireIntervalMultiplier": 1.7,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 3.2,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4,
+          "AlternativeRoster": [
+            3,
+            0
+          ]
+        },
+        {
+          "Id": "bal17_s2_bulky",
+          "Title": "Ochrona konwoju",
+          "Arena": 0,
+          "Roster": [
+            1,
+            0
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "ScrapReward": 115,
+          "Risk": "Wysokie",
+          "Loot": "Ciężkie koła i pancerz",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.2,
+          "DamageMultiplier": 0.5,
+          "FireIntervalMultiplier": 1.55,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 1.9,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4,
+          "AlternativeRoster": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "bal17_s3_open",
+          "Title": "Bieg przez pustkowia",
+          "Arena": 1,
+          "Roster": [
+            3,
+            0
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "ScrapReward": 110,
+          "Risk": "Wysokie",
+          "Loot": "Szybkie moduły ruchu",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.05,
+          "DamageMultiplier": 0.55,
+          "FireIntervalMultiplier": 1.45,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 4,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4,
+          "AlternativeRoster": [
+            0,
+            3
+          ]
+        },
+        {
+          "Id": "bal17_s3_crossfire",
+          "Title": "Ogień z dwóch wież",
+          "Arena": 2,
+          "Roster": [
+            2,
+            2
+          ],
+          "Variants": [
+            0,
+            0
+          ],
+          "EnemyCount": 2,
+          "ScrapReward": 130,
+          "Risk": "Bardzo wysokie",
+          "Loot": "Broń dystansowa i tarcze",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1,
+          "DamageMultiplier": 0.6,
+          "FireIntervalMultiplier": 1.35,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.1,
+          "PreferredDistance": 16,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "bal17_s4_bruiser",
+          "Title": "Elita: Natarcie",
+          "Arena": 0,
+          "Roster": [
+            1
+          ],
+          "Variants": [
+            1
+          ],
+          "EnemyCount": 1,
+          "ScrapReward": 135,
+          "Risk": "Wysokie",
+          "Loot": "Wytrzymałość i ciężkie części",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.35,
+          "DamageMultiplier": 0.62,
+          "FireIntervalMultiplier": 1.4,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.6,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4
+        },
+        {
+          "Id": "bal17_s4_gunner",
+          "Title": "Elita: Bastion ogniowy",
+          "Arena": 2,
+          "Roster": [
+            2
+          ],
+          "Variants": [
+            2
+          ],
+          "EnemyCount": 1,
+          "ScrapReward": 155,
+          "Risk": "Wysokie",
+          "Loot": "Precyzyjne uzbrojenie",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.2,
+          "DamageMultiplier": 0.7,
+          "FireIntervalMultiplier": 1.25,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 1.4,
+          "PreferredDistance": 18,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "bal17_s5_mobility",
+          "Title": "Dwa skrzydła",
+          "Arena": 1,
+          "Roster": [
+            3,
+            0,
+            2
+          ],
+          "Variants": [
+            0,
+            0,
+            0
+          ],
+          "EnemyCount": 3,
+          "ScrapReward": 160,
+          "Risk": "Bardzo wysokie",
+          "Loot": "Części szybkie i różne działa",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.15,
+          "DamageMultiplier": 0.62,
+          "FireIntervalMultiplier": 1.3,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 4.1,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4,
+          "AlternativeRoster": [
+            0,
+            3,
+            2
+          ]
+        },
+        {
+          "Id": "bal17_s5_siege",
+          "Title": "Przełamanie stalowej linii",
+          "Arena": 2,
+          "Roster": [
+            1,
+            2,
+            0
+          ],
+          "Variants": [
+            0,
+            0,
+            0
+          ],
+          "EnemyCount": 3,
+          "ScrapReward": 185,
+          "Risk": "Bardzo wysokie",
+          "Loot": "Ciężkie moduły i tarcze",
+          "Rule": "Zniszcz wszystkie rdzenie",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.4,
+          "DamageMultiplier": 0.7,
+          "FireIntervalMultiplier": 1.28,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 2.1,
+          "PreferredDistance": 13,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 4,
+          "AlternativeRoster": [
+            2,
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "Options": [
+        {
+          "Id": "bal17_s6_boss",
+          "Title": "Rdzeń Stalowego Monolitu",
+          "Arena": 2,
+          "Roster": [
+            1
+          ],
+          "Variants": [
+            3
+          ],
+          "EnemyCount": 1,
+          "ScrapReward": 210,
+          "Risk": "Boss",
+          "Loot": "Boss — finałowy odzysk",
+          "Rule": "Zniszcz rdzeń bossa; jego podpory chronią baterie boczne.",
+          "ThreatBudget": 40,
+          "HealthMultiplier": 1.25,
+          "DamageMultiplier": 0.57,
+          "FireIntervalMultiplier": 1.45,
+          "ProjectileSpeedMultiplier": 1,
+          "MoveSpeed": 1.7,
+          "PreferredDistance": 12,
+          "StrafeStrength": 0.35,
+          "RewardJitter": 0
+        }
+      ]
+    }
+  ]
+}
