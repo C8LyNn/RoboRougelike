@@ -31,7 +31,7 @@ jobs:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           od -An -tx1 -N 12 "$GITHUB_WORKSPACE/build/ENV02-001/ENV02-001_v002.blend"
-          xvfb-run -a blender --background "$GITHUB_WORKSPACE/build/ENV02-001/ENV02-001.blend" --python-expr "import bpy; assert 'CONTINUOUS_STEEL_DECK' in bpy.data.objects; assert 'COLLIDER_PROPOSAL_RAMP' in bpy.data.objects; print('ENV02_001_V002_BLEND_REOPEN_PASS')"
+          xvfb-run -a blender --background "$GITHUB_WORKSPACE/build/ENV02-001/ENV02-001_v002.blend" --python-expr "import bpy; assert 'CONTINUOUS_STEEL_DECK' in bpy.data.objects; assert 'COLLIDER_PROPOSAL_RAMP' in bpy.data.objects; print('ENV02_001_V002_BLEND_REOPEN_PASS')"
       - name: Regenerate in a separate directory and verify deterministic GLB outputs
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
