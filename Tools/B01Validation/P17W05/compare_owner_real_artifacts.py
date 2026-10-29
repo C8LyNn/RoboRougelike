@@ -27,10 +27,11 @@ def read_owner(directory):
          "ORIGINAL_PRODUCER_ARTIFACT_MISSING_EXTRA_OR_SYMLINK")
     content={name:(path/name).read_bytes() for name in FILES}
     receipt=json.loads(content["receipt.json"])
-    offers=json.loads(content["offers.json"])
+    # Authenticate bytes BEFORE parsing potentially corrupt/untrusted owner JSON.
     need(receipt["modified_host"] is False and
          receipt["file_sha256"]=={n:digest(content[n]) for n in ("catalog.json","offers.json")},
          "ORIGINAL_PRODUCER_RECEIPT_SHA_FORGED")
+    offers=json.loads(content["offers.json"])
     need(len(offers["offers"])==10 and offers["data_only"] is True and
          offers["host_transaction_required"] is True and
          offers["source_codex_sha"]==CODEX and
