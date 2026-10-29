@@ -14,6 +14,8 @@ from mathutils import Vector
 import bpy
 
 ASSET_ID = "ENV03-001"
+REVISION = "v002"
+SOURCE_BASELINE_SHA = "8622cdd6ddd5bb09f75779af8f468ce1a84c2be5"
 LENGTH = 2.0
 ROOT_NAME = "ENV03-001_ROOT"
 
@@ -100,8 +102,8 @@ def add_area_light(name, pos, energy, size):
     light.rotation_euler = (Vector((0, 0, 0.4)) - light.location).to_track_quat("-Z", "Y").to_euler()
     return light
 
-def preview(scene, path, position):
-    cam = set_camera(scene, "PREVIEW_CAMERA", position, (0, 0, 0.43))
+def preview(scene, path, position, ortho=3.25):
+    cam = set_camera(scene, "PREVIEW_CAMERA", position, (0, 0, 0.43), ortho=ortho)
     scene.render.filepath = path
     bpy.ops.render.render(write_still=True)
     bpy.data.objects.remove(cam, do_unlink=True)
@@ -148,16 +150,25 @@ def main():
     ]
     extruded_profile("Continuous_Steel_Coping", coping_yz, -1.0, 1.0, root, steel)
 
-    # All detail stays within X=+/-0.75, leaving clean mating ends.
+    # v002: continuous low steel impact line on both sides, flush at the X ends.
+    # It touches the flat concrete face at Y=+/-0.20; no positive-depth
+    # overlap with concrete, plates, or the next 2 m instance.
     for side, face in [(-1, "Arena"), (1, "Outer")]:
-        for ix, x in enumerate((-0.64, 0.64)):
-            box("TiePlate_%s_%d" % (face, ix), (x, side * 0.207, 0.42),
-                (0.14, 0.014, 0.28), root, steel)
-            for iz, z in enumerate((0.32, 0.52)):
-                bolt("Bolt_%s_%d_%d" % (face, ix, iz), x, side, z, root, steel)
-        for ix, x in enumerate((-0.32, 0.32)):
+        box("Continuous_Steel_ImpactRail_%s" % face,
+            (0.0, side * 0.206, 0.245), (2.0, 0.012, 0.05), root, steel)
+
+        # Enlarged plates/reflectors improve silhouette from a high game camera.
+        # Plates start at Z=0.28, 10 mm above the rail's upper edge.
+        for ix, x in enumerate((-0.56, 0.56)):
+            box("TiePlate_%s_%d" % (face, ix), (x, side * 0.207, 0.43),
+                (0.16, 0.014, 0.30), root, steel)
+            for iz, z in enumerate((0.35, 0.53)):
+                # Contrasting ochre fastener heads: bolt base touches plate
+                # at Y=+/-0.214, without floating or burying the fastener.
+                bolt("Bolt_%s_%d_%d" % (face, ix, iz), x, side, z, root, safety)
+        for ix, x in enumerate((-0.28, 0.28)):
             box("Reflector_%s_%d" % (face, ix), (x, side * 0.2035, 0.45),
-                (0.18, 0.007, 0.11), root, safety)
+                (0.22, 0.007, 0.12), root, safety)
 
     # Export root and mesh descendants only: no preview cameras/lights.
     bpy.ops.object.select_all(action="DESELECT")
@@ -209,13 +220,47 @@ def main():
             previews[label] = "NOT_RUN: " + str(exc)
             print("ENV03_PREVIEW_WARNING %s %s" % (label, exc))
 
+    # v002: render three visual instances at exactly 2 m pitch, strictly
+    # AFTER GLB export and BLEND save. Preview copies are never source assets.
+    originals = [obj for obj in bpy.data.objects if obj.type == "MESH" and obj.parent == root]
+    temporary = []
+    for offset in (-2.0, 2.0):
+        for original in originals:
+            instance = original.copy()
+            instance.data = original.data
+            bpy.context.collection.objects.link(instance)
+            instance.parent = None
+            instance.matrix_world = original.matrix_world.copy()
+            instance.location.x += offset
+            instance.name = "PREVIEW_ONLY_%s_%+g" % (original.name, offset)
+            temporary.append(instance)
+    for label, position in (
+        ("three_tile_arena", (6.0, -8.0, 4.5)),
+        ("three_tile_outer", (-6.0, 8.0, 4.5)),
+    ):
+        path = os.path.join(out, "ENV03-001_preview_%s.png" % label)
+        try:
+            preview(scene, path, position, ortho=7.6)
+            previews[label] = "PASS" if os.path.getsize(path) > 1024 else "FAIL"
+        except Exception as exc:
+            previews[label] = "NOT_RUN: " + str(exc)
+            print("ENV03_PREVIEW_WARNING %s %s" % (label, exc))
+    for obj in temporary:
+        bpy.data.objects.remove(obj, do_unlink=True)
+
     files = {}
     for name in sorted(os.listdir(out)):
         p = os.path.join(out, name)
         if os.path.isfile(p):
             files[name] = {"bytes": os.path.getsize(p), "sha256": sha256(p)}
     report = {
-        "id": ASSET_ID, "source": "Original procedural geometry; no third-party assets",
+        "id": ASSET_ID, "revision": REVISION, "baseline_source_sha": SOURCE_BASELINE_SHA,
+        "source": "Original procedural geometry; no third-party assets",
+        "module_pitch_m": 2.0,
+        "collision_proposal": [
+            {"type": "BOX", "center_m": [0, 0, 0.095], "size_m": [2.0, 0.48, 0.19]},
+            {"type": "BOX", "center_m": [0, 0, 0.535], "size_m": [2.0, 0.424, 0.69]},
+        ],
         "scale": "1 Blender unit = 1 m", "pivot": [0, 0, 0],
         "axes": {"X": "along wall", "Y": "positive away from arena", "Z": "up"},
         "preview": previews, "files": files,
