@@ -45,7 +45,15 @@ class OperatorTests(unittest.TestCase):
         self.root=Path(self.temp.name)
         self.player=self.root/'Player.exe';self.player.write_bytes(b'MOCK PLAYER, NEVER UNITY')
         self.zip=self.root/'build.zip'
-        with zipfile.ZipFile(self.zip,'w') as z:z.write(self.player,arcname='RoboRougelike/Player.exe')
+        self.dll=self.root/'UnityPlayer.dll';self.dll.write_bytes(b'ORIGINAL UNITY DLL')
+        self.data=self.root/'Player_Data';self.data.mkdir()
+        (self.data/'boot.config').write_bytes(b'original boot config')
+        (self.data/'globalgamemanagers').write_bytes(b'original managers')
+        with zipfile.ZipFile(self.zip,'w') as z:
+            z.write(self.player,arcname='RoboRougelike/Player.exe')
+            z.write(self.dll,arcname='RoboRougelike/UnityPlayer.dll')
+            for name in ('boot.config','globalgamemanagers'):
+                z.write(self.data/name,arcname='RoboRougelike/Player_Data/'+name)
         self.validator=self.root/'validate_live.py';self.validator.write_text(VALIDATOR_MOCK)
         self.output=self.root/'output';self.output.mkdir()
         self.args=self.options()
@@ -130,5 +138,37 @@ class OperatorTests(unittest.TestCase):
         src=(Path(__file__).resolve().parents[1]/'capture.py').read_text()
         for banned in ('urllib.request','requests.','http.client','socket.'):
             self.assertNotIn(banned,src)
+
+
+    def test_21_mixed_build_modified_unityplayer_dll_rejected(self):
+        self.dll.write_bytes(b'WRONG VERSION OF UNITYPLAYER DLL')
+        with self.assertRaisesRegex(capture.IntakeError,'distribution|mismatch'):
+            self.config()
+    def test_22_missing_extracted_data_asset_rejected(self):
+        (self.data/'globalgamemanagers').unlink()
+        with self.assertRaisesRegex(capture.IntakeError,'distribution|missing'):
+            self.config()
+    def test_23_malicious_zip_member_path_rejected(self):
+        with zipfile.ZipFile(self.zip,'a') as z:
+            z.writestr('RoboRougelike/../../escape.bin',b'evil')
+        with self.assertRaisesRegex(capture.IntakeError,'unsafe|traversal'):
+            self.config()
+    def test_24_malformed_list_receipt_fails_closed_and_preserves_operator_receipt(self):
+        c=self.config()
+        def runner(argv,**kwargs):
+            proc=DummyProcess(argv)
+            folder=Path(argv[argv.index('-b0150-live-output')+1])
+            (folder/'receipt.json').write_text('[]')
+            return proc
+        result=capture.run_and_validate(c,runner=runner)
+        self.assertEqual(result['classification'],capture.ERROR_CLASS)
+        self.assertFalse(result['native_performance_acceptance'])
+        self.assertIn('error',result)
+        self.assertTrue((c['run_dir']/'operator_receipt.json').is_file())
+    def test_25_rogue_extra_zip_root_rejected(self):
+        with zipfile.ZipFile(self.zip,'a') as z:
+            z.writestr('WRONG_ROOT/Resources/game.json',b'mixed archive')
+        with self.assertRaisesRegex(capture.IntakeError,'root|distribution'):
+            self.config()
 
 if __name__=='__main__':unittest.main()
