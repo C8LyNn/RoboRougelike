@@ -33,6 +33,8 @@ namespace B01.PARTSIZE001.P17Probe
         public string movementSweepsStatus="NOT_RUN";
         public string damageDetachStatus="NOT_RUN";
         public string playerBuildStatus="NOT_RUN";
+        // Actual Unity-imported prefab paths + GUIDs needed to reproduce any native result.
+        public Binding[] prefabBindings=new Binding[0];
         public NativeOutcome[] outcomes=new NativeOutcome[0];
         public string[] errors=new string[0];
     }
@@ -107,6 +109,9 @@ namespace B01.PARTSIZE001.P17Probe
                 string contract=BracingPhysicalContract.InputError(input);
                 if(contract!=null)
                     throw new InvalidOperationException("SOURCE_PREFAB_INTAKE_REJECTED:"+contract);
+                // Persist EXACT real AssetDatabase prefab evidence in the native receipt.
+                // Never substitute generated/stub GUIDs for actual imported prefab assets.
+                receipt.prefabBindings=bindings.ToArray();
                 // Create additive temporary scene and explicitly target it for each prefab.
                 // Never load/modify Codex R3 or existing garage scenes.
                 isolated=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
