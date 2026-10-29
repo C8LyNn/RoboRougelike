@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y blender python3-pil xvfb
+          sudo apt-get install -y blender python3-numpy python3-pil xvfb
           blender --version | head -n 2
           python3 -m py_compile Tools/B01/TechArt/P17W03/M04Fbx001/*.py
       - name: Execute original producer unmodified to create real M04 .blend and .glb
