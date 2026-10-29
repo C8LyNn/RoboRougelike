@@ -1,5 +1,5 @@
 {
-  "package_id": "B01-50-PERFRUN-001/R2",
+  "package_id": "B01-50-PERFRUN-001/R2-W05",
   "scope": "Tools/B01/B01-50/PERFRUN001/**",
   "producer": "B01-50",
   "previous_r1_sha": "e544f4a00c2ac149dfe118293929667559e7d521",
@@ -9,19 +9,21 @@
     "source_pr": 328
   },
   "executed": {
-    "python_unittest": "25/25 PASS real Linux Python 3.13; 5 new negatives R1 RED",
+    "python_unittest": "29/29 PASS real Linux Python 3.13: 25 operator cases + 4 real original-validator subprocess cases (synthetic input)",
     "original_full_historical_zip": "212/212 files SHA256 match, Windows Player NOT_RUN",
     "python_compile": "PASS",
     "unity_edit_play": "NOT_RUN",
     "native_player": "NOT_RUN",
     "actual_game_fps": "NOT_MEASURED",
     "independent_qa": "PENDING",
-    "codex_ack": "PENDING"
+    "codex_ack": "PENDING",
+    "original_validator_sha1": "7060aa3e364b2bc69de99501faa99bba57e84f82",
+    "original_validator_subprocess": "4/4 PASS (1 valid 120s synthetic trace + 3 intentional malformed variants)"
   },
   "files": {
     "README.md": {
-      "bytes": 10819,
-      "sha256": "070775458b82b325ac612a324ac8216957893f7f48475db15c2325bd9ecf8b25"
+      "bytes": 13740,
+      "sha256": "ea8b9c1830768527074e1434be2eed91d53557ac0213cf37908a58d60f7d758c"
     },
     "capture.py": {
       "bytes": 15796,
@@ -46,6 +48,15 @@
     "evidence/w04_red_green_receipt.json": {
       "bytes": 1422,
       "sha256": "b7f51d1cd37cdeb2a164d8d26709705a8056b9d6ba3743e3b30f7b86f97911c1"
+    },
+    "tests/test_original_validator_integration.py": {
+      "bytes": 6149,
+      "sha256": "5caaeeae8e89ae2669cbf74e2dc508f3e19afdbf3ea634d8c8d843843709477c"
+    },
+    "evidence/W05_original_validator_interop_receipt.json": {
+      "bytes": 1559,
+      "sha256": "aa8b9f9cd88d3a358ce546d1ee7e0e04f4d7c1ad9db6a302c2f6ac09eca6f547"
     }
-  }
+  },
+  "w05_extension": "original PERFSCALING001 validate_live.py subprocess interoperability tests; no Player execution"
 }
