@@ -66,3 +66,33 @@ node Research/B01-10/P17Workbench/browser.test.cjs
 **Uwaga:** powyższe pobranie Playwright dotyczy wyłącznie środowiska QA; sama aplikacja `R5Workbench.html` nadal działa offline. Po edycji wyłącznie manifestu/README nowy SHA PR będzie inny, ale oryginalne źródła `R5WorkbenchCore.js`, `R5Workbench.html`, test Node, Playwright i workflow pozostają tożsame z przetestowanymi Git blob SHA opisanymi w `QA_W02.json`. Nie utożsamiać tego testu z Unity.
 
 **STAN ODBIORU:** Własne realne source/UI tests **GREEN**; **niezależny B01-40/B01-60 QA PENDING**, Codex ACK PENDING, Unity/Windows Player **NOT_RUN**.
+
+
+## WAVE 03 — realna poprawka auto ThreatBudget, czerwony → zielony test Chromium
+
+**Pakiet nadal jest tą samą aplikacją R5WB001 w Draft #357, nie nowym konkurencyjnym generatorem ani mechaniką Unity.** Oryginalny formularz zawsze podawał w pakiecie zmian aktualne \`ThreatBudget\`, nawet gdy użytkownik pozostawił ten limit bez zmian i zaznaczył \`Automatycznie podnieś limit zagrożenia\`. Przez to oryginalny silnik nie wykonywał auto-korekty i odrzucał legalne zwiększenie trudności.
+
+W3 fix w \`R5Workbench.html\`: jeżeli checkbox jest aktywny **i** pole limitu odpowiada obecnemu zapisanemu limitowi, formularz nie przekazuje \`ThreatBudget\` jako ręcznej nadpisanej wartości. Funkcja \`R5WorkbenchCore.put\` oblicza wtedy budżet na podstawie faktycznie wybranego składu, mnożników i eskorty. **Gdy użytkownik zmienia limit świadomie**, wartość pozostaje w patch i nie jest po cichu podnoszona; zbyt niska wartość powoduje odmowę zapisu. **Po wyłączeniu checkboxa** każda zmiana przekroczenia limitu jest odrzucana. Nie zmieniono \`R5RunPlan.cs\` ani balansowych zasad gry.
+
+**Prawdziwe testy, oryginalne GitHub Actions:**
+
+| Commit / workflow | Windows Node 22 | Ubuntu Node 22 | Chromium 3 widoki |
+| --- | --- | --- | --- |
+| RED: \`f35809d2321bc3cbd08f0714c56a125480d5738d\`, [40900414206](https://github.com/C8LyNn/RoboRougelike/actions/runs/40900414206) | źródło 41/41 PASS | źródło 41/41 PASS | **33 PASS / 3 FAIL** — dokładnie auto ThreatBudget w każdym widoku |
+| GREEN: \`54270e16726be3b92e9f94978a855a03e28e98ac\`, [40900605642](https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642) | **41/41 PASS** | **41/41 PASS** | **36/36 PASS**, po 12 realnych interakcji na 1280×720, 1920×1080, 720×900 |
+
+**Pobrane oryginalne artefakty:** GREEN [workflow 40900605642](https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642), artifact **12909511232**, 3 realne PNG + \`QA_BROWSER.json\`. Zarejestrowano również czerwone błędy i faktyczne logi w [\`QA_W03.json\`](QA_W03.json). Test automatycznej korekty przelicza z limitu 12 rzeczywiste zagrożenie **29.440** przy mocniejszym przeciwniku. Nie ma fałszywego deklarowania, że test odegrał całą walkę. Natywne Unity/Player **NOT_RUN**, niezależny B01-60 nadal **PENDING**.
+
+**Odtwarzalność:**
+\`\`\`bash
+node Research/B01-10/P17Workbench/workbench.test.cjs
+npm install --no-save --no-package-lock playwright@1.56.1
+npx playwright install chromium
+node Research/B01-10/P17Workbench/browser.test.cjs
+\`\`\`
+
+### Copy-ready prośba odbioru przez Codexa, po autoryzacji B01-00/B01-40
+
+> **B01-10/R5WB001 WAVE03**: Nie kopiuj samej aplikacji HTML do gry. Otwórz [R5 Workbench Draft #357](https://github.com/C8LyNn/RoboRougelike/pull/357) tylko jako offline producenta oryginalnego \`R5Catalog\`. Sprawdź manifest i aktualny SHA R5 źródła. Jeżeli HQ zaakceptuje konkretny wyeksportowany katalog gry, przełącz się do odizolowanego worktree aktualnego Codexa, zachowaj oryginalne bajty \`Assets/Resources/R5/Encounters.json\` i nieruszony \`.meta\`. Zamień wyłącznie treść katalogu, uruchom natywny \`JsonUtility.FromJson<R5Catalog>\`, \`R5RunPlan.Validate\` i realne starcia. Zapisz raport XML/Editor.log/Player SHA, zgłoś rzeczywisty stan. Przy odrzuceniu danych przywróć oryginalny JSON byte-for-byte, zachowując GUID. **Nie ma autoryzacji do merge, gameplay tuning lub przejęcia source PR bez osobnego ACK.**
+
+**Właściciel handoffu:** B01-40 (weryfikacja pakietu i G0) → B01-60 (niezależny UI / katalog) → B01-00 (kolejność w #79) → Codex (ewentualny import danych). Do tego momentu status **\`PRODUCER_TESTED_READY / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / GAME_NOT_INTEGRATED\`**.
