@@ -10,10 +10,19 @@ OWN={
 "Assets/PARTSIZE001/P17NativeProbe/Editor/B01.PARTSIZE001.P17NativeProbe.Editor.asmdef.meta":"6cd35d13ef2e4f16a1a26a0c0b550003",
 "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingPhysicalContract.cs.meta":"6cd35d13ef2e4f16a1a26a0c0b550004",
 "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs.meta":"6cd35d13ef2e4f16a1a26a0c0b550005",
+"Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs.meta":"6cd35d13ef2e4f16a1a26a0c0b550006",
 }
 RX=re.compile(r"^guid: ([0-9a-f]{32})$",re.M)
 def ensure(value,message):
     if not value:raise ValueError(message)
+def dedicated_script_ok(path,contents,probe_contents):
+    class_name=path.stem
+    return (class_name=="P17NativePhysicalSettings" and
+            "[CreateAssetMenu(" in contents and
+            contents.count("public sealed class P17NativePhysicalSettings : ScriptableObject")==1 and
+            "class P17NativePhysicalSettings" not in probe_contents and
+            "GameObject ForKind(string kind)" in contents)
+
 def audit():
     for path,guid in OWN.items():
         meta=(R/path).read_text()
@@ -35,6 +44,18 @@ def audit():
     ensure(asm["includePlatforms"]==["Editor"] and not asm["autoReferenced"] and
            asm["references"]==["B01.PARTSIZE001.Runtime"],"NOT_EDITOR_ISOLATED")
     code=(R/"Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs").read_text()
+    settings_path=R/"Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs"
+    settings=settings_path.read_text(encoding="utf8")
+    ensure(dedicated_script_ok(settings_path,settings,code),
+           "INVALID_UNITY_SCRIPTABLEOBJECT_FILE_ASSOCIATION")
+    # Regression guards: a mismatched filename or embedded multi-class script
+    # is NOT a reliable Unity MonoScript/CreateAssetMenu association.
+    ensure(not dedicated_script_ok(settings_path.with_name("Other.cs"),settings,code),
+           "MISMATCHED_MONOSCRIPT_NAME_ACCEPTED")
+    ensure(not dedicated_script_ok(settings_path,settings.replace("[CreateAssetMenu(","[NotCreateAssetMenu("),code),
+           "SCRIPTABLEOBJECT_MENU_ATTRIBUTE_MISSING_ACCEPTED")
+    ensure(not dedicated_script_ok(settings_path,settings,code+" class P17NativePhysicalSettings {}"),
+           "DUPLICATED_SCRIPTABLEOBJECT_TYPE_ACCEPTED")
     for term in [
         "Physics.ComputePenetration","PartSizeNativePhysics.GridBounds",
         "PrefabUtility.InstantiatePrefab","PrefabUtility.IsPartOfPrefabAsset",
@@ -62,11 +83,11 @@ def audit():
            "BRACE_LAYOUT_SCOPE_DRIFT")
     for malformed in ["guid: ERROR","guid: "+"a"*31,"guid: "+"b"*32+"\nguid: "+"c"*32]:
         ensure(len(RX.findall(malformed))!=1,"BAD_GUID_MUTATION_FALSE_GREEN")
-    return len(OWN),len(actual),3
+    return len(OWN),len(actual),6
 if __name__=="__main__":
     try:
         meta,owners,negative=audit()
-        print(f"B01_23_P17_NATIVE_PROBE_SOURCE_META_PASS {meta}/{meta} GUID, {owners}/{owners} real source owners, {negative}/{negative} mutated GUID; UNITY_EDITOR_COMPILE_NOT_RUN; PHYSX_NOT_RUN")
+        print(f"B01_23_P17_NATIVE_PROBE_SOURCE_META_PASS {meta}/{meta} GUID, {owners}/{owners} real source owners, {negative}/{negative} mutation negatives (3 GUID + 3 MonoScript); UNITY_EDITOR_COMPILE_NOT_RUN; PHYSX_NOT_RUN")
     except (OSError,ValueError,KeyError) as e:
         print("B01_23_P17_NATIVE_PROBE_META_FAIL "+str(e),file=sys.stderr)
         raise SystemExit(1)
