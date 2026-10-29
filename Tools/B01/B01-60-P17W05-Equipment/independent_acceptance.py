@@ -52,7 +52,7 @@ def independent_intake():
  require(not any(p.startswith("Assets/") for p in paths),"CANONICAL_CHANGE")
  original=load(OLD,SRC/"catalog.json")
  catalog=load(NEW,SRC/"catalog.json")
- require(original["version"]=="1.0.2" and catalog["version"]=="1.0.3","VERSION")
+ require(original["version"]=="1.0.0" and catalog["version"]=="1.0.3","CATALOG_DATA_VERSION")
  require(len(catalog["kits"])==10,"KITS_COUNT")
  for attr in ("kits","part_prices","weapon_prices"):
   require(catalog[attr]==original[attr],"ORIGINAL_BALANCE_CHANGED_"+attr)
