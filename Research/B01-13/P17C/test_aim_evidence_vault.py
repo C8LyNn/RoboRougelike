@@ -149,7 +149,7 @@ class TestVault(unittest.TestCase):
               '--output',str(dest),'--confirm-private-embedded-images']
         run=subprocess.run(args,capture_output=True,text=True)
         self.assertEqual(run.returncode,0,run.stderr)
-        self.assertIn('data:image/png;base64,',dest.read_text())
+        self.assertIn('data:image/png;base64,',dest.read_text(encoding='utf-8'))
         v.attach_derived(self.root,'REPORT01.html',['S01','S02'])
         self.assertEqual(v.verify(self.root,self.receiver)['files_checked'],11)
         v.withdraw(self.root,'S02',True)
