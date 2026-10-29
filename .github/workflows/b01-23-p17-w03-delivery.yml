@@ -1,0 +1,64 @@
+name: B01-23 PASS17 W03 ORIGINAL BRACING ARCHIVE AND SAFE RECEIVER
+on:
+  push:
+    branches: [b01-23/p17-w03-bracing-delivery-r1]
+    paths:
+      - "Tools/B01/PARTSIZE001/P17Delivery/**"
+      - ".github/workflows/b01-23-p17-w03-delivery.yml"
+  workflow_dispatch:
+jobs:
+  original-unity-package-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout full immutable original PARTSIZE lineage
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify original Bracing PR and original SHA-pinned manifest
+        shell: bash
+        run: |
+          git merge-base --is-ancestor 5666a39eabd4cea91b2b605a9eb99ea2f1e226e8 HEAD
+          test "$(git rev-parse HEAD:Docs/B01/PARTSIZE001/P17_W02_BRACING_MANIFEST.json)" = "02221b524d2c106e90d179f16c09dcfef8815c6d"
+          git diff --quiet 5666a39eabd4cea91b2b605a9eb99ea2f1e226e8 HEAD -- Assets/PARTSIZE001/Bracing Assets/PARTSIZE001/Bracing.meta
+      - name: Use Python3.11 stdlib only
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run 20 original archive, mutation, isolation, rollback tests
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P17Delivery/test_pack_bracing.py
+      - name: Produce actual byte-identical real Unity JSON + meta ZIP
+        shell: bash
+        run: |
+          python Tools/B01/PARTSIZE001/P17Delivery/pack_bracing.py build --repo . --zip p17-bracing-original-unity-assets.zip
+          python Tools/B01/PARTSIZE001/P17Delivery/pack_bracing.py verify --repo . --zip p17-bracing-original-unity-assets.zip
+          sha256sum p17-bracing-original-unity-assets.zip
+      - name: Prove the actual archive's strict read-only stage and rollback end-to-end
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os,pathlib,subprocess,sys,tempfile
+          tool="Tools/B01/PARTSIZE001/P17Delivery/pack_bracing.py"
+          source=pathlib.Path(".").resolve()
+          archive=source/"p17-bracing-original-unity-assets.zip"
+          with tempfile.TemporaryDirectory(prefix="p17-actual-isolated-receiver-") as tmp:
+              dest=pathlib.Path(tmp)/"brand-new-stage"
+              for cmd in [
+                  ("init-stage","--repo",str(source),"--dest",str(dest)),
+                  ("stage","--repo",str(source),"--zip",str(archive),"--dest",str(dest)),
+                  ("rollback","--repo",str(source),"--zip",str(archive),"--dest",str(dest))
+              ]:
+                  subprocess.run([sys.executable,tool,*cmd],check=True)
+              assert not dest.exists()
+          print("B01_23_W03_ACTUAL_STAGE_AND_ROLLBACK_PASS no_codex_workspace_writes")
+          PY
+      - name: Upload literal reproducible physical bundle to Codex receiver
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-23-P17-W03-unity-bracing-ZIP-${{ matrix.os }}
+          path: p17-bracing-original-unity-assets.zip
+          if-no-files-found: error

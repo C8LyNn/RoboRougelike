@@ -1,0 +1,116 @@
+{
+  "schema": "B01-23-P17-W03-DELIVERY-v1",
+  "package_id": "PARTSIZE001-P17-BRACE-DELIVERY-001",
+  "revision": "R1",
+  "owner": "B01-23",
+  "package_type": "ORIGINAL_GAME_CONTENT_PRODUCER_SECURE_EXPORT_AND_ISOLATED_RECEIVER",
+  "source_branch": "b01-23/p17-w03-bracing-delivery-r1",
+  "code_sha_pinned": "abb8d0e463a1903df13f1d085d43f05baf757934",
+  "source_sha_with_docs_before_manifest": "48aca74b444974959e7807f22f7d8ddc16a409ea",
+  "pr_base_sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+  "original_producer": {
+    "pr": 375,
+    "sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+    "source_manifest_path": "Docs/B01/PARTSIZE001/P17_W02_BRACING_MANIFEST.json",
+    "manifest_git_blob_sha1": "02221b524d2c106e90d179f16c09dcfef8815c6d"
+  },
+  "dependency_packages": [
+    "PARTSIZE001-R1/#286@be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "PARTSIZE001-P17-RIGS-R1/#348@0978497561c8b6400490235d3e5a401ac32bea2d",
+    "PARTSIZE001-P17-WEAKPOINTS-R1/#361@098ccdbe8f129253fa4ada52318436b7cc2b4dc4",
+    "PARTSIZE001-P17-W02-STRUCTURAL-BRACING-R1/#375@5666a39eabd4cea91b2b605a9eb99ea2f1e226e8"
+  ],
+  "original_files": [
+    {
+      "path": ".github/workflows/b01-23-p17-w03-delivery.yml",
+      "git_blob_sha1": "74f0b70f0ae8f930d50aef8826aeeb2e72cfc24a"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Delivery/pack_bracing.py",
+      "git_blob_sha1": "747433ed9ed042388e1ef89334873660a3f26189"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Delivery/README.md",
+      "git_blob_sha1": "e4303672ca16aaa38dfbdf04b7cada127222e8f0"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Delivery/test_pack_bracing.py",
+      "git_blob_sha1": "bf4cb4d34583b0712d65e8f3fbc193b3bb49ec5b"
+    }
+  ],
+  "deliverable": {
+    "actual_zip_filename": "p17-bracing-original-unity-assets.zip",
+    "size_bytes": 23547,
+    "zip_sha256": "c4f9b083d618013d1d6c4f8a888dcb57d0a4e59220d37acf3f45644c65953580",
+    "member_count": 11,
+    "game_assets": {
+      "json_textasset": 4,
+      "unity_meta": 6,
+      "archive_receipt": 1
+    },
+    "source_scope": "EXACT TEN ORIGINAL Assets/PARTSIZE001/Bracing* PATHS ONLY",
+    "windows_artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40906530192/artifacts/12910483987",
+    "ubuntu_artifact_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40906530192/artifacts/12911702475",
+    "notes": "Artifacts contain one ORIGINAL inner ZIP; GitHub downloads outer wrapper; check original inner ZIP SHA256 and exact file path+data receipt."
+  },
+  "tests": {
+    "actual_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40906530192",
+    "actual_ci_source_sha": "abb8d0e463a1903df13f1d085d43f05baf757934",
+    "windows_2025": {
+      "tests": "20/20 PASS",
+      "actual_zip_build": "PASS",
+      "zip_sha256_cross_os": "IDENTICAL",
+      "isolated_stage_and_rollback": "PASS"
+    },
+    "ubuntu_2404": {
+      "tests": "20/20 PASS",
+      "actual_zip_build": "PASS",
+      "zip_sha256_cross_os": "IDENTICAL",
+      "isolated_stage_and_rollback": "PASS"
+    },
+    "test_coverage": [
+      "refuse altered pinned source sha1",
+      "refuse altered original manifest",
+      "byte-exact original ZIP including receipt",
+      "non-invasive stage init outside repo",
+      "successful stage and rollback",
+      "refuse stage into source/CodeX checkout",
+      "refuse user-owned existing directory overwrite",
+      "refuse ZIP modified asset",
+      "refuse receipt forgery",
+      "refuse extra canonical Codex source member",
+      "refuse zip-slip ../ traversal",
+      "refuse duplicate ZIP member",
+      "refuse stage without marker",
+      "refuse nonempty destination",
+      "refuse rollback of changed file",
+      "refuse rollback of unowned extra file",
+      "refuse output overwrite",
+      "reject dangerous names"
+    ],
+    "unity_compile": "NOT_RUN",
+    "unity_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "unity_physx": "NOT_RUN",
+    "windows_player": "NOT_RUN"
+  },
+  "handoff": {
+    "producer_state": "SOURCE_AND_PHYSICAL_ARCHIVE_COMPLETED",
+    "qa_b01_40": "PENDING_INDEPENDENT_G0",
+    "qa_b01_60": "PENDING_INDEPENDENT_UNITY_G1",
+    "hq_b01_00": "PENDING_INBOX_ADMISSION",
+    "codex_status": "ACK_PENDING_NOT_SENT_NOT_INTEGRATED",
+    "gate_g2": "HOLD",
+    "merge": false,
+    "instructions": "Tools/B01/PARTSIZE001/P17Delivery/README.md",
+    "install": "None automatic; isolated stage only, actual import by Codex after explicitly authorized G0/G1",
+    "rollback": "Only remove from new isolated staging through verified rollback; never modify canonical game or upstream PRs."
+  },
+  "limitations": [
+    "No new game integration code; original Bracing Unity content is still candidate only",
+    "No native Unity/PhysX typed socket or collider acceptance",
+    "B01-40/B01-60 independent verdict has not occurred",
+    "Package source branch stacked on producer PR #375; physical ZIP contains only ten exact original Assets/PARTSIZE001/Bracing files",
+    "Do not equate producer CI with Codex ACK; B01-00 routes inbox only."
+  ]
+}
