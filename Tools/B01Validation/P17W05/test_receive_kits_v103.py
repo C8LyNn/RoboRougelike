@@ -3,11 +3,14 @@
 import io
 import json
 import os
+import shutil
+import tempfile
 from pathlib import Path
 import unittest
 from unittest.mock import patch
 import zipfile
 import receive_kits_v103 as r
+import compare_owner_real_artifacts as owner
 
 REPO=Path(__file__).resolve().parents[3]
 class V103OriginalAcceptance(unittest.TestCase):
@@ -125,6 +128,43 @@ class V103OriginalAcceptance(unittest.TestCase):
         self.assertEqual(len(json.loads(self.files["staged-original/offers.json"])["offers"]),10)
         self.assertTrue(json.loads(self.files["staged-original/receipt.json"])["file_sha256"])
         self.assertEqual(json.loads(self.files["source-receipt.json"])["source_checks"]["source_SHA"],r.NEW)
+
+
+    def test_21_actual_producer_windows_ubuntu_same_as_receiver(self):
+        checked=owner.check(os.environ["B0140_W05_OWNER_WIN"],
+                            os.environ["B0140_W05_OWNER_UBUNTU"],self.out)
+        self.assertEqual(checked["original_files"],3)
+        self.assertTrue(checked["same_original_file_bytes_win_ubuntu_receiver"])
+    def test_22_modified_original_producer_offers_sha_rejects(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=Path(t)/"owner"
+            shutil.copytree(os.environ["B0140_W05_OWNER_WIN"],p)
+            (p/"offers.json").write_bytes(b"corruption")
+            with self.assertRaisesRegex(r.Reject,"ORIGINAL_PRODUCER_RECEIPT_SHA_FORGED"):
+                owner.read_owner(p)
+    def test_23_extra_original_file_rejects(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=Path(t)/"owner"
+            shutil.copytree(os.environ["B0140_W05_OWNER_WIN"],p)
+            (p/"FOREIGN").write_bytes(b"bad")
+            with self.assertRaisesRegex(r.Reject,"ORIGINAL_PRODUCER_ARTIFACT_MISSING_EXTRA"):
+                owner.read_owner(p)
+    def test_24_both_owner_artifacts_forged_coherently_rejects(self):
+        with tempfile.TemporaryDirectory() as t:
+            folders=[]
+            for system in ("windows","ubuntu"):
+                p=Path(t)/system
+                shutil.copytree(os.environ["B0140_W05_OWNER_WIN"],p)
+                o=json.loads((p/"offers.json").read_bytes())
+                o["offers"][0]["reference_total_scrap"]+=1
+                bad=r.canon(o)
+                (p/"offers.json").write_bytes(bad)
+                rec=json.loads((p/"receipt.json").read_bytes())
+                rec["file_sha256"]["offers.json"]=r.digest(bad)
+                (p/"receipt.json").write_bytes(r.canon(rec))
+                folders.append(p)
+            with self.assertRaisesRegex(r.Reject,"PRODUCER_ACTUAL_FILE_VERSUS_B01_40_RECEIVER_DIFFER"):
+                owner.check(folders[0],folders[1],self.out)
 
 if __name__=="__main__":
     unittest.main(verbosity=2)
