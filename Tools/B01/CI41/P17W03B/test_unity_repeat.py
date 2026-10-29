@@ -72,7 +72,7 @@ if scenario == "xml-broken":
     target.write_text("<not xml")
 else:
     target.write_bytes(b'<?xml version="1.0" encoding="utf-8"?>\n' + ET.tostring(root))
-if scenario in ("red", "green-bad-exit"):
+if scenario in ("red", "green-bad-exit", "full-red"):
     sys.exit(2)
 sys.exit(0)
 '''
@@ -287,7 +287,7 @@ class PhysicalSubprocessReplayTests(unittest.TestCase):
                      output=self.root / "missingcount", source=self.sha,
                      test_names=[], repeats=1, timeout=4, full_suite=True)
         with self.assertRaisesRegex(u.ReplayError,"FILTERED_REPLAY_FORBIDS_FULL_SUITE_COUNT"):
-            self.run_fake(trials=1,tests=[CAMERA]) if False else u.replay(
+            u.replay(
                     project=self.project, editor=Path(sys.executable),
                     output=self.root / "bad-filtered", source=self.sha,
                     test_names=[CAMERA], repeats=1, timeout=4,
