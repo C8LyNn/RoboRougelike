@@ -1,0 +1,39 @@
+{
+  "classification": "ORIGINAL_PLAYER_CAPTURE_OPERATOR_NO_NATIVE_EXECUTION",
+  "dependencies": {
+    "original_validator_git_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82",
+    "required_input_tool_pr": 328
+  },
+  "executed": {
+    "historical_original_zip_exe_match": "PASS (ZIP↔executable hash only; NO GAME RUN)",
+    "perf_frames": "NOT_MEASURED",
+    "python_pycompile": "PASS",
+    "python_unittest": "20/20 PASS, Linux Python",
+    "windows_unity_player": "NOT_RUN"
+  },
+  "files": {
+    "README.md": {
+      "bytes": 8001,
+      "sha256": "17c15c27a3bd9c45ec9a37ca9ee700d56feb193e7a3a2828c9da0d59300f58a0"
+    },
+    "capture.py": {
+      "bytes": 11120,
+      "sha256": "6205e83745ff2a9615b8abe3d0a261eb38974a4e29a37e6c9e95e578acad7925"
+    },
+    "evidence/historical_zip_binary_match.json": {
+      "bytes": 567,
+      "sha256": "45d06b4f28723f25b029eb518ddf6c20b474485b12751c6960b9873f0b3b5db0"
+    },
+    "evidence/unittest.log": {
+      "bytes": 3111,
+      "sha256": "0cd56a4544c529a73bc347dffa0d9c271f0e5255da54edaf59403ad6a24ed91d"
+    },
+    "tests/test_capture.py": {
+      "bytes": 8147,
+      "sha256": "b45fa07da1cb59415fb56ea377b810c4c1fc4933645dba54b89156e7878e1c17"
+    }
+  },
+  "owner": "B01-50",
+  "package_id": "B01-50-PERFRUN-001/R1",
+  "scope": "Tools/B01/B01-50/PERFRUN001/**"
+}
