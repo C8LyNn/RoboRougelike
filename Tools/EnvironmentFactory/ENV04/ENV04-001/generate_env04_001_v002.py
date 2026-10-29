@@ -151,6 +151,23 @@ for obj in mesh_objects:
             else:
                 uv_layer.data[li].uv = (co.x, co.y)
 
+# Geometry/UV fingerprint for two independent Blender executions.
+# Excludes cameras, file metadata and renderer-specific PNG bytes.
+bpy.context.view_layer.update()
+geometry_records = []
+for obj in sorted(mesh_objects, key=lambda item: item.name):
+    geometry_records.append({
+        "name": obj.name,
+        "material": [slot.material.name for slot in obj.material_slots],
+        "vertices": [[round(float(c), 6) for c in (obj.matrix_world @ v.co)]
+                     for v in obj.data.vertices],
+        "polygons": [list(face.vertices) for face in obj.data.polygons],
+        "uv": [[round(float(c), 6) for c in loop.uv]
+               for loop in obj.data.uv_layers.active.data],
+    })
+geometry_sha256 = hashlib.sha256(json.dumps(
+    geometry_records, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
 triangle_count = sum(sum(len(poly.vertices) - 2 for poly in obj.data.polygons)
                      for obj in mesh_objects)
 assert 200 <= triangle_count <= 1500, "Triangle budget: %d" % triangle_count
@@ -215,6 +232,7 @@ report = {
     "rework": "separated butt-jointed rim, six slimmer canted slats with 12 flush end brackets, flush seated floor/posts, separated armor and surface markers",
     "license": "CC0-1.0; original authored geometry, no external meshes/textures",
     "source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    "geometry_sha256": geometry_sha256,
     "unity": "NOT_RUN", "windows": "NOT_RUN"
 }
 (OUT / "build_report.json").write_text(json.dumps(report, indent=2) + "\n")
