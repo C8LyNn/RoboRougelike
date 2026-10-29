@@ -82,31 +82,53 @@ namespace B0130.M04UnityIntake
                 AnimationClip clip = obj as AnimationClip;
                 if (clip == null || clip.name.StartsWith("__preview__")) continue;
                 inspectedClips++;
+                // The actual original Blender M04 take has frame 1 (rest),
+                // frame 31 (+12deg) and frame 91 (-12deg) at 30 FPS.
+                // A rotation binding alone can be CONSTANT and previously
+                // triggered a false-green. Prove real opposite-phase motion.
+                if (clip.length <= 0f) continue;
+                float forwardTime = clip.length * 0.25f;
+                float reverseTime = clip.length * 0.75f;
                 EditorCurveBinding[] bindings = AnimationUtility.GetCurveBindings(clip);
-                HashSet<string> animatedPivots = new HashSet<string>();
+                HashSet<string> movingPivots = new HashSet<string>();
                 foreach (EditorCurveBinding binding in bindings)
                 {
-                    // Translation-only movement does NOT count as nozzle tilt.
-                    bool rotation = binding.propertyName.StartsWith("m_LocalRotation")
-                                    || binding.propertyName.StartsWith("localEulerAngles");
+                    // Only real rotation values, never translation or scale.
+                    string property = binding.propertyName ?? "";
+                    bool rotation = property.StartsWith("m_LocalRotation")
+                                    || property.StartsWith("localEulerAngles");
                     if (!rotation) continue;
+                    AnimationCurve curve = AnimationUtility.GetEditorCurve(clip, binding);
+                    if (curve == null) continue; // Unknown/missing: fail closed.
+                    float rest = curve.Evaluate(0f);
+                    float forward = curve.Evaluate(forwardTime);
+                    float reverse = curve.Evaluate(reverseTime);
+                    float firstDelta = forward - rest;
+                    float oppositeDelta = reverse - rest;
+                    // A real +/-12 degree nozzle has about 0.1045 change
+                    // in quaternion X/Y, or about 12 in Euler degrees.
+                    // A minimum of 0.015 excludes unchanged/near-flat curves.
+                    if (!(Math.Abs(firstDelta) > 0.015f
+                        && Math.Abs(oppositeDelta) > 0.015f
+                        && firstDelta * oppositeDelta < 0f))
+                        continue;
                     string path = binding.path ?? "";
                     foreach (string pivot in PivotNames)
                         if (path == pivot || path.EndsWith("/" + pivot))
-                            animatedPivots.Add(pivot);
+                            movingPivots.Add(pivot);
                 }
-                if (animatedPivots.Count == PivotNames.Length)
+                if (movingPivots.Count == PivotNames.Length)
                     oneCompleteClip = true;
             }
             if (!oneCompleteClip)
             {
-                Debug.LogError("M04-UNITY-INTAKE-001 FAIL: no SINGLE imported clip animates all 4 pivots; inspected "
+                Debug.LogError("M04-UNITY-INTAKE-001 FAIL: no SINGLE clip proves +/- gimbal motion of all 4 pivots; inspected "
                                + inspectedClips + " clips");
                 return false;
             }
 
             Debug.Log("M04-UNITY-INTAKE-001 PASS (native Editor inspection): 105 MeshFilters, 4 named pivots, "
-                      + "one common rotation-animated clip. Visual/UV/URP/PhysX NOT validated.");
+                      + "one common +/- opposite-phase moving clip. Visual/UV/URP/PhysX NOT validated.");
             return true;
         }
     }
