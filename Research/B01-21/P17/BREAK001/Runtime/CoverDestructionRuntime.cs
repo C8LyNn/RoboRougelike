@@ -58,7 +58,13 @@ namespace B01.MAPBREAK001
         public CoverWorld(SourceCoverLayout input, string actualMapGeometryHash)
         {
             if (input == null) throw new ArgumentNullException(nameof(input));
+            // Receipt fields are pipe-delimited ASCII. Reject ambiguous or
+            // unbounded source IDs instead of emitting an unparseable receipt.
+            // A missing hash must fail closed as a contract error, never NRE.
             if (string.IsNullOrEmpty(input.SourceLayoutId)
+                || input.SourceLayoutId.Length > 128
+                || input.SourceLayoutId.Any(c => c == '|' || c < 0x20 || c > 0x7e)
+                || string.IsNullOrEmpty(input.OriginalMapGeometryHash)
                 || input.OriginalMapGeometryHash.Length != 64
                 || !IsHex(input.OriginalMapGeometryHash))
                 throw new ArgumentException("INVALID_ORIGINAL_MAP_ID");
@@ -70,8 +76,11 @@ namespace B01.MAPBREAK001
                 || input.EnemySpawnDescriptors.Length != 3
                 || input.Boxes == null || input.Boxes.Length < input.OriginalCoverCount)
                 throw new ArgumentException("INVALID_ORIGINAL_COVER_CONTRACT");
-            if (input.FloorHalfX <= 0 || input.FloorHalfZ <= 0
-                || double.IsNaN(input.EyeY))
+            // NaN and Infinity bypass <= / static line-of-sight comparisons.
+            // In particular Infinity eye height silently disables all cover.
+            if (!Finite(input.FloorHalfX) || !Finite(input.FloorHalfZ)
+                || !Finite(input.EyeY)
+                || input.FloorHalfX <= 0 || input.FloorHalfZ <= 0)
                 throw new ArgumentException("INVALID_ORIGINAL_FLOOR_OR_EYE");
 
             var sorted = new SourceBox[input.OriginalCoverCount];
