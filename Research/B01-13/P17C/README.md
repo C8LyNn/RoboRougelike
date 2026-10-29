@@ -1,4 +1,4 @@
-# B01-13 PASS17 / WAVE03 — AIM-VAULT-001 R1
+# B01-13 PASS17 / WAVE03 — AIM-VAULT-001 R2
 
 ## Executable capability
 
@@ -62,3 +62,11 @@ The test suite uses actual original #349 verifier, generates physical PNG/receip
 - B01-60: independently rerun 33 source tests on this exact SHA with original #349 and R2 #363. Test crash recovery, untracked-file negative, consent disclaimer and **Windows NTFS ACL behavior** if a licensed machine is available. This producer PASS is *not* independent QA.
 - B01-00: decide whether this operator tool belongs in existing CODEX INBOX #79. `READY_TO_QA != CODEX_ACK != GAME_INTEGRATED`.
 - Codex: optional utility for an **authorized human-playtest operator** after real build/ZIP pin, explicit study consent, and private storage. No gameplay import; do not cherry-pick research code into `Assets`. Rollback: do not merge Draft PR, discard new own `P17C` files and remove optional private vault only under the operator's actual data-retention policy.
+
+## PASS17 WAVE03 R2 — verified privacy preflight repair
+
+**Real owner defect at R1:** `initialize()` checked only that the requested root was empty; it created `sessions/`, `derived/` and `.aim-vault.json` even **inside a Git worktree**, while `private_root()` subsequently rejected that location. An ancestor symlink could also redirect a new private vault to a different physical path. This is unsafe for private study evidence.
+
+**R2 fix:** shared `checked_location()` runs **before any mkdir/chmod/index write** in `init` and for every operation through `private_root()`. Refuses a Git worktree ancestor (`.git` file or directory) or symlink ancestor, retains valid new external directory behavior. This is a scoped research-only correctness fix; no native Windows ACL/junction guarantee.
+
+**New executable fail-closed regression:** `python3 Research/B01-13/P17C/test_private_root_location.py` (Python stdlib, no real people/screenshots, no Unity). Four cases: reject Git worktree **before creating any files**, reject symlink ancestor on init, reject symlink ancestor on existing vault, and accept normal external vault with POSIX 0700. Initial bounded exact-logic preflight reproduction: prior check **incorrectly ALLOWED** Git/symlink roots; patched excerpt **4/4 PASS** on Linux, confirmed by direct execution. This excerpt test is **not** a claim of full immutable remote-code suite or independent QA. The preexisting `QA_execution.json` / `QA_execution.log` are preserved as historical **R1 33/33**, not relabelled as R2. Independent full-source tests on final exact R2 SHA remain required before CODEX handoff.
