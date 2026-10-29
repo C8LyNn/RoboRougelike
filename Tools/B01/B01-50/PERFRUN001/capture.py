@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import stat
 import re
 import subprocess
 import sys
@@ -69,6 +70,77 @@ def verify_exe_zip_member(player: Path, build: Path) -> str:
     return found[0]
 
 
+def verify_full_build_distribution(player: Path, build: Path, member: str) -> dict:
+    """Hash EVERY original runtime ZIP member against its extracted sibling.
+
+    The original EXE-only identity was insufficient: matching the EXE but mixing
+    Player_Data/UnityPlayer.dll across versions can invalidate a performance run.
+    The ZIP is only read, never extracted by this operator.
+    """
+    root = player.parent.resolve()
+    prefix = member.rpartition('/')[0]
+    prefix_slash = prefix + '/' if prefix else ''
+    expected = {player.name.casefold(), 'unityplayer.dll',
+                f'{player.stem}_data/boot.config'.casefold(),
+                f'{player.stem}_data/globalgamemanagers'.casefold()}
+    present, fingerprint = set(), hashlib.sha256()
+    file_count, file_bytes = 0, 0
+    try:
+        with zipfile.ZipFile(build) as archive:
+            infos = []
+            for info in archive.infolist():
+                path = info.filename
+                # Do not normalize: a '..', backslash, absolute path, or duplicate
+                # could re-map different archive bytes onto the same Windows file.
+                parts = path.split('/')
+                require(not path.startswith('/') and '\\' not in path and
+                        all(p not in ('', '.', '..') for p in parts if p != parts[-1]) and
+                        all(p not in ('.', '..') for p in parts) and
+                        not stat.S_ISLNK(info.external_attr >> 16),
+                        'unsafe ZIP path traversal/symlink')
+                require(path.startswith(prefix_slash), 'ZIP contains files outside single build root')
+                relative = path[len(prefix_slash):].rstrip('/')
+                if not relative:
+                    require(info.is_dir(), 'invalid build ZIP root entry')
+                    continue
+                relative_parts = relative.split('/')
+                require(all(part not in ('', '.', '..') for part in relative_parts),
+                        'unsafe ZIP path traversal')
+                if info.is_dir():
+                    continue
+                key = relative.casefold()
+                require(key not in present, 'duplicate case-insensitive ZIP distribution path')
+                present.add(key)
+                infos.append((relative, relative_parts, info))
+            require(expected.issubset(present), 'missing required Unity runtime distribution files')
+            for relative, parts, info in sorted(infos, key=lambda x:x[0].casefold()):
+                disk = root.joinpath(*parts)
+                require(disk.resolve().is_relative_to(root) and
+                        not any(root.joinpath(*parts[:i]).is_symlink() for i in range(1,len(parts)+1)),
+                        'unsafe extracted runtime symlink or path traversal')
+                require(disk.is_file(), 'missing extracted build distribution file: '+relative)
+                require(disk.stat().st_size == info.file_size,
+                        'distribution size mismatch: '+relative)
+                actual = hashlib.sha256()
+                with disk.open('rb') as src:
+                    for block in iter(lambda:src.read(1048576),b''):
+                        actual.update(block)
+                original = hashlib.sha256()
+                with archive.open(info) as src:
+                    for block in iter(lambda:src.read(1048576),b''):
+                        original.update(block)
+                require(original.digest() == actual.digest(), 'distribution SHA256 mismatch: '+relative)
+                fingerprint.update(relative.encode('utf-8')+b'\0'+actual.digest()+b'\n')
+                file_count += 1
+                file_bytes += info.file_size
+    except (zipfile.BadZipFile, RuntimeError, EOFError, OSError) as exc:
+        raise IntakeError(f'original build distribution unreadable: {exc}') from exc
+    require(file_count > 3, 'invalid incomplete Unity build distribution')
+    return {'distribution_files_verified':file_count,
+            'distribution_uncompressed_bytes':file_bytes,
+            'distribution_sha256':fingerprint.hexdigest()}
+
+
 def validated_inputs(args) -> dict:
     player, build, validator = (Path(x).expanduser().resolve() for x in (args.player, args.build_zip, args.validator))
     require(player.is_file(), 'Player file missing')
@@ -82,6 +154,7 @@ def validated_inputs(args) -> dict:
     require(155 <= args.run_seconds <= 600, 'runtime must allow 30s warmup + 120s capture')
     require(player != build and player != validator and build != validator, 'input paths must be distinct')
     player_zip_member = verify_exe_zip_member(player, build)
+    distribution = verify_full_build_distribution(player, build, player_zip_member)
     parent = Path(args.out_parent).expanduser().resolve()
     require(parent.is_dir(), 'output parent must already exist; never create an arbitrary parent')
     run_dir = parent / args.scenario
@@ -90,7 +163,7 @@ def validated_inputs(args) -> dict:
             'run_dir': run_dir, 'game_sha': args.game_sha, 'scenario': args.scenario,
             'run_seconds': args.run_seconds, 'build_sha256': file_sha256(build),
             'player_sha256': file_sha256(player), 'player_zip_member': player_zip_member,
-            'validator_git_blob': RECORDER_VALIDATOR_GIT_BLOB}
+            'validator_git_blob': RECORDER_VALIDATOR_GIT_BLOB, **distribution}
 
 
 def player_argv(c: dict) -> list[str]:
@@ -107,6 +180,8 @@ def run_and_validate(c: dict, *, runner=subprocess.Popen, verifier=subprocess.ru
     recorded = {'classification': ERROR_CLASS, 'scenario': c['scenario'],
                 'declared_game_sha': c['game_sha'], 'build_zip_sha256': c['build_sha256'],
                 'player_exe_sha256': c['player_sha256'], 'player_zip_member': c['player_zip_member'],
+                'distribution_files_verified':c['distribution_files_verified'],
+                'distribution_sha256':c['distribution_sha256'],
                 'validator_git_blob': c['validator_git_blob'],
                 'run_seconds_requested': c['run_seconds'],
                 'command': argv, 'unity_edit_play': 'NOT_RUN_BY_OPERATOR',
@@ -136,6 +211,7 @@ def run_and_validate(c: dict, *, runner=subprocess.Popen, verifier=subprocess.ru
         receipt_file = capture / 'receipt.json'
         require(receipt_file.is_file(), 'live capture did not emit receipt.json: check B0150_LIVE_PROFILING build define')
         receipt = json.loads(receipt_file.read_text(encoding='utf-8-sig'))
+        require(isinstance(receipt, dict), 'capture receipt must be a JSON object')
         require(receipt.get('classification') == CAPTURE_CLASS, 'capture classification mismatch')
         require(receipt.get('game_sha') == c['game_sha'], 'capture game SHA mismatch')
         require(receipt.get('build_zip_sha256') == c['build_sha256'], 'capture ZIP identity mismatch')
@@ -152,6 +228,7 @@ def run_and_validate(c: dict, *, runner=subprocess.Popen, verifier=subprocess.ru
         recorded['validator_returncode'] = v.returncode
         require(v.returncode == 0, 'pinned original raw-frame validator returned nonzero')
         validation = json.loads((c['run_dir'] / 'validation.json').read_text(encoding='utf-8'))
+        require(isinstance(validation, dict), 'validator response must be a JSON object')
         require(validation.get('status') == 'LIVE_RAW_REVIEW_REQUIRED_NOT_PERFORMANCE_ACCEPTANCE',
                 'validator status mismatch')
         for name in ('receipt.json', 'frames.csv', 'objects.csv'):
@@ -183,7 +260,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.dry_run:
             print(json.dumps({'classification':'DRY_RUN_NO_PLAYER_EXECUTED', 'command':player_argv(c),
                 'build_zip_sha256':c['build_sha256'],'player_exe_sha256':c['player_sha256'],
-                'player_zip_member':c['player_zip_member']}, indent=2))
+                'player_zip_member':c['player_zip_member'],
+                'distribution_files_verified':c['distribution_files_verified'],
+                'distribution_sha256':c['distribution_sha256']}, indent=2))
             return 0
         result = run_and_validate(c)
         print(json.dumps({'classification':result['classification'], 'run_dir':str(c['run_dir']),
