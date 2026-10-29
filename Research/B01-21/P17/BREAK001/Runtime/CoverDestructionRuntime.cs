@@ -100,9 +100,23 @@ namespace B01.MAPBREAK001
             if (sorted.Any(x => x == null) || boundariesList.Count < 4)
                 throw new ArgumentException("MISSING_ORIGINAL_COVER_OR_BOUNDARY");
 
-            layout = input;
-            covers = sorted;
-            boundaries = boundariesList.ToArray();
+            // Deep-frozen input snapshots: changes to an authoring MapBlueprint
+            // reference after native receiver setup must not alter live state.
+            if (input.EnemySpawnDescriptors.Any(m => m == null ||
+                !Finite(m.X) || !Finite(m.Z)))
+                throw new ArgumentException("INVALID_ENEMY_SOURCE_MARKER");
+            layout = new SourceCoverLayout {
+                SourceLayoutId = input.SourceLayoutId,
+                OriginalMapGeometryHash = input.OriginalMapGeometryHash,
+                OriginalCoverCount = input.OriginalCoverCount,
+                EyeY = input.EyeY,
+                FloorHalfX = input.FloorHalfX, FloorHalfZ = input.FloorHalfZ,
+                EnemySpawnDescriptors = input.EnemySpawnDescriptors
+                    .Select(m => new SourceMarker { X = m.X, Z = m.Z }).ToArray(),
+                Boxes = Array.Empty<SourceBox>()
+            };
+            covers = sorted.Select(CloneBox).ToArray();
+            boundaries = boundariesList.Select(CloneBox).ToArray();
             removed = new bool[covers.Length];
         }
 
@@ -284,6 +298,15 @@ namespace B01.MAPBREAK001
             near = Math.Max(near, a);
             far = Math.Min(far, b);
             return far >= near;
+        }
+
+        private static SourceBox CloneBox(SourceBox b)
+        {
+            return new SourceBox {
+                SourceElementIndex = b.SourceElementIndex, CoverOrdinal = b.CoverOrdinal,
+                X = b.X, Y = b.Y, Z = b.Z, Width = b.Width,
+                Height = b.Height, Depth = b.Depth
+            };
         }
 
         private static bool Finite(double d) { return !(double.IsNaN(d) || double.IsInfinity(d)); }
