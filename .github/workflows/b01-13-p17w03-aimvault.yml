@@ -33,7 +33,7 @@ jobs:
       - name: Checkout immutable original AIM-DELTA R2 dependency
         uses: actions/checkout@v4
         with:
-          ref: dedd4cd57c4839038721444d3e6c3cce970cd593
+          ref: 47eba57b27db5b7e4e349e6891f02a606119eba7
           path: .b01-13-upstream
           persist-credentials: false
       - name: Install Python
@@ -53,7 +53,8 @@ jobs:
               if digest is not None: assert got_sha==digest, (path,got_sha)
               print('SOURCE_PIN_PASS',path,len(b),got_blob,got_sha)
           check('Research/B01-13/P17/verify_aim_receipt.py','70f93467fef1d5782ec4e5cbd6a8a98af6fd0b00','8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4')
-          check('.b01-13-upstream/Research/B01-13/P17B/aim_delta.py','213b3098510a4d270498a1f13770f286cae8706e')
+          check('.b01-13-upstream/Research/B01-13/P17B/aim_delta.py','78e40516d2d37e582756f85a34a62a66df53208e')
+          check('.b01-13-upstream/Research/B01-13/P17B/test_windows_atomic_publish.py','edff3430c725a8fb9f64691c350fbafb58b3bf13')
           check('Research/B01-13/P17C/aim_evidence_vault.py','7937b0a37e7c3038d571860e15d0a40710331948','4273a7ad73046a62c5ebba33a3342b980d7f823a09708d289cad21e98802f615')
           check('Research/B01-13/P17C/test_private_root_location.py','664efd3cb8f52fbd31165ee8422f2f9222b8bf3b')
       - name: Stage exact upstream dependency without source edits
@@ -65,10 +66,13 @@ jobs:
           dest.parent.mkdir(parents=True,exist_ok=True)
           assert not dest.exists(), 'Upstream unexpectedly present; refuse overwrite'
           dest.write_bytes(src.read_bytes())
+          Path('Research/B01-13/P17B/test_windows_atomic_publish.py').write_bytes(Path('.b01-13-upstream/Research/B01-13/P17B/test_windows_atomic_publish.py').read_bytes())
       - name: Install source-only image decoder
         run: python -m pip install --disable-pip-version-check pillow
       - name: Compile original code and complete regression suite
         run: python -m py_compile Research/B01-13/P17C/aim_evidence_vault.py Research/B01-13/P17C/test_aim_evidence_vault.py Research/B01-13/P17C/test_private_root_location.py
+      - name: Execute 6 Windows publication safety regressions on AIM-DELTA R3
+        run: python Research/B01-13/P17B/test_windows_atomic_publish.py
       - name: Execute 33 physical evidence lifecycle tests on CURRENT R2
         run: python Research/B01-13/P17C/test_aim_evidence_vault.py
       - name: Execute 4 private-root safety regressions on CURRENT R2
