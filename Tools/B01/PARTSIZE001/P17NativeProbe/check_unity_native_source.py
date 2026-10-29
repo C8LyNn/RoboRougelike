@@ -61,6 +61,8 @@ def audit():
         "PrefabUtility.InstantiatePrefab","PrefabUtility.IsPartOfPrefabAsset",
         "AssetDatabase.AssetPathToGUID","GetComponentsInChildren<Collider>(true)",
         "EditorSceneManager.NewScene","EditorSceneManager.CloseScene",
+        "public Binding[] prefabBindings=new Binding[0]",
+        "receipt.prefabBindings=bindings.ToArray()",
         'typedSocketStatus="NOT_RUN_NO_CODEX_AUTHORITY"',
         'movementSweepsStatus="NOT_RUN"',
         'damageDetachStatus="NOT_RUN"',
