@@ -1,0 +1,58 @@
+{
+  "schema": "B01-PACKAGE-V1",
+  "package_id": "CHECKPOINT-ORIGINAL-CSHARP-QA-001",
+  "version": "P17-W03-R1",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "branch": "qa/b01-62-p17w03-checkpoint-original-csharp",
+  "category": "INDEPENDENT_ORIGINAL_CODEX_CSHARP_QA",
+  "source_files": {
+    "Tools/B01/B01-62/P17W03CheckpointSourceQA/prepare.py": "fc7fc987734694d03371f04ea40bba51f047d3de",
+    "Tools/B01/B01-62/P17W03CheckpointSourceQA/Shims.cs": "5b07036265ff266e4722a5bc56717e20d6639c6c",
+    "Tools/B01/B01-62/P17W03CheckpointSourceQA/Program.cs": "ac5a2a6f4051f0f4ca1e6fa67dd980671d30fdf1",
+    "Tools/B01/B01-62/P17W03CheckpointSourceQA/Receiver.csproj": "9f304c6eb35e56889d4b4e9932dc8054aac7a9b9",
+    "Tools/B01/B01-62/P17W03CheckpointSourceQA/README.md": "ccea3ebc8131a3617fd9732aa6a528d66f1915a2",
+    ".github/workflows/b01-62-p17w03-checkpoint-original.yml": "06e2901ab49cce70fb5fac60fac54a9e9b3fc8b5"
+  },
+  "original_codex_sources": {
+    "old_sha": "a06dea84e11859a519a42f89c88b2dcdb055646f",
+    "fixed_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "unchanged_storage": {
+      "path": "Assets/R1/R1RunCheckpoint.cs",
+      "blob": "6eb8682c14329088d5698fc369009fb86b99b426"
+    },
+    "r3_old": {
+      "path": "Assets/R3/R3ModelCheckpoint.cs",
+      "blob": "658b6377cf6f36496c1d555ff6b92447e58d23a9"
+    },
+    "r3_fixed": {
+      "path": "Assets/R3/R3ModelCheckpoint.cs",
+      "blob": "29a85ae3ff0e761538c1937bf901d9a5ad573620"
+    },
+    "prs": [
+      382,
+      383
+    ]
+  },
+  "runtime": "Git, Python3.11+, .NET8 Windows/Ubuntu, actual disk FS, non-native UnityEngine.JsonUtility shim",
+  "tests_expected": "15 fixed positive/negative tests and explicit original old RED exit86 per OS",
+  "tests_actual": "PENDING_GITHUB_CI",
+  "scope": [
+    "Tools/B01/B01-62/P17W03CheckpointSourceQA/**",
+    ".github/workflows/b01-62-p17w03-checkpoint-original.yml"
+  ],
+  "integration": "NO; source read-only; G0 independent receiver candidate; G1 native NOT_RUN; G2 Player NOT_RUN; NO MERGE",
+  "recipients": [
+    "B01-40 source QA",
+    "B01-60 or B01-61 independent additional QA",
+    "B01-00 route to Codex #79"
+  ],
+  "import": "Use Python prepare.py to extract exact original Codex source from immutable Git objects into independent folder; run dotnet Receiver.csproj externally. Never copy shim into Assets.",
+  "rollback": "Delete the isolated QA tool folder and workflow only; never touch canonical checkpoint implementation or saved files.",
+  "limits": [
+    "Original Unity-heavy R1RunController is not part of compiled source excerpt",
+    "Full R3VehicleModel.TryRestoreCheckpoint not executed, only unchanged SavePart method",
+    "STJ shim not identical Unity JsonUtility",
+    "Native Unity and Player not run",
+    "Full Codex #383 EditMode suite is red, independent red/green of only scoped methods does not repair that"
+  ]
+}
