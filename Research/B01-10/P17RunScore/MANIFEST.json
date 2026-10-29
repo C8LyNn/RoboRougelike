@@ -1,11 +1,11 @@
 {
-  "packageId": "B01-10-RUNSCORE001/R1",
-  "version": "1.0.0",
+  "packageId": "B01-10-RUNSCORE001/R2",
+  "version": "1.1.0-W04-INTEGRATION_TIMELINE",
   "producer": "B01-10 GAME DESIGN & BALANCE",
   "owner": "B01-10",
   "receiver": "B01-40 → independent B01-60 → B01-00 → Codex only after authorized ACK",
-  "status": "PRODUCER_CSHARP_COMPILED_AND_TESTED / INDEPENDENT_G0_QA_PENDING / NOT_OFFERED_FROZEN / CODEX_ACK_PENDING / NOT_INTEGRATED",
-  "newGameFeature": "Six-stage risk-scaled non-monetary scoring, stage medals, run medal and three cosmetics achievements; one pure C# original core, no game code modified",
+  "status": "PRODUCER_REAL_DOTNET_CSHARP_74_OF_74_PASS_WIN_UBUNTU / B01-40_G0_PENDING / B01-60_INDEPENDENT_QA_PENDING / NOT_OFFERED_FROZEN / CODEX_ACK_PENDING / GAME_NOT_INTEGRATED",
+  "newGameFeature": "Original score engine + integration-ready two-phase source collector for authoritative cumulative kills/earnedScrap/recovery changes; proper post-combat then reward confirmation timeline; paused time excluded",
   "branch": "design/b01-10-p17w03-runscore",
   "pullRequest": "https://github.com/C8LyNn/RoboRougelike/pull/401",
   "sourceRef": "main",
@@ -19,9 +19,13 @@
       "blob": "1f0a5a6b2b82dd1367d01e7c9a18499651e5dd54",
       "characters": 8962
     },
+    "RunScoreCollector.cs": {
+      "blob": "470dd19cc06168eda78c52ca2741ea29624c1f18",
+      "characters": 6912
+    },
     "Program.cs": {
-      "blob": "55a22fcf3f00c59669d4351c170dadd5f31ca3a7",
-      "characters": 14629
+      "blob": "51bb6c18efe82fa27c8baf410c952c1c750f0474",
+      "characters": 21128
     },
     "RunScore.Runner.csproj": {
       "blob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
@@ -32,37 +36,42 @@
       "characters": 1769
     },
     "README.md": {
-      "blob": "b3648f471833dfc13a410b0e41c627cfe23c5089",
-      "characters": 9406
+      "blob": "3bab8e84b2af14a90e84e9c015a7d8c40526d3fe",
+      "characters": 14679
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-runscore.yml",
-    "blob": "3657d3218539c24bb419c46b98c5012d7e57ada7"
+    "blob": "1af15092f760395623cca83f8c46dbe661100c91"
   },
-  "testedAtCommit": "d5f7d16d73fd8b9d1bf8be833adde992834a7397",
+  "testedAtCommit": "3578ea377f5d200fddef94f6f6bceb75d5f64c89",
   "actualCI": {
-    "runId": 40911060167,
-    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40911060167",
-    "conclusion": "SUCCESS",
+    "runId": 40965818750,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965818750",
+    "conclusion": "SUCCESS (original compiled-source HEAD 3578ea377f5d200fddef94f6f6bceb75d5f64c89)",
     "windows": {
-      "actualCompiledCSharp": "56/56 PASS",
-      "seededSubcases": "120/120 PASS",
+      "os": "windows-2025",
+      "jobId": 123769920532,
+      "actualCompiledCSharp": "74 PASS / 0 FAIL",
+      "seededSubcases": "120 full six-stage datasets inside test 56",
       "validCLI": "PASS",
       "invalidCLIExit2": "PASS",
-      "artifactId": 12914146272
+      "artifactId": 12938016411
     },
     "ubuntu": {
-      "actualCompiledCSharp": "56/56 PASS",
-      "seededSubcases": "120/120 PASS",
+      "os": "ubuntu-24.04",
+      "jobId": 123769920196,
+      "actualCompiledCSharp": "74 PASS / 0 FAIL",
+      "seededSubcases": "120 full six-stage datasets inside test 56",
       "validCLI": "PASS",
       "invalidCLIExit2": "PASS",
-      "artifactId": 12913468111
+      "artifactId": 12937852588
     },
     "nativeUnity": "NOT_RUN",
     "windowsPlayer": "NOT_RUN",
     "actualGameIntegration": "NOT_RUN",
-    "independentQA": "PENDING"
+    "independentQA": "PENDING",
+    "redGreenNote": "Not a RED→GREEN runtime bug claimed: W04 source integration gap detected from actual R1 controller sequence, then verified newly written code on both OS. No native Unity job ran."
   },
   "gameDependencies": {
     "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a",
@@ -83,8 +92,8 @@
     "scoreRequiresAuthoritativeRuntimeMeasurements": true,
     "noAutomaticG1_or_G2": true
   },
-  "handoffInstructions": "README.md exact copy-ready gated Codex instructions, no producer-side Assets edits, discrete adapter plus reversible cleanup",
-  "rollback": "If Codex chooses integration in disposable worktree, remove solely newly copied scorer+adapter/UI and restore scene bytes/GUIDs; never overwrite active game files",
+  "handoffInstructions": "Current README W04 copy-ready two-phase Codex receiver flow with exact original R1 code lines and rollback; must not patch Codex canonical game until HQ order.",
+  "rollback": "Rollback only newly installed RunScore.cs+RunScoreCollector.cs and Codex-owned adapter/UI in disposable worktree; restore original scene files and .meta unchanged; do not merge.",
   "checks": {
     "sixSourceData": [
       {
@@ -126,7 +135,27 @@
     ],
     "fallback": "No native Unity/Player test, no actual stage observations, no B01-40 freeze or Codex ACK"
   },
-  "sourceVersion": "RUNSCORE001/R1",
-  "manifestPreparedAtHead": "99ca0ef433aa02e1216294dce58a0bb25514de05",
-  "exactFinalHeadMustPassRealWorkflow": true
+  "sourceVersion": "RUNSCORE001/R2",
+  "manifestPreparedAtHead": "f7184d323a48807261571a987e0d05ed08a1a55a",
+  "exactFinalHeadMustPassRealWorkflow": true,
+  "newCollector": {
+    "path": "Research/B01-10/P17RunScore/RunScoreCollector.cs",
+    "blob": "470dd19cc06168eda78c52ca2741ea29624c1f18",
+    "sourceControllerGameRef": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "sourceControllerBlob": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "validatedGameTimeline": [
+      "StartRun resets three cumulative counters, actual original line 106",
+      "End of combat updates cumulative kills and Scrap (original lines 270–290)",
+      "ConfirmRewards later increments cumulative recovered count (original lines 174–188)"
+    ],
+    "collectorActions": [
+      "new RunScoreCollector(.. baseline counts ..)",
+      "Advance(deltaUnscaledSeconds, paused)",
+      "FinishCombat(victory, cumulativeDefeated, coreRatio, cumulativeEarnedScrap)",
+      "FinishRewards(cumulativeRecovered, cumulativeEarnedScrap) only on successful rewards"
+    ],
+    "sourceCSharpCasesAdded": 18,
+    "totalRealCSharpCases": 74,
+    "constraint": "Normal R5 combat only. Noncombat race/road/reactor outcome scoring not authorized or supported; Codex collector hookup required"
+  }
 }
