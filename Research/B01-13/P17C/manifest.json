@@ -6,46 +6,47 @@
   "stacked_parent_pr": 349,
   "stacked_parent_head": "4ef06698e2ed6ada5e05b1a3e0a96b1c6aff5906",
   "upstream_delta_pr": 363,
-  "upstream_delta_retested_head": "dedd4cd57c4839038721444d3e6c3cce970cd593",
+  "upstream_delta_retested_head": "d8f51ea48e0b1185b91d9ea892cdca422d08c3bd",
   "original_receiver_blob": "70f93467fef1d5782ec4e5cbd6a8a98af6fd0b00",
   "original_receiver_sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
   "file_manifest": {
     "aim_evidence_vault.py": {
-      "bytes": 12803,
-      "sha256": "4273a7ad73046a62c5ebba33a3342b980d7f823a09708d289cad21e98802f615"
-    },
-    "test_private_root_location.py": {
-      "bytes": 2515,
-      "sha256": "fdf28ac81d0542f6db9c29b3e840e42ebc6b64803b57f9d6bd82b83ab8ba6a6a"
+      "sha256": "4273a7ad73046a62c5ebba33a3342b980d7f823a09708d289cad21e98802f615",
+      "bytes": 12803
     },
     "test_aim_evidence_vault.py": {
-      "bytes": 11691,
-      "sha256": "e578560e204ba12f77e8eff8e9cb6a6817376966eac09ba3917eb7772991ebc4"
+      "sha256": "166795af74eff8d25a7216c48f5dcb1080a77ba6fb46d04d4810a4aae1d0ab99",
+      "bytes": 11707
+    },
+    "test_private_root_location.py": {
+      "sha256": "fdf28ac81d0542f6db9c29b3e840e42ebc6b64803b57f9d6bd82b83ab8ba6a6a",
+      "bytes": 2515
     },
     "README.md": {
-      "bytes": 8940,
-      "sha256": "101380abab4ff6b60f3148c214fce0a3a87c64138173613248f3e447f7663f8e"
+      "sha256": "4065092719537102754e78554d149614154ee95140acfaf524d06f5d53a8da77",
+      "bytes": 10468
     },
     "QA_execution.log": {
-      "bytes": 3964,
-      "sha256": "e6359972470e3c71b82cd12afe93adfae17eba567a0e267b40d22f8826a290f2"
+      "sha256": "e6359972470e3c71b82cd12afe93adfae17eba567a0e267b40d22f8826a290f2",
+      "bytes": 3964
     },
     "QA_execution.json": {
-      "bytes": 691,
-      "sha256": "75d5e773ed47dfece36e6ba1231f0ff32866307902443778b5947636b8f2ff04"
+      "sha256": "75d5e773ed47dfece36e6ba1231f0ff32866307902443778b5947636b8f2ff04",
+      "bytes": 691
     },
     "QA_R2_LOCATION.log": {
-      "bytes": 1043,
-      "sha256": "5dc61786850afe00f0edb08e908dad43a96a30d9dd5be10e845ae68a4687abff"
+      "sha256": "5dc61786850afe00f0edb08e908dad43a96a30d9dd5be10e845ae68a4687abff",
+      "bytes": 1043
     }
   },
-  "local_tests": "R2 exact full original Git-identical Python source + Git-identical test: 4/4 PASS Linux 3.13.5, exit 0; R1 full source suite 33/33 historical, NOT rerun R2.",
-  "windows_test": "NOT_RUN",
+  "local_tests": "R2 original full source GitHub Actions #40913275888: Ubuntu+Windows x Python3.11+3.13, each 33 vault source tests PASS and 6 upstream publish tests PASS; location Ubuntu 4/4 PASS, Windows 2/4 PASS +2 SKIP (native symlink/junction exclusion); total 168 PASS+4 SKIP / 4 jobs SUCCESS",
+  "windows_test": "WINDOWS_PY311_AND_313_REAL_SOURCE_PASS_2_JOBS (NOT Unity Player/GUI nor ACL)",
   "unity_test": "NOT_RUN",
   "human_count": 0,
   "independent_qa": "PENDING",
   "game_integrated": false,
   "rollback": "No game files changed; discard unmerged research-only branch. Private vault removal only by operator policy.",
-  "location_guard_status": "FIX_VERIFIED_BY_PRODUCER_4_OF_4_EXACT_FULL_SOURCE / INDEPENDENT_B01_40_60_QA_PENDING",
-  "notes": "QA_execution.* remains historical R1 33/33. QA_R2_LOCATION.log is actual full Git-identical R2 module 4/4; no Python/Pillow 33-case suite on R2, no native Unity/Windows/humans."
+  "location_guard_status": "FINAL_R2_4_JOBS_SOURCE_PASS / EXTERNAL_QA_PENDING / NATIVE_G1_NOT_RUN",
+  "notes": "QA_execution.* and QA_R2_LOCATION.log predate final cross-OS run and stay historical. Current original CI receipt: https://github.com/C8LyNn/RoboRougelike/actions/runs/40913275888 ; not independent B01-60 or native game/human test.",
+  "upstream_delta_source_blob": "8825e21d73fc9e735c17f9d2a05254a5bac9b810"
 }
