@@ -1,0 +1,56 @@
+name: B01-40 W05 independent NEW B01-22 v1.0.3 kit source receipt
+on:
+  push:
+    branches: ['audit/b01-40-p17w05-v103-intake']
+    paths:
+      - 'Tools/B01Validation/P17W05/**'
+      - '.github/workflows/b01-40-p17w05-new-kit-v103-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-new-author-source-acceptance:
+    name: Exact new #411 source + real 10 kit rollback + 20 QA tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read-only fetch new #411 and exact old parent, Codex #383, prior pinned source
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=2 origin a3dd45a4c1f222ec5cc387302eafe9104f91ab52
+          git fetch --no-tags --depth=1 origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
+          git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+          git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
+          git fetch --no-tags --depth=1 origin f92c873bb1e397a598b133e107ae704e15f86768
+      - name: Execute unchanged new producer 26 Node + 18 Python + 7 negative tests, 10 real kit stage and rollback
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W05/receive_kits_v103.py --repo . --out "$RUNNER_TEMP/b0140-w05-original-v103"
+      - name: B01-40 20 independent source and physical ZIP negative tests on actual bytes
+        shell: bash
+        run: |
+          export B0140_W05_OUTPUT="$RUNNER_TEMP/b0140-w05-original-v103"
+          python Tools/B01Validation/P17W05/test_receive_kits_v103.py -v
+      - name: Explicit physical digest and source-only quality gate
+        shell: bash
+        run: |
+          python -c "import os,json,pathlib,hashlib; p=pathlib.Path(os.environ['RUNNER_TEMP'])/'b0140-w05-original-v103';r=json.loads((p/'qa-source-receipt.json').read_bytes());z=p/'B01-40-W05-Actual-10-Kit-V103-Source-Ingress.zip';assert hashlib.sha256(z.read_bytes()).hexdigest()==r['inner_archive_sha256'];assert r['new_sha_gate_latest_codex']=='PASS';assert r['CODEX_ACK']=='PENDING';print('ORIGINAL_NEW_V103_SOURCE_G0_INDEPENDENT_B01_40_PASS; AUTHOR_26_NODE_18_PYTHON_7_NEGATIVES; INNER_SHA256='+r['inner_archive_sha256']);print('INDEPENDENT_B01_60_PENDING NATIVE_UNITY_NOT_RUN HQ_G2_HOLD CODEX_ACK_PENDING')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W05-real-new-V103-10-kit-source-proof-${{ matrix.os }}
+          path: ${{ runner.temp }}/b0140-w05-original-v103/
+          if-no-files-found: error
+          retention-days: 21
