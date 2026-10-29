@@ -1,7 +1,7 @@
-name: B01-41 P17 W03B repeated Unity CLI execution harness (SIMULATED EDITOR)
+name: B01-41 P17 W04 repeat Unity full 1330-case and filtered execution (SIMULATED EDITOR)
 on:
   push:
-    branches: ['audit/b01-41-p17-w03-unity-repeat-executor']
+    branches: ['audit/b01-41-p17w04-replay-fullsuite-v110']
     paths:
       - 'Tools/B01/CI41/P17W03B/**'
       - '.github/workflows/b01-41-p17w03b-unity-replay.yml'
@@ -26,8 +26,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git hash-object Tools/B01/CI41/P17W03B/unity_repeat.py)" = '81e2e29a3be10a7882cba9603f453fd7253e1390'
-          test "$(git hash-object Tools/B01/CI41/P17W03B/test_unity_repeat.py)" = '16cb0fc02eed331a4a0dd2bea268d5b4abfa5413'
+          test "$(git hash-object Tools/B01/CI41/P17W03B/unity_repeat.py)" = '0d597ac74da8aba5911829128422006ae7dbd797'
+          test "$(git hash-object Tools/B01/CI41/P17W03B/test_unity_repeat.py)" = '38a81d67914bcdcd59bfc93542574361e1543501'
           echo 'CI41_REPLAY_SOURCE_PINNED; NO_GAMEPLAY_SOURCE_EDITED'
       - name: Execute actual physical process replay cases using simulated Unity CLI
         shell: bash
@@ -38,7 +38,9 @@ jobs:
           grep -q 'ACTUAL_SUBPROCESS_THREE_TRIALS_TWO_EXACT_CODEX_FILTERS_GREEN_NOT_UNITY' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
           grep -q 'REAL_SUBPROCESS_TIMEOUT_STOPS_REPLAY_WITH_EVIDENCE' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
           grep -q 'ACTUAL_COMMAND_LINE_SUBPROCESS_JSON_REPLAY_SCOPE_NOT_NATIVE_UNITY' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
-          echo 'SIMULATED_EDITOR_REAL_OS_PROCESSES_ONLY; NATIVE_UNITY=NOT_RUN; G1=NOT_RUN'
+          grep -q 'ORIGINAL_CODEX_1330_FULL_EDIT_PATTERN_1327_PASS_2_FAIL_1_SKIP_REPRODUCED_BY_STUB' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
+          grep -q 'REAL_CLI_FULL_SUITE_1330_RED_EXIT2_AND_ALL_TRIAL_EVIDENCE' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
+          echo 'SIMULATED_EDITOR_REAL_OS_PROCESSES_18_TESTS_ONLY; NATIVE_UNITY=NOT_RUN; G1=NOT_RUN'
       - name: Upload physical subprocess source-only test log
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
