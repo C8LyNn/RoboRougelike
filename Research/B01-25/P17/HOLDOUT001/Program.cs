@@ -58,32 +58,32 @@ static class ChallengeProof
         var authentic=new List<(string name,string mapBlob,JsonElement profile,HoldoutConfig cfg)>();
         for(int i=0;i<profiles.Length;i++)
         {
-            var p=profiles[i],raw=File.ReadAllBytes(mapFiles[i]);
-            var id=Str(p,"id"),blob=Blob(raw);
+            var p=profiles[i]; var raw=File.ReadAllBytes(mapFiles[i]);
+            var id=Str(p,"id"); var blob=Blob(raw);
             using var j=JsonDocument.Parse(raw);
             var items=Property(j.RootElement,"items").EnumerateArray().ToArray();
-            var z=Pair(p,"zoneCell");
+            var cell=Pair(p,"zoneCell");
             var target=Property(p,"zoneWorldMeters").EnumerateArray().Select(x=>x.GetDouble()).ToArray();
             var c=new HoldoutConfig(id,target[0],target[1],Num(p,"radiusMeters"),Num(p,"requiredSeconds"),Num(p,"outsideDecayPerSecond"));
             Check(id+"_ORIGINAL_GIT_BLOB",()=>Need(blob==Str(p,"mapGitBlob"),"source source blob mismatch "+blob));
             Check(id+"_MAPDOC_V2",()=>Need(Int(j.RootElement,"version")==2&&!Property(j.RootElement,"globalFloor").GetBoolean(),"MapDocument v2 local floor mandatory"));
             Check(id+"_ZONE_MAP_FLOOR_AND_UNOCCUPIED",()=>{
-                bool floor=items.Any(it=>Int(it,"kind")==0&&Int(it,"x")==z.x&&Int(it,"z")==z.z);
-                bool obstacle=items.Any(it=>Int(it,"kind")!=0&&Int(it,"x")==z.x&&Int(it,"z")==z.z);
+                bool floor=items.Any(it=>Int(it,"kind")==0&&Int(it,"x")==cell.x&&Int(it,"z")==cell.z);
+                bool obstacle=items.Any(it=>Int(it,"kind")!=0&&Int(it,"x")==cell.x&&Int(it,"z")==cell.z);
                 Need(floor&&!obstacle,"hold-zone center is an occupied or missing ground cell");
             });
             Check(id+"_ZONE_WORLD_ALIGNMENT",()=>{
-                Near(c.CenterX,z.x*4,"zone center x");Near(c.CenterZ,z.z*4,"zone center z");
+                Near(c.CenterX,cell.x*4,"zone center x");Near(c.CenterZ,cell.z*4,"zone center z");
                 var finish=items.Single(it=>Int(it,"kind")==5);
                 double dx=Int(finish,"x")*4-c.CenterX,dz=Int(finish,"z")*4-c.CenterZ;
-                Need(Math.Hypot(dx,dz)>c.RadiusMeters+2,"Zone overlaps finish marker source center envelope");
+                Need(Math.Sqrt(dx*dx+dz*dz)>c.RadiusMeters+2,"Zone overlaps finish marker source center envelope");
             });
             Check(id+"_CONFIG_VALID",()=>c.Validate());
             authentic.Add((id,blob,p,c));
         }
         var first=authentic[0].cfg;
         var zone=new HoldoutController(first);
-        var x=first.CenterX,z=first.CenterZ;
+        var x=first.CenterX; var z=first.CenterZ;
         Check("WAITING_BEFORE_ENTRY",()=>{var r=zone.Tick(Sample(.25,x+8,z));Need(r.Phase==HoldoutPhase.Waiting&&r.ProgressSeconds==0,"not waiting");});
         Check("CHARGES_WHEN_SAFE_INSIDE",()=>{var r=zone.Tick(Sample(2,x,z));Need(r.Phase==HoldoutPhase.Charging&&!r.Ready, "should charge");Near(r.ProgressSeconds,2,"first charge");});
         Check("CONTESTED_FREEZES",()=>{var r=zone.Tick(Sample(5,x,z,3));Need(r.Phase==HoldoutPhase.Contested, "not contested");Near(r.ProgressSeconds,2,"contested shouldn't advance");});
