@@ -1,6 +1,6 @@
 # B01-31 / A1-SELECTMASK-001 — original 2D selection-mask and focus-sprite export
 
-**Producer:** B01-31 CONCEPT ART · **Version:** P17-W03-R1 · **Status:** ART TOOL / SOURCE-ONLY.
+**Producer:** B01-31 CONCEPT ART · **Version:** P17-W03-R2 · **Status:** ART TOOL / SOURCE-ONLY.
 
 This tool turns **actual, immutable SVG art from [PR #377](https://github.com/C8LyNn/RoboRougelike/pull/377)** into usable pixel-perfect *UI* selection-mask PNGs and separate, transparent selection-focus border PNGs. It does **not** create a physical vehicle collider or install a Unity prefab. This is a **new original export function** with concrete output assets, not another wheel concept, pose, palette, or untested report.
 
@@ -22,7 +22,7 @@ python -m pip install 'CairoSVG==2.8.2' 'Pillow==11.3.0'
 python Docs/B01Concept/P17/W03/A1-SELECTMASK-001/build_and_test.py
 ```
 
-**Generated real assets:** 3 views × 3 pixel sizes (48, 96, 192) × 2 PNG types (alpha UI hit area and non-overlapping turquoise focus border) = **18 individual transparent sprites**, plus three 96px composited focus previews and one combined inspection contact PNG, **22 PNGs total**, and a JSON receipt. A hit-mask pixel is white and alpha 255 if original art alpha is at least 32/255, otherwise fully transparent. Focus outlines derive from morphological dilation minus the exact mask (2/3/4px radius across scales). PNG SHA256, CRC32 and pixel dimensions are recorded from actual bytes.
+**Generated real assets:** 3 views × 3 pixel sizes (48, 96, 192) × 2 PNG types (alpha UI hit area and non-overlapping turquoise focus border) = **18 individual transparent sprites**, plus three 96px composited focus previews and one combined inspection contact PNG, **22 PNGs total**, and a JSON receipt. A hit-mask pixel is white and alpha 255 if original art alpha is at least 32/255, otherwise fully transparent. Focus outlines derive from morphological dilation minus the exact mask (2/3/4px radius across scales). PNG SHA256, CRC32 and pixel dimensions are recorded from actual bytes. R2 removes previous generated `A1-*.png` files and any earlier `receipt.json` at the start of each run; an unsuccessful run removes partial A1 PNGs and writes no receipt. A separate negative regression verifies that an old PASS receipt and obsolete A1 art cannot survive a rerun while unrelated files are preserved. An exact inventory check rejects extra/stale PNG files. CI uploads generated art only on successful export.
 
 **Acceptance:** true original source Git blob SHA, original four semantic groups, nonempty masked silhouettes, transparent backgrounds, hit/miss query semantics, non-overlapping focus border, distinct views, 22 real PNGs, PNG signature/hashes, and strong negative controls detecting full-opaque, all-empty, bad upstream SHA, lost part semantics, and a one-pixel alpha mutation. PNGs are source G0 tests; neither human accessibility nor real Unity UI behavior is claimed.
 
