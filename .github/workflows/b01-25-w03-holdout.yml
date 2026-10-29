@@ -38,6 +38,12 @@ jobs:
           test "$(git hash-object "$SRC/.output/clearance.json")" = "$CLEARANCE_BLOB"
           test "$(git hash-object "$SRC/.output/slalom.json")" = "$SLALOM_BLOB"
           echo "ORIGINAL_MAP_SHA_BOTH_PASS"
+      - name: Compile same actual source against Unity 6000.3 CSharp9 and netstandard2.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build "$SRC/HoldoutUnityCompat.csproj" --configuration Release -p:LangVersion=9.0 -warnaserror
+          echo "UNITY_LANGUAGE_API_CEILING_COMPILE_PASS (NOT UNITY ENGINE)"
       - name: Actually compile and execute holdout CSharp gameplay rules, source-map and adversarial tests
         shell: bash
         run: |
