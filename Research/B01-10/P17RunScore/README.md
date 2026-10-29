@@ -97,3 +97,36 @@ StageScoreInput victoryObservation = collector.FinishRewards(
 **Important integration limitations:** The current R1 controller also supports optional **races/road/reactor** and map activities; this collector and existing scoring policy are **for normal R5 combat stages only (1–4 spawned combat enemies, counting the source-authored Scout escort)**. Non-combat objectives must not be falsely scored as kills, and a non-combat all-activities run requires a separately approved policy before integration. The collector does not decide exact input tick scheduling or where core health ratio is captured; only Codex can wire/verify those against real Unity lifecycle and state. Do not start measuring while the game is transitioning or within paused screen; the constructor is for an actual live encounter with an authoritative baseline. Likewise, no source-engine claim that native Unity can successfully compile or install this without the future authorized adapter.
 
 **W04 executable validation:** \`Program.cs\` adds **18 real compiled C# checks** (#57–74) covering delayed reward accrual, real cumulative counter deltas, pause-exclusion, terminal defeat, invalid replay/double rewards, abnormal kill/recovery counters, time overflow and non-monetary score invariance; old #1–56 and 120 seeded six-stage data checks retained. Own .NET8 Windows+Ubuntu workflow now asserts **74 PASS / 0 FAIL** per OS and saves JSON/negative exit evidence. GitHub Actions and exact SHA below MANIFEST provide the authoritative actual outcome. **B01-60 independent QA, B01-40 G0, native Unity/Player and Codex ACK all remain pending.** Receiver must not mark this as Unity tested.
+
+
+## WAVE 05 — physical SOURCE_ZIP handoff to B01-40 and independent B01-60
+
+**No new gameplay feature or additional competing PR.** This W05 build operation turns existing \`RUNSCORE001/R2\` into an independently inspectable **physical ZIP of the exact C# source and GUID-pinned Unity-import layout**. Original \`RunScore.cs\` and \`RunScoreCollector.cs\` remain unchanged; ownership and game code boundaries remain intact.
+
+The new [\`pack_handoff.py\`](pack_handoff.py) uses only standard Python 3.12. It checks the Git-blob SHA of **all existing compiled C# source, test runner, example and README** against the existing manifest, then produces a byte-reproducible ZIP from the exact PR commit SHA. It stores file entries with stable names, timestamp, permissions and no compression variance, plus a machine-readable \`SOURCE_RECEIPT.json\` and **three Unity \`.meta\` files**: one folder GUID and two MonoImporter GUIDs. It never writes to the canonical \`Assets/**\` tree.
+
+Extracted ZIP member roots:
+
+- \`UnityInstall/Assets/B01RunScore.meta\`
+- \`UnityInstall/Assets/B01RunScore/RunScore.cs\`
+- \`UnityInstall/Assets/B01RunScore/RunScore.cs.meta\`
+- \`UnityInstall/Assets/B01RunScore/RunScoreCollector.cs\`
+- \`UnityInstall/Assets/B01RunScore/RunScoreCollector.cs.meta\`
+- \`Evidence/{RunScore.Runner.csproj,Program.cs,example-run.json,README.md,MANIFEST.json}\`
+- \`SOURCE_RECEIPT.json\`, including the exact PR SHA, per-member SHA256/size, explicit \`nativeUnity=NOT_RUN\`, \`G0=PENDING\`, \`CODEX_ACK=PENDING\`.
+
+**Source bundle is not a pre-imported Unity package.** The \`.meta\` files are syntactically prepared only; Unity serialization, actual GUID conflicts and final plugin/asmdef integration still require Codex and a legitimate Unity environment. An independent review must check all GUIDs against the selected actual Codex worktree before installation.
+
+Run from repository root (replace \`<exact40hexhead>\`):
+
+\`\`\`bash
+python Research/B01-10/P17RunScore/pack_handoff.py pack --sha <exact40hexhead> --archive /tmp/RUNSCORE_SOURCE.zip --report /tmp/zip-build.json
+python Research/B01-10/P17RunScore/pack_handoff.py verify --sha <exact40hexhead> --archive /tmp/RUNSCORE_SOURCE.zip --report /tmp/zip-verify.json
+python Research/B01-10/P17RunScore/pack_handoff.py negatives --sha <exact40hexhead> --archive /tmp/zip-malicious-tests.zip --report /tmp/zip-negative.json
+\`\`\`
+
+\`negatives\` executes **four actual malformed archive rejection cases**, including injected Codex game path \`../Assets/R1/R1RunController.cs\`, altered C# source, drifted source GUID and forged native Unity pass. The isolated GitHub Actions workflow runs this packaging, reopens the ZIP, executes all negatives **on both Windows and Ubuntu**, and uploads the actual ZIP and readable receipts together with 74/74 original source C# tests.
+
+**Receiver flow:** B01-40 checks that exact original GitHub Actions ZIP from **both OS** has the same SHA256 and all **11 expected ZIP members**, that \`SOURCE_RECEIPT.json\` references the producer branch's actual immutable SHA, and that none of the existing game assets have been modified. B01-60 independently unpacks/tests the original files, checks copied C# compiler behavior and negative ZIP mutations, and reports a separate QA verdict. These steps are **not themselves an independent receiver ACK** until another agent explicitly confirms. The Codex-specific request must be routed by B01-00 through #79 **only after successful source G0 and independent QA**, or held as \`ACK_PENDING\`.
+
+**Codex install after authorization:** from an independently accepted exact-source ZIP, copy only the \`UnityInstall/Assets/B01RunScore\` folder **and its adjacent \`B01RunScore.meta\`** into the authorized current game worktree's \`Assets/\` folder, after confirming that the destination does not already exist and that each GUID is unused. Do not run a broad archive extraction over the repository. Then write the adapter and scoreboard in Codex-owned sources, test native Editor/PlayMode/Player, log acceptance and record exactly touched files. **Rollback removes only these new imported files/meta and newly authorized adapter/UI**, restoring previous scene/prefab/asmdef files byte-for-byte. No self-authorized main/develop merge.
