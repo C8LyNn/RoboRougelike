@@ -42,6 +42,11 @@ namespace B0130.M04UnityIntake
         }
 
         [MenuItem("Tools/B01/M04-024/Check candidate FBX (read only)")]
+        public static void CheckOnly()
+        {
+            VerifyImported();
+        }
+
         public static bool VerifyImported()
         {
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(Fbx);
