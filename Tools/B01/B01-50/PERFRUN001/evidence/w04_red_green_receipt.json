@@ -1,0 +1,38 @@
+{
+  "actual_game_fps": "NOT_MEASURED",
+  "classification": "ORIGINAL_PYTHON_SOURCE_RED_GREEN_PRODUCER_TEST_NOT_NATIVE_PLAYER",
+  "codex_ack": "PENDING",
+  "green": {
+    "command": "python -m unittest discover -s tests -v",
+    "error": 0,
+    "exit_code": 0,
+    "fail": 0,
+    "file": "evidence/w04_green_unittest.log",
+    "pass": 25,
+    "source": "R2 original capture.py + unchanged R2 original tests"
+  },
+  "historical_r1_capture_blob": "f23bde519c2caab7c8408bf1f979c29b7e26fc40",
+  "historical_r1_source_commit": "e544f4a00c2ac149dfe118293929667559e7d521",
+  "independent_qa": "PENDING",
+  "native_unity": "NOT_RUN",
+  "package_id": "B01-50-PERFRUN-001/R2",
+  "r2_capture_blob": "9e395dcb123882aa6be47855e88f679514823c42",
+  "r2_test_blob": "690a7caee06758b5f1182e4ae977372679bc9bda",
+  "real_archive": {
+    "aggregate_fingerprint": "5ad81e237a4f817303425fb5b526b1592cc616da8244649547d12f348c36de61",
+    "archive_sha256": "ec3193bb3ac24398c496ea65ad12aa653321db160a4dc74e8f618e3cc7ad6d1d",
+    "classification": "ZIP_AND_ENTIRE_EXTRACTED_RUNTIME_SHA256_MATCH_NO_GAME_EXECUTION",
+    "files": 212,
+    "uncompressed_bytes": 103854568
+  },
+  "red": {
+    "command": "python -m unittest discover -s tests -v",
+    "error": 1,
+    "exit_code": 1,
+    "fail": 4,
+    "file": "evidence/w04_red_on_r1.log",
+    "pass": 20,
+    "source": "R1 original capture.py + R2 original tests"
+  },
+  "windows_player": "NOT_RUN"
+}
