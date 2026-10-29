@@ -1,6 +1,6 @@
 {
   "package_id": "B01-22-KITGALLERY-001",
-  "revision": "1.0.0",
+  "revision": "1.0.1",
   "source_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
   "owner": "B01-22",
   "independent_qa": "PENDING",
@@ -16,18 +16,106 @@
   ],
   "rollback": "Remove isolated Assets/B01KitGallery001 folder and root meta from Codex disposable worktree only",
   "files": [
-    "Assets/B01KitGallery001/Data/KitGallery.json",
-    "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs",
-    "Tools/B01/B01-22/KITGALLERY001/original_source_fixture.json",
-    "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
-    "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
-    "Tools/B01/B01-22/KITGALLERY001/README.md",
     ".github/workflows/b01-22-w03-kitgallery.yml",
     "Assets/B01KitGallery001.meta",
     "Assets/B01KitGallery001/Data.meta",
-    "Assets/B01KitGallery001/Editor.meta",
+    "Assets/B01KitGallery001/Data/KitGallery.json",
     "Assets/B01KitGallery001/Data/KitGallery.json.meta",
-    "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs.meta"
+    "Assets/B01KitGallery001/Editor.meta",
+    "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs",
+    "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs.meta",
+    "Tools/B01/B01-22/KITGALLERY001/GalleryCompile.csproj",
+    "Tools/B01/B01-22/KITGALLERY001/OriginalEditorSourceTests.cs",
+    "Tools/B01/B01-22/KITGALLERY001/README.md",
+    "Tools/B01/B01-22/KITGALLERY001/UnityEditorStubs.cs",
+    "Tools/B01/B01-22/KITGALLERY001/original_source_fixture.json",
+    "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
+    "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
+    "Tools/B01/B01-22/KITGALLERY001/manifest.json"
   ],
-  "note": "No edits to canonical Codex game or W16 frozen economy"
+  "note": "No edits to canonical Codex game or W16 frozen economy",
+  "git_blob_hashes": [
+    {
+      "path": ".github/workflows/b01-22-w03-kitgallery.yml",
+      "git_blob_sha1": "bc07fe5fd254d056b9e53ce2f4431be6bb55302e"
+    },
+    {
+      "path": "Assets/B01KitGallery001.meta",
+      "git_blob_sha1": "41be6387cd51941ec0a6abe324ef1751e5289955"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Data.meta",
+      "git_blob_sha1": "2b5b5190d13a7a8763229139dd0d3e9809e49907"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Data/KitGallery.json",
+      "git_blob_sha1": "dabbacedda08c07982f4a5b467b08e3c74092e56"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Data/KitGallery.json.meta",
+      "git_blob_sha1": "3634bc0f38b2ce7cfa95add82032a4c7a7c23b47"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Editor.meta",
+      "git_blob_sha1": "73515505d48d0ccb5d2563045224e25185f3cc41"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs",
+      "git_blob_sha1": "7a12248d24a5c372d5c1e5aa813f5e2b967b2986"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs.meta",
+      "git_blob_sha1": "18c2250ff2d13f1586b8732a853d9ea768a9aa69"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/GalleryCompile.csproj",
+      "git_blob_sha1": "fb4aca95d7efeb223d1f2d93bd75fe66d3645f53"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/OriginalEditorSourceTests.cs",
+      "git_blob_sha1": "95103752b55b23faba1f8cc9a2065565dc0da19c"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/README.md",
+      "git_blob_sha1": "4921fa68caf1fd5c9d7cb415bbfd134dd83e690c"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/UnityEditorStubs.cs",
+      "git_blob_sha1": "f82426eaa393e754d3aec8f780cb2ca4ebda79f5"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/original_source_fixture.json",
+      "git_blob_sha1": "9dd89d18d04bd8f259a702e4194c3ea52b63b797"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
+      "git_blob_sha1": "c45e9c2546f5f86760b63798a507fad00286ad9c"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
+      "git_blob_sha1": "6294085dcc258a6aecedf5a7fabef1ea858aa3da"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Original Unity Editor C# source compiled with test-only Unity API stand-ins and 20 assertions",
+      "status": "PASS",
+      "tested_sha": "23114deb71e52c4c9be3f693c42a77e1e8cd02d7",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40907100934"
+    },
+    {
+      "name": "Python content, GUID and source validation 11 tests on Windows and Ubuntu",
+      "status": "PASS",
+      "tested_sha": "23114deb71e52c4c9be3f693c42a77e1e8cd02d7",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40907100934"
+    },
+    {
+      "name": "Git blob integrity manifest on 1.0.1",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "Native Unity editor GUI/PlayMode",
+      "status": "NOT_RUN"
+    }
+  ]
 }
