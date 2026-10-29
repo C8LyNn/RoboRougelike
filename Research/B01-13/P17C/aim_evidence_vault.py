@@ -36,10 +36,14 @@ def regular(path: Path, max_bytes: int):
 
 def sha(data: bytes): return hashlib.sha256(data).hexdigest()
 
-def private_root(root: Path):
-    need(root.is_dir() and not root.is_symlink(), 'PRIVATE_ROOT_NOT_DIRECTORY')
-    # Only local operator data, never a repository tree; do not create or remove from Git.
+def checked_location(root: Path):
+    # Reject both direct and ancestor symlinks, before creating any private data.
+    need(not any(p.is_symlink() for p in (root, *root.parents)), 'REFUSE_SYMLINK_ANCESTRY')
     need(not any((p/'.git').exists() for p in (root, *root.parents)), 'REFUSE_GIT_WORKTREE')
+
+def private_root(root: Path):
+    checked_location(root)
+    need(root.is_dir() and not root.is_symlink(), 'PRIVATE_ROOT_NOT_DIRECTORY')
     if os.name != 'nt':
         need(not (root.stat().st_mode & 0o077), 'PRIVATE_ROOT_MUST_BE_MODE_0700')
     need((root/'sessions').is_dir() and not (root/'sessions').is_symlink(), 'MISSING_SESSIONS_DIR')
@@ -91,6 +95,8 @@ def write_index(root, index):
         if os.path.lexists(tmp): os.unlink(tmp)
 
 def initialize(root):
+    # Preflight MUST precede mkdir/chmod/index writes. Never stage human evidence inside Git.
+    checked_location(root)
     need(not root.exists() or (root.is_dir() and not any(root.iterdir())), 'ROOT_MUST_BE_NEW_OR_EMPTY')
     root.mkdir(parents=True,mode=0o700,exist_ok=True)
     if os.name != 'nt': os.chmod(root,0o700)
