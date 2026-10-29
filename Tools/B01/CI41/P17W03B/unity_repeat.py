@@ -62,7 +62,7 @@ def validate_names(filters: list[str]) -> list[str]:
     return filters
 
 
-def parse_unity_xml(xml_file: Path, expected: list[str]) -> dict:
+def parse_unity_xml(xml_file: Path, expected: list[str] | None, expected_full_cases: int | None = None) -> dict:
     if not xml_file.exists() or not xml_file.is_file():
         raise ReplayError("UNITY_XML_MISSING")
     size = xml_file.stat().st_size
@@ -91,10 +91,23 @@ def parse_unity_xml(xml_file: Path, expected: list[str]) -> dict:
         if not key or key in results or value not in {"Passed", "Failed", "Skipped", "Inconclusive"}:
             raise ReplayError("DUPLICATE_OR_INVALID_UNITY_TESTCASE")
         results[key] = value
-    # A filtered Unity run must truly execute EXACTLY the requested original
-    # tests. A CLI success without the named tests is a blocking error.
-    if set(results) != set(expected) or len(results) != totals["total"]:
-        raise ReplayError("UNITY_FILTER_COVERAGE_MISMATCH")
+    # In full-suite mode there MUST be no -testFilter on the native process.
+    # For #383 require exactly the original 1330 cases. A subset, zero tests
+    # or a different NUnit test collection is a hard error, never "GREEN".
+    if expected is None:
+        if expected_full_cases is None or expected_full_cases < 50:
+            raise ReplayError("EXACT_FULL_SUITE_SIZE_REQUIRED")
+        if totals["total"] != expected_full_cases or len(results) != expected_full_cases:
+            raise ReplayError("UNITY_FULL_SUITE_COVERAGE_MISMATCH")
+        if "testcasecount" in root.attrib:
+            try:
+                if int(root.attrib["testcasecount"]) != expected_full_cases:
+                    raise ReplayError("UNITY_FULL_SUITE_DISCOVERY_MISMATCH")
+            except ValueError as exc:
+                raise ReplayError("UNITY_FULL_SUITE_DISCOVERY_INVALID") from exc
+    else:
+        if set(results) != set(expected) or len(results) != totals["total"]:
+            raise ReplayError("UNITY_FILTER_COVERAGE_MISMATCH")
     counted = {k: sum(1 for v in results.values() if v == k) for k in
                ("Passed", "Failed", "Skipped", "Inconclusive")}
     if any(counted[key] != totals[key.lower()] for key in counted):
@@ -112,16 +125,18 @@ def parse_unity_xml(xml_file: Path, expected: list[str]) -> dict:
 
 def execute_once(*, project: Path, editor: Path, editor_args: list[str],
                  test_names: list[str], source: str, attempt: int, output: Path,
-                 mode: str, timeout: int) -> dict:
+                 mode: str, timeout: int, full_suite: bool = False,
+                 expected_full_cases: int | None = None) -> dict:
     source_guard(project, source)
     run_dir = output / ("attempt-%02d" % attempt)
     run_dir.mkdir(parents=True, exist_ok=False)
     xml_path = run_dir / "results.xml"
     log_path = run_dir / "unity-editor.log"
     args = [str(editor), *editor_args, "-batchmode", "-nographics",
-            "-projectPath", str(project), "-runTests", "-testPlatform", mode,
-            "-testFilter", ";".join(test_names), "-testResults", str(xml_path),
-            "-logFile", str(log_path), "-quit"]
+            "-projectPath", str(project), "-runTests", "-testPlatform", mode]
+    if not full_suite:
+        args.extend(["-testFilter", ";".join(test_names)])
+    args.extend(["-testResults", str(xml_path), "-logFile", str(log_path), "-quit"])
     start = time.monotonic()
     stdout, stderr, exitcode, timed_out = b"", b"", None, False
     try:
@@ -138,7 +153,10 @@ def execute_once(*, project: Path, editor: Path, editor_args: list[str],
     item = {"attempt": attempt, "exit_code": exitcode, "timeout": timed_out,
             "duration_seconds": round(time.monotonic() - start, 3),
             "native_editor_invoked": exitcode is not None or timed_out,
-            "filter": test_names, "source_sha": source, "mode": mode,
+            "filter": test_names if not full_suite else None,
+            "scope": "FULL_SUITE" if full_suite else "FILTERED",
+            "expected_full_cases": expected_full_cases if full_suite else None,
+            "source_sha": source, "mode": mode,
             "xml_path": str(xml_path), "log_path": str(log_path)}
     if timed_out:
         item["status"] = "HOLD_TIMEOUT"
@@ -146,7 +164,8 @@ def execute_once(*, project: Path, editor: Path, editor_args: list[str],
         item["status"] = "HOLD_EDITOR_LAUNCH_FAILED"
     else:
         try:
-            parsed = parse_unity_xml(xml_path, test_names)
+            parsed = parse_unity_xml(xml_path, None if full_suite else test_names,
+                                     expected_full_cases=expected_full_cases if full_suite else None)
             item.update(parsed)
             item["status"] = ("NATIVE_TRIAL_PASS" if exitcode == 0 and
                               all(v == "Passed" for v in parsed["cases"].values())
@@ -168,10 +187,17 @@ def execute_once(*, project: Path, editor: Path, editor_args: list[str],
 
 def replay(*, project: Path, editor: Path, output: Path, source: str,
            test_names: list[str], repeats: int, timeout: int,
-           editor_args: list[str] | None = None, mode: str = "EditMode") -> dict:
+           editor_args: list[str] | None = None, mode: str = "EditMode",
+           full_suite: bool = False, expected_full_cases: int | None = None) -> dict:
     if mode not in ("EditMode", "PlayMode") or not 1 <= repeats <= 20 or not 1 <= timeout <= 3600:
         raise ReplayError("INVALID_REPLAY_SETTINGS")
-    validate_names(test_names)
+    if full_suite:
+        if test_names or expected_full_cases is None or not 50 <= expected_full_cases <= 50000:
+            raise ReplayError("FULL_SUITE_REQUIRES_EXACT_TESTCOUNT_AND_NO_FILTER")
+    else:
+        validate_names(test_names)
+        if expected_full_cases is not None:
+            raise ReplayError("FILTERED_REPLAY_FORBIDS_FULL_SUITE_COUNT")
     if not editor.is_file():
         raise ReplayError("UNITY_EDITOR_EXECUTABLE_NOT_FOUND")
     if not project.is_dir() or not (project / ".git").exists():
@@ -180,17 +206,23 @@ def replay(*, project: Path, editor: Path, output: Path, source: str,
     if output.exists():
         raise ReplayError("OUTPUT_DIRECTORY_MUST_NOT_EXIST")
     output.mkdir(parents=True)
-    data = {"package": "CI41-REPLAY-001", "source_sha": source, "editor": str(editor),
-            "mode": mode, "filters": test_names, "requested_trials": repeats,
+    data = {"package": "CI41-REPLAY-001", "version": "1.1.0",
+            "source_sha": source, "editor": str(editor),
+            "mode": mode, "filters": test_names if not full_suite else None,
+            "scope": "FULL_SUITE" if full_suite else "FILTERED",
+            "expected_full_cases": expected_full_cases if full_suite else None,
+            "requested_trials": repeats,
             "results": [], "native_unity": "EXECUTED_ONLY_IF_RUNNER_ACTUALLY_INVOKED",
-            "full_suite_g1": "NOT_ASSESSED_BY_FILTERED_REPLAY",
+            "full_suite_g1": ("FULL_SUITE_RECEIPT_REQUIRES_INDEPENDENT_NATIVE_QA"
+                              if full_suite else "NOT_ASSESSED_BY_FILTERED_REPLAY"),
             "status": "HOLD_INCOMPLETE"}
     try:
         for index in range(1, repeats + 1):
             res = execute_once(project=project, editor=editor,
                                editor_args=editor_args or [], test_names=test_names,
                                source=source, attempt=index, output=output,
-                               mode=mode, timeout=timeout)
+                               mode=mode, timeout=timeout,
+                               full_suite=full_suite, expected_full_cases=expected_full_cases)
             data["results"].append(res)
             if res["status"] in ("HOLD_SOURCE_CHANGED_DURING_RUN", "HOLD_TIMEOUT",
                                  "HOLD_EDITOR_LAUNCH_FAILED"):
@@ -209,12 +241,14 @@ def replay(*, project: Path, editor: Path, output: Path, source: str,
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="Invoke and audit repeated Unity Editor filtered test runs")
+    p = argparse.ArgumentParser(description="Repeat exact-commit Unity native full-suite or filtered test runs")
     p.add_argument("--project", required=True)
     p.add_argument("--editor-exe", required=True)
     p.add_argument("--editor-launch-arg", action="append", default=[])
     p.add_argument("--source-sha", required=True)
-    p.add_argument("--test", action="append", required=True)
+    p.add_argument("--test", action="append", default=[])
+    p.add_argument("--full-suite", action="store_true")
+    p.add_argument("--expected-full-cases", type=int)
     p.add_argument("--repeats", type=int, default=3)
     p.add_argument("--timeout", type=int, default=600)
     p.add_argument("--mode", choices=["EditMode", "PlayMode"], default="EditMode")
@@ -226,10 +260,12 @@ def main() -> int:
                         editor_args=args.editor_launch_arg, test_names=args.test,
                         source=args.source_sha, repeats=args.repeats,
                         timeout=args.timeout, mode=args.mode,
+                        full_suite=args.full_suite, expected_full_cases=args.expected_full_cases,
                         output=Path(args.output).resolve())
         print(json.dumps({"status": result["status"],
                           "summary": str((Path(args.output).resolve() / "summary.json")),
-                          "trials": len(result["results"]), "full_suite_g1": "NOT_ASSESSED"},
+                          "trials": len(result["results"]), "scope": result["scope"],
+                          "full_suite_g1": result["full_suite_g1"]},
                          sort_keys=True))
         return 0 if result["status"] == "REPEAT_PASS" else 2
     except (ReplayError, OSError, ValueError) as exc:
