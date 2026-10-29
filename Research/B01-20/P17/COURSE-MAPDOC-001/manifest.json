@@ -1,6 +1,6 @@
 {
   "packageId": "COURSE-MAPDOC-001",
-  "version": "R1",
+  "version": "R2_IMPORT_ONLY",
   "owner": "B01-20",
   "ownedPaths": [
     "Research/B01-20/P17/COURSE-MAPDOC-001/**",
@@ -15,20 +15,44 @@
     "commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
     "path": "Assets/MapEditor/MapDraft.cs",
     "gitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
-    "readOnly": true
+    "readOnly": true,
+    "additionalCompatibleBaseline": {
+      "pr": 383,
+      "sha": "f92c873bb1e397a598b133e107ae704e15f86768",
+      "gitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c"
+    }
   },
-  "actualOutputs": "18 MapDocument-v2 JSON + 18 non-native checkpoint sidecars + receipt JSON",
+  "actualOutputs": "18 MapDocument-v2 JSON + 18 non-native checkpoint sidecars + receipts + deterministic separate import-only 18-JSON ZIP",
   "expectedChecks": {
     "originalCsharpMapLoads": 18,
     "originalCsharpNegatives": 6,
-    "PythonNegatives": 6
+    "PythonNegatives": 6,
+    "intakePythonCases": 12,
+    "importOnlyZipEntries": 18,
+    "crossOSZipByteParity": "CI_REQUIRED"
   },
   "limits": [
     "1m cell grid projection, vertical ramp/height lost",
     "Checkpoint markers outside MapDocument v2; NOT native import",
     "Native Unity Edit/Play/PhysX not run",
     "Independent B01-40/60 QA pending",
-    "Codex ACK pending; no game source touched"
+    "Codex ACK pending; no game source touched",
+    "R2 is a data-only import ZIP, not a Unity scene, MapEditor import execution or integrated game"
   ],
-  "rollback": "Only remove optional exported JSON and isolated research files"
+  "rollback": "Only remove optional exported JSON and isolated research files",
+  "parentImmutableProducer": {
+    "pr": 397,
+    "sourceSHA": "6b76dd101f8dcf3b0697702cffbd67174635e35e",
+    "unchangedConverterGitBlob": "b2d3c29dcc3957e01a3d311b81258837ed829418"
+  },
+  "intake": {
+    "script": "package_intake.py",
+    "test": "test_intake.py",
+    "version": "R2_IMPORT_ONLY",
+    "zip": "codex-import-only-18-mapdocs.zip",
+    "receipt": "codex-import-only-receipt.json",
+    "contents": "ONLY 18 MapDocument v2 JSON, ZERO non-native checkpoint sidecars",
+    "originalConverterUnchanged": true,
+    "originalCodexCsharpUnchanged": true
+  }
 }

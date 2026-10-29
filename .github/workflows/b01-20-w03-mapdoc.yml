@@ -51,6 +51,21 @@ jobs:
         shell: bash
         run: |
           dotnet run --project Research/B01-20/P17/COURSE-MAPDOC-001/OriginalCodexMapDraftQA.csproj --configuration Release -- importable-mapdocs importable-mapdocs/original-codex-load-receipt.json
+      - name: Confirm original Codex MapDraft schema is unchanged at current #383 W04 baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin f92c873bb1e397a598b133e107ae704e15f86768
+          test "$(git rev-parse f92c873bb1e397a598b133e107ae704e15f86768:Assets/MapEditor/MapDraft.cs)" = "0331a54a1545ecd1ea18b616ef13fed113474b8c"
+          echo "COURSE_MAPDOC_CURRENT_CODEX_383_MAPDRAFT_BLOB_MATCH=PASS"
+      - name: Execute original-source 12 fail-closed receiver negatives and produce real 18-only import ZIP
+        shell: bash
+        env:
+          P17_MAPDOC_INPUT: importable-mapdocs
+        run: |
+          set -euo pipefail
+          python Research/B01-20/P17/COURSE-MAPDOC-001/test_intake.py
+          python Research/B01-20/P17/COURSE-MAPDOC-001/package_intake.py importable-mapdocs
       - name: Archive 18 original CSharp sourced MapDocuments and native-sidecar and QA receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -59,3 +74,28 @@ jobs:
           path: importable-mapdocs/
           if-no-files-found: warn
           retention-days: 21
+  compare-import-archive-between-systems:
+    needs: [original-mapgen-to-codex-mapdraft]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Download both original source generated Codex intake artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: b01-20-w03-mapdocument-*
+          path: original-artifacts
+          merge-multiple: false
+      - name: Require exact byte-equal import-only ZIP and companion receiver receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          W=original-artifacts/b01-20-w03-mapdocument-windows-latest
+          U=original-artifacts/b01-20-w03-mapdocument-ubuntu-24.04
+          test -s "$W/codex-import-only-18-mapdocs.zip"
+          test -s "$U/codex-import-only-18-mapdocs.zip"
+          test -s "$W/codex-import-only-receipt.json"
+          test -s "$U/codex-import-only-receipt.json"
+          cmp "$W/codex-import-only-18-mapdocs.zip" "$U/codex-import-only-18-mapdocs.zip"
+          cmp "$W/codex-import-only-receipt.json" "$U/codex-import-only-receipt.json"
+          sha256sum "$W/codex-import-only-18-mapdocs.zip"
+          echo "COURSE_MAPDOC_CODEX_IMPORT_ONLY_18_ZIP_CROSS_OS_BYTES_PASS UNITY=NOT_RUN"
