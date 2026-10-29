@@ -1,4 +1,4 @@
-name: B01-10 PASS17 W03 real CSharp RunScore
+name: B01-10 PASS17 W04 real CSharp RunScore
 on:
   push:
     branches:
@@ -31,12 +31,12 @@ jobs:
         run: |
           set -euo pipefail
           dotnet build Research/B01-10/P17RunScore/RunScore.Runner.csproj --configuration Release --nologo --warnaserror
-      - name: Run original 56 real compiled CSharp unit + 120 seeded cases
+      - name: Run original 74 real compiled CSharp including two-phase rewards + 120 seeded runs
         shell: bash
         run: |
           set -euo pipefail
           dotnet run --project Research/B01-10/P17RunScore/RunScore.Runner.csproj --configuration Release --no-build -- --test | tee "$RUNNER_TEMP/runscore-tests.log"
-          grep -F "B01-10 RUNSCORE REAL_CSHARP 56 PASS / 0 FAIL" "$RUNNER_TEMP/runscore-tests.log"
+          grep -F "B01-10 RUNSCORE REAL_CSHARP 74 PASS / 0 FAIL" "$RUNNER_TEMP/runscore-tests.log"
       - name: Run actual JSON input into score renderer
         shell: bash
         run: |
