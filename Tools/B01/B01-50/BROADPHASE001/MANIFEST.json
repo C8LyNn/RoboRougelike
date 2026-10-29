@@ -5,16 +5,16 @@
   ],
   "files": {
     "README.md": {
-      "bytes": 4207,
-      "sha256": "6a0f6924d69c0076b7c0b7d6d51c1bf7d205c1898376eab5eb97a1efc42e6ee0"
+      "bytes": 5679,
+      "sha256": "fd8f53b9cb3300a426b527daa5d6cd6bbe74ab6614c7026ebb2ed17d6999f10f"
     },
     "benchmark.mjs": {
       "bytes": 2951,
       "sha256": "723725d8f89cb37c3a9d37772854bac070210e28d5031a76dd29d287971a7506"
     },
     "broadphase.mjs": {
-      "bytes": 5120,
-      "sha256": "e3f6fcf3c42e33881938454571d49fc4c3aabd9da0c87aaea8bbaa98eadf6ec3"
+      "bytes": 5069,
+      "sha256": "ef7afe0b75fcb7acb170ec412f814702b500845895f13a9a81621528c02e5e64"
     },
     "evidence/benchmark_stdout_r1.log": {
       "bytes": 736,
@@ -29,13 +29,19 @@
       "sha256": "eeb0edf6a10926c0b5d04bc9b0b2edd9db990268097b8af5d935346d8232a23c"
     },
     "tests/broadphase.test.mjs": {
-      "bytes": 4170,
-      "sha256": "4a61895f78f89cda9d7b4ff9aebd64fa318ab626a7061a603dbd2a7fc1560912"
+      "bytes": 5004,
+      "sha256": "9185c4b13001942d986cad0186bb5a9f31c8749d15bfc95b9bc10c58ce59cd48"
+    },
+    "evidence/W03_R2_red_green_receipt.json": {
+      "bytes": 1410,
+      "sha256": "8c69ce6130c20ddad4a2400b946d6a88046c5ccb3977f3069558f09c7aa2184d"
     }
   },
   "independent_QA": "PENDING",
   "native_unity": "NOT_RUN",
   "owner": "B01-50",
-  "package_id": "B01-50-BROADPHASE-001/R1",
-  "scope": "Tools/B01/B01-50/BROADPHASE001/**"
+  "package_id": "B01-50-BROADPHASE-001/R2",
+  "scope": "Tools/B01/B01-50/BROADPHASE001/**",
+  "previous_source_commit": "3104370c99dce19253085a75589858975ca5f79d",
+  "r2_correction": "first-impact exact t ordering; ID tie-break only for exactly equal t; parity strict"
 }
