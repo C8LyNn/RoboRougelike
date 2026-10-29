@@ -1,0 +1,38 @@
+test_actual_unchanged_aim_delta_report_lifecycle (test_aim_evidence_vault.TestVault.test_actual_unchanged_aim_delta_report_lifecycle) ... ok
+test_cli_real_process_succeeds_and_fails_closed (test_aim_evidence_vault.TestVault.test_cli_real_process_succeeds_and_fails_closed) ... ok
+test_derived_report_attached_to_two_sessions (test_aim_evidence_vault.TestVault.test_derived_report_attached_to_two_sessions) ... ok
+test_duplicate_session_rejected (test_aim_evidence_vault.TestVault.test_duplicate_session_rejected) ... ok
+test_empty_private_vault_verified (test_aim_evidence_vault.TestVault.test_empty_private_vault_verified) ... ok
+test_forged_index_traversal_fails_closed (test_aim_evidence_vault.TestVault.test_forged_index_traversal_fails_closed) ... ok
+test_human_attestation_structural_only (test_aim_evidence_vault.TestVault.test_human_attestation_structural_only) ... ok
+test_human_requires_explicit_flag (test_aim_evidence_vault.TestVault.test_human_requires_explicit_flag) ... ok
+test_interrupted_tombstone_fails_closed_and_can_resume (test_aim_evidence_vault.TestVault.test_interrupted_tombstone_fails_closed_and_can_resume) ... ok
+test_missing_image_rejected (test_aim_evidence_vault.TestVault.test_missing_image_rejected) ... ok
+test_nonempty_init_refused (test_aim_evidence_vault.TestVault.test_nonempty_init_refused) ... ok
+test_original_receiver_rejects_wrong_group (test_aim_evidence_vault.TestVault.test_original_receiver_rejects_wrong_group) ... ok
+test_original_receiver_rejects_wrong_zip (test_aim_evidence_vault.TestVault.test_original_receiver_rejects_wrong_zip) ... ok
+test_private_permissions (test_aim_evidence_vault.TestVault.test_private_permissions) ... ok
+test_receiver_sha_tamper_refused (test_aim_evidence_vault.TestVault.test_receiver_sha_tamper_refused) ... ok
+test_reject_report_reusing_session (test_aim_evidence_vault.TestVault.test_reject_report_reusing_session) ... ok
+test_reject_report_single_session (test_aim_evidence_vault.TestVault.test_reject_report_single_session) ... ok
+test_reject_report_symlink (test_aim_evidence_vault.TestVault.test_reject_report_symlink) ... ok
+test_reject_unsafe_report_name (test_aim_evidence_vault.TestVault.test_reject_unsafe_report_name) ... ok
+test_report_tamper_detected (test_aim_evidence_vault.TestVault.test_report_tamper_detected) ... ok
+test_seal_original_receiver_and_four_images (test_aim_evidence_vault.TestVault.test_seal_original_receiver_and_four_images) ... ok
+test_sealed_image_mutation_detected (test_aim_evidence_vault.TestVault.test_sealed_image_mutation_detected) ... ok
+test_sealed_receipt_mutation_detected (test_aim_evidence_vault.TestVault.test_sealed_receipt_mutation_detected) ... ok
+test_two_distinct_build_sessions_accepted (test_aim_evidence_vault.TestVault.test_two_distinct_build_sessions_accepted) ... ok
+test_unknown_withdraw_refused (test_aim_evidence_vault.TestVault.test_unknown_withdraw_refused) ... ok
+test_unregistered_report_fails_verify (test_aim_evidence_vault.TestVault.test_unregistered_report_fails_verify) ... ok
+test_untracked_file_blocks_withdraw_without_deletion (test_aim_evidence_vault.TestVault.test_untracked_file_blocks_withdraw_without_deletion) ... ok
+test_untracked_image_rejected (test_aim_evidence_vault.TestVault.test_untracked_image_rejected) ... ok
+test_vault_not_inside_git_tree (test_aim_evidence_vault.TestVault.test_vault_not_inside_git_tree) ... ok
+test_withdraw_blocks_reuse (test_aim_evidence_vault.TestVault.test_withdraw_blocks_reuse) ... ok
+test_withdraw_explicit_confirmation (test_aim_evidence_vault.TestVault.test_withdraw_explicit_confirmation) ... ok
+test_withdraw_idempotent (test_aim_evidence_vault.TestVault.test_withdraw_idempotent) ... ok
+test_withdraw_removes_linked_report_but_preserves_other_session (test_aim_evidence_vault.TestVault.test_withdraw_removes_linked_report_but_preserves_other_session) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 2.409s
+
+OK

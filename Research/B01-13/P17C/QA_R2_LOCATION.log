@@ -1,0 +1,16 @@
+B01-13 PASS17/WAVE03 AIM-VAULT-001/R2 native Python source regression
+Python 3.13.5
+Published code Git blob: 7937b0a37e7c3038d571860e15d0a40710331948
+Published regression Git blob: 664efd3cb8f52fbd31165ee8422f2f9222b8bf3b
+Command: python test_private_root_location.py
+test_existing_vault_refuses_symlink_ancestor (__main__.LocationGuards.test_existing_vault_refuses_symlink_ancestor) ... ok
+test_initialize_refuses_git_worktree_without_creating_vault (__main__.LocationGuards.test_initialize_refuses_git_worktree_without_creating_vault) ... ok
+test_initialize_refuses_symlink_ancestor_without_creating_vault (__main__.LocationGuards.test_initialize_refuses_symlink_ancestor_without_creating_vault) ... ok
+test_initialize_still_works_outside_repository (__main__.LocationGuards.test_initialize_still_works_outside_repository) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.010s
+
+OK
+R1 full-suite historical: 33/33 PASS (not rerun on R2 exact code)
+Unity/Player/Windows/HUMAN: NOT_RUN / 0 people
