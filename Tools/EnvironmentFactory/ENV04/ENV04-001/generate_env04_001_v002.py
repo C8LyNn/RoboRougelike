@@ -208,7 +208,7 @@ for filename, pos in (
     ("preview_front.png", (2.6, 3.4, 2.2)),
     ("preview_rear.png", (-2.6, -3.4, 2.2)),
     ("preview_top.png", (1.0, 1.3, 4.0)),
-    ("preview_side.png", (2.6, 3.4, 0.95)),
+    ("preview_side.png", (4.2, 1.3, 1.6)),
 ):
     cam.location = pos
     cam.rotation_euler = (Vector((0, 0, 0.26)) - cam.location).to_track_quat("-Z", "Y").to_euler()
