@@ -51,7 +51,7 @@ From a checkout containing the **unchanged frozen #349 parent** and this new sou
 ```bash
 python3 -m pip install pillow
 python3 -m py_compile Research/B01-13/P17C/aim_evidence_vault.py Research/B01-13/P17C/test_aim_evidence_vault.py
-python3 -m unittest -v Research/B01-13/P17C/test_aim_evidence_vault.py
+python3 Research/B01-13/P17C/test_aim_evidence_vault.py
 ```
 
 The test suite uses actual original #349 verifier, generates physical PNG/receipt bytes, runs the real original **#363 R2 `aim_delta.py`** for an end-to-end registered generated HTML, and verifies withdrawal removes shared derived content but retains the unaffected session. The test expects the original R2 `Research/B01-13/P17B/aim_delta.py` present in checkout (without editing it). 33 source tests incl. negatives, tampering, crash/tombstone recovery, malicious index traversal, hard rejection of missing consent flag. **Linux Python + Pillow tested; Windows native NOT_RUN; Unity native NOT_RUN.** Original parent test 59/59 and R2 test 47/47 were rerun separately; they are **not** new AIM-VAULT feature tests.
