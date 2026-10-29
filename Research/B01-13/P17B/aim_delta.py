@@ -16,6 +16,7 @@ from pathlib import Path
 import re
 import sys
 import tempfile
+import time
 
 PINNED_RECEIVER_SHA256 = '8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4'
 CASES = ('CLOSE_STATIC','FAR_STATIC','OCCLUDED','ZOOM_MOVING')
@@ -123,8 +124,18 @@ def write_private(path:Path,content:str):
         os.fchmod(fd,0o600)
         with os.fdopen(fd,'w',encoding='utf-8') as stream:
             stream.write(content);stream.flush();os.fsync(stream.fileno())
-        need(not path.exists(),'Output already exists')
-        os.replace(tmp,path)
+        # Antivirus/indexers on Windows can briefly hold a just-fsynced temp file.
+        # Retry ONLY Windows sharing/lock violations, with a bounded wait. Never
+        # overwrite a path created by another process during the retry window.
+        for attempt in range(20):
+            need(not path.exists(),'Output already exists')
+            try:
+                os.replace(tmp,path)
+                break
+            except PermissionError as exc:
+                if getattr(exc,'winerror',None) not in (32,33) or attempt == 19:
+                    raise
+                time.sleep(0.1)
     finally:
         if os.path.exists(tmp):os.unlink(tmp)
 
