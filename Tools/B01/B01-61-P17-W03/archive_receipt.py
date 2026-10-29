@@ -14,6 +14,7 @@ import subprocess
 import sys
 import tempfile
 import urllib.request
+from urllib.parse import urlsplit
 import zipfile
 
 SOURCE="5666a39eabd4cea91b2b605a9eb99ea2f1e226e8"
@@ -206,7 +207,18 @@ def download_github_artifact(repo,id):
         f"https://api.github.com/repos/C8LyNn/RoboRougelike/actions/artifacts/{id}/zip",
         headers={"Accept":"application/vnd.github+json","Authorization":"Bearer "+token,
                  "X-GitHub-Api-Version":"2022-11-28","User-Agent":"B01-61-Independent-Archive-Receiver"})
-    with urllib.request.urlopen(req,timeout=45) as resp:
+    # GitHub uses a pre-signed cross-host redirect to object storage.
+    # Python's default redirect handler forwards Authorization across hosts,
+    # causing a 401 from signed Azure blob URLs and leaking token credentials.
+    # Keep auth for api.github.com only; remove on host changes.
+    class StripCrossHostAuth(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, request, fp, code, msg, headers, newurl):
+            redirected=super().redirect_request(request,fp,code,msg,headers,newurl)
+            if redirected and urlsplit(request.full_url).netloc!=urlsplit(newurl).netloc:
+                redirected.remove_header("Authorization")
+            return redirected
+    opener=urllib.request.build_opener(StripCrossHostAuth())
+    with opener.open(req,timeout=45) as resp:
         data=resp.read(4*1024*1024+1)
     insist(len(data)<4*1024*1024,"DOWNLOADED_GITHUB_ARTIFACT_TOO_LARGE")
     return data
