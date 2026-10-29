@@ -1,0 +1,84 @@
+{
+  "packageId": "B01-25-MAPDRAFT-IMPORT-001",
+  "version": "R1",
+  "owner": "B01-25",
+  "role": "Level & Challenge Design",
+  "type": "Standalone original Codex C# MapDocument loader compatibility receiver",
+  "paths": {
+    "root": "Research/B01-25/P17/MAPDRAFT-IMPORT-001",
+    "workflow": ".github/workflows/b01-25-w03-mapdraft-import.yml",
+    "generatedIgnored": "Research/B01-25/P17/MAPDRAFT-IMPORT-001/.source/**"
+  },
+  "sourceInputs": {
+    "mapDraft": {
+      "commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+      "path": "Assets/MapEditor/MapDraft.cs",
+      "gitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+      "alsoConfirmedOnCodexPRs": [
+        382,
+        383
+      ]
+    },
+    "clearance": {
+      "pr": 359,
+      "commit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "path": "Research/B01-25/P17/CLEARANCELADDER001/arena.json",
+      "gitBlob": "53eb696950121465befea2855eda4d7268750016",
+      "items": 415
+    },
+    "slalom": {
+      "pr": 346,
+      "commit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "path": "Research/B01-25/P17/SLALOM001/arena.json",
+      "gitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "items": 360
+    }
+  },
+  "authoredOriginalFiles": [
+    {
+      "name": "Program.cs",
+      "gitBlob": "5022a897115bf7a92299a780b6d2ac55585dea96"
+    },
+    {
+      "name": "UnityEngineStubs.cs",
+      "gitBlob": "4865314471602669b85f5a3746352797e7f70c18"
+    },
+    {
+      "name": "MapDraftImportProof.csproj",
+      "gitBlob": "32a62cf6c2607df03e47b40b4f2731d13de9dd23"
+    },
+    {
+      "name": ".gitignore",
+      "gitBlob": "033189290e0f277e5e6182a7fc3da28286d1439e"
+    },
+    {
+      "name": "README.md",
+      "gitBlob": "c7743c1c11f41e81aed537f51d7febe9c46f68e4"
+    }
+  ],
+  "workflowGitBlob": "054b121de566b7ffd4d7ca635729eaf7a5f261a5",
+  "qaAcceptance": {
+    "windowsUbuntu": true,
+    "expectedOriginalCsharpAssertions": 23,
+    "expectedNegativeSemantics": 12,
+    "inputsMustMatchGitBlob": true,
+    "receiptJsonRequired": true,
+    "logRequired": true,
+    "codePaths": [
+      "MapDraft.TryLoad",
+      "TestError",
+      "Footprint",
+      "ToJson",
+      "Undo",
+      "Redo"
+    ]
+  },
+  "limitations": [
+    "Native UnityEngine.JsonUtility is replaced by a System.Text.Json field-deserialization stub",
+    "Unity 6000.3.14f1 EditMode/PlayMode not executed",
+    "Real MapWorld physics and Light/Heavy drive not executed",
+    "Independent B01-40 and B01-60 receiver QA not yet recorded",
+    "No merge, CODEX_ACK pending, no canonical Assets changes"
+  ],
+  "rollback": "Remove ignored .source, bin, obj in isolated test checkout; changes are test-only and do not write player maps or canonical game files."
+}
