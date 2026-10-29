@@ -1,0 +1,67 @@
+{
+  "id": "ENV04-001",
+  "revision": "v002",
+  "status": "BLENDER_QA_PASS",
+  "blender_version": "4.0.2",
+  "mesh_objects": 40,
+  "triangles": 1344,
+  "materials": [
+    "01_GRAPHITE_POWDERCOAT",
+    "02_BRUSHED_STEEL",
+    "03_SAFETY_AMBER"
+  ],
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "negative_volume_meshes": [],
+  "invalid_normals": [],
+  "invalid_uv": [],
+  "critical_aabb_pairs_checked": 55,
+  "critical_positive_overlap_pairs": [],
+  "geometry_sha256": "b8eb8901786886f6473370febd343ead08e3a1db5df1a192e3173c851012b3d7",
+  "blender_bounds_min_m": [
+    -0.78,
+    -0.51,
+    0.0
+  ],
+  "blender_bounds_max_m": [
+    0.78,
+    0.51,
+    0.531
+  ],
+  "glb_valid": true,
+  "preview_dimensions": {
+    "preview_front.png": [
+      960,
+      640
+    ],
+    "preview_rear.png": [
+      960,
+      640
+    ],
+    "preview_top.png": [
+      960,
+      640
+    ],
+    "preview_side.png": [
+      960,
+      640
+    ]
+  },
+  "sha256": {
+    "generate_env04_001_v002.py": "9a3d37258876791e5a67d58ceb0cf2825903e75997c07624aaaf8d7cde5ce153",
+    "qa_env04_001_v002.py": "a60acf06574a8adb28b0b9373b5b0735df0f661bcbd9c4bd914dc59940193db7",
+    "generated/v002/ENV04-001_industrial_vent_grate.blend": "ca4745b88b7a2e0ea395132ba12bf912ab4c5d0be8411e2dfdc22c81626cc8bd",
+    "generated/v002/ENV04-001_industrial_vent_grate.glb": "5e367958b7537c7a37fcdb74311cdc58f65716117f7f498475d25ca407cc757d",
+    "generated/v002/preview_front.png": "23c7faba68ed23357cbeeace5f40f74b2278b97d5845a89f2fe8fd53ff6c85bc",
+    "generated/v002/preview_rear.png": "0d436d78c216d2136e54b8d70dd42987bf7ad0b218b59e02e6af32e72d99ed92",
+    "generated/v002/preview_top.png": "dad6f05f6e998004ac1aab5dd7a3a4c51bbea7d746f6123903be3c00511a0fb2",
+    "generated/v002/preview_side.png": "f672e45b69cb993d02d1b1fc442afbd1077a90cea46d6948511a496d79f59940",
+    "generated/v002/build_report.json": "554c0dbd1578d2d23f1399537417ef042c2d7983b62ecd0a78008a652a1d5804"
+  },
+  "license": "CC0-1.0",
+  "animation": "NOT_APPLICABLE",
+  "unity_editmode": "NOT_RUN",
+  "unity_playmode": "NOT_RUN",
+  "windows": "NOT_RUN",
+  "manual_art_review": "PENDING_HQ"
+}
