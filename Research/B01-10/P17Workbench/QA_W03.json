@@ -1,0 +1,87 @@
+{
+  "packageId": "R5WB001/P17-W03-THREATBUDGET-FIX",
+  "owner": "B01-10 GAME DESIGN & BALANCE",
+  "changeType": "BUGFIX_EXISTING_WORKBENCH_NOT_NEW_GAMEPLAY_PACKAGE",
+  "targetPR": 357,
+  "originalPreviousHead": "dd069348ae493ea503c57d0bae6d139c60cc959a",
+  "sourceRedCommit": "f35809d2321bc3cbd08f0714c56a125480d5738d",
+  "sourceGreenCommit": "54270e16726be3b92e9f94978a855a03e28e98ac",
+  "issue": "In R5Workbench.html formPatch included ThreatBudget on every save. R5WorkbenchCore.put enables automatic cap only when patch does NOT own ThreatBudget. Checkbox autoBudget checked was ineffective.",
+  "fix": "In formPatch omit ThreatBudget from patch ONLY when autoBudget is checked AND the displayed limit equals the selected encounter's existing source limit. If manually edited, keep explicit cap and fail-closed on too-low value. If unchecked, always retain strict cap. Original game R5 logic and authoring core unchanged.",
+  "red": {
+    "runId": 40900414206,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900414206",
+    "sourceSha": "f35809d2321bc3cbd08f0714c56a125480d5738d",
+    "browser": "REAL_CHROMIUM_33_PASS_3_FAIL",
+    "failedTest": "auto threat budget raises unchanged manual field",
+    "failedViewports": [
+      "1280x720",
+      "1920x1080",
+      "720x900"
+    ],
+    "sourceError": "Odmowa bez utraty danych: S1O1 threat 29.440 exceeds budget 12",
+    "redClass": "confirmed functional regression, test failure before fix, not flaky",
+    "sourceOnlyWindowsNode": "41 PASS / 0 FAIL",
+    "sourceOnlyUbuntuNode": "41 PASS / 0 FAIL"
+  },
+  "green": {
+    "runId": 40900605642,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642",
+    "sourceSha": "54270e16726be3b92e9f94978a855a03e28e98ac",
+    "conclusion": "SUCCESS",
+    "jobs": [
+      {
+        "platform": "windows-2025",
+        "jobId": 123541517417,
+        "originalNode22": "41 PASS / 0 FAIL"
+      },
+      {
+        "platform": "ubuntu-24.04",
+        "jobId": 123541516747,
+        "originalNode22": "41 PASS / 0 FAIL"
+      },
+      {
+        "platform": "ubuntu-24.04",
+        "jobId": 123541517796,
+        "chromiumPlaywright": "36 PASS / 0 FAIL",
+        "viewports": [
+          "1280x720",
+          "1920x1080",
+          "720x900"
+        ],
+        "perViewport": 12
+      }
+    ],
+    "artifactId": 12909511232,
+    "artifactSizeBytes": 909448,
+    "artifactContains": [
+      "QA_BROWSER.json",
+      "r5wb001_1280x720.png",
+      "r5wb001_1920x1080.png",
+      "r5wb001_720x900.png"
+    ],
+    "screenshotByteSizes": [
+      315334,
+      323145,
+      315313
+    ]
+  },
+  "exactExecutableBlobsAtGreenSha": {
+    "Research/B01-10/P17Workbench/R5Workbench.html": "f26ca89e7f7f2663754b1ef8ee6d28355ddcd7da",
+    "Research/B01-10/P17Workbench/R5WorkbenchCore.js": "73755a31a2c8ff937d47476f5cf5ae402e7fc5fd",
+    "Research/B01-10/P17Workbench/browser.test.cjs": "49f0523bdb2f9e96c35cf5991ce15d7366c10bbb",
+    "Research/B01-10/P17Workbench/workbench.test.cjs": "f02a8ca55cc3dda0146db98af51cf89e19afdfdf",
+    ".github/workflows/b01-10-p17-r5-workbench.yml": "b87dc9ba2cadaf562a88a3cccc5ab6e6701e1d39"
+  },
+  "provenance": "Every red/green result is from original GitHub Actions logs, REAL Chromium not DOM mock. Recheck final HEAD after report-only commits; executable blob parity is sufficient to map tested source.",
+  "unrun": [
+    "native Unity EditMode",
+    "Unity PlayMode",
+    "Windows Player gameplay",
+    "R5 imported in Codex game",
+    "B01-40 G0",
+    "B01-60 independent QA"
+  ],
+  "receiver": "B01-40 source admission → B01-60 external Chromium/Node testing → B01-00 CODEX INBOX ordering. No CODEX_ACK/merge/integrated claimed.",
+  "rollback": "Revert only W03 HTML formPatch change on isolated producer branch if rejected; for Codex future exported JSON restore exact existing Resources/R5/Encounters.json bytes retaining .meta GUID."
+}
