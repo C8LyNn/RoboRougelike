@@ -169,7 +169,9 @@ paths = [BASE / "generate_env04_001_v002.py", BASE / "qa_env04_001_v002.py",
          blend, glb, OUT / "preview_front.png", OUT / "preview_rear.png",
          OUT / "preview_top.png", OUT / "preview_side.png",
          OUT / "build_report.json"]
-hashes = {str(p.relative_to(BASE)): hashlib.sha256(p.read_bytes()).hexdigest()
+# A second isolated QA pass may use /tmp; keep canonical manifest keys.
+hashes = {(str(p.relative_to(BASE)) if p.is_relative_to(BASE)
+           else "generated/v002/" + p.name): hashlib.sha256(p.read_bytes()).hexdigest()
           for p in paths}
 result = {
     "id": "ENV04-001", "revision": "v002", "status": "BLENDER_QA_PASS",
