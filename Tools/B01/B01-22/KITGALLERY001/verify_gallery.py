@@ -4,7 +4,7 @@ from test_gallery import transform
 ROOT=Path(__file__).resolve().parents[4]
 REF="0d212a706c1e633b773d2e03b7b40c28bb63521b"
 P="Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json"
-original=json.loads(subprocess.run(["git","show",REF+":"+P],cwd=ROOT,check=True,capture_output=True,text=True).stdout)
+original=json.loads(subprocess.run(["git","show",REF+":"+P],cwd=ROOT,check=True,capture_output=True,encoding="utf-8",errors="strict",text=True).stdout)
 fixture=json.loads((Path(__file__).parent/"original_source_fixture.json").read_text(encoding="utf8"))
 asset=ROOT/"Assets/B01KitGallery001/Data/KitGallery.json"
 if fixture!=original or json.loads(asset.read_text(encoding="utf8"))!=transform(original):
