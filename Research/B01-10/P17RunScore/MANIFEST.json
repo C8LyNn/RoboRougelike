@@ -7,7 +7,7 @@
   "status": "PRODUCER_CSHARP_COMPILED_AND_TESTED / INDEPENDENT_G0_QA_PENDING / NOT_OFFERED_FROZEN / CODEX_ACK_PENDING / NOT_INTEGRATED",
   "newGameFeature": "Six-stage risk-scaled non-monetary scoring, stage medals, run medal and three cosmetics achievements; one pure C# original core, no game code modified",
   "branch": "design/b01-10-p17w03-runscore",
-  "pullRequest": "PENDING",
+  "pullRequest": "https://github.com/C8LyNn/RoboRougelike/pull/401",
   "sourceRef": "main",
   "ownedPaths": [
     "Research/B01-10/P17RunScore/**",
@@ -125,5 +125,8 @@
       }
     ],
     "fallback": "No native Unity/Player test, no actual stage observations, no B01-40 freeze or Codex ACK"
-  }
+  },
+  "sourceVersion": "RUNSCORE001/R1",
+  "manifestPreparedAtHead": "99ca0ef433aa02e1216294dce58a0bb25514de05",
+  "exactFinalHeadMustPassRealWorkflow": true
 }
