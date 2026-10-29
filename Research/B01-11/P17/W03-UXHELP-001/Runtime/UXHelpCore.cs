@@ -117,11 +117,22 @@ namespace B01.UXHelp
                 optional = Checkpoint;
             else if (state.Stage == HelpStage.Reward)
                 optional = RewardChoice;
-            else if (state.Stage == HelpStage.Combat && state.IsFirstCombat)
-                optional = (state.Drive == HelpDrive.Omni || state.Drive == HelpDrive.Hover)
-                    ? OmniControls : BasicControls;
-            else if (state.Stage == HelpStage.Combat && state.AssignedWeaponGroups == 2)
-                optional = WeaponGroups;
+            else if (state.Stage == HelpStage.Combat && state.ActiveWeapons > 0)
+            {
+                // Both control cards claim LMB/RMB can fire: never suggest firing with
+                // zero operational weapons. Two groups require two active weapons.
+                if (state.IsFirstCombat)
+                {
+                    var controls = (state.Drive == HelpDrive.Omni || state.Drive == HelpDrive.Hover)
+                        ? OmniControls : BasicControls;
+                    if (dismissed == null || !dismissed.Contains(controls.Id))
+                        optional = controls;
+                }
+                // An already dismissed first-combat card must not starve a second
+                // valid hint. Return at most one non-dismissed optional card.
+                if (optional == null && state.AssignedWeaponGroups == 2 && state.ActiveWeapons >= 2)
+                    optional = WeaponGroups;
+            }
             if (optional != null && (dismissed == null || !dismissed.Contains(optional.Id)))
                 result.Add(optional);
             return result.ToArray();
