@@ -1,0 +1,67 @@
+{
+  "package_id": "CI41-NATIVE-TRIAGE-001",
+  "version": "1.0.0",
+  "owner": "B01-41",
+  "type": "SOURCE_NATIVE_RECEIPT_ANALYZER_NOT_NATIVE_EXECUTION",
+  "branch": "audit/b01-41-p17-w03-native-evidence-triage",
+  "scope": [
+    "Tools/B01/CI41/P17W03/**",
+    ".github/workflows/b01-41-w03-native-receipt-triage.yml"
+  ],
+  "source_sha_blobs": {
+    "Tools/B01/CI41/P17W03/native_receipt_triage.py": "ba4d98d627aefdd35f00543d3766b5d5d170b4cb",
+    "Tools/B01/CI41/P17W03/test_native_receipt_triage.py": "e67a7aa6ec368074c8f59fbd297d638a98f84976"
+  },
+  "original_codex": {
+    "source_pr": 383,
+    "source_commit": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "receipt_commit": "f92c873bb1e397a598b133e107ae704e15f86768",
+    "original_unity_version": "6000.3.14f1"
+  },
+  "observed": {
+    "full_edit": {
+      "total": 1330,
+      "passed": 1327,
+      "failed": 2,
+      "skipped": 1,
+      "exit": 2
+    },
+    "full_play": {
+      "total": 474,
+      "passed": 474,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    },
+    "targeted_edit": {
+      "total": 20,
+      "passed": 20,
+      "exit": 0
+    },
+    "isolated_retest": {
+      "total": 2,
+      "passed": 2,
+      "exit": 0
+    }
+  },
+  "expected_status": "HOLD_FULL_NATIVE_REGRESSION",
+  "source_test_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900659128",
+  "qa": {
+    "source_test": "12/12 source tests Windows and 12/12 Ubuntu PASS, original Git-native receipts parsed, no Unity executed",
+    "B01_40": "PENDING",
+    "B01_60_61": "PENDING",
+    "native_run_by_B01_41": "NOT_RUN",
+    "G1": "HOLD",
+    "G2": "HOLD",
+    "codex_ack": "PENDING",
+    "integrated": false
+  },
+  "import": "Optional Python source-only receipt validation using trusted original Git SHA; B01-40/B01-60 independent QA and HQ authorization required",
+  "rollback": "Unmerged Draft PR; optional source-only removal, no gameplay state changes",
+  "known_limits": [
+    "Native source process authenticity requires independent CI provenance",
+    "Do not override full-suite failures with filtered rerun",
+    "Does not fix gameplay failures",
+    "Does not run Unity or Windows Player"
+  ]
+}
