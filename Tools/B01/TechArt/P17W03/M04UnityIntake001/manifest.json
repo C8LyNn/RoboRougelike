@@ -1,6 +1,6 @@
 {
   "package_id": "B01-30-M04-UNITY-INTAKE-001",
-  "version": "R1",
+  "version": "R2",
   "owner": "B01-30 Tech Art",
   "previous_owner_package": "B01-30-M04-FBX-RECEIVER-001/R1",
   "previous_pr": 386,
@@ -24,7 +24,7 @@
       121
     ]
   },
-  "new_functionality": "Real Unity custom .unitypackage from SHA-pinned genuine pre-existing M04 FBX, including opt-in native Editor import prep and read-only common-clip/4-pivot/105-mesh validation. No model new AUTHORING or gameplay changes",
+  "new_functionality": "R2 repaired original Unity Editor checker: require one imported take with four named pivots whose rotation curves have actual opposite-phase numeric motion at 25%/75% of clip duration; original Blender-tested source FBX unchanged.",
   "own_scope": [
     "Tools/B01/TechArt/P17W03/M04UnityIntake001/**",
     ".github/workflows/b01-30-p17w03-m04-unity-intake.yml"
@@ -43,7 +43,8 @@
     "actual UnityPackage tar/gzip decoded data and GUID",
     "four missing/altered/forged negative archive/input mutants",
     "exact binary UnityPackage replay",
-    "original Unity Editor C# compiled and executed against explicit stubs, fail-closed scenarios"
+    "original Unity Editor C# compiled and executed against explicit stubs, fail-closed scenarios",
+    "RED original R1 falsely accepted four static rotation bindings, R2 rejects 3 numeric-motion regression mutants; genuine C# source compiled/executed with Unity API shims"
   ],
   "not_run": [
     "Native Unity 6000.3.14f1 importer",
@@ -51,9 +52,10 @@
     "Unity true 105 imported mesh assertion",
     "Unity URP parity",
     "B01-60 independent source+native QA",
-    "Codex integration"
+    "Codex integration",
+    "Native Unity numeric curve evaluation - source-level shim only; B01-60 to verify"
   ],
-  "status": "DRAFT_NOT_OFFERED_NOT_INTEGRATED_CODEX_ACK_PENDING",
+  "status": "DRAFT_R2_PRODUCER_SOURCE_GREEN_INDEPENDENT_QA_PENDING_NO_CODEX_ACK",
   "handoff": [
     "B01-40 verify source and package G0",
     "B01-60 independent G0 and Unity G1 if licensed",
