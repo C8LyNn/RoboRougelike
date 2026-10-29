@@ -76,6 +76,31 @@ def run(page,w,h):
  assert_case(tag+'/export_schema',obj['schema']=='B01-12-SNAPGRID-PLAN' and obj['version']==1 and obj['grid']=={'columns':11,'rows':7} and len(obj['parts'])==5)
  assert_case(tag+'/export_dimensions',obj['parts'][1]['footprint']=={'w':2,'h':1} and obj['parts'][2]['footprint']=={'w':1,'h':2})
  assert_case(tag+'/end_no_overflow',page.evaluate('document.documentElement.scrollWidth <= innerWidth'))
+ # R2: copied export must never remain valid after a real state mutation.
+ assert_case(tag+'/export_current_mark','5 części' in page.locator('#exportStatus').inner_text())
+ click(page,6,3) # blocked bridge removal, no state mutation
+ assert_case(tag+'/blocked_remove_preserves_export',len(json.loads(page.locator('#plan').input_value())['parts'])==5)
+ click(page,8,3) # remove gun; stale JSON would still contain 5 parts
+ assert_case(tag+'/remove_invalidates_export',count(page)==4 and page.locator('#plan').input_value()=='' and 'wyeksportuj' in page.locator('#exportStatus').inner_text())
+ page.locator('#export').click()
+ assert_case(tag+'/reexport_matches_after_remove',len(json.loads(page.locator('#plan').input_value())['parts'])==count(page)==4)
+ page.locator('#undo').click()
+ assert_case(tag+'/undo_invalidates',count(page)==5 and page.locator('#plan').input_value()=='')
+ page.locator('#export').click();page.locator('#redo').click()
+ assert_case(tag+'/redo_invalidates',count(page)==4 and page.locator('#plan').input_value()=='')
+ page.locator('#export').click();select(page,'armor');click(page,0,0)
+ assert_case(tag+'/blocked_placement_preserves_export',len(json.loads(page.locator('#plan').input_value())['parts'])==4)
+ page.locator('#reset').click()
+ assert_case(tag+'/reset_invalidates',count(page)==1 and page.locator('#plan').input_value()=='')
+ page.locator('#export').click()
+ assert_case(tag+'/reset_reexport_core_only',len(json.loads(page.locator('#plan').input_value())['parts'])==1)
+ page.locator('#demo').click()
+ assert_case(tag+'/demo_invalidates',count(page)==5 and page.locator('#plan').input_value()=='')
+ page.locator('#export').click()
+ assert_case(tag+'/demo_reexport_matches_state',len(json.loads(page.locator('#plan').input_value())['parts'])==5)
+ page.locator('#undo').click();page.locator('#export').click();select(page,'armor');click(page,6,3)
+ assert_case(tag+'/new_placement_invalidates',count(page)==2 and page.locator('#plan').input_value()=='')
+ assert_case(tag+'/r2_no_overflow',page.evaluate('document.documentElement.scrollWidth <= innerWidth'))
  if w in [1280,1920]:
   page.screenshot(path=str(ROOT/'evidence'/f'snapgrid-{w}x{h}.png'),full_page=True)
 
