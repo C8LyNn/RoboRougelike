@@ -69,7 +69,7 @@ class Program
         Check("Omni first combat controls",()=>Same(IDs(initial),"COMBAT_OMNI_CONTROLS"));
         initial.Drive=HelpDrive.Hover;
         Check("Hover first combat controls",()=>Same(IDs(initial),"COMBAT_OMNI_CONTROLS"));
-        initial.AssignedWeaponGroups=2;initial.Drive=HelpDrive.Wheels;
+        initial.AssignedWeaponGroups=2;initial.MountedWeapons=2;initial.ActiveWeapons=2;initial.Drive=HelpDrive.Wheels;
         Check("First combat instructions prioritized over dual group hint",()=>Same(IDs(initial),"COMBAT_WHEELS_CONTROLS"));
         initial.IsFirstCombat=false;
         Check("Dual weapon group instruction",()=>Same(IDs(initial),"COMBAT_DUAL_GROUPS"));
