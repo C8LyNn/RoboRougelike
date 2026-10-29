@@ -1,0 +1,65 @@
+name: B01-60 W05 independent v1.0.3 equipment source and stage QA (NOT UNITY)
+on:
+  push:
+    branches: [qa/b01-60-p17w05-equipment-kits-v103-receiver]
+    paths:
+      - 'Tools/B01/B01-60-P17W05-Equipment/**'
+      - '.github/workflows/b01-60-p17w05-equipment-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-author-execution-and-independent-acceptance:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch frozen original owner, old Codex and actual corrected Codex game
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
+          git fetch --no-tags origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+          git fetch --no-tags origin 203a0805251ed28293888e43f2d49f0df63767c6
+          git fetch --no-tags origin a3dd45a4c1f222ec5cc387302eafe9104f91ab52
+          mkdir -p qa-w05-receipts
+      - name: ORIGINAL unchanged author Node22 26 tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs | tee qa-w05-receipts/author-node.txt
+      - name: ORIGINAL unchanged author Python 18 stage negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Research/B01-22/P17/EQUIPMENT-KITS-001 -p test_stage_kit_payload.py -v 2>&1 | tee qa-w05-receipts/author-stage.txt
+      - name: ORIGINAL unchanged Codex R3/R4 price source gate with seven synthetic mutants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py --current-ref 203a0805251ed28293888e43f2d49f0df63767c6 --selftest | tee qa-w05-receipts/host-source-7-mutants.json
+      - name: INDEPENDENT Git source semantics and 10 actual stage offers plus rollback mutants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60-P17W05-Equipment/independent_acceptance.py qa-w05-receipts/b01-60-independent.json
+      - name: Preserve authentic source-only receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w05-equipment-independent-${{ matrix.os }}
+          path: qa-w05-receipts/
+          if-no-files-found: warn
+          retention-days: 21
