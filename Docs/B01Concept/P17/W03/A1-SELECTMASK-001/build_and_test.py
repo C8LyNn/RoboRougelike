@@ -82,6 +82,14 @@ def make_ring(mask: Image.Image, radius_px: int) -> Image.Image:
     return ImageChops.subtract(dilated, mask)
 
 
+def focus_touches_canvas_edge(ring: Image.Image) -> bool:
+    """Observable warning: a focus ring at the raster edge may be clipped."""
+    bounds = ring.getbbox()
+    return (bounds is not None
+            and (bounds[0] == 0 or bounds[1] == 0
+                 or bounds[2] == ring.width or bounds[3] == ring.height))
+
+
 def sprite_from_mask(mask: Image.Image, color: tuple[int, int, int]) -> Image.Image:
     image = Image.new("RGBA", mask.size, color + (0,))
     image.putalpha(mask)
@@ -199,14 +207,15 @@ def main() -> int:
                   opaque_area(ring) > max(3, size // 8))
             check(f"{view}/{size}: focus never covers selectable interior",
                   ImageChops.multiply(ring, mask).getbbox() is None)
-            check(f"{view}/{size}: focus avoids clipping",
-                  ring.getbbox() is not None
-                  and ring.getbbox()[0] >= 0
-                  and ring.getbbox()[2] <= size)
+            check(f"{view}/{size}: focus has declared image dimensions",
+                  ring.size == mask.size and ring.mode == "L")
             mask_img = sprite_from_mask(mask, (255, 255, 255))
             ring_img = sprite_from_mask(ring, (91, 234, 217))
             save(f"A1-{view}-mask-{size}.png", mask_img)
             save(f"A1-{view}-focus-{size}.png", ring_img)
+            output_records[-1]["focus_touches_canvas_edge"] = (
+                focus_touches_canvas_edge(ring)
+            )
             if size == 96:
                 unique_masks[view] = hashlib.sha256(mask.tobytes()).hexdigest()
                 bg = Image.new("RGBA", (96, 96), (17, 31, 47, 255))
@@ -232,6 +241,15 @@ def main() -> int:
     check("negative single-pixel alpha source mutation is detectable",
           a.tobytes() != mutant.tobytes() and acceptable(a)
           and not acceptable(mutant))
+
+    edge_probe = Image.new("L", (8, 8), 0)
+    edge_probe.putpixel((0, 4), 255)
+    check("negative focus touching canvas edge is detected",
+          focus_touches_canvas_edge(edge_probe))
+    edge_probe.putpixel((0, 4), 0)
+    edge_probe.putpixel((4, 4), 255)
+    check("interior focus does not trigger edge warning",
+          not focus_touches_canvas_edge(edge_probe))
 
     save("A1-mask-contact.png", card)
     check("exact real PNG production count",
@@ -262,6 +280,8 @@ def main() -> int:
         "source_pr_sha": source["immutable_commit"],
         "tests": check_results, "outputs": output_records,
         "scope": "Original visual alpha selection and focus PNGs, NOT colliders",
+        "focus_edge_touch_count": sum(bool(x.get("focus_touches_canvas_edge"))
+                                      for x in output_records),
         "not_run": ["Unity Editor", "Unity PlayMode", "Windows Player",
                     "Human UI legibility", "Physical collider", "Blender"],
     }
