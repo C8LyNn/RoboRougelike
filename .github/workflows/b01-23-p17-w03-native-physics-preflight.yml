@@ -1,0 +1,64 @@
+name: B01-23 P17 W03 actual-native Unity probe preflight (Editor/PhysX NOT RUN)
+on:
+  push:
+    branches: [b01-23/p17-w03-native-physical-probe-r1]
+    paths:
+      - "Assets/PARTSIZE001/P17NativeProbe/**"
+      - "Assets/PARTSIZE001/P17NativeProbe.meta"
+      - "Tools/B01/PARTSIZE001/P17NativeProbe/**"
+      - ".github/workflows/b01-23-p17-w03-native-physics-preflight.yml"
+  workflow_dispatch:
+jobs:
+  actual-source-core:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify previous immutable producer and ALL exact original source blobs
+        shell: bash
+        run: |
+          git merge-base --is-ancestor 8fc0f99ef7bf6c39c21609616b7e852538d2de12 HEAD
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeContract.cs)" = "07455919a5544875fee5a78ecbbce36dc6cb49c2"
+          test "$(git rev-parse HEAD:Assets/PARTSIZE001/Runtime/PartSizeBaselineCatalog.cs)" = "6153d1758e800ec5c4210323610b061c06e8ea85"
+          test "$(git rev-parse HEAD:Docs/B01/PARTSIZE001/P17_W02_BRACING_MANIFEST.json)" = "02221b524d2c106e90d179f16c09dcfef8815c6d"
+          test "$(git rev-parse HEAD:Tools/B01/PARTSIZE001/P17Delivery/pack_bracing.py)" = "747433ed9ed042388e1ef89334873660a3f26189"
+          git diff --quiet 8fc0f99ef7bf6c39c21609616b7e852538d2de12 HEAD -- Assets/PARTSIZE001/Bracing Assets/PARTSIZE001/Bracing.meta
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify 5 new actual Unity GUIDs and isolated Editor source
+        shell: bash
+        run: python Tools/B01/PARTSIZE001/P17NativeProbe/check_unity_native_source.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile exact original PARTSIZE CSharp and new Unity-shared Editor source gate
+        shell: bash
+        run: dotnet build Tools/B01/PARTSIZE001/P17NativeProbe/P17NativeProbe.csproj -c Release --warnaserror
+      - name: Execute real original CSharp source tests and deliberate invalid configurations
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/PARTSIZE001/P17NativeProbe/P17NativeProbe.csproj -c Release --no-build -- --selftest
+          if dotnet run --project Tools/B01/PARTSIZE001/P17NativeProbe/P17NativeProbe.csproj -c Release --no-build -- --fake-native; then
+            echo "FAKE_NATIVE_CLI_FALSE_GREEN"
+            exit 1
+          fi
+          echo "B01_23_NATIVE_PROBE_BAD_CLI_CORRECTLY_REJECTED"
+      - name: Publish explicit truth gate (CI cannot run real Unity Editor/PhysX)
+        shell: bash
+        run: |
+          printf '%s\n' 'P17NativeProbe=UNITY_EDITOR_COMPILE_NOT_RUN' \
+            'PhysX=NOT_RUN' 'TypedSockets=NOT_RUN' 'RealPrefabs=NOT_ASSIGNED_BY_PRODUCER' \
+            'UnityG1=HOLD' 'CodexAck=PENDING' \
+            > p17-native-physics-g1-not-run.txt
+          cat p17-native-physics-g1-not-run.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-23-P17-W03-native-probe-source-${{ matrix.os }}
+          path: p17-native-physics-g1-not-run.txt
+          if-no-files-found: error

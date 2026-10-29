@@ -1,0 +1,186 @@
+{
+  "schema": "B01-P17-W03-NATIVE-PHYSICAL-PROBE-MANIFEST-v1",
+  "package_id": "PARTSIZE001-P17-NATIVE-COLLIDER-PROBE-001",
+  "revision": "R1",
+  "owner": "B01-23",
+  "unity_version_target": "6000.3.14f1",
+  "source_branch": "b01-23/p17-w03-native-physical-probe-r1",
+  "pr_base_sha": "8fc0f99ef7bf6c39c21609616b7e852538d2de12",
+  "verified_file_set_commit_before_manifest": "92f6dbf5da578b118dff609f8b50a9b1549d0f39",
+  "original_files": [
+    {
+      "path": ".github/workflows/b01-23-p17-w03-native-physics-preflight.yml",
+      "git_blob_sha1": "ca71f4527c038c42428238342fd299ad75b0bc9a"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe.meta",
+      "git_blob_sha1": "3356a38f95689ce7c33dae56678bc4e1cec5a206"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor.meta",
+      "git_blob_sha1": "128cf8cb99289de38ebec5f434e6489c582ce669"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/B01.PARTSIZE001.P17NativeProbe.Editor.asmdef",
+      "git_blob_sha1": "9d0af06e43316f755153212d59eefc35bf9261a2"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/B01.PARTSIZE001.P17NativeProbe.Editor.asmdef.meta",
+      "git_blob_sha1": "fde47cbb3a245376961f4e27ddaa8d02aba07f41"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs",
+      "git_blob_sha1": "c994e2230f4f6f4f7de2d94d1dc46a7dbb52f4ac"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs.meta",
+      "git_blob_sha1": "849ada5cb85cbfa7c34ddbbc9b4b93fe2dd9c320"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingPhysicalContract.cs",
+      "git_blob_sha1": "473ce39680745fad960d57963d4ad8e4c21b8e22"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingPhysicalContract.cs.meta",
+      "git_blob_sha1": "408c0b8949792441444fb7761cc109c3622aca2a"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs",
+      "git_blob_sha1": "9c9e5768e8ebaf5d562176e927549572fcacc1f5"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs.meta",
+      "git_blob_sha1": "9a1a84eba29be1c03c1fcda42d598672b995fd59"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17NativeProbe/check_unity_native_source.py",
+      "git_blob_sha1": "8f64eaa6c9145a25fe1523a8cde120a410998a36"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17NativeProbe/P17NativeProbe.csproj",
+      "git_blob_sha1": "55e45d191ccb81a4cb71c660487b49a85f19d24d"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17NativeProbe/Program.cs",
+      "git_blob_sha1": "d9bbccb50a4056e5a9615da180d52b7b43535f93"
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17NativeProbe/README.md",
+      "git_blob_sha1": "d6dda2ae9ab3fbc0ad34d8f7c7cd16e74860e419"
+    }
+  ],
+  "dependency_prs": {
+    "frozen_partsize": 286,
+    "baseline_p17_rigs": 348,
+    "singlebreak": 361,
+    "original_bracing": 375,
+    "bracing_export": 391,
+    "independent_source_content_qa": 396
+  },
+  "frozen_source": {
+    "partsize_original_commit": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+    "partsize_contract_blob": "07455919a5544875fee5a78ecbbce36dc6cb49c2",
+    "partsize_catalog_blob": "6153d1758e800ec5c4210323610b061c06e8ea85",
+    "bracing_original_content_sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+    "bracing_export_sha": "8fc0f99ef7bf6c39c21609616b7e852538d2de12"
+  },
+  "functionality": {
+    "actual_unity_editor_entrypoint": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs",
+    "input_contract": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingPhysicalContract.cs",
+    "isolated_asmdef": "B01.PARTSIZE001.P17NativeProbe.Editor",
+    "requires_actual_prefab_kinds": [
+      "Armor",
+      "Core",
+      "CrawlerTrack",
+      "Gun",
+      "HoverEngine",
+      "Wheel"
+    ],
+    "original_rigs": [
+      "P17-FLANKER-WHEELS-REINFORCED",
+      "P17-BULWARK-TRACKS-REINFORCED",
+      "P17-SKIRMISHER-HOVER-REINFORCED"
+    ],
+    "original_authoring_part_owners": 43,
+    "actual_colliders_measured_by_producer": 0,
+    "physical_colliders_provider": "ACTUAL_RECEIVER_UNITY_PREFABS_ONLY_NO_DUMMY_SHAPES",
+    "real_native_receipt_in_authorized_host": "Library/B01P17PhysicalProbe/actual-unity-p17-collider-receipt.json",
+    "report_result_not_equivalent_to_g1": "PHYSICS_COLLIDER_SCREEN_PASS_SOCKET_AND_G1_HOLD",
+    "review_limits": [
+      "Only static real prefab collider placement",
+      "No wheel,track,hover articulation sweeps",
+      "No authoritative typed socket binding to Codex build",
+      "No live damage, driving, weapon fire, Windows Player or GUI smoke"
+    ],
+    "requires_scriptable_settings_source": "Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs",
+    "native_receipt_contains": "Six Unity AssetDatabase actual prefab asset paths and GUIDs in prefabBindings; missing prefab cannot be certified"
+  },
+  "actual_producer_tests": {
+    "windows_2025": {
+      "compiled_original_source": "PASS",
+      "source_contract_positive_negative": "37/37 PASS",
+      "guid_meta": "6/6 PASS",
+      "source_owner_data": "43/43 PASS",
+      "negative_guid": "3/3 GUID + 3/3 SCRIPT_BINDING_NEGATIVES PASS",
+      "editor_compile": "NOT_RUN",
+      "physx": "NOT_RUN"
+    },
+    "ubuntu_2404": {
+      "compiled_original_source": "PASS",
+      "source_contract_positive_negative": "37/37 PASS",
+      "guid_meta": "6/6 PASS",
+      "source_owner_data": "43/43 PASS",
+      "negative_guid": "3/3 GUID + 3/3 SCRIPT_BINDING_NEGATIVES PASS",
+      "editor_compile": "NOT_RUN",
+      "physx": "NOT_RUN"
+    },
+    "ci_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965951170",
+    "test_code_sha": "92f6dbf5da578b118dff609f8b50a9b1549d0f39",
+    "details": "Source CSharp shared core compiled against actual frozen PARTSIZE. Synthetic placeholder IDs in the source unit tests only, NEVER passed as real prefab proof."
+  },
+  "gates": {
+    "producer_source": "PASS",
+    "independent_B01_40_g0": "PENDING",
+    "independent_B01_60_g1": "NOT_RUN",
+    "unity_editor_native_compile": "NOT_RUN",
+    "unity_physx": "NOT_RUN",
+    "typed_sockets": "NOT_RUN",
+    "g2": "HOLD",
+    "b01_00_inbox": "PENDING",
+    "codex_ack": "PENDING",
+    "integrated": false,
+    "merged": false
+  },
+  "handoff": {
+    "readme": "Tools/B01/PARTSIZE001/P17NativeProbe/README.md",
+    "install": "Isolated disposable licensed Unity project only, copy only own P17NativeProbe folder/meta after pinned predecessors, assign six REAL existing prefab references",
+    "rollback": "Remove only new P17NativeProbe folder/meta from isolated Unity; retain Editor.log, measured receipt, original source and Codex worktree unchanged",
+    "next_reviewer": "B01-40 independent provenance and B01-60 licensed Unity native QA; B01-00 decides Codex inbox slot"
+  },
+  "known_blockers": [
+    "No licensed Unity Editor session available to producer, so native Editor API compile/PhysX tests must NOT_RUN",
+    "No actual six assigned prefab references in producer repo: must be sourced from Codex-authorized assets at G1",
+    "No authoritative typed sockets or articulated drive collision measurement from source-only results",
+    "Dependent original PARTSIZE and P17 content not merged/installed into current Codex gameplay",
+    "Independent B01-40/B01-60 acceptance and Codex ACK absent"
+  ],
+  "wave04_repair": {
+    "kind": "SOURCE_BUGFIX_IN_PREEXISTING_PR_405_NO_NEW_PR",
+    "cause": "P17NativePhysicalSettings ScriptableObject CreateAssetMenu type embedded in mismatched BracingNativeColliderProbe.cs file, risking missing script asset association",
+    "fix": "P17NativePhysicalSettings moved into exact named P17NativePhysicalSettings.cs with its own .meta; native receipt saves six actual prefab asset paths and AssetDatabase GUIDs",
+    "code_SHA_before_manifest": "92f6dbf5da578b118dff609f8b50a9b1549d0f39",
+    "unity_metas_expected": 6,
+    "original_part_owners_unchanged": 43,
+    "source_behavioral_checks_per_os": 37,
+    "regression_guards": [
+      "REJECT_MISMATCHED_MONOSCRIPT_FILENAME",
+      "REJECT_MISSING_CREATEASSETMENU",
+      "REJECT_EMBEDDED_DUPLICATE_MONOSCRIPT",
+      "REJECT_THREE_MALFORMED_GUIDS",
+      "REQUIRE_SIX_PROVENANCE_PREFAB_BINDINGS_IN_RECEIPT"
+    ],
+    "native_Editor_compile": "NOT_RUN",
+    "native_Unity_PhysX": "NOT_RUN",
+    "ci_retest": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965951170"
+  }
+}
