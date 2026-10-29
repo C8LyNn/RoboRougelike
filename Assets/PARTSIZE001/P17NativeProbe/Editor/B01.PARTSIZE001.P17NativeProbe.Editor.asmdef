@@ -1,0 +1,14 @@
+{
+  "name": "B01.PARTSIZE001.P17NativeProbe.Editor",
+  "rootNamespace": "B01.PARTSIZE001.P17Probe",
+  "references": ["B01.PARTSIZE001.Runtime"],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
