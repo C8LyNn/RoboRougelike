@@ -37,7 +37,7 @@ def audit(data,receipt):
                 "Sprite Single import properties "+p)
         require(b"TextureImporter:" in meta,"Unity TextureImporter required")
     prefab=data[f"{ROOT}/Resources/B0132_SalvageBeaconLoop.prefab"].decode()
-    refs=re.findall(r"(?m)^  - \\{fileID: 21300000, guid: ([a-f0-9]{32}), type: 3\\}$",prefab)
+    refs=re.findall(r"(?m)^  - \{fileID: 21300000, guid: ([a-f0-9]{32}), type: 3\}$",prefab)
     require(len(refs)==8,"actual prefab must serialize eight and only eight Sprite refs")
     require(refs==[GUID.search(data[p+".meta"]).group(1).decode() for p in paths],
             "prefab sprite GUID or animation frame order mismatch")
