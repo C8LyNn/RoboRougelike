@@ -1,0 +1,43 @@
+{
+  "packageId": "B01-25-HOLDOUT-001",
+  "schemaVersion": 1,
+  "gridMeters": 4,
+  "profiles": [
+    {
+      "id": "CLEARANCE_HOLD",
+      "sourcePR": 359,
+      "mapCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "mapGitBlob": "53eb696950121465befea2855eda4d7268750016",
+      "zoneCell": [
+        9,
+        10
+      ],
+      "zoneWorldMeters": [
+        36,
+        40
+      ],
+      "radiusMeters": 2.5,
+      "requiredSeconds": 8,
+      "outsideDecayPerSecond": 1.5,
+      "goal": "Hold the extraction relay between L3 and L4; clear nearby threats before the finish."
+    },
+    {
+      "id": "SLALOM_HOLD",
+      "sourcePR": 346,
+      "mapCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "mapGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "zoneCell": [
+        7,
+        11
+      ],
+      "zoneWorldMeters": [
+        28,
+        44
+      ],
+      "radiusMeters": 2.5,
+      "requiredSeconds": 10,
+      "outsideDecayPerSecond": 1.5,
+      "goal": "Secure relay after east breach, before final west exit; optional source challenge."
+    }
+  ]
+}
