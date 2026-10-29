@@ -1,4 +1,4 @@
-name: B01-32 Wave03 salvage beacon physical Unity Sprite prefab delivery (NOT native Unity)
+name: B01-32 W03 physical Unity salvage Sprite prefab + Windows independent ZIP intake (NOT native Unity)
 on:
   push:
     branches: [art/b01-32-p17w03-salvage-unity-prefab]
@@ -9,17 +9,13 @@ on:
 permissions:
   contents: read
 jobs:
-  real-source-and-physical-unity-asset-archive:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-2022, ubuntu-24.04]
+  original-art-physical-unity-production:
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Fetch exact immutable B01-32 art producer source
+      - name: Fetch immutable original B01-32 art producer Git source
         shell: bash
         run: |
           git fetch --no-tags --depth=1 origin refs/heads/art/b01-32-p17-salvage-beacon-r1:refs/remotes/origin/immutable-salvage
@@ -30,20 +26,46 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Install original physical SVG/PNG renderer and image verifier
+      - name: Install real SVG renderer and original PNG physical inspector
         run: python -m pip install --disable-pip-version-check "CairoSVG==2.7.1" "Pillow==11.3.0"
-      - name: Compile and execute exact original 8-frame C# clock
+      - name: Execute exact original 8-frame CSharp clock
         run: dotnet run -c Release --project Tools/B01-32/P17/SalvageUnityDelivery/ClockTest/ClockTest.csproj
-      - name: Parse original owner Unity runtime/test C# at C#9 via real Roslyn
+      - name: Syntax-parse actual three Unity runtime/test CSharp sources
         run: dotnet run -c Release --project Tools/B01-32/P17/SalvageUnityDelivery/SyntaxTest/SyntaxTest.csproj
-      - name: Render 8 physical PNG Sprites from pinned Git sources and generate real Unity prefab/meta archive
+      - name: Generate exact-source 8 PNG Sprite Singles and serialized Unity prefab
         run: python Tools/B01-32/P17/SalvageUnityDelivery/build_import.py --output build/B0132SalvageUnity
-      - name: Verify actual ZIP extraction, all prefab GUID references, 8 PNG alpha and 4 deliberate bad-byte rejections
+      - name: Audit physically extracted original Unity ZIP and reject four corruption mutants
         run: python Tools/B01-32/P17/SalvageUnityDelivery/verify_import.py --output build/B0132SalvageUnity
-      - name: Publish actual importable original Unity asset archive and SHA-256 receipt
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: B0132-SALVAGE-UNITY-001-${{ matrix.os }}
+          name: B0132-SALVAGE-UNITY-001-original-ubuntu
           path: build/B0132SalvageUnity/
-          if-no-files-found: error
           retention-days: 30
+          if-no-files-found: error
+  independent-windows-physical-archive-intake:
+    needs: original-art-physical-unity-production
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Install binary PNG physical inspector (no Cairo requirement on Windows)
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile and execute exact same original 8-frame CSharp clock
+        run: dotnet run -c Release --project Tools/B01-32/P17/SalvageUnityDelivery/ClockTest/ClockTest.csproj
+      - name: Syntax-parse the exact original Unity runtime/test source on Windows
+        run: dotnet run -c Release --project Tools/B01-32/P17/SalvageUnityDelivery/SyntaxTest/SyntaxTest.csproj
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0132-SALVAGE-UNITY-001-original-ubuntu
+          path: build/B0132SalvageUnity/
+      - name: Independently check original physical Unity asset bytes, 20 GUIDs, 8 sprites, prefab and 4 corrupted mutants
+        run: python Tools/B01-32/P17/SalvageUnityDelivery/verify_import.py --output build/B0132SalvageUnity
+      - name: Verify physical archive still has producer receipt and immutable source commit
+        shell: bash
+        run: |
+          python -c "import json; p=json.load(open('build/B0132SalvageUnity/SOURCE_RECEIPT.json')); assert p['original_owner_sha']=='9956a9281ccbd93f8c115796f90f86d3bd0a0ca1'; print('WINDOWS_ORIGINAL_PIN_PASS',p['original_owner_sha'],p['zip_sha256'])"
