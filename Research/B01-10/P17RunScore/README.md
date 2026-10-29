@@ -55,3 +55,45 @@ This scoring is deliberately **ephemeral**: no checkpoint ownership, no serializ
 **Receivers:** B01-40 G0/source/interface/rollback → B01-60 independent C# QA → B01-00 queue #79 only if accepted → Codex ACK and native Unity integration only if explicit. \`PRODUCER_EXECUTABLE_GREEN\` ≠ \`OFFERED/FROZEN\` ≠ \`CODEX_CLAIMED\` ≠ \`INTEGRATED\`.
 
 **Source package paths:** exclusively \`Research/B01-10/P17RunScore/**\` + a single isolated, own CI workflow. No \`Assets/**\` modifications, no model jobs, no merge.
+
+
+## WAVE 04 — RUNSCORE001/R2: actual two-phase game-ready source collector
+
+**This is an extension to the same existing producer package #401, not a new duplicate scoring package.** The earlier score engine \`RunScore.cs\` requires a single \`StageScoreInput\` with the actual per-stage kill/recovery/scrap deltas. Native source review uncovered an important R1 timeline boundary. Source at current Codex gameplay baseline \`203a0805251ed28293888e43f2d49f0df63767c6\`, original \`Assets/R1/R1RunController.cs\` Git blob \`09a6776db67662e8960d1f446ba5c5168cd3e4b2\`:
+
+- \`StartRun\` resets \`DefeatedEnemies=EarnedScrap=RecoveredModules=0\` (line 106).
+- At \`ChooseRoute\`, the stage instance is selected (lines 112–121); \`BeginEncounter\` creates and spawns it (lines 216–241).
+- At **victory**, \`Update\` calls \`Progress.WinEncounter\`, awards Scrap, increments **cumulative** \`EarnedScrap\` and \`DefeatedEnemies\` (lines 270–290), **then opens the reward selection**. At this moment \`RecoveredModules\` has not increased.
+- **Only after successful \`ConfirmRewards\`** does \`RecoveredModules+=ids.Length\` (lines 174–188). Selecting zero/one/two/three parts is optional, and failed selections must not grant scores.
+
+The original scorer's single-stage observation must therefore **not** be constructed at the moment of combat victory using \`RecoveredModules\`. W04 adds actual original **\`RunScoreCollector.cs\`** with a two-phase event contract: \`new RunScoreCollector(... cumulative baseline ...)\`, \`Advance(unscaledDelta,paused)\` only while active combat, \`FinishCombat(victory,cumulativeKills,endCoreHpRatio,cumulativeScrap)\` once after the valid win/loss transition, and for **victory only**, \`FinishRewards(cumulativeRecovered,cumulativeScrap)\` once after successful \`ConfirmRewards\`. On defeat, \`FinishCombat\` immediately returns the terminal zero-point observation.
+
+**Key API behavior**: both finalization stages validate **before mutating internal state**, so a rejected counter mutation/invalid kill or premature reward confirmation remains recoverable. The collector rejects double victory/recovery; does not permit unpaused time accumulation after combat or count paused time; uses integer-long checked monotonic **deltas**, not absolute run-level Scrap/recovery counters; rejects an impossible recovered-parts count greater than three. \`StageScoreInput\` still passes to the **unchanged** original \`RunScorer.ScoreStage\` and \`ScoreRun\`. The original balance/medal formula and anti-farming policy remain unchanged.
+
+**Minimal integration-facing outline** (illustrative — Codex alone owns the real game adapter; no game files modified by producer):
+
+\`\`\`csharp
+// At the start of actual R5 combat, snapshot BEFORE any kills/rewards:
+var collector = new RunScoreCollector(
+    stageNumber, actualEncounter.Id, R5RunPlan.Threat(actualEncounter),
+    actualEncounter.SpawnCount, authoritativeCoreHpRatio,
+    run.DefeatedEnemies, run.EarnedScrap, run.RecoveredModules);
+
+// During active combat only, including pause-aware unscaled elapsed:
+collector.Advance(authoritativeUnscaledDeltaSeconds, run.Paused);
+
+// After R1 victory/defeat already incremented its cumulative counters:
+StageScoreInput loss = collector.FinishCombat(
+    victory, run.DefeatedEnemies, authoritativeRemainingCoreHpRatio,
+    run.EarnedScrap);
+// If defeat: loss is non-null and final; do NOT call FinishRewards.
+
+// If and only if R1 ConfirmRewards() successfully committed:
+StageScoreInput victoryObservation = collector.FinishRewards(
+    run.RecoveredModules, run.EarnedScrap);
+// RunScorer.ScoreStage(victoryObservation) is now safe to display.
+\`\`\`
+
+**Important integration limitations:** The current R1 controller also supports optional **races/road/reactor** and map activities; this collector and existing scoring policy are **for normal R5 combat stages only (1–4 spawned combat enemies, counting the source-authored Scout escort)**. Non-combat objectives must not be falsely scored as kills, and a non-combat all-activities run requires a separately approved policy before integration. The collector does not decide exact input tick scheduling or where core health ratio is captured; only Codex can wire/verify those against real Unity lifecycle and state. Do not start measuring while the game is transitioning or within paused screen; the constructor is for an actual live encounter with an authoritative baseline. Likewise, no source-engine claim that native Unity can successfully compile or install this without the future authorized adapter.
+
+**W04 executable validation:** \`Program.cs\` adds **18 real compiled C# checks** (#57–74) covering delayed reward accrual, real cumulative counter deltas, pause-exclusion, terminal defeat, invalid replay/double rewards, abnormal kill/recovery counters, time overflow and non-monetary score invariance; old #1–56 and 120 seeded six-stage data checks retained. Own .NET8 Windows+Ubuntu workflow now asserts **74 PASS / 0 FAIL** per OS and saves JSON/negative exit evidence. GitHub Actions and exact SHA below MANIFEST provide the authoritative actual outcome. **B01-60 independent QA, B01-40 G0, native Unity/Player and Codex ACK all remain pending.** Receiver must not mark this as Unity tested.
