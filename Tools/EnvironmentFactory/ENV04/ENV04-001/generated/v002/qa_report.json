@@ -48,15 +48,15 @@
     ]
   },
   "sha256": {
-    "generate_env04_001_v002.py": "9a3d37258876791e5a67d58ceb0cf2825903e75997c07624aaaf8d7cde5ce153",
+    "generate_env04_001_v002.py": "fa41f1c88e3d9e256af1061c1aeb868895b6defa63b47e2665e0dda3a93f633f",
     "qa_env04_001_v002.py": "a60acf06574a8adb28b0b9373b5b0735df0f661bcbd9c4bd914dc59940193db7",
-    "generated/v002/ENV04-001_industrial_vent_grate.blend": "ca4745b88b7a2e0ea395132ba12bf912ab4c5d0be8411e2dfdc22c81626cc8bd",
+    "generated/v002/ENV04-001_industrial_vent_grate.blend": "68b042c7f2a22b95a04f54cc78dffa0445ada4cc9d4a9ccfc2acff749b3352ea",
     "generated/v002/ENV04-001_industrial_vent_grate.glb": "5e367958b7537c7a37fcdb74311cdc58f65716117f7f498475d25ca407cc757d",
-    "generated/v002/preview_front.png": "23c7faba68ed23357cbeeace5f40f74b2278b97d5845a89f2fe8fd53ff6c85bc",
-    "generated/v002/preview_rear.png": "0d436d78c216d2136e54b8d70dd42987bf7ad0b218b59e02e6af32e72d99ed92",
-    "generated/v002/preview_top.png": "dad6f05f6e998004ac1aab5dd7a3a4c51bbea7d746f6123903be3c00511a0fb2",
-    "generated/v002/preview_side.png": "f672e45b69cb993d02d1b1fc442afbd1077a90cea46d6948511a496d79f59940",
-    "generated/v002/build_report.json": "554c0dbd1578d2d23f1399537417ef042c2d7983b62ecd0a78008a652a1d5804"
+    "generated/v002/preview_front.png": "e3de11b3f40ade28a524a3c1cb87a595b6222d92b3dfeaf135b850e18ad67dc3",
+    "generated/v002/preview_rear.png": "229a9cf96ee12302819149d92da67385d85d437b31a8b0cba8b00ab12bd5def7",
+    "generated/v002/preview_top.png": "1b89395d3a20169d8a280ef224a77ec1d1bbd43bade31727cdfe11db180807f2",
+    "generated/v002/preview_side.png": "674f1d8c0f2804afc56ad37ef7544a4a5a35e03ea802e9295acbcb00f7f851e1",
+    "generated/v002/build_report.json": "1e76c9359cc4c770c361720c9bc8bc055708ce484919a9e9116624e3adfff597"
   },
   "license": "CC0-1.0",
   "animation": "NOT_APPLICABLE",

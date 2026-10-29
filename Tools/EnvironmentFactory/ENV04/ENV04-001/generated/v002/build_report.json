@@ -33,7 +33,7 @@
   "uv_contract": "UV_METRIC_1M, world projected, 1 tile per metre",
   "rework": "separated butt-jointed rim, six slimmer canted slats with 12 flush end brackets, flush seated floor/posts, separated armor and surface markers",
   "license": "CC0-1.0; original authored geometry, no external meshes/textures",
-  "source_sha256": "9a3d37258876791e5a67d58ceb0cf2825903e75997c07624aaaf8d7cde5ce153",
+  "source_sha256": "fa41f1c88e3d9e256af1061c1aeb868895b6defa63b47e2665e0dda3a93f633f",
   "geometry_sha256": "b8eb8901786886f6473370febd343ead08e3a1db5df1a192e3173c851012b3d7",
   "unity": "NOT_RUN",
   "windows": "NOT_RUN"
