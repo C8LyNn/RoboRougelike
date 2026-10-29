@@ -69,3 +69,20 @@ test('prevalidated baseline equals checked baseline on validated world',()=>{
  new SpatialGrid(w.targets,4); // proof all targets have been checked
  for(const p of w.shots)assert.equal(validateSameHits(bruteFirstHit(p,w.targets),bruteFirstHitPrevalidated(p,w.targets)),true);
 });
+
+test('RED regression: strictly earlier impact wins even when times differ by less than 1e-10',()=>{
+  const p=shot(0,0,10,0);
+  const earlier={id:99,x:5,z:0,radius:1};
+  const later={id:1,x:5+5e-10,z:0,radius:1};
+  for(const targets of [[earlier,later],[later,earlier]]){
+    const brute=bruteFirstHit(p,targets);
+    const indexed=new SpatialGrid(targets,2).firstHit(p);
+    assert.ok(hitTime(p,earlier)<hitTime(p,later));
+    assert.equal(brute.id,99,'brute force returned the LATER target');
+    assert.equal(indexed.id,99,'indexed candidate search returned the LATER target');
+  }
+});
+test('RED regression: comparison requires exact earliest impact time, not epsilon',()=>{
+  assert.equal(validateSameHits({id:42,time:.4},{id:42,time:.4+5e-11}),false);
+  assert.equal(validateSameHits({id:42,time:.4},{id:42,time:.4}),true);
+});
