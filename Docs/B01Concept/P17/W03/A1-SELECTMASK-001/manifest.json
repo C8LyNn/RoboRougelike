@@ -1,6 +1,6 @@
 {
   "package_id": "B01-31-A1-SELECTMASK-001",
-  "version": "P17-W03-R1",
+  "version": "P17-W03-R2",
   "owner": "B01-31",
   "purpose": "Render pixel-exact 2D alpha hit-test masks and focus-outline sprites for existing A1 face/side/top art; NOT physical colliders",
   "source": {
@@ -53,7 +53,9 @@
       "empty mask rejected",
       "wrong parent Git blob rejected",
       "missing semantic part rejected",
-      "1px alpha mutation detected"
+      "1px alpha mutation detected",
+      "stale A1 PNG and old PASS receipt removed before rerun",
+      "PNG inventory exact-match, no extra/stale files"
     ]
   },
   "dependents": [
@@ -69,9 +71,10 @@
     "no Unity Sprite import",
     "no actual user legibility test",
     "no styling approval",
-    "not integrated"
+    "not integrated",
+    "Producer G0 only; independent B01-40/B01-60 QA not yet performed"
   ],
   "install": "Fetch exact source commit via documented git fetch. Run generator. Inspect mask/focus PNGs. Do not copy to canonical Assets/** without B01-00/Codex approval.",
   "rollback": "Delete Docs/B01Concept/P17/W03/A1-SELECTMASK-001/** and .github/workflows/b01-31-p17-w03-selectmask.yml in disposable branch; no canonical code, Unity assets or prior B01-31 PR modified.",
-  "status": "PRODUCER_SOURCE_G0_VALIDATED__INDEPENDENT_QA_PENDING__NOT_OFFERED"
+  "status": "PRODUCER_R2_RETEST_PENDING__INDEPENDENT_QA_PENDING__NOT_OFFERED"
 }
