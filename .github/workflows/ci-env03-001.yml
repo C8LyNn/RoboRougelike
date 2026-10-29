@@ -1,0 +1,91 @@
+name: ENV03-001 v002 Blender before-after export and QA
+
+on:
+  push:
+    branches:
+      - feature/rrl-env03-001-arena-wall-segment
+    paths:
+      - 'Tools/EnvironmentFactory/ENV03/ENV03-001/**'
+      - '.github/workflows/ci-env03-001.yml'
+      - 'Docs/EnvironmentFactory/claims/ENV03-001.json'
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV03/ENV03-001/**'
+      - '.github/workflows/ci-env03-001.yml'
+      - 'Docs/EnvironmentFactory/claims/ENV03-001.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  env03-blender-qa:
+    name: ENV03-001 Blender CPU export + independent QA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout isolated pilot and immutable v001 source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install real Blender from Ubuntu repository
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy
+          blender --version | head -3
+
+      - name: Reproduce immutable v001 baseline with original generator and QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p env03-001-artifacts/before_v001
+          BASELINE=8622cdd6ddd5bb09f75779af8f468ce1a84c2be5
+          git cat-file -e "$BASELINE^{commit}"
+          git show "$BASELINE:Tools/EnvironmentFactory/ENV03/ENV03-001/generate_env03_001.py" > env03-001-artifacts/before_v001/original_generator.py
+          git show "$BASELINE:Tools/EnvironmentFactory/ENV03/ENV03-001/qa_env03_001.py" > env03-001-artifacts/before_v001/original_qa.py
+          blender -b -noaudio --python env03-001-artifacts/before_v001/original_generator.py -- --output-dir "$PWD/env03-001-artifacts/before_v001" 2>&1 | tee env03-001-artifacts/before_v001/blender_export.log
+          blender -b -noaudio --python env03-001-artifacts/before_v001/original_qa.py -- --output-dir "$PWD/env03-001-artifacts/before_v001" 2>&1 | tee env03-001-artifacts/before_v001/blender_qa.log
+          test -s env03-001-artifacts/before_v001/ENV03-001_preview_arena_front.png
+          test -s env03-001-artifacts/before_v001/ENV03-001_preview_rear_end.png
+
+      - name: Generate v002 BLEND, GLB, and four CPU preview renders
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p env03-001-artifacts/after_v002 env03-001-artifacts/repeat_v002
+          blender -b -noaudio --python Tools/EnvironmentFactory/ENV03/ENV03-001/generate_env03_001.py -- --output-dir "$PWD/env03-001-artifacts/after_v002" 2>&1 | tee env03-001-artifacts/after_v002/blender_export.log
+          test -s env03-001-artifacts/after_v002/ENV03-001_ArenaWall.blend
+          test -s env03-001-artifacts/after_v002/ENV03-001_ArenaWall.glb
+          for label in arena_front rear_end three_tile_arena three_tile_outer; do
+            test -s "env03-001-artifacts/after_v002/ENV03-001_preview_${label}.png"
+          done
+
+      - name: Independently regenerate v002 to verify repeatability
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender -b -noaudio --python Tools/EnvironmentFactory/ENV03/ENV03-001/generate_env03_001.py -- --output-dir "$PWD/env03-001-artifacts/repeat_v002" 2>&1 | tee env03-001-artifacts/repeat_v002/blender_export.log
+          test -s env03-001-artifacts/repeat_v002/ENV03-001_ArenaWall.glb
+          cmp env03-001-artifacts/after_v002/ENV03-001_ArenaWall.glb env03-001-artifacts/repeat_v002/ENV03-001_ArenaWall.glb
+
+      - name: Inspect v002 BLEND, GLB, end profiles, normals and v001-v002 differences
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender -b -noaudio --python Tools/EnvironmentFactory/ENV03/ENV03-001/qa_env03_001.py -- --output-dir "$PWD/env03-001-artifacts/after_v002" --before-dir "$PWD/env03-001-artifacts/before_v001" --repeat-dir "$PWD/env03-001-artifacts/repeat_v002" 2>&1 | tee env03-001-artifacts/after_v002/blender_qa.log
+          test -s env03-001-artifacts/after_v002/qa_report.json
+          test -s env03-001-artifacts/after_v002/comparison_v001_v002.json
+          printf 'SOURCE_SHA=%s\nBASELINE_SOURCE_SHA=8622cdd6ddd5bb09f75779af8f468ce1a84c2be5\n' "$GITHUB_SHA" > env03-001-artifacts/source_sha.txt
+          (cd env03-001-artifacts/after_v002 && sha256sum ENV03-001_ArenaWall.blend ENV03-001_ArenaWall.glb ENV03-001_preview_*.png > SHA256SUMS)
+          (cd env03-001-artifacts/before_v001 && sha256sum ENV03-001_ArenaWall.blend ENV03-001_ArenaWall.glb ENV03-001_preview_*.png > SHA256SUMS)
+
+      - name: Upload actual exports, previews, hashes, and QA logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ENV03-001-v002-Before-After-Exports-QA
+          path: env03-001-artifacts/
+          if-no-files-found: warn
+          retention-days: 14

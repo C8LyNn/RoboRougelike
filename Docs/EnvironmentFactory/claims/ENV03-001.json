@@ -1,0 +1,18 @@
+{
+  "id": "ENV03-001",
+  "agent": "ENV03",
+  "name": "Niski segment muru areny / low industrial sci-fi arena wall segment",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-27T09:49:13.783Z",
+  "branch": "feature/rrl-env03-001-arena-wall-segment",
+  "base": "develop",
+  "scope": [
+    "Tools/EnvironmentFactory/ENV03/ENV03-001/**",
+    ".github/workflows/ci-env03-001.yml",
+    "Docs/EnvironmentFactory/claims/ENV03-001.json"
+  ],
+  "source_issue": "https://github.com/C8LyNn/RoboRougelike/issues/287",
+  "governance_issue": "https://github.com/C8LyNn/RoboRougelike/issues/276",
+  "owner": "ENV03",
+  "integration": "NOT_AUTHORIZED"
+}
