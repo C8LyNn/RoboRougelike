@@ -1,0 +1,89 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXHELP-001",
+  "revision": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/384",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "revision_source_commit": "393d3a32e2ddbf6cfb4ebde26b990c3f1d8aa122",
+  "source_provenance": "B01-11 original self-authored C# code and bilingual copy, no licensed external materials, not copied from other agents.",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/Runtime/UXHelpCore.cs",
+      "sha256": "5a64e1f7d8e76ced2985ccb0967b449d6200cacaa4fadcf898866d3752846cd8",
+      "bytes": 7696,
+      "git_blob_sha1": "9d71f334e15e6c9446d636c1988c5dc72ca17849"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/Tests/Program.cs",
+      "sha256": "4f37425ad0407bcd72e270854ca4110ac9465c300cabe6f677baa726d9ad69cd",
+      "bytes": 7753,
+      "git_blob_sha1": "73808f203dca52679d50f2df380a6c000f46e74b"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/Tests/UXHelpTests.csproj",
+      "sha256": "a58e4b871c24514dfed5c8d37cd2751bd5ccb6d0dc44e5705c94a5bbedf4929e",
+      "bytes": 396,
+      "git_blob_sha1": "fd56fb65b475cc56da10a46ee3d09379d919a06d"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxhelp-w03.yml",
+      "sha256": "fed37ebb008e73622e4b11c430f55df6569d5ee099bc3e17beef6b51db986b54",
+      "bytes": 892,
+      "git_blob_sha1": "2a214bb152becf1813bdcca42f00569fe7fbe758"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/README.md",
+      "sha256": "2b83a2e5f5ed76bfbe0a025f82dbe6854df9f6ae2b06fc048ca825b5873d72f6",
+      "bytes": 2295,
+      "git_blob_sha1": "5b5c23de4edd60b7a31631876a45f12751bd9e04"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/INSTALL_FOR_CODEX.md",
+      "sha256": "71d4b0d3c457ce6fcdf23ddfbceef38de4e69f6f8685c26db420421708899e53",
+      "bytes": 1514,
+      "git_blob_sha1": "b0aed3a358526ebb67f74652db90e80eaff54260"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/TEST_PLAN.md",
+      "sha256": "5d802f97a627b263fb23ec7fdd68f212772eefcc3ca15f21b66f4b9f7463a205",
+      "bytes": 1194,
+      "git_blob_sha1": "83a58c7c9f5e9df8c4c131e89d1bcb7383492b87"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/QA_B01_40_60.md",
+      "sha256": "b5a06b6cc78741a40cfaba27c2ab14e88e48e3b8ac9fd2b65ed113bf471ab79b",
+      "bytes": 906,
+      "git_blob_sha1": "81eac6800cda2395b2c257cefbf33b80122a01ca"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Original C# .NET8 assertions Ubuntu",
+      "status": "PASS",
+      "passed": 46,
+      "failed": 0,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40908953821"
+    },
+    {
+      "name": "Original C# .NET8 assertions Windows",
+      "status": "PASS",
+      "passed": 46,
+      "failed": 0,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40908953821"
+    },
+    {
+      "name": "Unity Editor/Player, human research, Codex adapter",
+      "status": "NOT_RUN"
+    }
+  ],
+  "qa_b01_40": "PENDING",
+  "qa_b01_60": "PENDING",
+  "native_unity": "NOT_RUN",
+  "codex_ack": "PENDING",
+  "g2": "HOLD",
+  "status": "PRODUCER_SOURCE_TESTED / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NOT_INTEGRATED",
+  "rollback": "Ignore/delete only isolated Research/B01-11/P17/W03-UXHELP-001/** and .github/workflows/b01-11-uxhelp-w03.yml; no canonical game changes.",
+  "manifest_note": "files[] includes every payload EXCEPT manifest itself; no circular self-hash."
+}
