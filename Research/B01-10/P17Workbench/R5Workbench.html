@@ -330,6 +330,11 @@ function formPatch(){
  for(const field of ["Id","Title","Loot","Rule"])patch[field]=$(field).value;
  patch.Arena=Number($("Arena").value);
  for(const field of numericIds)patch[field]=Number($(field).value);
+ // An unchanged limit is not an explicit override. Let the source R5 engine
+ // auto-raise it for a harder encounter. A manually edited cap remains strict.
+ if($("autoBudget").checked &&
+    patch.ThreatBudget===deck.Stages[stage].Options[option].ThreatBudget)
+    delete patch.ThreatBudget;
  for(const field of listIds)patch[field]=parseList($(field).value);
  patch.EnemyCount=patch.Roster.length;
  return patch;
