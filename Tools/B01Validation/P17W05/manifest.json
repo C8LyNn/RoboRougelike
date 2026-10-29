@@ -7,17 +7,20 @@
     "pr": 411,
     "package": "B01-22-EQUIPMENT-KITS-001",
     "revision": "1.0.3",
-    "immutable_sha": "a3dd45a4c1f222ec5cc387302eafe9104f91ab52",
+    "immutable_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
     "catalog_git_blob": "372b3bc74553ea459e89be38378f4429090e00a2",
     "manifest_git_blob": "bd4b759522ca1ebd385abf90680ef9f885ca3bb3",
     "old_pr": 333,
-    "old_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b"
+    "old_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+    "intermediate_v103_sha": "a3dd45a4c1f222ec5cc387302eafe9104f91ab52",
+    "final_owner_commit_changes_only": "original .github/workflows/b01-22-p17-equipment-kits.yml"
   },
   "approved_by_qa_replay": null,
   "code": [
     "Tools/B01Validation/P17W05/receive_kits_v103.py",
     "Tools/B01Validation/P17W05/test_receive_kits_v103.py",
-    ".github/workflows/b01-40-p17w05-new-kit-v103-intake.yml"
+    ".github/workflows/b01-40-p17w05-new-kit-v103-intake.yml",
+    "Tools/B01Validation/P17W05/compare_owner_real_artifacts.py"
   ],
   "current_codex": {
     "pr": 383,
@@ -32,15 +35,20 @@
     "original_node_tests": 26,
     "original_python_tests": 18,
     "original_negative_mutants": 7,
-    "independent_receiver_tests": 20,
+    "independent_receiver_tests": 24,
     "number_of_offers_staged": 10,
     "old_new_kit_BOM_equality": true,
     "unchanged_part_prices": 17,
     "unchanged_weapon_prices": 9,
     "new_host_source_gate": "PASS_ON_CURRENT_CODEX",
-    "old_host_source_gate": "REJECT_EXIT_2"
+    "old_host_source_gate": "REJECT_EXIT_2",
+    "actual_original_producer_physical_artifacts_two_operating_systems": true,
+    "original_exact_producer_run": 40968578571,
+    "original_windows_artifact_id": 12939655855,
+    "original_ubuntu_artifact_id": 12939461321,
+    "win_ubuntu_original_three_file_bytes_identical": true
   },
-  "physical_output": "New external directory containing original author-staged catalog.json/offers.json/receipt.json + independent source receipt in deterministic 4-member ZIP, external SHA256 receipt",
+  "physical_output": "New external directory containing unmodified author-staged catalog.json/offers.json/receipt.json + independent source receipt in deterministic 4-member ZIP; a separate proof compares those exact files byte-for-byte with both downloaded ORIGINAL producer Actions artifacts.",
   "expected_test_execution": "VERIFY_ACTUAL_EXACT_PR_HEAD_ACTIONS_NOT_THIS_STATIC_FIELD",
   "source_G0": "PENDING_ACTUAL_FINAL_SHA_CI",
   "independent_B01_60": "PENDING",
