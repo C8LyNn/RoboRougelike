@@ -73,3 +73,26 @@ The exact R2 fix verifies **every archive distribution file** against its extrac
 **Real historical fixture:** the supplied old `RoboRougelike_SuspensionUX_Windows_x64.zip` was fully extracted to a disposable directory; the new actual original-source function checked **212/212 archive files (103,854,568 uncompressed bytes)** with byte-identical SHA-256. This is physical file-verification evidence, **not Player execution** and **not proof that the requested game SHA is actually embedded in the binary**. Source SHA is still supplied by the operator and requires independent build provenance. The distributable ZIP and native Windows game runtime are NOT included.
 
 **Receiver acceptance:** B01-40 must check exact Git HEAD and updated per-file SHA256 manifest and replay the historical ZIP receipt if authorized; B01-60 independently executes `python -m unittest discover -s tests -v` against that exact SHA and checks RED→GREEN. Only B01-00 can prioritize Codex CV-12 after G0; the game owner Codex alone can build/install the optional recorder into the game. A source-test green or ZIP-match green is not G1 or Codex ACK. Rollback remains delete the operator-only Tools folder and explicitly chosen evidence outputs, not shared game code.
+
+
+## WAVE 05 / original validator integration receipt (same R2 operator, no separate prototype)
+
+The previous 25 owner tests use **fake validators**. These are useful for subprocess and error handling but do not establish that the real recorder receipt flows through the actual original validator. This is now separately covered by `tests/test_original_validator_integration.py`:
+
+- It **executes the untouched real** `validate_live.py` from original #328 using its subprocess/CLI, not a mock. Every execution verifies the original **Git blob SHA-1** `7060aa3e364b2bc69de99501faa99bba57e84f82`.
+- The positive case builds explicitly **SYNTHETIC** format-faithful `receipt.json`, `frames.csv` (7200 rows), and `objects.csv` (120 scans) marked 120.04 s and passes them through original `run_and_validate`. It must return `LIVE_RAW_REVIEW_REQUIRED_NOT_PERFORMANCE_ACCEPTANCE` and the operator receipt must keep `native_performance_acceptance=false`.
+- Three negative cases corrupt the Unity version, truncate scans or corrupt the CSV header, and require actual `validate_live.py` exit nonzero and preserved negative operator receipts.
+- Exact original-source producer run on Linux Python 3.13: **29 PASS, 0 FAIL, 0 SKIP** (25 existing + 4 original-validator integration). Full log SHA256 `8b8e8c6561041cf2da735b33f4278a35babd8d642fd6828d7ad199a54d162afe` and source result in `evidence/W05_original_validator_interop_receipt.json`.
+- The 4 integration tests **explicitly SKIP when the original validator path is absent**. An ordinary run without `B0150_ORIGINAL_VALIDATOR` is therefore **25 PASS / 4 SKIP**, not 29 PASS. An incorrect or modified validator with that variable set **FAILS**, not a silent skip. Do not distribute a copied/retyped validator as if it were pinned.
+
+**Bash / authorized independent QA** (requires locally checked-out original Git commit from #328):
+
+```sh
+git show b5fc00428f6f663016e1525da556afbfe775facb:Tools/B01/B01-50/PERFSCALING001/validate_live.py > /tmp/b0150-exact-validate-live.py
+cd Tools/B01/B01-50/PERFRUN001
+B0150_ORIGINAL_VALIDATOR=/tmp/b0150-exact-validate-live.py python -m unittest discover -s tests -v
+```
+
+**PowerShell / Windows**: export original `validate_live.py` from immutable #328 into an operator-owned file; set `$env:B0150_ORIGINAL_VALIDATOR = 'C:\B01QA\validate_live.py'` before `python -m unittest discover -s tests -v`. Restore/clear the environment variable when finished. No network or actual Player is required for these source tests.
+
+**Acceptance boundary:** this explicitly tests interoperability of *actual original Python components* with simulated Player data, not original Unity runtime execution, not external independent QA, not FPS/display-frame measurements, not current Codex SHA and not a Codex ACK. Native acceptance still requires Codex's authorized rebuilt Player and B01-00 approval under existing CV-12 #79. Rollback and permissions unchanged.
