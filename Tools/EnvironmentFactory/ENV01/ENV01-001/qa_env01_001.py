@@ -149,7 +149,7 @@ paths = [
     OUT / "preview_rear.png",
     OUT / "build_report.json",
 ]
-sha256 = {str(p.relative_to(BASE)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
+sha256 = {(str(p.relative_to(BASE)) if p.is_relative_to(BASE) else "external/" + p.name): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
 report = {
     "id": "ENV01-001", "revision": "v002",
     "v001_head": "265835419a7144799cc92fb4a7dac637edbb7cc3",
