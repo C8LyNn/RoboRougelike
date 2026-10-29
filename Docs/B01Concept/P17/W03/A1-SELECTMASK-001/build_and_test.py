@@ -13,6 +13,7 @@ import hashlib
 import io
 import json
 import subprocess
+import tempfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import zlib
@@ -87,8 +88,32 @@ def sprite_from_mask(mask: Image.Image, color: tuple[int, int, int]) -> Image.Im
     return image
 
 
+def clear_previous_export(folder: Path) -> None:
+    """Remove only previous A1 generated PNGs and old success/failure receipt."""
+    folder.mkdir(parents=True, exist_ok=True)
+    for old in folder.glob("A1-*.png"):
+        if old.is_file():
+            old.unlink()
+    (folder / "receipt.json").unlink(missing_ok=True)
+
+
+def cleanup_negative_regression() -> bool:
+    """A failed rerun must never preserve an earlier PASS receipt or stale A1 art."""
+    with tempfile.TemporaryDirectory(prefix="b01-31-art-cleanup-") as tmp:
+        directory = Path(tmp)
+        (directory / "A1-obsolete.png").write_bytes(b"OLD")
+        (directory / "receipt.json").write_text('{"status":"PASS"}', encoding="utf-8")
+        (directory / "unrelated.txt").write_text("PRESERVE", encoding="utf-8")
+        clear_previous_export(directory)
+        return (not (directory / "A1-obsolete.png").exists()
+                and not (directory / "receipt.json").exists()
+                and (directory / "unrelated.txt").read_text(encoding="utf-8")
+                == "PRESERVE")
+
+
 def main() -> int:
-    OUT.mkdir(parents=True, exist_ok=True)
+    # Do not leave a prior PASS receipt discoverable after failed or interrupted runs.
+    clear_previous_export(OUT)
     check_results: list[dict] = []
     output_records: list[dict] = []
     unique_masks = {}
@@ -112,6 +137,8 @@ def main() -> int:
             "crc32": f"{zlib.crc32(raw):08x}", "size_px": list(image.size),
         })
 
+    check("negative stale export and prior PASS receipt invalidated",
+          cleanup_negative_regression())
     source = M["source"]
     check("one authorized A1 unit, not a MODEL_JOB",
           M["authorization"]["unit"] == "SINGLE_ATTACHABLE_PART"
@@ -128,7 +155,10 @@ def main() -> int:
         path = source["base_path"] + f"A1-orientation-{view}.svg"
         raw = git_file(source["immutable_commit"], path)
         correct_blob = source["expected_blob_sha1"][view]
-        check(f"{view}: same real original Git object", git_blob(raw) == correct_blob)
+        verified = git_blob(raw) == correct_blob
+        check(f"{view}: same real original Git object", verified)
+        if not verified:
+            raise RuntimeError(f"{view}: immutable original SVG Git blob drift; export refused")
         check(f"{view}: negative corrupted Git object must fail",
               git_blob(raw + b"x") != correct_blob)
         root = ET.fromstring(raw)
@@ -206,6 +236,22 @@ def main() -> int:
     save("A1-mask-contact.png", card)
     check("exact real PNG production count",
           len(output_records) == M["render"]["output_count"])
+    expected_pngs = {
+        f"A1-{view}-{kind}-{size}.png"
+        for view in M["render"]["views"]
+        for kind in ("mask", "focus")
+        for size in M["render"]["sizes"]
+    } | {f"A1-{view}-preview-96.png" for view in M["render"]["views"]} | {
+        "A1-mask-contact.png"
+    }
+    reported_pngs = [item["name"] for item in output_records]
+    disk_pngs = [p.name for p in OUT.iterdir()
+                 if p.is_file() and p.suffix.lower() == ".png"]
+    check("exact exported PNG inventory matches expected names and receipt",
+          len(disk_pngs) == len(expected_pngs)
+          and set(disk_pngs) == expected_pngs
+          and set(reported_pngs) == expected_pngs
+          and len(reported_pngs) == len(expected_pngs))
 
     result = {
         "package_id": M["package_id"], "version": M["version"],
@@ -219,8 +265,14 @@ def main() -> int:
         "not_run": ["Unity Editor", "Unity PlayMode", "Windows Player",
                     "Human UI legibility", "Physical collider", "Blender"],
     }
-    (OUT / "receipt.json").write_text(
-        json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # A failed export is not a deliverable: remove partial PNGs and never publish
+    # a stale PASS receipt from a previous run.
+    if result["status"] != "PASS":
+        clear_previous_export(OUT)
+    else:
+        (OUT / "receipt.json").write_text(
+            json.dumps(result, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8")
     for item in check_results:
         if item["status"] == "FAIL":
             print("FAILED_CHECK: " + item["name"])
