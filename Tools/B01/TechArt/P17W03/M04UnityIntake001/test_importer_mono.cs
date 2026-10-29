@@ -23,7 +23,20 @@ namespace UnityEngine
     }
     public class Transform : Object {}
     public class MeshFilter : Object {}
-    public class AnimationClip : Object {}
+    public class AnimationClip : Object { public float length=4f; }
+    public class AnimationCurve
+    {
+        public float AtStart,AtForward,AtReverse;
+        public AnimationCurve(float start,float forward,float reverse)
+        { AtStart=start;AtForward=forward;AtReverse=reverse; }
+        public float Evaluate(float t)
+        {
+            if(t<=0) return AtStart;
+            if(t<=1f) return AtStart+(AtForward-AtStart)*t;
+            if(t<=3f) return AtForward+(AtReverse-AtForward)*(t-1f)/2f;
+            return AtReverse;
+        }
+    }
     public static class Debug
     {
         public static readonly List<string> Errors = new List<string>();
@@ -76,9 +89,18 @@ namespace UnityEditor
     {
         public static readonly Dictionary<string,EditorCurveBinding[]> Bindings =
             new Dictionary<string,EditorCurveBinding[]>();
+        public static readonly Dictionary<string,AnimationCurve> Curves =
+            new Dictionary<string,AnimationCurve>();
+        public static string Key(string clip,EditorCurveBinding b)
+        {return clip+"|"+b.path+"|"+b.propertyName;}
         public static EditorCurveBinding[] GetCurveBindings(AnimationClip clip)
         {
             return Bindings.ContainsKey(clip.name) ? Bindings[clip.name] : new EditorCurveBinding[0];
+        }
+        public static AnimationCurve GetEditorCurve(AnimationClip clip,EditorCurveBinding binding)
+        {
+            AnimationCurve curve;
+            return Curves.TryGetValue(Key(clip.name,binding),out curve)?curve:null;
         }
     }
 }
@@ -105,8 +127,12 @@ public static class ImporterTests
         var clip=new AnimationClip{name="M04_4GimbalTake"};
         AssetDatabase.Subassets=new UnityEngine.Object[]{clip};
         AnimationUtility.Bindings.Clear();
+        AnimationUtility.Curves.Clear();
         AnimationUtility.Bindings["M04_4GimbalTake"]=Names.Select(n=>new EditorCurveBinding{
             path="ROOT_UNDERSIDE_MOUNT_Z0/"+n,propertyName="m_LocalRotation.x"}).ToArray();
+        foreach (var binding in AnimationUtility.Bindings["M04_4GimbalTake"])
+            AnimationUtility.Curves[AnimationUtility.Key("M04_4GimbalTake",binding)]=
+                new AnimationCurve(0f,0.10f,-0.10f);
     }
     public static int Main()
     {
@@ -151,6 +177,23 @@ public static class ImporterTests
         AssetDatabase.Subassets=new UnityEngine.Object[]{new AnimationClip{name="A"},new AnimationClip{name="M04_4GimbalTake"}};
         AnimationUtility.Bindings["A"]=new EditorCurveBinding[0];
         Check(M04CandidateImportCheck.VerifyImported(),"empty extra clip does not negate complete take");
+        Reset();
+        foreach(var b in AnimationUtility.Bindings["M04_4GimbalTake"])
+            AnimationUtility.Curves[AnimationUtility.Key("M04_4GimbalTake",b)]=
+                new AnimationCurve(0f,0f,0f);
+        Check(!M04CandidateImportCheck.VerifyImported(),
+              "REGRESSION: four static rotation bindings MUST NOT count as four moving gimbals");
+        Reset();
+        var missing=AnimationUtility.Bindings["M04_4GimbalTake"][0];
+        AnimationUtility.Curves.Remove(AnimationUtility.Key("M04_4GimbalTake",missing));
+        Check(!M04CandidateImportCheck.VerifyImported(),
+              "REGRESSION: one missing numeric rotation curve cannot pass");
+        Reset();
+        foreach(var b in AnimationUtility.Bindings["M04_4GimbalTake"])
+            AnimationUtility.Curves[AnimationUtility.Key("M04_4GimbalTake",b)]=
+                new AnimationCurve(0f,0.10f,0.10f);
+        Check(!M04CandidateImportCheck.VerifyImported(),
+              "REGRESSION: one-sided tilt without opposite-phase sweep cannot pass");
         Console.WriteLine("B01_30_M04_UNITY_IMPORT_ACTUAL_CSHARP_SHIMS_PASS "+assertions+" assertions");
         return 0;
     }
