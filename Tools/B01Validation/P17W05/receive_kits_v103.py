@@ -20,7 +20,8 @@ import zipfile
 
 ID="B01-40-P17W05-NEW-KIT-V103-RECEIVER-001"
 OLD="0d212a706c1e633b773d2e03b7b40c28bb63521b"
-NEW="a3dd45a4c1f222ec5cc387302eafe9104f91ab52"
+INTERMEDIATE="a3dd45a4c1f222ec5cc387302eafe9104f91ab52"
+NEW="b1d4e341d846c9397e236809a1d7e4c4fff9c935"
 CODEX="203a0805251ed28293888e43f2d49f0df63767c6"
 CODEX_REPORT="f92c873bb1e397a598b133e107ae704e15f86768"
 PACKAGE="B01-22-EQUIPMENT-KITS-001"
@@ -59,7 +60,14 @@ def obj(repo,sha,path):
     need(got==good,"GIT_BLOB_CONTENT_INTEGRITY:"+path)
     return data,got
 def verify_source(repo):
-    need(git(repo,"rev-parse",NEW+"^")==OLD,"NEW_REVISION_NOT_SINGLE_CHILD_OF_FROZEN_V102")
+    need(git(repo,"rev-parse",NEW+"^")==INTERMEDIATE and
+         git(repo,"rev-parse",INTERMEDIATE+"^")==OLD,
+         "NEW_REVISION_NOT_APPROVED_TWO_COMMIT_ANCESTRY")
+    # Final owner W05 added only its own CI artifact producer stage:
+    # no catalog, manifest, kit logic, or test source changed after v1.0.3.
+    final_delta=git(repo,"diff","--name-only",INTERMEDIATE,NEW).splitlines()
+    need(final_delta==[".github/workflows/b01-22-p17-equipment-kits.yml"],
+         "FINAL_PRODUCER_UPDATE_NOT_WORKFLOW_ONLY")
     changed=git(repo,"diff","--name-only",OLD,NEW).splitlines()
     need(set(changed)==EXPECTED_DIFF and len(changed)==len(EXPECTED_DIFF),
          "UNEXPECTED_AUTHOR_REVISION_SCOPE:"+str(changed))
@@ -118,6 +126,8 @@ def verify_source(repo):
     need(obj(repo,CODEX,R4)[1]==obj(repo,CODEX_REPORT,R4)[1]==R4_BLOB,
          "REAL_CODEX_R4_PRICES_CHANGED")
     return {"source_SHA":NEW,"source_old_SHA":OLD,
+            "intermediate_git_sha":INTERMEDIATE,
+            "final_owner_commit_workflow_only":True,
             "new_catalog_git_blob":cat_blob,"new_manifest_git_blob":manifest_blob,
             "author_changed_paths":changed,"source_13_sha256_and_sizes":"PASS",
             "old_and_new_kit_BOMs_10":"IDENTICAL",
