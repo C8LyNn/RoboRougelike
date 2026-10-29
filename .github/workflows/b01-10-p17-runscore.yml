@@ -54,6 +54,20 @@ jobs:
           set -e
           test "$rc" -eq 2
           grep -F "INVALID_INPUT:" "$RUNNER_TEMP/runscore-negative.log"
+      - name: Set up Python 3.12 for deterministic physical Codex source archive
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble + independently re-open byte-exact source ZIP and GUID meta
+        shell: bash
+        env:
+          B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python Research/B01-10/P17RunScore/pack_handoff.py pack --sha "$B01_SOURCE_SHA" --archive "$RUNNER_TEMP/B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/source-build.json"
+          python Research/B01-10/P17RunScore/pack_handoff.py verify --sha "$B01_SOURCE_SHA" --archive "$RUNNER_TEMP/B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/source-verify.json"
+          python Research/B01-10/P17RunScore/pack_handoff.py negatives --sha "$B01_SOURCE_SHA" --archive "$RUNNER_TEMP/source-corrupted-test.zip" --report "$RUNNER_TEMP/source-negative.json"
+          grep -F '"passed": true' "$RUNNER_TEMP/source-negative.json"
       - name: Save inspectable actual CSharp test evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -63,5 +77,9 @@ jobs:
             ${{ runner.temp }}/runscore-tests.log
             ${{ runner.temp }}/runscore-output.json
             ${{ runner.temp }}/runscore-negative.log
+            ${{ runner.temp }}/B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip
+            ${{ runner.temp }}/source-build.json
+            ${{ runner.temp }}/source-verify.json
+            ${{ runner.temp }}/source-negative.json
           if-no-files-found: warn
           retention-days: 14
