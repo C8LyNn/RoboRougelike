@@ -1,0 +1,56 @@
+name: B01-40 W03 exact original enemy formation intake vs latest Codex
+on:
+  push:
+    branches: ['audit/b01-40-p17w03-priority-intake-001']
+    paths:
+      - 'Tools/B01Validation/P17W03/**'
+      - '.github/workflows/b01-40-p17w03-formation-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-owner-git-content-and-codex-contract:
+    name: Original 35 Node tests, 12 real spawns, immutable ZIP (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable original owner and both original Codex gameplay/report Git objects
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin c39a400cb07ae0fd6f0d8d419a128490cfbcfd8a
+          git fetch --no-tags --depth=1 origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
+          git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
+          git fetch --no-tags --depth=1 origin f92c873bb1e397a598b133e107ae704e15f86768
+          git fetch --no-tags --depth=1 origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
+      - name: Execute original owner Node 35 tests and real 12 exported Vector3 arguments
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W03/receive_formations.py --repo . --out "$RUNNER_TEMP/B0140-W03-ready"
+      - name: Independent real ZIP and 18 adversarial source-tests on actually generated content
+        shell: bash
+        run: |
+          export B0140_W03_OUTPUT="$RUNNER_TEMP/B0140-W03-ready"
+          python Tools/B01Validation/P17W03/test_receiver.py -v
+      - name: Print actual source provenance and SHA without claiming native Unity
+        shell: bash
+        run: |
+          python -c "import os,pathlib,json,hashlib;d=pathlib.Path(os.environ['RUNNER_TEMP'])/'B0140-W03-ready';r=json.loads((d/'receiver-receipt.json').read_bytes());p=d/'B01-40-W03-Codex-EnemyFormations.zip';assert hashlib.sha256(p.read_bytes()).hexdigest()==r['archive_sha256'];print('ORIGINAL_ENEMY_FORMATION_SOURCE_G0_PASS');print('INNER_ZIP_SHA256='+r['archive_sha256']);print('UNITY=NOT_RUN B01-60=QA_PENDING EQUIPMENT333=HOLD_R3_DRIFT')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W03-real-Codex-formation-handoff-${{ matrix.os }}
+          path: ${{ runner.temp }}/B0140-W03-ready/
+          if-no-files-found: error
+          retention-days: 21

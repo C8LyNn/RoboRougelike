@@ -1,0 +1,70 @@
+{
+  "package_id": "B01-40-P17W03-ENEMY-FORMATION-INGRESS-001",
+  "version": "1.0.0",
+  "owner": "B01-40",
+  "role": "INTEGRATION_AND_BUILD",
+  "source_type": "EXECUTED_IMMUTABLE_ORIGINAL_SOURCE_CONTENT_INGRESS",
+  "owned_paths": [
+    "Tools/B01Validation/P17W03/**",
+    ".github/workflows/b01-40-p17w03-formation-intake.yml"
+  ],
+  "priority_queue": [
+    {
+      "rank": 1,
+      "producer_pr": 355,
+      "producer": "B01-24",
+      "immutable_sha": "c39a400cb07ae0fd6f0d8d419a128490cfbcfd8a",
+      "source_git_manifest_blob": "538efb86de3fb6ccf3de8adbb3c1647ec7a984fc",
+      "source_formations_blob": "4c28b6289f23bcbd82c976bccb1567cbcb847371",
+      "game_content": "12 arena/SpawnCount layouts, 30 XZ positions, 12 original Vector3[] code arguments",
+      "G0": "VERIFY_ORIGINAL_REAL_CI",
+      "G1": "NOT_RUN",
+      "independent_b0160": "PENDING",
+      "codeX_ack": "PENDING"
+    },
+    {
+      "rank": 2,
+      "producer_pr": 333,
+      "producer": "B01-22",
+      "immutable_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+      "G0": "HOLD_CODEX_R3_BYTE_DRIFT",
+      "affected_source": "Assets/R3/R3VehicleModel.cs",
+      "producer_pinned_blob": "8cc68faf89793c3a803e5807594c9faf0df10091",
+      "latest_codex_gameplay_blob": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+      "price_semantic_gate": "NOT_RUN",
+      "G1": "NOT_RUN",
+      "codeX_ack": "PENDING"
+    }
+  ],
+  "codex_sources": {
+    "runtime_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "reported_qa_head_sha": "f92c873bb1e397a598b133e107ae704e15f86768",
+    "codex_pr": 383,
+    "known_full_editmode": "FAIL_1327_PASS_2_FAIL_1_SKIPPED",
+    "native_playmode_original_codex": "474_PASS_AS_REPORTED_NOT_RERUN_BY_B01_40"
+  },
+  "code_implementation": [
+    "Tools/B01Validation/P17W03/receive_formations.py",
+    "Tools/B01Validation/P17W03/test_receiver.py"
+  ],
+  "actual_output": [
+    "one immutable six-member ZIP with unchanged owner formations JSON, 12 actual source-emitted Vector3 arguments and 3 previews",
+    "external Git-blob and original author source test receipt",
+    "external ordered conditional Codex QA queue"
+  ],
+  "rollback": "Discard read-only external ZIP+JSON receipt. Any Codex game integration/rollback exclusively Codex-owned.",
+  "boundaries": [
+    "No canonical Assets changes",
+    "No direct Codex integration",
+    "No modified owner sources",
+    "Original Node and receiver test are source-only, not Unity",
+    "B01-00 controls #79 OFFERED transition",
+    "No main/develop merge"
+  ],
+  "G0": "PENDING_EXACT_HEAD_GITHUB_ACTIONS",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "independent_QA": "PENDING",
+  "codeX_ack": "PENDING",
+  "state": "RECEIVER_PRODUCER_CI_PENDING"
+}
