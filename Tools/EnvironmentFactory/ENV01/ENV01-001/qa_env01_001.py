@@ -13,7 +13,7 @@ from pathlib import Path
 from mathutils import Vector
 
 BASE = Path(__file__).resolve().parent
-OUT = BASE / "generated"
+OUT = BASE / "generated" / "v002"
 if "--" in sys.argv:
     args = sys.argv[sys.argv.index("--") + 1:]
     if "--out" in args:
@@ -67,8 +67,40 @@ assert degenerate_faces == 0, "Degenerate faces: %d" % degenerate_faces
 assert not negative_volumes, "Wrong winding/volume: %r" % negative_volumes
 assert 200 <= triangles <= 1500, "Triangle budget exceeded: %d" % triangles
 assert 2.2 <= world_max[0] - world_min[0] <= 2.55
-assert world_min[2] >= -0.005 and world_max[2] <= 1.0
-assert world_min[1] >= -0.50 and world_max[1] <= 0.40
+assert abs(world_min[2]) <= 0.002, "Barrier must touch ground Z=0"
+assert world_max[2] <= 1.0
+assert world_min[1] >= -0.60 and world_max[1] <= 0.42
+
+# Check rear structural steel against the concrete body. AABB disjointness
+# is deliberately conservative; touching faces are permitted but positive
+# volumetric overlap is forbidden for these deliberately offset frame parts.
+def bounds(obj):
+    points = [obj.matrix_world @ Vector(corner) for corner in obj.bound_box]
+    return [(min(p[i] for p in points), max(p[i] for p in points)) for i in range(3)]
+core = bpy.data.objects["Concrete_low_flared_core"]
+core_box = bounds(core)
+frame_prefixes = ("Foot_plate_", "Rear_post_", "Rear_brace_",
+                  "Rear_top_steel_tie", "Concrete_end_steel_strap_")
+frame_checks = 0
+for obj in meshes:
+    if obj.name.startswith(frame_prefixes):
+        box = bounds(obj)
+        penetration = [min(a[1], b[1]) - max(a[0], b[0])
+                       for a, b in zip(core_box, box)]
+        assert min(penetration) <= 0.0005, (
+            "Concrete / structural steel AABB intersection: %s %s" %
+            (obj.name, penetration))
+        frame_checks += 1
+assert frame_checks >= 9, "Rear steel overlap checks incomplete"
+
+# The proposed single collider must fully enclose rear feet and all meshes.
+collider_center = (0.0, -0.09, 0.42)
+collider_size = (2.62, 1.00, 0.90)
+collider_min = [c - s / 2 for c, s in zip(collider_center, collider_size)]
+collider_max = [c + s / 2 for c, s in zip(collider_center, collider_size)]
+for axis in range(3):
+    assert collider_min[axis] <= world_min[axis] - 0.015, "Collider min undercovers"
+    assert collider_max[axis] >= world_max[axis] + 0.015, "Collider max undercovers"
 
 # Independently parse actual GLB v2 binary, not just its extension.
 raw = glb.read_bytes()
@@ -104,7 +136,8 @@ paths = [
 ]
 sha256 = {str(p.relative_to(BASE)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
 report = {
-    "id": "ENV01-001",
+    "id": "ENV01-001", "revision": "v002",
+    "v001_head": "265835419a7144799cc92fb4a7dac637edbb7cc3",
     "status": "BLENDER_QA_PASS",
     "blender_version": bpy.app.version_string,
     "triangles": triangles,
@@ -113,6 +146,10 @@ report = {
     "nonmanifold_edges": nonmanifold_edges,
     "degenerate_faces": degenerate_faces,
     "negative_volume_meshes": negative_volumes,
+    "rear_frame_concrete_nonintersection_aabb_checks": frame_checks,
+    "ground_contact_z_m": round(world_min[2], 6),
+    "collider_center_m": list(collider_center),
+    "collider_size_m": list(collider_size),
     "blender_aabb_min_m": [round(v, 5) for v in world_min],
     "blender_aabb_max_m": [round(v, 5) for v in world_max],
     "preview_dimensions": preview_dims,
