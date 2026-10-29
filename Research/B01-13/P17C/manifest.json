@@ -1,6 +1,6 @@
 {
   "package_id": "AIM-VAULT-001",
-  "version": "R1",
+  "version": "R2",
   "owner": "B01-13 HUMAN PLAYTESTING",
   "owned_paths": "Research/B01-13/P17C/**",
   "stacked_parent_pr": 349,
@@ -11,16 +11,20 @@
   "original_receiver_sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
   "file_manifest": {
     "aim_evidence_vault.py": {
-      "bytes": 12537,
-      "sha256": "72ab902c12ff88e69236038b04eb4e260dd89698b937cae4ac5f230b22d6f66c"
+      "bytes": 12803,
+      "sha256": "4273a7ad73046a62c5ebba33a3342b980d7f823a09708d289cad21e98802f615"
+    },
+    "test_private_root_location.py": {
+      "bytes": 2515,
+      "sha256": "fdf28ac81d0542f6db9c29b3e840e42ebc6b64803b57f9d6bd82b83ab8ba6a6a"
     },
     "test_aim_evidence_vault.py": {
       "bytes": 11691,
       "sha256": "e578560e204ba12f77e8eff8e9cb6a6817376966eac09ba3917eb7772991ebc4"
     },
     "README.md": {
-      "bytes": 6756,
-      "sha256": "a75bacfad3cffb5aa4df33f15eec2726a95bd62063cebe9741b582dd273dff5e"
+      "bytes": 8381,
+      "sha256": "d012c66616c8fb2e3cb34461c905fc5e9c8844faa72661ac0a1dfb4955ba398c"
     },
     "QA_execution.log": {
       "bytes": 3964,
@@ -31,11 +35,13 @@
       "sha256": "75d5e773ed47dfece36e6ba1231f0ff32866307902443778b5947636b8f2ff04"
     }
   },
-  "local_tests": "33/33 PASS",
+  "local_tests": "R1: prior 33/33 Python+Pillow original source PASS. R2: 4/4 local exact-logic excerpt PASS; full original source suite and independent QA PENDING.",
   "windows_test": "NOT_RUN",
   "unity_test": "NOT_RUN",
   "human_count": 0,
   "independent_qa": "PENDING",
   "game_integrated": false,
-  "rollback": "No game files changed; discard unmerged research-only branch. Private vault removal only by operator policy."
+  "rollback": "No game files changed; discard unmerged research-only branch. Private vault removal only by operator policy.",
+  "location_guard_status": "R2 SOURCE_FIXED, 4 new runnable stdlib tests published; required actual full Git-identical source execution pending",
+  "notes": "QA_execution.* is preserved historical R1 33/33, not R2 evidence; do not claim native Windows/Unity or actual human consent"
 }
