@@ -1,0 +1,33 @@
+{
+  "package_id": "B01-22-EK-R3-COMPAT-001",
+  "revision": "1.0.0",
+  "producer": "B01-22",
+  "issue": 407,
+  "target_author": {
+    "pr": 333,
+    "sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b"
+  },
+  "target_codex": {
+    "pr": 383,
+    "gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6"
+  },
+  "scope": [
+    "Tools/B01/B01-22/EK-R3-COMPAT-001/**",
+    ".github/workflows/b01-22-w04-r3-compat.yml"
+  ],
+  "tests": {
+    "original_source_windows": "NOT_RUN",
+    "original_source_ubuntu": "NOT_RUN",
+    "unity_native": "NOT_RUN",
+    "independent_qa": "PENDING"
+  },
+  "result": "NOT_RUN",
+  "codex_ack": "PENDING",
+  "g2": "HOLD",
+  "merge": "NOT_PERFORMED",
+  "rollback": "Discard separately created receipt only; old author package and Codex runtime untouched",
+  "notes": [
+    "Strict exact pinned 1-line modifier, not permissive SHA bypass",
+    "No duplicate economy, garage integration or user-facing game UI"
+  ]
+}
