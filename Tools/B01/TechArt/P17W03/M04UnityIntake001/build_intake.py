@@ -71,8 +71,9 @@ def assets_from_fbx(fbx:Path,source_receipt:Path,reimport_receipt:Path)->list[di
         "B01-30 / M04-UNITY-INTAKE-001 (source pinned #386)\n"
         "Contains ORIGINAL animated M04-024 FBX, no new model or source changes.\n"
         "Unity 6 + URP: Tools > B01 > M04-024 > Prepare and check candidate FBX\n"
-        "Editor check: imported 4 named pivots, animation curves in a COMMON clip,\n"
-        "105 visual MeshFilter targets, model scale and original source SHA.\n"
+        "Editor check: 105 MeshFilters, 4 named pivots, ONE shared clip,\n"
+        "numeric opposite-phase motion at 25%/75% of original take duration.\n"
+        "Original binary SHA verified by package builder, not by Editor.\n"
         "Material assignment/URP look and native import acceptance NOT_RUN.\n"
         "No gameplay changes; QA gate B01-40 and B01-60 before Codex use.\n"
         "Rollback: delete only Assets/B0130M04Intake001 after restoring references.\n"
@@ -115,7 +116,7 @@ def main():
     target=out/"M04-024-SOURCE-LOCKED-UNITY-INTAKE-001.unitypackage"
     target.write_bytes(raw)
     report={
-        "package_id":PACKAGE_ID,"version":"R1",
+        "package_id":PACKAGE_ID,"version":"R2",
         "status":"REAL_BINARY_UNITYPACKAGE_BUILT_UNITY_NATIVE_NOT_RUN",
         "producer_pr":SOURCE_PR,"producer_source_sha":SOURCE_COMMIT,
         "producer_actions_run":SOURCE_ACTION_RUN,
