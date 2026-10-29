@@ -1,0 +1,18 @@
+{
+  "id": "ENV05-001",
+  "name": "Słupek świetlny / Industrial Warning Light Bollard",
+  "agent": "ENV05 / EnvironmentFactory",
+  "status": "CLAIMED",
+  "claimed_at_utc": "2026-10-27T09:53:11Z",
+  "source_branch": "feature/rrl-env05-001-light-bollard",
+  "base_branch": "develop",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "scope": [
+    "Tools/EnvironmentFactory/ENV05/ENV05-001/**",
+    ".github/workflows/ci-env05-001.yml",
+    "Docs/EnvironmentFactory/claims/ENV05-001.json"
+  ],
+  "review_gate": "MANUAL_ART_REVIEW_REQUIRED",
+  "unity_status": "NOT_RUN",
+  "note": "One-time visual-only ENV pilot. No integration, no further models."
+}
