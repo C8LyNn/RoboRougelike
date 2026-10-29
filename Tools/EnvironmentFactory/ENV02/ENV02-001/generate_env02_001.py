@@ -296,14 +296,13 @@ def main():
     assert all(abs(z-top_z(-y)) < 1e-8 for y,z in TOP_PROFILE)
     for x in (-HALF_WIDTH,HALF_WIDTH):
         def road_top(obj):
-            return {(round(v.co.y,7),round(v.co.z,7))
+            return {(round(v.co.y,5),round(v.co.z,5))
                     for v in obj.data.vertices if abs(v.co.x-x)<1e-6
-                    and any(abs(v.co.y-py)<1e-7 and abs(v.co.z-pz)<1e-7
+                    and any(abs(v.co.y-py)<2e-5 and abs(v.co.z-pz)<2e-5
                             for py,pz in TOP_PROFILE)}
         assert road_top(visual[1])==road_top(collider)
-        print('ENV02_V002_ROAD_TOP_COUNTS', x, len(road_top(visual[1])),
-              len(road_top(collider)), len(TOP_PROFILE))
-        assert len(road_top(collider)) >= 24, 'Too few sampled road vertices'
+        assert len(road_top(collider))==len(TOP_PROFILE), (
+            'Missing actual collider profile vertices',len(road_top(collider)))
     tri_count = sum(sum(len(p.vertices) - 2 for p in obj.data.polygons)
                     for obj in visual)
     if not 200 <= tri_count <= 1500:
@@ -337,7 +336,7 @@ def main():
     render_preview(scene, out / 'ENV02-001_v002_view_3q.png',
                    (5.8, -7.5, 5.0), (0, 0, 0.22), 7.5)
     render_preview(scene, out / 'ENV02-001_v002_view_side.png',
-                   (8.0, 0.0, 1.0), (0, 0, 0.22), 6.3)
+                   (8.0, 0.0, 0.22), (0, 0, 0.22), 6.3)
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
     evidence = {
