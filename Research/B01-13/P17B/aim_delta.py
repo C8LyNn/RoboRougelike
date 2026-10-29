@@ -121,7 +121,8 @@ def write_private(path:Path,content:str):
     need(not path.exists(),'Refuse overwrite of previous evidence')
     fd,tmp=tempfile.mkstemp(prefix='.aim-delta-',suffix='.tmp',dir=path.parent)
     try:
-        os.fchmod(fd,0o600)
+        # POSIX privacy bits do not exist as an NTFS ACL guarantee on Windows.
+        if os.name != 'nt': os.fchmod(fd,0o600)
         with os.fdopen(fd,'w',encoding='utf-8') as stream:
             stream.write(content);stream.flush();os.fsync(stream.fileno())
         # Antivirus/indexers on Windows can briefly hold a just-fsynced temp file.
