@@ -1,19 +1,17 @@
-name: ENV04-001 static industrial ventilation grate - Blender QA
+name: ENV04-001 v002 ventilation grate - actual Blender QA and immutable revision
 on:
   push:
     branches:
       - feature/rrl-env04-001-industrial-vent-grate-20261027
     paths:
-      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/*_v002.py'
       - 'Tools/EnvironmentFactory/ENV04/ENV04-001/README.md'
-      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/LICENSE.txt'
       - '.github/workflows/ci-env04-001.yml'
   pull_request:
     branches: [develop]
     paths:
-      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/*_v002.py'
       - 'Tools/EnvironmentFactory/ENV04/ENV04-001/README.md'
-      - 'Tools/EnvironmentFactory/ENV04/ENV04-001/LICENSE.txt'
       - '.github/workflows/ci-env04-001.yml'
   workflow_dispatch:
 
@@ -21,9 +19,9 @@ permissions:
   contents: write
 
 jobs:
-  blender-static-art:
+  blender-static-art-v002:
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,40 +31,54 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender python3-numpy libegl1 libgl1 libglx-mesa0 libopengl0 libosmesa6
           blender --version
-      - name: Generate native BLEND GLB and two real preview renders
+      - name: Generate actual v002 BLEND GLB and four real previews
         run: |
-          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/generate_env04_001.py -- --out Tools/EnvironmentFactory/ENV04/ENV04-001/generated
-      - name: Independent actual Blender mesh GLB and PNG QA
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/generate_env04_001_v002.py -- --out Tools/EnvironmentFactory/ENV04/ENV04-001/generated/v002
+      - name: Independent actual Blender mesh, UV, normals, GLB and PNG QA
         run: |
-          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/qa_env04_001.py -- --out Tools/EnvironmentFactory/ENV04/ENV04-001/generated
-      - name: Record source commit and physical SHA-256
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/qa_env04_001_v002.py -- --out Tools/EnvironmentFactory/ENV04/ENV04-001/generated/v002
+      - name: Repeat generator and independent QA in isolated directory
         run: |
-          cd Tools/EnvironmentFactory/ENV04/ENV04-001/generated
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/generate_env04_001_v002.py -- --out /tmp/env04_v002_repro
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV04/ENV04-001/qa_env04_001_v002.py -- --out /tmp/env04_v002_repro
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          first=Path("Tools/EnvironmentFactory/ENV04/ENV04-001/generated/v002")
+          second=Path("/tmp/env04_v002_repro")
+          for name,keys in [
+              ("build_report.json",("geometry_sha256","source_sha256","triangles","mesh_objects","materials")),
+              ("qa_report.json",("geometry_sha256","triangles","mesh_objects","materials","blender_bounds_min_m","blender_bounds_max_m","critical_aabb_pairs_checked"))
+          ]:
+              a=json.loads((first/name).read_text())
+              b=json.loads((second/name).read_text())
+              for key in keys:
+                  assert a[key]==b[key],f"REPRO_FAIL {name} {key}: {a[key]} != {b[key]}"
+          print("ENV04_V002_REPRODUCIBLE_GEOMETRY_AND_UV_PASS")
+          PY
+      - name: Record exact source SHA and physical SHA-256 for v002 only
+        run: |
+          cd Tools/EnvironmentFactory/ENV04/ENV04-001/generated/v002
           rm -f *.blend1
           git rev-parse HEAD > SOURCE_SHA.txt
           sha256sum *.blend *.glb *.png *.json SOURCE_SHA.txt > SHA256SUMS
           cat SOURCE_SHA.txt SHA256SUMS
-      - name: Upload real generated assets and QA evidence
+      - name: Upload actual v002 binaries and QA evidence
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: ENV04-001-vent-grate-real-blender-exports
-          path: Tools/EnvironmentFactory/ENV04/ENV04-001/generated/
+          name: ENV04-001-v002-actual-blender-exports
+          path: Tools/EnvironmentFactory/ENV04/ENV04-001/generated/v002/
           if-no-files-found: error
           retention-days: 30
-      - name: Commit binaries exclusively to own feature branch
-        if: success() && (github.event_name == 'push' || github.event_name == 'pull_request')
+      - name: Commit only new v002 artifacts to existing PR branch
+        if: success() && github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin feature/rrl-env04-001-industrial-vent-grate-20261027
-          if git cat-file -e origin/feature/rrl-env04-001-industrial-vent-grate-20261027:Tools/EnvironmentFactory/ENV04/ENV04-001/generated/SHA256SUMS 2>/dev/null; then
-            echo 'Verified binary outputs already committed on exclusive branch; skip publication.'
-            exit 0
-          fi
-          git add -f Tools/EnvironmentFactory/ENV04/ENV04-001/generated/*
+          git add -f Tools/EnvironmentFactory/ENV04/ENV04-001/generated/v002/
           if ! git diff --cached --quiet; then
-            git commit -m 'ENV04-001: actual Blender-validated ventilation grate exports'
+            git commit -m 'ENV04-001 v002: verified Blender GLB BLEND and four renders'
             git fetch origin feature/rrl-env04-001-industrial-vent-grate-20261027
             git rebase origin/feature/rrl-env04-001-industrial-vent-grate-20261027
             git push origin HEAD:feature/rrl-env04-001-industrial-vent-grate-20261027
