@@ -1,0 +1,46 @@
+name: B01-31 W03 A1 select-mask original-vector receiver
+
+on:
+  push:
+    branches:
+      - tools/b01-31-p17-w03-a1-select-masks
+    paths:
+      - 'Docs/B01Concept/P17/W03/A1-SELECTMASK-001/**'
+      - '.github/workflows/b01-31-p17-w03-selectmask.yml'
+  pull_request:
+    paths:
+      - 'Docs/B01Concept/P17/W03/A1-SELECTMASK-001/**'
+      - '.github/workflows/b01-31-p17-w03-selectmask.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-original-ui-alpha-masks:
+    name: Real pinned PR377 SVG to hit mask and focus PNG (NOT UNITY)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact dependency source without modifying PR377
+        run: |
+          git fetch --no-tags --depth=1 origin refs/heads/art/b01-31-p17-w02-a1-view-icons-001
+          test "$(git rev-parse FETCH_HEAD)" = "759c3471aab998b8ae1f153a9d4921401dddc749"
+      - name: Install original art raster dependencies
+        run: python -m pip install --disable-pip-version-check 'CairoSVG==2.8.2' 'Pillow==11.3.0'
+      - name: Export real masks, transparent focus rings, and run mutation QA
+        run: python Docs/B01Concept/P17/W03/A1-SELECTMASK-001/build_and_test.py
+      - name: Archive real PNGs and original SHA256/CRC32 receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-31-p17-w03-a1-select-masks
+          path: Docs/B01Concept/P17/W03/A1-SELECTMASK-001/rendered/
+          if-no-files-found: error
+          retention-days: 30
