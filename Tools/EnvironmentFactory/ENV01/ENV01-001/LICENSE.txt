@@ -1,0 +1,11 @@
+CC0 1.0 Universal — Public Domain Dedication
+
+ENV01-001 protective barrier: original Blender source, mesh geometry,
+simple material colors, preview renders and QA documentation.
+
+To the extent possible under law, the contributor(s) dedicate this
+work to the public domain under Creative Commons CC0 1.0 Universal.
+No third-party models, textures or copied competitor assets were used.
+
+Legal code: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+SPDX-License-Identifier: CC0-1.0

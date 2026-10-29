@@ -1,0 +1,71 @@
+name: ENV01-001 v002 static protective barrier — real Blender QA
+on:
+  push:
+    branches: [feature/rrl-env01-001-protective-barrier-20261027]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/README.md'
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/LICENSE.txt'
+      - '.github/workflows/ci-env01-001.yml'
+  pull_request:
+    types: [opened, synchronize]
+    branches: [develop]
+    paths:
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/*.py'
+      - 'Tools/EnvironmentFactory/ENV01/ENV01-001/README.md'
+      - '.github/workflows/ci-env01-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  blender-static-asset:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install actual Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy libegl1 libgl1 libgl1-mesa-dri libgles2
+          blender --version
+      - name: Generate v002 actual BLEND GLB and two PNG views
+        run: |
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV01/ENV01-001/generate_env01_001.py -- --out Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002
+      - name: Independently validate mesh geometry and physical binary files
+        run: |
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV01/ENV01-001/qa_env01_001.py -- --out Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002
+      - name: Rebuild independently and verify reproducible v002 GLB
+        run: |
+          SECOND=$(mktemp -d)
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV01/ENV01-001/generate_env01_001.py -- --out "$SECOND"
+          blender --background --python-exit-code 1 --python Tools/EnvironmentFactory/ENV01/ENV01-001/qa_env01_001.py -- --out "$SECOND"
+          cmp Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002/ENV01-001_protective_barrier.glb "$SECOND/ENV01-001_protective_barrier.glb"
+          python3 -c 'import json,sys; a=json.load(open(sys.argv[1])); b=json.load(open(sys.argv[2])); assert (a["triangles"],a["mesh_objects"],a["materials"]) == (b["triangles"],b["mesh_objects"],b["materials"])' Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002/build_report.json "$SECOND/build_report.json"
+      - name: Record physical SHA-256 digests
+        run: |
+          cd Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002
+          rm -f *.blend1
+          sha256sum *.blend *.glb *.png *.json > SHA256SUMS
+          cat SHA256SUMS
+      - name: Upload verified original static 3D artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ENV01-001-protective-barrier-real-Blender-exports
+          path: Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publish physical exports only to exclusive ENV01 branch
+        if: success() && github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f Tools/EnvironmentFactory/ENV01/ENV01-001/generated/v002/*
+          if ! git diff --cached --quiet; then
+            git commit -m 'ENV01-001: actual Blender-validated barrier exports'
+            git fetch origin feature/rrl-env01-001-protective-barrier-20261027
+            git rebase origin/feature/rrl-env01-001-protective-barrier-20261027
+            git push origin HEAD:feature/rrl-env01-001-protective-barrier-20261027
+          fi
