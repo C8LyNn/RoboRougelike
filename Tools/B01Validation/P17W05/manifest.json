@@ -1,0 +1,64 @@
+{
+  "package_id": "B01-40-P17W05-NEW-KIT-V103-RECEIVER-001",
+  "version": "1.0.0",
+  "owner": "B01-40",
+  "kind": "INDEPENDENT_FROZEN_NEW_AUTHOR_V103_SOURCE_INGRESS_AND_REAL_STAGING_QA",
+  "upstream": {
+    "pr": 411,
+    "package": "B01-22-EQUIPMENT-KITS-001",
+    "revision": "1.0.3",
+    "immutable_sha": "a3dd45a4c1f222ec5cc387302eafe9104f91ab52",
+    "catalog_git_blob": "372b3bc74553ea459e89be38378f4429090e00a2",
+    "manifest_git_blob": "bd4b759522ca1ebd385abf90680ef9f885ca3bb3",
+    "old_pr": 333,
+    "old_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b"
+  },
+  "approved_by_qa_replay": null,
+  "code": [
+    "Tools/B01Validation/P17W05/receive_kits_v103.py",
+    "Tools/B01Validation/P17W05/test_receive_kits_v103.py",
+    ".github/workflows/b01-40-p17w05-new-kit-v103-intake.yml"
+  ],
+  "current_codex": {
+    "pr": 383,
+    "gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "report_sha": "f92c873bb1e397a598b133e107ae704e15f86768",
+    "r3_blob": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "r4_blob": "502f6d7f70d4e8078260de632ab181f244a4d730"
+  },
+  "expected_real_source_checks": {
+    "source_payloads_sha256_and_size": 13,
+    "source_changed_files_from_v102": 7,
+    "original_node_tests": 26,
+    "original_python_tests": 18,
+    "original_negative_mutants": 7,
+    "independent_receiver_tests": 20,
+    "number_of_offers_staged": 10,
+    "old_new_kit_BOM_equality": true,
+    "unchanged_part_prices": 17,
+    "unchanged_weapon_prices": 9,
+    "new_host_source_gate": "PASS_ON_CURRENT_CODEX",
+    "old_host_source_gate": "REJECT_EXIT_2"
+  },
+  "physical_output": "New external directory containing original author-staged catalog.json/offers.json/receipt.json + independent source receipt in deterministic 4-member ZIP, external SHA256 receipt",
+  "expected_test_execution": "VERIFY_ACTUAL_EXACT_PR_HEAD_ACTIONS_NOT_THIS_STATIC_FIELD",
+  "source_G0": "PENDING_ACTUAL_FINAL_SHA_CI",
+  "independent_B01_60": "PENDING",
+  "native_G1": "NOT_RUN",
+  "HQ_G2": "HOLD",
+  "CODEX_SENT": "NO",
+  "CODEX_ACK": "PENDING",
+  "integrated": false,
+  "scope": [
+    "Tools/B01Validation/P17W05/**",
+    ".github/workflows/b01-40-p17w05-new-kit-v103-intake.yml"
+  ],
+  "dependencies": [
+    "B01-22 immutable v1.0.3 Git objects",
+    "Codex R3/R4 current pinned source",
+    "Original Node/Python producer tests",
+    "B01-60 independent QA",
+    "B01-00 queue permission"
+  ],
+  "rollback": "Original owner safe rollback on external temporary staging root; delete own QA-only ZIP/receipts; actual Codex optional stock implementation requires Codex-only rollback; never overwrite original #333"
+}
