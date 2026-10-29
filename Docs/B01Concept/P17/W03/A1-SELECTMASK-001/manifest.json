@@ -73,5 +73,5 @@
   ],
   "install": "Fetch exact source commit via documented git fetch. Run generator. Inspect mask/focus PNGs. Do not copy to canonical Assets/** without B01-00/Codex approval.",
   "rollback": "Delete Docs/B01Concept/P17/W03/A1-SELECTMASK-001/** and .github/workflows/b01-31-p17-w03-selectmask.yml in disposable branch; no canonical code, Unity assets or prior B01-31 PR modified.",
-  "status": "NOT_OFFERED_G0_PENDING_CI"
+  "status": "PRODUCER_SOURCE_G0_VALIDATED__INDEPENDENT_QA_PENDING__NOT_OFFERED"
 }
