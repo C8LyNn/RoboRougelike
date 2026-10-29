@@ -13,7 +13,7 @@ COLLECTION=PREFIX+"LIGHT_BOLLARD"
 MATERIALS={
  "Graphite":((.070,.092,.110,1),.68,.32,0),
  "GalvanizedSteel":((.48,.54,.57,1),.72,.38,0),
- "AmberBeacon":((1,.46,.035,1),.08,.30,3.2)
+ "AmberBeacon":((1,.24,.008,1),.04,.36,3.2)
 }
 def clear_own():
  col=bpy.data.collections.get(COLLECTION)
@@ -58,6 +58,15 @@ def box(name,pos,dims,mat,col,root,bevel=0):
   bpy.ops.object.modifier_apply(modifier=mod.name)
  return attach(obj,name,col,root,mat)
 
+def guard_strut(name,low,high,mat,col,root):
+ a,b=Vector(low),Vector(high)
+ vec=b-a
+ bpy.ops.mesh.primitive_cube_add(size=1,location=(a+b)*.5)
+ obj=bpy.context.object; obj.dimensions=(.016,.016,vec.length)
+ bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
+ obj.rotation_euler=vec.to_track_quat("Z","Y").to_euler()
+ return attach(obj,name,col,root,mat)
+
 def bolt(name,pos,mat,col,root):
  bpy.ops.mesh.primitive_cylinder_add(vertices=12,radius=.014,depth=.014,location=pos)
  return attach(bpy.context.object,name,col,root,mat)
@@ -88,9 +97,11 @@ def build():
  taper(col,root,dark)
  box("FrontServicePanel",(0,-.116,.395),(.118,.010,.173),steel,col,root,.003)
  box("FrontServiceInset",(0,-.123,.395),(.075,.006,.112),dark,col,root,.0015)
+ box("GuardLowerCollar",(0,0,.225),(.228,.228,.018),steel,col,root,.003)
+ box("GuardUpperCollar",(0,0,.635),(.190,.190,.016),steel,col,root,.002)
  for sx in (-1,1):
   for sy in (-1,1):
-   box("CornerGuard_%s_%s"%(sx,sy),(sx*.100,sy*.100,.427),(.014,.014,.392),steel,col,root,.0025)
+   guard_strut("CornerGuard_%s_%s"%(sx,sy),(sx*.110,sy*.110,.225),(sx*.087,sy*.087,.635),steel,col,root)
  box("BeaconMountPedestal",(0,0,.672),(.148,.148,.038),steel,col,root,.004)
  box("BeaconLowerGasket",(0,0,.697),(.190,.190,.030),dark,col,root,.006)
  box("BeaconMountBand",(0,0,.712),(.202,.202,.018),steel,col,root,.003)
