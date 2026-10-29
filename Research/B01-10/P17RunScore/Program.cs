@@ -263,6 +263,123 @@ internal static class Program
                 Check(r.Stages.Length==6 && r.RunWon && r.Total>=0 && r.Total<=100000,"seed stability "+seed);
             }
         });
+
+        // WAVE04: source-timeline integration gap from real Codex controller:
+        // victory wallet/kills are recorded before ConfirmRewards recovers parts.
+        Test("57 two-phase victory has no result before rewards", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,4,300,1);
+            c.Advance(90,false);
+            Check(c.FinishCombat(true,6,.8f,380)==null,"early scoreboard");
+            Check(c.AwaitingRewards && !c.Finished,"wrong reward phase");
+        });
+        Test("58 final rewards observe actual recovered delta", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,4,300,1);
+            c.Advance(90,false);
+            c.FinishCombat(true,6,.8f,380);
+            var s=c.FinishRewards(3,395);
+            Check(c.Finished&&s.Victory,"should close");
+            Equal(s.DefeatedEnemies,2); Equal(s.RecoveredModules,2);
+            Equal(s.ScrapEarned,95); Equal(RunScorer.ScoreStage(s).SalvageBonus,30);
+        });
+        Test("59 reward confirmation cannot precede combat", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            Check(Reject(()=>c.FinishRewards(0,0)),"premature reward accepted");
+        });
+        Test("60 combat transition cannot be duplicated", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(12,false);c.FinishCombat(true,2,.9f,80);
+            Check(Reject(()=>c.FinishCombat(true,2,.9f,80)),"double combat");
+        });
+        Test("61 reward selection cannot generate double points", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(12,false);c.FinishCombat(true,2,.9f,80);
+            c.FinishRewards(1,80);
+            Check(Reject(()=>c.FinishRewards(2,90)),"double recovery");
+        });
+        Test("62 true pause excluded from duration", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(3,false);c.Advance(77,true);c.Advance(2,false);
+            c.FinishCombat(true,2,1,80);
+            Equal(c.FinishRewards(0,80).DurationSeconds,5f);
+        });
+        Test("63 no extra time permitted during salvage", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(10,false);c.FinishCombat(true,2,.9f,80);
+            Check(Reject(()=>c.Advance(99,false)),"postcombat fake elapsed");
+        });
+        Test("64 false victory with alive enemy rejected atomically", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(10,false);
+            Check(Reject(()=>c.FinishCombat(true,1,.9f,80)),"false victory");
+            Check(!c.Finished&&!c.AwaitingRewards,"invalid finish mutated state");
+            c.FinishCombat(true,2,.9f,80);
+            Equal(c.FinishRewards(1,80).DefeatedEnemies,2);
+        });
+        Test("65 cumulative kill counter regression rejected", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,6,300,2);
+            c.Advance(10,false);
+            Check(Reject(()=>c.FinishCombat(false,5,0,300)),"negative kills");
+        });
+        Test("66 negative scrap delta rejected with no irreversible close", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,300,0);
+            c.Advance(10,false);
+            Check(Reject(()=>c.FinishCombat(true,2,.9f,200)),"scrap drop");
+            c.FinishCombat(true,2,.9f,390);
+            Equal(c.FinishRewards(0,390).ScrapEarned,90);
+        });
+        Test("67 bad recovered 4 rejects but later valid rewards pass", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(10,false);c.FinishCombat(true,2,.9f,80);
+            Check(Reject(()=>c.FinishRewards(4,80)),"four recovery accepted");
+            Check(c.AwaitingRewards&&!c.Finished,"bad reward closed state");
+            Equal(c.FinishRewards(3,80).RecoveredModules,3);
+        });
+        Test("68 negative recovered counter mutation refused", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,5);
+            c.Advance(10,false);c.FinishCombat(true,2,.9f,80);
+            Check(Reject(()=>c.FinishRewards(4,80)),"counter rewind accepted");
+            Equal(c.FinishRewards(5,80).RecoveredModules,0);
+        });
+        Test("69 duration over ten hours rejected atomically", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            c.Advance(35999,false);
+            Check(Reject(()=>c.Advance(5,false)),"time overrun");
+            Equal(c.ActiveSeconds,35999d);
+        });
+        Test("70 NaN tick rejected", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            Check(Reject(()=>c.Advance(float.NaN,false)),"NaN time");
+        });
+        Test("71 loss immediately closes without rewarding salvage", () => {
+            var c=new RunScoreCollector(1,"r5_s1",6,2,1,2,300,3);
+            c.Advance(30,false);
+            var s=c.FinishCombat(false,3,0,300);
+            Check(c.Finished&&!c.AwaitingRewards&&!s.Victory,"loss not closed");
+            Equal(RunScorer.ScoreStage(s).Total,0);
+            Check(Reject(()=>c.FinishRewards(4,300)),"reward after defeat");
+        });
+        Test("72 invalid id refused before any telemetry", () => {
+            Check(Reject(()=>new RunScoreCollector(1," ",6,2,1,0,0,0)),"empty id");
+        });
+        Test("73 separate stage baselines avoid double-counting cumulative recovery", () => {
+            var first=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            first.Advance(25,false);first.FinishCombat(true,2,.8f,80);
+            Equal(first.FinishRewards(2,95).RecoveredModules,2);
+            var next=new RunScoreCollector(2,"r5_s2",7,3,.8f,2,95,2);
+            next.Advance(70,false);next.FinishCombat(true,5,.7f,200);
+            var final=next.FinishRewards(3,210);
+            Equal(final.DefeatedEnemies,3);Equal(final.RecoveredModules,1);
+            Equal(final.ScrapEarned,115);
+        });
+        Test("74 earned Scrap remains display-only even through collector", () => {
+            var a=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            var b=new RunScoreCollector(1,"r5_s1",6,2,1,0,0,0);
+            a.Advance(10,false);b.Advance(10,false);
+            a.FinishCombat(true,2,.9f,80);b.FinishCombat(true,2,.9f,500);
+            var ra=RunScorer.ScoreStage(a.FinishRewards(1,80));
+            var rb=RunScorer.ScoreStage(b.FinishRewards(1,600));
+            Equal(ra.Total,rb.Total);
+        });
         Console.WriteLine("B01-10 RUNSCORE REAL_CSHARP " + passed
             + " PASS / " + failed + " FAIL | NATIVE_UNITY=NOT_RUN");
         return failed==0?0:1;
