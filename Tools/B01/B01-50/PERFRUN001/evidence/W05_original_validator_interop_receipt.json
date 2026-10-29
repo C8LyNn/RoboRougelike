@@ -1,0 +1,28 @@
+{
+  "package_id": "B01-50-PERFRUN-001/R2-W05",
+  "classification": "SYNTHETIC_INPUT_REAL_PINNED_VALIDATOR_EXECUTED_NOT_NATIVE_PLAYER",
+  "operator_git_blob": "9e395dcb123882aa6be47855e88f679514823c42",
+  "operator_tests_git_blob": "690a7caee06758b5f1182e4ae977372679bc9bda",
+  "integration_tests_git_blob": "891e814d566578596430bdd760e0cd79c8df1af0",
+  "original_validator_git_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82",
+  "original_validator_from": "B01-50 PR #328 / b5fc00428f6f663016e1525da556afbfe775facb",
+  "executed_on": "Linux Python 3.13",
+  "command": "B0150_ORIGINAL_VALIDATOR=<exact original validate_live.py> python -m unittest discover -s tests -v",
+  "exit_code": 0,
+  "total_pass": 29,
+  "total_fail": 0,
+  "total_skipped": 0,
+  "integration_cases": {
+    "positive_real_original_receiver": "PASS: 7200 synthetic frame rows, 120 synthetic object scans, 120.04s declared; status LIVE_RAW_REVIEW_REQUIRED_NOT_PERFORMANCE_ACCEPTANCE",
+    "negative_unity_version": "PASS: original validator exits nonzero; operator remains ERROR",
+    "negative_sparse_object_scans": "PASS: original validator exits nonzero; operator remains ERROR",
+    "negative_bad_csv_header": "PASS: original validator exits nonzero; operator remains ERROR"
+  },
+  "full_raw_test_log_sha256": "8b8e8c6561041cf2da735b33f4278a35babd8d642fd6828d7ad199a54d162afe",
+  "native_unity": "NOT_RUN",
+  "windows_player": "NOT_RUN",
+  "actual_game_performance": "NOT_MEASURED",
+  "independent_qa": "PENDING",
+  "codex_ack": "PENDING",
+  "ack_scope": "PRODUCER_SOURCE_TEST_ONLY"
+}
