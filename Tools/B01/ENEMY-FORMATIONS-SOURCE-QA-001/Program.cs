@@ -23,8 +23,8 @@ public static class Program {
     static double Num(JsonNode node) {
         if(node==null)Fail("NULL_NUMBER");
         double value;
-        try{value=node.GetValue<double>();}
-        catch { Fail("NONNUMERIC");return 0;}
+        Need(double.TryParse(node.ToJsonString(),System.Globalization.NumberStyles.Float,
+                             System.Globalization.CultureInfo.InvariantCulture,out value),"NONNUMERIC");
         Need(double.IsFinite(value),"NONFINITE");
         return value;
     }
