@@ -37,11 +37,19 @@
     },
     {
       "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/README.md",
-      "blob": "8370e12ab29f552ed6b6a8901de4f98460b8963e"
+      "blob": "0d91cf3c922251e8185f872d8d75a265f4d5e846"
     },
     {
       "path": ".github/workflows/b01-24-p17-w03-stage-builder.yml",
-      "blob": "8492459f498ebc9b3a75c22c3bb8d948ecea88d3"
+      "blob": "2b0ef59876fab8752b895f6a2037ca2d6c14fa3a"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/prepare_unity_import.py",
+      "blob": "9827d967f29e1d959b30f4cba367b1b96de32a7f"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/test_prepare_unity_import.py",
+      "blob": "72e740314de481781b1bc42cd1fd39b1597aa176"
     }
   ],
   "content": {
@@ -87,5 +95,14 @@
     "install": "In disposable Unity 6000.3.14f1 checkout, copy Editor source + .meta to isolated Assets/Editor/B0124EnemyStagingW03; menu B01/Enemy Staging/Generate all 12 isolated formation scenes; inspect new Assets/B0124EnemyStagingW03/Scenes only.",
     "rollback": "Remove only staging tool and its newly generated scenes after verifying/backing up locally edited files; never delete user scenes or modify original arena/spawner.",
     "flags": "G0_AUTHOR_TESTED / RECEIVER_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_PENDING / NOT_INTEGRATED"
+  },
+  "delivery": {
+    "kind": "real reproducible deterministic ZIP of two original Unity Editor .cs+.meta assets, native Unity not run",
+    "command": "python Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/prepare_unity_import.py --repo-root . --out-dir B0124-Codex-Receiver-Package",
+    "file": "B0124-Codex-Receiver-Package/B01-24-ENEMY-STAGING-001-unity-editor.zip",
+    "receipt": "B0124-Codex-Receiver-Package/receiver-receipt.json",
+    "python_tests": 16,
+    "native_unity": "NOT_RUN",
+    "pr": 387
   }
 }
