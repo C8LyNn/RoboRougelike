@@ -62,5 +62,6 @@ jobs:
           path: |
             Research/B01-25/P17/MAPDRAFT-IMPORT-001/.source/receipt.json
             Research/B01-25/P17/MAPDRAFT-IMPORT-001/.source/execution-*.log
-          if-no-files-found: warn
+          if-no-files-found: error
+          include-hidden-files: true
           retention-days: 21
