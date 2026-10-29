@@ -97,8 +97,12 @@ static class ChallengeProof
             Need(r.Ready&&r.BecameReady&&zone.IsReady,"should complete at exact time");
             Near(r.Fraction,1,"ready fraction");});
         Check("COMPLETE_EVENT_ONCE",()=>{var r=zone.Tick(Sample(7,x,z));Need(r.Ready&&!r.BecameReady,"ready double-fired");});
-        Check("READY_STAYS_READY_WHEN_CONTESTED_OUTSIDE_DEAD",()=>{
-            var r=zone.Tick(Sample(18,x+90,z,10,false));Need(r.Ready&&zone.IsReady&&!r.BecameReady,"completion must latch");});
+        Check("READY_STAYS_READY_WHEN_CONTESTED_OUTSIDE_ALIVE",()=>{
+            var r=zone.Tick(Sample(18,x+90,z,10,true));Need(r.Ready&&zone.IsReady&&!r.BecameReady,"completion must latch");});
+        Check("DEATH_AFTER_READY_RESETS",()=>{
+            var r=zone.Tick(Sample(1,x+90,z,10,false));
+            Need(!r.Ready&&!zone.IsReady&&!r.BecameReady&&r.ProgressSeconds==0,"death must invalidate ready latch");
+        });
         Check("RESET_REARMS_OBJECTIVE",()=>{zone.Reset();Need(!zone.IsReady&&zone.ProgressSeconds==0,"reset");var r=zone.Tick(Sample(1,x,z));Need(!r.Ready&&r.Phase==HoldoutPhase.Charging,"must recharge");});
         Check("LARGE_FRAME_CLAMPS_REQUIRED",()=>{
             zone.Reset();var r=zone.Tick(Sample(10000,x,z));Near(r.ProgressSeconds,first.RequiredSeconds,"cap progress");Need(r.Ready&&r.BecameReady,"event");});
