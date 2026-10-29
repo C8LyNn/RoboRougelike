@@ -1,0 +1,96 @@
+{
+  "packageId": "B01-25-HOLDOUT-001",
+  "version": "R2",
+  "owner": "B01-25",
+  "role": "Level & Challenge Design",
+  "purpose": "Original optional contested extraction zone gameplay rules for two authored map missions, no engine/AI/Finish override",
+  "scope": [
+    "Research/B01-25/P17/HOLDOUT001/**",
+    ".github/workflows/b01-25-w03-holdout.yml"
+  ],
+  "gitBlobs": {
+    "HoldoutCore.cs": "796f316ac3a8b1324c4673a568be21a916c328d5",
+    "Program.cs": "78130f7166d3e84ad03f7169557d822e821c9b61",
+    "Holdout001.csproj": "f4ab2bbfa2880f033676bf05d9098713e8837728",
+    "profiles.json": "3aee35e7f0be6104a6b72d031a9391cdab721311",
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "README.md": "717836eb265459074db51a53a968ae4904ae0f35",
+    ".github/workflows/b01-25-w03-holdout.yml": "8a5d7606a3ab936c19a1fd51ec6f62f96156e035",
+    "HoldoutUnityCompat.csproj": "8198479158ea498df43ea065f1ca9d6f71867fd9"
+  },
+  "inputs": [
+    {
+      "id": "CLEARANCE_HOLD",
+      "mapPR": 359,
+      "mapCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "arenaBlob": "53eb696950121465befea2855eda4d7268750016",
+      "centerCell": [
+        9,
+        10
+      ],
+      "radius": 2.5,
+      "duration": 8
+    },
+    {
+      "id": "SLALOM_HOLD",
+      "mapPR": 346,
+      "mapCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "arenaBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "centerCell": [
+        7,
+        11
+      ],
+      "radius": 2.5,
+      "duration": 10
+    }
+  ],
+  "api": {
+    "type": "B01.LevelChallenges.HoldoutController",
+    "version": "1.0.1-unity-compatible",
+    "entry": "Tick(HoldoutSample)",
+    "state": "ProgressSeconds, IsReady",
+    "emission": "HoldoutSnapshot.BecameReady one-shot",
+    "reset": "HoldoutController.Reset()",
+    "externalInputs": [
+      "real delta seconds",
+      "player XZ world",
+      "hostile count inside zone",
+      "alive state"
+    ]
+  },
+  "testPolicy": {
+    "command": "dotnet run --project Research/B01-25/P17/HOLDOUT001/Holdout001.csproj --configuration Release -- Research/B01-25/P17/HOLDOUT001/profiles.json <clearance.json> <slalom.json> <receipt.json>",
+    "expectedAssertions": 44,
+    "expectedAdversarialRejections": 12,
+    "ci": "GitHub Windows+Ubuntu compiler C# 9.0 netstandard2.1 (HoldoutUnityCompat.csproj) AND original net8 C# gameplay 44/44",
+    "nativeUnity": "NOT_RUN (Unity editor assembly, physics, IL2CPP)",
+    "trueVehicleDrive": "NOT_RUN",
+    "independentQA": "PENDING",
+    "unityCSharp9Netstandard21": "ACTUAL_COMPILE_PASS_WINDOWS_UBUNTU"
+  },
+  "conflictMitigation": {
+    "noAssetsEdits": true,
+    "noB0120OrderedCheckpoints": true,
+    "noB0124AIChanges": true,
+    "noB0110BalanceChanges": true,
+    "noRunSaveChanges": true,
+    "noExistingMapBlobChanges": true
+  },
+  "rollback": "remove isolated source package and unique workflow, delete generated ignored .output/bin/obj; no game/save mutation",
+  "receiverOrder": [
+    "B01-40 source and boundary check",
+    "B01-60 independent G0 tests and optional true Unity G1",
+    "B01-00 schedules Codex in #79 after approval",
+    "Codex explicit ACK and integration only"
+  ],
+  "status": "R2_PRODUCER_CSHARP9_COMPAT_PASS_BOTH_OS / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NOT_INTEGRATED",
+  "compatibilityFix": {
+    "historicalR1Head": "6f958160b8b96c1d3cfa7540bf0092adc3b4bf34",
+    "historicalR1CoreGitBlob": "052f8ad9302eeea17ac8eec2ef8b38771fc11c98",
+    "issue": "R1 uses unsupported Unity 6000.3 record struct C#10 and net8 APIs",
+    "redRun": 40965490699,
+    "greenRun": 40965833016,
+    "correction": "C#9 immutable readonly structs with explicit constructors/value equality, portable finite checks and clamp; same behavior",
+    "qaProof": "C#9/netstandard2.1 compile only; genuine Unity Editor NOT_RUN"
+  }
+}

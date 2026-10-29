@@ -1,0 +1,107 @@
+{
+  "packageId": "B01-25-HOLDOUT-001",
+  "version": "R2",
+  "realEvidence": [
+    {
+      "runId": 40913229623,
+      "headSha": "17e47ffde98cbc04b942c8769464e8ef840314da",
+      "conclusion": "FAIL",
+      "cause": "Actual C# compilation failed with CS0819/CS0136/CS0117; later corrected on same owner branch."
+    },
+    {
+      "runId": 40913465354,
+      "headSha": "f5a1612ea4853e73e2a00b2dd0a79a11ad236f0c",
+      "conclusion": "SUCCESS",
+      "windowsAndUbuntu": "42/42 original-CSharp PASS per OS, 12 negative rejections; original published source bytes"
+    },
+    {
+      "runId": 40913830285,
+      "headSha": "507696c6ddaa0c10f424b0fa271cdfdb16f3d4ae",
+      "conclusion": "SUCCESS",
+      "windows": {
+        "job": 123588637389,
+        "assertions": "43/43",
+        "negativeRejections": "12/12",
+        "artifactId": 12915082110
+      },
+      "ubuntu": {
+        "job": 123588638025,
+        "assertions": "43/43",
+        "negativeRejections": "12/12",
+        "artifactId": 12914643212
+      },
+      "note": "Actual original C# with death-after-ready regression; two immutable source map blobs checked. 0 job errors."
+    },
+    {
+      "runId": 40965490699,
+      "headSha": "669373b5cc53f6bc88d3323b2767bb6eb94d9acf",
+      "conclusion": "FAIL",
+      "cause": "Actual R1 original source compile under C#9/netstandard2.1 rejected IsExternalInit CS0518/record struct, before original gameplay tests. Reproduces Unity language/API ceiling blocker; not native Unity Editor."
+    },
+    {
+      "runId": 40965633587,
+      "headSha": "5380753441a9ae4dbb124deb2e46af10164cc765",
+      "conclusion": "SUCCESS",
+      "windowsAndUbuntu": "C#9/netstandard2.1 warning-as-error compile PASS + original 43/43 gameplay tests including 12 negatives. Corrected C#9 record struct issue."
+    },
+    {
+      "runId": 40965833016,
+      "headSha": "8e45bc4ac52dbf1d2c4703650d821a650d6f87b2",
+      "conclusion": "SUCCESS",
+      "testLevel": "Actual R2 gameplay source + new value equality regression, real C#9 and netstandard2.1 compile + dotnet8 runtime per OS",
+      "windows": {
+        "job": 123769970077,
+        "compiler": "CSharp 9.0 / netstandard2.1 PASS",
+        "assertions": "44/44",
+        "negativeRejections": "12/12",
+        "artifactId": 12937618244
+      },
+      "ubuntu": {
+        "job": 123769970513,
+        "compiler": "CSharp 9.0 / netstandard2.1 PASS",
+        "assertions": "44/44",
+        "negativeRejections": "12/12",
+        "artifactId": 12938002308
+      },
+      "sourceArtifacts": "Two real .output receipt.json + execution-*.log ZIPs, original jobs directly read back, 0 error lines"
+    }
+  ],
+  "originalSourceBlobs": {
+    "HoldoutCore.cs": "796f316ac3a8b1324c4673a568be21a916c328d5",
+    "Program.cs": "78130f7166d3e84ad03f7169557d822e821c9b61",
+    "Holdout001.csproj": "f4ab2bbfa2880f033676bf05d9098713e8837728",
+    "profiles.json": "3aee35e7f0be6104a6b72d031a9391cdab721311",
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "README.md": "717836eb265459074db51a53a968ae4904ae0f35",
+    ".github/workflows/b01-25-w03-holdout.yml": "8a5d7606a3ab936c19a1fd51ec6f62f96156e035",
+    "HoldoutUnityCompat.csproj": "8198479158ea498df43ea065f1ca9d6f71867fd9"
+  },
+  "gameplayConfirmed": [
+    "Charge while live, inside, uncontested",
+    "Freeze under hostile contest",
+    "Outside decay at configurable rate",
+    "Death resets even after Ready",
+    "Repeat Ready does not reemit while alive",
+    "Explicit Reset re-arms",
+    "Exact bound radius inclusive",
+    "Time partition equivalence under constant input",
+    "Pure instances independent",
+    "Finite/nonnegative telemetry and config fail closed",
+    "2 original arena zone centers are ground, not solid, before Finish"
+  ],
+  "nativeNotRun": [
+    "Unity assembly import / Unity JsonUtility",
+    "actual enemy-count binding",
+    "game Finish gating",
+    "Unity physics / actual Light+Heavy movement",
+    "Player build and human trials",
+    "independent B01-40/B01-60 acceptance",
+    "Unity Editor C# script compile under Unity's actual Roslyn/Player/IL2CPP; tested only external compiler with C#9 netstandard2.1 constraints"
+  ],
+  "codeIntegration": false,
+  "codeXAck": false,
+  "merged": false,
+  "scope": "One original standalone gameplay-rule module; real engine hook is Codex-only; no authorized native G1 in producer.",
+  "compatibilityNote": "R1 old .NET8-only GREEN was false indication for Unity source portability. R2 first reproduced red under C#9/netstandard2.1, then fixed the real producer core and preserved 43 behaviors plus value-equality regression, real 44 PASS each OS.",
+  "qaStatus": "PRODUCER_COMPAT_R2_G0_GREEN_INDEPENDENT_B01_40_AND_B01_60_PENDING"
+}
