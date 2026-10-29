@@ -1,0 +1,129 @@
+{
+  "packageId": "B01-10-RUNSCORE001/R1",
+  "version": "1.0.0",
+  "producer": "B01-10 GAME DESIGN & BALANCE",
+  "owner": "B01-10",
+  "receiver": "B01-40 → independent B01-60 → B01-00 → Codex only after authorized ACK",
+  "status": "PRODUCER_CSHARP_COMPILED_AND_TESTED / INDEPENDENT_G0_QA_PENDING / NOT_OFFERED_FROZEN / CODEX_ACK_PENDING / NOT_INTEGRATED",
+  "newGameFeature": "Six-stage risk-scaled non-monetary scoring, stage medals, run medal and three cosmetics achievements; one pure C# original core, no game code modified",
+  "branch": "design/b01-10-p17w03-runscore",
+  "pullRequest": "PENDING",
+  "sourceRef": "main",
+  "ownedPaths": [
+    "Research/B01-10/P17RunScore/**",
+    ".github/workflows/b01-10-p17-runscore.yml"
+  ],
+  "assetsChanged": 0,
+  "codeFiles": {
+    "RunScore.cs": {
+      "blob": "1f0a5a6b2b82dd1367d01e7c9a18499651e5dd54",
+      "characters": 8962
+    },
+    "Program.cs": {
+      "blob": "55a22fcf3f00c59669d4351c170dadd5f31ca3a7",
+      "characters": 14629
+    },
+    "RunScore.Runner.csproj": {
+      "blob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
+      "characters": 345
+    },
+    "example-run.json": {
+      "blob": "815b6e8ac7eb536262b0c8cde5b3de7ed6e49534",
+      "characters": 1769
+    },
+    "README.md": {
+      "blob": "b3648f471833dfc13a410b0e41c627cfe23c5089",
+      "characters": 9406
+    }
+  },
+  "workflow": {
+    "path": ".github/workflows/b01-10-p17-runscore.yml",
+    "blob": "3657d3218539c24bb419c46b98c5012d7e57ada7"
+  },
+  "testedAtCommit": "d5f7d16d73fd8b9d1bf8be833adde992834a7397",
+  "actualCI": {
+    "runId": 40911060167,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40911060167",
+    "conclusion": "SUCCESS",
+    "windows": {
+      "actualCompiledCSharp": "56/56 PASS",
+      "seededSubcases": "120/120 PASS",
+      "validCLI": "PASS",
+      "invalidCLIExit2": "PASS",
+      "artifactId": 12914146272
+    },
+    "ubuntu": {
+      "actualCompiledCSharp": "56/56 PASS",
+      "seededSubcases": "120/120 PASS",
+      "validCLI": "PASS",
+      "invalidCLIExit2": "PASS",
+      "artifactId": 12913468111
+    },
+    "nativeUnity": "NOT_RUN",
+    "windowsPlayer": "NOT_RUN",
+    "actualGameIntegration": "NOT_RUN",
+    "independentQA": "PENDING"
+  },
+  "gameDependencies": {
+    "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a",
+    "Assets/R1/R1RunDefinition.cs": "5665e64d3d665c67d352eb5a9809a66fc5136698",
+    "Assets/R1/R1RunController.cs": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "gameplayPin": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "sourceRunDeckPR": 344,
+    "sourceRunDeckBlob": "762009d1bde7978aeb5c842dd08d2efdddcec646",
+    "note": "Example-run encounter Id/Threat/SpawnCount from original PR344; hypothetical elapsed/hull/earned numbers, not game playthrough"
+  },
+  "limits": {
+    "noEconomyModification": true,
+    "noSaveModification": true,
+    "noR1ControllerModification": true,
+    "noCanonicalUnityAssets": true,
+    "noCHL_PARTSIZE": true,
+    "noPhysicalUnityClaims": true,
+    "scoreRequiresAuthoritativeRuntimeMeasurements": true,
+    "noAutomaticG1_or_G2": true
+  },
+  "handoffInstructions": "README.md exact copy-ready gated Codex instructions, no producer-side Assets edits, discrete adapter plus reversible cleanup",
+  "rollback": "If Codex chooses integration in disposable worktree, remove solely newly copied scorer+adapter/UI and restore scene bytes/GUIDs; never overwrite active game files",
+  "checks": {
+    "sixSourceData": [
+      {
+        "stage": 1,
+        "originalEncounterId": "bal17_s1_warmup",
+        "threat": 4.21979,
+        "spawnCount": 2
+      },
+      {
+        "stage": 2,
+        "originalEncounterId": "bal17_s2_mobile",
+        "threat": 9.87191,
+        "spawnCount": 3
+      },
+      {
+        "stage": 3,
+        "originalEncounterId": "bal17_s3_open",
+        "threat": 11.71876,
+        "spawnCount": 3
+      },
+      {
+        "stage": 4,
+        "originalEncounterId": "bal17_s4_bruiser",
+        "threat": 11.67242,
+        "spawnCount": 2
+      },
+      {
+        "stage": 5,
+        "originalEncounterId": "bal17_s5_mobility",
+        "threat": 17.44319,
+        "spawnCount": 4
+      },
+      {
+        "stage": 6,
+        "originalEncounterId": "bal17_s6_boss",
+        "threat": 17.49296,
+        "spawnCount": 1
+      }
+    ],
+    "fallback": "No native Unity/Player test, no actual stage observations, no B01-40 freeze or Codex ACK"
+  }
+}
