@@ -9,3 +9,6 @@ Safety: missing drive and weapon appear as TWO separately returned critical reas
 Run source-backed tests: `dotnet run --project Research/B01-11/P17/W03-UXHELP-001/Tests/UXHelpTests.csproj -c Release`. Dedicated GitHub Actions workflow builds/executed **original actual C#** on Ubuntu and Windows: [#40908953821 SUCCESS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40908953821), 46/46 per OS, zero FAIL. Native Unity/Player and human playtest NOT_RUN.
 
 B01-11 only owns `Research/B01-11/P17/W03-UXHELP-001/**` and dedicated `.github/workflows/b01-11-uxhelp-w03.yml`. No `Assets/**`, Codex #382/#383, CHL, PARTSIZE or other producer paths changed. Base `main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`. Independent receiver: B01-40 G0 → B01-60 source QA → B01-00 → Codex #79 only after authorized offer. No merge or CODEX_ACK.
+
+## WAVE04 / R2 — source bug fixed (2026-10-29)
+Original runtime C# no longer claims inactive weapon groups can fire; optional hint selection falls back after dismissal. **[True original RED 48/5 each OS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40965728452) → [GREEN 53/53 each OS](https://github.com/C8LyNn/RoboRougelike/actions/runs/40965931366)**. R1 source SHA preserved. R2 **independent QA PENDING / Codex ACK PENDING**. See `EVIDENCE/W04_RED_GREEN.md` and manifest R2.

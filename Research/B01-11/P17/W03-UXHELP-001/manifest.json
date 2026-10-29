@@ -1,25 +1,25 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-11-P17-UXHELP-001",
-  "revision": "R1",
+  "revision": "R2",
   "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
-  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/384",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/407",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "revision_source_commit": "393d3a32e2ddbf6cfb4ebde26b990c3f1d8aa122",
+  "revision_source_commit": "9c490a8255fc298058aecd2e3ddfa96ad6baddcb",
   "source_provenance": "B01-11 original self-authored C# code and bilingual copy, no licensed external materials, not copied from other agents.",
   "files": [
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/Runtime/UXHelpCore.cs",
-      "sha256": "5a64e1f7d8e76ced2985ccb0967b449d6200cacaa4fadcf898866d3752846cd8",
-      "bytes": 7696,
-      "git_blob_sha1": "9d71f334e15e6c9446d636c1988c5dc72ca17849"
+      "sha256": "7ad316114e924710abd58f4a65f37fbfb89fb80c77e8c05aeefc11bb96009bb7",
+      "bytes": 8291,
+      "git_blob_sha1": "1112470289f6341a7f41b9d201f9b6021feaad0e"
     },
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/Tests/Program.cs",
-      "sha256": "4f37425ad0407bcd72e270854ca4110ac9465c300cabe6f677baa726d9ad69cd",
-      "bytes": 7753,
-      "git_blob_sha1": "73808f203dca52679d50f2df380a6c000f46e74b"
+      "sha256": "099f89f7213f447d5703e80176e9377b3650b95cd8f21ae77cab424c9509ef2a",
+      "bytes": 9479,
+      "git_blob_sha1": "59743559cc37bf17a891d35d39008148873942ab"
     },
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/Tests/UXHelpTests.csproj",
@@ -35,46 +35,66 @@
     },
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/README.md",
-      "sha256": "2b83a2e5f5ed76bfbe0a025f82dbe6854df9f6ae2b06fc048ca825b5873d72f6",
-      "bytes": 2295,
-      "git_blob_sha1": "5b5c23de4edd60b7a31631876a45f12751bd9e04"
+      "sha256": "62ee07c3995aa9f4e063171b63e2834194ac016117fa3f2974f7ba156aac7536",
+      "bytes": 2788,
+      "git_blob_sha1": "d0092ecedc99314cf155acd97fb273bb819f9bf9"
     },
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/INSTALL_FOR_CODEX.md",
-      "sha256": "71d4b0d3c457ce6fcdf23ddfbceef38de4e69f6f8685c26db420421708899e53",
-      "bytes": 1514,
-      "git_blob_sha1": "b0aed3a358526ebb67f74652db90e80eaff54260"
+      "sha256": "14f5e270ccf045de9c4bcb1fdb194b486f44bebe80da4dcc33ea17eeb1816926",
+      "bytes": 2067,
+      "git_blob_sha1": "da06bf77e554f33a4c9fb871ec411d43a397e878"
     },
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/TEST_PLAN.md",
-      "sha256": "5d802f97a627b263fb23ec7fdd68f212772eefcc3ca15f21b66f4b9f7463a205",
-      "bytes": 1194,
-      "git_blob_sha1": "83a58c7c9f5e9df8c4c131e89d1bcb7383492b87"
+      "sha256": "025511f279a9a28e7054eed9c610858cf22a2e613504fdba904c51f4d46524ca",
+      "bytes": 1690,
+      "git_blob_sha1": "6e36b04e4f064f36686b0e28da05594ddbad62f3"
     },
     {
       "path": "Research/B01-11/P17/W03-UXHELP-001/QA_B01_40_60.md",
-      "sha256": "b5a06b6cc78741a40cfaba27c2ab14e88e48e3b8ac9fd2b65ed113bf471ab79b",
-      "bytes": 906,
-      "git_blob_sha1": "81eac6800cda2395b2c257cefbf33b80122a01ca"
+      "sha256": "fd9d4d95b58fc8216d015370aace371172be60cd97c3b1c1e5619c2e7c957be7",
+      "bytes": 1517,
+      "git_blob_sha1": "2e509f18e514fd6cade2610822015d59f5e3aefb"
+    },
+    {
+      "path": "Research/B01-11/P17/W03-UXHELP-001/EVIDENCE/W04_RED_GREEN.md",
+      "sha256": "d2e75365a4dd26d576ec76af0e06cb0729dcf772361e07b331c0adca9990dd87",
+      "bytes": 2828,
+      "git_blob_sha1": "c18363e8d05f66daf288fd2220c4e3b428784d85"
     }
   ],
   "tests": [
     {
-      "name": "Original C# .NET8 assertions Ubuntu",
-      "status": "PASS",
-      "passed": 46,
-      "failed": 0,
-      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40908953821"
+      "name": "True original R1 C# regression RED Ubuntu",
+      "status": "FAIL_EXPECTED",
+      "passed": 48,
+      "failed": 5,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965728452"
     },
     {
-      "name": "Original C# .NET8 assertions Windows",
-      "status": "PASS",
-      "passed": 46,
-      "failed": 0,
-      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40908953821"
+      "name": "True original R1 C# regression RED Windows",
+      "status": "FAIL_EXPECTED",
+      "passed": 48,
+      "failed": 5,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965728452"
     },
     {
-      "name": "Unity Editor/Player, human research, Codex adapter",
+      "name": "Original R2 C# .NET8 Ubuntu",
+      "status": "PASS",
+      "passed": 53,
+      "failed": 0,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965931366"
+    },
+    {
+      "name": "Original R2 C# .NET8 Windows",
+      "status": "PASS",
+      "passed": 53,
+      "failed": 0,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965931366"
+    },
+    {
+      "name": "Native Unity, independent B01-60, human player research",
       "status": "NOT_RUN"
     }
   ],
@@ -83,7 +103,12 @@
   "native_unity": "NOT_RUN",
   "codex_ack": "PENDING",
   "g2": "HOLD",
-  "status": "PRODUCER_SOURCE_TESTED / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NOT_INTEGRATED",
+  "status": "R2_SOURCE_FIXED_RED_GREEN_53_53_2OS / G0_INDEPENDENT_PENDING / G1_NATIVE_NOT_RUN / B01_60_PENDING / CODEX_ACK_PENDING / NOT_INTEGRATED",
   "rollback": "Ignore/delete only isolated Research/B01-11/P17/W03-UXHELP-001/** and .github/workflows/b01-11-uxhelp-w03.yml; no canonical game changes.",
-  "manifest_note": "files[] includes every payload EXCEPT manifest itself; no circular self-hash."
+  "manifest_note": "files[] includes every payload EXCEPT manifest itself; no circular self-hash.",
+  "predecessor": {
+    "version": "R1",
+    "sha": "08633b2dab05baaa929065483938d9c3568c4028",
+    "branch": "research/b01-11-p17-w03-uxhelp-001"
+  }
 }

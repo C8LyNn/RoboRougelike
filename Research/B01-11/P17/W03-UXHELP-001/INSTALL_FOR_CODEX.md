@@ -11,3 +11,6 @@ dotnet run --project /tmp/b0111-uxhelp/Research/B01-11/P17/W03-UXHELP-001/Tests/
 Minimum future Unity tests (not executed): simultaneous drive/gun failure, tips OFF, owned 0HP weapon, selected Omni controls (W/S, A/D, Z/C), selected Wheels/Tracks controls (W/S, A/D), correct LPM/PPM group semantics, nonexistent save not shown, localization clipping, 720p and 1080p. No "native PASS" claim without actual Codex Player receipt.
 
 **Rollback:** simply delete/ignore this isolated research branch. If later integrated, only Codex may revert its own adapter and copy; nothing was added to game files by this package.
+
+### W04/R2 operational guard
+Only display two weapon-group firing hints when `AssignedWeaponGroups == 2` **and** at least two real in-game `ActiveWeapons`; never tell the player to fire with zero active weapons. An already dismissed first-combat controls hint now falls through to a remaining eligible dual-group hint. Confirm the host adapter derives `ActiveWeapons` from actually operational mounted guns (not merely inventory/mount counts) and honors critical warnings even if all optional guidance is OFF. No canonical R3 or HUD changes by B01-11.
