@@ -288,6 +288,46 @@ internal static class Program
         try { new CoverWorld(invalidMarker,invalidMarker.OriginalMapGeometryHash); }
         catch(ArgumentException e) { rejectedNaN=e.Message.Contains("INVALID_ENEMY_SOURCE_MARKER"); }
         Require(rejectedNaN,"NON_FINITE_SOURCE_MARKER_REJECTED");
+        // W04 regression: malformed real map-receiver metadata used to be
+        // accepted and silently disabled LOS or floor boundary checks.
+        var infiniteEye=ReadLayout(d.RootElement);
+        infiniteEye.EyeY=double.PositiveInfinity;
+        bool rejectedInfiniteEye=false;
+        try { new CoverWorld(infiniteEye,infiniteEye.OriginalMapGeometryHash); }
+        catch(ArgumentException e){rejectedInfiniteEye=e.Message.Contains("INVALID_ORIGINAL_FLOOR_OR_EYE");}
+        Require(rejectedInfiniteEye,"INFINITE_EYE_HEIGHT_FAIL_CLOSED");
+
+        var nanFloor=ReadLayout(d.RootElement);
+        nanFloor.FloorHalfX=double.NaN;
+        bool rejectedNaNFloor=false;
+        try {new CoverWorld(nanFloor,nanFloor.OriginalMapGeometryHash);}
+        catch(ArgumentException e){rejectedNaNFloor=e.Message.Contains("INVALID_ORIGINAL_FLOOR_OR_EYE");}
+        Require(rejectedNaNFloor,"NAN_FLOOR_HALF_EXTENT_FAIL_CLOSED");
+
+        var infiniteFloor=ReadLayout(d.RootElement);
+        infiniteFloor.FloorHalfZ=double.PositiveInfinity;
+        bool rejectedInfiniteFloor=false;
+        try {new CoverWorld(infiniteFloor,infiniteFloor.OriginalMapGeometryHash);}
+        catch(ArgumentException e){rejectedInfiniteFloor=e.Message.Contains("INVALID_ORIGINAL_FLOOR_OR_EYE");}
+        Require(rejectedInfiniteFloor,"INFINITE_FLOOR_HALF_EXTENT_FAIL_CLOSED");
+
+        var missingHash=ReadLayout(d.RootElement);
+        missingHash.OriginalMapGeometryHash=null!;
+        bool rejectedNullHash=false;
+        try {new CoverWorld(missingHash,new string('a',64));}
+        catch(ArgumentException e){rejectedNullHash=e.Message.Contains("INVALID_ORIGINAL_MAP_ID");}
+        Require(rejectedNullHash,"NULL_SOURCE_GEOMETRY_HASH_FAIL_CLOSED_WITH_ARGUMENT_EXCEPTION");
+
+        // The receipt's five pipe-delimited fields require a source ID with
+        // no payload separators. Otherwise ExportReceipt cannot round-trip.
+        var separatorId=ReadLayout(d.RootElement);
+        separatorId.SourceLayoutId="MALFORMED|LAYOUT";
+        bool rejectedSeparator=false;
+        try {new CoverWorld(separatorId,separatorId.OriginalMapGeometryHash);}
+        catch(ArgumentException e){rejectedSeparator=e.Message.Contains("INVALID_ORIGINAL_MAP_ID");}
+        Require(rejectedSeparator,"RECEIPT_DELIMITER_IN_SOURCE_ID_FAIL_CLOSED");
+        Console.WriteLine("MAP_BREAK_W04_MALFORMED_SOURCE_CONTRACT_5_NEGATIVES_PASS");
+
         Console.WriteLine("MAP_BREAK_W03_PROTECTED_NEGATIVE_SOURCES_AND_REPLAY_PASS");
     }
 }
