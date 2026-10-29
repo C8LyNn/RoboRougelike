@@ -1,0 +1,44 @@
+{
+  "id": "ENV01-001",
+  "revision": "v002",
+  "asset_type": "STATIC_ENVIRONMENT_ONLY",
+  "triangles": 1144,
+  "mesh_objects": 30,
+  "materials": [
+    "01_CONCRETE_COOL_GRAY",
+    "02_STEEL_GRAPHITE",
+    "03_SAFETY_AMBER"
+  ],
+  "units": "1 Blender unit = 1 metre",
+  "blender_axes": "+X length, +Y road-facing, +Z up",
+  "glb_axes": "+X length, -Z road-facing, +Y up",
+  "root_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "suggested_box_collider_blender_m": {
+    "center": [
+      0.0,
+      -0.09,
+      0.42
+    ],
+    "size": [
+      2.62,
+      1.0,
+      0.9
+    ]
+  },
+  "animation": "NOT_APPLICABLE",
+  "v001_source_commit": "265835419a7144799cc92fb4a7dac637edbb7cc3",
+  "geometry_changes": [
+    "ground-contact feet and concrete",
+    "rear steel frame offset from concrete",
+    "shorter frame silhouette",
+    "four upper amber visibility markers",
+    "end straps offset from concrete",
+    "enclosing collider envelope"
+  ],
+  "license": "CC0-1.0; original geometry and script, no third-party models",
+  "source_file_sha256": "d7f4cd7c9e49de2e68033d2283e66fbeb36d2a8ea2a8045c8d4917fa61fff203"
+}
