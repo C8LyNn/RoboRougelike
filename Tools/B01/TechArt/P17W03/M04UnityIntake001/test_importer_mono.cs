@@ -58,14 +58,14 @@ namespace UnityEditor
     public static class AssetDatabase
     {
         public static GameObject Model;
-        public static Object[] Subassets = new Object[0];
+        public static UnityEngine.Object[] Subassets = new UnityEngine.Object[0];
         public static T LoadAssetAtPath<T>(string path) where T : class
         {
             if (path != "Assets/B0130M04Intake001/M04-024-4GIMBALS-ORIGINAL.fbx")
                 throw new Exception("outside own model scope");
             return Model as T;
         }
-        public static Object[] LoadAllAssetsAtPath(string path)
+        public static UnityEngine.Object[] LoadAllAssetsAtPath(string path)
         {
             if (path != "Assets/B0130M04Intake001/M04-024-4GIMBALS-ORIGINAL.fbx")
                 throw new Exception("outside own model scope");
