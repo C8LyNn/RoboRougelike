@@ -50,7 +50,7 @@ def source_inputs(repo: Path) -> tuple[dict, bytes, bytes]:
     pins = {row["path"]: row["blob"] for row in manifest["files"]}
     if len(pins) != len(manifest["files"]):
         raise UnsafePackage("Duplicate or ambiguous manifest file path")
-    if str(EDITOR) not in pins or str(META) not in pins:
+    if EDITOR.as_posix() not in pins or META.as_posix() not in pins:
         raise UnsafePackage("Manifest missing original editor source and meta")
     dep = manifest["dependency"]
     if dep["producer_SHA"] != "c39a400cb07ae0fd6f0d8d419a128490cfbcfd8a":
@@ -60,7 +60,7 @@ def source_inputs(repo: Path) -> tuple[dict, bytes, bytes]:
     # All seven original owner inputs must match, not just the two ZIP entries.
     for path, sha in sorted(pins.items()):
         verified_bytes(repo, path, sha)
-    editor, meta = verified_bytes(repo, str(EDITOR), pins[str(EDITOR)]), verified_bytes(repo, str(META), pins[str(META)])
+    editor, meta = verified_bytes(repo, EDITOR.as_posix(), pins[EDITOR.as_posix()]), verified_bytes(repo, META.as_posix(), pins[META.as_posix()])
     if "guid: 7a85dd4f01bb4e6ca241c78bdec78d24" not in meta.decode("utf-8"):
         raise UnsafePackage("Missing required stable original .meta GUID")
     if "NewSceneMode.Additive" not in editor.decode("utf-8") or "File.Exists(path)" not in editor.decode("utf-8"):
