@@ -2,34 +2,100 @@ using System;
 
 namespace B01.LevelChallenges
 {
-    // Pure game-rule module. No Unity references, global state, persistence,
-    // enemy AI, reward handling or game Finish-trigger override.
-    public readonly record struct HoldoutConfig(
-        string Id, double CenterX, double CenterZ, double RadiusMeters,
-        double RequiredSeconds, double OutsideDecayPerSecond)
+    // Unity 6000.3 source compatibility: C# 9 / netstandard2.1.
+    // Pure, deterministic game rules. No UnityEngine references, serializable
+    // Unity records, global state, save, AI, reward or MapFinish override.
+    internal static class HoldoutNumbers
     {
+        internal static bool Finite(double value) =>
+            !double.IsNaN(value) && !double.IsInfinity(value);
+    }
+
+    public readonly struct HoldoutConfig
+    {
+        public string Id { get; }
+        public double CenterX { get; }
+        public double CenterZ { get; }
+        public double RadiusMeters { get; }
+        public double RequiredSeconds { get; }
+        public double OutsideDecayPerSecond { get; }
+
+        public HoldoutConfig(string id, double centerX, double centerZ,
+            double radiusMeters, double requiredSeconds, double outsideDecayPerSecond)
+        {
+            Id=id;CenterX=centerX;CenterZ=centerZ;
+            RadiusMeters=radiusMeters;RequiredSeconds=requiredSeconds;
+            OutsideDecayPerSecond=outsideDecayPerSecond;
+        }
         public void Validate()
         {
             if(string.IsNullOrWhiteSpace(Id) || Id.Length>64)
                 throw new ArgumentException("Invalid challenge ID");
-            if(!double.IsFinite(CenterX)||!double.IsFinite(CenterZ)||
-               !double.IsFinite(RadiusMeters)||RadiusMeters<=0||
-               !double.IsFinite(RequiredSeconds)||RequiredSeconds<=0||
-               !double.IsFinite(OutsideDecayPerSecond)||OutsideDecayPerSecond<0)
+            if(!HoldoutNumbers.Finite(CenterX)||!HoldoutNumbers.Finite(CenterZ)||
+                !HoldoutNumbers.Finite(RadiusMeters)||RadiusMeters<=0||
+                !HoldoutNumbers.Finite(RequiredSeconds)||RequiredSeconds<=0||
+                !HoldoutNumbers.Finite(OutsideDecayPerSecond)||OutsideDecayPerSecond<0)
                 throw new ArgumentException("Invalid objective configuration");
         }
     }
 
     public enum HoldoutPhase { Waiting, Charging, Contested, Recovering, Ready }
-    public readonly record struct HoldoutSample(
-        double DeltaSeconds, double PlayerX, double PlayerZ,
-        int HostilesInside, bool PlayerAlive);
-    public readonly record struct HoldoutSnapshot(
-        HoldoutPhase Phase, double ProgressSeconds, double RequiredSeconds,
-        bool PlayerInside, bool Contested, bool BecameReady)
+
+    public readonly struct HoldoutSample
     {
-        public double Fraction => Math.Clamp(ProgressSeconds / RequiredSeconds,0,1);
+        public double DeltaSeconds { get; }
+        public double PlayerX { get; }
+        public double PlayerZ { get; }
+        public int HostilesInside { get; }
+        public bool PlayerAlive { get; }
+        public HoldoutSample(double deltaSeconds, double playerX, double playerZ,
+            int hostilesInside, bool playerAlive)
+        {
+            DeltaSeconds=deltaSeconds;PlayerX=playerX;PlayerZ=playerZ;
+            HostilesInside=hostilesInside;PlayerAlive=playerAlive;
+        }
+    }
+
+    public readonly struct HoldoutSnapshot : IEquatable<HoldoutSnapshot>
+    {
+        public HoldoutPhase Phase { get; }
+        public double ProgressSeconds { get; }
+        public double RequiredSeconds { get; }
+        public bool PlayerInside { get; }
+        public bool Contested { get; }
+        public bool BecameReady { get; }
+
+        public HoldoutSnapshot(HoldoutPhase phase, double progressSeconds,
+            double requiredSeconds, bool playerInside, bool contested, bool becameReady)
+        {
+            Phase=phase;ProgressSeconds=progressSeconds;RequiredSeconds=requiredSeconds;
+            PlayerInside=playerInside;Contested=contested;BecameReady=becameReady;
+        }
+
+        public double Fraction => Math.Max(0,Math.Min(1,ProgressSeconds/RequiredSeconds));
         public bool Ready => Phase==HoldoutPhase.Ready;
+
+        // C# 9 struct value equality preserves the previous record-struct
+        // deterministic timeline comparison without Unity-incompatible records.
+        public bool Equals(HoldoutSnapshot other) =>
+            Phase==other.Phase&&ProgressSeconds==other.ProgressSeconds&&
+            RequiredSeconds==other.RequiredSeconds&&PlayerInside==other.PlayerInside&&
+            Contested==other.Contested&&BecameReady==other.BecameReady;
+        public override bool Equals(object obj) => obj is HoldoutSnapshot other&&Equals(other);
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash=(int)Phase;
+                hash=hash*31+ProgressSeconds.GetHashCode();
+                hash=hash*31+RequiredSeconds.GetHashCode();
+                hash=hash*31+PlayerInside.GetHashCode();
+                hash=hash*31+Contested.GetHashCode();
+                return hash*31+BecameReady.GetHashCode();
+            }
+        }
+        public static bool operator ==(HoldoutSnapshot left,HoldoutSnapshot right) => left.Equals(right);
+        public static bool operator !=(HoldoutSnapshot left,HoldoutSnapshot right) => !left.Equals(right);
     }
 
     public sealed class HoldoutController
@@ -41,21 +107,18 @@ namespace B01.LevelChallenges
         public void Reset(){ProgressSeconds=0;IsReady=false;}
         public HoldoutSnapshot Tick(HoldoutSample sample)
         {
-            // Reject all malformed telemetry BEFORE any state mutation.
-            if(!double.IsFinite(sample.DeltaSeconds)||sample.DeltaSeconds<0||
-               !double.IsFinite(sample.PlayerX)||!double.IsFinite(sample.PlayerZ)||
+            // Reject malformed telemetry BEFORE ANY state mutation.
+            if(!HoldoutNumbers.Finite(sample.DeltaSeconds)||sample.DeltaSeconds<0||
+               !HoldoutNumbers.Finite(sample.PlayerX)||!HoldoutNumbers.Finite(sample.PlayerZ)||
                sample.HostilesInside<0)
                 throw new ArgumentException("Invalid holdout telemetry");
             bool inside=Inside(sample.PlayerX,sample.PlayerZ);
             bool contested=sample.HostilesInside>0;
             // Death invalidates the attempt even after the one-shot ready event.
-            // The host may separately apply a run-fail policy; this local state
-            // cannot grant an extraction after a destroyed robot.
             if(!sample.PlayerAlive)
             {
                 Reset();
-                return new(HoldoutPhase.Waiting,0,Config.RequiredSeconds,
-                    inside,contested,false);
+                return new(HoldoutPhase.Waiting,0,Config.RequiredSeconds,inside,contested,false);
             }
             if(IsReady)
                 return new(HoldoutPhase.Ready,Config.RequiredSeconds,
@@ -76,8 +139,7 @@ namespace B01.LevelChallenges
             ProgressSeconds=Math.Min(Config.RequiredSeconds,ProgressSeconds+sample.DeltaSeconds);
             if(ProgressSeconds>=Config.RequiredSeconds)
             {
-                ProgressSeconds=Config.RequiredSeconds;
-                IsReady=true;
+                ProgressSeconds=Config.RequiredSeconds;IsReady=true;
                 return new(HoldoutPhase.Ready,ProgressSeconds,Config.RequiredSeconds,true,false,true);
             }
             return new(HoldoutPhase.Charging,ProgressSeconds,
@@ -85,7 +147,7 @@ namespace B01.LevelChallenges
         }
         public bool Inside(double x,double z)
         {
-            if(!double.IsFinite(x)||!double.IsFinite(z))return false;
+            if(!HoldoutNumbers.Finite(x)||!HoldoutNumbers.Finite(z))return false;
             double dx=x-Config.CenterX,dz=z-Config.CenterZ;
             return dx*dx+dz*dz<=Config.RadiusMeters*Config.RadiusMeters;
         }
