@@ -1,0 +1,40 @@
+{
+  "package_id": "B01-60-EQUIPMENT-KITS-V103-INDEPENDENT-QA",
+  "revision": "PASS17-W05/R1",
+  "owner": "B01-60",
+  "issue": 412,
+  "original_producer_pr": 411,
+  "original_producer_exact_sha": "a3dd45a4c1f222ec5cc387302eafe9104f91ab52",
+  "frozen_previous_pr": 333,
+  "frozen_previous_exact_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+  "original_codex_current_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "game_source_pins": {
+    "Assets/R3/R3VehicleModel.cs": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "Assets/R4/R4WeaponDefinition.cs": "502f6d7f70d4e8078260de632ab181f244a4d730"
+  },
+  "original_older_R3_blob": "8cc68faf89793c803e5807594c9faf0df10091",
+  "exact_change_between_pinned_R3_sources": "only insertion of 8-byte 'partial ' in R3VehicleModel declaration",
+  "actual_workflow": ".github/workflows/b01-60-p17w05-equipment-acceptance.yml",
+  "source_reader": "Tools/B01/B01-60-P17W05-Equipment/independent_acceptance.py",
+  "test_plan": "Run unchanged original owner 26 Node tests, 18 Python stage tests and 7 original host mutations PLUS B01-60 independent exact Git manifest 13 payload hashes, frozen v1.0.2 vs v1.0.3 kit BOM and prices, native R3/R4 price source, real stage of 10 offers with individually computed costs, 4 independent negative rollback/no-clobber mutations, deterministic second staging",
+  "expected_platforms": [
+    "Windows 2025",
+    "Ubuntu 24.04"
+  ],
+  "owned_paths": [
+    "Tools/B01/B01-60-P17W05-Equipment/**",
+    ".github/workflows/b01-60-p17w05-equipment-acceptance.yml"
+  ],
+  "constraints": [
+    "zero Assets/** changes",
+    "no Codex or producer patches",
+    "no game economy transaction is installed",
+    "no native Unity license or runtime",
+    "source-only G0 candidate, not G1/G2 or Codex ACK"
+  ],
+  "g0": "INDEPENDENT_TEST_PENDING",
+  "native_unity_g1": "NOT_RUN",
+  "codex_ack": "PENDING",
+  "integrated": false,
+  "rollback": "delete only B01-60 Tools and own Actions workflow; never change producer #411 or frozen #333"
+}
