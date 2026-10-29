@@ -1,4 +1,4 @@
-# ENV03-001 — Segment niskiego muru areny (pilot)
+# ENV03-001 — Segment niskiego muru areny (pilot, rewizja v002)
 
 **Status:** isolated experimental environment art asset, **not integrated** into RoboRougelike.
 **Owner:** ENV03 (single pilot); no other ENV03 models authorized.
@@ -7,7 +7,7 @@
 
 ## Purpose and visual language
 
-One low, static, modular perimeter wall for an obstacle course or arena.
+One low, static, modular perimeter wall for an obstacle course or arena.\n\n**v002 scope (HQ 2026-10-29):** same ID and silhouette, no new asset. Two\ncontinuous side impact rails end flush at X=+/-1.00; plates are wider and\nraised 10 mm above rails; reflector surfaces are larger; ochre bolt heads\nseat exactly on plate surfaces. Three repeated copies at X=-2,0,+2 are\nrendered for visual seam inspection, but preview copies are never exported\nor saved as part of the source model. Historical v001 SOURCE_SHA\n`8622cdd6ddd5bb09f75779af8f468ce1a84c2be5` and its Actions artifacts\nremain immutable. A new commit/Actions artifact is required for v002.
 Industrial sci-fi graybox/low-poly: broad concrete mass, continuous dark steel
 coping, small steel tie plates and safety-ochre reflectors. Silhouette and contrast
 remain readable at gameplay distance. No damage states, construction/destruction
@@ -21,9 +21,9 @@ logic, animation, rig, gameplay scripts, or procedural level generation.
 - **Root pivot:** `ENV03-001_ROOT` at world origin (0,0,0), ground-centred.
 - **Overall AABB:** X -1.00..+1.00 m, Y -0.24..+0.24 m, Z 0.00..0.88 m.
 - **Modularity:** end faces at X=-1.00 and X=+1.00 have matching cross-sections
-  for both continuous extrusions. Put next instance at X=+/-2.00 m with no
+  for all four continuous profiles (concrete, coping and two rails). Put next instance at X=+/-2.00 m with no
   intervening gap. All decorative details stay away from mating ends.
-- **Target topology:** 18 separate closed mesh objects, 504 triangles total,
+- **v002 target topology:** 20 separate closed mesh objects, 528 triangles total,
   three simple PBR materials. No UV texture maps or external assets.
 - **Materials:** `ENV03_Concrete`, `ENV03_DarkSteel`, `ENV03_SafetyOchre`.
 - **Contact design:** coping touches body at Z=0.78 m; plates/reflectors touch
@@ -43,7 +43,7 @@ blender -b --python Tools/EnvironmentFactory/ENV03/ENV03-001/qa_env03_001.py -- 
 
 The generator writes `ENV03-001_ArenaWall.blend`,
 `ENV03-001_ArenaWall.glb`, `export_manifest.json` and, if headless CPU
-rendering succeeds, two PNG previews (`arena_front`, `rear_end`).
+rendering succeeds, four PNG previews (`arena_front`, `rear_end`, `three_tile_arena`,\n`three_tile_outer`).
 The independent QA writes `qa_report.json` and checks watertight positive-volume
 meshes, material budget, triangle budget, scale, root, end symmetry, source
 geometry, GLB import and PNG signatures. The isolated GitHub Actions workflow
@@ -51,7 +51,7 @@ uploads real generated files; source files alone are **not** evidence of export.
 
 ## Art review checklist
 
-Inspect the two previews and the actual .blend/.glb before approving:
+Inspect the v001 two previews, v002 four previews and both .blend/.glb before approving:
 whether the concrete reads as a wall (not a vehicle part), the top metal line
 is continuous across instances, the reflector contrast is appropriate,
 and the shape reads clearly at the intended camera distance. The flat
@@ -75,3 +75,4 @@ The generator depends only on Blender's built-in `bpy`/`bmesh` libraries.
 - Integration with existing scenes, prefabs, Codex source: **NOT_AUTHORIZED**.
 
 No merge or asset import is permitted without HQ approval.
+\n## v002 ownership and handoff\n\nHQ authorized one producer revision only. PR #291 stays DRAFT; no new claim,\nnew PR, merge, CODEX_ACK, or canonical Unity integration. The baseline v001\ncommit and physical artifact are immutable; v002 is a new commit and artifact\nfor independent B01-60/B01-00 visual/source QA. If ownership becomes\nOFFERED_FROZEN or CODEX_CLAIMED, further edits require explicit\nRETURNED_FOR_REWORK. Unity and Windows remain NOT_RUN unless real evidence\nis published.\n
