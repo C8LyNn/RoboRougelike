@@ -1,0 +1,40 @@
+{
+  "id": "ENV04-001",
+  "revision": "v002",
+  "asset_type": "STATIC_ENVIRONMENT_CONCEPT",
+  "mesh_objects": 40,
+  "triangles": 1344,
+  "materials": [
+    "01_GRAPHITE_POWDERCOAT",
+    "02_BRUSHED_STEEL",
+    "03_SAFETY_AMBER"
+  ],
+  "unit": "1 Blender unit = 1 m",
+  "blender_axes": "+X width, +Y front, +Z up",
+  "glb_axes": "+X width, -Z front, +Y up",
+  "root_pivot_m": [
+    0,
+    0,
+    0
+  ],
+  "suggested_single_box_collider_blender_m": {
+    "center": [
+      0,
+      0,
+      0.27
+    ],
+    "size": [
+      1.65,
+      1.08,
+      0.58
+    ]
+  },
+  "animation": "NOT_APPLICABLE",
+  "uv_contract": "UV_METRIC_1M, world projected, 1 tile per metre",
+  "rework": "separated butt-jointed rim, six slimmer canted slats with 12 flush end brackets, flush seated floor/posts, separated armor and surface markers",
+  "license": "CC0-1.0; original authored geometry, no external meshes/textures",
+  "source_sha256": "fa41f1c88e3d9e256af1061c1aeb868895b6defa63b47e2665e0dda3a93f633f",
+  "geometry_sha256": "b8eb8901786886f6473370febd343ead08e3a1db5df1a192e3173c851012b3d7",
+  "unity": "NOT_RUN",
+  "windows": "NOT_RUN"
+}

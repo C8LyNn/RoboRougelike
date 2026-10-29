@@ -1,0 +1,66 @@
+{
+  "id": "ENV04-001",
+  "title": "Kratka wentylacyjna / niska skrzynia wentylacyjna",
+  "series": "ENV experimental one-shot",
+  "owner": "ENV04",
+  "status": "BLENDER_QA_PASS / ART_REVIEW_PENDING / UNITY_NOT_RUN / ONE_SHOT_COMPLETE",
+  "branch": "feature/rrl-env04-001-industrial-vent-grate-20261027",
+  "base": "develop",
+  "scope": [
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/**",
+    ".github/workflows/ci-env04-001.yml",
+    "Docs/EnvironmentFactory/claims/ENV04-001.json"
+  ],
+  "created_at": "2026-10-27",
+  "github_issue_refs": [
+    276,
+    287
+  ],
+  "restrictions": "Static art concept only; no Unity integration; no gameplay; one pilot, no duplicates.",
+  "claim_commit": "fd8a5673ca755dcf93a9dd7ad57b8b314f55659e",
+  "source_sha": "dca1cfe4407f36b05fa0717b959e7c7ee41dbcc4",
+  "binary_publication_commit": "f030a485ec07095da59d0bab65c769f487e4624b",
+  "draft_pr": "https://github.com/C8LyNn/RoboRougelike/pull/289",
+  "blender_qa_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40484599726",
+  "blender_qa_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40484599726/artifacts/12724038852",
+  "artifact_zip_sha256": "4c2f0b972c738cc4a3de9221da2e065046cd823ef46f8b96897fc1dea7741f76",
+  "blender_version": "4.0.2",
+  "triangles": 1200,
+  "mesh_objects": 28,
+  "materials": 3,
+  "bounds_blender_m": {
+    "min": [
+      -0.78,
+      -0.51,
+      0
+    ],
+    "max": [
+      0.78,
+      0.51,
+      0.531
+    ]
+  },
+  "actual_files": [
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/ENV04-001_industrial_vent_grate.blend",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/ENV04-001_industrial_vent_grate.glb",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/preview_front.png",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/preview_rear.png",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/build_report.json",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/qa_report.json",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/SHA256SUMS",
+    "Tools/EnvironmentFactory/ENV04/ENV04-001/generated/SOURCE_SHA.txt"
+  ],
+  "qa": {
+    "blender_export": "PASS",
+    "blend_reopen": "PASS",
+    "glb_binary_parse": "PASS",
+    "two_png_previews": "PASS",
+    "manifold": "PASS",
+    "triangle_budget": "PASS",
+    "unity_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "windows": "NOT_RUN",
+    "manual_art_review": "PENDING_HQ"
+  },
+  "limits": "No integration/merge. No additional ENV04 asset before HQ manual review. Only source/exports and own workflow changed."
+}
