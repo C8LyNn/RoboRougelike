@@ -95,6 +95,43 @@ async function main(){
     await page.locator("#undo").click();
     assert.equal(await page.locator("#rows tr").count(),6);
    });
+   await t(label+" auto threat budget raises unchanged manual field",async()=>{
+    await page.locator("#new").click();
+    await page.locator("#stage").selectOption("0");
+    await page.locator("#autoBudget").check();
+    const base=Number(await page.locator("#ThreatBudget").inputValue());
+    await page.locator("#HealthMultiplier").fill("3");
+    await page.locator("#DamageMultiplier").fill("3");
+    await page.locator("#FireIntervalMultiplier").fill("0.3");
+    await page.locator("#MoveSpeed").fill("6");
+    await page.locator("#save").click();
+    assert.match(await page.locator("#error").innerText(),/Zapisano/);
+    const raised=Number(await page.locator("#ThreatBudget").inputValue());
+    assert.ok(raised>base,"expected auto budget > "+base+" but got "+raised);
+    const warning=await page.locator("#indicators").innerText();
+    assert.match(warning,/Zgodny schemat R5/);
+   });
+   await t(label+" auto budget disabled strictly rejects above-cap threat",async()=>{
+    await page.locator("#new").click();
+    await page.locator("#autoBudget").uncheck();
+    const initial=await page.locator("#rows").innerText();
+    await page.locator("#HealthMultiplier").fill("3");
+    await page.locator("#DamageMultiplier").fill("3");
+    await page.locator("#FireIntervalMultiplier").fill("0.3");
+    await page.locator("#MoveSpeed").fill("6");
+    await page.locator("#save").click();
+    assert.match(await page.locator("#error").innerText(),/Odmowa bez utraty danych/);
+    assert.equal(await page.locator("#rows").innerText(),initial);
+   });
+   await t(label+" explicit low manual budget is never silently raised",async()=>{
+    await page.locator("#new").click();
+    await page.locator("#autoBudget").check();
+    const initial=await page.locator("#rows").innerText();
+    await page.locator("#ThreatBudget").fill("1");
+    await page.locator("#save").click();
+    assert.match(await page.locator("#error").innerText(),/Odmowa bez utraty danych/);
+    assert.equal(await page.locator("#rows").innerText(),initial);
+   });
    await t(label+" no uncaught browser JS errors",async()=>assert.deepEqual(jsErrors,[]));
    const file=path.join(shots,"r5wb001_"+label+".png");
    await page.screenshot({path:file,fullPage:true});
