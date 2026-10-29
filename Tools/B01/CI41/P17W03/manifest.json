@@ -47,7 +47,7 @@
   "expected_status": "HOLD_FULL_NATIVE_REGRESSION",
   "source_test_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900659128",
   "qa": {
-    "source_test": "RUNNING_UNTIL_FINAL_CI_VERIFIED",
+    "source_test": "12/12 source tests Windows and 12/12 Ubuntu PASS, original Git-native receipts parsed, no Unity executed",
     "B01_40": "PENDING",
     "B01_60_61": "PENDING",
     "native_run_by_B01_41": "NOT_RUN",
