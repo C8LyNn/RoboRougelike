@@ -156,7 +156,7 @@ def make():
     out.mkdir(parents=True,exist_ok=True)
     ok(not (REPO/"Assets/B0132SalvageBeacon").exists(),"canonical Assets path already occupied")
     ok(git("rev-parse",OWNER).decode()==OWNER,"immutable art source absent; fetch it first")
-    template=git_data(BASE,TEMPLATE,TEMPLATE_BLOB).decode()
+    template=git_data('HEAD',TEMPLATE,TEMPLATE_BLOB).decode()
     ok("spriteMode: 0" in template and "TextureImporter:" in template,"unapproved Unity texture importer template")
     m=json.loads(git_data(OWNER,SRC+"/manifest.json",ORIGINAL_MANIFEST_BLOB))
     ok(m["package_id"]=="B01-32-SALVAGE-BEACON-001" and len(m["frames"])==8,"original source manifest differs")
