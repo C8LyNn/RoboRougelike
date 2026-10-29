@@ -37,7 +37,7 @@ jobs:
       - name: Export real masks, transparent focus rings, and run mutation QA
         run: python Docs/B01Concept/P17/W03/A1-SELECTMASK-001/build_and_test.py
       - name: Archive real PNGs and original SHA256/CRC32 receipts
-        if: always()
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: b01-31-p17-w03-a1-select-masks
