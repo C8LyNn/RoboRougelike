@@ -1,52 +1,66 @@
-# CI41-REPLAY-001 v1.0.0 — repeatable real Unity Editor filtered regression executor
+# CI41-REPLAY-001 v1.1.0 — WAVE 04 / real full-suite Unity reproduction adapter
 
-**Producer:** B01-41 — CI/CD & TEST AUTOMATION. New functional package; no `Assets/**`, canonical Codex code, CHL/PARTSIZE or shared CI02/03 edits. Python 3 standard library + Git. No standalone Unity license included.
+**Owner:** B01-41 CI/CD & TEST AUTOMATION. **Immutable ancestor:** [CI41-REPLAY-001 v1.0.0 Draft #400](https://github.com/C8LyNn/RoboRougelike/pull/400) @ `0a7c00655f9c84ee50a2bc8ff5f3733440dbbfdf`. **This is a NEW version on a new branch**; #400 is frozen and unchanged.
 
-## What this package actually does
+## Specific defect and repair
 
-The [`unity_repeat.py`](./unity_repeat.py) script is a **functional Unity Editor CLI executor**, not another static XML analyzer. When an authorized receiver supplies a real Unity 6000.3.14f1 Editor executable and an **exclusive clean worktree at the requested exact game commit**, the script actually launches the Editor N times via `subprocess.run`, running requested NUnit test names. Each trial gets its own preserved `results.xml`, `unity-editor.log`, `stdout.txt`, `stderr.txt`, and a summary record containing source SHA, process exit, timeout, exact filtered cases, result counts and XML SHA-256. An existing evidence directory is never overwritten. Every run verifies exact original `HEAD` and clean tracked `Assets/Packages/ProjectSettings` source before and after Editor invocation.
+v1.0.0 offered a real native-Editor subprocess runner but supported **only `-testFilter`**. The two original Codex [#383](https://github.com/C8LyNn/RoboRougelike/pull/383) failures both passed an isolated re-run (2/2) while full native EditMode failed (2/1330). Consequently repeating only the two filtered tests in v1.0.0 **cannot reproduce suite-order-dependent failures**. WAVE04 extends the *same real subprocess implementation*, without copying or editing Codex gameplay, with an explicitly disjoint `--full-suite --expected-full-cases 1330` mode. It invokes the native Editor **without any `-testFilter`**, requires all 1330 executed `test-case` nodes with matching NUnit root totals and discovery count, and retains the original XML, log, stdout, stderr, exact game SHA, process exit, and SHA-256 of each run. Missing/truncated/renamed/test-count-mismatched runs are HOLD, never PASS.
 
-**Result semantics:** `REPEAT_PASS` (exit 0) only if every requested, actually executed filtered test passed, all native process exits are zero and expected cases exactly match XML; `HOLD_REPRO_OR_INVALID_EVIDENCE` or `FAIL_CLOSED` (exit 2) otherwise. No XML, unexpected test names, contradictory counts, skipped tests, source changes, timeouts, or nonzero Editor process returns cannot be green. The tool never grants **full-suite G1**: filtered pass only means those tests passed in those attempts.
+This does **not** repair the Codex camera/physics gameplay failure; it provides a reproducible native QA procedure to distinguish the two real full EditMode failures from their green isolated retests. It leaves full-suite test order under Unity's original runner; a manifest cannot independently establish cause or physics nondeterminism.
 
-This is **distinct from [CI41-NATIVE-TRIAGE-001 #388](https://github.com/C8LyNn/RoboRougelike/pull/388)**, which *reads historical native XML*. This package **executes and repeats the command itself** when a real Unity binary is supplied, retaining each attempt so Codex can measure intermittent failures. Also distinct from GUID [#345](https://github.com/C8LyNn/RoboRougelike/pull/345), dependency impact [#352](https://github.com/C8LyNn/RoboRougelike/pull/352) and path-portability [#378](https://github.com/C8LyNn/RoboRougelike/pull/378).
+### Exact original game source and original native observation
 
-## Intended first Codex use, after authorized native QA intake
+- **Original gameplay SHA:** `203a0805251ed28293888e43f2d49f0df63767c6`.
+- **Original source of native evidence:** `f92c873bb1e397a598b133e107ae704e15f86768` ([Codex PR #383](https://github.com/C8LyNn/RoboRougelike/pull/383)).
+- Original **full EditMode: 1330 cases, 1327 PASS, 2 FAIL, 1 SKIP, exit 2**.
+- Full EditMode failing tests: `Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle` (1.00205421 m vs <1 m), `MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies` (grounded wheel count 0 vs >0).
+- Conditional policy SKIP: `B0124EnemyAiNegativeEditModeTests.SolidOpaqueCover_SuppressesShot_ThenRecovers_ConditionalPolicy`. **Never forcibly enable without HQ.**
+- Original PlayMode **474/474 PASS** and filtered failures 2/2 PASS; no proof the full EditMode is fixed.
 
-The two full-suite failures from Codex's original #383 receipt were:
+## First native action for an authorized Codex/B01-61 receiver
 
-- `Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle`
-- `MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies`
+**Prerequisites:** actual Unity **6000.3.14f1** Editor executable, separate/exclusive clean checkout of the exact **gameplay SHA** (NOT PR #400 or this QA branch), sufficient Unity license, no other Unity process using that project's `Library/`. The executable Python `unity_repeat.py` should be available *outside* that checkout (copy the versioned tool to a separate QA scripts directory if needed). `--output` must name a **new** directory outside the checkout, which will not be overwritten.
 
-On a **separate checkout of Codex gameplay SHA** `203a0805251ed28293888e43f2d49f0df63767c6`, not a concurrently used Editor project, run in PowerShell (substitute the actual Unity Editor path, and choose a fresh output directory):
+1. Reproduce the **original full-suite context**. Example PowerShell:
 
 ```powershell
-python Tools/B01/CI41/P17W03B/unity_repeat.py `
-  --project "C:\\Work\\RoboRougelike-P17-ExactSHA" `
-  --editor-exe "C:\\Program Files\\Unity\\Hub\\Editor\\6000.3.14f1\\Editor\\Unity.exe" `
+python "C:\QA\CI41-v1.1\unity_repeat.py" `
+  --project "C:\QA\Codex-Game-203a0805" `
+  --editor-exe "C:\Program Files\Unity\Hub\Editor\6000.3.14f1\Editor\Unity.exe" `
   --source-sha 203a0805251ed28293888e43f2d49f0df63767c6 `
-  --test "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle" `
-  --test "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" `
-  --mode EditMode --repeats 10 --timeout 600 `
-  --output "C:\\Work\\CI41-Evidence\\replay-001"
+  --mode EditMode --full-suite --expected-full-cases 1330 `
+  --repeats 3 --timeout 1800 `
+  --output "C:\QA\Results\codex-full-edit-001"
 ```
 
-**Important:** This should be run from a location where the script is available; the actual `--project` points to the exact Codex-game source worktree, not the B01-41 Draft branch. You may copy the optional standalone Python script into the authorized QA environment. **Never use an Editor concurrently against the same `Library/` worktree**. If the source changed mid-run the script returns HOLD; existing XML remains for investigation. Unity `-testFilter` is a semicolon-separated list of exact names; this tool checks the returned test cases to prevent passing an unintended filter. The caller must ensure that the selected filters are recognized by the Unity test runner and should check its own logs for runner version-specific argument behavior. The script also supports one test at a time.
+2. Compare with isolated tests under the **same game SHA** and another *unique* output directory:
 
-**Why this matters:** both historically failing tests passed 2/2 in isolated native re-runs even though full EditMode originally failed. Repeating the isolated pair can reveal intermittent behavior but cannot prove or rule out order-dependent regressions. To resolve the full-suite block, a fresh full EditMode run and independent B01-60/61 QA are still required.
+```powershell
+python "C:\QA\CI41-v1.1\unity_repeat.py" `
+  --project "C:\QA\Codex-Game-203a0805" `
+  --editor-exe "C:\Program Files\Unity\Hub\Editor\6000.3.14f1\Editor\Unity.exe" `
+  --source-sha 203a0805251ed28293888e43f2d49f0df63767c6 `
+  --mode EditMode `
+  --test "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle" `
+  --test "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies" `
+  --repeats 3 --timeout 900 `
+  --output "C:\QA\Results\codex-filtered-edit-001"
+```
 
-## Truly executed dual-OS producer tests
+The full mode deliberately rejects an accidental `--test`; the filtered mode deliberately rejects `--expected-full-cases`. Both fail closed on source SHA mismatch or tracked Unity source dirtiness. Full-mode count pin of 1330 prevents accidentally reporting 2 green filtered tests as full-suite PASS. The native Editor can update its generated `Library/` and other disposable outputs; it should not alter tracked `Assets/Packages/ProjectSettings`. If it does, source guard returns HOLD. Unity-version/environment or package drift may change actual test discovery; **investigate, don't silently relax the 1330 gate**.
 
-[`test_unity_repeat.py`](./test_unity_repeat.py) runs **12 actual subprocess fixture tests per OS** using a short Python executable acting as a *simulated* Unity CLI. These are physical processes that write real NUnit-format XML and logs; not just text matching or a mock of subprocess.run. Tests cover three actual repeated invocations with the two original Codex test names, failure exit and red XML, zero exit + red XML, nonzero exit + green XML, missing/malformed XML, inconsistent counters, duplicate/unrelated test cases, genuine process timeout, incorrect source SHA, tracked dirty assets, unsafe filters, output overwrite prevention, and a real complete CLI invocation.
+**Interpret results:** Each trial's `results.xml` and native `unity-editor.log` remain physically present, with `summary.json` recording `scope=FULL_SUITE`, `expected_full_cases=1330`, per-case results, exit code and XML SHA-256. If some trials pass and others fail, report the split to B01-61/Codex with exact SHA, runner version and logs. If all fail, that is reproducible failure; a Python wrapper failure is not a Codex gameplay PASS. If all pass, the script may return `REPEAT_PASS`, but `full_suite_g1=FULL_SUITE_RECEIPT_REQUIRES_INDEPENDENT_NATIVE_QA`: only actual receiving independent QA can accept native G1/G2. The prior original #383 failed full suite **remains failed historical evidence**.
 
-[Original Actions](https://github.com/C8LyNn/RoboRougelike/actions/runs/40911232379) exercises physical simulated processes on Windows 2025 and Ubuntu 24.04; original log artifacts are provided there. **NATIVE UNITY = NOT_RUN IN CI41 PRODUCER ACTIONS.** Earlier initial run [#40911049812](https://github.com/C8LyNn/RoboRougelike/actions/runs/40911049812) had 12/12 unittest passes per OS but workflow failure from a mismatched expected *grep marker* for timeout fixture; only the workflow assertion was corrected, no changes to implementation/tests or game.
+## Producer tests executed versus tests NOT executed
 
-## Import, independent QA, rollback and blockers
+[Dedicated workflow](https://github.com/C8LyNn/RoboRougelike/actions/workflows/b01-41-p17w03b-unity-replay.yml) verifies both original B01-41 source blobs and runs **18 physical-subprocess tests per OS**. The first 12 verify the original filtered cases; the 6 new tests run the actual OS process and NUnit XML test fixture that simulates **1330 discoverable cases**, including a 1327 PASS / 2 FAIL / 1 SKIP result matching the *shape* of the historical Codex #383 evidence; another is a simulated fully green 1330-run, and negatives reject truncated result coverage, mismatched discovery counts, accidentally mixing filtered and full modes, and test the full CLI with an expected exit 2. **The fake Python Editor is not Unity**; these 36 original source-level checks do not establish native G1. No Codex game code or Unity runtime was executed in these producer Actions.
 
-- Receiver **B01-40** checks own five-file manifest/sha/source scope/optional tool behavior and rollback.
-- **B01-60/61** independently reruns simulated subprocess tests, then optionally authorizes real native Editor execution on exact Codex game source. The producer GitHub Actions runner does **not** have the game/Unity license, so no native QA is asserted.
-- **B01-00** schedules possible integration in CODEX inbox #79; Codex explicitly acknowledges owner transfer. A producer comment or Draft PR is not `CODEX_ACK`.
-- **Rollback:** leave own Draft PR unmerged or remove optional script/workflow from a later authorized CI adaptation. The tool does not write game `Assets/` or `ProjectSettings/` source; native Unity may update the local generated `Library/` directory when run. Preserve/revert that disposable QA checkout if necessary.
+## Exact scope, receiver, rollback
 
-**Known limitations:** filtered single-/double-case runs are not the complete full-suite, Unity native execution is environment-dependent and unrun in this source producer, tests use intentionally constrained exact filter syntax (no unsafe arbitrary command injection), stdout/stderr are capped to 8 MB each, timeout killing a parent Editor is not a guarantee of terminating any unrelated child process, and an external native Editor can change untracked build artifacts. No guarantee of cross-session hardware/timing determinism or root-cause attribution.
+Only five existing owner files are changed in this version: `Tools/B01/CI41/P17W03B/{unity_repeat.py,test_unity_repeat.py,README.md,manifest.json}` and `.github/workflows/b01-41-p17w03b-unity-replay.yml`. No edits to `Assets/**`, original Codex branch, PARTSIZE/CHL, ruleset, CI02/CI03 or main/develop. All original file paths are in the existing CI41 owner scope.
 
-**State:** SOURCE_TOOL_EXECUTED_BY_SIMULATOR / NATIVE_UNITY_NOT_RUN_BY_PRODUCER / G0_B01_40_PENDING / INDEPENDENT_QA_B01_60_PENDING / CODEX_ACK_PENDING / G1_HOLD / G2_HOLD / NOT_INTEGRATED / NO_MERGE.
+**B01-40**: inspect v1.1 exact SHA, source Git blobs, test logs, manifest, upgrade compatibility, and rollback. **B01-61 + B01-60**: independently rerun simulated controls, then perform the two native invocations above only in an authorized Unity environment, preserve original per-trial ZIP/logs and exact game SHA, compare full-versus-filtered, and send defects to Codex without modifying his code. **B01-00** chooses whether to queue v1.1 via #79 and requires explicit **Codex ACK** before the state `CODEX_CLAIMED`. An offered Draft PR is not independent QA or ACK.
+
+**Rollback:** leave this new Draft PR unmerged; retain historical frozen v1.0.0 #400 if useful. No game assets, prefabs, GUID, scenes or save data migration. For a native QA repro, discard the separate disposable `Library/` after preserving logs.
+
+**Status:** producer source verification only; B01-40 G0 and B01-60/61 QA pending; native Unity in CI41 producer NOT_RUN, game G1 HOLD, G2 HOLD, Codex ACK pending, not integrated.

@@ -1,39 +1,80 @@
 {
   "package_id": "CI41-REPLAY-001",
-  "version": "1.0.0",
-  "producer": "B01-41 CI/CD & TEST AUTOMATION",
-  "branch": "audit/b01-41-p17-w03-unity-repeat-executor",
-  "kind": "REAL_SUBPROCESS_UNITY_CLI_EXECUTOR_NOT_SIMULATED_GAME",
-  "scope": [
+  "version": "1.1.0",
+  "producer": "B01-41",
+  "owner_scope": [
     "Tools/B01/CI41/P17W03B/**",
     ".github/workflows/b01-41-p17w03b-unity-replay.yml"
   ],
-  "source_blobs": {
-    "Tools/B01/CI41/P17W03B/unity_repeat.py": "81e2e29a3be10a7882cba9603f453fd7253e1390",
-    "Tools/B01/CI41/P17W03B/test_unity_repeat.py": "16cb0fc02eed331a4a0dd2bea268d5b4abfa5413"
+  "branch": "audit/b01-41-p17w04-replay-fullsuite-v110",
+  "immutable_predecessor": {
+    "pull_request": 400,
+    "version": "1.0.0",
+    "commit": "0a7c00655f9c84ee50a2bc8ff5f3733440dbbfdf",
+    "status": "FROZEN_OFFERED_FOR_G0"
   },
-  "original_game_source": "203a0805251ed28293888e43f2d49f0df63767c6",
-  "recommended_filters": [
-    "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
-    "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies"
-  ],
-  "test_runner": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40911232379",
-  "tests": {
-    "expected_cases_per_os": 12,
-    "platforms": [
+  "source_git_blob_pins": {
+    "Tools/B01/CI41/P17W03B/unity_repeat.py": "0d597ac74da8aba5911829128422006ae7dbd797",
+    "Tools/B01/CI41/P17W03B/test_unity_repeat.py": "38a81d67914bcdcd59bfc93542574361e1543501"
+  },
+  "source_code_scope": "UNITY_NATIVE_EDITOR_REPLAY_WITH_EXACT_UNFILTERED_1330_FULL_AND_FILTERED_TESTS",
+  "codex_original_game_source_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "codex_original_native_receipt_sha": "f92c873bb1e397a598b133e107ae704e15f86768",
+  "codex_original_suite": {
+    "EditMode": {
+      "total": 1330,
+      "passed": 1327,
+      "failed": 2,
+      "skipped": 1,
+      "native_exit": 2
+    },
+    "PlayMode": {
+      "total": 474,
+      "passed": 474,
+      "failed": 0,
+      "skipped": 0,
+      "native_exit": 0
+    },
+    "failure_retest": {
+      "total": 2,
+      "passed": 2,
+      "exit": 0
+    }
+  },
+  "real_tests": {
+    "source_git_actions": [
       "windows-2025",
       "ubuntu-24.04"
     ],
-    "test_editor": "SIMULATED_PYTHON_CHILD_PROCESS",
-    "native_unity": "NOT_RUN",
-    "G1": "HOLD",
-    "G2": "HOLD"
+    "physical_process_simulated_editor": true,
+    "expected_tests_per_os": 18,
+    "actual_unity_editor_by_producer": "NOT_RUN",
+    "g1": "HOLD"
   },
-  "expected_tool_status": "REPEAT_PASS only if all filtered real tests/exit/XML passed; otherwise HOLD or FAIL_CLOSED",
-  "output": "unique per-attempt xml/log/stdout/stderr + atomic summary.json and sha256",
-  "native_import": "B01-40 source-only QA then B01-60/61 authorized real Unity executable in disposable exclusive exact-sha game checkout",
-  "rollback": "No merge; remove own optional CI script; discard disposable Unity QA Library",
-  "qa": "INDEPENDENT_PENDING",
-  "codex_ack": "PENDING",
-  "integrated": false
+  "native_repro": {
+    "mode": "EditMode",
+    "full_suite_count": 1330,
+    "repeats": 3,
+    "filtered_retests": [
+      "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+      "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies"
+    ],
+    "runbook": "Tools/B01/CI41/P17W03B/README.md"
+  },
+  "acceptance": {
+    "B01_40_G0": "PENDING",
+    "B01_60_61_INDEPENDENT_QA": "PENDING",
+    "Codex_ACK": "PENDING",
+    "G1": "HOLD",
+    "G2": "HOLD",
+    "integrated": false,
+    "merged": false
+  },
+  "rollback": "Leave v1.1 Draft unmerged and keep frozen #400, discard any disposable Unity generated Library and preserve native evidence",
+  "limits": [
+    "Simulated Editor is not Unity",
+    "No native Unity execution by producer",
+    "Test-discovery count pinned to specific original #383 source",
+    "Full suite cannot silently become green from filtered tests"
+  ]
 }
