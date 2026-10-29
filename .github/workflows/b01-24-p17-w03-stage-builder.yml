@@ -32,6 +32,28 @@ jobs:
         shell: bash
         run: |
           dotnet run --no-build -c Release --project Research/B01-24/P17/W03-ENEMY-STAGING-001/StageBuilderCI.csproj | tee staging-source-receipt.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run actual pinned Unity Editor ZIP staging and 16 input-integrity adversarial tests
+        shell: bash
+        run: |
+          python -m unittest discover -s Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools -p "test_prepare_unity_import.py" -v 2>&1 | tee unity-zip-tests.txt
+      - name: Build actual CODEX RECEIVER ZIP of two original Unity Editor source assets
+        shell: bash
+        run: |
+          python Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/prepare_unity_import.py --repo-root . --out-dir B0124-Codex-Receiver-Package | tee unity-zip-receipt.txt
+      - name: Archive physical original code ZIP and CRC/SHA receipt (native Unity NOT_RUN)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0124-W03-codex-unity-editor-import-${{ matrix.os }}
+          path: |
+            B0124-Codex-Receiver-Package/*
+            unity-zip-tests.txt
+            unity-zip-receipt.txt
+          if-no-files-found: warn
+          retention-days: 21
       - name: Archive source execution receipt only (mock scenes are NOT valid Unity .unity assets)
         if: always()
         uses: actions/upload-artifact@v4
