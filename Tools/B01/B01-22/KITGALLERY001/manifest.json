@@ -1,0 +1,33 @@
+{
+  "package_id": "B01-22-KITGALLERY-001",
+  "revision": "1.0.0",
+  "source_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+  "owner": "B01-22",
+  "independent_qa": "PENDING",
+  "native_unity": "NOT_RUN",
+  "owned_paths": [
+    "Assets/B01KitGallery001/**",
+    "Tools/B01/B01-22/KITGALLERY001/**",
+    ".github/workflows/b01-22-w03-kitgallery.yml"
+  ],
+  "test_commands": [
+    "python -m unittest discover -s Tools/B01/B01-22/KITGALLERY001 -p test_gallery.py -v",
+    "python Tools/B01/B01-22/KITGALLERY001/verify_gallery.py"
+  ],
+  "rollback": "Remove isolated Assets/B01KitGallery001 folder and root meta from Codex disposable worktree only",
+  "files": [
+    "Assets/B01KitGallery001/Data/KitGallery.json",
+    "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs",
+    "Tools/B01/B01-22/KITGALLERY001/original_source_fixture.json",
+    "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
+    "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
+    "Tools/B01/B01-22/KITGALLERY001/README.md",
+    ".github/workflows/b01-22-w03-kitgallery.yml",
+    "Assets/B01KitGallery001.meta",
+    "Assets/B01KitGallery001/Data.meta",
+    "Assets/B01KitGallery001/Editor.meta",
+    "Assets/B01KitGallery001/Data/KitGallery.json.meta",
+    "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs.meta"
+  ],
+  "note": "No edits to canonical Codex game or W16 frozen economy"
+}

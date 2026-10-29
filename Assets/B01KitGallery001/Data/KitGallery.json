@@ -1,0 +1,306 @@
+{
+  "schema": "b01-22-unity-gallery-v1",
+  "source_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+  "source_package": "B01-22-EQUIPMENT-KITS-001",
+  "reference_only": true,
+  "offers": [
+    {
+      "id": "EK01",
+      "title": "Przyczepność awaryjna",
+      "role": "mobility-recovery",
+      "description": "Koła, zawieszenie i żyroskop.",
+      "parts": [
+        {
+          "kind": "Wheel",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 15
+        },
+        {
+          "kind": "Suspension",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 25
+        },
+        {
+          "kind": "Gyroscope",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 30
+        }
+      ],
+      "price_scrap": 110,
+      "pieces": 5
+    },
+    {
+      "id": "EK02",
+      "title": "Gąsienicowy taran",
+      "role": "armored-assault",
+      "description": "Armata ciężka i tarcza na gąsienicach.",
+      "parts": [
+        {
+          "kind": "CrawlerTrack",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 45
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Heavy",
+          "count": 1,
+          "unit_scrap": 55
+        },
+        {
+          "kind": "DirectionalShield",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 60
+        }
+      ],
+      "price_scrap": 205,
+      "pieces": 4
+    },
+    {
+      "id": "EK03",
+      "title": "Zwiadowca Omni",
+      "role": "skirmisher",
+      "description": "Manewrowy karabin i impuls skanera.",
+      "parts": [
+        {
+          "kind": "OmniDrive",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 40
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Automatic",
+          "count": 1,
+          "unit_scrap": 36
+        },
+        {
+          "kind": "ScannerPulse",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 30
+        }
+      ],
+      "price_scrap": 146,
+      "pieces": 4
+    },
+    {
+      "id": "EK04",
+      "title": "Zawis i przełamanie",
+      "role": "hover-marksman",
+      "description": "Podwójny zawis, Railgun i skan struktury.",
+      "parts": [
+        {
+          "kind": "HoverEngine",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 35
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Railgun",
+          "count": 1,
+          "unit_scrap": 65
+        },
+        {
+          "kind": "StructuralScanner",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 40
+        }
+      ],
+      "price_scrap": 175,
+      "pieces": 4
+    },
+    {
+      "id": "EK05",
+      "title": "Szturm bliski",
+      "role": "close-combat",
+      "description": "Dwie strzelby, booster i stabilizacja.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "Shotgun",
+          "count": 2,
+          "unit_scrap": 45
+        },
+        {
+          "kind": "Booster",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 35
+        },
+        {
+          "kind": "Gyroscope",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 30
+        }
+      ],
+      "price_scrap": 155,
+      "pieces": 4
+    },
+    {
+      "id": "EK06",
+      "title": "Strażnik punktowy",
+      "role": "point-defense",
+      "description": "Obrona punktowa, tarcza i zwykłe działo.",
+      "parts": [
+        {
+          "kind": "PointDefense",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 70
+        },
+        {
+          "kind": "DirectionalShield",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 60
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Basic",
+          "count": 1,
+          "unit_scrap": 30
+        }
+      ],
+      "price_scrap": 160,
+      "pieces": 3
+    },
+    {
+      "id": "EK07",
+      "title": "Zakłócacz linii",
+      "role": "disruptor",
+      "description": "EMP, przecinarka, zaczep i skaner.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "EmpEmitter",
+          "count": 1,
+          "unit_scrap": 65
+        },
+        {
+          "kind": "Gun",
+          "weapon": "BeamCutter",
+          "count": 1,
+          "unit_scrap": 55
+        },
+        {
+          "kind": "MagneticGrapple",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 45
+        },
+        {
+          "kind": "ScannerPulse",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 30
+        }
+      ],
+      "price_scrap": 195,
+      "pieces": 4
+    },
+    {
+      "id": "EK08",
+      "title": "Ciężkie przełamanie",
+      "role": "heavy-breach",
+      "description": "Rakietnica, armata, żyroskop i gąsienice.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "RocketLauncher",
+          "count": 1,
+          "unit_scrap": 60
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Heavy",
+          "count": 1,
+          "unit_scrap": 55
+        },
+        {
+          "kind": "Gyroscope",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 30
+        },
+        {
+          "kind": "CrawlerTrack",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 45
+        }
+      ],
+      "price_scrap": 235,
+      "pieces": 5
+    },
+    {
+      "id": "EK09",
+      "title": "Flanka mechaniczna",
+      "role": "melee-flanker",
+      "description": "Piła obrotowa, boostery i sterowanie.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "RotarySaw",
+          "count": 1,
+          "unit_scrap": 50
+        },
+        {
+          "kind": "Booster",
+          "weapon": "",
+          "count": 2,
+          "unit_scrap": 35
+        },
+        {
+          "kind": "IndependentSteering",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 45
+        }
+      ],
+      "price_scrap": 165,
+      "pieces": 4
+    },
+    {
+      "id": "EK10",
+      "title": "Skokowy strzelec",
+      "role": "mobile-fire",
+      "description": "Napęd skokowy, Railgun, automat i skaner.",
+      "parts": [
+        {
+          "kind": "JumpDrive",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 45
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Railgun",
+          "count": 1,
+          "unit_scrap": 65
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Automatic",
+          "count": 1,
+          "unit_scrap": 36
+        },
+        {
+          "kind": "ScannerPulse",
+          "weapon": "",
+          "count": 1,
+          "unit_scrap": 30
+        }
+      ],
+      "price_scrap": 176,
+      "pieces": 4
+    }
+  ]
+}
