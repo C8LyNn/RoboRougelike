@@ -1,0 +1,52 @@
+{
+  "packageId": "B01-25-MAPDRAFT-IMPORT-001",
+  "version": "R1",
+  "mode": "ACTUAL_ORIGINAL_CSHARP_NATIVE_DOTNET8_NOT_UNITY",
+  "executedSourceIdentity": {
+    "mapDraftGitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "clearanceOriginalJsonGitBlob": "53eb696950121465befea2855eda4d7268750016",
+    "slalomOriginalJsonGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+    "programGitBlob": "5022a897115bf7a92299a780b6d2ac55585dea96"
+  },
+  "actualOriginalProducerRun": {
+    "runId": 40906512919,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40906512919",
+    "headCommit": "e6e0aa0027c2bf4fc12eb7de19d86d4176134c3e",
+    "tests": [
+      {
+        "os": "ubuntu-latest",
+        "jobId": 123562637623,
+        "conclusion": "SUCCESS",
+        "originalMapDraftAssertions": "23/23",
+        "adversarialSemantics": "12/12",
+        "exactGitSourceInputs": "PASS",
+        "receiptArtifactId": 12911447231
+      },
+      {
+        "os": "windows-latest",
+        "jobId": 123562637849,
+        "conclusion": "SUCCESS",
+        "originalMapDraftAssertions": "23/23",
+        "adversarialSemantics": "12/12",
+        "exactGitSourceInputs": "PASS",
+        "receiptArtifactId": 12911088289
+      }
+    ],
+    "artifactsIncludeOriginalExecutedSourceReceipts": true
+  },
+  "sourceControls": [
+    "Original CSharp TryLoad and TestError load both authentic maps",
+    "MapDraft Footprint no same-kind duplicate",
+    "Roundtrip ToJson then TryLoad both",
+    "Undo/Redo after actual load",
+    "Original V1 compatibility drops vertical scale (documented hazard)",
+    "12 original source negative or error-semantics tests"
+  ],
+  "nativeUnityG1": "NOT_RUN",
+  "realUnityJsonUtility": "NOT_RUN",
+  "realVehiclePhysX": "NOT_RUN",
+  "actualCodexIntegration": "NO",
+  "independentB0140B0160": "PENDING",
+  "nuance": "Program uses original immutable Codex MapDraft.cs with a minimal .NET surrogate UnityEngine.Vector2Int/JsonUtility. This is stronger original C# acceptance than JS mirror but cannot establish Unity serialization/physics semantics.",
+  "historicalRunNotes": "Initial run 40906302543 passed 23/23 on both OS but upload-artifact ignored hidden .source and did NOT upload receipt. Fixed workflow at e6e0aa: include-hidden-files=true; if-no-files-found=error. Subsequent run 40906512919 completed both jobs SUCCESS and uploaded two physical artifacts."
+}
