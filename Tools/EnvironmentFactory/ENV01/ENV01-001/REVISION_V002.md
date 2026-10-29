@@ -26,9 +26,19 @@
 
 ## Executed tests and boundaries
 - In run #40968764152, actual Blender generated both binary formats and two PNGs; the first independent Blender QA stage passed (1144 triangles, 0 nonmanifold, 0 degenerate, 0 negative volumes, 9 rear steel-vs-concrete AABB checks, pivot, scale, collider envelope, GLB header).
-- The second-run QA initially **FAILED** because the report writer assumed output files lived beneath the source directory. This was a QA harness path defect, **not a mesh defect**. Fixed in commit `88b3f1b26b464c2634a68ffc348a0bbb61c9bde0`; a new CI run must confirm reproducibility before marking the revision accepted.
+- The second-run QA initially **FAILED** because the report writer assumed output files lived beneath the source directory. This was a QA harness path defect, **not a mesh defect**. Fixed in commit `88b3f1b26b464c2634a68ffc348a0bbb61c9bde0`; the subsequent CI run confirmed independent rebuild and GLB byte-level reproducibility (see final result below).
 - Added front-rail-to-concrete clearance assertions in QA; latest workflow rebuilds twice and compares actual GLB bytes.
 - Native Unity EditMode / PlayMode / Windows / PhysX / URP / manual HQ art approval: **NOT_RUN / PENDING**. No gameplay changes.
 - Request independent B01-60 reproduction and B01-00 governance review before any handoff. No OFFERED_FROZEN or CODEX_CLAIMED evidence for ENV01-001 was found in #79 / #407 or PR #288 at refinement start.
 
 **License / provenance:** CC0-1.0; all geometry and generator authored for this project, no third-party model imports.
+
+## Final v002 producer evidence (2026-10-29)
+- [Actual Blender Actions #40968911461](https://github.com/C8LyNn/RoboRougelike/actions/runs/40968911461): **SUCCESS**, Blender 4.0.2, two physical renders, native .blend and GLB, independent mesh QA, second generator run, independent QA of second output, byte-identical GLB, manifest generated.
+- Producer source/QA HEAD before export: `88b3f1b26b464c2634a68ffc348a0bbb61c9bde0`.
+- Physical v002 exports commit: `56895fba696d04bd24129bee1ef40ffacfd7cf25` (GitHub Actions bot; same original Draft PR branch, no force-push).
+- [Actions artifact #12939906003](https://github.com/C8LyNn/RoboRougelike/actions/runs/40968911461/artifacts/12939906003), GitHub-reported archive digest SHA256 `fd148e05340255236336752b42f5cf69f53f3c8ffdab9013561e0bafc77b266b`.
+- Physical v002 SHA256: BLEND `12562cc4864873f7178b794783097a11b7d24f2f6e021df2e6d7587fbc98211f`; GLB `bb49b0cb236e335e90d1fd8a155fc2013e0c7e6416c4eaa1327f18c2bf015c66`; front PNG `07db5026612a932ba66a1259517d08f0087ec5c0030801401aeb5799a9e88c3f`; rear PNG `4aa913d17c2ce52d31051b0d60e1501b0a55b5ffb934f7f4e3ebbbfd1339bdc3`.
+- Independent Blender QA: **PASS**; 0 nonmanifold, 0 degenerate, 0 negative-volume meshes, 9 rear-frame AABB disjointness checks, front rail clearances 8.814 mm / 10 mm, ground Z=0, collider contains all mesh AABBs with >=15mm margin, 3 materials, 1144 triangles.
+- V001 manifest and binary files remain unchanged in `generated/` and are available for side-by-side inspection.
+- **B01-60 / B01-00 independent QA and HQ art selection still pending.** Unity, Windows, URP and PhysX NOT_RUN. No integration or Codex handoff.
