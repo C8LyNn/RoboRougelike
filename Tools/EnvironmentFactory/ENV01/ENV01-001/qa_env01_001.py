@@ -93,6 +93,21 @@ for obj in meshes:
         frame_checks += 1
 assert frame_checks >= 9, "Rear steel overlap checks incomplete"
 
+# Front rails must sit outside the concrete profile with at least 5mm gap.
+# Evaluate the maximum forward concrete Y at each rail's lowest Z.
+def concrete_front_y(z):
+    if z <= 0.16:
+        return 0.30
+    if z <= 0.29:
+        return 0.30 + (z - 0.16) * (0.255 - 0.30) / (0.29 - 0.16)
+    return 0.255 + (z - 0.29) * (0.16 - 0.255) / (0.68 - 0.29)
+front_rail_clearances = {}
+for name in ("Front_impact_rail", "Front_toe_rail"):
+    box = bounds(bpy.data.objects[name])
+    gap = box[1][0] - concrete_front_y(box[2][0])
+    assert gap >= 0.005, "Front rail embeds into concrete: %s %.6f" % (name, gap)
+    front_rail_clearances[name] = round(gap, 6)
+
 # The proposed single collider must fully enclose rear feet and all meshes.
 collider_center = (0.0, -0.09, 0.42)
 collider_size = (2.62, 1.00, 0.90)
@@ -147,6 +162,7 @@ report = {
     "degenerate_faces": degenerate_faces,
     "negative_volume_meshes": negative_volumes,
     "rear_frame_concrete_nonintersection_aabb_checks": frame_checks,
+    "front_rail_clearances_m": front_rail_clearances,
     "ground_contact_z_m": round(world_min[2], 6),
     "collider_center_m": list(collider_center),
     "collider_size_m": list(collider_size),
