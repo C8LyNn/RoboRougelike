@@ -1,0 +1,44 @@
+test_01_real_file_hashes_correct (test_capture.OperatorTests.test_01_real_file_hashes_correct) ... ok
+test_02_exact_command_switches (test_capture.OperatorTests.test_02_exact_command_switches) ... ok
+test_03_unsafe_scenario_rejects (test_capture.OperatorTests.test_03_unsafe_scenario_rejects) ... ok
+test_04_bad_sha_rejects (test_capture.OperatorTests.test_04_bad_sha_rejects) ... ok
+test_05_wrong_validator_git_blob_rejects (test_capture.OperatorTests.test_05_wrong_validator_git_blob_rejects) ... ok
+test_06_runtime_too_short_rejects (test_capture.OperatorTests.test_06_runtime_too_short_rejects) ... ok
+test_07_missing_player_rejects (test_capture.OperatorTests.test_07_missing_player_rejects) ... ok
+test_08_duplicate_run_folder_rejects (test_capture.OperatorTests.test_08_duplicate_run_folder_rejects) ... ok
+test_09_dry_run_creates_no_evidence (test_capture.OperatorTests.test_09_dry_run_creates_no_evidence) ... ok
+test_10_fake_process_no_receipt_returns_failed (test_capture.OperatorTests.test_10_fake_process_no_receipt_returns_failed) ... ok
+test_11_fake_process_nonzero_rejects_even_complete (test_capture.OperatorTests.test_11_fake_process_nonzero_rejects_even_complete) ... ok
+test_12_fake_incomplete_capture_rejects (test_capture.OperatorTests.test_12_fake_incomplete_capture_rejects) ... ok
+test_13_fake_capture_with_mock_validator_still_not_native_pass (test_capture.OperatorTests.test_13_fake_capture_with_mock_validator_still_not_native_pass) ... ok
+test_14_reexecution_refuses_overwrite (test_capture.OperatorTests.test_14_reexecution_refuses_overwrite) ... ok
+test_15_validator_negative_result_not_promoted (test_capture.OperatorTests.test_15_validator_negative_result_not_promoted) ... ok
+test_16_mismatched_binary_and_build_zip_rejected (test_capture.OperatorTests.test_16_mismatched_binary_and_build_zip_rejected) ... ok
+test_17_unreadable_zip_rejected (test_capture.OperatorTests.test_17_unreadable_zip_rejected) ... ok
+test_18_original_zip_member_verified (test_capture.OperatorTests.test_18_original_zip_member_verified) ... ok
+test_19_duplicate_matching_binary_in_zip_rejected (test_capture.OperatorTests.test_19_duplicate_matching_binary_in_zip_rejected) ... ok
+test_20_no_external_network_dependencies (test_capture.OperatorTests.test_20_no_external_network_dependencies) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 1.621s
+
+OK
+{
+  "classification": "DRY_RUN_NO_PLAYER_EXECUTED",
+  "command": [
+    "/tmp/tmp01tpnp6i/Player.exe",
+    "-b0150-live-output",
+    "/tmp/tmp01tpnp6i/output/12gun-map/capture",
+    "-b0150-live-game-sha",
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "-b0150-live-build-sha",
+    "61240f2c64f68eb628d7c04c2ee46dd6ddcf77b1570f96ad3fdc90523f65f78b",
+    "-b0150-live-scenario",
+    "12gun-map",
+    "-logFile",
+    "/tmp/tmp01tpnp6i/output/12gun-map/Player.log"
+  ],
+  "build_zip_sha256": "61240f2c64f68eb628d7c04c2ee46dd6ddcf77b1570f96ad3fdc90523f65f78b",
+  "player_exe_sha256": "d46f23967545daf75022366bd4251f5725fd8136f969489ba2db134844e9a45a",
+  "player_zip_member": "RoboRougelike/Player.exe"
+}
