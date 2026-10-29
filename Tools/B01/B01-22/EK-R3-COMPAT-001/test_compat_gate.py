@@ -122,5 +122,18 @@ class OriginalR3GateTests(unittest.TestCase):
             self.assertEqual(receipt["frozen_files_verified"], 13)
             self.assertEqual(receipt["codex_integration"], "NOT_PERFORMED")
 
+    def test_20_own_source_manifest_git_blobs(self):
+        manifest = json.loads((HERE/"manifest.json").read_text(encoding="utf-8"))
+        rows = manifest["git_blobs"]
+        self.assertEqual(len(rows), 4)
+        seen = set()
+        for row in rows:
+            path = row["path"]
+            self.assertNotIn(path, seen)
+            self.assertTrue(path.startswith("Tools/B01/B01-22/EK-R3-COMPAT-001/") or
+                            path == ".github/workflows/b01-22-w04-r3-compat.yml")
+            self.assertEqual(g.blob(self.repo, "HEAD", path), row["blob_sha1"])
+            seen.add(path)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
