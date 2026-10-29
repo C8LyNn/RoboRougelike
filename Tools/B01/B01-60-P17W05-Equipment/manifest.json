@@ -32,9 +32,17 @@
     "no native Unity license or runtime",
     "source-only G0 candidate, not G1/G2 or Codex ACK"
   ],
-  "g0": "INDEPENDENT_TEST_PENDING",
+  "g0": "B01_60_INDEPENDENT_SOURCE_AND_STAGE_QA_PASS_EXACT_CODE_SHA",
   "native_unity_g1": "NOT_RUN",
   "codex_ack": "PENDING",
   "integrated": false,
-  "rollback": "delete only B01-60 Tools and own Actions workflow; never change producer #411 or frozen #333"
+  "rollback": "delete only B01-60 Tools and own Actions workflow; never change producer #411 or frozen #333",
+  "tested_code_sha": "fd3467389ea8984a08880ff5ba0cf3615a304b22",
+  "test_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40969011979",
+  "actual_test_evidence": {
+    "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40969011979/artifacts/12939436490",
+    "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40969011979/artifacts/12939527163",
+    "both": "completed success original Node26 Python18 original host mutated7; independent 13 SHA files/10 real offers/4 negative stage/rollback and immutable latest R3 exact 8-byte delta"
+  },
+  "source_release_gate": "SOURCE ONLY; producer manifest tests[0] still NOT_RUN despite actually executed CI; producer should reconcile metadata before HQ G2"
 }
