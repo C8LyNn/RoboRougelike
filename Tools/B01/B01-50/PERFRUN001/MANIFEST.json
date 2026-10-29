@@ -1,0 +1,62 @@
+{
+  "package_id": "B01-50-PERFRUN-001/R2-W05",
+  "scope": "Tools/B01/B01-50/PERFRUN001/**",
+  "producer": "B01-50",
+  "previous_r1_sha": "e544f4a00c2ac149dfe118293929667559e7d521",
+  "classification": "ORIGINAL_WINDOWS_PLAYER_CAPTURE_OPERATOR_NOT_NATIVE_PLAYER_EXECUTED",
+  "dependencies": {
+    "pinned_validate_live_git_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82",
+    "source_pr": 328
+  },
+  "executed": {
+    "python_unittest": "29/29 PASS real Linux Python 3.13: 25 operator cases + 4 real original-validator subprocess cases (synthetic input)",
+    "original_full_historical_zip": "212/212 files SHA256 match, Windows Player NOT_RUN",
+    "python_compile": "PASS",
+    "unity_edit_play": "NOT_RUN",
+    "native_player": "NOT_RUN",
+    "actual_game_fps": "NOT_MEASURED",
+    "independent_qa": "PENDING",
+    "codex_ack": "PENDING",
+    "original_validator_sha1": "7060aa3e364b2bc69de99501faa99bba57e84f82",
+    "original_validator_subprocess": "4/4 PASS (1 valid 120s synthetic trace + 3 intentional malformed variants)"
+  },
+  "files": {
+    "README.md": {
+      "bytes": 13740,
+      "sha256": "ea8b9c1830768527074e1434be2eed91d53557ac0213cf37908a58d60f7d758c"
+    },
+    "capture.py": {
+      "bytes": 15796,
+      "sha256": "63de7ea99fd7c66eb499bec0ec0fc6ebcd0ebb4aa80b46d9da7131ec1e3dea10"
+    },
+    "tests/test_capture.py": {
+      "bytes": 10321,
+      "sha256": "50e510e300519e6ffc64ab19f509f637b04bc847eba1e77194cba396952ac09d"
+    },
+    "evidence/historical_zip_binary_match.json": {
+      "bytes": 567,
+      "sha256": "45d06b4f28723f25b029eb518ddf6c20b474485b12751c6960b9873f0b3b5db0"
+    },
+    "evidence/unittest.log": {
+      "bytes": 3111,
+      "sha256": "0cd56a4544c529a73bc347dffa0d9c271f0e5255da54edaf59403ad6a24ed91d"
+    },
+    "evidence/historical_full_distribution_receipt.json": {
+      "bytes": 545,
+      "sha256": "dcdf62c6eb6c961035e847a8ac68e40720924b5f038c9ee9ca1aac3eccb8fc47"
+    },
+    "evidence/w04_red_green_receipt.json": {
+      "bytes": 1422,
+      "sha256": "b7f51d1cd37cdeb2a164d8d26709705a8056b9d6ba3743e3b30f7b86f97911c1"
+    },
+    "tests/test_original_validator_integration.py": {
+      "bytes": 6149,
+      "sha256": "5caaeeae8e89ae2669cbf74e2dc508f3e19afdbf3ea634d8c8d843843709477c"
+    },
+    "evidence/W05_original_validator_interop_receipt.json": {
+      "bytes": 1559,
+      "sha256": "aa8b9f9cd88d3a358ce546d1ee7e0e04f4d7c1ad9db6a302c2f6ac09eca6f547"
+    }
+  },
+  "w05_extension": "original PERFSCALING001 validate_live.py subprocess interoperability tests; no Player execution"
+}

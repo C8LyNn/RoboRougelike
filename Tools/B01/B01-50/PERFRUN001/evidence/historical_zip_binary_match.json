@@ -1,0 +1,11 @@
+{
+  "classification": "HISTORICAL_ARCHIVE_ZIP_BINARY_MATCH_NO_PLAYER_EXECUTED",
+  "historical_zip_sha256": "ec3193bb3ac24398c496ea65ad12aa653321db160a4dc74e8f618e3cc7ad6d1d",
+  "executable_sha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+  "archive_member": "RoboRougelike_SuspensionUX_Windows_x64/RoboRougelike.exe",
+  "archive_file_bytes": 38650598,
+  "exe_bytes": 667648,
+  "native_unity_player": "NOT_RUN",
+  "actual_game_fps": "NOT_MEASURED",
+  "warning": "Historical zip is not current Codex/LD02 build; provenance matching only."
+}
