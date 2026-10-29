@@ -35,7 +35,19 @@
   },
   "runtime": "Git, Python3.11+, .NET8 Windows/Ubuntu, actual disk FS, non-native UnityEngine.JsonUtility shim",
   "tests_expected": "15 fixed positive/negative tests and explicit original old RED exit86 per OS",
-  "tests_actual": "PENDING_GITHUB_CI",
+  "tests_actual": {
+    "github_actions": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40909753557",
+    "source_commit_before_receipt": "441b4a89a8b150232f6caff35683ae23aa820201",
+    "Windows": "15/15 PASS source-original .NET8 + historical old RED exit86 observed",
+    "Ubuntu": "15/15 PASS source-original .NET8 + historical old RED exit86 observed",
+    "artifact_windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40909753557/artifacts/12913212206",
+    "artifact_ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40909753557/artifacts/12913605823",
+    "CI01": "SUCCESS",
+    "unity_native": "NOT_RUN",
+    "codex_full_EditMode_external_owner_evidence": "1327 PASS / 2 FAIL / 1 SKIPPED; remains RED",
+    "independent_B0140_B0160_ack": "PENDING",
+    "codex_ack": "PENDING"
+  },
   "scope": [
     "Tools/B01/B01-62/P17W03CheckpointSourceQA/**",
     ".github/workflows/b01-62-p17w03-checkpoint-original.yml"
