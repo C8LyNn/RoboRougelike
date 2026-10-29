@@ -1,4 +1,4 @@
-name: ENV05-001 Light Bollard Blender QA
+name: ENV05-001 v002 Light Bollard Blender QA
 on:
   push:
     branches: [feature/rrl-env05-001-light-bollard]
@@ -38,7 +38,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ENV05-001-BLEND-GLB-Preview-QA
+          name: ENV05-001-v002-BLEND-GLB-Preview-QA
           path: env05-001-artifacts/
           if-no-files-found: warn
           retention-days: 14
