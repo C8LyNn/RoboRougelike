@@ -1,0 +1,10 @@
+2-gun-light rep=1 exact=64/64 candidates=66/12288 timeJS=6.61/0.50ms
+2-gun-light rep=2 exact=64/64 candidates=66/12288 timeJS=0.08/0.52ms
+2-gun-light rep=3 exact=64/64 candidates=66/12288 timeJS=0.13/0.43ms
+6-gun-mid rep=1 exact=256/256 candidates=668/294912 timeJS=1.86/2.01ms
+6-gun-mid rep=2 exact=256/256 candidates=668/294912 timeJS=3.39/1.40ms
+6-gun-mid rep=3 exact=256/256 candidates=668/294912 timeJS=3.11/1.09ms
+12-gun-heavy rep=1 exact=1024/1024 candidates=12486/4718592 timeJS=28.55/4.01ms
+12-gun-heavy rep=2 exact=1024/1024 candidates=12486/4718592 timeJS=33.97/3.50ms
+12-gun-heavy rep=3 exact=1024/1024 candidates=12486/4718592 timeJS=25.19/3.84ms
+PASS: exact hit ID + earliest swept time parity; native Unity/PhysX NOT_RUN

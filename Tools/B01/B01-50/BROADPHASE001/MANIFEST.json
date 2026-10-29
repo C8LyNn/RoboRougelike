@@ -1,0 +1,47 @@
+{
+  "classification": "STANDALONE_SYNTHETIC_XZ_COLLISION_REFERENCE_NOT_UNITY",
+  "dependencies": [
+    "Node.js >=18 (local only); 0 npm packages"
+  ],
+  "files": {
+    "README.md": {
+      "bytes": 5679,
+      "sha256": "fd8f53b9cb3300a426b527daa5d6cd6bbe74ab6614c7026ebb2ed17d6999f10f"
+    },
+    "benchmark.mjs": {
+      "bytes": 2951,
+      "sha256": "723725d8f89cb37c3a9d37772854bac070210e28d5031a76dd29d287971a7506"
+    },
+    "broadphase.mjs": {
+      "bytes": 5069,
+      "sha256": "ef7afe0b75fcb7acb170ec412f814702b500845895f13a9a81621528c02e5e64"
+    },
+    "evidence/benchmark_stdout_r1.log": {
+      "bytes": 736,
+      "sha256": "05fbcd0e52d3fbb27e3b47a56501fdd9842e1e4ab48349e18ff2086e84de054d"
+    },
+    "evidence/js_benchmark_seed31_r1.json": {
+      "bytes": 4593,
+      "sha256": "c9822b2b6ce5c9e429cc3dc64ecadba58824f8158782fc4eb6d6f59a1af38a4c"
+    },
+    "evidence/tests_node.log": {
+      "bytes": 2196,
+      "sha256": "eeb0edf6a10926c0b5d04bc9b0b2edd9db990268097b8af5d935346d8232a23c"
+    },
+    "tests/broadphase.test.mjs": {
+      "bytes": 5004,
+      "sha256": "9185c4b13001942d986cad0186bb5a9f31c8749d15bfc95b9bc10c58ce59cd48"
+    },
+    "evidence/W03_R2_red_green_receipt.json": {
+      "bytes": 1410,
+      "sha256": "8c69ce6130c20ddad4a2400b946d6a88046c5ccb3977f3069558f09c7aa2184d"
+    }
+  },
+  "independent_QA": "PENDING",
+  "native_unity": "NOT_RUN",
+  "owner": "B01-50",
+  "package_id": "B01-50-BROADPHASE-001/R2",
+  "scope": "Tools/B01/B01-50/BROADPHASE001/**",
+  "previous_source_commit": "3104370c99dce19253085a75589858975ca5f79d",
+  "r2_correction": "first-impact exact t ordering; ID tie-break only for exactly equal t; parity strict"
+}
