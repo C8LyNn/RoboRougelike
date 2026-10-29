@@ -31,7 +31,7 @@
   ],
   "rollback": "Delete only two QA tool files, own workflow, and generated report; original B01-23 game content stays frozen",
   "producer_original_assets": "Assets/PARTSIZE001/Bracing/P17/ from #375; archived physical ZIP provided independently in #391, not installed by this receiver",
-  "archive_receiver_git_blob": "43ca1e7cb1ae81f8281b0daf770b478381d303bb",
+  "archive_receiver_git_blob": "f2347ca47cdfe46ce486acba8b4cc38d2d1193ec",
   "wave04_binary_archive_intake": {
     "artifacts": {
       "windows": 12910483987,
