@@ -1,42 +1,44 @@
-# ENV02-001 — rampa terenowa / terrain ramp (concept asset)
+# ENV02-001 — terrain ramp, v002 source revision (concept only)
 
-**Scope:** One original, static low-poly industrial sci-fi obstacle-course ramp. Visual art pilot only; **no game integration**, no gameplay logic, no vehicle modification, no claim on M01–M05. Status: `MANUAL_ART_REVIEW_PENDING` until the owner reviews the actual exported asset.
+**Ownership:** ENV02 producer, original Draft PR #290, existing claim ENV02-001.
+**Status:** REFINEMENT_V002_SOURCE / INDEPENDENT_ART_QA_PENDING. No Unity integration, Codex ACK or merge.
+**History:** v001 source commit `daedcd618d3426ceffea0d1d093fdc3159844c90` remains immutable and downloadable through the [original Blender Actions evidence](https://github.com/C8LyNn/RoboRougelike/actions/runs/40484667955/artifacts/12723734098).
+This is an **in-place source revision on the same owned branch**, not a new asset, claim or PR. All generated outputs use `_v002` filenames; no v001 receipt is overwritten.
 
-## Dimensions and axis convention
+## Geometry: actual changes from v001
 
-- Blender scene: **1 Blender unit = 1 metre**, metric, scale 1.0. Origin/pivot `(0,0,0)` at ground level in the centre of the ramp footprint.
-- Blender **+X** right across the width, **+Y** forward along the vehicle path, **+Z** up. glTF uses Y-up internally; Blender exporter handles the conversion. Unity orientation/scale **NOT TESTED**.
-- Nominal drivable surface: **5.0 m long × 2.6 m wide**. Low deck tip **0.045 m** above the floor, crest **0.520 m**. Approach: Y -2.50 to -0.70 m; flat crest Y -0.70 to +0.70 m; exit Y +0.70 to +2.50 m. Both slopes **~14.8°**. Deck thickness **0.030 m**. Concrete foundation width **2.45 m**.
-- Three completely planar, uninterrupted steel drive faces: approach, plateau and exit. All rivets, side stiffeners and amber markings are on the **outside** of the 2.6 m drive envelope, not across the rolling surface.
-- Exactly **three simple materials**: `CONCRETE`, `STEEL`, `SAFETY_AMBER`. No external textures, no animation, no rig, no map generation.
+| Parameter | v001 verified physical geometry | v002 source design (verify in new Blender artifact) |
+|---|---:|---:|
+| Length / drive width | 5.0 / 2.6 m | unchanged |
+| Maximum crest height | 0.520 m | unchanged |
+| Level crest length | 1.40 m | 0.80 m |
+| Floor approach/exit lip | 45 mm | 5 mm |
+| Max straight-segment grade | 14.7827° | <= 15.48° |
+| Grade discontinuity at crest | abrupt 14.78° change | C1-eased 0.24 m transition, sampled every 40 mm |
+| Concrete support | deck underlay to ends | continuous central 4.4 m support with tapered 0.3 m steel tips |
+| Deck fasteners | side-mounted, possible 2 mm protrusion over road height | lowered to at least 23 mm below road height |
+| Collider proposal | convex prism with four top profile vertices | **STATIC NONCONVEX** closed MeshCollider proposal, identical sampled visual top |
 
-## Proposed collision (NOT imported into game)
+The **road top is one uninterrupted manifold steel shell**. The 0.24 m smoothstep-integrated slope ramps in/out continuously at the ground and crest. The central straight portions keep a bounded 15.48° maximum grade; the old 45 mm entrance lip is reduced to 5 mm. No props are placed on the drivable top. All side stiffeners/markers remain below the road height; side fasteners are now recessed. This reduces geometric snag risks but **does not establish tire physics PASS**.
 
-`COLLIDER_PROPOSAL_RAMP` is a single closed convex prism, matching the top steel deck profile (three drivable planes). It is visible as a wireframe helper in the editable BLEND, hidden from preview renders and **not part of the visual GLB**. A separate `ENV02-001_collider_proposal.glb` allows HQ to evaluate the geometry. Proposed **convex MeshCollider** or three planar convex box wedges for later review; no physics verification or Unity import has occurred. Real tire contact, edge clearance and penetration are **NOT_RUN**.
+**Collider limitation:** eased S-curve profile is non-convex. Proposed collider is a separate, closed, **static non-convex** mesh with an exact matching top and buried bottom; `convex=false` is required. It must not be assigned as a dynamic Rigidbody convex collider. Actual Unity contact, convex decomposition, tire clearance and performance: NOT_RUN.
 
-## Reproducible build
+## Coordinate system and provenance
 
-Requires Blender with Python `bpy` and its glTF exporter. From the repository root:
+- Blender metric scene: 1 unit = 1 metre, pivot at world (0,0,0), ground footprint centre. Blender +X across width, +Y forward travel, +Z up. GLB uses Y-up conversion. Unity import NOT_RUN.
+- Static low-poly industrial sci-fi, 3 original PBR materials: `CONCRETE`, `STEEL`, `SAFETY_AMBER`. No rigs, animation, gameplay logic or textures.
+- CC0-1.0 original authored procedural geometry; no competitor assets or third-party meshes.
+- Owned paths only: `Tools/EnvironmentFactory/ENV02/ENV02-001/**`, own `.github/workflows/ci-env02-001.yml`. No changes to original claim, scenes, prefabs, ProjectSettings or canonical game.
+
+## Reproduce and validate v002
 
 ```bash
 blender --background --factory-startup --python Tools/EnvironmentFactory/ENV02/ENV02-001/generate_env02_001.py -- --out ./build/ENV02-001
 python3 Tools/EnvironmentFactory/ENV02/ENV02-001/qa_env02_001.py ./build/ENV02-001
 ```
 
-Expected physical outputs: `ENV02-001.blend`, `ENV02-001_visual.glb`, `ENV02-001_collider_proposal.glb`, `ENV02-001_view_3q.png`, `ENV02-001_view_side.png`, `ENV02-001_blender_qa.json`, `ENV02-001_manifest.json`. GitHub Actions uploads these as one evidence artifact. Output files are only considered **real** when the build job has actually succeeded and the artifact exists; source presence alone does not constitute export.
+The generator creates `ENV02-001_v002.blend`, `ENV02-001_v002_visual.glb`, `ENV02-001_v002_collider_proposal.glb`, `ENV02-001_v002_view_3q.png`, `ENV02-001_v002_view_side.png`, and `ENV02-001_v002_blender_qa.json`. The independent validator creates `ENV02-001_v002_manifest.json` with SHA-256 of physical files and v001/v002 geometry metrics. GitHub Actions runs actual Blender headless, reopens the saved .blend, regenerates in a separate directory, compares GLB bytes, checks manifold/normal/triangle and matching collider profile, and uploads artifacts.
 
-## QA and review gate
+**Before PNGs (v001):** `ENV02-001_view_3q.png` and `ENV02-001_view_side.png` in the immutable original artifact linked above. **After PNGs (v002):** same two camera angles in the new artifact with `_v002` names. Review both pairs side-by-side. The original source SHA, physical BLEND/GLB and PNG SHA-256 are preserved in the v001 PR description and old manifest.
 
-Blender-native generator checks positive closed-manifold volumes, degenerate faces, positive signed normals, visual mesh transforms, metric scale, exactly three materials, static/no animation and **200–1500** rendered triangles. Independent Python validator parses the actual GLB binary and checks geometry counts, materials, collider isolation, Blender magic, PNG dimensions and SHA256 of physical outputs. The two PNGs are Workbench camera views, **not** Unity/URP renders.
-
-**NOT_RUN:** Unity 6 importer, EditMode, PlayMode, Windows build, physics/collision response, URP materials, manual artistic review. **NO MERGE / NO INTEGRATION** until separate HQ authorization. This is not a `CODEX_READY` gameplay package.
-
-## Authorship / licensing
-
-All geometry, proportions, Blender source, materials and preview setup are **original procedural authored work for this pilot**, not copied or extracted from any game or competitor. No external mesh, texture, font or reference image is embedded. The authored asset and source are offered under **CC0-1.0** (public-domain dedication) by the producer for this project; Blender's own software and the GitHub Actions environment retain their respective licenses. If project governance requires a different contribution license, HQ should review before integration.
-
-## Provenance
-
-- Control: [`#287`](https://github.com/C8LyNn/RoboRougelike/issues/287) and [`#276`](https://github.com/C8LyNn/RoboRougelike/issues/276).
-- Isolated source: `Tools/EnvironmentFactory/ENV02/ENV02-001/**` and its dedicated `.github/workflows/ci-env02-001.yml` only, plus single non-overwriting claim `Docs/EnvironmentFactory/claims/ENV02-001.json`.
-- Claim created **before** any production. The PR remains **Draft** and targets `develop`; do not merge or copy into canonical Unity scenes/prefabs.
+**Gates:** Producer Blender QA is not independent B01-60 review. B01-60 / B01-00 must explicitly accept the v002 SHA. No CODEX_ACK, no Unity/Windows/PhysX verification, no gameplay import or merge. Rules: [#276](https://github.com/C8LyNn/RoboRougelike/issues/276), [#407](https://github.com/C8LyNn/RoboRougelike/issues/407).
