@@ -6,7 +6,7 @@
   "draftPullRequest": "https://github.com/C8LyNn/RoboRougelike/pull/357",
   "headAtManifestCreation": "45e0103a7e78194f3f1ac7c1ed743cb8535096a0",
   "sourceOnly": true,
-  "productionStatus": "ACTUAL_SOURCE_AND_BROWSER_CI_GREEN / PRODUCER_COMPLETE / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NATIVE_UNITY_NOT_RUN",
+  "productionStatus": "PRODUCER_REAL_NODE_AND_CHROMIUM_GREEN_WITH_RED_GREEN_REGRESSION / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / GAME_NOT_INTEGRATED",
   "sourceScope": "Research/B01-10/P17Workbench/** plus ONE new owned isolated .github/workflows/b01-10-p17-r5-workbench.yml",
   "contents": {
     "R5WorkbenchCore.js": {
@@ -14,8 +14,8 @@
       "characters": 9660
     },
     "R5Workbench.html": {
-      "blob": "1ec85c696edaacf66553ab46590f091a6c8721a8",
-      "characters": 22313,
+      "blob": "f26ca89e7f7f2663754b1ef8ee6d28355ddcd7da",
+      "characters": 22606,
       "gitBlobAtRealBrowserRun": "1ec85c696edaacf66553ab46590f091a6c8721a8"
     },
     "workbench.test.cjs": {
@@ -23,16 +23,21 @@
       "characters": 5607
     },
     "README.md": {
-      "blob": "a4c0a9c66ae1117fd166920dfa1db79ed16ea116",
-      "characters": 7729
+      "blob": "7df13c7dc2590eb2146dd11c17d295c63c57900f",
+      "characters": 11389
     },
     "browser.test.cjs": {
-      "blob": "cf51ab91bf32543e6557cfd648eff1efa4270dfe",
-      "characters": 5774
+      "blob": "49f0523bdb2f9e96c35cf5991ce15d7366c10bbb",
+      "characters": 7810
     },
     "QA_W02.json": {
       "blob": "85343ab5c6acc318bb1a54c825792ac475e9287b",
       "characters": 3184
+    },
+    "QA_W03.json": {
+      "blob": "0252bf182f7729f0a1e8ffcda958b2f217057878",
+      "characters": 3898,
+      "role": "W3 real browser 33/36 red => 36/36 green, win/ubuntu node 41/41 with immutable original-source pins"
     }
   },
   "originalGameSource": {
@@ -59,13 +64,13 @@
   ],
   "tests": {
     "sourceCore": {
-      "result": "41/41 PASS actual Windows 2025 and Ubuntu 24.04 Node22 CLI",
+      "result": "41/41 actual Node 22 CLI PASS Windows+Ubuntu W3",
       "nativeNodeCLI": "PASS",
-      "origin": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141",
+      "origin": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642",
       "priorV8": "41/41 PASS"
     },
     "htmlUI": {
-      "result": "27/27 PASS REAL Chromium headless Playwright",
+      "result": "36/36 real Chromium PASS",
       "chromium": "PASS",
       "screenshots": 3,
       "viewports": [
@@ -75,7 +80,11 @@
       ],
       "origin": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141",
       "originalV8Adapter": "20/20 PASS",
-      "htmlBlob": "1ec85c696edaacf66553ab46590f091a6c8721a8"
+      "htmlBlob": "1ec85c696edaacf66553ab46590f091a6c8721a8",
+      "latestRun": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642",
+      "previousSourceRun": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759864861",
+      "currentAppBlob": "f26ca89e7f7f2663754b1ef8ee6d28355ddcd7da",
+      "chromiumVerifiedAtAppSha": "54270e16726be3b92e9f94978a855a03e28e98ac"
     },
     "previousPR344DeckImport": {
       "result": "10/10 options parsed with 0 errors/0 warnings",
@@ -87,7 +96,7 @@
     },
     "nativeUnity": "NOT_RUN",
     "nativeCSharp": "NOT_RUN",
-    "realBrowser": "PASS 27/27 REAL_CHROMIUM_ACTIONS",
+    "realBrowser": "PASS real Chromium 36/36 on three viewports, original source W3 green",
     "windowsPlayer": "NOT_RUN",
     "humanPlay": "NOT_RUN",
     "independentB0160QA": "PENDING",
@@ -108,7 +117,25 @@
         "r5wb001_720x900.png"
       ],
       "sourceBlobsRemainIdenticalAtManifestUpdate": true
-    }
+    },
+    "W03": {
+      "previousRed": "real Chromium 33/36 (3 auto-budget test failures) before fixing HTML formPatch",
+      "redRunId": 40900414206,
+      "redSha": "f35809d2321bc3cbd08f0714c56a125480d5738d",
+      "greenRunId": 40900605642,
+      "greenSha": "54270e16726be3b92e9f94978a855a03e28e98ac",
+      "greenStatus": "SUCCESS",
+      "actualWindowsNode22": "41/41 PASS",
+      "actualUbuntuNode22": "41/41 PASS",
+      "actualChromiumPlaywright": "36/36 PASS",
+      "nativeUnity": "NOT_RUN",
+      "independentB0160": "PENDING",
+      "artifactId": 12909511232,
+      "artifactScreenshots": 3,
+      "unchangedOriginalGameCode": true,
+      "delivery": "B01-40 source G0 and B01-60 independent QA required before B01-00 may route to CODEX INBOX"
+    },
+    "W03QAReceiptBlob": "0252bf182f7729f0a1e8ffcda958b2f217057878"
   },
   "receiver": {
     "B0140": "Verify scope/source Git blobs, run real Node 22 process and browser import/export",
@@ -130,7 +157,7 @@
   "ack": "PENDING",
   "G1": "NOT_RUN",
   "G2": "HOLD",
-  "version": "1.1.0-W02-RECEIVED_TEST_EVIDENCE",
+  "version": "1.1.1-W03-FIXED",
   "ownedWorkflow": {
     "path": ".github/workflows/b01-10-p17-r5-workbench.yml",
     "blob": "b87dc9ba2cadaf562a88a3cccc5ab6e6701e1d39",
