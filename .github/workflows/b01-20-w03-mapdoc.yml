@@ -1,0 +1,61 @@
+name: B01-20 W03 MAPGEN → Codex MapDocument v2 (UNITY NOT RUN)
+on:
+  push:
+    branches: [b01-20/p17-w03-course-mapdocument]
+    paths:
+      - 'Research/B01-20/P17/COURSE-MAPDOC-001/**'
+      - '.github/workflows/b01-20-w03-mapdoc.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-mapgen-to-codex-mapdraft:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate 18 real original MAPGEN CSharp courses
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Research/B01-20/P17/MAPGEN-COURSE/MapgenCourseP17.csproj --configuration Release -- Research/B01-20/P17/MAPGEN-COURSE/presets.json original-courses
+          python Research/B01-20/P17/MAPGEN-COURSE/verify_courses.py original-courses
+      - name: Run original-CSharp-input negatives and convert 18 native documents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Research/B01-20/P17/COURSE-MAPDOC-001/test_convert.py original-courses
+          python Research/B01-20/P17/COURSE-MAPDOC-001/convert.py original-courses importable-mapdocs
+      - name: Fetch original unchanged Codex MapDraft exact commit and Git blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin be2c4b6ac63e04eff5b046e50641ec8d1da4837f
+          mkdir -p Research/B01-20/P17/COURSE-MAPDOC-001/.source
+          git show be2c4b6ac63e04eff5b046e50641ec8d1da4837f:Assets/MapEditor/MapDraft.cs > Research/B01-20/P17/COURSE-MAPDOC-001/.source/MapDraft.cs
+          test "$(git hash-object Research/B01-20/P17/COURSE-MAPDOC-001/.source/MapDraft.cs)" = "0331a54a1545ecd1ea18b616ef13fed113474b8c"
+          echo "ORIGINAL_CODEX_MAPDRAFT_SOURCE_BLOB_PIN_PASS"
+      - name: Execute original Codex CSharp MapDraft TryLoad and TestError for 18 and negative cases
+        shell: bash
+        run: |
+          dotnet run --project Research/B01-20/P17/COURSE-MAPDOC-001/OriginalCodexMapDraftQA.csproj --configuration Release -- importable-mapdocs importable-mapdocs/original-codex-load-receipt.json
+      - name: Archive 18 original CSharp sourced MapDocuments and native-sidecar and QA receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-20-w03-mapdocument-${{ matrix.os }}
+          path: importable-mapdocs/
+          if-no-files-found: warn
+          retention-days: 21

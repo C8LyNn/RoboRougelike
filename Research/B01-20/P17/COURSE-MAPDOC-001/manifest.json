@@ -1,0 +1,34 @@
+{
+  "packageId": "COURSE-MAPDOC-001",
+  "version": "R1",
+  "owner": "B01-20",
+  "ownedPaths": [
+    "Research/B01-20/P17/COURSE-MAPDOC-001/**",
+    ".github/workflows/b01-20-w03-mapdoc.yml"
+  ],
+  "sourceGenerator": {
+    "PR": 331,
+    "SHA": "07d7d271b11ffc70e8e09da0043559fba06b5868",
+    "MAPGEN_SHA": "5be31039411f89f17654b1c332f8692883fa03cc"
+  },
+  "originalCodexMapDraft": {
+    "commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+    "path": "Assets/MapEditor/MapDraft.cs",
+    "gitBlob": "0331a54a1545ecd1ea18b616ef13fed113474b8c",
+    "readOnly": true
+  },
+  "actualOutputs": "18 MapDocument-v2 JSON + 18 non-native checkpoint sidecars + receipt JSON",
+  "expectedChecks": {
+    "originalCsharpMapLoads": 18,
+    "originalCsharpNegatives": 6,
+    "PythonNegatives": 6
+  },
+  "limits": [
+    "1m cell grid projection, vertical ramp/height lost",
+    "Checkpoint markers outside MapDocument v2; NOT native import",
+    "Native Unity Edit/Play/PhysX not run",
+    "Independent B01-40/60 QA pending",
+    "Codex ACK pending; no game source touched"
+  ],
+  "rollback": "Only remove optional exported JSON and isolated research files"
+}
