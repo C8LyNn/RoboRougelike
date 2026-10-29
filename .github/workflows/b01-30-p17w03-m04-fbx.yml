@@ -1,0 +1,90 @@
+name: B01-30 PASS17 W03 M04 original four-gimbal FBX receiving
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/TechArt/P17W03/M04Fbx001/**'
+      - '.github/workflows/b01-30-p17w03-m04-fbx.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  genuine-original-M04-mesh-to-Unity-FBX:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin original M04-024 producer SHA and two untouched Git blob IDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/196/head
+          test "$(git rev-parse FETCH_HEAD)" = "eef02864b106546b200011a2f0286fe7d9a83a1f"
+          test "$(git rev-parse FETCH_HEAD:Tools/ModelFactory/M04/M04-024/generate_m04_024.py)" = "102b2d430260ae4da15fc7dee51f9bd86ccd822c"
+          test "$(git rev-parse FETCH_HEAD:Tools/ModelFactory/M04/M04-024/qa_m04_024.py)" = "31ab3a7d79b5664bdfa9d8201ed26ed8a7104f62"
+          mkdir -p build/B01-30/P17W03-source
+          git archive FETCH_HEAD Tools/ModelFactory/M04/M04-024/generate_m04_024.py Tools/ModelFactory/M04/M04-024/qa_m04_024.py | tar -x -C build/B01-30/P17W03-source
+      - name: Install original Blender 4-capable M04 generator/reimport runtime
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil xvfb
+          blender --version | head -n 2
+          python3 -m py_compile Tools/B01/TechArt/P17W03/M04Fbx001/*.py
+      - name: Execute original producer unmodified to create real M04 .blend and .glb
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender -b --factory-startup --python-exit-code 1 \
+            --python build/B01-30/P17W03-source/Tools/ModelFactory/M04/M04-024/generate_m04_024.py -- \
+            --out build/B01-30/P17W03-original
+          python3 build/B01-30/P17W03-source/Tools/ModelFactory/M04/M04-024/qa_m04_024.py \
+            --glb build/B01-30/P17W03-original/M04-024.glb \
+            --manifest build/B01-30/P17W03-original/manifest.json \
+            --report build/B01-30/P17W03-original/original-qa.json
+      - name: Export original 4 simultaneously animated gimbals as real binary Unity candidate FBX
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender -b build/B01-30/P17W03-original/M04-024.blend --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W03/M04Fbx001/export_original_m04_fbx.py -- \
+            --out build/B01-30/P17W03-FBX \
+            --original-glb build/B01-30/P17W03-original/M04-024.glb
+      - name: Independently re-import real generated binary FBX in clean Blender and render its actual 4 moving pivots
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run -a blender -b --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W03/M04Fbx001/receive_original_m04_fbx.py -- \
+            --fbx build/B01-30/P17W03-FBX/M04-024-4GIMBALS-ORIGINAL.fbx \
+            --source-receipt build/B01-30/P17W03-FBX/m04-fbx-source-receipt.json \
+            --out build/B01-30/P17W03-FBX/reimport
+      - name: Check real exported and independently imported files and source provenance receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,hashlib,pathlib
+          root=pathlib.Path("build/B01-30/P17W03-FBX")
+          a=json.loads((root/"m04-fbx-source-receipt.json").read_text())
+          b=json.loads((root/"reimport/m04-real-fbx-reimport.json").read_text())
+          src=root/"M04-024-4GIMBALS-ORIGINAL.fbx"
+          assert src.stat().st_size>200000
+          digest=hashlib.sha256(src.read_bytes()).hexdigest()
+          assert digest==a["fbx_sha256"]==b["source_fbx_sha256"]
+          assert b["four_real_imported_animated_pivots"]==4
+          assert b["actual_imported_mesh_count"]==a["original_mesh_count"]
+          assert len(b["visual_proof_png"])==4
+          assert all((root/"reimport"/x["file"]).is_file() for x in b["visual_proof_png"])
+          print("M04_REAL_UNITY_CANDIDATE_FBX_BINARY_4GIMBAL_GATE_PASS",a["fbx_bytes"],digest)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17W03-M04-024-REAL-FOUR-GIMBAL-FBX
+          path: |
+            build/B01-30/P17W03-FBX/
+            build/B01-30/P17W03-original/original-qa.json
+          if-no-files-found: error
+          retention-days: 30

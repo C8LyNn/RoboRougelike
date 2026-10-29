@@ -1,0 +1,53 @@
+{
+  "id": "B01-30-M04-FBX-RECEIVER-001",
+  "version": "R1",
+  "role": "B01-30 Tech Art",
+  "producer": "MODEL-04 M04-024",
+  "original_pr": 196,
+  "original_exact_commit": "eef02864b106546b200011a2f0286fe7d9a83a1f",
+  "original_generator_blob": "102b2d430260ae4da15fc7dee51f9bd86ccd822c",
+  "original_qa_blob": "31ab3a7d79b5664bdfa9d8201ed26ed8a7104f62",
+  "scope": [
+    "Tools/B01/TechArt/P17W03/M04Fbx001/**",
+    ".github/workflows/b01-30-p17w03-m04-fbx.yml"
+  ],
+  "output": "Actual M04-024-4GIMBALS-ORIGINAL.fbx and two machine source/reimport receipts and four PNG renders uploaded by CI",
+  "goal": "Existing original M04 geometry, original separate 4 gimbal actions evaluated simultaneously and exported in one candidate FBX take. NO new geometry or MODEL_JOB.",
+  "export": {
+    "axis_forward": "-Z",
+    "axis_up": "Y",
+    "scale": "original 1 Blender unit=1 m; Unity actual import not proven",
+    "fps": 30,
+    "original_keyframes": [
+      1,
+      31,
+      61,
+      91,
+      121
+    ],
+    "original_tilt_degrees": 12
+  },
+  "tests": [
+    "original exact source Git SHA/blob pin",
+    "run original Blender generator .blend and .glb",
+    "run original GLB binary QA",
+    "real FBX header/sha256",
+    "independent fresh Blender FBX import mesh count",
+    "four independently rotating pivot nodes at frames31 and91",
+    "four actual FBX reimport PNG renders"
+  ],
+  "state": "DRAFT / NOT_OFFERED / NO_MODEL_JOB / NO_CODEX_ACK / NO_GAME_INTEGRATION",
+  "not_run": [
+    "Unity 6000.3.14f1 FBX importer",
+    "Unity Animator/URP",
+    "PhysX",
+    "B01-60 independent G1"
+  ],
+  "review_order": [
+    "B01-40 source/scope",
+    "B01-60 independent Blender+Unity on authorized host",
+    "B01-00 orders #79",
+    "Codex explicitly ACKs"
+  ],
+  "rollback": "Do not overwrite original producer M04. Remove only candidate FBX in isolated Unity receiving project and generated build/B01-30/P17W03-FBX/; no Assets/** changes in PR."
+}
