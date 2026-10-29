@@ -36,7 +36,7 @@ jobs:
           if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
           "$PY" -m unittest discover -s Tools/B01/CI41/P17W03B -p test_unity_repeat.py -v 2>&1 | tee "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
           grep -q 'ACTUAL_SUBPROCESS_THREE_TRIALS_TWO_EXACT_CODEX_FILTERS_GREEN_NOT_UNITY' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
-          grep -q 'ACTUAL_SUBPROCESS_TIMEOUT_STOPS_REPLAY_WITH_EVIDENCE' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
+          grep -q 'REAL_SUBPROCESS_TIMEOUT_STOPS_REPLAY_WITH_EVIDENCE' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
           grep -q 'ACTUAL_COMMAND_LINE_SUBPROCESS_JSON_REPLAY_SCOPE_NOT_NATIVE_UNITY' "Tools/B01/CI41/P17W03B/result-${RUNNER_OS}.txt"
           echo 'SIMULATED_EDITOR_REAL_OS_PROCESSES_ONLY; NATIVE_UNITY=NOT_RUN; G1=NOT_RUN'
       - name: Upload physical subprocess source-only test log
