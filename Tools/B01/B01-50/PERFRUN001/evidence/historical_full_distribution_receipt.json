@@ -1,0 +1,10 @@
+{
+  "classification": "HISTORICAL_ARCHIVE_COMPLETE_DISTRIBUTION_BYTES_MATCH_NO_EXECUTION",
+  "zip_sha256": "ec3193bb3ac24398c496ea65ad12aa653321db160a4dc74e8f618e3cc7ad6d1d",
+  "exe_member": "RoboRougelike_SuspensionUX_Windows_x64/RoboRougelike.exe",
+  "exe_sha256": "17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8",
+  "distribution_files_verified": 212,
+  "distribution_uncompressed_bytes": 103854568,
+  "distribution_sha256": "5ad81e237a4f817303425fb5b526b1592cc616da8244649547d12f348c36de61",
+  "native_player": "NOT_RUN"
+}
