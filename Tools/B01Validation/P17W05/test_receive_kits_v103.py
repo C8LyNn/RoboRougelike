@@ -22,6 +22,8 @@ class V103OriginalAcceptance(unittest.TestCase):
         info,catalog=r.verify_source(REPO)
         self.assertEqual(set(info["author_changed_paths"]),r.EXPECTED_DIFF)
         self.assertEqual(len(info["author_changed_paths"]),7)
+        self.assertEqual(info["intermediate_git_sha"],r.INTERMEDIATE)
+        self.assertTrue(info["final_owner_commit_workflow_only"])
     def test_02_new_immutable_git_manifest_catalog_pins(self):
         info,catalog=r.verify_source(REPO)
         self.assertEqual(info["new_catalog_git_blob"],r.NEW_CATALOG_BLOB)
@@ -96,7 +98,7 @@ class V103OriginalAcceptance(unittest.TestCase):
                 r.verify_source(REPO)
     def test_14_improper_parent_sha_fails_closed(self):
         with patch.object(r,"OLD","0"*40):
-            with self.assertRaisesRegex(r.Reject,"NEW_REVISION_NOT_SINGLE_CHILD"):
+            with self.assertRaisesRegex(r.Reject,"NEW_REVISION_NOT_APPROVED_TWO_COMMIT_ANCESTRY"):
                 r.verify_source(REPO)
     def test_15_latest_game_sha_mutation_fails(self):
         with patch.object(r,"CODEX",r.PREVIOUS_PIN):
