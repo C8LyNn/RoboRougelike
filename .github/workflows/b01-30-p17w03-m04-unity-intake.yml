@@ -1,0 +1,100 @@
+name: B01-30 P17W03 M04 original FBX to genuine UnityPackage
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/TechArt/P17W03/M04UnityIntake001/**'
+      - '.github/workflows/b01-30-p17w03-m04-unity-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  exact-original-M04-FBX-to-genuine-UnityPackage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify predecessor original FBX export branch is FROZEN at exact HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/386/head
+          test "$(git rev-parse FETCH_HEAD)" = "82ea17a6f964aa0cf08890c827b038ad9a0fc57f"
+          test "$(git rev-parse FETCH_HEAD:Tools/B01/TechArt/P17W03/M04Fbx001/export_original_m04_fbx.py)" = "9d0b9865ef93d76066b07d4fa0533feaccc47b2c" || {
+            echo "Source blob drift detected; compare original producer SHA and update pin intentionally" >&2
+            exit 1
+          }
+      - name: Download ORIGINAL actual Blender FBX binary and original reimport receipts from pinned Actions artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/B01-30/M04Unity001/source
+          gh run download 40900769565 --repo C8LyNn/RoboRougelike --name B01-30-P17W03-M04-024-REAL-FOUR-GIMBAL-FBX \
+            --dir build/B01-30/M04Unity001/source
+          find build/B01-30/M04Unity001/source -type f | sort
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path("build/B01-30/M04Unity001/source")
+          for name in ("M04-024-4GIMBALS-ORIGINAL.fbx","m04-fbx-source-receipt.json","m04-real-fbx-reimport.json"):
+              matches=list(root.rglob(name))
+              assert len(matches)==1,(name,[str(x) for x in matches])
+              print("ORIGINAL_BINARY_OR_RECEIPT_FOUND",name,matches[0].stat().st_size,hashlib.sha256(matches[0].read_bytes()).hexdigest())
+          f=list(root.rglob("M04-024-4GIMBALS-ORIGINAL.fbx"))[0]
+          assert f.stat().st_size==2109580
+          assert hashlib.sha256(f.read_bytes()).hexdigest()=="a017534047b9db6a1001b32b186809b796d4e6562f1c9ea560042de97cf58cd3"
+          PY
+      - name: Install source-level C# compiler and validate own Python source
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y mono-mcs
+          python3 -m py_compile Tools/B01/TechArt/P17W03/M04UnityIntake001/*.py
+      - name: Build REAL binary Unity package from the exactly pinned, prior Blender-tested 2MB FBX
+        shell: bash
+        run: |
+          set -euo pipefail
+          source=build/B01-30/M04Unity001/source
+          fbx=$(find "$source" -name 'M04-024-4GIMBALS-ORIGINAL.fbx' -type f -print -quit)
+          receipt=$(find "$source" -name 'm04-fbx-source-receipt.json' -type f -print -quit)
+          verified=$(find "$source" -name 'm04-real-fbx-reimport.json' -type f -print -quit)
+          python3 Tools/B01/TechArt/P17W03/M04UnityIntake001/build_intake.py \
+            --fbx "$fbx" --source-receipt "$receipt" --reimport-receipt "$verified" \
+            --out build/B01-30/M04Unity001/deliver
+          python3 Tools/B01/TechArt/P17W03/M04UnityIntake001/verify_intake.py \
+            --fbx "$fbx" --source-receipt "$receipt" --reimport-receipt "$verified" \
+            --built build/B01-30/M04Unity001/deliver
+      - name: Compile and execute ACTUAL C# Unity Editor inspector against explicit Unity API shims
+        shell: bash
+        run: |
+          set -euo pipefail
+          mcs -define:UNITY_EDITOR \
+            -out:build/B01-30/M04Unity001/deliver/OriginalEditorShimTests.exe \
+            Tools/B01/TechArt/P17W03/M04UnityIntake001/M04CandidateImportCheck.cs \
+            Tools/B01/TechArt/P17W03/M04UnityIntake001/test_importer_mono.cs
+          mono build/B01-30/M04Unity001/deliver/OriginalEditorShimTests.exe
+      - name: Independent second complete UnityPackage generation and exact binary identity check
+        shell: bash
+        run: |
+          set -euo pipefail
+          source=build/B01-30/M04Unity001/source
+          python3 Tools/B01/TechArt/P17W03/M04UnityIntake001/build_intake.py \
+            --fbx "$(find "$source" -name 'M04-024-4GIMBALS-ORIGINAL.fbx' -type f -print -quit)" \
+            --source-receipt "$(find "$source" -name 'm04-fbx-source-receipt.json' -type f -print -quit)" \
+            --reimport-receipt "$(find "$source" -name 'm04-real-fbx-reimport.json' -type f -print -quit)" \
+            --out build/B01-30/M04Unity001/replay
+          cmp build/B01-30/M04Unity001/deliver/*.unitypackage build/B01-30/M04Unity001/replay/*.unitypackage
+          echo B01_30_M04_UNITYPACKAGE_REAL_BINARY_REPLAY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17W03-M04-UNITY-INTAKE-001-REAL-UNITYPACKAGE
+          path: |
+            build/B01-30/M04Unity001/deliver/
+          if-no-files-found: error
+          retention-days: 30

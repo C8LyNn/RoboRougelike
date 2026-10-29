@@ -1,0 +1,66 @@
+{
+  "package_id": "B01-30-M04-UNITY-INTAKE-001",
+  "version": "R2",
+  "owner": "B01-30 Tech Art",
+  "previous_owner_package": "B01-30-M04-FBX-RECEIVER-001/R1",
+  "previous_pr": 386,
+  "previous_exact_source_sha": "82ea17a6f964aa0cf08890c827b038ad9a0fc57f",
+  "previous_exporter_blob": "9d0b9865ef93d76066b07d4fa0533feaccc47b2c",
+  "previous_successful_run": 40900769565,
+  "previous_artifact_id": 12908284071,
+  "binary_fbx": {
+    "file": "M04-024-4GIMBALS-ORIGINAL.fbx",
+    "bytes": 2109580,
+    "sha256": "a017534047b9db6a1001b32b186809b796d4e6562f1c9ea560042de97cf58cd3",
+    "original_model": "M04-024",
+    "source_owner": "MODEL-04",
+    "actual_blender_reimport_meshes": 105,
+    "original_gimbals": 4,
+    "original_frames": [
+      1,
+      31,
+      61,
+      91,
+      121
+    ]
+  },
+  "new_functionality": "R2 repaired original Unity Editor checker: require one imported take with four named pivots whose rotation curves have actual opposite-phase numeric motion at 25%/75% of clip duration; original Blender-tested source FBX unchanged.",
+  "own_scope": [
+    "Tools/B01/TechArt/P17W03/M04UnityIntake001/**",
+    ".github/workflows/b01-30-p17w03-m04-unity-intake.yml"
+  ],
+  "unity_candidate_path": "Assets/B0130M04Intake001/**",
+  "generated_artifact": "M04-024-SOURCE-LOCKED-UNITY-INTAKE-001.unitypackage",
+  "bundled_assets": [
+    "M04-024-4GIMBALS-ORIGINAL.fbx",
+    "Editor/M04CandidateImportCheck.cs",
+    "README.txt"
+  ],
+  "test_gates": [
+    "GitHub immutable predecessor PR head+exporter blob",
+    "actual previously Blender-tested binary FBX SHA256",
+    "matching original Blender source+reimport QA receipts",
+    "actual UnityPackage tar/gzip decoded data and GUID",
+    "four missing/altered/forged negative archive/input mutants",
+    "exact binary UnityPackage replay",
+    "original Unity Editor C# compiled and executed against explicit stubs, fail-closed scenarios",
+    "RED original R1 falsely accepted four static rotation bindings, R2 rejects 3 numeric-motion regression mutants; genuine C# source compiled/executed with Unity API shims"
+  ],
+  "not_run": [
+    "Native Unity 6000.3.14f1 importer",
+    "Unity animation curves",
+    "Unity true 105 imported mesh assertion",
+    "Unity URP parity",
+    "B01-60 independent source+native QA",
+    "Codex integration",
+    "Native Unity numeric curve evaluation - source-level shim only; B01-60 to verify"
+  ],
+  "status": "DRAFT_R2_PRODUCER_SOURCE_GREEN_INDEPENDENT_QA_PENDING_NO_CODEX_ACK",
+  "handoff": [
+    "B01-40 verify source and package G0",
+    "B01-60 independent G0 and Unity G1 if licensed",
+    "B01-00 control #79 offering",
+    "Codex only after explicit ACK"
+  ],
+  "rollback": "Delete only Assets/B0130M04Intake001 from isolated Unity after reference cleanup; remove generated build/B01-30/M04Unity001. No old source overwritten or main/develop merge."
+}
