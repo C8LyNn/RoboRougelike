@@ -25,7 +25,7 @@ jobs:
         run: git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
       - name: Fetch Codex #383 exact gameplay SHA, read-only
         run: git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
-      - name: 19 original Git object positive and negative tests
+      - name: 20 original Git object positive and negative tests
         run: python -m unittest discover -s Tools/B01/B01-22/EK-R3-COMPAT-001 -p test_compat_gate.py -v
       - name: Generate source compatibility receipt without game changes
         run: python Tools/B01/B01-22/EK-R3-COMPAT-001/compat_gate.py --repo .
