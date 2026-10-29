@@ -6,6 +6,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
@@ -59,12 +60,24 @@ namespace RoboRougelike.B0124.Staging
         if(File.Exists(path))throw new IOException("Refusing to overwrite staged scene: "+path);
       }
       Directory.CreateDirectory(sceneFolder);
+      var originalScene=SceneManager.GetActiveScene();
       foreach(var stage in Stages)for(int count=1;count<=4;count++)
       {
-        var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
-        GenerateStage(stage,count);
-        if(!EditorSceneManager.SaveScene(scene,ScenePath(stage.Id,count)))
-          throw new IOException("Unity failed to persist enemy staging scene: "+stage.Id+" / "+count);
+        // Additive + restore active scene protects the receiver's unrelated work.
+        var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
+        try
+        {
+          if(!SceneManager.SetActiveScene(scene))
+            throw new InvalidOperationException("Cannot activate disposable staging scene");
+          GenerateStage(stage,count);
+          if(!EditorSceneManager.SaveScene(scene,ScenePath(stage.Id,count)))
+            throw new IOException("Unity failed to persist enemy staging scene: "+stage.Id+" / "+count);
+        }
+        finally
+        {
+          SceneManager.SetActiveScene(originalScene);
+          EditorSceneManager.CloseScene(scene,true);
+        }
       }
       AssetDatabase.Refresh();
       Debug.Log("B01-24 W03: generated "+TotalLayouts+" isolated Unity preview scenes; original R5 and Codex gameplay untouched.");
