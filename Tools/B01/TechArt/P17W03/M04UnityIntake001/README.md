@@ -1,4 +1,4 @@
-# B01-30 PASS17/WAVE03 — M04-UNITY-INTAKE-001/R1
+# B01-30 PASS17/WAVE03 — M04-UNITY-INTAKE-001/R2
 
 **New tangible Codex candidate:** a real *binary Unity custom package* (.unitypackage) containing the original, Blender-tested four-gimbal M04-024 FBX (2,109,580 bytes), one opt-in Unity Editor import checker, and a receiving README. **Not** a new model or another lookdev screenshot. No gameplay code or new MODEL_JOB. Canonical Assets are untouched by this Draft PR.
 
@@ -15,6 +15,9 @@ After importing, execute Tools > B01 > M04-024 > **Prepare and check candidate F
 - Exactly 105 MeshFilter components on the FBX model root.
 - Four distinct named pivots N01_GIMBAL_PIVOT ... N04_GIMBAL_PIVOT.
 - A SINGLE imported animation clip contains rotation curves for all four pivot paths (four separate clips are insufficient).
+- For **each** pivot, sampled actual imported rotation curve must move away from the rest pose at 25% and 75% of clip duration, with **opposite signs** and >0.015 numeric delta; static, missing and one-sided data is rejected.
+
+**WAVE04 R1→R2 actual defect:** R1 counted four *present* rotation bindings without examining their values. A real regression reproducer with four flat rotation curves was falsely GREEN; R2 checks numerical opposite-phase movement of all four gimbals in the same imported clip. Original source FBX and Blender QA are unchanged; R2 changes only this owned candidate Editor test and archive evidence. A C# shim test validates the algorithm, not Unity-native Animator performance.
 
 A failing actual Unity import must be recorded as native G1 RED, with screenshots/logs. No shim success may be promoted as Unity import, Animator, URP/PBR visual, PhysX or G2 acceptance.
 
