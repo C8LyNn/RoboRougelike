@@ -1,0 +1,108 @@
+{
+  "package_id": "B01-24-ENEMY-STAGING-001",
+  "version": "1.0.0",
+  "producer": "B01-24 — ENEMY AI & COMBAT SYSTEMS",
+  "type": "Unity Editor direct scene-content generator, not integrated gameplay or stand-alone fake mock scenes",
+  "branch": "research/b01-24-p17-w03-enemy-staging-scenes",
+  "dependency": {
+    "package": "B01-24-ENEMY-FORMATIONS-002 v1.0.0",
+    "draft_pr": 355,
+    "producer_SHA": "c39a400cb07ae0fd6f0d8d419a128490cfbcfd8a",
+    "source_file": "Research/B01-24/P17/ENEMY-FORMATIONS-002/formations.json",
+    "blob": "4c28b6289f23bcbd82c976bccb1567cbcb847371",
+    "source_arena": "Assets/R5/R5Arena.cs",
+    "arena_blob": "fbe1537036910e0dcc2b2c7e502e66848fcd14a5",
+    "status": "source-only producer complete; independent QA pending, not Codex-claimed or integrated"
+  },
+  "files": [
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/Unity/Editor/B0124EnemyStageBuilder.cs",
+      "blob": "21dd5d598b83d9d704ad59859a213f464d4b0441"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/Unity/Editor/B0124EnemyStageBuilder.cs.meta",
+      "blob": "f228154e0a1e10e3188ccf6e0da18562050c20de"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/CI/UnityEditorStubs.cs",
+      "blob": "69e0abfdfae4e87ff5e361e8c9d88d50446faa99"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/CI/Program.cs",
+      "blob": "a337067eb86ea2e10c84f4392c80fa6c1079b094"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/StageBuilderCI.csproj",
+      "blob": "f5d34b5c282519b9cf358e008ded301ed8178ac4"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/README.md",
+      "blob": "0d91cf3c922251e8185f872d8d75a265f4d5e846"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-w03-stage-builder.yml",
+      "blob": "2b0ef59876fab8752b895f6a2037ca2d6c14fa3a"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/prepare_unity_import.py",
+      "blob": "9b2c1600e4e4f208e56eaa265359707b7cfd7972"
+    },
+    {
+      "path": "Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/test_prepare_unity_import.py",
+      "blob": "72e740314de481781b1bc42cd1fd39b1597aa176"
+    }
+  ],
+  "content": {
+    "R5_arena_types": 3,
+    "authored_original_spawn_layouts": 12,
+    "authored_original_positions": 30,
+    "player_spawn_original": true,
+    "static_arena_obstacles_original": true,
+    "two_hazard_marker_positions": true,
+    "editor_generated_scene_count": 12,
+    "scene_format": "Unity EditorSceneManager.SaveScene at integration time; not checked-in .unity scenes"
+  },
+  "ownership": {
+    "changes_canonical_Assets": false,
+    "new_editor_tool_copy_only_after_codex_ack": true,
+    "no_merge": true
+  },
+  "security": {
+    "output_root": "Assets/B0124EnemyStagingW03",
+    "never_overwrite_existing_scenes": true,
+    "new_scenes_additive": true,
+    "restore_previous_active_scene": true,
+    "close_only_generated_scene": true
+  },
+  "tests": {
+    "source_dotnet": "Actual Unity Editor .cs source compiled/executed by .NET8 using deliberately limited simulated UnityEditor/UnityEngine API; verified source geometry/12 output scenes, exact original formation data, nonoverwrite and preserve existing scene",
+    "ubuntu": "PASS: actual original Unity Editor source compiled under .NET8 mock API and 19/19 direct execution assertions PASS, 0 FAIL, Ubuntu24.04",
+    "windows": "PASS: actual original Unity Editor source compiled under .NET8 mock API and 19/19 direct execution assertions PASS, 0 FAIL, Windows2025",
+    "native_editor_import": "NOT_RUN",
+    "native_scene_serialization": "NOT_RUN",
+    "native_PhysX": "NOT_RUN",
+    "WindowsPlayer": "NOT_RUN",
+    "independent_B01_60": "PENDING",
+    "actions_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40901073123",
+    "actual_artifacts": {
+      "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40901073123/artifacts/12908538947",
+      "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40901073123/artifacts/12909451773"
+    },
+    "behavioral_mock_only_note": "All mock-created .unity files are marked MOCK_SCENE_NOT_NATIVE_UNITY and never claimed to be importable Unity scene files; game Editor import native NOT_RUN"
+  },
+  "handoff": {
+    "next": "B01-40 verifies source hashes, frozen #355 stacked diff and intake; B01-60 independent authorized native Unity editor scene generation and prefab/hull checks; B01-00 may queue via #79; only Codex may ACK/use",
+    "install": "In disposable Unity 6000.3.14f1 checkout, copy Editor source + .meta to isolated Assets/Editor/B0124EnemyStagingW03; menu B01/Enemy Staging/Generate all 12 isolated formation scenes; inspect new Assets/B0124EnemyStagingW03/Scenes only.",
+    "rollback": "Remove only staging tool and its newly generated scenes after verifying/backing up locally edited files; never delete user scenes or modify original arena/spawner.",
+    "flags": "G0_AUTHOR_TESTED / RECEIVER_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_PENDING / NOT_INTEGRATED"
+  },
+  "delivery": {
+    "kind": "real reproducible deterministic ZIP of two original Unity Editor .cs+.meta assets, native Unity not run",
+    "command": "python Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/prepare_unity_import.py --repo-root . --out-dir B0124-Codex-Receiver-Package",
+    "file": "B0124-Codex-Receiver-Package/B01-24-ENEMY-STAGING-001-unity-editor.zip",
+    "receipt": "B0124-Codex-Receiver-Package/receiver-receipt.json",
+    "python_tests": 16,
+    "native_unity": "NOT_RUN",
+    "pr": 387
+  }
+}
