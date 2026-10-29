@@ -1,0 +1,77 @@
+{
+  "package_id": "B01-31-A1-SELECTMASK-001",
+  "version": "P17-W03-R1",
+  "owner": "B01-31",
+  "purpose": "Render pixel-exact 2D alpha hit-test masks and focus-outline sprites for existing A1 face/side/top art; NOT physical colliders",
+  "source": {
+    "pr": 377,
+    "immutable_commit": "759c3471aab998b8ae1f153a9d4921401dddc749",
+    "branch": "art/b01-31-p17-w02-a1-view-icons-001",
+    "base_path": "Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/",
+    "expected_blob_sha1": {
+      "face": "3b18e0b2e02c550bdd667fe16f9c8501b88c4520",
+      "side": "9037da9ae1a44776475437b1c968a74ea84bbf9a",
+      "top": "8adb61ccdc4bd1a4dc962579184a83a7a8564236"
+    }
+  },
+  "authorization": {
+    "hq_decision": "https://github.com/C8LyNn/RoboRougelike/issues/287#issuecomment-6463914298",
+    "unit": "SINGLE_ATTACHABLE_PART",
+    "art_scope": "B01-31_RESEARCH_ONLY",
+    "G_DESIGN": "PENDING",
+    "MODEL_JOB": "NOT_AUTHORIZED"
+  },
+  "render": {
+    "sizes": [
+      48,
+      96,
+      192
+    ],
+    "views": [
+      "face",
+      "side",
+      "top"
+    ],
+    "alpha_threshold": 32,
+    "outline_thickness_pixels": {
+      "48": 2,
+      "96": 3,
+      "192": 4
+    },
+    "file_types": [
+      "mask",
+      "focus"
+    ],
+    "output_count": 22,
+    "output_paths": "rendered/A1-{view}-{mask|focus}-{size}.png, rendered/A1-{view}-preview-96.png, rendered/A1-mask-contact.png"
+  },
+  "tests": {
+    "runner": "python Docs/B01Concept/P17/W03/A1-SELECTMASK-001/build_and_test.py",
+    "environment": "Python 3.11, CairoSVG 2.8.2, Pillow 11.3.0",
+    "negative_controls": [
+      "all-opaque mask rejected",
+      "empty mask rejected",
+      "wrong parent Git blob rejected",
+      "missing semantic part rejected",
+      "1px alpha mutation detected"
+    ]
+  },
+  "dependents": [
+    "B01-40 manifest/handoff receiver",
+    "B01-60 independent image QA",
+    "B01-12 optional visual focus treatment review",
+    "Codex gated import after HQ authorization"
+  ],
+  "limitations": [
+    "2D visual hit selection only",
+    "not a vehicle PartSize mask",
+    "not a physics collider",
+    "no Unity Sprite import",
+    "no actual user legibility test",
+    "no styling approval",
+    "not integrated"
+  ],
+  "install": "Fetch exact source commit via documented git fetch. Run generator. Inspect mask/focus PNGs. Do not copy to canonical Assets/** without B01-00/Codex approval.",
+  "rollback": "Delete Docs/B01Concept/P17/W03/A1-SELECTMASK-001/** and .github/workflows/b01-31-p17-w03-selectmask.yml in disposable branch; no canonical code, Unity assets or prior B01-31 PR modified.",
+  "status": "NOT_OFFERED_G0_PENDING_CI"
+}
