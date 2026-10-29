@@ -39,19 +39,33 @@ log.parent.mkdir(parents=True, exist_ok=True)
 log.write_text("SIMULATED_EDITOR_ONLY; NO UNITY NATIVE QA\n")
 if scenario == "no-xml":
     sys.exit(0)
-filters = flag("-testFilter").split(";")
+full = "-testFilter" not in args
+if full:
+    filters = [
+      "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+      "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies",
+    ] + ["B01.Fixture.FullSuiteTest%04d" % j for j in range(1328)]
+else:
+    filters = flag("-testFilter").split(";")
 if scenario == "wrong-case":
     filters = ["UnknownTests.NotRequested"]
 if scenario == "duplicate":
     filters.append(filters[0])
-failure = scenario in ("red", "zero-red")
+if scenario == "full-truncated":
+    filters = filters[:2]
+failure = scenario in ("red", "zero-red", "full-red")
+failed = 2 if scenario == "full-red" else int(failure)
+skipped = 1 if scenario == "full-red" else 0
 root = ET.Element("test-run", {"total": str(len(filters)),
-    "passed": str(len(filters) - int(failure)),
-    "failed": str(int(failure)), "skipped": "0", "inconclusive": "0",
-    "result": "Failed(Child)" if failure else "Passed"})
+    "testcasecount": str(len(filters) if scenario != "full-bad-discovery" else 1329),
+    "passed": str(len(filters) - failed - skipped),
+    "failed": str(failed), "skipped": str(skipped), "inconclusive": "0",
+    "result": "Failed(Child)" if failure or skipped else "Passed"})
 for i, f in enumerate(filters):
-    ET.SubElement(root, "test-case", {"fullname": f,
-       "result": "Failed" if failure and i == 0 else "Passed"})
+    state = ("Failed" if (scenario == "full-red" and i in (0,1))
+             or (failure and i == 0) else
+             "Skipped" if scenario == "full-red" and i == 2 else "Passed")
+    ET.SubElement(root, "test-case", {"fullname": f, "result": state})
 if scenario == "bad-count":
     root.set("passed", str(len(filters)+1))
 if scenario == "xml-broken":
@@ -205,6 +219,99 @@ class PhysicalSubprocessReplayTests(unittest.TestCase):
         self.assertEqual(data["full_suite_g1"], "NOT_ASSESSED_BY_FILTERED_REPLAY")
         self.assertEqual(data["results"][0]["cases"], {CAMERA: "Passed"})
         print("ACTUAL_COMMAND_LINE_SUBPROCESS_JSON_REPLAY_SCOPE_NOT_NATIVE_UNITY")
+
+    def test_13_full_1330_original_codex_two_failures_one_policy_skip(self):
+        d = u.replay(project=self.project, editor=Path(sys.executable),
+                     editor_args=[str(self.stub), "--scenario", "full-red"],
+                     output=self.root / "full-1330-failing",
+                     source=self.sha, test_names=[], repeats=2, timeout=6,
+                     full_suite=True, expected_full_cases=1330)
+        self.assertEqual(d["status"], "HOLD_REPRO_OR_INVALID_EVIDENCE")
+        self.assertEqual(d["scope"], "FULL_SUITE")
+        self.assertEqual(len(d["results"]), 2)
+        for item in d["results"]:
+            self.assertEqual(item["totals"],
+                             {"total":1330,"passed":1327,"failed":2,"skipped":1,"inconclusive":0})
+            self.assertEqual(item["status"], "NATIVE_TRIAL_FAIL")
+            self.assertEqual(item["exit_code"], 2)
+            self.assertIn(CAMERA,item["cases"])
+            self.assertIn(HEAVY,item["cases"])
+            self.assertEqual(item["filter"],None)
+            self.assertTrue(Path(item["xml_path"]).exists())
+        self.assertEqual(d["full_suite_g1"],"FULL_SUITE_RECEIPT_REQUIRES_INDEPENDENT_NATIVE_QA")
+        print("ORIGINAL_CODEX_1330_FULL_EDIT_PATTERN_1327_PASS_2_FAIL_1_SKIP_REPRODUCED_BY_STUB")
+
+    def test_14_true_full_1330_green_requires_all_cases_and_independent_QA(self):
+        d = u.replay(project=self.project, editor=Path(sys.executable),
+                     editor_args=[str(self.stub), "--scenario", "full-green"],
+                     output=self.root / "full-1330-green",
+                     source=self.sha, test_names=[], repeats=2, timeout=6,
+                     full_suite=True, expected_full_cases=1330)
+        self.assertEqual(d["status"], "REPEAT_PASS")
+        self.assertEqual(d["trials_passed"],2)
+        self.assertEqual(d["full_suite_g1"],"FULL_SUITE_RECEIPT_REQUIRES_INDEPENDENT_NATIVE_QA")
+        self.assertTrue(all(x["totals"]["total"] == 1330 for x in d["results"]))
+        self.assertTrue(all(x["scope"]=="FULL_SUITE" for x in d["results"]))
+        print("FULL_GREEN_1330_STUB_ONLY_NOT_NATIVE_G1")
+
+    def test_15_truncated_full_suite_must_never_be_green(self):
+        d = u.replay(project=self.project, editor=Path(sys.executable),
+                     editor_args=[str(self.stub), "--scenario", "full-truncated"],
+                     output=self.root / "full-truncated",
+                     source=self.sha, test_names=[], repeats=1, timeout=4,
+                     full_suite=True, expected_full_cases=1330)
+        self.assertEqual(d["status"],"HOLD_REPRO_OR_INVALID_EVIDENCE")
+        self.assertEqual(d["results"][0]["status"], "HOLD_INVALID_OR_MISSING_XML")
+        self.assertIn("UNITY_FULL_SUITE_COVERAGE_MISMATCH", d["results"][0]["evidence_error"])
+        print("TRUNCATED_FULL_SUITE_TWO_TESTS_CANNOT_FAKE_1330_PASS")
+
+    def test_16_wrong_full_discovery_count_fails_closed(self):
+        d = u.replay(project=self.project, editor=Path(sys.executable),
+                     editor_args=[str(self.stub), "--scenario", "full-bad-discovery"],
+                     output=self.root / "full-badcount",
+                     source=self.sha, test_names=[], repeats=1, timeout=5,
+                     full_suite=True, expected_full_cases=1330)
+        self.assertEqual(d["results"][0]["status"], "HOLD_INVALID_OR_MISSING_XML")
+        self.assertEqual(d["results"][0]["evidence_error"],"UNITY_FULL_SUITE_DISCOVERY_MISMATCH")
+        print("FULL_SUITE_DISCOVERED_TESTCOUNT_MUST_MATCH_PINNED_1330")
+
+    def test_17_full_and_filter_selector_invariant(self):
+        with self.assertRaisesRegex(u.ReplayError,"FULL_SUITE_REQUIRES_EXACT_TESTCOUNT_AND_NO_FILTER"):
+            u.replay(project=self.project, editor=Path(sys.executable),
+                     output=self.root / "badfull", source=self.sha,
+                     test_names=[CAMERA], repeats=1, timeout=4,
+                     full_suite=True,expected_full_cases=1330)
+        self.assertFalse((self.root / "badfull").exists())
+        with self.assertRaisesRegex(u.ReplayError,"FULL_SUITE_REQUIRES_EXACT_TESTCOUNT_AND_NO_FILTER"):
+            u.replay(project=self.project, editor=Path(sys.executable),
+                     output=self.root / "missingcount", source=self.sha,
+                     test_names=[], repeats=1, timeout=4, full_suite=True)
+        with self.assertRaisesRegex(u.ReplayError,"FILTERED_REPLAY_FORBIDS_FULL_SUITE_COUNT"):
+            self.run_fake(trials=1,tests=[CAMERA]) if False else u.replay(
+                    project=self.project, editor=Path(sys.executable),
+                    output=self.root / "bad-filtered", source=self.sha,
+                    test_names=[CAMERA], repeats=1, timeout=4,
+                    expected_full_cases=1330)
+        print("FULL_SUITE_UNFILTERED_REQUIRED_AND_EXACT_DISCOVERY_COUNT_REQUIRED")
+
+    def test_18_cli_full_mode_invokes_real_stub_and_outputs_json(self):
+        out=self.root / "cli-full"
+        args=[sys.executable,str(HERE/"unity_repeat.py"),
+              "--project",str(self.project),"--editor-exe",sys.executable,
+              "--editor-launch-arg",str(self.stub),
+              "--editor-launch-arg=--scenario","--editor-launch-arg=full-red",
+              "--source-sha",self.sha,"--full-suite",
+              "--expected-full-cases","1330","--repeats","1",
+              "--timeout","6","--mode","EditMode","--output",str(out)]
+        p=subprocess.run(args,capture_output=True,text=True)
+        self.assertEqual(p.returncode,2,p.stdout+p.stderr)
+        self.assertEqual(json.loads(p.stdout)["scope"],"FULL_SUITE")
+        data=json.loads((out/"summary.json").read_text())
+        self.assertEqual(data["results"][0]["totals"]["failed"],2)
+        self.assertEqual(data["results"][0]["totals"]["skipped"],1)
+        self.assertEqual(data["full_suite_g1"],"FULL_SUITE_RECEIPT_REQUIRES_INDEPENDENT_NATIVE_QA")
+        print("REAL_CLI_FULL_SUITE_1330_RED_EXIT2_AND_ALL_TRIAL_EVIDENCE")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
