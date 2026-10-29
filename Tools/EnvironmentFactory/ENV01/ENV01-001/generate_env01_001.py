@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ENV01-001 — original static steel/concrete roadside protective barrier.
+"""ENV01-001 — v002 revised original static steel/concrete protective barrier.
 Blender Z-up, +Y = road-facing side, +X = barrier length.
 1 Blender unit = 1 metre. Ground-centred pivot (0, 0, 0).
 No game scripts, animations, textures, external geometry or downloaded assets.
@@ -17,7 +17,8 @@ from mathutils import Vector
 ID = "ENV01-001"
 STEM = "ENV01-001_protective_barrier"
 ROOT_NAME = "ENV01_001_ROOT"
-OUT = Path(__file__).resolve().parent / "generated"
+REVISION = "v002"
+OUT = Path(__file__).resolve().parent / "generated" / REVISION
 if "--" in sys.argv:
     args = sys.argv[sys.argv.index("--") + 1:]
     if "--out" in args:
@@ -112,7 +113,7 @@ def bolt(name, x, y, z, front=True):
 # Y is depth, Z is height; concrete remains a closed watertight prism.
 cross_section_prism(
     "Concrete_low_flared_core", -1.16, 1.16,
-    [(-0.30, 0.07), (0.30, 0.07), (0.30, 0.16),
+    [(-0.30, 0.00), (0.30, 0.00), (0.30, 0.16),
      (0.255, 0.29), (0.16, 0.68), (-0.16, 0.68),
      (-0.255, 0.29), (-0.30, 0.16)],
     concrete,
@@ -120,25 +121,31 @@ cross_section_prism(
 
 # Static steel frame behind the concrete: posts, feet, upper tie beam and braces.
 for side, x in (("L", -1.06), ("R", 1.06)):
-    block("Foot_plate_" + side, (x, -0.25, 0.065), (0.23, 0.34, 0.085), steel, 0.014)
-    block("Rear_post_" + side, (x, -0.25, 0.48), (0.095, 0.095, 0.80), steel, 0.012)
+    block("Foot_plate_" + side, (x, -0.42, 0.0425), (0.23, 0.24, 0.085), steel, 0.014)
+    block("Rear_post_" + side, (x, -0.355, 0.43), (0.095, 0.095, 0.73), steel, 0.012)
     block("Concrete_end_steel_strap_" + side,
-          (x * 1.075, 0.0, 0.39), (0.07, 0.52, 0.49), steel, 0.012)
-    diagonal("Rear_brace_" + side, (x, -0.27, 0.23),
-             (x * 0.68, -0.27, 0.81), 0.055, steel)
-block("Rear_top_steel_tie", (0, -0.25, 0.865), (2.32, 0.095, 0.09), steel, 0.012)
+          (math.copysign(1.22, x), 0.0, 0.32), (0.10, 0.64, 0.58), steel, 0.012)
+    diagonal("Rear_brace_" + side, (x, -0.355, 0.18),
+             (x * 0.68, -0.355, 0.74), 0.055, steel)
+block("Rear_top_steel_tie", (0, -0.355, 0.79), (2.32, 0.095, 0.09), steel, 0.012)
 
 # Two sacrificial face rails, reinforced end caps and high-contrast reflectors.
-block("Front_impact_rail", (0, 0.27, 0.43), (2.29, 0.085, 0.105), steel, 0.012)
-block("Front_toe_rail", (0, 0.313, 0.19), (2.30, 0.06, 0.062), steel, 0.009)
+block("Front_impact_rail", (0, 0.27, 0.43), (2.36, 0.085, 0.105), steel, 0.012)
+block("Front_toe_rail", (0, 0.322, 0.19), (2.36, 0.06, 0.062), steel, 0.009)
 for i, x in enumerate((-0.81, -0.27, 0.27, 0.81)):
     block("Amber_reflector_%02d" % (i + 1),
-          (x, 0.319, 0.432), (0.20, 0.014, 0.068), safety, 0.004)
+          (x, 0.316, 0.432), (0.20, 0.018, 0.068), safety, 0.004)
 for i, x in enumerate((-1.02, -0.62, -0.22, 0.22, 0.62, 1.02)):
-    bolt("Front_bolt_%02d" % (i + 1), x, 0.324, 0.43)
+    bolt("Front_bolt_%02d" % (i + 1), x, 0.322, 0.43)
 for side, x in (("L", -1.06), ("R", 1.06)):
     for j, z in enumerate((0.25, 0.72)):
-        bolt("Rear_bolt_" + side + str(j), x, -0.304, z, front=False)
+        bolt("Rear_bolt_" + side + str(j), x, -0.409, z, front=False)
+
+# Four flush amber top markers improve recognition from an elevated gameplay camera.
+# Marker undersides touch the concrete top at Z=0.68; no coplanar visible faces.
+for i, x in enumerate((-0.84, -0.28, 0.28, 0.84)):
+    block("Top_visibility_marker_%02d" % (i + 1),
+          (x, 0.065, 0.69), (0.22, 0.085, 0.02), safety, 0.003)
 
 # Apply rotations on all meshes, retaining the empty at ground-centred origin.
 for obj in [o for o in scene.objects if o.type == "MESH"]:
@@ -171,7 +178,7 @@ camera = bpy.data.objects.new("ENV01_PREVIEW_CAMERA", camera_data)
 scene.collection.objects.link(camera)
 scene.camera = camera
 camera_data.type = "ORTHO"
-camera_data.ortho_scale = 3.65
+camera_data.ortho_scale = 3.50
 scene.render.engine = "BLENDER_WORKBENCH"
 scene.display.shading.light = "STUDIO"
 scene.display.shading.color_type = "MATERIAL"
@@ -183,11 +190,11 @@ scene.render.resolution_percentage = 100
 scene.render.image_settings.file_format = "PNG"
 scene.render.film_transparent = False
 for name, location in (
-    ("preview_front.png", (3.7, 5.3, 2.7)),
-    ("preview_rear.png", (-3.7, -5.3, 2.7)),
+    ("preview_front.png", (3.1, 4.8, 3.5)),
+    ("preview_rear.png", (-3.1, -4.8, 3.5)),
 ):
     camera.location = location
-    direction = Vector((0.0, 0.0, 0.42)) - camera.location
+    direction = Vector((0.0, 0.0, 0.38)) - camera.location
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
     scene.render.filepath = str(OUT / name)
     bpy.ops.render.render(write_still=True)
@@ -195,7 +202,7 @@ for name, location in (
 # The native Blender source includes preview camera but no animation/game logic.
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT / (STEM + ".blend")), compress=True)
 report = {
-    "id": ID, "asset_type": "STATIC_ENVIRONMENT_ONLY",
+    "id": ID, "revision": REVISION, "asset_type": "STATIC_ENVIRONMENT_ONLY",
     "triangles": triangle_count, "mesh_objects": len(mesh_objects),
     "materials": [m.name for m in (concrete, steel, safety)],
     "units": "1 Blender unit = 1 metre",
@@ -203,9 +210,11 @@ report = {
     "glb_axes": "+X length, -Z road-facing, +Y up",
     "root_pivot_m": [0, 0, 0],
     "suggested_box_collider_blender_m": {
-        "center": [0.0, -0.04, 0.47], "size": [2.46, 0.86, 0.96]
+        "center": [0.0, -0.09, 0.42], "size": [2.62, 1.00, 0.90]
     },
     "animation": "NOT_APPLICABLE",
+    "v001_source_commit": "265835419a7144799cc92fb4a7dac637edbb7cc3",
+    "geometry_changes": ["ground-contact feet and concrete", "rear steel frame offset from concrete", "shorter frame silhouette", "four upper amber visibility markers", "end straps offset from concrete", "enclosing collider envelope"],
     "license": "CC0-1.0; original geometry and script, no third-party models",
     "source_file_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
 }
