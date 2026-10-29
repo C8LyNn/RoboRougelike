@@ -33,7 +33,7 @@ jobs:
       - name: Checkout immutable original AIM-DELTA R2 dependency
         uses: actions/checkout@v4
         with:
-          ref: b35e6ca3327e4cd45dea4309a274458a6aacb741
+          ref: 8b504152f2c4d170640ea824ee57a9b1ec51829c
           path: .b01-13-upstream
           persist-credentials: false
       - name: Install Python
