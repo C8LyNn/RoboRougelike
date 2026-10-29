@@ -1,0 +1,76 @@
+name: B01-41 W03 original Unity native receipt triage (NO UNITY EXECUTION)
+on:
+  push:
+    branches: ['audit/b01-41-p17-w03-native-evidence-triage']
+    paths:
+      - 'Tools/B01/CI41/P17W03/**'
+      - '.github/workflows/b01-41-w03-native-receipt-triage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-receipt-triage:
+    name: Original Codex Unity XML evidence triage (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify immutable original source and test blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W03/native_receipt_triage.py)" = 'ba4d98d627aefdd35f00543d3766b5d5d170b4cb'
+          test "$(git hash-object Tools/B01/CI41/P17W03/test_native_receipt_triage.py)" = '2f202056b53b6f82d6753ed2afd137a6d9199e63'
+          echo 'CI41_NATIVE_TRIAGE_SOURCE_GIT_HASH_PINNED'
+      - name: Fetch original Codex immutable source and full native XML
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=250 origin '+refs/pull/383/head:refs/remotes/origin/ci41-w03-codex'
+          git cat-file -e 'f92c873bb1e397a598b133e107ae704e15f86768^{commit}'
+          git cat-file -e '203a0805251ed28293888e43f2d49f0df63767c6^{commit}'
+          git cat-file -e 'f92c873bb1e397a598b133e107ae704e15f86768:Docs/P17Reload/Evidence/EditMode.xml'
+          git cat-file -e 'f92c873bb1e397a598b133e107ae704e15f86768:Docs/P17Reload/Evidence/PlayMode.xml'
+          echo 'CODEX_NATIVE_ORIGINAL_XML_AND_EXACT_GAMEPLAY_SHA_AVAILABLE'
+      - name: Execute original and adversarial native receipt checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W03 -p test_native_receipt_triage.py -v 2>&1 | tee "Tools/B01/CI41/P17W03/tests-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_CODEX_383_XML_1330_EDIT_TWO_FAILED_ONE_SKIPPED_474_PLAY_HOLD' "Tools/B01/CI41/P17W03/tests-${RUNNER_OS}.txt"
+          grep -q 'FILTERED_RETEST_GREEN_CANNOT_OVERRIDE_FAILED_FULL_EDIT_RED' "Tools/B01/CI41/P17W03/tests-${RUNNER_OS}.txt"
+          grep -q 'ACTUAL_CODEX_NATIVE_FAILED_XML_PRODUCES_NONZERO_CLI_STATUS_AND_JSON' "Tools/B01/CI41/P17W03/tests-${RUNNER_OS}.txt"
+          echo 'CI41_NATIVE_TRIAGE_ORIGINAL_GIT_EVIDENCE_VERIFIED_NATIVELY_NOT_EXECUTED'
+      - name: Persist original Codex source XML triage as JSON, exit 2 is EXPECTED
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          set +e
+          "$PY" Tools/B01/CI41/P17W03/native_receipt_triage.py --repo . --evidence-commit f92c873bb1e397a598b133e107ae704e15f86768 --gameplay-sha 203a0805251ed28293888e43f2d49f0df63767c6 > "Tools/B01/CI41/P17W03/codex-original-${RUNNER_OS}.json"
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          "$PY" -m json.tool "Tools/B01/CI41/P17W03/codex-original-${RUNNER_OS}.json" > /dev/null
+          grep -q '"status": "HOLD_FULL_NATIVE_REGRESSION"' "Tools/B01/CI41/P17W03/codex-original-${RUNNER_OS}.json"
+          grep -q '"failed": 2' "Tools/B01/CI41/P17W03/codex-original-${RUNNER_OS}.json"
+          grep -q '"passed": 474' "Tools/B01/CI41/P17W03/codex-original-${RUNNER_OS}.json"
+          echo 'CODEX_ORIGINAL_FULL_EDITMODE_FAILURE_PRESERVED_EXPECTED_EXIT_2'
+      - name: Upload real source-verification receipts (NOT Unity log from this run)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W03-NATIVE-TRIAGE-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W03/tests-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W03/codex-original-${{ runner.os }}.json
+          if-no-files-found: warn
+          retention-days: 14
