@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <OutputType>Exe</OutputType>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <DefineConstants>UNITY_EDITOR</DefineConstants>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="UnityEditorStubs.cs" />
+  <Compile Include="OriginalEditorSourceTests.cs" />
+  <Compile Include="../../../../Assets/B01KitGallery001/Editor/KitGalleryWindow.cs" />
+ </ItemGroup>
+</Project>

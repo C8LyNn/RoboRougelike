@@ -1,0 +1,269 @@
+{
+  "schema": "b01-equipment-kits-v1",
+  "package_id": "B01-22-EQUIPMENT-KITS-001",
+  "version": "1.0.0",
+  "currency": "scrap",
+  "no_mounted_positions": true,
+  "provenance": {
+    "codex_pr": 310,
+    "codex_sha": "aa7a917f177a9b1f07203868fb7d1d871eb3ee46",
+    "r3_blob": "8cc68faf89793c3a803e5807594c9faf0df10091",
+    "r4_blob": "502f6d7f70d4e8078260de632ab181f244a4d730"
+  },
+  "part_prices": {
+    "Wheel": 15,
+    "Suspension": 25,
+    "Booster": 35,
+    "JumpDrive": 45,
+    "Blink": 60,
+    "Gyroscope": 30,
+    "OmniDrive": 40,
+    "MagneticGrapple": 45,
+    "HoverEngine": 35,
+    "CrawlerTrack": 45,
+    "BonusModule": 60,
+    "DirectionalShield": 60,
+    "PointDefense": 70,
+    "StructuralScanner": 40,
+    "ScannerPulse": 30,
+    "IndependentSteering": 45,
+    "Armor": 5
+  },
+  "weapon_prices": {
+    "Basic": 30,
+    "Automatic": 36,
+    "Heavy": 55,
+    "Shotgun": 45,
+    "Railgun": 65,
+    "BeamCutter": 55,
+    "RocketLauncher": 60,
+    "RotarySaw": 50,
+    "EmpEmitter": 65
+  },
+  "kits": [
+    {
+      "id": "EK01",
+      "title": "Przyczepność awaryjna",
+      "role": "mobility-recovery",
+      "description": "Koła, zawieszenie i żyroskop.",
+      "parts": [
+        {
+          "kind": "Wheel",
+          "count": 2
+        },
+        {
+          "kind": "Suspension",
+          "count": 2
+        },
+        {
+          "kind": "Gyroscope",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK02",
+      "title": "Gąsienicowy taran",
+      "role": "armored-assault",
+      "description": "Armata ciężka i tarcza na gąsienicach.",
+      "parts": [
+        {
+          "kind": "CrawlerTrack",
+          "count": 2
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Heavy",
+          "count": 1
+        },
+        {
+          "kind": "DirectionalShield",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK03",
+      "title": "Zwiadowca Omni",
+      "role": "skirmisher",
+      "description": "Manewrowy karabin i impuls skanera.",
+      "parts": [
+        {
+          "kind": "OmniDrive",
+          "count": 2
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Automatic",
+          "count": 1
+        },
+        {
+          "kind": "ScannerPulse",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK04",
+      "title": "Zawis i przełamanie",
+      "role": "hover-marksman",
+      "description": "Podwójny zawis, Railgun i skan struktury.",
+      "parts": [
+        {
+          "kind": "HoverEngine",
+          "count": 2
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Railgun",
+          "count": 1
+        },
+        {
+          "kind": "StructuralScanner",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK05",
+      "title": "Szturm bliski",
+      "role": "close-combat",
+      "description": "Dwie strzelby, booster i stabilizacja.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "Shotgun",
+          "count": 2
+        },
+        {
+          "kind": "Booster",
+          "count": 1
+        },
+        {
+          "kind": "Gyroscope",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK06",
+      "title": "Strażnik punktowy",
+      "role": "point-defense",
+      "description": "Obrona punktowa, tarcza i zwykłe działo.",
+      "parts": [
+        {
+          "kind": "PointDefense",
+          "count": 1
+        },
+        {
+          "kind": "DirectionalShield",
+          "count": 1
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Basic",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK07",
+      "title": "Zakłócacz linii",
+      "role": "disruptor",
+      "description": "EMP, przecinarka, zaczep i skaner.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "EmpEmitter",
+          "count": 1
+        },
+        {
+          "kind": "Gun",
+          "weapon": "BeamCutter",
+          "count": 1
+        },
+        {
+          "kind": "MagneticGrapple",
+          "count": 1
+        },
+        {
+          "kind": "ScannerPulse",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK08",
+      "title": "Ciężkie przełamanie",
+      "role": "heavy-breach",
+      "description": "Rakietnica, armata, żyroskop i gąsienice.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "RocketLauncher",
+          "count": 1
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Heavy",
+          "count": 1
+        },
+        {
+          "kind": "Gyroscope",
+          "count": 1
+        },
+        {
+          "kind": "CrawlerTrack",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "EK09",
+      "title": "Flanka mechaniczna",
+      "role": "melee-flanker",
+      "description": "Piła obrotowa, boostery i sterowanie.",
+      "parts": [
+        {
+          "kind": "Gun",
+          "weapon": "RotarySaw",
+          "count": 1
+        },
+        {
+          "kind": "Booster",
+          "count": 2
+        },
+        {
+          "kind": "IndependentSteering",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "EK10",
+      "title": "Skokowy strzelec",
+      "role": "mobile-fire",
+      "description": "Napęd skokowy, Railgun, automat i skaner.",
+      "parts": [
+        {
+          "kind": "JumpDrive",
+          "count": 1
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Railgun",
+          "count": 1
+        },
+        {
+          "kind": "Gun",
+          "weapon": "Automatic",
+          "count": 1
+        },
+        {
+          "kind": "ScannerPulse",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

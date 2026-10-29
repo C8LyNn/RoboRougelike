@@ -1,0 +1,30 @@
+name: B01-22 W03 Unity Editor Kit Gallery original-source QA
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01KitGallery001/**'
+      - 'Assets/B01KitGallery001.meta'
+      - 'Tools/B01/B01-22/KITGALLERY001/**'
+      - '.github/workflows/b01-22-w03-kitgallery.yml'
+  push:
+    branches: ['b01-22/p17w03-kitgallery-001']
+permissions:
+  contents: read
+jobs:
+  source-qa:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet run --project Tools/B01/B01-22/KITGALLERY001/GalleryCompile.csproj --configuration Release
+      - run: python -m unittest discover -s Tools/B01/B01-22/KITGALLERY001 -p test_gallery.py -v
+      - run: git fetch --no-tags --depth=1 origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
+      - run: python Tools/B01/B01-22/KITGALLERY001/verify_gallery.py
