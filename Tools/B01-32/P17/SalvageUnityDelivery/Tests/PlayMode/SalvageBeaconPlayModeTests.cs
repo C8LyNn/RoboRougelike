@@ -12,11 +12,7 @@ namespace RoboRougelike.B0132P17.SalvageUnity.Tests
         {
             // Verify actual generated prefab after import via scene loading in Unity Editor.
             var prefab = Resources.Load<GameObject>("B0132_SalvageBeaconLoop");
-            if (prefab == null)
-            {
-                Assert.Ignore("Prefab is staged outside Resources; run Editor import/asset lookup receiver test.");
-                yield break;
-            }
+            Assert.IsNotNull(prefab, "Generated prefab must be placed inside Assets/B0132SalvageBeacon/Resources");
             var copy = Object.Instantiate(prefab);
             Assert.IsNotNull(copy.GetComponent<SpriteRenderer>());
             Assert.IsNotNull(copy.GetComponent<B0132SalvageBeaconLoop>());
