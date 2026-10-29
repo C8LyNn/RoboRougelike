@@ -1,0 +1,39 @@
+{
+  "package_id": "CI41-REPLAY-001",
+  "version": "1.0.0",
+  "producer": "B01-41 CI/CD & TEST AUTOMATION",
+  "branch": "audit/b01-41-p17-w03-unity-repeat-executor",
+  "kind": "REAL_SUBPROCESS_UNITY_CLI_EXECUTOR_NOT_SIMULATED_GAME",
+  "scope": [
+    "Tools/B01/CI41/P17W03B/**",
+    ".github/workflows/b01-41-p17w03b-unity-replay.yml"
+  ],
+  "source_blobs": {
+    "Tools/B01/CI41/P17W03B/unity_repeat.py": "81e2e29a3be10a7882cba9603f453fd7253e1390",
+    "Tools/B01/CI41/P17W03B/test_unity_repeat.py": "16cb0fc02eed331a4a0dd2bea268d5b4abfa5413"
+  },
+  "original_game_source": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "recommended_filters": [
+    "Camera275NativeTests.ScrollZoomIsSmoothAndRemainsAnchoredToVehicle",
+    "MapgenRC1IntegrationTests.MeasuredHeavySpawnsOnGeneratedFloorWithCanonicalEnemies"
+  ],
+  "test_runner": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40911232379",
+  "tests": {
+    "expected_cases_per_os": 12,
+    "platforms": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "test_editor": "SIMULATED_PYTHON_CHILD_PROCESS",
+    "native_unity": "NOT_RUN",
+    "G1": "HOLD",
+    "G2": "HOLD"
+  },
+  "expected_tool_status": "REPEAT_PASS only if all filtered real tests/exit/XML passed; otherwise HOLD or FAIL_CLOSED",
+  "output": "unique per-attempt xml/log/stdout/stderr + atomic summary.json and sha256",
+  "native_import": "B01-40 source-only QA then B01-60/61 authorized real Unity executable in disposable exclusive exact-sha game checkout",
+  "rollback": "No merge; remove own optional CI script; discard disposable Unity QA Library",
+  "qa": "INDEPENDENT_PENDING",
+  "codex_ack": "PENDING",
+  "integrated": false
+}
