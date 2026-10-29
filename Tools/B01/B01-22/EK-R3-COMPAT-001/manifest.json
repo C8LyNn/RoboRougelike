@@ -1,6 +1,6 @@
 {
   "package_id": "B01-22-EK-R3-COMPAT-001",
-  "revision": "1.0.0",
+  "revision": "1.0.1",
   "producer": "B01-22",
   "issue": 407,
   "target_author": {
@@ -18,6 +18,8 @@
   "tests": {
     "original_source_windows": "NOT_RUN",
     "original_source_ubuntu": "NOT_RUN",
+    "source_test_cases": 20,
+    "source_mutation_fail_closed": true,
     "unity_native": "NOT_RUN",
     "independent_qa": "PENDING"
   },
@@ -29,5 +31,23 @@
   "notes": [
     "Strict exact pinned 1-line modifier, not permissive SHA bypass",
     "No duplicate economy, garage integration or user-facing game UI"
+  ],
+  "git_blobs": [
+    {
+      "path": "Tools/B01/B01-22/EK-R3-COMPAT-001/compat_gate.py",
+      "blob_sha1": "bea6dadcbcf03806edd4f95ee2af996a1aff9d85"
+    },
+    {
+      "path": "Tools/B01/B01-22/EK-R3-COMPAT-001/test_compat_gate.py",
+      "blob_sha1": "f9a6921ac4bb9d8136c717e325d0d8e4ab2f83af"
+    },
+    {
+      "path": "Tools/B01/B01-22/EK-R3-COMPAT-001/README.md",
+      "blob_sha1": "03b67c1f56fcae1dcb0d0c8176bb2c3c1cb3d381"
+    },
+    {
+      "path": ".github/workflows/b01-22-w04-r3-compat.yml",
+      "blob_sha1": "ee2684e2c2e7716e60b5e93dcddfe8f6c6da4158"
+    }
   ]
 }
