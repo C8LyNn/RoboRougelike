@@ -112,7 +112,7 @@ internal static class Program
             Check(RunScorer.ScoreStage(b).BasePoints > RunScorer.ScoreStage(a).BasePoints, "risk not rewarded");
         });
         Test("20 later stages have higher base", () => {
-            Check(RunScorer.ScoreStage(Stage(6)).BasePoints > RunScorer.ScoreStage(Stage(1)), "bad");
+            Check(RunScorer.ScoreStage(Stage(6)).BasePoints > RunScorer.ScoreStage(Stage(1)).BasePoints, "bad");
         });
         Test("21 salvage points bounded 0..45", () => {
             var a = Stage(); a.RecoveredModules = 0;
