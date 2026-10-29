@@ -1,0 +1,56 @@
+name: B01-40 P17 W04 real immutable equipment acceptance versus Codex R3 partial
+on:
+  push:
+    branches: ['audit/b01-40-p17w04-equip-r3-compat']
+    paths:
+      - 'Tools/B01Validation/P17W04/**'
+      - '.github/workflows/b01-40-p17w04-equip-compat.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-equipment-native-source-qa:
+    runs-on: ${{ matrix.os }}
+    name: Execute original 26 Node + 18 Python + 7 pin negatives and real staging (${{ matrix.os }})
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact original B01-22 and latest Codex source without editing author
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
+          git fetch --no-tags --depth=1 origin 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1
+          git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+          git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
+          git fetch --no-tags --depth=1 origin f92c873bb1e397a598b133e107ae704e15f86768
+      - name: Execute unmodified original producer sources and create real 10 kit staged QA ZIP
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W04/receive_kit_compat.py --repo . --out "$RUNNER_TEMP/b0140-w04-original-kit"
+      - name: Independent original receipt and negative source mutation checks
+        shell: bash
+        run: |
+          export B0140_W04_OUTPUT="$RUNNER_TEMP/b0140-w04-original-kit"
+          python Tools/B01Validation/P17W04/test_kit_receiver.py -v
+      - name: Recheck actual SHA gate stays HOLD and produce physical evidence
+        shell: bash
+        run: |
+          python -c "import os,pathlib,json,hashlib; d=pathlib.Path(os.environ['RUNNER_TEMP'])/'b0140-w04-original-kit';r=json.loads((d/'compatibility-receipt.json').read_bytes());z=d/'B01-40-W04-Original-Kit-Offers-QA-ONLY.zip';assert hashlib.sha256(z.read_bytes()).hexdigest()==r['qa_only_zip_sha256'];assert r['author_pin_gate_current_exit']==2;assert not r['direct_game_import_authorized'];print('ORIGINAL_KITS_26_NODE_18_PY_7_NEGATIVE_PASS');print('CODEX_R3_ONLY_ADDED_PARTIAL_SEMANTICS_EQUIVALENT');print('SHA_GATE=HOLD NOT_CODEX_READY UNITY=NOT_RUN ZIP_SHA256='+r['qa_only_zip_sha256'])"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W04-Original-Kits-SHA-gated-Codex-QA-HOLD-${{ matrix.os }}
+          path: ${{ runner.temp }}/b0140-w04-original-kit/
+          retention-days: 21
+          if-no-files-found: error
