@@ -1,0 +1,28 @@
+{
+  "package_id": "B01-60-ENEMY-FORMATIONS-SOURCE-QA-001",
+  "wave": "PASS17-W03",
+  "owner": "B01-60",
+  "upstream_pr": 355,
+  "upstream_immutable_sha": "c39a400cb07ae0fd6f0d8d419a128490cfbcfd8a",
+  "codex_pr": 383,
+  "codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "original_game_source_blobs": {
+    "Assets/R5/R5Arena.cs": "fbe1537036910e0dcc2b2c7e502e66848fcd14a5",
+    "Assets/R1/R1EncounterManager.cs": "0a1c36b246c059a8bd9ec93a9d531cbe916b64bf",
+    "Assets/R1/R1RunDefinition.cs": "5665e64d3d665c67d352eb5a9809a66fc5136698",
+    "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a"
+  },
+  "upstream_data_blob": "4c28b6289f23bcbd82c976bccb1567cbcb847371",
+  "test_scope": "Original R5Arena.Build C# invoked 3 times; actual original boxes captured, 12 layouts/30 spawn points + 8 negative mutated inputs",
+  "sources_owned": [
+    "Tools/B01/ENEMY-FORMATIONS-SOURCE-QA-001/**",
+    ".github/workflows/b01-60-p17w03-enemy-formations-receiver.yml"
+  ],
+  "prerequisites": "Git, Python 3.11, dotnet SDK 8",
+  "limitations": [
+    "Original managed C# executed with disposable Unity API shims, NOT native Unity",
+    "No real prefab extents/PhysX/weapon AI/player manual play",
+    "G1 native NOT_RUN; G2 HOLD; Codex ACK pending; no merge"
+  ],
+  "rollback": "delete only B01-60-owned QA paths, never original producer or Codex game source"
+}
