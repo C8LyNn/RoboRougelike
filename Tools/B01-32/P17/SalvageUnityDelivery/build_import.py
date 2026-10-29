@@ -32,18 +32,18 @@ def git_data(commit,path,expected=None):
     blob=git("rev-parse",commit+":"+path).decode()
     if expected:ok(blob==expected,"git blob drift "+path)
     raw=git("show",commit+":"+path)
-    ok(sha1(b"blob "+str(len(raw)).encode()+b"\\0"+raw)==blob,"git object bytes mismatch "+path)
+    ok(sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw)==blob,"git object bytes mismatch "+path)
     return raw
 def guid(relative):
     return sha256((PACKAGE+":v1:"+relative).encode())[:32]
 def folder_meta(relative):
-    return (f"fileFormatVersion: 2\\nguid: {guid(relative)}\\nfolderAsset: yes\\nDefaultImporter:\\n  externalObjects: {{}}\\n  userData:\\n  assetBundleName:\\n  assetBundleVariant:\\n").encode()
+    return (f"fileFormatVersion: 2\nguid: {guid(relative)}\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {{}}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n").encode()
 def mono_meta(relative):
-    return (f"fileFormatVersion: 2\\nguid: {guid(relative)}\\nMonoImporter:\\n  externalObjects: {{}}\\n  serializedVersion: 2\\n  defaultReferences: []\\n  executionOrder: 0\\n  icon: {{instanceID: 0}}\\n  userData:\\n  assetBundleName:\\n  assetBundleVariant:\\n").encode()
+    return (f"fileFormatVersion: 2\nguid: {guid(relative)}\nMonoImporter:\n  externalObjects: {{}}\n  serializedVersion: 2\n  defaultReferences: []\n  executionOrder: 0\n  icon: {{instanceID: 0}}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n").encode()
 def importer_meta(relative,kind):
-    return (f"fileFormatVersion: 2\\nguid: {guid(relative)}\\n{kind}:\\n  externalObjects: {{}}\\n  userData:\\n  assetBundleName:\\n  assetBundleVariant:\\n").encode()
+    return (f"fileFormatVersion: 2\nguid: {guid(relative)}\n{kind}:\n  externalObjects: {{}}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n").encode()
 def yaml_prefab(sprite_paths,loop_path):
-    sprites="".join("  - {fileID: 21300000, guid: "+guid(s)+", type: 3}\\n" for s in sprite_paths)
+    sprites="".join("  - {fileID: 21300000, guid: "+guid(s)+", type: 3}\n" for s in sprite_paths)
     first=guid(sprite_paths[0]);script=guid(loop_path)
     return f"""%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
@@ -205,14 +205,14 @@ def make():
      "rootNamespace":"RoboRougelike.B0132P17.SalvageUnity",
      "references":[],"includePlatforms":[],"excludePlatforms":[],"allowUnsafeCode":False,
      "overrideReferences":False,"precompiledReferences":[],"autoReferenced":True,
-     "defineConstraints":[],"versionDefines":[],"noEngineReferences":False},indent=2)+"\\n").encode()
+     "defineConstraints":[],"versionDefines":[],"noEngineReferences":False},indent=2)+"\n").encode()
     local[test_asm]=(json.dumps({"name":"B0132.SalvageUnity.PlayModeTests",
      "rootNamespace":"RoboRougelike.B0132P17.SalvageUnity.Tests",
      "references":["B0132.SalvageUnity.Runtime"],"includePlatforms":[],
      "excludePlatforms":[],"allowUnsafeCode":False,"overrideReferences":False,
      "precompiledReferences":[],"autoReferenced":False,
      "defineConstraints":[],"versionDefines":[],"noEngineReferences":False,
-     "optionalUnityReferences":["TestAssemblies"]},indent=2)+"\\n").encode()
+     "optionalUnityReferences":["TestAssemblies"]},indent=2)+"\n").encode()
     for path in [runtime_asm,test_asm]:local[path+".meta"]=importer_meta(path,"AssemblyDefinitionImporter")
     prefab=f"{PKG}/Resources/B0132_SalvageBeaconLoop.prefab"
     local[prefab]=yaml_prefab([p for p,_ in sprites],f"{PKG}/Runtime/B0132SalvageBeaconLoop.cs")
@@ -243,8 +243,8 @@ def make():
         ok(set(z.namelist())==set(local),"ZIP files changed")
         for p,d in local.items():ok(z.read(p)==d,"ZIP bytes mismatch "+p)
     receipt["zip_sha256"]=sha256(zip_path.read_bytes());receipt["zip_bytes"]=zip_path.stat().st_size
-    (out/"SOURCE_RECEIPT.json").write_text(json.dumps(receipt,indent=2)+"\\n",encoding="utf8")
-    (out/"SOURCE_SHA256.txt").write_text("".join(sha256(d)+"  "+p+"\\n" for p,d in sorted(local.items())),encoding="utf8")
+    (out/"SOURCE_RECEIPT.json").write_text(json.dumps(receipt,indent=2)+"\n",encoding="utf8")
+    (out/"SOURCE_SHA256.txt").write_text("".join(sha256(d)+"  "+p+"\n" for p,d in sorted(local.items())),encoding="utf8")
     print("SALVAGE_PHYSICAL_UNITY_PACKAGE_PASS",len(local),"actual source assets, 8 PNG Sprite Singles, 1 animated prefab, 8 direct serialized sprite refs")
     print("SALVAGE_UNITY_ZIP_SHA256",receipt["zip_sha256"])
     print("NATIVE_UNITY_NOT_RUN / CODEX_ACK_PENDING / NO_GAME_MUTATION")
