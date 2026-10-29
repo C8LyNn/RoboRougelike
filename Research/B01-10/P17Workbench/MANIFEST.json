@@ -1,0 +1,166 @@
+{
+  "packageId": "R5WB001/P17-R1",
+  "owner": "B01-10 GAME DESIGN & BALANCE",
+  "goal": "Standalone original-R5-format new content authoring workbench",
+  "branch": "design/b01-10-pass17-r5-workbench",
+  "draftPullRequest": "https://github.com/C8LyNn/RoboRougelike/pull/357",
+  "headAtManifestCreation": "45e0103a7e78194f3f1ac7c1ed743cb8535096a0",
+  "sourceOnly": true,
+  "productionStatus": "PRODUCER_REAL_NODE_AND_CHROMIUM_GREEN_WITH_RED_GREEN_REGRESSION / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / GAME_NOT_INTEGRATED",
+  "sourceScope": "Research/B01-10/P17Workbench/** plus ONE new owned isolated .github/workflows/b01-10-p17-r5-workbench.yml",
+  "contents": {
+    "R5WorkbenchCore.js": {
+      "blob": "73755a31a2c8ff937d47476f5cf5ae402e7fc5fd",
+      "characters": 9660
+    },
+    "R5Workbench.html": {
+      "blob": "f26ca89e7f7f2663754b1ef8ee6d28355ddcd7da",
+      "characters": 22606,
+      "gitBlobAtRealBrowserRun": "1ec85c696edaacf66553ab46590f091a6c8721a8"
+    },
+    "workbench.test.cjs": {
+      "blob": "f02a8ca55cc3dda0146db98af51cf89e19afdfdf",
+      "characters": 5607
+    },
+    "README.md": {
+      "blob": "7df13c7dc2590eb2146dd11c17d295c63c57900f",
+      "characters": 11389
+    },
+    "browser.test.cjs": {
+      "blob": "49f0523bdb2f9e96c35cf5991ce15d7366c10bbb",
+      "characters": 7810
+    },
+    "QA_W02.json": {
+      "blob": "85343ab5c6acc318bb1a54c825792ac475e9287b",
+      "characters": 3184
+    },
+    "QA_W03.json": {
+      "blob": "0252bf182f7729f0a1e8ffcda958b2f217057878",
+      "characters": 3898,
+      "role": "W3 real browser 33/36 red => 36/36 green, win/ubuntu node 41/41 with immutable original-source pins"
+    }
+  },
+  "originalGameSource": {
+    "pr": 310,
+    "commit": "be2c4b6ac63e04eff5b046e50641ec8d1da4837f",
+    "sourceFileBlobs": {
+      "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a",
+      "Assets/R1/R1RunDefinition.cs": "5665e64d3d665c67d352eb5a9809a66fc5136698",
+      "Assets/R3/R3EnemyArchetype.cs": "66cd1ee734b129117b3753d1205469a0496cb673",
+      "Assets/R1/R1EncounterManager.cs": "0a1c36b246c059a8bd9ec93a9d531cbe916b64bf"
+    },
+    "mainR5SourceDiffers": true,
+    "notes": "Original R5 current Codex source must be reverified before any Unity import"
+  },
+  "features": [
+    "Offline single-file HTML: no CDN, network, build tool or backend",
+    "Create/edit six R5 stages with 1–2 original R1 encounter options per stage",
+    "Native fields original three arena kinds, four enemy archetypes and four variants",
+    "Original special EliteGunner/Gunner and EliteBruiser/Bruiser/SiegeBoss/Bruiser restrictions",
+    "Source R5Threat per route and alt roster with additional escort or boss-only logic",
+    "Create/remove alternate routes; original ScrapReward and RewardJitter",
+    "Atomic fail-closed editing; source-schema validation and warning separation",
+    "Edit history up to 30; local JSON import/export/download; previous P17 game deck 10/10 imports"
+  ],
+  "tests": {
+    "sourceCore": {
+      "result": "41/41 actual Node 22 CLI PASS Windows+Ubuntu W3",
+      "nativeNodeCLI": "PASS",
+      "origin": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642",
+      "priorV8": "41/41 PASS"
+    },
+    "htmlUI": {
+      "result": "36/36 real Chromium PASS",
+      "chromium": "PASS",
+      "screenshots": 3,
+      "viewports": [
+        "1280x720",
+        "1920x1080",
+        "720x900"
+      ],
+      "origin": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759517141",
+      "originalV8Adapter": "20/20 PASS",
+      "htmlBlob": "1ec85c696edaacf66553ab46590f091a6c8721a8",
+      "latestRun": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40900605642",
+      "previousSourceRun": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759864861",
+      "currentAppBlob": "f26ca89e7f7f2663754b1ef8ee6d28355ddcd7da",
+      "chromiumVerifiedAtAppSha": "54270e16726be3b92e9f94978a855a03e28e98ac"
+    },
+    "previousPR344DeckImport": {
+      "result": "10/10 options parsed with 0 errors/0 warnings",
+      "inputBlob": "762009d1bde7978aeb5c842dd08d2efdddcec646"
+    },
+    "remoteSourceParity": {
+      "result": "2/2 PASS",
+      "details": "HTML embeds exact Core JS, no invalid placeholder markup"
+    },
+    "nativeUnity": "NOT_RUN",
+    "nativeCSharp": "NOT_RUN",
+    "realBrowser": "PASS real Chromium 36/36 on three viewports, original source W3 green",
+    "windowsPlayer": "NOT_RUN",
+    "humanPlay": "NOT_RUN",
+    "independentB0160QA": "PENDING",
+    "W02": {
+      "runId": 40759517141,
+      "status": "SUCCESS",
+      "sha": "5a341ceceedb5f118392298f07f2728ba6e92b00",
+      "jobs": [
+        "Ubuntu 24.04 Node22 41/41",
+        "Windows 2025 Node22 41/41",
+        "Actual Chromium 27/27"
+      ],
+      "artifactId": 12847242860,
+      "artifactContains": [
+        "QA_BROWSER.json",
+        "r5wb001_1280x720.png",
+        "r5wb001_1920x1080.png",
+        "r5wb001_720x900.png"
+      ],
+      "sourceBlobsRemainIdenticalAtManifestUpdate": true
+    },
+    "W03": {
+      "previousRed": "real Chromium 33/36 (3 auto-budget test failures) before fixing HTML formPatch",
+      "redRunId": 40900414206,
+      "redSha": "f35809d2321bc3cbd08f0714c56a125480d5738d",
+      "greenRunId": 40900605642,
+      "greenSha": "54270e16726be3b92e9f94978a855a03e28e98ac",
+      "greenStatus": "SUCCESS",
+      "actualWindowsNode22": "41/41 PASS",
+      "actualUbuntuNode22": "41/41 PASS",
+      "actualChromiumPlaywright": "36/36 PASS",
+      "nativeUnity": "NOT_RUN",
+      "independentB0160": "PENDING",
+      "artifactId": 12909511232,
+      "artifactScreenshots": 3,
+      "unchangedOriginalGameCode": true,
+      "delivery": "B01-40 source G0 and B01-60 independent QA required before B01-00 may route to CODEX INBOX"
+    },
+    "W03QAReceiptBlob": "0252bf182f7729f0a1e8ffcda958b2f217057878"
+  },
+  "receiver": {
+    "B0140": "Verify scope/source Git blobs, run real Node 22 process and browser import/export",
+    "B0160": "Independent QA for 6-stage editor input, selection, undo, atomic refusal and JSON source compatibility",
+    "codex": "ONLY if B01-00 authorizes; use disposable worktree and replace content of original Assets/Resources/R5/Encounters.json retaining .meta, run original R5RunPlan.Validate and PlayMode",
+    "rollBack": "restore original original-game JSON exact bytes, keep .meta GUID, verify clean git diff",
+    "blockedBy": "Codex import/merge and native game QA are not authorized as part of research tool delivery"
+  },
+  "noChangesTo": [
+    "Assets/**",
+    ".github/**",
+    "main",
+    "develop",
+    "CHL-003",
+    "PARTSIZE-001",
+    "LD02 Canonical",
+    "B01-12/20/21/24/25"
+  ],
+  "ack": "PENDING",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "version": "1.1.1-W03-FIXED",
+  "ownedWorkflow": {
+    "path": ".github/workflows/b01-10-p17-r5-workbench.yml",
+    "blob": "b87dc9ba2cadaf562a88a3cccc5ab6e6701e1d39",
+    "reason": "Actual browser and source test CI added in WAVE02; this workflow belongs only to B01-10 research tool"
+  }
+}
