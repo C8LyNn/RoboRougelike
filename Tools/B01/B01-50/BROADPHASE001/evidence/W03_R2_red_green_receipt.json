@@ -1,0 +1,36 @@
+{
+  "package_id": "B01-50-BROADPHASE-001/R2",
+  "classification": "REAL_NODE22_SOURCE_FIX_NO_NATIVE_UNITY",
+  "test_host": "Linux Node.js v22.16.0",
+  "old_source_commit": "3104370c99dce19253085a75589858975ca5f79d",
+  "r1_original_source_blob": "3c7a59fc799dc0af99e12b94ed5f6da18fd3bef9",
+  "red": {
+    "command": "node --test tests/broadphase.test.mjs (R1 production source + R2 regression tests)",
+    "exit_code": 1,
+    "pass": 11,
+    "fail": 2,
+    "case_12": "returned LATER target id=1 (expected id=99, t=0.4)",
+    "case_13": "incorrectly accepted 5e-11 impact-time mismatch"
+  },
+  "fixed_source_blob": "99c98bf9cd460058f58bd53960402ac51f107dec",
+  "fixed_test_blob": "721b44de6c3998c0d4ac8c45aedccbcb0c367820",
+  "green": {
+    "command": "node --test tests/broadphase.test.mjs (R2 source + tests)",
+    "exit_code": 0,
+    "pass": 13,
+    "fail": 0
+  },
+  "benchmark": {
+    "command": "node benchmark.mjs --seed 31 --runs 3 --out replay_r2.json",
+    "exit_code": 0,
+    "comparisons": 9,
+    "same_structural_fields_per_comparison": 12,
+    "exact_hit_parity": true,
+    "previous_original_receipt_sha256": "c9822b2b6ce5c9e429cc3dc64ecadba58824f8158782fc4eb6d6f59a1af38a4c",
+    "replay_r2_sha256": "7e45ad35c033069792004a28333addb0ea135403afa7f106554b987d666b5525"
+  },
+  "native_unity": "NOT_RUN",
+  "actual_game_fps": "NOT_MEASURED",
+  "independent_qa": "PENDING",
+  "codex_ack": "PENDING"
+}
