@@ -1,0 +1,20 @@
+{
+  "package_id": "B01-12-SNAPGRID-001",
+  "version": "R2",
+  "owner": "B01-12 Interactive UX Prototypes",
+  "html_sha256": "be8b4908663cd7c887d8feb6c9b096ef24f9b1c0bde2326b4705f205c8e681ef",
+  "test_sha256": "2b2aa2eca8575f04a0de1963a999c4ef5dcdeb43b25b51e7d7bc1178edb089a8",
+  "source_size": 15074,
+  "dependencies": {
+    "browser": "recent offline Chromium or similar",
+    "test": "Python 3.10+, playwright, /usr/bin/chromium"
+  },
+  "nativeUnity": "NOT_RUN",
+  "gameIntegrated": false,
+  "scope": [
+    "Research/B01-12/P17W02/SnapGrid001/**"
+  ],
+  "prior_r1_blob": "39113ac4f90e57584877339fae7c5eafcd10150e",
+  "change": "invalidate stale exported research JSON after every successful state mutation/undo/redo",
+  "acceptance": "B01-40 source/manifest G0, B01-60 independent Chromium on R2, B01-00 queues Codex"
+}
