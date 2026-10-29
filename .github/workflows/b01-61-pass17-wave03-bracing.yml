@@ -1,0 +1,48 @@
+name: B01-61 W03 original P17 bracing independent content acceptance
+
+on:
+  push:
+    branches: ['qa/b01-61-pass17-wave03-bracing-cross-acceptance']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61-P17-W03/**'
+      - '.github/workflows/b01-61-pass17-wave03-bracing.yml'
+
+permissions:
+  contents: read
+jobs:
+  braced-cross-receiver:
+    name: Independent six-face original source geometry / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable B01-23 original base/weakpoint/bracing/partsize Git commits
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 0978497561c8b6400490235d3e5a401ac32bea2d
+          git fetch --no-tags --depth=1 origin 098ccdbe8f129253fa4ada52318436b7cc2b4dc4
+          git fetch --no-tags --depth=1 origin 5666a39eabd4cea91b2b605a9eb99ea2f1e226e8
+          git fetch --no-tags --depth=1 origin be2be0e4802bc3f450179901f9ae91c6d84bcb5b
+      - name: Independent exact 18 Git blobs + 227 original pairs + 64 armor pairs + 6 adversarial mutants
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61-P17-W03/bracing_cross_receiver.py --repo . --output bracing_cross_acceptance.json 2>&1 | tee b0161-w03-original-cross-qa.log
+      - name: Archive original content receiver receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w03-bracing-original-receiver-${{ matrix.os }}
+          path: |
+            b0161-w03-original-cross-qa.log
+            bracing_cross_acceptance.json
+          if-no-files-found: warn
