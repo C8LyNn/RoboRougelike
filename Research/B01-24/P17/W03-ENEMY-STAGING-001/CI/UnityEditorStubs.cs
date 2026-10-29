@@ -67,25 +67,49 @@ namespace UnityEditor {
   }
   public static class AssetDatabase {public static int RefreshCalls;public static void Refresh(){RefreshCalls++;}}
 }
+namespace UnityEngine.SceneManagement {
+  public struct Scene {
+    public int Id;
+    public Scene(int id){Id=id;}
+  }
+  public static class SceneManager {
+    private static Scene active=new Scene(0);
+    public static Scene GetActiveScene()=>active;
+    public static bool SetActiveScene(Scene scene){active=scene;return true;}
+  }
+}
 namespace UnityEditor.SceneManagement {
+  using UnityEngine.SceneManagement;
   public enum NewSceneSetup {EmptyScene}
-  public enum NewSceneMode {Single}
-  public sealed class SceneMarker{}
+  public enum NewSceneMode {Single,Additive}
   public sealed class Snapshot {
     public string Path="";
     public List<UnityEngine.GameObject> Objects=new();
   }
   public static class EditorSceneManager {
     public static readonly List<Snapshot> Saves=new();
-    public static SceneMarker NewScene(NewSceneSetup setup,NewSceneMode mode) {
-      if(setup!=NewSceneSetup.EmptyScene||mode!=NewSceneMode.Single)throw new Exception("Unsafe editor scene setup");
-      UnityEngine.GameObject.All.Clear();return new SceneMarker();
+    private static readonly Dictionary<int,int> firstIndex=new();
+    private static int nextId;
+    public static int CloseCalls;
+    public static Scene NewScene(NewSceneSetup setup,NewSceneMode mode) {
+      if(setup!=NewSceneSetup.EmptyScene||mode!=NewSceneMode.Additive)
+        throw new Exception("Refused unsafe overwrite of pre-existing scene");
+      var scene=new Scene(++nextId);
+      firstIndex.Add(scene.Id,UnityEngine.GameObject.All.Count);
+      return scene;
     }
-    public static bool SaveScene(SceneMarker scene,string path) {
+    public static bool SaveScene(Scene scene,string path) {
       // Mock output marker ONLY. Not valid Unity scene YAML.
       Directory.CreateDirectory(Path.GetDirectoryName(path)??".");
       File.WriteAllText(path,"MOCK_SCENE_NOT_NATIVE_UNITY\n");
-      Saves.Add(new Snapshot{Path=path,Objects=UnityEngine.GameObject.All.ToList()});
+      Saves.Add(new Snapshot{Path=path,Objects=UnityEngine.GameObject.All.Skip(firstIndex[scene.Id]).ToList()});
+      return true;
+    }
+    public static bool CloseScene(Scene scene,bool removeScene) {
+      if(!removeScene)throw new Exception("Expected dispose temporary scene");
+      int first=firstIndex[scene.Id];
+      UnityEngine.GameObject.All.RemoveRange(first,UnityEngine.GameObject.All.Count-first);
+      firstIndex.Remove(scene.Id);CloseCalls++;
       return true;
     }
   }
