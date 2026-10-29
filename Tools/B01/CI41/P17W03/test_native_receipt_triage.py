@@ -141,7 +141,7 @@ class SourceTriageTests(unittest.TestCase):
 
     def test_09_forged_root_counts_truncated_xml_dtd_rejected(self):
         raw = xml([(GOOD, "Passed")])
-        with self.assertRaisesRegex(triage.ReceiptError, "ROOT_LEAF"):
+        with self.assertRaisesRegex(triage.ReceiptError, "INCONSISTENT_NUNIT_ROOT_COUNTS"):
             triage.parse_nunit(raw.replace(b'total="1"', b'total="2"'), "root.xml")
         with self.assertRaisesRegex(triage.ReceiptError, "MALFORMED"):
             triage.parse_nunit(raw[:-30], "cut.xml")

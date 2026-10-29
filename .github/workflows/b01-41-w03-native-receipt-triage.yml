@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/P17W03/native_receipt_triage.py)" = 'ba4d98d627aefdd35f00543d3766b5d5d170b4cb'
-          test "$(git hash-object Tools/B01/CI41/P17W03/test_native_receipt_triage.py)" = '2f202056b53b6f82d6753ed2afd137a6d9199e63'
+          test "$(git hash-object Tools/B01/CI41/P17W03/test_native_receipt_triage.py)" = 'e67a7aa6ec368074c8f59fbd297d638a98f84976'
           echo 'CI41_NATIVE_TRIAGE_SOURCE_GIT_HASH_PINNED'
       - name: Fetch original Codex immutable source and full native XML
         shell: bash
