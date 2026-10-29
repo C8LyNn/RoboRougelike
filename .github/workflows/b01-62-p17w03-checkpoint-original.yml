@@ -1,0 +1,72 @@
+name: B01-62 source-original Codex run checkpoint and expired reload QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Tools/B01/B01-62/P17W03CheckpointSourceQA/**'
+      - '.github/workflows/b01-62-p17w03-checkpoint-original.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checkpoint-original:
+    name: Source-original C# vs historical RED (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    env:
+      CODEX_FIXED: 203a0805251ed28293888e43f2d49f0df63767c6
+      CODEX_OLD: a06dea84e11859a519a42f89c88b2dcdb055646f
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exact original Codex C# source; never modify producer trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$CODEX_FIXED"
+          git fetch --no-tags origin "$CODEX_OLD"
+          python Tools/B01/B01-62/P17W03CheckpointSourceQA/prepare.py \
+            --repo . --mode fixed --out "$RUNNER_TEMP/checkpoint-fixed"
+          python Tools/B01/B01-62/P17W03CheckpointSourceQA/prepare.py \
+            --repo . --mode old --out "$RUNNER_TEMP/checkpoint-old"
+      - name: Execute FIXED original C# storage on actual OS temp files and original R3 deadline method
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$RUNNER_TEMP/checkpoint-fixed/Receiver.csproj" -c Release \
+            2>&1 | tee "Tools/B01/B01-62/P17W03CheckpointSourceQA/fixed-$RUNNER_OS.txt"
+          grep -q '^ORIGINAL_CODEX_CHECKPOINT_SOURCE_GREEN=15/15 NOT_UNITY_NATIVE$' \
+            "Tools/B01/B01-62/P17W03CheckpointSourceQA/fixed-$RUNNER_OS.txt"
+      - name: Execute ORIGINAL historic bug source - must demonstrate failure exit 86
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          dotnet run --project "$RUNNER_TEMP/checkpoint-old/Receiver.csproj" -c Release \
+            -- --historical-negative \
+            > "Tools/B01/B01-62/P17W03CheckpointSourceQA/old-red-$RUNNER_OS.txt" 2>&1
+          status=$?
+          set -e
+          cat "Tools/B01/B01-62/P17W03CheckpointSourceQA/old-red-$RUNNER_OS.txt"
+          echo "HISTORIC_CSHARP_EXIT=$status"
+          test "$status" -eq 86
+          grep -q '^HISTORICAL_CODEX_RELOAD_EXPIRY_RED=OBSERVED$' \
+            "Tools/B01/B01-62/P17W03CheckpointSourceQA/old-red-$RUNNER_OS.txt"
+          echo "HISTORICAL_RED_EXPECTED_REJECTION=PASS"
+      - name: Upload actual source logs, not native Unity results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-p17w03-checkpoint-${{ matrix.os }}
+          path: |
+            Tools/B01/B01-62/P17W03CheckpointSourceQA/fixed-*.txt
+            Tools/B01/B01-62/P17W03CheckpointSourceQA/old-red-*.txt
+          retention-days: 14
