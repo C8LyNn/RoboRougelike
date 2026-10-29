@@ -263,6 +263,31 @@ internal static class Program
         bool badOrdinal=false;
         try{world.Destroy(-1);}catch(ArgumentOutOfRangeException){badOrdinal=true;}
         Require(badOrdinal,"NEGATIVE_COVER_ORDINAL_REJECTED");
+        var mutableAuthoringSource=ReadLayout(d.RootElement);
+        var frozenRuntime=new CoverWorld(mutableAuthoringSource,
+                                         mutableAuthoringSource.OriginalMapGeometryHash);
+        var originalVisibility=frozenRuntime.VisibleEnemyDescriptors(-20,-20);
+        string frozenHash=frozenRuntime.SourceOverlayStateHash;
+        string frozenReceipt=frozenRuntime.ExportReceipt();
+        // Host-owned source objects are mutable, but cannot silently mutate
+        // an initialized runtime after a source hash was validated.
+        mutableAuthoringSource.Boxes[4].X+=2000;
+        mutableAuthoringSource.Boxes[4].Width*=100;
+        mutableAuthoringSource.EnemySpawnDescriptors[0].X+=9999;
+        mutableAuthoringSource.OriginalMapGeometryHash=new string('b',64);
+        mutableAuthoringSource.SourceLayoutId="FAKE_LAYOUT";
+        Require(frozenRuntime.SourceOverlayStateHash==frozenHash,
+                "POST_INIT_AUTHORING_SOURCE_MUTATION_HASH_FROZEN");
+        Require(frozenRuntime.ExportReceipt()==frozenReceipt,
+                "POST_INIT_AUTHORING_SOURCE_MUTATION_RECEIPT_FROZEN");
+        SameInts(frozenRuntime.VisibleEnemyDescriptors(-20,-20),
+                 originalVisibility,"POST_INIT_AUTHORING_SOURCE_MUTATION_LOS_FROZEN");
+        var invalidMarker=ReadLayout(d.RootElement);
+        invalidMarker.EnemySpawnDescriptors[0].X=double.NaN;
+        bool rejectedNaN=false;
+        try { new CoverWorld(invalidMarker,invalidMarker.OriginalMapGeometryHash); }
+        catch(ArgumentException e) { rejectedNaN=e.Message.Contains("INVALID_ENEMY_SOURCE_MARKER"); }
+        Require(rejectedNaN,"NON_FINITE_SOURCE_MARKER_REJECTED");
         Console.WriteLine("MAP_BREAK_W03_PROTECTED_NEGATIVE_SOURCES_AND_REPLAY_PASS");
     }
 }
