@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ENV05-001 original low-poly warning bollard. Blender Z up, -Y front, 1 unit=1 m.
+"""ENV05-001 v002: refined original warning bollard. Blender Z up, -Y front, 1 unit=1 m.
 Run: blender -b -t 2 --python-exit-code 1 --python generate_env05_001.py -- --out /tmp/env05-001 --self-test
 CC0-1.0; no external meshes or textures; static visual prop only.
 """
@@ -13,7 +13,7 @@ COLLECTION=PREFIX+"LIGHT_BOLLARD"
 MATERIALS={
  "Graphite":((.070,.092,.110,1),.68,.32,0),
  "GalvanizedSteel":((.48,.54,.57,1),.72,.38,0),
- "AmberBeacon":((1,.33,.018,1),.08,.28,1.8)
+ "AmberBeacon":((1,.46,.035,1),.08,.30,3.2)
 }
 def clear_own():
  col=bpy.data.collections.get(COLLECTION)
@@ -80,21 +80,25 @@ def build():
  col.objects.link(root); root.location=(0,0,0); root.empty_display_size=.13
  mats={k:make_material(k,v) for k,v in MATERIALS.items()}
  dark,steel,amber=(mats[k] for k in ("Graphite","GalvanizedSteel","AmberBeacon"))
- box("BaseFoot",(0,0,.041),(.32,.32,.082),dark,col,root,.012)
- box("BaseReinforcement",(0,0,.105),(.265,.265,.048),steel,col,root,.006)
+ box("BaseFoot",(0,0,.041),(.300,.300,.082),dark,col,root,.010)
+ box("BaseReinforcement",(0,0,.105),(.257,.257,.048),steel,col,root,.006)
  for sx in (-1,1):
   for sy in (-1,1):
    bolt("BaseBolt_%s_%s"%(sx,sy),(sx*.117,sy*.117,.088),steel,col,root)
  taper(col,root,dark)
  box("FrontServicePanel",(0,-.116,.395),(.118,.010,.173),steel,col,root,.003)
  box("FrontServiceInset",(0,-.123,.395),(.075,.006,.112),dark,col,root,.0015)
- for label,x in (("L",-.101),("R",.101)):
-  box("CornerRib_"+label,(x,-.076,.430),(.018,.022,.492),steel,col,root,.004)
- box("BeaconLowerGasket",(0,0,.674),(.195,.195,.038),dark,col,root,.008)
- box("SingleAmberBeaconLens",(0,0,.760),(.175,.175,.140),amber,col,root,.012)
- box("BeaconTopVisor",(0,0,.851),(.213,.213,.046),steel,col,root,.009)
- for label,x in (("L",-.109),("R",.109)):
-  box("BeaconFrontGuard_"+label,(x,-.106,.762),(.016,.017,.147),dark,col,root,.003)
+ for sx in (-1,1):
+  for sy in (-1,1):
+   box("CornerGuard_%s_%s"%(sx,sy),(sx*.100,sy*.100,.427),(.014,.014,.392),steel,col,root,.0025)
+ box("BeaconMountPedestal",(0,0,.672),(.148,.148,.038),steel,col,root,.004)
+ box("BeaconLowerGasket",(0,0,.697),(.190,.190,.030),dark,col,root,.006)
+ box("BeaconMountBand",(0,0,.712),(.202,.202,.018),steel,col,root,.003)
+ box("SingleAmberBeaconLens",(0,0,.787),(.192,.192,.170),amber,col,root,.009)
+ box("BeaconTopVisor",(0,0,.884),(.195,.195,.028),steel,col,root,.006)
+ for sx in (-1,1):
+  for sy in (-1,1):
+   box("BeaconCornerRetainer_%s_%s"%(sx,sy),(sx*.097,sy*.097,.793),(.013,.013,.190),steel,col,root,.002)
  return col
 
 def inspect(col):
@@ -111,16 +115,23 @@ def inspect(col):
   bm=bmesh.new(); bm.from_mesh(obj.data)
   assert all(e.is_manifold for e in bm.edges),obj.name
   assert all(f.calc_area()>1e-9 for f in bm.faces),obj.name
+  assert all(f.normal.length>0.99 for f in bm.faces),("invalid_face_normal",obj.name)
+  assert bm.calc_volume(signed=True)>1e-10,("inverted_normals_or_volume",obj.name)
   bm.free()
   verts.extend(obj.matrix_world@v.co for v in obj.data.vertices)
  lo=[min(v[i] for v in verts) for i in range(3)]
  hi=[max(v[i] for v in verts) for i in range(3)]
  assert -.005<=lo[2]<=.005 and hi[2]<1.0,(lo,hi)
  assert max(abs(lo[0]),abs(hi[0]),abs(lo[1]),abs(hi[1]))<.25
+ assert abs(lo[0]+.150)<.001 and abs(hi[0]-.150)<.001,(lo,hi)
+ assert abs(lo[1]+.150)<.001 and abs(hi[1]-.150)<.001,(lo,hi)
+ assert .895<hi[2]<.902,(lo,hi)
+ assert all(abs(v)<1e-9 for v in col.objects[PREFIX+"ROOT_PIVOT_GROUND"].location)
  return {"mesh_count":len(meshes),"triangles":tri,"materials":sorted(used),
          "aabb_min_m":lo,"aabb_max_m":hi,"pivot_m":[0,0,0],
          "units":"1 unit = 1 m","axes":"Blender +Z up, -Y front; glTF Y up",
-         "suggested_collider":"box 0.32 x 0.32 x 0.88 m, center 0,0,0.44",
+         "suggested_collider":"box 0.30 x 0.30 x 0.90 m, center 0,0,0.45",
+         "revision":"v002","beacon_emission_strength":3.2,
          "animations":"NOT_APPLICABLE","unity":"NOT_RUN","windows":"NOT_RUN"}
 
 def preview_setup(col):
@@ -142,7 +153,7 @@ def preview_setup(col):
   obj.rotation_euler=(Vector((0,0,.47))-obj.location).to_track_quat("-Z","Y").to_euler()
  data=bpy.data.cameras.new(PREFIX+"PreviewCamera")
  camera=bpy.data.objects.new(PREFIX+"PreviewCamera",data)
- col.objects.link(camera); data.type="ORTHO"; data.ortho_scale=1.25
+ col.objects.link(camera); data.type="ORTHO"; data.ortho_scale=1.34
  scene.camera=camera
  return camera
 
@@ -169,30 +180,30 @@ def main():
  else:
   col=build(); metrics=inspect(col)
  camera=preview_setup(col)
- blend=out/"ENV05-001_light_bollard.blend"
+ blend=out/"ENV05-001_v002_light_bollard.blend"
  bpy.ops.wm.save_as_mainfile(filepath=str(blend))
- for name,loc in (("front_three_quarter",(1.7,-2,1.42)),
-                  ("rear_three_quarter",(-1.7,1.85,1.4))):
+ for name,loc in (("front_three_quarter",(1.7,-2,1.85)),
+                  ("rear_three_quarter",(-1.7,1.85,1.75))):
   camera.location=loc
   camera.rotation_euler=(Vector((0,0,.45))-camera.location).to_track_quat("-Z","Y").to_euler()
-  bpy.context.scene.render.filepath=str(out/("ENV05-001_"+name+".png"))
+  bpy.context.scene.render.filepath=str(out/("ENV05-001_v002_"+name+".png"))
   bpy.ops.render.render(write_still=True)
  bpy.ops.object.select_all(action="DESELECT")
  for obj in col.all_objects:
   if obj.type in ("MESH","EMPTY"): obj.select_set(True)
- glb=out/"ENV05-001_light_bollard.glb"
+ glb=out/"ENV05-001_v002_light_bollard.glb"
  bpy.ops.export_scene.gltf(filepath=str(glb),export_format="GLB",use_selection=True,
                            export_apply=True,export_yup=True,export_animations=False,
                            export_cameras=False,export_lights=False)
- outputs=[blend,glb,out/"ENV05-001_front_three_quarter.png",
-          out/"ENV05-001_rear_three_quarter.png"]
+ outputs=[blend,glb,out/"ENV05-001_v002_front_three_quarter.png",
+          out/"ENV05-001_v002_rear_three_quarter.png"]
  assert all(p.is_file() and p.stat().st_size>1000 for p in outputs)
- report={"id":"ENV05-001","status":"BLENDER_QA_PASS",
+ report={"id":"ENV05-001","revision":"v002","status":"BLENDER_QA_PASS",
          "blender_version":bpy.app.version_string,"self_test":args.self_test,
          "source_script_sha256":sha(Path(__file__)),"metrics":metrics,
          "outputs":{p.name:{"bytes":p.stat().st_size,"sha256":sha(p)} for p in outputs},
          "license":"CC0-1.0; entirely original, no external assets",
          "review":"MANUAL_ART_REVIEW_PENDING"}
- (out/"ENV05-001_qa.json").write_text(json.dumps(report,indent=2)+"\n")
+ (out/"ENV05-001_v002_qa.json").write_text(json.dumps(report,indent=2)+"\n")
  print("ENV05-001 BLENDER_QA_PASS",json.dumps(metrics))
 if __name__=="__main__": main()
