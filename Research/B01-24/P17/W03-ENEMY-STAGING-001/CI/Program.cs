@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using RoboRougelike.B0124.Staging;
 internal static class Program {
   private static int passed,failed;
@@ -38,16 +39,21 @@ internal static class Program {
     });
     Check("main source contains editor import menu and stable sandbox target",()=>{
       var code=File.ReadAllText(Root+"Unity/Editor/B0124EnemyStageBuilder.cs");
-      Must(code.Contains("[MenuItem(") && code.Contains("NewSceneMode.Single") &&
+      Must(code.Contains("[MenuItem(") && code.Contains("NewSceneMode.Additive") &&
            code.Contains("Assets/B0124EnemyStagingW03") &&
            code.Contains("File.Exists(path)"),"safe Unity staging required");
     });
     Check("execute original Unity Editor generator under explicit .NET8 mocks",()=>{
       Must(B0124EnemyStageBuilder.StageCount==3,"not three arena families");
       Must(B0124EnemyStageBuilder.TotalLayouts==12,"not twelve scene variants");
+      var receiverScene=new GameObject("UNRELATED RECEIVER SCENE CONTENT — MUST SURVIVE");
+      var previous=SceneManager.GetActiveScene();
       B0124EnemyStageBuilder.GenerateAll();
-      Must(EditorSceneManager.Saves.Count==12,"twelve distinct physical scenes not created");
+      Must(EditorSceneManager.Saves.Count==12,"twelve distinct stage scenes not generated");
       Must(AssetDatabase.RefreshCalls==1,"expected single asset refresh");
+      Must(EditorSceneManager.CloseCalls==12,"disposable additive preview scenes remained open");
+      Must(SceneManager.GetActiveScene().Id==previous.Id,"receiver active scene changed");
+      Must(GameObject.All.Count==1 && GameObject.All[0]==receiverScene,"receiver content was destroyed");
     });
     using var doc=JsonDocument.Parse(File.ReadAllText(Input));
     foreach(JsonElement formation in doc.RootElement.GetProperty("formations").EnumerateArray()){
