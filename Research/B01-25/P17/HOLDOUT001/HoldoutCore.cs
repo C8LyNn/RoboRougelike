@@ -48,15 +48,18 @@ namespace B01.LevelChallenges
                 throw new ArgumentException("Invalid holdout telemetry");
             bool inside=Inside(sample.PlayerX,sample.PlayerZ);
             bool contested=sample.HostilesInside>0;
-            if(IsReady)
-                return new(HoldoutPhase.Ready,Config.RequiredSeconds,
-                    Config.RequiredSeconds,inside,contested,false);
+            // Death invalidates the attempt even after the one-shot ready event.
+            // The host may separately apply a run-fail policy; this local state
+            // cannot grant an extraction after a destroyed robot.
             if(!sample.PlayerAlive)
             {
                 Reset();
                 return new(HoldoutPhase.Waiting,0,Config.RequiredSeconds,
                     inside,contested,false);
             }
+            if(IsReady)
+                return new(HoldoutPhase.Ready,Config.RequiredSeconds,
+                    Config.RequiredSeconds,inside,contested,false);
             if(!inside)
             {
                 ProgressSeconds=Math.Max(0,ProgressSeconds-
