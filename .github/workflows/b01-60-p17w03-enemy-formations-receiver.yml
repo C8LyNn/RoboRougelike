@@ -1,0 +1,48 @@
+name: B01-60 W03 original R5Arena CSharp enemy formation receipt (NOT UNITY)
+on:
+  push:
+    branches: [qa/b01-60-p17w03-enemy-formations-source-receiver]
+    paths:
+      - 'Tools/B01/ENEMY-FORMATIONS-SOURCE-QA-001/**'
+      - '.github/workflows/b01-60-p17w03-enemy-formations-receiver.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-r5-csharp:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable source and check exact game CSharp versus current Codex
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 203a0805251ed28293888e43f2d49f0df63767c6
+          mkdir -p qa-results
+          python Tools/B01/ENEMY-FORMATIONS-SOURCE-QA-001/verify_inputs.py | tee qa-results/source-pins.json
+      - name: Compile and execute original R5Arena.Build CSharp with 12 layouts and negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/ENEMY-FORMATIONS-SOURCE-QA-001/Harness.csproj --configuration Release -- Research/B01-24/P17/ENEMY-FORMATIONS-002/formations.json | tee qa-results/original-r5-arena-qa.json
+      - name: Preserve original-CSharp execution receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w03-original-r5-formation-${{ matrix.os }}
+          path: qa-results/
+          if-no-files-found: warn
+          retention-days: 21
