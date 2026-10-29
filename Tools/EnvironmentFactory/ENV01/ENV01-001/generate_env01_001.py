@@ -130,13 +130,13 @@ for side, x in (("L", -1.06), ("R", 1.06)):
 block("Rear_top_steel_tie", (0, -0.355, 0.79), (2.32, 0.095, 0.09), steel, 0.012)
 
 # Two sacrificial face rails, reinforced end caps and high-contrast reflectors.
-block("Front_impact_rail", (0, 0.27, 0.43), (2.36, 0.085, 0.105), steel, 0.012)
-block("Front_toe_rail", (0, 0.322, 0.19), (2.36, 0.06, 0.062), steel, 0.009)
+block("Front_impact_rail", (0, 0.285, 0.43), (2.36, 0.085, 0.105), steel, 0.012)
+block("Front_toe_rail", (0, 0.34, 0.19), (2.36, 0.06, 0.062), steel, 0.009)
 for i, x in enumerate((-0.81, -0.27, 0.27, 0.81)):
     block("Amber_reflector_%02d" % (i + 1),
-          (x, 0.316, 0.432), (0.20, 0.018, 0.068), safety, 0.004)
+          (x, 0.33, 0.432), (0.20, 0.018, 0.068), safety, 0.004)
 for i, x in enumerate((-1.02, -0.62, -0.22, 0.22, 0.62, 1.02)):
-    bolt("Front_bolt_%02d" % (i + 1), x, 0.322, 0.43)
+    bolt("Front_bolt_%02d" % (i + 1), x, 0.33, 0.43)
 for side, x in (("L", -1.06), ("R", 1.06)):
     for j, z in enumerate((0.25, 0.72)):
         bolt("Rear_bolt_" + side + str(j), x, -0.409, z, front=False)
