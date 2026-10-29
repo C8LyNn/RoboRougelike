@@ -1,0 +1,85 @@
+name: B01-10 PASS17 W04 real CSharp RunScore
+on:
+  push:
+    branches:
+      - design/b01-10-p17w03-runscore
+    paths:
+      - 'Research/B01-10/P17RunScore/**'
+      - '.github/workflows/b01-10-p17-runscore.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Research/B01-10/P17RunScore/**'
+      - '.github/workflows/b01-10-p17-runscore.yml'
+permissions:
+  contents: read
+jobs:
+  compile-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual CSharp scoring core and runner (warnings errors)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Research/B01-10/P17RunScore/RunScore.Runner.csproj --configuration Release --nologo --warnaserror
+      - name: Run original 74 real compiled CSharp including two-phase rewards + 120 seeded runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Research/B01-10/P17RunScore/RunScore.Runner.csproj --configuration Release --no-build -- --test | tee "$RUNNER_TEMP/runscore-tests.log"
+          grep -F "B01-10 RUNSCORE REAL_CSHARP 74 PASS / 0 FAIL" "$RUNNER_TEMP/runscore-tests.log"
+      - name: Run actual JSON input into score renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Research/B01-10/P17RunScore/RunScore.Runner.csproj --configuration Release --no-build -- --input Research/B01-10/P17RunScore/example-run.json | tee "$RUNNER_TEMP/runscore-output.json"
+          grep -F '"RunWon": true' "$RUNNER_TEMP/runscore-output.json"
+          grep -F '"CompletedStages": 6' "$RUNNER_TEMP/runscore-output.json"
+      - name: Bad JSON path must fail closed with exit 2
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          dotnet run --project Research/B01-10/P17RunScore/RunScore.Runner.csproj --configuration Release --no-build -- --input Research/B01-10/P17RunScore/nonexistent.json > "$RUNNER_TEMP/runscore-negative.log" 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          grep -F "INVALID_INPUT:" "$RUNNER_TEMP/runscore-negative.log"
+      - name: Set up Python 3.12 for deterministic physical Codex source archive
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble + independently re-open byte-exact source ZIP and GUID meta
+        shell: bash
+        env:
+          B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python Research/B01-10/P17RunScore/pack_handoff.py pack --sha "$B01_SOURCE_SHA" --archive "$RUNNER_TEMP/B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/source-build.json"
+          python Research/B01-10/P17RunScore/pack_handoff.py verify --sha "$B01_SOURCE_SHA" --archive "$RUNNER_TEMP/B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/source-verify.json"
+          python Research/B01-10/P17RunScore/pack_handoff.py negatives --sha "$B01_SOURCE_SHA" --archive "$RUNNER_TEMP/source-corrupted-test.zip" --report "$RUNNER_TEMP/source-negative.json"
+          grep -F '"passed": true' "$RUNNER_TEMP/source-negative.json"
+      - name: Save inspectable actual CSharp test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-10-runscore-csharp-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/runscore-tests.log
+            ${{ runner.temp }}/runscore-output.json
+            ${{ runner.temp }}/runscore-negative.log
+            ${{ runner.temp }}/B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip
+            ${{ runner.temp }}/source-build.json
+            ${{ runner.temp }}/source-verify.json
+            ${{ runner.temp }}/source-negative.json
+          if-no-files-found: warn
+          retention-days: 14

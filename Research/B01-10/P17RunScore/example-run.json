@@ -1,0 +1,80 @@
+[
+  {
+    "StageNumber": 1,
+    "EncounterId": "bal17_s1_warmup",
+    "Victory": true,
+    "Threat": 4.21979,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.91,
+    "DurationSeconds": 90,
+    "ScrapEarned": 75,
+    "RecoveredModules": 0
+  },
+  {
+    "StageNumber": 2,
+    "EncounterId": "bal17_s2_mobile",
+    "Victory": true,
+    "Threat": 9.87191,
+    "ExpectedEnemies": 3,
+    "DefeatedEnemies": 3,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.865,
+    "DurationSeconds": 99,
+    "ScrapEarned": 98,
+    "RecoveredModules": 1
+  },
+  {
+    "StageNumber": 3,
+    "EncounterId": "bal17_s3_open",
+    "Victory": true,
+    "Threat": 11.71876,
+    "ExpectedEnemies": 3,
+    "DefeatedEnemies": 3,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.82,
+    "DurationSeconds": 108,
+    "ScrapEarned": 121,
+    "RecoveredModules": 2
+  },
+  {
+    "StageNumber": 4,
+    "EncounterId": "bal17_s4_bruiser",
+    "Victory": true,
+    "Threat": 11.67242,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.775,
+    "DurationSeconds": 117,
+    "ScrapEarned": 144,
+    "RecoveredModules": 0
+  },
+  {
+    "StageNumber": 5,
+    "EncounterId": "bal17_s5_mobility",
+    "Victory": true,
+    "Threat": 17.44319,
+    "ExpectedEnemies": 4,
+    "DefeatedEnemies": 4,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.73,
+    "DurationSeconds": 126,
+    "ScrapEarned": 167,
+    "RecoveredModules": 1
+  },
+  {
+    "StageNumber": 6,
+    "EncounterId": "bal17_s6_boss",
+    "Victory": true,
+    "Threat": 17.49296,
+    "ExpectedEnemies": 1,
+    "DefeatedEnemies": 1,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.685,
+    "DurationSeconds": 135,
+    "ScrapEarned": 190,
+    "RecoveredModules": 2
+  }
+]

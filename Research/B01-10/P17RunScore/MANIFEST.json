@@ -1,0 +1,202 @@
+{
+  "packageId": "B01-10-RUNSCORE001/R2",
+  "version": "1.1.0-W05-PHYSICAL_SOURCE_HANDOFF",
+  "producer": "B01-10 GAME DESIGN & BALANCE",
+  "owner": "B01-10",
+  "receiver": "B01-40 → independent B01-60 → B01-00 → Codex only after authorized ACK",
+  "status": "PRODUCER_CSHARP_74_OF_74_GREEN_WIN_UBUNTU_AND_DETERMINISTIC_SOURCE_ZIP / INDEPENDENT_B01-40_G0_PENDING / B01-60_QA_PENDING / CODEX_ACK_PENDING / NO_INTEGRATION",
+  "newGameFeature": "Original score engine + integration-ready two-phase source collector for authoritative cumulative kills/earnedScrap/recovery changes; proper post-combat then reward confirmation timeline; paused time excluded",
+  "branch": "design/b01-10-p17w03-runscore",
+  "pullRequest": "https://github.com/C8LyNn/RoboRougelike/pull/401",
+  "sourceRef": "main",
+  "ownedPaths": [
+    "Research/B01-10/P17RunScore/**",
+    ".github/workflows/b01-10-p17-runscore.yml"
+  ],
+  "assetsChanged": 0,
+  "codeFiles": {
+    "RunScore.cs": {
+      "blob": "1f0a5a6b2b82dd1367d01e7c9a18499651e5dd54",
+      "characters": 8962
+    },
+    "RunScoreCollector.cs": {
+      "blob": "470dd19cc06168eda78c52ca2741ea29624c1f18",
+      "characters": 6912
+    },
+    "Program.cs": {
+      "blob": "51bb6c18efe82fa27c8baf410c952c1c750f0474",
+      "characters": 21128
+    },
+    "RunScore.Runner.csproj": {
+      "blob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
+      "characters": 345
+    },
+    "example-run.json": {
+      "blob": "815b6e8ac7eb536262b0c8cde5b3de7ed6e49534",
+      "characters": 1769
+    },
+    "README.md": {
+      "blob": "6bb1fba95f7e8b57119f3654358aae0895eea1a5",
+      "characters": 18951
+    }
+  },
+  "workflow": {
+    "path": ".github/workflows/b01-10-p17-runscore.yml",
+    "blob": "f0a72233cb0135f27d58991e2353796b9d6fe881"
+  },
+  "testedAtCommit": "3578ea377f5d200fddef94f6f6bceb75d5f64c89",
+  "actualCI": {
+    "runId": 40965818750,
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965818750",
+    "conclusion": "SUCCESS (original compiled-source HEAD 3578ea377f5d200fddef94f6f6bceb75d5f64c89)",
+    "windows": {
+      "os": "windows-2025",
+      "jobId": 123769920532,
+      "actualCompiledCSharp": "74 PASS / 0 FAIL",
+      "seededSubcases": "120 full six-stage datasets inside test 56",
+      "validCLI": "PASS",
+      "invalidCLIExit2": "PASS",
+      "artifactId": 12938016411
+    },
+    "ubuntu": {
+      "os": "ubuntu-24.04",
+      "jobId": 123769920196,
+      "actualCompiledCSharp": "74 PASS / 0 FAIL",
+      "seededSubcases": "120 full six-stage datasets inside test 56",
+      "validCLI": "PASS",
+      "invalidCLIExit2": "PASS",
+      "artifactId": 12937852588
+    },
+    "nativeUnity": "NOT_RUN",
+    "windowsPlayer": "NOT_RUN",
+    "actualGameIntegration": "NOT_RUN",
+    "independentQA": "PENDING",
+    "redGreenNote": "Not a RED→GREEN runtime bug claimed: W04 source integration gap detected from actual R1 controller sequence, then verified newly written code on both OS. No native Unity job ran.",
+    "originalSource74PlusFourZipMutants": "PASS on Windows and Ubuntu for earlier snapshot; final SHA is separate GitHub Actions receipt"
+  },
+  "gameDependencies": {
+    "Assets/R5/R5RunPlan.cs": "6fde58f1fc621cde6488d9ee81c3510aa729839a",
+    "Assets/R1/R1RunDefinition.cs": "5665e64d3d665c67d352eb5a9809a66fc5136698",
+    "Assets/R1/R1RunController.cs": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "gameplayPin": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "sourceRunDeckPR": 344,
+    "sourceRunDeckBlob": "762009d1bde7978aeb5c842dd08d2efdddcec646",
+    "note": "Example-run encounter Id/Threat/SpawnCount from original PR344; hypothetical elapsed/hull/earned numbers, not game playthrough"
+  },
+  "limits": {
+    "noEconomyModification": true,
+    "noSaveModification": true,
+    "noR1ControllerModification": true,
+    "noCanonicalUnityAssets": true,
+    "noCHL_PARTSIZE": true,
+    "noPhysicalUnityClaims": true,
+    "scoreRequiresAuthoritativeRuntimeMeasurements": true,
+    "noAutomaticG1_or_G2": true
+  },
+  "handoffInstructions": "Physical UnityImport-ready source ZIP with fixed .meta GUIDs, byte-for-byte receipt, source Git SHA and four negative mutants; B01-40/G0 and B01-60/independent QA required before B01-00 dispatch; Codex alone installs in approved worktree",
+  "rollback": "No repository Assets writes by producer. Codex, after authorization, removes solely new UnityInstall/Assets/B01RunScore and .meta, restoring all touched authorized scene files; no merge.",
+  "checks": {
+    "sixSourceData": [
+      {
+        "stage": 1,
+        "originalEncounterId": "bal17_s1_warmup",
+        "threat": 4.21979,
+        "spawnCount": 2
+      },
+      {
+        "stage": 2,
+        "originalEncounterId": "bal17_s2_mobile",
+        "threat": 9.87191,
+        "spawnCount": 3
+      },
+      {
+        "stage": 3,
+        "originalEncounterId": "bal17_s3_open",
+        "threat": 11.71876,
+        "spawnCount": 3
+      },
+      {
+        "stage": 4,
+        "originalEncounterId": "bal17_s4_bruiser",
+        "threat": 11.67242,
+        "spawnCount": 2
+      },
+      {
+        "stage": 5,
+        "originalEncounterId": "bal17_s5_mobility",
+        "threat": 17.44319,
+        "spawnCount": 4
+      },
+      {
+        "stage": 6,
+        "originalEncounterId": "bal17_s6_boss",
+        "threat": 17.49296,
+        "spawnCount": 1
+      }
+    ],
+    "fallback": "No native Unity/Player test, no actual stage observations, no B01-40 freeze or Codex ACK"
+  },
+  "sourceVersion": "RUNSCORE001/R2-SOURCEZIP",
+  "manifestPreparedAtHead": "f7184d323a48807261571a987e0d05ed08a1a55a",
+  "exactFinalHeadMustPassRealWorkflow": true,
+  "newCollector": {
+    "path": "Research/B01-10/P17RunScore/RunScoreCollector.cs",
+    "blob": "470dd19cc06168eda78c52ca2741ea29624c1f18",
+    "sourceControllerGameRef": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "sourceControllerBlob": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "validatedGameTimeline": [
+      "StartRun resets three cumulative counters, actual original line 106",
+      "End of combat updates cumulative kills and Scrap (original lines 270–290)",
+      "ConfirmRewards later increments cumulative recovered count (original lines 174–188)"
+    ],
+    "collectorActions": [
+      "new RunScoreCollector(.. baseline counts ..)",
+      "Advance(deltaUnscaledSeconds, paused)",
+      "FinishCombat(victory, cumulativeDefeated, coreRatio, cumulativeEarnedScrap)",
+      "FinishRewards(cumulativeRecovered, cumulativeEarnedScrap) only on successful rewards"
+    ],
+    "sourceCSharpCasesAdded": 18,
+    "totalRealCSharpCases": 74,
+    "constraint": "Normal R5 combat only. Noncombat race/road/reactor outcome scoring not authorized or supported; Codex collector hookup required"
+  },
+  "tooling": {
+    "path": "Research/B01-10/P17RunScore/pack_handoff.py",
+    "blob": "8a616f9b3a533da883d387ad3362f7ab0b74522b",
+    "artifact": "B01-10_RUNSCORE001_R2_UNITY_SOURCE.zip",
+    "format": "ZIP_STORED reproducible member metadata, 11 exact entries",
+    "unityMembers": [
+      "UnityInstall/Assets/B01RunScore.meta",
+      "UnityInstall/Assets/B01RunScore/RunScore.cs",
+      "UnityInstall/Assets/B01RunScore/RunScore.cs.meta",
+      "UnityInstall/Assets/B01RunScore/RunScoreCollector.cs",
+      "UnityInstall/Assets/B01RunScore/RunScoreCollector.cs.meta"
+    ],
+    "testerMembers": [
+      "Evidence/Program.cs",
+      "Evidence/RunScore.Runner.csproj",
+      "Evidence/example-run.json",
+      "Evidence/README.md",
+      "Evidence/MANIFEST.json",
+      "SOURCE_RECEIPT.json"
+    ],
+    "explicitNativeUnityStatus": "NOT_RUN",
+    "negativeTests": [
+      "source_tamper",
+      "fake_unity_pass",
+      "unsafe_game_path",
+      "meta_GUID_drift"
+    ],
+    "allowedInstaller": "Codex alone after B01-00 + B01-40 + B01-60 acceptance; no canonical Assets modification by B01-10"
+  },
+  "physicalSourcePreliminary": {
+    "runId": 40968675579,
+    "sha": "3dd92e6815cf12151ee94d048b2b5e1693c84da8",
+    "status": "SOURCE_ONLY_SUCCESS Windows+Ubuntu, reference test before README/manifest change",
+    "sourceZipSHA256": "5f45b0835a2a1e19c55b973998a089b36a13d7b3298ae13317946fdc18b8b043",
+    "originals": {
+      "windowsArtifact": 12939950117,
+      "ubuntuArtifact": 12939251895
+    },
+    "finalExactSourceZipRequiresFreshCI": true
+  }
+}
