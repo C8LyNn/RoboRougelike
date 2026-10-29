@@ -23,7 +23,7 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin refs/pull/386/head
           test "$(git rev-parse FETCH_HEAD)" = "82ea17a6f964aa0cf08890c827b038ad9a0fc57f"
-          test "$(git rev-parse FETCH_HEAD:Tools/B01/TechArt/P17W03/M04Fbx001/export_original_m04_fbx.py)" = "959bff6a01b8b5e6df44ad950bcad8d6f35c2f8ab" || {
+          test "$(git rev-parse FETCH_HEAD:Tools/B01/TechArt/P17W03/M04Fbx001/export_original_m04_fbx.py)" = "9d0b9865ef93d76066b07d4fa0533feaccc47b2c" || {
             echo "Source blob drift detected; compare original producer SHA and update pin intentionally" >&2
             exit 1
           }
