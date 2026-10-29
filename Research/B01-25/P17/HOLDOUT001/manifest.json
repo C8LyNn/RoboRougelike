@@ -1,6 +1,6 @@
 {
   "packageId": "B01-25-HOLDOUT-001",
-  "version": "R1",
+  "version": "R2",
   "owner": "B01-25",
   "role": "Level & Challenge Design",
   "purpose": "Original optional contested extraction zone gameplay rules for two authored map missions, no engine/AI/Finish override",
@@ -9,13 +9,14 @@
     ".github/workflows/b01-25-w03-holdout.yml"
   ],
   "gitBlobs": {
-    "HoldoutCore.cs": "052f8ad9302eeea17ac8eec2ef8b38771fc11c98",
-    "Program.cs": "391ddb6e27bf7f3610d3f480cf5c5e2c42be48eb",
+    "HoldoutCore.cs": "796f316ac3a8b1324c4673a568be21a916c328d5",
+    "Program.cs": "78130f7166d3e84ad03f7169557d822e821c9b61",
     "Holdout001.csproj": "f4ab2bbfa2880f033676bf05d9098713e8837728",
     "profiles.json": "3aee35e7f0be6104a6b72d031a9391cdab721311",
     ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
-    "README.md": "bad088142f2746896ad17c39aecb4ef380f71737",
-    ".github/workflows/b01-25-w03-holdout.yml": "b61eadfd4c2c85926ea61f746b7649e292cd0fa1"
+    "README.md": "717836eb265459074db51a53a968ae4904ae0f35",
+    ".github/workflows/b01-25-w03-holdout.yml": "8a5d7606a3ab936c19a1fd51ec6f62f96156e035",
+    "HoldoutUnityCompat.csproj": "8198479158ea498df43ea065f1ca9d6f71867fd9"
   },
   "inputs": [
     {
@@ -45,7 +46,7 @@
   ],
   "api": {
     "type": "B01.LevelChallenges.HoldoutController",
-    "version": "1.0.0",
+    "version": "1.0.1-unity-compatible",
     "entry": "Tick(HoldoutSample)",
     "state": "ProgressSeconds, IsReady",
     "emission": "HoldoutSnapshot.BecameReady one-shot",
@@ -59,12 +60,13 @@
   },
   "testPolicy": {
     "command": "dotnet run --project Research/B01-25/P17/HOLDOUT001/Holdout001.csproj --configuration Release -- Research/B01-25/P17/HOLDOUT001/profiles.json <clearance.json> <slalom.json> <receipt.json>",
-    "expectedAssertions": 43,
+    "expectedAssertions": 44,
     "expectedAdversarialRejections": 12,
-    "ci": "GitHub Actions Windows + Ubuntu original net8 CSharp run",
-    "nativeUnity": "NOT_RUN",
+    "ci": "GitHub Windows+Ubuntu compiler C# 9.0 netstandard2.1 (HoldoutUnityCompat.csproj) AND original net8 C# gameplay 44/44",
+    "nativeUnity": "NOT_RUN (Unity editor assembly, physics, IL2CPP)",
     "trueVehicleDrive": "NOT_RUN",
-    "independentQA": "PENDING"
+    "independentQA": "PENDING",
+    "unityCSharp9Netstandard21": "ACTUAL_COMPILE_PASS_WINDOWS_UBUNTU"
   },
   "conflictMitigation": {
     "noAssetsEdits": true,
@@ -81,5 +83,14 @@
     "B01-00 schedules Codex in #79 after approval",
     "Codex explicit ACK and integration only"
   ],
-  "status": "PRODUCER_SOURCE_GREEN / OFFER_TO_QA / CODEX_ACK_PENDING / NOT_INTEGRATED"
+  "status": "R2_PRODUCER_CSHARP9_COMPAT_PASS_BOTH_OS / INDEPENDENT_QA_PENDING / CODEX_ACK_PENDING / NOT_INTEGRATED",
+  "compatibilityFix": {
+    "historicalR1Head": "6f958160b8b96c1d3cfa7540bf0092adc3b4bf34",
+    "historicalR1CoreGitBlob": "052f8ad9302eeea17ac8eec2ef8b38771fc11c98",
+    "issue": "R1 uses unsupported Unity 6000.3 record struct C#10 and net8 APIs",
+    "redRun": 40965490699,
+    "greenRun": 40965833016,
+    "correction": "C#9 immutable readonly structs with explicit constructors/value equality, portable finite checks and clamp; same behavior",
+    "qaProof": "C#9/netstandard2.1 compile only; genuine Unity Editor NOT_RUN"
+  }
 }

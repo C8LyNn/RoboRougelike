@@ -1,6 +1,6 @@
-# B01-25-HOLDOUT-001 / R1 — optional contested extraction objective
+# B01-25-HOLDOUT-001 / R2 — optional contested extraction objective
 
-**Producer:** B01-25 Level & Challenge Design. **Runtime deliverable:** a genuinely executable, self-contained, pure-C# (net8) level challenge state machine, **not another arena** or a replacement for B01-20 CHL ordered checkpoint track. Neither enemy AI nor combat damage nor rewards/run-save are implemented or modified. Original parent maps and canonical `Assets/**` remain untouched. The host Codex gameplay must opt in before HOLDOUT changes victory.
+**Producer:** B01-25 Level & Challenge Design. **Runtime deliverable:** a genuinely executable, self-contained **Unity 6000.3 C# 9 / netstandard2.1-compatible** pure-C# level challenge state machine (exercised by .NET 8 test runner), **not another arena** or a replacement for B01-20 CHL ordered checkpoint track. Neither enemy AI nor combat damage nor rewards/run-save are implemented or modified. Original parent maps and canonical `Assets/**` remain untouched. The host Codex gameplay must opt in before HOLDOUT changes victory.
 
 ## Game mechanic in this actual package
 
@@ -22,10 +22,18 @@ git show ad52a604ffa4f143d98e607049d6f79e0c7e580f:Research/B01-25/P17/CLEARANCEL
 git show f565e250659692541d672cdab108c4cfb8cfdd31:Research/B01-25/P17/SLALOM001/arena.json > "$P/.output/slalom.json"
 git hash-object "$P/.output/clearance.json" # expect 53eb696950121465befea2855eda4d7268750016
 git hash-object "$P/.output/slalom.json" # expect 013f5fe2058e76233f580a439e8402c0fe09f124
+dotnet build "$P/HoldoutUnityCompat.csproj" --configuration Release -p:LangVersion=9.0 -warnaserror
 dotnet run --project "$P/Holdout001.csproj" --configuration Release -- "$P/profiles.json" "$P/.output/clearance.json" "$P/.output/slalom.json" "$P/.output/receipt.json"
 ```
 
-The CI workflow `.github/workflows/b01-25-w03-holdout.yml` runs this command on Windows+Ubuntu with real dotnet 8, records exit and stdout and fails if required receipt missing. Exact final run IDs/results belong in `evidence.json`; do not infer native Unity execution from this CI.
+The CI workflow `.github/workflows/b01-25-w03-holdout.yml` first compiles the **exact same production `HoldoutCore.cs`** with `LangVersion=9.0` and `TargetFramework=netstandard2.1` (all warnings as errors); then runs the 44-case source executable on Windows+Ubuntu using real dotnet 8, records exit and stdout and fails if required receipt missing. Exact physical job/artifact IDs and historical red→green runs are in `evidence.json`; do not infer native Unity execution from this CI.
+
+## W04 compatibility repair / R2 (real initial RED → corrected GREEN)
+
+- **Old immutable R1:** Draft #406 commit `6f958160b8b96c1d3cfa7540bf0092adc3b4bf34`, original `HoldoutCore.cs` blob `052f8ad9302eeea17ac8eec2ef8b38771fc11c98` passed 43/43 on .NET8 but used **C#10 `record struct`**, `double.IsFinite`, `Math.Clamp`; it was NOT compiler-compatible with Unity 6000.3. This was not discovered by prior .NET8 tests.
+- **Actual RED:** after adding `HoldoutUnityCompat.csproj`, original-source [Actions #40965490699](https://github.com/C8LyNn/RoboRougelike/actions/runs/40965490699) failed to compile on actual `-langversion:9.0 / netstandard2.1` (notably `CS0518 IsExternalInit`), independently reproducing the blocker in the existing owner branch.
+- **R2 fix:** normal C#9 `readonly struct` models with explicit constructors/getters, exact value equality for `HoldoutSnapshot` (IEquatable and operators); a portable `!IsNaN && !IsInfinity` finite check and `Math.Min/Max` clamp. No changes to game reward, enemy AI, CHL, Finish, time logic, zone positions, authored map inputs or existing gameplay semantics. Test harness removes C#10 `with` expressions and adds a source-level `SNAPSHOT_STRUCT_VALUE_EQUALITY` regression (total **44 assertions**, including 12 malformed-input negatives). The actual engine remains **Unity NOT_RUN**.
+- **R2 install boundary:** If independently accepted and explicitly taken by Codex, ONLY the `HoldoutCore.cs` source and selected profile should be adapted to `Assets/**` by Codex; do **not** copy both `.csproj` files or tests into Unity. This compact source proof is not an authorized `Assets` modification and does not establish `MonoBehaviour` / IL2CPP / actual enemy binding compatibility.
 
 ## Codex integration API (proposal only; requires owner acceptance)
 
