@@ -109,8 +109,7 @@ def check_content(forms,databytes):
                  all(type(v) in (int,float) and abs(v)<45 for v in p) for p in pts),
                  "ORIGINAL_POSITION_INVALID")
             total+=len(pts)
-    need(total==30 and sha(databytes)==sha(canonical(forms)) or total==30,
-         "ORIGINAL_COUNT_INVALID")
+    need(total==30,"ORIGINAL_COUNT_INVALID")
     return total
 def produce(repo,out):
     repo=Path(repo).resolve(strict=True)
