@@ -1,0 +1,123 @@
+name: B01-21 WAVE02 MAP-BREAK-001 real source cover break/restore (NOT Unity)
+on:
+  push:
+    branches: [research/b01-21-p17-cover-destruction-states]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static_source_states:
+    name: Original source visibility & 33 destructible cases / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Freeze original real MAPGEN and previous own source Git blobs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $pinned=@{
+            'Research/B01-21/P17/map_routes.py'='5888a7e96a58cabcc32da72cb8f74715b4d6ceb5'
+            'Research/B01-21/P17/COVER001/cover_field.py'='9ebc860f48f4681316b47c46ee0deba86330033b'
+            'Research/B01-21/P16/generated/AR16_01_OPEN_FLANK.blueprint.json'='fce7cdce22fa9d9f512c8cd1d112cf1d83ad205e'
+            'Research/B01-21/P16/generated/AR16_02_SPLIT_DECISION.blueprint.json'='022b5c0cd1e13ca64460a3d6a0ab0122c4c2c790'
+            'Research/B01-21/P16/generated/AR16_03_DENSE_PRESSURE.blueprint.json'='1fe7bf8b124d999de75c0fd3cacc85ee62319429'
+          }
+          foreach($item in $pinned.GetEnumerator()){
+            $actual=(git hash-object "$($item.Key)").Trim()
+            if($LASTEXITCODE -ne 0 -or $actual -ne $item.Value){throw "PINNED_ORIGINAL_MAPGEN_SOURCE_CHANGED: $($item.Key): $actual"}
+          }
+          Write-Output 'MAP_BREAK_P17_IMMUTABLE_5_SOURCE_GIT_BLOBS_PASS'
+      - name: Execute 12 source-world positive and negative test cases
+        shell: pwsh
+        run: |
+          python -m unittest discover -s Research/B01-21/P17/BREAK001 -p 'test_cover_break.py' -v
+          if($LASTEXITCODE -ne 0){throw 'MAP_BREAK_P17_UNITTTEST_RED'}
+      - name: Generate and byte-verify physical source-derived output files
+        shell: pwsh
+        run: |
+          $script='Research/B01-21/P17/BREAK001/cover_break.py'
+          $manifest='Research/B01-21/P17/BREAK001/generated/manifest.json'
+          if(Test-Path "$manifest"){
+            python $script --check
+            if($LASTEXITCODE -ne 0){throw 'MAP_BREAK_P17_COMMITTED_OUTPUT_DRIFT'}
+            python $script
+          } elseif('${{ matrix.os }}' -eq 'ubuntu-24.04'){
+            python $script --emit-base64
+          } else {
+            python $script
+          }
+          if($LASTEXITCODE -ne 0){throw 'MAP_BREAK_P17_EXPORT_RED'}
+          python $script --check
+          if($LASTEXITCODE -ne 0){throw 'MAP_BREAK_P17_NONDETERMINISTIC'}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-map-break-001-data-${{ matrix.os }}
+          path: Research/B01-21/P17/BREAK001/generated/*
+          if-no-files-found: error
+          retention-days: 30
+  real_browser:
+    name: Chromium interactive damage/restore on actual generated arena geometry
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare exact generator-backed viewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Research/B01-21/P17/BREAK001/cover_break.py
+      - name: Run actual Chrome canvas UI and 33 destruction/reset interactions
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          if [[ -z "$chrome" ]]; then echo 'CHROME_NOT_RUN_NO_EXECUTABLE'; exit 2; fi
+          dir="$GITHUB_WORKSPACE/Research/B01-21/P17/BREAK001/generated"
+          viewer="file://$dir/cover_break_viewer.html"
+          "$chrome" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --allow-file-access-from-files --virtual-time-budget=30000 --dump-dom "$viewer?selftest=1" > "$RUNNER_TEMP/browser-dom.html" 2> "$RUNNER_TEMP/browser-err.log"
+          if ! grep -q 'data-status="PASS"' "$RUNNER_TEMP/browser-dom.html"; then
+            echo 'MAP_BREAK_P17_BROWSER_INTERACTIVE_RED'
+            grep -o '<output id="selftest"[^<]*' "$RUNNER_TEMP/browser-dom.html" || true
+            exit 3
+          fi
+          mkdir -p "$GITHUB_WORKSPACE/Research/B01-21/P17/BREAK001/browser-evidence"
+          cp "$RUNNER_TEMP/browser-dom.html" "$GITHUB_WORKSPACE/Research/B01-21/P17/BREAK001/browser-evidence/DOM.html"
+          "$chrome" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --allow-file-access-from-files --window-size=1280,720 --screenshot="$GITHUB_WORKSPACE/Research/B01-21/P17/BREAK001/browser-evidence/arena-720.png" "$viewer"
+          "$chrome" --headless=new --no-sandbox --disable-dev-shm-usage --disable-gpu --allow-file-access-from-files --window-size=1920,1080 --screenshot="$GITHUB_WORKSPACE/Research/B01-21/P17/BREAK001/browser-evidence/arena-1080.png" "$viewer"
+          echo 'MAP_BREAK_P17_CHROMIUM_33_REAL_EVENTS_AND_RESTORE_PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-21-map-break-001-browser
+          path: Research/B01-21/P17/BREAK001/browser-evidence/*
+          if-no-files-found: error
+          retention-days: 30
+
+  portable_runtime_original_csharp:
+    name: Actual MAP-BREAK-001 original Python ↔ pure C# 33-state crosscheck / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and run optional engine-independent C# world-state implementation against exact 33 source fixtures
+        shell: pwsh
+        run: |
+          dotnet run --project Research/B01-21/P17/BREAK001/RuntimeTests/CoverBreakRuntimeTests.csproj --configuration Release
+          if ($LASTEXITCODE -ne 0) { throw 'MAP_BREAK_W03_ORIGINAL_CSHARP_RUNTIME_RED' }
