@@ -6,7 +6,7 @@
   "unity_version_target": "6000.3.14f1",
   "source_branch": "b01-23/p17-w03-native-physical-probe-r1",
   "pr_base_sha": "8fc0f99ef7bf6c39c21609616b7e852538d2de12",
-  "verified_file_set_commit_before_manifest": "dd53b6449ec3e8ef6b60cafb61d731a4032a19c3",
+  "verified_file_set_commit_before_manifest": "92f6dbf5da578b118dff609f8b50a9b1549d0f39",
   "original_files": [
     {
       "path": ".github/workflows/b01-23-p17-w03-native-physics-preflight.yml",
@@ -30,7 +30,7 @@
     },
     {
       "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs",
-      "git_blob_sha1": "307f7bc3589f58385732215dcf4ce6eac16b712b"
+      "git_blob_sha1": "c994e2230f4f6f4f7de2d94d1dc46a7dbb52f4ac"
     },
     {
       "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/BracingNativeColliderProbe.cs.meta",
@@ -45,8 +45,16 @@
       "git_blob_sha1": "408c0b8949792441444fb7761cc109c3622aca2a"
     },
     {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs",
+      "git_blob_sha1": "9c9e5768e8ebaf5d562176e927549572fcacc1f5"
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs.meta",
+      "git_blob_sha1": "9a1a84eba29be1c03c1fcda42d598672b995fd59"
+    },
+    {
       "path": "Tools/B01/PARTSIZE001/P17NativeProbe/check_unity_native_source.py",
-      "git_blob_sha1": "15eac42de367a14300b38d643588040ad5fadd18"
+      "git_blob_sha1": "8f64eaa6c9145a25fe1523a8cde120a410998a36"
     },
     {
       "path": "Tools/B01/PARTSIZE001/P17NativeProbe/P17NativeProbe.csproj",
@@ -58,7 +66,7 @@
     },
     {
       "path": "Tools/B01/PARTSIZE001/P17NativeProbe/README.md",
-      "git_blob_sha1": "93974b1e8ecc783f691554537009a725551ed20a"
+      "git_blob_sha1": "d6dda2ae9ab3fbc0ad34d8f7c7cd16e74860e419"
     }
   ],
   "dependency_prs": {
@@ -103,29 +111,31 @@
       "No wheel,track,hover articulation sweeps",
       "No authoritative typed socket binding to Codex build",
       "No live damage, driving, weapon fire, Windows Player or GUI smoke"
-    ]
+    ],
+    "requires_scriptable_settings_source": "Assets/PARTSIZE001/P17NativeProbe/Editor/P17NativePhysicalSettings.cs",
+    "native_receipt_contains": "Six Unity AssetDatabase actual prefab asset paths and GUIDs in prefabBindings; missing prefab cannot be certified"
   },
   "actual_producer_tests": {
     "windows_2025": {
       "compiled_original_source": "PASS",
       "source_contract_positive_negative": "37/37 PASS",
-      "guid_meta": "5/5 PASS",
+      "guid_meta": "6/6 PASS",
       "source_owner_data": "43/43 PASS",
-      "negative_guid": "3/3 PASS",
+      "negative_guid": "3/3 GUID + 3/3 SCRIPT_BINDING_NEGATIVES PASS",
       "editor_compile": "NOT_RUN",
       "physx": "NOT_RUN"
     },
     "ubuntu_2404": {
       "compiled_original_source": "PASS",
       "source_contract_positive_negative": "37/37 PASS",
-      "guid_meta": "5/5 PASS",
+      "guid_meta": "6/6 PASS",
       "source_owner_data": "43/43 PASS",
-      "negative_guid": "3/3 PASS",
+      "negative_guid": "3/3 GUID + 3/3 SCRIPT_BINDING_NEGATIVES PASS",
       "editor_compile": "NOT_RUN",
       "physx": "NOT_RUN"
     },
-    "ci_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40913884212",
-    "test_code_sha": "b3adc33beaf29c3b4b83644f050e782c8adae1c2",
+    "ci_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965951170",
+    "test_code_sha": "92f6dbf5da578b118dff609f8b50a9b1549d0f39",
     "details": "Source CSharp shared core compiled against actual frozen PARTSIZE. Synthetic placeholder IDs in the source unit tests only, NEVER passed as real prefab proof."
   },
   "gates": {
@@ -153,5 +163,24 @@
     "No authoritative typed sockets or articulated drive collision measurement from source-only results",
     "Dependent original PARTSIZE and P17 content not merged/installed into current Codex gameplay",
     "Independent B01-40/B01-60 acceptance and Codex ACK absent"
-  ]
+  ],
+  "wave04_repair": {
+    "kind": "SOURCE_BUGFIX_IN_PREEXISTING_PR_405_NO_NEW_PR",
+    "cause": "P17NativePhysicalSettings ScriptableObject CreateAssetMenu type embedded in mismatched BracingNativeColliderProbe.cs file, risking missing script asset association",
+    "fix": "P17NativePhysicalSettings moved into exact named P17NativePhysicalSettings.cs with its own .meta; native receipt saves six actual prefab asset paths and AssetDatabase GUIDs",
+    "code_SHA_before_manifest": "92f6dbf5da578b118dff609f8b50a9b1549d0f39",
+    "unity_metas_expected": 6,
+    "original_part_owners_unchanged": 43,
+    "source_behavioral_checks_per_os": 37,
+    "regression_guards": [
+      "REJECT_MISMATCHED_MONOSCRIPT_FILENAME",
+      "REJECT_MISSING_CREATEASSETMENU",
+      "REJECT_EMBEDDED_DUPLICATE_MONOSCRIPT",
+      "REJECT_THREE_MALFORMED_GUIDS",
+      "REQUIRE_SIX_PROVENANCE_PREFAB_BINDINGS_IN_RECEIPT"
+    ],
+    "native_Editor_compile": "NOT_RUN",
+    "native_Unity_PhysX": "NOT_RUN",
+    "ci_retest": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40965951170"
+  }
 }
