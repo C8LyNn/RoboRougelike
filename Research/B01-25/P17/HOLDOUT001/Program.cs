@@ -127,7 +127,7 @@ static class ChallengeProof
             Need(t0.ProgressSeconds==t1.ProgressSeconds&&t1.Contested&&!t0.Contested,"hostile count");
         });
         Check("OUTSIDE_DECAY_ZERO_CUSTOM_RULE",()=>{
-            var c=first with {OutsideDecayPerSecond=0};
+            var c=new HoldoutConfig(first.Id,first.CenterX,first.CenterZ,first.RadiusMeters,first.RequiredSeconds,0);
             var a=new HoldoutController(c);
             a.Tick(Sample(2,x,z));a.Tick(Sample(60,x+20,z));
             Near(a.ProgressSeconds,2,"no decay allowed");
@@ -147,12 +147,12 @@ static class ChallengeProof
         Reject("INVALID_INFINITY_PLAYER_Z",()=>zone.Tick(Sample(1,x,double.PositiveInfinity)));
         Reject("INVALID_HOSTILE_COUNT",()=>zone.Tick(Sample(1,x,z,-1)));
         Check("REJECTS_DO_NOT_MUTATE_PROGRESS",()=>Near(zone.ProgressSeconds,prior,"invalid sample state atomic"));
-        Reject("INVALID_ZERO_RADIUS_CONFIG",()=>new HoldoutController(first with {RadiusMeters=0}));
-        Reject("INVALID_INFINITE_RADIUS_CONFIG",()=>new HoldoutController(first with {RadiusMeters=double.PositiveInfinity}));
-        Reject("INVALID_NEGATIVE_REQUIRED_CONFIG",()=>new HoldoutController(first with {RequiredSeconds=-1}));
-        Reject("INVALID_NEGATIVE_DECAY_CONFIG",()=>new HoldoutController(first with {OutsideDecayPerSecond=-1}));
-        Reject("INVALID_NAN_CENTER_CONFIG",()=>new HoldoutController(first with {CenterZ=double.NaN}));
-        Reject("INVALID_EMPTY_ID_CONFIG",()=>new HoldoutController(first with {Id=""}));
+        Reject("INVALID_ZERO_RADIUS_CONFIG",()=>new HoldoutController(new HoldoutConfig(first.Id,first.CenterX,first.CenterZ,0,first.RequiredSeconds,first.OutsideDecayPerSecond)));
+        Reject("INVALID_INFINITE_RADIUS_CONFIG",()=>new HoldoutController(new HoldoutConfig(first.Id,first.CenterX,first.CenterZ,double.PositiveInfinity,first.RequiredSeconds,first.OutsideDecayPerSecond)));
+        Reject("INVALID_NEGATIVE_REQUIRED_CONFIG",()=>new HoldoutController(new HoldoutConfig(first.Id,first.CenterX,first.CenterZ,first.RadiusMeters,-1,first.OutsideDecayPerSecond)));
+        Reject("INVALID_NEGATIVE_DECAY_CONFIG",()=>new HoldoutController(new HoldoutConfig(first.Id,first.CenterX,first.CenterZ,first.RadiusMeters,first.RequiredSeconds,-1)));
+        Reject("INVALID_NAN_CENTER_CONFIG",()=>new HoldoutController(new HoldoutConfig(first.Id,first.CenterX,double.NaN,first.RadiusMeters,first.RequiredSeconds,first.OutsideDecayPerSecond)));
+        Reject("INVALID_EMPTY_ID_CONFIG",()=>new HoldoutController(new HoldoutConfig("",first.CenterX,first.CenterZ,first.RadiusMeters,first.RequiredSeconds,first.OutsideDecayPerSecond)));
         Check("NO_UNBOUNDED_GLOBAL_GAME_MUTATION",()=>{
             // A challenge only computes its own state. No event is sent to MapFinish, battle or reward.
             Need(typeof(HoldoutController).GetEvents().Length==0,"Unexpected global event/economy coupling");
