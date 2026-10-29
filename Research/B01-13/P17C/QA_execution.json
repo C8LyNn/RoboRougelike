@@ -1,0 +1,18 @@
+{
+  "package": "AIM-VAULT-001/R1",
+  "environment": "Linux Python 3.13 + Pillow, original frozen #349 receiver and original frozen #363 R2 delta source",
+  "command": "python -m unittest -v test_aim_evidence_vault.py",
+  "process_exit_code": 0,
+  "cases": 33,
+  "passed": 33,
+  "failed": 0,
+  "errors": 0,
+  "parent_receiver_sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
+  "original_delta_source_executed": true,
+  "real_game_screenshots": 0,
+  "human_participants": 0,
+  "unity_native": "NOT_RUN",
+  "windows_native": "NOT_RUN",
+  "independent_qa": "NOT_RUN",
+  "original_test_log_sha256": "e6359972470e3c71b82cd12afe93adfae17eba567a0e267b40d22f8826a290f2"
+}

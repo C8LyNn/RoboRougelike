@@ -1,0 +1,41 @@
+{
+  "package_id": "AIM-VAULT-001",
+  "version": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "owned_paths": "Research/B01-13/P17C/**",
+  "stacked_parent_pr": 349,
+  "stacked_parent_head": "4ef06698e2ed6ada5e05b1a3e0a96b1c6aff5906",
+  "upstream_delta_pr": 363,
+  "upstream_delta_retested_head": "dedd4cd57c4839038721444d3e6c3cce970cd593",
+  "original_receiver_blob": "70f93467fef1d5782ec4e5cbd6a8a98af6fd0b00",
+  "original_receiver_sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
+  "file_manifest": {
+    "aim_evidence_vault.py": {
+      "bytes": 12537,
+      "sha256": "72ab902c12ff88e69236038b04eb4e260dd89698b937cae4ac5f230b22d6f66c"
+    },
+    "test_aim_evidence_vault.py": {
+      "bytes": 11691,
+      "sha256": "e578560e204ba12f77e8eff8e9cb6a6817376966eac09ba3917eb7772991ebc4"
+    },
+    "README.md": {
+      "bytes": 6771,
+      "sha256": "bbb7f13b87a91602fdf17ea34c954fad66e546390c115ba73f784d310bc0079c"
+    },
+    "QA_execution.log": {
+      "bytes": 3964,
+      "sha256": "e6359972470e3c71b82cd12afe93adfae17eba567a0e267b40d22f8826a290f2"
+    },
+    "QA_execution.json": {
+      "bytes": 691,
+      "sha256": "75d5e773ed47dfece36e6ba1231f0ff32866307902443778b5947636b8f2ff04"
+    }
+  },
+  "local_tests": "33/33 PASS",
+  "windows_test": "NOT_RUN",
+  "unity_test": "NOT_RUN",
+  "human_count": 0,
+  "independent_qa": "PENDING",
+  "game_integrated": false,
+  "rollback": "No game files changed; discard unmerged research-only branch. Private vault removal only by operator policy."
+}

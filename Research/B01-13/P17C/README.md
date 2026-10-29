@@ -1,0 +1,64 @@
+# B01-13 PASS17 / WAVE03 — AIM-VAULT-001 R1
+
+## Executable capability
+
+A **private local evidence lifecycle tool** for images/receipts made by [AIM-OBS001 #349](https://github.com/C8LyNn/RoboRougelike/pull/349), including [AIM-DELTA001/R2 #363](https://github.com/C8LyNn/RoboRougelike/pull/363) private reports referencing two different sessions. The tool **does not** annotate screenshots, calculate gameplay measurements, implement an additional HUD, or alter any Unity gameplay or project files. It provides a missing facility in the existing B01-13 study workflow: source-pinned cryptographic checks at intake, an index of **exact local files**, byte-integrity verification, and a **durable withdrawal tombstone that also unlinks registered cross-session derived reports**.
+
+- Owner: `B01-13 HUMAN PLAYTESTING`. Package: `AIM-VAULT-001/R1`. Scope: `Research/B01-13/P17C/**`, brand-new branch stacked only on frozen #349. No writes to source #349, #363, `Assets/**`, Codex, CHL, PARTSIZE, main or develop.
+- Original verifier dependency: frozen `Research/B01-13/P17/verify_aim_receipt.py` Git blob **`70f93467fef1d5782ec4e5cbd6a8a98af6fd0b00`**, SHA-256 **`8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4`**. It is **not copied or edited** in this package; a different verifier fails closed.
+- Python 3.11+, Pillow required. No network calls. Native Unity, Windows GUI and consent validation not implemented. `HUMAN_APPROVED` files are refused by default and require explicit `--allow-human-data`, but even that **cannot authenticate HQ permission**; never run human sessions before HQ GATE D and actual participant consent.
+
+## Commands (operator private machine; avoid repository folders)
+
+```bash
+# 1. Create an isolated, new private root OUTSIDE all Git worktrees.
+python3 Research/B01-13/P17C/aim_evidence_vault.py init --root /private/AIM_VAULT
+
+# 2. Privately place exactly 5 already captured physical files in each subfolder:
+# /private/AIM_VAULT/sessions/S01/receipt.json + four images named in receipt;
+# /private/AIM_VAULT/sessions/S02/receipt.json + four images named in receipt.
+# The tool DOES NOT copy or collect images from the game.
+python3 Research/B01-13/P17C/aim_evidence_vault.py seal \
+  --root /private/AIM_VAULT --sid S01 \
+  --receiver Research/B01-13/P17/verify_aim_receipt.py \
+  --game-sha YOUR_EXACT_40_HEX_SHA --zip-sha256 YOUR_EXACT_64_HEX_PLAYER_ZIP_SHA
+
+# Repeat seal with S02 and its own exact build+ZIP SHA.
+# Optionally generate the actual private before/after report using original #363,
+# saving output as /private/AIM_VAULT/derived/REPORT01.html.
+python3 Research/B01-13/P17C/aim_evidence_vault.py attach-report \
+  --root /private/AIM_VAULT --report REPORT01.html \
+  --related-session S01 --related-session S02
+
+# 3. Check every exact registered file, verify the original screenshot receipt
+# against the unmodified #349 receiver, and reject unregistered files.
+python3 Research/B01-13/P17C/aim_evidence_vault.py verify \
+  --root /private/AIM_VAULT --receiver Research/B01-13/P17/verify_aim_receipt.py
+
+# 4. Only after a real withdrawal request from the proper participant/operator:
+python3 Research/B01-13/P17C/aim_evidence_vault.py withdraw \
+  --root /private/AIM_VAULT --sid S01 --confirm-local-delete
+```
+
+**Withdrawal semantics:** a durable tombstone is written **before** unlinking tracked local files. Any interrupted deletion leaves `verify` **RED** until deletion resumes; repeat the same `withdraw` to recover. If S01 participated in `REPORT01.html` alongside S02, the **entire shared private HTML is unlinked**, while S02's unrelated original screenshots/receipt remain. Reusing S01 after withdrawal is rejected. Foreign/untracked file in the session blocks automatic deletion rather than removing arbitrary data. Symlinks, unsafe paths, extra screenshots, malformed index and repository roots are refused. **This is unlinking, not secure erasure**: external screenshots, uploaded files, other exports, sync copies, downloaded reports, backups and retention schedules remain outside this tool and require the actual operator's manual/policy handling. For Windows, private folder ACLs are an **operator responsibility**; POSIX root `0700` checks do not prove NTFS ACL privacy.
+
+**Safety:** do not put real participant data, raw screenshots, private generated HTML or session indexes in GitHub, ChatGPT, CI artifacts or this repository. No real participant was used to test this code. Tested fixture modes were `SYNTHETIC` with deliberately bogus example hashes and `HUMAN_APPROVED` with explicitly fake witness IDs to demonstrate the gate **does not establish consent**. Do not infer a completed playtest or game QA from structural verification.
+
+## Actual source tests
+
+From a checkout containing the **unchanged frozen #349 parent** and this new source:
+
+```bash
+python3 -m pip install pillow
+python3 -m py_compile Research/B01-13/P17C/aim_evidence_vault.py Research/B01-13/P17C/test_aim_evidence_vault.py
+python3 -m unittest -v Research/B01-13/P17C/test_aim_evidence_vault.py
+```
+
+The test suite uses actual original #349 verifier, generates physical PNG/receipt bytes, runs the real original **#363 R2 `aim_delta.py`** for an end-to-end registered generated HTML, and verifies withdrawal removes shared derived content but retains the unaffected session. The test expects the original R2 `Research/B01-13/P17B/aim_delta.py` present in checkout (without editing it). 33 source tests incl. negatives, tampering, crash/tombstone recovery, malicious index traversal, hard rejection of missing consent flag. **Linux Python + Pillow tested; Windows native NOT_RUN; Unity native NOT_RUN.** Original parent test 59/59 and R2 test 47/47 were rerun separately; they are **not** new AIM-VAULT feature tests.
+
+## B01-40 / B01-60 / Codex handoff
+
+- B01-40: verify only new `P17C/**` changes, parent branch/source pin and manifest; confirm no canonical game asset or other-producer edit. Source install only; no Unity integration expected.
+- B01-60: independently rerun 33 source tests on this exact SHA with original #349 and R2 #363. Test crash recovery, untracked-file negative, consent disclaimer and **Windows NTFS ACL behavior** if a licensed machine is available. This producer PASS is *not* independent QA.
+- B01-00: decide whether this operator tool belongs in existing CODEX INBOX #79. `READY_TO_QA != CODEX_ACK != GAME_INTEGRATED`.
+- Codex: optional utility for an **authorized human-playtest operator** after real build/ZIP pin, explicit study consent, and private storage. No gameplay import; do not cherry-pick research code into `Assets`. Rollback: do not merge Draft PR, discard new own `P17C` files and remove optional private vault only under the operator's actual data-retention policy.
