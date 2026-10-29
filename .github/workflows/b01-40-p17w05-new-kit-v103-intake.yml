@@ -30,7 +30,7 @@ jobs:
       - name: Read-only fetch new #411 and exact old parent, Codex #383, prior pinned source
         shell: bash
         run: |
-          git fetch --no-tags --depth=2 origin a3dd45a4c1f222ec5cc387302eafe9104f91ab52
+          git fetch --no-tags --depth=3 origin b1d4e341d846c9397e236809a1d7e4c4fff9c935
           git fetch --no-tags --depth=1 origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
           git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
           git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
@@ -39,10 +39,30 @@ jobs:
         shell: bash
         run: |
           python Tools/B01Validation/P17W05/receive_kits_v103.py --repo . --out "$RUNNER_TEMP/b0140-w05-original-v103"
-      - name: B01-40 20 independent source and physical ZIP negative tests on actual bytes
+      - name: Download physically produced exact-head v1.0.3 Windows source artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 40968578571
+          name: b01-22-ek103-receiver-windows-2025
+          path: ${{ runner.temp }}/b0140-w05-origin-win
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download physically produced exact-head v1.0.3 Ubuntu source artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 40968578571
+          name: b01-22-ek103-receiver-ubuntu-24.04
+          path: ${{ runner.temp }}/b0140-w05-origin-ubuntu
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Independently compare downloaded actual original 3-file Windows vs Ubuntu vs own receiver bytes
+        shell: bash
+        run: |
+          python Tools/B01Validation/P17W05/compare_owner_real_artifacts.py --windows "$RUNNER_TEMP/b0140-w05-origin-win" --ubuntu "$RUNNER_TEMP/b0140-w05-origin-ubuntu" --receiver "$RUNNER_TEMP/b0140-w05-original-v103" --proof "$RUNNER_TEMP/b0140-w05-original-v103/producer-original-artifact-compare.json"
+      - name: B01-40 24 independent source and physical ZIP negative tests on actual bytes
         shell: bash
         run: |
           export B0140_W05_OUTPUT="$RUNNER_TEMP/b0140-w05-original-v103"
+          export B0140_W05_OWNER_WIN="$RUNNER_TEMP/b0140-w05-origin-win"
+          export B0140_W05_OWNER_UBUNTU="$RUNNER_TEMP/b0140-w05-origin-ubuntu"
           python Tools/B01Validation/P17W05/test_receive_kits_v103.py -v
       - name: Explicit physical digest and source-only quality gate
         shell: bash
