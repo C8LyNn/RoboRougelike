@@ -1,6 +1,6 @@
 {
   "package_id": "B01-60-ENEMY-FORMATIONS-SOURCE-QA-001",
-  "wave": "PASS17-W03",
+  "wave": "PASS17-W04",
   "owner": "B01-60",
   "upstream_pr": 355,
   "upstream_immutable_sha": "c39a400cb07ae0fd6f0d8d419a128490cfbcfd8a",
@@ -24,5 +24,21 @@
     "No real prefab extents/PhysX/weapon AI/player manual play",
     "G1 native NOT_RUN; G2 HOLD; Codex ACK pending; no merge"
   ],
-  "rollback": "delete only B01-60-owned QA paths, never original producer or Codex game source"
+  "rollback": "Remove only B01-60 Tools/B01/ENEMY-FORMATIONS-SOURCE-QA-001/** and dedicated QA workflow, do not modify source PR #355, integration PR #398, game Assets or Codex code.",
+  "revision": "R2_EXTENDED_PHYSICAL_RECEIVER",
+  "b01_40_receiver": {
+    "pr": 398,
+    "sha": "f4165fd2bac86741326253800c6160d8ca8bea02",
+    "original_binary_zip_sha256": "ef25e8759a02a9b5f0c22d19198e6fcbf8e6c9d13ee7963c7d1fa2f091d82d8a",
+    "files_in_zip": 6
+  },
+  "independent_physical_qa": {
+    "script": "Tools/B01/ENEMY-FORMATIONS-SOURCE-QA-001/verify_handoff_zip.py",
+    "test_scope": "Rebuild B01-40 exact source immutable Git-object tool, inspect real six-file ZIP/CRC/SHA, original content JSON and twelve Vector3 arguments (30 locations), eight deliberately malformed ZIP content/receipt mutants",
+    "expected_platforms": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "gate": "source-only; no native Unity/PhysX"
+  }
 }
