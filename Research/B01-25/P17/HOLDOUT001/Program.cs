@@ -132,6 +132,13 @@ static class ChallengeProof
             a.Tick(Sample(2,x,z));a.Tick(Sample(60,x+20,z));
             Near(a.ProgressSeconds,2,"no decay allowed");
         });
+        Check("SNAPSHOT_STRUCT_VALUE_EQUALITY",()=>{
+            var a=new HoldoutSnapshot(HoldoutPhase.Charging,2,8,true,false,false);
+            var b=new HoldoutSnapshot(HoldoutPhase.Charging,2,8,true,false,false);
+            var c=new HoldoutSnapshot(HoldoutPhase.Contested,2,8,true,true,false);
+            Need(a.Equals(b)&&a==b&&a.GetHashCode()==b.GetHashCode(),"value equality drift");
+            Need(!a.Equals(c)&&a!=c,"different phases must compare unequal");
+        });
         Check("REPLAY_REPRODUCIBLE_OUTPUT_SEQUENCE",()=>{
             var cmds=new[]{Sample(.5,x,z),Sample(2,x,z,1),Sample(1,x+8,z),Sample(1,x,z),Sample(10,x,z)};
             var a=new HoldoutController(first);var b=new HoldoutController(first);
@@ -158,7 +165,7 @@ static class ChallengeProof
             Need(typeof(HoldoutController).GetEvents().Length==0,"Unexpected global event/economy coupling");
         });
         Console.WriteLine($"RESULT PASS: {successes}/{successes} original C# challenge assertions, including {negativeCases} malformed-input rejection cases, 2 original MapDocument v2 source blobs. UNITY_NATIVE/PHYSX/CODEX_INTEGRATION NOT_RUN");
-        var receipt=new{packageId="B01-25-HOLDOUT-001/R1",testsPassed=successes,negativeInputCases=negativeCases,
+        var receipt=new{packageId="B01-25-HOLDOUT-001/R2",testsPassed=successes,negativeInputCases=negativeCases,
             status="CSharp Original Rule Logic PASS / Unity Native NOT_RUN",
             mapInputs=authentic.Select(v=>new{id=v.name,blob=v.mapBlob,centerX=v.cfg.CenterX,centerZ=v.cfg.CenterZ,radius=v.cfg.RadiusMeters}).ToArray(),
             tests=receipts};
