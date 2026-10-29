@@ -27,9 +27,9 @@ def ok(condition,reason):
 def git(*args):
     p=subprocess.run(["git",*args],cwd=REPO,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ok(p.returncode==0,"Git command "+repr(args)+" "+p.stderr.decode(errors="replace")[-250:])
-    return p.stdout.strip()
+    return p.stdout
 def git_data(commit,path,expected=None):
-    blob=git("rev-parse",commit+":"+path).decode()
+    blob=git("rev-parse",commit+":"+path).decode().strip()
     if expected:ok(blob==expected,"git blob drift "+path)
     raw=git("show",commit+":"+path)
     ok(sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw)==blob,"git object bytes mismatch "+path)
@@ -155,7 +155,7 @@ def make():
     out=Path(args.output).resolve()
     out.mkdir(parents=True,exist_ok=True)
     ok(not (REPO/"Assets/B0132SalvageBeacon").exists(),"canonical Assets path already occupied")
-    ok(git("rev-parse",OWNER).decode()==OWNER,"immutable art source absent; fetch it first")
+    ok(git("rev-parse",OWNER).decode().strip()==OWNER,"immutable art source absent; fetch it first")
     template=git_data('HEAD',TEMPLATE,TEMPLATE_BLOB).decode()
     ok("spriteMode: 0" in template and "TextureImporter:" in template,"unapproved Unity texture importer template")
     m=json.loads(git_data(OWNER,SRC+"/manifest.json",ORIGINAL_MANIFEST_BLOB))
