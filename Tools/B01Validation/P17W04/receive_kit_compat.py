@@ -93,10 +93,14 @@ def validate_source(repo):
     owner,owner_r3=blob(repo,OWNER,R3)
     current,new=blob(repo,GAME,R3)
     latest,report_r3=blob(repo,REPORT,R3)
-    need(old==R3_OLD_BLOB and owner_r3==R3_OLD_BLOB and
-         new==R3_NEW_BLOB and report_r3==R3_NEW_BLOB,
+    need(old==R3_OLD_BLOB and new==R3_NEW_BLOB and
+         report_r3==R3_NEW_BLOB,
          "EXPECTED_EXACT_CODEX_R3_SHA_DRIFT_CHANGED")
-    need(original==owner and current==latest and
+    # B01-22's research branch inherits older *main* game files; its
+    # catalog instead explicitly pins the later original Codex SHA.
+    # Never confuse the producer worktree's inherited R3 with its
+    # catalog.provenance.codex_sha.
+    need(current==latest and
          original.count(OLD)==1 and current.count(NEW)==1 and
          len(current)==len(original)+8 and original.replace(OLD,NEW,1)==current,
          "UNAPPROVED_R3_DIFFERENCE_BEYOND_PARTIAL_KEYWORD")
@@ -112,7 +116,7 @@ def validate_source(repo):
          len(catalogue["kits"])==10,"ORIGINAL_KIT_PRICE_PROVENANCE_CHANGED")
     return {"owner_manifest_git_blob":hashid,"manifest_original_sha256":digest(raw),
             "13_payloads_sha256_verified":True,"original_scope_paths":changes,
-            "original_r3_blob":old,"latest_r3_blob":new,"r4_blob":r4id,
+            "original_r3_blob":old,"producer_base_r3_blob":owner_r3,"latest_r3_blob":new,"r4_blob":r4id,
             "r3_only_diff":"EXACT_ADD_8_BYTES_PARTIAL_KEYWORD",
             "latest_gameplay_sha":GAME,"latest_report_sha":REPORT},catalogue,current,r4
 def receive(repo,out):
