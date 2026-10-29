@@ -1,0 +1,56 @@
+name: B01-22 P17 equipment kits data QA
+on:
+  push:
+    branches: ['b01-22/p17w04-equipment-kits-r103']
+    paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
+  pull_request:
+    paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
+permissions:
+  contents: read
+jobs:
+  node-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: node --test Research/B01-22/P17/EQUIPMENT-KITS-001/kit_core.test.mjs
+      - run: node Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs validate
+      - run: node Research/B01-22/P17/EQUIPMENT-KITS-001/kit_cli.mjs list
+      - run: python -m unittest discover -s Research/B01-22/P17/EQUIPMENT-KITS-001 -p test_stage_kit_payload.py -v
+      - run: python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --verify-only
+      - name: Fetch exact original Codex host commit (read-only)
+        run: git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
+      - name: Real original C# price/enum source gate + 7 negatives
+        run: python Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py --current-ref 203a0805251ed28293888e43f2d49f0df63767c6 --selftest
+      - name: Physically stage 10 original offer records (QA ONLY; no game Assets)
+        run: python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --stage b01-22-receiver-output
+      - name: Independently verify three staged files, receipt hashes, and Codex provenance
+        run: >-
+          python -c "import json,hashlib,pathlib;
+          p=pathlib.Path('b01-22-receiver-output');
+          names={x.name for x in p.iterdir()};
+          assert names=={'catalog.json','offers.json','receipt.json'},names;
+          d=json.loads((p/'offers.json').read_text(encoding='utf-8'));
+          r=json.loads((p/'receipt.json').read_text(encoding='utf-8'));
+          assert d['schema']=='b01-codex-kit-offers-v1' and len(d['offers'])==10;
+          assert d['source_codex_sha']=='203a0805251ed28293888e43f2d49f0df63767c6';
+          assert d['data_only'] is True and d['host_transaction_required'] is True;
+          assert d['source_manifest_sha256']==r['source_manifest_sha256'];
+          assert r['modified_host'] is False;
+          assert r['file_sha256']=={x:hashlib.sha256((p/x).read_bytes()).hexdigest() for x in ('catalog.json','offers.json')};
+          print('B01-22-W05-PHYSICAL-STAGE-RECEIPT-PASS')"
+      - name: Upload reproducible 3-file SOURCE-ONLY receiver artifact (not Codex authorization)
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-ek103-receiver-${{ matrix.os }}
+          path: b01-22-receiver-output/
+          if-no-files-found: error
+          retention-days: 14
