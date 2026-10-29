@@ -14,7 +14,7 @@
 <div class="alerts"><div id="gunAlert" class="alert" data-critical="true" role="status"><strong>Brak działa</strong></div><div id="wheelAlert" class="alert" data-critical="true" role="status"><strong>Brak kół po obu stronach</strong></div></div>
 <div id="feedback" class="log" aria-live="polite" role="status">Wybierz narzędzie i pole obok rdzenia.</div>
 <div class="stack" style="margin-top:12px"><button id="demo">Demonstracja</button><button id="reset">Sam rdzeń</button><button id="undo">Cofnij</button><button id="redo">Ponów</button></div>
-<h2 style="margin-top:18px">Eksport planu rozmieszczenia</h2><p class="hint">JSON służy tylko do oceny UX i przekazania układu. Nie jest formatem zapisu gry, modułem PARTSIZE ani schematem eksportu do Unity.</p><button id="export">Eksportuj opis siatki</button><textarea id="plan" class="json" readonly spellcheck="false" aria-label="Opis rozmieszczenia części JSON"></textarea>
+<h2 style="margin-top:18px">Eksport planu rozmieszczenia</h2><p class="hint">JSON służy tylko do oceny UX i przekazania układu. Nie jest formatem zapisu gry, modułem PARTSIZE ani schematem eksportu do Unity.</p><button id="export">Eksportuj opis siatki</button><p id="exportStatus" class="hint" role="status" aria-live="polite">Nie wyeksportowano jeszcze planu.</p><textarea id="plan" class="json" readonly spellcheck="false" aria-label="Opis rozmieszczenia części JSON"></textarea>
 </aside></div><footer>B01-12-SNAPGRID-001/R1 · 2D footprint jest umowny. Grubość modułów, rzeczywiste sockety i kontakt fizyczny wymagają autorytatywnej implementacji Codexa oraz natywnych testów Unity. Brak zmian w grze i plikach innych producentów.</footer>
 </div><script>
 (()=>{'use strict';
@@ -32,7 +32,8 @@ function connected(parts){const all=occupancy(parts);if(all.size===0||!all.has(`
 const label=p=>p.type==='core'?'Rdzeń':types[p.type].label;
 function canPlace(part){if(!inside(part))return {ok:false,reason:'Poza obszarem siatki.'};const occupied=occupancy(state.parts);const ps=points(part);if(ps.some(k=>occupied.has(k)))return {ok:false,reason:'Kolizja — co najmniej jedno pole jest już zajęte.'};const all=state.parts.concat([part]);if(!connected(all))return {ok:false,reason:'Brak styku bocznego z podłączoną konstrukcją.'};return {ok:true,reason:'Montaż możliwy.'};}
 function removeAt(){const map=occupancy(state.parts),p=map.get(`${cursor.x},${cursor.y}`);if(!p)return {ok:false,reason:'Nie ma tu części do zdjęcia.'};if(p.type==='core')return {ok:false,reason:'Rdzeń jest stały; nie można go zdemontować.'};const rest=state.parts.filter(a=>a.id!==p.id);if(!connected(rest))return {ok:false,reason:'Demontaż odłączony: pozostałe części utraciłyby połączenie z rdzeniem.'};return {ok:true,reason:`Zdemontowano: ${label(p)}.`,rest};}
-function mutate(fn){past.push(clone(state));if(past.length>50)past.shift();future=[];fn();render()}
+function invalidateExport(){$('plan').value='';$('exportStatus').textContent='Układ zmieniony — wyeksportuj aktualny plan ponownie.'}
+function mutate(fn){past.push(clone(state));if(past.length>50)past.shift();future=[];fn();invalidateExport();render()}
 function announce(s){$('feedback').textContent=s}
 function apply(override){const action=override||tool;if(action==='remove'){const r=removeAt();if(!r.ok){announce(r.reason);render();return}mutate(()=>state.parts=r.rest);announce(r.reason);return}const part={id:'mod-'+state.seq,type:action,x:cursor.x,y:cursor.y,rot:rotation};const r=canPlace(part);if(!r.ok){announce(r.reason);render();return}mutate(()=>{state.parts.push(part);state.seq++});announce(`Zamontowano: ${label(part)} (${cursor.x+1}, ${cursor.y+1}).`)}
 function rotate(){rotation=(rotation+1)%2;render();announce(`Obrót ${rotation*90}°; pole ${dims(tool,rotation).w}×${dims(tool,rotation).h}.`)}
@@ -44,10 +45,10 @@ function render(){const map=occupancy(state.parts),size=dims(tool,rotation),cand
  $('undo').disabled=past.length===0;$('redo').disabled=future.length===0;
 }
 $('tool').onchange=e=>{tool=e.target.value;render();announce('Narzędzie: '+(tool==='remove'?'Demontaż':types[tool].label))};$('rotate').onclick=rotate;
-$('undo').onclick=()=>{if(!past.length)return;future.push(clone(state));state=past.pop();render();announce('Cofnięto ostatni montaż lub demontaż.')};$('redo').onclick=()=>{if(!future.length)return;past.push(clone(state));state=future.pop();render();announce('Ponowiono ostatnią operację.')};
+$('undo').onclick=()=>{if(!past.length)return;future.push(clone(state));state=past.pop();invalidateExport();render();announce('Cofnięto ostatni montaż lub demontaż.')};$('redo').onclick=()=>{if(!future.length)return;past.push(clone(state));state=future.pop();invalidateExport();render();announce('Ponowiono ostatnią operację.')};
 $('reset').onclick=()=>{mutate(()=>{state={parts:[clone(CORE)],seq:1}});announce('Pozostawiono sam rdzeń.')};
 $('demo').onclick=()=>{mutate(()=>{state={seq:6,parts:[clone(CORE),{id:'mod-1',type:'armor',x:6,y:3,rot:0},{id:'mod-2',type:'gun',x:8,y:3,rot:0},{id:'mod-3',type:'wheel',x:4,y:3,rot:0},{id:'mod-4',type:'wheel',x:6,y:4,rot:0}]}});announce('Demo: usuń pancerz przy kolumnie 7, aby sprawdzić blokadę odłączonego działa.')};
-$('export').onclick=()=>{const payload={schema:'B01-12-SNAPGRID-PLAN',version:1,grid:{columns:W,rows:H},parts:state.parts.map(p=>({...p,footprint:dims(p.type,p.rot)}))};$('plan').value=JSON.stringify(payload,null,2);announce('Wyeksportowano wyłącznie poglądowy plan 2D. Nie zapisano gry.')};
+$('export').onclick=()=>{const payload={schema:'B01-12-SNAPGRID-PLAN',version:1,grid:{columns:W,rows:H},parts:state.parts.map(p=>({...p,footprint:dims(p.type,p.rot)}))};$('plan').value=JSON.stringify(payload,null,2);$('exportStatus').textContent=`Aktualny plan: ${state.parts.length} części · eksport ważny dla tego układu.`;announce('Wyeksportowano wyłącznie poglądowy plan 2D. Nie zapisano gry.')};
 render();announce('Gotowość: podgląd można montować obok rdzenia.');
 })();
 </script></body></html>
