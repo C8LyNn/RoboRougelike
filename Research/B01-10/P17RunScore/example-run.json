@@ -1,0 +1,80 @@
+[
+  {
+    "StageNumber": 1,
+    "EncounterId": "bal17_s1_sample",
+    "Victory": true,
+    "Threat": 5,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.91,
+    "DurationSeconds": 90,
+    "ScrapEarned": 75,
+    "RecoveredModules": 0
+  },
+  {
+    "StageNumber": 2,
+    "EncounterId": "bal17_s2_sample",
+    "Victory": true,
+    "Threat": 7.1,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.865,
+    "DurationSeconds": 99,
+    "ScrapEarned": 98,
+    "RecoveredModules": 1
+  },
+  {
+    "StageNumber": 3,
+    "EncounterId": "bal17_s3_sample",
+    "Victory": true,
+    "Threat": 9.2,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.82,
+    "DurationSeconds": 108,
+    "ScrapEarned": 121,
+    "RecoveredModules": 2
+  },
+  {
+    "StageNumber": 4,
+    "EncounterId": "bal17_s4_sample",
+    "Victory": true,
+    "Threat": 11.3,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.775,
+    "DurationSeconds": 117,
+    "ScrapEarned": 144,
+    "RecoveredModules": 0
+  },
+  {
+    "StageNumber": 5,
+    "EncounterId": "bal17_s5_sample",
+    "Victory": true,
+    "Threat": 13.4,
+    "ExpectedEnemies": 2,
+    "DefeatedEnemies": 2,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.73,
+    "DurationSeconds": 126,
+    "ScrapEarned": 167,
+    "RecoveredModules": 1
+  },
+  {
+    "StageNumber": 6,
+    "EncounterId": "bal17_s6_sample",
+    "Victory": true,
+    "Threat": 15.5,
+    "ExpectedEnemies": 1,
+    "DefeatedEnemies": 1,
+    "HullRatioStart": 1,
+    "HullRatioEnd": 0.685,
+    "DurationSeconds": 135,
+    "ScrapEarned": 190,
+    "RecoveredModules": 2
+  }
+]
