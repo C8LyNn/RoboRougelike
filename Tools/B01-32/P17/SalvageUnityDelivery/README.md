@@ -12,7 +12,7 @@ This is a *new real Unity Sprite + animated prefab delivery*, not another concep
 ## Staged Unity reviewer instructions — ONLY AFTER OWNER APPROVAL
 1. Independent B01-40 checks physical ZIP + 8 GUID & source blob hashes; independent B01-60 re-runs original build and verifies original Unity 6000.3.14f1 URP `Editor.log`, raw Test Runner XML and 720/1080 visual screenshots. No license is presumed.
 2. In a disposable licensed Unity 6000.3.14f1 URP checkout, copy the ZIP's `Assets/B0132SalvageBeacon/` folder *with all .meta files*, after preflighting path/GUID collisions. Note: test fixture is authored but no completed native Unity Test Runner verdict.
-3. Drag `Prefabs/B0132_SalvageBeaconLoop.prefab` into an isolated review scene. It animates 8 sprite frames ×0.12sec and exposes `SetVisualsEnabled(false)` for immediate OFF clearing. **No pickup trigger, reward grant, particle pooling or gameplay connection is made**.
+3. Drag `Resources/B0132_SalvageBeaconLoop.prefab` into an isolated review scene. It animates 8 sprite frames ×0.12sec and exposes `SetVisualsEnabled(false)` for immediate OFF clearing. **No pickup trigger, reward grant, particle pooling or gameplay connection is made**.
 4. Codex alone may instantiate this prefab from a real existing presentation-only reward event after HQ/QA ACK. Design decision for visible gameplay signals is pending; never infer a reward spawn source.
 5. Rollback: remove only the newly added `Assets/B0132SalvageBeacon/` import folder and any Codex-owned opt-in adapter; source game and save data untouched.
 
