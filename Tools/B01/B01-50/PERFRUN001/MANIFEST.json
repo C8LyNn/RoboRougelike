@@ -1,24 +1,35 @@
 {
-  "classification": "ORIGINAL_PLAYER_CAPTURE_OPERATOR_NO_NATIVE_EXECUTION",
+  "package_id": "B01-50-PERFRUN-001/R2",
+  "scope": "Tools/B01/B01-50/PERFRUN001/**",
+  "producer": "B01-50",
+  "previous_r1_sha": "e544f4a00c2ac149dfe118293929667559e7d521",
+  "classification": "ORIGINAL_WINDOWS_PLAYER_CAPTURE_OPERATOR_NOT_NATIVE_PLAYER_EXECUTED",
   "dependencies": {
-    "original_validator_git_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82",
-    "required_input_tool_pr": 328
+    "pinned_validate_live_git_blob": "7060aa3e364b2bc69de99501faa99bba57e84f82",
+    "source_pr": 328
   },
   "executed": {
-    "historical_original_zip_exe_match": "PASS (ZIP↔executable hash only; NO GAME RUN)",
-    "perf_frames": "NOT_MEASURED",
-    "python_pycompile": "PASS",
-    "python_unittest": "20/20 PASS, Linux Python",
-    "windows_unity_player": "NOT_RUN"
+    "python_unittest": "25/25 PASS real Linux Python 3.13; 5 new negatives R1 RED",
+    "original_full_historical_zip": "212/212 files SHA256 match, Windows Player NOT_RUN",
+    "python_compile": "PASS",
+    "unity_edit_play": "NOT_RUN",
+    "native_player": "NOT_RUN",
+    "actual_game_fps": "NOT_MEASURED",
+    "independent_qa": "PENDING",
+    "codex_ack": "PENDING"
   },
   "files": {
     "README.md": {
-      "bytes": 8001,
-      "sha256": "17c15c27a3bd9c45ec9a37ca9ee700d56feb193e7a3a2828c9da0d59300f58a0"
+      "bytes": 10819,
+      "sha256": "070775458b82b325ac612a324ac8216957893f7f48475db15c2325bd9ecf8b25"
     },
     "capture.py": {
-      "bytes": 11120,
-      "sha256": "6205e83745ff2a9615b8abe3d0a261eb38974a4e29a37e6c9e95e578acad7925"
+      "bytes": 15796,
+      "sha256": "63de7ea99fd7c66eb499bec0ec0fc6ebcd0ebb4aa80b46d9da7131ec1e3dea10"
+    },
+    "tests/test_capture.py": {
+      "bytes": 10321,
+      "sha256": "50e510e300519e6ffc64ab19f509f637b04bc847eba1e77194cba396952ac09d"
     },
     "evidence/historical_zip_binary_match.json": {
       "bytes": 567,
@@ -28,12 +39,13 @@
       "bytes": 3111,
       "sha256": "0cd56a4544c529a73bc347dffa0d9c271f0e5255da54edaf59403ad6a24ed91d"
     },
-    "tests/test_capture.py": {
-      "bytes": 8147,
-      "sha256": "b45fa07da1cb59415fb56ea377b810c4c1fc4933645dba54b89156e7878e1c17"
+    "evidence/historical_full_distribution_receipt.json": {
+      "bytes": 545,
+      "sha256": "dcdf62c6eb6c961035e847a8ac68e40720924b5f038c9ee9ca1aac3eccb8fc47"
+    },
+    "evidence/w04_red_green_receipt.json": {
+      "bytes": 1422,
+      "sha256": "b7f51d1cd37cdeb2a164d8d26709705a8056b9d6ba3743e3b30f7b86f97911c1"
     }
-  },
-  "owner": "B01-50",
-  "package_id": "B01-50-PERFRUN-001/R1",
-  "scope": "Tools/B01/B01-50/PERFRUN001/**"
+  }
 }
