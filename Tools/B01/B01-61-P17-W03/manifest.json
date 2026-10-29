@@ -1,0 +1,34 @@
+{
+  "schema": "B01-61-P17-W03-BRACING-ACCEPTANCE-MANIFEST-v1",
+  "package_id": "B01-61-P17-W03-BRACING-ACCEPTANCE-001",
+  "owner": "B01-61 CODEX REGRESSION QA",
+  "version": "1.0.0",
+  "receiver_git_blob": "5d26678153d40f236533d20b06bd5d8c5abee0b1",
+  "original_braced_producer_sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+  "original_blueprint_source_sha": "0978497561c8b6400490235d3e5a401ac32bea2d",
+  "original_weakpoints_sha": "098ccdbe8f129253fa4ada52318436b7cc2b4dc4",
+  "original_frozen_partsize_sha": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "source_scope": [
+    "Tools/B01/B01-61-P17-W03/**",
+    ".github/workflows/b01-61-pass17-wave03-bracing.yml"
+  ],
+  "new_capability": "Original-source independent 3 rig bracing cross-acceptance, all 38 historical one-owner cases, 227 common original pair removals, 64 new armor-removal pairs, original GUIDs, 6 tamper negatives, deterministic JSON outcome",
+  "dependencies": [
+    "Git",
+    "Python 3.11+ stdlib",
+    "original Git commits fetched with exact SHA"
+  ],
+  "tested_source_class": "Original Git blob-exact JSON asset content and read-only original C# source contracts; no managed C# executed in this W03 receiver",
+  "unity_native": "NOT_RUN",
+  "physics": "NOT_RUN",
+  "game_integrated": false,
+  "codex_ack": "PENDING",
+  "qa_independent_on_producer": true,
+  "limitations": [
+    "Logical 6-face grid, NOT actual typed socket or collider/PhysX, no vehicle performance",
+    "63-mask logical contact only; original modules must not be installed without Codex asset receiver",
+    "No local or remote game source updates"
+  ],
+  "rollback": "Delete only two QA tool files, own workflow, and generated report; original B01-23 game content stays frozen",
+  "producer_original_assets": "Assets/PARTSIZE001/Bracing/P17/ from #375; archived physical ZIP provided independently in #391, not installed by this receiver"
+}
