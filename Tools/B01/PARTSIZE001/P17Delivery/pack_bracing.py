@@ -39,7 +39,7 @@ def ensure(ok,code):
 def sha(data):return hashlib.sha256(data).hexdigest()
 
 def gitblob(data):
-    return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\\0"+data).hexdigest()
+    return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
 
 def canon(obj):
     return (json.dumps(obj,sort_keys=True,separators=(",",":"),ensure_ascii=False)+"\n").encode("utf-8")
