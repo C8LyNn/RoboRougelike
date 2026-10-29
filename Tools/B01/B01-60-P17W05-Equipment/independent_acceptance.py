@@ -17,14 +17,14 @@ OLD="0d212a706c1e633b773d2e03b7b40c28bb63521b"
 NEW="a3dd45a4c1f222ec5cc387302eafe9104f91ab52"
 CODEX="203a0805251ed28293888e43f2d49f0df63767c6"
 OLD_R3_SOURCE="aa7a917f177a9b1f07203868fb7d1d871eb3ee46"
-OLD_R3_BLOB="8cc68faf89793c803e5807594c9faf0df10091"
+OLD_R3_BLOB="8cc68faf89793c3a803e5807594c9faf0df10091"
 NEW_R3_BLOB="1d0f378dc598e08b3d7c16975f419d84231511bb"
 R4_BLOB="502f6d7f70d4e8078260de632ab181f244a4d730"
 EXPECTED_PRICES={"EK01":110,"EK02":205,"EK03":146,"EK04":175,"EK05":155,
                  "EK06":160,"EK07":195,"EK08":235,"EK09":165,"EK10":176}
 ALLOWED_CHANGES={
  ".github/workflows/b01-22-p17-equipment-kits.yml",
- *(str(SRC/p) for p in
+ *((SRC/p).as_posix() for p in
    ("CHANGELOG.md","INSTALL_FOR_CODEX.md","README.md","catalog.json",
     "manifest.json","stage_kit_payload.py")),
 }
@@ -33,9 +33,9 @@ def require(ok,name):
 def git(*args)->bytes:
  return subprocess.check_output(["git","-C",str(ROOT),*args],stderr=subprocess.STDOUT)
 def object_at(ref,path)->bytes:
- return git("show",ref+":"+str(path))
+ return git("show",ref+":"+Path(path).as_posix())
 def blob_at(ref,path)->str:
- return git("rev-parse",ref+":"+str(path)).decode().strip()
+ return git("rev-parse",ref+":"+Path(path).as_posix()).decode().strip()
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 def load(ref,path):return json.loads(object_at(ref,path))
 def import_owner_stage():
@@ -47,7 +47,7 @@ def import_owner_stage():
 def independent_intake():
  require(git("rev-parse","HEAD").decode().strip()!=OLD,"OLD_BRANCH_NOT_ACCEPTABLE")
  require(git("merge-base","--is-ancestor",OLD,NEW)==b"","NEW_NOT_DESCENDANT")
- paths=set(git("diff","--name-only",OLD,NEW).decode().splitlines())
+ paths=set(x.replace("\\","/") for x in git("diff","--name-only",OLD,NEW).decode().splitlines())
  require(paths==ALLOWED_CHANGES,"UNEXPECTED_OWNER_CHANGE "+repr(sorted(paths^ALLOWED_CHANGES)))
  require(not any(p.startswith("Assets/") for p in paths),"CANONICAL_CHANGE")
  original=load(OLD,SRC/"catalog.json")
@@ -80,7 +80,7 @@ def independent_intake():
  require(len(rows)==13 and len(set(row["path"] for row in rows))==13,"THIRTEEN_FILES")
  for row in rows:
   p=row["path"]
-  require(p.startswith(str(SRC)+"/"),"FILE_OUT_OF_SCOPE")
+  require(p.startswith(SRC.as_posix()+"/"),"FILE_OUT_OF_SCOPE")
   require(".." not in Path(p).parts and "\\" not in p,"UNSAFE_PATH")
   raw=object_at(NEW,p)
   require(sha(raw)==row["sha256"] and len(raw)==row["bytes"],"MANIFEST_HASH_"+p)
