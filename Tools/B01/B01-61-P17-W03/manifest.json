@@ -1,0 +1,49 @@
+{
+  "schema": "B01-61-P17-W03-BRACING-ACCEPTANCE-MANIFEST-v1",
+  "package_id": "B01-61-P17-W03-BRACING-ACCEPTANCE-001",
+  "owner": "B01-61 CODEX REGRESSION QA",
+  "version": "1.0.0",
+  "receiver_git_blob": "5d26678153d40f236533d20b06bd5d8c5abee0b1",
+  "original_braced_producer_sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+  "original_blueprint_source_sha": "0978497561c8b6400490235d3e5a401ac32bea2d",
+  "original_weakpoints_sha": "098ccdbe8f129253fa4ada52318436b7cc2b4dc4",
+  "original_frozen_partsize_sha": "be2be0e4802bc3f450179901f9ae91c6d84bcb5b",
+  "source_scope": [
+    "Tools/B01/B01-61-P17-W03/**",
+    ".github/workflows/b01-61-pass17-wave03-bracing.yml"
+  ],
+  "new_capability": "Original-source independent 3 rig bracing cross-acceptance, all 38 historical one-owner cases, 227 common original pair removals, 64 new armor-removal pairs, original GUIDs, 6 tamper negatives, deterministic JSON outcome",
+  "dependencies": [
+    "Git",
+    "Python 3.11+ stdlib",
+    "original Git commits fetched with exact SHA"
+  ],
+  "tested_source_class": "Original Git blob-exact JSON asset content and read-only original C# source contracts; no managed C# executed in this W03 receiver",
+  "unity_native": "NOT_RUN",
+  "physics": "NOT_RUN",
+  "game_integrated": false,
+  "codex_ack": "PENDING",
+  "qa_independent_on_producer": true,
+  "limitations": [
+    "Logical 6-face grid, NOT actual typed socket or collider/PhysX, no vehicle performance",
+    "63-mask logical contact only; original modules must not be installed without Codex asset receiver",
+    "No local or remote game source updates"
+  ],
+  "rollback": "Delete only two QA tool files, own workflow, and generated report; original B01-23 game content stays frozen",
+  "producer_original_assets": "Assets/PARTSIZE001/Bracing/P17/ from #375; archived physical ZIP provided independently in #391, not installed by this receiver",
+  "archive_receiver_git_blob": "f2347ca47cdfe46ce486acba8b4cc38d2d1193ec",
+  "wave04_binary_archive_intake": {
+    "artifacts": {
+      "windows": 12910483987,
+      "ubuntu": 12911702475
+    },
+    "inner_zip_expected_bytes": 23547,
+    "inner_zip_expected_sha256": "c4f9b083d618013d1d6c4f8a888dcb57d0a4e59220d37acf3f45644c65953580",
+    "original_producer_delivery_sha": "8fc0f99ef7bf6c39c21609616b7e852538d2de12",
+    "original_source_manifest_blob": "02221b524d2c106e90d179f16c09dcfef8815c6d",
+    "original_delivery_manifest_blob": "d9a6e3180d8bd8dc4791c36368b977b84ccad6e1",
+    "expected_git_exact_members": 10,
+    "expected_negative_mutants": 6,
+    "scope": "Actual downloaded producer artifact ZIP and isolated filesystem staging; original source no mutations; Unity native NOT_RUN"
+  }
+}
