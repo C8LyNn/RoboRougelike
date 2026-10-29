@@ -1,0 +1,53 @@
+{
+  "package_id": "AIM-DELTA001",
+  "version": "R3",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "owned_paths": "Research/B01-13/P17B/**",
+  "stacked_base_pr": 349,
+  "stacked_base_sha": "4ef06698e2ed6ada5e05b1a3e0a96b1c6aff5906",
+  "parent_receiver_git_blob": "70f93467fef1d5782ec4e5cbd6a8a98af6fd0b00",
+  "parent_receiver_sha256": "8e6cd46bc5f1229b54e565a1b74ea9387d27073d463f61268809f212a9e2ddf4",
+  "source_game_dependency": "physical source-anchored AIM-OBS001 receipts, runtime SHA provided by operator",
+  "dependencies": [
+    "Python 3.11+",
+    "Pillow",
+    "original pinned P17 receiver; Chromium+Playwright for tests"
+  ],
+  "tests": {
+    "actual_original_receiver_and_browser": "R2 historical 47/47 (NOT reexecuted on R3); R3 complete original integration via AIM-VAULT: 33/33 physical suite per job on Ubuntu/Windows Python3.11+3.13; 6/6 new Windows-publish unit tests per job; location 4 per Ubuntu, Windows 2 PASS/2 SKIP, GitHub Actions #40913275888",
+    "python_compile": "PASS",
+    "unity": "NOT_RUN",
+    "win_player_gui": "NOT_RUN",
+    "human_participants": 0,
+    "published_parent_browser": "59/59 PASS (exact #349 Git blob 3f745d1fbd49e02a3cd10886f33c1d3baad72856)",
+    "windows_cross_os_source": "168 PASS + 4 SKIP / four jobs total, action #40913275888; independent reviewer not run",
+    "windows_native_acl": "NOT_MEASURED (operator NTFS ACL responsibility)"
+  },
+  "output_contains_full_private_images": true,
+  "game_integrated": false,
+  "files": {
+    "aim_delta.py": {
+      "sha256": "dcef628616c34574c4ba209654ef72946ae6bcecef8a3402ee03f949772c154d",
+      "bytes": 12164
+    },
+    "test_windows_atomic_publish.py": {
+      "sha256": "b9c9be8219cbb1fc5f87813f2e5a0a8dbb6b78e30eb55301439753634bbc1042",
+      "bytes": 3474
+    },
+    "test_aim_delta.py": {
+      "sha256": "b821d288539a416e08194410b7d335bc5c8df891da4a1b4d6170324f0d07d190",
+      "bytes": 12431
+    },
+    "QA_delta.json": {
+      "sha256": "05ef6c5cc20bf07373762b047a19590dbf82f15d426af9b5bafad125c4b07c54",
+      "bytes": 3991
+    },
+    "README.md": {
+      "sha256": "4ae5967c88f58eb885830cdce5a76e772609c28520fda1cf4403bf4f70c94f98",
+      "bytes": 10486
+    }
+  },
+  "historical_r1_commit": "e1cebe2f877fc4de67968f3d5006d2a326482206",
+  "wave02_source_red": "R1 originally embedded a modified PNG after original receiver accepted earlier bytes; R2 verifies bytes at embed point",
+  "windows_rename_regression": "R2 Windows source WinError32 and Python3.11 missing fchmod repaired in owner R3; current original code Git blob 8825e21d73fc9e735c17f9d2a05254a5bac9b810"
+}
