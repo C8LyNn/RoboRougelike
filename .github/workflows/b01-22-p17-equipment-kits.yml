@@ -1,7 +1,7 @@
 name: B01-22 P17 equipment kits data QA
 on:
   push:
-    branches: ['b01-22/p17-equipment-kits-001']
+    branches: ['b01-22/p17w04-equipment-kits-r103']
     paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
   pull_request:
     paths: ['Research/B01-22/P17/EQUIPMENT-KITS-001/**','.github/workflows/b01-22-p17-equipment-kits.yml']
@@ -27,8 +27,8 @@ jobs:
       - run: python -m unittest discover -s Research/B01-22/P17/EQUIPMENT-KITS-001 -p test_stage_kit_payload.py -v
       - run: python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --verify-only
       - name: Fetch exact original Codex host commit (read-only)
-        run: git fetch --no-tags --depth=1 origin aa7a917f177a9b1f07203868fb7d1d871eb3ee46
+        run: git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
       - name: Fetch latest published Codex PR 310 (read-only)
-        run: git fetch --no-tags --depth=1 origin refs/pull/310/head:refs/remotes/origin/b01-codex-pr310
+        run: git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
       - name: Real original C# price/enum source gate + 7 negatives
-        run: python Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py --current-ref origin/b01-codex-pr310 --selftest
+        run: python Research/B01-22/P17/EQUIPMENT-KITS-001/verify_host_source.py --current-ref 203a0805251ed28293888e43f2d49f0df63767c6 --selftest

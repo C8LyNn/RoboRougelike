@@ -27,3 +27,6 @@ python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --stage /tmp/
 python Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py --rollback /tmp/NEW-CODEX-INTAKE
 python -m unittest discover -s Research/B01-22/P17/EQUIPMENT-KITS-001 -p test_stage_kit_payload.py -v
 ```
+
+## 1.0.3 / PASS17 W04 - approved-source candidate
+Identical ten EK01-EK10 kit bills of materials and prices, but new Codex #383 source provenance: gameplay 203a0805251ed28293888e43f2d49f0df63767c6 / R3 blob 1d0f378dc598e08b3d7c16975f419d84231511bb / R4 unchanged. This is a separate immutable revision branched from original frozen #333 v1.0.2. Strict original source blob gate is retained without bypass. B01-40 independently verified prior R3 source difference was ONLY addition of partial modifier. Do not auto-merge, purchase/mount or claim Codex ACK.

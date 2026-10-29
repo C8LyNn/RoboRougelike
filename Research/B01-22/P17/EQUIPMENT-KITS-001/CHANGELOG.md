@@ -14,3 +14,7 @@
 - Added actual manifest-hashed safe data staging CLI, 10 flat import-ready equipment offers, no canonical game changes.
 - Added rollback transaction receipt and 18 source unit tests including tamper/no-clobber/symlink checks.
 - Preserved old v1.0.0/v1.0.1 commits, retained dedicated Windows+Ubuntu workflow.
+
+## 1.0.3 / PASS17 W04
+- Distinct newly issued author version for exactly Codex #383 gameplay source and changed R3 Git blob. Ten original kits and prices unchanged.
+- Strict SHA checks preserved, original frozen #333 remains unchanged.

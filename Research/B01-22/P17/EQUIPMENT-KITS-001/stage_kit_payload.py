@@ -43,7 +43,7 @@ def verify_package(root=ROOT):
         manifest = json.loads(manifest_bytes)
     except (OSError, ValueError) as error:
         raise IntakeError("INVALID_MANIFEST") from error
-    if manifest.get("schema") != "b01-package-v1" or manifest.get("package_id") != "B01-22-EQUIPMENT-KITS-001" or manifest.get("revision") != "1.0.2":
+    if manifest.get("schema") != "b01-package-v1" or manifest.get("package_id") != "B01-22-EQUIPMENT-KITS-001" or manifest.get("revision") != "1.0.3":
         raise IntakeError("INVALID_PACKAGE_VERSION")
     entries = manifest.get("files")
     if not isinstance(entries, list):

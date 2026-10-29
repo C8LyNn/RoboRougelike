@@ -1,21 +1,21 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-22-EQUIPMENT-KITS-001",
-  "revision": "1.0.2",
+  "revision": "1.0.3",
   "owner": "B01-22",
   "issue": 330,
   "purpose": "10 source-pinned garage equipment offer datasets, offline quote/validation",
   "unity_version": "6000.3.14f1",
   "source_base_branch": "main",
-  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_base_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
   "codex_target_branch": null,
-  "codex_target_sha": null,
+  "codex_target_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
   "scope_ack_url": null,
   "dependency_package_ids": [],
   "files": [
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json",
-      "sha256": "2f831b0762a5624846ad3212c09b5a57d59a51d86b77a9c8d98663f414597e2c",
+      "sha256": "b6cc8888c2c70da7212a88a505bac9949352493187bb23ceb875c95349123fa6",
       "bytes": 5676
     },
     {
@@ -35,13 +35,13 @@
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/README.md",
-      "sha256": "6f8f28d322f130968aa1595a503760bcc489e433d577b0d84529fea31567f7e5",
-      "bytes": 2414
+      "sha256": "e868605f8e2354d0f781c73d801f5f798c0a8e12b7425cd2ba14936ef7e33749",
+      "bytes": 2971
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/INSTALL_FOR_CODEX.md",
-      "sha256": "da782475cbfb0e4c86ebd72971d3828ce5e7b6d3b7ca462c1589144528860ec9",
-      "bytes": 2070
+      "sha256": "837cde13774a7464d4965592f31881e7ca3c11b7a3d5d14e63e99f9293facae1",
+      "bytes": 2469
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/KNOWN_LIMITATIONS.md",
@@ -55,8 +55,8 @@
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/CHANGELOG.md",
-      "sha256": "6273051913fddf7bdde088055fa14505c4102b820675f39ba7af2e0ad9928db9",
-      "bytes": 963
+      "sha256": "f9e80397d00c04873b75c47c2a6a454a9f188ab5e4deac1a875cb038e211abfd",
+      "bytes": 1200
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/TEST_EVIDENCE/v8-direct.json",
@@ -70,7 +70,7 @@
     },
     {
       "path": "Research/B01-22/P17/EQUIPMENT-KITS-001/stage_kit_payload.py",
-      "sha256": "fe49701432cac3869f7268c9d6b812cff508157eefc33e14863c5652b7a06b1f",
+      "sha256": "e8d83920163baf8d4891f2fd28799ddc593a52dd1ba073f82cd16de0f49da042",
       "bytes": 8813
     },
     {
@@ -90,20 +90,20 @@
   "source_license": "B01 original data and source; published R3/R4 enum/price provenance in catalog.json",
   "tests": [
     {
-      "name": "v1.0.1 original Node 26/26 each OS plus 7 original-source negatives",
-      "status": "PASS",
-      "tested_sha": "1dd5c79c685f25a214995d9c9dc6561277978f81",
-      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40743472433"
-    },
-    {
-      "name": "v1.0.2 original Python staging 18 tests and Node 26 tests",
+      "name": "v1.0.3 actual Node + Python stages and strict current Codex #383 source tests",
       "status": "NOT_RUN",
       "evidence": null
     },
     {
-      "name": "Unity native EditMode and PlayMode",
+      "name": "original frozen v1.0.2 source tests",
+      "status": "PASS",
+      "tested_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40759398014"
+    },
+    {
+      "name": "native Unity EditMode/PlayMode",
       "status": "NOT_RUN",
-      "reason": "Unity activation credentials unavailable"
+      "reason": "Unity credentials missing"
     }
   ],
   "qa_b01_60": {
@@ -120,5 +120,6 @@
     "Only staging data; no canonical host transaction or code changes",
     "B01-40 and B01-60 independent QA pending"
   ],
-  "rollback": "Do not import or remove staged EK01-EK10; canonical game source unchanged"
+  "rollback": "Do not import or remove staged EK01-EK10; canonical game source unchanged",
+  "previous_frozen_source_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b"
 }

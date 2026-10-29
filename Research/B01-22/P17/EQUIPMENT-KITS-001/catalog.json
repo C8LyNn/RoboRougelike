@@ -1,13 +1,13 @@
 {
   "schema": "b01-equipment-kits-v1",
   "package_id": "B01-22-EQUIPMENT-KITS-001",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "currency": "scrap",
   "no_mounted_positions": true,
   "provenance": {
-    "codex_pr": 310,
-    "codex_sha": "aa7a917f177a9b1f07203868fb7d1d871eb3ee46",
-    "r3_blob": "8cc68faf89793c3a803e5807594c9faf0df10091",
+    "codex_pr": 383,
+    "codex_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "r3_blob": "1d0f378dc598e08b3d7c16975f419d84231511bb",
     "r4_blob": "502f6d7f70d4e8078260de632ab181f244a4d730"
   },
   "part_prices": {
