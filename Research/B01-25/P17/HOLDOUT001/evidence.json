@@ -1,0 +1,70 @@
+{
+  "packageId": "B01-25-HOLDOUT-001",
+  "version": "R1",
+  "realEvidence": [
+    {
+      "runId": 40913229623,
+      "headSha": "17e47ffde98cbc04b942c8769464e8ef840314da",
+      "conclusion": "FAIL",
+      "cause": "Actual C# compilation failed with CS0819/CS0136/CS0117; later corrected on same owner branch."
+    },
+    {
+      "runId": 40913465354,
+      "headSha": "f5a1612ea4853e73e2a00b2dd0a79a11ad236f0c",
+      "conclusion": "SUCCESS",
+      "windowsAndUbuntu": "42/42 original-CSharp PASS per OS, 12 negative rejections; original published source bytes"
+    },
+    {
+      "runId": 40913830285,
+      "headSha": "507696c6ddaa0c10f424b0fa271cdfdb16f3d4ae",
+      "conclusion": "SUCCESS",
+      "windows": {
+        "job": 123588637389,
+        "assertions": "43/43",
+        "negativeRejections": "12/12",
+        "artifactId": 12915082110
+      },
+      "ubuntu": {
+        "job": 123588638025,
+        "assertions": "43/43",
+        "negativeRejections": "12/12",
+        "artifactId": 12914643212
+      },
+      "note": "Actual original C# with death-after-ready regression; two immutable source map blobs checked. 0 job errors."
+    }
+  ],
+  "originalSourceBlobs": {
+    "HoldoutCore.cs": "052f8ad9302eeea17ac8eec2ef8b38771fc11c98",
+    "Program.cs": "391ddb6e27bf7f3610d3f480cf5c5e2c42be48eb",
+    "Holdout001.csproj": "f4ab2bbfa2880f033676bf05d9098713e8837728",
+    "profiles.json": "3aee35e7f0be6104a6b72d031a9391cdab721311",
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "README.md": "bad088142f2746896ad17c39aecb4ef380f71737",
+    ".github/workflows/b01-25-w03-holdout.yml": "b61eadfd4c2c85926ea61f746b7649e292cd0fa1"
+  },
+  "gameplayConfirmed": [
+    "Charge while live, inside, uncontested",
+    "Freeze under hostile contest",
+    "Outside decay at configurable rate",
+    "Death resets even after Ready",
+    "Repeat Ready does not reemit while alive",
+    "Explicit Reset re-arms",
+    "Exact bound radius inclusive",
+    "Time partition equivalence under constant input",
+    "Pure instances independent",
+    "Finite/nonnegative telemetry and config fail closed",
+    "2 original arena zone centers are ground, not solid, before Finish"
+  ],
+  "nativeNotRun": [
+    "Unity assembly import / Unity JsonUtility",
+    "actual enemy-count binding",
+    "game Finish gating",
+    "Unity physics / actual Light+Heavy movement",
+    "Player build and human trials",
+    "independent B01-40/B01-60 acceptance"
+  ],
+  "codeIntegration": false,
+  "codeXAck": false,
+  "merged": false,
+  "scope": "One original standalone gameplay-rule module; real engine hook is Codex-only; no authorized native G1 in producer."
+}
