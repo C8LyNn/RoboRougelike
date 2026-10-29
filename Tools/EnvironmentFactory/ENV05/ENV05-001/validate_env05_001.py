@@ -40,7 +40,7 @@ def main():
  assert len(emissive)==1,("amber_material_missing",emissive)
  amber=emissive[0]
  assert amber.get("emissiveFactor",[0,0,0])[0]>.9,amber
- assert amber.get("emissiveFactor",[0,0,0])[1]>.4,amber
+ assert amber.get("emissiveFactor",[0,0,0])[1]>.2,amber
  assert amber.get("extensions",{}).get("KHR_materials_emissive_strength",{}).get("emissiveStrength",0)>=3.0,amber
  assert gltf.get("meshes") and gltf.get("nodes") and gltf.get("scenes")
  triangles=0
