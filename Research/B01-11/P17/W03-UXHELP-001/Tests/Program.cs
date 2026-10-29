@@ -114,6 +114,27 @@ class Program
                 if(!ids.Add(msg.Id))return false;
             return ids.Count==10;
         });
+
+        // WAVE04 regression: gameplay must not tell a player to fire a disabled weapon.
+        var disabledDual=S(HelpStage.Combat);
+        disabledDual.MountedWeapons=2;
+        disabledDual.ActiveWeapons=0;
+        disabledDual.AssignedWeaponGroups=2;
+        Check("Inactive dual-gun cannot advertise firing groups",()=>Same(IDs(disabledDual),"COMBAT_WEAPON_LOST"));
+        disabledDual.IsFirstCombat=true;
+        Check("First-combat controls cannot advertise firing inactive weapons",()=>Same(IDs(disabledDual),"COMBAT_WEAPON_LOST"));
+        disabledDual.ActiveWeapons=1;disabledDual.IsFirstCombat=false;
+        Check("Partially disabled group must not advertise both guns as firing",()=>Same(IDs(disabledDual),""));
+        disabledDual.ActiveWeapons=2;
+        Check("Two genuinely active groups can advertise controls",()=>Same(IDs(disabledDual),"COMBAT_DUAL_GROUPS"));
+        var firstDual=S(HelpStage.Combat);
+        firstDual.IsFirstCombat=true;firstDual.MountedWeapons=2;firstDual.ActiveWeapons=2;firstDual.AssignedWeaponGroups=2;
+        var controlsDismissed=new HashSet<string>{"COMBAT_WHEELS_CONTROLS"};
+        Check("Dismissed first controls fall back to valid dual-group hint",()=>Same(IDs(firstDual,controlsDismissed),"COMBAT_DUAL_GROUPS"));
+        var allDismissed=new HashSet<string>{"COMBAT_WHEELS_CONTROLS","COMBAT_DUAL_GROUPS"};
+        Check("All eligible optional messages dismissed means no optional message",()=>Same(IDs(firstDual,allDismissed),""));
+        firstDual.CoreHp=20;
+        Check("Critical core and fallback info stay correctly ordered",()=>Same(IDs(firstDual,controlsDismissed),"COMBAT_CORE_CRITICAL|COMBAT_DUAL_GROUPS"));
         Console.WriteLine("RESULT " + pass + " PASS, " + fail + " FAIL");
         if(fail>0)Environment.Exit(1);
     }
