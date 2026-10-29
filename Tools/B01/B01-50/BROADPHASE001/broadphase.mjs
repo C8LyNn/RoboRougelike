@@ -4,7 +4,6 @@
  * No external packages or network calls.
  */
 const MAX_CELLS = 20000;
-const EPS = 1e-10;
 const finite = (x) => typeof x === 'number' && Number.isFinite(x);
 const requireValue = (ok, message) => { if (!ok) throw new RangeError(message); };
 function checkTarget(t) {
@@ -34,7 +33,7 @@ export function hitTime(shot,target) {
   const t=(-bb-Math.sqrt(disc))/(2*aa);
   return t>=0 && t<=1 ? t : null;
 }
-function better(hit,best) {return hit && (!best || hit.time<best.time-EPS || (Math.abs(hit.time-best.time)<=EPS && hit.id<best.id));}
+function better(hit,best) {return hit && (!best || hit.time<best.time || (hit.time===best.time && hit.id<best.id));}
 function bruteInternal(shot,targets,counter,prevalidated) {
   checkShot(shot);
   let best=null;
@@ -109,5 +108,5 @@ export function makeScenario({seed=7,robotParts=24,enemies=8,projectiles=64,worl
 }
 export function validateSameHits(a,b) {
   if(a===null || b===null) return a===b;
-  return a.id===b.id && Math.abs(a.time-b.time) <= EPS;
+  return a.id===b.id && a.time===b.time;
 }
