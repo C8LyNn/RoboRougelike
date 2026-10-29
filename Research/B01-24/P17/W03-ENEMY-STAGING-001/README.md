@@ -38,3 +38,22 @@ Workflow `.github/workflows/b01-24-p17-w03-stage-builder.yml` executes original 
 This package is stacked on frozen producer #355 and changes exclusively `Research/B01-24/P17/W03-ENEMY-STAGING-001/**` plus one own CI workflow. B01-40 verifies exact SHA/scope and dependency; B01-60 can independently import it into an authorized disposable Unity checkout and compare 12 scenes to original positions and actual prefab envelopes; Codex must explicitly accept the tool before copy/import.
 
 To uninstall, remove **only** the previously copied `Assets/Editor/B0124EnemyStagingW03/B0124EnemyStageBuilder.cs` and its .meta and, after explicit inspection/backup, the tool-created `Assets/B0124EnemyStagingW03/Scenes/` directory. Never delete existing manually edited scenes just because they share a prefix. The original game remains untouched. No merge to any mainline branch; G2 and CODEX_ACK remain pending.
+
+
+## PASS17 W03 receiver upgrade — actual deterministic ZIP delivery (R2)
+
+A real physically-downloadable `B01-24-ENEMY-STAGING-001-unity-editor.zip` **containing just the original C# Editor tool and its exact tracked Unity `.meta`** is built from this branch by the new pinned [receiver packager](Tools/prepare_unity_import.py). This is not a generic build/export; it is a one-purpose, no-dependency Unity import asset delivery for Codex and B01-40.
+
+```sh
+python -m unittest discover -s Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools -p "test_prepare_unity_import.py" -v
+python Research/B01-24/P17/W03-ENEMY-STAGING-001/Tools/prepare_unity_import.py --repo-root . --out-dir B0124-Codex-Receiver-Package
+```
+
+The command **creates real ZIP bytes and `receiver-receipt.json`** inside a new, previously nonexistent output directory. It checks original Git blob SHA-1 on frozen #355 data, canonical R5 Arena, and every producer-pinned W03 file before writing. The deterministic ZIP contains exactly:
+
+- `Assets/Editor/B0124EnemyStagingW03/B0124EnemyStageBuilder.cs`
+- `Assets/Editor/B0124EnemyStagingW03/B0124EnemyStageBuilder.cs.meta`
+
+The exact payload-byte SHA-256 hashes, whole-ZIP SHA-256, original Git source hashes and honest `unity_native_import=NOT_RUN` are recorded in the JSON receipt. Both CI systems upload the same ZIP + receipt as downloadable Actions artifacts. **A ZIP assembled from source is not a Unity `.unitypackage` or native scene**; Codex must unpack it into an *approved disposable project root*, inspect the two paths, let the real Unity Editor import them, then use the specified menu to generate 12 genuine scenes. Never extract over an existing `Assets/Editor/B0124EnemyStagingW03/` path or edited user-owned files. The packager itself refuses to overwrite any existing destination output directory.
+
+Adversarial Python regression tests operate on copies in temporary filesystems and deliberately mutate: source C#, tracked GUID, frozen game data, original R5 Arena, author test code, manifest, missing files, symlink source, reused output directory, and verify ZIP-byte determinism and CRC before declaring any source delivery PASS. Native Unity compilation, validity of generated scene serialization and actual vehicle colliders remain for independent B01-60 / Codex to execute. No canonical game source is changed.
