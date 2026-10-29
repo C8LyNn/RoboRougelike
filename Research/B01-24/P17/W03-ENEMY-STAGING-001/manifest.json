@@ -68,13 +68,19 @@
   },
   "tests": {
     "source_dotnet": "Actual Unity Editor .cs source compiled/executed by .NET8 using deliberately limited simulated UnityEditor/UnityEngine API; verified source geometry/12 output scenes, exact original formation data, nonoverwrite and preserve existing scene",
-    "ubuntu": "PENDING final SHA",
-    "windows": "PENDING final SHA",
+    "ubuntu": "PASS: actual original Unity Editor source compiled under .NET8 mock API and 19/19 direct execution assertions PASS, 0 FAIL, Ubuntu24.04",
+    "windows": "PASS: actual original Unity Editor source compiled under .NET8 mock API and 19/19 direct execution assertions PASS, 0 FAIL, Windows2025",
     "native_editor_import": "NOT_RUN",
     "native_scene_serialization": "NOT_RUN",
     "native_PhysX": "NOT_RUN",
     "WindowsPlayer": "NOT_RUN",
-    "independent_B01_60": "PENDING"
+    "independent_B01_60": "PENDING",
+    "actions_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40901073123",
+    "actual_artifacts": {
+      "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40901073123/artifacts/12908538947",
+      "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40901073123/artifacts/12909451773"
+    },
+    "behavioral_mock_only_note": "All mock-created .unity files are marked MOCK_SCENE_NOT_NATIVE_UNITY and never claimed to be importable Unity scene files; game Editor import native NOT_RUN"
   },
   "handoff": {
     "next": "B01-40 verifies source hashes, frozen #355 stacked diff and intake; B01-60 independent authorized native Unity editor scene generation and prefab/hull checks; B01-00 may queue via #79; only Codex may ACK/use",
