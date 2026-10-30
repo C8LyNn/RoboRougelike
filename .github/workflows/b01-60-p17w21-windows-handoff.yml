@@ -40,6 +40,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Pin original historical object SHA inputs in CI checkout before strictly offline run
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in d94400d95d13db7f27e1533df05c9292d5380431 cb2b3a76e84266e2730fffc4ab048c1039f0652f 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3 33094f154c7b91119b36d58aab285e6e83c5de57; do
+            git fetch --no-tags origin "$sha"
+            test "$(git cat-file -t "$sha")" = commit
+          done
+          echo 'B0160_W21_CI_ORIGINAL_HISTORY_DOWNLOADED_TO_RUNNER_ONLY'
       - name: Actual Windows PowerShell W21 frozen W20 source-only preflight, no Unity
         shell: pwsh
         run: |
