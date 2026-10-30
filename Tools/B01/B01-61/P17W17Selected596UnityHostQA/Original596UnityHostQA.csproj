@@ -2,7 +2,7 @@
 <TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion>
 <Nullable>annotations</Nullable><ImplicitUsings>disable</ImplicitUsings>
 <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-<TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup><ItemGroup>
+<TreatWarningsAsErrors>true</TreatWarningsAsErrors><NoWarn>CS0649</NoWarn></PropertyGroup><ItemGroup>
 <Compile Include="Program.cs"/>
 <Compile Include="SyntheticUnityEngine.cs"/>
 <Compile Include="../../../../Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs" Link="EXACT_SELECTED_596_ORIGINAL_UNITY_MONOBEHAVIOUR.cs"/>
