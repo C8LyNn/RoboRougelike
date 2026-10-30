@@ -127,6 +127,22 @@ internal static class ReadinessCli
                 folder + "/", StringComparison.OrdinalIgnoreCase));
     }
 
+    // Refuse aliases that redirect new output into a real Unity/game directory.
+    // An ancestor symlink can bypass a simple lexical Assets/ path check.
+    private static bool HasSymlinkedParent(string output)
+    {
+        string directory = Path.GetDirectoryName(output);
+        while (!String.IsNullOrEmpty(directory))
+        {
+            if ((File.GetAttributes(directory) & FileAttributes.ReparsePoint) != 0)
+                return true;
+            string previous = Path.GetDirectoryName(directory);
+            if (String.IsNullOrEmpty(previous) || previous == directory) break;
+            directory = previous;
+        }
+        return false;
+    }
+
     public static int Run(string inputPath, string outputPath, string catalogPath,
                           string repositoryRoot)
     {
@@ -135,7 +151,7 @@ internal static class ReadinessCli
             string input = Path.GetFullPath(inputPath);
             string output = Path.GetFullPath(outputPath);
             if (input == output || Path.GetExtension(output) != ".json" ||
-                IsGamePath(repositoryRoot, output) ||
+                IsGamePath(repositoryRoot, output) || HasSymlinkedParent(output) ||
                 !Directory.Exists(Path.GetDirectoryName(output)) ||
                 !File.Exists(input) ||
                 (File.GetAttributes(input) & FileAttributes.ReparsePoint) != 0 ||

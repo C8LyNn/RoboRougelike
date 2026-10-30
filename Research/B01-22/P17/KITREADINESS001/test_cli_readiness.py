@@ -128,6 +128,18 @@ class UserSuppliedReadinessCliTests(unittest.TestCase):
     def test_15_malformed_json_is_rejected_without_output(self):
         self.assert_rejected(self.sample,raw=b'{ "requests": ')
 
+    def test_17_cannot_write_into_unity_asset_tree(self):
+        protected=ROOT/"Assets/B01KitReadiness001/DO_NOT_WRITE_W10_TEST.json"
+        self.assertFalse(protected.exists(),"Preexisting test path must not be touched")
+        with tempfile.TemporaryDirectory() as tmp:
+            input_path=pathlib.Path(tmp)/"request.json"
+            input_path.write_bytes(self.sample_bytes)
+            cp=subprocess.run(
+                ["dotnet",str(DLL),"--input",str(input_path),"--out",str(protected)],
+                cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(cp.returncode,2,cp.stderr)
+            self.assertFalse(protected.exists())
+
     def test_16_too_many_requests_fail_closed(self):
         payload=copy.deepcopy(self.sample);payload["requests"]=["EK01"]*101
         self.assert_rejected(payload)
