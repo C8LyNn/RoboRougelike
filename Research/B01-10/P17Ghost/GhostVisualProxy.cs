@@ -13,20 +13,22 @@ namespace RoboRougelike.B0110.TrainingGhost
     public sealed class GhostVisualProxy : MonoBehaviour
     {
         private GhostPlayback playback;
+        private GhostPracticeLoop drill;
         private Mesh ownedMesh;
         private Material ownedMaterial;
         private MeshRenderer visual;
         private const float Height = 0.12f;
 
-        public bool IsBound => playback != null;
-        public float Duration => playback == null ? 0f : playback.Duration;
+        public bool IsBound => playback != null || drill != null;
+        public float Duration => drill != null ? drill.SegmentDurationSeconds
+            : playback == null ? 0f : playback.Duration;
 
         /// <summary>
         /// Call ONLY from an opt-in CHL host adapter AFTER it accepted
         /// an actual completed, player-verified reference recording.
         /// Install on a dedicated EMPTY root GameObject, not a real vehicle.
         /// </summary>
-        public void Bind(GhostRun completedTrack)
+        private void ValidateVisualOnlyRoot()
         {
             if (transform.parent != null || GetComponent<Rigidbody>() != null
                 || GetComponent<Collider>() != null
@@ -36,9 +38,28 @@ namespace RoboRougelike.B0110.TrainingGhost
                 || GetComponent<MeshRenderer>() != null && visual == null)
                 throw new InvalidOperationException(
                     "GHOST-001 requires its own empty non-colliding root, never a real robot");
+        }
+
+        public void Bind(GhostRun completedTrack)
+        {
+            ValidateVisualOnlyRoot();
             var validated = new GhostPlayback(completedTrack);
             EnsureVisual();
+            drill = null;
             playback = validated;
+            visual.enabled = false;
+        }
+
+        // Bind only a completed, meaningful, coach-issued practice loop to
+        // this dedicated, collider-free visual root; no gameplay actor control.
+        public void BindDrill(GhostPracticeLoop practiceLoop)
+        {
+            if (practiceLoop == null)
+                throw new ArgumentException("No completed significant practice loop");
+            ValidateVisualOnlyRoot();
+            EnsureVisual();
+            playback = null;
+            drill = practiceLoop;
             visual.enabled = false;
         }
 
@@ -50,7 +71,19 @@ namespace RoboRougelike.B0110.TrainingGhost
         {
             if (playback == null) throw new InvalidOperationException(
                 "Cannot display an unbound GHOST-001 reference");
-            GhostPose p = playback.Seek(elapsedSeconds);
+            ApplyVisualPose(playback.Seek(elapsedSeconds));
+        }
+
+        public void SeekDrill(double visualLoopElapsedSeconds)
+        {
+            if (drill == null)
+                throw new InvalidOperationException(
+                    "Cannot replay an unbound training segment");
+            ApplyVisualPose(drill.PoseAt(visualLoopElapsedSeconds));
+        }
+
+        private void ApplyVisualPose(GhostPose p)
+        {
             transform.SetPositionAndRotation(
                 new Vector3(p.X, p.Y + Height, p.Z),
                 Quaternion.Euler(0f, p.Yaw, 0f));
