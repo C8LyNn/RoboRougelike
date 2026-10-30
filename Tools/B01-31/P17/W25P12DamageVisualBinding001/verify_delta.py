@@ -42,6 +42,14 @@ def examine(entries,repo,strict=True):
     expected={ROOT,ROOT+"/B0131W25P12DamageVisualBinding.cs",ROOT+"/README.md"}
     need(set(paths)==expected and len(set(paths.values()))==3,
          "ONLY W25 new binder and README, never old original P12 or W24 copies")
+    allowed=set()
+    for path,guid in paths.items():
+        allowed.add(guid+"/pathname")
+        allowed.add(guid+"/asset.meta")
+        if path != ROOT:
+            allowed.add(guid+"/asset")
+    need(set(entries)==allowed and len(allowed)==8,
+         "no malicious extra TAR members or foreign GUID without pathname")
     for path,guid in paths.items():
         original=repo/(path+".meta")
         need(entries.get(guid+"/asset.meta")==original.read_bytes()
