@@ -1,0 +1,55 @@
+{
+  "package_id": "B01-30-P17-ORIGINAL-GLB-BINARY-QA-001",
+  "version": "R1",
+  "producer": "B01-30 TECH ART",
+  "source_priority_issue": 450,
+  "upstream_binary_artifact": {
+    "pr": 423,
+    "sha": "60a453e4ecd915725bc2fac5433ba7ad43a628cb",
+    "workflow": 41030346462,
+    "artifact_id": 12964979343,
+    "expected_original_glb": 3,
+    "expected_original_parts": 43,
+    "braces": 5
+  },
+  "original_owner": {
+    "pr": 375,
+    "sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+    "git_blobs": {
+      "P17_Flanker_Reinforced.json": "7259e3454b2f7dd72ca66de83673c143075a807f",
+      "P17_Bulwark_Reinforced.json": "8b00e5da047a22bc23644639e3292c447dd6b335",
+      "P17_Skirmisher_Reinforced.json": "edf332a66645c5ea4374b1957d2cc1a7d356e4d2",
+      "P17_StructuralBracingKits.json": "9b3d2403e7f6e32ea6e20f9f5bb0a83b859bc6e1"
+    }
+  },
+  "expected_gates": {
+    "source_git_blobs": 4,
+    "real_binary_GLBS": 3,
+    "world_position_source_cells": 43,
+    "required_brace_flag_and_material_count": 5,
+    "adversarial_negative_cases_per_GLb": 11,
+    "total_expected_adversarial": 33,
+    "windows_and_ubuntu": true,
+    "real_glb_geometry_triangle_count": ">0",
+    "identical_report_json_sha256_cross_os": true
+  },
+  "changed_scope": [
+    "Tools/B01/TechArt/P17W08/P17GlbBinary001/**",
+    ".github/workflows/b01-30-p17w08-original-glb-binary-gate.yml"
+  ],
+  "source_owner_isolation": true,
+  "not_run": [
+    "Unity6000.3.14f1 Editor",
+    "Unity URP visual",
+    "Unity PhysX",
+    "CODEX_ACK",
+    "Unity G1"
+  ],
+  "receivers": [
+    "B01-40 independent artifact QA",
+    "B01-60 independent real GLB reimport",
+    "B01-23 source author if defects"
+  ],
+  "rollback": "Remove only W08 isolated generated QA build output; do not modify #423/#375 or canonical Unity Assets.",
+  "status": "SOURCE_PRODUCER_PENDING_REAL_CI_G0_PENDING"
+}

@@ -1,0 +1,127 @@
+name: B01-30 W08 source-pinned real binary GLB2 material and mesh receiver
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w08-original-glb-binary-gate.yml'
+      - 'Tools/B01/TechArt/P17W08/P17GlbBinary001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-binary-source-and-triangle-receiver:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 13
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require unchanged B01-30 W06 GLB producer exact Git source and original B01-23 rig source SHA
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/423/head
+          test "$(git rev-parse FETCH_HEAD)" = "60a453e4ecd915725bc2fac5433ba7ad43a628cb"
+          git fetch --no-tags origin refs/pull/375/head
+          test "$(git rev-parse FETCH_HEAD)" = "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8"
+          mkdir -p build/B01-30/W08/source
+          for name in P17_Flanker_Reinforced.json P17_Bulwark_Reinforced.json P17_Skirmisher_Reinforced.json P17_StructuralBracingKits.json; do
+            git show "FETCH_HEAD:Assets/PARTSIZE001/Bracing/P17/$name" \
+              > "build/B01-30/W08/source/$name"
+          done
+          echo B01_30_W08_ORIGINAL_TWO_PRODUCER_SOURCE_COMMITS_PIN_PASS
+      - name: Download ACTUAL prior W06 Blender-generated three GLB2 binary models + prior receipts, without regenerating proxies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/B01-30/W08/previous
+          gh run download 41030346462 --repo C8LyNn/RoboRougelike \
+            --name B01-30-P17W06-BRACEVIS001-3-GLB-3-BLEND-6-PNG \
+            --dir build/B01-30/W08/previous
+          echo B01_30_W08_REAL_PRIOR_BINARY_ARTIFACT_DOWNLOADED
+      - name: Compile/check and ACTUALLY parse original GLB2 buffers+source cells+materials; 10 mutations per rig
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/TechArt/P17W08/P17GlbBinary001/*.py
+          python Tools/B01/TechArt/P17W08/P17GlbBinary001/audit_original_glb.py \
+            --binary build/B01-30/W08/previous \
+            --source build/B01-30/W08/source \
+            --out build/B01-30/W08/result
+      - name: Verify REAL JSON receipt/counts without trusting pass labels alone
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          q=json.loads(Path("build/B01-30/W08/result/p17-original-glb-binary-qa.json").read_text())
+          assert q["outcome"]=="ORIGINAL_3_BINARY_GLB2_SOURCE_AND_GEOMETRY_GATE_PASS"
+          assert q["binary_GLB_count"]==3 and q["actual_mesh_nodes_total"]==43
+          assert q["original_brace_material_nodes_total"]==5
+          assert len(q["rigs"])==3 and q["adversarial_rejections"]>=30
+          assert all(r["real_triangles"]>100 and r["original_brace_material_nodes"]>0 for r in q["rigs"])
+          assert {x["mutation"] for x in q["adversarial_negative_cases"]} >= {"real_geometry_nan_float32","real_glb_byte_sha256_corrupt","wrong_material_association","forged_world_position"}
+          assert all(x["result"]=="EXPECTED_REJECT" for x in q["adversarial_negative_cases"])
+          print("B01_30_W08_3_ORIGINAL_GLB_BINARY_SOURCE_AND_MUTATION_RECEIVER_VERIFIED",q["real_triangles_total"],q["adversarial_rejections"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W08-ORIGINAL-GLB-BINARY-QA-${{ runner.os }}
+          path: build/B01-30/W08/result/p17-original-glb-binary-qa.json
+          if-no-files-found: error
+          retention-days: 30
+
+  independent-cross-os-binary-receipt-parity:
+    needs: [original-binary-source-and-triangle-receiver]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: B01-30-W08-ORIGINAL-GLB-BINARY-QA-*
+          path: build/B01-30/W08/all-platform-receipts
+          merge-multiple: false
+      - name: Compare actual Windows and Linux JSON bytes, original SHA and all 33 negative outcomes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          p=Path("build/B01-30/W08/all-platform-receipts")
+          matches=list(p.rglob("p17-original-glb-binary-qa.json"))
+          assert len(matches)==2,[(f.name,str(f)) for f in matches]
+          a,b=sorted(matches)
+          x,y=a.read_bytes(),b.read_bytes()
+          assert x==y,("CROSS_OS_REPORT_BYTE_MISMATCH",hashlib.sha256(x).hexdigest(),hashlib.sha256(y).hexdigest())
+          obj=json.loads(x)
+          assert obj["actual_mesh_nodes_total"]==43 and obj["original_brace_material_nodes_total"]==5
+          assert obj["binary_GLB_count"]==3 and obj["adversarial_rejections"]==33
+          assert obj["real_triangles_total"]==932
+          assert all(z["result"]=="EXPECTED_REJECT" for z in obj["adversarial_negative_cases"])
+          h=hashlib.sha256(x).hexdigest()
+          out=Path("build/B01-30/W08/cross-os-parity")
+          out.mkdir(parents=True,exist_ok=True)
+          result={"result":"WINDOWS_LINUX_EXACT_ORIGINAL_GLB_RECEIPT_BYTES_IDENTICAL",
+                  "original_artifact_run":41030346462,"original_artifact_id":12964979343,
+                  "original_producer_head":"60a453e4ecd915725bc2fac5433ba7ad43a628cb",
+                  "windows_and_linux_sha256":h,"bytes":len(x),
+                  "real_mesh_parts":43,"real_3d_triangles":932,
+                  "braces":5,"rejected_negative_cases":33,
+                  "not_run":["native Unity 6/URP","PhysX","independent B01-40/60 formal QA"]}
+          (out/"p17-original-glb-cross-os-parity.json").write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
+          print("B01_30_W08_WINDOWS_LINUX_ORIGINAL_REAL_GLB_BINARY_RESULT_BYTE_PARITY_PASS",h,len(x))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W08-ORIGINAL-GLB-CROSS-OS-BYTE-PARITY
+          path: build/B01-30/W08/cross-os-parity/p17-original-glb-cross-os-parity.json
+          if-no-files-found: error
+          retention-days: 30
