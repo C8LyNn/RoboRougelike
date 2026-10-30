@@ -16,7 +16,9 @@ class OriginalDualR3SourceControls(unittest.TestCase):
         host=g.git("show",g.R3["A"]["sha"]+":"+g.HOST,binary=True).decode()
         bcore=g.git("show",g.R3["B"]["sha"]+":Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs",binary=True).decode()
         bhost=g.git("show",g.R3["B"]["sha"]+":"+g.HOST,binary=True).decode()
-        cls.a=(core,host);cls.b=(bcore,bhost)
+        ccore=g.git("show",g.R3["C"]["sha"]+":Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs",binary=True).decode()
+        chost=g.git("show",g.R3["C"]["sha"]+":"+g.HOST,binary=True).decode()
+        cls.a=(core,host);cls.b=(bcore,bhost);cls.c=(ccore,chost)
     def test_01_original_r3a_exact_source_fingerprint(self):
         g.inspect_source("A",*self.a)
         self.assertEqual(g.R3["A"]["sha"],"22cec9888047994ae523cbe7bf1b0a483d64cec4")
@@ -30,7 +32,7 @@ class OriginalDualR3SourceControls(unittest.TestCase):
         self.assertNotIn("publishedGeneration",self.b[0])
         self.assertIn("publishedGeneration",self.a[0])
     def test_05_no_source_selection_without_owner(self):
-        self.assertEqual(len(g.R3),2)
+        self.assertEqual(len(g.R3),3)
         self.assertEqual(len(g.OWNED),7)
     def test_06_reject_mismatched_r3a_core(self):
         self.reject("A",self.b[0],self.a[1],"MISSING_R3A_PUBLISHED")
@@ -63,5 +65,13 @@ class OriginalDualR3SourceControls(unittest.TestCase):
                     self.a[1],"NOT_ORIGINAL_FROZEN_SOURCE_CORE")
     def test_16_reject_unknown_third_source_variant(self):
         self.reject("X",*self.a,"CANDIDATE_UNKNOWN")
+    def test_17_real_owner_r4_quarantine_source_is_new_version_not_alt(self):
+        g.inspect_source("C",*self.c)
+        self.assertEqual(g.R3["C"]["sha"],"ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419")
+        self.assertEqual(self.c[1],self.a[1])
+        self.assertIn("commitMayHaveChangedAuthority",self.c[0])
+    def test_18_reject_r4_without_same_call_commit_ambiguity_quarantine(self):
+        self.reject("C",self.c[0].replace("commitMayHaveChangedAuthority","lostCommitFlag"),
+                    self.c[1],"R4_PENDING_COMMIT_STICKY")
 
 if __name__=="__main__":unittest.main(verbosity=2)
