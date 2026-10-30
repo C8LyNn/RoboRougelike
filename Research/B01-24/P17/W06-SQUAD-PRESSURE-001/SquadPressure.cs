@@ -135,7 +135,8 @@ namespace RoboRougelike.B0124.SquadPressure
             if(active>=0)
             {
                 var observed=byIndex[active];
-                if(tick>=activeUntil||!observed.Alive||!observed.CanExecute||!observed.TargetVisible)
+                if(tick>=activeUntil||!observed.Alive||!observed.CanExecute||!observed.TargetVisible||
+                    observed.Distance>rule.RangeFor(members[active].Archetype))
                 {
                     var ended=new PressurePulse(PressureState.Ended,members[active].Id,activeIntent,tick,false);
                     active=-1;activeIntent=PressureIntent.None;
