@@ -47,6 +47,10 @@ def scope():
     if ("ColdRestore.TryStage(bytes" not in core or
         "currentCold=ready;" not in core or
         "checkpoint.Commit(" not in core or
+        "bool commitAttempted=false" not in core or
+        "if(commitAttempted)" not in core or
+        "OnDisable(){/* keep slot lifetime owner" not in unity or
+        "if(expectedRun!=runId" not in unity or
         "post-activation physics/ID mismatch" not in core or
         "verdict=WorldSwapVerdict.RollbackQuarantine" not in core or
         "old.Deactivate()" not in core or
@@ -79,7 +83,7 @@ def build():
     files=scope()
     contents={p:source(p) for p in files}
     manifest={
-      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"3.0.0",
+      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"4.0.0",
       "own_head_sha":git("rev-parse","HEAD"),
       "only_save_source_sha":SELECTED_SAVE,"gameplay_510_sha":SELECTED_GAME,
       "frozen_blob_guards":PINS,"unity_guid_count":10,"asmdef_count":3,
@@ -102,7 +106,7 @@ def verify(raw):
         contents={p:z.read(p) for p in names}
     manifest=json.loads(contents[MANIFEST])
     if (manifest.get("package")!="B01-23-UNITY-SAVE-HOST-BRIDGE-001" or
-        manifest.get("version")!="3.0.0" or
+        manifest.get("version")!="4.0.0" or
         manifest.get("own_head_sha")!=git("rev-parse","HEAD") or
         manifest.get("only_save_source_sha")!=SELECTED_SAVE or
         manifest.get("gameplay_510_sha")!=SELECTED_GAME or

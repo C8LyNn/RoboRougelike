@@ -62,7 +62,7 @@ namespace B01.UnitySaveBridge001.Tests
         public IEnumerator ColdRestart_RestoresRealRigidbodyAndConsumedIds()
         {
             GameObject prior=new GameObject("W15 old separate process");
-            GameObject next=new GameObject("W15 new separate process");
+            GameObject next=null;
             try
             {
                 System.Guid slot=System.Guid.NewGuid();
@@ -71,7 +71,11 @@ namespace B01.UnitySaveBridge001.Tests
                 Assert.IsTrue(original.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(41,4,true,false),41,4));
                 Assert.IsTrue(original.TrySaveBytes(out byte[] saved));
+                // Disable MUST NOT release the same-world slot to a newer host.
                 prior.SetActive(false);
+                Object.Destroy(prior);
+                yield return null; // native Unity destruction and OnDestroy lease release
+                next=new GameObject("W19 restarted owner");
                 var restored=next.AddComponent<IsolatedTwinRigSaveHost>();
                 Assert.IsTrue(restored.TrySelectPersistentRunSlot(41,slot));
                 Assert.IsTrue(restored.TryRestoreBytes(saved,41,4));
@@ -80,7 +84,11 @@ namespace B01.UnitySaveBridge001.Tests
                 Assert.AreEqual(4,restored.Generation);
                 yield return null;
             }
-            finally {Object.Destroy(prior);Object.Destroy(next);}
+            finally
+            {
+                if(prior!=null)Object.Destroy(prior);
+                if(next!=null)Object.Destroy(next);
+            }
         }
         [UnityTest]
         public IEnumerator WrongGeneration_CannotPartiallyPublishRealPhysicalWorld()
@@ -115,7 +123,7 @@ namespace B01.UnitySaveBridge001.Tests
                 Assert.IsTrue(a.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(51,1,true,false),51,1));
                 Assert.IsTrue(a.IsConsumed(0,2310001));
-                first.SetActive(false); // release file owner lease
+                first.SetActive(false); // owner lease retained; different run has different file
                 var b=second.AddComponent<IsolatedTwinRigSaveHost>();
                 Assert.IsTrue(b.TrySelectPersistentRunSlot(52,slot));
                 Assert.IsTrue(b.TryRestoreBytes(
@@ -125,6 +133,38 @@ namespace B01.UnitySaveBridge001.Tests
             }
             finally {Object.Destroy(first);Object.Destroy(second);}
             yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator DisabledSameSlotHost_CannotStealOwnerUntilDestroyed()
+        {
+            System.Guid slot=System.Guid.NewGuid();
+            GameObject first=new GameObject("W19 real slot owner");
+            GameObject competing=null;
+            try
+            {
+                var a=first.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(a.TrySelectPersistentRunSlot(77,slot));
+                Assert.IsTrue(a.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(77,1,true,false),77,1));
+                first.SetActive(false); // NOT permission to hand over live state
+                competing=new GameObject("W19 blocked second owner");
+                var b=competing.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsFalse(b.TrySelectPersistentRunSlot(77,slot));
+                Assert.IsFalse(b.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(77,2,false,true),77,1));
+                Object.Destroy(first);
+                yield return null; // true Unity OnDestroy must close the slot lease
+                Assert.IsTrue(b.TrySelectPersistentRunSlot(77,slot));
+                Assert.IsTrue(b.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(77,2,false,true),77,1));
+                Assert.IsTrue(b.IsConsumed(1,2310002));
+            }
+            finally
+            {
+                if(first!=null)Object.Destroy(first);
+                if(competing!=null)Object.Destroy(competing);
+            }
         }
     }
 }

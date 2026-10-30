@@ -59,6 +59,28 @@ class T
             return Last;
         }
     }
+
+    // #637 independent exact original #596 P0: Commit successfully changed
+    // the genuine file and then lost its acknowledgement through an exception.
+    sealed class LostAckStore:ICheckpointStore
+    {
+        private readonly FileCheckpointStore real;
+        private bool throwAfterCommit;
+        public LostAckStore(string path,bool throwOnce=true)
+        {real=new FileCheckpointStore(path);throwAfterCommit=throwOnce;}
+        public bool Read(long run,out long generation,out string hash)
+            =>real.Read(run,out generation,out hash);
+        public bool Commit(long run,long before,string beforeHash,long next,string hash)
+        {
+            bool done=real.Commit(run,before,beforeHash,next,hash);
+            if(done&&throwAfterCommit)
+            {
+                throwAfterCommit=false;
+                throw new IOException("W19 injected lost durable Commit ACK");
+            }
+            return done;
+        }
+    }
     static void Tests()
     {
         Check("frozen #510 actual source SHA",()=>FrozenPartCatalog.SelectedSourceSha=="d94400d95d13db7f27e1533df05c9292d5380431");
@@ -335,6 +357,50 @@ class T
                     h52.IsConsumed(1,2310002)&&!h52.IsConsumed(0,2310001);
             }
             finally{Directory.Delete(root,true);}
+        });
+
+        Check("W19 #637 disk Commit succeeded then throws => sticky quarantine",()=>{
+            string folder=Path.Combine(Path.GetTempPath(),"b0123_w19_"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            try
+            {
+                string path=Path.Combine(folder,"checkpoint");
+                var f=new Factory();
+                var host=new AtomicWorldSwap(f,new LostAckStore(path,false));
+                if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                // A new ICheckpointStore wrapper must now inject an exception only
+                // on second Commit, preserving actual first loaded world.
+                var injection=new LostAckStore(path);
+                var reloaded=new AtomicWorldSwap(new Factory(),injection);
+                if(reloaded.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                var attempt=reloaded.TryLoad(Make(false,true,11),7,1,()=>true);
+                var durable=new FileCheckpointStore(path);
+                bool read=durable.Read(7,out long gen,out string digest);
+                return attempt==WorldSwapVerdict.RollbackQuarantine &&
+                    reloaded.Quarantined && read && gen==11 && digest.Length==64 &&
+                    !reloaded.TrySave(7,()=>true,out _) &&
+                    reloaded.TryLoad(Make(true,false,12),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine;
+            }
+            finally{Directory.Delete(folder,true);}
+        });
+        Check("W19 #637 first-load lost ACK also sticky quarantine",()=>{
+            string folder=Path.Combine(Path.GetTempPath(),"b0123_w19_"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            try
+            {
+                string path=Path.Combine(folder,"checkpoint");
+                var host=new AtomicWorldSwap(new Factory(),new LostAckStore(path));
+                var result=host.TryLoad(Make(false,true,1),7,1,()=>true);
+                var actual=new FileCheckpointStore(path);
+                return result==WorldSwapVerdict.RollbackQuarantine &&
+                    host.Quarantined && !host.HasWorld &&
+                    actual.Read(7,out long gen,out _) && gen==1 &&
+                    !host.TrySave(7,()=>true,out _) &&
+                    host.TryLoad(Make(false,true,2),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine;
+            }
+            finally{Directory.Delete(folder,true);}
         });
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
