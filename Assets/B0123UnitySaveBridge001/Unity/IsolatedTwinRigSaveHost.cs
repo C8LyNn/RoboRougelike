@@ -152,6 +152,12 @@ namespace B01.UnitySaveBridge001
                         if(ledger.Contains(p.Id)!=p.Consumed)
                             throw new InvalidOperationException("W06 ledger mismatch");
                         world.ledgers[i]=ledger;
+                        // Re-enable locally while PARENT STAYS INACTIVE.
+                        // Otherwise SetActive(true) on the world root would leave
+                        // Rigidbody/Collider permanently inactive (activeSelf=false).
+                        part.SetActive(true);
+                        if(part.activeInHierarchy)
+                            throw new InvalidOperationException("staged physics became live before commit");
                     }
                     return world;
                 }
