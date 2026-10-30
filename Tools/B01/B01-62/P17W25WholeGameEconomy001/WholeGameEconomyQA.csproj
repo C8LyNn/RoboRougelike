@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType>
+<LangVersion>9.0</LangVersion><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+<EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+<ItemGroup>
+<Compile Include="WholeGameEconomySlotV1.cs"/><Compile Include="Program.cs"/>
+<Compile Include=".source/ApprovedEconomyPolicyV6.cs"/>
+<Compile Include="../../../../Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs"/>
+<Compile Include="../../../../Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs"/>
+<Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"/>
+<Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs"/>
+</ItemGroup></Project>
