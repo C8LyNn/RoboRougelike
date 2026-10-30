@@ -27,9 +27,9 @@ R4={
         "core_blob":"04866a5682d4898a3f8ba0cfa9083cb684213269",
         "host_blob":"7b8354bc4cd846227b4bdf6d25d81bed34a325bc"}
 }
-# No R4 owner has signed a W20 selection in the original HQ at package creation.
-# Never let caller-supplied manifest elevate its own source into OWNER_SELECTED.
-OWNER_SIGNED_R4=None
+# B01-23 OWNER signed exact #647 only at PR #647 issuecomment-6531727970.
+# #652 remains ALT_HOLD despite historical own producer source tests.
+OWNER_SIGNED_R4="647"
 MIN_CASES={"EditMode":2,"PhysX":14,"SaveBridge":6}
 SENTINEL={
  "EditMode":{"ExactOwnerRuntimeAndOriginalW06AreLinkableByUnity",
@@ -118,7 +118,8 @@ def verify(root):
     require(m.get("schema")=="B01-CI41-UNITY-NATIVE-EVIDENCE-001/R1",
             "UNSUPPORTED_EVIDENCE_SCHEMA")
     p=str(m.get("producer_pr",""))
-    require(p in R4 and m.get("source_sha")==R4[p]["sha"],
+    require(p==OWNER_SIGNED_R4 and p in R4 and
+            m.get("source_sha")==R4[p]["sha"],
             "UNTRUSTED_OR_MIXED_R4_SOURCE_SHA")
     require(m.get("source_r3_parent")==BASE and
             m.get("frozen_game_sha")==GAME and m.get("frozen_save_sha")==SAVE,
@@ -175,7 +176,7 @@ def verify(root):
     return {"package":"CI41-W20-NATIVE-EVIDENCE-GATE-001/R1",
             "result":"STRUCTURALLY_CONSISTENT_NOT_PROVEN_NATIVE_EXECUTION",
             "candidate_pr":p,"candidate_source_sha":m["source_sha"],
-            "owner_signed_r4":"NOT_YET_AT_QA_PIN",
+            "owner_signed_r4":OWNER_SIGNED_R4,
             "g0":"EXTERNAL_B01_40_REQUIRED",
             "g1":"NOT_CERTIFIED_REQUIRE_LOCAL_HUMAN_EDITOR_EVIDENCE_REVIEW",
             "suites":results,"total_nunit_cases":len(all_cases),
@@ -186,13 +187,13 @@ def main():
     ap.add_argument("--evidence",required=True)
     ap.add_argument("--output",required=True)
     ap.add_argument("--enforce",action="store_true",
-                    help="fail closed if final R4 owner decision and external native attestation absent")
+                    help="fail closed until original #647 orphan-host P0 and independent native attestation are resolved")
     a=ap.parse_args()
     try:
         result=verify(a.evidence)
         code=0
         if a.enforce:
-            result["release_gate"]="HOLD_OWNER_R4_UNSELECTED_OR_NATIVE_UNATTESTED"
+            result["release_gate"]="HOLD_HOST_P0_AND_NATIVE_UNATTESTED"
             code=3
     except (Denied,ValueError,TypeError,OSError,UnicodeError) as e:
         result={"result":"REJECTED_EVIDENCE","reason":str(e),
