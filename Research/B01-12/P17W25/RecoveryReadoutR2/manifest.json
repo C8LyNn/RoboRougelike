@@ -1,0 +1,43 @@
+{
+  "package": "B01-12-RECOVERY-READOUT-001/R2",
+  "original_pr": 771,
+  "original_sha": "7628b6bd299c29f937c5d5aa383f58dad6945d92",
+  "files": {
+    "readout_engine.js": {
+      "sha256": "ab960b9be09b8dc9b3e4c5b4e2faa6f60c8d0379b091cf71dd56ac6dbcd332a3",
+      "bytes": 4324
+    },
+    "fixtures.js": {
+      "sha256": "bce8c395a06a56af3446c732a4917046a560a385ffb99979a69788b46ed07c3a",
+      "bytes": 1929
+    },
+    "ui.js": {
+      "sha256": "947480b0f64d486fe8668d5f9ad17da107febfd40fd6eca7d0984e45ab177ee3",
+      "bytes": 2299
+    },
+    "demo.html": {
+      "sha256": "9a9c54e80962bc138fa824c9430ad8423af95f14773f385a2250ca723545c669",
+      "bytes": 4434
+    },
+    "test_engine.cjs": {
+      "sha256": "b6beabeb3ca3a37877b4cb2af1204d416e4f4a5c2c6421850c28d3ef9a9e6e1c",
+      "bytes": 6677
+    },
+    "test_browser.py": {
+      "sha256": "ad3a1cdc7e44d8ab1d7e4bd9862f70ad02ff21b980c3a45df1d3b65e4f8255a1",
+      "bytes": 4722
+    },
+    "r1-red-reproducer.cjs": {
+      "sha256": "597c2615236fa913b55b50966b3428c878ee9a3efbbb658abbba267db2ea4a29",
+      "bytes": 1016
+    },
+    "r1-original/readout_engine.js": {
+      "sha256": "06c00121b607dd3dca78d3d5e189a3f0fbf05cd446c52ced6a326b0570cf2fb2",
+      "bytes": 4188
+    },
+    "r1-original/fixtures.js": {
+      "sha256": "bce8c395a06a56af3446c732a4917046a560a385ffb99979a69788b46ed07c3a",
+      "bytes": 1929
+    }
+  }
+}

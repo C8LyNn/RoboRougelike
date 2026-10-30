@@ -1,0 +1,342 @@
+{
+  "pass": 84,
+  "fail": 0,
+  "tests": [
+    {
+      "case": "five scenarios",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 R1 RED: unverified free quota must fail closed",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 no win with no coupon valid",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 no win and claimed coupon rejection immutable",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 positive quote price one paid one is denied",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 price one may display zero quote but not mint a free coupon",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 non-authoritative victory text does not claim verification",
+      "status": "PASS"
+    },
+    {
+      "case": "W25 non-authoritative free label warns verification outside UI",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 0 accepted",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 0 route",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 0 stable",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 0 no source mutation",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 0 frozen result",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 1 accepted",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 1 route",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 1 stable",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 1 no source mutation",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 1 frozen result",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 2 accepted",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 2 route",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 2 stable",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 2 no source mutation",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 2 frozen result",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 3 accepted",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 3 route",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 3 stable",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 3 no source mutation",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 3 frozen result",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 4 accepted",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 4 route",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 4 stable",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 4 no source mutation",
+      "status": "PASS"
+    },
+    {
+      "case": "scenario 4 frozen result",
+      "status": "PASS"
+    },
+    {
+      "case": "missing run",
+      "status": "PASS"
+    },
+    {
+      "case": "extra run",
+      "status": "PASS"
+    },
+    {
+      "case": "missing generation",
+      "status": "PASS"
+    },
+    {
+      "case": "extra generation",
+      "status": "PASS"
+    },
+    {
+      "case": "missing coreAlive",
+      "status": "PASS"
+    },
+    {
+      "case": "extra coreAlive",
+      "status": "PASS"
+    },
+    {
+      "case": "missing canDeploy",
+      "status": "PASS"
+    },
+    {
+      "case": "extra canDeploy",
+      "status": "PASS"
+    },
+    {
+      "case": "missing hasNextChallenge",
+      "status": "PASS"
+    },
+    {
+      "case": "extra hasNextChallenge",
+      "status": "PASS"
+    },
+    {
+      "case": "missing loanerUsed",
+      "status": "PASS"
+    },
+    {
+      "case": "extra loanerUsed",
+      "status": "PASS"
+    },
+    {
+      "case": "missing loanerEligible",
+      "status": "PASS"
+    },
+    {
+      "case": "extra loanerEligible",
+      "status": "PASS"
+    },
+    {
+      "case": "missing victoryId",
+      "status": "PASS"
+    },
+    {
+      "case": "extra victoryId",
+      "status": "PASS"
+    },
+    {
+      "case": "missing freeAvailable",
+      "status": "PASS"
+    },
+    {
+      "case": "extra freeAvailable",
+      "status": "PASS"
+    },
+    {
+      "case": "missing parts",
+      "status": "PASS"
+    },
+    {
+      "case": "extra parts",
+      "status": "PASS"
+    },
+    {
+      "case": "foreign run",
+      "status": "PASS"
+    },
+    {
+      "case": "invalid generation",
+      "status": "PASS"
+    },
+    {
+      "case": "float gen",
+      "status": "PASS"
+    },
+    {
+      "case": "invalid flags",
+      "status": "PASS"
+    },
+    {
+      "case": "invalid win",
+      "status": "PASS"
+    },
+    {
+      "case": "dead core with loaner",
+      "status": "PASS"
+    },
+    {
+      "case": "dead core deploy",
+      "status": "PASS"
+    },
+    {
+      "case": "loaner while normal",
+      "status": "PASS"
+    },
+    {
+      "case": "loaner already used",
+      "status": "PASS"
+    },
+    {
+      "case": "loaner without challenge",
+      "status": "PASS"
+    },
+    {
+      "case": "bad list",
+      "status": "PASS"
+    },
+    {
+      "case": "duplicate id",
+      "status": "PASS"
+    },
+    {
+      "case": "bad part id",
+      "status": "PASS"
+    },
+    {
+      "case": "wrong status",
+      "status": "PASS"
+    },
+    {
+      "case": "negative quote",
+      "status": "PASS"
+    },
+    {
+      "case": "quote not cheaper",
+      "status": "PASS"
+    },
+    {
+      "case": "same win repair impossible",
+      "status": "PASS"
+    },
+    {
+      "case": "extra part field",
+      "status": "PASS"
+    },
+    {
+      "case": "invalid part name",
+      "status": "PASS"
+    },
+    {
+      "case": "too many parts",
+      "status": "PASS"
+    },
+    {
+      "case": "failed readout does not modify object",
+      "status": "PASS"
+    },
+    {
+      "case": "id not duplicated in projection",
+      "status": "PASS"
+    },
+    {
+      "case": "projection no ECON write operations",
+      "status": "PASS"
+    },
+    {
+      "case": "free label is read only",
+      "status": "PASS"
+    },
+    {
+      "case": "policy price is not computed by UI",
+      "status": "PASS"
+    },
+    {
+      "case": "different fixture instances",
+      "status": "PASS"
+    },
+    {
+      "case": "0 price quote can be zero",
+      "status": "PASS"
+    },
+    {
+      "case": "pending completion cannot be marked same event",
+      "status": "PASS"
+    },
+    {
+      "case": "empty parts valid readout",
+      "status": "PASS"
+    },
+    {
+      "case": "monotonic projection",
+      "status": "PASS"
+    },
+    {
+      "case": "malicious markup remains text in projection",
+      "status": "PASS"
+    }
+  ]
+}
