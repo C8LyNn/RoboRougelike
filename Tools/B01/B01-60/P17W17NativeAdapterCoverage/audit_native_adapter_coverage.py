@@ -16,8 +16,8 @@ import sys
 ROOT=Path(__file__).resolve().parents[4]
 GAME="d94400d95d13db7f27e1533df05c9292d5380431"
 SAVE="33094f154c7b91119b36d58aab285e6e83c5de57"
-PROPOSED="1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
-ALTERNATIVE="efb2b06eafedab5469b57f163152d96aca3c5915"
+PROPOSED="efb2b06eafedab5469b57f163152d96aca3c5915"
+ALTERNATIVE="1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
 BASEQA="dd088a8c4823a6d128085e5ef08aca4b7f9307ea"
 QA_NATIVE="Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py"
 GAME_SOURCE="Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs"
@@ -25,7 +25,6 @@ GAME_LEDGER="Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs"
 SAVE_SOURCE="Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"
 NATIVE_SOURCE="Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs"
 BRIDGE_CORE="Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs"
-FENCE_CORE="Assets/B0123UnitySaveBridge001/Core/CheckpointFence.cs"
 BRIDGE_UNITY="Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs"
 ASMTEST="Assets/B0123UnitySaveBridge001/Tests/B0123.UnitySaveBridge.PlayModeTests.asmdef"
 ASMCORE="Assets/B0123UnitySaveBridge001/Core/B0123.UnitySaveBridge.Core.asmdef"
@@ -35,14 +34,13 @@ NATIVE_CASES=(
  "ColdLoad_RealRigidbody_RoundTripLightHeavy",
  "CorruptLoad_LeavesPreviouslyActiveRigidbodyAndIdsUntouched",
  "ColdRestart_RestoresRealRigidbodyAndConsumedIds",
- "PersistentFence_DeniesConflictingSameGenerationAcrossHosts",
  "WrongGeneration_CannotPartiallyPublishRealPhysicalWorld",
 )
 PROVEN_GIT_BLOBS={
  GAME_SOURCE:"328977b4cdcdcd7c9f128c01f11ff67f8e46086a",
  GAME_LEDGER:"b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
  SAVE_SOURCE:"b52e511c370f5fca56c74029050844dc8cbb7f9a",
- NATIVE_SOURCE:"9b836abacaa4d3a995f765e0c964e19173da1528",
+ NATIVE_SOURCE:"1ad6239b8e4e932dc1b87bb355d225867b2f4a4b",
 }
 def git(*args):
  return subprocess.check_output(["git","-C",str(ROOT),*args],stderr=subprocess.PIPE)
@@ -63,7 +61,7 @@ def methods(text):
  # Enumerate real NUnit UnityTest method declarations, not mentions in prose.
  return re.findall(r"\[UnityTest\]\s*public\s+IEnumerator\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(",text)
 def check_assets(assets):
- require(set(assets)=={NATIVE_SOURCE,BRIDGE_CORE,FENCE_CORE,BRIDGE_UNITY,
+ require(set(assets)=={NATIVE_SOURCE,BRIDGE_CORE,BRIDGE_UNITY,
                             ASMTEST,ASMCORE,ASMUNITY,GAME_SOURCE,GAME_LEDGER,
                             SAVE_SOURCE},"native exact source provenance not complete / extra source")
  require(set(SOURCE_PINS)==set(assets),"original immutable Git hashes not initialized")
@@ -73,21 +71,19 @@ def check_assets(assets):
  text=assets[NATIVE_SOURCE].decode("utf8")
  require(tuple(methods(text))==NATIVE_CASES,
          "required FIVE exact selected-adapter NUnit method identities missing/swapped")
- require(text.count("[UnityTest]")==5,
+ require(text.count("[UnityTest]")==4,
          "unexpected UnityTest count in selected exact adapter")
- require("PersistentFence_DeniesConflictingSameGenerationAcrossHosts" in text,
-         "persistent checkpoint restart physical test missing")
  require("GetComponentsInChildren<Rigidbody>(true)" in text
          and "activeInHierarchy" in text and
          "IsConsumed" in text and
          "TrySaveBytes" in text and "TryRestoreBytes" in text,
          "actual PhysX/ID/Save cases not authored")
- require("FileCheckpointFence" in assets[FENCE_CORE].decode(),
-         "real filesystem fence source not present")
+ require("FileCheckpointStore" in assets[BRIDGE_CORE].decode(),
+         "selected owner original file-based checkpoint CAS store not present")
  require("candidate.Capture()" in assets[BRIDGE_CORE].decode(),
          "post-activation readback source unavailable")
- require("UsePersistentCheckpointSlot" in assets[BRIDGE_UNITY].decode(),
-         "Unity host lacks persistent slot switch")
+ require('Path.Combine(Application.persistentDataPath,"b0123_one_save_host_v2.checkpoint")' in assets[BRIDGE_UNITY].decode(),
+         "owner original Unity host global sidecar path changed; re-audit isolation")
  expected={
   ASMTEST:("B0123.UnitySaveBridge.PlayModeTests",{
    "B0123.UnitySaveBridge.Core","B0123.UnitySaveBridge.Unity",
@@ -131,20 +127,20 @@ def main():
          and blob(PROPOSED,SAVE_SOURCE)==PROVEN_GIT_BLOBS[SAVE_SOURCE],
          "only selected frozen #556 Save source differs in candidate #604")
  require(blob(PROPOSED,NATIVE_SOURCE)==PROVEN_GIT_BLOBS[NATIVE_SOURCE],
-         "original frozen full #604 native tests source blob changed")
+         "selected #596 native tests original source blob changed")
  oldrunner=orig(BASEQA,QA_NATIVE).decode()
  require(re.search(r'(?m)^SHA="d94400d95d13db7f27e1533df05c9292d5380431"$',oldrunner)
          and re.search(r'(?m)^PREFIXES=\("Assets/B0123DebrisRepulse001","Assets/B0123SecureReattachV2"\)',oldrunner),
          "old #532 runner source input no longer source-only selected gameplay")
  require(not git_has(GAME,SAVE_SOURCE) and not git_has(GAME,NATIVE_SOURCE),
          "exact #510 native project unexpectedly includes Save contract/adapter")
- require(git_has(PROPOSED,NATIVE_SOURCE) and git_has(PROPOSED,FENCE_CORE),
-         "candidate #604 Unity host has no physical native fixture/fence")
+ require(git_has(PROPOSED,NATIVE_SOURCE) and git_has(PROPOSED,BRIDGE_CORE),
+         "owner selected #596 Unity host has no physical native fixture/atomic core")
  require(not git_has(BASEQA,NATIVE_SOURCE),
          "original #532/#601 QA receiver unexpectedly includes selected adapter")
- # Construct original immutable source sample in memory; do NOT co-install
+ # Construct only selected #596 immutable source sample in memory; do NOT co-install
  # producer candidates or create a competing native runner/package.
- paths=(NATIVE_SOURCE,BRIDGE_CORE,FENCE_CORE,BRIDGE_UNITY,
+ paths=(NATIVE_SOURCE,BRIDGE_CORE,BRIDGE_UNITY,
         ASMTEST,ASMCORE,ASMUNITY,GAME_SOURCE,GAME_LEDGER,SAVE_SOURCE)
  originals={
   p:orig(GAME if p in (GAME_SOURCE,GAME_LEDGER) else
@@ -152,22 +148,22 @@ def main():
  }
  SOURCE_PINS.update({p:hashlib.sha256(raw).hexdigest() for p,raw in originals.items()})
  positive=check_assets(originals)
- require(positive==5,"exact source five-case sample not verified")
- # Alternative #596 is NEVER blended with #604, only a negative mismatched
- # source sample. #596's FOUR original authored cases are not five #604 cases.
+ require(positive==4,"exact owner selected #596 four-case sample not verified")
+ # Alternative #604 is NEVER blended with owner-selected #596, only a negative mismatched
+ # source sample. #604's FIVE original authored cases are not the chosen four #596 cases.
  alternate=orig(ALTERNATIVE,NATIVE_SOURCE).decode()
- require(len(methods(alternate))==4,
-         "competing producer alternative changed: must re-evaluate negative")
+ require(len(methods(alternate))==5,
+         "competing #604 alternative changed: must re-evaluate negative")
  neg=0
  bad=dict(originals)
  bad[NATIVE_SOURCE]=orig(ALTERNATIVE,NATIVE_SOURCE)
- denial(lambda:check_assets(bad),"alternate #596 4-case test source substituted");neg+=1
+ denial(lambda:check_assets(bad),"alternative #604 5-case test source substituted");neg+=1
  bad=dict(originals);bad[NATIVE_SOURCE]=bad[NATIVE_SOURCE].replace(
-  b"PersistentFence_DeniesConflictingSameGenerationAcrossHosts",
-  b"MissingPhysicalFenceTest",1)
+  b"ColdRestart_RestoresRealRigidbodyAndConsumedIds",
+  b"ForgedColdRestartCase",1)
  denial(lambda:check_assets(bad),"same-count but forged native suite case");neg+=1
- bad=dict(originals);bad.pop(FENCE_CORE)
- denial(lambda:check_assets(bad),"missing selected original persistent fence source");neg+=1
+ bad=dict(originals);bad.pop(BRIDGE_CORE)
+ denial(lambda:check_assets(bad),"missing selected original atomic checkpoint/CAS source");neg+=1
  bad=dict(originals);bad[GAME_SOURCE]=b"foreign V2 runtime"
  denial(lambda:check_assets(bad),"game V2 runtime differs from exact source");neg+=1
  bad=dict(originals);bad[ASMTEST]=bad[ASMTEST].replace(b"UNITY_INCLUDE_TESTS",
@@ -182,11 +178,11 @@ def main():
  bad=dict(originals);bad[SAVE_SOURCE]=b"foreign second Save format"
  denial(lambda:check_assets(bad),"Save contract SHA source switched");neg+=1
  require(neg==8,"expected 8 negative source/native coverage checks")
- print("B01_60_W17_SELECTED_GIT_SOURCE_510_556_604_BLOB_PINS_PASS",4)
- print("B01_60_W17_PROPOSED_604_FIVE_UNITY_PLAYMODE_CASES_SOURCE_AUTHORED",positive)
- print("B01_60_W17_ALTERNATIVE_596_NO_MIXING_4_VS_5_NEGATIVE_PASS")
+ print("B01_60_W17_SELECTED_GIT_SOURCE_510_556_596_BLOB_PINS_PASS",4)
+ print("B01_60_W17_OWNER_SELECTED_596_FOUR_UNITY_PLAYMODE_CASES_SOURCE_AUTHORED",positive)
+ print("B01_60_W17_ALTERNATIVE_604_NO_MIXING_5_VS_4_NEGATIVE_PASS")
  print("B01_60_W17_NATIVE_ADAPTER_SOURCE_SCOPE_NEGATIVE_PASS",neg)
- print("B01_60_W17_ORIGINAL_532_NATIVE_PROJECT_MISSING_556_AND_ADAPTER_604_WITNESSED")
+ print("B01_60_W17_ORIGINAL_532_NATIVE_PROJECT_MISSING_556_AND_ADAPTER_596_WITNESSED")
  print("B01_60_W17_ACTUAL_UNITY_EDIT_PLAY_PHYSX_NOT_RUN_NO_ACTIVATED_EDITOR")
  out=ROOT/"qa-w17-native-adapter-coverage-evidence"
  require(not out.exists(),"refuse existing output folder")
@@ -194,15 +190,16 @@ def main():
  receipt={
   "qa_owner":"B01-60","qa_head_sha":git("rev-parse","HEAD").decode().strip(),
   "game_510_source_sha":GAME,"only_save_556_source_sha":SAVE,
-  "full_candidate_under_review_604_sha":PROPOSED,
-  "unselected_competitor_596_sha":ALTERNATIVE,
-  "producer_choice":"B01-23_AND_62_ONLY; QA_DOES_NOT_SELECT",
+  "selected_by_producer_B01_23_596_sha":PROPOSED,
+  "B01_62_conflicting_604_sha":ALTERNATIVE,
+  "producer_choice":"B01-23_SELECTED_596; B01-62_REPORTED_604; HQ_RECONCILIATION_REQUIRED",
   "original_532_existing_native_receiver_only_game_510":True,
-  "original_532_includes_556_or_604_native_adapter":False,
-  "additional_native_playmode_cases_authored_exact_604":positive,
+  "original_532_includes_556_or_selected_596_native_adapter":False,
+  "additional_native_playmode_cases_authored_exact_596":positive,
   "original_independent_532_unity_cases_authored":16,
   "physical_native_adaptor_cases_executed":0,
   "exact_original_files_audited":len(originals),
+  "native_test_isolation_blocker":"All four owner #596 native cases share persistentDataPath/b0123_one_save_host_v2.checkpoint, separate run IDs 31/41/9 and no per-test teardown of sidecar",
   "adversarial_no_mix_negative_pass":neg,
   "native_CI_evidence":"NOT_RUN",
   "licensed_unity_6000_3_14f1":"NOT_AVAILABLE",
