@@ -82,7 +82,7 @@ class OriginalPhysicalR3QA(unittest.TestCase):
                          raw(A+"/Runtime/PhysicalObstacleRouter.cs"))
         self.assertEqual(raw(R+"/SafeRouteCore.cs"),raw(A+"/Runtime/SafeRouteCore.cs"))
     def test_05_original_22_unity_paths_14_valid_distinct_meta_guids(self):
-        self.assertEqual(22,len(unity()))
+        self.assertEqual(23,len(unity()))
         metas=[x for x in unity() if x.endswith(".meta")]
         self.assertEqual(14,len(metas))
         ids=[]
@@ -148,7 +148,7 @@ class OriginalPhysicalR3QA(unittest.TestCase):
             empty=root/"FOREIGN_EMPTY";empty.mkdir()
             keep=root/"OTHER"/"keep.txt";keep.parent.mkdir();keep.write_text("PRESERVE")
             files=stage(a,root)
-            self.assertEqual(23,len(files))
+            self.assertEqual(24,len(files))
             undo(files)
             self.assertTrue(empty.is_dir() and not list(empty.iterdir()))
             self.assertEqual("PRESERVE",keep.read_text())
@@ -179,7 +179,7 @@ class OriginalPhysicalR3QA(unittest.TestCase):
     def test_20_full_original_file_manifest_not_stale_old_manifest(self):
         m=doc(T+"/manifest.json")
         self.assertEqual(42,m["closureCount"])
-        self.assertEqual(22,len(unity()))
+        self.assertEqual(23,len(unity()))
         self.assertNotIn(T+"/manifest.json",pins())
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--out",required=True)

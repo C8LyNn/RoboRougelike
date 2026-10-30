@@ -44,7 +44,7 @@
   "gitBlobs": {
     ".github/workflows/b01-25-w23-saferoute.yml": "7a87cfee78e4ce776b6de7ac11893ce94a502cfd",
     ".github/workflows/b01-25-w24-saferoute-r2.yml": "3be7309e484621706dbb2f7d789077b3c97a04d3",
-    ".github/workflows/b01-25-w25-saferoute-r3.yml": "ef859b6fe6170582714292494faf55aece920d6c",
+    ".github/workflows/b01-25-w25-saferoute-r3.yml": "df0fe53a034ca6353af7fd49eee6ae691d3b0174",
     "Assets/B0125SafeRoute001.meta": "bacb874a278d997f667151893c4438c65aca4d29",
     "Assets/B0125SafeRoute001/Editor.meta": "dff34cb12f18c909d1cfe10eed8f0b2906895e55",
     "Assets/B0125SafeRoute001/Editor/B0125.SafeRoute.Editor.asmdef": "d904023d5d761f6a274652a2bb7afbb83e939673",
@@ -82,8 +82,8 @@
     "Tools/B01/B01-25/P17W24SafeRouteR2/check.py": "f806f79a600400316d1f277bce96bd7487d6d89d",
     "Tools/B01/B01-25/P17W24SafeRouteR2/README.md": "717b39f93eee8d0b0e390d1e7d1a37e4a1c988c9",
     "Tools/B01/B01-25/P17W25SafeRouteR3/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W25SafeRouteR3/check.py": "bf0de7996159f1d0986300ff820eb41abe4444f8",
-    "Tools/B01/B01-25/P17W25SafeRouteR3/README.md": "67fe5d6047dc90e543e0b96d03f0d606b23a72ce"
+    "Tools/B01/B01-25/P17W25SafeRouteR3/check.py": "0c43e4794b633d1ef91bd6fe5fe93afac2846341",
+    "Tools/B01/B01-25/P17W25SafeRouteR3/README.md": "d517cb2cddf57120a8a302837e7f146db712ead3"
   },
   "sourceCI": "PENDING",
   "formalIndependentG0": "PENDING",
@@ -93,5 +93,7 @@
   "released": false,
   "g2": "HOLD",
   "r1r2r3NeverCoInstall": true,
-  "rollback": "Use exact full original 22-source Unity content files plus own embedded manifest on pristine disposable scratch; fail closed existing paths or symlink ancestor, unlink ONLY staged files and do not delete foreign empty or occupied directories."
+  "rollback": "Use exact full original 22-source Unity content files plus own embedded manifest on pristine disposable scratch; fail closed existing paths or symlink ancestor, unlink ONLY staged files and do not delete foreign empty or occupied directories.",
+  "unitySourceCount": 23,
+  "sourceZipEntryCount": 24
 }

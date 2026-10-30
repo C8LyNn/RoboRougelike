@@ -86,10 +86,10 @@ jobs:
           import json,sys,zipfile
           with zipfile.ZipFile(sys.argv[1]) as z:
               n=z.namelist()
-              assert len(n)==23 and len(set(n))==23
+              assert len(n)==24 and len(set(n))==23
               assert all(i.create_system==3 for i in z.infolist())
               m=json.loads(z.read("PACKAGE_MANIFEST.json"))
               assert m["oneVersionOnly"] and m["nativeUnity"]=="NOT_RUN"
-              assert len(m["files"])==22
+              assert len(m["files"])==23
           print("SAFEROUTE_R3_ORIGINAL_UNITY_SOURCE_ZIP_PARITY_PASS")
           PY
