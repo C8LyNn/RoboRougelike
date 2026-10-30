@@ -1,0 +1,113 @@
+name: B01-40 W22 ORIGINAL #712 R2 API + R5 #690 + V2 #691 independent source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w22-712-session-g0-mutation]
+    paths:
+      - 'Tools/B01/B01-40/P17W22CanonicalR2G0/**'
+      - '.github/workflows/b01-40-p17w22-r2-712-source-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W22CanonicalR2G0/**'
+      - '.github/workflows/b01-40-p17w22-r2-712-source-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-712-direct-csharp-and-707-mutant-physical-g0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: r2
+          ref: bd8905ad549a7b26854b671be971f7d781308311
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: v1
+          ref: ab62b041e50f8aa0defada2aadc0987d6c63f9d9
+      - uses: actions/checkout@v4
+        with:
+          path: api
+          ref: 809f82575c638e1b4d2806b5f417bddab6c0871a
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: api_v1
+          ref: eed2e39636edfd8b8db754c426db452164cbf9d7
+      - uses: actions/checkout@v4
+        with:
+          path: api_alt
+          ref: 5387e829a5f6d38b713086e6fb906a9a755189ff
+      - uses: actions/checkout@v4
+        with:
+          path: r5
+          ref: cc7f73541517a18f4479bb155534bd4832d9985e
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r4
+          ref: 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: storage
+          ref: d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+      - uses: actions/checkout@v4
+        with:
+          path: safe
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/checkout@v4
+        with:
+          path: guidfence
+          ref: 547b55560d1a33af182caeaf73f9a9b2d8b1b7fe
+      - uses: actions/checkout@v4
+        with:
+          path: old704
+          ref: 3cd990c1fabe7c01d226f40f3b8faa6de59e9819
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Run actual ORIGINAL #712 C#9 .NET8 direct tests and explicit isolated #707 RED mutation, exact Git source receipt and safe Unity-only scratch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W22CanonicalR2G0/intake.py \
+            --r2 r2 --v1 v1 --api api --api_v1 api_v1 --api_alt api_alt \
+            --r5 r5 --r4 r4 --game game --save save --storage storage \
+            --safe safe --guidfence guidfence --old704 old704 --out evidence \
+            | tee b0140-w22-original-712-source.log
+          grep -q 'B0140_W22_R2_712_REAL_ORIGINAL_CSHARP' b0140-w22-original-712-source.log
+          grep -q 'B0140_W22_R2_712_ORIGINAL_GIT' b0140-w22-original-712-source.log
+          grep -q 'B0140_W22_R2_712_SCRATCH' b0140-w22-original-712-source.log
+          grep -q 'B0140_W22_R5_690_API691_UNITY_PHYSICAL' b0140-w22-original-712-source.log
+          grep -q 'B0140_W22_712_SOURCE_G0_PASS_FORMAL_CANONICAL_LIVE_SAVE_HOLD_G1_NOT_RUN_NO_MERGE' b0140-w22-original-712-source.log
+          test -s evidence/r2-712-physical-receipt.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0140-P17W22-R2-712-OriginalDirectCSharpAndScratch-${{ matrix.os }}
+          path: |
+            evidence/r2-712-physical-receipt.json
+            b0140-w22-original-712-source.log
+          retention-days: 21
+          if-no-files-found: warn
