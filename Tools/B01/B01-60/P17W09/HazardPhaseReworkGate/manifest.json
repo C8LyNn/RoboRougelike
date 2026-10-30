@@ -1,0 +1,46 @@
+{
+  "package_id": "B01-60-P17W09-HAZARDPULSE-RETARGETABLE-INDEPENDENT-RETEST",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "scope": "QA-only exact original source and candidate original C# execution",
+  "original": {
+    "producer": "B01-25",
+    "pr": 430,
+    "immutable_sha": "6095577ece27320b1a861a738cc23ba42d6793a6",
+    "original_pulse_core_git_blob": "a7a2c69c80d43bf027f2b00896df72f892fa1a17",
+    "known_defect": "10x0.1 vs 4x0.25 at nominal phase boundary 1s"
+  },
+  "frozen_qa": {
+    "pr": 444,
+    "immutable_sha": "5dc838f3342083ebc78bbf8704053b996dac4a8a",
+    "test_program_git_blob": "e65ca6134e0730c1a91a7f98cc1da286f6ff08f6",
+    "old_expected": "9 PASS / 1 FAIL",
+    "candidate_expected": "10 PASS / 0 FAIL"
+  },
+  "new_qa": {
+    "matrix": "2 offsets * 8 legal frame partitions * 24 whole seconds = 384 phase endpoints + 16 full-cycle grant checks",
+    "original_expected": "SOURCE_RED_REPRODUCED",
+    "candidate_expected": "ZERO disagreements",
+    "verification": "immutable Git blob source copy generated only in test work dir, compiled actual C#9, two OS",
+    "candidate_requirements": "new distinct 40-character commit descended from original #430; only B01-25 Research package and B01-25 own workflow allowed changed paths"
+  },
+  "files": [
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/BoundaryMatrix.cs",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/Matrix.csproj",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/FrozenW07.csproj",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/retarget.py",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/README.md",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/manifest.json",
+    ".github/workflows/b01-60-p17w09-hazard-phase-rework.yml"
+  ],
+  "gates": {
+    "G0_original": "KNOWN_RED",
+    "G0_candidate": "NOT_RUN_UNTIL_B01-25_PRODUCER_SHA",
+    "G1": "UNITY_NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": "PENDING",
+    "integrated": false,
+    "merged": false
+  },
+  "rollback": "Delete only B01-60 Tools/B01/B01-60/P17W09/HazardPhaseReworkGate and own CI workflow; never overwrite producer original #430, #444 frozen QA, or Codex sources."
+}
