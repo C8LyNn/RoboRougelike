@@ -8,6 +8,7 @@
 <Compile Include="CanonicalSessionR3.cs"/>
 <Compile Include="SingleAuthoritySaveSlotR3.cs"/>
 <Compile Include="Program.cs"/>
+<Compile Include=".source/Original669SingleFileSaveSlot.cs"/>
 <Compile Include=".source/CanonicalWorldGatewayV3.cs"/>
 <Compile Include=".source/CanonicalWorldSlotLease.cs"/>
 <Compile Include=".source/DetachedSnapshotContract.cs"/>
