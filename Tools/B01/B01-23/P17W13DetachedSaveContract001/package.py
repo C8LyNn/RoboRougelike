@@ -87,7 +87,7 @@ def verify(raw):
     manifest=json.loads(data[MANIFEST])
     if manifest.get("package")!="B01-23-DETACHED-SAVE-CONTRACT-001" or \
        manifest.get("version")!="2.0.0" or manifest.get("selected_secure_v2_sha")!=PIN or \
-       manifest.get("supersedes_w13_sha")!=PARENT_W13 or
+       manifest.get("supersedes_w13_sha")!=PARENT_W13 or \
        manifest.get("own_head_sha")!=git("rev-parse","HEAD") or \
        manifest.get("frozen_blobs")!=PINS or manifest.get("meta_guids")!=4 or \
        manifest.get("native_unity")!="NOT_RUN" or \
