@@ -1,0 +1,40 @@
+name: B01-13 P17W14 screenshot witness original-source
+on:
+  push:
+    paths: ['Research/B01-13/P17L/**', '.github/workflows/b01-13-w14-screenshot-witness.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17L/**', '.github/workflows/b01-13-w14-screenshot-witness.yml']
+  workflow_dispatch:
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify five original own source/docs/workflow Git blobs
+        run: python Research/B01-13/P17L/verify_package.py
+      - name: Fetch and authenticate exact frozen W13 original source
+        shell: pwsh
+        run: |
+          git fetch --no-tags origin aee4315304ca3e2fe3e155242d7d181260089efc
+          node -e "const fs=require('fs'),cp=require('child_process');fs.writeFileSync('Research/B01-13/P17L/PinnedW13.mjs',cp.execFileSync('git',['show','aee4315304ca3e2fe3e155242d7d181260089efc:Research/B01-13/P17K/save_visual_pairs.mjs']))"
+          $actual = (git hash-object -- Research/B01-13/P17L/PinnedW13.mjs).Trim()
+          if ($actual -ne '94c621f54fffd7e1325700b88b441652755c0feb') { throw "FROZEN_W13_DRIFT=$actual" }
+          Write-Output "FROZEN_W13_SOURCE_BLOB_PASS=$actual"
+      - name: Execute actual original source positive/negative tests
+        shell: pwsh
+        run: |
+          $env:B01_W13_ORIGINAL_SOURCE = (Resolve-Path Research/B01-13/P17L/PinnedW13.mjs).Path
+          node --test Research/B01-13/P17L/test_screenshot_witness.mjs
