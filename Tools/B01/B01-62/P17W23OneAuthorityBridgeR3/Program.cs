@@ -302,7 +302,7 @@ internal static class Program
         string stderr=child.StandardError.ReadToEnd();
         if(!child.WaitForExit(20000)){try{child.Kill(true);}catch{}return false;}
         return child.ExitCode==expectedExit&&
-            stdout.Contains("W21_681_669_CHILD_"+(expectedExit==3?"DENIED":"GRANTED"));
+            stdout.Contains("W23_ONE_OWNER_CHILD_"+(expectedExit==3?"DENIED":"GRANTED"));
     }
     private static bool BasicGuards()
     {
