@@ -31,8 +31,9 @@ def main():
       "W15 original own runner Git source pin changed")
  must(git("merge-base",GAME,"HEAD").decode().strip()==GAME,
       "selected original game source missing")
- must(git("merge-base",SAVE,"HEAD").decode().strip()==SAVE,
-      "selected immutable Save source missing")
+ # #556 Save contract is on a DIFFERENT producer lineage, not a #510 ancestor.
+ # Require exact immutable commit object via Git, without co-installing it.
+ git("cat-file","-e",SAVE+"^{commit}")
  spec=importlib.util.spec_from_file_location("b0160_w15_source_test_helpers",ROOT/W15_HELPER)
  must(spec is not None and spec.loader is not None,"missing owned W15 helpers")
  helpers=importlib.util.module_from_spec(spec)
