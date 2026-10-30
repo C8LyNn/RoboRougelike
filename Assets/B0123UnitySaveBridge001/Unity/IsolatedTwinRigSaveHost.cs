@@ -75,8 +75,14 @@ namespace B01.UnitySaveBridge001
             coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(checkpointPath));
             AcquireSlot();
         }
-        private void OnEnable(){if(!string.IsNullOrEmpty(checkpointPath))AcquireSlot();}
-        private void OnDisable(){ReleaseSlot();}
+        // A disabled GameObject still owns its old physical/ledger world.
+        // Never hand out that same slot to another host until actual destruction.
+        private void OnEnable()
+        {
+            if(slotOwnerLease==null&&!HasWorld&&
+               !string.IsNullOrEmpty(checkpointPath))AcquireSlot();
+        }
+        private void OnDisable(){/* keep slot lifetime owner while a world survives */}
         private void OnDestroy(){ReleaseSlot();}
 
         // Explicit isolated durable slot selection: unlike historical #596,
@@ -110,6 +116,13 @@ namespace B01.UnitySaveBridge001
         }
         public bool TryRestoreBytes(byte[] bytes,long expectedRun,long minGeneration)
         {
+            // Explicit per-run admission: prevent silently restoring an unrelated
+            // run into the legacy global default checkpoint file.
+            if(expectedRun!=runId || expectedRun<=0)
+            {
+                LastRestoreVerdict=WorldSwapVerdict.WrongRun;
+                return false;
+            }
             LastRestoreVerdict=CanOperate()
                 ? coordinator.TryLoad(bytes,expectedRun,minGeneration,PhysicalIdle)
                 : WorldSwapVerdict.HostBusy;

@@ -201,6 +201,9 @@ namespace B01.UnitySaveBridge001
             IPreparedWorld? candidate=null;
             IPreparedWorld? old=current;
             bool touchedOld=false,touchedNew=false,published=false;
+            // An ICheckpointStore may durably commit and THEN throw before ACK.
+            // Once we enter Commit(), its outcome is uncertain until reconciliation.
+            bool commitAttempted=false;
             WorldSwapVerdict verdict=WorldSwapVerdict.HostException;
             try
             {
@@ -240,9 +243,15 @@ namespace B01.UnitySaveBridge001
                     // #572: physical state can mutate as a side effect of Activate().
                     if(!Consistent(candidate.Capture(),snap))
                         throw new InvalidOperationException("post-activation physics/ID mismatch");
-                    if(!replay&&!checkpoint.Commit(expectedRun,durable,digest,snap.Generation,fingerprint))
+                    if(!replay)
                     {
-                        quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
+                        commitAttempted=true;
+                        // Treat false AND a lost acknowledgement / exception identically:
+                        // permanent quarantine until independently reconciled.
+                        if(!checkpoint.Commit(expectedRun,durable,digest,snap.Generation,fingerprint))
+                        {
+                            quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
+                        }
                     }
                     if(!Consistent(candidate.Capture(),snap))
                     {
@@ -265,7 +274,15 @@ namespace B01.UnitySaveBridge001
                     }
                 }while(false);
             }
-            catch{verdict=WorldSwapVerdict.HostException;}
+            catch
+            {
+                if(commitAttempted)
+                {
+                    quarantined=true;
+                    verdict=WorldSwapVerdict.RollbackQuarantine;
+                }
+                else verdict=WorldSwapVerdict.HostException;
+            }
             finally
             {
                 if(!published)
