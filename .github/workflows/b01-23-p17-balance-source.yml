@@ -1,0 +1,36 @@
+name: B01-23 P17 Mass Balance original source C# tests
+on:
+  push:
+    branches: ['b01-23/p17-w06-massbalance-r1']
+  pull_request:
+    paths:
+      - 'Assets/PARTSIZE001/P17Balance/**'
+      - 'Tools/B01/PARTSIZE001/P17Balance/**'
+      - '.github/workflows/b01-23-p17-balance-source.yml'
+  workflow_dispatch:
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and test exact Unity-compatible C# original core
+        shell: bash
+        run: |
+          dotnet run -c Release --project Tools/B01/PARTSIZE001/P17Balance/BalanceTests.csproj > balance-tests.log 2>&1
+          cat balance-tests.log
+          grep -q '^SOURCE_CORE_TESTS_PASS=' balance-tests.log
+          grep -q 'NATIVE_UNITY=NOT_RUN PHYSX=NOT_RUN' balance-tests.log
+      - name: Persist real source test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p17balance-source-${{ matrix.os }}
+          path: balance-tests.log
+          if-no-files-found: warn
