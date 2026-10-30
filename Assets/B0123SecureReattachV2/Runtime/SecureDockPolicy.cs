@@ -5,7 +5,7 @@ namespace B01.SecureReattachV2
 {
     public enum DockResult
     {
-        Allowed, NotDetached, InvalidInput, OutOfReach, QuerySaturated, Obstructed
+        Allowed, NotDetached, InvalidInput, OutOfReach, QuerySaturated, Obstructed, TransactionRejected
     }
 
     public readonly struct DockHit
@@ -85,7 +85,21 @@ namespace B01.SecureReattachV2
             try
             {
                 LastResult = inspect(index);
-                return LastResult == DockResult.Allowed && commit(index);
+                if (LastResult != DockResult.Allowed) return false;
+                try
+                {
+                    if (!commit(index))
+                    {
+                        LastResult = DockResult.TransactionRejected;
+                        return false;
+                    }
+                    return true;
+                }
+                catch
+                {
+                    LastResult = DockResult.TransactionRejected;
+                    throw;
+                }
             }
             finally { executing = false; }
         }

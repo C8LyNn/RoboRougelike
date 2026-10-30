@@ -13,6 +13,8 @@ import zipfile
 ROOT=Path(__file__).resolve().parents[4]
 ASSET="Assets/B0123SecureReattachV2"
 OWN="Tools/B01/B01-23/P17W10SecureReattachV2/"
+W11="Tools/B01/B01-23/P17W11DockAtomicR2/"
+CI11=".github/workflows/b01-23-p17w11-atomic-dock-r2.yml"
 CI=".github/workflows/b01-23-p17w10-secure-reattach-v2.yml"
 PARENT="cb2b3a76e84266e2730fffc4ab048c1039f0652f"
 PINS={
@@ -38,9 +40,10 @@ def scope():
         if g("rev-parse","HEAD:"+path)!=h:
             raise ValueError("Frozen W06 producer Git blob drift: "+path)
     files=sorted(g("ls-tree","-r","--name-only","HEAD",ASSET+"/").splitlines()+
-        g("ls-tree","-r","--name-only","HEAD",OWN).splitlines()+[ASSET+".meta",CI])
+        g("ls-tree","-r","--name-only","HEAD",OWN).splitlines()+
+        g("ls-tree","-r","--name-only","HEAD",W11).splitlines()+[ASSET+".meta",CI,CI11])
     if len(files)!=len(set(files)) or any(not(p.startswith(ASSET+"/") or
-        p.startswith(OWN) or p in (ASSET+".meta",CI)) for p in files):
+        p.startswith(OWN) or p.startswith(W11) or p in (ASSET+".meta",CI,CI11)) for p in files):
         raise ValueError("owner scope or duplicate")
     metas={}
     asm={}
@@ -56,7 +59,7 @@ def scope():
         if p.endswith(".asmdef"):
             j=json.loads(data)
             asm[j["name"]]=j
-    if len(metas)!=13:raise ValueError("expected 13 stable unique Unity meta GUIDs, got "+str(len(metas)))
+    if len(metas)!=14:raise ValueError("expected 14 stable unique Unity meta GUIDs, got "+str(len(metas)))
     expected={
        "B0123.SecureReattachV2.Runtime":["B0123.DebrisRepulse.Runtime"],
        "B0123.SecureReattachV2.Editor":["B0123.SecureReattachV2.Runtime"],
@@ -69,11 +72,12 @@ def scope():
         raise ValueError("Unity test/editor assembly boundaries missing")
     required={
         ASSET+"/Runtime/SecureDockPolicy.cs",ASSET+"/Runtime/SecureRigSpec.cs",
-        ASSET+"/Runtime/SecureDebrisPlaygroundV2.cs",
+        ASSET+"/Runtime/SecureDebrisPlaygroundV2.cs",ASSET+"/Runtime/AtomicDockLedger.cs",
         ASSET+"/Editor/SecureReattachSceneBuilder.cs",
         ASSET+"/Tests/PlayMode/SecureReattachV2PlayModeTests.cs",
         OWN+"Program.cs",OWN+"DockV2SourceTests.csproj",OWN+"package.py",
-        OWN+"test_package.py",OWN+"README.md",CI
+        OWN+"test_package.py",OWN+"README.md",
+        W11+"Program.cs",W11+"AtomicSourceTests.csproj",W11+"test_atomic_package.py",W11+"README.md",CI,CI11
     }
     if not required.issubset(files):raise ValueError("missing W10 real deliverables")
     return files
@@ -107,8 +111,21 @@ def guard_contract():
        "public bool TrySafeReattach(int index) => Execute(index)" not in policy or \
        "public bool ReattachFromGui(int index) => Execute(index)" not in policy:
         raise ValueError("public aliases do not all use GuardedDockCommand.Execute")
-    if "return LastResult == DockResult.Allowed && commit(index);" not in policy:
+    if 'LastResult = DockResult.TransactionRejected;' not in policy or \
+       'if (LastResult != DockResult.Allowed) return false;' not in policy or \
+       'if (!commit(index))' not in policy:
         raise ValueError("dock mutator can execute without inspect approval")
+    txn=blob(ASSET+"/Runtime/AtomicDockLedger.cs").decode()
+    if "private readonly DebrisImpulseLedger consumed" not in txn or \
+       "consumed.RearmAfterReattach(id)" not in txn or \
+       "applyPhysical();" not in txn or "rollbackPhysical();" not in txn or \
+       "consumed.TryDetach(" not in txn:
+        raise ValueError("R2 ledger transaction pre-commit or compensation missing")
+    if "rig.Ledger.TryReattach(rig.Spec.PartId," not in unity or \
+       "private bool CommitDock(int index)" not in unity or \
+       "rig.Emitter.RearmAfterReattach" in unity or \
+       "rig.Body.linearVelocity=Vector3.zero;\n            rig.Body.angularVelocity=Vector3.zero;" in unity:
+        raise ValueError("R2 physical mutation must only occur after atomic ID reserve")
     editor=blob(ASSET+"/Editor/SecureReattachSceneBuilder.cs").decode()
     if "NewScene(NewSceneSetup.EmptyScene" not in editor or \
        "controller.AddComponent<SecureDebrisPlaygroundV2>()" not in editor or \
@@ -127,9 +144,9 @@ def build():
     guard_contract()
     original={p:blob(p) for p in files}
     manifest={
-        "package":ID,"version":"1.0.0","source_sha":source_sha(),
-        "parent_w06_sha":PARENT,"frozen_source_blobs":PINS,
-        "owned_meta_guids":13,"native_unity":"NOT_RUN","codex_ack":False,
+        "package":ID,"version":"2.0.0","source_sha":source_sha(),
+        "parent_w06_sha":PARENT,"supersedes_source_sha":"33a32b8bd9ab40467ab1a17b5684926a37dbd4d3","frozen_source_blobs":PINS,
+        "owned_meta_guids":14,"native_unity":"NOT_RUN","codex_ack":False,
         "files":[{"path":p,"bytes":len(original[p]),"sha256":sha(original[p])} for p in files]
     }
     original[MANIFEST]=(json.dumps(manifest,sort_keys=True,separators=(",",":"))+"\n").encode()
@@ -149,11 +166,12 @@ def verify(raw):
             raise ValueError("ZIP altered, duplicate or traversal")
         data={p:z.read(p) for p in names}
     manifest=json.loads(data[MANIFEST])
-    if manifest.get("package")!=ID or manifest.get("version")!="1.0.0" or \
+    if manifest.get("package")!=ID or manifest.get("version")!="2.0.0" or \
        manifest.get("source_sha")!=source_sha() or \
        manifest.get("parent_w06_sha")!=PARENT or \
+       manifest.get("supersedes_source_sha")!="33a32b8bd9ab40467ab1a17b5684926a37dbd4d3" or \
        manifest.get("frozen_source_blobs")!=PINS or \
-       manifest.get("owned_meta_guids")!=13 or \
+       manifest.get("owned_meta_guids")!=14 or \
        manifest.get("native_unity")!="NOT_RUN" or manifest.get("codex_ack") is not False:
         raise ValueError("manifest provenance, bogus native or ACK")
     records=manifest.get("files",[])
