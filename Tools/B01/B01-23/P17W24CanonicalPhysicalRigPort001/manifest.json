@@ -1,0 +1,14 @@
+{
+  "package": "B01-23-CANONICAL-510-PHYSICAL-PORT-001",
+  "version": "1.0.0",
+  "selected_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "native_g1": "NOT_RUN",
+  "new_unity_guids": 9,
+  "new_asmdefs": 2,
+  "existing_private_rigs": "NOT_IMPORTED",
+  "selected_storage_749": "REQUIRES_AUTHORIZED_UNITY_SCENE_BINDING",
+  "codex_ack": false,
+  "ready_for_integrator": false
+}
