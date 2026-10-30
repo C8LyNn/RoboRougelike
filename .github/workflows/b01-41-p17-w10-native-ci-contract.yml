@@ -1,0 +1,58 @@
+name: B01-41 P17W10 real native Unity workflow contract (source only)
+on:
+  push:
+    branches: ['ci/b01-41-p17-w10-native-ci-contract']
+    paths:
+      - 'Tools/B01/CI41/P17W10/**'
+      - '.github/workflows/b01-41-p17-w10-native-ci-contract.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contract:
+    name: Original CI-02/03/04 source+mutant gates (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Pin original own validator + real Git regression test blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W10/native_ci_contract.py)" = '2e85f3f6fda714dfda17b657a9d55b3b136858f1'
+          test "$(git hash-object Tools/B01/CI41/P17W10/test_native_ci_contract.py)" = '63644424404e5505953913180cc5bbba8f8bec10'
+          echo 'ORIGINAL_CI41_CONTRACT_SOURCE_SHA_PINS_PASS'
+      - name: Execute original Git-object CI-02/03/04 native pipeline gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W10/native_ci_contract.py --repo . --head-sha "$(git rev-parse HEAD)" --out "Tools/B01/CI41/P17W10/original-contract-${{ runner.os }}.json" 2>&1 | tee "Tools/B01/CI41/P17W10/original-contract-${{ runner.os }}.txt"
+          grep -q '"result": "SOURCE_CONTRACT_PASS"' "Tools/B01/CI41/P17W10/original-contract-${{ runner.os }}.json"
+          grep -q '"native_unity": "NOT_RUN"' "Tools/B01/CI41/P17W10/original-contract-${{ runner.os }}.json"
+      - name: Run 20 positive and negative real Git fixture + CLI tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W10/ -p test_native_ci_contract.py -v 2>&1 | tee "Tools/B01/CI41/P17W10/tests-${{ runner.os }}.txt"
+          grep -q 'Ran 20 tests' "Tools/B01/CI41/P17W10/tests-${{ runner.os }}.txt"
+          grep -q 'REAL_ORIGINAL_CLI_GREEN_AND_INVALID_COMMITTED_WORKFLOW_EXIT2_PASS' "Tools/B01/CI41/P17W10/tests-${{ runner.os }}.txt"
+      - name: Preserve source contract receipts, never fabricate Unity G1
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-NATIVE-CONTRACT-W10-${{ runner.os }}
+          path: |
+            Tools/B01/CI41/P17W10/original-contract-${{ runner.os }}.json
+            Tools/B01/CI41/P17W10/original-contract-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W10/tests-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
