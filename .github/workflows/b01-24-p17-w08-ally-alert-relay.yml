@@ -32,6 +32,28 @@ jobs:
         shell: bash
         run: |
           dotnet run --no-build -c Release --project Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/AllyAlertRelayCI.csproj | tee b01-24-w08-radio-run.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute 16 real ZIP and original source drift rejection tests
+        shell: bash
+        run: |
+          python -m unittest discover -s Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/Tools -p "test_receiver.py" -v 2>&1 | tee b01-24-w08-receiver-tests.txt
+      - name: Build genuine source-pinned Unity .cs plus .meta ZIP with receiver JSON receipt
+        shell: bash
+        run: |
+          python Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/Tools/build_receiver.py --repo . --out b01-24-w08-source-zip | tee b01-24-w08-zip-receipt.txt
+      - name: Archive physical Codex receiver source ZIP only (Unity native NOT_RUN)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-w08-unity-asset-import-${{ matrix.os }}
+          path: |
+            b01-24-w08-source-zip/*
+            b01-24-w08-receiver-tests.txt
+            b01-24-w08-zip-receipt.txt
+          retention-days: 21
+          if-no-files-found: warn
       - name: Archive actual source runtime logs native Unity NOT_RUN
         if: always()
         uses: actions/upload-artifact@v4
