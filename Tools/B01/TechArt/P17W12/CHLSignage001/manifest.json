@@ -1,0 +1,64 @@
+{
+  "package_id": "B01-30-CHL003-GATE-SIGNAGE-001",
+  "version": "R1",
+  "role": "B01-30 TECH ART",
+  "authorized_stream": "B01-20 CHL-003 R1",
+  "original_source": {
+    "pr": 285,
+    "sha": "c7b2a234a286089383503da41883d624fe650551",
+    "path": "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs",
+    "git_blob": "9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e"
+  },
+  "real_chl_anchors": {
+    "gate_trigger_width_m": 3.7,
+    "post_center_x_m": [
+      -1.97,
+      1.97
+    ],
+    "original_post_top_y_m": 2.6,
+    "checkpoint_count": 4,
+    "finish_count": 1
+  },
+  "new_3d_feature": "true mesh CHL checkpoint/finish overhead letter signage, no colliders",
+  "expected_producer_output": {
+    "real_binary_fbx": 2,
+    "real_editable_blend": 2,
+    "real_render_png": 2,
+    "original_real_3d_mesh_nodes": 22,
+    "converted_3d_word_glyphs": 2,
+    "producer_geometry_negative_mutants": 4,
+    "independent_process_mutations": 4,
+    "source_sha_negative": 1,
+    "unitypackage_binary_assets": 2,
+    "unitypackage_total_assets": 3,
+    "stable_meta_guids": 3,
+    "tar_members": 9,
+    "unitypackage_mutants": 5,
+    "windows_package_exact_binary_parity": true
+  },
+  "own_changed_paths": [
+    "Tools/B01/TechArt/P17W12/CHLSignage001/**",
+    ".github/workflows/b01-30-p17w12-chl003-gate-signage.yml"
+  ],
+  "gates": {
+    "producer": "PENDING_EXECUTED_ACTIONS",
+    "B01_40_independent_G0": "PENDING",
+    "B01_60_native_Unity_G1": "NOT_RUN",
+    "Codex_ACK": "NONE",
+    "merged": false
+  },
+  "not_claimed": [
+    "Native Unity import/URP shader appearance",
+    "Actual in-game sign legibility at all display sizes",
+    "Automatic placement or runtime checkpoint change",
+    "Game scoring/PhysX/Collider safety",
+    "Formal independent QA or Codex integration"
+  ],
+  "receivers": [
+    "B01-20 optional CHL owner acceptance",
+    "B01-40 independent physical source G0",
+    "B01-60 licensed native import G1 if available",
+    "B01-00 eventual Codex queue"
+  ],
+  "rollback": "Only remove isolated Assets/B0130CHL003GateSigns001 from a disposable receiving project after confirming no references; never modify owner CHL, reattach or Codex."
+}
