@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y blender python3-numpy python3-pil xvfb
+          sudo apt-get install -y blender python3-numpy python3-pil xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
           blender --version | head -n 2
       - name: Generate three physically real ORIGINAL-SOURCE GLBs and Blender scene files
         run: |
@@ -51,7 +51,7 @@ jobs:
       - name: Independent clean Blender process imports binary GLBs, checks 43 world positions, renders 6 actual PNGs
         run: |
           set -euo pipefail
-          blender --background --python-exit-code 1 \
+          xvfb-run -a -s '-screen 0 1280x1024x24' blender --background --python-exit-code 1 \
             --python Tools/B01/TechArt/P17W06/P17BracingVis001/receive_glb_and_render.py \
             -- --source build/B01-30/P17W06/BraceVis001/source \
                --export build/B01-30/P17W06/BraceVis001/export \
