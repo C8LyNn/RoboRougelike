@@ -342,6 +342,21 @@ def run_approved_plan(plan: dict, *,
     out["source_quote_overridden_from"] = parsed["paid_quote_percent"]
     out["quote_floor_formula"] = "purchase_price*65//100"
     out["live_reward_settlement"] = "OWNER_IMPLEMENTATION_UNVERIFIED"
+    # A fully approved temporary loaner is NOT sufficient if it wins but no
+    # damaged essential component had any accepted reservation BEFORE that
+    # victory. Zero-Scrap cannot buy pre-win repairs, free credit is not
+    # permitted before a verified victory, and the single loaner is exhausted.
+    # Flag as a real missing GAME-DESIGN CONTRACT/owner handoff rather than
+    # pretending a source-only model fixed this circular dependency.
+    out["p0_post_loaner_win_deferred_rebuild_deadlock"] = bool(
+        any(o.get("used_temporary_loaner") and o.get("win")
+            for o in out["observations"])
+        and out["end_feasibility"] ==
+            "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
+    out["p0_recovery_contract"] = (
+        "OWNER_B01_22_DECIDE_TRUSTED_CONDITIONAL_PREWIN_ORDER_OR_ALTERNATE"
+        if out["p0_post_loaner_win_deferred_rebuild_deadlock"]
+        else "NO_POST_LOANER_WIN_DEADLOCK_OBSERVED_IN_MODEL")
     return out
 
 
