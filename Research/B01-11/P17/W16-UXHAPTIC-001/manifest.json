@@ -1,0 +1,109 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXHAPTIC-001",
+  "version": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "wave": "PASS17 WAVE16",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/589",
+  "branch": "research/b01-11-p17-w16-uxhaptic-001",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "b9974591f5360831526e0364d42b0f7fc66b4956",
+  "docs_commit": "0c890fd432fed36a82b64445c3944130bb5b467d",
+  "scope": [
+    "Research/B01-11/P17/W16-UXHAPTIC-001/**",
+    ".github/workflows/b01-11-uxhaptic-w16.yml"
+  ],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Runtime/HapticGate.cs",
+      "bytes": 6916,
+      "git_blob_sha1": "13f2c52ae0c5efa5fdadcdde9e217592c3c104f8",
+      "sha256": "cac7c6d25cc34f424739eea4fa0225fa98f4faa9f779103e3c8b31370e828e6d"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Tests/Program.cs",
+      "bytes": 19349,
+      "git_blob_sha1": "b8828d74147529f77ff1008dfcac6bba75e643ae",
+      "sha256": "2869f1ac71a9bb05ea186499aa2e623425f5802eefcf8ccb9b10d329c3ff6951"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Tests/UXHapticTests.csproj",
+      "bytes": 395,
+      "git_blob_sha1": "5e0c44225dc907f53cc38b459c74dceacdc4ee24",
+      "sha256": "fadcbf9abdcd76b7a310f58f5c03d5aebfaec58217dc77d4e923e2508be65ec3"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxhaptic-w16.yml",
+      "bytes": 874,
+      "git_blob_sha1": "0b9c28a40a11a20d095549f85f8f1355eb304d62",
+      "sha256": "a48d804c672c68e8bd66f338bae68f81bd50480759ea37c323a8352a94bc4f45"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/README.md",
+      "bytes": 4239,
+      "git_blob_sha1": "cf113e81172395cefa079f04d5425bf9384fae9f",
+      "sha256": "4a139752c0f452a6fddabd791559dc5f8d60d1a8b16b844d22059b8e94d121e4"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/TEST_PLAN.md",
+      "bytes": 2373,
+      "git_blob_sha1": "3f6c45e9026a5647599ffab8f1fcdfeb744391a8",
+      "sha256": "7003cf8b7b3299c6872813e0c440f973b7844c571c5637cf4c7c8b21e1fc9ec7"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/QA_RECEIVER.md",
+      "bytes": 1869,
+      "git_blob_sha1": "1bda0b38552585054942f19cf1c0be125daf20bf",
+      "sha256": "8c3de933850b236ecdb9f8be91316344349c525d1ced92f3c7abd19f409d38b7"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2026,
+      "git_blob_sha1": "0f8bd9be5c867a921e76876a794202dc3b6589a8",
+      "sha256": "bceb53ae271fe6e665f4399913fe7989fda6c630aacf2dcac51e66d16958cdc3"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/EVIDENCE/W16_RED_GREEN.md",
+      "bytes": 2304,
+      "git_blob_sha1": "26b11782bfbb2b638796e15ad22ea07aae6a16ca",
+      "sha256": "e4f8e3f52dcddc27a6ec8ca9dc3f3ae01d1b54b42158353063a853d3342e6c29"
+    }
+  ],
+  "tests": [
+    {
+      "phase": "BASELINE",
+      "os": "Ubuntu+Windows",
+      "passed_per_os": 111,
+      "failed_per_os": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096654228"
+    },
+    {
+      "phase": "RED",
+      "os": "Ubuntu+Windows",
+      "passed_per_os": 112,
+      "failed_per_os": 2,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096911640"
+    },
+    {
+      "phase": "GREEN",
+      "os": "Ubuntu+Windows",
+      "passed_per_os": 114,
+      "failed_per_os": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097067292"
+    },
+    {
+      "phase": "NATIVE_UNITY",
+      "status": "NOT_RUN"
+    }
+  ],
+  "producer_source": "SOURCE_GREEN_114_PER_OS",
+  "source_g0": "EXTERNAL_PENDING",
+  "independent_qa": "EXTERNAL_PENDING",
+  "unity_g1": "NOT_RUN",
+  "codex": "NOT_OFFERED_ACK_PENDING_NOT_INTEGRATED",
+  "g2": "HOLD",
+  "no_merge": true,
+  "limits": "Deterministic .NET C# haptic intent, not real gamepad/Input System/Unity Player. Critical visual requirement emitted; actual screen UI not integrated. No haptic accessibility certification.",
+  "rollback": "Discard isolated UXHAPTIC W16 Research and dedicated workflow/branch; no Codex or frozen #510/#556 source changed.",
+  "note": "Manifest itself excluded from digest to avoid self-reference; all nine payloads pin SHA256, UTF8 size and Git blob SHA1."
+}
