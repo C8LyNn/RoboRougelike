@@ -55,8 +55,8 @@ internal static class Tests
         public RunSnapshot Capture()
         {
             if(WrongAfterActivate&&Active)
-                return SnapshotCodec.TryDecode(Save(false,true,Data.Generation,Data.RunId),
-                    out RunSnapshot? altered)&&altered!=null?altered:Data;
+                return SnapshotCodec.TryDecode(Save(!Data.Parts[0].Consumed,!Data.Parts[1].Consumed,
+                    Data.Generation,Data.RunId),out RunSnapshot? altered)&&altered!=null?altered:Data;
             return Data;
         }
         public void Activate()
