@@ -1,0 +1,134 @@
+{
+  "schema": "b01-w19-r3-exclusive-intake-v1",
+  "frozen": {
+    "game": {
+      "pr": 510,
+      "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+    },
+    "save": {
+      "pr": 556,
+      "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+    },
+    "r2": {
+      "pr": 596,
+      "sha": "efb2b06eafedab5469b57f163152d96aca3c5915"
+    },
+    "alt": {
+      "pr": 604,
+      "status": "ALT_HOLD"
+    }
+  },
+  "security": {
+    "629_stale_public_host": "R3_EXACT_642_SOURCE_GREEN_STALE_REPLAY",
+    "637_durable_commit_then_throw": "R3_EXACT_642_INDEPENDENT_RELEASE_P0_RED",
+    "631_native_checkpoint_fixture": "SOURCE_RISK_R3_NATIVE_NOT_RUN",
+    "640_slot_ownership": "HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
+    "original_556_consumed_light_heavy": "R3_INDEPENDENT_NOT_RUN",
+    "whole_game_private_510_hydration": "NOT_AUTHORIZED",
+    "crash_atomic_payload_and_checkpoint": "NOT_PROVEN"
+  },
+  "gates": {
+    "r3_independent_security_qa": "PARTIAL_629_GREEN_637_P0_RED",
+    "r3_physical_g0": "HOLD_P0_RED",
+    "native_unity_editmode": "NOT_RUN",
+    "native_unity_playmode": "NOT_RUN",
+    "native_unity_physx": "NOT_RUN",
+    "canonical_game_save_load": "HOLD",
+    "codex_offer": "BLOCKED",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "integrated": false,
+    "merged": false
+  },
+  "owner_choice": {
+    "authority": "B01-23",
+    "status": "SELECTED_LINEAGE_SECURITY_HOLD",
+    "winner_pr": 642,
+    "loser_pr": 644,
+    "decision_comment_url": "https://github.com/C8LyNn/RoboRougelike/pull/642#issuecomment-6530905217"
+  },
+  "competing_sources_installed": false,
+  "code_offer_to_codex": false,
+  "integrator_feedback": {
+    "status": "NOT_MEASURED",
+    "ack_url": null,
+    "elapsed_seconds": null,
+    "attempts": null,
+    "regressions": null,
+    "integration_sha": null
+  },
+  "candidates": [
+    {
+      "pr": 642,
+      "source": {
+        "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+        "source_tests_each_os": 101,
+        "archive_tests_each_os": 25,
+        "zip_bytes": 96318,
+        "zip_members": 23,
+        "zip_sha256": "2fd97465358bddb7c9aeee91af2d4a0b75dd9b86525150e6bf708403291aa60d",
+        "unity_guid_count": 10,
+        "asmdef_count": 3,
+        "producer_ci_run": 41106902806,
+        "changed_path_count": 7,
+        "new_type": "SAME_CORE_MODIFIED",
+        "core_stale_export_guard": "SOURCE_IMPLEMENTED_NOT_INDEPENDENTLY_QA",
+        "host_slot_lease": "SOURCE_IMPLEMENTED_NOT_INDEPENDENTLY_QA"
+      },
+      "owner": "B01-23",
+      "lineage_parent_pr": 596,
+      "lineage_parent_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+      "branch_selection": "SELECTED_BASE_SECURITY_HOLD",
+      "ci_status": "PRODUCER_SOURCE_PASS_ONLY",
+      "independent_qa": "PARTIAL_629_GREEN_637_P0_RED",
+      "formal_g0": "HOLD_P0_RED",
+      "native_g1": "NOT_RUN",
+      "lifecycle": {
+        "IMPLEMENTED": true,
+        "TESTED": true,
+        "QA_ACCEPTED": false,
+        "READY_FOR_INTEGRATOR": false,
+        "INTEGRATED": false,
+        "RELEASED": false
+      },
+      "producer_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41106902806",
+      "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/642"
+    },
+    {
+      "pr": 644,
+      "source": {
+        "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2",
+        "source_tests_each_os": 103,
+        "archive_tests_each_os": 27,
+        "zip_bytes": 103942,
+        "zip_members": 27,
+        "zip_sha256": "7f10a7e4ef5052d7b83010c07fff4b8eb653e62caf314ed0751345c108547315",
+        "unity_guid_count": 11,
+        "asmdef_count": 3,
+        "producer_ci_run": 41105901634,
+        "changed_path_count": 10,
+        "new_type": "ADDITIVE_LEASE_WITH_FROZEN_R2_CORE",
+        "core_stale_export_guard": "R2_CORE_UNCHANGED_SEPARATE_INDEPENDENT_QA_REQUIRED",
+        "host_slot_lease": "SOURCE_IMPLEMENTED_NOT_INDEPENDENTLY_QA"
+      },
+      "owner": "B01-23",
+      "lineage_parent_pr": 596,
+      "lineage_parent_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+      "branch_selection": "ALT_HOLD",
+      "ci_status": "PRODUCER_SOURCE_PASS_ONLY",
+      "independent_qa": "NOT_RUN",
+      "formal_g0": "ALT_HOLD",
+      "native_g1": "NOT_RUN",
+      "lifecycle": {
+        "IMPLEMENTED": true,
+        "TESTED": true,
+        "QA_ACCEPTED": false,
+        "READY_FOR_INTEGRATOR": false,
+        "INTEGRATED": false,
+        "RELEASED": false
+      },
+      "producer_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41105901634",
+      "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/644"
+    }
+  ]
+}

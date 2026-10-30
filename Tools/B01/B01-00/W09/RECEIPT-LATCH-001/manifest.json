@@ -1,0 +1,1435 @@
+{
+  "schema_version": "b01-package-v1",
+  "package_id": "B01-00-RECEIPT-LATCH-001",
+  "revision": "2.5.0",
+  "owner": "B01-00",
+  "producer_agent": "B01-00",
+  "issue": 731,
+  "purpose": "W24 LIVE GitHub 13 PR HEADs + 9 exact real Actions + 5 approved owner policies. Keep historical selected #749 and ALT #753/#741. Exact original #749 public-store fork #767 PRODUCT P0 RED and #773 new producer source repair candidate NOT_SELECTED. Independent #758/#768 and #766 source-only QA greens scoped, full game G0/Unity G1 HOLD; 80 new W24 tests (W23 846 + W24 80 =926). W25 urgent P0 dispatch ready.",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_branch": "b01-00/p17w09-receipt-latch-001",
+  "source_sha_before_manifest": "60313900028f22101cb3b68a9268c13148a9e778",
+  "code_scope": [
+    "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
+    ".github/workflows/b01-00-w09-receipt-latch.yml"
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex canonical gameplay",
+    "B01-40/60/61/62 independent source",
+    "CHL/PARTSIZE/MODEL_JOB",
+    "main/develop"
+  ],
+  "files": [
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/receipt_latch.py",
+      "sha256": "949f576c5bca81cb4b90f998a9c1c3901b08d5f0baafc9329e99510e86db5faa",
+      "bytes": 8997
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/github_live.py",
+      "sha256": "0a9c0e4ac285774f93a824e6658683b2afad6ccdae1956e0a76cdfdb80569ddf",
+      "bytes": 14524
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_protocol.py",
+      "sha256": "c5f2f5cd2b5ea4e190d138a56d8a86089d3450cfaa68ec50825a564a277456d7",
+      "bytes": 7848
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_receipt_latch.py",
+      "sha256": "ec1ab240197433c6f935fc632f1bfe9bc25d8ad7da71a9fffd4824326d9c3f9b",
+      "bytes": 12209
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_proof_replay.py",
+      "sha256": "672996aea12f31956c8f97bc4c82a4cec5507c946e53d8521dc1838883227595",
+      "bytes": 2076
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_github_live.py",
+      "sha256": "e4f231940d8bd392fcfd70be6715473487610b238eec021243c0a5a0549b22d4",
+      "bytes": 14131
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_workflow_contract.py",
+      "sha256": "61500515cc5aebaa4d4e59810cd41d9e219d188a659b63c729902ef68b36493a",
+      "bytes": 8204
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_runner_identity.py",
+      "sha256": "5d2fe4db1b09ab89fb8882bf5b0ce9ff80850f9e690d3462f935591c026179d3",
+      "bytes": 6020
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_offer_protocol.py",
+      "sha256": "07956a13816f6b545a206328f4dfb8056dda6de74ddb5c30b4973904371580f8",
+      "bytes": 10427
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json",
+      "sha256": "15be4ad83b18e333effa12a1404aadc257cc79239f536a2c852445d4aebecde2",
+      "bytes": 1738
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_secure_v2_source_only.json",
+      "sha256": "08be89f9edecfd02abd2d39e1825bafb6f274e69694fe23470728527bd5d9085",
+      "bytes": 1706
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
+      "sha256": "feda324dc97ad67e28cc721afe3de6237f8b8724669c4bc51d6c75b362efab75",
+      "bytes": 66208
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
+      "sha256": "2fc048f35f72b0c2d65ad54da3f53655ef6ef3d3866f2c51452168ee70ee25df",
+      "bytes": 2531
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W10-LIVE-PROOF.md",
+      "sha256": "3d8903d3aa3125b8935ceff535ed682d9c43596867a7499422e363160bb99160",
+      "bytes": 2724
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W11-WORKFLOW-RED-GREEN.md",
+      "sha256": "2a39524984482a2ff42a2985056dcadd1ea8141984ede7650a7724bbd4ce410c",
+      "bytes": 3574
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W12-RUNNER-RED-GREEN.md",
+      "sha256": "60dfff263cc1c260ae0137859921250139f7b768cf833167367e67f62b3eb53a",
+      "bytes": 3080
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W13-SOURCE-ONLY-OFFER.md",
+      "sha256": "b11ee0e600e01555f25da64d86ea402e8c0299f3cc17749b6a1cbfd80c08a137",
+      "bytes": 4730
+    },
+    {
+      "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
+      "sha256": "9fc8420513bf0da84c7273ecbcc4a70731ef116a22551232a86684d1521cd4ae",
+      "bytes": 4177
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
+      "sha256": "d36b257beb433bf3449c3fa3d956073ef7044eaae495c1316396326c329b26d4",
+      "bytes": 31676
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_save_admission.py",
+      "sha256": "142a778480c56348b258b4294d518bb69345e360d60276cb15fe3a597e604545",
+      "bytes": 13861
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_contract_w14_hold.json",
+      "sha256": "1441004bd7179d0f788ffe4307325d722417244bd4c77635f7954e7bb495d52b",
+      "bytes": 2281
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W14-SAVE-CONTRACT-ADMISSION.md",
+      "sha256": "fd6ceb52eff4ce24927f5e5492211387c5dda6ac6a81cb6ec99f7d3a223bf6a2",
+      "bytes": 5342
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_contract_w15_selected.json",
+      "sha256": "c1d0cb3c570c6972d7ca711d45aee2d9d8add88c0451037c905783f86b6a2666",
+      "bytes": 2504
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_save_selected_v2.py",
+      "sha256": "64fcb1cbf4bb3059ea2644460480eee3f41b6656485410541e30124848892b6f",
+      "bytes": 11345
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W15-FROZEN-SAVE-SOURCE-G0-HOST-HOLD.md",
+      "sha256": "272787e926eabaa3dc258290a2da065169793bac7a08b475d80a7408aebeb183",
+      "bytes": 5671
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w16_hold.json",
+      "sha256": "81d6d1babb0d0f955c24a3cc0b15385e9395d62bb9a9270a33a5232a3503ac37",
+      "bytes": 3413
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_bridge_w16.py",
+      "sha256": "b4ccaed5025ad78cefdcd003822cfda49585b1b9b103af4f78b02d4faf003069",
+      "bytes": 13640
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W16-BRIDGE-PROVENANCE-RED-HOLD.md",
+      "sha256": "fe688b03850ebaf9022d34c3badf368399d43851d74934315af59f89d8cd5eb0",
+      "bytes": 9000
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w17_final_pending.json",
+      "sha256": "c519bae8c1dd99c1211598c1e4c94a2984a54ab48f33f3ba617970e652ec74c4",
+      "bytes": 2365
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_final_w17.py",
+      "sha256": "eaaced9d443373da10f7e98128b6e12da78c5e5d316da7c81963b2ab1a4d8b2b",
+      "bytes": 10260
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W17-ONE-FINAL-R2-CHOICE-HOLD.md",
+      "sha256": "1c3e5e27596f0cc67fea54f59c477df32d35623c9d5663e02dfd82b32f14910d",
+      "bytes": 8353
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/integration_experiment.py",
+      "sha256": "3ccf4dc33b5d53a577abbf3230647b427a90b3f76cad6a2cb3d2c4324637e0cd",
+      "bytes": 8491
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/integrator_w18_batch.json",
+      "sha256": "20476e5b128a0f3ec83b52a58c9b5f84ac611920334632deedb8c2e4513e23ec",
+      "bytes": 5207
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_integration_experiment.py",
+      "sha256": "f2ccecad2f5ac36967f661c969ff5e31afff1e16e5d7fa35f7ba4cfdde4851dd",
+      "bytes": 10433
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W18-INTEGRATOR-BATCH-BASELINE.md",
+      "sha256": "1ee10e958c6bbfa1419d860f08cb37c25ce5ee23c867aeb07856f96d59e74b31",
+      "bytes": 8872
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r3_decision_gate.py",
+      "sha256": "9fe73fb7a0b7bf54bfa0f412dfe72e03137c2b8ef8c92b33582add4710f11058",
+      "bytes": 8021
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r3_w19_unselected.json",
+      "sha256": "39675ee86f44211af0ba9ab398247b1570273410243cb9eda5bd9d6836c6ac30",
+      "bytes": 4567
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_r3_decision_gate.py",
+      "sha256": "b86097e5a2a48dcbae8271b679910141b50c1bf8cce0657a4ee66a87ccaa5efa",
+      "bytes": 10689
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W19-R3-EXCLUSIVE-P0-RECEIPT.md",
+      "sha256": "5b83316f2f984d5c45f8c1cf415f202bb078d3fb83587a69f57877e5c7cd6038",
+      "bytes": 8667
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r4_w20_intake.py",
+      "sha256": "8f023a2a717f6516dde6554b87c01480e3cc34122b4bf6017cbf850873713a31",
+      "bytes": 7448
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r4_w20_pending.json",
+      "sha256": "5b34ec110ab2481301d30b4a98a44df23a9f7f4265ed475831f38b482521bfef",
+      "bytes": 4985
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_r4_w20_intake.py",
+      "sha256": "c53d17c0cd0dec2f1929614e6e72b3df2612b6c3894abbca28e2093901464ce5",
+      "bytes": 13326
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W20-R4-647-OWNER-API-UNITY-HOLD.md",
+      "sha256": "007db99e760c3af91c142c80e083021bf7756f24881bb7fc56426eb72a20e878",
+      "bytes": 9522
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w21_handoff_dag.py",
+      "sha256": "768dc4ba76bdda7d747f109d12892cc1c3c879b161a6425804cf6e6fb2a884a6",
+      "bytes": 8529
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w21_handoff_sources.json",
+      "sha256": "b6bbdc15e846a917c4b01c6d59dce2b1966c629b969730ab4b290aa2848c7a38",
+      "bytes": 4814
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w21_handoff_dag.py",
+      "sha256": "50fc2d1423e661d39c6709e03e41cccc37c31166069709150b10239c706caebe",
+      "bytes": 8451
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W21-CROSS-SUBSYSTEM-DEPENDENCY-HANDOFF.md",
+      "sha256": "39ff1dfd12db23802d758255140c06cbf5bf22bd38920e99954de24fd2134a13",
+      "bytes": 9703
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w22_one_save_authority.py",
+      "sha256": "b1988a1af65b50f197a798d01d0bf72684393164e6964dad7bfb29908eb4ae63",
+      "bytes": 9001
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w22_one_save_sources.json",
+      "sha256": "a3f32c99a1ebc469942d99309bf05af21ca50539046f637b39398a15655329ec",
+      "bytes": 6720
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w22_one_save_authority.py",
+      "sha256": "a2d2ec7247c449e78dbbeeb87cbd4b95cec4afba8375135f1cdfc8187bf5262e",
+      "bytes": 10944
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W22-ONE-CANONICAL-SAVE-SECURITY-HANDOFF.md",
+      "sha256": "522766d6e1d8f7692fb83f7cc054cbb968a6e92f0ea17351ebd28215f06229ae",
+      "bytes": 11441
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w23_one_authority_model.py",
+      "sha256": "955699740fe9d539d3296b600abf2ff0727df4894d66b8c391a640a201a94b78",
+      "bytes": 8636
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w23_owner_snapshot.json",
+      "sha256": "53cf7a67d46a8548b31a29451ec635d81592c77c2a82ff69431e1372704a591a",
+      "bytes": 2658
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w23_one_authority_model.py",
+      "sha256": "b232598a07b40ed2833bb69c82fd54c27f2e114c02c3289d90c2390d0df5d12b",
+      "bytes": 18739
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W23-729-712-SINGLE-AUTHORITY-HOLD.md",
+      "sha256": "e824a2613c38f6987fc61c38a2d4ee11549a974affad6e76144935230bc88483",
+      "bytes": 12143
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w24_live_github_intake.py",
+      "sha256": "3394aac5f2d50da5fca8363f9d897e656cb17f894ce3804fadcfd785a065b401",
+      "bytes": 10814
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w24_live_github_intake.py",
+      "sha256": "0c308ac373a7ae594348baef38115f9e37337a48c765f422ae9f5132e5e67c92",
+      "bytes": 15793
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W24-OWNER-SELECTED-749-LIVE-SOURCE-INTAKE.md",
+      "sha256": "6bb940edebe4436cccbbcbb2cfe023f675ceaf3b0ff14233b3ca7b2bf1143bed",
+      "bytes": 18021
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/W25-NEXT-WAVE-DISPATCH-DRAFT.md",
+      "sha256": "ba57306ae7a5cc16201a75bd14a5166cee615d5128878a0a28ba820ebec21a18",
+      "bytes": 7245
+    }
+  ],
+  "producer_tests": [
+    {
+      "name": "Initial actual original 40-case URL parser RED",
+      "status": "FAIL_EXPECTED",
+      "total": 40,
+      "failed": 3,
+      "errors": 29,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "d0b48ea6f984f65e978b03af8d1d71edf0a08c71",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053421464"
+    },
+    {
+      "name": "Corrected actual original 40-case URL parser GREEN",
+      "status": "PASS",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "da955cfa0d861f143987b6a6136f57b42bafd4f6",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053561030"
+    },
+    {
+      "name": "Expanded actual original 44-case proof-replay RED",
+      "status": "FAIL_EXPECTED",
+      "total": 44,
+      "failed": 2,
+      "errors": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "e738393b892aae8feddb45ab2830ff508355190e",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053683730"
+    },
+    {
+      "name": "Corrected actual original 44-case proof-replay GREEN",
+      "status": "PASS",
+      "total": 44,
+      "passed": 44,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "d40870a4b654d6d746a5c18c5a10350f755fa62e",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053802245"
+    },
+    {
+      "name": "W10 exact final HEAD real 76 cases per OS + live API",
+      "status": "PASS",
+      "total": 76,
+      "passed": 76,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "48565967e8d3b7cc45b5916b6a65d7b1918cf8f2",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41065359290"
+    },
+    {
+      "name": "W11 unrelated-workflow bypass real RED (25 added regressions)",
+      "status": "FAIL_EXPECTED",
+      "total": 101,
+      "failed": 22,
+      "errors": 2,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "4347e14d22e4a321818c82fdf95a0ebb10b8e96c",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41068708656"
+    },
+    {
+      "name": "W11 original workflow/job/step real GREEN before manifest",
+      "status": "PASS",
+      "total": 101,
+      "passed": 101,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "d59f19ecb19a6e39c4af69f05a5fb9f8454dd4ba",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41069154521"
+    },
+    {
+      "name": "W11 exact final HEAD 101 cases + genuine GitHub REST checks each OS",
+      "status": "PASS",
+      "total": 101,
+      "passed": 101,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "dcd59f2c2687ab7a721fed83be1da64fb891fc62",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41069584119"
+    },
+    {
+      "name": "W12 runner/attempt tampering RED before implementation",
+      "status": "EXPECTED_FAIL",
+      "total": 123,
+      "failures": 21,
+      "errors": 1,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "108b1ebd14f2066ef7d1aed3dbcc990494a36619",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41072839179"
+    },
+    {
+      "name": "W12 original Python 123 GREEN + real GitHub REST source check",
+      "status": "PASS",
+      "total": 123,
+      "passed": 123,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "259b1f5bb2a0a02852ec2787b513a29b1d1f9844",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41073097313"
+    },
+    {
+      "name": "W12 exact-final-HEAD original 123 tests + real GitHub run/runner/attempt verification both OS",
+      "status": "PASS",
+      "total": 123,
+      "passed": 123,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "15123ec53de3c629ae935000c1ef81181c8d6f20",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41073573439"
+    },
+    {
+      "name": "W13 original 49 new source-only offer state tests + previous 123",
+      "status": "PASS",
+      "total": 172,
+      "passed": 172,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "9e5aee6f2c11899263ee0187ad69043a995dcde0",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082151864"
+    },
+    {
+      "name": "W13 original offer_protocol CLI actual #510/#521/#517/#79 source-only receipt",
+      "status": "PASS",
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "9e5aee6f2c11899263ee0187ad69043a995dcde0",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082151864",
+      "note": "Source-only structure passes, G1/SaveLoad/rollback/G2/ACK/integration explicitly blocked; no GitHub role provenance authenticated"
+    },
+    {
+      "name": "W13 exact final HEAD source-only 172 cases per OS",
+      "status": "PASS",
+      "total": 172,
+      "passed": 172,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "b38924449928efa76dbd1e1860f07cd72b56b41b",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082510683"
+    },
+    {
+      "name": "W14 real 53 new single Save contract admission cases and previous 172",
+      "status": "PASS",
+      "total": 225,
+      "passed": 225,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "b25f42081c931e0ad2399b250ecdd301f0275942",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41087521336"
+    },
+    {
+      "name": "W14 original final manifest HEAD 225 tests each OS",
+      "status": "PASS",
+      "total": 225,
+      "passed": 225,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "2cd3ffc464022357578250540efd9507d9d12fa1",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41088199765"
+    },
+    {
+      "name": "W15 selected frozen #556 62 new + prior 225 original cases",
+      "status": "PASS",
+      "total": 287,
+      "passed": 287,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "cdcb0c489be1552b5e061bae9cf3df57294e5290",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091363949"
+    },
+    {
+      "name": "W15 exact final HEAD original 287 tests both OS",
+      "status": "PASS",
+      "total": 287,
+      "passed": 287,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "430152a82934a650190638239ff3d7c7f9b8af93",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41092246975"
+    },
+    {
+      "name": "W16 original 57 new + prior 287 344 dual-OS source tests and bridge CLI",
+      "status": "PASS",
+      "total": 344,
+      "passed": 344,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "67bd76c48350506269c85165a1a1bd8e7ae77f00",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096301536"
+    },
+    {
+      "name": "W16 initial exact final manifest HEAD original 344 source tests both OS",
+      "status": "PASS",
+      "total": 344,
+      "passed": 344,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "361c8c1b430a9b46b4900c4738fc011c48149e18",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096831928"
+    },
+    {
+      "name": "W16 exact-current #590 two independent RED witnesses and #596 owner correction pending, 353 original source tests both OS",
+      "status": "PASS",
+      "total": 353,
+      "passed": 353,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "b0ae76cb7f15039d507a5a22d5572a124ec3c863",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097743223"
+    },
+    {
+      "name": "W16 final exact HEAD 353 original source tests each OS",
+      "status": "PASS",
+      "total": 353,
+      "passed": 353,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "265edf1e92a062a2c0d2566f9d26cb5eae1bc8d0",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41098128323"
+    },
+    {
+      "name": "W17 exclusive final #596/#604 producer original QA scope; 53 new source tests+353 historical",
+      "status": "NOT_RUN",
+      "total": 406,
+      "passed": null,
+      "failed": null,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "77faa1e20fc54589f349017cf3f4eca3d70959b1",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41100845894",
+      "note": "W17 initial intermediate original jobs QUEUED on GitHub at author time, 406 cases not yet proven; later final HEAD requires its own run"
+    },
+    {
+      "name": "W17 selected exact final HEAD 406 genuine source unit cases each OS",
+      "status": "PASS",
+      "total": 406,
+      "passed": 406,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "52485f60273c9be12a9e8d250e872ef74aae5954",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41101967421"
+    },
+    {
+      "name": "W18 initial original experiment test assertion mismatch genuine RED",
+      "status": "FAIL",
+      "total": 467,
+      "passed": 464,
+      "failed": 3,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "1556c40b44ce870889dd5a802dabe6018375a0ac",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41104797074",
+      "note": "Three original tests expected regex `source` while actual correct fail-closed source said package ID/owner/PR; corrected in own test only, no source validator flaw"
+    },
+    {
+      "name": "W18 corrected 467 cases after test-regex repair",
+      "status": "NOT_RUN",
+      "total": 467,
+      "passed": null,
+      "failed": null,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "c113da9397936c95f459ec67618413ef5a8fce80",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41105187407",
+      "note": "GitHub queued at writing; confirm original raw job logs later"
+    },
+    {
+      "name": "W18 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "note": "Final exact SHA after manifest update needs independent post-commit workflow log proof; publish in PR and issue comments"
+    },
+    {
+      "name": "W18 exact final SHA 467 original cases each OS",
+      "status": "PASS",
+      "total": 467,
+      "passed": 467,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "338c856ef55dae127a6f757f401850ae0c7bc2f5",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41105627844"
+    },
+    {
+      "name": "W19 owner-selected base #642 source policy 66 new, combined 533 original cases",
+      "status": "PASS",
+      "total": 533,
+      "passed": 533,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "1d44041458a0cc78d73c0f1e9fcf78f654c43c03",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41111011348",
+      "note": "Success actual raw logs on original W19 source before evidence/readme/manifest commits, not proof of final HEAD"
+    },
+    {
+      "name": "W19 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "note": "Must verify exact post-manifest HEAD original dual-OS Actions logs separately and add independent PR comment"
+    },
+    {
+      "name": "W19 exact final HEAD original 533 source unit cases each OS",
+      "status": "PASS",
+      "total": 533,
+      "passed": 533,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "be13f3d77caef954fb8f0ea857de7bd1b557b33f",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41111481254"
+    },
+    {
+      "name": "W20 source 90 added tests total 623 exact corrected premanifest own source",
+      "status": "NOT_RUN",
+      "total": 623,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Probe final exact-head workflows separately, do not count intermediate as tested final"
+    },
+    {
+      "name": "W20 final manifest HEAD",
+      "status": "NOT_RUN",
+      "note": "Verify original GitHub Actions exact HEAD logs and add PR/HQ comment"
+    },
+    {
+      "name": "W20 exact final original 623 original cases each OS",
+      "status": "PASS",
+      "total": 623,
+      "passed": 623,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "cccc1f6990a65bd29ae90633a1eafe1106a0310b",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41116145952"
+    },
+    {
+      "name": "W21 premanifest actual source DAG 45 new original cases combined 668",
+      "status": "PASS",
+      "total": 668,
+      "passed": 668,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "71fe756481eb3c4c223f7c126c4f7f8022790a78",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41122508287",
+      "note": "Real raw Windows & Ubuntu job logs original source after DAG/workflow code, before README/evidence/manifest"
+    },
+    {
+      "name": "W21 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "total": 668,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Postcommit exact final-HEAD must be independently tested; add actual evidence in PR/HQ comment without self-invalidating SHA"
+    },
+    {
+      "name": "W21 exact final source 668/668 both systems",
+      "status": "PASS",
+      "total": 668,
+      "passed": 668,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "145c4a89c153746e4c53de41ff290d74d7cc4996",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41122993033"
+    },
+    {
+      "name": "W22 premanifest actual new source+workflow 735 tests each OS",
+      "status": "PASS",
+      "total": 735,
+      "passed": 735,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "4f186e4dbc22136d3506b10663cde9cbc143c8ab",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41129731688",
+      "note": "Original raw both job logs read: PASS but this is pre-readme/evidence/manifest exact commit"
+    },
+    {
+      "name": "W22 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "total": 735,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Must independently read original GitHub Actions final exact-head job logs and add postcommit comment"
+    },
+    {
+      "name": "W22 own exact final 735 original source cases each OS",
+      "status": "PASS",
+      "total": 735,
+      "passed": 735,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "f3236fa55c074bf4b448990314b605251fd7ac4a",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41130358003"
+    },
+    {
+      "name": "W23 original reference model 111 new, cumulative 846 source tests both OS premainfest",
+      "status": "PASS",
+      "total": 846,
+      "passed": 846,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "894d96dab7830bf5c9b35ceccd3f134b6a581c26",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41132059427",
+      "note": "Original raw Windows and Ubuntu jobs observed before README/evidence/manifest final SHA; reference model not original C# integration"
+    },
+    {
+      "name": "W23 exact final manifest commit original own tests",
+      "status": "NOT_RUN",
+      "total": 846,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "independently inspect postcommit SHA exact original CI before W23 terminal HQ success"
+    },
+    {
+      "name": "W23 own exact final original 846 source model tests each OS",
+      "status": "PASS",
+      "total": 846,
+      "passed": 846,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "8ce5b3741228cf6d98b064692a938362ddd52d3b",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41132504290"
+    },
+    {
+      "name": "W24 actual premanifest original live GitHub + 63 new unit checks, cumulative 909 source tests per OS",
+      "status": "PASS",
+      "total": 909,
+      "passed": 909,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "cd7547b19ba2c6a926062cefd6d6b52e6ef68292",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41137857650",
+      "note": "Original raw Windows and Ubuntu 909/909 PASS; each actual GitHub REST read-only source intake check current 8 PRs, 4 CI Actions, HQ #731 owner policies; source HOLD. Pre-document/manifest SHA only."
+    },
+    {
+      "name": "W24 exact final manifest HEAD original source+LIVE GitHub intake",
+      "status": "NOT_RUN",
+      "total": 909,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Final exact SHA source/ACTUAL GitHub live job stdout to be read and reported postcommit; no promotion from old SHA"
+    },
+    {
+      "name": "W24 expanded 72 new live GitHub source/QA unit tests, cumulative 918 each OS premanifest",
+      "status": "NOT_RUN",
+      "total": 918,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "2aa167dfd30ec405544168ba5c52d25c2f2d18eb",
+      "note": "Requires post-source CI original job stdout; compares 11 real PRs + 7 actual success Action runs and approved 731 policy; no product G0/G1"
+    },
+    {
+      "name": "W24 expanded final SHA after manifest",
+      "status": "NOT_RUN",
+      "total": 918,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Read exact final Actions both OS including authentic live read-only GitHub before claiming PASS"
+    },
+    {
+      "name": "W24 final original source 926 cases each OS with LIVE 13 PRs+9 Actions and new #767 P0/source #773 correction",
+      "status": "NOT_RUN",
+      "total": 926,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Require actual exact final-manifest-source original stdout and live API verdict before PASS; earlier W24 runs 909 are separate original historical source"
+    }
+  ],
+  "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
+  "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
+  "native_unity_editmode": "NOT_RUN",
+  "native_unity_playmode": "NOT_RUN",
+  "g0": "SELECTED_749_INDEPENDENT_755_SOURCE_TRANSPORT_ACCEPTED_SOURCE_ONLY_BUT_767_ORIGINAL_PUBLIC_STORE_SECURITY_P0_RED_FULL_PRODUCT_G0_HOLD",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "codex_sent": true,
+  "codex_ack": false,
+  "integrated": false,
+  "limitations": [
+    "Offline input URLs and GitHub actor names are NOT authenticated; externally verify actual immutable objects before formal acceptance.",
+    "No native Unity applicability",
+    "No automatic game source modification, GitHub posts or merges",
+    "GitHub live checker authenticates only exact current PR head and successful Actions run metadata; does not replay Actions job logs or verify test counts",
+    "GitHub live comment existence+exact SHA mention does NOT validate independent role identity, ACK, approval, integration or native Unity results",
+    "GitHub workflow ID/path/job/step success confirms metadata, not real log-content/test-count provenance; independent reviewers must verify original workflow YAML and job logs",
+    "Job names indicate Windows/Ubuntu runner in declared contract; runner OS labels are not independently verified by this v1.2 gate",
+    "W12 verifies GitHub-reported runner.labels, run_id and run_attempt; it cannot prove physical OS outside GitHub's trusted metadata or authenticate independent reviewer role",
+    "Source-only candidate #510 is frozen separately under B01-23; no parallel #511/#494 import and no Codex source-only OFFER until formal B01-40 acceptance",
+    "W13 offer_protocol.py only tests internal JSON handoff state; it cannot authenticate original comment author/QA signer/ZIP bytes online or claim Codex ACK",
+    "W13 source-only #510 offer exists, but Save/Load consumed+detached ID, foreign-empty-dir rollback, native G1 and canonical game migration explicitly block integration; never execute original #510 rollback on shared receiver",
+    "W14 offline Save contract queue gate does not authenticate review author; #549 producer PASS is insufficient after independent #550 C# RED",
+    "Original #550 QA-tested earlier SHA and #549 current HEAD have identical vulnerable C# Git blob, independently fetched live this turn; #544 requires separate exact-SHA independent QA",
+    "Source-only #556 G0 and independent C# QA do not implement Unity host Save/Load; frozen #510 private ledger lacks an approved public hydration interface",
+    "W15 selected-v2 code checks offline JSON consistency, not GitHub signatures, actual ZIP bytes, native Unity/PhysX, ACK or integration; B01-40/60 must independently accept B01-00 tool",
+    "W16 only records original-source SHA-aware QA differences: #585 core same as #572 tested, #587 current core differs from #588 original test; current #587 release verdict requires new exact-SHA independent QA",
+    "B01-00 offline JSON gate cannot authenticate original GitHub source/QA actor automatically; independent bridge G0, native Unity/PhysX and live #510 private ledger hydration remain HOLD",
+    "Post-snapshot independent B01-61 #590 actually tested exact #587 original Git SHA, proved two P0 source REDs; new owner-selected correction #596 R2 is separate mutable Draft, not independently accepted",
+    "B01-00 W16 original 353 positive/negative policy tests PASS does not imply #587 or #596 production release, host Unity G1 or Codex ACK; original 510/556 frozen",
+    "W17 corrected #596/#604 have four overlapping producer paths; no dual installation, file mixing or Codex source offer without single owner-version SHA and B01-40 physical G0",
+    "W17 independent B01-61 #607 source tests #596 exact correction; #603 tests unchanged original #604 core/fence from older commit not whole newest Unity package; neither is native G1 or canonical original #510 private host integration",
+    "B01-23 #596 owner freeze #6529388456 explicitly overrides B01-40/#62 alternate #604 intake #609/#610; those original scripts are evidence for losing ALT_HOLD only and must not count toward formal selected #596 G0",
+    "Original W17 406 unit suite results must not be invented while all GitHub Actions runners remain QUEUED; no local clone network access, final SHA outcome must cite actual Actions logs when available",
+    "W18 two representative paired standard/polished metadata source packages are NOT actually offered to Codex, feedback metrics NULL, not fabricated zeros nor measured integration throughput",
+    "B01-62 #627 original negative GUID count assertion failed both platforms while B01-40 #625 original physical exact #596 source CI PASSED both: must reconcile and obtain formal G0 before source offer",
+    "B01-61 #629 original CI failed at own QA scope guard workflow rename BEFORE executing host stale-owner theory, do not call hypothetical P0 verified",
+    "Actual W18 own 467 test cases initial 3 failed only test expected error message mismatch, separate corrected final SHA must rerun on Windows and Ubuntu, native Unity NOT_RUN",
+    "W19 B01-23 explicit #642 owner-selected BASE only; #644 ALT_HOLD due core difference, never blend/cherry-pick, #604 ALT_HOLD; no released R3 until separate owner versioned uncertain durable Commit P0 fix with exact new SHA and independent QA",
+    "W19 B01-61 #648 original R3 #642 source on both OS reproduced durable Commit persisted then threw lost ACK; 16/16 case assertions PASS each OS are security RED release, not clean G0; actual native Unity physics remains NOT_RUN",
+    "W19 original public host OnDisable slot lease lifetime requires independent review, full original #510 private Rig/AtomicDockLedger rehydrate and crash-atomic payload+checkpoint contract still unapproved",
+    "W19 paired integrator time/retries/acceptance remain NOT_MEASURED; source-only #79 R3 offer explicitly BLOCKED, no ACK, merged=false",
+    "W20 physical R4 #647 original ZIP transport by B01-40 #672 PASS source-only but formal host G0 HOLD due new #670 source orphan-world component-only Destroy witness, native Unity not executed",
+    "W20 #670 earlier Ubuntu managed UnityEngine source RED 17 assertions; exact QA head run initially FAILED harness SHA-parent guard BEFORE C# compile, do not assert native or independent final cross-OS reproduction",
+    "W20 #666 authorization permits separate B01-23/20/62 canonical live API development but NO frozen source edit or game integration; #667 local Windows Unity runner requires real user-operator execution and no remote access",
+    "W20 economy one free per unique victory epoch is TEMP playtest hypothesis, no source gameplay implementation or human/price results claimed",
+    "W20 user says Codex out of quota, no source-only offer/ACK nor measured integration time",
+    "W21 selected API #681 explicit B01-23 owner freeze, loser #682 ALT_HOLD; #685 historical #682 private world orphan P0 and separate #688 owner-selected #681 unfenced cross-process slot RED are DIFFERENT negative witnesses; V2 #691 must independently close both",
+    "W21 R5 #690 owner producer source/ZIP CI GREEN both systems but independent public #670 component-only Destroy release QA and formal new R5 G0 pending; cannot inherit older #647 transport G0",
+    "W21 B01-62 store #669 source OS-file one-writer tests do not authenticate external valid prior epoch rollback/fork #680; require independent trusted anchor or precise threat-model exclusion",
+    "W21 local runner #684/689 source PowerShell tests are NOT owner PC Unity 6000.3.14f1 execution; Editor.log/NUnit missing native G1 NOT_RUN",
+    "W21 dependency handoff evaluator is B01-00-only source tool: no actual frozen #510 private ledger, canonical adapter, hardware, Codex or gameplay integration; SOURCE consistency not external authentication",
+    "W22 independent original R5 #690 B01-61 #705 25 C# synthetic Unity tests each OS and B01-40 #699 source transport G0 GREEN, but not native Unity/PhysX nor gameplay G0",
+    "W22 selected canonical V2 #691 B01-61 #710 9 tests each OS witness original two active same-slot private owners/stale preview P0 RELEASE RED, source physical G0 #704 cannot authorize full live Save",
+    "W22 B01-62 corrected #712 producer source 36 cases each OS PASS; independent #707 regression exact NEW SHA not yet accepted; old source #697 P0 negative evidence cannot transfer",
+    "W22 #669 SHA corruption detection does not authenticate older valid external backup or equal-gen ledger fork #680; optional separate #709 witness cannot certify external trust without independent external monotonic anchor",
+    "W22 B01-60 manual #711 safe PowerShell source CI PASS but owner never executed activated Unity Editor; native G1 NOT_RUN and real #510 private canonical Rig/AtomicDockLedger adapter still not implemented",
+    "W22 B01-00 own source-only structural intake gate does NOT execute other owner original code/native Unity, authenticate GitHub comments or grant gameplay release/Codex ACK",
+    "W23 selected V3 #729 exact owner choice supersedes earlier #719 alternative; #719 ALT_HOLD no cherry-pick, selected original #729 producer source GREEN does not transfer to physical G0/real game",
+    "W23 #729 V3 .owner FileShare.None run+Guid and old selected #712/#669 .lease own a different lifetime lock/constructor; no independently compiled/tested single real authority bridge exists at W23 baseline",
+    "W23 own reference one-lock state machine is IN-MEMORY HYPOTHETICAL policy, not real OS FileShare.None concurrency, C# owner source, Unity PhysX, external trusted proof nor implementation of real private frozen #510 Rig[]/AtomicDockLedger",
+    "W23 #718 original R5 #690 ColdRestart NUnit mismatch actual written g5 vs expected g4 is fixture-only RED; correcting test expectation in NEW version does not prove native G1",
+    "W23 actual owner Unity PC remains unaccessed; #711/#717/#718 PowerShell/source/synthetic tests do not prove activated Unity 6000.3.14f1 Editor or real NUnit XML",
+    "W23 external valid older Save/equal-generation ledger fork #680 remains a threat unless independent protected root #709 or formally limited threat model; identical self hashes cannot detect both-root restoration",
+    "W24 B01-00 live GitHub source intake makes real authenticated read-only network GET and exact 8 PR plus 4 Actions run + owner decisions validations on both CI OS, unlike synthetic-only model, but STILL cannot prove external author authenticity, private Unity gameplay, native G1 or full product G0",
+    "W24 selected #749 exact owner and B01-40 #755 independent original source transport G0 accepted SOURCE_ONLY, competing #753/#741 ALT_HOLD, no mixing physical .owner and legacy raw #669 .lease",
+    "W24 #750 owner R5 fixture source green differs from #732 fixture inspected in #755 exact G0; do NOT inherit #755 formal original G0 to different #750 head",
+    "W24 owner's five gameplay/economy/Save policies are APPROVED design requirements and anti-tamper adversarial whole-root rollback OUT OF SCOPE, but actual one-source atomic victory/loaner/wallet journal, true CanDeploy and Unity game private adapter remain unverified",
+    "W24 original read-only live gate returns source-intake HOLD even with PR/CI source green and does not grant G1, actual Codex ACK, merge or full integrated gameplay Save",
+    "W24 expanded live GitHub intake exact-current PRs 11 and actual original Actions 7 with independent B01-61 #758 #749 source security, B01-62 #768 honest crash, B01-61 #766 R5 #750 fixture source QA; all SOURCE_SCOPE_GREEN, not real game full G0 nor native Unity G1",
+    "W24 original direct B01-62 #767 independently proved selected #749 public store can write two valid conflicting same-generation #556 Save envelopes under one .owner; genuine witness CI PASS is PRODUCT P0 RED. Owner-lineage new #773 source producer green but requires explicit one NEW owner choice, independent #767 regression and formal new G0; do not silently promote or co-install"
+  ],
+  "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
+  "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
+  "selected_immutable_source": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "source_g0_pr": 521,
+    "source_qa_pr": 517,
+    "source_only": true,
+    "alternative_hold": [
+      511,
+      494
+    ],
+    "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
+  },
+  "save_load": "HISTORICAL_SELECTED_749_ONE_OWNER_SOURCE_SCOPED_QA_GOOD_BUT_PUBLIC_STORE_RAW_ALTERNATE_ROOT_FORK_767_P0; NEW_773_UNSELECTED_SOURCE_FIX; TRUE_PRIVATE_510_UNITY_PORT_AND_ATOMIC_ECON_JOURNAL_MISSING",
+  "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
+  "canonical_migration": "NOT_DONE",
+  "save_contract_choice": {
+    "owner": "B01-23",
+    "state": "SELECTED_ONE_FROZEN_SOURCE_ONLY",
+    "selected": {
+      "pr": 556,
+      "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+      "g0_pr": 560,
+      "g0_sha": "1a218df9e287a8a254b7d84c228c962ab232b9b5",
+      "inner_zip_sha256": "20c3c17c252f084014e9766010ab4651770a41f73ce534fc2aa7fd2edc697060",
+      "independent_qa_prs": [
+        563,
+        570
+      ]
+    },
+    "alternatives_hold": [
+      544,
+      549,
+      554
+    ],
+    "historical_security_red": [
+      544,
+      549
+    ]
+  },
+  "bridge_selection": {
+    "owner": "B01-23",
+    "selected_lineage_pr": 587,
+    "owner_selection_evidence_pr": 596,
+    "original_selected_source_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+    "original_source_g0": "HOLD_P0_SOURCE_RED",
+    "exact_original_qa_pr": 590,
+    "qa_sha": "c28565639bef834e64c092ce142c449acdfb7ae5",
+    "qa_tested_original_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+    "qa_red_codes": [
+      "SAME_GENERATION_WORLD_FORK",
+      "ROLLBACK_EXCEPTION_VERDICT_MASKED"
+    ],
+    "correction_pr": 596,
+    "correction_observed_unfrozen_sha": "7bd598fde2204d6a397a50b199be12f072b5cd66",
+    "correction_state": "DRAFT_SOURCE_QA_PENDING",
+    "alt_hold": [
+      585,
+      577,
+      584
+    ],
+    "prior_qa_572": "ORIGINAL_585_EXACT_SOURCE_RED",
+    "prior_qa_588": "ORIGINAL_587_EARLIER_BLOB_RED"
+  },
+  "w17_selection": {
+    "owner": "B01-23",
+    "state": "ONE_FROZEN",
+    "winner": {
+      "pr": 596,
+      "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+      "owner_comment": "https://github.com/C8LyNn/RoboRougelike/pull/596#issuecomment-6529388456",
+      "qa_pr": 607,
+      "qa_sha": "86f3292c928e52609db6c7afdb2010971d6946f1",
+      "author_inner_zip_sha256": "005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9",
+      "zip_entries": 23
+    },
+    "alternative_hold": {
+      "pr": 604,
+      "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+      "owner_hold_comment": "https://github.com/C8LyNn/RoboRougelike/pull/604#issuecomment-6529391408",
+      "qa_scope": "core/fence only old sha",
+      "zip_entries": 27
+    },
+    "wrong_receiver_drafts": [
+      609,
+      610
+    ],
+    "physical_g0": "PENDING_REDIRECT_TO_596",
+    "native_unity_g1": "NOT_RUN",
+    "ack": "NONE",
+    "offer": "HOLD"
+  },
+  "w18_integrator_batch": {
+    "schema": "b01-w18-paired-integrator-baseline-v1",
+    "original_source_packages": [
+      {
+        "pr": 596,
+        "sha": "efb2b06eafedab5469b57f163152d96aca3c5915"
+      },
+      {
+        "pr": 607,
+        "sha": "86f3292c928e52609db6c7afdb2010971d6946f1"
+      }
+    ],
+    "paired_presentation_arms": 4,
+    "real_reviews": 0,
+    "acceptance_yield": null,
+    "integration_time_seconds": null,
+    "regression_rate": null,
+    "retries": null,
+    "feedback": "NOT_MEASURED",
+    "codex_offer": "BLOCKED",
+    "selected_596_g0": "PENDING_FORMAL",
+    "native_unity_g1": "NOT_RUN",
+    "source_host_629": "UNVERIFIED_SOURCE_RISK_QA_GUARD_FAILED",
+    "fixture_631": "UNVERIFIED_SOURCE_RISK",
+    "source_627": "GUID_COUNT_ASSERTION_FAILED_BOTH_OS",
+    "source_625": "PHYSICAL_CI_SUCCESS_BOTH_OS_PENDING_FORMAL_RECEIPT",
+    "six_stage": {
+      "IMPLEMENTED": true,
+      "TESTED": false,
+      "QA_ACCEPTED": false,
+      "READY_FOR_INTEGRATOR": false,
+      "INTEGRATED": false,
+      "RELEASED": false
+    }
+  },
+  "w19_r3": {
+    "owner": "B01-23",
+    "owner_comment": "https://github.com/C8LyNn/RoboRougelike/pull/642#issuecomment-6530905217",
+    "selected_base": {
+      "pr": 642,
+      "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+      "inner_zip_sha256": "2fd97465358bddb7c9aeee91af2d4a0b75dd9b86525150e6bf708403291aa60d",
+      "inner_zip_bytes": 96318,
+      "inner_zip_members": 23,
+      "producer_source_ci": "PASS_101_CSHARP_25_ZIP_EACH_OS",
+      "independent_security_648": "PARTIAL_GREEN_STALE_WRITER_RELEASE_P0_RED",
+      "formal_g0": "HOLD_P0_RED"
+    },
+    "alternative_hold": {
+      "pr": 644,
+      "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2",
+      "inner_zip_sha256": "7f10a7e4ef5052d7b83010c07fff4b8eb653e62caf314ed0751345c108547315",
+      "inner_zip_bytes": 103942,
+      "inner_zip_members": 27,
+      "producer_source_ci": "PASS_103_CSHARP_27_ZIP_EACH_OS",
+      "status": "ALT_HOLD"
+    },
+    "independent_witness": {
+      "pr": 648,
+      "sha": "88e67451492e877032aa6a822f46a76449bf6aaa",
+      "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41110488050",
+      "source_assertions_each_os": 16,
+      "dual_os": "PASS_EXPECTED_RELEASE_RED",
+      "release_exit": 3,
+      "reason": "ICheckpointStore.Commit physically persists new g11 then throws lost ACK; original R3 TryLoad returns HostException/Quarantined=false old Light/g10 physical world"
+    },
+    "native_unity_g1": "NOT_RUN",
+    "original_510_private_ledger_hydration": "NOT_AUTHORIZED",
+    "codex_offer": "BLOCKED",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "integrator_feedback": "NOT_MEASURED",
+    "merged": false
+  },
+  "w20": {
+    "owner": "B01-23",
+    "owner_comment": "https://github.com/C8LyNn/RoboRougelike/pull/647#issuecomment-6531727970",
+    "selected": {
+      "pr": 647,
+      "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+      "zip_sha256": "9ae2919e9cfdea1bf75f785b1cdfc2d3465a6a90c7d18ff22def69cb53406d30",
+      "zip_bytes": 105099,
+      "zip_entries": 23,
+      "independent_664_green_scope": "CORE_ACK_AND_ONDISABLE_ONLY",
+      "independent_662_qa_each_os": 97,
+      "new_670_security": "ORIGINAL_SYNTHETIC_UNITY_SOURCE_COMPONENT_ONLY_DESTROY_ORPHAN_WORLD_P0_RED_UBUNTU_PRIOR_COMMIT_ONLY",
+      "qa_670_final": "PENDING_OWN_QA_SCOPE_FIX"
+    },
+    "alternative_hold": {
+      "pr": 652,
+      "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+      "zip_sha256": "cf9412e2f34fadeb75e028387eb5869c4444c1b9e8a3b88e7c6f40bba7f37f9e",
+      "status": "ALT_HOLD"
+    },
+    "physical_672": "PASS_TRANSPORT_ONLY_NOT_HOST_G0",
+    "formal_selected_r4_g0": "HOLD_SOURCE_P0_RED",
+    "api_666": "OWNER_APPROVED_TO_DEVELOP_NEW_VERSION_NOT_IMPLEMENTED_IN_B0100",
+    "local_windows_667": "OWNER_APPROVED_MANUAL_OPERATOR_RUNNER_NOT_EXECUTED",
+    "economy": "TEMP_ONE_GLOBAL_FREE_REBUILD_PER_UNIQUE_VICTORY_EPOCH_PLAYTEST_HYPOTHESIS",
+    "native_unity_g1": "NOT_RUN",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "feedback": "NOT_MEASURED"
+  },
+  "w21": {
+    "owner_r4": {
+      "winner_pr": 647,
+      "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+      "loser_pr": 652,
+      "loser": "ALT_HOLD"
+    },
+    "owner_api": {
+      "winner_pr": 681,
+      "sha": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+      "loser_pr": 682,
+      "loser": "ALT_HOLD"
+    },
+    "r5_host": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "producer_ci": "SOURCE_SUCCESS_BOTH_OS",
+      "source_zip_sha256": "a37e942d6a0cc5236570edaf7cba49384a84d0553f88fb29988a855d692a1496",
+      "source_zip_bytes": 129088,
+      "source_zip_entries": 27,
+      "independent_exact_sha_security": "PENDING",
+      "formal_new_g0": "PENDING"
+    },
+    "api_v2": {
+      "pr": 691,
+      "sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+      "producer_ci": "SOURCE_SUCCESS_BOTH_OS",
+      "zip_sha256": "90198e6429d912a40e4e2df3935281627282f14799c4f34479439af150f5bccd",
+      "zip_bytes": 61736,
+      "zip_entries": 15,
+      "independent_685_new_sha": "PENDING",
+      "independent_688_same_slot": "PENDING_NEW_OWNER_LEASE",
+      "formal_new_g0": "PENDING"
+    },
+    "store": {
+      "pr": 669,
+      "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+      "source_trust_680": "EXTERNALLY_VALID_PRIOR_EPOCH_AND_SAME_GEN_DIFFERENT_LEDGER_RED",
+      "new_owner_trusted_anchor": "NOT_IMPLEMENTED"
+    },
+    "native_local": {
+      "pr": 684,
+      "sha": "c75cb6e52a0de11f27b570c34e08d32082af421f",
+      "manual_user_execution": "NOT_RUN",
+      "actual_unity_physx": "NOT_RUN"
+    },
+    "canonical_private_510_adapter": "NOT_IMPLEMENTED",
+    "codex_ack": "NONE",
+    "measured_external_integration": "NOT_MEASURED",
+    "integrated": false,
+    "merged": false,
+    "g2": "HOLD"
+  },
+  "w22": {
+    "selected_r5": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "alt_pr": 693,
+      "alt": "ALT_HOLD",
+      "independent_pr": 705,
+      "independent_exact_sha": "0d07173f38ac4b332d6c826e434de1f53205107f",
+      "original_source_independent": "25_OF_25_EACH_OS_GREEN_SYNTHETIC_UNITY",
+      "physical_pr": 699,
+      "physical": "ACCEPTED_SOURCE_ONLY",
+      "full_g0": "HOLD_GAME_SCENE"
+    },
+    "selected_api": {
+      "pr": 691,
+      "sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+      "alts": [
+        682,
+        695
+      ],
+      "independent_pr": 710,
+      "independent_source": "9_OF_9_EACH_OS_SOURCE_WITNESSES_BUT_TWO_LIVE_OWNER_P0_RED",
+      "physical_pr": 704,
+      "physical": "ACCEPTED_SOURCE_ONLY",
+      "full_g0": "HOLD_P0_RED"
+    },
+    "session": {
+      "pr": 712,
+      "sha": "bd8905ad549a7b26854b671be971f7d781308311",
+      "historical_defect_pr": 707,
+      "historical_producer_pr": 697,
+      "own_producer_tests": "36_EACH_OS_PASS",
+      "independent_exact_new_sha": "NOT_RUN",
+      "full_g0": "PENDING"
+    },
+    "storage": {
+      "pr": 669,
+      "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+      "trust_negative_pr": 680,
+      "optional_anchor_pr": 709,
+      "independent_trusted_root": "NOT_ACCEPTED",
+      "external_valid_backup_rollback": "HOLD_OR_EXPLICIT_THREAT_SCOPE"
+    },
+    "windows": {
+      "pr": 711,
+      "sha": "02272e8b0facc00d3943672770251b1d01182b85",
+      "source_run": 41127568270,
+      "owner_local_activation": "NOT_RUN",
+      "native_g1": "NOT_RUN"
+    },
+    "real_private_510": "NOT_IMPLEMENTED",
+    "live_game": "HOLD",
+    "codex_ack": "NONE",
+    "integrator_feedback": "NOT_MEASURED",
+    "merged": false,
+    "g2": "HOLD"
+  },
+  "w23": {
+    "selected_canonical_api": {
+      "pr": 729,
+      "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+      "alt_pr": 719,
+      "alt": "ALT_HOLD",
+      "parent_original_691": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+      "producer": "152_SOURCE_ASSERTIONS_PASS_REPORTED",
+      "inner_zip_bytes": 90659,
+      "inner_zip_members": 19,
+      "inner_zip_sha256": "17a80c55b0d40e8afa7ef50509e434b970cc3296c3cc9926aba82b6fd5973b18",
+      "independent_v3_qa": "PENDING",
+      "v3_physical_g0": "PENDING"
+    },
+    "sole_r5_host": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "alt_pr": 693,
+      "scoped_independent_705": "25_EACH_OS_SOURCE_GREEN_SYNTHETIC_UNITY",
+      "source_g0_699": "ACCEPTED_SOURCE_ONLY",
+      "cold_restart_actual_generation": 5,
+      "old_fixture_asserts_generation": 4,
+      "new_owner_fixture": "NOT_IMPLEMENTED"
+    },
+    "single_session_contract": {
+      "old_session_pr": 712,
+      "old_session_sha": "bd8905ad549a7b26854b671be971f7d781308311",
+      "store_pr": 669,
+      "store_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+      "legacy_lock_files": [
+        ".owner",
+        ".lease"
+      ],
+      "new_bridge_original_pr": null,
+      "new_bridge_source_sha": null,
+      "one_shared_authority": "NOT_IMPLEMENTED",
+      "v3_r2_compile": "NOT_RUN",
+      "independent_original_cross_process": "NOT_RUN",
+      "combined_full_g0": "HOLD"
+    },
+    "frozen_real_510": "NOT_IMPLEMENTED",
+    "storage_external_rollback_680": "UNRESOLVED",
+    "optional_trust_709": "NOT_ACCEPTED",
+    "native_unity_g1": "NOT_RUN",
+    "private_game_save_load": "HOLD",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "integrator_feedback": "NOT_MEASURED",
+    "merged": false
+  },
+  "w24": {
+    "sole_selected_bridge": {
+      "pr": 749,
+      "sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+      "canonical_v3_pr": 729,
+      "canonical_v3_sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+      "physical_os_owner": ".owner",
+      "raw_legacy_669_slot_lease_coinstall": "FORBIDDEN",
+      "original_source_run": 41133131736,
+      "independent_source_transport_pr": 755,
+      "independent_source_transport_sha": "f1bff0839e297df971d097231c4627a07005ee17",
+      "physical_source_g0": "ACCEPTED_SOURCE_ONLY",
+      "full_game_g0": "HOLD_P0_ORIGINAL_PUBLIC_STORE_FORK_767",
+      "native_g1": "NOT_RUN"
+    },
+    "alternatives_hold": [
+      {
+        "pr": 753,
+        "sha": "743e36478ae8cf99e8429af1a8209da9d7ca64de",
+        "status": "ALT_HOLD"
+      },
+      {
+        "pr": 741,
+        "sha": "75f1631f9a36ce51b0f8edc0c7857e924cdf78ec",
+        "status": "ALT_HOLD"
+      }
+    ],
+    "r5_fixture_variants": {
+      "owner_correction_pr": 750,
+      "source_sha": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+      "independent_current_g0": "PENDING",
+      "older_independent_g0_fixture_pr": 732,
+      "older_sha": "0bee4ce9928354433ec719c45a8186378361d46e",
+      "source_test_only": true,
+      "native_unity": "NOT_RUN"
+    },
+    "owner_approved_economy": {
+      "one_free_rebuild_per_authentic_unique_victory": true,
+      "newly_destroyed_waits_next_distinct_win": true,
+      "one_shot_eligible_weaker_loaner": true,
+      "destroyed_part_price_ratio": "65%",
+      "block_fight_only_actual_nonfunctional": true,
+      "honest_crash_corruption_save_required": true,
+      "advanced_malicious_disk_antitamper_out_of_scope": true,
+      "physical_atomic_journal_implemented": "NOT_VERIFIED"
+    },
+    "canonical_private_510_rig_ledger_adapter": "NOT_IMPLEMENTED",
+    "live_game_save": "HOLD",
+    "full_g0": "HOLD",
+    "g1": "NOT_RUN",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "measured_external_integrator_feedback": "NOT_MEASURED",
+    "merged": false,
+    "next_wave_file": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/W25-NEXT-WAVE-DISPATCH-DRAFT.md",
+    "read_only_live_actual_ci": "PENDING_POSTMANIFEST_SHA",
+    "source_evidence_update": {
+      "qa_749": {
+        "pr": 758,
+        "sha": "1034127a994c4453127d5906bb3c49d05fb59975",
+        "run": 41137466367,
+        "source": "INDEPENDENT_12_EACH_OS_GREEN_SCOPE_ONLY",
+        "full_g0": "HOLD"
+      },
+      "crash_749": {
+        "pr": 768,
+        "sha": "34bf47a6953800226872029e42ce0535d464f322",
+        "run": 41138019965,
+        "source": "ORIGINAL_16_EACH_OS_CRASH_ACK_CORRUPT_COLD_SOURCE_GREEN",
+        "native": "NOT_RUN"
+      },
+      "cold_fixture_750": {
+        "pr": 766,
+        "sha": "f376f729fcbba916089d3f38853f952afc675abe",
+        "run": 41137933943,
+        "source": "INDEPENDENT_5_EACH_OS_GEN4_TO5_GREEN_SCOPE_ONLY",
+        "formal_fixture_g0": "NEW_750_PENDING_NOT_732"
+      },
+      "live_prs": 13,
+      "live_original_actions": 9,
+      "source_unit_cases_added_w24": 80,
+      "cumulative_original_source_cases_each_os": 926,
+      "negative_749_public_store_p0": {
+        "pr": 767,
+        "sha": "6d0dff5571cb1d8b252311557dd8142e1b616cf1",
+        "ci": 41137846205,
+        "source_witness": "4_EACH_OS_TEST_RUNNER_PASS_PRODUCT_SECURITY_P0_RED_TWO_CANONICAL_SAME_SLOT_SAVE_ENVELOPES",
+        "product_release": "HOLD_P0"
+      },
+      "r2_773_fix_candidate": {
+        "pr": 773,
+        "sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+        "ci": 41138550902,
+        "source": "4_EACH_OS_PRODUCER_PASS_CANONICAL_ROOT_AND_ONE_STORE_REGISTRY",
+        "selected": "NO_EXPLICIT_OWNER_REPLACEMENT_YET",
+        "independent_g0": "PENDING"
+      }
+    },
+    "w24_test_767_773_set_fix": "SOURCE_CI_OLD_TEST_EXPECTATION_CORRECTED_WAIT_EXACT_SHA"
+  }
+}

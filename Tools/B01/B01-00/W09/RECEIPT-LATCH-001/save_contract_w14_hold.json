@@ -1,0 +1,67 @@
+{
+  "schema": "b01-w14-single-save-admission-v1",
+  "frozen_gameplay": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/510",
+    "frozen": true
+  },
+  "proposals": [
+    {
+      "pr": 544,
+      "url": "https://github.com/C8LyNn/RoboRougelike/pull/544",
+      "source_sha": "e77529262b8f03c6e9f0e25b642038c351872044",
+      "target_game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+      "contract_id": "B01-23-SECUREV2-SAVE-CONTRACT-001",
+      "producer_ci": "PASS_SOURCE_ONLY",
+      "producer_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082219558",
+      "independent_qa": {
+        "state": "NOT_RUN",
+        "review_pr": null,
+        "review_sha": null,
+        "target_sha": null,
+        "tested_blob_sha": null,
+        "failure_codes": []
+      }
+    },
+    {
+      "pr": 549,
+      "url": "https://github.com/C8LyNn/RoboRougelike/pull/549",
+      "source_sha": "6da2c523e03766cd5a6deaed0cb3cccf8765354b",
+      "source_blob_sha": "6c036985411164372bf3d21d467780ff3777544e",
+      "target_game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+      "contract_id": "B01-23-DETACHED-SAVE-CONTRACT-001",
+      "producer_ci": "PASS_SOURCE_ONLY",
+      "producer_ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082728707",
+      "independent_qa": {
+        "state": "SECURITY_RED",
+        "review_pr": 550,
+        "review_sha": "be2f8e76a881481c904ecc368c17218c80bd1709",
+        "target_sha": "c2c179317af8155d17a1027283fe991565779ede",
+        "tested_blob_sha": "6c036985411164372bf3d21d467780ff3777544e",
+        "failure_codes": [
+          "VALIDATED_SNAPSHOT_MUTABLE",
+          "W06_LEDGER_PUBLIC_MUTATOR"
+        ],
+        "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082794585"
+      }
+    }
+  ],
+  "owner_choice": {
+    "authority": "B01-23",
+    "state": "UNDECIDED",
+    "pr": null,
+    "source_sha": null,
+    "decision_url": null
+  },
+  "release_gates": {
+    "native_g1": "NOT_RUN",
+    "canonical_save_load": "NOT_IMPLEMENTED",
+    "canonical_migration": "NOT_DONE",
+    "original_510_rollback": "FORBIDDEN",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "integrated": false,
+    "merge": false
+  }
+}

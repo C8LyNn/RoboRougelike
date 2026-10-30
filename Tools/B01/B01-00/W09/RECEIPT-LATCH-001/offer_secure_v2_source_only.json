@@ -1,0 +1,56 @@
+{
+  "schema": "b01-source-only-offer-v1",
+  "package_id": "B01-23-SECURE-REATTACH-V2",
+  "version": "2.0.0",
+  "source": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/510",
+    "frozen": true
+  },
+  "physical_archive": {
+    "sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387",
+    "bytes": 99666,
+    "members": 35,
+    "guid_count": 14,
+    "asmdef_count": 3
+  },
+  "g0": {
+    "agent": "B01-40",
+    "status": "G0_ACCEPTED_SOURCE_ONLY",
+    "source_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "pr": 521,
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/521",
+    "qa_sha": "a19724328cfda8a19f694cd84de899da214b3163",
+    "archive_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
+  },
+  "source_qa": {
+    "agent": "B01-61",
+    "status": "PASS_SOURCE_ONLY",
+    "source_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "pr": 517,
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/517",
+    "qa_sha": "12ceba268a3828d28dc9e99a0a36ec797599c8c1"
+  },
+  "offer": {
+    "status": "SOURCE_ONLY_OFFERED",
+    "comment_id": 6526629723,
+    "url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
+    "source_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "package_id": "B01-23-SECURE-REATTACH-V2"
+  },
+  "alternatives_hold": [
+    511,
+    494
+  ],
+  "release_constraints": {
+    "native_g1": "NOT_RUN",
+    "save_load": "HOLD",
+    "rollback_receiver": "HOLD_RETEST_REQUIRED",
+    "canonical_migration": "NOT_DONE",
+    "g2": "HOLD",
+    "codex_ack": "PENDING",
+    "integrated": "NO",
+    "merge": "NO"
+  }
+}

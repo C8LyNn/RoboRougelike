@@ -1,0 +1,75 @@
+{
+  "schema": "b01-receipt-latch-v1",
+  "package_id": "B01-00-DISPATCH-001",
+  "version": "1.2.0",
+  "needs_native": false,
+  "producer": {
+    "agent": "B01-00",
+    "source_pr": 427,
+    "sha": "3c4b576bb5d7cac5bb9ddc941da3dba0f6f2e07f",
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/427",
+    "ci": {
+      "sha": "3c4b576bb5d7cac5bb9ddc941da3dba0f6f2e07f",
+      "status": "PASS",
+      "passed": 65,
+      "failed": 0,
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41046087105",
+      "contract": {
+        "workflow_id": 401553591,
+        "workflow_path": ".github/workflows/b01-00-dispatch-w06.yml",
+        "event": "pull_request",
+        "required_job_names": [
+          "dispatch (windows-2025)",
+          "dispatch (ubuntu-24.04)"
+        ],
+        "required_steps": [
+          "Original source full dispatch and freeze regression suite",
+          "Produce deterministic example plan"
+        ],
+        "required_runner_labels": {
+          "dispatch (windows-2025)": "windows-2025",
+          "dispatch (ubuntu-24.04)": "ubuntu-24.04"
+        }
+      }
+    }
+  },
+  "qa": {
+    "intake": {
+      "agent": "B01-40",
+      "status": "PENDING",
+      "sha": null,
+      "url": null
+    },
+    "independent": {
+      "agent": "B01-60",
+      "status": "PENDING",
+      "sha": null,
+      "url": null
+    }
+  },
+  "native": {
+    "edit": {
+      "status": "NOT_RUN"
+    },
+    "play": {
+      "status": "NOT_RUN"
+    }
+  },
+  "offer": {
+    "status": "NOT_SENT",
+    "sha": null,
+    "url": null
+  },
+  "ack": {
+    "status": "NO",
+    "sha": null,
+    "url": null,
+    "actor": null
+  },
+  "integration": {
+    "status": "NO",
+    "sha": null,
+    "url": null,
+    "commit_sha": null
+  }
+}

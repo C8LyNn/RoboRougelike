@@ -1,0 +1,172 @@
+{
+  "schema": "b01-w21-cross-subsystem-handoff-v1",
+  "source_sha": {
+    "r4_frozen": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "r4_alt": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+    "api_selected_base": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+    "api_alt": "5387e829a5f6d38b713086e6fb906a9a755189ff",
+    "host_v5": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "api_v2": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+    "storage_v1": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+    "runner_v1": "c75cb6e52a0de11f27b570c34e08d32082af421f",
+    "game510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save556": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "authorities": {
+    "r4": {
+      "winner_pr": 647,
+      "loser_pr": 652,
+      "loser": "ALT_HOLD"
+    },
+    "api": {
+      "winner_pr": 681,
+      "loser_pr": 682,
+      "loser": "ALT_HOLD"
+    },
+    "codex": "UNAVAILABLE",
+    "merge": false,
+    "releases": false
+  },
+  "security_evidence": {
+    "r4_647_security_670": "REPRODUCED_SOURCE_RED_ON_FROZEN_R4",
+    "r5_690_security": "PRODUCER_GREEN_INDEPENDENT_PENDING",
+    "api_682_security_685": "REPRODUCED_SOURCE_RED_ALT_HOLD",
+    "api_681_security_688": "REPRODUCED_SOURCE_RED_ON_SELECTED_BASE",
+    "api_v2_691_688_fix": "PENDING_NEW_OWNER_EXCLUSIVE_LEASE",
+    "storage_669_680": "EXTERNAL_VALID_FILE_REPLACEMENT_TRUST_RED",
+    "unity_pc_native": "NOT_RUN",
+    "original_510_private_port": "NOT_IMPLEMENTED",
+    "integrator_feedback": "NOT_MEASURED"
+  },
+  "stage_status": {
+    "host_r5": {
+      "SOURCE_IMPL": "PRODUCER_TESTED",
+      "INDEPENDENT": "PENDING",
+      "FORMAL_G0": "PENDING",
+      "NATIVE_G1": "NOT_RUN"
+    },
+    "api_v2": {
+      "SOURCE_IMPL": "PRODUCER_TESTED",
+      "INDEPENDENT": "PENDING",
+      "FORMAL_G0": "PENDING",
+      "NATIVE_G1": "NOT_RUN"
+    },
+    "storage": {
+      "SOURCE_IMPL": "PRODUCER_TESTED",
+      "INDEPENDENT": "TRUST_BOUNDARY_RED_680",
+      "FORMAL_G0": "PENDING",
+      "NATIVE_G1": "NOT_RUN"
+    },
+    "native_runner": {
+      "SOURCE_IMPL": "PRODUCER_TESTED",
+      "INDEPENDENT": "SOURCE_REVIEWED_ONLY",
+      "FORMAL_G0": "NOT_APPLICABLE",
+      "NATIVE_G1": "NOT_RUN"
+    },
+    "canonical_adapter": {
+      "SOURCE_IMPL": "NOT_IMPLEMENTED",
+      "INDEPENDENT": "NOT_RUN",
+      "FORMAL_G0": "NOT_RUN",
+      "NATIVE_G1": "NOT_RUN"
+    },
+    "integrator": {
+      "SOURCE_IMPL": "NOT_IMPLEMENTED",
+      "INDEPENDENT": "NOT_RUN",
+      "FORMAL_G0": "NOT_RUN",
+      "NATIVE_G1": "NOT_RUN"
+    }
+  },
+  "packages": {
+    "host_r5": {
+      "pr": 690,
+      "sha_key": "host_v5",
+      "evidence_run": 41120562896,
+      "depends_on": [],
+      "receiver": "B01-61/41+40/62",
+      "required": [
+        "INDEPENDENT_R5_COMPONENT_DESTROY_QA",
+        "FORMAL_NEW_R5_PHYSICAL_G0"
+      ]
+    },
+    "api_v2": {
+      "pr": 691,
+      "sha_key": "api_v2",
+      "evidence_run": 41121167581,
+      "depends_on": [
+        "host_r5"
+      ],
+      "receiver": "B01-23/62+61/41+40",
+      "required": [
+        "API_681_MULTI_OWNER_EXCLUSIVE_LEASE_688",
+        "INDEPENDENT_V2_PREPARE_ABORT_QA_685",
+        "FORMAL_NEW_API_G0"
+      ]
+    },
+    "storage": {
+      "pr": 669,
+      "sha_key": "storage_v1",
+      "evidence_run": 41115085734,
+      "depends_on": [],
+      "receiver": "B01-62+61/41+40",
+      "required": [
+        "EXTERNAL_VALID_BACKUP_ROLLBACK_POLICY_680",
+        "TRUSTED_MONOTONIC_WATERMARK_OR_SCOPED_THREAT_MODEL",
+        "STORAGE_NEW_G0"
+      ]
+    },
+    "native_runner": {
+      "pr": 684,
+      "sha_key": "runner_v1",
+      "evidence_run": 41116686300,
+      "depends_on": [],
+      "receiver": "B01-60+41+40+LOCAL_OPERATOR",
+      "required": [
+        "OWNER_EXECUTES_ACTIVATED_UNITY_6000_3_14F1",
+        "ORIGINAL_NUNIT_EDITORLOG_SHA_MANIFEST"
+      ]
+    },
+    "canonical_adapter": {
+      "pr": null,
+      "sha_key": null,
+      "evidence_run": null,
+      "depends_on": [
+        "host_r5",
+        "api_v2",
+        "storage"
+      ],
+      "receiver": "B01-23/20/62+61/41+40",
+      "required": [
+        "REAL_FROZEN_510_PRIVATE_RIG_LEDGER_PORT",
+        "WHOLE_SNAPSHOT_ATOMIC_COLD_RESTORE"
+      ]
+    },
+    "integrator": {
+      "pr": null,
+      "sha_key": null,
+      "evidence_run": null,
+      "depends_on": [
+        "canonical_adapter",
+        "native_runner"
+      ],
+      "receiver": "B01-00+OWNER+CODEX_LATER",
+      "required": [
+        "SINGLE_G0_SIGNED_PACK",
+        "CODEX_REVIEW_ACK_AND_EXPLICIT_INSTALL_PERMISSION"
+      ]
+    }
+  },
+  "integrator_outcome": {
+    "status": "NOT_MEASURED",
+    "ack": null,
+    "elapsed_s": null,
+    "retries": null,
+    "regressions": null,
+    "commit_sha": null
+  },
+  "operator_access": {
+    "owner_pc_access": false,
+    "native_unity_executed": false,
+    "ssh": false,
+    "credentials": false
+  }
+}

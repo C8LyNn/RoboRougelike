@@ -1,0 +1,690 @@
+#!/usr/bin/env python3
+"""W14 declarative admission gate for ONE stable-ID Save/Load contract.
+
+Offline audit only. This tool cannot authenticate GitHub actors, source hashes,
+review content, tested binaries or a Codex ACK. Source-only offer is not a
+Save/Load implementation and NEVER grants native G1/G2 or integration.
+"""
+from __future__ import annotations
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import re
+import sys
+
+REPO = "https://github.com/C8LyNn/RoboRougelike/"
+SHA = re.compile(r"^[0-9a-f]{40}$")
+SCHEMA = "b01-w14-single-save-admission-v1"
+REQUIRED_HOLDS = {
+    "native_g1": "NOT_RUN",
+    "canonical_save_load": "NOT_IMPLEMENTED",
+    "canonical_migration": "NOT_DONE",
+    "original_510_rollback": "FORBIDDEN",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "integrated": False,
+    "merge": False,
+}
+ALLOWED_RED = frozenset(("VALIDATED_SNAPSHOT_MUTABLE", "W06_LEDGER_PUBLIC_MUTATOR",
+                         "OTHER_VERIFIED_SECURITY_RED"))
+
+
+class AdmissionError(ValueError):
+    pass
+
+
+def doc(value, name):
+    if type(value) is not dict:
+        raise AdmissionError(name + " must be an object")
+    return value
+
+
+def valid_sha(x):
+    return type(x) is str and bool(SHA.fullmatch(x))
+
+
+def natural(x):
+    return type(x) is int and x > 0
+
+
+def pr_url(n):
+    return REPO + "pull/" + str(n)
+
+
+def audit(payload):
+    source = doc(payload, "root")
+    if source.get("schema") != SCHEMA:
+        raise AdmissionError("unsupported schema, explicit version migration required")
+    game = doc(source.get("frozen_gameplay"), "frozen_gameplay")
+    if not natural(game.get("pr")) or not valid_sha(game.get("sha")):
+        raise AdmissionError("invalid frozen gameplay identity")
+    if game.get("frozen") is not True or game.get("url") != pr_url(game["pr"]):
+        raise AdmissionError("gameplay must be frozen and canonical")
+    # This W14 authority is ONLY the explicitly frozen and independently
+    # source-G0-accepted #510; avoid parsing a generic other-game offer.
+    if (game["pr"] != 510
+            or game["sha"] != "d94400d95d13db7f27e1533df05c9292d5380431"):
+        raise AdmissionError("wrong immutable selected gameplay source")
+
+    proposals = source.get("proposals")
+    if type(proposals) is not list or len(proposals) != 2:
+        raise AdmissionError("exactly two comparison proposals required")
+    candidates = {}
+    for candidate in proposals:
+        x = doc(candidate, "proposal")
+        n = x.get("pr")
+        h = x.get("source_sha")
+        if not natural(n) or not valid_sha(h) or x.get("url") != pr_url(n):
+            raise AdmissionError("proposal source identity malformed")
+        if n in candidates:
+            raise AdmissionError("duplicate proposal PR")
+        if x.get("target_game_sha") != game["sha"]:
+            raise AdmissionError("proposal targets wrong frozen gameplay SHA")
+        if x.get("producer_ci") not in ("PASS_SOURCE_ONLY", "FAIL", "NOT_RUN"):
+            raise AdmissionError("invalid producer evidence state")
+        qa = doc(x.get("independent_qa"), "independent_qa")
+        if qa.get("state") not in ("PASS_SOURCE_ONLY", "SECURITY_RED", "NOT_RUN"):
+            raise AdmissionError("invalid independent QA state")
+        if qa["state"] == "NOT_RUN":
+            if any(qa.get(k) is not None for k in
+                   ("review_pr", "review_sha", "target_sha", "tested_blob_sha")):
+                raise AdmissionError("QA NOT_RUN cannot contain fabricated review")
+        else:
+            if (not natural(qa.get("review_pr")) or qa["review_pr"] == n
+                    or not valid_sha(qa.get("review_sha"))
+                    or not valid_sha(qa.get("target_sha"))):
+                raise AdmissionError("independent review must pin tested source commit")
+            if qa["state"] == "PASS_SOURCE_ONLY" and qa["target_sha"] != h:
+                raise AdmissionError("older QA PASS cannot promote later producer HEAD")
+            if qa["state"] == "SECURITY_RED" and qa["target_sha"] != h:
+                # A RED from an older branch commit can remain an active
+                # blocker ONLY for exactly the same original vulnerable blob.
+                # Do not pretend the review tested the later branch HEAD.
+                if (not valid_sha(x.get("source_blob_sha"))
+                        or qa.get("tested_blob_sha") != x["source_blob_sha"]):
+                    raise AdmissionError("older RED cannot transfer without identical source blob")
+        codes = qa.get("failure_codes")
+        if qa["state"] == "SECURITY_RED":
+            if (type(codes) is not list or not codes
+                    or len(codes) != len(set(codes))
+                    or any(type(c) is not str or c not in ALLOWED_RED for c in codes)):
+                raise AdmissionError("SECURITY_RED must preserve exact known defect codes")
+        elif codes not in ([], None):
+            raise AdmissionError("cannot attach SECURITY_RED codes to non-RED verdict")
+        candidates[n] = x
+    if set(candidates) != {544, 549}:
+        raise AdmissionError("this wave compares #544 against #549 only")
+
+    choice = doc(source.get("owner_choice"), "owner_choice")
+    if choice.get("authority") != "B01-23":
+        raise AdmissionError("only source contract owner B01-23 may choose")
+    state = choice.get("state")
+    if state not in ("UNDECIDED", "SELECTED_ONE"):
+        raise AdmissionError("invalid selection state")
+    if state == "UNDECIDED":
+        if any(choice.get(k) is not None for k in ("pr", "source_sha", "decision_url")):
+            raise AdmissionError("undecided cannot name selected contract")
+    else:
+        chosen = choice.get("pr")
+        if chosen not in candidates or choice.get("source_sha") != candidates[chosen]["source_sha"]:
+            raise AdmissionError("chosen proposal SHA must be exact current source")
+        url = choice.get("decision_url")
+        if (not isinstance(url, str)
+                or not re.fullmatch(
+                    r"https://github\.com/C8LyNn/RoboRougelike/"
+                    r"(?:issues|pull)/[1-9][0-9]*#issuecomment-[1-9][0-9]*", url)):
+            raise AdmissionError("owner choice needs a distinct canonical decision receipt")
+
+    holds = doc(source.get("release_gates"), "release_gates")
+    if set(holds) != set(REQUIRED_HOLDS):
+        raise AdmissionError("release gate fields must be complete and exact")
+    for key, value in REQUIRED_HOLDS.items():
+        if holds[key] != value or type(holds[key]) is not type(value):
+            raise AdmissionError("attempt to promote unverified release gate: " + key)
+
+    statuses = {}
+    for n, x in sorted(candidates.items()):
+        q = x["independent_qa"]["state"]
+        if q == "SECURITY_RED":
+            status = "REJECT_EXACT_SOURCE_SECURITY_RED"
+        elif x["producer_ci"] != "PASS_SOURCE_ONLY":
+            status = "HOLD_PRODUCER_TESTS"
+        elif q != "PASS_SOURCE_ONLY":
+            status = "HOLD_INDEPENDENT_SOURCE_QA"
+        elif state != "SELECTED_ONE" or choice["pr"] != n:
+            status = "HOLD_NOT_EXCLUSIVE_OWNER_SELECTION"
+        else:
+            status = "MANUAL_G0_REVIEW_ONLY"
+        statuses[str(n)] = status
+
+    any_red = any(x["independent_qa"]["state"] == "SECURITY_RED"
+                  for x in candidates.values())
+    eligible = [n for n, x in sorted(candidates.items())
+                if x["producer_ci"] == "PASS_SOURCE_ONLY"
+                and x["independent_qa"]["state"] == "PASS_SOURCE_ONLY"
+                and state == "SELECTED_ONE" and choice["pr"] == n]
+    if any_red and state == "SELECTED_ONE" and (
+            candidates[choice["pr"]]["independent_qa"]["state"] == "SECURITY_RED"):
+        eligible.clear()
+    chosen = eligible[0] if len(eligible) == 1 else None
+    # Even if a later actual source-only QA PASS exists, this is an OFFLINE
+    # statement, not an authenticated G0; intake still needs B01-40 review.
+    return {
+        "schema": SCHEMA,
+        "frozen_gameplay_sha": game["sha"],
+        "candidate_statuses": statuses,
+        "only_source_candidate_for_manual_review": chosen,
+        "single_contract_source_record_consistent": chosen is not None,
+        "owner_choice_state": state,
+        "independent_security_red_present": any_red,
+        "source_only_candidate_proof_authenticated": False,
+        "host_save_load": "HOLD",
+        "safe_receiver_migration": "HOLD",
+        "native_unity_g1": "NOT_RUN",
+        "g2": "HOLD",
+        "codex_ack": "UNCONFIRMED",
+        "integrated": False,
+        "release_allowed": False,
+        "verdict": ("MANUAL_G0_REVIEW_REQUIRED" if chosen is not None
+                    else "HOLD_NO_ACCEPTED_SINGLE_SAVE_CONTRACT"),
+    }
+
+
+
+# W15 distinct explicit source receipt; W14 remains historical evidence.
+SELECTED_V2_SCHEMA = "b01-w15-selected-save-host-gate-v1"
+FROZEN_GAME_SHA = "d94400d95d13db7f27e1533df05c9292d5380431"
+FROZEN_SAVE_SHA = "33094f154c7b91119b36d58aab285e6e83c5de57"
+HOLD_HOST = {
+    "adapter": "NOT_IMPLEMENTED", "actual_unity_save_reload": "NOT_RUN",
+    "native_physx_g1": "NOT_RUN", "migration": "NOT_DONE",
+    "receiver_rollback": "SCRATCH_ONLY",
+    "original_510_rollback": "FORBIDDEN", "codex_ack": "NONE",
+    "integrated": False, "merged": False, "g2": "HOLD",
+}
+
+
+def audit_selected_v2(raw):
+    """Offline receipt consistency, NEVER live Unity/QA actor authentication."""
+    root = doc(raw, "W15 receipt")
+    if root.get("schema") != SELECTED_V2_SCHEMA:
+        raise AdmissionError("unsupported W15 versioned receipt schema")
+    game = doc(root.get("gameplay"), "gameplay")
+    save = doc(root.get("selected_save"), "selected_save")
+    if (game.get("pr") != 510 or game.get("sha") != FROZEN_GAME_SHA
+            or game.get("url") != pr_url(510) or game.get("frozen") is not True):
+        raise AdmissionError("frozen gameplay #510 mismatch")
+    if (save.get("pr") != 556 or save.get("sha") != FROZEN_SAVE_SHA
+            or save.get("url") != pr_url(556) or save.get("frozen") is not True
+            or save.get("target_game_sha") != FROZEN_GAME_SHA
+            or save.get("version") != "2.0.0"):
+        raise AdmissionError("only frozen #556 can be selected")
+    owner = doc(root.get("owner_choice"), "owner_choice")
+    if (owner.get("agent") != "B01-23" or owner.get("selection") != "SELECTED_ONE"
+            or owner.get("pr") != 556 or owner.get("sha") != FROZEN_SAVE_SHA):
+        raise AdmissionError("exclusive producer choice missing")
+    held = root.get("alternatives_hold")
+    if (type(held) is not list or sorted(held) != [494, 511, 544, 549, 554]):
+        raise AdmissionError("old and alternative source HOLD missing")
+    g0 = doc(root.get("physical_source_g0"), "physical_source_g0")
+    expected_g0 = {
+        "agent": "B01-40", "state": "ACCEPTED_SOURCE_ONLY", "pr": 560,
+        "url": pr_url(560),
+        "qa_sha": "1a218df9e287a8a254b7d84c228c962ab232b9b5",
+        "target_sha": FROZEN_SAVE_SHA,
+        "inner_zip_sha256":
+            "20c3c17c252f084014e9766010ab4651770a41f73ce534fc2aa7fd2edc697060",
+        "members": 17,
+    }
+    if g0 != expected_g0:
+        raise AdmissionError("physical G0 source-only provenance mismatch")
+    qas = root.get("independent_source_qa")
+    if type(qas) is not list or len(qas) != 2:
+        raise AdmissionError("two source QA receipts required")
+    expected_qa = {
+        563: ("42aa590a2f6b08e33886027ea452ef3392a2f2c0", "OPEN_DRAFT"),
+        570: ("413bee4c232145be4cdf5745088fe1538a5f421b", "CLOSED_UNMERGED"),
+    }
+    seen = set()
+    for entry in qas:
+        qa = doc(entry, "independent QA")
+        n = qa.get("pr")
+        if n not in expected_qa or n in seen:
+            raise AdmissionError("duplicate or alternative QA")
+        seen.add(n)
+        h, state = expected_qa[n]
+        if (qa.get("agent") != "B01-61" or qa.get("target_sha") != FROZEN_SAVE_SHA
+                or qa.get("result") != "PASS_SOURCE_ONLY"
+                or qa.get("qa_sha") != h or qa.get("pr_state") != state
+                or qa.get("url") != pr_url(n)
+                or qa.get("merged") is not False):
+            raise AdmissionError("QA SHA/state does not match selected #556")
+    history = root.get("historical_rejections")
+    if (type(history) is not list or len(history) != 2
+            or {r.get("pr") for r in history if type(r) is dict} != {544, 549}
+            or any(type(r) is not dict or
+                   r.get("status") != "HISTORICAL_SECURITY_RED_NOT_SELECTED"
+                   for r in history)):
+        raise AdmissionError("historical security RED forgotten")
+    if (root.get("legacy_security_qa") != 550
+            or root.get("legacy_red_source_blob") !=
+                "6c036985411164372bf3d21d467780ff3777544e"):
+        raise AdmissionError("historical original #550 SHA mismatch")
+    host = doc(root.get("host_runtime"), "host_runtime")
+    if set(host) != set(HOLD_HOST):
+        raise AdmissionError("unknown host gate field or missing blocker")
+    for k, v in HOLD_HOST.items():
+        if host[k] != v or type(host[k]) is not type(v):
+            raise AdmissionError("unreviewed host gate promotion: " + k)
+    if root.get("adapter_package_id") != "NOT_ASSIGNED":
+        raise AdmissionError("no approved host bridge can be invented")
+    return {
+        "schema": SELECTED_V2_SCHEMA,
+        "selected_gameplay_pr": 510, "selected_save_pr": 556,
+        "selected_save_sha": FROZEN_SAVE_SHA,
+        "source_g0_recorded": "ACCEPTED_SOURCE_ONLY",
+        "independent_source_qa_records": [563, 570],
+        "historical_rejected_sources": [544, 549, 554],
+        "source_claims_authenticated_online": False,
+        "unity_host_adapter": "NOT_IMPLEMENTED",
+        "unity_cold_save_load": "NOT_RUN", "native_physx_g1": "NOT_RUN",
+        "receiver_migration": "NOT_DONE", "rollback": "SCRATCH_ONLY",
+        "codex_ack": "UNCONFIRMED", "g2": "HOLD",
+        "integrated": False, "release_allowed": False,
+        "verdict": "SOURCE_G0_RECORDED_HOST_GATE_HOLD",
+    }
+
+
+def selected_main(argv=None):
+    parser = argparse.ArgumentParser(description="W15 selected frozen #556 host receipt")
+    parser.add_argument("receipt", type=Path)
+    parser.add_argument("--output", type=Path)
+    a = parser.parse_args(argv)
+    try:
+        blob = a.receipt.read_bytes()
+        result = audit_selected_v2(json.loads(blob.decode("utf-8")))
+        result["input_sha256"] = hashlib.sha256(blob).hexdigest()
+        rendered = json.dumps(result, sort_keys=True, indent=2) + "\n"
+        if a.output is None:
+            print(rendered, end="")
+        else:
+            if a.output.resolve() == a.receipt.resolve() or a.output.exists():
+                raise AdmissionError("refuse to overwrite evidence")
+            with a.output.open("x", encoding="utf-8") as stream:
+                stream.write(rendered)
+        return 0
+    except (AdmissionError, OSError, ValueError, UnicodeError, TypeError) as err:
+        print("SELECTED_SAVE_HOST_HOLD: " + str(err), file=sys.stderr)
+        return 2
+
+
+# W16 authoritative original-source host-bridge intake (NOT a host adapter).
+BRIDGE_SCHEMA = "b01-w16-bridge-source-admission-v1"
+BRIDGE_EXPECTED = {
+    585: ("135a67d42acfccd59ca9145e09630d0b4bbade1c",
+          "e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b"),
+    587: ("ad7904eca571c742257551fa8103f266fcb9b752",
+          "16a7d7043a2ecb59a41bbfb063170235872fd7fc"),
+}
+BRIDGE_QA = {
+    585: (572, "135a67d42acfccd59ca9145e09630d0b4bbade1c",
+          "e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b",
+          "ACTIVATION_POSTVALIDATION_BYPASS"),
+    587: (588, "39f03fd6a0d5fae10be5419db4beb79201147bc8",
+          "db69bae2bf4cf106da68f13e0b067499f0da02f3",
+          "SAME_GENERATION_WORLD_FORK"),
+}
+BRIDGE_HOLDS = {
+    "unity_g1": "NOT_RUN",
+    "canonical_game_host": "NOT_INTEGRATED",
+    "canonical_save_reload": "HOLD",
+    "physical_receiver": "HOLD",
+    "migration": "NOT_DONE",
+    "rollback": "SAFE_WRAPPER_ONLY",
+    "original_510_rollback": "FORBIDDEN",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "merged": False,
+}
+
+
+def audit_bridge_wave16(payload):
+    """Version-specific offline source-provenance queue; never CODEX_READY."""
+    root = doc(payload, "W16 bridge intake")
+    if root.get("schema") != BRIDGE_SCHEMA:
+        raise AdmissionError("W16 schema mismatch")
+    frozen = doc(root.get("frozen"), "frozen")
+    if (frozen != {
+        "game_pr": 510, "game_sha": FROZEN_GAME_SHA,
+        "save_pr": 556, "save_sha": FROZEN_SAVE_SHA,
+        "frozen": True,
+    }):
+        raise AdmissionError("frozen #510/#556 identity or immutability violation")
+    candidates = root.get("candidates")
+    if type(candidates) is not list or len(candidates) != 2:
+        raise AdmissionError("exactly two W15 producer bridge lineages expected")
+    seen = set()
+    verdicts = {}
+    for entry in candidates:
+        c = doc(entry, "bridge candidate")
+        n = c.get("pr")
+        if n not in BRIDGE_EXPECTED or n in seen:
+            raise AdmissionError("duplicate or unknown adapter producer")
+        seen.add(n)
+        commit, blob = BRIDGE_EXPECTED[n]
+        if (c.get("sha") != commit or c.get("core_blob_sha") != blob
+                or c.get("url") != pr_url(n)
+                or c.get("producer_ci") != "PASS_SOURCE_ONLY"
+                or c.get("source_g0") != "NOT_ACCEPTED"
+                or c.get("source_only") is not True
+                or c.get("selected_save_sha") != FROZEN_SAVE_SHA
+                or c.get("gameplay_sha") != FROZEN_GAME_SHA):
+            raise AdmissionError("source SHA, blob, scope, producer or G0 spoof")
+
+        qa = doc(c.get("independent_qa"), "independent bridge QA")
+        qa_pr, tested_commit, tested_blob, bug = BRIDGE_QA[n]
+        if qa != {
+            "pr": qa_pr,
+            "url": pr_url(qa_pr),
+            "tested_commit": tested_commit,
+            "tested_core_blob": tested_blob,
+            "reproduced_defect": bug,
+            "verdict": "EXPECTED_RED_WITNESS",
+        }:
+            raise AdmissionError("original independent QA must retain exact RED witness")
+        if tested_commit == commit and tested_blob == blob:
+            verdicts[str(n)] = "HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED"
+        else:
+            verdicts[str(n)] = "HOLD_CHANGED_CORE_NEW_EXACT_SHA_QA_REQUIRED"
+
+    # W16 updated original-independent QA: #590 tested the CURRENT #587
+    # Git blob. Preserve the older #588 source RED as historical evidence,
+    # but do not keep advertising the newer exact source as "not re-tested".
+    fresh = doc(root.get("fresh_exact_587_qa"), "fresh_exact_587_qa")
+    if fresh != {
+        "pr": 590, "qa_sha": "c28565639bef834e64c092ce142c449acdfb7ae5",
+        "target_pr": 587,
+        "tested_commit": BRIDGE_EXPECTED[587][0],
+        "tested_core_blob": BRIDGE_EXPECTED[587][1],
+        "verdict": "EXPECTED_RED_WITNESS",
+        "defects": [
+            "SAME_GENERATION_WORLD_FORK",
+            "ROLLBACK_EXCEPTION_VERDICT_MASKED",
+        ],
+    }:
+        raise AdmissionError("current exact #587 independent QA #590 source/defects mismatch")
+    verdicts["587"] = "HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED"
+
+    if seen != set(BRIDGE_EXPECTED):
+        raise AdmissionError("both original producer candidates required")
+    historical = doc(root.get("noncanonical_qa"), "noncanonical_qa")
+    if historical != {
+        "pr": 582, "tested_port_pr": 577,
+        "defects": ["SAME_GENERATION_WORLD_FORK", "ABORT_THROWS_QUARANTINE_MASKED"],
+        "port_state": "ALTERNATIVE_HOLD",
+    }:
+        raise AdmissionError("B01-62 port RED must not be attached to #585/#587")
+    alternatives = root.get("alternatives_hold")
+    if (type(alternatives) is not list or
+            sorted(alternatives) != [494, 511, 544, 549, 554, 577, 584]):
+        raise AdmissionError("all original gameplay/save/port alternatives must be HOLD")
+    owner = doc(root.get("owner_selection"), "owner_selection")
+    if owner.get("actor") != "B01-23":
+        raise AdmissionError("only B01-23 can select its bridge lineage")
+    state = owner.get("state")
+    if state == "UNDECIDED":
+        if any(owner.get(key) is not None for key in
+               ("pr", "sha", "decision_url")):
+            raise AdmissionError("undecided cannot imply frozen selection")
+    elif state == "SELECTED_ONE":
+        if (owner.get("pr") != 587
+                or owner.get("sha") != BRIDGE_EXPECTED[587][0]
+                or owner.get("decision_url") != pr_url(596)):
+            raise AdmissionError("owner-selected #587 lineage requires actual new #596 producer PR")
+    else:
+        raise AdmissionError("invalid bridge selection state")
+
+    revision = doc(root.get("owner_correction"), "owner_correction")
+    if (revision != {
+        "pr": 596,
+        "selected_lineage_pr": 587,
+        "observed_unfrozen_head": "7bd598fde2204d6a397a50b199be12f072b5cd66",
+        "state": "DRAFT_SOURCE_QA_PENDING",
+        "merged": False,
+        "source_g0": "HOLD",
+    }):
+        raise AdmissionError("unapproved or already-promoted R2 revision")
+    if state != "SELECTED_ONE":
+        raise AdmissionError("corrected R2 #596 owner selection must be explicit")
+
+    gates = doc(root.get("release_gates"), "release_gates")
+    if set(gates) != set(BRIDGE_HOLDS):
+        raise AdmissionError("missing or additional release gate fields")
+    for key, required in BRIDGE_HOLDS.items():
+        if gates[key] != required or type(gates[key]) is not type(required):
+            raise AdmissionError("premature bridge host promotion: " + key)
+    return {
+        "schema": BRIDGE_SCHEMA,
+        "selected_source": owner.get("pr") if state == "SELECTED_ONE" else None,
+        "owner_decision_state": state,
+        "source_statuses": verdicts,
+        "selected_correction_pr": 596,
+        "selected_correction_status": "DRAFT_SOURCE_QA_PENDING",
+        "independent_exact_sha_qa_current_green": False,
+        "source_g0": "HOLD",
+        "native_unity_g1": "NOT_RUN",
+        "live_game_save_load": "HOLD",
+        "migration": "NOT_DONE",
+        "codex_ack": "UNCONFIRMED",
+        "g2": "HOLD", "integrated": False, "merge_authorized": False,
+        "external_review_identity_authenticated": False,
+        "verdict": "HOLD_NO_SELECTED_REPAIRED_BRIDGE",
+    }
+
+
+def bridge_main(argv=None):
+    parser = argparse.ArgumentParser(description="W16 selected host source intake HOLD")
+    parser.add_argument("receipt", type=Path)
+    parser.add_argument("--require-accepted-source", action="store_true")
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args(argv)
+    try:
+        raw = args.receipt.read_bytes()
+        result = audit_bridge_wave16(json.loads(raw.decode("utf-8")))
+        result["input_sha256"] = hashlib.sha256(raw).hexdigest()
+        content = json.dumps(result, sort_keys=True, indent=2) + "\n"
+        if args.output is None:
+            print(content, end="")
+        else:
+            if args.output.resolve() == args.receipt.resolve() or args.output.exists():
+                raise AdmissionError("refusing to overwrite source or prior evidence")
+            with args.output.open("x", encoding="utf-8") as out:
+                out.write(content)
+        return 2 if args.require_accepted_source else 0
+    except (AdmissionError, OSError, ValueError, TypeError, UnicodeError) as err:
+        print("W16_BRIDGE_SOURCE_HOLD: " + str(err), file=sys.stderr)
+        return 2
+
+
+
+# W17 exclusive *version* choice gate for the existing B01-23 #587 R2 lineage.
+# This audits SOURCE evidence records only. In particular, it does not claim
+# that either final corrected proposal has physically passed Unity G0/G1.
+FINAL_W17_SCHEMA = "b01-w17-one-bridge-version-v1"
+W17_CANDIDATES = {
+    596: {
+        "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+        "producer_ci": "PASS_SOURCE_ONLY",
+        "qa_pr": 607,
+        "qa_sha": "86f3292c928e52609db6c7afdb2010971d6946f1",
+        "qa_tested_commit": "efb2b06eafedab5469b57f163152d96aca3c5915",
+        "qa_scope": "EXACT_CORE_AND_CORRECTION_SOURCE_ONLY",
+        "qa_assertions_per_os": 82,
+        "archive_sha256": "005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9",
+        "archive_entries": 23,
+    },
+    604: {
+        "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+        "producer_ci": "PASS_SOURCE_ONLY",
+        "qa_pr": 603,
+        "qa_sha": "df1ed1e9707094cbdcac74662cda4094b7a0c370",
+        "qa_tested_commit": "7d206c63e1e9ab4ee4ce52eb314507ce49721d2c",
+        "qa_scope": "UNCHANGED_CORE_FENCE_ONLY_NOT_WHOLE_HEAD",
+        "qa_assertions_per_os": 52,
+        "archive_sha256": "ef110b5906d385cbc51938a35510c97516a0942b28ec055519a78d1e3fe5afb8",
+        "archive_entries": 27,
+    },
+}
+W17_NATIVE_HOLDS = {
+    "bridge_physical_g0": "NOT_ACCEPTED",
+    "unity_editmode_g1": "NOT_RUN",
+    "unity_playmode_g1": "NOT_RUN",
+    "unity_physx_g1": "NOT_RUN",
+    "canonical_private_rig_capture": "NOT_AUTHORIZED",
+    "canonical_private_ledger_hydration": "NOT_AUTHORIZED",
+    "live_cold_game_save_load": "HOLD",
+    "real_scene_migration": "NOT_DONE",
+    "rollback": "SCRATCH_SAFE_ONLY",
+    "original_510_rollback": "FORBIDDEN",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "installed": False,
+    "merged": False,
+}
+
+
+def audit_final_w17(payload):
+    """A single owner version decision cannot be inferred from passing QA."""
+    r = doc(payload, "W17 final intake")
+    if r.get("schema") != FINAL_W17_SCHEMA:
+        raise AdmissionError("W17 schema mismatch")
+    if r.get("frozen") != {
+        "game_pr": 510, "game_sha": FROZEN_GAME_SHA,
+        "save_pr": 556, "save_sha": FROZEN_SAVE_SHA,
+        "immutable": True,
+    }:
+        raise AdmissionError("frozen selected game/save altered")
+    prior = doc(r.get("lineage"), "lineage")
+    if prior != {
+        "selected_original_pr": 587,
+        "selected_original_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+        "original_587_source_release": "HOLD_P0_RED",
+        "alternative_585": "ALT_HOLD",
+    }:
+        raise AdmissionError("selected historical lineage mismatch")
+    sources = r.get("versions")
+    if type(sources) is not list or len(sources) != 2:
+        raise AdmissionError("two original R2 versions required for exclusive choice")
+    found = set()
+    for item in sources:
+        v = doc(item, "R2 version")
+        n = v.get("pr")
+        if n not in W17_CANDIDATES or n in found:
+            raise AdmissionError("unknown or duplicate competing R2")
+        found.add(n)
+        expected = W17_CANDIDATES[n]
+        if v != {"pr": n, "url": pr_url(n), **expected}:
+            raise AdmissionError("wrong original source, QA scope or archive hash")
+    if found != set(W17_CANDIDATES):
+        raise AdmissionError("one producer R2 omitted or blended")
+    choice = doc(r.get("owner_choice"), "owner_choice")
+    if choice.get("owner") != "B01-23":
+        raise AdmissionError("coordinator cannot claim B01-23 owner decision")
+    # W17 B01-23 original explicit owner freeze: ONLY #596. The #604
+    # B01-40/#62 receiver intake currently conflicts with this owner lock.
+    # A model-generated note or other role's selection never overrides #23.
+    state = choice.get("state")
+    if (state != "ONE_FROZEN"
+            or choice.get("selected_pr") != 596
+            or choice.get("loser_pr") != 604
+            or choice.get("decision_url") !=
+                "https://github.com/C8LyNn/RoboRougelike/pull/596#issuecomment-6529388456"):
+        raise AdmissionError("B01-23 sole frozen #596 owner decision; #604 ALT_HOLD")
+
+    scope = doc(r.get("receiver"), "receiver")
+    if set(scope) != set(W17_NATIVE_HOLDS):
+        raise AdmissionError("missing physical, native or canonical release gate")
+    for key, value in W17_NATIVE_HOLDS.items():
+        if scope[key] != value or type(scope[key]) is not type(value):
+            raise AdmissionError("fake SOURCE_G0, Unity, rollback, ACK or game promotion: " + key)
+    if r.get("offer_to_codex") is not False:
+        raise AdmissionError("G0 pending: no offer to Codex Inbox")
+    return {
+        "schema": FINAL_W17_SCHEMA,
+        "owner_choice": state,
+        "selected_version_pr": choice["selected_pr"] if state == "ONE_FROZEN" else None,
+        "version_sha": W17_CANDIDATES[choice["selected_pr"]]["sha"]
+            if state == "ONE_FROZEN" else None,
+        "available_competing_prs": [596, 604],
+        "historical_587_release": "HOLD_P0_RED",
+        "candidate_source_evidence": "RECORDS_ONLY_NOT_OWNER_RELEASE",
+        "one_qa_scope_604": "UNCHANGED_CORE_FENCE_ONLY_NOT_WHOLE_HEAD",
+        "physical_g0": "HOLD",
+        "native_g1": "NOT_RUN",
+        "canonical_game_save_load": "HOLD",
+        "codex_ack": "UNCONFIRMED",
+        "g2": "HOLD",
+        "source_claims_authenticated_online": False,
+        "authorized_offer": False, "installed": False, "merged": False,
+        "verdict": "HOLD_SELECTED_596_PENDING_PHYSICAL_G0",
+    }
+
+
+def final_w17_main(argv=None):
+    parser = argparse.ArgumentParser(description="W17 exclusive bridge version intake")
+    parser.add_argument("receipt", type=Path)
+    parser.add_argument("--require-accepted-source", action="store_true")
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args(argv)
+    try:
+        original = args.receipt.read_bytes()
+        result = audit_final_w17(json.loads(original.decode("utf-8")))
+        result["input_sha256"] = hashlib.sha256(original).hexdigest()
+        value = json.dumps(result, indent=2, sort_keys=True) + "\n"
+        if args.output is None:
+            print(value, end="")
+        else:
+            if args.output.resolve() == args.receipt.resolve() or args.output.exists():
+                raise AdmissionError("cannot overwrite original or existing evidence")
+            with args.output.open("x", encoding="utf-8") as output:
+                output.write(value)
+        return 3 if args.require_accepted_source else 0
+    except (AdmissionError, OSError, ValueError, UnicodeError, TypeError) as err:
+        print("W17_FINAL_VERSION_HOLD: " + str(err), file=sys.stderr)
+        return 2
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("receipt", type=Path)
+    p.add_argument("--require-single-source-candidate", action="store_true")
+    p.add_argument("--output", type=Path)
+    args = p.parse_args(argv)
+    try:
+        raw = args.receipt.read_bytes()
+        result = audit(json.loads(raw.decode("utf-8")))
+        result["input_sha256"] = hashlib.sha256(raw).hexdigest()
+        rendered = json.dumps(result, indent=2, sort_keys=True) + "\n"
+        if args.output is None:
+            print(rendered, end="")
+        else:
+            if args.output.resolve() == args.receipt.resolve() or args.output.exists():
+                raise AdmissionError("refuse to overwrite evidence")
+            with args.output.open("x", encoding="utf-8") as f:
+                f.write(rendered)
+        if args.require_single_source_candidate and not result["single_contract_source_record_consistent"]:
+            return 2
+        return 0
+    except (AdmissionError, OSError, ValueError, TypeError, UnicodeError) as exc:
+        print("SAVE_CONTRACT_HOLD: " + str(exc), file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--final-w17":
+        raise SystemExit(final_w17_main(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "--bridge-w16":
+        raise SystemExit(bridge_main(sys.argv[2:]))
+    if len(sys.argv) > 1 and sys.argv[1] == "--selected-v2":
+        raise SystemExit(selected_main(sys.argv[2:]))
+    raise SystemExit(main())

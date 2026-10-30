@@ -1,0 +1,100 @@
+{
+  "schema": "b01-w23-single-authority-migration-model-r1",
+  "original_sources": {
+    "host": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "physical_g0": "ACCEPTED_SOURCE_ONLY",
+      "native": "NOT_RUN"
+    },
+    "canonical_v3": {
+      "pr": 729,
+      "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+      "producer": "PASS_152_SOURCE",
+      "physical_g0": "PENDING",
+      "native": "NOT_RUN"
+    },
+    "session_r2": {
+      "pr": 712,
+      "sha": "bd8905ad549a7b26854b671be971f7d781308311",
+      "independent_707": "PASS_SCOPED_OLD_V2_ONLY",
+      "native": "NOT_RUN"
+    },
+    "store": {
+      "pr": 669,
+      "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+      "external_rollback": "UNRESOLVED_680"
+    },
+    "game": {
+      "pr": 510,
+      "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+      "private_port": "NOT_IMPLEMENTED"
+    },
+    "codec": {
+      "pr": 556,
+      "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+      "immutable": true
+    },
+    "cold_restart": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "actual_generation": 5,
+      "asserted_generation": 4,
+      "fixture": "RED_718"
+    },
+    "runner": {
+      "pr": 711,
+      "sha": "02272e8b0facc00d3943672770251b1d01182b85",
+      "native": "NOT_RUN"
+    }
+  },
+  "alternatives_hold": [
+    719,
+    695,
+    693,
+    682,
+    652,
+    644,
+    604
+  ],
+  "receivers": {
+    "one_lock": "B01-23/62",
+    "native_private_port": "B01-23/20/62",
+    "independent_security": "B01-61/41",
+    "physical_source_g0": "B01-40/62",
+    "native_g1": "B01-60+LOCAL_OPERATOR",
+    "cold_restart_fixture": "B01-23",
+    "trusted_rollback": "B01-62+OWNER",
+    "eventual_integrator": "B01-00+OWNER+CODEX_LATER"
+  },
+  "observed_risk": {
+    "sole_selected_v3": 729,
+    "loser_v3": 719,
+    "loser_status": "ALT_HOLD",
+    "frozen_host": 690,
+    "host_alt": 693,
+    "canonical_bridge_pr": null,
+    "bridge_git_sha": null,
+    "same_os_lock": "NOT_IMPLEMENTED",
+    "constructor_v3_r2_compiles": "NOT_RUN",
+    "lease_layout_legacy": [
+      ".owner",
+      ".lease"
+    ],
+    "owned_host_world_binding": "NOT_IMPLEMENTED",
+    "trusted_external_rollback": "UNRESOLVED",
+    "cold_restart_corrected_new_pr": null,
+    "independent_v3_qa": "NOT_RUN",
+    "combined_source_g0": "HOLD",
+    "unity_g1": "NOT_RUN",
+    "codex_ack": null,
+    "integrator_feedback": "NOT_MEASURED",
+    "merged": false
+  },
+  "source_only_handoff": true,
+  "tests_are_reference_model_only": true,
+  "user_pc_access": false,
+  "native_nunit_xml": null,
+  "native_editor_log": null,
+  "human_economy_trials": 0
+}

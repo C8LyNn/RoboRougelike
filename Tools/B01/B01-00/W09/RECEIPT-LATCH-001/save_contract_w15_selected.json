@@ -1,0 +1,87 @@
+{
+  "schema": "b01-w15-selected-save-host-gate-v1",
+  "gameplay": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/510",
+    "frozen": true
+  },
+  "selected_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/556",
+    "version": "2.0.0",
+    "target_game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "frozen": true
+  },
+  "owner_choice": {
+    "agent": "B01-23",
+    "selection": "SELECTED_ONE",
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "alternatives_hold": [
+    494,
+    511,
+    544,
+    549,
+    554
+  ],
+  "physical_source_g0": {
+    "agent": "B01-40",
+    "state": "ACCEPTED_SOURCE_ONLY",
+    "pr": 560,
+    "url": "https://github.com/C8LyNn/RoboRougelike/pull/560",
+    "qa_sha": "1a218df9e287a8a254b7d84c228c962ab232b9b5",
+    "target_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "inner_zip_sha256": "20c3c17c252f084014e9766010ab4651770a41f73ce534fc2aa7fd2edc697060",
+    "members": 17
+  },
+  "independent_source_qa": [
+    {
+      "agent": "B01-61",
+      "pr": 563,
+      "url": "https://github.com/C8LyNn/RoboRougelike/pull/563",
+      "qa_sha": "42aa590a2f6b08e33886027ea452ef3392a2f2c0",
+      "target_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+      "result": "PASS_SOURCE_ONLY",
+      "pr_state": "OPEN_DRAFT",
+      "merged": false
+    },
+    {
+      "agent": "B01-61",
+      "pr": 570,
+      "url": "https://github.com/C8LyNn/RoboRougelike/pull/570",
+      "qa_sha": "413bee4c232145be4cdf5745088fe1538a5f421b",
+      "target_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+      "result": "PASS_SOURCE_ONLY",
+      "pr_state": "CLOSED_UNMERGED",
+      "merged": false
+    }
+  ],
+  "historical_rejections": [
+    {
+      "pr": 544,
+      "status": "HISTORICAL_SECURITY_RED_NOT_SELECTED"
+    },
+    {
+      "pr": 549,
+      "status": "HISTORICAL_SECURITY_RED_NOT_SELECTED"
+    }
+  ],
+  "legacy_security_qa": 550,
+  "legacy_red_source_blob": "6c036985411164372bf3d21d467780ff3777544e",
+  "adapter_package_id": "NOT_ASSIGNED",
+  "host_runtime": {
+    "adapter": "NOT_IMPLEMENTED",
+    "actual_unity_save_reload": "NOT_RUN",
+    "native_physx_g1": "NOT_RUN",
+    "migration": "NOT_DONE",
+    "receiver_rollback": "SCRATCH_ONLY",
+    "original_510_rollback": "FORBIDDEN",
+    "codex_ack": "NONE",
+    "integrated": false,
+    "merged": false,
+    "g2": "HOLD"
+  }
+}

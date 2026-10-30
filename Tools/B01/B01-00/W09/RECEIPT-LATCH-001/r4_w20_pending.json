@@ -1,0 +1,153 @@
+{
+  "schema": "b01-w20-r4-api-windows-intake-v1",
+  "frozen": {
+    "game510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "host596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "r3_642": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "r3_644": "ALT_HOLD",
+    "r2_604": "ALT_HOLD"
+  },
+  "owner_choice": {
+    "authority": "B01-23",
+    "decision": "ONE_FROZEN_R4_SOURCE_ONLY",
+    "winner_pr": 647,
+    "loser_pr": 652,
+    "comment_url": "https://github.com/C8LyNn/RoboRougelike/pull/647"
+  },
+  "canonical_api": {
+    "issue": 666,
+    "authority": "OWNER_APPROVED_NEW_VERSIONED_IMPLEMENTATION",
+    "source_pr": null,
+    "source_sha": null,
+    "implemented": false,
+    "independent_qa": "NOT_RUN",
+    "captured_private_rig_ledger": false,
+    "atomic_single_slot_recovery": "NOT_IMPLEMENTED",
+    "canonical_game_integrated": false
+  },
+  "local_unity": {
+    "issue": 667,
+    "lead": "B01-60",
+    "local_operator_opt_in": false,
+    "runner_pr": null,
+    "runner_sha": null,
+    "source_review": "PENDING",
+    "exact_editor_version": "6000.3.14f1",
+    "private_disposable_checkout": "NOT_VERIFIED",
+    "credentials_disclosed": false,
+    "remote_ssh_used": false,
+    "unity_editor_executed": false,
+    "editmode": "NOT_RUN",
+    "playmode": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "nunit_xml": null,
+    "editor_log": null,
+    "source_manifest": null
+  },
+  "economy": {
+    "issue": 668,
+    "policy": "PROVISIONAL_PER_UNIQUE_VICTORY_EPOCH",
+    "global_free_reservations_per_victory": 1,
+    "victory_event_id_one_use": true,
+    "stale_restore_replay_denied": "NOT_IMPLEMENTED",
+    "source252": "FROZEN",
+    "unit_price": "TUNABLE_UNDECIDED",
+    "player_balancing_trials": 0,
+    "human_preference_measured": false
+  },
+  "gates": {
+    "selected_r4_g0": "HOLD_SOURCE_P0_RED",
+    "new_r4_native_g1": "NOT_RUN",
+    "canonical_game_save": "HOLD",
+    "codex_available": false,
+    "codex_offer": "BLOCKED",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "merged": false,
+    "integrated": false,
+    "released": false
+  },
+  "lifecycle": {
+    "IMPLEMENTED": true,
+    "TESTED": true,
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "integrator_feedback": {
+    "outcome": "NOT_MEASURED",
+    "review_url": null,
+    "elapsed_seconds": null,
+    "attempts": null,
+    "conflicts": null,
+    "regressions": null
+  },
+  "authoritative_selection_source": "B01-23_EXPLICIT_COMMENT_REQUIRED",
+  "co_install_alternatives": false,
+  "authorized_protected_merge": false,
+  "r4_candidates": [
+    {
+      "pr": 647,
+      "source": {
+        "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+        "source_ci": 41110483164,
+        "physical_zip_sha256": "9ae2919e9cfdea1bf75f785b1cdfc2d3465a6a90c7d18ff22def69cb53406d30",
+        "physical_zip_bytes": 105099,
+        "physical_zip_members": 23,
+        "independent_security": {
+          "pr": 664,
+          "sha": "398b160cec2918be21ed29dbb1dfcef833198b81",
+          "run": 41112337448,
+          "cases_each_os": 46,
+          "scope": "DIRECT_ORIGINAL_CORE_PLUS_SYNTHETIC_UNITY_HOST"
+        },
+        "independent_receiver": {
+          "pr": 662,
+          "sha": "ccc1d047ead4d9dfe578dba89d4b4ef96f680efd",
+          "run": 41112235790,
+          "cases_each_os": 97,
+          "scope": "PHYSICAL_GIT_ZIP_AND_DIRECT_DISK_CORE"
+        },
+        "lease_lifecycle": "DISABLE_GREEN_BUT_COMPONENT_DESTROY_ORPHAN_RED",
+        "new_component_destroy_qa": {
+          "pr": 670,
+          "producer_sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+          "observed_original_source_run": 41114875911,
+          "ubuntu_assertions": 17,
+          "finding": "HOST_COMPONENT_DESTROY_ONLY_RELEASES_SLOT_WITH_LIVE_ORPHAN_RIGIDBODIES",
+          "native_unity": "NOT_RUN",
+          "release_gate": "HOLD_SOURCE_P0_RED"
+        }
+      },
+      "owner": "B01-23",
+      "parent": "r3_642",
+      "admission": "SELECTED_SOURCE_QA_ONLY",
+      "original_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/647",
+      "tested_source_only": true,
+      "independent_formal_g0": "PENDING",
+      "native_unity": "NOT_RUN"
+    },
+    {
+      "pr": 652,
+      "source": {
+        "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+        "source_ci": 41110778985,
+        "physical_zip_sha256": "cf9412e2f34fadeb75e028387eb5869c4444c1b9e8a3b88e7c6f40bba7f37f9e",
+        "physical_zip_bytes": 111519,
+        "physical_zip_members": 25,
+        "independent_security": null,
+        "independent_receiver": null,
+        "lease_lifecycle": "ONDISABLE_RELEASE_SOURCE_RISK_NOT_NATIVE_PROVEN"
+      },
+      "owner": "B01-23",
+      "parent": "r3_642",
+      "admission": "ALT_HOLD",
+      "original_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/652",
+      "tested_source_only": true,
+      "independent_formal_g0": "ALT_HOLD",
+      "native_unity": "NOT_RUN"
+    }
+  ]
+}
