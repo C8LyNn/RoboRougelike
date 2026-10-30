@@ -28,12 +28,12 @@
     ".github/workflows/b01-62-p17w07-hazard-temporal.yml"
   ],
   "qa_blob_pins": {
-    "Tools/B01/B01-62/P17W07HazardTemporalQA/receiver.py": "fb041f270d5d61c07350a215be6944b5ec82147c",
-    "Tools/B01/B01-62/P17W07HazardTemporalQA/test_receiver.py": "b43bf4e54b6f2fc4a74dbd0223890e3e8dcd6441",
-    "Tools/B01/B01-62/P17W07HazardTemporalQA/README.md": "ec89c12589b4a2f07a4e07621028c6f38299ab0e",
-    ".github/workflows/b01-62-p17w07-hazard-temporal.yml": "fd9f9f0c97a06ba92c0cf0e9c6c5a6b44aac2065"
+    "Tools/B01/B01-62/P17W07HazardTemporalQA/receiver.py": "5e674fae3a4a621eec666917005529c6d6a81cde",
+    "Tools/B01/B01-62/P17W07HazardTemporalQA/test_receiver.py": "79acc5b970f4ca9682ff7f6ca9662912fbc38f9c",
+    "Tools/B01/B01-62/P17W07HazardTemporalQA/README.md": "790c7c9954911fdf6360fdb76752f4bfa4694df4",
+    ".github/workflows/b01-62-p17w07-hazard-temporal.yml": "2fca005d3938756e12af86a3b7a1445f5b7d4e19"
   },
-  "checks_expected": "16 unittest per OS, original-git source-provenance and 2 time-expanded routes, 3rd cross-OS byte parity job",
+  "checks_expected": "17 unittest per OS, original-git source-provenance and 2 time-expanded routes, 3rd cross-OS byte parity job",
   "actual_results": "CI_PENDING",
   "assumptions": [
     "Point entity source-grid moves one 4m cell per 1s, 0.25s interpolation, instant turns, optional waiting",
