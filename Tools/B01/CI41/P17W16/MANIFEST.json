@@ -1,0 +1,36 @@
+{
+  "package": "CI41-BRIDGE-QA-FRESHNESS-001",
+  "version": "1.0.0",
+  "owner": "B01-41",
+  "wave": "PASS17_WAVE16",
+  "branch": "ci/b01-41-p17w16-bridge-qa-freshness",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "game_frozen_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "save_frozen_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "producer_options": {
+    "585": {
+      "sha": "135a67d42acfccd59ca9145e09630d0b4bbade1c",
+      "qa": 572,
+      "qa_result": "ORIGINAL_SOURCE_RED"
+    },
+    "587": {
+      "sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+      "qa": 588,
+      "qa_result": "STALE_SOURCE_BLOB_AND_ORIGINAL_SOURCE_RED"
+    }
+  },
+  "selection": "NONE_BY_CI41",
+  "tests_per_os": 41,
+  "owned_paths": [
+    "Tools/B01/CI41/P17W16/bridge_qa_freshness.py",
+    "Tools/B01/CI41/P17W16/test_bridge_qa_freshness.py",
+    "Tools/B01/CI41/P17W16/README.md",
+    "Tools/B01/CI41/P17W16/MANIFEST.json",
+    ".github/workflows/b01-41-p17w16-bridge-qa-freshness.yml"
+  ],
+  "release_gate": "HOLD",
+  "native_g1": "NOT_RUN",
+  "codex_ack": false,
+  "integrated": false,
+  "rollback": "Isolated CI41 branch; do not merge; remove only W16-owned 5 paths."
+}
