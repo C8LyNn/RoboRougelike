@@ -49,3 +49,17 @@ Wszystkie nowe pliki należą tylko do `Research/B01-24/P17/W07-NOISE-INVESTIGAT
 **B01-40:** sprawdzić Git bloby w manifeście, obecny docelowy R3 ABI, pełny zakres PR, stabilność GUID i realny wynik CI. **B01-60:** niezależnie sprawdzić event watermark, monotoniczne ticki, pamięć/false positives, degeneracje Float, losowe sekwencje, realną nawigację/WorldLOS dopiero przy natywnym Unity. **B01-00:** sam decyduje, czy włączyć kod do kolejki Codexa; nie jest to automatycznie `CODEX_SENT`.
 
 **Codex-only integracja, dopiero po ACK:** sprawdzić bieżący realny runtime SHA, importować TYLKO `EnemyInvestigation.cs` + `.meta` do nowego `Assets/B0124EnemyInvestigation/`, opcjonalnie podłączyć bezpieczny adapter percepcji i istniejącą nawigację, zachować domyślną ścieżkę przeciwnika gdy funkcja wyłączona. Testy natywne: rzeczywista widoczność przez R5 geometry, odgłosy broni i kolizji, wiele wrogów, brak teleportów, brak przechodzenia przez ściany i bez uszkodzenia broni/AI. Zmiany `P12PipelineSafeEnemyTurret` może wykonywać **wyłącznie Codex**. Rollback: wyłączyć adapter i usunąć tylko dodatkowe pliki B0124, po sprawdzeniu kopii lokalnie edytowanych plików. No merge i no Game G2 claim.
+
+
+## WAVE07 — fizyczny ZIP odbiorczy dla Codexa i niezależnego QA
+
+Po sprawdzeniu oryginalnego manifestu `Tools/build_receiver.py` buduje deterministyczny, **rzeczywisty ZIP bajtów** dwóch oryginalnych plików Unity (`EnemyInvestigation.cs`, `EnemyInvestigation.cs.meta`) w dedykowanym `Assets/B0124EnemyInvestigation/`; dołącza `receiver-receipt.json` z SHA-256 archiwum i SHA256 każdego wpisu. Komenda **odmawia nadpisania** istniejącego katalogu odbioru i odrzuca zmianę dowolnego przypiętego bloba, oryginalnego R3, GUID lub próbę symlinka/traversal. Nigdy nie kopiuje ani nie zmienia canonical `Assets/**`.
+
+```sh
+python -m unittest discover -s Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools -p "test_receiver.py" -v
+python Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools/build_receiver.py --repo . --out b01-24-W07-source-zip
+```
+
+16 testów oryginalnego pakowacza wykonuje rzeczywiste operacje ZIP, CRC, bajtową deterministyczność i celowe błędne źródła na osobnych, tymczasowych katalogach. CI buduje osobne artefakty do pobrania na Windows2025 i Ubuntu24.04; można porównać ich **wewnętrzny** ZIP SHA-256 (nie należy utożsamiać go z zewnętrznym archiwum GitHub Actions).
+
+To ZIP dwóch oryginalnych plików importu C#, **nie** `.unitypackage`, prefab ani scena. Wewnętrzny folder `Assets/B0124EnemyInvestigation` to wyłącznie docelowa ścieżka opcjonalnego *przyszłego* importu autoryzowanego przez Codexa. Natywne Unity pozostaje NOT_RUN nawet po utworzeniu prawdziwego archiwum.
