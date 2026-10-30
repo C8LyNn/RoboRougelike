@@ -70,7 +70,7 @@ def zip_files(raw,outer=False):
         # Inspect ORIGINAL local and central directory header bytes first.
         central=z.start_dir
         for item in infos:
-            check(central>=0 and raw[central:central+4]==b"PK\\x01\\x02",
+            check(central>=0 and raw[central:central+4]==b"PK\x01\x02",
                   "INVALID_RAW_CENTRAL_DIRECTORY")
             check(central+46<=len(raw),"TRUNCATED_RAW_CENTRAL_HEADER")
             name_len,extra_len,comment_len=struct.unpack_from("<HHH",raw,central+28)
@@ -79,7 +79,7 @@ def zip_files(raw,outer=False):
             central_name=raw[central+46:central+46+name_len]
             central=central_end
             offset=item.header_offset
-            check(offset>=0 and raw[offset:offset+4]==b"PK\\x03\\x04",
+            check(offset>=0 and raw[offset:offset+4]==b"PK\x03\x04",
                   "INVALID_RAW_LOCAL_HEADER")
             check(offset+30<=len(raw),"TRUNCATED_RAW_LOCAL_HEADER")
             local_name_len,local_extra_len=struct.unpack_from("<HH",raw,offset+26)
