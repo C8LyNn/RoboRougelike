@@ -1,0 +1,68 @@
+{
+  "package_id": "B01-31-DOCK-DENIED-ANIM-001",
+  "version": "P17-W11-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "dispatch_issue": 500,
+  "purpose": "Four usable original 2D looped denied/HOLD visual feedback animations, not a gameplay-security feature",
+  "distinct_from": "W10 #489 authored four static diagnostic SVG concepts and 12 static PNGs; W11 produces actual 4x8 temporal VFX and Unity importable physical frame assets without touching W10 originals",
+  "w10_immutable_source": {
+    "pr": 489,
+    "commit": "7944af98524b7eb5ceadb88eb056de1d486ac461",
+    "path": "Tools/B01-31/P17/W10SafeDockSignals001/source/*.svg",
+    "git_blobs": {
+      "collision-overlap": "8c762cde35b5cc991130ac643c2a558de6a31cdb",
+      "distance-limit": "ff40ff8c5c1c68867004b439fa797e51dc999544",
+      "unguarded-route": "45bfb39e323279b667245b3e19bf8ad3bb4231fb",
+      "query-saturated": "d604cbd4af1aa5e9b5111576f36fa5a5dd28a993"
+    }
+  },
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "owned_paths": [
+    "Tools/B01-31/P17/W11DockDeniedVfx001/**",
+    ".github/workflows/b01-31-p17w11-dock-denied-vfx.yml"
+  ],
+  "deliverables": [
+    "32 actual 192x192 RGBA motion frames, 8 per denial/HOLD state",
+    "four original eight-frame 100ms looping animated preview GIFs",
+    "four 1536x192 eight-frame horizontal sprite strips",
+    "one 1536x860 all-state storyboard PNG",
+    "Unity 6 isolated 70-member ZIP: 32 sprite PNG + 32 .meta + 6 folder .meta, 38 GUID unique",
+    "clip_timing.json with exact per-state chronological PNG names and 100ms timing",
+    "receipt.json per-frame/ZIP SHA256 actual output"
+  ],
+  "technique": "CairoSVG 2.8.2 raster from immutable original W10 SVG source + original Pillow 11.3.0 programmatic halo/ring/scan/status pulses; no third-party artwork",
+  "semantics": [
+    "Physical overlap denied",
+    "Distance beyond allowed reach denied",
+    "Unguarded public legacy Reattach route HOLD",
+    "Collision query incomplete/saturated HOLD"
+  ],
+  "safety": "Visual feedback only; no success/SAFE/allow output, NO true API guard, NO Unity PhysX, NO retry/rearm/transaction state mutation",
+  "open_P0": [
+    "#488/#494 choose one without double install, B01-23 owner only",
+    "#486 commit-before-ledger-rearm/partial transaction risk B01-23 must repair",
+    "B01-40/60/61/62 formal independent code QA, not affected by art"
+  ],
+  "tests": [
+    "exact immutable W10 source Git commit and four original Git blob IDs",
+    "raster original actual SVG bytes, 32 actual 192x192 transparent frame PNGs with unique visible frames",
+    "four actual GIF 8x100ms readable preview loops",
+    "four contact strips+one full 4-state 32-frame storyboard",
+    "70-member physical zip CRC/bytes, no traversal/case collisions, exactly 38 deterministic unique Unity GUIDs",
+    "6 negative mutants/input-invalid checks plus independently authored receiver validation of real artifact",
+    "full deterministic rerender byte identity, optional Windows receiver for actual physical output"
+  ],
+  "native_unity": "NOT_RUN",
+  "formal_independent_QA": "B01-40/B01-60 PENDING",
+  "G2": "HOLD",
+  "codex_ACK": false,
+  "integration": false,
+  "rollback": "Delete only this W11 tool directory/workflow from disposable branch; if a future licensed Unity receiver imported it then delete ONLY Assets/B0131DockDeniedVfx/ and its root .meta; do not remove W10 art/source or game code",
+  "recipients": [
+    "B01-12 UX/interaction designer for optional semantic mapping AFTER validated backend status",
+    "B01-40 physical ZIP/GUID and current receiver conflicts",
+    "B01-60 licensed Unity 6 Sprite import/GPU/alpha/human legibility",
+    "B01-23 reattach security remains solely its responsibility",
+    "B01-00 eventual #79 decision; no Codex ACK assumed"
+  ]
+}
