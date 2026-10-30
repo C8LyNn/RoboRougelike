@@ -1,0 +1,345 @@
+{
+  "package": "B01-12-TACTICAL-PING-001/R1",
+  "runtime": "v22.16.0",
+  "cases": [
+    {
+      "name": "initial valid and empty",
+      "result": "PASS"
+    },
+    {
+      "name": "invalid extra state key",
+      "result": "PASS"
+    },
+    {
+      "name": "empty accepted tick",
+      "result": "PASS"
+    },
+    {
+      "name": "deterministic export",
+      "result": "PASS"
+    },
+    {
+      "name": "unknown op reject",
+      "result": "PASS"
+    },
+    {
+      "name": "event null reject",
+      "result": "PASS"
+    },
+    {
+      "name": "reset exact schema",
+      "result": "PASS"
+    },
+    {
+      "name": "extra reset key reject",
+      "result": "PASS"
+    },
+    {
+      "name": "valid rank empty",
+      "result": "PASS"
+    },
+    {
+      "name": "invalid rank empty",
+      "result": "PASS"
+    },
+    {
+      "name": "add attack",
+      "result": "PASS"
+    },
+    {
+      "name": "ttl expiry attack",
+      "result": "PASS"
+    },
+    {
+      "name": "priority preserved attack",
+      "result": "PASS"
+    },
+    {
+      "name": "add defend",
+      "result": "PASS"
+    },
+    {
+      "name": "ttl expiry defend",
+      "result": "PASS"
+    },
+    {
+      "name": "priority preserved defend",
+      "result": "PASS"
+    },
+    {
+      "name": "add repair",
+      "result": "PASS"
+    },
+    {
+      "name": "ttl expiry repair",
+      "result": "PASS"
+    },
+    {
+      "name": "priority preserved repair",
+      "result": "PASS"
+    },
+    {
+      "name": "add move",
+      "result": "PASS"
+    },
+    {
+      "name": "ttl expiry move",
+      "result": "PASS"
+    },
+    {
+      "name": "priority preserved move",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID ",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID lower",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID P-1",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID a",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID <script>",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID 1234567890123456789",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID 123",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID null",
+      "result": "PASS"
+    },
+    {
+      "name": "reject invalid ID P.3",
+      "result": "PASS"
+    },
+    {
+      "name": "reject x -1",
+      "result": "PASS"
+    },
+    {
+      "name": "reject y -1",
+      "result": "PASS"
+    },
+    {
+      "name": "reject x 1000",
+      "result": "PASS"
+    },
+    {
+      "name": "reject y 1000",
+      "result": "PASS"
+    },
+    {
+      "name": "reject x 1.2",
+      "result": "PASS"
+    },
+    {
+      "name": "reject y 1.2",
+      "result": "PASS"
+    },
+    {
+      "name": "reject x NaN",
+      "result": "PASS"
+    },
+    {
+      "name": "reject y NaN",
+      "result": "PASS"
+    },
+    {
+      "name": "reject x Infinity",
+      "result": "PASS"
+    },
+    {
+      "name": "reject y Infinity",
+      "result": "PASS"
+    },
+    {
+      "name": "reject x null",
+      "result": "PASS"
+    },
+    {
+      "name": "reject y null",
+      "result": "PASS"
+    },
+    {
+      "name": "reject priority 0",
+      "result": "PASS"
+    },
+    {
+      "name": "reject priority 4",
+      "result": "PASS"
+    },
+    {
+      "name": "reject priority -1",
+      "result": "PASS"
+    },
+    {
+      "name": "reject priority 1.1",
+      "result": "PASS"
+    },
+    {
+      "name": "reject priority 2",
+      "result": "PASS"
+    },
+    {
+      "name": "reject priority null",
+      "result": "PASS"
+    },
+    {
+      "name": "reject time -1",
+      "result": "PASS"
+    },
+    {
+      "name": "reject time 1.2",
+      "result": "PASS"
+    },
+    {
+      "name": "reject time NaN",
+      "result": "PASS"
+    },
+    {
+      "name": "reject time Infinity",
+      "result": "PASS"
+    },
+    {
+      "name": "reject time 1000000001",
+      "result": "PASS"
+    },
+    {
+      "name": "reject time 3",
+      "result": "PASS"
+    },
+    {
+      "name": "clock rewind",
+      "result": "PASS"
+    },
+    {
+      "name": "duplicate ID reject",
+      "result": "PASS"
+    },
+    {
+      "name": "reject no select ID",
+      "result": "PASS"
+    },
+    {
+      "name": "select null",
+      "result": "PASS"
+    },
+    {
+      "name": "remove selected clears",
+      "result": "PASS"
+    },
+    {
+      "name": "unknown remove reject",
+      "result": "PASS"
+    },
+    {
+      "name": "strict remove keys",
+      "result": "PASS"
+    },
+    {
+      "name": "strict select keys",
+      "result": "PASS"
+    },
+    {
+      "name": "strict tick keys",
+      "result": "PASS"
+    },
+    {
+      "name": "rank priority",
+      "result": "PASS"
+    },
+    {
+      "name": "cap exactly six",
+      "result": "PASS"
+    },
+    {
+      "name": "no partial mutation rejected cap",
+      "result": "PASS"
+    },
+    {
+      "name": "rev serial six",
+      "result": "PASS"
+    },
+    {
+      "name": "expired selected resets",
+      "result": "PASS"
+    },
+    {
+      "name": "restart reset",
+      "result": "PASS"
+    },
+    {
+      "name": "round trip import/export",
+      "result": "PASS"
+    },
+    {
+      "name": "import invalid JSON",
+      "result": "PASS"
+    },
+    {
+      "name": "import oversized",
+      "result": "PASS"
+    },
+    {
+      "name": "import unknown key",
+      "result": "PASS"
+    },
+    {
+      "name": "import duplicate marker ID",
+      "result": "PASS"
+    },
+    {
+      "name": "import stale expired marker",
+      "result": "PASS"
+    },
+    {
+      "name": "import nonexistent selection",
+      "result": "PASS"
+    },
+    {
+      "name": "import malicious extra proto key",
+      "result": "PASS"
+    },
+    {
+      "name": "state cannot be array",
+      "result": "PASS"
+    },
+    {
+      "name": "validate no side effects",
+      "result": "PASS"
+    },
+    {
+      "name": "input coords cloned",
+      "result": "PASS"
+    },
+    {
+      "name": "strict event object keys",
+      "result": "PASS"
+    },
+    {
+      "name": "future serial cap",
+      "result": "PASS"
+    },
+    {
+      "name": "clock at max expires overflow",
+      "result": "PASS"
+    }
+  ],
+  "total": 84,
+  "pass": 84,
+  "fail": 0
+}

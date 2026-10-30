@@ -1,0 +1,25 @@
+{
+  "package": "B01-12-TACTICAL-PING-001/R1",
+  "source": {
+    "demo.html": {
+      "bytes": 4551,
+      "sha256": "b3a7591508857e2d7aecf1bb3d7f4042c9cce8bff11b9633b22085d62935284b"
+    },
+    "ping_engine.js": {
+      "bytes": 5339,
+      "sha256": "0f6f4c82e4698e6fbffc64fbe93a09044dc0ee3ac8b73692db91669ef0b2b01b"
+    },
+    "ui.js": {
+      "bytes": 3077,
+      "sha256": "02dd0837c9242b12bfe53e45f14bec9cb16353b64b79183cd93f001fd98ffcd8"
+    },
+    "test_engine.cjs": {
+      "bytes": 7784,
+      "sha256": "2ff05718e7052ead66390ebc18790fbb6bdc91285d4b503bf14a7d2189c8677d"
+    },
+    "test_browser.py": {
+      "bytes": 4709,
+      "sha256": "5e9f773b8c73729cdee17ac1678b331b75ad91bad07d3003b1ad1db8f768f9ac"
+    }
+  }
+}

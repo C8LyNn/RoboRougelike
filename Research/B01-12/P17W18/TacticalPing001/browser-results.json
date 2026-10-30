@@ -1,0 +1,346 @@
+{
+  "package": "B01-12-TACTICAL-PING-001/R1",
+  "browser": "actual Chromium Playwright",
+  "cases": [
+    {
+      "name": "320 title",
+      "result": "PASS"
+    },
+    {
+      "name": "320 initial 0/6",
+      "result": "PASS"
+    },
+    {
+      "name": "320 status ready",
+      "result": "PASS"
+    },
+    {
+      "name": "320 map visible",
+      "result": "PASS"
+    },
+    {
+      "name": "320 no overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "320 enter creates",
+      "result": "PASS"
+    },
+    {
+      "name": "320 first selected",
+      "result": "PASS"
+    },
+    {
+      "name": "320 first attack",
+      "result": "PASS"
+    },
+    {
+      "name": "320 count one",
+      "result": "PASS"
+    },
+    {
+      "name": "320 snapshot valid",
+      "result": "PASS"
+    },
+    {
+      "name": "320 2 markers",
+      "result": "PASS"
+    },
+    {
+      "name": "320 repair color",
+      "result": "PASS"
+    },
+    {
+      "name": "320 snapshot priority",
+      "result": "PASS"
+    },
+    {
+      "name": "320 tick 2s",
+      "result": "PASS"
+    },
+    {
+      "name": "320 attack expired",
+      "result": "PASS"
+    },
+    {
+      "name": "320 repair retained",
+      "result": "PASS"
+    },
+    {
+      "name": "320 remove selected",
+      "result": "PASS"
+    },
+    {
+      "name": "320 reset clock",
+      "result": "PASS"
+    },
+    {
+      "name": "320 reset markers",
+      "result": "PASS"
+    },
+    {
+      "name": "320 no exceptions",
+      "result": "PASS"
+    },
+    {
+      "name": "320 no overflow after interactions",
+      "result": "PASS"
+    },
+    {
+      "name": "768 title",
+      "result": "PASS"
+    },
+    {
+      "name": "768 initial 0/6",
+      "result": "PASS"
+    },
+    {
+      "name": "768 status ready",
+      "result": "PASS"
+    },
+    {
+      "name": "768 map visible",
+      "result": "PASS"
+    },
+    {
+      "name": "768 no overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "768 enter creates",
+      "result": "PASS"
+    },
+    {
+      "name": "768 first selected",
+      "result": "PASS"
+    },
+    {
+      "name": "768 first attack",
+      "result": "PASS"
+    },
+    {
+      "name": "768 count one",
+      "result": "PASS"
+    },
+    {
+      "name": "768 snapshot valid",
+      "result": "PASS"
+    },
+    {
+      "name": "768 2 markers",
+      "result": "PASS"
+    },
+    {
+      "name": "768 repair color",
+      "result": "PASS"
+    },
+    {
+      "name": "768 snapshot priority",
+      "result": "PASS"
+    },
+    {
+      "name": "768 tick 2s",
+      "result": "PASS"
+    },
+    {
+      "name": "768 attack expired",
+      "result": "PASS"
+    },
+    {
+      "name": "768 repair retained",
+      "result": "PASS"
+    },
+    {
+      "name": "768 remove selected",
+      "result": "PASS"
+    },
+    {
+      "name": "768 reset clock",
+      "result": "PASS"
+    },
+    {
+      "name": "768 reset markers",
+      "result": "PASS"
+    },
+    {
+      "name": "768 no exceptions",
+      "result": "PASS"
+    },
+    {
+      "name": "768 no overflow after interactions",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 title",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 initial 0/6",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 status ready",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 map visible",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 no overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 enter creates",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 first selected",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 first attack",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 count one",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 snapshot valid",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 2 markers",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 repair color",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 snapshot priority",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 tick 2s",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 attack expired",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 repair retained",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 remove selected",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 reset clock",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 reset markers",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 no exceptions",
+      "result": "PASS"
+    },
+    {
+      "name": "1280 no overflow after interactions",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 title",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 initial 0/6",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 status ready",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 map visible",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 no overflow",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 enter creates",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 first selected",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 first attack",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 count one",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 snapshot valid",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 2 markers",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 repair color",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 snapshot priority",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 tick 2s",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 attack expired",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 repair retained",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 remove selected",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 reset clock",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 reset markers",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 no exceptions",
+      "result": "PASS"
+    },
+    {
+      "name": "1920 no overflow after interactions",
+      "result": "PASS"
+    }
+  ],
+  "total": 84,
+  "pass": 84,
+  "fail": 0,
+  "js_exceptions": []
+}
