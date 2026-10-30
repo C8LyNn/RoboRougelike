@@ -1,0 +1,38 @@
+name: B01-23 W20 owner canonical SaveLoad API source and physical original Git
+on:
+  push:
+    branches: [b01-23/p17w20-canonical-world-api-v1]
+  pull_request:
+    paths:
+      - 'Assets/B0123CanonicalSaveApi001/**'
+      - 'Tools/B01/B01-23/P17W20CanonicalSaveApi001/**'
+      - '.github/workflows/b01-23-p17w20-canonical-api-source.yml'
+jobs:
+  real-source-and-zip:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Actual original frozen #556 plus W06 + new canonical gateway C#9 source
+        run: dotnet run --project Tools/B01/B01-23/P17W20CanonicalSaveApi001/CanonicalApiSourceTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Git-only source package provenance and safe rollback
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W20CanonicalSaveApi001 -p test_package.py -v
+      - name: Build original Git source INNER ZIP
+        run: python Tools/B01/B01-23/P17W20CanonicalSaveApi001/package.py build --archive dist/B0123CanonicalApi001_Original.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-p17w20-canonical-api-${{ matrix.os }}
+          path: dist/B0123CanonicalApi001_Original.zip
+          if-no-files-found: error
