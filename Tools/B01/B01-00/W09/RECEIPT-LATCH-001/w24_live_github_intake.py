@@ -28,6 +28,8 @@ PR_PINS={
     758:"1034127a994c4453127d5906bb3c49d05fb59975",
     766:"f376f729fcbba916089d3f38853f952afc675abe",
     768:"34bf47a6953800226872029e42ce0535d464f322",
+    767:"6d0dff5571cb1d8b252311557dd8142e1b616cf1",
+    773:"3aaaec4027ee246fbfb6f209179f0e9507363473",
 }
 ACTION_RUN_PINS={
     41133131736:749,
@@ -37,6 +39,8 @@ ACTION_RUN_PINS={
     41137466367:758,
     41137933943:766,
     41138019965:768,
+    41137846205:767,
+    41138550902:773,
 }
 ALT_HOLD=[753,741,719,695,693,682,652,644,604]
 POLICY_LINES={
@@ -132,6 +136,14 @@ def validate(payload):
     require("#750" in cold_independent and
             "10/10" in cold_independent and "NOT_RUN" in cold_independent,
             "original #750 independent ColdRestart SOURCE-only QA missing")
+    p0=prs["767"].get("body","")
+    require("#749" in p0 and "SOURCE SECURITY P0 RED" in p0
+            and "TWO physical" in p0,
+            "P0 independent raw Store same-slot fork negative missing")
+    candidate=prs["773"].get("body","")
+    require("#749" in candidate and "RED→GREEN" in candidate
+            and "foreign" in candidate.lower(),
+            "P0 new R2 correction candidate source evidence missing")
     note=prs["750"].get("body","")
     require("ColdRestart" in note and
             "generation" in note.lower(),
@@ -154,6 +166,8 @@ def validate(payload):
        "independent_749_SECURITY":"SOURCE_GREEN_SCOPE_ONLY_B01_61_758",
        "selected_749_crash_source":"SOURCE_GREEN_SCOPE_ONLY_B01_62_768",
        "independent_750_fixture":"SOURCE_GREEN_SCOPE_ONLY_B01_61_766",
+       "selected_749_raw_store_product_security":"P0_RED_INDEPENDENT_ORIGINAL_767",
+       "r2_773_unselected_correction_candidate":"PRODUCER_GREEN_SCOPE_ONLY_INDEPENDENT_G0_PENDING",
        "same_physical_owner":".owner",
        "legacy_669_raw_store_coinstall":"FORBIDDEN",
        "actual_private_510_world_adapter":"NOT_IMPLEMENTED",
