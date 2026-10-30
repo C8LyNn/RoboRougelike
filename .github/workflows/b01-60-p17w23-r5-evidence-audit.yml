@@ -1,0 +1,96 @@
+name: B01-60 P17 W23 R5 receipt verifier SOURCE ONLY (no Unity)
+on:
+  push:
+    branches: [qa/b01-60-p17w23-r5-native-receipt-verifier-r1]
+    paths: ['Tools/B01/B01-60/P17W23R5EvidenceAudit/**','.github/workflows/b01-60-p17w23-r5-evidence-audit.yml']
+  pull_request:
+    paths: ['Tools/B01/B01-60/P17W23R5EvidenceAudit/**','.github/workflows/b01-60-p17w23-r5-evidence-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-w22-source-and-strict-w23-audit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact original selected R5 historical Git source to ephemeral CI clone ONLY
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
+          test "$(git cat-file -t cc7f73541517a18f4479bb155534bd4832d9985e)" = commit
+      - name: Execute 33 synthetic adversarial R5 receipt tests (NOT Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W23R5EvidenceAudit -p test_audit_r5.py -v 2>&1 | tee w23-r5-adversarial.log
+          grep -F 'Ran 33 tests' w23-r5-adversarial.log
+          grep -F 'OK' w23-r5-adversarial.log
+      - name: Execute original W22 real selected R5 Git source-only private stage/rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W22R5PartialNative/r5_native.py --mode preflight --scratch-parent "$RUNNER_TEMP" 2>&1 | tee w23-real-original-w22-preflight.log
+          grep -F 'B0160_W22_R5_SIX_PRIVATE_PROJECTS_STAGE_ROLLBACK_PASS' w23-real-original-w22-preflight.log
+          grep -F 'B0160_W22_G1_NOT_RUN_SOURCE_ONLY' w23-real-original-w22-preflight.log
+          evidence="$(grep -F 'B0160_W22_LOCAL_EVIDENCE_NO_UPLOAD=' w23-real-original-w22-preflight.log | tail -1 | cut -d= -f2-)"
+          test -d "$evidence"
+          python Tools/B01/B01-60/P17W23R5EvidenceAudit/audit_r5.py "$evidence" 2>&1 | tee w23-real-w22-independent-audit.log
+          grep -F '"native": "NOT_RUN"' w23-real-w22-independent-audit.log
+          grep -F '"source_preflight": "CONSISTENT_SOURCE_ONLY"' w23-real-w22-independent-audit.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W23-EVIDENCE-AUDIT-NOT-UNITY-${{ matrix.os }}
+          path: |
+            w23-r5-adversarial.log
+            w23-real-original-w22-preflight.log
+            w23-real-w22-independent-audit.log
+          retention-days: 14
+          if-no-files-found: warn
+  real-windows-powershell-operator-source-only-audit:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original selected R5 source in isolated CI history only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
+          git cat-file -e 'cc7f73541517a18f4479bb155534bd4832d9985e^{commit}'
+      - name: Reuse actual Windows W22 PowerShell safe source operator, then independent W23 read-only audit
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W22R5PartialNative\Invoke-B0160W22R5.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w23-real-powershell.log
+          if($LASTEXITCODE -ne 0){throw "Existing exact W22 Windows source-only operator failed"}
+          if(!(Select-String w23-real-powershell.log -Pattern 'B0160_W22_SOURCE_PASS_NATIVE_G1_NOT_RUN_FULL_R5_HOLD' -Quiet)){throw "Original source-only scope missing"}
+          $evidence=Get-ChildItem -LiteralPath $env:RUNNER_TEMP -Directory -Filter 'B22-*' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if($null -eq $evidence){throw "No original physical W22 receipt"}
+          & python .\Tools\B01\B01-60\P17W23R5EvidenceAudit\audit_r5.py $evidence.FullName *>&1 | Tee-Object -FilePath w23-real-powershell-audit.log
+          if($LASTEXITCODE -ne 0){throw "W23 independent audit original Windows physical W22 receipt failed"}
+          if(!(Select-String w23-real-powershell-audit.log -Pattern '"native": "NOT_RUN"' -Quiet)){throw "Source audit falsely promoted Unity native"}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W23-REAL-WINDOWS-POWERSHELL-SOURCE-AUDIT-NOT-UNITY
+          path: |
+            w23-real-powershell.log
+            w23-real-powershell-audit.log
+          retention-days: 14
+          if-no-files-found: warn
