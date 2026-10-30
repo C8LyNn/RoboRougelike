@@ -14,19 +14,51 @@ namespace B01.UnitySaveBridge001
     {
         [SerializeField] private bool buildInitialFixtureOnStart;
         private AtomicWorldSwap coordinator;
+        private HostSlotLease slotLease;
+        private string checkpointSlot;
         private long runId=1;
+        public bool OwnsCheckpointSlot => slotLease!=null&&slotLease.Owned;
+        // Call on an INACTIVE GameObject immediately after AddComponent and
+        // BEFORE Awake. Native tests get a GUID-based private slot; never erase
+        // the default existing player checkpoint file or any foreign directory.
+        public bool ConfigureCheckpointSlotBeforeAwake(string slot)
+        {
+            if(coordinator!=null||slotLease!=null||isActiveAndEnabled||
+               string.IsNullOrEmpty(slot)||slot.Length>48)return false;
+            foreach(char c in slot)
+                if(!((c>='A'&&c<='Z')||(c>='a'&&c<='z')||
+                     (c>='0'&&c<='9')||c=='_'||c=='-'))return false;
+            checkpointSlot=slot;
+            return true;
+        }
+        // Authoritative single path per host; same slot has one active lease.
+        public static string CheckpointPathForSlot(string slot)
+        {
+            if(string.IsNullOrEmpty(slot))
+                return Path.Combine(Application.persistentDataPath,
+                    "b0123_one_save_host_v2.checkpoint"); // historical default, no auto-delete
+            if(slot.Length>48)throw new ArgumentException("slot too long");
+            foreach(char c in slot)
+                if(!((c>='A'&&c<='Z')||(c>='a'&&c<='z')||
+                     (c>='0'&&c<='9')||c=='_'||c=='-'))
+                    throw new ArgumentException("Invalid private checkpoint slot");
+            return Path.Combine(Application.persistentDataPath,
+                "B0123UnitySaveBridge001","PrivateSlot",slot+".checkpoint");
+        }
         public WorldSwapVerdict LastRestoreVerdict {get;private set;}
         public bool HasWorld => coordinator!=null&&coordinator.HasWorld;
         public bool Quarantined => coordinator!=null&&coordinator.Quarantined;
         public long Generation => coordinator==null?0:coordinator.Generation;
         public bool IsConsumed(int slot,long id) =>
             coordinator!=null&&coordinator.IsConsumed(slot,id);
-        private bool CanOperate() => coordinator!=null&&!coordinator.Busy&&PhysicalIdle();
+        private bool CanOperate() => coordinator!=null&&OwnsCheckpointSlot&&
+            !coordinator.Busy&&PhysicalIdle();
         // The coordinator intentionally holds Busy through both idle checks:
         // checking coordinator.Busy from THIS callback would self-deadlock.
         private bool PhysicalIdle()
         {
-            if(!isActiveAndEnabled||coordinator==null||coordinator.Quarantined||
+            if(!isActiveAndEnabled||coordinator==null||!OwnsCheckpointSlot||
+               coordinator.Quarantined||
                transform.position!=Vector3.zero||transform.rotation!=Quaternion.identity||
                transform.lossyScale!=Vector3.one)
                 return false;
@@ -43,8 +75,22 @@ namespace B01.UnitySaveBridge001
         }
         private void Awake()
         {
-            string sidecar=Path.Combine(Application.persistentDataPath,"b0123_one_save_host_v2.checkpoint");
-            coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(sidecar));
+            string sidecar=CheckpointPathForSlot(checkpointSlot);
+            if(!HostSlotLease.TryAcquire(sidecar,out HostSlotLease acquired))
+            {
+                LastRestoreVerdict=WorldSwapVerdict.HostBusy;
+                return; // no world and no durable writer without owning the slot
+            }
+            slotLease=acquired;
+            try { coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(sidecar)); }
+            catch {slotLease.Dispose();slotLease=null;throw;}
+        }
+        private void OnDestroy()
+        {
+            // Keep file lease while merely disabled; release only after the
+            // actual host object and its owned child worlds are destroyed.
+            if(slotLease!=null){slotLease.Dispose();slotLease=null;}
+            coordinator=null;
         }
         private void Start()
         {

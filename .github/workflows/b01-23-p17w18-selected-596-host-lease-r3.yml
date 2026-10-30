@@ -1,0 +1,39 @@
+name: B01-23 P17 W18 selected 596 host lease R3 source and Git ZIP
+on:
+  push:
+    branches: [b01-23/p17w18-selected-596-host-slot-lease-r3]
+  pull_request:
+    paths:
+      - 'Assets/B0123UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W15UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W18Selected596HostLeaseR3/**'
+      - '.github/workflows/b01-23-p17w18-selected-596-host-lease-r3.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Original #596 transaction and real physical host lease tests
+        run: dotnet run --project Tools/B01/B01-23/P17W15UnitySaveBridge001/HostBridgeTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Git source ZIP/rollback security negatives
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W15UnitySaveBridge001 -p test_package.py -v
+      - name: Build exact original source archive
+        run: python Tools/B01/B01-23/P17W15UnitySaveBridge001/package.py build --archive dist/B0123_UnitySaveHostR3_Original.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w18-selected-596-lease-${{ matrix.os }}
+          path: dist/B0123_UnitySaveHostR3_Original.zip
+          if-no-files-found: error
