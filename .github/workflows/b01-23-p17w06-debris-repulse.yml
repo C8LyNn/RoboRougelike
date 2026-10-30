@@ -1,0 +1,24 @@
+name: B01-23 P17 W06 detached debris source QA
+on:
+  push:
+    branches:
+      - b01-23/p17w06-detached-debris-repulse-001
+  pull_request:
+    paths:
+      - Assets/B0123DebrisRepulse001/**
+      - Tools/B01/B01-23/P17W06DebrisRepulse001/**
+      - .github/workflows/b01-23-p17w06-debris-repulse.yml
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Actual original CSharp9 package tests
+        run: dotnet run --project Tools/B01/B01-23/P17W06DebrisRepulse001/DebrisRepulseTests.csproj --configuration Release

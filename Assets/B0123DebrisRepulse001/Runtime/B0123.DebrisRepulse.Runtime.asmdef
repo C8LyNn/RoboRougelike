@@ -1,0 +1,14 @@
+{
+  "name": "B0123.DebrisRepulse.Runtime",
+  "rootNamespace": "B01.DebrisRepulse001",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
