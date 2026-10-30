@@ -28,7 +28,7 @@ strong{color:#f8fcff}small{color:#bdd0e4}.metrics{font-variant-numeric:tabular-n
 </section>
 <canvas id="frame" width="900" height="506" role="img" aria-label="Rzut perspektywiczny modułów robota oraz obramowanie strefy bezpiecznego kadru"></canvas>
 <p>Przerywana ramka oznacza obszar bezpieczny po odjęciu rezerw na HUD. <strong>Zielony</strong> obrys oznacza część mieszczącą się w ramce; <strong>pomarańczowy</strong> — wypadającą poza nią. Lista tekstowa pozwala odczytać stan bez rozpoznawania kolorów.</p>
-<div class="controls"><button id="auto" type="button">Zaproponuj oddalenie kamery</button><button id="reset" type="button">Przywróć kamerę</button></div>
+<div class="controls"><button id="auto" type="button">Zaproponuj oddalenie kamery</button><button id="reset" type="button">Przywróć kamerę</button><button id="reset-all" type="button">Zresetuj całe doświadczenie</button></div>
 <section><h2>Rekomendacja i ograniczenia</h2><p id="recommendation" aria-live="polite"></p><ol id="issues" aria-label="Problemy kadrowania"></ol></section>
 <footer><small>Model oblicza perspektywiczne rzutowanie osiowo wyrównanych pudełek robotycznych. Nie bada przeszkód, widoczności przeciwnika, rotacji poszczególnych części, collision avoidance, rzeczywistego aspect-ratio GameView, animacji ani bezpieczeństwa rozgrywki. Nawet 4/4 w modelu nie jest odbiorem UI/UX gry.</small></footer>
 </main><script src="frame.js"></script><script>
@@ -80,10 +80,23 @@ strong{color:#f8fcff}small{color:#bdd0e4}.metrics{font-variant-numeric:tabular-n
     if(!r.ok){$('recommendation').textContent='Brak rozwiązania przez samo oddalenie: '+r.reason+'. Wymagane przekomponowanie HUD lub kadru.';return;}
     scene.camera={...r.candidate.camera};
     $('recommendation').textContent='Próbne oddalenie ×'+r.candidate.scale.toFixed(1)+': '+r.candidate.result.framed+'/'+r.candidate.result.total+' modułów w ramce; kamera Unity pozostaje nietknięta.';draw();});
-  $('reset').addEventListener('click',()=>{const keepAspect=scene.aspect;const keepWidth=canvas.width,keepHeight=canvas.height;scene=fresh();scene.aspect=keepAspect;canvas.width=keepWidth;canvas.height=keepHeight;
+  // Camera-only recovery must not change the user's loadout, FOV or viewport.
+  $('reset').addEventListener('click',()=>{
+    scene.camera={...fresh().camera};
+    $('recommendation').textContent='Przywrócono tylko kamerę. FOV, format i uzbrojenie bez zmian.';
+    draw();
+  });
+  // Intentional explicit full experiment reset, separate from restoring camera.
+  $('reset-all').addEventListener('click',()=>{
+    scene=fresh();
+    setViewport(false);
     for(const id of ['weapon-left','weapon-right'])$(id).setAttribute('aria-pressed','true');
-    $('weapon-left').textContent='Broń LPM: zamontowana';$('weapon-right').textContent='Broń PPM: zamontowana';$('fov').textContent='FOV: 55°';
-    $('recommendation').textContent='Zresetowano symulowaną kamerę.';draw();});
+    $('weapon-left').textContent='Broń LPM: zamontowana';
+    $('weapon-right').textContent='Broń PPM: zamontowana';
+    $('fov').textContent='FOV: 55°';
+    $('recommendation').textContent='Zresetowano całe doświadczenie: kamerę, FOV, ekran i uzbrojenie.';
+    draw();
+  });
   draw();
 })();
 </script></body></html>
