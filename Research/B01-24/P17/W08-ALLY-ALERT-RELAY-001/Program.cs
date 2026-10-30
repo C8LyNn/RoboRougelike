@@ -176,7 +176,7 @@ internal static class Program
         Check("Flanker and Gunner canonical radio roles can link",()=>{
             var p=new AllyAlertRelay(new[]{1,2},new[]{R3EnemyArchetype.Flanker,R3EnemyArchetype.Gunner},RelayPolicy.Standard());
             var obs=new[]{Member(1,R3EnemyArchetype.Flanker,visible:true),Member(2,R3EnemyArchetype.Gunner,x:40)};
-            p.Tick(0,obs,new[]{Msg(4,sender:1)]);
+            p.Tick(0,obs,new[]{Msg(4,sender:1)});
             Assert(p.Tick(2,new[]{Member(1,R3EnemyArchetype.Flanker),Member(2,R3EnemyArchetype.Gunner,x:40)},Array.Empty<SightMessage>())[1].Valid,"flanker relay failed");
         });
         Check("newer real visual report updates previously received location",()=>{
