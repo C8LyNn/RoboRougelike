@@ -10,7 +10,9 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference="Stop"
 $SourceSha="";$scratch="";$exitCode=2
 $receipt=@{package="B01-60-P17W20-WINDOWS-LOCAL-UNITY";mode="PREFLIGHT";
-  source_sha="";real_unity="NOT_RUN";native_g1="NOT_RUN";selected_R4="HOLD_OWNER_G0";
+  source_sha="";real_unity="NOT_RUN";native_g1="NOT_RUN";selected_R4="SELECTED_647_SECURITY_P0_G0_HOLD";
+  selected_R4_sha="09c1809b73324a6d31c13e5d0143de62ac1e3ca6";
+  ALT_HOLD_R4_652="ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419";
   canonical_SaveLoad="HOLD";codex_ack="NONE";merged=$false;uploaded=$false;
   editor_sha256="";operator_consent=$false;result="NOT_RUN";
   start_utc=(Get-Date).ToUniversalTime().ToString("o")}
@@ -115,7 +117,7 @@ try {
   Need $ready "Unity Hub 6000.3.14f1 missing. Native NOT_RUN; no activation bypass"
   Write-Host "Verify legitimate Unity license via your own Unity Hub. No credentials needed."
   Write-Host "This runs ONLY original independent #510 V2: 2 EditMode +14 PlayMode PhysX cases."
-  Write-Host "R4 Save/Load HOLD until owner chooses ONE SHA, G0 and fixture P0 fix."
+  Write-Host "R4 #647 owner-selected, #652 ALT_HOLD. Save/Load native HOLD: #670 orphan-physics host P0, no safe G0/fixture acceptance."
   $answer=Read-Host "To authorize ONE local native run, type exactly B0160 RUN NATIVE"
   Need ($answer -ceq "B0160 RUN NATIVE") "Explicit real operator opt-in denied"
   $receipt.operator_consent=$true
