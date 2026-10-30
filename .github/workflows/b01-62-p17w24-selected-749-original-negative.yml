@@ -1,0 +1,52 @@
+name: B01-62 P17 W24 selected #749 direct original disk/security negative
+on:
+  push:
+    branches: [qa/b01-62-p17w24-selected-749-physical-slot-fork-econ-gate-r1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W24Selected749SourceIntegrity/**'
+      - '.github/workflows/b01-62-p17w24-selected-749-original-negative.yml'
+permissions:
+  contents: read
+jobs:
+  selected-original-source-negative:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pin selected original #749 and seven unchanged producer/frozen blobs
+        run: |
+          set -euo pipefail
+          mkdir -p b0162-w24-selected-749-evidence
+          python Tools/B01/B01-62/P17W24Selected749SourceIntegrity/source_guard.py --receipt b0162-w24-selected-749-evidence/original-source-pins.json | tee b0162-w24-selected-749-evidence/git-source-guard.log
+          grep -q 'W24_B0162_SELECTED_ORIGINAL_749_SOURCE_PINS=7/7' b0162-w24-selected-749-evidence/git-source-guard.log
+      - name: Compile original #749/#729/#556 unchanged and execute real OS/atomic fault and fork witnesses
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W24Selected749SourceIntegrity/OriginalSelected749W24QA.csproj -c Release --verbosity quiet | tee b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'W24_749_P0_DIRECT_RAW_STORE_TWO_DISTINCT_SAME_EPOCH_SAVE_FILES=REPRODUCED' b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'W24_749_PUBLIC_STORE_FOREIGN_ROOT_ADMISSION=REPRODUCED' b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'W24_APPROVED_ECONOMY_FIELDS_NOT_IN_FROZEN_556_ATOMIC_SAVE=CONFIRMED_HOLD' b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'W24_749_POST_RENAME_ACK_LOSS_STICKY_QUARANTINE_READBACK=PASS' b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'W24_749_PRE_RENAME_NO_COMMIT_STICKY_QUARANTINE_AND_RECOVERY=PASS' b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'W24_SELECTED_749_SECURITY_G0=HOLD_PUBLIC_STORE_MULTIPATH_FORK' b0162-w24-selected-749-evidence/original-real-source-qa.log
+          grep -q 'FAIL 0' b0162-w24-selected-749-evidence/original-real-source-qa.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w24-selected-749-${{ matrix.os }}
+          path: b0162-w24-selected-749-evidence/*
+          if-no-files-found: error
