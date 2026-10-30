@@ -175,14 +175,17 @@ static class Proof
                 "recovery should not emit damage");
         });
         Test("NEXT_CYCLE_REARMS_ONE_SHOT",()=>{
-            var r=Step(zone,16,.25,x,z);
-            Need(r.Phase==PulsePhase.Recovery,"expected recovery before next cycle");
-            r=Step(zone,8,.25,x,z);
-            Need(r.Phase==PulsePhase.Active&&r.Exposed&&!r.DamagePulse,
-                "new cycle must have fired one event earlier in substeps");
-            zone.Reset();Step(zone,4,.25,x,z);
-            Need(zone.Advance(Sample(.25,x,z)).DamagePulse==false,
-                "repeated damage blocked after reset and first activation");
+            var next=new PulseZoneController(cfg);
+            var first=Step(next,4,.25,x,z);
+            Need(first.DamagePulse,"first cycle must hit once");
+            var safe=Step(next,20,.25,x,z);
+            Need(safe.Phase==PulsePhase.Warning&&!safe.DamagePulse,
+                "new-cycle warning is safe");
+            var second=Step(next,4,.25,x,z);
+            Need(second.Phase==PulsePhase.Active&&second.DamagePulse,
+                "new cycle must re-arm once");
+            Need(!next.Advance(Sample(.25,x,z)).DamagePulse,
+                "same second cycle cannot repeat damage");
         });
         Test("RESET_REARMS_AFTER_FINISH",()=>{
             zone.Reset();Need(zone.ElapsedSeconds==0,"reset clock");
