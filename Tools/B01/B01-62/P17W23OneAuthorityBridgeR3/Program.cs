@@ -399,6 +399,64 @@ internal static class Program
             return Probe(path,0);
         });
     }
+    private static bool OriginalLegacyCannotOpenR3()
+    {
+        return Temp(root=>{
+            string dir=Path.Combine(root,"selected-r3");
+            if(!Open(dir,true,out var newOwner,out var newFac,out _)||
+               newOwner==null)return false;
+            try
+            {
+                if(!File.Exists(Path.Combine(dir,"slot.canonical-v3"))||
+                   File.Exists(Path.Combine(dir,"slot.owner"))||
+                   File.Exists(Path.Combine(dir,"slot.lease")))return false;
+                if(newOwner.TryRestore(Bytes(1,true,false),Run,1)!=
+                   CanonicalGateResult.Accepted)return false;
+                // Direct EXACT UNCHANGED old #669 source is compiled as
+                // hostile fixture only. It MUST NOT be able to create its
+                // independent .lease authority for a V3-owned Save.
+                var status=B01.SingleFileSaveSlot001.SingleFileSaveSlot
+                    .TryOpenExisting(dir,Run,Id,out var legacy);
+                legacy?.Dispose();
+                if(status!=B01.SingleFileSaveSlot001.SlotStatus.WrongOwner ||
+                   legacy!=null)return false;
+                status=B01.SingleFileSaveSlot001.SingleFileSaveSlot
+                    .TryCreateNew(dir,Run,Id,out legacy);
+                legacy?.Dispose();
+                if(status!=B01.SingleFileSaveSlot001.SlotStatus.WrongOwner ||
+                   legacy!=null)return false;
+                if(File.Exists(Path.Combine(dir,"slot.lease")))return false;
+                Console.WriteLine("B0162_W23_ORIGINAL_669_LEGACY_DIRECT_OPEN_DENIED=TRUE");
+                return true;
+            }
+            finally{Release(newOwner,newFac);}
+        });
+    }
+    private static bool LegacyRootNeedsExplicitMigration()
+    {
+        return Temp(root=>{
+            string legacyPath=Path.Combine(root,"legacy-root");
+            var oldCode=B01.SingleFileSaveSlot001.SingleFileSaveSlot.TryCreateNew(
+                legacyPath,Run,Id,out var old);
+            if(oldCode!=B01.SingleFileSaveSlot001.SlotStatus.Accepted ||
+               old==null)return false;
+            if(old.TryCommit(0,Bytes(1,true,false))!=
+               B01.SingleFileSaveSlot001.SlotStatus.Accepted)return false;
+            old.Dispose();
+            byte[] original=File.ReadAllBytes(Path.Combine(legacyPath,"save.envelope"));
+            // A canonical V3 owner MUST reject an occupied old on-disk
+            // V1 marker and NEVER overwrite historical user bytes.
+            var status=CanonicalSlotSessionR3.TryOpen(
+                legacyPath,Run,Id,false,out var newer);
+            if(status!=CanonicalSessionOpenStatus.NoOwner||newer!=null)return false;
+            if(!File.ReadAllBytes(Path.Combine(legacyPath,"save.envelope"))
+                .SequenceEqual(original))return false;
+            if(!File.Exists(Path.Combine(legacyPath,"slot.owner"))||
+               File.Exists(Path.Combine(legacyPath,"slot.canonical-v3")))return false;
+            Console.WriteLine("B0162_W23_LEGACY_OWNER_V1_MIGRATION=HOLD_NO_DATA_CHANGE");
+            return true;
+        });
+    }
     private static bool NoSecondLeaseAndColdOwner()
     {
         return Temp(root=>{
@@ -453,6 +511,8 @@ internal static class Program
             Console.WriteLine("W23_ONE_OWNER_CHILD_"+(ok?"GRANTED":"DENIED"));
             return ok?0:3;
         }
+        Test("R3 original #669 legacy cannot open new V3-owned Save",OriginalLegacyCannotOpenR3);
+        Test("R3 old physical V1 requires explicit migration, no overwrite",LegacyRootNeedsExplicitMigration);
         Test("R3 original #729 one owner .owner and no #669 .lease",NoSecondLeaseAndColdOwner);
         Test("R3 Dispose while world live fails closed",OnDisposeLiveWorldFailClosed);
         Test("R3 #707 cleanup false retains real OS lease",()=>PartialStageDisposeGuard(true,false));
