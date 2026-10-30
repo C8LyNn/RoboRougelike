@@ -25,7 +25,9 @@ namespace B01.UnitySaveBridge001
         // checking coordinator.Busy from THIS callback would self-deadlock.
         private bool PhysicalIdle()
         {
-            if(!isActiveAndEnabled||coordinator==null||coordinator.Quarantined)
+            if(!isActiveAndEnabled||coordinator==null||coordinator.Quarantined||
+               transform.position!=Vector3.zero||transform.rotation!=Quaternion.identity||
+               transform.lossyScale!=Vector3.one)
                 return false;
             // No mixed V2/W07 controllers in the same isolated Unity scene.
             foreach(var component in FindObjectsByType<MonoBehaviour>(
@@ -82,7 +84,7 @@ namespace B01.UnitySaveBridge001
         }
 
         IPreparedWorld IWorldFactory.Prepare(RunSnapshot snapshot)
-            => TwinWorld.Build(snapshot);
+            => TwinWorld.Build(snapshot,transform);
 
         private sealed class TwinWorld : IPreparedWorld
         {
@@ -98,7 +100,7 @@ namespace B01.UnitySaveBridge001
                 new Vector3((float)x.X,(float)x.Y,(float)x.Z);
             private static Vector3d D(Vector3 x)=>new Vector3d(x.x,x.y,x.z);
 
-            public static TwinWorld Build(RunSnapshot snapshot)
+            public static TwinWorld Build(RunSnapshot snapshot,Transform ownerHost)
             {
                 if(!SnapshotRules.Valid(snapshot))
                     throw new InvalidOperationException("Invalid original Save contract");
@@ -107,6 +109,7 @@ namespace B01.UnitySaveBridge001
                 {
                     world.container=new GameObject("B01-23 W15 ISOLATED COLD SAVE WORLD");
                     world.container.SetActive(false); // no physics while staging
+                    world.container.transform.SetParent(ownerHost,false); // owned by host lifecycle
                     for(int i=0;i<2;i++)
                     {
                         var p=snapshot.Parts[i];
