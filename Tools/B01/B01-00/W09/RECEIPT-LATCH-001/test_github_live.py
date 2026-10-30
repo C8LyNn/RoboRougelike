@@ -74,6 +74,14 @@ class RealObjectGate(unittest.TestCase):
         data = original_objects(); data["/pulls/355"]["html_url"] = "https://evil.invalid/fake"
         self.assertFalse(verify_live(make_record(), read_fixture(data))["source_git_objects_verified"])
 
+    def test_pr_malformed_null_head_repo_hold(self):
+        data = original_objects(); data["/pulls/355"]["head"]["repo"] = None
+        self.assertIn("live_pr_unavailable", verify_live(make_record(), read_fixture(data))["blockers"])
+
+    def test_ci_run_malformed_null_repository_hold(self):
+        data = original_objects(); data["/actions/runs/41000000001"]["repository"] = None
+        self.assertIn("live_ci_unavailable", verify_live(make_record(), read_fixture(data))["blockers"])
+
     def test_pr_missing(self):
         data = original_objects(); del data["/pulls/355"]
         self.assertIn("live_pr_unavailable", verify_live(make_record(), read_fixture(data))["blockers"])
@@ -113,8 +121,8 @@ class RealObjectGate(unittest.TestCase):
     def test_qa_pending_does_not_fetch_comment(self):
         data = original_objects()
         r = verify_live(make_record(), read_fixture(data))
-        self.assertEqual(r["qa_comments"], {"intake": "PENDING", "independent": "PENDING"} if False else r["qa_comments"])
-        # The fixture from W09 declares PASS, so this actually fails closed on missing objects.
+        # W09 source unit fixture declares PASS, but no real remote QA records exist.
+        self.assertEqual(r["qa_comments"], {"intake": "FETCH_FAILED", "independent": "FETCH_FAILED"})
         self.assertIn("live_intake_unavailable", r["blockers"])
 
     def test_real_qa_pending_skips_network_and_remains_hold(self):
