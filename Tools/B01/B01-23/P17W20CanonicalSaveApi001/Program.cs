@@ -126,6 +126,8 @@ internal static class Tests
     sealed class Disk : ICanonicalCommitPort
     {
         readonly string file;
+        public string Root => Path.GetDirectoryName(file)!;
+        public readonly Guid OwnerSlot=Guid.NewGuid();
         public bool ThrowBeforeCommit,ThrowAfterCommit,RejectCommit,FailRead;
         public Action? OnSuccess;
         public Disk(string file){this.file=file;}
@@ -156,17 +158,43 @@ internal static class Tests
     static void WithDisk(Func<Gate,Factory,Disk,CanonicalWorldGateway,bool> test)
     {
         string dir=Path.Combine(Path.GetTempPath(),"b01-canonical-"+Guid.NewGuid().ToString("N"));
+        CanonicalWorldGateway? api=null;
+        Factory? fac=null;
         try
         {
-            var gate=new Gate();var fac=new Factory();
+            Directory.CreateDirectory(dir);
+            var gate=new Gate();fac=new Factory();
             var disk=new Disk(Path.Combine(dir,"revision"));
-            var api=new CanonicalWorldGateway(gate,fac,disk);
+            if(!CanonicalWorldSlotLease.TryAcquire(dir,7,disk.OwnerSlot,
+                out CanonicalWorldSlotLease? owner)||owner==null)
+                throw new IOException("Cannot acquire genuine test OS owner");
+            api=new CanonicalWorldGateway(gate,fac,disk,owner);
             if(!test(gate,fac,disk,api))throw new InvalidOperationException("Assertion failed");
         }
-        finally{if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        finally
+        {
+            // The source surrogate test ends here: retire all test-created
+            // fake roots BEFORE asserting physically safe owner release.
+            if(fac?.Last!=null)
+            {
+                fac.Last.FailRetire=false;
+                fac.Last.Active=false;
+                fac.Last.Retired=true;
+            }
+            bool closed=api?.TryCloseAfterPhysicalRetirement(()=>true)??true;
+            if(closed&&Directory.Exists(dir))Directory.Delete(dir,true);
+            // An uncertain failed retirement remains OS-locked intentionally.
+        }
     }
     static bool Every(Func<Gate,Factory,Disk,CanonicalWorldGateway,bool> f)
     {WithDisk(f);return true;}
+    static CanonicalWorldGateway Restart(Gate gate,Factory factory,Disk disk)
+    {
+        if(!CanonicalWorldSlotLease.TryAcquire(disk.Root,7,disk.OwnerSlot,
+            out CanonicalWorldSlotLease? owner)||owner==null)
+            throw new IOException("Original owner lease not retired");
+        return new CanonicalWorldGateway(gate,factory,disk,owner);
+    }
     static string Hash(byte[] data)
     {
         using(var sha=SHA256.Create())
@@ -222,15 +250,19 @@ internal static class Tests
         Check("cold restart on same exact frozen bytes is allowed",()=>Every((g,f,d,a)=>{
             byte[] bytes=Save(false,true,10);
             if(a.TryRestore(bytes,7,1)!=CanonicalGateResult.Accepted)return false;
-            var next=new CanonicalWorldGateway(g,new Factory(),d);
-            return next.TryRestore(bytes,7,1)==CanonicalGateResult.Accepted;
+            if(!a.TryCloseAfterPhysicalRetirement(()=>true))return false;
+            var next=Restart(g,new Factory(),d);
+            bool ok=next.TryRestore(bytes,7,1)==CanonicalGateResult.Accepted;
+            return ok&&next.TryCloseAfterPhysicalRetirement(()=>true);
         }));
         Check("cold restart same-gen different consumed ID is refused",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            if(!a.TryCloseAfterPhysicalRetirement(()=>true))return false;
             var freshFactory=new Factory();
-            var fresh=new CanonicalWorldGateway(g,freshFactory,d);
-            return fresh.TryRestore(Save(false,true,10),7,1)==CanonicalGateResult.StaleGeneration&&
+            var fresh=Restart(g,freshFactory,d);
+            bool ok=fresh.TryRestore(Save(false,true,10),7,1)==CanonicalGateResult.StaleGeneration&&
                 freshFactory.Stages==0;
+            return ok&&fresh.TryCloseAfterPhysicalRetirement(()=>true);
         }));
         Check("external Commit AFTER disk write then throws -> sticky quarantine",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
