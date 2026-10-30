@@ -93,6 +93,92 @@ namespace RoboRougelike.B0110.TrainingGhost
         }
     }
 
+    // Optional user-facing VISUAL playback transport, entirely independent
+    // of Unity timescale and authoritative CHL/PhysX clocks.
+    // R11's stateless PoseAt(elapsed, speed) is retained for existing hosts;
+    // this stateful controller is for changing speed without resetting phase.
+    public sealed class GhostPracticeTransport
+    {
+        private readonly GhostPracticeLoop loop;
+        private double referencePosition;
+        private float playbackSpeed = 1f;
+        private bool playing;
+
+        public GhostPracticeTransport(GhostPracticeLoop validatedFocusLoop)
+        {
+            GhostMath.Check(validatedFocusLoop != null,
+                "Visual transport requires a coach-issued completed focus loop");
+            loop = validatedFocusLoop;
+        }
+
+        public double ReferencePositionSeconds => referencePosition;
+        public float PlaybackSpeed => playbackSpeed;
+        public bool IsPlaying => playing;
+        public float ReferenceSegmentDuration => loop.SegmentDurationSeconds;
+
+        public void SetSpeed(float speed)
+        {
+            GhostMath.Check(!float.IsNaN(speed) && !float.IsInfinity(speed)
+                            && speed >= .25f && speed <= 2f,
+                "Practice transport accepts only finite 0.25x..2x visual speed");
+            // Only future Advance() calls use the new rate; do not multiply
+            // the entire elapsed visual clock and jump between source poses.
+            playbackSpeed = speed;
+        }
+
+        public void Play() { playing = true; }
+        public void Pause() { playing = false; }
+
+        public void Restart()
+        {
+            referencePosition = 0d;
+            playing = false;
+        }
+
+        private double Wrap(double referenceSeconds)
+        {
+            double length = loop.SegmentDurationSeconds;
+            double phase = referenceSeconds % length;
+            return phase < 0d ? phase + length : phase;
+        }
+
+        public void Seek(double referenceSeconds)
+        {
+            GhostMath.Check(!double.IsNaN(referenceSeconds)
+                            && !double.IsInfinity(referenceSeconds)
+                            && referenceSeconds >= 0d
+                            && referenceSeconds <= ReferenceSegmentDuration,
+                "Practice transport seek outside validated reference segment");
+            referencePosition = referenceSeconds == ReferenceSegmentDuration
+                ? 0d : referenceSeconds;
+        }
+
+        public void Step(double referenceSeconds)
+        {
+            GhostMath.Check(!playing, "Pause visual replay before frame stepping");
+            GhostMath.Check(!double.IsNaN(referenceSeconds)
+                            && !double.IsInfinity(referenceSeconds)
+                            && referenceSeconds >= -1d
+                            && referenceSeconds <= 1d,
+                "Visual frame step must be finite and within plus/minus 1s");
+            referencePosition = Wrap(referencePosition + referenceSeconds);
+        }
+
+        public void Advance(double unscaledVisualDeltaSeconds)
+        {
+            GhostMath.Check(!double.IsNaN(unscaledVisualDeltaSeconds)
+                            && !double.IsInfinity(unscaledVisualDeltaSeconds)
+                            && unscaledVisualDeltaSeconds >= 0d
+                            && unscaledVisualDeltaSeconds <= 10d,
+                "Visual transport delta must be finite and bounded");
+            if (playing)
+                referencePosition = Wrap(referencePosition
+                    + unscaledVisualDeltaSeconds * playbackSpeed);
+        }
+
+        public GhostPose Pose() => loop.PoseAt(referencePosition);
+    }
+
     // Shared UI decision contract: a measured maximum below tolerance is
     // informative data, not an actionable "focus" recommendation.
     // Compiled in both portable .NET tests and Unity; UI must call this rather
