@@ -1,0 +1,28 @@
+test_atomic_guard_blocks_claim (test_dispatch.ClaimTests.test_atomic_guard_blocks_claim) ... ok
+test_claim_and_hash_locked_release (test_dispatch.ClaimTests.test_claim_and_hash_locked_release) ... ok
+test_concurrent_claim_only_one_wins (test_dispatch.ClaimTests.test_concurrent_claim_only_one_wins) ... ok
+test_inter_task_overlapping_reserve_denied (test_dispatch.ClaimTests.test_inter_task_overlapping_reserve_denied) ... ok
+test_malformed_existing_claim_fail_closed (test_dispatch.ClaimTests.test_malformed_existing_claim_fail_closed) ... ok
+test_symlink_claim_dir_rejected (test_dispatch.ClaimTests.test_symlink_claim_dir_rejected) ... ok
+test_active_stream_exceed_cap_blocks_everything (test_dispatch.ScopeTests.test_active_stream_exceed_cap_blocks_everything) ... ok
+test_already_done_not_reclaimed (test_dispatch.ScopeTests.test_already_done_not_reclaimed) ... ok
+test_approved_existing_stream_allowed (test_dispatch.ScopeTests.test_approved_existing_stream_allowed) ... ok
+test_claimed_production_stream_counts_against_cap (test_dispatch.ScopeTests.test_claimed_production_stream_counts_against_cap) ... ok
+test_cyclic_dependency_rejected (test_dispatch.ScopeTests.test_cyclic_dependency_rejected) ... ok
+test_dependency_not_done (test_dispatch.ScopeTests.test_dependency_not_done) ... ok
+test_deterministic_batch_and_overlap (test_dispatch.ScopeTests.test_deterministic_batch_and_overlap) ... ok
+test_duplicate_claim_identity (test_dispatch.ScopeTests.test_duplicate_claim_identity) ... ok
+test_duplicate_package_fail (test_dispatch.ScopeTests.test_duplicate_package_fail) ... ok
+test_existing_claim_collision_blocks (test_dispatch.ScopeTests.test_existing_claim_collision_blocks) ... ok
+test_no_new_unapproved_stream (test_dispatch.ScopeTests.test_no_new_unapproved_stream) ... ok
+test_planned_new_stream_consumes_single_slot (test_dispatch.ScopeTests.test_planned_new_stream_consumes_single_slot) ... ok
+test_reject_codex_overwrite (test_dispatch.ScopeTests.test_reject_codex_overwrite) ... ok
+test_reject_dotdot (test_dispatch.ScopeTests.test_reject_dotdot) ... ok
+test_segment_boundary (test_dispatch.ScopeTests.test_segment_boundary) ... ok
+test_unknown_codex_scope_fail_closed (test_dispatch.ScopeTests.test_unknown_codex_scope_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.128s
+
+OK
+EXIT_CODE=0
