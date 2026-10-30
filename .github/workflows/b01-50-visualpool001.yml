@@ -1,0 +1,73 @@
+name: B01-50 VISUALPOOL-001 original visual lease lifecycle .NET and Unity GUID audit
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/VISUALPOOL001/**'
+      - '.github/workflows/b01-50-visualpool001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-visualpool-csharp:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile and execute real original CSharp pool lifecycle tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p visualpool-evidence
+          dotnet --version | tee visualpool-evidence/dotnet-sdk.txt
+          dotnet run -c Release --project Tools/B01/B01-50/VISUALPOOL001/tests/VISUALPOOL.Tests.csproj -- --receipt visualpool-evidence/source-qa.json 2>&1 | tee visualpool-evidence/actual-csharp-test.log
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p = json.loads(Path('visualpool-evidence/source-qa.json').read_text())
+          assert p['passed'] == 50 and p['total'] == 50 and p['failed'] == 0, p
+          assert p['nativeUnity'] == 'NOT_RUN' and p['fps'] == 'NOT_MEASURED'
+          print('ORIGINAL_POOL_CSHARP_TEST_PASS 50/50; NATIVE_UNITY_NOT_RUN')
+          PY
+      - name: Scan all original tracked Unity .meta GUIDs for collision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' | tee visualpool-evidence/meta-gate.log
+          from pathlib import Path
+          import re
+          own = Path('Tools/B01/B01-50/VISUALPOOL001')
+          sources = ['Core/OptionalVisualLeasePool.cs',
+                     'Unity/B0150OptionalVisualPool.cs',
+                     'Unity/B0150OptionalVisualPoolDemo.cs']
+          identifiers = set()
+          for name in sources:
+              p = own / name
+              m = Path(str(p) + '.meta')
+              assert p.is_file() and m.is_file(), name
+              txt = m.read_text()
+              assert 'MonoImporter:' in txt and 'fileFormatVersion: 2' in txt
+              guid = re.search(r'^guid: ([a-f0-9]{32})$',txt,re.M)
+              assert guid is not None, name
+              assert guid[1] not in identifiers, 'own duplicate meta guid'
+              identifiers.add(guid[1])
+          count = 0
+          for m in Path('Assets').rglob('*.meta'):
+              txt = m.read_text(encoding='utf-8',errors='replace')
+              match = re.search(r'^guid: ([a-f0-9]{32})$',txt,re.M)
+              if match:
+                  assert match[1] not in identifiers, 'tracked Assets GUID collision: '+str(m)
+              count += 1
+          print(f'VISUALPOOL_META_GATE 3/3 PASS; scanned {count} existing canonical Unity .meta sources')
+          PY
+          sha256sum visualpool-evidence/source-qa.json visualpool-evidence/actual-csharp-test.log visualpool-evidence/meta-gate.log visualpool-evidence/dotnet-sdk.txt > visualpool-evidence/SHA256SUMS.txt
+      - name: Upload actual original source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-VISUALPOOL001-REAL-CSHARP-SOURCE-QA
+          path: visualpool-evidence/**
+          if-no-files-found: error
+          retention-days: 30
