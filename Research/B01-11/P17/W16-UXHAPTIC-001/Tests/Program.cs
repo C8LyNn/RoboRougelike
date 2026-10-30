@@ -276,6 +276,19 @@ static class Program
             var g=Gate();g.Record(Event(1,0,HapticKind.CriticalDamage));
             return g.Record(Event(2,1,HapticKind.CriticalDamage)).RequireVisibleCriticalAlert;
         });
+        Check("W16 stale critical from prior run never requests a false visual alert",()=>{
+            var g=Gate();var d=g.Record(Event(1,10,HapticKind.CriticalDamage,run:6));
+            return d.Outcome==HapticOutcome.IgnoredOldRun&&!d.RequireVisibleCriticalAlert;
+        });
+        Check("W16 stale critical after reset never requests a false visual alert",()=>{
+            var g=Gate();g.StartNewRun(8);
+            var d=g.Record(Event(900,100,HapticKind.CriticalDamage,run:7));
+            return d.Outcome==HapticOutcome.IgnoredOldRun&&!d.RequireVisibleCriticalAlert;
+        });
+        Check("W16 current critical still requires visual if haptics disabled",()=>{
+            var g=Gate(false);var d=g.Record(Event(1,10,HapticKind.CriticalDamage));
+            return d.Outcome==HapticOutcome.SuppressedDisabled&&d.RequireVisibleCriticalAlert;
+        });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
     }
