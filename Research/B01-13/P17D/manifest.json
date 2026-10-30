@@ -1,0 +1,50 @@
+{
+  "package_id": "LD02-OBS-001",
+  "revision": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "code_scope": [
+    "Research/B01-13/P17D/**",
+    ".github/workflows/b01-13-p17w06-ld02-observer.yml"
+  ],
+  "source_language": "Python 3.11+ stdlib; offline operator-only; NO Unity imports",
+  "dependencies": [],
+  "files": {
+    "Research/B01-13/P17D/ld02_observer.py": {
+      "sha256": "61f1e65deaaac3f670850a18e1a7011d7b8cb22a7640a383b5103fcfffa1a516",
+      "bytes": 11514
+    },
+    "Research/B01-13/P17D/test_ld02_observer.py": {
+      "sha256": "7acace79dba6438261e680ee4bd9eccca3e2bf362cb0e717a24637153014194a",
+      "bytes": 11797
+    },
+    "Research/B01-13/P17D/README.md": {
+      "sha256": "0f53f3a6fbc91a7add439c7bfe2c905b670c02156337a527e66f2d8e7628d6f1",
+      "bytes": 5388
+    },
+    ".github/workflows/b01-13-p17w06-ld02-observer.yml": {
+      "sha256": "7c9ad9b65f907c932e8cefd2c26ee37530434f2cfa7654bb2bb2f742968f2900",
+      "bytes": 1554
+    }
+  },
+  "qa": {
+    "producer_source_local": "31 PASS / 0 FAIL Linux stdlib unittest on actual code",
+    "final_ci": "PENDING at initial source production; see exact PR HEAD GitHub Actions",
+    "independent_b01_40": "PENDING",
+    "independent_b01_60": "PENDING",
+    "unity_edit_play_windows_player": "NOT_RUN",
+    "actual_human_participants": 0,
+    "windows_native_acl_junction": "NOT_MEASURED",
+    "windows_root_casing_fix": "Windows source initial CI RED due to os.path Path.resolve() case-normalization mismatch; fixed in actual R1 original module; final exact SHA CI required, no secret native Unity/Player testing",
+    "windows_temp_location_fix": "Original Windows tempfile path may be OS-native junction; tests use explicitly resolved canonical temp base. Real operator root remains fail-closed when ambiguous/junction; exact final source CI is decisive."
+  },
+  "actual_game_evidence": false,
+  "security_limits": [
+    "operator-supplied source SHA is not independently verified",
+    "exe SHA does not authenticate whole build",
+    "hash chain not cryptographic authenticity",
+    "consent/approval reference cannot prove consent",
+    "Windows NTFS ACL/junction not independently tested"
+  ],
+  "rollback": "Do not merge Draft. Discard isolated branch; remove private operator captures only under explicit retention and withdrawal policy."
+}
