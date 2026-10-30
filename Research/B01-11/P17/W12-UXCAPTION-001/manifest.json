@@ -1,0 +1,105 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXCAPTION-001",
+  "version": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "wave": "PASS17 WAVE12",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/518",
+  "branch": "research/b01-11-p17-w12-uxcaption-001",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "0cfee53674a8d4dfd4ec56ad247965d4375aed8e",
+  "scope": [
+    "Research/B01-11/P17/W12-UXCAPTION-001/**",
+    ".github/workflows/b01-11-uxcaption-w12.yml"
+  ],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Runtime/CaptionTrack.cs",
+      "bytes": 8230,
+      "git_blob_sha1": "7d4a4112cf67b11522ab21daa909f9bc985320bf",
+      "sha256": "39e91fad5258634136421ab674d4da1bdb5afd5eceeb4c15d2647d804939e966"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Tests/Program.cs",
+      "bytes": 19353,
+      "git_blob_sha1": "2d12202a1d2a713c64f4d0c18ce994e7f58e3166",
+      "sha256": "87fb7aee09e1ac7c9a4962e23039e0025dd7479d17b763062afab73395ca9e5d"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Tests/UXCaptionTests.csproj",
+      "bytes": 529,
+      "git_blob_sha1": "12ca0abccd7ec0e09135b34e3a0d51ff6496a154",
+      "sha256": "01e59bce07957912c921561fa5b067c3d10337b27b989e1ab2323c00415d4110"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxcaption-w12.yml",
+      "bytes": 906,
+      "git_blob_sha1": "1f7716552771fc198fa15d8f0d4f65a5048a8404",
+      "sha256": "04e9af728e1400971ca6abc58a87dc421a86c6350ccf8f5f564ef9f95ede4d58"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Localization/en.json",
+      "bytes": 542,
+      "git_blob_sha1": "faf05c44fa28880f228fd77262c441d595c6b827",
+      "sha256": "98b5d183d318a824cb317e0a56c9010e434e2bc8b9a8306e019d9de651a3c3dc"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Localization/pl.json",
+      "bytes": 596,
+      "git_blob_sha1": "4a54a89a1de2f25c36f31c15f5b7cd37ba217129",
+      "sha256": "8950c96ca0379d1d6211ca45e04a852f9b571bd0d603a2c93862c419832c85bd"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/README.md",
+      "bytes": 3910,
+      "git_blob_sha1": "8745982d53ce7e8aa0bc8b77b07933974a0b4f43",
+      "sha256": "e31d29f5657671cbe08f55e751420f062c6b0367a3ad9d16d49d7539529eea25"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/TEST_PLAN.md",
+      "bytes": 2438,
+      "git_blob_sha1": "86f07379acbcb535e373ad38979f2b8c6adbbff7",
+      "sha256": "acff8fb8260a44bf6545a5ae27c1517eadbe813f3d1bba7e40791928f6bc7b96"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2638,
+      "git_blob_sha1": "79499689a4ba69e2c65b59f3651459bfa2874bef",
+      "sha256": "2d2c6480638b00a2ca3fbed07bf2fb629d1d01920f0f051dbceb5db2c11ed479"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/QA_RECEIVER.md",
+      "bytes": 1922,
+      "git_blob_sha1": "48ed107bd7241188ee886359eb3ab4d2a765a242",
+      "sha256": "b5d0bdd774dcbd1af65dbd92694373b6849d2268f452b57e0a1f6fed70333a87"
+    }
+  ],
+  "description": "Original compiled C# spatial audio accessibility captions with 8 directions, priority, coalescing, bounded buffer and PL/EN JSON data. NOT installed in Unity.",
+  "tests": [
+    {
+      "name": "original CSharp + PL EN Ubuntu net8",
+      "status": "PASS",
+      "passed": 150,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41073897570"
+    },
+    {
+      "name": "original CSharp + PL EN Windows net8",
+      "status": "PASS",
+      "passed": 150,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41073897570"
+    },
+    {
+      "name": "native Unity Editor PlayMode Player, actual sound and human UX",
+      "status": "NOT_RUN"
+    }
+  ],
+  "producer_status": "SOURCE_GREEN",
+  "independent_g0": "PENDING",
+  "independent_qa": "PENDING",
+  "native_g1": "NOT_RUN",
+  "codex_status": "NOT_OFFERED / ACK_PENDING / NOT_INTEGRATED",
+  "rollback": "Drop isolated W12 Research UXCAPTION subtree and its own workflow or delete producer branch. No canonical Unity gameplay changes.",
+  "note": "Manifest excluded from own SHA to avoid circular digest. 10 UTF-8 source/JSON/doc/workflow payloads are SHA256/byte/Git blob pinned; exact final package commit is descendant of source_commit."
+}
