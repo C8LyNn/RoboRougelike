@@ -12,7 +12,7 @@ FILES={
  "SecureRigSpec.cs":("Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs","b680ed0ec969ac23203fa55eab7b90f8daa86e43")
 }
 def gitblob(b):
- return hashlib.sha1(b"blob "+str(len(b)).encode()+b"\\0"+b).hexdigest()
+ return hashlib.sha1(b"blob "+str(len(b)).encode()+b"\0"+b).hexdigest()
 def stage(repo,dest):
  dest=Path(dest)
  if dest.exists() or not dest.parent.is_dir():raise ValueError("STAGE_NEW_DIRECTORY_ONLY")
@@ -26,7 +26,7 @@ def stage(repo,dest):
  receipt={"selected_source_sha":SELECTED,"actual_original_source_files":
           {name:{"git_blob":FILES[name][1],"sha256":hashlib.sha256(b).hexdigest()} for name,b in sorted(values.items())},
           "native_unity":"NOT_RUN","game_save_adapter":"NOT_INTEGRATED"}
- r=json.dumps(receipt,indent=2,sort_keys=True)+"\\n"
+ r=json.dumps(receipt,indent=2,sort_keys=True)+"\n"
  (dest/"source_receipt.json").write_text(r,encoding="utf-8")
  print("ORIGINAL_W06_R2_SOURCE_3_OF_3_PINNED")
  print("SOURCE_RECEIPT_SHA256="+hashlib.sha256(r.encode()).hexdigest())
