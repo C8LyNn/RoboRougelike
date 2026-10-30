@@ -90,6 +90,19 @@ try {
  if($Run){$opts+='-Run'}
  & $shell @opts *>&1 | Tee-Object -FilePath (Join-Path $dir 'w20-console.log')
  $w20Exit=$LASTEXITCODE
+ if($w20Exit -ne 0) {
+   $runs=@(Get-ChildItem -LiteralPath $results -Directory -Filter 'B0160W20-*')
+   if($runs.Count -eq 1) {
+     $inner=Join-Path $runs[0].FullName 'git-exact-detached'
+     if(Test-Path -LiteralPath $inner) {
+       $probe=@(& git -C $inner cat-file -t $pins[0] 2>&1)
+       $probeExit=$LASTEXITCODE
+       Write-Host "B0160_W21_INNER_ORIGINAL_SHA_PROBE exit=$probeExit kind=$($probe -join ',')"
+       $branches=@(& git -C $inner branch -a --list '*b0160-w21-pin*' 2>&1)
+       Write-Host "B0160_W21_INNER_PIN_BRANCH_COUNT=$($branches.Count)"
+     }
+   }
+ }
  $evidenceDirs=@(Get-ChildItem -LiteralPath $results -Directory -Filter 'B0160W20-*')
  Need ($evidenceDirs.Count -eq 1) 'Exactly one frozen W20 evidence directory required'
  $ev=Join-Path $evidenceDirs[0].FullName 'evidence'
