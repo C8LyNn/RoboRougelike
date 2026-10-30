@@ -56,7 +56,7 @@ namespace B01.W16Selected587Repair
                     throw new InvalidDataException("Noncanonical journal filename");
                 if(!long.TryParse(middle,out long epoch)||epoch<=0)
                     throw new InvalidDataException("Invalid epoch filename");
-                if(entry.Length>256||entry.Length<60)
+                if(new FileInfo(entry.FullName).Length>256||new FileInfo(entry.FullName).Length<60)
                     throw new InvalidDataException("Invalid record size");
                 var raw=File.ReadAllBytes(entry.FullName);
                 string val=new UTF8Encoding(false,true).GetString(raw);
