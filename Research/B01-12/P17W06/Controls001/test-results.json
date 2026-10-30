@@ -1,0 +1,795 @@
+{
+  "package": "B01-12-CONTROLS-001/R1",
+  "source_sha256": "bad7f4e8ab3134d3e3791550c8bee598b680686c2c505f20e91b21d6769dad60",
+  "total": 196,
+  "pass": 196,
+  "failed": [],
+  "js_errors": [],
+  "native_unity": "NOT_RUN",
+  "checks": [
+    {
+      "case": "320/initial_actions",
+      "pass": true
+    },
+    {
+      "case": "320/initial_no_conflicts",
+      "pass": true
+    },
+    {
+      "case": "320/locked_mouse_buttons",
+      "pass": true
+    },
+    {
+      "case": "320/default_forward",
+      "pass": true
+    },
+    {
+      "case": "320/keyboard_only_remap",
+      "pass": true
+    },
+    {
+      "case": "320/keyboard_only_undo",
+      "pass": true
+    },
+    {
+      "case": "320/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "320/remap",
+      "pass": true
+    },
+    {
+      "case": "320/remap_notice",
+      "pass": true
+    },
+    {
+      "case": "320/undo",
+      "pass": true
+    },
+    {
+      "case": "320/redo",
+      "pass": true
+    },
+    {
+      "case": "320/versioned_export",
+      "pass": true
+    },
+    {
+      "case": "320/export_full_actions",
+      "pass": true
+    },
+    {
+      "case": "320/export_invalidated",
+      "pass": true
+    },
+    {
+      "case": "320/undo_after_export",
+      "pass": true
+    },
+    {
+      "case": "320/import_valid",
+      "pass": true
+    },
+    {
+      "case": "320/import_value",
+      "pass": true
+    },
+    {
+      "case": "320/reset_defaults",
+      "pass": true
+    },
+    {
+      "case": "320/conflict_detected",
+      "pass": true
+    },
+    {
+      "case": "320/conflict_before_confirm",
+      "pass": true
+    },
+    {
+      "case": "320/cancel_collision",
+      "pass": true
+    },
+    {
+      "case": "320/atomic_swap",
+      "pass": true
+    },
+    {
+      "case": "320/no_collision_after_swap",
+      "pass": true
+    },
+    {
+      "case": "320/undo_swap",
+      "pass": true
+    },
+    {
+      "case": "320/reject_reserved",
+      "pass": true
+    },
+    {
+      "case": "320/escape_cancel",
+      "pass": true
+    },
+    {
+      "case": "320/escape_no_change",
+      "pass": true
+    },
+    {
+      "case": "320/cross_context_repeat_allowed",
+      "pass": true
+    },
+    {
+      "case": "320/cross_context_no_collision",
+      "pass": true
+    },
+    {
+      "case": "320/bad_json_reject",
+      "pass": true
+    },
+    {
+      "case": "320/bad_json_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/wrong_version_reject",
+      "pass": true
+    },
+    {
+      "case": "320/wrong_version_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/extra_key_reject",
+      "pass": true
+    },
+    {
+      "case": "320/extra_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/missing_action_reject",
+      "pass": true
+    },
+    {
+      "case": "320/missing_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/unknown_action_reject",
+      "pass": true
+    },
+    {
+      "case": "320/unknown_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/locked_mouse_changed_reject",
+      "pass": true
+    },
+    {
+      "case": "320/locked_mouse_changed_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/unsupported_key_reject",
+      "pass": true
+    },
+    {
+      "case": "320/unsupported_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/duplicate_same_context_reject",
+      "pass": true
+    },
+    {
+      "case": "320/duplicate_same_context_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/invalid_type_reject",
+      "pass": true
+    },
+    {
+      "case": "320/invalid_type_atomic",
+      "pass": true
+    },
+    {
+      "case": "320/reset_garage",
+      "pass": true
+    },
+    {
+      "case": "320/responsive_final",
+      "pass": true
+    },
+    {
+      "case": "768/initial_actions",
+      "pass": true
+    },
+    {
+      "case": "768/initial_no_conflicts",
+      "pass": true
+    },
+    {
+      "case": "768/locked_mouse_buttons",
+      "pass": true
+    },
+    {
+      "case": "768/default_forward",
+      "pass": true
+    },
+    {
+      "case": "768/keyboard_only_remap",
+      "pass": true
+    },
+    {
+      "case": "768/keyboard_only_undo",
+      "pass": true
+    },
+    {
+      "case": "768/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "768/remap",
+      "pass": true
+    },
+    {
+      "case": "768/remap_notice",
+      "pass": true
+    },
+    {
+      "case": "768/undo",
+      "pass": true
+    },
+    {
+      "case": "768/redo",
+      "pass": true
+    },
+    {
+      "case": "768/versioned_export",
+      "pass": true
+    },
+    {
+      "case": "768/export_full_actions",
+      "pass": true
+    },
+    {
+      "case": "768/export_invalidated",
+      "pass": true
+    },
+    {
+      "case": "768/undo_after_export",
+      "pass": true
+    },
+    {
+      "case": "768/import_valid",
+      "pass": true
+    },
+    {
+      "case": "768/import_value",
+      "pass": true
+    },
+    {
+      "case": "768/reset_defaults",
+      "pass": true
+    },
+    {
+      "case": "768/conflict_detected",
+      "pass": true
+    },
+    {
+      "case": "768/conflict_before_confirm",
+      "pass": true
+    },
+    {
+      "case": "768/cancel_collision",
+      "pass": true
+    },
+    {
+      "case": "768/atomic_swap",
+      "pass": true
+    },
+    {
+      "case": "768/no_collision_after_swap",
+      "pass": true
+    },
+    {
+      "case": "768/undo_swap",
+      "pass": true
+    },
+    {
+      "case": "768/reject_reserved",
+      "pass": true
+    },
+    {
+      "case": "768/escape_cancel",
+      "pass": true
+    },
+    {
+      "case": "768/escape_no_change",
+      "pass": true
+    },
+    {
+      "case": "768/cross_context_repeat_allowed",
+      "pass": true
+    },
+    {
+      "case": "768/cross_context_no_collision",
+      "pass": true
+    },
+    {
+      "case": "768/bad_json_reject",
+      "pass": true
+    },
+    {
+      "case": "768/bad_json_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/wrong_version_reject",
+      "pass": true
+    },
+    {
+      "case": "768/wrong_version_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/extra_key_reject",
+      "pass": true
+    },
+    {
+      "case": "768/extra_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/missing_action_reject",
+      "pass": true
+    },
+    {
+      "case": "768/missing_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/unknown_action_reject",
+      "pass": true
+    },
+    {
+      "case": "768/unknown_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/locked_mouse_changed_reject",
+      "pass": true
+    },
+    {
+      "case": "768/locked_mouse_changed_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/unsupported_key_reject",
+      "pass": true
+    },
+    {
+      "case": "768/unsupported_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/duplicate_same_context_reject",
+      "pass": true
+    },
+    {
+      "case": "768/duplicate_same_context_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/invalid_type_reject",
+      "pass": true
+    },
+    {
+      "case": "768/invalid_type_atomic",
+      "pass": true
+    },
+    {
+      "case": "768/reset_garage",
+      "pass": true
+    },
+    {
+      "case": "768/responsive_final",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_actions",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_no_conflicts",
+      "pass": true
+    },
+    {
+      "case": "1280/locked_mouse_buttons",
+      "pass": true
+    },
+    {
+      "case": "1280/default_forward",
+      "pass": true
+    },
+    {
+      "case": "1280/keyboard_only_remap",
+      "pass": true
+    },
+    {
+      "case": "1280/keyboard_only_undo",
+      "pass": true
+    },
+    {
+      "case": "1280/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1280/remap",
+      "pass": true
+    },
+    {
+      "case": "1280/remap_notice",
+      "pass": true
+    },
+    {
+      "case": "1280/undo",
+      "pass": true
+    },
+    {
+      "case": "1280/redo",
+      "pass": true
+    },
+    {
+      "case": "1280/versioned_export",
+      "pass": true
+    },
+    {
+      "case": "1280/export_full_actions",
+      "pass": true
+    },
+    {
+      "case": "1280/export_invalidated",
+      "pass": true
+    },
+    {
+      "case": "1280/undo_after_export",
+      "pass": true
+    },
+    {
+      "case": "1280/import_valid",
+      "pass": true
+    },
+    {
+      "case": "1280/import_value",
+      "pass": true
+    },
+    {
+      "case": "1280/reset_defaults",
+      "pass": true
+    },
+    {
+      "case": "1280/conflict_detected",
+      "pass": true
+    },
+    {
+      "case": "1280/conflict_before_confirm",
+      "pass": true
+    },
+    {
+      "case": "1280/cancel_collision",
+      "pass": true
+    },
+    {
+      "case": "1280/atomic_swap",
+      "pass": true
+    },
+    {
+      "case": "1280/no_collision_after_swap",
+      "pass": true
+    },
+    {
+      "case": "1280/undo_swap",
+      "pass": true
+    },
+    {
+      "case": "1280/reject_reserved",
+      "pass": true
+    },
+    {
+      "case": "1280/escape_cancel",
+      "pass": true
+    },
+    {
+      "case": "1280/escape_no_change",
+      "pass": true
+    },
+    {
+      "case": "1280/cross_context_repeat_allowed",
+      "pass": true
+    },
+    {
+      "case": "1280/cross_context_no_collision",
+      "pass": true
+    },
+    {
+      "case": "1280/bad_json_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/bad_json_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/wrong_version_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/wrong_version_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/extra_key_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/extra_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/missing_action_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/missing_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/unknown_action_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/unknown_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/locked_mouse_changed_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/locked_mouse_changed_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/unsupported_key_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/unsupported_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/duplicate_same_context_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/duplicate_same_context_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/invalid_type_reject",
+      "pass": true
+    },
+    {
+      "case": "1280/invalid_type_atomic",
+      "pass": true
+    },
+    {
+      "case": "1280/reset_garage",
+      "pass": true
+    },
+    {
+      "case": "1280/responsive_final",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_actions",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_no_conflicts",
+      "pass": true
+    },
+    {
+      "case": "1920/locked_mouse_buttons",
+      "pass": true
+    },
+    {
+      "case": "1920/default_forward",
+      "pass": true
+    },
+    {
+      "case": "1920/keyboard_only_remap",
+      "pass": true
+    },
+    {
+      "case": "1920/keyboard_only_undo",
+      "pass": true
+    },
+    {
+      "case": "1920/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1920/remap",
+      "pass": true
+    },
+    {
+      "case": "1920/remap_notice",
+      "pass": true
+    },
+    {
+      "case": "1920/undo",
+      "pass": true
+    },
+    {
+      "case": "1920/redo",
+      "pass": true
+    },
+    {
+      "case": "1920/versioned_export",
+      "pass": true
+    },
+    {
+      "case": "1920/export_full_actions",
+      "pass": true
+    },
+    {
+      "case": "1920/export_invalidated",
+      "pass": true
+    },
+    {
+      "case": "1920/undo_after_export",
+      "pass": true
+    },
+    {
+      "case": "1920/import_valid",
+      "pass": true
+    },
+    {
+      "case": "1920/import_value",
+      "pass": true
+    },
+    {
+      "case": "1920/reset_defaults",
+      "pass": true
+    },
+    {
+      "case": "1920/conflict_detected",
+      "pass": true
+    },
+    {
+      "case": "1920/conflict_before_confirm",
+      "pass": true
+    },
+    {
+      "case": "1920/cancel_collision",
+      "pass": true
+    },
+    {
+      "case": "1920/atomic_swap",
+      "pass": true
+    },
+    {
+      "case": "1920/no_collision_after_swap",
+      "pass": true
+    },
+    {
+      "case": "1920/undo_swap",
+      "pass": true
+    },
+    {
+      "case": "1920/reject_reserved",
+      "pass": true
+    },
+    {
+      "case": "1920/escape_cancel",
+      "pass": true
+    },
+    {
+      "case": "1920/escape_no_change",
+      "pass": true
+    },
+    {
+      "case": "1920/cross_context_repeat_allowed",
+      "pass": true
+    },
+    {
+      "case": "1920/cross_context_no_collision",
+      "pass": true
+    },
+    {
+      "case": "1920/bad_json_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/bad_json_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/wrong_version_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/wrong_version_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/extra_key_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/extra_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/missing_action_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/missing_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/unknown_action_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/unknown_action_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/locked_mouse_changed_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/locked_mouse_changed_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/unsupported_key_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/unsupported_key_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/duplicate_same_context_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/duplicate_same_context_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/invalid_type_reject",
+      "pass": true
+    },
+    {
+      "case": "1920/invalid_type_atomic",
+      "pass": true
+    },
+    {
+      "case": "1920/reset_garage",
+      "pass": true
+    },
+    {
+      "case": "1920/responsive_final",
+      "pass": true
+    }
+  ]
+}

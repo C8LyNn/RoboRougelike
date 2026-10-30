@@ -1,0 +1,17 @@
+{
+  "package_id": "B01-12-CONTROLS-001",
+  "version": "R1",
+  "owner": "B01-12 Interactive UX Prototypes",
+  "scope": [
+    "Research/B01-12/P17W06/Controls001/**"
+  ],
+  "html_sha256": "bad7f4e8ab3134d3e3791550c8bee598b680686c2c505f20e91b21d6769dad60",
+  "html_bytes": 12696,
+  "dependencies": {
+    "runtime": "modern offline Chromium",
+    "tests": "Python3 + playwright + /usr/bin/chromium"
+  },
+  "native_unity": "NOT_RUN",
+  "game_integrated": false,
+  "test_sha256": "690845b315fc5c0353445295ecc2f16d8f0dd03a15e4a92ecf8357ddc5d0ca61"
+}
