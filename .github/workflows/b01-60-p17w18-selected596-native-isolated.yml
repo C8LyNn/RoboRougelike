@@ -1,0 +1,102 @@
+name: B01-60 W18 selected #596 four private Unity native cases source preflight (G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w18-selected596-native-isolated-cases-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W18Selected596Native/**'
+      - '.github/workflows/b01-60-p17w18-selected596-native-isolated.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W18Selected596Native/**'
+      - '.github/workflows/b01-60-p17w18-selected596-native-isolated.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-only-596-native-project-physical-source-preflight-not-G1:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch only exact original candidate refs (not co-installing #604)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
+          git fetch --no-tags origin 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          git fetch --no-tags origin f4e26ac21ade9a54c0c38927ee48cea50ed8377c
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Execute ORIGINAL #596 exact byte physical four-private-project source stage, 10 corrupt source refusals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W18Selected596Native/test_preflight.py 2>&1 | tee b0160-w18-source-negative.log
+          cp b0160-w18-source-negative.log qa-w18-selected596-source-check-evidence/stdout.log
+      - name: Execute selected #596 native source builder in explicit PRE-FLIGHT-only mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W18Selected596Native/run.py --mode preflight --out qa-w18-selected596-project-preflight 2>&1 | tee b0160-w18-source-project-preflight.log
+          grep -F 'B01_60_W18_G1_NOT_RUN_SOURCE_PREFLIGHT_ONLY' b0160-w18-source-project-preflight.log
+          test -f qa-w18-selected596-project-preflight/receipt.json
+      - name: Confirm actual existing native launcher fails closed with no licensed Editor, no fake NUnit or Editor.log
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python Tools/B01/B01-60/P17W18Selected596Native/run.py --mode native --unity /B01/NO_ACTIVATED_UNITY_6000.3.14f1 --out qa-w18-selected596-no-unity 2>&1 | tee b0160-w18-real-native-NOT_RUN.log
+          native_exit="${PIPESTATUS[0]}"
+          set -e
+          if [ "$native_exit" -ne 3 ]; then echo "B01_60_W18_NATIVE_EXPECTED_NOT_RUN_EXIT3_GOT=$native_exit"; exit 1; fi
+          grep -F 'B01_60_W18_G1_NOT_RUN_NO_AUTHORIZED_ACTIVATED_UNITY_EDITOR' b0160-w18-real-native-NOT_RUN.log
+          test -f qa-w18-selected596-no-unity/receipt.json
+          test ! -e qa-w18-selected596-no-unity/selected-bridge-native-verdict.json
+          test ! -e qa-w18-selected596-no-unity/selected-0.xml
+          test ! -e qa-w18-selected596-no-unity/guard-0.xml
+          test ! -e qa-w18-selected596-no-unity/selected-0-Editor.log
+          echo 'B01_60_W18_REAL_UNITY_G1_NOT_RUN_NO_ORIGINAL_XML_NO_EDITORLOG'
+      - name: Prove source-only six-stage receipt never represents a fake engine pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path("qa-w18-selected596-source-check-evidence/receipt.json").read_text())
+          assert a["physical_adversarial_failclosed"]==10
+          assert a["projects_physically_staged_and_safe_rolled_back"]==4
+          assert len(set(a["private_product_names"]))==4
+          assert a["native_unity"]=="NOT_RUN" and a["G1"]=="NOT_RUN"
+          b=json.loads(Path("qa-w18-selected596-no-unity/receipt.json").read_text())
+          assert b["native_G1"]=="NOT_RUN" and b["Unity6000_3_14f1"]=="NOT_RUN"
+          assert b["sole_bridge_SHA"]=="efb2b06eafedab5469b57f163152d96aca3c5915"
+          assert b["unselected_ALT_SHA"]=="1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
+          assert not any(Path("qa-w18-selected596-no-unity").glob("*Editor.log"))
+          print("B01_60_W18_SOURCE_ONLY_NOT_NATIVE_EVIDENCE_CONTRACT_PASS")
+          PY
+      - name: Archive actual source QA receipts with explicit NOT RUN native status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0160-w18-selected596-private-staged-sourceQA-NOT-Unity-${{ matrix.os }}
+          path: |
+            qa-w18-selected596-source-check-evidence/
+            qa-w18-selected596-project-preflight/
+            qa-w18-selected596-no-unity/
+            b0160-w18-source-negative.log
+            b0160-w18-source-project-preflight.log
+            b0160-w18-real-native-NOT_RUN.log
+          retention-days: 21
+          if-no-files-found: warn
