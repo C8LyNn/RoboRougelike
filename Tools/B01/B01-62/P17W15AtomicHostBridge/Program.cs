@@ -51,7 +51,7 @@ internal sealed class FakeWorldHost : IAtomicWorldHost
        PublishThenThrow, FailRestore, StageNotReady, StageCorrupt,
        MutateWorldWhileStaging, RejectOnSecondIdle;
     public bool Quarantined;
-    public int AbortCount, PublishCalls, RestoreCalls, StageCalls, IdleCalls;
+    public int PublishCalls, RestoreCalls, StageCalls, IdleCalls;
     public Stage? LastStage;
     public Action? IdleCallback;
     public FakeWorldHost(RunSnapshot initial){Current=new LogicalWorld(initial);}
