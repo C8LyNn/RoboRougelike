@@ -10,12 +10,12 @@
 
 - \`GhostRecorder(courseId, rigId, requiredCheckpoints, actualStartPose)\` opens **one** physical attempt, recording real host-supplied world positions/heading.
 - \`Tick(unscaledDelta, paused, actualPose)\` samples at approximately 10Hz rather than allocating data every frame, accumulates only non-paused time, bounds each delta to 10 sec and a whole attempt to 15 minutes. **Tick never applies Rigidbody forces or controls vehicles**.
-- \`Checkpoint(zeroBasedIndex, actualPose)\` records ordered checkpoint splits, rejects skips and repeats. **It must only receive checkpoint events already accepted by the real CHL-003 trigger/controller**. The library does NOT validate Unity colliders or actor identity.
+- \`Checkpoint(zeroBasedIndex, actualPose)\` records ordered checkpoint splits, rejects skips and repeats. A completed exported track also records RequiredCheckpoints; imported JSON cannot claim victory after fewer than the configured gates. **It must only receive checkpoint events already accepted by the real CHL-003 trigger/controller**. The library does NOT validate Unity colliders or actor identity.
 - \`Finish(actualPose)\` refuses early finish, closes the recording and supplies a completed immutable-by-copy \`GhostRun\`. \`Fail(actualPose)\` closes a non-completing run, never a valid personal record. Duplicate finalization/ticking is rejected.
 - \`GhostMath.At(completedRun, seconds)\` supplies a detached 3D playback pose, interpolating xyz and taking the shortest yaw arc across the 0/360 boundary. It only computes pose; Codex (if authorized) may render a translucent non-colliding ghost. **Do not turn this output into a physics vehicle or collision actor**.
 - \`GhostBestBook.Submit(completedRun)\` stores a defensive deep clone of the fastest completed attempt per course+vehicle rig. A failed attempt, duplicate/equal best or slower completion cannot replace it.
 - \`GhostMath.Compare(reference,trial)\` computes actual signed checkpoint split deltas and finish-time delta for **two completed attempts on the same course and matching gate count**, including cross-rig Light vs Heavy. No fixed "Heavy always slower" balance assertion, no equipment/credits/reward effect.
-- \`GhostMath.Validate\` rejects NaN/Infinity, malformed timestamps, missing samples, invalid positions, checkpoint drift, impossible time, uncontrolled length. Identity is separate by course and rig, case-sensitive. Records and best query results are deep copies.
+- \`GhostMath.Validate\` rejects NaN/Infinity, malformed timestamps, missing samples, invalid positions, missing configured checkpoints in a forged completed track, checkpoint drift, impossible time, uncontrolled length. Identity is separate by course and rig, case-sensitive. Records and best query results are deep copies.
 
 **No persistent game save changes**: best book is in-memory, rebuilt or reset when the host decides. No monetization, economy, meta progression, combat, CHL-003 controller, R1, R3, R5, scenes or Unity project files are edited by this branch.
 
@@ -27,7 +27,7 @@ dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj -c Release --n
 dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj -c Release --no-build -- --demo
 \`\`\`
 
-The original source \`Program.cs\` runs **50 named positive/negative C# checks** including 100 extra deterministic synthetic motion traces, plus 2 synthetic example rigs and original JSON export. Output explicitly says **SYNTHETIC**, never live CHL-003 telemetry or native Unity/PhysX proof. \`--demo\` provides data for real game preview or design review; it is not a claim of playable Unity demo.
+The original source \`Program.cs\` runs **54 named positive/negative C# checks** including 100 extra deterministic synthetic motion traces, plus 2 synthetic example rigs and original JSON export. Output explicitly says **SYNTHETIC**, never live CHL-003 telemetry or native Unity/PhysX proof. \`--demo\` provides data for real game preview or design review; it is not a claim of playable Unity demo.
 
 The dedicated isolated \`.github/workflows/b01-10-p17-ghost.yml\` compiles and runs the real same original C# under .NET8 on **Windows 2025 and Ubuntu 24.04**, uploads real test logs and demo JSON, negative command exit2. Only count actual PASS once the CI run completes; native Unity remains **NOT_RUN** until a licensed editor imports this code and tests real rig physics.
 
