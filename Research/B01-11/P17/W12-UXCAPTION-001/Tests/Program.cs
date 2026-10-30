@@ -180,12 +180,14 @@ static class Program
             f.Record(Cue(3,30,SoundCueKind.PartDetached));
             return f.ActiveCount==2&&f.Visible(true).Length==1&&f.Visible()[1].FirstSequence==2;
         });
-        Check("when all urgent new urgent replaces oldest urgent",()=>{
+        Check("new detached evicts oldest detached but displays critical first",()=>{
             var f=Track(2,2);f.Record(Cue(1,10,SoundCueKind.PartDetached));
             f.Record(Cue(2,20,SoundCueKind.CriticalWarning));
             f.Record(Cue(3,30,SoundCueKind.PartDetached,source:"other"));
-            return f.ActiveCount==2&&f.Visible()[0].FirstSequence==3&&
-                   f.Visible()[1].FirstSequence==2;
+            return f.ActiveCount==2&&f.Visible()[0].FirstSequence==2&&
+                   f.Visible()[0].Priority==CaptionPriority.Critical&&
+                   f.Visible()[1].FirstSequence==3&&
+                   f.Visible()[1].Priority==CaptionPriority.Urgent;
         });
         Check("normal capacity evicts oldest normal",()=>{
             var f=Track(2,2);f.Record(Cue(1,10));f.Record(Cue(2,20,source:"two"));
