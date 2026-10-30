@@ -1,0 +1,83 @@
+{
+  "package_id": "B01-31-SPLIT-COUPLER-CONCEPT3D-001",
+  "version": "P17-W16-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "dispatch_issue": 589,
+  "governance_issue": 276,
+  "original_visual_asset": "Two-section low-poly broken electrical coupler model, with separate left/right transform pivots and exposed conductor pins physically separated by 0.26 m.",
+  "distinct_from": "Existing W14 #557 sprite animation/W15 #576 Unity .anim are 2D; this delivers a genuine 3D spatial concept for future optional geometry intake, not new VFX or duplicate G0 shim.",
+  "file_scope": [
+    "Tools/B01-31/P17/W16SplitCoupler3D001/{build_model.py,verify_model.py,manifest.json,README.md}",
+    ".github/workflows/b01-31-p17w16-split-coupler3d.yml"
+  ],
+  "distribution": {
+    "physical_GLB2": "B0131SplitCouplerConcept.glb",
+    "interchange_OBJ": "B0131SplitCouplerConcept.obj",
+    "materials_MTL": "B0131SplitCouplerConcept.mtl",
+    "actual_gltf_nodes": [
+      "LeftConnectorPivot",
+      "RightConnectorPivot"
+    ],
+    "pivot_translations_m": [
+      [
+        -0.2,
+        0,
+        0
+      ],
+      [
+        0.2,
+        0,
+        0
+      ]
+    ],
+    "physical_separation_ends_m": 0.26,
+    "materials": [
+      "graphite_shell",
+      "rubber_cable",
+      "hazard_amber",
+      "exposed_copper",
+      "insulation_cyan",
+      "strain_collar"
+    ],
+    "preview_board_png": [
+      "B0131SplitCouplerConcept-dark-three-views.png",
+      "B0131SplitCouplerConcept-light-three-views.png"
+    ],
+    "original_generator_output": "GLB2 + OBJ + MTL + 2 genuine projected PNG 1800x700 + SHA receipt; 6 member deterministic physical ZIP"
+  },
+  "test_contract": [
+    "Decode genuine GLB2 JSON and BIN, verify lengths 4-byte alignment and glTF 2.0 header",
+    "Validate 2 top-level independent pivot meshes; 12 real material primitives across six PBR colors",
+    "Physically parse positions/normals/indices; finite float data, exact AABB, actual every triangle area nonzero, proper unit face normals",
+    "Measure actual world-space left/right bounding meshes and copper conductor tip gap >= 0.26m; no overlapping shared cable geometry",
+    "Cross-check physical OBJ triangle faces/vertex-normal counts and 6 real .mtl material references with GLB primitive totals",
+    "Open actual 2 PNG 1800x700 original 3-view projected concept boards and multi-color pixel existence",
+    "Exact physical 6 member ZIP data bytes equal loose model and boards/receipt",
+    "Four adversarial GLB header corruption tests RED, whole reproducible rerender bytes identical",
+    "Windows independently verifies actual Ubuntu-produced physical 3D GLB, OBJ, MTL and review boards without calling geometry producer"
+  ],
+  "no_gameplay": "Pure 3D art/prototype/geometry source. Mesh is NOT an authoritative collision, rigidbody, attachment socket, Save/Load schema or native Unity prefab. GLB2 may need Blender/Unity model import pipeline review.",
+  "frozen_owners": {
+    "secureV2_pr": 510,
+    "secureV2_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_pr": 556,
+    "save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "bridge_585_587": "B01-23/62 only, chosen adapter not modified here"
+  },
+  "gates": {
+    "original_producer_G0": "PENDING actual CI",
+    "B01_40_independent_G0": "PENDING",
+    "B01_60_Unity_native_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": false,
+    "integrated": false,
+    "no_merge": true
+  },
+  "receivers": [
+    "B01-30/40 for distinct visual-asset technical intake + GLB2/OBJ geometry/pivot QA, not a duplicate 3D production job",
+    "B01-60 real activated Unity 6000.3.14f1 OBJ model import/visual readability and physics only if authorized; no native claim from this package",
+    "B01-12 optional cosmetics for authoritative severance event, no changes to game/Save",
+    "B01-00 route only after G0/G1 and explicit authorization"
+  ],
+  "rollback": "Remove only five OWN W16 source/workflow files from branch. On any authorized disposable importer remove only W16 distinctly namespaced model data; never delete foreign empty dirs or previous original game/asset files."
+}
