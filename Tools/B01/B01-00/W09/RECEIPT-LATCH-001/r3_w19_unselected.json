@@ -19,8 +19,8 @@
     }
   },
   "security": {
-    "629_stale_public_host": "HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
-    "637_durable_commit_then_throw": "HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
+    "629_stale_public_host": "R3_EXACT_642_SOURCE_GREEN_STALE_REPLAY",
+    "637_durable_commit_then_throw": "R3_EXACT_642_INDEPENDENT_RELEASE_P0_RED",
     "631_native_checkpoint_fixture": "SOURCE_RISK_R3_NATIVE_NOT_RUN",
     "640_slot_ownership": "HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
     "original_556_consumed_light_heavy": "R3_INDEPENDENT_NOT_RUN",
@@ -28,8 +28,8 @@
     "crash_atomic_payload_and_checkpoint": "NOT_PROVEN"
   },
   "gates": {
-    "r3_independent_security_qa": "NOT_RUN",
-    "r3_physical_g0": "PENDING",
+    "r3_independent_security_qa": "PARTIAL_629_GREEN_637_P0_RED",
+    "r3_physical_g0": "HOLD_P0_RED",
     "native_unity_editmode": "NOT_RUN",
     "native_unity_playmode": "NOT_RUN",
     "native_unity_physx": "NOT_RUN",
@@ -42,10 +42,10 @@
   },
   "owner_choice": {
     "authority": "B01-23",
-    "status": "PENDING",
-    "winner_pr": null,
-    "loser_pr": null,
-    "decision_comment_url": null
+    "status": "SELECTED_LINEAGE_SECURITY_HOLD",
+    "winner_pr": 642,
+    "loser_pr": 644,
+    "decision_comment_url": "https://github.com/C8LyNn/RoboRougelike/pull/642#issuecomment-6530905217"
   },
   "competing_sources_installed": false,
   "code_offer_to_codex": false,
@@ -78,10 +78,10 @@
       "owner": "B01-23",
       "lineage_parent_pr": 596,
       "lineage_parent_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
-      "branch_selection": "UNSELECTED_PENDING_OWNER",
+      "branch_selection": "SELECTED_BASE_SECURITY_HOLD",
       "ci_status": "PRODUCER_SOURCE_PASS_ONLY",
-      "independent_qa": "NOT_RUN",
-      "formal_g0": "PENDING",
+      "independent_qa": "PARTIAL_629_GREEN_637_P0_RED",
+      "formal_g0": "HOLD_P0_RED",
       "native_g1": "NOT_RUN",
       "lifecycle": {
         "IMPLEMENTED": true,
@@ -114,10 +114,10 @@
       "owner": "B01-23",
       "lineage_parent_pr": 596,
       "lineage_parent_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
-      "branch_selection": "UNSELECTED_PENDING_OWNER",
+      "branch_selection": "ALT_HOLD",
       "ci_status": "PRODUCER_SOURCE_PASS_ONLY",
       "independent_qa": "NOT_RUN",
-      "formal_g0": "PENDING",
+      "formal_g0": "ALT_HOLD",
       "native_g1": "NOT_RUN",
       "lifecycle": {
         "IMPLEMENTED": true,
