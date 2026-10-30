@@ -302,7 +302,7 @@ def prepare_original_cs(roots,project):
 
 def main():
     parser=argparse.ArgumentParser()
-    for name in ["game","save544","save549","wrapper536","wrapper542","project","out"]:
+    for name in ["game","save544","save549","save556","wrapper536","wrapper542","project","out"]:
         parser.add_argument("--"+name,required=True,type=Path)
     a=parser.parse_args()
     roots={k:getattr(a,k).resolve() for k in SHAS}
