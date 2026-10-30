@@ -1,0 +1,90 @@
+name: B01-40 W24 independent candidate 773 + rig 772 + economy 764 source G0 (NOT Unity)
+on:
+  push:
+    branches: [qa/b01-40-p17w24-selected749-r2-772-764-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W24CandidateR2G0/**'
+      - '.github/workflows/b01-40-p17w24-candidate-r2-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W24CandidateR2G0/**'
+      - '.github/workflows/b01-40-p17w24-candidate-r2-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  exact-original-git-source-transport-only:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: candidate
+          ref: 3aaaec4027ee246fbfb6f209179f0e9507363473
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: selected
+          ref: 8634e71dfcf633323073fe584a6c0884f1ca5d23
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: api
+          ref: b8ca29c7707cd6b4338d0b9772d74dee676d49d2
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: rig
+          ref: ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: econ
+          ref: cc5d65f66ad7a764af6515c566e489b9fc3be82e
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r5
+          ref: 60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Actual original Git HEAD / diff / GUID / serialized script refs / disposable scratch and fail-closed rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W24CandidateR2G0/intake.py --own own --candidate candidate --selected selected --api api --rig rig --econ econ --r5 r5 --game game --save save --out evidence/b0140-w24-candidate-773-source-g0.json | tee b0140-w24-source.log
+          grep -q 'B0140_W24_ORIGINAL_EXACT_SHA_SOURCE_LINEAGE_PASS' b0140-w24-source.log
+          grep -q 'B0140_W24_UNITY_NEW_GUIDS_PASS 9_RIG 4_ECON' b0140-w24-source.log
+          grep -q 'B0140_W24_DISPOSABLE_PHYSICAL_STAGE_AND_SAFE_ROLLBACK_PASS' b0140-w24-source.log
+          grep -q 'B0140_W24_SOURCE_TRANSPORT_G0_PASS_CANDIDATE_NOT_SELECTED' b0140-w24-source.log
+          grep -q 'B0140_W24_NATIVE_UNITY_G1_NOT_RUN_LIVE_ECON_SAVE_HOLD_NO_MERGE' b0140-w24-source.log
+          grep -q 'EVIDENCE_SHA256=ab94e0d87f3820145bc16ddc982c7980d3566dec9bdbafd05a9295d2dc67ec70' b0140-w24-source.log
+          test -s evidence/b0140-w24-candidate-773-source-g0.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w24-r2-rig-econ-${{ matrix.os }}-source-only
+          path: |
+            evidence/
+            b0140-w24-source.log
+          if-no-files-found: warn
