@@ -48,7 +48,7 @@ def private_root(root):
     # For symbolic links that are not the final component (including junctions),
     # resolve and recheck. Native Windows ACL/junction protection is NOT certified.
     resolved = raw.resolve(strict=False)
-    if resolved != raw:
+    if os.path.normcase(str(resolved)) != os.path.normcase(str(raw)):
         raise Invalid('PATH_REDIRECTION_DENIED')
     return raw
 
