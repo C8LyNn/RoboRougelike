@@ -506,6 +506,161 @@ def bridge_main(argv=None):
         print("W16_BRIDGE_SOURCE_HOLD: " + str(err), file=sys.stderr)
         return 2
 
+
+
+# W17 exclusive *version* choice gate for the existing B01-23 #587 R2 lineage.
+# This audits SOURCE evidence records only. In particular, it does not claim
+# that either final corrected proposal has physically passed Unity G0/G1.
+FINAL_W17_SCHEMA = "b01-w17-one-bridge-version-v1"
+W17_CANDIDATES = {
+    596: {
+        "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+        "producer_ci": "PASS_SOURCE_ONLY",
+        "qa_pr": 607,
+        "qa_sha": "86f3292c928e52609db6c7afdb2010971d6946f1",
+        "qa_tested_commit": "efb2b06eafedab5469b57f163152d96aca3c5915",
+        "qa_scope": "EXACT_CORE_AND_CORRECTION_SOURCE_ONLY",
+        "qa_assertions_per_os": 82,
+        "archive_sha256": "005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9",
+        "archive_entries": 23,
+    },
+    604: {
+        "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+        "producer_ci": "PASS_SOURCE_ONLY",
+        "qa_pr": 603,
+        "qa_sha": "df1ed1e9707094cbdcac74662cda4094b7a0c370",
+        "qa_tested_commit": "7d206c63e1e9ab4ee4ce52eb314507ce49721d2c",
+        "qa_scope": "UNCHANGED_CORE_FENCE_ONLY_NOT_WHOLE_HEAD",
+        "qa_assertions_per_os": 52,
+        "archive_sha256": "ef110b5906d385cbc51938a35510c97516a0942b28ec055519a78d1e3fe5afb8",
+        "archive_entries": 27,
+    },
+}
+W17_NATIVE_HOLDS = {
+    "bridge_physical_g0": "NOT_ACCEPTED",
+    "unity_editmode_g1": "NOT_RUN",
+    "unity_playmode_g1": "NOT_RUN",
+    "unity_physx_g1": "NOT_RUN",
+    "canonical_private_rig_capture": "NOT_AUTHORIZED",
+    "canonical_private_ledger_hydration": "NOT_AUTHORIZED",
+    "live_cold_game_save_load": "HOLD",
+    "real_scene_migration": "NOT_DONE",
+    "rollback": "SCRATCH_SAFE_ONLY",
+    "original_510_rollback": "FORBIDDEN",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "installed": False,
+    "merged": False,
+}
+
+
+def audit_final_w17(payload):
+    """A single owner version decision cannot be inferred from passing QA."""
+    r = doc(payload, "W17 final intake")
+    if r.get("schema") != FINAL_W17_SCHEMA:
+        raise AdmissionError("W17 schema mismatch")
+    if r.get("frozen") != {
+        "game_pr": 510, "game_sha": FROZEN_GAME_SHA,
+        "save_pr": 556, "save_sha": FROZEN_SAVE_SHA,
+        "immutable": True,
+    }:
+        raise AdmissionError("frozen selected game/save altered")
+    prior = doc(r.get("lineage"), "lineage")
+    if prior != {
+        "selected_original_pr": 587,
+        "selected_original_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+        "original_587_source_release": "HOLD_P0_RED",
+        "alternative_585": "ALT_HOLD",
+    }:
+        raise AdmissionError("selected historical lineage mismatch")
+    sources = r.get("versions")
+    if type(sources) is not list or len(sources) != 2:
+        raise AdmissionError("two original R2 versions required for exclusive choice")
+    found = set()
+    for item in sources:
+        v = doc(item, "R2 version")
+        n = v.get("pr")
+        if n not in W17_CANDIDATES or n in found:
+            raise AdmissionError("unknown or duplicate competing R2")
+        found.add(n)
+        expected = W17_CANDIDATES[n]
+        if v != {"pr": n, "url": pr_url(n), **expected}:
+            raise AdmissionError("wrong original source, QA scope or archive hash")
+    if found != set(W17_CANDIDATES):
+        raise AdmissionError("one producer R2 omitted or blended")
+    choice = doc(r.get("owner_choice"), "owner_choice")
+    if choice.get("owner") != "B01-23":
+        raise AdmissionError("coordinator cannot claim B01-23 owner decision")
+    state = choice.get("state")
+    if state == "PENDING":
+        if (choice.get("selected_pr") is not None
+                or choice.get("loser_pr") is not None
+                or choice.get("decision_url") is not None):
+            raise AdmissionError("pending owner choice cannot imply selection")
+    elif state == "ONE_FROZEN":
+        n = choice.get("selected_pr")
+        if (n not in W17_CANDIDATES
+                or choice.get("loser_pr") != ({596, 604} - {n}).pop()
+                or not isinstance(choice.get("decision_url"), str)
+                or not re.fullmatch(
+                    r"https://github\.com/C8LyNn/RoboRougelike/"
+                    r"(?:issues|pull)/[1-9][0-9]*#issuecomment-[1-9][0-9]*",
+                    choice["decision_url"])):
+            raise AdmissionError("one explicit owner-frozen SHA/decision required")
+    else:
+        raise AdmissionError("invalid exclusive owner selection state")
+    scope = doc(r.get("receiver"), "receiver")
+    if set(scope) != set(W17_NATIVE_HOLDS):
+        raise AdmissionError("missing physical, native or canonical release gate")
+    for key, value in W17_NATIVE_HOLDS.items():
+        if scope[key] != value or type(scope[key]) is not type(value):
+            raise AdmissionError("fake SOURCE_G0, Unity, rollback, ACK or game promotion: " + key)
+    if r.get("offer_to_codex") is not False:
+        raise AdmissionError("G0 pending: no offer to Codex Inbox")
+    return {
+        "schema": FINAL_W17_SCHEMA,
+        "owner_choice": state,
+        "selected_version_pr": choice["selected_pr"] if state == "ONE_FROZEN" else None,
+        "version_sha": W17_CANDIDATES[choice["selected_pr"]]["sha"]
+            if state == "ONE_FROZEN" else None,
+        "available_competing_prs": [596, 604],
+        "historical_587_release": "HOLD_P0_RED",
+        "candidate_source_evidence": "RECORDS_ONLY_NOT_OWNER_RELEASE",
+        "one_qa_scope_604": "UNCHANGED_CORE_FENCE_ONLY_NOT_WHOLE_HEAD",
+        "physical_g0": "HOLD",
+        "native_g1": "NOT_RUN",
+        "canonical_game_save_load": "HOLD",
+        "codex_ack": "UNCONFIRMED",
+        "g2": "HOLD",
+        "source_claims_authenticated_online": False,
+        "authorized_offer": False, "installed": False, "merged": False,
+        "verdict": "HOLD_ONE_OWNER_VERSION_AND_PHYSICAL_G0",
+    }
+
+
+def final_w17_main(argv=None):
+    parser = argparse.ArgumentParser(description="W17 exclusive bridge version intake")
+    parser.add_argument("receipt", type=Path)
+    parser.add_argument("--require-accepted-source", action="store_true")
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args(argv)
+    try:
+        original = args.receipt.read_bytes()
+        result = audit_final_w17(json.loads(original.decode("utf-8")))
+        result["input_sha256"] = hashlib.sha256(original).hexdigest()
+        value = json.dumps(result, indent=2, sort_keys=True) + "\n"
+        if args.output is None:
+            print(value, end="")
+        else:
+            if args.output.resolve() == args.receipt.resolve() or args.output.exists():
+                raise AdmissionError("cannot overwrite original or existing evidence")
+            with args.output.open("x", encoding="utf-8") as output:
+                output.write(value)
+        return 3 if args.require_accepted_source else 0
+    except (AdmissionError, OSError, ValueError, UnicodeError, TypeError) as err:
+        print("W17_FINAL_VERSION_HOLD: " + str(err), file=sys.stderr)
+        return 2
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("receipt", type=Path)
@@ -533,6 +688,8 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--final-w17":
+        raise SystemExit(final_w17_main(sys.argv[2:]))
     if len(sys.argv) > 1 and sys.argv[1] == "--bridge-w16":
         raise SystemExit(bridge_main(sys.argv[2:]))
     if len(sys.argv) > 1 and sys.argv[1] == "--selected-v2":
