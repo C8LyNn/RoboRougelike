@@ -1,0 +1,42 @@
+name: B01-24 PASS17 W06 Original R3 Squad Pressure source CSharp9 (Unity NOT_RUN)
+on:
+  push:
+    branches: [research/b01-24-p17-w06-squad-pressure]
+    paths:
+      - 'Research/B01-24/P17/W06-SQUAD-PRESSURE-001/**'
+      - '.github/workflows/b01-24-p17-w06-squad-pressure.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/W06-SQUAD-PRESSURE-001/**'
+      - '.github/workflows/b01-24-p17-w06-squad-pressure.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  execute-original-R3-and-independent-squad-mechanic:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile ORIGINAL Codex R3 CSharp with authored independent Unity-CSharp9-compatible combat scheduler
+        shell: bash
+        run: dotnet build Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressureCI.csproj -c Release --warnaserror
+      - name: Execute real compiled scheduler fairness role targeting timeouts source pin and negative regressions
+        shell: bash
+        run: |
+          dotnet run --no-build -c Release --project Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressureCI.csproj | tee b01-24-squad-pressure-source-execution.txt
+      - name: Archive actual CSharp runner logs (not native Unity)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0124-squad-pressure-real-csharp-${{ matrix.os }}
+          path: b01-24-squad-pressure-source-execution.txt
+          if-no-files-found: warn
+          retention-days: 21

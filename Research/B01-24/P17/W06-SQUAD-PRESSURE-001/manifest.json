@@ -1,0 +1,96 @@
+{
+  "package_id": "B01-24-SQUAD-PRESSURE-001",
+  "version": "1.0.0",
+  "author_role": "B01-24 ENEMY AI & COMBAT SYSTEMS",
+  "type": "Original pure CSharp9 enemy group special-attack pressure arbitration + authored executable replay scenarios",
+  "owner": "B01-24",
+  "branch": "research/b01-24-p17-w06-squad-pressure",
+  "original_codex": {
+    "source_commit": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "original_R3_file": "Assets/R3/R3EnemyArchetype.cs",
+    "original_R3_git_blob": "66cd1ee734b129117b3753d1205469a0496cb673",
+    "native_game_unchanged": true
+  },
+  "files": [
+    {
+      "path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressure.cs",
+      "blob": "3402fe61153e307ba164340956afd76aec6e8603"
+    },
+    {
+      "path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressure.cs.meta",
+      "blob": "f509721f660ed57bd1dac0863a5bb9ea51b36f3a"
+    },
+    {
+      "path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/Program.cs",
+      "blob": "b0e2f574b52ae3be03fefac81b63846908791805"
+    },
+    {
+      "path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/scenarios.json",
+      "blob": "0aee7414f0e785d8f2363decff56b1f78ad8ca4f"
+    },
+    {
+      "path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressureCI.csproj",
+      "blob": "e1549c37150634aedc4d656b2eeb695c110e68b4"
+    },
+    {
+      "path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/README.md",
+      "blob": "372dcabfa74af96ee8623e78a289a30c30004bd1"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-w06-squad-pressure.yml",
+      "blob": "9fd1469cda6ff025d41c82438f677e5e1466c39a"
+    }
+  ],
+  "real_mechanic": {
+    "roles": [
+      "ScoutMark",
+      "BruiserPush",
+      "GunnerVolley",
+      "FlankerPincer"
+    ],
+    "original_R3_archetypes": true,
+    "squad_size": [
+      1,
+      4
+    ],
+    "simultaneous_action_windows_max": 1,
+    "deterministic_round_robin": true,
+    "role_range_and_cooldown": true,
+    "early_cancel_death_los_canExecute_outOfRange": true,
+    "scout_mark_telemetry": true,
+    "authored_scenarios": 3,
+    "source_trace_events": 39,
+    "source_replay_sha256": "1d451db0f8e70ec4c4e642bf3ab91d084a56062d62550c75bf0324cbf39275b6",
+    "provisional_balance": true
+  },
+  "test_receipt": {
+    "source_compiled": "Real original CSharp9 squad pressure plus ORIGINAL unmodified Codex R3EnemyArchetype.cs in .NET8 project",
+    "ubuntu": "40/40 PASS, 0 FAIL",
+    "windows": "40/40 PASS, 0 FAIL",
+    "ci_example": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41029933253",
+    "unity_editor": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "windows_player": "NOT_RUN",
+    "independent_B01_40": "PENDING",
+    "independent_B01_60": "PENDING"
+  },
+  "intake": {
+    "source_scope": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/** plus dedicated own workflow",
+    "canonical_assets_changed": false,
+    "pr": "PENDING",
+    "user_ack": "HQ W06 new independent author work permitted",
+    "codex_ack": "PENDING",
+    "g0": "PRODUCER_SOURCE_PASS_RECEIVER_PENDING",
+    "g1": "NATIVE_NOT_RUN",
+    "g2": "HOLD",
+    "not_integrated": true,
+    "rollback": "Do not attach optional adapter, or remove only standalone B0124SquadPressure files and Codex-approved optional wiring; preserve canonical R3/R1/R5/P12"
+  },
+  "limitations": [
+    "Advisory special-action scheduling, not integrated real enemy attacks, projectiles, physics or movement",
+    "SquadPressurePolicy.Standard values are provisional, not game balance approval",
+    "Caller must supply real stable active member IDs, LOS, distance, capability and monotonically increasing tick",
+    "No direct Unity Editor scene generation or native test evidence"
+  ]
+}
