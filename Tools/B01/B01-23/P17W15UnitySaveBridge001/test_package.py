@@ -30,6 +30,12 @@ class SourcePackageTests(unittest.TestCase):
         self.assertIn("if(part.activeInHierarchy)",source)
         self.assertIn("container.SetActive(true);",source)
         self.assertIn("body.linearVelocity",source)
+    def test_w16_unity_real_persistent_fence_opt_in(self):
+        runtime=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
+        self.assertIn("UsePersistentCheckpointSlot(string slot)",runtime)
+        self.assertIn("Application.persistentDataPath",runtime)
+        self.assertIn("new FileCheckpointFence(",runtime)
+        self.assertIn("coordinator.HasWorld",runtime)
     def test_real_git_deterministic_archive(self):self.assertEqual(p.build(),p.build())
     def test_exact_23_archive_members(self):self.assertEqual(len(p.verify(p.build())),25)
     def test_manifest_source_guards(self):
