@@ -6,6 +6,7 @@ using B01.DetachedSaveContract001;
 using B01.DebrisRepulse001;
 using B01.CanonicalWorldApi001;
 using B01.CanonicalSingleAuthorityW23;
+using B01.SingleFileSaveSlot001;
 internal static class T
 {
     static int passed,failed;
@@ -28,6 +29,11 @@ internal static class T
                 new Vector3d(0,0,0),FrozenPartCatalog.Mass(i));
         }
         return SnapshotCodec.Encode(new RunSnapshot(run,generation,parts));
+    }
+    sealed class LostAck:IAtomicEnvelopePublisher
+    {
+        public void Publish(string stage,string final)
+        {File.Move(stage,final,true);throw new IOException("ACK lost after atomic rename");}
     }
     sealed class Gate:ICanonicalMutationGate{public bool IsQuiescent()=>true;}
     sealed class World:ICanonicalStagedWorld
@@ -142,6 +148,48 @@ internal static class T
                 CanonicalGateResult.StaleGeneration;
             bool same=second.TryRestore(Snapshot(71,1,true),71,1)==CanonicalGateResult.Accepted;
             return second.TryCloseAfterPhysicalRetirement(()=>true)&&stale&&same;
+        }));
+        Check("same process second original slot.lease owner denied",()=>InRoot(root=>{
+            string dir=Path.Combine(root,"new");Guid slot=Guid.NewGuid();
+            var first=Open(dir,slot,true);
+            var status=CanonicalSingleAuthoritySession.TryOpen(dir,71,slot,false,out var rival);
+            return status==SessionOpenResult.Busy&&rival==null&&
+                first.TryCloseAfterPhysicalRetirement(()=>true);
+        }));
+        Check("wrong run and corrupt original #556 refuse before physical staging",()=>InRoot(root=>{
+            string dir=Path.Combine(root,"new");Guid slot=Guid.NewGuid();var f=new Factory();
+            var owner=Open(dir,slot,true,f);
+            var invalid=Snapshot(71,1,true);invalid[110]^=1;
+            bool denied=owner.TryRestore(Snapshot(72,1,true),72,1)==
+                CanonicalGateResult.WrongRun&&
+                owner.TryRestore(invalid,71,1)==CanonicalGateResult.InvalidSnapshot&&
+                f.Last==null&&!File.Exists(Path.Combine(dir,"save.envelope"));
+            return denied&&owner.TryCloseAfterPhysicalRetirement(()=>true);
+        }));
+        Check("actual original #669 published envelope then LOST ACK retains owner quarantine",()=>InRoot(root=>{
+            string dir=Path.Combine(root,"new");Guid id=Guid.NewGuid();
+            var result=CanonicalSingleAuthoritySession.TryOpen(dir,71,id,true,
+                out var owner,new LostAck());
+            if(result!=SessionOpenResult.Accepted||owner==null||
+                !owner.Attach(new Gate(),new Factory()))return false;
+            bool failClosed=owner.TryRestore(Snapshot(71,1,true),71,1)==
+                CanonicalGateResult.RollbackQuarantine&&owner.Quarantined&&
+                File.Exists(Path.Combine(dir,"save.envelope"))&&
+                !owner.TryCapturePreview(out _)&&Child(dir,id)==7;
+            return failClosed&&owner.TryCloseAfterPhysicalRetirement(()=>true)&&
+                Child(dir,id)==0;
+        }));
+        Check("external valid previous-generation envelope rollback blocks live preview",()=>InRoot(root=>{
+            string dir=Path.Combine(root,"new");Guid id=Guid.NewGuid();var owner=Open(dir,id,true);
+            if(owner.TryRestore(Snapshot(71,1,true),71,1)!=CanonicalGateResult.Accepted)
+                return false;
+            byte[] previous=File.ReadAllBytes(Path.Combine(dir,"save.envelope"));
+            if(owner.TryRestore(Snapshot(71,2,false),71,1)!=CanonicalGateResult.Accepted)
+                return false;
+            File.WriteAllBytes(Path.Combine(dir,"save.envelope"),previous);
+            bool fenced=!owner.TryCapturePreview(out _)&&owner.Quarantined&&
+                owner.OwnsSlot&&Child(dir,id)==7;
+            return fenced&&owner.TryCloseAfterPhysicalRetirement(()=>true);
         }));
         Console.WriteLine("TOTAL "+(passed+failed)+" PASS "+passed+" FAIL "+failed);
         Console.WriteLine("UNITY_G1=NOT_RUN PRIVATE_510=NOT_IMPLEMENTED");
