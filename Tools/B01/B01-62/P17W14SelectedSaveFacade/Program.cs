@@ -96,7 +96,7 @@ internal static class Program
         }
         Check(session.TryExport(out byte[]? export)&&export!=null,"copy-only re-export");
         Check(export!.SequenceEqual(raw),"source codec wire roundtrip byte-exact");
-        export[0]^=0xff; // intentional corruption on caller copy
+        export![0]^=0xff; // intentional corruption on caller copy
         Check(session.TryExport(out byte[]? again)&&again!.SequenceEqual(raw),
               "caller cannot corrupt published session via exported bytes");
         positive++;
