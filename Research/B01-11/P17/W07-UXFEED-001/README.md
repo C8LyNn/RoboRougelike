@@ -1,4 +1,4 @@
-# B01-11 P17/W07 — UXFEED-001/R2: tactical HUD event history (original C#)
+# B01-11 P17/W07 — UXFEED-001/R3: tactical HUD event history (original C#)
 
 **New real UX mechanism.** Pure C# standalone `Runtime/TacticalFeed.cs` builds a deterministic **bounded event history + HUD-visible priority queue** for authoritative host-supplied battle events. This is not the UXHELP-001 localized hint selector, UXFOCUS-001 keyboard menu navigation, or any existing combat VFX work. It makes actual event display arbitration testable before a Codex UI adapter exists.
 
@@ -17,3 +17,9 @@ An unexpired PartDetached/WeaponOffline alert was stored ONLY in a 32-item chron
 - Real fixed original source [GREEN #41045982978](https://github.com/C8LyNn/RoboRougelike/actions/runs/41045982978): **95/95 PASS Ubuntu +95/95 PASS Windows**, original earlier 87 cases retained.
 - [W08_RED_GREEN.md](EVIDENCE/W08_RED_GREEN.md) is the reproducible case-by-case record. **Independent B01-40/B01-60 QA PENDING**, and native Unity/UI/human playtest NOT_RUN.
 - Historical R1 exact source SHA `437d27b5ee8c73db4917f4dfcec3363f776c451d` preserved; R2 code fix commit `32514d90feb538b67035f7d5804408170e065e2c`. No force-push, no Codex/Assets changes.
+
+## W09 R3 — optional critical-alert acknowledgment, real C# UI lifecycle
+
+New original, **opt-in** `TacticalFeed.AcknowledgeCritical(TacticalItem ticket)` returns `true` only for an exact visible, unexpired critical alert object from `Visible(false)`. It hides that one HUD alert from the bounded transient queue **without removing it from `History()` or changing gameplay, time or sequence**. The same ticket cannot be acknowledged twice; old-run/stale/expired/normal tickets return `false`, and a fabricated data-equal ticket cannot remove the real alert. A later authoritative event from the same weapon/part creates a new distinct alert, which an earlier ticket cannot dismiss. Null tickets throw `ArgumentNullException`. The producer code never binds a button or changes a canonical Unity screen; only Codex may wire a player-visible acknowledgment if approved.
+
+**Actual W09 RED:** [run #41053157595](https://github.com/C8LyNn/RoboRougelike/actions/runs/41053157595) unmodified original R2 source +15 new executable feature tests: **100 PASS /10 FAIL** each Ubuntu and Windows. [Typed C# GREEN source #41053373321](https://github.com/C8LyNn/RoboRougelike/actions/runs/41053373321): **112/112 PASS** Ubuntu and **112/112 PASS** Windows (224 genuine C# checks). This extends R2's historical 95 tests with 17 tests; original tests preserved. [W09_ACK_RED_GREEN.md](EVIDENCE/W09_ACK_RED_GREEN.md) explains the real source and case coverage. Native Unity gameplay HUD and human interaction **NOT_RUN**.

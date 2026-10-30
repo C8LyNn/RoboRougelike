@@ -1,13 +1,13 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-11-P17-UXFEED-001",
-  "revision": "R2",
+  "revision": "R3",
   "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
-  "wave": "PASS17 WAVE07",
-  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/450",
+  "wave": "PASS17 WAVE09",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/466",
   "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "research/b01-11-p17-w07-uxfeed-001",
-  "source_commit": "32514d90feb538b67035f7d5804408170e065e2c",
+  "source_commit": "a570c14bfe5da0f0178dbfd9a8aaea0743090c5e",
   "source_type": "Original pure C# gameplay HUD tactical-event priority queue, NOT integrated Unity gameplay",
   "file_scope": [
     "Research/B01-11/P17/W07-UXFEED-001/**",
@@ -16,15 +16,15 @@
   "files": [
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/Runtime/TacticalFeed.cs",
-      "bytes": 7790,
-      "git_blob_sha1": "7e5a68ca9ef21c67ba6a42c7158df3f5f2269d9e",
-      "sha256": "b0ff2d5f7f4e00b526bc82c8696fe4fd41153e4f1a65df6e6035ede7beb69710"
+      "bytes": 8801,
+      "git_blob_sha1": "882d418e583ae1ccd92b2e7bd6aa6f31e84fe03a",
+      "sha256": "be7a0562a9e09008a06c06b92e06a2db352bf06ebdd53cbb29591d5b12e31e0e"
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/Tests/Program.cs",
-      "bytes": 15595,
-      "git_blob_sha1": "ff722d7bcb424309221260121cd81e1e897bc0ab",
-      "sha256": "6bdebf0289c832f247490bfbbf515887b46b94e8b4677e8e0f9a6f6db094dec3"
+      "bytes": 20904,
+      "git_blob_sha1": "05bed671455ab021c4e51b5c2a54ead2b0602d87",
+      "sha256": "d4ab37a79fa78de2a70f81c60df07a74f3cd5833169dd93fd9a654a08d49dbfe"
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/Tests/TacticalFeedTests.csproj",
@@ -40,73 +40,79 @@
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/README.md",
-      "bytes": 3921,
-      "git_blob_sha1": "8ba4cad86b68d19054c43055c15a8ef8ba48dfd1",
-      "sha256": "3833f840957b199de8acbae59e316623031690cf0e86a2e5a2fb86baa9b6c363"
+      "bytes": 5428,
+      "git_blob_sha1": "31e5fdf3a18d8b8686be028445a10f1179f33e0c",
+      "sha256": "a500cc28c865b256f2ee760f65537030da12de5023d473ccd2cc48b3bc027a06"
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/TEST_PLAN.md",
-      "bytes": 2313,
-      "git_blob_sha1": "6cd86bb67dc5a54125fc9e3482fdf30a108b79b1",
-      "sha256": "f23a4e189ac0f735312746289140c177bfbeadf4c17c3e8c4126c7e526bd1600"
+      "bytes": 3342,
+      "git_blob_sha1": "a7bed950a0f4f7771e2baab403ac9d3257fbd34d",
+      "sha256": "abf28b0cd942c0ebda7ea4c79cc4f7630b527549295d311527be2bc711fd9d13"
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/INSTALL_FOR_CODEX.md",
-      "bytes": 2793,
-      "git_blob_sha1": "850063f1ba6af3fcc6974ba5ebb3971d326f80e3",
-      "sha256": "c74acc17e28d018566ac508c64ae9d6b6ede876256e7c1d66c581eb2301d1d06"
+      "bytes": 3604,
+      "git_blob_sha1": "3816b7debdbfc46f17a3dd2be3aeceed439fdf23",
+      "sha256": "88244ef1906467e6e2eb41e9500b33e546a9e6c4e64780cc96828bc38c1e309c"
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/QA_RECEIVER.md",
-      "bytes": 2061,
-      "git_blob_sha1": "83e4753efb115a4c41e85a3d1744041808490438",
-      "sha256": "b598d4b146ba68930e9ad648e6c3a017a4ea253483e33e54e63352023c9d1bf0"
+      "bytes": 2956,
+      "git_blob_sha1": "1d103016c24d3752572869cbca81ffed7dd1c7fb",
+      "sha256": "ac6fc51f9b5d36b3fbc600c240bb6af61b486f5691d5d6eb0ffb4aadeb61c251"
     },
     {
       "path": "Research/B01-11/P17/W07-UXFEED-001/EVIDENCE/W08_RED_GREEN.md",
       "bytes": 2663,
       "git_blob_sha1": "e2acd0d3f58b34579e3095d453255cac56edbfef",
       "sha256": "cf9356ac9ffeff0a919c7cc1ddb723dbe58b54b1edd9dd1a8ac775c132fd2b5b"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/EVIDENCE/W09_ACK_RED_GREEN.md",
+      "bytes": 2470,
+      "git_blob_sha1": "b0c74d9d57f77719e3c8436da94d8b38675544bb",
+      "sha256": "6468dcbdf51286fc20cd2988c50dbb0654f84e6d6eebb0a660eb5bd7304f3d5c"
     }
   ],
   "tests": [
     {
-      "name": "Original actual C# source .NET8 Ubuntu R2",
+      "name": "R3 original typed C# Ubuntu .NET8",
       "status": "PASS",
-      "passed": 95,
+      "passed": 112,
       "failed": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045982978"
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053373321"
     },
     {
-      "name": "Original actual C# source .NET8 Windows R2",
+      "name": "R3 original typed C# Windows .NET8",
       "status": "PASS",
-      "passed": 95,
+      "passed": 112,
       "failed": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045982978"
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053373321"
     },
     {
-      "name": "Old source + 8 added tests RED Ubuntu",
+      "name": "W09 RED old R2 + 15 new feature tests Ubuntu",
       "status": "FAIL",
-      "passed": 91,
-      "failed": 4,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045734715"
+      "passed": 100,
+      "failed": 10,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053157595"
     },
     {
-      "name": "Old source + 8 added tests RED Windows",
+      "name": "W09 RED old R2 + 15 new feature tests Windows",
       "status": "FAIL",
-      "passed": 91,
-      "failed": 4,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045734715"
+      "passed": 100,
+      "failed": 10,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053157595"
     },
     {
-      "name": "Native Unity Editor/PlayMode, Player, visual UX, human playtest",
+      "name": "Native Unity, Player GUI, actual in-game input, human playtest",
       "status": "NOT_RUN"
     }
   ],
-  "source_producer": "R2_REAL_SOURCE_FIX_TESTED_95_PER_OS",
+  "source_producer": "R3_OPT_IN_ACK_REAL_CSHARP_TESTED_112_PER_OS",
   "g0_independent": "PENDING",
   "g1_independent": "PENDING",
   "codex_status": "NOT_OFFERED / ACK_PENDING / NOT_INTEGRATED",
-  "rollback": "R1 immutable at 437d27b5ee8c73db4917f4dfcec3363f776c451d; revert R2 producer-only commits or discard isolated W07 branch; future game import/rollback Codex-owned.",
-  "note": "No circular manifest self hash; R2 evidence and all 8 other source/workflow/doc files pinned. G0/QA independently PENDING."
+  "rollback": "Historical R2 commit 68b90881bcd427c93e773bea4eb5b8370f3bcbfd immutable; revert R3 producer-only commits or discard isolated W07 branch; no canonical Unity game edits.",
+  "note": "No circular manifest self hash. 10 pinned source/test/workflow/doc/evidence payloads; final HEAD is parent source commit plus docs/manifest."
 }
