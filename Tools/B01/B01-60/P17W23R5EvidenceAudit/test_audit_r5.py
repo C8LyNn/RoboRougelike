@@ -183,4 +183,12 @@ class W23Adversarial(unittest.TestCase):
   p.symlink_to(a)
   self.is_red()
 
+ def test_34_foreign_root_text_rejected_even_if_resealed(self):
+  write(self.root/"PRIVATE_OWNER_DATA.txt","not an original W22 native evidence item")
+  reseal(self.root,self.r);self.is_red()
+ def test_35_fake_root_prefix_not_allowed_in_native(self):
+  self.switch_native()
+  write(self.root/"P99-extra-claims.txt","fake selected SHA or G1")
+  reseal(self.root,self.r);self.is_red()
+
 if __name__=="__main__":unittest.main(verbosity=2)
