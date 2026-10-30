@@ -304,8 +304,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w24_live_github_intake.py",
-      "sha256": "b8a7de8e1394e179fd5e1fb5eb0a0c53dd48bef023adf916e54e928c35a79a44",
-      "bytes": 15785
+      "sha256": "0c308ac373a7ae594348baef38115f9e37337a48c765f422ae9f5132e5e67c92",
+      "bytes": 15793
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W24-OWNER-SELECTED-749-LIVE-SOURCE-INTAKE.md",
@@ -1429,6 +1429,7 @@
         "selected": "NO_EXPLICIT_OWNER_REPLACEMENT_YET",
         "independent_g0": "PENDING"
       }
-    }
+    },
+    "w24_test_767_773_set_fix": "SOURCE_CI_OLD_TEST_EXPECTATION_CORRECTED_WAIT_EXACT_SHA"
   }
 }
