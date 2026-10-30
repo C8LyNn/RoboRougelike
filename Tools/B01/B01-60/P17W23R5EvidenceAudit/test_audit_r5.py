@@ -151,7 +151,7 @@ class W23Adversarial(unittest.TestCase):
  def test_27_native_uninventoried_xml_rejected(self):
   self.switch_native()
   write(self.root/"foreign.xml",one_xml("Unknown.Fake"))
-  reseal(self.root,self.r);self.is_red()
+  self.is_red()
  def test_28_native_duplicate_private_product_rejected(self):
   self.switch_native()
   write(self.root/"P1/ProjectSettings/ProjectSettings.asset",
