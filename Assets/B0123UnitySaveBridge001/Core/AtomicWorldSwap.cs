@@ -201,6 +201,10 @@ namespace B01.UnitySaveBridge001
             IPreparedWorld? candidate=null;
             IPreparedWorld? old=current;
             bool touchedOld=false,touchedNew=false,published=false;
+            // A checkpoint Commit can durably succeed and THEN throw (lost ACK).
+            // Until a new world is fully verified+published, any exception is
+            // ambiguous and the old world must never issue a newer Save.
+            bool commitMayHaveChangedAuthority=false;
             WorldSwapVerdict verdict=WorldSwapVerdict.HostException;
             try
             {
@@ -240,9 +244,13 @@ namespace B01.UnitySaveBridge001
                     // #572: physical state can mutate as a side effect of Activate().
                     if(!Consistent(candidate.Capture(),snap))
                         throw new InvalidOperationException("post-activation physics/ID mismatch");
-                    if(!replay&&!checkpoint.Commit(expectedRun,durable,digest,snap.Generation,fingerprint))
+                    if(!replay)
                     {
-                        quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
+                        commitMayHaveChangedAuthority=true; // set BEFORE external Commit
+                        if(!checkpoint.Commit(expectedRun,durable,digest,snap.Generation,fingerprint))
+                        {
+                            quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
+                        }
                     }
                     if(!Consistent(candidate.Capture(),snap))
                     {
@@ -253,6 +261,7 @@ namespace B01.UnitySaveBridge001
                     publishedHash=fingerprint;
                     saveGeneration=Math.Max(saveGeneration,snap.Generation);
                     candidate=null;published=true;
+                    commitMayHaveChangedAuthority=false; // full verified publication
                     verdict=WorldSwapVerdict.Accepted;
                     if(old!=null)
                     {
@@ -265,7 +274,19 @@ namespace B01.UnitySaveBridge001
                     }
                 }while(false);
             }
-            catch{verdict=WorldSwapVerdict.HostException;}
+            catch
+            {
+                if(commitMayHaveChangedAuthority)
+                {
+                    // #637: a throwing Commit may already have advanced durable
+                    // authority, or post-commit world Capture may fail. Even if
+                    // compensation succeeds, returning HostException would let
+                    // the stale old world Save and leapfrog the disk epoch.
+                    quarantined=true;
+                    verdict=WorldSwapVerdict.RollbackQuarantine;
+                }
+                else verdict=WorldSwapVerdict.HostException;
+            }
             finally
             {
                 if(!published)
