@@ -1,0 +1,87 @@
+name: B01-62 W13 immutable #510 stable ID disk SaveLoad and rollback RED GREEN
+on:
+  push:
+    branches: [qa/b01-62-p17w13-persistent-ids-rollback-proof]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W13PersistentIdContract/**'
+      - '.github/workflows/b01-62-p17w13-stable-save-and-rollback.yml'
+permissions:
+  contents: read
+jobs:
+  proof:
+    name: Original W06 R2 executable SaveLoad and physical rollback (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact selected and receiver formal G0 Git provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W13PersistentIdContract"
+          git fetch --no-tags origin a19724328cfda8a19f694cd84de899da214b3163
+          git cat-file -e d94400d95d13db7f27e1533df05c9292d5380431^{commit}
+          git cat-file -e a19724328cfda8a19f694cd84de899da214b3163^{commit}
+          mkdir -p "$dir/.output" "$dir/.source"
+          git worktree add --detach "$dir/.producer510" d94400d95d13db7f27e1533df05c9292d5380431
+          test "$(git -C "$dir/.producer510" rev-parse HEAD)" = d94400d95d13db7f27e1533df05c9292d5380431
+          git show a19724328cfda8a19f694cd84de899da214b3163:Tools/B01/B01-40/P17W12SelectedR2Receiver/receiver.py > "$dir/.source/accepted_g0_receiver.py"
+          python "$dir/stage_original.py" --repo . --dest "$dir/.original" | tee "$dir/.output/provenance.log"
+          cp "$dir/.original/source_receipt.json" "$dir/.output/source_receipt.json"
+          cp "$dir/.original/"*.cs "$dir/.source/"
+      - name: Actual original W06 and #510 C#9 persisted SaveLoad disk roundtrip and adversarial rejection
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W13PersistentIdContract"
+          dotnet run --project "$dir/StableIdContract.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/save-executed.log"
+          grep -q 'TOTAL 43 PASS 43 FAIL 0 ORIGINAL_W06_AND_510_CSHARP_EXECUTED NATIVE_UNITY_NOT_RUN' "$dir/.output/save-executed.log"
+      - name: Actually execute frozen #510 rollback RED versus independent accepted receiver G0 GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W13PersistentIdContract"
+          export B01_W13_PRODUCER="$dir/.producer510"
+          export B01_W13_ACCEPTED_G0="$dir/.source/accepted_g0_receiver.py"
+          python -m unittest discover -s "$dir" -p test_rollback.py -v 2>&1 | tee "$dir/.output/rollback-executed.log"
+          grep -q 'Ran 14 tests' "$dir/.output/rollback-executed.log"
+          grep -q '^OK' "$dir/.output/rollback-executed.log"
+          echo ORIGINAL_510_ROLLBACK_FOREIGN_EMPTY_DIRECTORY_ACTUAL_RED_WITNESS
+          echo INDEPENDENT_521_RECEIVER_STRICT_ROLLBACK_SOURCE_GREEN
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w13-save-rollback-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W13PersistentIdContract/.output/
+          if-no-files-found: error
+  parity:
+    name: Exact original source JSON receipt cross OS bytes
+    runs-on: ubuntu-24.04
+    needs: proof
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w13-save-rollback-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w13-save-rollback-windows-2025
+          path: windows
+      - shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/source_receipt.json windows/source_receipt.json
+          sha256sum ubuntu/source_receipt.json windows/source_receipt.json
+          echo B01_62_W13_FROZEN_SOURCE_RECEIPT_CROSS_OS_PARITY_PASS
