@@ -27,11 +27,21 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project Tools/B01/B01-61/P17W14ColdIdleReentryQA/ColdIdleReentryQA.csproj -c Release | tee qa_test.log
+      - name: Independently execute corrected producer 556 exact pinned original CSharp
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file -e '33094f154c7b91119b36d58aab285e6e83c5de57^{commit}' || git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          mkdir -p dist/candidate
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > dist/candidate/DetachedSnapshotContract.cs
+          test "$(git hash-object dist/candidate/DetachedSnapshotContract.cs)" = "b52e511c370f5fca56c74029050844dc8cbb7f9a"
+          dotnet build Tools/B01/B01-61/P17W14ColdIdleReentryQA/CorrectedGuardTests.csproj -c Release -p:CorrectedSourcePath="$(pwd)/dist/candidate/DetachedSnapshotContract.cs" --nologo
+          dotnet Tools/B01/B01-61/P17W14ColdIdleReentryQA/bin/Release/net8.0/CorrectedGuardTests.dll | tee qa_green.log
       - name: Build real original HEAD/source/bytes QA receipt
         shell: bash
         run: |
           set -euo pipefail
-          python Tools/B01/B01-61/P17W14ColdIdleReentryQA/receipt.py --log qa_test.log --out dist/b01-61-p17w14-reentry-qa.json
+          python Tools/B01/B01-61/P17W14ColdIdleReentryQA/receipt.py --log qa_test.log --green-log qa_green.log --candidate-source dist/candidate/DetachedSnapshotContract.cs --out dist/b01-61-p17w14-reentry-qa.json
       - name: Publish exact-head evidence, no fabricated Unity XML
         if: always()
         uses: actions/upload-artifact@v4
@@ -39,5 +49,6 @@ jobs:
           name: b01-61-p17w14-cold-reentry-${{ matrix.os }}
           path: |
             qa_test.log
+            qa_green.log
             dist/b01-61-p17w14-reentry-qa.json
           if-no-files-found: warn
