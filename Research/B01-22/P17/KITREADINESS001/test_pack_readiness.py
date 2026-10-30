@@ -227,8 +227,8 @@ class PhysicalSourceTests(unittest.TestCase):
 
     def test_28_verify_stage_clean_is_strict_read_only(self):
         with tempfile.TemporaryDirectory() as t:
-            p=pathlib.Path(t);self.data_dir(p/"in")
-            dest=p/"stage";receipt=stage(dest,p/"in",source_check=False)
+            p=pathlib.Path(t);
+            dest=p/"stage";receipt=stage(dest,ROOT/"readiness-previews",source_check=False)
             before={k:(dest/k).read_bytes() for k in FILES}
             first=pack_readiness.verify_stage(dest)
             second=pack_readiness.verify_stage(dest)
@@ -259,8 +259,8 @@ class PhysicalSourceTests(unittest.TestCase):
 
     def test_31_actual_verify_stage_cli_pass_is_nonmutating(self):
         with tempfile.TemporaryDirectory() as t:
-            p=pathlib.Path(t);self.data_dir(p/"in")
-            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            p=pathlib.Path(t);
+            dest=p/"stage";stage(dest,ROOT/"readiness-previews",source_check=False)
             before={k:(dest/k).read_bytes() for k in FILES}
             result=subprocess.run([sys.executable,str(pathlib.Path(__file__).with_name("pack_readiness.py")),
                                    "--verify-stage",str(dest)],cwd=ROOT,capture_output=True,text=True)
@@ -280,6 +280,45 @@ class PhysicalSourceTests(unittest.TestCase):
             self.assertIn("FAIL_CLOSED",result.stderr)
             self.assertTrue((dest/"unowned-empty").is_dir())
             self.assertEqual({k:(dest/k).read_bytes() for k in FILES},before)
+
+    def test_33_forged_user_result_and_rehashed_receipt_cannot_get_g0(self):
+        # Real source-derived JSON (not synthetic fixtures) is forged. The
+        # old receiver compared receipt to data but had no independent anchor.
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t)
+            dest=p/"stage"
+            stage(dest,ROOT/"readiness-previews",source_check=False)
+            self.assertTrue(pack_readiness.verify_stage(dest))
+            target=dest/"user-preview.json"
+            obj=json.loads(target.read_text(encoding="utf-8"))
+            self.assertNotEqual(obj["result"]["ReadyCount"],100)
+            obj["result"]["ReadyCount"]=100
+            target.write_text(json.dumps(obj,sort_keys=True)+"\n",encoding="utf-8")
+            previews=read_previews(dest)
+            receipt=receipt_for((dest/"kitreadiness-unity.zip").read_bytes(),self.files,previews)
+            (dest/"receipt.json").write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+            before={x:(dest/x).read_bytes() for x in FILES}
+            with self.assertRaises(SourceError):
+                pack_readiness.verify_stage(dest)
+            self.assertEqual({x:(dest/x).read_bytes() for x in FILES},before)
+
+    def test_34_forged_priority_optimizer_and_rehashed_receipt_cannot_get_g0(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t)
+            dest=p/"stage"
+            stage(dest,ROOT/"readiness-previews",source_check=False)
+            self.assertTrue(pack_readiness.verify_stage(dest))
+            target=dest/"priority-preview.json"
+            obj=json.loads(target.read_text(encoding="utf-8"))
+            obj["buildOrder"]["SuggestedReadyCount"]=99
+            target.write_text(json.dumps(obj,sort_keys=True)+"\n",encoding="utf-8")
+            previews=read_previews(dest)
+            receipt=receipt_for((dest/"kitreadiness-unity.zip").read_bytes(),self.files,previews)
+            (dest/"receipt.json").write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+            before={x:(dest/x).read_bytes() for x in FILES}
+            with self.assertRaises(SourceError):
+                pack_readiness.verify_stage(dest)
+            self.assertEqual({x:(dest/x).read_bytes() for x in FILES},before)
 
     def test_25_git_blob_identity_independent_known_sha1(self):
         # Independently verify the Git object framing against the standard
