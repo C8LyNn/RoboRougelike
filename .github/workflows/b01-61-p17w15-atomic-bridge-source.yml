@@ -1,0 +1,58 @@
+name: B01-61 W15 exact original B01-23 AtomicWorldSwap source fault-atomicity QA
+on:
+  push:
+    branches: [qa/b01-61-p17w15-original-atomicworldswap]
+    paths:
+      - 'Tools/B01/B01-61/P17W15OriginalAtomicBridgeQA/**'
+      - '.github/workflows/b01-61-p17w15-atomic-bridge-source.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W15OriginalAtomicBridgeQA/**'
+      - '.github/workflows/b01-61-p17w15-atomic-bridge-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-B01-23-bridge-fault-atomic-transaction:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Strict original NEW host and frozen #556 #510 W06 Git SHA protection
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W15OriginalAtomicBridgeQA/source_guard.py 2>&1 | tee b0161-w15-bridge-source-pins.log
+      - name: Direct genuine B01-23 AtomicWorldSwap and original #556 W06 R2 build
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W15OriginalAtomicBridgeQA/OriginalBridgeQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w15-bridge-build.log
+      - name: Original source fault injection, physical abstract-world transactions, ID conflict
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W15OriginalAtomicBridgeQA/OriginalBridgeQA.csproj 2>&1 | tee b0161-w15-bridge-execution.log
+          grep -q 'ORIGINAL_NEW_ATOMIC_WORLD_SWAP_QA_EXECUTION_PASS' b0161-w15-bridge-execution.log
+          grep -q 'REAL_ORIGINAL_BRIDGE_SAME_GENERATION_DIFFERENT_WORLD_RED=REPRODUCED' b0161-w15-bridge-execution.log
+          grep -q 'ACTUAL_LICENSED_UNITY_PHYSX=NOT_RUN' b0161-w15-bridge-execution.log
+      - name: Preserve real original source stdout, not Unity native XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w15-real-atomicbridge-${{ matrix.os }}
+          path: |
+            b0161-w15-bridge-source-pins.log
+            b0161-w15-bridge-build.log
+            b0161-w15-bridge-execution.log
+          if-no-files-found: warn
+          retention-days: 21
