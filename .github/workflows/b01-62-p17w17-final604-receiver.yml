@@ -1,0 +1,73 @@
+name: B01-62 W17 final single #604 exact SHA source and physical G0 receiver
+on:
+  push:
+    branches: [qa/b01-62-p17w17-selected604-formal-g0-receiver]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W17Selected604Receiver/**'
+      - '.github/workflows/b01-62-p17w17-final604-receiver.yml'
+permissions:
+  contents: read
+jobs:
+  exact-source-and-receiver:
+    runs-on: ${{ matrix.os }}
+    name: One selected 604 and real original physical ZIP (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exactly chosen producer 604, only frozen Save 556 and game 510; independently pin source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W17Selected604Receiver"
+          git fetch --no-tags origin 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          mkdir -p "$dir/.source" "$dir/.output"
+          git show 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/AtomicWorldSwap.cs"
+          git show 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a:Assets/B0123UnitySaveBridge001/Core/CheckpointFence.cs > "$dir/.source/CheckpointFence.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.source/SecureRigSpec.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          test "$(git hash-object "$dir/.source/AtomicWorldSwap.cs")" = 399d3cb2074a2659af8f4e941edb28a3d2dd2832
+          test "$(git hash-object "$dir/.source/CheckpointFence.cs")" = 53f907125b09531ebdf5ffdfbb9c5c9b48eca217
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          git worktree add --detach "$dir/.producer604" 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          test "$(git -C "$dir/.producer604" rev-parse HEAD)" = 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          echo B01_62_W17_EXACT_FIVE_ORIGINAL_BLOBS_604_556_510_PINNED | tee "$dir/.output/source-pins.log"
+      - name: Execute direct ORIGINAL selected 604 CSharp transaction, restart, ID and fault QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W17Selected604Receiver"
+          dotnet run --project "$dir/Exact604IndependentSourceQA.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/original604-executed.log"
+          grep -q 'B0162_W17_SELECTED604_EXACT_SOURCE_TOTAL 60 PASS 60 FAIL 0' "$dir/.output/original604-executed.log"
+          grep -q 'ACTUAL_ORIGINAL_604_CORE_AND_FENCE_DIRECTLY_COMPILED' "$dir/.output/original604-executed.log"
+      - name: Rebuild exact author 604 original 101354-byte ZIP and independently test physical receipt and rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W17Selected604Receiver"
+          export B0162_ORIGINAL604_WORKTREE="$PWD/$dir/.producer604"
+          python -m unittest discover -s "$dir" -p 'test_exact604_receiver.py' -v 2>&1 | tee "$dir/.output/exact604-original-zip-and-rollback.log"
+          grep -q 'Ran 20 tests' "$dir/.output/exact604-original-zip-and-rollback.log"
+          grep -q '^OK' "$dir/.output/exact604-original-zip-and-rollback.log"
+          echo B0162_W17_EXACT_604_GIT_PHYSICAL_ZIP_20_OF_20_PASS | tee "$dir/.output/original-zip-pass.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w17-selected604-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W17Selected604Receiver/.output/
+          include-hidden-files: true
+          if-no-files-found: error
