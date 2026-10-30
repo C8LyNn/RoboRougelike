@@ -50,6 +50,12 @@ def scope():
         "post-activation physics/ID mismatch" not in core or
         "verdict=WorldSwapVerdict.RollbackQuarantine" not in core or
         "old.Deactivate()" not in core or
+        "durable!=publishedGeneration" not in core or
+        "diskHash!=publishedHash" not in core or
+        "publishedHash=fingerprint;" not in core or
+        "TryUseIsolatedNativeTestSlot" not in unity or
+        "slotOwnerLease" not in unity or
+        "FileShare.None" not in unity or
         "quarantined=true;" not in core or
         "SameIdentityAndLedger" not in core or
         "TwinWorld.Build(snapshot,transform)" not in unity or
@@ -69,7 +75,7 @@ def build():
     files=scope()
     contents={p:source(p) for p in files}
     manifest={
-      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"2.0.0",
+      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"3.0.0",
       "own_head_sha":git("rev-parse","HEAD"),
       "only_save_source_sha":SELECTED_SAVE,"gameplay_510_sha":SELECTED_GAME,
       "frozen_blob_guards":PINS,"unity_guid_count":10,"asmdef_count":3,
@@ -92,7 +98,7 @@ def verify(raw):
         contents={p:z.read(p) for p in names}
     manifest=json.loads(contents[MANIFEST])
     if (manifest.get("package")!="B01-23-UNITY-SAVE-HOST-BRIDGE-001" or
-        manifest.get("version")!="2.0.0" or
+        manifest.get("version")!="3.0.0" or
         manifest.get("own_head_sha")!=git("rev-parse","HEAD") or
         manifest.get("only_save_source_sha")!=SELECTED_SAVE or
         manifest.get("gameplay_510_sha")!=SELECTED_GAME or
