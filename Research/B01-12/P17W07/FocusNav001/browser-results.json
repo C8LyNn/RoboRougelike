@@ -1,0 +1,522 @@
+{
+  "package": "B01-12-FOCUSNAV-001/R1",
+  "total": 128,
+  "pass": 128,
+  "fail": [],
+  "js_errors": [],
+  "environment": "Linux Chromium via Playwright; NOT Unity",
+  "checks": [
+    {
+      "case": "320/initial_page",
+      "pass": true
+    },
+    {
+      "case": "320/initial_focus",
+      "pass": true
+    },
+    {
+      "case": "320/initial_invariant",
+      "pass": true
+    },
+    {
+      "case": "320/cards_garage_6",
+      "pass": true
+    },
+    {
+      "case": "320/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "320/right_navigation",
+      "pass": true
+    },
+    {
+      "case": "320/down_navigation",
+      "pass": true
+    },
+    {
+      "case": "320/left_navigation",
+      "pass": true
+    },
+    {
+      "case": "320/up_navigation",
+      "pass": true
+    },
+    {
+      "case": "320/enter_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "320/inert_underlay",
+      "pass": true
+    },
+    {
+      "case": "320/modal_has_aria",
+      "pass": true
+    },
+    {
+      "case": "320/modal_right",
+      "pass": true
+    },
+    {
+      "case": "320/modal_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "320/modal_shift_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "320/modal_state_invariant",
+      "pass": true
+    },
+    {
+      "case": "320/escape_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "320/background_unlocked",
+      "pass": true
+    },
+    {
+      "case": "320/switch_run",
+      "pass": true
+    },
+    {
+      "case": "320/run_focus_map",
+      "pass": true
+    },
+    {
+      "case": "320/garage_focus_memory",
+      "pass": true
+    },
+    {
+      "case": "320/disable_focus_fallback",
+      "pass": true
+    },
+    {
+      "case": "320/disabled_is_real",
+      "pass": true
+    },
+    {
+      "case": "320/reward_focus",
+      "pass": true
+    },
+    {
+      "case": "320/garage_memory_fallback",
+      "pass": true
+    },
+    {
+      "case": "320/restore_enables_all",
+      "pass": true
+    },
+    {
+      "case": "320/pointer_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "320/confirm_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "320/cancel_restores_selected",
+      "pass": true
+    },
+    {
+      "case": "320/reset_deterministic",
+      "pass": true
+    },
+    {
+      "case": "320/postreset_invariant",
+      "pass": true
+    },
+    {
+      "case": "320/no_horizontal_overflow_end",
+      "pass": true
+    },
+    {
+      "case": "768/initial_page",
+      "pass": true
+    },
+    {
+      "case": "768/initial_focus",
+      "pass": true
+    },
+    {
+      "case": "768/initial_invariant",
+      "pass": true
+    },
+    {
+      "case": "768/cards_garage_6",
+      "pass": true
+    },
+    {
+      "case": "768/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "768/right_navigation",
+      "pass": true
+    },
+    {
+      "case": "768/down_navigation",
+      "pass": true
+    },
+    {
+      "case": "768/left_navigation",
+      "pass": true
+    },
+    {
+      "case": "768/up_navigation",
+      "pass": true
+    },
+    {
+      "case": "768/enter_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "768/inert_underlay",
+      "pass": true
+    },
+    {
+      "case": "768/modal_has_aria",
+      "pass": true
+    },
+    {
+      "case": "768/modal_right",
+      "pass": true
+    },
+    {
+      "case": "768/modal_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "768/modal_shift_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "768/modal_state_invariant",
+      "pass": true
+    },
+    {
+      "case": "768/escape_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "768/background_unlocked",
+      "pass": true
+    },
+    {
+      "case": "768/switch_run",
+      "pass": true
+    },
+    {
+      "case": "768/run_focus_map",
+      "pass": true
+    },
+    {
+      "case": "768/garage_focus_memory",
+      "pass": true
+    },
+    {
+      "case": "768/disable_focus_fallback",
+      "pass": true
+    },
+    {
+      "case": "768/disabled_is_real",
+      "pass": true
+    },
+    {
+      "case": "768/reward_focus",
+      "pass": true
+    },
+    {
+      "case": "768/garage_memory_fallback",
+      "pass": true
+    },
+    {
+      "case": "768/restore_enables_all",
+      "pass": true
+    },
+    {
+      "case": "768/pointer_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "768/confirm_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "768/cancel_restores_selected",
+      "pass": true
+    },
+    {
+      "case": "768/reset_deterministic",
+      "pass": true
+    },
+    {
+      "case": "768/postreset_invariant",
+      "pass": true
+    },
+    {
+      "case": "768/no_horizontal_overflow_end",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_page",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_focus",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_invariant",
+      "pass": true
+    },
+    {
+      "case": "1280/cards_garage_6",
+      "pass": true
+    },
+    {
+      "case": "1280/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1280/right_navigation",
+      "pass": true
+    },
+    {
+      "case": "1280/down_navigation",
+      "pass": true
+    },
+    {
+      "case": "1280/left_navigation",
+      "pass": true
+    },
+    {
+      "case": "1280/up_navigation",
+      "pass": true
+    },
+    {
+      "case": "1280/enter_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "1280/inert_underlay",
+      "pass": true
+    },
+    {
+      "case": "1280/modal_has_aria",
+      "pass": true
+    },
+    {
+      "case": "1280/modal_right",
+      "pass": true
+    },
+    {
+      "case": "1280/modal_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "1280/modal_shift_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "1280/modal_state_invariant",
+      "pass": true
+    },
+    {
+      "case": "1280/escape_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "1280/background_unlocked",
+      "pass": true
+    },
+    {
+      "case": "1280/switch_run",
+      "pass": true
+    },
+    {
+      "case": "1280/run_focus_map",
+      "pass": true
+    },
+    {
+      "case": "1280/garage_focus_memory",
+      "pass": true
+    },
+    {
+      "case": "1280/disable_focus_fallback",
+      "pass": true
+    },
+    {
+      "case": "1280/disabled_is_real",
+      "pass": true
+    },
+    {
+      "case": "1280/reward_focus",
+      "pass": true
+    },
+    {
+      "case": "1280/garage_memory_fallback",
+      "pass": true
+    },
+    {
+      "case": "1280/restore_enables_all",
+      "pass": true
+    },
+    {
+      "case": "1280/pointer_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "1280/confirm_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "1280/cancel_restores_selected",
+      "pass": true
+    },
+    {
+      "case": "1280/reset_deterministic",
+      "pass": true
+    },
+    {
+      "case": "1280/postreset_invariant",
+      "pass": true
+    },
+    {
+      "case": "1280/no_horizontal_overflow_end",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_page",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_focus",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_invariant",
+      "pass": true
+    },
+    {
+      "case": "1920/cards_garage_6",
+      "pass": true
+    },
+    {
+      "case": "1920/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1920/right_navigation",
+      "pass": true
+    },
+    {
+      "case": "1920/down_navigation",
+      "pass": true
+    },
+    {
+      "case": "1920/left_navigation",
+      "pass": true
+    },
+    {
+      "case": "1920/up_navigation",
+      "pass": true
+    },
+    {
+      "case": "1920/enter_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "1920/inert_underlay",
+      "pass": true
+    },
+    {
+      "case": "1920/modal_has_aria",
+      "pass": true
+    },
+    {
+      "case": "1920/modal_right",
+      "pass": true
+    },
+    {
+      "case": "1920/modal_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "1920/modal_shift_tab_trap",
+      "pass": true
+    },
+    {
+      "case": "1920/modal_state_invariant",
+      "pass": true
+    },
+    {
+      "case": "1920/escape_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "1920/background_unlocked",
+      "pass": true
+    },
+    {
+      "case": "1920/switch_run",
+      "pass": true
+    },
+    {
+      "case": "1920/run_focus_map",
+      "pass": true
+    },
+    {
+      "case": "1920/garage_focus_memory",
+      "pass": true
+    },
+    {
+      "case": "1920/disable_focus_fallback",
+      "pass": true
+    },
+    {
+      "case": "1920/disabled_is_real",
+      "pass": true
+    },
+    {
+      "case": "1920/reward_focus",
+      "pass": true
+    },
+    {
+      "case": "1920/garage_memory_fallback",
+      "pass": true
+    },
+    {
+      "case": "1920/restore_enables_all",
+      "pass": true
+    },
+    {
+      "case": "1920/pointer_opens_modal",
+      "pass": true
+    },
+    {
+      "case": "1920/confirm_closes_modal",
+      "pass": true
+    },
+    {
+      "case": "1920/cancel_restores_selected",
+      "pass": true
+    },
+    {
+      "case": "1920/reset_deterministic",
+      "pass": true
+    },
+    {
+      "case": "1920/postreset_invariant",
+      "pass": true
+    },
+    {
+      "case": "1920/no_horizontal_overflow_end",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B01-12 FOCUSNAV-001 — nawigacja UX</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1522;--panel:#16253a;--line:#344e6b;--fg:#f3f8ff;--mute:#bacde4;--cyan:#5ce2e6;--yellow:#ffd484}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,Segoe UI,sans-serif}main{max-width:1040px;margin:0 auto;padding:26px 18px 70px}h1{font-size:clamp(1.45rem,3vw,2.1rem);line-height:1.16;margin:0 0 12px}h2{font-size:1.05rem}p{margin:.4rem 0 .95rem;color:var(--mute)}kbd{display:inline-block;padding:1px 6px;border:1px solid #7891ac;border-radius:5px;color:var(--fg)}.top,.tools{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}.top button,.tools button{border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:10px 12px;border-radius:9px;cursor:pointer}.top button[aria-current="page"]{border-color:var(--cyan);background:#173f52}.layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(210px,1fr);gap:16px}section,.side{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:18px;min-width:0}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{min-height:108px;background:#21354d;border:1px solid #4a6380;border-radius:12px;color:var(--fg);padding:13px 9px;cursor:pointer;font:inherit;font-weight:600;min-width:0;overflow-wrap:anywhere}.card:focus-visible,.dialog button:focus-visible{outline:4px solid var(--cyan);outline-offset:2px}.card:disabled{opacity:.32;cursor:not-allowed}.card[data-focus="true"]{border-color:var(--cyan);box-shadow:0 0 0 2px #5ce2e650}.status{padding:12px;background:#102638;border-left:4px solid var(--cyan);margin-top:16px;overflow-wrap:anywhere}.side pre{font:12px/1.5 ui-monospace,Consolas,monospace;background:#0d1a2a;border-radius:8px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:350px;overflow:auto}.overlay[hidden]{display:none}.overlay{position:fixed;inset:0;background:#03101fe8;display:grid;place-items:center;padding:16px;z-index:10}.dialog{width:min(440px,100%);background:#192b42;border:2px solid var(--cyan);border-radius:16px;padding:24px;box-shadow:0 10px 55px #000}.dialog-actions{display:flex;gap:10px}.dialog button{background:#254561;color:#fff;border:1px solid #7db8d0;padding:13px;flex:1;border-radius:9px;font:inherit;cursor:pointer}.small{font-size:.83rem;color:var(--mute)}#notice{color:var(--yellow)}@media(max-width:700px){.layout{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:15px 11px 50px}.card{min-height:90px}section,.side{padding:13px}}
+</style></head><body><main>
+<h1>FOCUSNAV — laboratorium nawigacji interfejsu</h1>
+<p>Mechanizm dostępności dla przyszłego interfejsu RoboRougelike. Funkcjonalny prototyp przeglądarkowy, <strong>nie</strong> podłączony do Unity, zapisu ani realnego garażu.</p>
+<div id="background">
+<nav class="top" aria-label="Przełącz widok"><button data-panel="garage" aria-current="page">Garaż</button><button data-panel="run">Run / HUD</button><button data-panel="reward">Ulepszenia</button></nav>
+<p><kbd>←</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>→</kbd> przemieszczają fokus; <kbd>Enter</kbd> otwiera potwierdzenie; <kbd>Esc</kbd> zamyka okno. <kbd>Tab</kbd> pozostaje natywny.</p>
+<div class="layout"><section aria-label="Siatka interakcji"><h2 id="pageTitle">Garaż</h2><div id="cards" class="cards" role="group" aria-label="Elementy interfejsu"></div><div class="status" role="status" aria-live="polite" id="status">Gotowe</div></section>
+<aside class="side"><h2>Kontrola dostępności</h2><div class="tools"><button id="toggle">Wyłącz aktualną kontrolkę</button><button id="restore">Włącz wszystkie</button><button id="reset">Reset symulacji</button></div><p id="notice" class="small">Nie zmienia ustawień gry.</p><h2>Stan deterministyczny</h2><pre id="snapshot" aria-label="Bieżący stan symulatora"></pre></aside></div></div>
+<div class="overlay" id="overlay" hidden><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><h2 id="dialog-title">Potwierdź akcję</h2><p>Przykładowa decyzja UX. Akcja niczego nie zmienia w grze.</p><div class="dialog-actions"><button id="confirm">Potwierdź</button><button id="cancel">Anuluj</button></div><p class="small">Dostępne: strzałki, Enter i Escape. Fokus nie wychodzi z okna.</p></div></div>
+<script src="focus_engine.js"></script><script>
+(()=>{'use strict';const {FocusRouter,panels}=window.B01FocusNav;let r=new FocusRouter();const $=id=>document.getElementById(id),card=$('cards'),background=$('background'),overlay=$('overlay');
+function announce(s){$('status').textContent=s;}
+function update(){
+  const state=r.snapshot();
+  for(const b of document.querySelectorAll('[data-panel]'))b.setAttribute('aria-current',b.dataset.panel===r.panel?'page':'false');
+  $('pageTitle').textContent={garage:'Garaż',run:'Run / HUD',reward:'Ulepszenia'}[r.panel];
+  const old=card.querySelectorAll('button.card');const oldIds=[...old].map(x=>x.dataset.action).join(',');const targetIds=panels[r.panel].map(x=>x.id).join(',');
+  if(oldIds!==targetIds){card.replaceChildren();for(const node of panels[r.panel]){
+    const b=document.createElement('button');b.type='button';b.className='card';b.id='control-'+node.id;b.dataset.action=node.id;
+    b.textContent=node.label;b.addEventListener('click',()=>{const a=r.activate(node.id);if(a.ok)update();else announce('Odmowa: '+a.reason)});
+    b.addEventListener('focus',()=>{if(!r.modal&&r.focus!==node.id){r.focusControl(node.id);refreshFocus()}});card.append(b);
+  }}
+  for(const b of card.querySelectorAll('.card')){b.disabled=r.disabled.has(b.dataset.action);b.dataset.focus=String(!r.modal&&r.focus===b.dataset.action)}
+  background.inert=!!r.modal;overlay.hidden=!r.modal;
+  $('snapshot').textContent=JSON.stringify(state,null,2);
+  announce(state.lastEvent);
+  const element=r.modal?$(r.focus):$('control-'+r.focus);
+  if(element&&document.activeElement!==element)element.focus({preventScroll:true});
+}
+function refreshFocus(){for(const b of card.querySelectorAll('.card'))b.dataset.focus=String(!r.modal&&r.focus===b.dataset.action);$('snapshot').textContent=JSON.stringify(r.snapshot(),null,2)}
+for(const b of document.querySelectorAll('[data-panel]'))b.addEventListener('click',()=>{const a=r.switchPanel(b.dataset.panel);if(a.ok)update();else announce('Odmowa: '+a.reason)});
+$('toggle').addEventListener('click',()=>{const a=r.setEnabled(r.focus,false);if(!a.ok)announce('Odmowa: '+a.reason);else update()});
+$('restore').addEventListener('click',()=>{for(const id of [...r.disabled])r.setEnabled(id,true);update()});
+$('reset').addEventListener('click',()=>{r=new FocusRouter();update()});
+$('confirm').addEventListener('click',()=>{r.activate('confirm');update()});$('cancel').addEventListener('click',()=>{r.activate('cancel');update()});
+for(const id of ['confirm','cancel'])$(id).addEventListener('focus',()=>{if(r.modal&&r.focus!==id){r.focusControl(id);refreshFocus()}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&r.modal){e.preventDefault();r.closeDialog();update();return}
+  if(e.key.startsWith('Arrow')&&!e.altKey&&!e.ctrlKey&&!e.metaKey){
+    e.preventDefault();const a=r.move(e.key);if(a.ok)update();else announce('Krawędź obszaru');return
+  }
+  if(r.modal&&e.key==='Tab'){
+    e.preventDefault();r.focusControl(r.focus==='confirm'?'cancel':'confirm');update();return
+  }
+  if((e.key==='Enter'||e.key===' ')&&!e.altKey&&!e.ctrlKey&&!e.metaKey&&document.activeElement?.dataset?.action){e.preventDefault();r.activate();update()}
+});
+update();window.__B01FocusTest={get snapshot(){return r.snapshot()},get invariant(){return r.invariant()}};
+})();</script></main></body></html>
