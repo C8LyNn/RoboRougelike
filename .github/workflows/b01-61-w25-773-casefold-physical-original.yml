@@ -1,0 +1,72 @@
+name: B01-61 W25 original #773 canonical physical-casefold cross-OS negative QA
+on:
+  push:
+    branches: [qa/b01-61-p17w25-773-canonical-casefold-crossos]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W25Selected773IndependentQA/**'
+      - '.github/workflows/b01-61-w25-773-casefold-physical-original.yml'
+permissions:
+  contents: read
+jobs:
+  original-773-crossos-casefold:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 19
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact selected 773 original and frozen 729 556 W06 510 independent Git blob pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-61/P17W25Selected773IndependentQA/.original
+          mkdir -p "$dir"
+          git fetch --no-tags origin 3aaaec4027ee246fbfb6f209179f0e9507363473 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/CanonicalWorldGateway.cs"
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$dir/CanonicalWorldSlotLease.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/SecureRigSpec.cs"
+          test "$(git rev-parse HEAD:Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSingleAuthorityStoreV3R2.cs)" = 3689238a16d706eda1bf4905cba8029cd2fe77aa
+          test "$(git rev-parse HEAD:Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSlotSessionV3R2.cs)" = b3841132fbfc05da5708af4047f7db141a4abe91
+          test "$(git hash-object "$dir/CanonicalWorldGateway.cs")" = 21733278b6ab0669fccb6d085e0b6cf242792de2
+          test "$(git hash-object "$dir/CanonicalWorldSlotLease.cs")" = a9331dd620336d8c42165d134dc8a5e05ed51873
+          test "$(git hash-object "$dir/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+      - name: Build actual unchanged original selected 773 R2 and #729 #556 W06 CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W25Selected773IndependentQA/Original773ExactQA.csproj -c Release --nologo 2>&1 | tee build.log
+      - name: Execute direct original physical Save raw Store alias and cold/rollback child CLR cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet Tools/B01/B01-61/P17W25Selected773IndependentQA/bin/Release/net8.0/Original773ExactQA.dll 2>&1 | tee qa_release.log
+          grep -Fx 'TOTAL 9 PASS 9 FAIL 0' qa_release.log
+          grep -Fx 'QA_WITNESS_773_SOURCE_GATE=HOLD_IF_CASEFOLD_REPRODUCED_ON_POSIX' qa_release.log
+      - name: Verify exact owned-five QA-only added paths real OS stdout and original immutable source SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W25Selected773IndependentQA/receipt.py --log qa_release.log --out dist/b0161-w25-773-canonical-casefold.json
+      - name: Preserve original raw Windows/Linux source stdout compiler log and exact SHA receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w25-773-original-${{ matrix.os }}
+          path: |
+            build.log
+            qa_release.log
+            dist/b0161-w25-773-canonical-casefold.json
+          if-no-files-found: warn
