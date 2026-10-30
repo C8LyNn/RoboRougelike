@@ -41,9 +41,10 @@ internal sealed class PhysicalWorldDouble : IPreparedWorld
 }
 internal sealed class FactoryDouble:IWorldFactory
 {
-    public PhysicalWorldDouble Last;
-    public bool MutateNextOnActivate,FailNextActivate,FailNextDeactivate,FailNextRetire;
-    public Action OnPrepare;
+    public PhysicalWorldDouble Last=null!;
+    public bool MutateNextOnActivate,FailNextActivate,FailNextDeactivate;
+    public bool FailNextRetire { get; set; }
+    public Action OnPrepare=()=>{};
     public IPreparedWorld Prepare(RunSnapshot snapshot)
     {
         OnPrepare?.Invoke();
@@ -103,11 +104,11 @@ internal static class Program
                 "b01-61-w16-"+Guid.NewGuid().ToString("N")+".save");
             try
             {
-                File.WriteAllBytes(file,bytes);
+                File.WriteAllBytes(file,bytes!);
                 byte[] onDisk=File.ReadAllBytes(file);physicalFileRead++;
-                Check(SnapshotCodec.TryDecode(onDisk,out RunSnapshot decoded)&&decoded!=null,
+                Check(SnapshotCodec.TryDecode(onDisk,out RunSnapshot? decoded)&&decoded!=null,
                     "selected #556 physical bytes genuinely read from operating system file");
-                Check(decoded.Parts[0].Id==2310001 &&decoded.Parts[1].Id==2310002&&
+                Check(decoded!.Parts[0].Id==2310001 &&decoded.Parts[1].Id==2310002&&
                       decoded.Parts[0].Consumed==light&&decoded.Parts[1].Consumed==heavy,
                     "stable Light/Heavy IDs persist from exact binary bytes");
                 var cold=new AtomicWorldSwap(new FactoryDouble());
