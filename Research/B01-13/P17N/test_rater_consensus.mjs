@@ -1,0 +1,56 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import {spawnSync} from "node:child_process";
+import {fileURLToPath} from "node:url";
+import {W15_COMMIT,W15_BLOB,GAME,SAVE,checkedUpstream,analyze,cli} from "./rater_consensus.mjs";
+const HASH="a".repeat(64);
+const e=(at_ms,event,value="NONE")=>({at_ms,event,value});
+function t(id="T0001",status="RECOVERED"){
+ const events=status==="RECOVERED"?[e(0,"CUE"),e(300,"NOTICE"),e(1000,"ACTION"),e(1250,"FEEDBACK","CLEAR"),e(3000,"END","RECOVERED")]:[e(0,"CUE"),e(350,"NOTICE"),e(3000,"END",status)];
+ return {schema:"B01-13-RECOVERY-TRIAL/R1",game_sha:GAME,save_sha:SAVE,player_sha256:HASH,source_to_player:"UNVERIFIED",unity_g1:"NOT_RUN",human_verified:0,trial_id:id,scenario:"DETACHED_AT_SAVE",filled:true,events};
+}
+const doc=(pairs)=>({schema:"B01-13-RATER-CONSENSUS/R1",truth_gate:"UNATTESTED_TECHNICAL_TRANSCRIPTION",pairs:pairs.map(([a,b])=>({a,b}))});
+const source=()=>{const f=process.env.B01_W15_ORIGINAL_SOURCE;assert.ok(f&&fs.existsSync(f),"MISSING_PINNED_W15_SOURCE");return f};
+async function tmp(f){const d=fs.mkdtempSync(path.join(os.tmpdir(),"b01w16-"));try{return await f(d)}finally{fs.rmSync(d,{recursive:true,force:true})}}
+async function review(a,b){return analyze(doc([[a,b]]),source())}
+test("frozen W15 exact original source + #510 and #556 pinned",()=>{assert.equal(W15_COMMIT,"acc2288f72d47bd3969f840524cf8c5d07c0c6d2");assert.equal(W15_BLOB,"6ec383f0b3e341d58f9b5e971fc435a74d78a583");assert.equal(GAME,"d94400d95d13db7f27e1533df05c9292d5380431");assert.equal(SAVE,"33094f154c7b91119b36d58aab285e6e83c5de57")});
+test("original source verified by real Git blob",()=>assert.match(checkedUpstream(source()),/file:/));
+test("fully consistent observation is not verified human data",async()=>{const r=await review(t(),t());assert.equal(r.summary.consistent,1);assert.equal(r.summary.review_required,0);assert.equal(r.human_verified,0);assert.equal(r.live_save_load_verified,false)});
+test("conflicting recovery outcome marked for review",async()=>{const r=await review(t(),t("T0001","ABANDONED"));assert.deepEqual(r.review_queue[0].flags,["COMPLETION_CONFLICT","FEEDBACK_CLASS_CONFLICT"]);assert.equal(r.summary.completion_agreement.cohen_kappa,0)});
+test("help disagreement requires review",async()=>{const b=t();b.events.splice(3,0,e(1150,"HELP"));const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("HELP_CONFLICT"))});
+test("notice gap > 1000ms requires review",async()=>{const b=t();b.events[1].at_ms=1450;b.events[2].at_ms=1700;b.events[3].at_ms=1850;const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("NOTICE_TIME_GAP"))});
+test("notice gap exactly 1000ms accepted",async()=>{const b=t();b.events[1].at_ms=1300;b.events[2].at_ms=1700;b.events[3].at_ms=1850;const r=await review(t(),b);assert.equal(r.summary.review_required,0)});
+test("one missing notice is an explicit conflict",async()=>{const b=t();b.events.splice(1,1);const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("NOTICE_MISSING_CONFLICT"))});
+test("both missing notice compatible without inference",async()=>{const a=t(),b=t();a.events.splice(1,1);b.events.splice(1,1);const r=await review(a,b);assert.equal(r.summary.review_required,0);assert.equal(r.all_results[0].notice_gap_ms,null)});
+test("completion gap > 2 seconds requires review",async()=>{const b=t();b.events.at(-1).at_ms=5100;const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("COMPLETION_TIME_GAP"))});
+test("completion gap exactly 2 seconds accepted",async()=>{const b=t();b.events.at(-1).at_ms=5000;const r=await review(t(),b);assert.equal(r.summary.review_required,0)});
+test("attempt gap of 2 flags discrepancy",async()=>{const b=t();b.events.splice(3,0,e(1020,"ACTION"),e(1030,"ACTION"));const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("ACTION_COUNT_GAP"))});
+test("attempt gap of 1 within tolerance",async()=>{const b=t();b.events.splice(3,0,e(1020,"ACTION"));const r=await review(t(),b);assert.equal(r.summary.review_required,0)});
+test("ambiguous feedback disagrees with clear",async()=>{const b=t();b.events[3].value="AMBIGUOUS";const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("FEEDBACK_CLASS_CONFLICT"))});
+test("absent feedback disagrees with clear",async()=>{const b=t();b.events[3].value="ABSENT";const r=await review(t(),b);assert.ok(r.review_queue[0].flags.includes("FEEDBACK_CLASS_CONFLICT"))});
+test("multiple flags are all retained, not silently accepted",async()=>{const b=t("T0001","STOPPED");b.events[1].at_ms=2450;const r=await review(t(),b);assert.ok(r.review_queue[0].flags.length>=2);assert.ok(r.summary.flag_counts.COMPLETION_CONFLICT)});
+test("mixed completion in cohort yields kappa=1 when all agree",async()=>{const r=await analyze(doc([[t("T0001"),t("T0001")],[t("T0002","ABANDONED"),t("T0002","ABANDONED")],[t("T0003","STOPPED"),t("T0003","STOPPED")]]),source());assert.equal(r.summary.completion_agreement.cohen_kappa,1)});
+test("single category perfect agreement has undefined kappa",async()=>{const r=await review(t(),t());assert.equal(r.summary.completion_agreement.cohen_kappa,null);assert.equal(r.summary.completion_agreement.kappa_defined,false)});
+test("two crossed completion statuses give kappa -1",async()=>{const r=await analyze(doc([[t("T0001"),t("T0001","ABANDONED")],[t("T0002","ABANDONED"),t("T0002")]]),source());assert.equal(r.summary.completion_agreement.cohen_kappa,-1)});
+test("duplicate trial is rejected",async()=>{await assert.rejects(()=>analyze(doc([[t(),t()],[t(),t()]]),source()),/DUPLICATE_TRIAL/)});
+test("two observer trial IDs must match",async()=>{await assert.rejects(()=>review(t(),t("T0002")) ,/RATER_PAIR_MISMATCH/)});
+test("two observer scenarios must match",async()=>{const b=t();b.scenario="DOCK_DENIED";await assert.rejects(()=>review(t(),b),/RATER_PAIR_MISMATCH/)});
+test("two observer Player hashes must match",async()=>{const b=t();b.player_sha256="b".repeat(64);await assert.rejects(()=>review(t(),b),/RATER_PAIR_MISMATCH/)});
+test("cohort cannot combine distinct binary hashes",async()=>{const a=t("T0002"),b=t("T0002");a.player_sha256="b".repeat(64);b.player_sha256="b".repeat(64);await assert.rejects(()=>analyze(doc([[t(),t()],[a,b]]),source()),/MIXED_EXE_HASH/)});
+test("identity/PII metadata rejected in wrapper",async()=>{const x=doc([[t(),t()]]);x.participant_name="SOMEONE";await assert.rejects(()=>analyze(x,source()),/SCHEMA_KEYS/)});
+test("PII fields rejected by original W15 scorer",async()=>{const a=t();a.person="SOMEONE";await assert.rejects(()=>review(a,t()),/SCHEMA_KEYS|SCHEMA/)});
+test("forged human verification rejected by original scorer",async()=>{const a=t();a.human_verified=1;await assert.rejects(()=>review(a,t()),/FORGED_GATE/)});
+test("forged Unity verification rejected by original scorer",async()=>{const a=t();a.unity_g1="PASS";await assert.rejects(()=>review(a,t()),/FORGED_GATE/)});
+test("forged #556 candidate rejected by original scorer",async()=>{const a=t();a.save_sha="f".repeat(40);await assert.rejects(()=>review(a,t()),/SOURCE_CONTRACT/)});
+test("empty cohort rejected",async()=>{await assert.rejects(()=>analyze(doc([]),source()),/PAIR_COUNT/)});
+test("invalid attestation label rejected",async()=>{const d=doc([[t(),t()]]);d.truth_gate="HUMANS_VERIFIED";await assert.rejects(()=>analyze(d,source()),/INPUT_GATE/)});
+test("source tamper rejected on byte-level",async()=>tmp(async d=>{const f=path.join(d,"original.mjs");fs.writeFileSync(f,"export function score(){}");await assert.rejects(()=>analyze(doc([[t(),t()]]),f),/UPSTREAM_BLOB_MISMATCH/)}));
+test("no source path relative",()=>assert.throws(()=>checkedUpstream("some.mjs"),/UPSTREAM_ABSOLUTE/));
+test("source link not followed",()=>tmp(d=>{const f=path.join(d,"real.mjs"),link=path.join(d,"ln.mjs");fs.copyFileSync(source(),f);try{fs.symlinkSync(f,link)}catch{return}assert.throws(()=>checkedUpstream(link),/UPSTREAM_FILE/)}));
+test("private file output refuses overwrite after successful CLI",()=>tmp(async d=>{const f=path.join(d,"input.json"),out=path.join(d,"out.json");fs.writeFileSync(f,JSON.stringify(doc([[t(),t()]])));const cmd=["--input",f,"--upstream",source(),"--output",out];await cli(cmd);await assert.rejects(()=>cli(cmd),/EEXIST/)}));
+test("private file output refuses Git tree",()=>tmp(async d=>{fs.mkdirSync(path.join(d,".git"));const f=path.join(d,"input.json");fs.writeFileSync(f,JSON.stringify(doc([[t(),t()]])));await assert.rejects(()=>cli(["--input",f,"--upstream",source(),"--output",path.join(d,"r.json")]),/OUTPUT_GIT_BLOCK/)}));
+test("real CLI child-process produces JSON result",()=>tmp(d=>{const f=path.join(d,"input.json"),out=path.join(d,"result.json");fs.writeFileSync(f,JSON.stringify(doc([[t(),t()]])));const run=spawnSync(process.execPath,[fileURLToPath(new URL("./rater_consensus.mjs",import.meta.url)),"--input",f,"--upstream",source(),"--output",out],{encoding:"utf8"});assert.equal(run.status,0,run.stderr);const result=JSON.parse(fs.readFileSync(out));assert.equal(result.summary.trial_pairs,1);assert.equal(result.native_unity,"NOT_RUN")}));
+test("actual CLI child-process invalid parser arguments fail closed",()=>{const run=spawnSync(process.execPath,[fileURLToPath(new URL("./rater_consensus.mjs",import.meta.url)),"--human"],{encoding:"utf8"});assert.equal(run.status,2);assert.match(run.stderr,/ARG_COUNT/)});
