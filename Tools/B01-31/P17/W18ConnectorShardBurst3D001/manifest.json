@@ -1,0 +1,83 @@
+{
+  "package_id": "B01-31-CONNECTOR-SHARD-BURST3D-001",
+  "version": "P17-W18-R1",
+  "owner": "B01-31",
+  "HQ": 632,
+  "governance": 276,
+  "source_scope": [
+    "Tools/B01-31/P17/W18ConnectorShardBurst3D001/build_shards.py",
+    "Tools/B01-31/P17/W18ConnectorShardBurst3D001/verify_shards.py",
+    "Tools/B01-31/P17/W18ConnectorShardBurst3D001/README.md",
+    "Tools/B01-31/P17/W18ConnectorShardBurst3D001/manifest.json",
+    ".github/workflows/b01-31-p17w18-connector-shard-burst3d.yml"
+  ],
+  "purpose": "Real original standalone 3D connector fracture debris VFX, not W17 cable body animation; 16 individual 8-triangle closed manifold shard prisms moving independently in 3D.",
+  "assets": {
+    "glTF2_file": "B0131-ConnectorShardBurst3D.glb",
+    "separate_3d_prism_nodes": 16,
+    "unique_meshes": 16,
+    "triangles": 128,
+    "original_PBR_materials": 4,
+    "real_linear_transform_channels": 32,
+    "real_keyframes": 224,
+    "keys_per_channel": 7,
+    "triple_animated_3d_camera_GIFs": [
+      "iso",
+      "side",
+      "top"
+    ],
+    "actual_frames_per_GIF": 16,
+    "actual_ms_per_frame": 80,
+    "two_original_genuine_3d_storyboards": [
+      "dark",
+      "light"
+    ],
+    "pose_frames_per_storyboard": 7,
+    "source_timeline": "timeline.json",
+    "actual_binary_receipt": "receipt.json",
+    "real_distribution_ZIP_members": 8
+  },
+  "boundaries": {
+    "chosenSaveAdapter": "#596@efb2b06eafedab5469b57f163152d96aca3c5915",
+    "otherSaveAdapter": "#604 ALT_HOLD",
+    "selectedReattach": "#510@d94400d95d13db7f27e1533df05c9292d5380431",
+    "saveSchema": "#556@33094f154c7b91119b36d58aab285e6e83c5de57",
+    "canonicalGameCode": "NEVER_MODIFY",
+    "gameplayDetach": "NOT_IMPLEMENTED",
+    "UnityImport": "NOT_RUN",
+    "PhysX": "NOT_RUN",
+    "SaveLoad": "NOT_RUN",
+    "glTFOneshot": "NOT_ENFORCED (only host suggestion)"
+  },
+  "tests": [
+    "Actual 16 physically unique original closed triangular-prism shards (128 nondegenerate faces with consistent normals and indices)",
+    "Actual 4 original PBR materials and separately addressable 16 source nodes",
+    "32 FLOAT32 LINEAR native glTF animation channels, all 224 original physical time/quaternion/position keys verified by independent binary decoder",
+    "All 16 shards physically move outward, no reverse distance; each original quaternion unit",
+    "Three genuine GIF previews separately drawn from 3D triangles, 16 genuinely distinct visible 80ms frames for each iso, side, top",
+    "Two physically rendered 2100x520 7-pose dark/light RGB preview PNGs, each seven genuinely distinct poses",
+    "Actual source timing and receipt SHA/byte checks, 8-member physical ZIP CRC/byte content equality",
+    "7 independent corrupt real GLB2/semantic mutants rejected",
+    "Complete physical author rebuild twice with every GLB/GIF/PNG/receipt/ZIP SHA byte-equal",
+    "Separate Windows2022 actual Ubuntu original outputs independently verified WITHOUT invoking generator"
+  ],
+  "receivers": [
+    "B01-30/B01-40 independent G0 3D asset/normal/material/ZIP/model import intake and scratch rollback",
+    "B01-60 legal activated Unity6 URP/visual GPU actual import/PlayMode only, else NOT_RUN",
+    "B01-32 optional synchronization with approved effects on confirmed detach event",
+    "B01-00 only authorized later Codex inbox #79 after actual gates"
+  ],
+  "gates": {
+    "implemented": "PENDING_BUILD",
+    "tested": "NOT_RUN",
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false,
+    "source_producer_G0": "PENDING",
+    "formal_B01_40_G0": "PENDING",
+    "Unity_native_G1": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "rollback": "Delete only five new source/CI paths from W18 isolated branch; actual GLB and previews only in workflow artifact. In any authorized scratch import, delete ONLY B0131-ConnectorShardBurst3D outputs under explicitly chosen disposable path, never other models, empty foreign directories, selected #510/#556/#596 or Codex."
+}
