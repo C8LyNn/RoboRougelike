@@ -74,6 +74,12 @@ namespace B01.UnitySaveBridge001
                 // Only immutable identity, authority and detached/consumed coupling must match.
                 if(!SameIdentityAndLedger(snap,currentCold.Snapshot))return false;
                 byte[] pending=SnapshotCodec.Encode(snap);
+                // A durable fence cannot authorize a physically changed
+                // checkpoint with SAME generation. Host must version + durably
+                // write a new checkpoint via an owner-approved save transaction.
+                if(checkpoint.IsDurable&&checkpoint.Check(snap.RunId,
+                    snap.Generation,CheckpointHash.Of(pending),true)!=FenceVerdict.Allowed)
+                    return false;
                 if(!Idle(hostIdle))return false;
                 bytes=pending;
                 return true;

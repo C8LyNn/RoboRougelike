@@ -28,7 +28,7 @@ def scope():
     files=sorted([ASSET+".meta",WORKFLOW]+
         git("ls-tree","-r","--name-only","HEAD",ASSET+"/").splitlines()+
         git("ls-tree","-r","--name-only","HEAD",TOOLS).splitlines())
-    if len(files)!=22 or len(files)!=len(set(files)):raise ValueError("W15 exactly 22 owner Git files required")
+    if len(files)!=24 or len(files)!=len(set(files)):raise ValueError("W15 exactly 22 owner Git files required")
     if any(not (p==ASSET+".meta" or p==WORKFLOW or p.startswith(ASSET+"/") or p.startswith(TOOLS))
            for p in files):raise ValueError("foreign file")
     metas=[];defs=[]
@@ -38,13 +38,17 @@ def scope():
             if len(tags)!=1 or len(tags[0])!=32:raise ValueError("GUID bad")
             metas.extend(tags)
         if p.endswith(".asmdef"):defs.append(json.loads(source(p)))
-    if len(metas)!=10 or len(set(metas))!=10:raise ValueError("bad GUID count or duplicate")
+    if len(metas)!=11 or len(set(metas))!=11:raise ValueError("bad GUID count or duplicate")
     if sorted(x["name"] for x in defs)!=[
         "B0123.UnitySaveBridge.Core","B0123.UnitySaveBridge.PlayModeTests",
         "B0123.UnitySaveBridge.Unity"]:raise ValueError("not three new isolated asmdefs")
     core=source(ASSET+"/Core/AtomicWorldSwap.cs").decode()
     unity=source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
     if ("ColdRestore.TryStage(bytes" not in core or
+        "snapshot.Generation<=currentCold.Snapshot.Generation" not in core or
+        "candidate.Capture(),snapshot" not in core or
+        "checkpoint.Seal(" not in core or
+        "return quarantined?WorldSwapVerdict.RollbackQuarantine:verdict;" not in core or
         "currentCold=restored;" not in core or
         "old.Deactivate()" not in core or
         "quarantined=true;" not in core or
@@ -66,10 +70,10 @@ def build():
     files=scope()
     contents={p:source(p) for p in files}
     manifest={
-      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"1.0.0",
+      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"2.0.0",
       "own_head_sha":git("rev-parse","HEAD"),
       "only_save_source_sha":SELECTED_SAVE,"gameplay_510_sha":SELECTED_GAME,
-      "frozen_blob_guards":PINS,"unity_guid_count":10,"asmdef_count":3,
+      "frozen_blob_guards":PINS,"unity_guid_count":11,"asmdef_count":3,
       "native_unity":"NOT_RUN","codex_ack":False,"canonical_510_live_import":"HOLD",
       "files":[{"path":p,"bytes":len(contents[p]),"sha256":sha(contents[p])} for p in files],
     }
@@ -89,12 +93,12 @@ def verify(raw):
         contents={p:z.read(p) for p in names}
     manifest=json.loads(contents[MANIFEST])
     if (manifest.get("package")!="B01-23-UNITY-SAVE-HOST-BRIDGE-001" or
-        manifest.get("version")!="1.0.0" or
+        manifest.get("version")!="2.0.0" or
         manifest.get("own_head_sha")!=git("rev-parse","HEAD") or
         manifest.get("only_save_source_sha")!=SELECTED_SAVE or
         manifest.get("gameplay_510_sha")!=SELECTED_GAME or
         manifest.get("frozen_blob_guards")!=PINS or
-        manifest.get("unity_guid_count")!=10 or
+        manifest.get("unity_guid_count")!=11 or
         manifest.get("asmdef_count")!=3 or
         manifest.get("native_unity")!="NOT_RUN" or
         manifest.get("codex_ack") is not False or
