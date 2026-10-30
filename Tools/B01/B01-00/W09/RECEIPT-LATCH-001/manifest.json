@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "2.3.0",
+  "revision": "2.4.0",
   "owner": "B01-00",
   "producer_agent": "B01-00",
-  "issue": 713,
-  "purpose": "W22 original B01-00 one canonical Save admission release DAG: #690 independent synthetic C# GREEN #705 / #699 source G0, #691 independent same-slot P0 RED #710 / #704 source G0, #712 source 707 regression not independently tested, #669 external valid rollback trust #680 and optional witness #709, #711 Windows source only native NOT_RUN, #510 private real adapter absent",
+  "issue": 731,
+  "purpose": "W23 B01-00 own executable single-authority migration reference model and fail-closed receipt: solely owner-selected #729 V3 (vs #719 ALT), incompatible #712/#669 .owner/.lease, required one real host session capability, frozen R5 #690 native ColdRestart g5 vs expected g4, all selected original frozen SHAs preserved, G0/G1 and actual private #510 port HOLD",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "51e5ce5cfb69e2fbc543e0b89e66a3722f75b355",
+  "source_sha_before_manifest": "9674e3e371c5aeab7fcf4cf5975b90cf7f5c21ae",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "f00a0827305b40d2c0263f151fd89df7ab43b2a1a59f91051e004803fd4cfbcb",
-      "bytes": 53943
+      "sha256": "49531695813dc00995b90a26655b6054fe9866147e45dc3d3804b5dacf6ca026",
+      "bytes": 57618
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "0fb8e08094498aaeb6de3d246fe7e7cd833ba6461917da34ab2afed8c318a035",
-      "bytes": 3736
+      "sha256": "fad91228a489f7a070d0e34d0fe4ba8892c3f7f86fbbaafe654cda333b419225",
+      "bytes": 3971
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
@@ -276,6 +276,26 @@
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W22-ONE-CANONICAL-SAVE-SECURITY-HANDOFF.md",
       "sha256": "522766d6e1d8f7692fb83f7cc054cbb968a6e92f0ea17351ebd28215f06229ae",
       "bytes": 11441
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w23_one_authority_model.py",
+      "sha256": "955699740fe9d539d3296b600abf2ff0727df4894d66b8c391a640a201a94b78",
+      "bytes": 8636
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w23_owner_snapshot.json",
+      "sha256": "53cf7a67d46a8548b31a29451ec635d81592c77c2a82ff69431e1372704a591a",
+      "bytes": 2658
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w23_one_authority_model.py",
+      "sha256": "b232598a07b40ed2833bb69c82fd54c27f2e114c02c3289d90c2390d0df5d12b",
+      "bytes": 18739
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W23-729-712-SINGLE-AUTHORITY-HOLD.md",
+      "sha256": "e824a2613c38f6987fc61c38a2d4ee11549a974affad6e76144935230bc88483",
+      "bytes": 12143
     }
   ],
   "producer_tests": [
@@ -756,13 +776,50 @@
         "ubuntu-24.04"
       ],
       "note": "Must independently read original GitHub Actions final exact-head job logs and add postcommit comment"
+    },
+    {
+      "name": "W22 own exact final 735 original source cases each OS",
+      "status": "PASS",
+      "total": 735,
+      "passed": 735,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "f3236fa55c074bf4b448990314b605251fd7ac4a",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41130358003"
+    },
+    {
+      "name": "W23 original reference model 111 new, cumulative 846 source tests both OS premainfest",
+      "status": "PASS",
+      "total": 846,
+      "passed": 846,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "894d96dab7830bf5c9b35ceccd3f134b6a581c26",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41132059427",
+      "note": "Original raw Windows and Ubuntu jobs observed before README/evidence/manifest final SHA; reference model not original C# integration"
+    },
+    {
+      "name": "W23 exact final manifest commit original own tests",
+      "status": "NOT_RUN",
+      "total": 846,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "independently inspect postcommit SHA exact original CI before W23 terminal HQ success"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "R5_690_AND_API_691_SOURCE_G0_ACCEPTED_SOURCE_ONLY_INDEPENDENT_SOURCE_R5_SCOPED_GREEN_API_GLOBAL_SLOT_RED_FINAL_GAME_G0_HOLD",
+  "g0": "R5_690_SOURCE_ONLY_ACCEPTED_V3_729_SOURCE_G0_PENDING_REAL_NEW_ONE_OWNER_BRIDGE_NOT_IMPLEMENTED_COMBINED_G0_HOLD",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -815,7 +872,13 @@
     "W22 B01-62 corrected #712 producer source 36 cases each OS PASS; independent #707 regression exact NEW SHA not yet accepted; old source #697 P0 negative evidence cannot transfer",
     "W22 #669 SHA corruption detection does not authenticate older valid external backup or equal-gen ledger fork #680; optional separate #709 witness cannot certify external trust without independent external monotonic anchor",
     "W22 B01-60 manual #711 safe PowerShell source CI PASS but owner never executed activated Unity Editor; native G1 NOT_RUN and real #510 private canonical Rig/AtomicDockLedger adapter still not implemented",
-    "W22 B01-00 own source-only structural intake gate does NOT execute other owner original code/native Unity, authenticate GitHub comments or grant gameplay release/Codex ACK"
+    "W22 B01-00 own source-only structural intake gate does NOT execute other owner original code/native Unity, authenticate GitHub comments or grant gameplay release/Codex ACK",
+    "W23 selected V3 #729 exact owner choice supersedes earlier #719 alternative; #719 ALT_HOLD no cherry-pick, selected original #729 producer source GREEN does not transfer to physical G0/real game",
+    "W23 #729 V3 .owner FileShare.None run+Guid and old selected #712/#669 .lease own a different lifetime lock/constructor; no independently compiled/tested single real authority bridge exists at W23 baseline",
+    "W23 own reference one-lock state machine is IN-MEMORY HYPOTHETICAL policy, not real OS FileShare.None concurrency, C# owner source, Unity PhysX, external trusted proof nor implementation of real private frozen #510 Rig[]/AtomicDockLedger",
+    "W23 #718 original R5 #690 ColdRestart NUnit mismatch actual written g5 vs expected g4 is fixture-only RED; correcting test expectation in NEW version does not prove native G1",
+    "W23 actual owner Unity PC remains unaccessed; #711/#717/#718 PowerShell/source/synthetic tests do not prove activated Unity 6000.3.14f1 Editor or real NUnit XML",
+    "W23 external valid older Save/equal-generation ledger fork #680 remains a threat unless independent protected root #709 or formally limited threat model; identical self hashes cannot detect both-root restoration"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -831,7 +894,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "CANONICAL_PRIVATE_510_PHYSICAL_RIG_LEDGER_PORT_NOT_IMPLEMENTED_API_691_TWO_OWNER_P0_STORAGE_669_EXTERNAL_VALID_ROLLBACK_THREAT_UNRESOLVED",
+  "save_load": "ONE_CANONICAL_V3_729_WITH_R2_712_OS_FILESTORE_669_INCOMPATIBLE_TWO_LOCK_ROOTS_NO_NEW_BRIDGE_OR_REAL_PRIVATE_510_OWNER_ADAPTER",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -1123,5 +1186,55 @@
     "integrator_feedback": "NOT_MEASURED",
     "merged": false,
     "g2": "HOLD"
+  },
+  "w23": {
+    "selected_canonical_api": {
+      "pr": 729,
+      "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+      "alt_pr": 719,
+      "alt": "ALT_HOLD",
+      "parent_original_691": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+      "producer": "152_SOURCE_ASSERTIONS_PASS_REPORTED",
+      "inner_zip_bytes": 90659,
+      "inner_zip_members": 19,
+      "inner_zip_sha256": "17a80c55b0d40e8afa7ef50509e434b970cc3296c3cc9926aba82b6fd5973b18",
+      "independent_v3_qa": "PENDING",
+      "v3_physical_g0": "PENDING"
+    },
+    "sole_r5_host": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "alt_pr": 693,
+      "scoped_independent_705": "25_EACH_OS_SOURCE_GREEN_SYNTHETIC_UNITY",
+      "source_g0_699": "ACCEPTED_SOURCE_ONLY",
+      "cold_restart_actual_generation": 5,
+      "old_fixture_asserts_generation": 4,
+      "new_owner_fixture": "NOT_IMPLEMENTED"
+    },
+    "single_session_contract": {
+      "old_session_pr": 712,
+      "old_session_sha": "bd8905ad549a7b26854b671be971f7d781308311",
+      "store_pr": 669,
+      "store_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+      "legacy_lock_files": [
+        ".owner",
+        ".lease"
+      ],
+      "new_bridge_original_pr": null,
+      "new_bridge_source_sha": null,
+      "one_shared_authority": "NOT_IMPLEMENTED",
+      "v3_r2_compile": "NOT_RUN",
+      "independent_original_cross_process": "NOT_RUN",
+      "combined_full_g0": "HOLD"
+    },
+    "frozen_real_510": "NOT_IMPLEMENTED",
+    "storage_external_rollback_680": "UNRESOLVED",
+    "optional_trust_709": "NOT_ACCEPTED",
+    "native_unity_g1": "NOT_RUN",
+    "private_game_save_load": "HOLD",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "integrator_feedback": "NOT_MEASURED",
+    "merged": false
   }
 }
