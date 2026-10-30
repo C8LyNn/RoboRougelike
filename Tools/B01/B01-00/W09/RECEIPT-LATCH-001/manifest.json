@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "1.6.0",
+  "revision": "1.7.0",
   "owner": "B01-00",
   "producer_agent": "B01-00",
-  "issue": 571,
-  "purpose": "B01-00 W15 stale Save queue correction: sole immutable #556 v2 selected; B01-40 source-only G0 #560 and B01-61 exact C# source QA #563/#570; no Unity host bridge, native G1, Codex ACK or integration",
+  "issue": 589,
+  "purpose": "B01-00 source owner queue W16: current exact #585 original C# RED by #572, #587 latest core SHA changed since #588 test; prevent false exact QA G0/Unity G1/Codex ACK",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "a19179ba46f7a57c524bee93b1e83696dfff9b91",
+  "source_sha_before_manifest": "8991644b3919279f23ffd6e154c14e7b05787c6f",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "8caaf822dfcc19ccf1a9cdb52778a1cf8d908a8f884d0279bad7fd3938496e8f",
-      "bytes": 20956
+      "sha256": "8333adb06d88540fa623e6e9bb0c45e4e7734876f54ecd6bbfa27e081f300fb1",
+      "bytes": 24994
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,13 +109,13 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "df281189685e6b6fb36192792533c99143f0f97fc856f1c5bf9387fbdfadc2b0",
-      "bytes": 2064
+      "sha256": "9932f40d6b5433ea65a56840f2ccc9fb6178e39e45627d3605db52e30eafab74",
+      "bytes": 2315
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
-      "sha256": "ac355fee7d6cd13e7dba01d1a6bb48892cfd9710173bd8440d9cc962e47b2eec",
-      "bytes": 16355
+      "sha256": "0fcce8da00babfcb1e48c6870c1a5ee0b545a506cf85d0a4c3fac6cdaaaa2c3f",
+      "bytes": 23652
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_save_admission.py",
@@ -146,6 +146,21 @@
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W15-FROZEN-SAVE-SOURCE-G0-HOST-HOLD.md",
       "sha256": "272787e926eabaa3dc258290a2da065169793bac7a08b475d80a7408aebeb183",
       "bytes": 5671
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w16_hold.json",
+      "sha256": "410e17698abc3004177900f592884a0e7aaa287e3f4b9999a600d6b8aa1ba8f8",
+      "bytes": 2693
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_bridge_w16.py",
+      "sha256": "67d4651a48790c503adda3d5a69cf00faf84e944cd7acbc5cc0dbb616278e809",
+      "bytes": 12112
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W16-BRIDGE-PROVENANCE-RED-HOLD.md",
+      "sha256": "b3eb595eeef2115cefc1f6dadcdecb5a6f0831f91a5e4c5fa658cb2dae7a5d47",
+      "bytes": 6011
     }
   ],
   "producer_tests": [
@@ -369,16 +384,42 @@
       "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091363949"
     },
     {
-      "name": "W15 exact final manifest HEAD",
+      "name": "W15 exact final HEAD original 287 tests both OS",
+      "status": "PASS",
+      "total": 287,
+      "passed": 287,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "430152a82934a650190638239ff3d7c7f9b8af93",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41092246975"
+    },
+    {
+      "name": "W16 original 57 new + prior 287 344 dual-OS source tests and bridge CLI",
+      "status": "PASS",
+      "total": 344,
+      "passed": 344,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "67bd76c48350506269c85165a1a1bd8e7ae77f00",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096301536"
+    },
+    {
+      "name": "W16 exact final manifest SHA original CI",
       "status": "NOT_RUN",
-      "note": "Verify after this commit and record in separate exact-HEAD PR comment"
+      "note": "To be checked after this commit; authoritative post-commit PR receipt needed"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "SELECTED_GAMEPLAY_510_G0_ACCEPTED / SELECTED_SAVE_556_SOURCE_G0_ACCEPTED_BY_B01_40_560 / B01_00_OWN_TOOL_INDEPENDENT_QA_PENDING",
+  "g0": "GAME_510_SOURCE_G0_ACCEPTED / SAVE_556_SOURCE_G0_ACCEPTED / BRIDGE_585_EXACT_RED / BRIDGE_587_EXACT_QA_PENDING / B01_00_TOOL_INDEPENDENT_QA_PENDING",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -399,7 +440,9 @@
     "W14 offline Save contract queue gate does not authenticate review author; #549 producer PASS is insufficient after independent #550 C# RED",
     "Original #550 QA-tested earlier SHA and #549 current HEAD have identical vulnerable C# Git blob, independently fetched live this turn; #544 requires separate exact-SHA independent QA",
     "Source-only #556 G0 and independent C# QA do not implement Unity host Save/Load; frozen #510 private ledger lacks an approved public hydration interface",
-    "W15 selected-v2 code checks offline JSON consistency, not GitHub signatures, actual ZIP bytes, native Unity/PhysX, ACK or integration; B01-40/60 must independently accept B01-00 tool"
+    "W15 selected-v2 code checks offline JSON consistency, not GitHub signatures, actual ZIP bytes, native Unity/PhysX, ACK or integration; B01-40/60 must independently accept B01-00 tool",
+    "W16 only records original-source SHA-aware QA differences: #585 core same as #572 tested, #587 current core differs from #588 original test; current #587 release verdict requires new exact-SHA independent QA",
+    "B01-00 offline JSON gate cannot authenticate original GitHub source/QA actor automatically; independent bridge G0, native Unity/PhysX and live #510 private ledger hydration remain HOLD"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -415,7 +458,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "SOURCE_ONLY_SELECTED_UNITY_HOST_NOT_IMPLEMENTED",
+  "save_load": "BRIDGE_SOURCE_HOLD / LIVE_GAME_NOT_INTEGRATED",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -441,5 +484,32 @@
       544,
       549
     ]
+  },
+  "bridge_selection": {
+    "owner": "B01-23",
+    "state": "UNDECIDED",
+    "candidates": [
+      {
+        "pr": 585,
+        "sha": "135a67d42acfccd59ca9145e09630d0b4bbade1c",
+        "core_blob": "e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b",
+        "qa_pr": 572,
+        "qa_status": "EXACT_SOURCE_SECURITY_RED"
+      },
+      {
+        "pr": 587,
+        "sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+        "core_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+        "qa_pr": 588,
+        "qa_earlier_sha": "39f03fd6a0d5fae10be5419db4beb79201147bc8",
+        "qa_earlier_core_blob": "db69bae2bf4cf106da68f13e0b067499f0da02f3",
+        "qa_status": "CHANGED_SOURCE_REQUIRES_NEW_EXACT_SHA_QA"
+      }
+    ],
+    "alternative_port_qa": {
+      "pr": 582,
+      "port_pr": 577,
+      "disposition": "HOLD"
+    }
   }
 }
