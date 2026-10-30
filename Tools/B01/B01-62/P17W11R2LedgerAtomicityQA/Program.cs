@@ -69,6 +69,7 @@ internal static class Program
         long id=demo.PartId(index);
         Check(emitter.Contains(id),"pre-reset original W06 consumed ID index="+index);
         var body=demo.PartBody(index);
+        body.linearVelocity=new Vector3(3f,0,0);
         var parent=body.transform.parent;
         var velocity=body.linearVelocity;
         Check(parent==null && !body.isKinematic && demo.IsDetached(index),
