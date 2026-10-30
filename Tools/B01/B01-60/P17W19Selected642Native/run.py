@@ -56,7 +56,19 @@ def adapt():
  m.METHODS=METHODS
  # Old #532 source provenance ZIP receiver recognizes all own W19 files in its
  # exclusive OWN set; only the difference between W18 and W19 is W19-owned.
+ historical_own_W18_files=set(m.W18)
  m.W18=FILES
+ # Original #532 source receiver checks the COMPLETE owned QA path inventory
+ # from frozen #510 to current HEAD. W18's Git files still exist in that tree,
+ # even though W18->W19 diff contains ONLY the new five W19 files.
+ # Keep the W18->W19 diff strict in source_scope_preflight, but include the
+ # frozen prior W18-owned paths when invoking the SAME trusted #532 packager.
+ original_load=m.load_w12
+ def load_w12_with_full_prior_owned_inventory():
+  m.W18=historical_own_W18_files|FILES
+  try:return original_load()
+  finally:m.W18=FILES
+ m.load_w12=load_w12_with_full_prior_owned_inventory
  m.EXACT_SOURCE_BLOBS[FIXTURE]=FIXTURE_BLOB
  m.EXACT_SOURCE_BLOBS[CORE]=CORE_BLOB
  m.EXACT_SOURCE_BLOBS[HOST]=HOST_BLOB
