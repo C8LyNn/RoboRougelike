@@ -95,6 +95,12 @@ jobs:
             A="$(sha256sum "ubuntu/$file" | cut -d' ' -f1)"
             B="$(sha256sum "windows/$file" | cut -d' ' -f1)"
             echo "ORIGINAL_PHYSICAL_CROSS_OS $file Ubuntu=$A Windows=$B"
-            test "$A" = "$B"
+            if [ "$A" != "$B" ]; then
+              echo "CROSS_OS_DIFFERENCE_IN $file"
+              if [ "$file" = receipt.json ]; then
+                diff -u "ubuntu/$file" "windows/$file" | head -n 120 || true
+              fi
+              exit 1
+            fi
           done
           echo "ORIGINAL_PHYSICAL_CROSS_OS_ALL_THREE_BYTE_IDENTICAL"
