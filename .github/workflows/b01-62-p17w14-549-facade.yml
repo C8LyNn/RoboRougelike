@@ -1,0 +1,48 @@
+name: B01-62 P17 W14 Selected #549 Exact Source Facade QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w14-selected549-safe-cold-facade
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W14SelectedSaveFacade/**'
+      - '.github/workflows/b01-62-p17w14-549-facade.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-red-to-facade-green:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch only selected original producer SHA and frozen gameplay SHA
+        run: |
+          git fetch --no-tags origin 6da2c523e03766cd5a6deaed0cb3cccf8765354b
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Verify real original Git SHA objects and isolate raw C# input
+        run: |
+          mkdir -p qa-receipts
+          python Tools/B01/B01-62/P17W14SelectedSaveFacade/source_guard.py --repo . --input-dir Tools/B01/B01-62/P17W14SelectedSaveFacade/Input
+      - name: Compile and execute ORIGINAL #549 producer and ORIGINAL W06 plus safe facade
+        run: |
+          dotnet run --project Tools/B01/B01-62/P17W14SelectedSaveFacade/OriginalContractQA.csproj --configuration Release --verbosity quiet | tee qa-receipts/original-source-facade.stdout
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w14-549-source-${{ matrix.os }}
+          path: qa-receipts/*
+          if-no-files-found: error
