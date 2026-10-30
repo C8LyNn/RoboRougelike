@@ -14,12 +14,12 @@ class SourcePackageTests(unittest.TestCase):
     def test_frozen_selected_gameplay(self):
         self.assertEqual(p.SELECTED_GAME,"d94400d95d13db7f27e1533df05c9292d5380431")
     def test_original_critical_git_blobs(self):self.assertEqual(len(p.PINS),5)
-    def test_exact_22_own_git_paths(self):self.assertEqual(len(p.scope()),22)
-    def test_10_unique_meta_guids_and_three_asmdefs(self):p.scope()
+    def test_exact_26_own_git_paths(self):self.assertEqual(len(p.scope()),26)
+    def test_11_unique_meta_guids_and_three_asmdefs(self):p.scope()
     def test_actual_original_unity_body_source(self):
         s=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
         self.assertIn("Rigidbody",s);self.assertIn("DebrisImpulseLedger",s)
-        self.assertIn("TwinWorld.Build(snapshot,transform)",s)
+        self.assertIn("TwinWorld.Build(snapshot,transform,TrackOwnedWorldRoot)",s)
     def test_actual_original_transaction_state(self):
         s=p.source(p.ASSET+"/Core/AtomicWorldSwap.cs").decode()
         self.assertIn("ColdRestore.TryStage",s)
@@ -30,14 +30,24 @@ class SourcePackageTests(unittest.TestCase):
         self.assertIn("if(part.activeInHierarchy)",source)
         self.assertIn("container.SetActive(true);",source)
         self.assertIn("body.linearVelocity",source)
+    def test_w21_actual_component_only_destroy_requires_retirement(self):
+        host=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
+        self.assertIn("OwnerWorldLeaseRetirement.Hold(checkpointPath",host)
+        self.assertIn("coordinator.TryRetireForOwnerRemoval()",host)
+        self.assertIn("AllOwnedRootsDestroyed()",host)
+        self.assertIn("ReconcileBeforeNewAcquire(checkpointPath)",host)
+    def test_w21_frozen_r4_and_unique_new_guid(self):
+        self.assertEqual(p.R4_FROZEN,"09c1809b73324a6d31c13e5d0143de62ac1e3ca6")
+        self.assertIn("b0123210000000000000000000000001",
+            p.source(p.ASSET+"/Core/OwnerWorldLeaseRetirement.cs.meta").decode())
     def test_real_git_deterministic_archive(self):self.assertEqual(p.build(),p.build())
-    def test_exact_23_archive_members(self):self.assertEqual(len(p.verify(p.build())),23)
+    def test_exact_27_archive_members(self):self.assertEqual(len(p.verify(p.build())),27)
     def test_manifest_source_guards(self):
         x=p.verify(p.build());m=json.loads(x[p.MANIFEST])
         self.assertEqual(m["native_unity"],"NOT_RUN")
         self.assertEqual(m["canonical_510_live_import"],"HOLD")
         self.assertFalse(m["codex_ack"])
-        self.assertEqual(m["version"],"4.0.0")
+        self.assertEqual(m["version"],"5.0.0")
     def test_reject_foreign_member(self):
         with self.assertRaises(ValueError):
             p.verify(mutated(p.build(),extra={"Assets/Canon/HACK.cs":b"abc"}))

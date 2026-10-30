@@ -402,6 +402,71 @@ class T
             }
             finally{Directory.Delete(folder,true);}
         });
+
+        Check("W21 #670 live component destroyed before physics world -> lease must NOT transfer",()=>{
+            string temp=Path.Combine(Path.GetTempPath(),"b0123-w21-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(temp);
+            string checkpoint=Path.Combine(temp,"session");
+            bool physicallyDestroyed=false;
+            try
+            {
+                using(var lease=new FileStream(checkpoint+".owner",FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite,FileShare.None))
+                {
+                    // Duplicate lease handle ownership remains with the retirement
+                    // registry, NOT the departing component. Do not dispose here.
+                }
+                var held=new FileStream(checkpoint+".owner",FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite,FileShare.None);
+                OwnerWorldLeaseRetirement.Hold(checkpoint,held,()=>physicallyDestroyed,true);
+                if(OwnerWorldLeaseRetirement.ReconcileBeforeNewAcquire(checkpoint))return false;
+                try
+                {
+                    using(var impossible=new FileStream(checkpoint+".owner",
+                        FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None))
+                        return false;
+                }
+                catch(IOException){}
+                physicallyDestroyed=true; // represents ACTUAL Unity fake-null GameObject
+                if(!OwnerWorldLeaseRetirement.ReconcileBeforeNewAcquire(checkpoint))return false;
+                using(var fresh=new FileStream(checkpoint+".owner",
+                    FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None))
+                    return fresh.CanWrite;
+            }
+            finally {Directory.Delete(temp,true);}
+        });
+        Check("W21 owner world consumed ID retirement quarantines source coordinator",()=>{
+            var factory=new Factory();var host=new AtomicWorldSwap(factory);
+            if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+            World? old=factory.Last;
+            return host.TryRetireForOwnerRemoval()&&host.Quarantined&&!host.HasWorld&&
+                old!=null&&old.Retired&&!old.Active&&!host.TrySave(7,()=>true,out _)&&
+                host.TryLoad(Make(false,true,11),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine;
+        });
+        Check("W21 cleanup failure retains permanent sticky quarantine",()=>{
+            var factory=new Factory();var host=new AtomicWorldSwap(factory);
+            if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted||
+               factory.Last==null)return false;
+            factory.Last.FailRetire=true;
+            return !host.TryRetireForOwnerRemoval()&&host.Quarantined&&host.CleanupPending&&
+                !host.TrySave(7,()=>true,out _)&&
+                !host.TryRetireForOwnerRemoval();
+        });
+        Check("W21 pending guard callback exception does NOT release OS lease",()=>{
+            string checkpoint=Path.Combine(Path.GetTempPath(),"b0123-w21-danger-"+
+                Guid.NewGuid().ToString("N"));
+            var stream=new FileStream(checkpoint+".owner",FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,FileShare.None);
+            OwnerWorldLeaseRetirement.Hold(checkpoint,stream,
+                ()=>throw new IOException("cannot prove child destroyed"),true);
+            // Intentionally fail closed for process lifetime. The runner's
+            // disposable OS sandbox removes the unique temp source after exit.
+            return !OwnerWorldLeaseRetirement.ReconcileBeforeNewAcquire(checkpoint);
+        });
+        Check("W21 no committed world + no orphan: shutdown is safe",()=>{
+            var host=new AtomicWorldSwap(new Factory());
+            return host.TryRetireForOwnerRemoval()&&host.Quarantined&&!host.HasWorld;
+        });
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
     public static int Main(){Tests();Console.WriteLine("TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);return fail==0?0:1;}
