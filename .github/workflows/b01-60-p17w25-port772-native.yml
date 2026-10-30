@@ -1,0 +1,116 @@
+name: B01-60 W25 original #772 physical Unity native operator SOURCE CI ONLY
+on:
+  push:
+    branches: [qa/b01-60-p17w25-physical772-unity-g1-native-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W25Physical772Native/**'
+      - '.github/workflows/b01-60-p17w25-port772-native.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W25Physical772Native/**'
+      - '.github/workflows/b01-60-p17w25-port772-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-772-real-source-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch only exact owner #772, selected Save #749 and suggested descendant #773 into ephemeral CI checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1
+          git fetch --no-tags origin 8634e71dfcf633323073fe584a6c0884f1ca5d23
+          git fetch --no-tags origin 3aaaec4027ee246fbfb6f209179f0e9507363473
+          test "$(git rev-parse ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1:Assets/B0123CanonicalRigPortW24/Tests/PlayMode/CanonicalPhysicalRigPortW24NativeTests.cs)" = 6827351e8f578030de932b2d36a5c0c55337a2f7
+      - name: Execute 16 original selected Git source and physical scratch regression tests NOT Unity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W25Physical772Native -p test_port772_native.py -v 2>&1 | tee w25-source-16.log
+          grep -F 'Ran 16 tests' w25-source-16.log
+          grep -F 'OK' w25-source-16.log
+      - name: Independently run original #772 THREE physical Unity project stage and rollback with no Editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W25Physical772Native/port772_native.py --mode preflight --scratch-parent "$RUNNER_TEMP" 2>&1 | tee w25-physical-source-only.log
+          grep -F 'B0160_W25_PORT772_THREE_PRIVATE_STAGE_ROLLBACK_PASS' w25-physical-source-only.log
+          grep -F 'B0160_W25_PORT772_NATIVE_G1_NOT_RUN' w25-physical-source-only.log
+          grep -F 'B0160_W25_PORT772_CANONICAL_SAVE_G1_NOT_RUN_UNITY_BINDING_MISSING' w25-physical-source-only.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W25-PORT772-SOURCE-ONLY-${{ matrix.os }}
+          path: |
+            w25-source-16.log
+            w25-physical-source-only.log
+          if-no-files-found: warn
+          retention-days: 14
+  real-windows-source-only-powershell:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact sources only ephemeral CI checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1
+          git fetch --no-tags origin 8634e71dfcf633323073fe584a6c0884f1ca5d23
+          git fetch --no-tags origin 3aaaec4027ee246fbfb6f209179f0e9507363473
+      - name: Real Windows PowerShell manual operator defaults to source-only no Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Port772.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w25-windows-source-only.log
+          if($LASTEXITCODE -ne 0){throw 'Real PowerShell original #772 source-only operator failed'}
+          if(!(Select-String w25-windows-source-only.log -Pattern 'B0160_W25_PORT772_SOURCE_ONLY_PASS G1_NOT_RUN' -Quiet)){throw 'Wrong Unity G1 claim'}
+      - name: Real Windows rejects scratch under protected checkout no deletion
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Port772.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w25-windows-unsafe.log
+          $code=$LASTEXITCODE
+          if($code -ne 2){throw "Unsafe user scratch was not denied: $code"}
+          $global:LASTEXITCODE=0
+      - name: Real Windows rejects native without reviewed independent source G0
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Port772.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w25-windows-no-g0.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Native without G0 acknowledged was not denied: $code"}
+          $global:LASTEXITCODE=0
+      - name: Real Windows rejects native without real installed licensed Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Port772.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -G0Reviewed -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w25-windows-no-editor.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Missing real Unity Editor was not denied: $code"}
+          $global:LASTEXITCODE=0
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W25-WINDOWS-POWERSHELL-NOT-UNITY
+          path: |
+            w25-windows-source-only.log
+            w25-windows-unsafe.log
+            w25-windows-no-g0.log
+            w25-windows-no-editor.log
+          if-no-files-found: warn
+          retention-days: 14
