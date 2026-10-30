@@ -1,0 +1,78 @@
+name: B01-32 W06 original procedural repair weld source, Unity ZIP and real PNG QA
+on:
+  push:
+    branches: [art/b01-32-p17-w06-repair-weld-vfx]
+    paths:
+      - Tools/B01-32/P17/W06RepairWeld/**
+      - .github/workflows/b01-32-p17-w06-repair-weld.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  produce-original-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Real compiled/executed deterministic C#9 repair welding core + 7 exact source snapshot JSONs
+        run: dotnet run -c Release --project Tools/B01-32/P17/W06RepairWeld/ClockTests/ClockTests.csproj -- build/RepairWeldW06/frames.json
+      - name: Parse all three actual original Unity C#9 source/test files via Roslyn
+        run: dotnet run -c Release --project Tools/B01-32/P17/W06RepairWeld/SyntaxTests/SyntaxTests.csproj
+      - name: Install Pillow CPU renderer (NOT Unity GPU screenshots)
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Draw 7 actual physically transparent PNG source-state samples and contrast checks
+        run: python Tools/B01-32/P17/W06RepairWeld/render_core_samples.py --output build/RepairWeldW06
+      - name: Build physical real Unity Resources prefab + .meta + isolated C# source ZIP
+        run: python Tools/B01-32/P17/W06RepairWeld/build_import.py --output build/RepairWeldW06
+      - name: Independently read all 22 original Unity ZIP bytes+11 GUID+prefab script refs and 4 corrupt mutants
+        run: python Tools/B01-32/P17/W06RepairWeld/verify_import.py --output build/RepairWeldW06
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG
+          path: build/RepairWeldW06/
+          retention-days: 30
+          if-no-files-found: error
+  independent-windows-parity:
+    needs: produce-original-linux
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and execute original C#9 lifecycle on Windows and generate source frame JSON
+        run: dotnet run -c Release --project Tools/B01-32/P17/W06RepairWeld/ClockTests/ClockTests.csproj -- build/RepairWeldW06/frames.json
+      - name: Syntax-parse three actual original Unity source/test files
+        run: dotnet run -c Release --project Tools/B01-32/P17/W06RepairWeld/SyntaxTests/SyntaxTests.csproj
+      - name: Install identical original PNG CPU renderer
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Physically generate Windows PNGs from compiled original C# state samples
+        run: python Tools/B01-32/P17/W06RepairWeld/render_core_samples.py --output build/RepairWeldW06
+      - name: Build Windows actual Unity import ZIP from same authored original source
+        run: python Tools/B01-32/P17/W06RepairWeld/build_import.py --output build/RepairWeldW06
+      - name: Verify physical ZIP, prefab and four deliberate corrupted inputs on Windows
+        run: python Tools/B01-32/P17/W06RepairWeld/verify_import.py --output build/RepairWeldW06
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG
+          path: build/UbuntuReference
+      - name: Compare exact original physical Unity ZIP and C# samples between Windows and Ubuntu
+        shell: bash
+        run: |
+          python -c "import hashlib,pathlib; a=pathlib.Path('build/RepairWeldW06/B0132-RepairWeld-UnityImport.zip').read_bytes();b=pathlib.Path('build/UbuntuReference/B0132-RepairWeld-UnityImport.zip').read_bytes();assert a==b, 'CROSS_OS_PHYSICAL_UNITY_BYTES_DIFFER';print('WELD_CROSS_OS_UNITY_ZIP_PARITY_PASS',hashlib.sha256(a).hexdigest())"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W06-REPAIR-WELD-WINDOWS-RECEIVER
+          path: |
+            build/RepairWeldW06/UNITY_IMPORT_RECEIPT.json
+            build/RepairWeldW06/WELD_PREVIEW_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: error
