@@ -42,8 +42,10 @@ namespace RoboRougelike.B0124.SquadPressure
         public int WindowTicks { get; }
         public int GlobalGapTicks { get; }
         public int ScoutMarkTicks { get; }
-        public int[] RoleCooldownTicks { get; }
-        public float[] RoleRangeMetres { get; }
+        private readonly int[] roleCooldownTicks;
+        private readonly float[] roleRangeMetres;
+        public int CooldownFor(R3EnemyArchetype role) => roleCooldownTicks[(int)role];
+        public float RangeFor(R3EnemyArchetype role) => roleRangeMetres[(int)role];
         public SquadPressurePolicy(int windowTicks,int globalGapTicks,int scoutMarkTicks,
             int[] roleCooldownTicks,float[] roleRangeMetres)
         {
@@ -57,8 +59,8 @@ namespace RoboRougelike.B0124.SquadPressure
                     roleRangeMetres[i]<1f||roleRangeMetres[i]>200f)
                     throw new ArgumentException("Invalid role cooldown/range "+i);
             WindowTicks=windowTicks;GlobalGapTicks=globalGapTicks;ScoutMarkTicks=scoutMarkTicks;
-            RoleCooldownTicks=(int[])roleCooldownTicks.Clone();
-            RoleRangeMetres=(float[])roleRangeMetres.Clone();
+            this.roleCooldownTicks=(int[])roleCooldownTicks.Clone();
+            this.roleRangeMetres=(float[])roleRangeMetres.Clone();
         }
         public static SquadPressurePolicy Standard()
         {
@@ -148,9 +150,9 @@ namespace RoboRougelike.B0124.SquadPressure
                 int i=(cursor+offset)%members.Length;
                 var o=byIndex[i];var role=members[i].Archetype;
                 if(!o.Alive||!o.TargetVisible||!o.CanExecute||tick<ready[i]||
-                    o.Distance>rule.RoleRangeMetres[(int)role])continue;
+                    o.Distance>rule.RangeFor(role))continue;
                 active=i;activeIntent=ToIntent(role);activeUntil=tick+rule.WindowTicks;
-                ready[i]=tick+rule.RoleCooldownTicks[(int)role];
+                ready[i]=tick+rule.CooldownFor(role);
                 nextGlobalTick=activeUntil+rule.GlobalGapTicks;
                 cursor=(i+1)%members.Length;
                 bool tagged=activeIntent!=PressureIntent.ScoutMark && tick<markUntil;
