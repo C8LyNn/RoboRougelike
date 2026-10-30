@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Execute original Python source and 533 original cases including W19 immutable twin R3 owner pending gate, independent QA and strict no Codex offer
+      - name: Execute original Python source and 620 original cases including W20 twin R4 competing source gates, newly authorized #666 API, safe local #667 Unity NOT_RUN and provisional economy
         run: python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
       - name: Run original CLI on safe HOLD example
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/receipt_latch.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json
@@ -48,3 +48,5 @@ jobs:
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/integration_experiment.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/integrator_w18_batch.json
       - name: Execute W19 real original #642/#644 source-fingerprint dual-R3 HOLD receipt
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r3_decision_gate.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r3_w19_unselected.json
+      - name: Execute W20 R4 exact producer and approvals as genuine source-only HOLD
+        run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r4_w20_intake.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r4_w20_pending.json
