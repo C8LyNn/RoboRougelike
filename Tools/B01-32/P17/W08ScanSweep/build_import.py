@@ -100,7 +100,7 @@ def make(out):
     files[pf+".meta"]=source_meta(pf,"PrefabImporter")
     require(len(files)==20,"expected 20 actual Unity source/import members, got "+str(len(files)))
     guids=[GUID(p[:-5]) for p in files if p.endswith(".meta")]
-    require(len(guids)==12 and len(set(guids))==12,"expected 12 unique .meta GUIDs")
+    require(len(guids)==13 and len(set(guids))==13,"expected 13 unique .meta GUIDs")
     out.mkdir(parents=True,exist_ok=True)
     archive=out/"B0132-ScanSweep-UnityImport.zip"
     with zipfile.ZipFile(archive,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
