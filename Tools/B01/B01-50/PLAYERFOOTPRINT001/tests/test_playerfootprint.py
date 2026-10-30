@@ -84,7 +84,16 @@ class PlayerFootprintTests(unittest.TestCase):
     def test_zip_slip_rejected(self):
         for bad in ("../escape", "/absolute", "bad\\windows", "nested//empty", "folder/./value", "C:/drive"):
             with self.subTest(bad=bad):
-                self.build(extra={bad: b"bad"})
+                if bad == "bad\\windows":
+                    # ZipInfo rewrites backslashes on Windows. Make BOTH local
+                    # and central ZIP filename bytes invalid, identically on
+                    # Linux and Windows. The payload and CRC remain unchanged.
+                    self.build(extra={"bad/windows": b"bad"})
+                    raw = self.zip_path.read_bytes()
+                    self.assertEqual(raw.count(b"bad/windows"), 2)
+                    self.zip_path.write_bytes(raw.replace(b"bad/windows", b"bad\\windows"))
+                else:
+                    self.build(extra={bad: b"bad"})
                 with self.assertRaises(ValueError):
                     m.inspect(self.zip_path)
 
