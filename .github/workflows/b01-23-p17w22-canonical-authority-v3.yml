@@ -1,0 +1,39 @@
+name: B01-23 W22 canonical #691 real authority V3 OS source and package
+on:
+  push:
+    branches: [b01-23/p17w22-canonical-authority-fence-v3]
+  pull_request:
+    paths:
+      - 'Assets/B0123CanonicalSaveApi001/**'
+      - 'Tools/B01/B01-23/P17W20CanonicalSaveApi001/**'
+      - 'Tools/B01/B01-23/P17W22CanonicalAuthorityV3/**'
+      - '.github/workflows/b01-23-p17w22-canonical-authority-v3.yml'
+jobs:
+  source-real-file:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Real original frozen source and OS two-owner process tests
+        run: dotnet run --project Tools/B01/B01-23/P17W20CanonicalSaveApi001/CanonicalApiSourceTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Git package frozen SHA and safe scratch rollback
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W20CanonicalSaveApi001 -p test_package.py -v
+      - name: Package REAL original Git inner ZIP
+        run: python Tools/B01/B01-23/P17W20CanonicalSaveApi001/package.py build --archive dist/B0123CanonicalAuthorityV3_Original.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-p17w22-canonical-authority-v3-${{ matrix.os }}
+          path: dist/B0123CanonicalAuthorityV3_Original.zip
+          if-no-files-found: error
