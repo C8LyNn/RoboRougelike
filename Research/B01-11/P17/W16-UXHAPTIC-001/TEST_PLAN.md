@@ -26,3 +26,16 @@ dotnet run --project Research/B01-11/P17/W16-UXHAPTIC-001/Tests/UXHapticTests.cs
 ```
 
 Twelve additional executable cases explicitly verify `StartNewRun(int)` returns boolean mandatory physical STOP for active old-run Minor/Major/Critical impulses; returns false for idle/expired/disabled/zero strength and a second immediate reset; still clears old run and allows fresh first source sequence; invalid new-run ID leaves existing active motor state intact; `SetEnabled(false)` continues to emit STOP on active motor. Test-first RED source is unchanged R1 at `eacbbb35a440edb83405919ffd34a7f11b3fc9bb`; actual C# repair `fc9046c022d1a0512b2858f43bc82cee41fef11a`. The full original suite now has **126 named executable checks per OS**. Run receipts: [RED #41100770919](https://github.com/C8LyNn/RoboRougelike/actions/runs/41100770919), [GREEN #41100849650](https://github.com/C8LyNn/RoboRougelike/actions/runs/41100849650); check actual result status and exact final SHA before release. New returned `bool` must be consumed by Codex-owned eventual driver; no native device evidence here.
+
+
+## W18 R3 pause/resume regression test plan — 144 direct original C# cases/OS
+
+```sh
+dotnet run --project Research/B01-11/P17/W16-UXHAPTIC-001/Tests/UXHapticTests.csproj -c Release --no-launch-profile
+```
+
+This project **includes the actual original production** `Runtime/HapticGate.cs`, not a simulated C# model. Previous R2 **126 PASS/OS** verified at frozen exact SHA `fa6defe701818e79fec447b95fc94efc1cc76cd1`, [Actions #41101261126](https://github.com/C8LyNn/RoboRougelike/actions/runs/41101261126).
+
+18 W18 additional original executable cases cover: `SetPaused(bool)` method signature, initial `Paused=false`, STOP obligation when entering pause mid-Minor and mid-Critical pulse, no stop for idle, no repeated STOP, resume no STOP, persistent `Enabled`, typed `SuppressedPaused`, critical visible alert when motors blocked, consumed replay sequence, prior `LastPlayedMs` cooldown across pause/resume, no output despite critical events during pause, next new run clears pause, old-run critical remains ignored, and invalid input fails while paused. Expected **144/144 per OS**. [RED #41104581405](https://github.com/C8LyNn/RoboRougelike/actions/runs/41104581405) at test-only SHA `604443a9c42557633d41519d50c13a5815553d68`; [GREEN #41104661493](https://github.com/C8LyNn/RoboRougelike/actions/runs/41104661493) at source implementation `3875a32a9c1fac5feba98d06ecede99196de926f`. Record actual logs and separately rerun final package HEAD; pending GitHub queue ≠ PASS.
+
+Native Unity EditMode/PlayMode/gamepad/UX pause integration remains **NOT_RUN**; no physical motor-stop signal has actually been issued. Host must still obey STOP on pause, reset, disable and disconnection.
