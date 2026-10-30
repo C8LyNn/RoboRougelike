@@ -1,0 +1,85 @@
+{
+  "role": "B01-62",
+  "wave": "PASS17_WAVE17",
+  "authority": "B01-23 final #608 comment 6529538404",
+  "decision": "ONLY_FINAL_PRODUCER_596__604_ALT_HOLD",
+  "chosen": {
+    "pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "original_core_git_blob": "1f9e883c38101f214e4335867faa731f7ae67689",
+    "physical_inner_zip": {
+      "bytes": 81190,
+      "members": 23,
+      "original_git_owner_paths": 22,
+      "sha256": "005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9",
+      "meta_guids": 10,
+      "asmdefs": 3
+    }
+  },
+  "loser": {
+    "pr": 604,
+    "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+    "status": "ALT_HOLD_NOT_INSTALL"
+  },
+  "frozen_foundations": {
+    "gameplay": {
+      "pr": 510,
+      "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+    },
+    "save": {
+      "pr": 556,
+      "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+      "csharp_git_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a"
+    },
+    "w06_git_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_git_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "owned_new_files": [
+    {
+      "path": "Tools/B01/B01-62/P17W17Final596G0/ExactFinal596QA.cs",
+      "git_blob": "12d9c2c523bbaedd73f5e9d0955d7a3fdac15688"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W17Final596G0/ExactFinal596QA.csproj",
+      "git_blob": "90fbb55322ee2a7e8feffd757934fde28fa4b9ec"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W17Final596G0/test_exact596_receiver.py",
+      "git_blob": "6b7cd212b58b0a90acf7b8172a2a771eebb6a522"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W17Final596G0/README.md",
+      "git_blob": "d3a8c389ad327b48f73b2bcac8fca15e39595186"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w17-final596-source-g0.yml",
+      "git_blob": "7ae991db1c2b559f83fe1cdcf86fc6f7ceb01bc2"
+    }
+  ],
+  "real_prior_evidence": {
+    "original_producer_CI": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097409278",
+    "producer_source_total": 242,
+    "independent_b01_61_QA_PR": 607,
+    "independent_b01_61_original_source_total": 164
+  },
+  "own_tests_authored_per_os": {
+    "original_CSharp": 56,
+    "original_physical_zip_stage_rollback": 20,
+    "native_Unity": "NOT_RUN"
+  },
+  "gates": {
+    "exact_selected_source_physical_b01_62": "PENDING_NEW_ACTUAL_CI",
+    "b01_40_formal_g0": "PENDING_NEW_EXACT596",
+    "native_unity_g1": "NOT_RUN",
+    "canonical_game_saveload": "HOLD_PRIVATE_RIG_LEDGER_API_NOT_AUTHORIZED",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "merged": false
+  },
+  "revoked_history": {
+    "stale_b01_62_pr": 617,
+    "state": "CLOSED_UNMERGED",
+    "reason": "Original B01-62 earlier chose 604 before final authoritative producer B01-23 selected only 596"
+  },
+  "limit": "Managed QA source and cloned original isolated package only, never actual native Unity/PhysX or canonical Codex host"
+}
