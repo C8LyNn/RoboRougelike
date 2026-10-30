@@ -1,0 +1,83 @@
+name: B01-62 W12 selected #510 immutable ZIP and disposable receiver G0 QA
+on:
+  push:
+    branches: [qa/b01-62-p17w12-secure510-receiver-preflight]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W12Secure510Receiver/**'
+      - '.github/workflows/b01-62-p17w12-secure510-receiver-preflight.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Original #510 bytes and migration rollback (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact approved source commit without merging anything
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W12Secure510Receiver"
+          git fetch --no-tags --depth=1 origin d94400d95d13db7f27e1533df05c9292d5380431
+          git worktree add --detach "$dir/.source510" d94400d95d13db7f27e1533df05c9292d5380431
+          test "$(git -C "$dir/.source510" rev-parse HEAD)" = d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Build producer's REAL immutable 35-member source ZIP at selected exact SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W12Secure510Receiver"
+          mkdir -p "$dir/.output" "$dir/.receiver"
+          python "$dir/.source510/Tools/B01/B01-23/P17W10SecureReattachV2/package.py" build --archive "$dir/.output/selected510.zip" | tee "$dir/.output/zip.log"
+          echo d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387 > "$dir/.output/expected.sha"
+          ( cd "$dir/.output" && sed 's/$/  selected510.zip/' expected.sha | sha256sum -c - )
+      - name: Execute independent 23 actual-byte, collision and rollback regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W12Secure510Receiver"
+          export B01_W12_SOURCE="$dir/.source510"
+          export B01_W12_ZIP="$dir/.output/selected510.zip"
+          python -m unittest discover -s "$dir" -p test_receiver.py -v 2>&1 | tee "$dir/.output/negative-tests.log"
+          grep -q 'Ran 23 tests' "$dir/.output/negative-tests.log"
+          grep -q '^OK' "$dir/.output/negative-tests.log"
+          python "$dir/receiver_gate.py" --archive "$B01_W12_ZIP" --source-repo "$B01_W12_SOURCE" --receiver "$dir/.receiver" --receipt "$dir/.output/preflight.json" | tee "$dir/.output/preflight.log"
+          grep -q 'B01_62_W12_PREFLIGHT=SOURCE_PACKAGE_RECEIVER_PATHS_CLEAR_ONLY' "$dir/.output/preflight.log"
+          echo B01_62_W12_G0_QA_SOURCE_ONLY_PASSED_NOT_UNITY_G1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w12-selected510-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W12Secure510Receiver/.output/
+          include-hidden-files: true
+          if-no-files-found: error
+  parity:
+    name: Original #510 ZIP and receiver JSON cross-OS exact-byte equality
+    needs: verify
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w12-selected510-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w12-selected510-windows-2025
+          path: windows
+      - name: Compare independent physical source receipts and original ZIP bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/selected510.zip windows/selected510.zip
+          cmp ubuntu/preflight.json windows/preflight.json
+          sha256sum ubuntu/selected510.zip windows/selected510.zip
+          sha256sum ubuntu/preflight.json windows/preflight.json
+          echo B01_62_W12_CROSS_OS_EXACT_SOURCE_AND_JSON_PARITY_PASS
