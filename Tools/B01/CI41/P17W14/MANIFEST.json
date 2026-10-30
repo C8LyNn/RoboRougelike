@@ -1,0 +1,51 @@
+{
+  "package_id": "CI41-SAVE-ARTIFACT-PARITY-001",
+  "version": "1.0.0",
+  "wave": "PASS17/W14",
+  "producer": "B01-41",
+  "repository": "C8LyNn/RoboRougelike",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "ci/b01-41-p17w14-save-archive-parity",
+  "game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "source_proposals": [
+    {
+      "pr": 544,
+      "sha": "e77529262b8f03c6e9f0e25b642038c351872044",
+      "run_id": 41082219558,
+      "security": "INDEPENDENT_QA_PENDING"
+    },
+    {
+      "pr": 549,
+      "sha": "6da2c523e03766cd5a6deaed0cb3cccf8765354b",
+      "run_id": 41082728707,
+      "security": "P0_RED_550"
+    }
+  ],
+  "independent_negative": {
+    "pr": 550,
+    "sha": "be2f8e76a881481c904ecc368c17218c80bd1709",
+    "run_id": 41082794585
+  },
+  "own_paths": [
+    "Tools/B01/CI41/P17W14/save_artifact_parity.py",
+    "Tools/B01/CI41/P17W14/test_save_artifact_parity.py",
+    "Tools/B01/CI41/P17W14/README.md",
+    "Tools/B01/CI41/P17W14/MANIFEST.json",
+    ".github/workflows/b01-41-p17w14-save-archive-parity.yml"
+  ],
+  "tests_per_os": 30,
+  "platforms": [
+    "ubuntu-24.04",
+    "windows-2025"
+  ],
+  "gate": {
+    "physical_artifact_parity": "CI_PENDING",
+    "source_acceptance": "NOT_GRANTED",
+    "save_load": "HOLD",
+    "native_unity": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": false,
+    "integrated": false
+  },
+  "rollback": "No game/source modifications; leave draft unmerged; remove only new independent CI41 W14-owned files."
+}
