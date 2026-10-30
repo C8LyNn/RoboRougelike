@@ -36,8 +36,8 @@
       "bytes": 22791
     },
     ".github/workflows/b01-10-p17w20-econbalance.yml": {
-      "gitBlob": "29645401d83fe953e3f5d1e89a48a6ef1f3dc338",
-      "bytes": 5679
+      "gitBlob": "85c17e78b0187dffa87167a965631052a4e65d79",
+      "bytes": 5995
     }
   },
   "runtimeAuthority": "NONE_OFFLINE_DESIGN_MODEL",
@@ -65,7 +65,7 @@
       "windows-2025",
       "ubuntu-24.04"
     ],
-    "exactHeadExecution": "R2 exact-head CI PENDING; R1 45/45 on both OS is historical ONLY",
+    "exactHeadExecution": "R2 corrected integration oracle exact-head CI PENDING. Original 70/70 unit tests passed but prior full W21 run was RED at wrong third-win oracle.",
     "independentQA": "PENDING",
     "progressionCounterfactuals": 2,
     "postVictoryBoundary": "new 0HP damage after victory cannot complete by same victory",
