@@ -1,0 +1,121 @@
+name: B01-50 W22 CONTACTPRESSURE R2 original R1 RED to corrected GREEN
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/CONTACTPRESSURE001R2/**'
+      - '.github/workflows/b01-50-w22-contactpressure-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-contactpressure-r1-red-r2-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact own blob pins, immutable original R1 adapter, GUIDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT=Tools/B01/B01-50/CONTACTPRESSURE001R2
+          mkdir -p ci-evidence
+          n=0
+          while IFS=$'\t' read -r expected file; do
+            test -n "$expected" || continue
+            actual=$(git hash-object --no-filters "$file")
+            test "$expected" = "$actual" || { echo "OWN_BLOB_MISMATCH $file"; exit 1; }
+            n=$((n+1))
+            echo "OWN_ORIGINAL_GIT_BLOB_PASS $file"
+          done < "$ROOT/MANIFEST-GIT-BLOBS.tsv"
+          test "$n" -eq 9
+          git fetch --no-tags origin fcacc7916c7e0b9ec01ea986c24f34062b3e6ad3
+          git show fcacc7916c7e0b9ec01ea986c24f34062b3e6ad3:Tools/B01/B01-50/CONTACTPRESSURE001/Unity/B0150OptionalContactPressureProbe.cs > "$ROOT/tests/original_r1_adapter.cs"
+          test "$(git hash-object --no-filters "$ROOT/tests/original_r1_adapter.cs")" = ebf0fe8535f85558f03c58a0823d67c248a1bce6
+          echo "FROZEN_ORIGINAL_R1_BLOB_PASS" | tee ci-evidence/original_r1_blob_gate.txt
+          python - <<'PY' | tee ci-evidence/guid_gate.txt
+          from pathlib import Path
+          import re
+          root=Path("Tools/B01/B01-50/CONTACTPRESSURE001R2")
+          ids=[]
+          for part in ("Core/ContactPressureMeter.cs","Unity/B0150OptionalContactPressureProbe.cs"):
+              p=Path(str(root/part)+".meta")
+              assert p.is_file() and (root/part).is_file(),part
+              s=p.read_text()
+              assert "MonoImporter:" in s and "fileFormatVersion: 2" in s,part
+              m=re.search(r"^guid: ([0-9a-f]{32})$",s,re.M)
+              assert m,part
+              ids.append(m.group(1))
+          assert len(set(ids)) == 2
+          scanned=0
+          for base in (Path("Assets"),Path("Tools/B01/B01-50/CONTACTPRESSURE001")):
+              for p in base.rglob("*.meta"):
+                  scanned+=1
+                  t=p.read_text(errors="replace")
+                  for guid in ids:
+                      assert "guid: "+guid not in t,"GUID_COLLISION "+str(p)
+          print("R2_NEW_GUID_NONCOLLISION_PASS 2/2 checked metas",scanned)
+          PY
+      - name: Execute exact untouched original R1 — REQUIRE 32 PASS 9 RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT=Tools/B01/B01-50/CONTACTPRESSURE001R2/tests/CONTACTPRESSURE.Tests.csproj
+          dotnet --version | tee ci-evidence/dotnet_version.txt
+          set +e
+          AdapterSource=original_r1_adapter.cs dotnet run -c Release --project "$PROJECT" -- --receipt ci-evidence/original_r1_expected_red.json 2>&1 | tee ci-evidence/original_r1_expected_red.log
+          status=$?
+          set -e
+          test "$status" -eq 1 || { echo "R1_RED_NOT_REPRODUCED exit=$status"; exit 1; }
+          python - <<'PY'
+          import json
+          r=json.load(open("ci-evidence/original_r1_expected_red.json"))
+          assert r["total"]==41 and r["passed"]==32 and r["failed"]==9,r
+          assert len(r["failures"])==9
+          assert all(any(k in x for x in r["failures"]) for k in (
+            "disabled component does not accumulate",
+            "disabled component cannot advance",
+            "disabled component cannot expose",
+            "OnDisable discards",
+            "OnDisable blocks",
+            "OnDestroy releases",
+            "OnDestroy cannot be rearmed",
+            "OnEnable while disabled",
+            "valid disable and reenable"))
+          assert r["unityG1"]=="NOT_RUN" and r["physx"]=="NOT_RUN"
+          print("ORIGINAL_R1_PRODUCT_RELEASE_RED_PROVEN 9 source failures, 32 baseline PASS")
+          PY
+      - name: Execute actual R2 production source — REQUIRE 41 GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT=Tools/B01/B01-50/CONTACTPRESSURE001R2/tests/CONTACTPRESSURE.Tests.csproj
+          dotnet clean -c Release "$PROJECT" >/dev/null
+          dotnet run -c Release --project "$PROJECT" -- --receipt ci-evidence/corrected_r2_41_green.json 2>&1 | tee ci-evidence/corrected_r2_41_green.log
+          python - <<'PY'
+          import json
+          r=json.load(open("ci-evidence/corrected_r2_41_green.json"))
+          assert r["total"]==r["passed"]==41 and r["failed"]==0,r
+          assert r["productionCoreExecuted"] and r["productionUnityAdapterExecutedWithExplicitSurrogate"]
+          assert r["unityApi"]=="SURROGATE_NOT_NATIVE_UNITY"
+          assert r["unityG1"]==r["physx"]=="NOT_RUN"
+          print("CORRECTED_R2_EXACT_SOURCE_GREEN 41/41 PASS; UNITY_NATIVE_NOT_RUN")
+          PY
+          git rev-parse HEAD > ci-evidence/exact_source_head.txt
+          sha256sum Tools/B01/B01-50/CONTACTPRESSURE001R2/Unity/B0150OptionalContactPressureProbe.cs > ci-evidence/production_adapter_sha256.txt
+      - name: Archive authentic R1 RED / R2 GREEN .NET evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W22-CONTACTPRESSURE-R2-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn
