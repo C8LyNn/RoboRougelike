@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "1.9.0",
+  "revision": "2.0.0",
   "owner": "B01-00",
   "producer_agent": "B01-00",
-  "issue": 632,
-  "purpose": "W18 B01-00 original paired standard/polished integrator metadata baseline, six lifecycle stages, nullable metrics, real receiver QA conflicts, strict #596 ONLY, zero invented Codex ACCEPTED time or RELEASED",
+  "issue": 646,
+  "purpose": "W19 B01-00 executed exclusive R3 original #642 owner-selected BASE and #644 ALT_HOLD, original producer immutable ZIP SHA; independently executed original B01-61 #648 confirmed #637 lost-ACK durable Commit P0 RED; source gate refuses G0/G1/ACK/live integration",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "f96d75654709639dea63dbeebac777c9d2ef4abd",
+  "source_sha_before_manifest": "2fd72317ec3e887dd7e1e55e0f8257483b80f811",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "f42fa4c32c8cf7cb2ec94d7404e330f7d4b662129bd5aaebf7b8958e57e602a1",
-      "bytes": 37578
+      "sha256": "2bced07f7365189f9efdfe8123801b717993d52e10e61d0a2fc1e0e1fca222a9",
+      "bytes": 41496
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "88b734bdf4b8767b4cbcfa42d3e73369943b7bd955c6d60c934a7966684c3bd3",
-      "bytes": 2818
+      "sha256": "43b4e24c24e9b1a074df31932fb77a478a67a3cf400af9c568b5f1b7102c4138",
+      "bytes": 3059
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
@@ -196,6 +196,26 @@
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W18-INTEGRATOR-BATCH-BASELINE.md",
       "sha256": "1ee10e958c6bbfa1419d860f08cb37c25ce5ee23c867aeb07856f96d59e74b31",
       "bytes": 8872
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r3_decision_gate.py",
+      "sha256": "9fe73fb7a0b7bf54bfa0f412dfe72e03137c2b8ef8c92b33582add4710f11058",
+      "bytes": 8021
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/r3_w19_unselected.json",
+      "sha256": "39675ee86f44211af0ba9ab398247b1570273410243cb9eda5bd9d6836c6ac30",
+      "bytes": 4567
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_r3_decision_gate.py",
+      "sha256": "b86097e5a2a48dcbae8271b679910141b50c1bf8cce0657a4ee66a87ccaa5efa",
+      "bytes": 10689
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W19-R3-EXCLUSIVE-P0-RECEIPT.md",
+      "sha256": "5b83316f2f984d5c45f8c1cf415f202bb078d3fb83587a69f57877e5c7cd6038",
+      "bytes": 8667
     }
   ],
   "producer_tests": [
@@ -542,13 +562,45 @@
       "name": "W18 exact final manifest HEAD",
       "status": "NOT_RUN",
       "note": "Final exact SHA after manifest update needs independent post-commit workflow log proof; publish in PR and issue comments"
+    },
+    {
+      "name": "W18 exact final SHA 467 original cases each OS",
+      "status": "PASS",
+      "total": 467,
+      "passed": 467,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "338c856ef55dae127a6f757f401850ae0c7bc2f5",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41105627844"
+    },
+    {
+      "name": "W19 owner-selected base #642 source policy 66 new, combined 533 original cases",
+      "status": "PASS",
+      "total": 533,
+      "passed": 533,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "1d44041458a0cc78d73c0f1e9fcf78f654c43c03",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41111011348",
+      "note": "Success actual raw logs on original W19 source before evidence/readme/manifest commits, not proof of final HEAD"
+    },
+    {
+      "name": "W19 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "note": "Must verify exact post-manifest HEAD original dual-OS Actions logs separately and add independent PR comment"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "FROZEN_GAME510_SAVE556_PRIOR_SOURCE_G0 / SELECTED596_ORIGINAL_B0140_625_PHYSICAL_CI_PASS / B0162_627_GUID_ASSERTION_FAIL / SELECTED596_FORMAL_G0_PENDING / B0100_OWN_INDEPENDENT_QA_PENDING",
+  "g0": "FROZEN_510_556_596_PRIOR_G0_SOURCE_ONLY / ONE_R3_SELECTED_BASE_642 / INDEPENDENT_EXACT_642_648_SECURITY_RELEASE_RED / R3_642_FORMAL_G0_HOLD_P0_RED",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -581,7 +633,11 @@
     "W18 two representative paired standard/polished metadata source packages are NOT actually offered to Codex, feedback metrics NULL, not fabricated zeros nor measured integration throughput",
     "B01-62 #627 original negative GUID count assertion failed both platforms while B01-40 #625 original physical exact #596 source CI PASSED both: must reconcile and obtain formal G0 before source offer",
     "B01-61 #629 original CI failed at own QA scope guard workflow rename BEFORE executing host stale-owner theory, do not call hypothetical P0 verified",
-    "Actual W18 own 467 test cases initial 3 failed only test expected error message mismatch, separate corrected final SHA must rerun on Windows and Ubuntu, native Unity NOT_RUN"
+    "Actual W18 own 467 test cases initial 3 failed only test expected error message mismatch, separate corrected final SHA must rerun on Windows and Ubuntu, native Unity NOT_RUN",
+    "W19 B01-23 explicit #642 owner-selected BASE only; #644 ALT_HOLD due core difference, never blend/cherry-pick, #604 ALT_HOLD; no released R3 until separate owner versioned uncertain durable Commit P0 fix with exact new SHA and independent QA",
+    "W19 B01-61 #648 original R3 #642 source on both OS reproduced durable Commit persisted then threw lost ACK; 16/16 case assertions PASS each OS are security RED release, not clean G0; actual native Unity physics remains NOT_RUN",
+    "W19 original public host OnDisable slot lease lifetime requires independent review, full original #510 private Rig/AtomicDockLedger rehydrate and crash-atomic payload+checkpoint contract still unapproved",
+    "W19 paired integrator time/retries/acceptance remain NOT_MEASURED; source-only #79 R3 offer explicitly BLOCKED, no ACK, merged=false"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -597,7 +653,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "CANONICAL_GAME_510_PRIVATE_RIG_LEDGER_NOT_AUTHORIZED / NO_CODEX_ACK / NO_LIVE_HOST",
+  "save_load": "CANONICAL_FROZEN_510_PRIVATE_RIG_LEDGER_NO_APPROVED_CAPTURE_REHYDRATE / SELECTED_642_R3_UNCERTAIN_DURABLE_COMMIT_P0_RED",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -710,5 +766,44 @@
       "INTEGRATED": false,
       "RELEASED": false
     }
+  },
+  "w19_r3": {
+    "owner": "B01-23",
+    "owner_comment": "https://github.com/C8LyNn/RoboRougelike/pull/642#issuecomment-6530905217",
+    "selected_base": {
+      "pr": 642,
+      "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+      "inner_zip_sha256": "2fd97465358bddb7c9aeee91af2d4a0b75dd9b86525150e6bf708403291aa60d",
+      "inner_zip_bytes": 96318,
+      "inner_zip_members": 23,
+      "producer_source_ci": "PASS_101_CSHARP_25_ZIP_EACH_OS",
+      "independent_security_648": "PARTIAL_GREEN_STALE_WRITER_RELEASE_P0_RED",
+      "formal_g0": "HOLD_P0_RED"
+    },
+    "alternative_hold": {
+      "pr": 644,
+      "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2",
+      "inner_zip_sha256": "7f10a7e4ef5052d7b83010c07fff4b8eb653e62caf314ed0751345c108547315",
+      "inner_zip_bytes": 103942,
+      "inner_zip_members": 27,
+      "producer_source_ci": "PASS_103_CSHARP_27_ZIP_EACH_OS",
+      "status": "ALT_HOLD"
+    },
+    "independent_witness": {
+      "pr": 648,
+      "sha": "88e67451492e877032aa6a822f46a76449bf6aaa",
+      "ci_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41110488050",
+      "source_assertions_each_os": 16,
+      "dual_os": "PASS_EXPECTED_RELEASE_RED",
+      "release_exit": 3,
+      "reason": "ICheckpointStore.Commit physically persists new g11 then throws lost ACK; original R3 TryLoad returns HostException/Quarantined=false old Light/g10 physical world"
+    },
+    "native_unity_g1": "NOT_RUN",
+    "original_510_private_ledger_hydration": "NOT_AUTHORIZED",
+    "codex_offer": "BLOCKED",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "integrator_feedback": "NOT_MEASURED",
+    "merged": false
   }
 }
