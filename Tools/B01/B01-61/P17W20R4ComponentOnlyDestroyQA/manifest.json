@@ -11,8 +11,9 @@
   "actual_cpp": "CSharp9 original source, test-only managed Unity API, NOT native Unity",
   "qa_only_paths": 7,
   "source_pins": 5,
-  "original_runtime_assertions_per_os": 20,
+  "original_runtime_assertions_per_os": 17,
   "native_unity_g1": "NOT_RUN",
   "integration": "NONE",
-  "merge": false
+  "merge": false,
+  "W20_source_result": "17/17 per OS expected negative scenario; CI exact head required"
 }
