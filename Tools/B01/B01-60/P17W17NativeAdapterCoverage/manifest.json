@@ -1,0 +1,47 @@
+{
+  "package_id": "B01-60-P17W17-NATIVE-ADAPTER-COVERAGE-001",
+  "version": "1.0.0",
+  "role": "B01-60",
+  "hq": 608,
+  "baseline_qa_pr": 601,
+  "baseline_qa_sha": "dd088a8c4823a6d128085e5ef08aca4b7f9307ea",
+  "frozen_game": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "frozen_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "candidate_under_review": {
+    "pr": 604,
+    "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+    "native_test_methods_authored": 5
+  },
+  "competitor_not_installed": {
+    "pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "native_test_methods_authored": 4
+  },
+  "owner_selection": "B01-23_AND_B01-62_ONLY",
+  "existing_532_native_fixture_cases": 16,
+  "existing_532_contains_selected_Save_and_adapter": false,
+  "actual_unity_6000_3_14f1": "NOT_RUN",
+  "native_nunit": "NOT_CREATED",
+  "original_editor_log": "NOT_CREATED",
+  "source_only_tests": "EXECUTE_CI_AND_VERIFY_EXACT_SHA",
+  "canonical_live_game_saveload": "HOLD",
+  "G0_selected_adapter": "B01-40_PENDING",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "no_merge": true,
+  "owned_paths": [
+    "Tools/B01/B01-60/P17W17NativeAdapterCoverage/README.md",
+    "Tools/B01/B01-60/P17W17NativeAdapterCoverage/manifest.json",
+    "Tools/B01/B01-60/P17W17NativeAdapterCoverage/audit_native_adapter_coverage.py",
+    ".github/workflows/b01-60-p17w17-native-adapter-coverage.yml"
+  ],
+  "rollback": "delete only 4 own W17 files; original QA W12-W16 and game/save producer unmodified"
+}
