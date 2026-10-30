@@ -22,10 +22,10 @@ class ExclusiveFinalSourceReceipt(unittest.TestCase):
         with self.assertRaisesRegex(AdmissionError, pattern):
             audit_final_w17(r)
 
-    def test_real_two_R2_drafts_hold(self):
+    def test_real_single_owner_selected_596_still_g0_hold(self):
         x = audit_final_w17(source())
-        self.assertEqual(x["verdict"], "HOLD_ONE_OWNER_VERSION_AND_PHYSICAL_G0")
-        self.assertIsNone(x["selected_version_pr"])
+        self.assertEqual(x["verdict"], "HOLD_SELECTED_596_PENDING_PHYSICAL_G0")
+        self.assertEqual(x["selected_version_pr"], 596)
         self.assertFalse(x["authorized_offer"])
 
     def test_no_false_604_full_Unity_QA(self):
@@ -118,47 +118,45 @@ class ExclusiveFinalSourceReceipt(unittest.TestCase):
         self.rejects(lambda r: r["owner_choice"].update(owner="B01-00"), "owner")
 
     def test_pending_cannot_mark_596(self):
-        self.rejects(lambda r: r["owner_choice"].update(selected_pr=596), "pending")
+        self.rejects(lambda r: r["owner_choice"].update(state="PENDING",selected_pr=596), "sole frozen")
 
     def test_pending_cannot_mark_604(self):
-        self.rejects(lambda r: r["owner_choice"].update(selected_pr=604), "pending")
+        self.rejects(lambda r: r["owner_choice"].update(selected_pr=604), "sole frozen")
 
     def test_pending_cannot_fake_loser(self):
-        self.rejects(lambda r: r["owner_choice"].update(loser_pr=604), "pending")
+        self.rejects(lambda r: r["owner_choice"].update(state="PENDING",loser_pr=604), "sole frozen")
 
     def test_pending_cannot_fake_decision(self):
         self.rejects(lambda r: r["owner_choice"].update(
-            decision_url="https://github.com/C8LyNn/RoboRougelike/issues/608#issuecomment-999"),
-            "pending")
+            state="PENDING",decision_url="https://github.com/C8LyNn/RoboRougelike/issues/608#issuecomment-999"),
+            "sole frozen")
 
     def test_selected_596_can_still_be_hold(self):
         d = source()
         d["owner_choice"].update(state="ONE_FROZEN",selected_pr=596,loser_pr=604,
-                                 decision_url="https://github.com/C8LyNn/RoboRougelike/issues/608#issuecomment-999")
+                                 decision_url="https://github.com/C8LyNn/RoboRougelike/pull/596#issuecomment-6529388456")
         x = audit_final_w17(d)
         self.assertEqual(x["version_sha"],d["versions"][0]["sha"])
         self.assertEqual(x["physical_g0"],"HOLD")
         self.assertFalse(x["authorized_offer"])
 
-    def test_selected_604_can_still_be_hold(self):
-        d = source()
-        d["owner_choice"].update(state="ONE_FROZEN",selected_pr=604,loser_pr=596,
-                                 decision_url="https://github.com/C8LyNn/RoboRougelike/issues/608#issuecomment-999")
-        x = audit_final_w17(d)
-        self.assertEqual(x["version_sha"],d["versions"][1]["sha"])
-        self.assertEqual(x["canonical_game_save_load"],"HOLD")
+    def test_alt_604_receiver_selection_conflicts_with_owner(self):
+        self.rejects(lambda r: r["owner_choice"].update(
+            selected_pr=604,loser_pr=596,
+            decision_url="https://github.com/C8LyNn/RoboRougelike/pull/604#issuecomment-6529391408"),
+            "sole frozen")
 
     def test_two_selected_same_version_denied(self):
         self.rejects(lambda r: r["owner_choice"].update(
             state="ONE_FROZEN",selected_pr=596,loser_pr=596,
             decision_url="https://github.com/C8LyNn/RoboRougelike/issues/608#issuecomment-999"),
-            "one explicit")
+            "sole frozen")
 
     def test_fake_owner_url_denied(self):
         self.rejects(lambda r: r["owner_choice"].update(
             state="ONE_FROZEN",selected_pr=604,loser_pr=596,
             decision_url="https://attacker.example/pull/604#issuecomment-999"),
-            "one explicit")
+            "sole frozen")
 
     def test_fake_physical_source_g0(self):
         self.rejects(lambda r: r["receiver"].update(bridge_physical_g0="ACCEPTED_SOURCE_ONLY"),
@@ -213,7 +211,7 @@ class ExclusiveFinalSourceReceipt(unittest.TestCase):
         with redirect_stdout(out):
             self.assertEqual(final_w17_main([str(SOURCE)]),0)
         self.assertEqual(json.loads(out.getvalue())["verdict"],
-                         "HOLD_ONE_OWNER_VERSION_AND_PHYSICAL_G0")
+                         "HOLD_SELECTED_596_PENDING_PHYSICAL_G0")
 
     def test_cli_strict_release_exit_3(self):
         with redirect_stdout(io.StringIO()):
