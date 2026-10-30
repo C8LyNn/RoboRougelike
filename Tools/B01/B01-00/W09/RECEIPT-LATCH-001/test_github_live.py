@@ -30,10 +30,12 @@ def original_objects():
             "workflow_id": 401553591,
             "path": ".github/workflows/b01-00-dispatch-w06.yml",
             "event": "pull_request",
+            "run_attempt": 1,
         },
         "/actions/runs/" + str(run) + "/jobs": {
             "total_count": 2, "jobs": [
                 {"id": 101, "name": "dispatch (windows-2025)", "head_sha": SHA,
+                 "labels": ["windows-2025"], "run_id": run, "run_attempt": 1,
                  "status": "completed", "conclusion": "success",
                  "steps": [
                      {"name": "Original source full dispatch and freeze regression suite",
@@ -42,6 +44,7 @@ def original_objects():
                       "status": "completed", "conclusion": "success"},
                  ]},
                 {"id": 102, "name": "dispatch (ubuntu-24.04)", "head_sha": SHA,
+                 "labels": ["ubuntu-24.04"], "run_id": run, "run_attempt": 1,
                  "status": "completed", "conclusion": "success",
                  "steps": [
                      {"name": "Original source full dispatch and freeze regression suite",
