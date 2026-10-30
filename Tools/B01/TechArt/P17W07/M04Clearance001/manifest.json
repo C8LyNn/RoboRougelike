@@ -1,0 +1,54 @@
+{
+  "package_id": "B01-30-M04-TRIANGLE-CLEARANCE-001",
+  "version": "R1",
+  "producer": "B01-30",
+  "scope": "Actual geometry-based inter-nozzle 121-frame sampling of existing original frozen FBX; no mesh change or MODEL_JOB",
+  "source_fbx_pr": 386,
+  "source_fbx_head": "82ea17a6f964aa0cf08890c827b038ad9a0fc57f",
+  "source_fbx_git_exporter_blob": "9d0b9865ef93d76066b07d4fa0533feaccc47b2c",
+  "source_fbx_bytes": 2109580,
+  "source_fbx_sha256": "a017534047b9db6a1001b32b186809b796d4e6562f1c9ea560042de97cf58cd3",
+  "expected_input": {
+    "mesh_nodes": 105,
+    "animated_pivots": 4,
+    "frames": 121,
+    "moving_pair_tests": 726
+  },
+  "scope_paths": [
+    "Tools/B01/TechArt/P17W07/M04Clearance001/**",
+    ".github/workflows/b01-30-p17w07-m04-triangle-clearance.yml"
+  ],
+  "expected_outputs": [
+    "M04-original-121-frame-six-pair-triangle-sweep.csv",
+    "M04-real-triangle-sweep-qa.json",
+    "M04-CLEARANCE-REAL-FBX-FRAME001.png",
+    "M04-CLEARANCE-REAL-FBX-FRAME031.png",
+    "M04-CLEARANCE-REAL-FBX-FRAME091.png"
+  ],
+  "negative_cases": [
+    "moved original imported nozzle physically intersects another moving assembly",
+    "original FBX byte corruption rejected"
+  ],
+  "limitations": [
+    "BVH only compares moving nozzle assemblies, not fixed spindle/plate",
+    "All 121 integer sampled frames, no subframe continuous CCD",
+    "AABB min gap is only a lower bound, never an exact surface distance",
+    "no native Unity / Animator / URP / PhysX result",
+    "No games Assets/**, owner #196/#386/#399 or Codex edits",
+    "independent B01-40/60 QA pending"
+  ],
+  "gates": {
+    "owner_source": "PENDING_CI",
+    "real_blender_bvh": "PENDING_CI",
+    "independent_g0": "PENDING",
+    "native_unity_g1": "NOT_RUN",
+    "codex_ack": "NOT_SENT",
+    "merge": false
+  },
+  "receivers": [
+    "B01-40 source and artifact exact SHA",
+    "B01-60 independent Blender geometry/animation QA",
+    "B01-00 queue only after independent acceptance"
+  ],
+  "rollback": "Delete only own disposable QA output directory; source FBX artifact never modified."
+}
