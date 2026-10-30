@@ -1,0 +1,19 @@
+{
+  "name": "B0123.CanonicalRigPortW24.Runtime",
+  "rootNamespace": "B01.CanonicalRigPortW24",
+  "references": [
+    "B0123.DebrisRepulse.Runtime",
+    "B0123.DetachedSaveContract.Runtime",
+    "B0123.SecureReattachV2.Runtime",
+    "B0123.CanonicalSaveApi.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

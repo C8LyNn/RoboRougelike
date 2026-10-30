@@ -1,0 +1,27 @@
+{
+  "name": "B0123.CanonicalRigPortW24.PlayMode",
+  "rootNamespace": "B01.CanonicalRigPortW24.Tests",
+  "references": [
+    "B0123.CanonicalRigPortW24.Runtime",
+    "B0123.CanonicalSaveApi.Core",
+    "B0123.SecureReattachV2.Runtime",
+    "B0123.DetachedSaveContract.Runtime",
+    "B0123.DebrisRepulse.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
