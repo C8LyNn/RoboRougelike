@@ -127,7 +127,9 @@ internal static class IndependentOriginalGate
         string root=Path.Combine(Path.GetTempPath(),
             "b0162-w22-independent-"+Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root);
-        try{return test(Path.Combine(root,"owned"));}
+        string owned=Path.Combine(root,"owned");
+        Directory.CreateDirectory(owned); // original #729 requires an existing authorized private root
+        try{return test(owned);}
         finally {Directory.Delete(root,true);}
     }
     private static bool TrySecondClr(string dir,bool shouldGet)
