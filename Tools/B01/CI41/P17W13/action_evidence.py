@@ -48,7 +48,7 @@ class EvidenceError(Exception):
     pass
 
 def get_json(url: str, token: str="") -> dict:
-    if not url.startswith(PREFIX) or url.split("?")[0].count("/")<9:
+    if not url.startswith(PREFIX) or url.split("?")[0].count("/")<8:
         raise EvidenceError("UNAPPROVED_GITHUB_API_ENDPOINT")
     headers={"Accept":"application/vnd.github+json","User-Agent":"B01-41-evidence-gate",
              "X-GitHub-Api-Version":"2022-11-28"}
