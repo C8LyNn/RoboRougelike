@@ -115,14 +115,21 @@ def audit(record):
     if doc["needs_native"]:
         for part in ("edit", "play"):
             positive_ci(native.get(part), source, "native_" + part, blockers)
+    qa_urls = [r.get("url") for r in (qa.get("intake"), qa.get("independent"))
+               if type(r) is dict and isinstance(r.get("url"), str)]
+    if len(qa_urls) != len(set(qa_urls)):
+        blockers.append("independent_receipt_reused")
     source_ready = not blockers
 
     offer = mapping(doc.get("offer"), "offer")
     offer_status = offer.get("status")
     if offer_status not in ("NOT_SENT", "OFFERED"):
         raise GateError("offer.status must be NOT_SENT or OFFERED")
+    offer_reused = offer.get("url") in qa_urls if offer_status == "OFFERED" else False
+    if offer_reused:
+        blockers.append("offer_receipt_reused_qa_comment")
     offer_proven = (offer_status == "OFFERED" and offer.get("sha") == source
-                    and ref_url(offer.get("url"), "comment"))
+                    and ref_url(offer.get("url"), "comment") and not offer_reused)
     if offer_status == "OFFERED" and not offer_proven:
         blockers.append("offer_receipt_invalid")
     if offer_status == "OFFERED" and not source_ready:
@@ -131,9 +138,16 @@ def audit(record):
     ack = mapping(doc.get("ack"), "ack")
     if ack.get("status") not in ("NO", "YES"):
         raise GateError("ack.status must be NO or YES")
+    ack_reused_offer = ack.get("status") == "YES" and ack.get("url") == offer.get("url")
+    ack_reused_qa = ack.get("status") == "YES" and ack.get("url") in qa_urls
+    if ack_reused_offer:
+        blockers.append("codex_ack_reused_offer_comment")
+    if ack_reused_qa:
+        blockers.append("codex_ack_reused_qa_comment")
     ack_proven = (ack.get("status") == "YES" and ack.get("actor") == "CODEX"
                   and ack.get("sha") == source and ref_url(ack.get("url"), "comment")
-                  and offer_proven and source_ready)
+                  and offer_proven and source_ready and not ack_reused_offer
+                  and not ack_reused_qa)
     if ack.get("status") == "YES" and not ack_proven:
         blockers.append("codex_ack_unverified_or_out_of_order")
 
