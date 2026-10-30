@@ -44,7 +44,7 @@
   "gitBlobs": {
     ".github/workflows/b01-25-w23-saferoute.yml": "7a87cfee78e4ce776b6de7ac11893ce94a502cfd",
     ".github/workflows/b01-25-w24-saferoute-r2.yml": "3be7309e484621706dbb2f7d789077b3c97a04d3",
-    ".github/workflows/b01-25-w25-saferoute-r3.yml": "df0fe53a034ca6353af7fd49eee6ae691d3b0174",
+    ".github/workflows/b01-25-w25-saferoute-r3.yml": "fcc66813c697e4047c56729aa50c269234789d03",
     "Assets/B0125SafeRoute001.meta": "bacb874a278d997f667151893c4438c65aca4d29",
     "Assets/B0125SafeRoute001/Editor.meta": "dff34cb12f18c909d1cfe10eed8f0b2906895e55",
     "Assets/B0125SafeRoute001/Editor/B0125.SafeRoute.Editor.asmdef": "d904023d5d761f6a274652a2bb7afbb83e939673",
@@ -95,5 +95,6 @@
   "r1r2r3NeverCoInstall": true,
   "rollback": "Use exact full original 22-source Unity content files plus own embedded manifest on pristine disposable scratch; fail closed existing paths or symlink ancestor, unlink ONLY staged files and do not delete foreign empty or occupied directories.",
   "unitySourceCount": 23,
-  "sourceZipEntryCount": 24
+  "sourceZipEntryCount": 24,
+  "redToGreenFix": "Original independent third job had wrong len(set(zip names))==23 assertion for a verified 24-entry ZIP; changed expected unique to 24; original dual OS archive SHA and cmp already matched, full exact HEAD CI rerun required"
 }
