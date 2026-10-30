@@ -34,7 +34,7 @@ jobs:
       - name: Execute original user-input CLI black-box positives and negatives
         run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_cli_readiness.py -v
       - name: Reproduce sample user-input CLI preview with no wallet writes
-        run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-user-preview.json
+        run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-previews/user-preview.json
       - name: Run physical ZIP SHA receipt forged-input and rollback negatives
         run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_pack_readiness.py -v
       - name: Stage verified original Unity C# and 3 C# scenario previews
@@ -43,8 +43,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: b01-22-w10-kitreadiness-${{ matrix.os }}
-          path: |
-            readiness-artifact/
-            readiness-user-preview.json
+          path: readiness-artifact/
           if-no-files-found: error
           retention-days: 14

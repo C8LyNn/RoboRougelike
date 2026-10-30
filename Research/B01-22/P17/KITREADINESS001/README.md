@@ -63,3 +63,18 @@ Original raw Windows/Ubuntu first-run inner source ZIP SHA matched, but preview 
 **New original C# negative cases:** coherently forged unit price, valid-but-changed part count, substitution of another valid physical part kind with a plausible price, and reordering two real source BOM rows — all required to reject while catalog SHA field stays unchanged. Original test count 53. **New independent Python cases:** recompute the exact approved SHA256 from real original catalog with a distinct implementation, demonstrate modified price and row order produce different digests; original Python test count 19. Both original code and real physical ZIP/receipt must pass Windows+Ubuntu on the exact new HEAD.
 
 **Handoff:** supersede W08 producer SHA `aca5da31b756edee795af1c5e001dd134902c258` only after exact-head W09 run finishes successfully; do not erase the previous immutable evidence. #461 remains Draft, not OFFERED/FROZEN by B01-40, no Codex ACK or game integration. Continue independent B01-40 G0 and B01-60 exact new-head QA; native Unity 6 Editor/Play/Player still NOT_RUN unless separately evidenced.
+
+## PASS17 WAVE10 — v1.1.0: real user-provided equipment stock input
+
+NEW **working read-only C#9 CLI** uses **the same original `KitReadinessPlanner` source** as the Unity component, not a separate mock planner. It accepts an exact JSON contract (example `scenarios/user-request-example.json`) with `schema=b01-kitreadiness-request-v1`, approved immutable `source_sha`, `reference_only=true`, `requests` (0–100 real EK01–EK10 IDs in explicit priority order) and `owned_parts` (physical kinds/counts, optional `weapon` subtype for Gun). The input can be authored by a person or external tool; no game integration, inventory adapter or wallet access.
+
+```sh
+dotnet build Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj -c Release
+dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out my-readiness-preview.json
+```
+
+The command evaluates real source-accepted #411 kits, validates every input field, rejects duplicate/foreign JSON properties and invalid stock and IDs, and **does not create output on validation failure**. It writes an exclusive NEW UTF-8/LF JSON output (never overwrite) with each request's actual ready/blocked, missing kind/weapon/quantity and reference Scrap shortfall, and a private unpersisted remaining-stock snapshot. It refuses outputs within `Assets/`, `Packages/`, `ProjectSettings/`, `Library/`, `UserSettings/` and `.git/` for the selected repository root. Reference preview does **not** buy parts, reserve real stock, modify live game state, or authorize any mounting.
+
+Original cross-platform CI compiles and executes this production C#9 CLI, runs 16 black-box positive/negative **real child process** tests (including double JSON keys, forged source, no-overwrite, false reference flag, invalid stock, duplicate items, malformed inputs and 101 requests), and generates a fourth actual `user-preview.json` from `scenarios/user-request-example.json`. The original physical packager now verifies **all four** C#-produced preview JSON files (three historical authored scenarios + new user input) against a SHA256 receipt, together with the 3-member Unity source ZIP; cross-OS byte parity is mandatory. The CLI files are NOT copied into Unity; import scope remains only `Assets/B01KitReadiness001/**` plus root `.meta`.
+
+This is **revision 1.1.0 of existing open producer Draft #461**, not an additional package or independent QA acceptance. Supersedes previous candidate 1.0.1 for a future receiver. Native Unity Editor/PlayMode is still `NOT_RUN`; B01-40 G0/B01-60 independent QA pending.
