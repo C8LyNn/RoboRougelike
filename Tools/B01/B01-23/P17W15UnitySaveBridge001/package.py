@@ -81,7 +81,7 @@ def scope():
         "FileShare.None" not in unity or
         "quarantined=true;" not in core or
         "SameIdentityAndLedger" not in core or
-        "TwinWorld.Build(snapshot,transform)" not in unity or
+        "TwinWorld.Build(snapshot,transform,TrackOwnedWorldRoot)" not in unity or
         "GameObject.CreatePrimitive" not in unity or
         "new DebrisImpulseLedger()" not in unity or
         "body.linearVelocity" not in unity or
