@@ -187,7 +187,7 @@ internal static class Program
             var old=host.Current;
             return host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>true)==
                 RestoreVerdict.Accepted&&!ReferenceEquals(old,host.Current)&&
-                !host.Current!.GetLedger(0).Contains(2310001)&&host.Current.GetLedger(1).Contains(2310002);
+                !host.Current!.IsConsumed(0,2310001)&&host.Current.IsConsumed(1,2310002);
         });
         Test("host idle callback exception fails closed",()=>{
             var host=new ColdSessionHandle();
