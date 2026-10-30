@@ -89,7 +89,11 @@ jobs:
           assert critical['deploy_gate_no_loaner']['wins']==1
           assert critical['deploy_gate_no_loaner']['blocked_deploy_attempts']==2
           assert critical['deploy_gate_no_loaner']['contradicted_scripted_wins']==2
-          assert critical['deploy_gate_one_hypothetical_loaner']['wins']==2
+          # Win 1 breaks drive. Win 2 uses ONE hypothetical loaner
+          # and repairs; win 3 is now normally reachable.
+          assert critical['deploy_gate_one_hypothetical_loaner']['wins']==3
+          assert critical['deploy_gate_one_hypothetical_loaner']['hypothetical_loaner_used']==1
+          assert critical['deploy_gate_one_hypothetical_loaner']['blocked_deploy_attempts']==0
           second=cases['one_loaner_losses_then_blocked']
           assert second['deploy_gate_one_hypothetical_loaner']['wins']==0
           assert second['deploy_gate_one_hypothetical_loaner']['blocked_deploy_attempts']==1
