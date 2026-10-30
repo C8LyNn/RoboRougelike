@@ -56,6 +56,8 @@ internal sealed class FakeWorldHost : IAtomicWorldHost
     public Action? IdleCallback;
     public FakeWorldHost(RunSnapshot initial){Current=new LogicalWorld(initial);}
     public object CurrentWorldToken=>Current;
+    public bool ContainsConsumedId(int slot,long id)=>Current.Ledgers[slot].Contains(id);
+    public int ConsumedCount(int slot)=>Current.Ledgers[slot].Count;
     public bool IsQuiescent()
     {
         IdleCalls++;
@@ -260,8 +262,19 @@ internal static class Program
         Check(maliciousBridge.TryLoad(badBytes,77,1)==BridgeResult.Accepted,
               "input buffer copied before malicious host callback");
         Inspect(malicious,true,true);
-        var invalidCapture=new FakeWorldHost(Snap(false,false,1));
-        invalidCapture.MutateWorldWhileStaging=true;
+        var damagedSaveHost=new FakeWorldHost(Snap(true,false,1));
+        damagedSaveHost.Current.Ledgers[0].ClearForNewRun();
+        var damagedSaver=new FrozenSaveHostBridge(damagedSaveHost);
+        Check(damagedSaver.TrySave(out var blockedBytes)==BridgeResult.InvalidSnapshot &&
+              blockedBytes==null,"Save refuses mismatched running consumed ID");
+        var damagedLoadHost=new FakeWorldHost(Snap(true,false,1));
+        object damagedBefore=damagedLoadHost.Current;
+        damagedLoadHost.Current.Ledgers[0].ClearForNewRun();
+        var damagedLoad=new FrozenSaveHostBridge(damagedLoadHost);
+        Check(damagedLoad.TryLoad(raw,77,1)==BridgeResult.Quarantine,
+              "Load quarantines running host with ledger-to-snapshot divergence");
+        Check(ReferenceEquals(damagedBefore,damagedLoadHost.Current),
+              "refused Load never replaces broken current world");
     }
     public static int Main()
     {
