@@ -126,7 +126,7 @@ namespace B01.SingleAuthoritySlot003
         }
 
         public static SlotStatus TryOpenExisting(string directory,long run,Guid slot,
-            out SingleAuthoritySaveSlot? opened,IAtomicEnvelopePublisher? hook=null)
+            CanonicalWorldSlotLease authority,out SingleAuthoritySaveSlot? opened,IAtomicEnvelopePublisher? hook=null)
         {
             opened=null;
             if(!ValidPath(directory,run,slot)||!OwnerMatches(authority,run,slot,directory))
