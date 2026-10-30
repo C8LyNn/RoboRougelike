@@ -35,7 +35,7 @@ class SourceOnlyRealityCheck(unittest.TestCase):
     def test_06_reject_fake_or_removed_real_disk_commit(self):
         self.fails(SOURCE.replace('new FileCheckpointStore(file).Commit(run,0,"",1,hash)',
                                   'true'),"MISSING_REAL_CONCURRENT")
-    def test_07_reject_one-process_sequential_workflow(self):
+    def test_07_reject_one_process_sequential_workflow(self):
         self.fails(SOURCE.replace('File.WriteAllText(start,"GO")','Thread.Sleep(100)'),
                    "MISSING_REAL_CONCURRENT")
     def test_08_reject_serial_process_waits(self):
