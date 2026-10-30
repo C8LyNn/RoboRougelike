@@ -1,0 +1,95 @@
+name: B01-25 W20 WEIGHTLATCH original Unity6 source CSharp9 tests
+on:
+  push:
+    branches: [research/b01-25-p17w20-weightlatch001-r1]
+    paths:
+      - 'Assets/B0125WeightLatch001/**'
+      - 'Assets/B0125WeightLatch001.meta'
+      - 'Research/B01-25/P17/WEIGHTLATCH001/**'
+      - 'Tools/B01/B01-25/P17W20WeightLatch/**'
+      - '.github/workflows/b01-25-w20-weightlatch.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      SRC: Research/B01-25/P17/WEIGHTLATCH001
+      OUT: Tools/B01/B01-25/P17W20WeightLatch/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile ORIGINAL netstandard2.1 CSharp9 runtime warnings errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/WeightLatchRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Execute ORIGINAL mass pressure latch game logic and rejected input
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/WeightLatchTests.csproj" -c Release -- "$SRC/.output/results.json" 2>&1 | tee "$OUT/original-$RUNNER_OS.log"
+      - name: Independently check original Git files GUIDs and physical scratch rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W20WeightLatch/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/qa-$RUNNER_OS.log"
+      - name: Preflight actual original source ZIP and machine evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$OUT/receipt.zip"
+          test -s "$OUT/receipt.json"
+          test -s "$SRC/.output/results.json"
+          sha256sum "$OUT/receipt.zip"
+      - name: Publish actual original code and evidence ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-weightlatch-w20-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/WEIGHTLATCH001/.output/results.json
+            Tools/B01/B01-25/P17W20WeightLatch/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  original-source-zip-cross-os:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-weightlatch-w20-*
+          path: evidence
+      - name: Compare exact physical source artifacts from Windows and Ubuntu
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-weightlatch-w20-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-weightlatch-w20-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==20 and len(set(names))==20
+              assert all(f.create_system==3 for f in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert len(m["files"])==19 and m["nativeUnity"]=="NOT_RUN"
+          print("WEIGHTLATCH_ORIGINAL_UNITY_SOURCE_ZIP_PARITY_PASS")
+          PY
