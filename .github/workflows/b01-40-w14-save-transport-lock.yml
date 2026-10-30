@@ -43,6 +43,12 @@ jobs:
           path: save549
           ref: 6da2c523e03766cd5a6deaed0cb3cccf8765354b
           fetch-depth: 0
+      - name: Sole selected corrected Save V2 #556 exact B01-23 source (read-only)
+        uses: actions/checkout@v4
+        with:
+          path: save556
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
       - name: Original B01-40 safe receiver #536 exact source
         uses: actions/checkout@v4
         with:
@@ -64,12 +70,13 @@ jobs:
         run: |
           set -euo pipefail
           python own/Tools/B01/B01-40/P17W14SaveReceiverGate/intake.py \
-            --game game --save544 save544 --save549 save549 \
+            --game game --save544 save544 --save549 save549 --save556 save556 \
             --wrapper536 wrapper536 --wrapper542 wrapper542 \
             --project own/Tools/B01/B01-40/P17W14SaveReceiverGate \
             --out dist | tee w14-intake-stdout.log
           grep -q "B01_40_W14_RELEASE_DENIAL_PASS 7" w14-intake-stdout.log
           grep -q "B01_40_W14_ROLLBACK_RECEIVERS_PASS" w14-intake-stdout.log
+          grep -q "B01_40_W14_SELECTED_556_SOURCE_G0" w14-intake-stdout.log
           test -s dist/W14-save-receiver-gate.json
       - name: Compile and EXECUTE unchanged original #544 CSharp codec + original W06/R2 ledger post-validate RED
         shell: bash
