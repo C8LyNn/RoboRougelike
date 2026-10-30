@@ -33,11 +33,12 @@ class T
     class World : IPreparedWorld
     {
         public RunSnapshot State;
-        public bool Active,Retired,FailActivate,FailDeactivate,FailRetire,WrongCapture;
+        public bool Active,Retired,FailActivate,FailDeactivate,FailRetire,WrongCapture,ThrowCapture;
         public int Activations;
         public World(RunSnapshot s){State=s;}
         public RunSnapshot Capture()
         {
+            if(ThrowCapture)throw new IOException("injected post-Commit Capture exception");
             if(!WrongCapture)return State;
             var p=State.Parts;p[0]=p[1];
             return new RunSnapshot(State.RunId,State.Generation,p);
@@ -57,6 +58,29 @@ class T
             if(FailFactory)throw new IOException("prepare");
             Last=new World(p){FailActivate=FailActivate,WrongCapture=WrongCapture};
             return Last;
+        }
+    }
+
+    // Fault-inject around the REAL original FileCheckpointStore without replacing
+    // its disk IO: both lost-ACK and post-commit physics failures are reproducible.
+    sealed class UncertainStore : ICheckpointStore
+    {
+        private readonly FileCheckpointStore physical;
+        public bool ThrowBeforeCommit,ThrowAfterCommit;
+        public Action? AfterCommit;
+        public UncertainStore(string path){physical=new FileCheckpointStore(path);}
+        public bool Read(long run,out long generation,out string hash)
+            => physical.Read(run,out generation,out hash);
+        public bool Commit(long run,long previous,string oldHash,long next,string hash)
+        {
+            if(ThrowBeforeCommit)throw new IOException("injected before durable write");
+            bool committed=physical.Commit(run,previous,oldHash,next,hash);
+            if(committed)
+            {
+                AfterCommit?.Invoke();
+                if(ThrowAfterCommit)throw new IOException("lost durable commit ACK");
+            }
+            return committed;
         }
     }
     static void Tests()
@@ -335,6 +359,79 @@ class T
                     h52.IsConsumed(1,2310002)&&!h52.IsConsumed(0,2310001);
             }
             finally{Directory.Delete(root,true);}
+        });
+
+        Check("W19 #637 durable Commit SUCCEEDS then throws => immediate quarantine",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01w19_"+Guid.NewGuid().ToString("N"));
+            try
+            {
+                var store=new UncertainStore(Path.Combine(dir,"checkpoint"));
+                var factory=new Factory();
+                var host=new AtomicWorldSwap(factory,store);
+                if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                World? old=factory.Last;
+                store.ThrowAfterCommit=true;
+                var result=host.TryLoad(Make(false,true,11),7,1,()=>true);
+                if(!store.Read(7,out long disk,out _)||disk!=11)return false;
+                return result==WorldSwapVerdict.RollbackQuarantine&&host.Quarantined&&
+                    old!=null&&old.Active&&host.IsConsumed(0,2310001)&&
+                    !host.IsConsumed(1,2310002)&&
+                    !host.TrySave(7,()=>true,out byte[] refused)&&refused==null&&
+                    host.TryLoad(Make(true,false,12),7,1,()=>true)==
+                        WorldSwapVerdict.RollbackQuarantine;
+            }finally{if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W19 #637 external Commit throws BEFORE write => ambiguous quarantine",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01w19_"+Guid.NewGuid().ToString("N"));
+            try
+            {
+                var store=new UncertainStore(Path.Combine(dir,"checkpoint"));
+                var host=new AtomicWorldSwap(new Factory(),store);
+                if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                store.ThrowBeforeCommit=true;
+                var value=host.TryLoad(Make(false,true,11),7,1,()=>true);
+                return store.Read(7,out long disk,out _)&&disk==10&&
+                    host.Quarantined&&value==WorldSwapVerdict.RollbackQuarantine&&
+                    !host.TrySave(7,()=>true,out byte[] refused)&&refused==null;
+            }finally{if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W19 #637 post-durable real world readback THROWS => quarantine",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01w19_"+Guid.NewGuid().ToString("N"));
+            try
+            {
+                var store=new UncertainStore(Path.Combine(dir,"checkpoint"));
+                var factory=new Factory();var host=new AtomicWorldSwap(factory,store);
+                if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                World? old=factory.Last;
+                store.AfterCommit=()=>{
+                    if(factory.Last==null)throw new IOException("missing candidate");
+                    factory.Last.ThrowCapture=true;
+                };
+                var result=host.TryLoad(Make(false,true,11),7,1,()=>true);
+                return store.Read(7,out long disk,out _)&&disk==11&&
+                    result==WorldSwapVerdict.RollbackQuarantine&&host.Quarantined&&
+                    old!=null&&old.Active&&host.IsConsumed(0,2310001)&&
+                    !host.TrySave(7,()=>true,out _);
+            }finally{if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W19 pre-durable Activate exception clean compensation not falsely quarantined",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01w19_"+Guid.NewGuid().ToString("N"));
+            try
+            {
+                var store=new UncertainStore(Path.Combine(dir,"checkpoint"));
+                var factory=new Factory();var host=new AtomicWorldSwap(factory,store);
+                if(host.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                World? old=factory.Last;
+                factory.FailActivate=true;
+                var result=host.TryLoad(Make(false,true,11),7,1,()=>true);
+                return store.Read(7,out long disk,out _)&&disk==10&&
+                    result==WorldSwapVerdict.HostException&&!host.Quarantined&&
+                    old!=null&&old.Active&&host.IsConsumed(0,2310001);
+            }finally{if(Directory.Exists(dir))Directory.Delete(dir,true);}
         });
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
