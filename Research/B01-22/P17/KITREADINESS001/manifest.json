@@ -30,7 +30,7 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
     "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "610962f06133e33b0b84296c4ece16d3ac3deccd",
-    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "f0417d2a400b0150fc13289430e9addbd427a7a0",
+    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "0a77cd898425da9dc4a9546b9bb6918a77443b6a",
     "Research/B01-22/P17/KITREADINESS001/README.md": "22ee264b87968e7a9e160229799f6b6a2c97307e",
     ".github/workflows/b01-22-p17w08-kitreadiness.yml": "5ab87eb5e7ef003a235f3ecef2ed6695c3800212",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "c53bf577ec7ae849897027e87f2e70bde369d642",
@@ -166,7 +166,7 @@
     "native_unity": "NOT_RUN"
   },
   "w16_receipt_anchor": {
-    "state": "PENDING_CROSS_OS_FINAL_HEAD_CI",
+    "state": "PENDING_RECHECK_BOTH_OS",
     "red_cases": [
       "33",
       "34"
@@ -178,7 +178,8 @@
     "source_of_pins": "previous W15 #41091906172 two matching physical runner receipts",
     "manifest_anchored_to_git_HEAD": true,
     "frozen_source_unchanged": true,
-    "native_unity": "NOT_RUN"
+    "native_unity": "NOT_RUN",
+    "source_of_prior_failure": "#41096885022 Windows RED due to test-only Python newline translation; negative checks now exact UTF-8 LF and assert UNAPPROVED_PHYSICAL_PAYLOAD"
   },
   "approved_physical_sha256": {
     "kitreadiness-unity.zip": {

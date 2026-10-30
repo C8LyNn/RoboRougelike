@@ -293,12 +293,12 @@ class PhysicalSourceTests(unittest.TestCase):
             obj=json.loads(target.read_text(encoding="utf-8"))
             self.assertNotEqual(obj["result"]["ReadyCount"],100)
             obj["result"]["ReadyCount"]=100
-            target.write_text(json.dumps(obj,sort_keys=True)+"\n",encoding="utf-8")
+            target.write_bytes((json.dumps(obj,sort_keys=True)+"\n").encode("utf-8"))
             previews=read_previews(dest)
             receipt=receipt_for((dest/"kitreadiness-unity.zip").read_bytes(),self.files,previews)
-            (dest/"receipt.json").write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+            (dest/"receipt.json").write_bytes((json.dumps(receipt,sort_keys=True,indent=2)+"\n").encode("utf-8"))
             before={x:(dest/x).read_bytes() for x in FILES}
-            with self.assertRaises(SourceError):
+            with self.assertRaisesRegex(SourceError, 'UNAPPROVED_PHYSICAL_PAYLOAD'):
                 pack_readiness.verify_stage(dest)
             self.assertEqual({x:(dest/x).read_bytes() for x in FILES},before)
 
@@ -311,12 +311,12 @@ class PhysicalSourceTests(unittest.TestCase):
             target=dest/"priority-preview.json"
             obj=json.loads(target.read_text(encoding="utf-8"))
             obj["buildOrder"]["SuggestedReadyCount"]=99
-            target.write_text(json.dumps(obj,sort_keys=True)+"\n",encoding="utf-8")
+            target.write_bytes((json.dumps(obj,sort_keys=True)+"\n").encode("utf-8"))
             previews=read_previews(dest)
             receipt=receipt_for((dest/"kitreadiness-unity.zip").read_bytes(),self.files,previews)
-            (dest/"receipt.json").write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+            (dest/"receipt.json").write_bytes((json.dumps(receipt,sort_keys=True,indent=2)+"\n").encode("utf-8"))
             before={x:(dest/x).read_bytes() for x in FILES}
-            with self.assertRaises(SourceError):
+            with self.assertRaisesRegex(SourceError, 'UNAPPROVED_PHYSICAL_PAYLOAD'):
                 pack_readiness.verify_stage(dest)
             self.assertEqual({x:(dest/x).read_bytes() for x in FILES},before)
 
@@ -337,9 +337,9 @@ class PhysicalSourceTests(unittest.TestCase):
                 (inputs/name).write_bytes((ROOT/"readiness-previews"/name).read_bytes())
             obj=json.loads((inputs/"priority-preview.json").read_text(encoding="utf-8"))
             obj["buildOrder"]["SuggestedReadyCount"]=99
-            (inputs/"priority-preview.json").write_text(json.dumps(obj,sort_keys=True)+"\n",encoding="utf-8")
+            (inputs/"priority-preview.json").write_bytes((json.dumps(obj,sort_keys=True)+"\n").encode("utf-8"))
             dest=p/"stage"
-            with self.assertRaises(SourceError): stage(dest,inputs,source_check=True)
+            with self.assertRaisesRegex(SourceError, 'UNAPPROVED_PHYSICAL_PAYLOAD'): stage(dest,inputs,source_check=True)
             self.assertFalse(dest.exists())
 
     def test_25_git_blob_identity_independent_known_sha1(self):
