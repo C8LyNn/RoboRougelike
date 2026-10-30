@@ -935,6 +935,8 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual(x["end_feasibility"],
                          "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
         self.assertEqual(x["reserved_final"],1)
+        self.assertTrue(x["p0_post_loaner_win_deferred_rebuild_deadlock"])
+        self.assertIn("OWNER_B01_22",x["p0_recovery_contract"])
 
     def test_136_approved_loaner_loss_exhausts_lease_per_run(self):
         from rebuild_balance import run_approved_plan
