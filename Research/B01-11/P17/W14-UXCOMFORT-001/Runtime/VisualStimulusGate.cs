@@ -120,6 +120,11 @@ namespace B01.UXComfort
             var indicator=IndicatorOf(cue.Kind);
             if(IsFlash(cue.Kind))
             {
+                // Zero-strength cues are not emitted flashes. Returning a static
+                // semantic indicator preserves feedback without spending quota or
+                // delaying subsequent nonzero real visual effects.
+                if(cue.Intensity==0)
+                    return new VisualDecision(cue,RenderMode.StaticIndicator,0,indicator);
                 int maxPerWindow=_mode==ComfortMode.Standard?_maxFlashes:
                     _mode==ComfortMode.ReducedMotion?Math.Min(1,_maxFlashes):0;
                 int gap=_mode==ComfortMode.ReducedMotion?
@@ -135,6 +140,9 @@ namespace B01.UXComfort
             }
             if(IsShake(cue.Kind))
             {
+                // Do not schedule a zero-amplitude camera motion.
+                if(cue.Intensity==0)
+                    return new VisualDecision(cue,RenderMode.StaticIndicator,0,indicator);
                 if(_mode==ComfortMode.ReducedMotion||_maxShakeIntensity==0)
                     return new VisualDecision(cue,RenderMode.StaticIndicator,0,indicator);
                 int value=Math.Min(cue.Intensity,_maxShakeIntensity);
