@@ -14,7 +14,7 @@ namespace Swarm.B01.Playtesting
         [SerializeField] private float width = 420f;
         [SerializeField] private float top = 12f;
 
-        private Ld02TechnicalTrial trial;
+        private Ld02TechnicalTrial trial = new Ld02TechnicalTrial(0);
         private bool visible;
         private bool showHint;
 
