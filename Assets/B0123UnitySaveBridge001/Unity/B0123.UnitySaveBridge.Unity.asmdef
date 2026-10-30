@@ -1,0 +1,19 @@
+{
+  "name": "B0123.UnitySaveBridge.Unity",
+  "rootNamespace": "B01.UnitySaveBridge001",
+  "references": [
+    "B0123.UnitySaveBridge.Core",
+    "B0123.DetachedSaveContract.Runtime",
+    "B0123.DebrisRepulse.Runtime",
+    "B0123.SecureReattachV2.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
