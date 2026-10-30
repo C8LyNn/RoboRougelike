@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+ <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+ <LangVersion>9.0</LangVersion><Nullable>disable</Nullable>
+ <ImplicitUsings>disable</ImplicitUsings><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+ <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup>
+<ItemGroup>
+ <Compile Include="Program.cs"/>
+ <Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs" Link="EXACT_NEW_ORIGINAL_W15_ATOMIC_BRIDGE.cs"/>
+ <Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs" Link="EXACT_FROZEN_556_SELECTED_SAVE.cs"/>
+ <Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="EXACT_FROZEN_W06_LEDGER.cs"/>
+ <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" Link="EXACT_FROZEN_510_ATOMIC_R2.cs"/>
+ <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" Link="EXACT_FROZEN_510_RIG_CATALOG.cs"/>
+</ItemGroup></Project>
