@@ -452,6 +452,115 @@ internal static class Program
             var lost=rec.Fail(P(1));
             Check(Reject(()=>new GhostSplitCoach(lost)),"lost reference");
         });
+        Test("83 real finish leg correctly outranks all checkpoint segments",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,10);
+            Check(s.Completed&&s.BiggestLossIsFinishSegment,"finish leg not detected");
+            Equal(s.BiggestLossGate,0);
+            Equal(s.BiggestLossSeconds,5f);
+            Equal(s.FinishSegmentSeconds,6f);
+            Equal(s.ReferenceFinishSegmentSeconds,1f);
+            Equal(s.FinishSegmentDeltaSeconds,5f);
+        });
+        Test("84 equal finish time gives zero finish segment delta",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,5);
+            Check(!s.BiggestLossIsFinishSegment&&s.BiggestLossGate==0);
+            Equal(s.FinishSegmentDeltaSeconds,0f);
+        });
+        Test("85 faster last leg cannot be declared a lost segment",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,4.5f);
+            Check(!s.BiggestLossIsFinishSegment&&s.BiggestLossGate==0);
+            Equal(s.FinishSegmentDeltaSeconds,-.5f);
+        });
+        Test("86 late checkpoint segment beats smaller finish-leg loss",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1);
+            c.AcceptValidatedGate(1,3.5f);
+            c.AcceptValidatedGate(2,4.5f);
+            c.AcceptValidatedGate(3,5.5f);
+            var s=c.EndTrial(true,7);
+            Equal(s.BiggestLossGate,2);
+            Check(!s.BiggestLossIsFinishSegment);
+            Equal(s.BiggestLossSeconds,1.5f);
+            Equal(s.FinishSegmentDeltaSeconds,.5f);
+        });
+        Test("87 false completed run without all gates cannot claim finish split",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1);
+            Check(Reject(()=>c.EndTrial(true,10)),"premature win");
+            Check(!c.IsFinished&&c.GatesReached==1);
+        });
+        Test("88 failed trial does not invent an authoritative finish leg",()=>{
+            var c=new GhostSplitCoach(Run());
+            var s=c.EndTrial(false,2);
+            Check(!s.Completed&&!s.BiggestLossIsFinishSegment);
+            Equal(s.FinishSegmentSeconds,0f);
+            Equal(s.ReferenceFinishSegmentSeconds,0f);
+            Equal(s.FinishSegmentDeltaSeconds,0f);
+        });
+        Test("89 completed reference with zero finish leg rejected at bind",()=>{
+            var r=Run();r.CheckpointSeconds[3]=5f;
+            GhostMath.Validate(r); // valid recorder format, invalid coaching leg
+            Check(Reject(()=>new GhostSplitCoach(r)),"zero finish reference");
+        });
+        Test("90 completed reference with duplicate gate timestamps refused",()=>{
+            var r=Run();r.CheckpointSeconds[1]=1f;
+            GhostMath.Validate(r); // source snapshot tolerates simultaneous markers
+            Check(Reject(()=>new GhostSplitCoach(r)),"zero gate interval");
+        });
+        Test("91 completed reference with checkpoint at time zero refused",()=>{
+            var r=Run();r.CheckpointSeconds[0]=0f;
+            GhostMath.Validate(r);
+            Check(Reject(()=>new GhostSplitCoach(r)),"zero first interval");
+        });
+        Test("92 finish advice points to actual last section, not gate 4",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,10);
+            Check(s.Guidance.Contains("finish segment after checkpoint 4"),"wrong advice");
+            Check(!s.Guidance.Contains("ending at checkpoint 4"),"wrong gate label");
+        });
+        Test("93 source reference changes after coach bind cannot spoof finish",()=>{
+            var r=Run();var c=new GhostSplitCoach(r);
+            r.CheckpointSeconds[3]=4.99f;r.ElapsedSeconds=9;
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,10);
+            Equal(s.ReferenceFinishSegmentSeconds,1f);
+            Equal(s.FinishSegmentDeltaSeconds,5f);
+        });
+        Test("94 small finish delta below threshold gives neutral advice",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,5.1f);
+            Check(!s.BiggestLossIsFinishSegment || s.BiggestLossSeconds<.15f);
+            Check(s.Guidance.Contains("No measured segment"),"small delta overreported");
+        });
+        Test("95 failed early completion leaves coach available for valid finish",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1);
+            Check(Reject(()=>c.EndTrial(true,9)),"false finish");
+            c.AcceptValidatedGate(1,2);
+            c.AcceptValidatedGate(2,3);
+            c.AcceptValidatedGate(3,4);
+            var s=c.EndTrial(true,10);
+            Check(s.Completed && s.BiggestLossIsFinishSegment);
+        });
+        Test("96 tied finish and gate loss preserves first checkpoint focus",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.AcceptValidatedGate(1,2.5f);
+            c.AcceptValidatedGate(2,3.5f);
+            c.AcceptValidatedGate(3,4.5f);
+            var s=c.EndTrial(true,6f);
+            Equal(s.BiggestLossGate,1);
+            Check(!s.BiggestLossIsFinishSegment);
+            Equal(s.BiggestLossSeconds,.5f);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
