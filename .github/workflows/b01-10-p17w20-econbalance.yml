@@ -22,10 +22,12 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Pin original source bytes SHA256, base and scope
+      - name: Pin original source Git blobs, bytes, base and exclusive scope
         shell: bash
         env:
           B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -36,13 +38,15 @@ jobs:
           root=pathlib.Path('Research/B01-10/P17/W20_ECONBAL_001')
           doc=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
           assert doc['packageId']=='B01-10-ECONBAL-001'
-          assert len(doc['originalSourceFiles'])==5
+          assert len(doc['originalSourceFiles'])==6
           for name,pin in doc['originalSourceFiles'].items():
               path=pathlib.Path(name)
               assert path.is_file() and not path.is_symlink()
               raw=path.read_bytes()
               assert len(raw)==pin['bytes'],name
-              assert hashlib.sha256(raw).hexdigest()==pin['sha256'],name
+              blob=subprocess.check_output(['git','hash-object',str(path)],text=True).strip()
+              assert blob==pin['gitBlob'],name
+              print('SOURCE '+name+' bytes='+str(len(raw))+' sha256='+hashlib.sha256(raw).hexdigest())
           head=os.environ['B01_SOURCE_SHA']
           assert len(head)==40
           files=subprocess.check_output(['git','diff','--name-only',
