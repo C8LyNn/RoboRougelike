@@ -1,0 +1,391 @@
+{
+  "schema": "B01-24-NOISE-INVESTIGATION-001-v1",
+  "original_codex_R3_sha": "66cd1ee734b129117b3753d1205469a0496cb673",
+  "author_provisional_balance": true,
+  "scenarios": [
+    {
+      "id": "SHOT_BEHIND_SCRAP",
+      "role": "Scout",
+      "frames": [
+        {
+          "tick": 0,
+          "self": [
+            0,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": [
+            {
+              "id": 1,
+              "tick": 0,
+              "pos": [
+                10,
+                0
+              ],
+              "strength": 1,
+              "occluded": true
+            }
+          ]
+        },
+        {
+          "tick": 1,
+          "self": [
+            5,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 2,
+          "self": [
+            10,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 3,
+          "self": [
+            10,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 4,
+          "self": [
+            14,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 5,
+          "self": [
+            10,
+            4
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 6,
+          "self": [
+            6,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 7,
+          "self": [
+            10,
+            -4
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        }
+      ]
+    },
+    {
+      "id": "LOST_VISUAL_RETURNS",
+      "role": "Bruiser",
+      "frames": [
+        {
+          "tick": 0,
+          "self": [
+            0,
+            0
+          ],
+          "canMove": true,
+          "visible": true,
+          "player": [
+            12,
+            4
+          ],
+          "noises": []
+        },
+        {
+          "tick": 1,
+          "self": [
+            2,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 2,
+          "self": [
+            6,
+            2
+          ],
+          "canMove": false,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 3,
+          "self": [
+            9,
+            3
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 4,
+          "self": [
+            12,
+            4
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 9,
+          "self": [
+            12,
+            4
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 10,
+          "self": [
+            12,
+            4
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        }
+      ]
+    },
+    {
+      "id": "GUNFIRE_REDIRECT",
+      "role": "Flanker",
+      "frames": [
+        {
+          "tick": 0,
+          "self": [
+            0,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": [
+            {
+              "id": 14,
+              "tick": 0,
+              "pos": [
+                18,
+                4
+              ],
+              "strength": 0.8,
+              "occluded": false
+            }
+          ]
+        },
+        {
+          "tick": 1,
+          "self": [
+            5,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": [
+            {
+              "id": 14,
+              "tick": 0,
+              "pos": [
+                18,
+                4
+              ],
+              "strength": 0.8,
+              "occluded": false
+            }
+          ]
+        },
+        {
+          "tick": 2,
+          "self": [
+            7,
+            0
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": [
+            {
+              "id": 15,
+              "tick": 2,
+              "pos": [
+                -6,
+                5
+              ],
+              "strength": 1,
+              "occluded": false
+            }
+          ]
+        },
+        {
+          "tick": 3,
+          "self": [
+            -6,
+            5
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 4,
+          "self": [
+            -6,
+            5
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 5,
+          "self": [
+            -1,
+            5
+          ],
+          "canMove": true,
+          "visible": true,
+          "player": [
+            2,
+            1
+          ],
+          "noises": []
+        },
+        {
+          "tick": 6,
+          "self": [
+            2,
+            1
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        },
+        {
+          "tick": 7,
+          "self": [
+            2,
+            1
+          ],
+          "canMove": true,
+          "visible": false,
+          "player": [
+            0,
+            0
+          ],
+          "noises": []
+        }
+      ]
+    }
+  ]
+}
