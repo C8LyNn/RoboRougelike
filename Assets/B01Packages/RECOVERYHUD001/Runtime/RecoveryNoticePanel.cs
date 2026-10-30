@@ -9,10 +9,10 @@ namespace B01.RecoveryHud
     // loaner writes and intentionally has no gameplay-command buttons.
     public sealed class RecoveryNoticePanel : MonoBehaviour
     {
-        [SerializeField] private Text heading;
-        [SerializeField] private Text explanation;
-        [SerializeField] private Text detail;
-        [SerializeField] private Text severityLabel;
+        [SerializeField] private Text heading = null;
+        [SerializeField] private Text explanation = null;
+        [SerializeField] private Text detail = null;
+        [SerializeField] private Text severityLabel = null;
 
         public RecoveryNoticeKind CurrentKind { get; private set; } = RecoveryNoticeKind.Unknown;
 
