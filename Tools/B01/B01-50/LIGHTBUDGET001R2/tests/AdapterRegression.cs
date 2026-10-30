@@ -1,0 +1,122 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
+using B01.Performance.LightBudget001.Unity;
+using UnityEngine;
+
+internal static class Program
+{
+    private static int pass, fail;
+    private static readonly List<string> failed = new();
+    private sealed class Fixture
+    {
+        public B0150OptionalCosmeticLightBudget Manager = null!;
+        public B0150OptionalCosmeticLightBudget.LightSlot[] Slots = null!;
+        public Light First = null!, Second = null!, Foreign = null!;
+    }
+    private static Fixture Setup(bool secondEnabled=true)
+    {
+        var a = new Light { enabled=true };
+        a.transform.position=new Vector3(1f,0,0);
+        var b = new Light { enabled=secondEnabled };
+        b.transform.position=new Vector3(6f,0,0);
+        var foreign = new Light { enabled=false };
+        foreign.transform.position=new Vector3(2f,0,0);
+        var slots = new[] {
+            new B0150OptionalCosmeticLightBudget.LightSlot { Light=a, Importance=70 },
+            new B0150OptionalCosmeticLightBudget.LightSlot { Light=b, Importance=60 }
+        };
+        var owner=new B0150OptionalCosmeticLightBudget();
+        if(!owner.Configure(new Camera(), slots, 1, 0f, 1))
+            throw new Exception("Configure failed");
+        Call(owner,"Awake");
+        return new Fixture { Manager=owner, Slots=slots, First=a, Second=b, Foreign=foreign };
+    }
+    private static void Call(object instance, string method)
+    {
+        var methodInfo=instance.GetType().GetMethod(method,BindingFlags.Instance|BindingFlags.NonPublic);
+        if(methodInfo==null)throw new Exception("Missing original adapter method: "+method);
+        // Unwrap actual original method errors to report their true root.
+        try { methodInfo.Invoke(instance,null); }
+        catch(TargetInvocationException e) when(e.InnerException!=null) {
+            throw new Exception("Original adapter "+method+" threw "+e.InnerException.GetType().Name, e.InnerException);
+        }
+    }
+    private static void Assert(bool condition,string why)
+    {
+        if(!condition)throw new Exception(why);
+    }
+    private static void Test(string name,Action test)
+    {
+        try{test();pass++;Console.WriteLine("PASS "+name);}
+        catch(Exception e){fail++;failed.Add(name+": "+e.Message);Console.WriteLine("FAIL "+name+": "+e);}
+    }
+    private static void Reapply(Fixture f)=>Call(f.Manager,"LateUpdate");
+    private static void Restore(Fixture f)=>Call(f.Manager,"OnDisable");
+    public static int Main(string[] args)
+    {
+        if(args.Length!=2||args[0]!="--receipt")return 3;
+        Test("smoke capped lights and restore",()=>{
+            var f=Setup();Reapply(f);
+            Assert(f.First.enabled&&!f.Second.enabled,"cap broken");
+            Restore(f);
+            Assert(f.First.enabled&&f.Second.enabled,"baseline not restored");
+        });
+        Test("null slot after Awake cannot block original rollback",()=>{
+            var f=Setup();Reapply(f);
+            f.Slots[1]=null!;
+            Restore(f);
+            Assert(f.Second.enabled,"original disabled light not restored");
+        });
+        Test("slot changed to foreign light after Awake does not mutate foreign",()=>{
+            var f=Setup();Reapply(f);
+            f.Slots[1].Light=f.Foreign;
+            Restore(f);
+            Assert(f.Second.enabled,"original disabled light not restored");
+            Assert(!f.Foreign.enabled,"foreign unowned light was enabled");
+        });
+        Test("serialized array shortened after Awake cannot truncate rollback",()=>{
+            var f=Setup();Reapply(f);
+            var field=typeof(B0150OptionalCosmeticLightBudget).GetField("cosmeticLights",BindingFlags.Instance|BindingFlags.NonPublic);
+            Assert(field!=null,"expected original serialized input field");
+            field!.SetValue(f.Manager,new[]{f.Slots[0]});
+            Restore(f);
+            Assert(f.Second.enabled,"shortened input skipped restoring original second light");
+        });
+        Test("runtime slot importance mutation cannot hijack selection",()=>{
+            var f=Setup();Reapply(f);
+            f.Slots[0].Importance=0;
+            f.Slots[1].Importance=100;
+            Reapply(f);
+            Assert(f.First.enabled&&!f.Second.enabled,"mutable slot importance changed trusted ranking");
+            Restore(f);
+        });
+        Test("originally disabled lights remain disabled after restore",()=>{
+            var f=Setup(secondEnabled:false);
+            Reapply(f);Restore(f);
+            Assert(f.First.enabled&&!f.Second.enabled,"originally disabled light activated");
+        });
+        Test("multiple disable/destroy calls are idempotent",()=>{
+            var f=Setup();Reapply(f);Restore(f);
+            Call(f.Manager,"OnDestroy");Restore(f);
+            Assert(f.First.enabled&&f.Second.enabled,"double restore lost baseline");
+        });
+        Test("new Configure after Awake is rejected without mutation",()=>{
+            var f=Setup();Reapply(f);
+            Assert(!f.Manager.Configure(new Camera(),new[]{new B0150OptionalCosmeticLightBudget.LightSlot{Light=f.Foreign}},0,0,1),"unexpected config replacement");
+            Restore(f);
+            Assert(f.First.enabled&&f.Second.enabled&&!f.Foreign.enabled,"unauthorized post-Awake replacement");
+        });
+        string path=args[1];
+        if(File.Exists(path))return 4;
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
+        var receipt=new{schema="B01-50-LIGHTBUDGET-R2-ADAPTER-SOURCE-REDGREEN",total=pass+fail,passed=pass,failed=fail,failures=failed,
+            testsExecuteOriginalAdapterMethodBodies=true,engineType="SURROGATE_UNITY_API_NOT_NATIVE_UNITY",
+            nativeUnity="NOT_RUN",actualGpuDrawCalls="NOT_MEASURED",actualFps="NOT_MEASURED"};
+        File.WriteAllText(path,JsonSerializer.Serialize(receipt,new JsonSerializerOptions{WriteIndented=true})+"\n");
+        Console.WriteLine($"ORIGINAL_ADAPTER_SOURCE_TESTS: {pass}/{pass+fail} PASS; {fail} FAIL; UNITY_NOT_RUN");
+        return fail==0?0:1;
+    }
+}
