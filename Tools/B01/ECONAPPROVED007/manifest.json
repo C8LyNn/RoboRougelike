@@ -16,7 +16,7 @@
     "Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs": "53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
     "Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs": "d8b71de91db36295b6220e9c4baad71eb54455f6",
     "Tools/B01/ECONAPPROVED007/Program.cs": "ab9629da2894528e5a8a577ca77aecd4e5a396db",
-    "Tools/B01/ECONAPPROVED007/SectionTests.cs": "45972bdfc01f48eaefedadcafa4deaf0e5f7ac28",
+    "Tools/B01/ECONAPPROVED007/SectionTests.cs": "65b7db5f8468e843d15ae2da0c24336c0b23bf36",
     "Tools/B01/ECONAPPROVED007/verify_package.py": "979990ca2abe2727424cecbdb494db4de70edcc4"
   },
   "owned_paths": [
