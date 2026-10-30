@@ -1,0 +1,84 @@
+name: B01-62 W14 selected 549 V2 immutable-public save + reused safe rollback
+on:
+  push:
+    branches: [qa/b01-62-p17w14-selected549-hardened-v2]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W14Selected549HardenedV2/**'
+      - '.github/workflows/b01-62-p17w14-selected549-v2.yml'
+permissions:
+  contents: read
+jobs:
+  proof:
+    name: Original W06 chosen549 V2 CSharp and safe #536 rollback (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact frozen sources and already accepted standalone rollback wrapper
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W14Selected549HardenedV2"
+          git fetch --no-tags origin 6da2c523e03766cd5a6deaed0cb3cccf8765354b d94400d95d13db7f27e1533df05c9292d5380431 77d75d73467d236f6e3404caa58271ffec9d45cb
+          mkdir -p "$dir/.source" "$dir/.output"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git rev-parse 6da2c523e03766cd5a6deaed0cb3cccf8765354b:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs)" = 6c036985411164372bf3d21d467780ff3777544e
+          git show 77d75d73467d236f6e3404caa58271ffec9d45cb:Tools/B01/B01-40/P17W13RollbackPreservation/receiver.py > "$dir/.source/receiver536.py"
+          git worktree add --detach "$dir/.producer510" d94400d95d13db7f27e1533df05c9292d5380431
+          test "$(git -C "$dir/.producer510" rev-parse HEAD)" = d94400d95d13db7f27e1533df05c9292d5380431
+          python -c 'import hashlib,json,pathlib; p=pathlib.Path("Tools/B01/B01-62/P17W14Selected549HardenedV2"); obj={"schema":"B01-62-P17W14","chosen_producer":"#549","chosen_sha":"6da2c523e03766cd5a6deaed0cb3cccf8765354b","selected_gameplay":"d94400d95d13db7f27e1533df05c9292d5380431","original_producer_blob":"6c036985411164372bf3d21d467780ff3777544e","original_W06_blob":"fa1aa5e531927cbe73cf5fdfe161b4a981316db5","safe_receiver536_sha":"77d75d73467d236f6e3404caa58271ffec9d45cb","native_unity":"NOT_RUN","live_save_adapter":"NOT_INTEGRATED"}; (p/".output/provenance.json").write_bytes((json.dumps(obj,sort_keys=True,indent=2)+"\\n").replace("\\\\n","\\n").encode())'
+      - name: Compile genuine W06 plus hardened chosen #549 V2 and execute 174 tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W14Selected549HardenedV2"
+          cp "$dir/.source/DebrisImpulseCore.cs" "$dir/.source/DebrisImpulseCore.cs.staged"
+          dotnet run --project "$dir/Selected549HardenedV2.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/actual-original-W06-v2-csharp.log"
+          grep -q 'W14_SELECTED549_V2_TOTAL 174 PASS 174 FAIL 0' "$dir/.output/actual-original-W06-v2-csharp.log"
+      - name: Reuse exact existing #536 real source rollout and foreign-empty-dir rollback witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W14Selected549HardenedV2"
+          python "$dir/.source/receiver536.py" --producer "$dir/.producer510" --out "$dir/.output/rollback536" 2>&1 | tee "$dir/.output/real-rollback536.log"
+          grep -q '^ACTUAL_FROZEN_510_ROLLBACK_RED' "$dir/.output/real-rollback536.log"
+          grep -q '^VERSIONED_B0140_WRAPPER_GREEN' "$dir/.output/real-rollback536.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w14-v2-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W14Selected549HardenedV2/.output/
+          include-hidden-files: true
+          if-no-files-found: error
+  parity:
+    name: V2 contract source receipt exact-byte cross-OS equality
+    needs: proof
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w14-v2-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w14-v2-windows-2025
+          path: windows
+      - shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/provenance.json windows/provenance.json
+          sha256sum ubuntu/provenance.json windows/provenance.json
+          echo B01_62_W14_SELECTED549_V2_RECEIPT_PARITY_PASS
