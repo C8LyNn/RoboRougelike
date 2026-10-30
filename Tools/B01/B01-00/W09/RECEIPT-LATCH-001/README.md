@@ -1,4 +1,4 @@
-# B01-00 RECEIPT-LATCH-001 v1.6.0 / PASS17 W15
+# B01-00 RECEIPT-LATCH-001 v1.7.0 / PASS17 W16
 
 Offline Python 3.11 standard-library executable for B01-00 coordinating multi-agent package receipts. `receipt_latch.py` validates offline snapshot consistency; `github_live.py` now checks a bounded subset of original GitHub PR, Actions workflow, job and step metadata online. Neither can authenticate the independence or authorization of a B01-40/B01-60 review, Codex ACK or merge. Source-ready is a **candidate for external review**, never formal G0, G1, Codex ACK or integration.
 
@@ -107,3 +107,23 @@ The current source-only receipt can be internally consistent, **but its verdict 
 The original W15 `test_save_selected_v2.py` adds **62** positive and adversarial regression cases (total 287 W09–W15). A missing or wrong SHA, forged QA/G0 ZIP, historical alternatives, false G1/SaveLive, fake migration, ACK or merge fails closed. **Limitations:** the CLI validates a declared JSON receipt **offline**, does not authenticate GitHub identity, actual source ZIP bytes, Codex actor or Unity host. Actual original GitHub source and QA were inspected separately by the coordinator. The `source_g0_recorded` label is a *recorded claim*, not an independent review conducted by this program. No new source-only offer is posted to #79 by this CLI and it has no network calls.
 
 **Rollback**: discard only the unmerged coordinator Python tool and disposable local reports; leave frozen #510, #556, B01-40/61 evidence, Codex Inbox, and all production assets intact. No branch merge/release. The B01-00 tool remains pending its own independent B01-40/B01-60 code review even if producer tests pass.
+
+## W16 single Unity bridge source evidence: exact RED vs changed-code QA gap
+
+Wave16 [#589](https://github.com/C8LyNn/RoboRougelike/issues/589) retains immutable #510 gameplay and #556 Save schema, and assigns B01-23/62 (NOT B01-00) the exclusive decision among additive Unity host bridges [#585](https://github.com/C8LyNn/RoboRougelike/pull/585) and [#587](https://github.com/C8LyNn/RoboRougelike/pull/587). **No new bridge version has been accepted, offered, installed or merged**. The previous W15 selected Save v2 source G0 still does not mean live Unity Save/Load.
+
+The **existing** original `save_admission.py` adds `--bridge-w16` to maintain current, original-source-exact QA inventory. Its `bridge_w16_hold.json` records:
+- **#585 current core SHA `e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b`**: independent [#572](https://github.com/C8LyNn/RoboRougelike/pull/572) tested the *same source commit and Git blob*, demonstrated post-visibility-activation mutation not revalidated before publication: `HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED`.
+- **#587 current core SHA `16a7d7043a2ecb59a41bbfb063170235872fd7fc`**: independent [#588](https://github.com/C8LyNn/RoboRougelike/pull/588) tested *earlier* Git blob `db69bae2bf4cf106da68f13e0b067499f0da02f3`. Its same-generation world-fork RED is genuine **for the earlier version**, but the current SHA changed: `HOLD_CHANGED_CORE_NEW_EXACT_SHA_QA_REQUIRED`. The latest source includes post-activation Capture validation but still appears to accept different same-generation snapshots; obtain **new original source execution on exact current or newer selected SHA** before an independent verdict.
+- Separate [#582](https://github.com/C8LyNn/RoboRougelike/pull/582) targets alternative B01-62 #577 code and found same-generation fork plus misreported cleanup failure when `Abort()` throws. Do not automatically assign these findings to #585/#587 or install #577 as third bridge.
+
+```sh
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py --bridge-w16 Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w16_hold.json
+python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
+```
+
+The coordinator CLI *only validates declared JSON offline*, using source SHAs independently read from GitHub; it does NOT authenticate reviewer identity, run real Unity, provide an atomic host adapter, infer B01-23 owner choice or send a Codex handoff. It always reports `source_g0=HOLD`, `native_unity_g1=NOT_RUN`, `live_game_save_load=HOLD`, `g2=HOLD`, `codex_ack=UNCONFIRMED`. It rejects a false G0, fabricated owner selection, substituted original QA commit/blob, alternative source injection, unsafe rollback, fake native G1 and premature Codex ACK. A decision by B01-23 later needs a **new source SHA, exact re-run independent QA and B01-40 physical source acceptance**; never mutate the frozen #510/#556.
+
+New original `test_bridge_w16.py` contributes **57 positive/adversarial cases**, taking the full executable suite to **344 source-only original tests**. Real GitHub Actions exact functional SHA [#41096301536](https://github.com/C8LyNn/RoboRougelike/actions/runs/41096301536) ran **344/344 PASS each Windows2025/Ubuntu24.04**, actual GitHub read-only producer source/OS proof remained PASS, and true W16 CLI returned both correct source HOLD outcomes. See `TEST_EVIDENCE/W16-BRIDGE-PROVENANCE-RED-HOLD.md`. Exact final manifest SHA CI requires separate post-commit check.
+
+**Rollback / authority:** discard only unmerged B01-00 Python tool checkout and disposable outputs. No changes to original frozen #510/#556, B01-23 bridge files, B01-61 test files, `Assets/**`, Codex scenes or main/develop. Never run original #510 unsafe recursive rollback on occupied targets; only separately reviewed B01-40/60 safe wrappers in disposable sandbox. **Receiver** B01-23/62 selects/corrects bridge, B01-61 exact selected new SHA tests, B01-40/62 physical archive+safe rollback G0, B01-60 activated real Unity PhysX or NOT_RUN, B01-00 tracks owner/ACK without inventing one.
