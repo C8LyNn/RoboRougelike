@@ -183,6 +183,12 @@ namespace B01.CanonicalRigPortW24
             private readonly RunSnapshot planned;
             private readonly Rig[] rigs;
             private bool published,retired;
+            // W25: old world may have evolved after its initial #556 restore.
+            // Its LIVE velocities must survive a failed competing stage rollback;
+            // never reset them from stale immutable Rig.Saved on Reactivate.
+            private bool resumePending;
+            private readonly Vector3[] resumeLinear=new Vector3[FrozenPartCatalog.Slots];
+            private readonly Vector3[] resumeAngular=new Vector3[FrozenPartCatalog.Slots];
             internal PhysicalWorld(CanonicalPhysicalRigPortW24 port,RunSnapshot snap,Rig[] entries)
             {owner=port;planned=snap;rigs=entries;}
             internal Rigidbody? Body(int i)=>published&&!retired?rigs[i].Body:null;
@@ -240,15 +246,29 @@ namespace B01.CanonicalRigPortW24
                     if(r.Saved.State==PartDockState.Detached)r.Part.SetActive(true);
                     if(!r.Body.isKinematic)
                     {
-                        r.Body.linearVelocity=V(r.Saved.LinearVelocity);
-                        r.Body.angularVelocity=V(r.Saved.AngularVelocity);
+                        r.Body.linearVelocity=resumePending?resumeLinear[i]:V(r.Saved.LinearVelocity);
+                        r.Body.angularVelocity=resumePending?resumeAngular[i]:V(r.Saved.AngularVelocity);
                     }
                 }
-                published=true;owner.visible=this;
+                published=true;resumePending=false;owner.visible=this;
             }
             public void Deactivate()
             {
                 if(retired)return;
+                if(published)
+                {
+                    // Save the REAL current physics after any movement/damage.
+                    // The selected #729 gateway may call Deactivate on the old
+                    // world and later Activate it if new Commit fails.
+                    for(int i=0;i<rigs.Length;i++)
+                    {
+                        Rig r=rigs[i];
+                        if(r.Body==null)throw new InvalidOperationException("Old Rigidbody lost before rollback snapshot");
+                        resumeLinear[i]=r.Body.linearVelocity;
+                        resumeAngular[i]=r.Body.angularVelocity;
+                    }
+                    resumePending=true;
+                }
                 foreach(Rig r in rigs)
                 {
                     if(r.Part!=null)r.Part.SetActive(false);
