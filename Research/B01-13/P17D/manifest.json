@@ -1,0 +1,48 @@
+{
+  "package_id": "LD02-OBS-001",
+  "revision": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "code_scope": [
+    "Research/B01-13/P17D/**",
+    ".github/workflows/b01-13-p17w06-ld02-observer.yml"
+  ],
+  "source_language": "Python 3.11+ stdlib; offline operator-only; NO Unity imports",
+  "dependencies": [],
+  "files": {
+    "Research/B01-13/P17D/ld02_observer.py": {
+      "sha256": "7925d787678284f90023b4360d2e001320a4349cc27c520a258600b752a1ab54",
+      "bytes": 11468
+    },
+    "Research/B01-13/P17D/test_ld02_observer.py": {
+      "sha256": "8ace675bb1daad9e156002a7dd5390970db903d308435cd871f52f9be032ed95",
+      "bytes": 11787
+    },
+    "Research/B01-13/P17D/README.md": {
+      "sha256": "0f53f3a6fbc91a7add439c7bfe2c905b670c02156337a527e66f2d8e7628d6f1",
+      "bytes": 5388
+    },
+    ".github/workflows/b01-13-p17w06-ld02-observer.yml": {
+      "sha256": "7c9ad9b65f907c932e8cefd2c26ee37530434f2cfa7654bb2bb2f742968f2900",
+      "bytes": 1554
+    }
+  },
+  "qa": {
+    "producer_source_local": "31 PASS / 0 FAIL Linux stdlib unittest on actual code",
+    "final_ci": "PENDING at initial source production; see exact PR HEAD GitHub Actions",
+    "independent_b01_40": "PENDING",
+    "independent_b01_60": "PENDING",
+    "unity_edit_play_windows_player": "NOT_RUN",
+    "actual_human_participants": 0,
+    "windows_native_acl_junction": "NOT_MEASURED"
+  },
+  "actual_game_evidence": false,
+  "security_limits": [
+    "operator-supplied source SHA is not independently verified",
+    "exe SHA does not authenticate whole build",
+    "hash chain not cryptographic authenticity",
+    "consent/approval reference cannot prove consent",
+    "Windows NTFS ACL/junction not independently tested"
+  ],
+  "rollback": "Do not merge Draft. Discard isolated branch; remove private operator captures only under explicit retention and withdrawal policy."
+}
