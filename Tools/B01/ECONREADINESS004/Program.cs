@@ -9,7 +9,6 @@ using RoboRougelike.B01.Economy.ReadinessV4;
 sealed class DurableTestOwner : IAtomicRebuildOwnerStoreV3
 {
     readonly string file;
-    public Action OnRead;
     static readonly JsonSerializerOptions Opt=new JsonSerializerOptions{IncludeFields=true};
     public DurableTestOwner(string path){file=path;}
     public static void Initialize(string path)
@@ -40,7 +39,6 @@ sealed class DurableTestOwner : IAtomicRebuildOwnerStoreV3
         try
         {
             state=Load(file);
-            OnRead?.Invoke();
             why="OK";return true;
         }
         catch(Exception){state=null;why="READ_FAIL";return false;}
