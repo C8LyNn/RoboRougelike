@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
-"""B01-62 P17/W17: independent ORIGINAL Git #604 physical #510+#556 coexistence/migration.
+"""B01-62 P17/W17: independent ORIGINAL Git #596 physical #510+#556 coexistence/migration.
 No canonical receiver and no producer source writes. Explicit #596 ALTERNATIVE_HOLD.
 """
 import argparse, hashlib, importlib.util, io, json, os, pathlib, shutil, subprocess, tempfile, zipfile
 
-PRODUCER="1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
+PRODUCER="efb2b06eafedab5469b57f163152d96aca3c5915"
 FROZEN_GAME="d94400d95d13db7f27e1533df05c9292d5380431"
 FROZEN_SAVE="33094f154c7b91119b36d58aab285e6e83c5de57"
-ALT="efb2b06eafedab5469b57f163152d96aca3c5915"
-EXPECTED_SHA256="ef110b5906d385cbc51938a35510c97516a0942b28ec055519a78d1e3fe5afb8"
-EXPECTED_BYTES=101354
-EXPECTED_MEMBERS=27
+ALT="1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
+EXPECTED_SHA256="005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9"
+EXPECTED_BYTES=81190
+EXPECTED_MEMBERS=23
 PACKAGER="Tools/B01/B01-23/P17W15UnitySaveBridge001/package.py"
-PACKAGER_BLOB="96dc5475505172a63ed2510098eb6fc8a234ee18"
+PACKAGER_BLOB="f0fb2f5764c83ed011c309c5a48e4a67ad9b6fa7"
 CORE="Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs"
-CORE_BLOB="399d3cb2074a2659af8f4e941edb28a3d2dd2832"
-FENCE="Assets/B0123UnitySaveBridge001/Core/CheckpointFence.cs"
-FENCE_BLOB="53f907125b09531ebdf5ffdfbb9c5c9b48eca217"
+CORE_BLOB="1f9e883c38101f214e4335867faa731f7ae67689"
 UNITY="Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs"
-UNITY_BLOB="5012e98bba786c6b9702992c317586a0015678c1"
+UNITY_BLOB="4bac6f327c9b93ae98dd2061c0ca8ea2100aab42"
 FROZEN_PINS=[
  (FROZEN_GAME,"Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs","fa1aa5e531927cbe73cf5fdfe161b4a981316db5"),
  (FROZEN_GAME,"Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs","b680ed0ec969ac23203fa55eab7b90f8daa86e43"),
@@ -59,7 +57,7 @@ def execute(repo,output):
     output=pathlib.Path(output).resolve()
     need(output.parent.is_dir() and not output.exists(),"output_must_be_new")
     need(git(repo,"rev-parse",PRODUCER).decode()==PRODUCER,"missing_selected_original_commit")
-    check_paths={PACKAGER:PACKAGER_BLOB,CORE:CORE_BLOB,FENCE:FENCE_BLOB,UNITY:UNITY_BLOB}
+    check_paths={PACKAGER:PACKAGER_BLOB,CORE:CORE_BLOB,UNITY:UNITY_BLOB}
     for path,expected in check_paths.items():
         raw=orig(repo,PRODUCER,path)
         need(git(repo,"rev-parse",PRODUCER+":"+path).decode()==expected and blob(raw)==expected,
@@ -89,7 +87,7 @@ def execute(repo,output):
                 contents={name:z.read(name) for name in names}
             manifest=json.loads(contents["PACKAGE_MANIFEST.json"])
             paths=[entry["path"] for entry in manifest["files"]]
-            need(len(paths)==26 and set(paths)==set(names)-{"PACKAGE_MANIFEST.json"},
+            need(len(paths)==22 and set(paths)==set(names)-{"PACKAGE_MANIFEST.json"},
                  "original_26_exact_member_files")
             need(manifest["own_head_sha"]==PRODUCER and
                  manifest["gameplay_510_sha"]==FROZEN_GAME and
@@ -115,8 +113,8 @@ def execute(repo,output):
                 selected[tags[0]]=path
             game=parent_meta(repo,FROZEN_GAME,"Assets/B0123SecureReattachV2")
             save=parent_meta(repo,FROZEN_SAVE,"Assets/B0123DetachedSaveContract001")
-            need(len(selected)==11 and len(game)==14 and len(save)==9,"selected_dependency_guid_counts")
-            need(len(set(selected)|set(game)|set(save))==34,
+            need(len(selected)==10 and len(game)==14 and len(save)==9,"selected_dependency_guid_counts")
+            need(len(set(selected)|set(game)|set(save))==33,
                  "CROSS_DEPENDENCY_META_GUID_COLLISION")
             need(not (set(selected.values())&set(game.values()) or
                       set(selected.values())&set(save.values()) or
@@ -197,12 +195,12 @@ def execute(repo,output):
             denied(lambda:pack.stage(raw,checkout),"overwrite_selected_source_worktree")
             checks+=2
             receipt={
-              "schema":"B01-62-P17W17-SELECTED604-PHYSICAL-INTAKE-v1",
-              "chosen_pr":604,"chosen_sha":PRODUCER,"alt_hold_pr":596,"alt_hold_sha":ALT,
+              "schema":"B01-62-P17W17-SELECTED596-PHYSICAL-INTAKE-v2",
+              "chosen_pr":596,"chosen_sha":PRODUCER,"alt_hold_pr":604,"alt_hold_sha":ALT,
               "game_510_sha":FROZEN_GAME,"save_556_sha":FROZEN_SAVE,
               "inner_zip_sha256":sha(raw),"inner_zip_bytes":len(raw),"inner_members":len(names),
               "original_b01_23_source_files":len(paths),
-              "guid_counts":{"selected_604":len(selected),"frozen_510":len(game),"frozen_556":len(save),
+              "guid_counts":{"selected_596":len(selected),"frozen_510":len(game),"frozen_556":len(save),
                  "triple_no_duplicates":len(set(selected)|set(game)|set(save))},
               "selected_asmdefs":sorted(asmdefs),
               "tests_pass":checks,"source_physical_gate":"PASS",
@@ -211,9 +209,9 @@ def execute(repo,output):
               "merged":False,
             }
             output.write_bytes((json.dumps(receipt,sort_keys=True,indent=2)+"\n").encode())
-            print("SELECTED_604_ORIGINAL_INNER_ZIP_SHA256="+sha(raw))
-            print("SELECTED_604_REAL_GIT_FILES=26 ZIP_MEMBERS=27 UNITY_META_GUIDS=11")
-            print("TRIPLE_604_510_556_GUID_CLOSURE=34/34 UNIQUE ASMDEFS=3")
+            print("SELECTED_596_ORIGINAL_INNER_ZIP_SHA256="+sha(raw))
+            print("SELECTED_596_REAL_GIT_FILES=22 ZIP_MEMBERS=23 UNITY_META_GUIDS=10")
+            print("TRIPLE_596_510_556_GUID_CLOSURE=33/33 UNIQUE ASMDEFS=3")
             print("B0162_W17_INDEPENDENT_PHYSICAL_CHECKS_PASS="+str(checks))
             print("SOURCE_G0_RECEIPT_PASS FORMAL_G0_PENDING UNITY_G1_NOT_RUN")
             print("CROSS_OS_RECEIPT_SHA256="+sha(output.read_bytes()))
