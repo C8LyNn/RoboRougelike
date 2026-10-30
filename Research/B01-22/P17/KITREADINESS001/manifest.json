@@ -35,7 +35,7 @@
     ".github/workflows/b01-22-p17w08-kitreadiness.yml": "a66fd1ff5f575ed373b01becde76fb4cd14a3e6c",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "1eeaf4742a36c106d3ea0d046c9b64d8af63a341",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "90772a5649e27f4afc99d39c68f4651a99b83448",
-    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "2703f008c76154149ec17648d64dfac02605885b",
+    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "3f3dca8eb8bcae7c3f1fc55fcf958a8f30268495",
     "Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json": "6200854efbf3e9be1f163a3065be62fe2ac18ae9",
     "Research/B01-22/P17/KITREADINESS001/KitProcurementForecast.cs": "f153999a62fd4488f89b831ab2532e051ac3f01f"
   },
@@ -102,5 +102,6 @@
     "does_not_use_blocked_virtual_reservations": true,
     "source_path": "Research/B01-22/P17/KITREADINESS001/KitProcurementForecast.cs",
     "example": "two EK01 + one EK01 owned = 5 missing physical parts, 110 reference Scrap"
-  }
+  },
+  "test_fix_w11": "Actual original CLI RED test #23 misidentified 3-kit total deficit as a 1-part virtual reservation deficit; assertion corrected to 4 and order invariance preserved"
 }
