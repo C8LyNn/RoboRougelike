@@ -9,7 +9,7 @@ class FixedR5SevenOriginal(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
   cls.n=v.w22()
-  cls.m=cls.n.runner()
+  cls.m=v.corrected_stage_runner(cls.n)
   cls.files=v.original_corrected_source(cls.n,cls.m)
  def test_01_owner_R5_old_exact_frozen_commit(self):
   self.assertEqual(self.n.git("merge-base",v.R5,v.FIXED),v.R5)
