@@ -99,5 +99,13 @@ def rollback(payload,target):
         if path.is_dir() and not any(path.iterdir()):path.rmdir()
     # Any unrelated EMPTY directories remain intentionally untouched.
 if __name__=="__main__":
+    import argparse
+    cli=argparse.ArgumentParser()
+    cli.add_argument("--archive",default="")
+    opt=cli.parse_args()
     b=newzip();verify(b)
+    if opt.archive:
+        output=Path(opt.archive)
+        output.parent.mkdir(parents=True,exist_ok=True)
+        output.write_bytes(b)
     print("PASS ORIGINAL W23 ONE-LEASE INNER ZIP",len(b),"entries",len(zipfile.ZipFile(io.BytesIO(b)).namelist()),"SHA256",sha(b),"HEAD",git("rev-parse","HEAD"),"NATIVE_G1_NOT_RUN")

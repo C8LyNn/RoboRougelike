@@ -31,5 +31,10 @@ jobs:
         run: dotnet run --project Tools/B01/B01-23/P17W23UnifiedAuthority001/UnifiedOriginalSourceQA.csproj -c Release
       - name: Real original Git ZIP and rollback safety
         run: python -m unittest discover -s Tools/B01/B01-23/P17W23UnifiedAuthority001 -p test_package.py -v
-      - name: Original source physical archive receipt
-        run: python Tools/B01/B01-23/P17W23UnifiedAuthority001/package.py
+      - name: Build original physical INNER ZIP and exact SHA receipt
+        run: python Tools/B01/B01-23/P17W23UnifiedAuthority001/package.py --archive dist/B0123_W23_ONE_ORIGINAL_LEASE.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w23-original-single-lease-${{ matrix.os }}
+          path: dist/B0123_W23_ONE_ORIGINAL_LEASE.zip
+          if-no-files-found: error
