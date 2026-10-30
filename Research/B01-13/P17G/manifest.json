@@ -1,0 +1,77 @@
+{
+  "package_id": "INPUT-DISCOVERY-001",
+  "version": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_branch": "research/b01-13-pass17-wave09-input-discovery",
+  "exclusive_paths": [
+    "Research/B01-13/P17G/**",
+    ".github/workflows/b01-13-p17w09-input-discovery.yml"
+  ],
+  "dependencies": "Unity 6 / Active Input Handling=Input Manager Old or Both for runtime. .NET 8 and test-only UnityEngine stubs for source CI.",
+  "files": {
+    "UnityPackage/Runtime/InputDiscoveryLedger.cs": {
+      "sha256": "22fa004e76e38b6dbfd55a44d7c8a23c5cb6a2c584af3d048ffc7d45d69b6a44",
+      "bytes": 3905
+    },
+    "UnityPackage/Runtime/InputDiscoveryOverlay.cs": {
+      "sha256": "93f1de8a971d35d53d774c937fdea7b94406da3ce8b4eb6968d1943d03efa22d",
+      "bytes": 4343
+    },
+    "UnityPackage/Runtime/InputDiscoveryLedger.cs.meta": {
+      "sha256": "60973d26ddd442d46a96b1c84f1975c1208a783630ac905bfe436e265f8f9d29",
+      "bytes": 240
+    },
+    "UnityPackage/Runtime/InputDiscoveryOverlay.cs.meta": {
+      "sha256": "adfe92df329ec72a587f5691e11dd1aff9133cd6393bdbada08fbe0fb93f2532",
+      "bytes": 240
+    },
+    "UnityPackage/Prefabs/B01_13_InputDiscovery_Optional.prefab": {
+      "sha256": "e53a3e2469f0bc1cf16d15d65a1ca1b2ef5ea8a7fa67bd5e1ea31417fb07a08f",
+      "bytes": 1332
+    },
+    "UnityPackage/Prefabs/B01_13_InputDiscovery_Optional.prefab.meta": {
+      "sha256": "586072f5e0261864b594fd93aa2558ce45481560b5cc98091194c10fa77b1806",
+      "bytes": 151
+    },
+    "Tests/DotNetOnly/Program.cs": {
+      "sha256": "430b29bd80c7944161999a15e6ba506db06efc8a346937a7b9f3141bbaab7aaa",
+      "bytes": 11884
+    },
+    "Tests/DotNetOnly/UnityStubs.cs": {
+      "sha256": "b486cba0026bf77530e9d68ee358904f4f9aac4b7aec44179d437e17114aa968",
+      "bytes": 2170
+    },
+    "Tests/DotNetOnly/InputDiscoveryTests.csproj": {
+      "sha256": "e16487ffb0dd0403e9edc59d5df174a659b93e299be84e2850a0d2f7c8ff158d",
+      "bytes": 721
+    },
+    "verify_package.py": {
+      "sha256": "304b9fd93a5e75e797da03695bc008253ff3de2235dc5f93d96a6857867f463d",
+      "bytes": 2774
+    },
+    "README.md": {
+      "sha256": "67a654ddd94107a0c6c50c2ce24e0c1999ae2a9dcd80140e5be3fac7dd642321",
+      "bytes": 5360
+    },
+    "../../../.github/workflows/b01-13-p17w09-input-discovery.yml": {
+      "sha256": "ad55a695dfe7e514dec7e2b903107b871c51affba647558eefd0d17b9edb791f",
+      "bytes": 1726
+    }
+  },
+  "tests": {
+    "original_source_cases": 51,
+    "author_ci": "PENDING until exact-head run completes",
+    "native_unity": "NOT_RUN",
+    "participants": 0,
+    "independent_b01_40_b01_60": "PENDING"
+  },
+  "limitations": [
+    "raw W/A/S/D/SPACE/LMB/RMB only; no semantics",
+    "no persistent telemetry",
+    "F8 key may conflict in game",
+    "legacy Input Manager unavailable on New Input System-only Unity",
+    "source compile shim does not prove native Unity PlayMode"
+  ],
+  "rollback": "Leave isolated Draft unmerged; discard branch; if authorized test import performed remove prefab instance and isolated imported files including .meta."
+}

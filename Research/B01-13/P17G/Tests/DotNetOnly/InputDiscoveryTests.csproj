@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="UnityStubs.cs" />
+    <Compile Include="../../UnityPackage/Runtime/InputDiscoveryLedger.cs" Link="InputDiscoveryLedger.cs" />
+    <Compile Include="../../UnityPackage/Runtime/InputDiscoveryOverlay.cs" Link="InputDiscoveryOverlay.cs" />
+  </ItemGroup>
+</Project>
