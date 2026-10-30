@@ -1,0 +1,110 @@
+name: B01-30 P17W07 actual original M04 FBX 121-frame triangle clearance
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/TechArt/P17W07/M04Clearance001/**'
+      - '.github/workflows/b01-30-p17w07-m04-triangle-clearance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-locked-real-imported-mesh-bvh-sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reject changed or competing original M04 producer/exporter source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/386/head
+          test "$(git rev-parse FETCH_HEAD)" = "82ea17a6f964aa0cf08890c827b038ad9a0fc57f"
+          test "$(git rev-parse FETCH_HEAD:Tools/B01/TechArt/P17W03/M04Fbx001/export_original_m04_fbx.py)" = "9d0b9865ef93d76066b07d4fa0533feaccc47b2c"
+          echo B01_30_M04_EXACT_ORIGINAL_FBX_SOURCE_PR386_PIN_PASS
+      - name: Download PREVIOUS actually generated source-locked M04 FBX, not a forged/regenerated 3D asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/B01-30/P17W07/source
+          gh run download 40900769565 --repo C8LyNn/RoboRougelike \
+            --name B01-30-P17W03-M04-024-REAL-FOUR-GIMBAL-FBX \
+            --dir build/B01-30/P17W07/source
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          d=Path("build/B01-30/P17W07/source")
+          fbxs=list(d.rglob("M04-024-4GIMBALS-ORIGINAL.fbx"))
+          src=list(d.rglob("m04-fbx-source-receipt.json"))
+          assert len(fbxs)==len(src)==1
+          f=fbxs[0]
+          sha=hashlib.sha256(f.read_bytes()).hexdigest()
+          assert f.stat().st_size==2109580
+          assert sha=="a017534047b9db6a1001b32b186809b796d4e6562f1c9ea560042de97cf58cd3"
+          assert json.loads(src[0].read_text())["fbx_sha256"]==sha
+          print("B01_30_M04_REAL_ORIGINAL_BINARY_SOURCE_SHA256_PASS",sha)
+          PY
+      - name: Install actual Blender+headless EGL for Blender original mesh reimport / BVH
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          blender --version | head -n 2
+          python3 -m py_compile Tools/B01/TechArt/P17W07/M04Clearance001/*.py
+      - name: Actually import original 2.1MB FBX, BVH-test all 121 frames / six distinct nozzle pairs and negative real collision
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          fbx=$(find build/B01-30/P17W07/source -name 'M04-024-4GIMBALS-ORIGINAL.fbx' -type f -print -quit)
+          receipt=$(find build/B01-30/P17W07/source -name 'm04-fbx-source-receipt.json' -type f -print -quit)
+          test -n "$fbx" && test -n "$receipt"
+          set -e
+          mkdir -p build/B01-30/P17W07/output
+          xvfb-run -a -s '-screen 0 1280x1024x24' \
+            blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W07/M04Clearance001/sweep_original_fbx.py \
+            -- --fbx "$fbx" --receipt "$receipt" \
+               --out build/B01-30/P17W07/output
+      - name: Independently verify ORIGINAL output CSV+JSON+3 real-render PNG binary and source lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import csv,hashlib,json,struct
+          from pathlib import Path
+          d=Path("build/B01-30/P17W07/output")
+          q=json.loads((d/"M04-real-triangle-sweep-qa.json").read_text())
+          f=d/q["csv_name"]
+          actual=f.read_bytes()
+          assert len(actual)==q["csv_bytes"] and hashlib.sha256(actual).hexdigest()==q["csv_sha256"]
+          rows=list(csv.DictReader(f.open()))
+          assert len(rows)==121*6==726
+          assert {int(x["frame"]) for x in rows}==set(range(1,122))
+          assert all(int(x["real_triangle_intersection_count"])==0 for x in rows)
+          assert q["fbx_binary_sha256"]=="a017534047b9db6a1001b32b186809b796d4e6562f1c9ea560042de97cf58cd3"
+          assert q["fbx_imported_meshes"]==105 and len(q["pivots"])==4
+          assert q["negative_real_moved_nozzle"]["mutant_overlap_pairs"]>=1
+          assert len(q["real_blender_rendered_FBX_previews"])==3
+          for item in q["real_blender_rendered_FBX_previews"]:
+              data=(d/item["name"]).read_bytes()
+              assert data[:8]==b'\x89PNG\r\n\x1a\n'
+              assert tuple(struct.unpack(">II",data[16:24]))==(760,760)
+              assert len(data)==item["bytes"] and hashlib.sha256(data).hexdigest()==item["sha256"]
+          print("B01_30_M04_726_REAL_IMPORTED_TRIANGLE_TESTS_AND_TWO_NEGATIVES_3_PNG_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17W07-M04-121-FRAME-REAL-FBX-TRIANGLE-QA
+          path: |
+            build/B01-30/P17W07/output/*.json
+            build/B01-30/P17W07/output/*.csv
+            build/B01-30/P17W07/output/*.png
+          if-no-files-found: error
+          retention-days: 30
