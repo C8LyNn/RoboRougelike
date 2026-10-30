@@ -921,14 +921,20 @@ class RebuildModelTests(unittest.TestCase):
             attempt("victory",True)],cash=0))
         self.assertEqual((x["wins"],x["blocked_deploy_attempts"]),(1,0))
 
-    def test_135_approved_essential_0hp_uses_single_loaner_when_valid(self):
+    def test_135_approved_loaner_win_with_zero_cash_exposes_blocker(self):
         from rebuild_balance import run_approved_plan
         s=[attempt("lost",False,({"id":"gun","role":"weapon",
                                  "blocks_deploy":True},)),
            attempt("loaner_win",True)]
         x=run_approved_plan(plan(s,cash=0))
+        # REQUIRED OWNER FIX: cannot repair non-reserved 0HP from the loaner
+        # victory itself; the new quota only reserves a future rebuild, but
+        # the sole loaner is exhausted and CanDeploy is still blocked.
         self.assertEqual((x["hypothetical_loaner_used"],x["wins"],
-                          x["restored"],x["destroyed_final"]),(1,1,1,0))
+                          x["restored"],x["destroyed_final"]),(1,1,0,1))
+        self.assertEqual(x["end_feasibility"],
+                         "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
+        self.assertEqual(x["reserved_final"],1)
 
     def test_136_approved_loaner_loss_exhausts_lease_per_run(self):
         from rebuild_balance import run_approved_plan
