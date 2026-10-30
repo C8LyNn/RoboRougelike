@@ -34,7 +34,7 @@
     "lifecycle": "zero-impulse burns ID until reattach, new-run reset",
     "boundaries": "extreme finite coordinates, mass, speed and force cap"
   },
-  "g0": "INDEPENDENT_SOURCE_STRESS_PENDING",
+  "g0": "B01_60_INDEPENDENT_DIRECT_ORIGINAL_CSHARP_SOURCE_QA_PASS",
   "g1": "NATIVE_UNITY_NOT_RUN",
   "g2": "HOLD",
   "actual_physics": "NOT_RUN",
@@ -46,5 +46,22 @@
     "No detached game rig, runtime prefab import, real collider/PhysX, human play",
     "B01-40 physical package/GUID/asmdef gate separate"
   ],
-  "rollback": "Delete only six QA-owned files on this branch. Original Assets/B0123DebrisRepulse001/** remain unchanged."
+  "rollback": "Delete only six QA-owned files on this branch. Original Assets/B0123DebrisRepulse001/** remain unchanged.",
+  "verification": {
+    "test_logic_exact_sha": "15ba847231d68598bf3a2ecf47c47c1de4fc63dc",
+    "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045871841",
+    "win_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045871841/artifacts/12971494182",
+    "ubuntu_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045871841/artifacts/12971613739",
+    "both_OS": "SUCCESS",
+    "groups_per_OS": "5 PASS 0 FAIL",
+    "original_git_source_members": "13/13 unchanged",
+    "actual_cases": 50000,
+    "nonzero": 26979,
+    "zero": 23021,
+    "duplicate_rejected": 50000,
+    "invalid_rejected": 2000,
+    "rearms": 394,
+    "trace_sha256": "5b33f65e80cf471370008380ab78e47f1c81be0e465ac4b889f92ca6b7e4c571",
+    "native_g1": "NOT_RUN"
+  }
 }
