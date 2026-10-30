@@ -15,7 +15,7 @@ internal static class Original587Witness
         public W(RunSnapshot snapshot){State=snapshot;}
         public RunSnapshot Capture()
         {
-            if(Active &&BadAfterActivation)return MakeState(false,true,State.Generation,State.RunId);
+            if(Active &&BadAfterActivation)return MakeState(!State.Parts[0].Consumed,!State.Parts[1].Consumed,State.Generation,State.RunId);
             return State;
         }
         public void Activate()=>Active=true;
