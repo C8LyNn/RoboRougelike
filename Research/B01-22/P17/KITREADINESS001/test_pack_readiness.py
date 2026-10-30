@@ -1,0 +1,112 @@
+import copy
+import io
+import json
+import pathlib
+import tempfile
+import unittest
+import zipfile
+
+from pack_readiness import ASSETS, PREVIEWS, FILES, ROOT, SourceError, sha256, \
+    physical_unity_files, make_zip, verify_zip, receipt_for, verify_receipt, \
+    read_previews, stage, rollback
+
+
+class PhysicalSourceTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.files=physical_unity_files()
+        cls.zip=make_zip(cls.files)
+        cls.fixture=pathlib.Path(__file__).parent/"test-previews"
+
+    def preview(self):
+        # Independent preview fixture canary, but must have original schema.
+        values={}
+        for name in PREVIEWS:
+            values[name]=(json.dumps({
+                "schema":"b01-kitreadiness-preview-v1",
+                "source_sha":"b1d4e341d846c9397e236809a1d7e4c4fff9c935",
+                "scenario":name,"reference_only":True,"modifies_game":False,
+                "result":{"Requests":[{"Id":"EK01","Ready":False}]}
+            },sort_keys=True)+"\n").encode()
+        return values
+
+    def data_dir(self,path):
+        path.mkdir()
+        for name,data in self.preview().items():(path/name).write_bytes(data)
+
+    def test_01_exact_three_owned_unity_members(self):
+        self.assertEqual(len(self.files),3)
+        self.assertTrue(verify_zip(self.zip,self.files))
+    def test_02_reproducible_zip(self):
+        self.assertEqual(self.zip,make_zip(physical_unity_files()))
+    def test_03_content_one_real_cppcompatible_source(self):
+        self.assertIn(b"class ReadinessPlan",self.files["Assets/B01KitReadiness001/KitReadinessPlanner.cs"])
+    def test_04_two_distinct_guid_metas(self):
+        import re
+        vals=[re.search(rb"(?m)^guid: ([0-9a-f]{32})$",blob).group(1)
+              for name,blob in self.files.items() if name.endswith(".meta")]
+        self.assertEqual((len(vals),len(set(vals))),(2,2))
+    def test_05_extra_asset_refused(self):
+        bogus=dict(self.files);bogus["Assets/R3/Extra.cs"]=b"bad"
+        with self.assertRaises(SourceError):make_zip(bogus)
+    def test_06_missing_asset_refused(self):
+        bogus=dict(self.files);bogus.pop(ASSETS[0])
+        with self.assertRaises(SourceError):make_zip(bogus)
+    def test_07_tampered_sha_refused(self):
+        receipt=receipt_for(self.zip,self.files,self.preview())
+        receipt["files"]["kitreadiness-unity.zip"]["sha256"]="bad"
+        with self.assertRaises(SourceError):
+            verify_receipt(self.zip,self.files,self.preview(),receipt)
+    def test_08_wrong_original_catalog_sha_refused(self):
+        receipt=receipt_for(self.zip,self.files,self.preview())
+        receipt["original_catalog_git_blob"]="bad"
+        with self.assertRaises(SourceError):
+            verify_receipt(self.zip,self.files,self.preview(),receipt)
+    def test_09_preview_cannot_become_game_mutation(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            obj=json.loads((p/"in"/PREVIEWS[0]).read_text())
+            obj["modifies_game"]=True
+            (p/"in"/PREVIEWS[0]).write_text(json.dumps(obj))
+            with self.assertRaises(SourceError):read_previews(p/"in")
+    def test_10_stage_then_rollback(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"real-output"
+            stage(dest,p/"in",source_check=False)
+            self.assertEqual({f.name for f in dest.iterdir()},FILES)
+            self.assertEqual(rollback(dest),"ROLLED_BACK_PREVIEW_ONLY")
+            self.assertFalse(dest.exists())
+    def test_11_refuse_overwrite(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"existing";dest.mkdir()
+            with self.assertRaises(SourceError):stage(dest,p/"in",source_check=False)
+    def test_12_foreign_file_rollback_refused(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"output";stage(dest,p/"in",source_check=False)
+            (dest/"user.txt").write_text("do not remove")
+            with self.assertRaises(SourceError):rollback(dest)
+            self.assertTrue((dest/"user.txt").exists())
+    def test_13_modified_zip_rollback_refused(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"output";stage(dest,p/"in",source_check=False)
+            (dest/"kitreadiness-unity.zip").write_bytes(b"modified")
+            with self.assertRaises((SourceError,zipfile.BadZipFile)):rollback(dest)
+            self.assertTrue(dest.exists())
+    def test_14_modified_preview_rollback_refused(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"output";stage(dest,p/"in",source_check=False)
+            (dest/PREVIEWS[0]).write_text("{}")
+            with self.assertRaises((SourceError,KeyError)):rollback(dest)
+            self.assertTrue(dest.exists())
+    def test_15_receipt_rejects_unexpected_member_byte(self):
+        files=dict(self.files);files[ASSETS[1]]=files[ASSETS[1]]+b"changed"
+        rec=receipt_for(self.zip,self.files,self.preview())
+        with self.assertRaises(SourceError):verify_receipt(self.zip,files,self.preview(),rec)
+
+
+if __name__=="__main__":unittest.main(verbosity=2)
