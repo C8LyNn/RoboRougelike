@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "10.0.0-P17W16-HUD_SNAPSHOT_OWNERSHIP",
+  "version": "11.0.0-P17W17-VISUAL_SLOW_MOTION_LOOP",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "R10_EXACT_SHA_SOURCE_CI_PENDING / SOURCE_G0_INDEPENDENT_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO / G2_HOLD",
+  "status": "R11_EXACT_SHA_CI_PENDING / SOURCE_G0_INDEPENDENT_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO / G2_HOLD",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -26,12 +26,12 @@
       "chars": 15147
     },
     "GhostVisualProxy.cs": {
-      "gitBlob": "de795c06fd0b462a0fe5f895460dfa796a664cd0",
-      "chars": 6400
+      "gitBlob": "be52e109ecd5729211c09a15026fc5acbfaa94b6",
+      "chars": 6705
     },
     "GhostSplitCoach.cs": {
-      "gitBlob": "8f5128c9da46f81116e178862039238916c67be1",
-      "chars": 17840
+      "gitBlob": "90b377e01b19c2deab01a76ce766e31c70ca1aea",
+      "chars": 18609
     },
     "GhostSplitHud.cs": {
       "gitBlob": "7e5badbde8a19f9746fe0b5baee8b12ee92dfd5a",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "3c08c8e862cfec0b2fb2abc81aaefe4084e30348",
-      "chars": 52316
+      "gitBlob": "5c584f589bfd223840cdfe32f922508963ada627",
+      "chars": 57635
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "6f142691dc08dee0a161ff770fdbbf486568d7b0",
-      "chars": 39050
+      "gitBlob": "b4f173154816764caf733bb42b9c8ab7cac43c02",
+      "chars": 42642
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "6f01e25b27e33fdb787f526688f3aadf5be2b955"
+    "gitBlob": "71b68873d8677efa0f061539f758be9431949a95"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 157,
+    "namedCases": 171,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "W16 R10 exact head CI PENDING, predecessor R9 145/145 per OS is historical only",
-    "windows": "W16 157 C# PENDING actual execution",
-    "ubuntu": "W16 157 C# PENDING actual execution",
-    "actualDemoJson": "W16 R10 PENDING",
+    "workflowRun": "R11 exact-head original source CI PENDING; prior R10 157/157 per OS is historical only",
+    "windows": "R11 171 original C# PENDING execution Windows",
+    "ubuntu": "R11 171 original C# PENDING execution Ubuntu",
+    "actualDemoJson": "R11 exact-head PENDING",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "WAVE16 R10: portable GhostPracticePresentation clone-on-write/clone-on-read used by actual GhostSplitHud OnGUI, prevents returned host DTO edits forging display after gate/finish; 12 original C# tests #146-157",
+  "qualityPatch": "WAVE17 R11: opt-in original GhostPracticeLoop.PoseAt(double,float) with bounded 0.25x-2x visual-only practice speed; original Unity GhostVisualProxy.SeekDrill(double,float) overload; legacy 1x preserved; 14 new executable original C# cases 158-171.",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -232,5 +232,5 @@
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
   },
-  "currentPredecessorSHA": "efb754f8d735be8609c3623f66647220fc85c773"
+  "currentPredecessorSHA": "656f8e7f58047e2483e8c4b8ba3214017cf2d9c2"
 }
