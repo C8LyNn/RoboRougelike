@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "11.0.0-P17W17-VISUAL_SLOW_MOTION_LOOP",
+  "version": "12.0.0-P17W18-INTERACTIVE_VISUAL_TRANSPORT",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "R11_EXACT_SHA_CI_PENDING / SOURCE_G0_INDEPENDENT_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO / G2_HOLD",
+  "status": "R12_SOURCE_CI_PENDING / INDEPENDENT_G0_PENDING / UNITY_G1_NOT_RUN / HOST_LIVE_SAVE_NOT_APPLICABLE / CODEX_ACK_NO / G2_HOLD",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -26,12 +26,12 @@
       "chars": 15147
     },
     "GhostVisualProxy.cs": {
-      "gitBlob": "be52e109ecd5729211c09a15026fc5acbfaa94b6",
-      "chars": 6705
+      "gitBlob": "890d47ce6b22f2da36e5ac1f53740727406aaf0c",
+      "chars": 10515
     },
     "GhostSplitCoach.cs": {
-      "gitBlob": "90b377e01b19c2deab01a76ce766e31c70ca1aea",
-      "chars": 18609
+      "gitBlob": "1d60bf9d0ec3ece96bdfe306e37cc782b54c75a5",
+      "chars": 22296
     },
     "GhostSplitHud.cs": {
       "gitBlob": "7e5badbde8a19f9746fe0b5baee8b12ee92dfd5a",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "5c584f589bfd223840cdfe32f922508963ada627",
-      "chars": 57635
+      "gitBlob": "9914cd4b294a9331d7556e01a28034332eab92e8",
+      "chars": 64122
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "b4f173154816764caf733bb42b9c8ab7cac43c02",
-      "chars": 42642
+      "gitBlob": "533f22a7af9cbf8a7aed031354c1a188e1a488c4",
+      "chars": 46667
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "71b68873d8677efa0f061539f758be9431949a95"
+    "gitBlob": "53e472af3f04766374349ae48f2bfcf5f6a40513"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 171,
+    "namedCases": 193,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "R11 exact-head original source CI PENDING; prior R10 157/157 per OS is historical only",
-    "windows": "R11 171 original C# PENDING execution Windows",
-    "ubuntu": "R11 171 original C# PENDING execution Ubuntu",
-    "actualDemoJson": "R11 exact-head PENDING",
+    "workflowRun": "R12 exact-head CI PENDING; R11 at f0fc162 171/171 per OS success is historical only",
+    "windows": "R12 193 source tests PENDING",
+    "ubuntu": "R12 193 source tests PENDING",
+    "actualDemoJson": "R12 original demo PENDING",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "WAVE17 R11: opt-in original GhostPracticeLoop.PoseAt(double,float) with bounded 0.25x-2x visual-only practice speed; original Unity GhostVisualProxy.SeekDrill(double,float) overload; legacy 1x preserved; 14 new executable original C# cases 158-171.",
+  "qualityPatch": "W18 R12: genuine coach focus GhostPracticeTransport reference cursor prevents R11 rate-switch jumps, offers play/pause/frame-step/seek/reset and 0.25x-2x; actual opt-in native GhostVisualProxy OnGUI buttons. 22 original C# cases #172-193.",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -232,5 +232,5 @@
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
   },
-  "currentPredecessorSHA": "656f8e7f58047e2483e8c4b8ba3214017cf2d9c2"
+  "currentPredecessorSHA": "f0fc1626d6ce92f87738695cb327249cf0f52ef5"
 }
