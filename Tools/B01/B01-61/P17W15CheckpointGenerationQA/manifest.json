@@ -1,0 +1,36 @@
+{
+  "package": "B01-61-P17W15-ORIGINAL556-DISK-RESTART-GENERATION-QA",
+  "owner": "B01-61",
+  "version": "1.0.0",
+  "selected_save_pr": 556,
+  "selected_save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_gameplay_pr": 510,
+  "frozen_gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "source_immutable_blobs": [
+    "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  ],
+  "owned_files": 6,
+  "processes_per_os": 4,
+  "expected_red": "Different valid saved states with same run+generation both accepted",
+  "test_mode": "actual managed original producer source and real OS file, four distinct CLR processes",
+  "unity_host_adapter": "NOT_AVAILABLE",
+  "disk_atomicity": "NOT_PRODUCTION_VERIFIED",
+  "unity_native": "NOT_RUN",
+  "codex_receiver": "NOT_SCANNED",
+  "release": "HOLD",
+  "G2": "HOLD",
+  "ack": false,
+  "integrated": false,
+  "merge": false,
+  "alternatives_on_hold": [
+    544,
+    549,
+    554,
+    511,
+    494
+  ],
+  "rollback": "close unmerged own Draft; no producer source changed"
+}
