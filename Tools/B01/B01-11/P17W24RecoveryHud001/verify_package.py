@@ -25,7 +25,7 @@ def main():
     expected=recorded|{"Tools/B01/B01-11/P17W24RecoveryHud001/manifest.json"}
     diff=subprocess.check_output(["git","diff","--name-only",BASE,"HEAD"],cwd=ROOT,text=True).splitlines()
     assert set(diff)==expected,sorted(set(diff)^expected)
-    own=sorted((ROOT/"Assets/B01Packages/RECOVERYHUD001").rglob("*.meta"))
+    own=[ROOT/"Assets/B01Packages/RECOVERYHUD001.meta"] + sorted((ROOT/"Assets/B01Packages/RECOVERYHUD001").rglob("*.meta"))
     assert len(own)==5,len(own)
     guids=[]
     for f in own:
