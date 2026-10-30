@@ -182,6 +182,7 @@ internal static class Tests
                 fac.Last.Retired=true;
             }
             bool closed=api?.TryCloseAfterPhysicalRetirement(()=>true)??true;
+            if(api!=null&&!api.AuthorityActive)closed=true;
             if(closed&&Directory.Exists(dir))Directory.Delete(dir,true);
             // An uncertain failed retirement remains OS-locked intentionally.
         }

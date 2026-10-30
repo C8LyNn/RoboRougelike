@@ -68,6 +68,7 @@ namespace B01.CanonicalWorldApi001
         private RunSnapshot? accepted;
         private bool busy, quarantined;
         public bool Quarantined => quarantined;
+        public bool AuthorityActive => HasAuthority;
         public bool HasWorld => active != null;
         public long Generation => accepted?.Generation ?? 0;
 
