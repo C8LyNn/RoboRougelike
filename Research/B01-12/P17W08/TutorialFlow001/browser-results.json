@@ -1,0 +1,507 @@
+{
+  "package": "B01-12-TUTORIALFLOW-001/R1",
+  "viewport_count": 4,
+  "total": 124,
+  "passed": 124,
+  "failed": [],
+  "js_errors": [],
+  "cases": [
+    {
+      "case": "320/renders",
+      "pass": true
+    },
+    {
+      "case": "320/initial_counter",
+      "pass": true
+    },
+    {
+      "case": "320/initial_progress",
+      "pass": true
+    },
+    {
+      "case": "320/initial_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "320/initial_back_disabled",
+      "pass": true
+    },
+    {
+      "case": "320/six_step_rows",
+      "pass": true
+    },
+    {
+      "case": "320/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "320/wrong_phase_rejected",
+      "pass": true
+    },
+    {
+      "case": "320/keyboard_accepts_action",
+      "pass": true
+    },
+    {
+      "case": "320/aria_live_feedback",
+      "pass": true
+    },
+    {
+      "case": "320/progress_17",
+      "pass": true
+    },
+    {
+      "case": "320/garage_2_done",
+      "pass": true
+    },
+    {
+      "case": "320/optional_skip_enabled",
+      "pass": true
+    },
+    {
+      "case": "320/skip_marks_step",
+      "pass": true
+    },
+    {
+      "case": "320/phase_combat",
+      "pass": true
+    },
+    {
+      "case": "320/wrong_reward_rejected",
+      "pass": true
+    },
+    {
+      "case": "320/combat_fired",
+      "pass": true
+    },
+    {
+      "case": "320/optional_dodge_enabled",
+      "pass": true
+    },
+    {
+      "case": "320/dodge_done",
+      "pass": true
+    },
+    {
+      "case": "320/final_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "320/complete",
+      "pass": true
+    },
+    {
+      "case": "320/complete_progress_100",
+      "pass": true
+    },
+    {
+      "case": "320/restart_enabled",
+      "pass": true
+    },
+    {
+      "case": "320/history_complete_six",
+      "pass": true
+    },
+    {
+      "case": "320/back_opens_final_step",
+      "pass": true
+    },
+    {
+      "case": "320/back_not_game_rollback",
+      "pass": true
+    },
+    {
+      "case": "320/replaying_final_works",
+      "pass": true
+    },
+    {
+      "case": "320/restart_resets_progress",
+      "pass": true
+    },
+    {
+      "case": "320/restart_resets_progressbar",
+      "pass": true
+    },
+    {
+      "case": "320/reset_midflow",
+      "pass": true
+    },
+    {
+      "case": "320/final_no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "768/renders",
+      "pass": true
+    },
+    {
+      "case": "768/initial_counter",
+      "pass": true
+    },
+    {
+      "case": "768/initial_progress",
+      "pass": true
+    },
+    {
+      "case": "768/initial_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "768/initial_back_disabled",
+      "pass": true
+    },
+    {
+      "case": "768/six_step_rows",
+      "pass": true
+    },
+    {
+      "case": "768/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "768/wrong_phase_rejected",
+      "pass": true
+    },
+    {
+      "case": "768/keyboard_accepts_action",
+      "pass": true
+    },
+    {
+      "case": "768/aria_live_feedback",
+      "pass": true
+    },
+    {
+      "case": "768/progress_17",
+      "pass": true
+    },
+    {
+      "case": "768/garage_2_done",
+      "pass": true
+    },
+    {
+      "case": "768/optional_skip_enabled",
+      "pass": true
+    },
+    {
+      "case": "768/skip_marks_step",
+      "pass": true
+    },
+    {
+      "case": "768/phase_combat",
+      "pass": true
+    },
+    {
+      "case": "768/wrong_reward_rejected",
+      "pass": true
+    },
+    {
+      "case": "768/combat_fired",
+      "pass": true
+    },
+    {
+      "case": "768/optional_dodge_enabled",
+      "pass": true
+    },
+    {
+      "case": "768/dodge_done",
+      "pass": true
+    },
+    {
+      "case": "768/final_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "768/complete",
+      "pass": true
+    },
+    {
+      "case": "768/complete_progress_100",
+      "pass": true
+    },
+    {
+      "case": "768/restart_enabled",
+      "pass": true
+    },
+    {
+      "case": "768/history_complete_six",
+      "pass": true
+    },
+    {
+      "case": "768/back_opens_final_step",
+      "pass": true
+    },
+    {
+      "case": "768/back_not_game_rollback",
+      "pass": true
+    },
+    {
+      "case": "768/replaying_final_works",
+      "pass": true
+    },
+    {
+      "case": "768/restart_resets_progress",
+      "pass": true
+    },
+    {
+      "case": "768/restart_resets_progressbar",
+      "pass": true
+    },
+    {
+      "case": "768/reset_midflow",
+      "pass": true
+    },
+    {
+      "case": "768/final_no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1280/renders",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_counter",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_progress",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "1280/initial_back_disabled",
+      "pass": true
+    },
+    {
+      "case": "1280/six_step_rows",
+      "pass": true
+    },
+    {
+      "case": "1280/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1280/wrong_phase_rejected",
+      "pass": true
+    },
+    {
+      "case": "1280/keyboard_accepts_action",
+      "pass": true
+    },
+    {
+      "case": "1280/aria_live_feedback",
+      "pass": true
+    },
+    {
+      "case": "1280/progress_17",
+      "pass": true
+    },
+    {
+      "case": "1280/garage_2_done",
+      "pass": true
+    },
+    {
+      "case": "1280/optional_skip_enabled",
+      "pass": true
+    },
+    {
+      "case": "1280/skip_marks_step",
+      "pass": true
+    },
+    {
+      "case": "1280/phase_combat",
+      "pass": true
+    },
+    {
+      "case": "1280/wrong_reward_rejected",
+      "pass": true
+    },
+    {
+      "case": "1280/combat_fired",
+      "pass": true
+    },
+    {
+      "case": "1280/optional_dodge_enabled",
+      "pass": true
+    },
+    {
+      "case": "1280/dodge_done",
+      "pass": true
+    },
+    {
+      "case": "1280/final_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "1280/complete",
+      "pass": true
+    },
+    {
+      "case": "1280/complete_progress_100",
+      "pass": true
+    },
+    {
+      "case": "1280/restart_enabled",
+      "pass": true
+    },
+    {
+      "case": "1280/history_complete_six",
+      "pass": true
+    },
+    {
+      "case": "1280/back_opens_final_step",
+      "pass": true
+    },
+    {
+      "case": "1280/back_not_game_rollback",
+      "pass": true
+    },
+    {
+      "case": "1280/replaying_final_works",
+      "pass": true
+    },
+    {
+      "case": "1280/restart_resets_progress",
+      "pass": true
+    },
+    {
+      "case": "1280/restart_resets_progressbar",
+      "pass": true
+    },
+    {
+      "case": "1280/reset_midflow",
+      "pass": true
+    },
+    {
+      "case": "1280/final_no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1920/renders",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_counter",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_progress",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "1920/initial_back_disabled",
+      "pass": true
+    },
+    {
+      "case": "1920/six_step_rows",
+      "pass": true
+    },
+    {
+      "case": "1920/no_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "case": "1920/wrong_phase_rejected",
+      "pass": true
+    },
+    {
+      "case": "1920/keyboard_accepts_action",
+      "pass": true
+    },
+    {
+      "case": "1920/aria_live_feedback",
+      "pass": true
+    },
+    {
+      "case": "1920/progress_17",
+      "pass": true
+    },
+    {
+      "case": "1920/garage_2_done",
+      "pass": true
+    },
+    {
+      "case": "1920/optional_skip_enabled",
+      "pass": true
+    },
+    {
+      "case": "1920/skip_marks_step",
+      "pass": true
+    },
+    {
+      "case": "1920/phase_combat",
+      "pass": true
+    },
+    {
+      "case": "1920/wrong_reward_rejected",
+      "pass": true
+    },
+    {
+      "case": "1920/combat_fired",
+      "pass": true
+    },
+    {
+      "case": "1920/optional_dodge_enabled",
+      "pass": true
+    },
+    {
+      "case": "1920/dodge_done",
+      "pass": true
+    },
+    {
+      "case": "1920/final_skip_disabled",
+      "pass": true
+    },
+    {
+      "case": "1920/complete",
+      "pass": true
+    },
+    {
+      "case": "1920/complete_progress_100",
+      "pass": true
+    },
+    {
+      "case": "1920/restart_enabled",
+      "pass": true
+    },
+    {
+      "case": "1920/history_complete_six",
+      "pass": true
+    },
+    {
+      "case": "1920/back_opens_final_step",
+      "pass": true
+    },
+    {
+      "case": "1920/back_not_game_rollback",
+      "pass": true
+    },
+    {
+      "case": "1920/replaying_final_works",
+      "pass": true
+    },
+    {
+      "case": "1920/restart_resets_progress",
+      "pass": true
+    },
+    {
+      "case": "1920/restart_resets_progressbar",
+      "pass": true
+    },
+    {
+      "case": "1920/reset_midflow",
+      "pass": true
+    },
+    {
+      "case": "1920/final_no_horizontal_overflow",
+      "pass": true
+    }
+  ],
+  "native_unity": "NOT_RUN"
+}

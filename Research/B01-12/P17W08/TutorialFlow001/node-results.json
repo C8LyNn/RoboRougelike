@@ -1,0 +1,291 @@
+{
+  "package": "B01-12-TUTORIALFLOW-001/R1",
+  "environment": {
+    "node": "v22.16.0"
+  },
+  "total": 70,
+  "passed": 70,
+  "failed": [],
+  "cases": [
+    {
+      "name": "initial index 0",
+      "pass": true
+    },
+    {
+      "name": "initial status active",
+      "pass": true
+    },
+    {
+      "name": "initial no history",
+      "pass": true
+    },
+    {
+      "name": "fixed 6 steps",
+      "pass": true
+    },
+    {
+      "name": "view first step",
+      "pass": true
+    },
+    {
+      "name": "view progress 0%",
+      "pass": true
+    },
+    {
+      "name": "immutable step definitions",
+      "pass": true
+    },
+    {
+      "name": "history cannot be forged",
+      "pass": true
+    },
+    {
+      "name": "invalid unsupported version fails closed",
+      "pass": true
+    },
+    {
+      "name": "invalid skipped mandatory fails closed",
+      "pass": true
+    },
+    {
+      "name": "negative index fails closed",
+      "pass": true
+    },
+    {
+      "name": "duplicate receipt state fails closed",
+      "pass": true
+    },
+    {
+      "name": "invalid event null rejected",
+      "pass": true
+    },
+    {
+      "name": "invalid event string rejected",
+      "pass": true
+    },
+    {
+      "name": "unsupported event type rejected",
+      "pass": true
+    },
+    {
+      "name": "wrong phase rejected",
+      "pass": true
+    },
+    {
+      "name": "wrong action rejected",
+      "pass": true
+    },
+    {
+      "name": "wrong action leaves original same reference",
+      "pass": true
+    },
+    {
+      "name": "skip mandatory rejected",
+      "pass": true
+    },
+    {
+      "name": "back at start rejected",
+      "pass": true
+    },
+    {
+      "name": "restart before done rejected",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt \"\"",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt \"space bad\"",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt \"..\"",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt \"\\n\"",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt 7",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt undefined",
+      "pass": true
+    },
+    {
+      "name": "valid action step index",
+      "pass": true
+    },
+    {
+      "name": "original input unchanged",
+      "pass": true
+    },
+    {
+      "name": "action records history",
+      "pass": true
+    },
+    {
+      "name": "action records receipt",
+      "pass": true
+    },
+    {
+      "name": "revision increments exactly once",
+      "pass": true
+    },
+    {
+      "name": "progress 17%",
+      "pass": true
+    },
+    {
+      "name": "repeat old receipt rejected even if next action",
+      "pass": true
+    },
+    {
+      "name": "wrong next action no advance",
+      "pass": true
+    },
+    {
+      "name": "second mandatory completed",
+      "pass": true
+    },
+    {
+      "name": "optional step exposed",
+      "pass": true
+    },
+    {
+      "name": "optional skip advances",
+      "pass": true
+    },
+    {
+      "name": "skip outcome saved",
+      "pass": true
+    },
+    {
+      "name": "skip does not add receipt",
+      "pass": true
+    },
+    {
+      "name": "action in old phase blocked after skip",
+      "pass": true
+    },
+    {
+      "name": "combat fire advances",
+      "pass": true
+    },
+    {
+      "name": "next optional visible",
+      "pass": true
+    },
+    {
+      "name": "combat dodge performed",
+      "pass": true
+    },
+    {
+      "name": "reward cannot be skipped",
+      "pass": true
+    },
+    {
+      "name": "wrong context at result blocked",
+      "pass": true
+    },
+    {
+      "name": "complete status",
+      "pass": true
+    },
+    {
+      "name": "complete index 6",
+      "pass": true
+    },
+    {
+      "name": "complete progress 100%",
+      "pass": true
+    },
+    {
+      "name": "complete current null",
+      "pass": true
+    },
+    {
+      "name": "complete effect",
+      "pass": true
+    },
+    {
+      "name": "post-complete action ignored",
+      "pass": true
+    },
+    {
+      "name": "post-complete skip ignored",
+      "pass": true
+    },
+    {
+      "name": "post-complete restart allowed",
+      "pass": true
+    },
+    {
+      "name": "post-complete back to final",
+      "pass": true
+    },
+    {
+      "name": "back truncates history",
+      "pass": true
+    },
+    {
+      "name": "back clears receipts to allow replay",
+      "pass": true
+    },
+    {
+      "name": "back does not change source complete",
+      "pass": true
+    },
+    {
+      "name": "back text is not gameplay rollback",
+      "pass": true
+    },
+    {
+      "name": "back then retry final accepted",
+      "pass": true
+    },
+    {
+      "name": "skip optional + back restores required marker",
+      "pass": true
+    },
+    {
+      "name": "reset on active clears state",
+      "pass": true
+    },
+    {
+      "name": "reset still monotonic revision",
+      "pass": true
+    },
+    {
+      "name": "restart clears completed state",
+      "pass": true
+    },
+    {
+      "name": "invalid receipt code cannot progress",
+      "pass": true
+    },
+    {
+      "name": "state immutability of history snapshots",
+      "pass": true
+    },
+    {
+      "name": "status forged fails closed",
+      "pass": true
+    },
+    {
+      "name": "untrusted mutated history fails closed",
+      "pass": true
+    },
+    {
+      "name": "same valid event after reset accepted",
+      "pass": true
+    }
+  ]
+}
