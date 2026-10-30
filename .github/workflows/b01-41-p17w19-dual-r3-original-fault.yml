@@ -1,0 +1,81 @@
+name: B01-41 P17 W19 exact independent original R3A R3B ambiguous Commit QA
+on:
+  push:
+    branches: ['ci/b01-41-p17w19-r3-fault-disposition']
+    paths:
+      - 'Tools/B01/CI41/P17W19/**'
+      - '.github/workflows/b01-41-p17w19-dual-r3-original-fault.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  isolated-exact-r3-csharp:
+    name: Both R3 ORIGINAL CSharp sources separately, durable fault RED (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch EXACT real GitHub R3 PR heads WITHOUT merging competing source trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/pull/642/head:refs/remotes/ci41/r3a' '+refs/pull/644/head:refs/remotes/ci41/r3b'
+          test "$(git rev-parse refs/remotes/ci41/r3a)" = '22cec9888047994ae523cbe7bf1b0a483d64cec4'
+          test "$(git rev-parse refs/remotes/ci41/r3b)" = 'd9b95146e46a5d81d5a291d7887e456164f4d0c2'
+          test "$(git rev-parse HEAD)" = '${{ github.sha }}'
+          echo 'EXACT_TWO_FROZEN_R3_ORIGINAL_COMMITS_AVAILABLE_NOT_MIXED'
+      - name: Run 16 independent original R3 source mixing and missing guard adversarial tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W19/ -p test_stage_original.py -v 2>&1 | tee "ci41-w19-source-${{ runner.os }}.txt"
+          grep -q 'Ran 16 tests' "ci41-w19-source-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w19-source-${{ runner.os }}.txt"
+      - name: Stage each candidate's ORIGINAL Git blob sources and recompile isolated CSharp exact candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          for c in A B; do
+            "$PY" Tools/B01/CI41/P17W19/stage_original.py --candidate "$c" --dest "ci41-w19-stage/$c" | tee "ci41-w19-git-$c-${{ runner.os }}.json"
+            "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1])); assert x["stage"]=="EXACT_ORIGINAL_GIT_BLOBS_ONLY" and x["selected_r3"]=="NONE_OWNER_DECISION_PENDING" and x["no_mixed_assets"] and len(x["source_files"])==4 and x["unity_g1"]=="NOT_RUN" and x["release_gate"]=="HOLD";print("EXACT_R3_ORIGINAL_BLOBS_ISOLATED")' "ci41-w19-git-$c-${{ runner.os }}.json"
+            # Never reuse build DLL between R3A / R3B despite common project name.
+            rm -rf Tools/B01/CI41/P17W19/obj Tools/B01/CI41/P17W19/bin
+            dotnet build Tools/B01/CI41/P17W19/R3OriginalFaultQA.csproj -c Release --warnaserror "-p:OriginalRoot=../../../../ci41-w19-stage/$c" 2>&1 | tee "ci41-w19-build-$c-${{ runner.os }}.txt"
+            dotnet Tools/B01/CI41/P17W19/bin/Release/net8.0/R3OriginalFaultQA.dll "$c" --audit 2>&1 | tee "ci41-w19-audit-$c-${{ runner.os }}.txt"
+            grep -q "CI41_W19_ORIGINAL_${c}_UNCERTAIN_COMMIT_P0_RED_REPRODUCED" "ci41-w19-audit-$c-${{ runner.os }}.txt"
+            grep -q "CI41_W19_ORIGINAL_${c}_DIRECT_CSHARP_PASS" "ci41-w19-audit-$c-${{ runner.os }}.txt"
+            grep -q 'CI41_W19_SOURCE_QA_WITNESS_PASS_RELEASE_HOLD_NOT_SELECTED' "ci41-w19-audit-$c-${{ runner.os }}.txt"
+            set +e
+            dotnet Tools/B01/CI41/P17W19/bin/Release/net8.0/R3OriginalFaultQA.dll "$c" --release > "ci41-w19-release-$c-${{ runner.os }}.txt" 2>&1
+            exit_code=$?
+            set -e
+            test "$exit_code" -eq 3
+            grep -q 'CI41_W19_SOURCE_QA_WITNESS_PASS_RELEASE_HOLD_NOT_SELECTED' "ci41-w19-release-$c-${{ runner.os }}.txt"
+            echo "ORIGINAL_R3_$c_DURABLE_COMMIT_SECURITY_RELEASE_HOLD_EXIT3"
+          done
+      - name: Preserve real Git blob, CSharp run and security-release-denied evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W19-DUAL-R3-AMBIGUOUS-COMMIT-${{ runner.os }}
+          path: |
+            ci41-w19-source-${{ runner.os }}.txt
+            ci41-w19-git-*.json
+            ci41-w19-build-*.txt
+            ci41-w19-audit-*.txt
+            ci41-w19-release-*.txt
+          retention-days: 14
+          if-no-files-found: warn
