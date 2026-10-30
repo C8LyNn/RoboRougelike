@@ -1,4 +1,4 @@
-name: B01-10 P17W20 ECONBAL Original Source Model
+name: B01-10 P17W21 ECONBAL Original Source Model
 on:
   push:
     branches: [design/b01-10-p17w20-econbal-001]
@@ -62,7 +62,7 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s Research/B01-10/P17/W20_ECONBAL_001 -p test_rebuild_balance.py -v > "$RUNNER_TEMP/econbal-tests.log" 2>&1
           cat "$RUNNER_TEMP/econbal-tests.log"
-          grep -F 'Ran 45 tests' "$RUNNER_TEMP/econbal-tests.log"
+          grep -F 'Ran 70 tests' "$RUNNER_TEMP/econbal-tests.log"
           grep -Fx 'OK' "$RUNNER_TEMP/econbal-tests.log"
       - name: Actually analyze six independent scenario inputs and 200 seeded synthetic runs
         shell: bash
@@ -74,7 +74,7 @@ jobs:
           import json,sys
           report=json.load(open(sys.argv[1],encoding='utf8'))
           cases=report['cases']
-          assert len(cases)==6
+          assert len(cases)==8
           h=cases['twelve_victories_two_destroyed']['bootstrap_epoch_zero']
           assert (h['per_win']['free'],h['per_win']['paid'],
                   h['per_win']['charged_scrap'])==(12,12,840)
@@ -82,13 +82,23 @@ jobs:
                   h['per_run']['charged_scrap'])==(1,23,1610)
           assert h['delta_scrap_per_run_minus_per_win']==770
           n=cases['twelve_victories_two_destroyed']['no_bootstrap_epoch_zero']
-          assert n['per_win']['charged_scrap']==910
+          assert n['per_win']['charged_scrap']==840
+          # Strict alternate design assumptions: unstartable future scripted
+          # wins MUST NOT magically clear 0HP essential blockers.
+          critical=cases['victory_breaks_essential_drive_next_win_unreachable']
+          assert critical['deploy_gate_no_loaner']['wins']==1
+          assert critical['deploy_gate_no_loaner']['blocked_deploy_attempts']==2
+          assert critical['deploy_gate_no_loaner']['contradicted_scripted_wins']==2
+          assert critical['deploy_gate_one_hypothetical_loaner']['wins']==2
+          second=cases['one_loaner_losses_then_blocked']
+          assert second['deploy_gate_one_hypothetical_loaner']['wins']==0
+          assert second['deploy_gate_one_hypothetical_loaner']['blocked_deploy_attempts']==1
           stress=json.load(open(sys.argv[2],encoding='utf8'))
           assert stress['episodes']==200
           assert stress['attempts_each']==12
           assert 'SYNTHETIC_ONLY' in stress['notice']
           assert len(stress['aggregate'])==2
-          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 6/6 PASS '
+          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 8/8 PASS '
                 '| BOOTSTRAP 2/2 PASS | SYNTHETIC_FIXED_SEED_EPISODES 200 PASS '
                 '| HUMAN_PLAYTEST NOT_RUN | UNITY NOT_RUN')
           PY
