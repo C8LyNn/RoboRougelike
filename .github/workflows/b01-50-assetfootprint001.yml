@@ -1,0 +1,50 @@
+name: B01-50 ASSETFOOTPRINT001 Source Bytes
+on:
+  push:
+    branches:
+      - perf/b01-50-p17-w12-assetfootprint001
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/ASSETFOOTPRINT001/**'
+      - '.github/workflows/b01-50-assetfootprint001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify original tool bytes
+        run: sha256sum -c Tools/B01/B01-50/ASSETFOOTPRINT001/MANIFEST.sha256
+      - name: Run 18 original scanner/negative tests
+        run: python3 -m unittest discover -s Tools/B01/B01-50/ASSETFOOTPRINT001/tests -v 2>&1 | tee /tmp/b01-50-tests.log; exit ${PIPESTATUS[0]}
+      - name: Analyze actual checked-out Unity Assets source bytes
+        run: |
+          mkdir -p /tmp/b01-50
+          python3 Tools/B01/B01-50/ASSETFOOTPRINT001/assetfootprint.py scan --assets Assets --out /tmp/b01-50/source-assets.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/b01-50/source-assets.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          s = d['summary']
+          assert s['file_count'] > 0 and s['source_bytes'] > 0, 'Empty Assets receipt rejected'
+          print('ORIGINAL_ASSETS_SOURCE', 'files=', s['file_count'], 'bytes=', s['source_bytes'], 'duplicates=', len(s['exact_duplicate_groups']))
+          PY
+          sha256sum /tmp/b01-50/source-assets.json > /tmp/b01-50/source-assets.sha256
+          git rev-parse HEAD > /tmp/b01-50/tested-commit.txt
+          cp /tmp/b01-50-tests.log /tmp/b01-50/tests.log
+      - name: Publish actual original source audit and test receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-50-ASSETFOOTPRINT001-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/b01-50/
+            /tmp/b01-50-tests.log
+          if-no-files-found: warn
+          retention-days: 14
