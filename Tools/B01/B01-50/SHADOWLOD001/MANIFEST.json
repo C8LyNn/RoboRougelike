@@ -1,0 +1,67 @@
+{
+  "package_id": "B01-50-SHADOWLOD-001",
+  "version": "R1",
+  "owner": "B01-50",
+  "original_main_commit": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "ownership": [
+    "Tools/B01/B01-50/SHADOWLOD001/**",
+    ".github/workflows/b01-50-shadowlod001.yml"
+  ],
+  "description": "Executable C# hysteretic optional-decorative shadowCastingMode culling, bounded 1-128 checks per frame with stable Unity .meta",
+  "files": {
+    "Tools/B01/B01-50/SHADOWLOD001/Core/ShadowDistanceBudget.cs": {
+      "git_blob_sha": "de7703814b0033baa5667cd02c7f3991238ba549",
+      "utf8_bytes": 5956
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/Core/ShadowDistanceBudget.cs.meta": {
+      "git_blob_sha": "12a209553375fbd5c8cf8e788b7e21e22549f550",
+      "utf8_bytes": 243
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/Unity/B0150OptionalShadowDistancePacer.cs": {
+      "git_blob_sha": "4964f4360b7d455a22d5b5aa819ad74694a98438",
+      "utf8_bytes": 5047
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/Unity/B0150OptionalShadowDistancePacer.cs.meta": {
+      "git_blob_sha": "3e8b259109eca4ca20ce1ed3f291f44c0d2be25c",
+      "utf8_bytes": 243
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/Unity/B0150OptionalShadowDemo.cs": {
+      "git_blob_sha": "a5c7ac5cad24ead7a7d14717c10b6d57b42056c3",
+      "utf8_bytes": 1672
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/Unity/B0150OptionalShadowDemo.cs.meta": {
+      "git_blob_sha": "c2c9fffdaac9b11c48dd46d5b19ec23cd03bd884",
+      "utf8_bytes": 243
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/tests/Program.cs": {
+      "git_blob_sha": "094479436b73b618103cdc8c1ead80922efa5ecf",
+      "utf8_bytes": 10761
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/tests/SHADOWLOD.Tests.csproj": {
+      "git_blob_sha": "5bb73d5217a3b22ec6d61899d4428836a3491fef",
+      "utf8_bytes": 412
+    },
+    "Tools/B01/B01-50/SHADOWLOD001/README.md": {
+      "git_blob_sha": "f5f47639a323725b5618b5720dce26d6c876e8af",
+      "utf8_bytes": 6056
+    },
+    ".github/workflows/b01-50-shadowlod001.yml": {
+      "git_blob_sha": "49257663475eee7f24d9ae2d521273be7e59b4ac",
+      "utf8_bytes": 3278
+    }
+  },
+  "tests": {
+    "actual_dotnet_original": "CI_PUBLISH_PENDING",
+    "unity_editor": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "gpu_draw_calls": "NOT_MEASURED",
+    "fps": "NOT_MEASURED",
+    "independent_qa": "PENDING"
+  },
+  "blockers": [
+    "Independent B01-40/B01-60 source acceptance",
+    "Authorized Unity 6 licensed native PlayMode proof",
+    "Actual current Codex integration owner SHA and permission"
+  ],
+  "rollback": "Remove only SHADOWLOD001-owned Tools subtree and own new workflow; disable the sandbox MonoBehaviour to restore original shadow casting; never modify canonical Assets."
+}
