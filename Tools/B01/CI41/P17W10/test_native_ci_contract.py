@@ -88,8 +88,10 @@ class GitNativeCIContractTests(unittest.TestCase):
         a=self.original["playmode"]
         needle="UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}"
         self.assertEqual(a.count(needle),2)
-        self.reject("playmode",a,
-                    a.replace(needle,"UNITY_PASSWORD: disabled",2),"NATIVE_RUNNER_SECRET_BINDING_MISSING")
+        first=a.find(needle)
+        second=a.find(needle,first+len(needle))
+        mutated=a[:second]+a[second:].replace(needle,"UNITY_PASSWORD: disabled",1)
+        self.reject("playmode",a,mutated,"NATIVE_RUNNER_SECRET_BINDING_MISSING")
 
     def test_08_evidence_no_longer_always_uploads(self):
         self.reject("editmode","if: always()","if: success()","LOSS_OF_FAILURE_EVIDENCE")
