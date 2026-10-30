@@ -107,9 +107,11 @@ def build_zip(path):
             ledger[name]={"sha256":hashlib.sha256(payload).hexdigest(),
                           "gitBlob":blob(payload),"bytes":len(payload)}
             info=zipfile.ZipInfo(name,date_time=(1980,1,1,0,0,0))
+            info.create_system=3  # canonical cross-OS ZIP creator metadata
             info.external_attr=0o100644<<16
             z.writestr(info,payload,compress_type=zipfile.ZIP_STORED)
         info=zipfile.ZipInfo("PACKAGE_MANIFEST.json",date_time=(1980,1,1,0,0,0))
+        info.create_system=3  # canonical cross-OS ZIP creator metadata
         info.external_attr=0o100644<<16
         summary={"package":"B01-25-SWEEPORB001/R2","sourceBaseSha":R1,
                  "nativeUnity":"NOT_RUN","codexAck":False,"files":ledger}
