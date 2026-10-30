@@ -74,7 +74,7 @@ namespace RoboRougelike.B0110.TrainingGhost
         {
             if (!showOverlay || coach == null) return;
             float width = Mathf.Min(390f, Mathf.Max(220f, Screen.width - screenAnchor.x - 14f));
-            float height = summary == null ? 92f : 125f;
+            float height = summary == null ? 92f : 153f;
             var bounds = new Rect(screenAnchor.x, screenAnchor.y, width, height);
             GUI.Box(bounds, "CHL-003 · TRAINING SPLITS (visual only)");
             GUI.Label(new Rect(bounds.x + 12, bounds.y + 27, width - 24, 24),
@@ -91,6 +91,11 @@ namespace RoboRougelike.B0110.TrainingGhost
                 GUI.Label(new Rect(bounds.x + 12, bounds.y + 73, width - 24, 24),
                     summary.Completed ? "Finish measured (no rewards)" : "Attempt ended / retry");
                 GUI.Label(new Rect(bounds.x + 12, bounds.y + 94, width - 24, 24),
+                    summary.HasFullCourseComparison
+                        ? "Full course: " + (summary.TotalDeltaSeconds > 0f ? "+" : "")
+                          + summary.TotalDeltaSeconds.ToString("0.00") + "s vs reference"
+                        : "No full-course comparison (attempt incomplete)");
+                GUI.Label(new Rect(bounds.x + 12, bounds.y + 116, width - 24, 24),
                     !summary.Completed ? "Retry: no finish segment measured"
                     : summary.BiggestLossIsFinishSegment
                         ? "Focus: finish after gate " + coach.RequiredGates
