@@ -90,10 +90,13 @@ namespace B01.CanonicalWorldApi001
         public bool TryCapturePreview(out byte[] bytes)
         {
             bytes=null!;
-            if(busy||quarantined||active==null||accepted==null||!Idle())return false;
+            if(busy||quarantined||active==null||accepted==null)return false;
+            // Acquire the transaction guard BEFORE calling any user-provided
+            // quiescence callback; that callback may re-enter Save or Load.
             busy=true;
             try
             {
+                if(!Idle())return false;
                 RunSnapshot now=active.Capture();
                 if(!SnapshotRules.Valid(now)||now.RunId!=accepted.RunId||
                    now.Generation!=accepted.Generation||!Idle())return false;
@@ -105,7 +108,9 @@ namespace B01.CanonicalWorldApi001
         public CanonicalGateResult TryRestore(byte[] bytes,long expectedRun,long minimumGeneration)
         {
             if(quarantined)return CanonicalGateResult.RollbackQuarantine;
-            if(busy||!Idle())return CanonicalGateResult.HostBusy;
+            if(busy)return CanonicalGateResult.HostBusy;
+            // P0: the quiescence gate can synchronously re-enter this API.
+            // Set busy BEFORE the first gate callback (which lives below).
             busy=true;
             ICanonicalStagedWorld? staged=null, prior=active;
             bool touchedPrior=false,touchedNew=false,published=false;
