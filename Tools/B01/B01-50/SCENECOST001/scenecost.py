@@ -69,7 +69,7 @@ def scan(path: Path, limits: dict[str, int] | None = None) -> dict:
     try:
         data = path.read_text(encoding='utf-8-sig')
     except UnicodeError as exc:
-        raise AuditError('Unity YAML must be UTF-8 text')
+        raise AuditError('Unity YAML must be UTF-8 text') from exc
     if not data.startswith('%YAML 1.1') or '%TAG !u!' not in data[:150]:
         raise AuditError('not text-serialized Unity YAML (binary/unsupported format)')
     objects: dict[int, dict] = {}
