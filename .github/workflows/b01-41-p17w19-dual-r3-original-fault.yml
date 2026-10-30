@@ -70,7 +70,7 @@ jobs:
             set -e
             test "$exit_code" -eq 3
             grep -q "$marker" "ci41-w19-release-$c-${{ runner.os }}.txt"
-            echo "ORIGINAL_VARIANT_$c_INDEPENDENT_FAULT_GATE_EXIT3"
+            echo "ORIGINAL_VARIANT_${c}_INDEPENDENT_FAULT_GATE_EXIT3"
           done
       - name: Preserve real Git blob, CSharp run and security-release-denied evidence
         if: always()
