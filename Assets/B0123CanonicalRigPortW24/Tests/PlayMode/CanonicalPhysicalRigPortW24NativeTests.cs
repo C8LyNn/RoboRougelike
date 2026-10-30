@@ -102,6 +102,41 @@ namespace B01.CanonicalRigPortW24.Tests
             }
         }
         [UnityTest]
+        public IEnumerator AbortedCompetingWorld_PreservesActualLiveVelocityAndAngularVelocity()
+        {
+            // P0 W25: the OLD world has moved since the original #556 snapshot.
+            // Deactivate/Reactivate is the canonical #729 rollback path when
+            // the competing NEW world fails after touching the old world.
+            var go=new GameObject("W25 live physics rollback");
+            var port=go.AddComponent<CanonicalPhysicalRigPortW24>();
+            try
+            {
+                Assert.IsTrue(port.SetExternalWritersQuiesced(true));
+                byte[] original=MakeSnapshot(1);
+                Assert.IsTrue(ColdRestore.TryStage(original,out ColdRestore stage));
+                ICanonicalStageOwnership owned=port.BeginOwnedStage(stage.Snapshot,stage);
+                ICanonicalStagedWorld world=owned.PrepareInactive();
+                world.Activate();
+                Rigidbody body=port.VisiblePartBody(0);
+                Assert.IsNotNull(body);
+                body.linearVelocity=new Vector3(2.5f,0,0);
+                body.angularVelocity=new Vector3(0,0.5f,0);
+                world.Deactivate();
+                world.Activate();
+                Assert.AreEqual(2.5f,body.linearVelocity.x,1e-4f,
+                    "rollback must preserve CURRENT body speed, not initial #556 velocity 1");
+                Assert.AreEqual(0.5f,body.angularVelocity.y,1e-4f,
+                    "rollback must preserve CURRENT angular velocity");
+                Assert.AreEqual(0f,body.transform.parent==null?0f:1f);
+                Assert.IsTrue(port.VisibleConsumedId(0,2310001));
+                world.Retire();
+                yield return null; // Unity Destroy is deferred
+                Assert.IsTrue(port.AllOwnedPhysicalRootsDestroyed());
+            }
+            finally { UnityEngine.Object.Destroy(go); }
+        }
+
+        [UnityTest]
         public IEnumerator InvalidOriginal556Binary_CannotCreateAnyUnityBodyOrConsumeId()
         {
             var go=new GameObject("B01 W24 invalid original #556");
