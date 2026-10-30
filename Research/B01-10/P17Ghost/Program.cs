@@ -653,6 +653,123 @@ internal static class Program
                 BiggestLossGate=0, BiggestLossIsFinishSegment=false};
             Check(Reject(()=>GhostPracticeFocus.Text(s,4)),"forged focus");
         });
+        Test("110 significant gate 1 generates replay segment zero to first reference gate",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.AcceptValidatedGate(1,2.5f);
+            c.AcceptValidatedGate(2,3.5f);
+            c.AcceptValidatedGate(3,4.5f);
+            c.EndTrial(true,5.5f);
+            var loop=c.RecommendedLoop;
+            Check(loop!=null&&!loop.IsFinishSegment);
+            Equal(loop.GateNumber,1);Equal(loop.StartSeconds,0f);
+            Equal(loop.EndSeconds,1f);Equal(loop.SegmentDurationSeconds,1f);
+            Equal(loop.Label,"gate 1");
+        });
+        Test("111 significant gate 2 replays only reference gate1-to-gate2",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1);
+            c.AcceptValidatedGate(1,3.5f);
+            c.AcceptValidatedGate(2,4.5f);
+            c.AcceptValidatedGate(3,5.5f);
+            c.EndTrial(true,6.5f);
+            var loop=c.RecommendedLoop;
+            Check(loop!=null);Equal(loop.GateNumber,2);
+            Equal(loop.StartSeconds,1f);Equal(loop.EndSeconds,2f);
+            Check(Math.Abs(loop.PoseAt(.5d).X-1.5f)<1e-5f);
+        });
+        Test("112 worst finished leg picks last checkpoint to reference finish",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(loop!=null&&loop.IsFinishSegment);
+            Equal(loop.GateNumber,4);Equal(loop.StartSeconds,4f);
+            Equal(loop.EndSeconds,5f);
+            Equal(loop.Label,"finish after gate 4");
+        });
+        Test("113 replay loops exactly at segment duration with no clock mutation",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Equal(loop.PoseAt(0).X,4f);
+            Equal(loop.PoseAt(1).X,4f);
+            Equal(loop.PoseAt(2).X,4f);
+            Check(Math.Abs(loop.PoseAt(2.5d).X-4.5f)<1e-5f);
+        });
+        Test("114 no actionable loop for completed benchmark pace tie",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,5f);
+            Check(c.RecommendedLoop==null);
+        });
+        Test("115 failed attempt after real checkpoint never generates a loop",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.EndTrial(false,2f);
+            Check(c.RecommendedLoop==null);
+        });
+        Test("116 subthreshold pace difference does not produce false drill",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.1f);
+            c.AcceptValidatedGate(1,2.1f);
+            c.AcceptValidatedGate(2,3.1f);
+            c.AcceptValidatedGate(3,4.1f);
+            c.EndTrial(true,5.1f);
+            Check(c.RecommendedLoop==null);
+        });
+        Test("117 retry clears actionable loop until new genuine finish",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Check(c.RecommendedLoop!=null);
+            Check(c.Retry().RecommendedLoop==null);
+        });
+        Test("118 invalid visual clocks rejected without altering replay",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(Reject(()=>loop.PoseAt(-1)),"negative clock accepted");
+            Check(Reject(()=>loop.PoseAt(double.NaN)),"NaN clock accepted");
+            Check(Reject(()=>loop.PoseAt(double.PositiveInfinity)),"infinite clock accepted");
+            Check(Reject(()=>loop.PoseAt(86401)),"unbounded clock accepted");
+            Equal(loop.PoseAt(0).X,4f);
+        });
+        Test("119 post-bind caller benchmark corruption cannot change loop",()=>{
+            var run=Run();var c=new GhostSplitCoach(run);
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            run.Frames[4].Pose.X=900f;
+            run.CheckpointSeconds[3]=4.99f;
+            Equal(c.RecommendedLoop.StartSeconds,4f);
+            Equal(c.RecommendedLoop.PoseAt(0).X,4f);
+        });
+        Test("120 defensive sampled pose edits cannot mutate the replay source",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            var pose=loop.PoseAt(.5d);pose.X=9999;
+            Check(Math.Abs(loop.PoseAt(.5d).X-4.5f)<1e-5f);
+        });
+        Test("121 tied gate-versus-finish losses preserve first actionable gate",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.AcceptValidatedGate(1,2.5f);
+            c.AcceptValidatedGate(2,3.5f);
+            c.AcceptValidatedGate(3,4.5f);
+            c.EndTrial(true,6f);
+            var loop=c.RecommendedLoop;
+            Check(loop!=null&&!loop.IsFinishSegment);
+            Equal(loop.GateNumber,1);
+        });
+        Test("122 before authoritative end no training loop may be consumed",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            Check(c.RecommendedLoop==null);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
