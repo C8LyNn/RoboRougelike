@@ -196,7 +196,10 @@ def validate(manifest: dict, locked: dict, unity_version: str,
         elif type(obj.get("depth")) is int and obj["depth"] != distances[name]:
             error("LOCK_DEPTH_NOT_SHORTEST_REACHABLE", name,
                   f"lock={obj['depth']}, expected={distances[name]}")
-        for dep, minimum in sorted(obj.get("dependencies", {}).items()):
+        requests = obj.get("dependencies", {})
+        if not isinstance(requests, dict):
+            continue  # Already reported INVALID_TRANSITIVE_DEPENDENCY_MAP.
+        for dep, minimum in sorted(requests.items()):
             if dep not in valid or not isinstance(minimum, str):
                 continue
             target = valid[dep].get("version")
