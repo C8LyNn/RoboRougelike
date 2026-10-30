@@ -1,0 +1,32 @@
+{
+  "package": "CI41-TESTIMPACT-001",
+  "version": "2.0.0",
+  "cycle": "PASS17_WAVE09",
+  "producer": "B01-41 CI / TEST AUTOMATION",
+  "branch": "ci/b01-41-p17w09-testimpact-safety-r2",
+  "base": "main",
+  "original_immutable_pr": 459,
+  "original_source_commit": "432acd34ca12378f512fa5e2384afbe1ff041b7b",
+  "original_source_blob": "463edd27d74d7dc0b178a2d651ff57a95c0ce89e",
+  "owned_paths": [
+    "Tools/B01/CI41/P17W09/test_impact_plan.py",
+    "Tools/B01/CI41/P17W09/test_test_impact_plan.py",
+    "Tools/B01/CI41/P17W09/proof_red_green.py",
+    "Tools/B01/CI41/P17W09/README.md",
+    "Tools/B01/CI41/P17W09/manifest.json",
+    ".github/workflows/b01-41-p17w09-test-impact-r2.yml"
+  ],
+  "tests_expected": {
+    "regressions_per_os": 34,
+    "immutable_red_to_green_cases_per_os": 3
+  },
+  "status": {
+    "producer_source": "CI_PENDING",
+    "independent_G0": "PENDING",
+    "native_unity_G1": "NOT_RUN",
+    "codex_ACK": false,
+    "integrated": false,
+    "merged": false
+  },
+  "rollback": "Do not merge; delete only isolated R2-owned paths; leave source R1 #459 unchanged"
+}
