@@ -30,7 +30,7 @@ namespace B01.SingleSlotLease001
             lease=null;
             if(string.IsNullOrWhiteSpace(persistentRoot)||!Path.IsPathRooted(persistentRoot)||
                string.IsNullOrEmpty(slot)||slot.Length>32||
-               !Regex.IsMatch(slot,@"\\A[A-Za-z0-9_-]+\\z"))return false;
+               !Regex.IsMatch(slot,@"\A[A-Za-z0-9_-]+\z"))return false;
             try
             {
                 string root=Path.GetFullPath(persistentRoot);
