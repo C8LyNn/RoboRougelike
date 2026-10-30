@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AdapterSource Condition="'$(AdapterSource)'==''">../Unity/B0150OptionalContactPressureProbe.cs</AdapterSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Core/ContactPressureMeter.cs" />
+    <Compile Include="$(AdapterSource)" />
+    <Compile Include="UnitySurrogate.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+</Project>
