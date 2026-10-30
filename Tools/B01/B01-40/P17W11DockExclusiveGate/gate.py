@@ -197,7 +197,7 @@ def preflight(v2, guard, legacy, w06, w09):
     return {"v2_order": verify_v2(v2_text, old),
             "guard_order": verify_guard(patch_text),
             "v2_changed_paths": len(files_v2), "guard_changed_paths": len(files_guard),
-            "legacy_original_blob": blob(old)}
+            "legacy_original_blob": blob(old.encode())}
 
 def gate_tests(v2, guard, legacy):
     v2_text = source(v2, SOURCE_V2).decode()
