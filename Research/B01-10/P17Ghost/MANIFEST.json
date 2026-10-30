@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "4.0.0-P17W10-FINISH_SPLIT_FIX",
+  "version": "5.0.0-P17W11-ABORT_SAFE_FULL_COURSE",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "PRODUCER_SOURCE_PATCHED / ORIGINAL_96_CASES_AWAIT_FINAL_EXACT_HEAD_CI / PHYSICAL_ZIP_SHA_PENDING / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_NOT_CLAIMED",
+  "status": "R5_SOURCE_PATCHED / EXACT_HEAD_CI_PENDING / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_NOT_CLAIMED",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -30,12 +30,12 @@
       "chars": 5245
     },
     "GhostSplitCoach.cs": {
-      "gitBlob": "6ac6e1cbb19aa850c67333417d1a2e78dac66d04",
-      "chars": 10106
+      "gitBlob": "715fd2ae47f331a02f17cec1d2f300431651981b",
+      "chars": 10406
     },
     "GhostSplitHud.cs": {
-      "gitBlob": "6072d99d3130dc0ea93e22b495f65a115c675977",
-      "chars": 4477
+      "gitBlob": "65452dc4458b6119cc8c72d1041df7b6a77cc504",
+      "chars": 4867
     },
     "GhostCore.cs.meta": {
       "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "cf23307c53801a5589ab1c114b24927dfbbb5fa8",
-      "chars": 28350
+      "gitBlob": "22f2d299ee5b757c122afc81571ed5c97780a792",
+      "chars": 29895
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "f95d2c4f83367b252e8abe848f0b3258fe68417e",
-      "chars": 24862
+      "gitBlob": "b0442033e0f27a6938d9fa25670c0acc2fd3fecf",
+      "chars": 26880
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "bf4f1fd974e5affd9a44d31220e5085b860f0f7a"
+    "gitBlob": "837b8ca8907b6eb88349c116ee0a6f1c7e6a29b3"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 96,
+    "namedCases": 100,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "PENDING final W10 SHA action; do not claim 96 PASS until actual logs",
-    "windows": "W10 exact-head 96 tests PENDING; W09 82/82 real PASS at prior SHA",
-    "ubuntu": "W10 exact-head 96 tests PENDING; W09 82/82 real PASS at prior SHA",
-    "actualDemoJson": "W10 PENDING exact-head run",
+    "workflowRun": "PENDING final W11 R5 exact-head Action; historic R4 96/96 PASS does not validate new source",
+    "windows": "W11 R5 100 tests NOT_VERIFIED; R4 96/96 PASS on previous immutable SHA",
+    "ubuntu": "W11 R5 100 tests NOT_VERIFIED; R4 96/96 PASS on previous immutable SHA",
+    "actualDemoJson": "W11 PENDING exact-head run",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "W10 fixes real false coaching guidance by measuring final gate-to-finish segment; adds finish-only result fields, reference segment positivity guards, Unity HUD focus hint, and 14 new adversarial C# tests.",
+  "qualityPatch": "W11 R5 fixes aborted-trial false faster full-course delta; explicit HasFullCourseComparison, 0 invalid sentinel on abort, HUD distinction, four new original tests 97-100",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -231,5 +231,6 @@
     "nativeUnity": "NOT_RUN",
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
-  }
+  },
+  "currentPredecessorSHA": "3ad724b45a809cd674043bdb4c086f0ac6dfbb24"
 }
