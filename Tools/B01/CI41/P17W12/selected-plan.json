@@ -1,0 +1,15 @@
+{
+  "candidate_pr": 510,
+  "candidate_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "imports": [
+    {
+      "pr": 510,
+      "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+    }
+  ],
+  "variant": "secure-v2-r2",
+  "intended_operation": "source_only_preflight",
+  "independent_g0": "PENDING",
+  "native_unity_g1": "NOT_RUN",
+  "codex_ack": false
+}
