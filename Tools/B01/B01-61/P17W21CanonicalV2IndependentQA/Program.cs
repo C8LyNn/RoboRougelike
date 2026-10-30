@@ -52,28 +52,20 @@ internal static class W21V2
     sealed class World:ICanonicalStagedWorld
     {
         readonly RunSnapshot data;
-        public bool Active,Retired,ThrowCleanup,WrongAfterActivation;
+        public bool Active,Retired;
         public World(RunSnapshot data){this.data=data;}
-        public RunSnapshot Capture()
-        {
-            if(WrongAfterActivation&&Active &&
-               SnapshotCodec.TryDecode(Save(data.Generation,!data.Parts[0].Consumed,
-                          !data.Parts[1].Consumed,data.RunId),
-                          out RunSnapshot? other)&&other!=null)return other;
-            return data;
-        }
+        public RunSnapshot Capture()=>data;
         public void Activate(){Active=true;}
         public void Deactivate(){Active=false;}
         public void Retire()
         {
-            if(ThrowCleanup)throw new IOException("physical retirement fault");
             Active=false;Retired=true;
         }
     }
     sealed class Factory:ICanonicalRigFactory
     {
         public bool PartialThrow,CleanupThrows,CleanupReturnsFalse,
-                    WrongAfterActivation,FailOnBegin;
+                    FailOnBegin;
         public int Stages,Cleanups;
         public World? Last,PartialWorld;
         public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot s,ColdRestore plan)
@@ -95,7 +87,7 @@ internal static class W21V2
                 for(int i=0;i<FrozenPartCatalog.Slots;i++)
                     if(cold.ContainsConsumedId(i,s.Parts[i].Id)!=s.Parts[i].Consumed)
                         throw new InvalidDataException("frozen W06 consumed divergence");
-                world=new World(s){WrongAfterActivation=f.WrongAfterActivation};
+                world=new World(s);
                 f.Last=world;
                 if(f.PartialThrow)
                 {
