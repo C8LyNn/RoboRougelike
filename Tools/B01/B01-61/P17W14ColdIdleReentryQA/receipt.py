@@ -21,15 +21,15 @@ WORKFLOW = ".github/workflows/b01-61-p17w14-cold-idle-reentry.yml"
 def git(*args):
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
-def make_receipt(test_log):
+def make_receipt(test_log, green_log, candidate_source):
     subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], cwd=ROOT, check=True)
     for path, expected in PINS.items():
         actual = git("rev-parse", "HEAD:" + path)
         if actual != expected:
             raise ValueError("original source pin changed: " + path)
     paths = git("diff", "--name-only", BASE, "HEAD").splitlines()
-    if len(paths) != 5 or len(set(paths)) != 5:
-        raise ValueError("expected exactly five unique QA-owned paths: " + repr(paths))
+    if len(paths) != 7 or len(set(paths)) != 7:
+        raise ValueError("expected exactly seven unique QA-owned paths: " + repr(paths))
     if any(not (p.startswith(OWN_PREFIX) or p == WORKFLOW) for p in paths):
         raise ValueError("producer/game/foreign path changed: " + repr(paths))
     if not test_log.exists():
@@ -44,6 +44,18 @@ def make_receipt(test_log):
     ):
         if "PASS " + name not in log:
             raise ValueError("missing real RED witness: " + name)
+    if not green_log.exists():
+        raise ValueError("missing actual corrected candidate CSharp test log")
+    corrected_log = green_log.read_text(encoding="utf-8")
+    if "TOTAL 8 PASS 8 FAIL 0" not in corrected_log:
+        raise ValueError("corrected original producer source did not pass GREEN checks")
+    if "CORRECTED_CANDIDATE_SOURCE_QA=GREEN_GUARD_ONLY" not in corrected_log:
+        raise ValueError("incorrect corrected-source result state")
+    if not candidate_source.exists():
+        raise ValueError("missing exact candidate production CSharp source")
+    corrected_blob = git("hash-object", str(candidate_source))
+    if corrected_blob != "b52e511c370f5fca56c74029050844dc8cbb7f9a":
+        raise ValueError("incorrect candidate source Git blob: " + corrected_blob)
     return {
         "qa_head_sha": git("rev-parse", "HEAD"),
         "target_producer_pr": 549,
@@ -55,6 +67,11 @@ def make_receipt(test_log):
             p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in paths
         },
         "original_csharp_executed": {"assertions": 6, "pass": 6, "fail": 0},
+        "corrected_candidate_pr": 556,
+        "corrected_candidate_commit_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+        "corrected_candidate_contract_blob_sha": corrected_blob,
+        "corrected_candidate_csharp_executed": {"assertions": 8, "pass": 8, "fail": 0},
+        "corrected_guard_source_qa": "GREEN_ONLY_THIS_EXACT_SHA",
         "original_source_regression_witness": "REPRODUCED_RED",
         "contract_release_gate": "HOLD_REENTRANCY_AND_550",
         "unity_g1": "NOT_RUN",
@@ -66,9 +83,11 @@ def make_receipt(test_log):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--log", type=Path, required=True)
+    ap.add_argument("--green-log", type=Path, required=True)
+    ap.add_argument("--candidate-source", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
-    result = make_receipt(args.log)
+    result = make_receipt(args.log, args.green_log, args.candidate_source)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(result, sort_keys=True))
