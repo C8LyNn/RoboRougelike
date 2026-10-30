@@ -1,0 +1,48 @@
+name: B01-13 W22 Recovery Routes Original Source and Reports
+on:
+  push:
+    paths: ['Research/B01-13/P17T/**', '.github/workflows/b01-13-p17w22-recovery-routes.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17T/**', '.github/workflows/b01-13-p17w22-recovery-routes.yml']
+  workflow_dispatch:
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify physical Git blobs and sizes, print SHA256
+        run: python Research/B01-13/P17T/verify_package.py
+      - name: Execute genuine original recovery-route solver and OS CLI tests
+        run: node --test Research/B01-13/P17T/test_recovery_routes.mjs
+      - name: Generate Markdown and JSON separately outside Git checkout
+        shell: pwsh
+        run: |
+          $one = Join-Path $env:RUNNER_TEMP 'w22-recovery-scenarios.md'
+          $two = Join-Path $env:RUNNER_TEMP 'w22-recovery-traces.json'
+          node Research/B01-13/P17T/recovery_routes.mjs --format md $one
+          if ($LASTEXITCODE -ne 0) { throw 'MD_GENERATION_FAILED' }
+          node Research/B01-13/P17T/recovery_routes.mjs --format json $two
+          if ($LASTEXITCODE -ne 0) { throw 'JSON_GENERATION_FAILED' }
+          if (-not (Test-Path $one) -or -not (Test-Path $two)) { throw 'REPORT_OUTPUT_MISSING' }
+          Write-Output "W22_MD_SHA256=$((Get-FileHash -Algorithm SHA256 $one).Hash.ToLowerInvariant())"
+          Write-Output "W22_JSON_SHA256=$((Get-FileHash -Algorithm SHA256 $two).Hash.ToLowerInvariant())"
+      - name: Upload physical playtest planning artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W22-ROUTES-${{ matrix.os }}-Node${{ matrix.node }}
+          path: |
+            ${{ runner.temp }}/w22-recovery-scenarios.md
+            ${{ runner.temp }}/w22-recovery-traces.json
+          if-no-files-found: error
+          retention-days: 14
