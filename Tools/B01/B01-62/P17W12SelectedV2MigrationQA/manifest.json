@@ -1,0 +1,37 @@
+{
+  "schema": "b01-62-independent-source-qa-v1",
+  "package_id": "B01-62-P17W12-SELECTED-V2-SAVE-MIGRATION-QA",
+  "version": "1.0.0",
+  "owner": "B01-62",
+  "selected_producer_pr": 510,
+  "selected_producer_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "selected_version": "B01-23-SECURE-REATTACH-V2/2.0.0",
+  "excluded_alternatives": [
+    511,
+    494
+  ],
+  "producer_source_pins": {
+    "Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs": "328977b4cdcdcd7c9f128c01f11ff67f8e46086a",
+    "Assets/B0123SecureReattachV2/Runtime/SecureDockPolicy.cs": "9f80f705475bd312f209033a57bd07e03bf95628",
+    "Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs": "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "Assets/B0123SecureReattachV2/Editor/SecureReattachSceneBuilder.cs": "07de6c8ce784b714699ce5598564aab2b2f1db29"
+  },
+  "scope": [
+    "Tools/B01/B01-62/P17W12SelectedV2MigrationQA/intake.py",
+    "Tools/B01/B01-62/P17W12SelectedV2MigrationQA/test_intake.py",
+    "Tools/B01/B01-62/P17W12SelectedV2MigrationQA/manifest.json",
+    "Tools/B01/B01-62/P17W12SelectedV2MigrationQA/README.md",
+    ".github/workflows/b01-62-p17w12-v2-save-migration.yml"
+  ],
+  "test_environment": "Python 3.12, Git, GitHub Actions Windows2025 and Ubuntu24.04",
+  "native_unity": "NOT_RUN",
+  "save_load_integration": "NOT_IMPLEMENTED_IN_SELECTED_SOURCE",
+  "fixture_schema": "b01-62-migration-qa-fixture-v1",
+  "g0": "INDEPENDENT_SOURCE_CHECK_ONLY__B01_40_FORMAL_PENDING",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "rollback": "Drop only self-owned QA branch; standalone QA fixtures stage exclusively to new external scratch and fail closed on dirty rollback"
+}
