@@ -1,0 +1,59 @@
+{
+  "package": "CI41-773-CASEFOLD-OS-001",
+  "version": "R1",
+  "owner": "B01-41",
+  "hq": 731,
+  "producer_candidate": {
+    "pr": 773,
+    "sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+    "selected": false
+  },
+  "current_selected": {
+    "pr": 749,
+    "sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23"
+  },
+  "frozen_originals": [
+    729,
+    556,
+    510,
+    669,
+    690,
+    750
+  ],
+  "alt_hold": [
+    753,
+    741,
+    747
+  ],
+  "owned_paths": [
+    "Tools/B01/CI41/P17W25/Program.cs",
+    "Tools/B01/CI41/P17W25/Original773CasefoldOSQA.csproj",
+    "Tools/B01/CI41/P17W25/source_guard.py",
+    "Tools/B01/CI41/P17W25/test_source_guard.py",
+    "Tools/B01/CI41/P17W25/README.md",
+    "Tools/B01/CI41/P17W25/MANIFEST.json",
+    ".github/workflows/b01-41-p17w25-773-casefold-os-qa.yml"
+  ],
+  "expected": {
+    "hostile_source_tests_each_os": 18,
+    "physical_process_pairs_each_os": 13,
+    "external_clr_workers_each_os": 26,
+    "linux_wrong_case_physically_distinct": true,
+    "unity_native": "NOT_RUN"
+  },
+  "gates": {
+    "source_g0": "HOLD_UNTIL_CASEFOLD_FIX",
+    "native_g1": "NOT_RUN",
+    "live_private510": "HOLD",
+    "g2": "HOLD",
+    "codex_ack": "NONE"
+  },
+  "six_stages": {
+    "IMPLEMENTED": true,
+    "TESTED": "CI_PENDING",
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  }
+}
