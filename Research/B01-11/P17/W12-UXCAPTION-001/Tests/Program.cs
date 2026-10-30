@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text.Json;
 using B01.UXCaption;
 
 static class Program
@@ -16,6 +18,18 @@ static class Program
        string key="cue.steps",string source="enemy1",int bearing=0,int run=7)
     {return new SoundCueInput{RunId=run,Sequence=seq,TimeMs=time,Kind=kind,
         LocalizationKey=key,SourceId=source,BearingDegrees=bearing};}
+    static JsonDocument LoadLocale(string locale)
+    { return JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"Localization",locale+".json"))); }
+    static bool HasLocaleEntry(string locale,string section,string key)
+    {
+        using(var doc=LoadLocale(locale))
+        {
+            JsonElement item;
+            return doc.RootElement.GetProperty(section).TryGetProperty(key,out item) &&
+                item.ValueKind==JsonValueKind.String && !string.IsNullOrWhiteSpace(item.GetString()) &&
+                !item.GetString().Contains("<") && !item.GetString().Contains("\n");
+        }
+    }
     static void Main()
     {
         var t=Track();
@@ -258,6 +272,37 @@ static class Program
         Check("urgent-only projection keeps queue intact",()=>{
             var f=Track();f.Record(Cue(1,10));f.Visible(true);
             return f.ActiveCount==1&&f.Visible(false).Length==1;
+        });
+
+        Check("English localization manifest valid",()=>{
+            using(var d=LoadLocale("en"))return d.RootElement.GetProperty("locale").GetString()=="en";
+        });
+        Check("Polish localization manifest valid",()=>{
+            using(var d=LoadLocale("pl"))return d.RootElement.GetProperty("locale").GetString()=="pl";
+        });
+        var cueKeys=new[]{"cue.steps","cue.fire","cue.impact","cue.detached","cue.warning","cue.pickup","cue.machinery"};
+        foreach(string key in cueKeys)
+        {
+            string expected=key;
+            Check("English audio caption "+expected,()=>HasLocaleEntry("en","cues",expected));
+            Check("Polish audio caption "+expected,()=>HasLocaleEntry("pl","cues",expected));
+        }
+        foreach(CaptionDirection direction in Enum.GetValues(typeof(CaptionDirection)))
+        {
+            string expected=direction.ToString();
+            Check("English bearing "+expected,()=>HasLocaleEntry("en","directions",expected));
+            Check("Polish bearing "+expected,()=>HasLocaleEntry("pl","directions",expected));
+        }
+        Check("English repetition count parameter provided",()=>{
+            using(var d=LoadLocale("en"))return d.RootElement.GetProperty("repeatFormat").GetString().Contains("{count}");
+        });
+        Check("Polish repetition count parameter provided",()=>{
+            using(var d=LoadLocale("pl"))return d.RootElement.GetProperty("repeatFormat").GetString().Contains("{count}");
+        });
+        Check("Sample Polish warning and bearing usable together",()=>{
+            var f=Track();f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",bearing:-90));
+            var c=f.Visible()[0];
+            return HasLocaleEntry("pl","cues",c.LocalizationKey)&&HasLocaleEntry("pl","directions",c.Direction.ToString());
         });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);

@@ -8,5 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../Runtime/CaptionTrack.cs" Link="CaptionTrack.cs" />
+    <None Include="../Localization/*.json" Link="Localization/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
