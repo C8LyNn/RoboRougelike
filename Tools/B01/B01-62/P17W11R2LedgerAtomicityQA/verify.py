@@ -69,8 +69,8 @@ def order_guard(source,name):
       "RearmAfterReattach("
     ]
     # R2 and V2 both must be evaluated without treating their source text as a PASS.
-    compact=re.sub(r"\\s+","",fragment)
-    locations=[compact.find(re.sub(r"\\s+","",x)) for x in actions]
+    compact=re.sub(r"\s+","",fragment)
+    locations=[compact.find(re.sub(r"\s+","",x)) for x in actions]
     if min(locations)<0 or locations != sorted(locations):
         raise Drift("TRANSACTION_SHAPE_DRIFT_"+name)
     return {"mutations_before_ledger":6, "ledger_rearm_after_mutations":True}
