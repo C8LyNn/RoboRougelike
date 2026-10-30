@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Execute original Python source and 225 original cases including W14 Save contract security RED admission
+      - name: Execute original Python source and 287 original cases including W15 frozen #556 and host hold refusal
         run: python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
       - name: Run original CLI on safe HOLD example
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/receipt_latch.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json
@@ -38,3 +38,5 @@ jobs:
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_protocol.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_secure_v2_source_only.json --require-structural-offer
       - name: Check W14 real Save contract source evidence, no fake G0 or integration
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_contract_w14_hold.json
+      - name: Execute W15 one selected frozen Save #556, source-G0 only and host HOLD
+        run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py --selected-v2 Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_contract_w15_selected.json
