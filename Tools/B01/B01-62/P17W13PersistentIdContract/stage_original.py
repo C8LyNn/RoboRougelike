@@ -27,7 +27,7 @@ def stage(repo,dest):
           {name:{"git_blob":FILES[name][1],"sha256":hashlib.sha256(b).hexdigest()} for name,b in sorted(values.items())},
           "native_unity":"NOT_RUN","game_save_adapter":"NOT_INTEGRATED"}
  r=json.dumps(receipt,indent=2,sort_keys=True)+"\n"
- (dest/"source_receipt.json").write_text(r,encoding="utf-8")
+ (dest/"source_receipt.json").write_bytes(r.encode("utf-8"))
  print("ORIGINAL_W06_R2_SOURCE_3_OF_3_PINNED")
  print("SOURCE_RECEIPT_SHA256="+hashlib.sha256(r.encode()).hexdigest())
 if __name__=="__main__":
