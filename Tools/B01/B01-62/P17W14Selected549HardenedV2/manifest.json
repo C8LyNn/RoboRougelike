@@ -1,0 +1,82 @@
+{
+  "id": "B01-62-P17W14-SINGLE-549-LINEAGE-HARDENED-002",
+  "owner": "B01-62",
+  "version": "2.0.0-source-candidate",
+  "chosen_orig": {
+    "pr": 549,
+    "head_sha": "6da2c523e03766cd5a6deaed0cb3cccf8765354b",
+    "git_source_blob": "6c036985411164372bf3d21d467780ff3777544e"
+  },
+  "not_selected": [
+    {
+      "pr": 544,
+      "head_sha": "e77529262b8f03c6e9f0e25b642038c351872044"
+    }
+  ],
+  "unsafe_original": {
+    "pr": 549,
+    "red_pr": 550,
+    "issues": [
+      "RunSnapshot.Parts public mutable array",
+      "ColdRestore.GetLedger exposed mutable W06 ledger"
+    ]
+  },
+  "frozen_gameplay": {
+    "pr": 510,
+    "head_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "modified": false
+  },
+  "original_w06": {
+    "git_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "safe_receiver_reused": {
+    "pr": 536,
+    "head_sha": "77d75d73467d236f6e3404caa58271ffec9d45cb"
+  },
+  "own_files": [
+    {
+      "path": "Tools/B01/B01-62/P17W14Selected549HardenedV2/DetachedSnapshotContractV2.cs",
+      "git_blob": "62a4d6e249904b4216a5c0448e9a430a227826c7"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W14Selected549HardenedV2/Program.cs",
+      "git_blob": "cf8d7a81ace0b004d98758fa0fa8a7a5fdcf229f"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W14Selected549HardenedV2/Selected549HardenedV2.csproj",
+      "git_blob": "f5af1ab7620229acad8ef4a0b6e058b6a099e936"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W14Selected549HardenedV2/README.md",
+      "git_blob": "4287fbf9b04fba3bd9f8339bad6b47d60c0433e2"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w14-selected549-v2.yml",
+      "git_blob": "c844b0f9320d42fd720a84135f52e48a77ef3591"
+    }
+  ],
+  "execution": {
+    "os": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "csharp_v2": 174,
+    "receiver_negatives": 12,
+    "clean_stage": 2,
+    "prior_verified_run_id": 41087151272,
+    "original_510_unsafe_rollback_reproduced": true,
+    "live_unity": "NOT_RUN"
+  },
+  "gates": {
+    "selected_510_g0": "EXISTING_ACCEPTED_SOURCE_ONLY",
+    "new_v2_contract_g0": "PENDING_B01_40",
+    "new_v2_independent_qa": "PENDING_B01_61",
+    "live_save_load": "HOLD",
+    "native_unity_g1": "NOT_RUN",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "integrated": false,
+    "merged": false
+  },
+  "rollback": "Close unmerged Draft; remove only these new QA paths; do not call original producer #510 rollback on shared receiver"
+}
