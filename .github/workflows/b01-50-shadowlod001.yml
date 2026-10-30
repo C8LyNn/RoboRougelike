@@ -1,0 +1,71 @@
+name: B01-50 SHADOWLOD-001 original shadow policy .NET and Unity GUID source gate
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/SHADOWLOD001/**'
+      - '.github/workflows/b01-50-shadowlod001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-shadow-distance-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile and execute original CSharp core, no NuGet or Unity shims
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p shadowlod-evidence
+          dotnet --version | tee shadowlod-evidence/dotnet-version.txt
+          dotnet run -c Release --project Tools/B01/B01-50/SHADOWLOD001/tests/SHADOWLOD.Tests.csproj -- --receipt shadowlod-evidence/original-csharp-receipt.json 2>&1 | tee shadowlod-evidence/original-csharp-tests.log
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path('shadowlod-evidence/original-csharp-receipt.json').read_text())
+          assert receipt['failed'] == 0
+          assert receipt['total'] == receipt['passed'] == 38
+          assert receipt['nativeUnity'] == 'NOT_RUN'
+          assert receipt['actualGpuDrawCalls'] == 'NOT_MEASURED'
+          assert receipt['actualFps'] == 'NOT_MEASURED'
+          print('ORIGINAL_CSHARP_38_PASS; ORIGINAL_UNITY_NOT_RUN')
+          PY
+      - name: Verify three stable Unity script metas and noncollision with canonical Assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' | tee shadowlod-evidence/meta-source-gate.log
+          from pathlib import Path
+          import re
+          base=Path('Tools/B01/B01-50/SHADOWLOD001')
+          names=['Core/ShadowDistanceBudget.cs','Unity/B0150OptionalShadowDistancePacer.cs','Unity/B0150OptionalShadowDemo.cs']
+          ids=[]
+          for name in names:
+              p=base/name
+              meta=Path(str(p)+'.meta')
+              assert p.is_file() and meta.is_file(),name
+              txt=meta.read_text()
+              assert 'MonoImporter:' in txt and 'fileFormatVersion: 2' in txt,name
+              match=re.search(r'^guid: ([0-9a-f]{32})$',txt,re.M)
+              assert match,name
+              ids.append(match.group(1))
+          assert len(set(ids)) == 3
+          for path in Path('Assets').rglob('*.meta'):
+              text=path.read_text(errors='replace')
+              for guid in ids:
+                  assert f'guid: {guid}' not in text, f'GUID collision {path}'
+          print('STABLE_META_SOURCE_GATE 3/3 PASS; NO GUID COLLISIONS IN ORIGINAL ASSETS')
+          PY
+          sha256sum shadowlod-evidence/original-csharp-receipt.json shadowlod-evidence/original-csharp-tests.log shadowlod-evidence/meta-source-gate.log shadowlod-evidence/dotnet-version.txt > shadowlod-evidence/SHA256SUMS.txt
+      - name: Preserve original executed tests and stable Unity GUID verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-SHADOWLOD001-ORIGINAL-CSHARP-GUID-QA
+          path: shadowlod-evidence/**
+          if-no-files-found: error
+          retention-days: 30
