@@ -48,7 +48,14 @@ def no_symlink(path):
 
 def validate_sources():
     manifest_path = pathlib.Path(__file__).with_name("manifest.json")
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    no_symlink(manifest_path)
+    original_bytes = manifest_path.read_bytes()
+    expected_blob = subprocess.run(
+        ["git", "rev-parse", "HEAD:" + manifest_path.relative_to(ROOT).as_posix()],
+        cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
+    if git_blob_oid(original_bytes) != expected_blob:
+        raise SourceError("DIRTY_OR_UNAPPROVED_MANIFEST")
+    manifest = json.loads(original_bytes.decode("utf-8"))
     if manifest["package_id"] != "B01-22-KITREADINESS-001" or \
        manifest["source_sha"] != SOURCE_SHA:
         raise SourceError("WRONG_MANIFEST")
@@ -139,6 +146,19 @@ def read_previews(path):
     return previews
 
 
+def verify_approved_physical(zipped, previews):
+    """Require actual C# preview bytes to match original approved Git manifest."""
+    approved = json.loads(pathlib.Path(__file__).with_name(
+        "manifest.json").read_text(encoding="utf-8")).get("approved_physical_sha256")
+    received = {"kitreadiness-unity.zip": zipped, **previews}
+    if not isinstance(approved, dict) or set(approved) != set(received):
+        raise SourceError("MISSING_APPROVED_PHYSICAL_PINS")
+    for name, raw in received.items():
+        if approved[name] != {"sha256": sha256(raw), "bytes": len(raw)}:
+            raise SourceError("UNAPPROVED_PHYSICAL_PAYLOAD:" + name)
+    return True
+
+
 def receipt_for(zipped, files, previews):
     hashes = {"kitreadiness-unity.zip":{"sha256":sha256(zipped),"bytes":len(zipped)}}
     hashes.update({k:{"sha256":sha256(v),"bytes":len(v)} for k,v in previews.items()})
@@ -179,6 +199,7 @@ def stage(dest, preview_dir, source_check=True):
     zipped=make_zip(files)
     receipt=receipt_for(zipped,files,previews)
     verify_receipt(zipped,files,previews,receipt)
+    if source_check: verify_approved_physical(zipped,previews)
     dest.mkdir(mode=0o700)
     try:
         (dest/"kitreadiness-unity.zip").write_bytes(zipped)
@@ -220,6 +241,7 @@ def verify_stage(dest):
     zipped=(dest/"kitreadiness-unity.zip").read_bytes()
     receipt=json.loads((dest/"receipt.json").read_text(encoding="utf-8"))
     verify_receipt(zipped, physical_unity_files(), previews, receipt)
+    verify_approved_physical(zipped, previews)
     if owned_rollback_snapshot(dest) != before:
         raise SourceError("VERIFY_STAGE_CHANGED_DURING_READ")
     return receipt
@@ -257,7 +279,7 @@ def main():
         if args.stage:
             if not args.previews:raise SourceError("PREVIEW_INPUT_REQUIRED")
             rec=stage(args.stage,args.previews)
-            print(json.dumps({"result":"B01_22_W15_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
+            print(json.dumps({"result":"B01_22_W16_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
         elif args.verify_stage:
             if args.previews:raise SourceError("PREVIEWS_NOT_ALLOWED_FOR_READONLY_VERIFY")
             rec=verify_stage(args.verify_stage)

@@ -1,4 +1,4 @@
-name: B01-22 P17 W15 KITREADINESS-001 read-only artifact intake
+name: B01-22 P17 W16 KITREADINESS-001 Git-pinned source decisions
 on:
   pull_request:
     paths:
@@ -46,7 +46,7 @@ jobs:
       - name: Upload original source ZIP, receipts and actual scenario decisions
         uses: actions/upload-artifact@v4
         with:
-          name: b01-22-w15-kitreadiness-${{ matrix.os }}
+          name: b01-22-w16-kitreadiness-${{ matrix.os }}
           path: readiness-artifact/
           if-no-files-found: error
           retention-days: 14

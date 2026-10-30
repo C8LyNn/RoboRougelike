@@ -320,6 +320,28 @@ class PhysicalSourceTests(unittest.TestCase):
                 pack_readiness.verify_stage(dest)
             self.assertEqual({x:(dest/x).read_bytes() for x in FILES},before)
 
+    def test_35_dirty_manifest_cannot_authorize_modified_physical_hashes(self):
+        path=pathlib.Path(__file__).with_name("manifest.json")
+        actual=pathlib.Path.read_bytes
+        def corrupted(candidate):
+            data=actual(candidate)
+            return data+b"\n" if candidate == path else data
+        with mock.patch.object(pathlib.Path,"read_bytes",new=corrupted):
+            with self.assertRaises(SourceError): validate_sources()
+
+    def test_36_production_stage_rejects_forged_actual_csharp_result(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t)
+            inputs=p/"inputs";inputs.mkdir()
+            for name in PREVIEWS:
+                (inputs/name).write_bytes((ROOT/"readiness-previews"/name).read_bytes())
+            obj=json.loads((inputs/"priority-preview.json").read_text(encoding="utf-8"))
+            obj["buildOrder"]["SuggestedReadyCount"]=99
+            (inputs/"priority-preview.json").write_text(json.dumps(obj,sort_keys=True)+"\n",encoding="utf-8")
+            dest=p/"stage"
+            with self.assertRaises(SourceError): stage(dest,inputs,source_check=True)
+            self.assertFalse(dest.exists())
+
     def test_25_git_blob_identity_independent_known_sha1(self):
         # Independently verify the Git object framing against the standard
         # Git SHA1 empty-blob identity and original source blob from #461.

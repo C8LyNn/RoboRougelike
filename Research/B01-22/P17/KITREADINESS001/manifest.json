@@ -1,6 +1,6 @@
 {
   "package_id": "B01-22-KITREADINESS-001",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "owner": "B01-22",
   "product": "Unity-compatible validated kit planner plus Research-only full-stock procurement and exact bounded priority order advisor",
   "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
@@ -29,10 +29,10 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
-    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "5064510548c777b1f865b45d9f94ac5342e4aeb9",
-    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "9876756ce9fd2eb5d9d220ea7f011332120b912a",
-    "Research/B01-22/P17/KITREADINESS001/README.md": "3860c71e8a5054b55b83f5051b03843d27f166c8",
-    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "002af10c1e9827484089e34423912ff92e8e803b",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "610962f06133e33b0b84296c4ece16d3ac3deccd",
+    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "f0417d2a400b0150fc13289430e9addbd427a7a0",
+    "Research/B01-22/P17/KITREADINESS001/README.md": "22ee264b87968e7a9e160229799f6b6a2c97307e",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "5ab87eb5e7ef003a235f3ecef2ed6695c3800212",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "c53bf577ec7ae849897027e87f2e70bde369d642",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "c5bfe35121382394824265c56986d5db66c5693b",
     "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "e12df589ba9d0a22d7e78036bcb0cca87af39f77",
@@ -52,14 +52,14 @@
   ],
   "expected": {
     "original_csharp_assertions": 53,
-    "python_physical_tests": 34,
+    "python_physical_tests": 36,
     "scenarios": 5,
     "unity_source_members": 3,
     "unity_guid_metas": 2,
     "git_blob_checks": 19,
     "python_cli_blackbox_tests": 31
   },
-  "producer_qa": "PENDING_EXACT_SHA_FINAL_CI",
+  "producer_qa": "PENDING_FINAL_HEAD_CI",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
   "handoff": "B01-40 independent exact SHA G0 check all 19 physical working tree blobs + 3 Unity source members and rollback foreign empty directory; B01-60 rerun 53/31/25 source tests; native Unity NOT_RUN unless real host. No Codex or Secure Reattach edits.",
@@ -166,12 +166,44 @@
     "native_unity": "NOT_RUN"
   },
   "w16_receipt_anchor": {
-    "state": "RED_EXPECTED",
-    "issue": "self-signed receipt allows forged C# output READY counts with regenerated SHA",
+    "state": "PENDING_CROSS_OS_FINAL_HEAD_CI",
     "red_cases": [
       "33",
       "34"
     ],
-    "frozen_external_contracts_no_write": true
+    "new_negative_cases": [
+      "35",
+      "36"
+    ],
+    "source_of_pins": "previous W15 #41091906172 two matching physical runner receipts",
+    "manifest_anchored_to_git_HEAD": true,
+    "frozen_source_unchanged": true,
+    "native_unity": "NOT_RUN"
+  },
+  "approved_physical_sha256": {
+    "kitreadiness-unity.zip": {
+      "bytes": 3755,
+      "sha256": "01c1a1887a291b93a4c439dfefa04c4c3bcba4aa14f8ea4badd2f88c012ce69a"
+    },
+    "starter-cache-preview.json": {
+      "bytes": 2174,
+      "sha256": "54cb1f9d012e2bbb42753eef3a0e418f114d931346431106e646f835b526b32c"
+    },
+    "siege-cache-preview.json": {
+      "bytes": 2602,
+      "sha256": "ba09ee9688dbf61990d74ac1a38e4ffeb05199f4a96084cb8207ccb0a938c1d3"
+    },
+    "shared-gyro-preview.json": {
+      "bytes": 3569,
+      "sha256": "04a4d5759176330088b48088ff291fb746b2017a80af81836d993dfabe4636df"
+    },
+    "user-preview.json": {
+      "bytes": 3346,
+      "sha256": "9402a5d602f41be64b0edccb2e3e8e9bffdf4a9600d5142d06349b239f12023b"
+    },
+    "priority-preview.json": {
+      "bytes": 5676,
+      "sha256": "25e2426cdbcd9da4b067735ab75ab6f59756110da866d1f226fb7f3cdf933985"
+    }
   }
 }
