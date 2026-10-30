@@ -10,10 +10,10 @@
   },
   "owner_choice": {
     "authority": "B01-23",
-    "decision": "PENDING_FINAL_EXCLUSIVE_R4",
-    "winner_pr": null,
-    "loser_pr": null,
-    "comment_url": null
+    "decision": "ONE_FROZEN_R4_SOURCE_ONLY",
+    "winner_pr": 647,
+    "loser_pr": 652,
+    "comment_url": "https://github.com/C8LyNn/RoboRougelike/pull/647"
   },
   "canonical_api": {
     "issue": 666,
@@ -57,7 +57,7 @@
     "human_preference_measured": false
   },
   "gates": {
-    "selected_r4_g0": "PENDING_OWNER_CHOICE",
+    "selected_r4_g0": "PENDING_FORMAL_B01_40",
     "new_r4_native_g1": "NOT_RUN",
     "canonical_game_save": "HOLD",
     "codex_available": false,
@@ -114,7 +114,7 @@
       },
       "owner": "B01-23",
       "parent": "r3_642",
-      "admission": "UNSELECTED_ORIGIN_ONLY",
+      "admission": "SELECTED_SOURCE_QA_ONLY",
       "original_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/647",
       "tested_source_only": true,
       "independent_formal_g0": "PENDING",
@@ -134,10 +134,10 @@
       },
       "owner": "B01-23",
       "parent": "r3_642",
-      "admission": "UNSELECTED_ORIGIN_ONLY",
+      "admission": "ALT_HOLD",
       "original_pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/652",
       "tested_source_only": true,
-      "independent_formal_g0": "PENDING",
+      "independent_formal_g0": "ALT_HOLD",
       "native_unity": "NOT_RUN"
     }
   ]
