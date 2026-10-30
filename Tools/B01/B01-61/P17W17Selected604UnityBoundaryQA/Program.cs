@@ -62,7 +62,8 @@ internal static class Program
             State(h,1,light,heavy,"physical mask="+mask);
             Check(h.TrySaveBytes(out byte[] fresh)&&fresh!=null,
                   "real actual unity-host .TrySaveBytes with VOLATILE demo must produce #556 data");
-            Check(SnapshotCodec.TryDecode(fresh,out RunSnapshot decoded)&&decoded!=null,
+            RunSnapshot decoded=null!;
+            Check(SnapshotCodec.TryDecode(fresh,out decoded)&&decoded!=null,
                   "exact original frozen #556 codec decodes Unity MonoBehaviour capture");
             Check(decoded.Parts[0].Consumed==light&&decoded.Parts[1].Consumed==heavy &&
                   decoded.Parts[0].Id==2310001&&decoded.Parts[1].Id==2310002,
