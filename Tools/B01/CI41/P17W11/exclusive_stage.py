@@ -113,10 +113,11 @@ def plan(repo, target_sha, producer_sha, variant, pinned_sha=None):
     target, source = tree(repo,target_sha),tree(repo,producer_sha)
     chosen = PREFIXES[variant]
     other = PREFIXES["public-guard" if variant=="secure-v2" else "secure-v2"]
-    if any(scoped(p,other) for p in source):
-        raise GateError("CANDIDATE_CONTAINS_COMPETING_DOCK_STACK")
+    # Diagnose existing target migration debt before inherited candidate ancestry.
     if any(scoped(p,chosen+other) for p in target):
         raise GateError("TARGET_ALREADY_CONTAINS_DOCK_OR_LEGACY")
+    if any(scoped(p,other) for p in source):
+        raise GateError("CANDIDATE_CONTAINS_COMPETING_DOCK_STACK")
     selected={p:b for p,b in source.items() if scoped(p,chosen)}
     if not selected or len(selected)>MAX_STAGE_FILES:
         raise GateError("EMPTY_OR_OVERSIZED_DOCK_SOURCE")
