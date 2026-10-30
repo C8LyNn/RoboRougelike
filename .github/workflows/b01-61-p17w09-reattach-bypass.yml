@@ -1,0 +1,52 @@
+name: B01-61 W09 original unsafe reattach evidence + RED release gate (Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w09-reattach-bypass]
+    paths:
+      - 'Tools/B01/B01-61/P17W09ReattachBypassQA/**'
+      - 'Assets/B0161ReattachBypassQA/**'
+      - 'Assets/B0161ReattachBypassQA.meta'
+      - '.github/workflows/b01-61-p17w09-reattach-bypass.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W09ReattachBypassQA/**'
+      - 'Assets/B0161ReattachBypassQA/**'
+      - 'Assets/B0161ReattachBypassQA.meta'
+      - '.github/workflows/b01-61-p17w09-reattach-bypass.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-original-bypass:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Produce exact frozen original-source bypass evidence
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W09ReattachBypassQA/verify.py --evidence 2>&1 | tee b01-61-reattach-evidence.txt
+      - name: Block release on known W07 direct unsafe reattach (intentional RED)
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W09ReattachBypassQA/verify.py --release 2>&1 | tee b01-61-reattach-release-red.txt
+      - name: Preserve evidence and intentional RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-reattach-${{ matrix.os }}
+          path: |
+            b01-61-reattach-evidence.txt
+            b01-61-reattach-release-red.txt
+          if-no-files-found: warn
+          retention-days: 21

@@ -1,0 +1,25 @@
+{
+  "package": "B01-61-W09-REATTACH-BYPASS-QA-001",
+  "version": "1.0.0",
+  "source_w06": "#421@cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "source_w07": "#439@cdcaea750fda1a9d7db6018e34970f4b9f206427",
+  "source_w08": "#455@99dfbd25d471f9983f9472b12d3725f4c002f7e9",
+  "owner": "B01-61",
+  "owned_paths": [
+    "Tools/B01/B01-61/P17W09ReattachBypassQA/verify.py",
+    "Tools/B01/B01-61/P17W09ReattachBypassQA/README.md",
+    "Tools/B01/B01-61/P17W09ReattachBypassQA/manifest.json",
+    ".github/workflows/b01-61-p17w09-reattach-bypass.yml",
+    "Assets/B0161ReattachBypassQA.meta",
+    "Assets/B0161ReattachBypassQA/Tests.meta",
+    "Assets/B0161ReattachBypassQA/Tests/PlayMode.meta",
+    "Assets/B0161ReattachBypassQA/Tests/PlayMode/B0161.ReattachBypass.PlayMode.asmdef",
+    "Assets/B0161ReattachBypassQA/Tests/PlayMode/B0161.ReattachBypass.PlayMode.asmdef.meta",
+    "Assets/B0161ReattachBypassQA/Tests/PlayMode/ReattachBypassPlayModeTests.cs",
+    "Assets/B0161ReattachBypassQA/Tests/PlayMode/ReattachBypassPlayModeTests.cs.meta"
+  ],
+  "expected": "SOURCE_BYPASS_REPRODUCED + RELEASE_GATE_RED",
+  "unity": "NOT_RUN",
+  "codex_ack": false,
+  "rollback": "Delete QA branch and close Draft only; preserve immutable producers"
+}
