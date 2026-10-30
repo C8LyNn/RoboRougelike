@@ -1,0 +1,76 @@
+name: B01-61 W22 exact original 712 real crossprocess lease regression QA
+on:
+  push:
+    branches: [qa/b01-61-p17w22-session712-real-lease-proof]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W22Original712LeaseQA/**'
+      - '.github/workflows/b01-61-w22-712-real-owner-lease.yml'
+permissions:
+  contents: read
+jobs:
+  original-712-independent-clr:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Rehydrate and pin unchanged selected owner #691, original #669, frozen #556/W06/#510
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-61/P17W22Original712LeaseQA/.source"
+          mkdir -p "$dir"
+          git fetch --no-tags origin 809f82575c638e1b4d2806b5f417bddab6c0871a d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show 809f82575c638e1b4d2806b5f417bddab6c0871a:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/CanonicalWorldGatewayV2.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$dir/SingleFileSaveSlot.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/SecureRigSpec.cs"
+          test "$(git rev-parse HEAD:Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/CanonicalSlotSessionR2.cs)" = fefc2e263e068b913c6e59ec3c8375bbbe43db4e
+          test "$(git hash-object "$dir/CanonicalWorldGatewayV2.cs")" = 704e774dedd5be5af26e0791fba87ecdb109ae2a
+          test "$(git hash-object "$dir/SingleFileSaveSlot.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$dir/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+      - name: Build exact ORIGINAL 712 R2 adapter with owner 691 and OS storage 669 strict CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W22Original712LeaseQA/Original712LeaseQA.csproj -c Release --nologo 2>&1 | tee build.log
+      - name: Original production source real CLR external slot denial release and stable ID
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          dotnet Tools/B01/B01-61/P17W22Original712LeaseQA/bin/Release/net8.0/Original712LeaseQA.dll --release | tee qa_release.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          echo "B0161_W22_SOURCE_SCOPE_EXIT=${rc}"
+          if [[ "${rc}" -ne 3 ]]; then echo 'W22_SCOPE_EXPECTED_SAFE_GATE_NOT_CONFIRMED_OR_TEST_FAILURE'; exit 1; fi
+          grep -Fx 'TOTAL 11 PASS 11 FAIL 0' qa_release.log
+          grep -Fx 'SOURCE_RELEASE_GATE=GREEN_TESTED_707_SCOPE_ONLY' qa_release.log
+      - name: Check exact original Git source blobs and five added QA-only files with executed evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W22Original712LeaseQA/receipt.py --log qa_release.log --out dist/b01-61-w22-712-original-source.json
+      - name: Real source stdout compiler log SHA256 JSON (no Unity false claims)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w22-original712-${{ matrix.os }}
+          path: |
+            build.log
+            qa_release.log
+            dist/b01-61-w22-712-original-source.json
+          if-no-files-found: warn
