@@ -1,0 +1,49 @@
+name: B01-62 W20 SLOTSAVE-001 Original #556 Single-File Crash Recovery QA
+on:
+  push:
+    branches:
+      - b01-62/p17w20-single-file-crash-slot-v1
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W20SingleFileSaveSlot/**'
+      - '.github/workflows/b01-62-p17w20-singlefile-slot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-frozen-556-source-disk:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch ONLY original frozen #556 and #510 exact sources
+        run: |
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Verify immutable Git blobs and materialize original C# sources in dedicated QA output
+        run: |
+          mkdir -p b0162-w20-evidence
+          python Tools/B01/B01-62/P17W20SingleFileSaveSlot/source_guard.py --repo . --out Tools/B01/B01-62/P17W20SingleFileSaveSlot/OriginalFrozen --receipt b0162-w20-evidence/source.json
+      - name: Compile actual original codec and test same-file atomic commit and cross-CLR lease
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W20SingleFileSaveSlot/SlotsaveQA.csproj -c Release --verbosity quiet | tee b0162-w20-evidence/slotsave-tests.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w20-slotsave-original-${{ matrix.os }}
+          path: b0162-w20-evidence/*
+          if-no-files-found: error
