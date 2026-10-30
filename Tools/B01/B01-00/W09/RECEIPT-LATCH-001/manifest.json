@@ -5,11 +5,11 @@
   "owner": "B01-00",
   "producer_agent": "B01-00",
   "issue": 731,
-  "purpose": "W24 B01-00 LIVE GitHub read-only 11 current PRs and 7 exact original source Action runs + owner 5 approved policies. Independent source #749 direct QA #758 source GREEN and real crash QA #768 source GREEN, R5 fixture #750 independent #766 source GREEN. Selected only #749 physical .owner, #753/#741 ALT_HOLD. Physical Unity/private frozen #510 and economy atomic journal NOT IMPLEMENTED; G0 source-only and G1 NOT_RUN. Prepare W25 conditional dispatch.",
+  "purpose": "W24 LIVE GitHub 15 PR HEADs + 11 exact real Actions + 5 approved owner policies. Keep historical selected #749 and ALT #753/#741. Exact original #749 public-store fork #767 PRODUCT P0 RED and #773 new producer source repair candidate NOT_SELECTED. Independent #758/#768 and #766 source-only QA greens scoped, full game G0/Unity G1 HOLD; 80 new W24 tests (W23 846 + W24 80 =926). W25 urgent P0 dispatch ready.",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "2aa167dfd30ec405544168ba5c52d25c2f2d18eb",
+  "source_sha_before_manifest": "60313900028f22101cb3b68a9268c13148a9e778",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "e8f2cb123340162d51a956e4574db58509f8a8cd6a781faaf329cc6bfff4e9f9",
-      "bytes": 63689
+      "sha256": "feda324dc97ad67e28cc721afe3de6237f8b8724669c4bc51d6c75b362efab75",
+      "bytes": 66208
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "d57e9a694cf976815b21b655d0bf0d2610d3ac6a316c2358cd693c55da045cb8",
-      "bytes": 4171
+      "sha256": "9fc8420513bf0da84c7273ecbcc4a70731ef116a22551232a86684d1521cd4ae",
+      "bytes": 4177
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
@@ -299,23 +299,23 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w24_live_github_intake.py",
-      "sha256": "dd2a31722becb130ca227b20667ffe1bbefa9e2917aa9905afbd83f02c873fa0",
-      "bytes": 10060
+      "sha256": "3394aac5f2d50da5fca8363f9d897e656cb17f894ce3804fadcfd785a065b401",
+      "bytes": 10814
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w24_live_github_intake.py",
-      "sha256": "8d25a50749f0ebf10925850f88e6279a31bce69c1d712a4a17bfe6f1ce542744",
-      "bytes": 14347
+      "sha256": "b8a7de8e1394e179fd5e1fb5eb0a0c53dd48bef023adf916e54e928c35a79a44",
+      "bytes": 15785
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W24-OWNER-SELECTED-749-LIVE-SOURCE-INTAKE.md",
-      "sha256": "75469c8c05bb59318d09e35a7281615136929059ec1a0c102c2f5a0d4e07c155",
-      "bytes": 14724
+      "sha256": "6bb940edebe4436cccbbcbb2cfe023f675ceaf3b0ff14233b3ca7b2bf1143bed",
+      "bytes": 18021
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/W25-NEXT-WAVE-DISPATCH-DRAFT.md",
-      "sha256": "60d4c56fc407b5e6e1e1e4f95a8fd73343ea9b9a00af42fcf6e4e417e65f861f",
-      "bytes": 5920
+      "sha256": "ba57306ae7a5cc16201a75bd14a5166cee615d5128878a0a28ba820ebec21a18",
+      "bytes": 7245
     }
   ],
   "producer_tests": [
@@ -891,13 +891,23 @@
         "ubuntu-24.04"
       ],
       "note": "Read exact final Actions both OS including authentic live read-only GitHub before claiming PASS"
+    },
+    {
+      "name": "W24 final original source 926 cases each OS with LIVE 15 PRs+11 Actions and new #767 P0/source #773 correction",
+      "status": "NOT_RUN",
+      "total": 926,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Require actual exact final-manifest-source original stdout and live API verdict before PASS; earlier W24 runs 909 are separate original historical source"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "SELECTED_749_INDEPENDENT_755_SOURCE_TRANSPORT_ACCEPTED_SOURCE_ONLY_FULL_PRIVATE_GAME_G0_HOLD",
+  "g0": "SELECTED_749_INDEPENDENT_755_SOURCE_TRANSPORT_ACCEPTED_SOURCE_ONLY_BUT_767_ORIGINAL_PUBLIC_STORE_SECURITY_P0_RED_FULL_PRODUCT_G0_HOLD",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -962,7 +972,8 @@
     "W24 #750 owner R5 fixture source green differs from #732 fixture inspected in #755 exact G0; do NOT inherit #755 formal original G0 to different #750 head",
     "W24 owner's five gameplay/economy/Save policies are APPROVED design requirements and anti-tamper adversarial whole-root rollback OUT OF SCOPE, but actual one-source atomic victory/loaner/wallet journal, true CanDeploy and Unity game private adapter remain unverified",
     "W24 original read-only live gate returns source-intake HOLD even with PR/CI source green and does not grant G1, actual Codex ACK, merge or full integrated gameplay Save",
-    "W24 expanded live GitHub intake exact-current PRs 11 and actual original Actions 7 with independent B01-61 #758 #749 source security, B01-62 #768 honest crash, B01-61 #766 R5 #750 fixture source QA; all SOURCE_SCOPE_GREEN, not real game full G0 nor native Unity G1"
+    "W24 expanded live GitHub intake exact-current PRs 11 and actual original Actions 7 with independent B01-61 #758 #749 source security, B01-62 #768 honest crash, B01-61 #766 R5 #750 fixture source QA; all SOURCE_SCOPE_GREEN, not real game full G0 nor native Unity G1",
+    "W24 original direct B01-62 #767 independently proved selected #749 public store can write two valid conflicting same-generation #556 Save envelopes under one .owner; genuine witness CI PASS is PRODUCT P0 RED. Owner-lineage new #773 source producer green but requires explicit one NEW owner choice, independent #767 regression and formal new G0; do not silently promote or co-install"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -978,7 +989,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "SELECTED_749_ONE_LIFETIME_OWNER_SOURCE_TESTED_ONE_FULL_556_SNAPSHOT_BUT_PRIVATE_REAL_510_RIG_LEDGER_UNITY_ADAPTER_NOT_IMPLEMENTED_AND_ECON_ATOMIC_JOURNAL_NOT_VERIFIED",
+  "save_load": "HISTORICAL_SELECTED_749_ONE_OWNER_SOURCE_SCOPED_QA_GOOD_BUT_PUBLIC_STORE_RAW_ALTERNATE_ROOT_FORK_767_P0; NEW_773_UNSELECTED_SOURCE_FIX; TRUE_PRIVATE_510_UNITY_PORT_AND_ATOMIC_ECON_JOURNAL_MISSING",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -1333,7 +1344,7 @@
       "independent_source_transport_pr": 755,
       "independent_source_transport_sha": "f1bff0839e297df971d097231c4627a07005ee17",
       "physical_source_g0": "ACCEPTED_SOURCE_ONLY",
-      "full_game_g0": "HOLD",
+      "full_game_g0": "HOLD_P0_ORIGINAL_PUBLIC_STORE_FORK_767",
       "native_g1": "NOT_RUN"
     },
     "alternatives_hold": [
@@ -1399,10 +1410,25 @@
         "source": "INDEPENDENT_5_EACH_OS_GEN4_TO5_GREEN_SCOPE_ONLY",
         "formal_fixture_g0": "NEW_750_PENDING_NOT_732"
       },
-      "live_prs": 11,
-      "live_original_actions": 7,
-      "source_unit_cases_added_w24": 72,
-      "cumulative_original_source_cases_each_os": 918
+      "live_prs": 15,
+      "live_original_actions": 11,
+      "source_unit_cases_added_w24": 80,
+      "cumulative_original_source_cases_each_os": 926,
+      "negative_749_public_store_p0": {
+        "pr": 767,
+        "sha": "6d0dff5571cb1d8b252311557dd8142e1b616cf1",
+        "ci": 41137846205,
+        "source_witness": "4_EACH_OS_TEST_RUNNER_PASS_PRODUCT_SECURITY_P0_RED_TWO_CANONICAL_SAME_SLOT_SAVE_ENVELOPES",
+        "product_release": "HOLD_P0"
+      },
+      "r2_773_fix_candidate": {
+        "pr": 773,
+        "sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+        "ci": 41138550902,
+        "source": "4_EACH_OS_PRODUCER_PASS_CANONICAL_ROOT_AND_ONE_STORE_REGISTRY",
+        "selected": "NO_EXPLICIT_OWNER_REPLACEMENT_YET",
+        "independent_g0": "PENDING"
+      }
     }
   }
 }
