@@ -1,0 +1,38 @@
+name: B01-23 P17 W15 atomic isolated Unity Save #556 original-source CI
+on:
+  push:
+    branches: [b01-23/p17w15-isolated-unity-save-bridge-001]
+  pull_request:
+    paths:
+      - 'Assets/B0123UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W15UnitySaveBridge001/**'
+      - '.github/workflows/b01-23-p17w15-unity-save-bridge.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and execute selected frozen #556 + original W06 + new transaction
+        run: dotnet run --project Tools/B01/B01-23/P17W15UnitySaveBridge001/HostBridgeTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check immutable source refs, exact Git bytes, meta GUIDs, rollback refusal
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W15UnitySaveBridge001 -p test_package.py -v
+      - name: Build owner-only original Git source archive and manifest
+        run: python Tools/B01/B01-23/P17W15UnitySaveBridge001/package.py build --archive dist/B0123_UnitySaveBridge001_source.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w15-unity-host-source-${{ matrix.os }}
+          path: dist/B0123_UnitySaveBridge001_source.zip
+          if-no-files-found: error
