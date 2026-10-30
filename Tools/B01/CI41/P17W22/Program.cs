@@ -131,9 +131,9 @@ internal static class Program
         {
             File.WriteAllText(result,"UNEXPECTED_"+status);return 3;
         }
+        var factory=new Factory{PrepareThrows=false};
         try
         {
-            var factory=new Factory{PrepareThrows=false};
             if(!sess.Attach(new Gate(),factory))
             {File.WriteAllText(result,"UNATTACHED");return 6;}
             var value=sess.TryRestore(Bytes(1,true,false),Run,1);
