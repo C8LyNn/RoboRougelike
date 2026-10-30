@@ -1,0 +1,28 @@
+name: B01-23 W23 selected R5 native ColdRestart fixture source-only
+on:
+  push:
+    branches: [b01-23/p17w23-r5-coldrestart-fixture-v6]
+  pull_request:
+    paths:
+      - 'Assets/B0123UnitySaveBridge001/Tests/**'
+      - 'Tools/B01/B01-23/P17W23R5ColdRestart/**'
+      - '.github/workflows/b01-23-p17w23-r5-coldrestart-fixture.yml'
+jobs:
+  source-only-not-unity:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original exact fixture and frozen R5 source identity
+        run: python Tools/B01/B01-23/P17W23R5ColdRestart/test_fixture.py
+      - name: State native execution truthfully
+        run: echo "SOURCE_FIXTURE_PASS; UNITY_EDITOR_NOT_LAUNCHED; NATIVE_G1_NOT_RUN"

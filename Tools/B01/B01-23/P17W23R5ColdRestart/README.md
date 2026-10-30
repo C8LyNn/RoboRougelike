@@ -1,0 +1,7 @@
+# B01-23 W23 — selected R5 #690 / ColdRestart fixture only / version 6.0.0
+
+Original immutable selected #690 SHA `cc7f73541517a18f4479bb155534bd4832d9985e`. This NEW draft is limited to native NUnit **test fixture** generation correction: real original selected #556 Save of run41 generation 4 increments stored bytes to generation **5**; the old test incorrectly used minimum generation 4 and asserted Generation 4 after loading an actual saved g5 payload. Test now reads **actual saved #556 SnapshotCodec** and requires savedSnapshot.Generation==5, Restore minGeneration==5 and restored.Generation==5, preserving original Light/Heavy W06 consumed IDs and physical Rigidbody assertions.
+
+**No product Unity code, private frozen #510, selected R5 #690 source or #556 serialization modified.** Native Unity6000.3.14f1 Editor.log/NUnit XML **NATIVE_G1_NOT_RUN**. Source-only Python runs exact Git selected #690 ancestry and isolated fixture checks; source .NET8 original host replay remains independent. Source G0 for new fixture-only SHA requires B01-40 exact Git identity, and new R5 native evidence B01-60 via #711/#718 after user explicitly opts in; don't confuse Python source fixture PASS with native game G1.
+
+Receiver B01-61/41 owner source fixture spot-check, B01-40 formal new partial package G0, B01-60 Unity operator-only, B01-00 source handoff. `IMPLEMENTED=YES/TESTED=CI_PENDING/QA_ACCEPTED=NO/READY_FOR_INTEGRATOR=NO/INTEGRATED=NO/RELEASED=NO`, G2 HOLD, ACK NONE, no merge.

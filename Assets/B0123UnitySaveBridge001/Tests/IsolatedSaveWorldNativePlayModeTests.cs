@@ -71,6 +71,10 @@ namespace B01.UnitySaveBridge001.Tests
                 Assert.IsTrue(original.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(41,4,true,false),41,4));
                 Assert.IsTrue(original.TrySaveBytes(out byte[] saved));
+                // Save advances original selected #556 generation 4 -> 5.
+                // Decode the ACTUAL serialized bytes; never assume old generation.
+                Assert.IsTrue(SnapshotCodec.TryDecode(saved,out RunSnapshot savedSnapshot));
+                Assert.AreEqual(5,savedSnapshot.Generation);
                 // Disable MUST NOT release the same-world slot to a newer host.
                 prior.SetActive(false);
                 Object.Destroy(prior);
@@ -78,10 +82,10 @@ namespace B01.UnitySaveBridge001.Tests
                 next=new GameObject("W19 restarted owner");
                 var restored=next.AddComponent<IsolatedTwinRigSaveHost>();
                 Assert.IsTrue(restored.TrySelectPersistentRunSlot(41,slot));
-                Assert.IsTrue(restored.TryRestoreBytes(saved,41,4));
+                Assert.IsTrue(restored.TryRestoreBytes(saved,41,5));
                 Assert.IsTrue(restored.IsConsumed(0,2310001));
                 Assert.IsFalse(restored.IsConsumed(1,2310002));
-                Assert.AreEqual(4,restored.Generation);
+                Assert.AreEqual(5,restored.Generation);
                 yield return null;
             }
             finally
