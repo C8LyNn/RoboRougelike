@@ -1,0 +1,88 @@
+{
+  "package_id": "B01-31-COUPLER-UV-WEAR-LIVERY-001",
+  "version": "P17-W19-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "HQ_issue": 646,
+  "purpose": "Original worn/scratched UV industrial livery for existing original W16 3D coupler model, adding genuine physically embedded PBR base-color PNG textures and UV accessors while preserving all actual W16 original geometry and transforms",
+  "source": {
+    "pr": 599,
+    "head": "5df35807c61d3e238a04b3b3a493e095a589b001",
+    "original_W16_GLB_sha256": "eeae6a553ca6136b5eaa97a65d5dd995f5f28fcb8bc54eb2180dfe28bc3653d7",
+    "original_artifact_run": 41097210391,
+    "original_artifact_id": 12996617273,
+    "read_only": true,
+    "changed": false
+  },
+  "owned_paths": [
+    "Tools/B01-31/P17/W19CouplerUVLivery001/build_livery.py",
+    "Tools/B01-31/P17/W19CouplerUVLivery001/verify_livery.py",
+    "Tools/B01-31/P17/W19CouplerUVLivery001/manifest.json",
+    "Tools/B01-31/P17/W19CouplerUVLivery001/README.md",
+    ".github/workflows/b01-31-p17w19-coupler-uv-livery.yml"
+  ],
+  "new_assets": {
+    "genuine_GLTF2": "B0131SplitCouplerWornLivery.glb",
+    "original_PBR_textures": 6,
+    "source_3D_UV_accessor_primitives": 12,
+    "source_GLB2_images_embedded": 6,
+    "original_standalone_256x256_RGBA_PNGs": 6,
+    "original_1800x720_3view_dark_light_PNGs": 2,
+    "original_machine_receipt": "receipt.json",
+    "deterministic_physical_ZIP_members": 10
+  },
+  "test_scope": [
+    "Immutable source W16 physical 110644-byte GLB actual SHA and actual W16 receipt first",
+    "The complete original GLB BIN geometry byte prefix must match and initial 36 native VEC3 accessors plus original 36 buffer views be identical",
+    "Precisely twelve original 3D meshes material primitives contain genuinely new packed FLOAT32 TEXCOORD_0 VEC2 attributes with valid per-vertex counts",
+    "All 6 embedded original 256x256 PNG image bytes are actual read-back identical to six standalone original sources",
+    "6 new material PBR baseColorTexture links; no original PBR properties, nodes, mesh indices, original material identity rewritten",
+    "Actual 2 projected 3-view preview boards read RGB pixels and validate different visual appearance",
+    "Full physical ten-member ZIP CRC and byte parity",
+    "8 independent mutation controls fail closed and 2 complete output rerenders SHA-identical",
+    "Ubuntu independent receiver + Windows independent receiver of actual Ubuntu physical binary, not just source generated fixture"
+  ],
+  "frozen": {
+    "reattach_pr": 510,
+    "reattach_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_pr": 556,
+    "save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "selected_R2_pr": 596,
+    "selected_R2_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "older_alt_pr": 604,
+    "older_alt_status": "ALT_HOLD",
+    "R3_candidates": [
+      642,
+      644
+    ],
+    "R3_sole_selection": "B01-23/B01-62; NOT chosen by B01-31"
+  },
+  "boundaries": {
+    "canonical_Assets": "NEVER MODIFIED",
+    "GameSaveLoad": "NOT RUN",
+    "PhysX": "NOT_RUN",
+    "Unity_Native": "NOT_RUN",
+    "glTF_baseColor_multiplication": "Standalone glTF2 PBR factor x actual physical PNG pixel",
+    "no_3d_collider": true,
+    "no_scripts_or_prefabs": true,
+    "source_version_only": true
+  },
+  "gates": {
+    "IMPLEMENTED": "PENDING",
+    "TESTED": "PENDING",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "SOURCE_G0": "PENDING",
+    "UNITY_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": "NO"
+  },
+  "receivers": [
+    "B01-30 / B01-40 — independent six PBR textures + UV/source binary GUID-free stage/rollback",
+    "B01-60 — real licensed Unity6000.3.14f1 import of actual textured glTF or approved converter (Unity default glTF import not assumed)",
+    "B01-12 — potential non-authoritative cosmetic/garage readability only after approved game event",
+    "B01-00 — integrator candidate only after separately tracked formal gates"
+  ],
+  "rollback": "Delete only five new W19 owned source/workflow files; output stays inside GitHub artifact, not canonical Unity Assets. If authorized disposable Unity host imports, remove only W19 named B0131SplitCouplerWornLivery model and textures; never original W16 geometry, W17/W18 unrelated assets, foreign empty dirs, CodeX or frozen #510/#556/#596."
+}
