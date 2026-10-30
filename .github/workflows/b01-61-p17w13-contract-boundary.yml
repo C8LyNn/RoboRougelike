@@ -1,0 +1,56 @@
+name: B01-61 W13 actual original producer Save snapshot and original W06 direct security QA
+on:
+  push:
+    branches: [qa/b01-61-p17w13-save-contract-boundary]
+    paths:
+      - 'Tools/B01/B01-61/P17W13ContractBoundaryQA/**'
+      - '.github/workflows/b01-61-p17w13-contract-boundary.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W13ContractBoundaryQA/**'
+      - '.github/workflows/b01-61-p17w13-contract-boundary.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  direct-original-producer-and-W06-ledger:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Immutable original new producer SHA, original W06, QA only scope
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W13ContractBoundaryQA/source_guard.py 2>&1 | tee b01-61-w13-contract-pins.log
+      - name: Original new producer and original W06 strict CSharp9 compile
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W13ContractBoundaryQA/OriginalProducerSchemaQA.csproj -c Release --warnaserror 2>&1 | tee b01-61-w13-contract-build.log
+      - name: Execute actual publisher and original W06 detached ID adversarial tests
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run -c Release --no-build --project Tools/B01/B01-61/P17W13ContractBoundaryQA/OriginalProducerSchemaQA.csproj 2>&1 | tee b01-61-w13-contract-execution.log
+          grep -q 'SAVE_CONTRACT_RELEASE_GATE_RED=MUTABLE_VALIDATED_SNAPSHOT_AND_EXPOSED_LEDGER' b01-61-w13-contract-execution.log
+      - name: Preserve original machine stdout
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w13-contract-boundary-${{ matrix.os }}
+          path: |
+            b01-61-w13-contract-pins.log
+            b01-61-w13-contract-build.log
+            b01-61-w13-contract-execution.log
+          retention-days: 21
+          if-no-files-found: warn
