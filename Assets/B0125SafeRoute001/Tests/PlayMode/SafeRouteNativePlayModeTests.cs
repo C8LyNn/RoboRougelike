@@ -112,5 +112,62 @@ namespace B0125.SafeRoute.Tests
             Assert.IsFalse(demo.CurrentRouteFromPlayer);
             Object.Destroy(host);
         }
+        [UnityTest]
+        public IEnumerator W25DynamicCrateReallyHasRigidbodyBoxColliderAndGridHit()
+        {
+            var host=new GameObject("Real R3 physical movable obstacle");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.PhysicalCrate.isKinematic);
+            Assert.NotNull(demo.PhysicalCrate.GetComponent<BoxCollider>());
+            Assert.AreEqual(new GridCell(3,8),demo.CrateCell);
+            Assert.Greater(demo.PhysicalBlockedCells,0);
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W25DangerousMoveNeverChangesPhysicsOrMintsFalseRoute()
+        {
+            var host=new GameObject("R3 reject heavy softlock");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            Vector3 prior=demo.PhysicalCrate.position;
+            Assert.IsFalse(demo.TryMoveCrate(new GridCell(7,8)));
+            Assert.AreEqual(prior,demo.PhysicalCrate.position);
+            Assert.Greater(demo.RejectedCrateMoves,0);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W25SafeMoveUpdatesRealWorldPhysicalOccupancy()
+        {
+            var host=new GameObject("R3 safe move");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.TryMoveCrate(new GridCell(4,4)));
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(new GridCell(4,4),demo.CrateCell);
+            Assert.Greater(demo.PhysicalBlockedCells,0);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Assert.IsTrue(demo.PhysicallyClearCurrentPlan());
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W25ExternalUntrustedPhysicsMoveFailsClosedForHeavy()
+        {
+            var host=new GameObject("R3 unguarded external movement");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Vector3 prior=demo.PhysicalCrate.position;
+            Vector3 danger=prior+new Vector3(8f,0,0);
+            demo.PhysicalCrate.position=danger;
+            demo.PhysicalCrate.transform.position=danger;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(new GridCell(7,8),demo.CrateCell);
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Object.Destroy(host);
+        }
     }
 }
