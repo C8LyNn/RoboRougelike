@@ -23,7 +23,7 @@ internal static class WorldSwapSourceQA
     private sealed class World : IPreparedWorld
     {
         private readonly RunSnapshot expected;
-        public bool Active, Retired, FailActivate, FailDeactivate, FailRetire, CorruptAfterActivate;
+        public bool Active, Retired, FailActivate, FailDeactivate, CorruptAfterActivate;
         public World(RunSnapshot source){expected=source;}
         public RunSnapshot Capture()
         {
@@ -46,13 +46,12 @@ internal static class WorldSwapSourceQA
         public void Retire()
         {
             Retired=true;Active=false;
-            if(FailRetire)throw new InvalidOperationException("retirement deferred");
         }
     }
     private sealed class Factory : IWorldFactory
     {
         public bool FailPrepare, NextFailActivate, NextFailDeactivate, NextCorruptAfterActivate;
-        public World? Last;
+        public World Last;
         public IPreparedWorld Prepare(RunSnapshot snapshot)
         {
             if(FailPrepare)throw new InvalidOperationException("prepare failure");
