@@ -29,7 +29,10 @@ def main():
    not (x.startswith(DIR) or x==WORKFLOW) for x in changed):
   raise AssertionError("NOT_FIVE_EXCLUSIVE_NEW_QA_PATHS "+str(changed))
  for x in changed:
-  if git("cat-file","-e",BASE+":"+x) is not None:
+  try:
+   git("cat-file","-e",BASE+":"+x)
+   raise AssertionError("QA_FILE_ALREADY_PRESENT_AT_FROZEN_PRODUCER "+x)
+  except subprocess.CalledProcessError:
    pass
  # Original selected #596 uses the real FileCheckpointStore and never #604 CheckpointFence.
  if "Assets/B0123UnitySaveBridge001/Core/CheckpointFence.cs" in git(
