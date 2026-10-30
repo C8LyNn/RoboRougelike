@@ -1,0 +1,73 @@
+{
+  "id": "B01-62-P17W13-PERSISTENT-ID-AND-ROLLBACK-QA-001",
+  "owner": "B01-62",
+  "version": "1.0.0",
+  "based_on_frozen_source": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "alternative_hold": [
+      511,
+      494
+    ]
+  },
+  "accepted_receiver": {
+    "pr": 521,
+    "sha": "a19724328cfda8a19f694cd84de899da214b3163"
+  },
+  "immutable_original_blobs": {
+    "W06_ledger": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "R2_atomic": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "R2_rig_catalog": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "source_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387",
+  "scope": [
+    {
+      "path": ".github/workflows/b01-62-p17w13-stable-save-and-rollback.yml",
+      "git_blob": "5c7a08f6b5abc40ccb376b1f522a6a3600d565d4"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W13PersistentIdContract/StableIdSaveContract.cs",
+      "git_blob": "7ff83838afc3ff115c0988f38f3faacf2d4656b4"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W13PersistentIdContract/StableIdContract.csproj",
+      "git_blob": "e4bbcf798ed4b406d3946e64908f838f18fa12cf"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W13PersistentIdContract/Program.cs",
+      "git_blob": "6cd97178c7dd0625677f20864e9949461a7c7e6e"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W13PersistentIdContract/stage_original.py",
+      "git_blob": "cb18a1b5e9b324af9b7dd26e4d9d196ca43f355e"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W13PersistentIdContract/test_rollback.py",
+      "git_blob": "bd65e8a8afd4c091c00b6fff48498de4c52424a9"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W13PersistentIdContract/README.md",
+      "git_blob": "83fa1c34169573ef6ce067de378944e6e5a6557c"
+    }
+  ],
+  "real_tests_planned": {
+    "os": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "csharp": 43,
+    "python_rollback": 14,
+    "source_blob_pins": 3
+  },
+  "staging": "NEW_TEMP_ONLY",
+  "save_schema": "PROPOSED_STANDALONE_NOT_NATIVE",
+  "g0": "EXISTING_B01_40_ACCEPTED_SOURCE_ONLY",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "save_load_accepted": false,
+  "real_game_migrated": false,
+  "codex_ack": false,
+  "integrated": false,
+  "merged": false,
+  "rollback": "Never call frozen #510 package.py::rollback on untrusted destination. B01-40 #521 rollback_strict OR new wrapper accepting exact owned directories only. No canonical write."
+}
