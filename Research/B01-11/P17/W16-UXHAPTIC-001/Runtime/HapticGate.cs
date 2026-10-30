@@ -5,7 +5,7 @@ namespace B01.UXHaptic
     public enum HapticKind { CriticalDamage, PartDetached, Collision, WeaponImpact, Pickup }
     public enum HapticSide { Center, Left, Right }
     public enum HapticTier { Minor, Major, Critical }
-    public enum HapticOutcome { Play, SuppressedDisabled, SuppressedZero, SuppressedBusy, SuppressedCooldown, IgnoredOldRun }
+    public enum HapticOutcome { Play, SuppressedDisabled, SuppressedZero, SuppressedBusy, SuppressedCooldown, IgnoredOldRun, SuppressedPaused }
 
     // An authoritative event from the game host. Never synthesized from microphone/input data.
     public sealed class HapticEvent
@@ -50,6 +50,7 @@ namespace B01.UXHaptic
         readonly int _criticalCap, _majorCap, _minorCap;
         int _runId;
         bool _enabled;
+        bool _paused;
         long _nowMs, _lastSequence, _lastPlayedMs=-1, _activeUntilMs;
         HapticTier _activeTier;
 
@@ -65,6 +66,7 @@ namespace B01.UXHaptic
         }
         public int RunId { get {return _runId;} }
         public bool Enabled { get {return _enabled;} }
+        public bool Paused { get {return _paused;} }
         public long NowMs { get {return _nowMs;} }
         public long ActiveUntilMs { get {return _activeUntilMs;} }
         public long LastPlayedMs { get {return _lastPlayedMs;} }
@@ -76,6 +78,17 @@ namespace B01.UXHaptic
             _enabled=enabled;
             if(!enabled)_activeUntilMs=_nowMs;
             // Preserve last-played cooldown across toggles, prevents repeated on/off bypass.
+            return stop;
+        }
+        // A pause is transient per run, unlike the user's persistent Enabled
+        // preference. The host MUST stop physical motors if this returns true.
+        // No vibration is emitted for new cues during pause; sequences/time
+        // continue to advance to reject stale events after resuming.
+        public bool SetPaused(bool paused)
+        {
+            bool stop=!_paused&&paused&&_enabled&&_activeUntilMs>_nowMs;
+            _paused=paused;
+            if(paused)_activeUntilMs=_nowMs;
             return stop;
         }
         public void AdvanceTo(long timeMs)
@@ -93,6 +106,7 @@ namespace B01.UXHaptic
             bool stop=_enabled&&_activeUntilMs>_nowMs;
             _runId=nextRunId;_nowMs=0;_lastSequence=0;
             _lastPlayedMs=-1;_activeUntilMs=0;_activeTier=HapticTier.Minor;
+            _paused=false; // Pause belongs to the outgoing run, not preferences.
             return stop;
         }
 
@@ -119,6 +133,7 @@ namespace B01.UXHaptic
             _nowMs=cue.TimeMs;_lastSequence=cue.Sequence;
             HapticTier tier=TierOf(cue.Kind);
             if(!_enabled)return Rejected(cue,tier,HapticOutcome.SuppressedDisabled);
+            if(_paused)return Rejected(cue,tier,HapticOutcome.SuppressedPaused);
             if(cue.Strength==0)return Rejected(cue,tier,HapticOutcome.SuppressedZero);
             int cap=tier==HapticTier.Critical?_criticalCap:
                 tier==HapticTier.Major?_majorCap:_minorCap;
