@@ -187,6 +187,42 @@ class PhysicalSourceTests(unittest.TestCase):
                     stage(dest,p/"in",source_check=False)
             self.assertFalse(dest.exists())
 
+    def test_26_foreign_empty_dir_appearing_during_receipt_validation_is_noop(self):
+        # Simulate another actor placing an EMPTY directory after the
+        # original preflight listing but during receipt verification.
+        # Refusal must preserve ALL original owned physical bytes.
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            original={k:(dest/k).read_bytes() for k in FILES}
+            real=pack_readiness.verify_receipt
+            def inject(*args):
+                result=real(*args)
+                (dest/"other-owner-empty").mkdir()
+                return result
+            with mock.patch.object(pack_readiness,"verify_receipt",side_effect=inject):
+                with self.assertRaises(SourceError): rollback(dest)
+            self.assertTrue((dest/"other-owner-empty").is_dir())
+            self.assertEqual({k:(dest/k).read_bytes() for k in FILES},original)
+
+    def test_27_owned_receipt_changed_after_validation_is_noop(self):
+        # A second actor modifying an owned file after original receipt
+        # validation must not cause that new byte content to be deleted.
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            original={k:(dest/k).read_bytes() for k in FILES}
+            real=pack_readiness.verify_receipt
+            def inject(*args):
+                result=real(*args)
+                (dest/"receipt.json").write_bytes(b"FOREIGN_CHANGED_RECEIPT")
+                return result
+            with mock.patch.object(pack_readiness,"verify_receipt",side_effect=inject):
+                with self.assertRaises(SourceError): rollback(dest)
+            self.assertEqual((dest/"receipt.json").read_bytes(),b"FOREIGN_CHANGED_RECEIPT")
+            for name in FILES-{"receipt.json"}:
+                self.assertEqual((dest/name).read_bytes(),original[name])
+
     def test_25_git_blob_identity_independent_known_sha1(self):
         # Independently verify the Git object framing against the standard
         # Git SHA1 empty-blob identity and original source blob from #461.
