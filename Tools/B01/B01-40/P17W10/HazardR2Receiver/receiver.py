@@ -58,7 +58,7 @@ def hash256(content):
     return hashlib.sha256(content).hexdigest()
 
 def git_blob(content):
-    return hashlib.sha1(b"blob " + str(len(content)).encode() + b"\\0" + content).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(content)).encode() + b"\0" + content).hexdigest()
 
 def validate_source(source, qa, r1):
     head(source, R2, "R2")
@@ -97,11 +97,11 @@ def validate_source(source, qa, r1):
 
 def meta(guid, kind):
     if kind == "folder":
-        return ("fileFormatVersion: 2\\nguid: " + guid +
-                "\\nfolderAsset: yes\\nDefaultImporter:\\n  externalObjects: {}\\n  userData:\\n  assetBundleName:\\n  assetBundleVariant:\\n").encode()
+        return ("fileFormatVersion: 2\nguid: " + guid +
+                "\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n").encode()
     importer = "MonoImporter" if kind == "script" else "AssemblyDefinitionImporter" if kind == "asmdef" else "DefaultImporter"
-    return ("fileFormatVersion: 2\\nguid: " + guid +
-            "\\n" + importer + ":\\n  externalObjects: {}\\n  userData:\\n  assetBundleName:\\n  assetBundleVariant:\\n").encode()
+    return ("fileFormatVersion: 2\nguid: " + guid +
+            "\n" + importer + ":\n  externalObjects: {}\n  userData:\n  assetBundleName:\n  assetBundleVariant:\n").encode()
 
 def all_guids(root):
     r = subprocess.run(["git", "-C", str(root), "grep", "-h", "-I", "^guid: ", "HEAD", "--", "*.meta"],
@@ -136,7 +136,7 @@ def build_payload(source, qa, r1, receiver):
           asm["noEngineReferences"] is True, "unsafe asmdef")
     files = {
         UNITY + "/Runtime/PulseCore.cs": core,
-        UNITY + "/Runtime/B0140.HazardPulseR2.Runtime.asmdef": (json.dumps(asm, indent=2) + "\\n").encode(),
+        UNITY + "/Runtime/B0140.HazardPulseR2.Runtime.asmdef": (json.dumps(asm, indent=2) + "\n").encode(),
         UNITY + "/Data/profiles.json": profile,
     }
     for filename, uid in GUIDS.items():
@@ -166,7 +166,7 @@ def build_payload(source, qa, r1, receiver):
         "files": [{"path": key, "bytes": len(value), "sha256": hash256(value),
                    "git_blob": git_blob(value)} for key, value in sorted(files.items())]
     }
-    files[MANIFEST] = (json.dumps(evidence, sort_keys=True, separators=(",", ":")) + "\\n").encode()
+    files[MANIFEST] = (json.dumps(evidence, sort_keys=True, separators=(",", ":")) + "\n").encode()
     return files, evidence
 
 def deterministic_zip(files):
@@ -292,7 +292,7 @@ def main():
                "producer_git_pins": manifest["producer_manifest_pins_verified"],
                "negative_staging_archive_tests": checks, "native_unity": "NOT_RUN",
                "codex_ack": False, "integrated": False, "merge": False}
-    (a.out / "G0-RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\\n")
+    (a.out / "G0-RECEIPT.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
     print("G0_PHYSICAL_SOURCE_PASS", json.dumps(receipt, sort_keys=True))
     print("R1_REJECTED_R2_SOURCE_ACCEPTED UNITY_G1_NOT_RUN G2_HOLD CODEX_ACK_NONE NO_MERGE")
 
