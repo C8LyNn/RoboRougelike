@@ -6,11 +6,12 @@ import json
 import pathlib
 import tempfile
 import unittest
+from unittest import mock
 import zipfile
 
 from pack_readiness import ASSETS, PREVIEWS, FILES, ROOT, SourceError, sha256, \
     physical_unity_files, make_zip, verify_zip, receipt_for, verify_receipt, \
-    read_previews, stage, rollback
+    read_previews, stage, rollback, validate_sources
 
 
 class PhysicalSourceTests(unittest.TestCase):
@@ -111,6 +112,65 @@ class PhysicalSourceTests(unittest.TestCase):
             target=p/"in"/PREVIEWS[0]
             target.write_bytes(target.read_bytes().replace(b"\n",b"\r\n"))
             with self.assertRaises(SourceError):read_previews(p/"in")
+
+    def test_20_reject_dirty_worktree_unity_source_despite_clean_git_head(self):
+        # Reproduce HEAD SHA matching manifest while on-disk bytes differ.
+        # Inject a fake read; actual source file remains untouched.
+        target = ROOT/ASSETS[1]
+        original = pathlib.Path.read_bytes
+        def corrupted(candidate):
+            data = original(candidate)
+            if candidate == target:
+                return data + b"\n// LOCAL_UNCOMMITTED_SOURCE_INJECTION\n"
+            return data
+        with mock.patch.object(pathlib.Path, "read_bytes", new=corrupted):
+            with self.assertRaises(SourceError):
+                validate_sources()
+
+    def test_21_reject_dirty_frozen_catalog_despite_clean_git_head(self):
+        target = ROOT/"Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json"
+        original = pathlib.Path.read_bytes
+        def corrupted(candidate):
+            data = original(candidate)
+            return data + b" " if candidate == target else data
+        with mock.patch.object(pathlib.Path, "read_bytes", new=corrupted):
+            with self.assertRaises(SourceError):
+                validate_sources()
+
+    def test_22_foreign_empty_nested_directory_never_removed_by_rollback(self):
+        # Relevant also to W13 #535 empty-foreign-directory rollback hazards:
+        # protect even a directory with no files, not merely user.txt.
+        with tempfile.TemporaryDirectory() as t:
+            p = pathlib.Path(t)
+            self.data_dir(p/"in")
+            dest = p/"staged"
+            stage(dest,p/"in",source_check=False)
+            protected = dest/"foreign"/"empty"
+            protected.mkdir(parents=True)
+            before = {name:(dest/name).read_bytes() for name in FILES}
+            with self.assertRaises(SourceError):
+                rollback(dest)
+            self.assertTrue(protected.is_dir())
+            self.assertEqual({name:(dest/name).read_bytes() for name in FILES},before)
+
+    def test_23_foreign_empty_symlink_directory_never_removed(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t)
+            self.data_dir(p/"in")
+            dest=p/"staged"
+            stage(dest,p/"in",source_check=False)
+            elsewhere=p/"foreign-empty"
+            elsewhere.mkdir()
+            link=dest/"external-link"
+            try:
+                link.symlink_to(elsewhere,target_is_directory=True)
+            except (OSError,NotImplementedError):
+                self.skipTest("OS does not permit test symlink creation")
+            with self.assertRaises(SourceError):
+                rollback(dest)
+            self.assertTrue(elsewhere.is_dir())
+            self.assertTrue(link.is_symlink())
+            self.assertEqual({x.name for x in dest.iterdir()}, FILES|{"external-link"})
 
     @staticmethod
     def original_digest(forced_price_delta=0, swap_first_two=False):

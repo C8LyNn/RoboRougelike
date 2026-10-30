@@ -30,7 +30,7 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
     "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "283fcb3e5d9a1ca5b09ece77df0ec111782d89ed",
-    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "069839de7d69c2f4baaff1ad8f0db4da6c7c4cb8",
+    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "8ead86b08db79910ed7c10f123bdf0e97fb342d6",
     "Research/B01-22/P17/KITREADINESS001/README.md": "247c62c5c14a64c66454dc79fb49a68fe3e7ae43",
     ".github/workflows/b01-22-p17w08-kitreadiness.yml": "f7e78a48ed8808f602d4c03834be70a1267095e7",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "c53bf577ec7ae849897027e87f2e70bde369d642",
@@ -52,7 +52,7 @@
   ],
   "expected": {
     "original_csharp_assertions": 53,
-    "python_physical_tests": 19,
+    "python_physical_tests": 23,
     "scenarios": 5,
     "unity_source_members": 3,
     "unity_guid_metas": 2,
@@ -116,5 +116,16 @@
     "source_path": "Research/B01-22/P17/KITREADINESS001/KitBuildOrderAdvisor.cs",
     "no_game_effect": true,
     "no_purchases": true
+  },
+  "security_w13": {
+    "red": "worktree dirty source and catalog must fail even with unchanged HEAD Git blobs",
+    "negative_cases": [
+      "local dirty source via safe fake reads",
+      "local dirty frozen catalog via safe fake reads",
+      "foreign nested EMPTY directory protected",
+      "foreign directory symlink protected"
+    ],
+    "state": "RED_EXPECTED",
+    "no_game_code_mutated": true
   }
 }
