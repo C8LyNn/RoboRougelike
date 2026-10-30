@@ -1,0 +1,51 @@
+{
+  "packageId": "B01-25-SYNCRELAY-001",
+  "version": "R1",
+  "realExecutedRun": 41037968021,
+  "sourceCommitBeforeDocs": "0afb07485df1e7edb39d15518bffca829cb3eb69",
+  "win": {
+    "jobId": 124003421285,
+    "conclusion": "SUCCESS",
+    "originalCSharp9Compile": "PASS",
+    "originalAssertions": "53/53",
+    "explicitNegativeAssertions": "15/15",
+    "authenticMapBlobs": "2/2 PASS",
+    "physicalArtifactId": 12969460610
+  },
+  "ubuntu": {
+    "jobId": 124003420798,
+    "conclusion": "SUCCESS",
+    "originalCSharp9Compile": "PASS",
+    "originalAssertions": "53/53",
+    "explicitNegativeAssertions": "15/15",
+    "authenticMapBlobs": "2/2 PASS",
+    "physicalArtifactId": 12968474000
+  },
+  "tested": [
+    "Either relay can be first; one-shot unlock only after distinct partner",
+    "same-site replay never unlocks",
+    "deadline exact timeout, near-deadline acceptance",
+    "timeout can be retried without softlock",
+    "pause no time or interaction",
+    "death clears partial and latched completion",
+    "out-of-range and just-outside site cannot activate",
+    "inclusive IEEE754 radius boundary",
+    "deterministic split vs unsplit dt clock",
+    "source fixtures both original Git SHA map blobs, v2, 415/360 items, two original Ground-only cells per map",
+    "reverse-order source BFS spawn→both sites→finish, windows source average <=2m/s",
+    "15 fail-closed negative tests",
+    "no unauthorized global event"
+  ],
+  "notRun": [
+    "Unity 6000.3.14f1 Editor assembly import and native NUnit",
+    "Actual raycast interaction/2 prefabs / UI console / door/Finish gating",
+    "Real Light/Heavy vehicle physics/collider navigation/time limits",
+    "Windows Player GUI, human playtesting",
+    "Save/load and world reset integration",
+    "Independent B01-40/B01-60 acceptance",
+    "Codex claim, integration and merge"
+  ],
+  "producerOnly": true,
+  "gameIntegration": false,
+  "independentQA": false
+}
