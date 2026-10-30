@@ -1,0 +1,64 @@
+name: B01-60 P17 W09 HAZARDPULSE frozen RED and future owner-CSharp-GREEN gate (NOT UNITY)
+on:
+  push:
+    branches: [qa/b01-60-p17w09-hazardphase-rework-gate]
+    paths:
+      - 'Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/**'
+      - '.github/workflows/b01-60-p17w09-hazard-phase-rework.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/**'
+      - '.github/workflows/b01-60-p17w09-hazard-phase-rework.yml'
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: 'OPTIONAL exact 40-char owner B01-25 corrected commit SHA; blank means original RED baseline'
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  original-csharp-boundary-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      CANDIDATE_SOURCE_SHA: ${{ inputs.source_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download frozen exact B01-25 and immutable B01-60 W07 test commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 6095577ece27320b1a861a738cc23ba42d6793a6
+          git fetch --no-tags origin 5dc838f3342083ebc78bbf8704053b996dac4a8a
+          if [ -n "$CANDIDATE_SOURCE_SHA" ]; then
+            if [[ ! "$CANDIDATE_SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "INVALID candidate SHA; not running untrusted source"; exit 2
+            fi
+            git fetch --no-tags origin "$CANDIDATE_SOURCE_SHA"
+          fi
+      - name: Run physical frozen original W07 CSharp RED signature and W09 original CSharp partition matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/retarget.py
+      - name: Preserve original compiler stdout CSharp tests SHA and independent verdict
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-60-w09-hazard-rework-${{ matrix.os }}
+          path: qa-w09-hazard-evidence/
+          if-no-files-found: warn
+          retention-days: 21
