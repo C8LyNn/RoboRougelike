@@ -1,7 +1,7 @@
 {
   "schema": "b01-22-source-qa-package-manifest-v1",
   "package_id": "B01-22-ECONREBUILD-RESTORE-QA-001",
-  "version": "1.1.0-W18",
+  "version": "1.2.0-W19",
   "owner": "B01-22",
   "scope": "isolated source-only original frozen ECON replay and durability QA",
   "original_producer": {
@@ -32,12 +32,15 @@
       "original same-process stale checkpoint replay",
       "two fresh OS processes for physical checkpoint write/reload",
       "valid current checkpoint rejects already consumed event ID",
-      "older checkpoint permits same event ID after process restart"
+      "older checkpoint permits same event ID after process restart",
+      "positive: one service two parts => first free / second 70 paid; duplicate win blocked",
+      "negative: two services one physical host => two free claims and same victory event twice"
     ],
     "artifacts": [
       "econrestore-w17-witness.json",
       "econrestore-w18-source-state.json",
-      "econrestore-w18-cross-process-qa.json"
+      "econrestore-w18-cross-process-qa.json",
+      "econrestore-w19-shared-owner-qa.json"
     ]
   },
   "verdict": {
@@ -46,7 +49,9 @@
     "native_unity": "NOT_RUN",
     "live_game_host": "NOT_ASSESSED",
     "g0": "NOT_INDEPENDENTLY_ACCEPTED",
-    "g2": "HOLD"
+    "g2": "HOLD",
+    "shared_owner_risk": "SOURCE_CONTRACT_RED_IF_QA_DETECTOR_REPRODUCED",
+    "single_writer_canonical_contract": "UNKNOWN_NOT_VERIFIED"
   },
   "dependencies": [
     "frozen original ECONREBUILD #252 source",
@@ -62,5 +67,13 @@
     "B01-00 owner / Codex for source-risk review",
     "B01-40 independent physical QA",
     "B01-60 independent native-only QA when available"
-  ]
+  ],
+  "receivers_w19": {
+    "owner": "B01-00 / original ECON #252 owner for authorized singleton/host-wide epoch rework",
+    "independent_qa": [
+      "B01-40",
+      "B01-60"
+    ],
+    "external_game_source_unchanged": true
+  }
 }

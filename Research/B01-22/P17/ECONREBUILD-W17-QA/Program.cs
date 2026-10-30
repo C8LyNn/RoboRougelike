@@ -148,9 +148,85 @@ static class Program {
             {WriteIndented=true})+"\n");
         Console.WriteLine("QA_DETECTOR_PASS cross-process stale save + same event replay; SOURCE_RELEASE_RED; NATIVE_UNITY_NOT_RUN");
     }
+
+    static object SingleOwnerCostControl(){
+        var host=new ReadOnlyHost();
+        var a="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        var b="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+        host.Parts.Add(new RebuildPartView(a,"Wheel",0));
+        host.Parts.Add(new RebuildPartView(b,"Gun",0));
+        var q=new RebuildQueueService(host);
+        Assert(q.TryQueueDestroyed(a,out var why),"SINGLE_FIRST_QUEUE:"+why);
+        Assert(q.TryQueueDestroyed(b,out why),"SINGLE_SECOND_QUEUE:"+why);
+        Assert(host.Cash==930&&host.Reservations.Count==2,
+            "SINGLE_OWNER_DID_NOT_CHARGE_SECOND_ORDER");
+        Assert(q.PendingCount==2&&!q.FreeSlotAvailable,"SINGLE_OWNER_FREE_SLOT_INCORRECT");
+        Assert(q.TryFinishVictory("same-epoch-win",true,out why),"SINGLE_REAL_WIN:"+why);
+        bool replayBlocked=!q.TryFinishVictory("same-epoch-win",true,out why);
+        Assert(replayBlocked&&why=="VICTORY_EVENT_REPLAY","SINGLE_OWNER_REPLAY_NOT_BLOCKED");
+        Assert(host.Completions==1&&host.Cash==930&&host.Reservations.Count==0&&
+            host.Parts.All(x=>x.Health==1),"SINGLE_OWNER_PHYSICAL_RESULT_INCORRECT");
+        Console.WriteLine("PASS W19 single service: exactly one free slot + one paid quote + one victory event");
+        return new {name="single_queue_shared_epoch_positive",detector="PASS",
+            free_rebuilds=1,paid_rebuilds=1,paid_scrap=70,
+            host_batch_completions=host.Completions,
+            replayed_victory_rejected=replayBlocked};
+    }
+    static object TwoServicesDoubleClaim(){
+        var host=new ReadOnlyHost();
+        var a="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        var b="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+        host.Parts.Add(new RebuildPartView(a,"Wheel",0));
+        host.Parts.Add(new RebuildPartView(b,"Gun",0));
+        var qa=new RebuildQueueService(host);
+        var qb=new RebuildQueueService(host);
+        Assert(qa.TryQueueDestroyed(a,out var why),"TWIN_FIRST_QUEUE:"+why);
+        Assert(qb.TryQueueDestroyed(b,out why),"TWIN_SECOND_QUEUE:"+why);
+        bool twoFree=host.Cash==1000&&host.Reservations.Count==2 &&
+            qa.PendingCount==1&&qb.PendingCount==1 &&
+            !qa.FreeSlotAvailable&&!qb.FreeSlotAvailable;
+        Assert(twoFree,"TWIN_FREE_EPOCH_CLAIM_NOT_REPRODUCED");
+        var firstSave=Save(qa);var secondSave=Save(qb);
+        Assert(firstSave!=secondSave,"TWIN_SAVES_NOT_INDEPENDENT");
+        Assert(qa.TryFinishVictory("same-epoch-win",true,out why),"TWIN_FIRST_WIN:"+why);
+        bool replayedAcrossInstances=qb.TryFinishVictory("same-epoch-win",true,out why);
+        Assert(replayedAcrossInstances,"TWIN_VICTORY_ID_DEDUPED_BY_EXTERNAL_HOST");
+        Assert(host.Completions==2&&host.Cash==1000&&host.Reservations.Count==0&&
+            host.Parts.All(x=>x.Health==1),"TWIN_PHYSICAL_RESULT_NOT_REPRODUCED");
+        Console.WriteLine("QA_DETECTOR_PASS W19: TWO services consume same epoch free slot and same victory ID against one host; SOURCE_CONTRACT_RED");
+        return new {name="shared_authoritative_host_duplicate_free_slot_epoch",
+            detector="PASS",source_contract_release="RED",
+            distinct_queue_instances=2,physical_hosts=1,
+            free_rebuilds=2,paid_scrap=0,physical_batch_completions=host.Completions,
+            same_victory_event_accepted_by_both_services=replayedAcrossInstances,
+            original_save_ledgers_diverge=firstSave!=secondSave,
+            native_unity="NOT_RUN",live_canonical_host="NOT_TESTED"};
+    }
+    static void SharedOwnerEpoch(string output){
+        var control=SingleOwnerCostControl();
+        var exposure=TwoServicesDoubleClaim();
+        var evidence=new {
+            schema="b01-22-w19-shared-owner-econ-original-source-v1",
+            original_econ_sha=Source,
+            original_git_blob_sha1="cac95b28647528a7a46cb818c6d78037dc3e80a2",
+            real_original_csharp_compiled=true,
+            one_authoritative_test_host=true,
+            qa_detector="PASS",source_contract_release="RED",
+            meaning="Shared host permits 2 local queue services; no global free-slot or event-ID authority in original contract",
+            native_unity="NOT_RUN",real_canonical_r3_host="NOT_TESTED",
+            cases=new object[]{control,exposure}
+        };
+        File.WriteAllText(output,JsonSerializer.Serialize(evidence,
+            new JsonSerializerOptions{WriteIndented=true})+"\n");
+        Console.WriteLine("QA_DETECTOR_PASS W19 shared-host two-service epoch; SOURCE_CONTRACT_RED; NATIVE_UNITY_NOT_RUN");
+    }
+
     static int Main(string[] args){
         if(args.Length!=1 && args.Length!=2 && args.Length!=3)return 2;
         try{
+            if(args.Length==2 && args[0]=="--shared-owner-epoch"){
+                SharedOwnerEpoch(args[1]);return 0;
+            }
             if(args.Length==2 && args[0]=="--make-process-snapshot"){
                 SaveProcessState(args[1]);return 0;
             }
