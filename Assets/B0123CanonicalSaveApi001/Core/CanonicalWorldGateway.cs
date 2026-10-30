@@ -120,6 +120,9 @@ namespace B01.CanonicalWorldApi001
             {
                 do
                 {
+                    // The first quiescence check must be INSIDE the busy lease.
+                    // Check before decoding, reading disk or staging new physics.
+                    if(!Idle()){result=CanonicalGateResult.HostBusy;break;}
                     if(!ColdRestore.TryStage(bytes,out ColdRestore? cold)||cold==null)
                     {result=CanonicalGateResult.InvalidSnapshot;break;}
                     RunSnapshot snap=cold.Snapshot;
