@@ -1,0 +1,58 @@
+name: B01-62 P17W13 Original W06 Save ID and #510 Rollback Negative QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w13-save-v1-rollback-guard
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W13SaveRollbackContract/**'
+      - '.github/workflows/b01-62-p17w13-save-rollback.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-ledger-and-rollback:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch ONLY frozen selected producer
+        run: git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+      - name: 48 original QA adversarial state and rollback tests
+        run: python -m unittest discover -s Tools/B01/B01-62/P17W13SaveRollbackContract -p test_contract.py -v
+      - name: Generate source-only fixtures and copy immutable original W06 Git blob
+        run: |
+          python Tools/B01/B01-62/P17W13SaveRollbackContract/make_fixtures.py qa-contract-fixtures
+          mkdir -p Tools/B01/B01-62/P17W13SaveRollbackContract/OriginalW06
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > Tools/B01/B01-62/P17W13SaveRollbackContract/OriginalW06/DebrisImpulseCore.cs
+          test "$(git rev-parse d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs)" = "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+          echo ORIGINAL_W06_GIT_BLOB_PIN=PASS
+      - name: Run executable original W06 ledger CLR rehydration from validated JSON
+        run: |
+          dotnet run --project Tools/B01/B01-62/P17W13SaveRollbackContract/OriginalLedgerQA.csproj -c Release -- qa-contract-fixtures/attached.json qa-contract-fixtures/detached.json qa-contract-fixtures/both.json
+      - name: Actually execute frozen #510 original rollback RED then own fail-closed wrapper GREEN
+        run: |
+          mkdir -p qa-output
+          python Tools/B01/B01-62/P17W13SaveRollbackContract/rollback_witness.py --repo . --output qa-output/rollback-witness.json
+      - name: Archive reproducible negative/positive original-source evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w13-persistence-rollback-${{ matrix.os }}
+          path: |
+            qa-contract-fixtures/*.json
+            qa-output/rollback-witness.json
+          if-no-files-found: error
