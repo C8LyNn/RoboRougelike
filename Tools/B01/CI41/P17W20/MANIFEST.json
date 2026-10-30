@@ -1,0 +1,73 @@
+{
+  "package": "CI41-W20-NATIVE-EVIDENCE-GATE-001",
+  "version": "R1",
+  "owner": "B01-41",
+  "headquarters": "https://github.com/C8LyNn/RoboRougelike/issues/668",
+  "owner_authorizations": [
+    666,
+    667
+  ],
+  "selected_r3": {
+    "pr": 642,
+    "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4"
+  },
+  "r4_candidates": {
+    "647": {
+      "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+      "public_host_blob": "82147492a9205f8ef5986ceb61aeb10d6ea24ff2",
+      "lifetime_lease": "RETAIN_ON_DISABLE"
+    },
+    "652": {
+      "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+      "public_host_blob": "7b8354bc4cd846227b4bdf6d25d81bed34a325bc",
+      "lifetime_lease": "RELEASE_ON_DISABLE_SOURCE_RISK"
+    }
+  },
+  "owner_selected_r4": "PENDING_OWNER_SIGNED_DECISION",
+  "alternative604": "ALT_HOLD",
+  "alternative644": "ALT_HOLD",
+  "frozen_sources": {
+    "game510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "savehost596": "efb2b06eafedab5469b57f163152d96aca3c5915"
+  },
+  "owned_paths": [
+    "Tools/B01/CI41/P17W20/verify_native_evidence.py",
+    "Tools/B01/CI41/P17W20/test_verify_native_evidence.py",
+    "Tools/B01/CI41/P17W20/README.md",
+    "Tools/B01/CI41/P17W20/MANIFEST.json",
+    ".github/workflows/b01-41-p17w20-native-evidence-gate.yml"
+  ],
+  "tests": {
+    "synthetic_adversarial_validation_cases_per_os": 32,
+    "exact_original_host_git_blob_comparison": true,
+    "real_unity": false,
+    "real_native_g1": "NOT_RUN",
+    "test_synthetic_fixtures_are_real_unity": false
+  },
+  "result_boundary": "STRUCTURAL_EVIDENCE_ONLY_NOT_NATIVE_EXECUTION",
+  "release_gate": "ENFORCE_EXITS_3_HOLD_UNTIL_OWNER_AND_HUMAN_ATTESTATION",
+  "gates": {
+    "G0": "NEW_R4_INDEPENDENT_B01_40_PENDING",
+    "G1": "NOT_RUN",
+    "canonical_live_save": "HOLD",
+    "G2": "HOLD",
+    "codex_ack": false
+  },
+  "state": {
+    "IMPLEMENTED": true,
+    "TESTED": "PENDING_ACTUAL_CI",
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "receiver": [
+    "B01-60",
+    "B01-23",
+    "B01-62",
+    "B01-40",
+    "B01-00"
+  ],
+  "rollback": "Own new files only, unmerged Draft; never touch user PC, original game project or private saves."
+}
