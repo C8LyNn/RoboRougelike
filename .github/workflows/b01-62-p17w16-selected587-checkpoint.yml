@@ -1,0 +1,50 @@
+name: B01-62 W16 Selected #587 Checkpoint/Physical Rollback Exact Source QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w16-selected587-checkpoint-gate
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W16Selected587CheckpointGate/**'
+      - '.github/workflows/b01-62-p17w16-selected587-checkpoint.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-original-587:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch ONLY selected #587 original + frozen #556 and #510
+        run: |
+          git fetch --no-tags origin ad7904eca571c742257551fa8103f266fcb9b752
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Verify exact Git blobs, original afteractivation guard and source SHA
+        run: |
+          mkdir -p qa-b01-62-w16
+          python Tools/B01/B01-62/P17W16Selected587CheckpointGate/source_guard.py --repo . --out Tools/B01/B01-62/P17W16Selected587CheckpointGate/Input --receipt qa-b01-62-w16/source.json
+      - name: Execute REAL original source #587/#556/#510/W06 plus only own receiver gate
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W16Selected587CheckpointGate/Original587GateQA.csproj -c Release --verbosity quiet | tee qa-b01-62-w16/qa.stdout
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w16-selected587-${{ matrix.os }}
+          path: qa-b01-62-w16/*
+          if-no-files-found: error
