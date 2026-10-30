@@ -40,7 +40,7 @@ internal static class Program
     private sealed class World:IPreparedWorld
     {
         private readonly RunSnapshot saved;
-        public bool Active,Retired,ThrowActivate,ThrowDeactivate,MutateAfterActivation;
+        public bool Active,Retired,ThrowDeactivate,MutateAfterActivation;
         public World(RunSnapshot snapshot){saved=snapshot;}
         public RunSnapshot Capture()
         {
@@ -49,7 +49,7 @@ internal static class Program
             parts[0]=parts[1];
             return new RunSnapshot(saved.RunId,saved.Generation,parts);
         }
-        public void Activate(){Active=true;if(ThrowActivate)throw new IOException("activated then failed");}
+        public void Activate(){Active=true;}
         public void Deactivate(){Active=false;if(ThrowDeactivate)throw new IOException("cannot undo staged world");}
         public void Retire(){Retired=true;Active=false;}
     }
@@ -57,16 +57,15 @@ internal static class Program
     {
         public World? Last;
         public int Preparations;
-        public bool FailActivate,FailRollback,PostActivateMutation;
+        public bool FailRollback,PostActivateMutation;
         public IPreparedWorld Prepare(RunSnapshot snapshot)
         {
             Preparations++;
             Last=new World(snapshot) {
-                ThrowActivate=FailActivate,
                 ThrowDeactivate=FailRollback,
                 MutateAfterActivation=PostActivateMutation
             };
-            FailActivate=FailRollback=PostActivateMutation=false;
+            FailRollback=PostActivateMutation=false;
             return Last;
         }
     }
@@ -231,7 +230,7 @@ internal static class Program
             });
             Check("FRESH_FILE_LOCK_CAS_RACE_REFUSES_STALE_SECOND_WRITER",()=>{
                 string path=NewSlot(root,"cas");
-                var(s,_,_old,store)=Seed(path);
+                var(s,_,_,store)=Seed(path);
                 if(!store.Real.Read(Run,out long gen,out string digest)||gen!=10)
                     return false;
                 var other=new FileCheckpointStore(path);
