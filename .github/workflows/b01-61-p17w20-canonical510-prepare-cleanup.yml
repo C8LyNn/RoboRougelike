@@ -1,0 +1,57 @@
+name: B01-61 P17 W20 exact #682 canonical #510 OwnerFactory staged cleanup source P0
+on:
+  push:
+    branches: [qa/b01-61-p17w20-canonical510-ownerfactory-failed-cleanup]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W20Canonical510PrepareCleanupQA/**'
+      - '.github/workflows/b01-61-p17w20-canonical510-prepare-cleanup.yml'
+permissions:
+  contents: read
+jobs:
+  exact-original-owner-port:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Compile original unchanged R4 core plus new original #682 owner port
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W20Canonical510PrepareCleanupQA/CanonicalCleanupQA.csproj -c Release --nologo 2>&1 | tee build.log
+      - name: Execute real original CSharp9 owner API against fault injected private rig lifecycle
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          dotnet Tools/B01/B01-61/P17W20Canonical510PrepareCleanupQA/bin/Release/net8.0/CanonicalCleanupQA.dll --release | tee qa_release.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          echo "ACTUAL_ORIGINAL_682_RELEASE_GATE_EXIT=${rc}"
+          if [[ "${rc}" -ne 3 ]]; then echo 'EXPECTED_P0_WITNESS_NOT_REPRODUCED_OR_TEST_FAILURE'; exit 1; fi
+          grep -Fx 'SOURCE_QA_CASES_TOTAL=9 PASS=9 FAIL=0' qa_release.log
+          grep -Fx 'SOURCE_RELEASE_GATE=HOLD_P0_PREPARE_CLEANUP_ORPHAN' qa_release.log
+      - name: Fail closed on original Git SHA drift, competitor source and unsupported native claims
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W20Canonical510PrepareCleanupQA/receipt.py --log qa_release.log --out dist/b01-61-p17w20-original-682.json
+      - name: Preserve original source log and exact SHA-256 manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w20-canonical-owner-port-${{ matrix.os }}
+          path: |
+            build.log
+            qa_release.log
+            dist/b01-61-p17w20-original-682.json
+          if-no-files-found: warn
