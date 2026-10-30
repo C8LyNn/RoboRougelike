@@ -1,0 +1,88 @@
+{
+  "package_id": "B01-62-P17W21-CANONICAL681-691-SLOTSAVE669-ADAPTER-001",
+  "version": "1.0.0-SOURCE-ONLY",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "selected_api_lineage": {
+    "only_base_pr": 681,
+    "base_exact_sha": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+    "base_blob": "f47dacc4ce6dd4ed1c66b6d3a07b432d2bc572c7",
+    "owner_corrected_pr": 691,
+    "corrected_exact_sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+    "corrected_blob": "704e774dedd5be5af26e0791fba87ecdb109ae2a",
+    "alternate_api_pr_682": "ALT_HOLD_DO_NOT_IMPORT"
+  },
+  "durable_selected_one": {
+    "pr": 669,
+    "exact_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+    "original_blob": "db7745635164d9eb6b10f3246538700158130b7b"
+  },
+  "host": {
+    "old_r4_selected_frozen_647": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "new_owner_r5_pr": 690,
+    "new_owner_r5_exact_sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "r4_652": "ALT_HOLD"
+  },
+  "frozen": {
+    "game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "host_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "r3_642": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "codec_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "new_only_paths": [
+    {
+      "path": "Tools/B01/B01-62/P17W21Canonical681SlotAdapter001/CanonicalSlotCommitAdapter.cs",
+      "git_blob": "bcecb87c8b1b198e8c086d30f26846bf202ea1c4"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W21Canonical681SlotAdapter001/Program.cs",
+      "git_blob": "39b567443902fd74fc73b570e198c412b3c4a4dc"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W21Canonical681SlotAdapter001/Original681And669Tests.csproj",
+      "git_blob": "f4ff60ade13618751291f89943958349d7efd708"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W21Canonical681SlotAdapter001/Original691And669Tests.csproj",
+      "git_blob": "fb3b394dfccfc38f429161ed47c5015db431a9e4"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W21Canonical681SlotAdapter001/README.md",
+      "git_blob": "a5f68f477fba307ebc6e749271f63dbd30e45ed6"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w21-canonical681-669-adapter.yml",
+      "git_blob": "58b54462d38c51835c5f7319c5e5cfd7dd4d8269"
+    }
+  ],
+  "actual_executed_ci_prior_head": {
+    "run_id": 41123725528,
+    "original_681_to_669_source_per_os": 33,
+    "original_691_v2_to_669_source_per_os": 33,
+    "windows2025": "SUCCESS_66_66",
+    "ubuntu2404": "SUCCESS_66_66",
+    "total_across_two_os": 132
+  },
+  "gates": {
+    "source_tested": "YES_ACTUAL_WIN_AND_UBUNTU",
+    "independent_source_qa": "PENDING_B01_61_41",
+    "new_r5_formal_physical_g0": "PENDING_B01_40",
+    "native_g1": "NOT_RUN",
+    "live_510_private_world": "HOLD_UNWIRED",
+    "hardware_power_loss": "NOT_PROVEN",
+    "external_valid_file_rollback": "OUT_OF_SCOPE_UNLESS_TRUSTED_MONOTONIC_ANCHOR",
+    "codex_ack": "NONE",
+    "integrated": false,
+    "released": false,
+    "merged": false
+  },
+  "warnings": [
+    "This is a new versioned source-only Tools adapter, not Unity installable.",
+    "Selected #681 original multiple naked gateways remain unsafe unless bound through one OS-leased session.",
+    "The managed World/Factory are test doubles for physics and do not hydrate frozen #510 private Rig[]/AtomicDockLedger.",
+    "External old valid snapshot file restore can defeat single-file self SHA256, documented trust/ACL policy required.",
+    "Disposing with a live world intentionally holds OS lease until process exit unless real trusted physical retirement predicate proves all actual roots gone."
+  ]
+}
