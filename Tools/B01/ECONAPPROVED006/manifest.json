@@ -1,0 +1,64 @@
+{
+  "package_id": "B01-22-ECONAPPROVED-006",
+  "version": "6.0.0-P17W24",
+  "parent": "1b964643dc191e5daa47b03c6e6fb295c0427493",
+  "blobs": {
+    "Assets/B01Packages/ECONAPPROVED006.meta": "75904952b49006c17553839cd4e98e3455edb41a",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime.meta": "a2e3e090bd5d28a319d97a7a0e861c6f70906016",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs.meta": "f4c999a12e4002aeb78357141fa935fdf57b5c61",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/B01.EconApprovedV6.asmdef.meta": "b504cc1eee52d3fa5e5bf571352340dabc5b6016",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/B01.EconApprovedV6.asmdef": "558a4b5c5c0cf83b54e9e2e56d8a538377ee7694",
+    "Tools/B01/ECONAPPROVED006/W24.Tests.csproj": "fc03359178c86a298587e1900d2beef449a287f5",
+    "Tools/B01/ECONAPPROVED006/README.md": "bdf5966c3038dc53cf2770b67b1e8f4378da0e35",
+    "Tools/B01/ECONAPPROVED006/INTEGRATION_CONTRACT.md": "008b1582236f5491cf4ada95646a764ae460018f",
+    ".github/workflows/b01-22-p17w24-approved-economy.yml": "a7cde3ce07c030823d81b570f33ead9acafeee3f",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs": "c72db78548f3e21765c54eb4609b748153118392",
+    "Tools/B01/ECONAPPROVED006/Program.cs": "cf0f655aadedc46165f9125e090dd8a75e56f702",
+    "Tools/B01/ECONAPPROVED006/verify_package.py": "aab33b032aaa01667f04a87743a16bf47f811412"
+  },
+  "owned_paths": [
+    ".github/workflows/b01-22-p17w24-approved-economy.yml",
+    "Assets/B01Packages/ECONAPPROVED006.meta",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime.meta",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs.meta",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/B01.EconApprovedV6.asmdef",
+    "Assets/B01Packages/ECONAPPROVED006/Runtime/B01.EconApprovedV6.asmdef.meta",
+    "Tools/B01/ECONAPPROVED006/INTEGRATION_CONTRACT.md",
+    "Tools/B01/ECONAPPROVED006/Program.cs",
+    "Tools/B01/ECONAPPROVED006/README.md",
+    "Tools/B01/ECONAPPROVED006/W24.Tests.csproj",
+    "Tools/B01/ECONAPPROVED006/manifest.json",
+    "Tools/B01/ECONAPPROVED006/verify_package.py"
+  ],
+  "frozen": {
+    "v3": "Assets/B01Packages/ECONREBUILD003/Runtime/RebuildOwnerAuthorityV3.cs",
+    "v4": "Assets/B01Packages/ECONREADINESS004/Runtime/EconomyRunReadinessGateV4.cs",
+    "v5": "Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs"
+  },
+  "frozen_sha": {
+    "v3": "ace8d24196b7aa795f2af46beed508ce3e29ad7e",
+    "v4": "cb8f1e15a6d2ed1370d005653ce489c3f4ad5c51",
+    "v5": "2d0fdae02bce10c406464eda182218a5e9bec6a0"
+  },
+  "selected_storage": "#749_only_pending_integrator",
+  "nonselected_storage": "#753/#741_ALT_HOLD",
+  "native_g1": "NOT_RUN",
+  "source_g0": "INDEPENDENT_PENDING",
+  "released": false,
+  "anti_tamper": "OUT_OF_SCOPE",
+  "owner_loss": "IN_SCOPE",
+  "codex_ack": "NONE",
+  "integrator_feedback": "NOT_MEASURED",
+  "receivers": [
+    "B01-23",
+    "B01-62",
+    "B01-61",
+    "B01-41",
+    "B01-40",
+    "B01-60",
+    "B01-10",
+    "B01-13",
+    "B01-00"
+  ]
+}
