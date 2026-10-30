@@ -34,8 +34,8 @@
     },
     {
       "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs",
-      "bytes": 8168,
-      "sha256": "c2f12250868997290cbe414f723dc69bced8e8ac2d6edd9f50e652debd31f0d8"
+      "bytes": 8949,
+      "sha256": "c149017bc05130ae846c7ff09e8cbe7c138b9efb804c3f73265420b04631aa5b"
     },
     {
       "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs.meta",
@@ -74,8 +74,8 @@
     },
     {
       "path": "Tools/B01/B01-11/P17W24RecoveryHud001/verify_package.py",
-      "bytes": 2531,
-      "sha256": "edf0b3b6ab5e83e51d4bb32ac6d114412e945436398fdd6ff3c01658bbc27ab5"
+      "bytes": 3675,
+      "sha256": "7cd3c1c59c23e1adef90cc70c86347fca0c91fe978abe68e227b6e4e0c681eea"
     }
   ]
 }
