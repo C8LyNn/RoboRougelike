@@ -1,0 +1,29 @@
+# B01-62 W24 — SELECTED749-HONEST-CRASH-RECOVERY-QA-001
+
+**Type:** Additive independent test package on exact owner-selected [#749 @ 8634e71dfcf633323073fe584a6c0884f1ca5d23](https://github.com/C8LyNn/RoboRougelike/pull/749). The alternative #753 V4 and #741 R3 are **ALT_HOLD** until an explicit B01-00 selection; no source from either is mixed into this package. Original #729 V3 gateway b8ca29c7707cd6b4338d0b9772d74dee676d49d2; original frozen #669 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121, binary #556 33094f154c7b91119b36d58aab285e6e83c5de57 and gameplay #510 d94400d95d13db7f27e1533df05c9292d5380431 immutable. R5 host #690 immutable; owner-corrected fixture #750/#732 must be independently reviewed separately.
+
+## Real implemented QA (no new duplicate Save feature)
+
+This suite *directly compiles the unchanged original #749 source*, plus unchanged original #729 gateway/lease and frozen #556/W06 original-source code. It is independently authored as new B01-62 QA paths rather than altering source producer's tests or its C# files. Strict net8.0 / C#9 warnings-as-errors on GitHub Windows2025 and Ubuntu24.04. All original external source files are pulled at exact SHA and verified by immutable Git blob SHA, including original legacy #669 solely for negative no-coinstall test.
+
+The 11 inherited baseline owner tests verify actual OS FileShare.None on ONE .owner across a separate child CLR, zero slot.lease, direct original #669 V1 marker refusal, committed cold original #556 Light/Heavy consumed IDs, partial private-stage failed cleanup false/throw without releasing owner, foreign slot/run isolation and same-epoch stale replay. The new **FIVE distinct original-implementation crash/recovery tests** add:
+
+1. Actual original #669-derived `OsAtomicEnvelopePublisher` performs physical `File.Move(stage, save.envelope)` to commit g2 after g1. Test hook throws *after the genuine rename*, lost ACK => source gateway/slot sticky quarantine, original owner cannot be reacquired until trusted retirement. On cold reopening the **g2** original frozen #556 Light/Heavy consumed ledger and exact full payload digest survive.
+2. Injection throws *before rename* on attempted g2: source quarantine still enforced because publication status uncertain to caller; next cold owner sees **g1**, not invented g2. Both paths test actual OS full file and no second .lease.
+3. After real g1, flip an actual digest byte of the physical authoritative `save.envelope`: original V3 source rejects Read, enters sticky quarantine, refuses g2 overwrite, preserves the corrupted file byte-for-byte; cold new owner rejects record. This is **corruption**, not attacker-authentication.
+4. Leave a foreign `pending-foreign-w24.stage` file alongside actual authoritative g1: the recovery authority ignores it, does not delete it, reads g1 and safely publishes g2, preserving foreign bytes. Never use unsafe scratch cleanup or delete arbitrary filenames.
+5. Actual g1 -> g2 disk, retire owner, cold new owned session restores g2 and writes g3; original frozen #556 W06 Light+Heavy consumed IDs and full binary fingerprint remain exact and stable; zero separate slot.lease.
+
+All per-test roots are newly created UUID temp directories under the CI OS user; never touch real game saves, other project folders or user PC. Managed synthetic `Factory`/`World` are explicitly NOT native Unity #510 private Rig[]/AtomicDockLedger, Rigidbody parents/velocity or PhysX. Real OS process, FileStreams, original #729 C#, derived original #749 producer and original frozen #556 source are NOT stubs.
+
+## Owner-approved honest-crash threat model / out of scope
+
+W24 owner explicitly approves protection against honest local crash, truncated writes, interrupted processes, ordinary corruption, duplicate legitimate sessions, ambiguous ACK, stale IDs and safe recovery. Sophisticated malicious whole-file replacement / complete root rollback is out of release scope. Historical valid external g1 backup or same-epoch forged source trust witness [#680](https://github.com/C8LyNn/RoboRougelike/pull/680) remains possible if attacker can replace private Save; SHA256 checksum does not authenticate. Optional #709 highwater is NOT selected; this suite does not mix it, and physical power-cut parent-directory fsync remains unproven. No unverified native PASS claims.
+
+## G0/G1 / handoff
+
+Selected #749 exact packet with owner corrected R5 g5 fixture is reported source-transport G0 by [B01-40 #755](https://github.com/C8LyNn/RoboRougelike/pull/755), but this new QA-only package adds no Unity Assets, .meta/GUID, asmdef or altered source. New full game G0 still HOLD pending actual private #510 capture/hydrate, inventory/main-thread quiescence, safe Old World rollback/owner one-assembly closure. Real activated Windows Unity6000.3.14f1 G1 = NOT_RUN unless user manually runs owner-approved disposable project and returns Editor.log/NUnit XML. R5 fixture #750 source fix (gen4 -> saved gen5) is SOURCE evidence only, not genuine PhysX. No Codex ACK, merge, production install or G2.
+
+**Owner receivers:** B01-23/20 real Unity #510 private world factory and physics, B01-61/41 independent original exact-SHA #749 security and these new crash negatives, B01-40 formal safe source/GUID/scratch G0, B01-60 owner-operated native Windows G1, B01-00 one bridge decision and future Codex offer. New approved rebuild/loaner/65% pricing ledger must eventually share one canonical Save authority and stable item+victory IDs; this suite does not invent production implementation.
+
+**Stages:** IMPLEMENTED=YES (test-only), TESTED=CI pending exact final SHA, QA_ACCEPTED=INDEPENDENT_SOURCE_SCOPE_ONLY_PENDING, READY_FOR_INTEGRATOR=NO, INTEGRATED=NO, RELEASED=NO; native G1 NOT_RUN, full game G0 HOLD, Codex ACK NONE and integrator feedback NOT_MEASURED. Safe rollback: close unmerged QA Draft, leave original #749/#729/#669/#556/#510 and all user files untouched.
