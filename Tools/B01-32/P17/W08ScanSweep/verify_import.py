@@ -14,9 +14,9 @@ def check(files,receipt):
         require(p.startswith(ROOT+"/") or p==ROOT+".meta","out-of-scope ZIP member "+p)
         require(SHA(d)==by_path[p]["sha256"] and len(d)==by_path[p]["bytes"],"source hash drift "+p)
     metas={p:GUID.search(d) for p,d in files.items() if p.endswith(".meta")}
-    require(len(metas)==12 and all(metas.values()),"12 actual original metadata GUIDs")
+    require(len(metas)==13 and all(metas.values()),"13 actual original metadata GUIDs")
     unique=[x.group(1).decode() for x in metas.values()]
-    require(len(set(unique))==12,"original GUID collision")
+    require(len(set(unique))==13,"original GUID collision")
     script=ROOT+"/Runtime/B0132ScanSweepVisual.cs.meta"
     guid=metas[script].group(1).decode()
     pf=files[ROOT+"/Resources/B0132_ScanSweep.prefab"].decode()
