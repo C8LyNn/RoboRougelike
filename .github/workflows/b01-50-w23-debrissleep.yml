@@ -1,0 +1,87 @@
+name: B01-50 W23 DEBRISSLEEP001 real source CSharp and Unity adapter checks
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/DEBRISSLEEP001/**'
+      - '.github/workflows/b01-50-w23-debrissleep.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-csharp:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Pin 9 exact own Git blobs and check new Unity GUIDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ci-evidence
+          ROOT=Tools/B01/B01-50/DEBRISSLEEP001
+          count=0
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            test "$(git hash-object --no-filters "$path")" = "$expected" || { echo "OWN_BLOB_MISMATCH $path"; exit 1; }
+            echo "ORIGINAL_GIT_BLOB_PASS $path"
+            count=$((count+1))
+          done < "$ROOT/MANIFEST-GIT-BLOBS.tsv"
+          test "$count" -eq 9 || { echo "PIN_COUNT_WRONG $count"; exit 1; }
+          python - <<'PY' | tee ci-evidence/original_guid_gate.txt
+          from pathlib import Path
+          import re
+          r=Path('Tools/B01/B01-50/DEBRISSLEEP001')
+          fresh=[]
+          for p in ('Core/DebrisSleepPolicy.cs','Unity/B0150OptionalDebrisSleepGovernor.cs'):
+              meta=Path(str(r/p)+'.meta')
+              assert (r/p).is_file() and meta.is_file(),p
+              s=meta.read_text()
+              assert 'fileFormatVersion: 2' in s and 'MonoImporter:' in s
+              m=re.search(r'^guid: ([0-9a-f]{32})$',s,re.M)
+              assert m,p
+              fresh.append(m.group(1))
+          assert len(set(fresh))==2
+          n=0
+          for parent in (Path('Assets'),Path('Tools/B01/B01-50/CONTACTPRESSURE001'),Path('Tools/B01/B01-50/CONTACTPRESSURE001R2')):
+              if not parent.is_dir(): continue
+              for f in parent.rglob('*.meta'):
+                  n+=1
+                  t=f.read_text(errors='replace')
+                  assert not any(('guid: '+g) in t for g in fresh),f
+          print('DEBRISSLEEP_FRESH_META_GUID_PASS 2/2; checked historical meta:',n)
+          PY
+      - name: Compile both actual original CSharp production files and run 54 real source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet --version | tee ci-evidence/original_dotnet_version.txt
+          dotnet run --project Tools/B01/B01-50/DEBRISSLEEP001/tests/DEBRISSLEEP.Tests.csproj --configuration Release -- --receipt ci-evidence/original_54_source_tests.json 2>&1 | tee ci-evidence/original_54_source_tests.log
+          python - <<'PY'
+          import json
+          j=json.load(open('ci-evidence/original_54_source_tests.json'))
+          assert j['total']==j['passed']==54 and j['failed']==0,j
+          assert j['genuineProductionCore'] and j['genuineProductionUnityFacingAdapter']
+          assert j['unitySurface']=='SURROGATE_TEST_ONLY_NOT_UNITY'
+          assert j['nativeUnity']==j['nativePhysX']=='NOT_RUN'
+          assert j['actualFrameTime']==j['physicalSleepAcceptance']=='NOT_MEASURED'
+          print('ORIGINAL_DEBRISSLEEP_54_54_SOURCE_PASS; NATIVE_G1_NOT_RUN')
+          PY
+          git rev-parse HEAD > ci-evidence/exact_source_sha.txt
+          sha256sum Tools/B01/B01-50/DEBRISSLEEP001/Core/DebrisSleepPolicy.cs Tools/B01/B01-50/DEBRISSLEEP001/Unity/B0150OptionalDebrisSleepGovernor.cs > ci-evidence/production_sha256.txt
+      - name: Preserve real original logs and source receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W23-DEBRISSLEEP-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn
