@@ -46,6 +46,8 @@ jobs:
           grep -q 'W17_EXACT_SELECTED_596_ORIGINAL_UNITY_MONO_PHYSICAL_SOURCE_PASS' b0161-w17-p596-physical.log
           grep -q 'W17_SELECTED_596_CONCURRENT_HOST_SOURCE_RED=' b0161-w17-p596-concurrent.log
           grep -q 'W17_SELECTED_596_STALE_HOST_ESCALATION_RED=' b0161-w17-p596-concurrent.log
+          dotnet run --no-build -c Release --project "$p" -- cross-run "$root" 2>&1 | tee b0161-w18-p596-cross-run.log
+          grep -q 'W18_SELECTED_596_NEW_RUN_STICKY_QUARANTINE_RED=' b0161-w18-p596-cross-run.log
       - name: Six fresh CLR processes use REAL original file checkpoint and #556 payload
         shell: bash
         run: |
@@ -66,6 +68,7 @@ jobs:
             b0161-w17-p596-build.log
             b0161-w17-p596-physical.log
             b0161-w17-p596-concurrent.log
+            b0161-w18-p596-cross-run.log
             b0161-w17-p596-seal.log
             b0161-w17-p596-restart.log
             b0161-w17-p596-fork.log
