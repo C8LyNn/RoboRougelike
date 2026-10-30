@@ -1,0 +1,70 @@
+name: B01-60 P17W17 exact original Native Save adapter coverage audit (source only, G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w17-native-adapter-coverage-receipt-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W17NativeAdapterCoverage/**'
+      - '.github/workflows/b01-60-p17w17-native-adapter-coverage.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W17NativeAdapterCoverage/**'
+      - '.github/workflows/b01-60-p17w17-native-adapter-coverage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-original-git-source-native-test-coverage-and-no-competing-adapter:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch ONLY immutable original Git objects; never merge two adapter branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
+          git fetch --no-tags origin dd088a8c4823a6d128085e5ef08aca4b7f9307ea
+      - name: Execute original 510/556/604 Git objects, exact five Unity case identities and 8 fail-closed wrong-bridge source negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W17NativeAdapterCoverage/audit_native_adapter_coverage.py 2>&1 | tee b01-60-w17-source-audit.log
+          cp b01-60-w17-source-audit.log qa-w17-native-adapter-coverage-evidence/stdout.log
+      - name: Prohibit synthetic native evidence or accidental editor-claim
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f qa-w17-native-adapter-coverage-evidence/receipt.json
+          python - <<'PY'
+          import json
+          with open("qa-w17-native-adapter-coverage-evidence/receipt.json",encoding="utf-8") as f: r=json.load(f)
+          assert r["G1"]=="NOT_RUN" and r["physical_native_adaptor_cases_executed"]==0
+          assert r["original_532_includes_556_or_604_native_adapter"] is False
+          assert r["actual_unity_6000_3_14f1"] if "actual_unity_6000_3_14f1" in r else True
+          assert r["additional_native_playmode_cases_authored_exact_604"]==5
+          assert r["adversarial_no_mix_negative_pass"]==8
+          assert r["merged"] is False
+          print("B01_60_W17_G1_NOT_RUN_FALSE_CLAIM_GUARD_PASS")
+          PY
+      - name: Preserve original-source inspection receipt, NOT Editor.log/NUnit XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w17-selected-source-native-coverage-NOT-UNITY-${{ matrix.os }}
+          path: |
+            qa-w17-native-adapter-coverage-evidence/
+            b01-60-w17-source-audit.log
+          retention-days: 21
+          if-no-files-found: warn
