@@ -1,0 +1,52 @@
+{
+  "schema": "b01-62-p17w11-source-qa-v1",
+  "owner": "B01-62",
+  "wave": "PASS17-W11",
+  "scope": "ORIGINAL_PUBLIC_REATTACH_V2_LEDGER_ATOMICITY",
+  "producer_494_sha": "6efe45961ed0ffdf183e8016e350978b9f3dc51c",
+  "comparison_488_sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3",
+  "parent_421_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "files": [
+    {
+      "path": ".github/workflows/b01-62-p17w11-original494-ledger-atomicity.yml",
+      "git_blob": "045010cca0fd96bccb1689ed5a8bd8f3af23e3fe"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W11Atomicity494/stage_source.py",
+      "git_blob": "9041a60e82567981018a83e49f20828223f7db63"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W11Atomicity494/test_stage.py",
+      "git_blob": "095613848b1bf3c30bd10d01601fac0226447bcb"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W11Atomicity494/Independent494.csproj",
+      "git_blob": "d36fb66ad65f0d48ab1fb0c41c2bb61424fb549a"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W11Atomicity494/Independent494Runner.cs",
+      "git_blob": "6e64a2d1d298c880b202598ec2fdf14dfc696a3f"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W11Atomicity494/README.md",
+      "git_blob": "c97677195d3be8dd189fddefc1feb35c6a2f2a8c"
+    }
+  ],
+  "independent_tests": {
+    "python": 17,
+    "original_CSharp": 9,
+    "os": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "execution": "PENDING_CI",
+    "native_unity": "NOT_RUN"
+  },
+  "expected_release_safety": "HOLD_COMMIT_BEFORE_LEDGER_REARM",
+  "codex_ack": "NONE",
+  "integrated": false,
+  "g0": "PENDING_B01_40",
+  "g1_native": "NOT_RUN",
+  "g2": "HOLD",
+  "rollback": "Close QA Draft and remove only B01-62 W11 QA files/branch; delete disposable .stage and .output within QA workspace; never alter producers or Codex."
+}
