@@ -1,0 +1,18 @@
+{
+  "id": "B01-61-P17W21-CANONICAL-V2-691-685-688-NEGATIVE-QA",
+  "producer_pr": 691,
+  "exact_parent_sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+  "selected_api_v1": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+  "exclude_api_682": true,
+  "frozen_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "source_blob_pins": 3,
+  "owned_QA_paths": 6,
+  "source_tests": 9,
+  "negative_witnesses": [
+    "two_same_slot_live_gateways",
+    "stale_preview_after_other_commit"
+  ],
+  "G1_native": "NOT_RUN",
+  "merge": false
+}
