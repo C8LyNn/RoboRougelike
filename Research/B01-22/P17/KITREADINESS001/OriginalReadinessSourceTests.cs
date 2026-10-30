@@ -159,6 +159,22 @@ internal static class OriginalReadinessSourceTests
             Check("reject injected catalog ID",()=>{
                 var x=Clone(c);x[3].Id="EK14";return Rejected(()=>Plan(x,enough,"EK01"));
             });
+            Check("REJECT coerced unit scrap with old source SHA",()=>{
+                var x=Clone(c);x[0].Parts[0].UnitScrap+=7;
+                return Rejected(()=>Plan(x,Array.Empty<OwnedPart>(),"EK01"));
+            });
+            Check("REJECT coherent but inflated part quantity with old SHA",()=>{
+                var x=Clone(c);x[0].Parts[0].Quantity+=1;
+                return Rejected(()=>Plan(x,Array.Empty<OwnedPart>(),"EK01"));
+            });
+            Check("REJECT substituted valid physical part under copied SHA",()=>{
+                var x=Clone(c);x[0].Parts[0].Kind="Booster";x[0].Parts[0].UnitScrap=35;
+                return Rejected(()=>Plan(x,Array.Empty<OwnedPart>(),"EK01"));
+            });
+            Check("REJECT changed approved BOM ordering without new source version",()=>{
+                var x=Clone(c);var temp=x[0].Parts[0];x[0].Parts[0]=x[0].Parts[1];x[0].Parts[1]=temp;
+                return Rejected(()=>Plan(x,Array.Empty<OwnedPart>(),"EK01"));
+            });
             string[] requests;
             var first=FromScenario("starter-cache.json",out requests);
             var sp=Plan(c,first,requests);
@@ -175,8 +191,8 @@ internal static class OriginalReadinessSourceTests
                 foreach(string file in new[]{"starter-cache.json","siege-cache.json","shared-gyro.json"})
                     Scenario(file,c,args[1]);
             }
-            Console.WriteLine("PASS_TOTAL "+passes+"/49");
-            return passes==49?0:2;
+            Console.WriteLine("PASS_TOTAL "+passes+"/53");
+            return passes==53?0:2;
         }
         catch(Exception e) {Console.Error.WriteLine(e.ToString());return 2;}
     }
