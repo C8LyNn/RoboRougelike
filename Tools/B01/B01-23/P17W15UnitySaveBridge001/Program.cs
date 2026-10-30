@@ -1,6 +1,10 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Diagnostics;
+using System.Reflection;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using System.Buffers.Binary;
 using B01.DetachedSaveContract001;
 using B01.DebrisRepulse001;
@@ -257,7 +261,128 @@ class T
                !SnapshotCodec.TryDecode(second,out RunSnapshot? b)||a==null||b==null)return false;
             return a.Generation==5&&b.Generation==6;
         });
+        Check("W18 lease same slot second host denied while original alive",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w18-"+Guid.NewGuid().ToString("N"));
+            string slot=Path.Combine(dir,"save.checkpoint");
+            try
+            {
+                if(!HostSlotLease.TryAcquire(slot,out var one)||one==null)return false;
+                using(one)
+                {
+                    if(!one.Owned)return false;
+                    bool second=HostSlotLease.TryAcquire(slot,out var alien);
+                    alien?.Dispose();
+                    return !second&&one.Owned&&File.Exists(slot+".ownerlock");
+                }
+            }
+            finally {if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W18 disabled-host lease deliberately does NOT release",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w18-"+Guid.NewGuid().ToString("N"));
+            string slot=Path.Combine(dir,"save.checkpoint");
+            try
+            {
+                if(!HostSlotLease.TryAcquire(slot,out var one)||one==null)return false;
+                using(one)
+                {
+                    // Represents inactive GameObject; no Dispose until OnDestroy.
+                    if(HostSlotLease.TryAcquire(slot,out var second))
+                    {second?.Dispose();return false;}
+                    return one.Owned;
+                }
+            }
+            finally {if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W18 released lease permits later cold host and stable owner identity",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w18-"+Guid.NewGuid().ToString("N"));
+            string slot=Path.Combine(dir,"save.checkpoint");
+            try
+            {
+                if(!HostSlotLease.TryAcquire(slot,out var first)||first==null)return false;
+                first.Dispose();
+                if(first.Owned||!HostSlotLease.TryAcquire(slot,out var next)||next==null)
+                    return false;
+                using(next)return next.Owned;
+            }
+            finally {if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W18 two different slots never share authority",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w18-"+Guid.NewGuid().ToString("N"));
+            try
+            {
+                if(!HostSlotLease.TryAcquire(Path.Combine(dir,"first"),out var a)||a==null)
+                    return false;
+                using(a)
+                {
+                    if(!HostSlotLease.TryAcquire(Path.Combine(dir,"second"),out var b)||b==null)
+                        return false;
+                    using(b)return a.Owned&&b.Owned;
+                }
+            }
+            finally {if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W18 concurrent 32 managed hosts: ONE wins",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w18-"+Guid.NewGuid().ToString("N"));
+            string slot=Path.Combine(dir,"slot");
+            var owners=new ConcurrentBag<HostSlotLease>();
+            try
+            {
+                Parallel.For(0,32,_=>{
+                    if(HostSlotLease.TryAcquire(slot,out var l)&&l!=null)owners.Add(l);
+                });
+                return owners.Count==1;
+            }
+            finally
+            {
+                foreach(var owner in owners)owner.Dispose();
+                if(Directory.Exists(dir))Directory.Delete(dir,true);
+            }
+        });
+        Check("W18 separate CLR process cannot steal live checkpoint owner",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w18-"+Guid.NewGuid().ToString("N"));
+            string slot=Path.Combine(dir,"checkpoint");
+            try
+            {
+                if(!HostSlotLease.TryAcquire(slot,out var lease)||lease==null)return false;
+                int denied;
+                using(lease)denied=ChildLeaseExit(slot);
+                return denied==19&&ChildLeaseExit(slot)==0;
+            }
+            finally {if(Directory.Exists(dir))Directory.Delete(dir,true);}
+        });
+        Check("W18 source path contract denies relative/empty slot paths",()=>{
+            bool rel=HostSlotLease.TryAcquire("relative-checkpoint",out var a);
+            bool empty=HostSlotLease.TryAcquire("",out var b);
+            a?.Dispose();b?.Dispose();
+            return !rel&&!empty;
+        });
+
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
-    public static int Main(){Tests();Console.WriteLine("TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);return fail==0?0:1;}
+    private static int ChildLeaseExit(string path)
+    {
+        var psi=new ProcessStartInfo("dotnet");
+        psi.ArgumentList.Add(Assembly.GetExecutingAssembly().Location);
+        psi.ArgumentList.Add("--lease-child");
+        psi.ArgumentList.Add(path);
+        psi.UseShellExecute=false;
+        using(var process=Process.Start(psi))
+        {
+            if(process==null)return 99;
+            if(!process.WaitForExit(30000)){process.Kill();return 98;}
+            return process.ExitCode;
+        }
+    }
+    public static int Main(string[] args)
+    {
+        if(args.Length==2&&args[0]=="--lease-child")
+        {
+            bool acquired=HostSlotLease.TryAcquire(args[1],out var lease);
+            lease?.Dispose();
+            return acquired?0:19;
+        }
+        Tests();
+        Console.WriteLine("TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);
+        return fail==0?0:1;
+    }
 }
