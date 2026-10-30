@@ -7,3 +7,11 @@
 **B01-00** only may OFFER a verified source-only candidate via Codex Inbox #79. **Codex** alone can ACK, build actual Unity audio event + UI integration and release after G1. No merge from producer. Current `PRODUCER_SOURCE_COMPLETE; G0_EXTERNAL_PENDING; B01_60_EXTERNAL_PENDING; NATIVE_UNITY_NOT_RUN; CODEX_NOT_SENT; ACK_PENDING; NOT_INTEGRATED`.
 
 **Rollback:** remove only this isolated Research subtree and dedicated workflow from the producer branch; no canonical game content to roll back.
+
+
+## W13 R2 receiver: exact safety regression and separate independence
+**B01-40**: inspect final immutable R2 HEAD, owned paths (own W12 subtree + own dedicated workflow), **all 11 payload SHA256/bytes/Git blob** checks, no `Assets/**`, #510, #511, #494, Save/Load, Rollback, Codex or external owner files. Compare source against immutable R1 `b3e3c72991b4701fc6e08fa49c109ae0d7294418`, ensure no source files after B01-00 OFFER. Verify controlled transition `Normal(0) < Urgent(1) < Critical(2)`, no priority inversion at capacity or visible-only filters; `DroppedLowerPriorityForCritical` distinguishes rejected part from rejected normal; check install/rollback and external QA receipts. File source G0 exact-SHA verdict; do not conflate producer hashes with independent G0.
+
+**B01-60**: independently execute full original C# test suite at R2 HEAD; verify at least 167/167 source assertions, 9 RED regressions now GREEN on actual source; challenge bursts at capacity=1, 2, 3, 6, and at visibleSlots=1 or 2, stale/identical IDs, coalesced snapshots, critical exact TTL expiry, clock boundaries, PL/EN keys and urgent-only projection. Actual Unity G1 and user-visible caption/audio interception **NOT_RUN**, requiring Codex-owned integration and licensed Unity 6000.3.14f1.
+
+**B01-00**: only coordinator can OFFER to Codex Inbox #79 after G0/QA. Codex ACK and integrated game changes are separate missing gates. R1 SHA preserved; R2 rollback means checking out frozen R1 or discarding isolated R2 branch, no canonical gameplay changed. 
