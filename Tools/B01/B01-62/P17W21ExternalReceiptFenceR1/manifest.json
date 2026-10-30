@@ -1,0 +1,48 @@
+{
+  "package": "B01-62-EXTERNAL-RECEIPT-FENCE-001",
+  "version": "1.0.0",
+  "wave": "P17-W21",
+  "owner": "B01-62",
+  "selected_api_pr": 681,
+  "selected_api_sha": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+  "corrective_api_pr": 691,
+  "corrective_api_sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+  "alt_hold_api_pr": 682,
+  "selected_host_r4": 647,
+  "corrective_host_r5": 690,
+  "payload_owner_pr": 669,
+  "payload_owner_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+  "original_frozen_game": 510,
+  "original_frozen_binary": 556,
+  "trust_model": "witness independently trusted across cold restart; BOTH roots rollback not covered",
+  "files": [
+    "Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/ExternalReceiptFence.cs",
+    "Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/Program.cs",
+    "Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/Original669ReceiptQA.csproj",
+    "Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/source_guard.py",
+    "Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/README.md",
+    "Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/manifest.json",
+    ".github/workflows/b01-62-p17w21-external-receipt-fence.yml"
+  ],
+  "validation": {
+    "os": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "native": "NOT_RUN",
+    "powerloss": "NOT_PROVEN",
+    "double_root_attacker": "OUT_OF_SCOPE_EXPLICIT_TEST"
+  },
+  "lifecycle": {
+    "implemented": true,
+    "tested": "PENDING_CI",
+    "qa_accepted": false,
+    "ready_for_integrator": false,
+    "integrated": false,
+    "released": false
+  },
+  "code_modified": [
+    "new B01-62 own files only"
+  ],
+  "no_merge": true
+}
