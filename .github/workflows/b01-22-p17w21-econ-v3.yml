@@ -30,6 +30,11 @@ jobs:
           dotnet run --project Tools/B01/ECONREBUILD003/V3.Tests.csproj -c Release --no-build -- --cold "$RUNNER_TEMP/econ-v3.json" | tee -a "$RUNNER_TEMP/econ-v3.log"
           grep -q "ECON_V3_SOURCE_PASS" "$RUNNER_TEMP/econ-v3.log"
           grep -q "pending=2" "$RUNNER_TEMP/econ-v3.log"
+      - name: Execute original frozen V2 source negative fake-win witness
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONREBUILD003/V2OriginalWitness.csproj -c Release | tee "$RUNNER_TEMP/econ-v2-original-witness.log"
+          grep -q "ORIGINAL_FROZEN_V2_CONTRACT_RED" "$RUNNER_TEMP/econ-v2-original-witness.log"
       - name: Exact Git package source manifest + frozen V2/V1 unchanged
         shell: bash
         run: |
@@ -38,6 +43,7 @@ jobs:
         with:
           name: b01-22-econ-v3-${{ matrix.os }}
           path: |
+            ${{ runner.temp }}/econ-v2-original-witness.log
             ${{ runner.temp }}/econ-v3.log
             ${{ runner.temp }}/econ-v3.json
             ${{ runner.temp }}/lost-ack.json
