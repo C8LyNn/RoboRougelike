@@ -1,0 +1,58 @@
+name: B01-22 P17W25 Econ V7 strict floor and canonical binary section
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/ECONAPPROVED007/**'
+      - 'Tools/B01/ECONAPPROVED007/**'
+      - '.github/workflows/b01-22-p17w25-econ-section-v7.yml'
+  workflow_dispatch:
+jobs:
+  original-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile real two original W25 CSharp9 runtime sources
+        shell: bash
+        run: dotnet build Tools/B01/ECONAPPROVED007/W25.Tests.csproj -c Release
+      - name: Test original policy source binary section cold restart
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONAPPROVED007/W25.Tests.csproj -c Release --no-build -- --scenario "$RUNNER_TEMP/w25-econ" | tee "$RUNNER_TEMP/w25-econ.log"
+          dotnet run --project Tools/B01/ECONAPPROVED007/W25.Tests.csproj -c Release --no-build -- --cold "$RUNNER_TEMP/w25-econ" | tee -a "$RUNNER_TEMP/w25-econ.log"
+          grep -q 'ECON_V7_APPROVED_SOURCE_PASS' "$RUNNER_TEMP/w25-econ.log"
+          grep -q 'W25_SECTION_SOURCE_PASS' "$RUNNER_TEMP/w25-econ.log"
+          grep -q 'human_trials=0' "$RUNNER_TEMP/w25-econ.log"
+      - name: External process one physical test-only owner lock
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONAPPROVED007/W25.Tests.csproj -c Release --no-build -- --hold "$RUNNER_TEMP/w25-econ" > "$RUNNER_TEMP/w25-holder.log" 2>&1 &
+          holder=$!
+          ready=0
+          for i in {1..80}; do
+            if test -f "$RUNNER_TEMP/w25-econ.ready"; then ready=1; break; fi
+            sleep .15
+          done
+          if test "$ready" -ne 1; then cat "$RUNNER_TEMP/w25-holder.log"; exit 1; fi
+          dotnet run --project Tools/B01/ECONAPPROVED007/W25.Tests.csproj -c Release --no-build -- --contend "$RUNNER_TEMP/w25-econ" | tee -a "$RUNNER_TEMP/w25-econ.log"
+          wait "$holder"
+          cat "$RUNNER_TEMP/w25-holder.log" | tee -a "$RUNNER_TEMP/w25-econ.log"
+      - name: Verify original Git blob scope and GUID closure
+        shell: bash
+        run: python3 Tools/B01/ECONAPPROVED007/verify_package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w25-econ-section-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/w25-econ.log
+            ${{ runner.temp }}/w25-econ.json
+            ${{ runner.temp }}/w25-holder.log
+          if-no-files-found: error
