@@ -1,14 +1,14 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-11-P17-UXHAPTIC-001",
-  "version": "R1",
+  "version": "R2",
   "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
-  "wave": "PASS17 WAVE16",
-  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/589",
+  "wave": "PASS17 WAVE17",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/608",
   "branch": "research/b01-11-p17-w16-uxhaptic-001",
   "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "source_commit": "b9974591f5360831526e0364d42b0f7fc66b4956",
-  "docs_commit": "0c890fd432fed36a82b64445c3944130bb5b467d",
+  "source_commit": "fc9046c022d1a0512b2858f43bc82cee41fef11a",
+  "docs_commit": "339d0e0e47ae45382fe41c1473ed075faf778ba5",
   "scope": [
     "Research/B01-11/P17/W16-UXHAPTIC-001/**",
     ".github/workflows/b01-11-uxhaptic-w16.yml"
@@ -16,15 +16,15 @@
   "files": [
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Runtime/HapticGate.cs",
-      "bytes": 6916,
-      "git_blob_sha1": "13f2c52ae0c5efa5fdadcdde9e217592c3c104f8",
-      "sha256": "cac7c6d25cc34f424739eea4fa0225fa98f4faa9f779103e3c8b31370e828e6d"
+      "bytes": 7291,
+      "git_blob_sha1": "4d8dfc4093e14f0b5240a42ddfd48709d997003a",
+      "sha256": "9e9bfb9f8d19f2b16abf9731ced1612ccfb100d4bb881ce03d0387735d687985"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Tests/Program.cs",
-      "bytes": 19349,
-      "git_blob_sha1": "b8828d74147529f77ff1008dfcac6bba75e643ae",
-      "sha256": "2869f1ac71a9bb05ea186499aa2e623425f5802eefcf8ccb9b10d329c3ff6951"
+      "bytes": 22913,
+      "git_blob_sha1": "8058b7b9fe90766f9f26898d23202d7d3434b5f5",
+      "sha256": "bd92dee65f4c66a97f5e8622adfb531b286ce01bc78f2e717e707e4b30559503"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Tests/UXHapticTests.csproj",
@@ -40,70 +40,76 @@
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/README.md",
-      "bytes": 4239,
-      "git_blob_sha1": "cf113e81172395cefa079f04d5425bf9384fae9f",
-      "sha256": "4a139752c0f452a6fddabd791559dc5f8d60d1a8b16b844d22059b8e94d121e4"
+      "bytes": 6017,
+      "git_blob_sha1": "8c3b282dea0260d1da8568a9397f6d00e83729d4",
+      "sha256": "4a97300a7c7674a262f90e9b2bc137a830ed7ea8f90f34cddc461cd7148f656c"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/TEST_PLAN.md",
-      "bytes": 2373,
-      "git_blob_sha1": "3f6c45e9026a5647599ffab8f1fcdfeb744391a8",
-      "sha256": "7003cf8b7b3299c6872813e0c440f973b7844c571c5637cf4c7c8b21e1fc9ec7"
+      "bytes": 3636,
+      "git_blob_sha1": "536738ab7912a2209c9096d561df3c6c811bb34b",
+      "sha256": "14f7c88944a259a8c1f02801ddcfea90fbed0e672113318d007fe80ca88ea308"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/QA_RECEIVER.md",
-      "bytes": 1869,
-      "git_blob_sha1": "1bda0b38552585054942f19cf1c0be125daf20bf",
-      "sha256": "8c3de933850b236ecdb9f8be91316344349c525d1ced92f3c7abd19f409d38b7"
+      "bytes": 3054,
+      "git_blob_sha1": "7d799c7a1c42ccb9eca368850cccb70be1636594",
+      "sha256": "e52427d6ae201da53dd7466fa05a806837c1e82773db350da8e7e5393165707c"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/INSTALL_FOR_CODEX.md",
-      "bytes": 2026,
-      "git_blob_sha1": "0f8bd9be5c867a921e76876a794202dc3b6589a8",
-      "sha256": "bceb53ae271fe6e665f4399913fe7989fda6c630aacf2dcac51e66d16958cdc3"
+      "bytes": 3394,
+      "git_blob_sha1": "89f4674458bad3437b5c1c4562a7bb3414f392db",
+      "sha256": "ae1858b1fa8dbbce5e50230240894311f8e467e425892a90dedd2c3893bd0613"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/EVIDENCE/W16_RED_GREEN.md",
       "bytes": 2304,
       "git_blob_sha1": "26b11782bfbb2b638796e15ad22ea07aae6a16ca",
       "sha256": "e4f8e3f52dcddc27a6ec8ca9dc3f3ae01d1b54b42158353063a853d3342e6c29"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/EVIDENCE/W17_RUN_TRANSITION_RED_GREEN.md",
+      "bytes": 1923,
+      "git_blob_sha1": "6468dc1544f1d05523e507d2039526fdbd10f602",
+      "sha256": "1398dfb5bd948bc8ef6909e2365bd9d5fd698ea14bdbed51290f7e590daacfdc"
     }
   ],
   "tests": [
     {
-      "phase": "BASELINE",
-      "os": "Ubuntu+Windows",
-      "passed_per_os": 111,
-      "failed_per_os": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096654228"
-    },
-    {
-      "phase": "RED",
-      "os": "Ubuntu+Windows",
-      "passed_per_os": 112,
-      "failed_per_os": 2,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096911640"
-    },
-    {
-      "phase": "GREEN",
-      "os": "Ubuntu+Windows",
+      "phase": "R1_FINAL",
+      "os": "Ubuntu + Windows",
       "passed_per_os": 114,
       "failed_per_os": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097067292"
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097917157"
     },
     {
-      "phase": "NATIVE_UNITY",
+      "phase": "W17_TEST_FIRST_RED",
+      "os": "Ubuntu + Windows",
+      "status": "AWAIT_LOG",
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41100770919",
+      "head": "eacbbb35a440edb83405919ffd34a7f11b3fc9bb"
+    },
+    {
+      "phase": "W17_SOURCE_GREEN",
+      "os": "Ubuntu + Windows",
+      "status": "AWAIT_LOG",
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41100849650",
+      "head": "fc9046c022d1a0512b2858f43bc82cee41fef11a"
+    },
+    {
+      "phase": "UNITY_NATIVE",
       "status": "NOT_RUN"
     }
   ],
-  "producer_source": "SOURCE_GREEN_114_PER_OS",
+  "producer_source": "R2_CHANGE_COMMITTED_W17_ORIGINAL_CI_PENDING",
   "source_g0": "EXTERNAL_PENDING",
   "independent_qa": "EXTERNAL_PENDING",
   "unity_g1": "NOT_RUN",
   "codex": "NOT_OFFERED_ACK_PENDING_NOT_INTEGRATED",
   "g2": "HOLD",
   "no_merge": true,
-  "limits": "Deterministic .NET C# haptic intent, not real gamepad/Input System/Unity Player. Critical visual requirement emitted; actual screen UI not integrated. No haptic accessibility certification.",
-  "rollback": "Discard isolated UXHAPTIC W16 Research and dedicated workflow/branch; no Codex or frozen #510/#556 source changed.",
-  "note": "Manifest itself excluded from digest to avoid self-reference; all nine payloads pin SHA256, UTF8 size and Git blob SHA1."
+  "limits": "Source contract now emits mandatory stopExistingMotors flag from StartNewRun() if outgoing run motor pulse remains active; future Unity driver must actually issue physical motor-stop and recompile. Not a native hardware pass.",
+  "rollback": "Historical R1 immutable 82cc7518b12ab530a3a819af0ffe9072c88c9675. Discard own R2 research changes or revert only current producer branch; frozen Secure #510 and Save #556 unaffected.",
+  "note": "10 owned payloads SHA256/UTF8 exact size/Git blob pinned, manifest excludes itself. W17 source CI must be checked on final package SHA; queued is not PASS."
 }
