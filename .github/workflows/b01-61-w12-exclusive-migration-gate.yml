@@ -1,0 +1,36 @@
+name: B01-61 W12 - exact #510 receiver migration read-only negative QA
+on:
+  push:
+    branches: [qa/b01-61-p17w12-receiver-migration-guard]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W12ReceiverMigrationGuard/**"
+      - ".github/workflows/b01-61-w12-exclusive-migration-gate.yml"
+  workflow_dispatch:
+jobs:
+  exact-original-migration-admission-fixtures:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Real #510 Git pinned source and hostile migration fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m unittest discover -s Tools/B01/B01-61/P17W12ReceiverMigrationGuard -p test_preflight.py -v 2>&1 | tee b01-61-w12-migration-fixtures.log
+          printf 'SYNTHETIC_RECEIVER_QA_PASS; SOURCE_SHA=d94400d95d13db7f27e1533df05c9292d5380431; UNITY_G1=NOT_RUN; REAL_CODEX_RECEIVER=UNVERIFIED; NO_MERGE\n' | tee b01-61-w12-status.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-w12-receiver-gate-${{ matrix.os }}
+          path: |
+            b01-61-w12-migration-fixtures.log
+            b01-61-w12-status.txt

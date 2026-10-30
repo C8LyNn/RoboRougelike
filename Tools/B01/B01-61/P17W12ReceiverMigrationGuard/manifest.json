@@ -1,0 +1,27 @@
+{
+  "package": "B01-61-P17W12-RECEIVER-MIGRATION-STRICT-001",
+  "version": "1.0.0",
+  "owner": "B01-61",
+  "selected_producer_pr": 510,
+  "selected_source_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "selected_w06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "excluded_producer_prs": [
+    511,
+    494
+  ],
+  "selected_inner_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387",
+  "role": "read-only post-staging migration+rollback admission scan, not a source harness",
+  "own_paths": [
+    "Tools/B01/B01-61/P17W12ReceiverMigrationGuard/preflight.py",
+    "Tools/B01/B01-61/P17W12ReceiverMigrationGuard/test_preflight.py",
+    "Tools/B01/B01-61/P17W12ReceiverMigrationGuard/README.md",
+    "Tools/B01/B01-61/P17W12ReceiverMigrationGuard/manifest.json",
+    ".github/workflows/b01-61-w12-exclusive-migration-gate.yml"
+  ],
+  "g0": "receiver preflight pending REAL Codex receiver; scratch fixtures are not G0",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "codex_ack": false,
+  "merged": false,
+  "rollback": "No writes. Close Draft/delete 5 QA-only paths, owner #510 package.py owns scratch rollback."
+}
