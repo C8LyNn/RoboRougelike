@@ -63,8 +63,8 @@ jobs:
           B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
-          python Research/B01-10/P17Ghost/pack_ghost.py pack --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R2_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-pack.json"
-          python Research/B01-10/P17Ghost/pack_ghost.py verify --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R2_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-verify.json"
+          python Research/B01-10/P17Ghost/pack_ghost.py pack --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R5_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-pack.json"
+          python Research/B01-10/P17Ghost/pack_ghost.py verify --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R5_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-verify.json"
           python Research/B01-10/P17Ghost/pack_ghost.py negatives --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/unused-negatives.zip" --report "$RUNNER_TEMP/ghost-zip-negatives.json"
           grep -F '"pass": true' "$RUNNER_TEMP/ghost-zip-negatives.json"
       - name: Upload real source-CSharp logs and two-rig synthetic demo
@@ -76,7 +76,7 @@ jobs:
             ${{ runner.temp }}/ghost-tests.log
             ${{ runner.temp }}/ghost-synthetic-demo.json
             ${{ runner.temp }}/ghost-negative.log
-            ${{ runner.temp }}/B01-10_GHOST001_R2_UNITY_SOURCE.zip
+            ${{ runner.temp }}/B01-10_GHOST001_R5_UNITY_SOURCE.zip
             ${{ runner.temp }}/ghost-zip-pack.json
             ${{ runner.temp }}/ghost-zip-verify.json
             ${{ runner.temp }}/ghost-zip-negatives.json
