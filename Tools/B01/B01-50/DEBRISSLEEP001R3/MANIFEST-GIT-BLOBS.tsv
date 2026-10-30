@@ -1,0 +1,17 @@
+3c29112945e0f37ab8131ed2d8ac4382d7fa510b	.github/workflows/b01-50-w25-debrissleep-r3.yml
+6f407626639e68add97cd3d2e75c7d64a505fe6a	Tools/B01/B01-50/DEBRISSLEEP001R3/Core/DebrisSleepPolicy.cs
+2ff33d2a53911e0604e12625f5d0daee4d70c337	Tools/B01/B01-50/DEBRISSLEEP001R3/Core/DebrisSleepPolicy.cs.meta
+caac832c775085920fc587e21909342434905dce	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Runtime/B0150.DebrisSleep.R3.Runtime.asmdef
+f7f8ddeae674ae2cbc5fbe0c53f70a78a5d32f07	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Runtime/B0150.DebrisSleep.R3.Runtime.asmdef.meta
+5c73756be13962ba67d799845c5b6b43d335ceb3	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Tests/PlayMode/B0150.DebrisSleep.R3.PlayModeTests.asmdef
+0dd7c6819422f25739047a067aa58abd6a5e53be	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Tests/PlayMode/B0150.DebrisSleep.R3.PlayModeTests.asmdef.meta
+074984797ca353d34f4ca8f618e4190f3fa846e6	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Tests/PlayMode/DebrisSleepR3NativePlayModeTests.cs
+8010c616973de22b27a97320dc107c7c508ed243	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Tests/PlayMode/DebrisSleepR3NativePlayModeTests.cs.meta
+3df216620fab288ff8cea7fb7feff6ac97257407	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Tests/PlayMode/DebrisStayWitness.cs
+542664d08e177b3cd88a16bfc4886fd93b905cee	Tools/B01/B01-50/DEBRISSLEEP001R3/NativeG1/Tests/PlayMode/DebrisStayWitness.cs.meta
+14e64a50fed6c838131dc8fe4ce529118b07bcb0	Tools/B01/B01-50/DEBRISSLEEP001R3/README.md
+43fabefabe93463cdb511cb87512099c2625f6a9	Tools/B01/B01-50/DEBRISSLEEP001R3/Unity/B0150OptionalDebrisSleepGovernor.cs
+45587a8f363c416ad304a552d75fecdaf23e9cd2	Tools/B01/B01-50/DEBRISSLEEP001R3/Unity/B0150OptionalDebrisSleepGovernor.cs.meta
+794f5b03e294f9e13c2017523eb7551b82c29c6d	Tools/B01/B01-50/DEBRISSLEEP001R3/tests/DEBRISSLEEP.Tests.csproj
+0ce6b965aaf0b26bba943d4a1769f5db200951a8	Tools/B01/B01-50/DEBRISSLEEP001R3/tests/Program.cs
+f6618408e130b00b9742c776ba0db5751c80166f	Tools/B01/B01-50/DEBRISSLEEP001R3/tests/UnitySurrogate.cs
