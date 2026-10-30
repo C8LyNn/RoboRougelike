@@ -1,0 +1,30 @@
+{
+  "package": "B01-11-CAMERA-VISIBILITY-LAB-001/R1",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W21-CAMERA-VISIBILITY-LAB-001/visibility.js",
+      "bytes": 5329,
+      "sha256": "48a0e9c0f96430be6b54b75b9e167d3019b2cd46c4b5e08550de9d5c3e055419"
+    },
+    {
+      "path": "Research/B01-11/P17/W21-CAMERA-VISIBILITY-LAB-001/test_visibility.cjs",
+      "bytes": 9318,
+      "sha256": "10098f98ddd03e0a93ccecc8847fe6987b2f5e2f3a22223189288c66a12bd48c"
+    },
+    {
+      "path": "Research/B01-11/P17/W21-CAMERA-VISIBILITY-LAB-001/index.html",
+      "bytes": 7714,
+      "sha256": "4e481f64e760a406ea250add0eaed1a38e4bfd99d4bfa41005f4e2be294ab7a9"
+    },
+    {
+      "path": "Research/B01-11/P17/W21-CAMERA-VISIBILITY-LAB-001/README.md",
+      "bytes": 4224,
+      "sha256": "7e95d537638fddaffa6bde1ff2500e4d24baa3f54edd81c61d77ad799a266133"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w21-camera-visibility-lab-001.yml",
+      "bytes": 735,
+      "sha256": "2e8cd8460a25a52c9a631b816898dc6c4b302c8f58a43c862924988d7c00f089"
+    }
+  ]
+}
