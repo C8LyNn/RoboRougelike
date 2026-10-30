@@ -126,8 +126,10 @@ static class Program {
     "second #691 owner replays same original durable g10 while A physically alive");
   Check(fa.Last!=null&&fa.Last.Active&&fb.Last!=null&&fb.Last.Active,
     "two independent active managed private rigs same canonical disk+run coexist");
-  Check(a.TryCapturePreview(out byte[] first)&&b.TryCapturePreview(out byte[] second),
-    "both original source gateways export source previews while physically live");
+  Check(a.TryCapturePreview(out byte[] first),
+    "original A gateway exports current source preview while physically live");
+  Check(b.TryCapturePreview(out byte[] second),
+    "original B gateway independently exports source preview while physically live");
   Check(Convert.ToHexString(first)==Convert.ToHexString(second),
     "two distinct owner preview bytes from same original #556 Light/epoch");
   Check(disk.Read(Run,out long diskGen,out string _)&&diskGen==10,
