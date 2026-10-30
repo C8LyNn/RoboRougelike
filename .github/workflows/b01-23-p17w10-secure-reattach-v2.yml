@@ -1,0 +1,38 @@
+name: B01-23 W10 secure V2 public reattach gate + physical source ZIP
+on:
+  push:
+    branches: [b01-23/p17w10-secure-reattach-v2]
+  pull_request:
+    paths:
+      - 'Assets/B0123SecureReattachV2/**'
+      - 'Tools/B01/B01-23/P17W10SecureReattachV2/**'
+      - '.github/workflows/b01-23-p17w10-secure-reattach-v2.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Real original C#9 Unity portable safe dock API and negative tests
+        run: dotnet run --project Tools/B01/B01-23/P17W10SecureReattachV2/DockV2SourceTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Real Git source and fail-closed package GUI bypass integrity/rollback tests
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W10SecureReattachV2 -p test_package.py -v
+      - name: Physically produce deterministic original Git W10 delta ZIP
+        run: python Tools/B01/B01-23/P17W10SecureReattachV2/package.py build --archive dist/B0123_SecureReattachV2_Only.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w10-secure-dock-${{ matrix.os }}
+          path: dist/B0123_SecureReattachV2_Only.zip
+          if-no-files-found: error
