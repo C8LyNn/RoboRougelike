@@ -14,7 +14,7 @@
     "Assets/B01Packages/ECONREADINESS004/Runtime/B01.EconReadinessV4.asmdef.meta": "13d9452625dea9d506afd8a9f2a186a8a3288060",
     "Assets/B01Packages/ECONREADINESS004/Runtime/EconomyRunReadinessGateV4.cs": "cb8f1e15a6d2ed1370d005653ce489c3f4ad5c51",
     "Assets/B01Packages/ECONREADINESS004/Runtime/B01.EconReadinessV4.asmdef": "a774e5e2add092ec378bbb17dadb57fed71d00b7",
-    "Tools/B01/ECONREADINESS004/Program.cs": "ec27313766fc599bfb0d23ceb90142a53f0e0af7",
+    "Tools/B01/ECONREADINESS004/Program.cs": "08e2cea14d37c73615110464187ff459a71997bb",
     "Tools/B01/ECONREADINESS004/Readiness.Tests.csproj": "df6d7b03f0d0081907283f4cc1b7415683699f7d",
     "Tools/B01/ECONREADINESS004/README.md": "1e2d324773bd19b58bfc08285b65de0be89195eb",
     ".github/workflows/b01-22-p17w22-econ-readiness.yml": "72a638623fde8439a86a5288afd7ed5e608cb89c",
