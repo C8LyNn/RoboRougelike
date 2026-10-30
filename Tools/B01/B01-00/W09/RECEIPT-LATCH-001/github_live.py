@@ -107,7 +107,7 @@ def verify_live(record, getter):
             proof["source_pr_head"] = True
         else:
             blockers.append("live_pr_head_or_repository_mismatch")
-    except (GateError, KeyError, TypeError, ValueError):
+    except (GateError, KeyError, TypeError, ValueError, AttributeError):
         blockers.append("live_pr_unavailable")
 
     ci = producer.get("ci")
@@ -125,7 +125,7 @@ def verify_live(record, getter):
                 proof["producer_ci_run"] = True
             else:
                 blockers.append("live_ci_run_sha_result_or_repo_mismatch")
-        except (GateError, KeyError, TypeError, ValueError):
+        except (GateError, KeyError, TypeError, ValueError, AttributeError):
             blockers.append("live_ci_unavailable")
 
     # Role-specific claims cannot be proved merely from a comment body or login.
@@ -150,7 +150,7 @@ def verify_live(record, getter):
             else:
                 qa[role] = "OBJECT_MISMATCH"
                 blockers.append("live_" + role + "_object_mismatch")
-        except (GateError, KeyError, TypeError, ValueError):
+        except (GateError, KeyError, TypeError, ValueError, AttributeError):
             qa[role] = "FETCH_FAILED"
             blockers.append("live_" + role + "_unavailable")
 
