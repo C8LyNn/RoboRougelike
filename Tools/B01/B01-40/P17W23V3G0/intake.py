@@ -295,7 +295,7 @@ def no_one_authority_bridge(r):
        "CanonicalWorldSlotLease" not in source712,
        "EXPECTED_VERSIONED_V3_R2_CONSTRUCTOR_BOUNDARY_CHANGED")
     require('".owner"' in source(r["v3"],NEWLEASE).decode() and
-            '".lease"' in source669,
+            '"slot.lease"' in source669,
             "V3_OWNER_VS_STORAGE_SEPARATE_PHYSICAL_LOCKS_WITNESS_NOT_FOUND")
     return {"selected_v3_constructor_needs_authority_argument":True,
        "old_r2_constructor_has_only_three_args":True,
