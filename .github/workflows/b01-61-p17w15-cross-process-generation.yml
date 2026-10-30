@@ -1,0 +1,67 @@
+name: B01-61 W15 exact #556 disk restart and conflicting-generation source QA
+on:
+  push:
+    branches: [qa/b01-61-p17w15-cross-process-checkpoint-generation]
+    paths:
+      - 'Tools/B01/B01-61/P17W15CheckpointGenerationQA/**'
+      - '.github/workflows/b01-61-p17w15-cross-process-generation.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W15CheckpointGenerationQA/**'
+      - '.github/workflows/b01-61-p17w15-cross-process-generation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cross-process-original-save-556:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact unchanged producer and QA-only source-provenance
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W15CheckpointGenerationQA/source_guard.py 2>&1 | tee b0161-w15-provenance.log
+      - name: Compile exact original selected #556 and original W06 + #510 (CSharp9 warning-as-error)
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W15CheckpointGenerationQA/Original556CheckpointQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w15-build.log
+      - name: Four independent CLR processes write actual disk file, fresh-load, conflict, negative
+        shell: bash
+        run: |
+          set -o pipefail
+          p=Tools/B01/B01-61/P17W15CheckpointGenerationQA/Original556CheckpointQA.csproj
+          f=b0161-w15-disk-checkpoint.bin
+          dotnet run --no-build -c Release --project "$p" -- write "$f" 2>&1 | tee b0161-w15-write.log
+          dotnet run --no-build -c Release --project "$p" -- read "$f" 2>&1 | tee b0161-w15-fresh-read.log
+          dotnet run --no-build -c Release --project "$p" -- collision "$f" 2>&1 | tee b0161-w15-generation-conflict.log
+          dotnet run --no-build -c Release --project "$p" -- negative "$f" 2>&1 | tee b0161-w15-rollback.log
+          grep -q 'SOURCE_CROSS_PROCESS_COLD_RESTORE_PASS' b0161-w15-fresh-read.log
+          grep -q 'SOURCE_SAVE_GENERATION_CONFLICT_RED=' b0161-w15-generation-conflict.log
+          grep -q 'SOURCE_FAILURE_ATOMIC_LOGICAL_RESTORE_PASS' b0161-w15-rollback.log
+          grep -q 'ACTUAL_UNITY_G1=NOT_RUN' b0161-w15-rollback.log
+      - name: Save exact source test stdout (not native Unity evidence)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w15-556-disk-generation-${{ matrix.os }}
+          path: |
+            b0161-w15-provenance.log
+            b0161-w15-build.log
+            b0161-w15-write.log
+            b0161-w15-fresh-read.log
+            b0161-w15-generation-conflict.log
+            b0161-w15-rollback.log
+          if-no-files-found: warn
+          retention-days: 21
