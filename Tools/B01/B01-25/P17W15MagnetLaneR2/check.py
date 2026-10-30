@@ -16,7 +16,7 @@ def assetnames():
 def original_core(raw):
     assert raw==git("show","HEAD:"+(R/"MagnetLaneCore.cs").as_posix())
     assert b"public sealed class MagnetLaneController" in raw
-    assert b"weightedForce+=take*force" in raw
+    assert b"weightedForce+=take*Polarity*Config.ForceNewtons*spatial" in raw
 def guids():
     names=assetnames()
     assert len(names)==19,"19 Unity source/meta original paths"
@@ -44,7 +44,7 @@ def asmdefs():
 def runtime(s):
     for token in ("AddComponent<Rigidbody>()","GameObject.CreatePrimitive(PrimitiveType.Cube)",
                   "vehicle.mass=heavy?12f:1.5f","vehicle.transform.localScale=heavy",
-                  "new MagnetSample(dt,pos.x,pos.z,vehicle.mass",
+                  "new MagnetSample(dt,previousPhysicsPosition.x,previousPhysicsPosition.z",
                   "vehicle.AddForce(Vector3.forward*(float)last.ForceZ,ForceMode.Force)",
                   "PERMANENT SAFE BYPASS world Z4","if(dt<=0||dt>.1f)return"):
         assert token in s,"Missing runtime source contract "+token
