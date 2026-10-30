@@ -30,5 +30,19 @@
   "unityG1G2": "NOT_RUN",
   "codexAck": "PENDING",
   "integrated": false,
-  "rollback": "Drop only new R2 directory/workflow on disposable branch; original #430/#444 immutable"
+  "rollback": "Drop only new R2 directory/workflow on disposable branch; original #430/#444 immutable",
+  "gitBlobs": {
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "HazardPulse.csproj": "b028afaa31a96c4bbc30387b631cc313ab5e1aa8",
+    "Program.cs": "5722f274293a8cf3bd1a7204964b88e33568b68d",
+    "PulseCore.cs": "42385a88a43a2d5854a00d74ac82e65075b8c56b",
+    "PulseUnityCompat.csproj": "eb4f653c484a39c794608347357059a3aa0afec9",
+    "Qa444Regression.cs": "2f1d5de948c1a98db68d3f1670e8da7d4097f9de",
+    "Qa444Regression.csproj": "56055233b4e400522ec24695ed6c7ea29634f91d",
+    "README.md": "d37bcfaa9c87e4629ae90d76a312d461f210b93a",
+    "profiles.json": "67334b2a48116a526a1e7c1cefdfc57edcd68cec",
+    ".github/workflows/b01-25-w09-hazardpulse-r2.yml": "04e6804f226c9245fe95c9971493480d6e1af7ab"
+  },
+  "ownReceipt": "Producer real Ubuntu SHA da1ce4cf980e1eef1491e28c06e59d87a5e1d09c 55/55 + QA444 regression 10/10, map pins PASS; R2 final HEAD CI must still be checked.",
+  "manifestPins": 10
 }
