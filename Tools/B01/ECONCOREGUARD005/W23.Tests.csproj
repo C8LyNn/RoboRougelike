@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+  <LangVersion>9.0</LangVersion><Nullable>disable</Nullable>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <StartupObject>W23Checks</StartupObject>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Program.cs"/>
+  <Compile Include="../ECONREADINESS004/Program.cs" Link="FROZEN_W22_OriginalTestFixture.cs"/>
+  <Compile Include="../../../Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs" Link="OriginalW23Runtime.cs"/>
+  <Compile Include="../../../Assets/B01Packages/ECONREADINESS004/Runtime/EconomyRunReadinessGateV4.cs" Link="FrozenW22Runtime.cs"/>
+  <Compile Include="../../../Assets/B01Packages/ECONREBUILD003/Runtime/RebuildOwnerAuthorityV3.cs" Link="FrozenW21Runtime.cs"/>
+ </ItemGroup>
+</Project>
