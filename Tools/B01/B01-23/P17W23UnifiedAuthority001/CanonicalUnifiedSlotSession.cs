@@ -68,14 +68,27 @@ namespace B01.CanonicalUnifiedAuthorityV4
             }
             catch{return false;}
         }
-        public static UnifiedOpenStatus TryOpen(string exactSlotDirectory,long run,
+        public static string CanonicalDirectory(string trustedPrivateRoot,long run,
+            Guid slot)
+            => Path.Combine(Path.GetFullPath(trustedPrivateRoot),
+                "b01_canonical_slot_run_"+run.ToString(
+                    System.Globalization.CultureInfo.InvariantCulture)+
+                "_guid_"+slot.ToString("N"));
+
+        public static UnifiedOpenStatus TryOpen(string trustedPrivateRoot,long run,
             Guid guid,bool create,out CanonicalUnifiedSlotSession? session,
             IAtomicEnvelopePublisher? writer=null)
         {
             session=null;
-            if(run<=0||guid==Guid.Empty||string.IsNullOrWhiteSpace(exactSlotDirectory)||
-                !Path.IsPathFullyQualified(exactSlotDirectory)||
-                !TrustedComponents(exactSlotDirectory))
+            if(run<=0||guid==Guid.Empty||string.IsNullOrWhiteSpace(trustedPrivateRoot)||
+                !Path.IsPathFullyQualified(trustedPrivateRoot)||
+                !Directory.Exists(trustedPrivateRoot)||
+                !TrustedComponents(trustedPrivateRoot))
+                return UnifiedOpenStatus.Invalid;
+            // Only ONE well-defined physical path per run+GUID below trusted
+            // private storage root; callers cannot inject a second directory.
+            string exactSlotDirectory=CanonicalDirectory(trustedPrivateRoot,run,guid);
+            if(!TrustedComponents(exactSlotDirectory))
                 return UnifiedOpenStatus.Invalid;
             SlotStatus status=create
                 ? SingleFileSaveSlot.TryCreateNew(exactSlotDirectory,run,guid,
