@@ -259,6 +259,76 @@ internal static class Program
         });
         Test("30 format is ONLY actual original #556 (no new schema classes)",()=>
             typeof(SnapshotCodec).FullName=="B01.DetachedSaveContract001.SnapshotCodec");
+        Test("31 durable new-file physical disk Save to cold host Load",()=>{
+            var dir=Path.Combine(Path.GetTempPath(),"b01-62-w15-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                string file=Path.Combine(dir,"slot.sav");
+                var src=new AtomicHostSaveBridge(new Host(Snap(true,false,11)));
+                if(!src.TrySaveNewFile(file) || !File.Exists(file))return false;
+                var dst=new Host(Snap(false,false,1));
+                if(new AtomicHostSaveBridge(dst).TryLoadFile(file)!=RestoreVerdict.Accepted)return false;
+                return dst.Active.Snapshot.Generation==11 &&dst.Active.Ledger[0].Contains(2310001)
+                    &&!dst.Active.Ledger[1].Contains(2310002);
+            }
+            finally{Directory.Delete(dir,true);}
+        });
+        Test("32 new slot cannot overwrite foreign or old save file",()=>{
+            var dir=Path.Combine(Path.GetTempPath(),"b01-62-w15-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                var file=Path.Combine(dir,"slot.sav");
+                File.WriteAllBytes(file,new byte[]{1,2,3,4});
+                bool refused=!new AtomicHostSaveBridge(new Host()).TrySaveNewFile(file);
+                return refused&&File.ReadAllBytes(file).SequenceEqual(new byte[]{1,2,3,4});
+            }
+            finally{Directory.Delete(dir,true);}
+        });
+        Test("33 busy SaveNewFile creates no partial slot",()=>{
+            var dir=Path.Combine(Path.GetTempPath(),"b01-62-w15-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                var file=Path.Combine(dir,"slot.sav");
+                return !new AtomicHostSaveBridge(new Host{Busy=true}).TrySaveNewFile(file) &&
+                    Directory.GetFiles(dir).Length==0;
+            }
+            finally{Directory.Delete(dir,true);}
+        });
+        Test("34 corrupted on-disk slot denies without publishing",()=>{
+            var dir=Path.Combine(Path.GetTempPath(),"b01-62-w15-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                var file=Path.Combine(dir,"slot.sav");byte[] bad=Wire();bad[99]^=18;
+                File.WriteAllBytes(file,bad);
+                var h=new Host();var old=h.Active;
+                return new AtomicHostSaveBridge(h).TryLoadFile(file)==RestoreVerdict.InvalidSnapshot &&
+                    ReferenceEquals(old,h.Active) &&h.Prepares==0;
+            }
+            finally{Directory.Delete(dir,true);}
+        });
+        Test("35 too-large physical slot denied before staging",()=>{
+            var dir=Path.Combine(Path.GetTempPath(),"b01-62-w15-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                var file=Path.Combine(dir,"slot.sav");
+                File.WriteAllBytes(file,new byte[SnapshotCodec.MaxBytes+1]);
+                var h=new Host();var old=h.Active;
+                return new AtomicHostSaveBridge(h).TryLoadFile(file)==RestoreVerdict.InvalidSnapshot &&
+                    ReferenceEquals(old,h.Active) &&h.Prepares==0;
+            }
+            finally{Directory.Delete(dir,true);}
+        });
+        Test("36 missing save slot denied",()=>{
+            var h=new Host();
+            return new AtomicHostSaveBridge(h).TryLoadFile(
+                Path.Combine(Path.GetTempPath(),Guid.NewGuid().ToString("N")+".missing"))==
+                RestoreVerdict.InvalidSnapshot&&h.Prepares==0;
+        });
         for(int i=0;i<96;i++){int n=i;Test("negative payload mutation "+n,()=>RejectMutatedSnapshot(n));}
         for(int i=0;i<64;i++){int n=i;Test("source cold loaded all ID-state patterns "+n,()=>
             RoundTrip((n&1)!=0,(n&2)!=0));}
