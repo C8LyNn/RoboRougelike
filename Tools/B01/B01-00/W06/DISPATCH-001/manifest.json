@@ -1,0 +1,107 @@
+{
+  "schema_version": "b01-package-v1",
+  "package_id": "B01-00-DISPATCH-001",
+  "revision": "1.0.0",
+  "owner": "B01-00",
+  "issue": 416,
+  "purpose": "Executable offline task scheduler with deterministic planning, fail-closed overlap and active-stream limits, atomic claims and hash-checked rollback",
+  "unity_version": null,
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": null,
+  "dependency_package_ids": [],
+  "files": [
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/dispatch.py",
+      "bytes": 12563,
+      "sha256": "35903ce274377cfc87926cfeaa6c859d02ff71ff42e2949bcd1ba07e0987b54c"
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/test_dispatch.py",
+      "bytes": 8311,
+      "sha256": "b5e63c1aee297a2f63e9feac3afe3d989b57002e0c912e907e292d9a06cc56a4"
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/snapshot_wave06.example.json",
+      "bytes": 1170,
+      "sha256": "d9ccb5042f89dfef7b32a15ba034e250b2292fb8d734920abf7bb672f452dd5e"
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/README.md",
+      "bytes": 3187,
+      "sha256": "c7c85d18bbc8819dbb8b7233457d95ffa5c7a61a7e85ee093306550279f94800"
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/unittest.txt",
+      "bytes": 2373,
+      "sha256": "eb5fdaa1156517f776c2d6eda9a28adbfe948bd36ac954d5cefdb5b407faa25e"
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/example-plan.json",
+      "bytes": 1159,
+      "sha256": "ccc27512e563af745b3ff43845c8ab762df15a6af1ee5053262997bace73713d"
+    },
+    {
+      "path": ".github/workflows/b01-00-dispatch-w06.yml",
+      "bytes": 835,
+      "sha256": "f0bdf1f82910947dc00d477cebd24ace05645d1af5a436cdd56deb14859871ea"
+    }
+  ],
+  "possible_conflicts": [],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex canonical gameplay and active worktree",
+    "B01-40/60/61/62 source QA",
+    "main/develop merges"
+  ],
+  "source_license_provenance": [
+    "Original B01-00 tool created for W06 coordination"
+  ],
+  "tests": [
+    {
+      "name": "Python unittest actual local execution",
+      "status": "PASS",
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "environment": "Python 3 local Linux",
+      "evidence": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/unittest.txt"
+    },
+    {
+      "name": "Deterministic illustrative CLI plan",
+      "status": "PASS",
+      "environment": "Python 3 local Linux",
+      "evidence": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/example-plan.json"
+    },
+    {
+      "name": "GitHub CI Windows/Ubuntu",
+      "status": "NOT_RUN",
+      "environment": "Pending workflow trigger and verification"
+    },
+    {
+      "name": "Unity EditMode/PlayMode",
+      "status": "NOT_RUN",
+      "environment": "Not a Unity package"
+    }
+  ],
+  "qa_b01_40": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "qa_b01_60": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "handoff_status": "PRODUCER_TESTED_INDEPENDENT_QA_PENDING",
+  "codex_status": "NOT_REQUIRED_FOR_OFFLINE_COORDINATION; NO CODEX_ACK OR INTEGRATION CLAIMED",
+  "limitations": [
+    "Snapshot is illustrative and not automatically synced to live GitHub or Codex",
+    "Claims coordinate only participants sharing the same reliable filesystem",
+    "No native Unity/editor/gameplay claims"
+  ],
+  "rollback": "Remove disposable tool checkout; release owned claim with exact recorded SHA256; never automatically delete modified claims"
+}
