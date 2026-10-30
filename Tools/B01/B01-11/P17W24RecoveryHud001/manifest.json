@@ -1,0 +1,76 @@
+{
+  "package": "B01-11-RECOVERYHUD001/R1",
+  "base_commit": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "files": [
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs",
+      "bytes": 8168,
+      "sha256": "c2f12250868997290cbe414f723dc69bced8e8ac2d6edd9f50e652debd31f0d8"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNoticePanel.cs",
+      "bytes": 2838,
+      "sha256": "7e32cf7575f897d661be79fc44c814fe699afae28a58a3e71d6ac782a3393e42"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/B01.RecoveryHud.asmdef",
+      "bytes": 364,
+      "sha256": "40ee59f677f8590f58ef04eb87716f8c5df38922a1d3f20b41d48f57b66f06d3"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs.meta",
+      "bytes": 240,
+      "sha256": "f0583e7eb2de0d53b4cc0dda161488fcfc51e9715d0eb27fee1ffea7e75ec84a"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNoticePanel.cs.meta",
+      "bytes": 240,
+      "sha256": "2997a6a0b57a2900085f130edbba9193df6a00bc6c3c8c44e0c286776f9d60d7"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/B01.RecoveryHud.asmdef.meta",
+      "bytes": 163,
+      "sha256": "c9ea918bfef45043b8e49affa04c39b766f1b91b28aa63009e86c703712c42ee"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001.meta",
+      "bytes": 169,
+      "sha256": "c0fd7487258b7362e22974e85dc34e4e36a6231dea3d25725ee565ee6b426987"
+    },
+    {
+      "path": "Assets/B01Packages/RECOVERYHUD001/Runtime.meta",
+      "bytes": 169,
+      "sha256": "8eef41657adf1d319f8b1cad6ada9784ed55606796f77a4c85fb50ac281c4193"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W24RecoveryHud001/UnityStubs.cs",
+      "bytes": 260,
+      "sha256": "366ec3a38098008b1dd434eed47f040792b2841181b2ea3596a15f9a1e66f667"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W24RecoveryHud001/RecoveryHud.Tests.csproj",
+      "bytes": 766,
+      "sha256": "595e3b0ac819ed1d9e4b069fd4ac81c16369249d6c46c6c6865c28427e2402ba"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W24RecoveryHud001/Program.cs",
+      "bytes": 11861,
+      "sha256": "09519cacea8b04371a517aa69fb9ade7026e4386ac2b911b8ea9816cd4018700"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W24RecoveryHud001/README.md",
+      "bytes": 2883,
+      "sha256": "74cc360e604e56e235b844d3da25c2dad85653be94dce5757a7362b8ca673b8c"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W24RecoveryHud001/verify_package.py",
+      "bytes": 2418,
+      "sha256": "ed4f635ef4a241dff5b71c997f1b9a7e12acd138057104b31cc569e2e3ac19e6"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w24-recoveryhud.yml",
+      "bytes": 1087,
+      "sha256": "e3b3e66925bb9739ed8e16fa58b4f5c343662f949befcff93700ecb1433c7d3e"
+    }
+  ]
+}
