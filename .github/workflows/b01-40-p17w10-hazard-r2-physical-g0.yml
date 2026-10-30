@@ -1,0 +1,73 @@
+name: B01-40 P17W10 HAZARDPULSE R2 physical Unity-source G0 (NOT native Unity)
+on:
+  push:
+    branches: [qa/b01-40-p17w10-hazard-r2-physical-intake]
+    paths:
+      - 'Tools/B01/B01-40/P17W10/HazardR2Receiver/**'
+      - '.github/workflows/b01-40-p17w10-hazard-r2-physical-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W10/HazardR2Receiver/**'
+      - '.github/workflows/b01-40-p17w10-hazard-r2-physical-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-source-receiver:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - name: Checkout isolated B01-40 receiver branch
+        uses: actions/checkout@v4
+        with:
+          path: gate
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Checkout immutable owner R2 #470
+        uses: actions/checkout@v4
+        with:
+          path: producer-r2
+          ref: ebc3d6162f4516147092960291e50e15fe6c4582
+          fetch-depth: 0
+      - name: Checkout independent RED to GREEN #474
+        uses: actions/checkout@v4
+        with:
+          path: independent-qa
+          ref: 2538f60093d3e8732e3c7865a10ef81ac3a340d7
+          fetch-depth: 0
+      - name: Checkout original rejected R1 #430
+        uses: actions/checkout@v4
+        with:
+          path: original-r1
+          ref: 6095577ece27320b1a861a738cc23ba42d6793a6
+          fetch-depth: 0
+      - name: Checkout exact read-only Codex R3 receiver
+        uses: actions/checkout@v4
+        with:
+          path: codex-receiver
+          ref: 203a0805251ed28293888e43f2d49f0df63767c6
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify Git pins, R1 RED QA, GUID collision, asmdef and physical ZIP, adversarial staging and rollback
+        shell: bash
+        run: |
+          python gate/Tools/B01/B01-40/P17W10/HazardR2Receiver/receiver.py \
+            --source producer-r2 --qa independent-qa --r1 original-r1 \
+            --receiver codex-receiver --out dist | tee b01-40-r2-receiver-source-g0.txt
+      - name: Publish real physical inner ZIP and independently generated G0 receipt
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-40-w10-hazard-r2-source-${{ matrix.os }}
+          path: |
+            dist/*.zip
+            dist/G0-RECEIPT.json
+            b01-40-r2-receiver-source-g0.txt
+          if-no-files-found: warn
+          retention-days: 21
