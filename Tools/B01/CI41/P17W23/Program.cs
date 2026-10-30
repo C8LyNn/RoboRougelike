@@ -195,7 +195,7 @@ internal static class Program
         Check(gateway.AuthorityActive&&gateway.HasWorld&&factory.Last.Active,
               "V3 world still LIVE after independent storage .lease is released");
         RunPair(slotDir,Path.Combine(root,"after"),false);
-        Check(gateway.AuthorityActive&&factory.Last.Active&&
+        Check(gateway.AuthorityActive&&factory.Last!=null&&factory.Last.Active&&
               gateway.TryCapturePreview(out byte[] oldSnapshot),
               "original V3 active Light g10 still exports while foreign #669 Heavy g1 exists");
         CheckIds(oldSnapshot,10,true,false);
@@ -213,7 +213,7 @@ internal static class Program
         finally{cold.Dispose();}
         Check(gateway.TryCloseAfterPhysicalRetirement(()=>factory.TrustedRetire()),
               "original V3 .owner released only after surrogate physical retirement");
-        Check(!gateway.AuthorityActive&&factory.Last.Retired,
+        Check(!gateway.AuthorityActive&&factory.Last?.Retired==true,
               "original V3 lifecycle safely quiesced after detectable dual-lock bypass");
         bypass++;
     }
