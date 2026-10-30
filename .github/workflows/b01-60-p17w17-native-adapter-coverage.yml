@@ -1,4 +1,4 @@
-name: B01-60 P17W17 exact original Native Save adapter coverage audit (source only, G1 NOT_RUN)
+name: B01-60 W17 exact owner-selected #596 Native Save coverage audit (source only G1 NOT_RUN)
 on:
   push:
     branches: [qa/b01-60-p17w17-native-adapter-coverage-receipt-r1]
@@ -36,7 +36,7 @@ jobs:
           git fetch --no-tags origin 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
           git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
           git fetch --no-tags origin dd088a8c4823a6d128085e5ef08aca4b7f9307ea
-      - name: Execute original 510/556/604 Git objects, exact five Unity case identities and 8 fail-closed wrong-bridge source negatives
+      - name: Execute original 510/556/596 Git objects, exact four selected Unity cases and 8 fail-closed source/no-mix negatives
         shell: bash
         run: |
           set -euo pipefail
@@ -51,11 +51,13 @@ jobs:
           import json
           with open("qa-w17-native-adapter-coverage-evidence/receipt.json",encoding="utf-8") as f: r=json.load(f)
           assert r["G1"]=="NOT_RUN" and r["physical_native_adaptor_cases_executed"]==0
-          assert r["original_532_includes_556_or_604_native_adapter"] is False
+          assert r["original_532_includes_556_or_selected_596_native_adapter"] is False
           assert r["licensed_unity_6000_3_14f1"]=="NOT_AVAILABLE"
-          assert r["additional_native_playmode_cases_authored_exact_604"]==5
+          assert r["additional_native_playmode_cases_authored_exact_596"]==4
           assert r["adversarial_no_mix_negative_pass"]==8
           assert r["merged"] is False
+          assert r["selected_by_producer_B01_23_596_sha"]=="efb2b06eafedab5469b57f163152d96aca3c5915"
+          assert r["B01_62_conflicting_604_sha"]=="1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
           print("B01_60_W17_G1_NOT_RUN_FALSE_CLAIM_GUARD_PASS")
           PY
       - name: Preserve original-source inspection receipt, NOT Editor.log/NUnit XML
