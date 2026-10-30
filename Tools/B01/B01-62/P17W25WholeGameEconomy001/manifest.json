@@ -24,11 +24,13 @@
     "Tools/B01/B01-62/P17W25WholeGameEconomy001/source_guard.py",
     "Tools/B01/B01-62/P17W25WholeGameEconomy001/manifest.json",
     "Tools/B01/B01-62/P17W25WholeGameEconomy001/README.md",
-    ".github/workflows/b01-62-w25-unified-economy-save.yml"
+    ".github/workflows/b01-62-w25-unified-economy-save.yml",
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/CanonicalWholeGameSessionV1.cs"
   ],
   "G0": "PENDING_INDEPENDENT",
   "G1": "NOT_RUN",
   "integrated": false,
   "released": false,
-  "code_ack": false
+  "code_ack": false,
+  "canonical_gateway_adapter": "actual #729 original FOUR-ARG gateway + ICanonicalCommitPort + same whole-game wallet transaction and replay identity protection"
 }
