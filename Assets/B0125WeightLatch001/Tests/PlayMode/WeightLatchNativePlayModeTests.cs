@@ -77,7 +77,7 @@ namespace B0125.WeightLatch.Tests
         [UnityTest]
         public IEnumerator SourceInvalidTelemetryIsAtomicEvenWhenPaused()
         {
-            var logic=new WeightLatchController(new GateConfig());
+            var logic=new WeightLatchController(new GateConfig(8,1.5,-3,1,1.2,3));
             logic.Advance(new GateInput(.02,0,-3,12,true));
             var before=logic.State;
             Assert.Throws<System.ArgumentException>(()=>

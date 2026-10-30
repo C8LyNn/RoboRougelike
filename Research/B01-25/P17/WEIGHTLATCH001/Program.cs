@@ -8,7 +8,7 @@ public static class WeightLatchExecutableTests
 {
     static readonly List<string> Ok=new();
     static int rejected;
-    static WeightLatchController Gate()=>new WeightLatchController(new GateConfig());
+    static WeightLatchController Gate()=>new WeightLatchController(new GateConfig(8,1.5,-3,1,1.2,3));
     static GateInput I(double dt=.02,double x=0,double z=-3,double mass=12,
         bool contact=true,bool paused=false,bool alive=true)
         =>new GateInput(dt,x,z,mass,contact,paused,alive);
@@ -131,6 +131,7 @@ public static class WeightLatchExecutableTests
             var g=Gate();for(int j=0;j<100;j++)g.Advance(I(dt:.02,contact:false));
             Eq(g.State.ElapsedSeconds,2,"clock",1e-7);
         });
+        Reject("DEFAULT_CSHARP9_STRUCT_CONFIG_MUST_FAIL_CLOSED",()=>new WeightLatchController(new GateConfig()));
         Reject("CONFIG_NEGATIVE_THRESHOLD",()=>new GateConfig(-1));
         Reject("CONFIG_NONFINITE_CENTER",()=>new GateConfig(padCenterZ:double.PositiveInfinity));
         Reject("CONFIG_ZERO_HOLD",()=>new GateConfig(holdSeconds:0));

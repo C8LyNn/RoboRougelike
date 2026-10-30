@@ -57,7 +57,19 @@ namespace B01.LevelChallenges.WeightLatch
     {
         public GateConfig Config {get;}
         public GateState State {get;private set;}
-        public WeightLatchController(GateConfig config){Config=config;Reset();}
+        public WeightLatchController(GateConfig config)
+        {
+            // In CSharp9, new GateConfig() on a struct yields default zero fields,
+            // despite optional arguments of the user-defined constructor.
+            // Reject that footgun before any state can advance.
+            if(!GateConfig.Finite(config.MinimumMassKg)||config.MinimumMassKg<.1||
+               !GateConfig.Finite(config.PadHalfX)||config.PadHalfX<=0||
+               !GateConfig.Finite(config.PadHalfZ)||config.PadHalfZ<=0||
+               !GateConfig.Finite(config.MoveSeconds)||config.MoveSeconds<.2||
+               !GateConfig.Finite(config.HoldSeconds)||config.HoldSeconds<=0)
+                throw new ArgumentException("Missing or zero-initialized gate config");
+            Config=config;Reset();
+        }
         public void Reset(){State=new GateState(GateMotion.Closed,0,0,0,0,false);}
         public GateState Advance(GateInput input)
         {
