@@ -1,0 +1,56 @@
+name: B01-12 SHORTCUT-GUIDE-001 original-source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W21/ShortcutGuide001/**'
+      - '.github/workflows/b01-12-shortcut-guide.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original Chromium browser QA dependencies
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Original Node and real Chromium regression
+        working-directory: Research/B01-12/P17W21/ShortcutGuide001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Negative byte corruption must fail closed before tests
+        run: |
+          set -eu
+          folder=Research/B01-12/P17W21/ShortcutGuide001
+          cp -a "$folder" /tmp/b01-12-shortcut-guide-negative
+          printf 'x' >> /tmp/b01-12-shortcut-guide-negative/ui.js
+          set +e
+          (cd /tmp/b01-12-shortcut-guide-negative && node test_engine.cjs) > /tmp/b01-12-negative-node.log 2>&1
+          nc=$?
+          (cd /tmp/b01-12-shortcut-guide-negative && python test_browser.py) > /tmp/b01-12-negative-browser.log 2>&1
+          bc=$?
+          set -e
+          cat /tmp/b01-12-negative-node.log
+          cat /tmp/b01-12-negative-browser.log
+          test "$nc" -eq 2 && test "$bc" -eq 2
+          grep -F 'FAIL_CLOSED source mismatch: ui.js' /tmp/b01-12-negative-node.log
+          grep -F 'FAIL_CLOSED source mismatch: ui.js' /tmp/b01-12-negative-browser.log
+      - name: Upload immutable original evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-12-shortcut-guide-w21-source-evidence
+          path: |
+            Research/B01-12/P17W21/ShortcutGuide001/node-results.json
+            Research/B01-12/P17W21/ShortcutGuide001/browser-results.json
+            Research/B01-12/P17W21/ShortcutGuide001/evidence-1280x720.png
