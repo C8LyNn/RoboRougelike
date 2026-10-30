@@ -185,24 +185,17 @@ internal static class IndependentOriginalGate
                    f.Partial==null||!f.Partial.Active||f.Partial.Retired||
                    f.CleanupCalls!=1)return false;
                 s.Dispose();
-                // New canonical V3 source must keep FileShare.None for unresolved stages.
                 bool expectedAcquire=false;
-#endif
                 bool ok=useChild?TrySecondClr(dir,expectedAcquire):
                     CanOpen(dir,expectedAcquire);
                 if(!ok)return false;
-#if OLD
-                Console.WriteLine("W22_ORIGINAL_V1_697_ORPHAN_LEASE_P0_RELEASE_RED_REPRODUCED");
-                return f.Partial.Active;
-#else
                 Console.WriteLine("W23_CANONICAL_V3_SINGLE_OWNER_ORPHAN_LEASE_HELD_GREEN");
-                // Failed explicit cleanup proof cannot close/release the OS slot.
+                // A false physical cleanup proof cannot release authority.
                 if(s.TryCloseAfterPhysicalRetirement(()=>false))return false;
                 if(!TrySecondClr(dir,false))return false;
                 f.Partial.Retire();
                 if(!CloseTrusted(s,f))return false;
                 return TrySecondClr(dir,true);
-
             }
             finally
             {
