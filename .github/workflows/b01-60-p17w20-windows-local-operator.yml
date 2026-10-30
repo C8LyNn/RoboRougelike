@@ -92,6 +92,7 @@ jobs:
           $rc=$LASTEXITCODE
           if($rc -ne 2){throw "Unsafe scratch not denied exit2: $rc"}
           Write-Host "B01_60_W20_WINDOWS_SCRATCH_DENIED_PASS"
+          $global:LASTEXITCODE=0
       - name: Windows native request must refuse missing Editor without an interactive bypass
         shell: pwsh
         run: |
@@ -99,6 +100,7 @@ jobs:
           $rc=$LASTEXITCODE
           if($rc -ne 3){throw "Missing real Unity not denied exit3: $rc"}
           Write-Host "B01_60_W20_WINDOWS_MISSING_UNITY_NOT_RUN_PASS"
+          $global:LASTEXITCODE=0
       - name: Verify physical Windows evidence, retained source SHA, SHA256 manifest, no native claim
         shell: pwsh
         run: |
