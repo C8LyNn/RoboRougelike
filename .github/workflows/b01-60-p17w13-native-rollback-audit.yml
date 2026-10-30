@@ -1,0 +1,73 @@
+name: B01-60 W13 Original W12 empty-directory RED to QA Receiver R2 GREEN; native G1 NOT_RUN
+on:
+  push:
+    branches: [qa/b01-60-p17w13-native-rollback-emptydir-r2]
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py'
+      - 'Tools/B01/B01-60/P17W13NativeRollbackQA/**'
+      - '.github/workflows/b01-60-p17w13-native-rollback-audit.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py'
+      - 'Tools/B01/B01-60/P17W13NativeRollbackQA/**'
+      - '.github/workflows/b01-60-p17w13-native-rollback-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-old-red-new-green-without-unity:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch selected original game SHA, frozen original W12 QA SHA and immutable W06
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 5778023163d8b51d23abfebaa17119e21bd5e131
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Actually execute frozen W12 empty-directory unsafe deletion versus W13 new fail-closed rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W13NativeRollbackQA/audit.py 2>&1 | tee b01-60-w13-actual-old-red-new-green.log
+          cp b01-60-w13-actual-old-red-new-green.log qa-w13-native-rollback-evidence/stdout.log
+      - name: Reuse existing #532 runner (NOT new Unity runner) and demand truthful no-editor exit code 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py --mode native --unity /B01/NONEXISTENT-UNITY-6000.3.14f1 --out qa-w13-native-no-editor 2>&1 | tee b01-60-w13-native-not-run.log
+          result="${PIPESTATUS[0]}"
+          set -e
+          if [ "$result" -ne 3 ]; then echo "EXPECTED_NATIVE_NOT_RUN_EXIT_3_GOT=$result"; exit 1; fi
+          grep -F "B01_60_W12_NATIVE_NOT_RUN: authorized Unity executable missing" b01-60-w13-native-not-run.log
+          test ! -e qa-w13-native-no-editor/EditMode.xml
+          test ! -e qa-w13-native-no-editor/PlayMode.xml
+          test ! -e qa-w13-native-no-editor/EditMode-Editor.log
+          test ! -e qa-w13-native-no-editor/PlayMode-Editor.log
+          echo "B01_60_W13_NATIVE_G1_NOT_RUN_VERIFIED_NO_XML_NO_EDITORLOG"
+          cp b01-60-w13-native-not-run.log qa-w13-native-rollback-evidence/native-not-run.log
+      - name: Archive actual source receipts and historical rollback RED plus native NOT_RUN
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w13-rollback-and-native-NOT_RUN-${{ matrix.os }}
+          path: |
+            qa-w13-native-rollback-evidence/
+            qa-w13-native-no-editor/receipt.json
+            b01-60-w13-actual-old-red-new-green.log
+            b01-60-w13-native-not-run.log
+          retention-days: 21
+          if-no-files-found: warn
