@@ -41,7 +41,7 @@ static class TestRunner
             using var json=JsonDocument.Parse(File.ReadAllText("Research/B01-25/P17/SINKPLATE001/arena.json"));
             var r=json.RootElement;
             Check(r.GetProperty("version").GetInt32()==1&&r.GetProperty("metersPerCell").GetInt32()==1,"arena");
-            var plate=r.GetProperty("plate"),bypass=r.GetProperty("safeBypass");
+            var plate=r.GetProperty("plate"); var bypass=r.GetProperty("safeBypass");
             Check(plate.GetProperty("center")[0].GetDouble()==0 &&
                 plate.GetProperty("center")[1].GetDouble()==0,"center");
             Check(plate.GetProperty("size")[0].GetDouble()==6,"6m plate");
