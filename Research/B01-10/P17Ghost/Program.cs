@@ -594,6 +594,65 @@ internal static class Program
             Check(s.HasFullCourseComparison&&s.Completed);
             Equal(s.TotalDeltaSeconds,5f);
         });
+        Test("101 subthreshold real gate loss gives neutral HUD focus",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.1f);
+            c.AcceptValidatedGate(1,2.1f);
+            c.AcceptValidatedGate(2,3.1f);
+            c.AcceptValidatedGate(3,4.1f);
+            var s=c.EndTrial(true,5.1f);
+            Equal(s.BiggestLossGate,1); // R5 HUD incorrectly showed Focus: gate 1
+            Check(s.BiggestLossSeconds<GhostSplitCoach.PaceToleranceSeconds);
+            Equal(GhostPracticeFocus.Text(s,4),"No significant loss (finish included)");
+        });
+        Test("102 significant real checkpoint loss names correct gate",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.AcceptValidatedGate(1,2.5f);
+            c.AcceptValidatedGate(2,3.5f);
+            c.AcceptValidatedGate(3,4.5f);
+            var s=c.EndTrial(true,5.5f);
+            Equal(GhostPracticeFocus.Text(s,4),"Focus: gate 1");
+        });
+        Test("103 significant real finish loss names final segment not fifth gate",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,10);
+            Equal(GhostPracticeFocus.Text(s,4),"Focus: finish after gate 4");
+        });
+        Test("104 aborted partial run never exposes actionable full finish focus",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            var s=c.EndTrial(false,2);
+            Equal(GhostPracticeFocus.Text(s,4),"Retry: no finish segment measured");
+        });
+        Test("105 complete reference tie receives neutral focus",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,5);
+            Equal(GhostPracticeFocus.Text(s,4),"No significant loss (finish included)");
+        });
+        Test("106 tolerance boundary itself is neutral, not a gate focus",()=>{
+            var s=new GhostPracticeSummary {Completed=true,
+                HasFullCourseComparison=true, BiggestLossGate=2,
+                BiggestLossSeconds=GhostSplitCoach.PaceToleranceSeconds};
+            Equal(GhostPracticeFocus.Text(s,4),"No significant loss (finish included)");
+        });
+        Test("107 null focus source rejected before UI access",()=>{
+            Check(Reject(()=>GhostPracticeFocus.Text(null,4)),"null summary");
+        });
+        Test("108 invalid gate count rejected before generating false advice",()=>{
+            var s=new GhostPracticeSummary {Completed=true,
+                HasFullCourseComparison=true, BiggestLossSeconds=1,
+                BiggestLossGate=1};
+            Check(Reject(()=>GhostPracticeFocus.Text(s,0)),"invalid gate count");
+        });
+        Test("109 significant loss without a real gate fails closed",()=>{
+            var s=new GhostPracticeSummary {Completed=true,
+                HasFullCourseComparison=true, BiggestLossSeconds=1,
+                BiggestLossGate=0, BiggestLossIsFinishSegment=false};
+            Check(Reject(()=>GhostPracticeFocus.Text(s,4)),"forged focus");
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
