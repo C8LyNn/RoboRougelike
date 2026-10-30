@@ -59,7 +59,7 @@ py Tools/B01/CI41/P17W20/verify_native_evidence.py --evidence C:/separate/ci41-e
 Do not upload operator-specific local paths, logs or project files to public CI without human approval.
 
 ### Actual automated QA for THIS code
-GitHub Actions executes `test_verify_native_evidence.py` on Windows2025 and Ubuntu24.04: **30 adversarial tests per OS on self-generated SYNTHETIC fixture bytes** that deliberately DO NOT represent real Unity runs. Additionally the workflow fetches actual original Git R4 #647/#652 source commit refs and verifies host Git blob exact; compares lifecycle `OnDisable` authority (source audit ONLY). Artifacts contain only static machine results and synthetic-verifier stdout, **not** real Unity evidence. **G1 NOT_RUN** always in this workflow.
+GitHub Actions executes `test_verify_native_evidence.py` on Windows2025 and Ubuntu24.04: **32 adversarial tests per OS on self-generated SYNTHETIC fixture bytes** that deliberately DO NOT represent real Unity runs. Additionally the workflow fetches actual original Git R4 #647/#652 source commit refs and verifies host Git blob exact; compares lifecycle `OnDisable` authority (source audit ONLY). Artifacts contain only static machine results and synthetic-verifier stdout, **not** real Unity evidence. **G1 NOT_RUN** always in this workflow.
 
 ### Receivers & six lifecycle states
 B01-60 attaches this NEW source guard to the one-command LOCAL manual runner #667 once real owner R4 winner is selected, without a new redundant launcher; B01-23/62 explicitly sign ONE R4 winner, new canonical #510 Save API development remains separate under #666; B01-40 exact source G0; B01-61 independent actual original transaction/ID/rollback; B01-00 only authorized release decision/real Codex intake.
