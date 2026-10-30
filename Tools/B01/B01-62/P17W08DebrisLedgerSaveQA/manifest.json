@@ -1,0 +1,53 @@
+{
+  "schema": "b01-qa-package-v1",
+  "id": "B01-62-DEBRIS-LEDGER-SAVE-QA-001",
+  "version": "P17-W08-R1",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "branch": "qa/b01-62-p17w08-debris-ledger-save-receipt",
+  "upstream": {
+    "pr": 421,
+    "sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+    "path": "Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs",
+    "git_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "source_pins": {
+    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/prepare.py": "4ed79ff1fea6f14a96cbd5d37eca7953ba58d3ee",
+    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/DebrisLedgerSaveQA.csproj": "e89017444654fa6053cbb4c86875c8e4bcd2a83c",
+    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/Program.cs": "667567066e12c5d1d62a942c13e482ccee46b8f7",
+    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/README.md": "efc608c3e02efc179f8ea2dcc48f5d57e5c5a817",
+    ".github/workflows/b01-62-p17w08-debris-ledger-save.yml": "d8ee04603c75bb323e87c42f1de1e6cf1f5451cd"
+  },
+  "scope": [
+    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/**",
+    ".github/workflows/b01-62-p17w08-debris-ledger-save.yml"
+  ],
+  "tests_expected": {
+    "windows": "28 original C#9 source-ledger/disk checks",
+    "ubuntu": "28 original C#9 source-ledger/disk checks",
+    "extra": "2 exact cross-OS raw JSON receipt files match"
+  },
+  "tests_actual": "PENDING_RUN",
+  "guards": [
+    "no existing sandbox path",
+    "FileMode.CreateNew",
+    "run ID + producer SHA binding",
+    "canonical sorted strictly positive IDs <=4096",
+    "SHA256 accidental corruption detection (NOT cryptographic authentication)",
+    "fail closed before original zero-impulse replay"
+  ],
+  "boundary": [
+    "source tests only, actual Unity Physics/Editor/Player NOT_RUN",
+    "no original DebrisRepulsionEmitter compiled",
+    "no canonical game save hook exists or is modified",
+    "fresh original ledger loses one-shot state: expected risk observation, not proof of live game save bug"
+  ],
+  "recipients": [
+    "B01-40 G0 provenance and scope",
+    "B01-60 and B01-61 independent persistence semantics",
+    "B01-23 source interface contract",
+    "B01-00 Codex #79 routing only after acceptance"
+  ],
+  "rollback": "Close draft; delete only isolated B01-62 QA scope and receiver-owned disposable scratch files. Never delete real saves.",
+  "codex_ack": "PENDING",
+  "merged": false
+}
