@@ -1,0 +1,64 @@
+name: B01-24 PASS17 W09 — original R3 predictive projectile evasion real CSharp
+on:
+  push:
+    branches: [research/b01-24-p17-w09-projectile-evasion]
+    paths:
+      - 'Research/B01-24/P17/W09-PROJECTILE-EVASION-001/**'
+      - '.github/workflows/b01-24-p17-w09-projectile-evasion.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/W09-PROJECTILE-EVASION-001/**'
+      - '.github/workflows/b01-24-p17-w09-projectile-evasion.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-csharp-and-zip-receipts:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build ORIGINAL evasion CSharp9 + actual unchanged Codex R3 --warnaserror
+        shell: bash
+        run: dotnet build Research/B01-24/P17/W09-PROJECTILE-EVASION-001/ProjectileEvasionCI.csproj -c Release --warnaserror
+      - name: Execute original relative-sweep intersection and adversarial CSharp tests
+        shell: bash
+        run: |
+          dotnet run --no-build -c Release --project Research/B01-24/P17/W09-PROJECTILE-EVASION-001/ProjectileEvasionCI.csproj | tee b01-24-w09-original-csharp.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute 16 real Git SHA pin and physical ZIP tamper fail-closed tests
+        shell: bash
+        run: |
+          python -m unittest discover -s Research/B01-24/P17/W09-PROJECTILE-EVASION-001/Tools -p 'test_receiver.py' -v 2>&1 | tee b01-24-w09-receiver-tests.txt
+      - name: Actually create exact source-pinned Unity .cs plus .meta ZIP with SHA256 receipt
+        shell: bash
+        run: |
+          python Research/B01-24/P17/W09-PROJECTILE-EVASION-001/Tools/build_receiver.py --repo . --out b01-24-w09-zip | tee b01-24-w09-receiver-sha.txt
+      - name: Archive original source receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-w09-original-csharp-${{ matrix.os }}
+          path: b01-24-w09-original-csharp.txt
+          retention-days: 21
+          if-no-files-found: warn
+      - name: Archive actual import ZIP and SHA receipt not native Unity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-w09-projectile-evasion-unity-import-${{ matrix.os }}
+          path: |
+            b01-24-w09-zip/*
+            b01-24-w09-receiver-tests.txt
+            b01-24-w09-receiver-sha.txt
+          retention-days: 21
+          if-no-files-found: warn
