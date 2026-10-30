@@ -1,0 +1,35 @@
+name: B01-11 W25 Recovery HUD real quote guard source+RED QA
+on:
+  push:
+    branches: ['feature/b01-11-p17w25-recovery-quote-guard-002']
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs'
+      - 'Tools/B01/B01-11/P17W24RecoveryHud001/manifest.json'
+      - 'Tools/B01/B01-11/P17W24RecoveryHud001/verify_package.py'
+      - 'Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/**'
+      - '.github/workflows/b01-11-p17w25-recovery-quote-r2.yml'
+jobs:
+  original-source:
+    name: Original R1 RED to R2 GREEN (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact SHA256, GUID and original Git-path scope
+        run: python Tools/B01/B01-11/P17W24RecoveryHud001/verify_package.py
+      - name: Re-run all original W24 source tests unchanged
+        run: dotnet run --configuration Release --project Tools/B01/B01-11/P17W24RecoveryHud001/RecoveryHud.Tests.csproj
+      - name: Compile original R2 Unity production source and run quote guards
+        run: dotnet run --configuration Release --project Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/QuoteGuard.Tests.csproj
+      - name: Compile and compare immutable R1 negative witness against fixed R2
+        run: python Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/test_r1_red.py
