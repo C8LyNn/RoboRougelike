@@ -12,6 +12,20 @@ internal static class Original787IndependentQA
     const long Run=251787;
     static readonly Guid Slot=Guid.Parse("25178725-1787-4000-8000-000000000787");
     static int pass,fail;
+    private sealed class Idle:ICanonicalMutationGate {public bool IsQuiescent()=>true;}
+    private sealed class NotUsedFactory:ICanonicalRigFactory
+    {
+        public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot s,ColdRestore c)
+            =>throw new InvalidOperationException("QA only reads physical disk, no fake world");
+    }
+    private sealed class NotUsedDurable:ICanonicalCommitPort
+    {
+        public bool Read(long run,out long generation,out string hash)
+        {generation=0;hash="";return false;}
+        public bool Commit(long run,long prior,string priorHash,long next,string hash)=>false;
+    }
+    private static CanonicalWorldGateway Bind(CanonicalWorldSlotLease owner)
+        =>new CanonicalWorldGateway(new Idle(),new NotUsedFactory(),new NotUsedDurable(),owner);
     static void Check(string name,Func<bool> test)
     {
         try {if(test()){pass++;Console.WriteLine("PASS "+name);}
@@ -77,6 +91,10 @@ internal static class Original787IndependentQA
             if(!Open(root,out var owner)||owner==null)return false;
             string path=Canonical(root);
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            // Authentic #729 contract: owner.Live is true ONLY after BindOnce
+            // by its real FOUR-ARG Gateway. Our original fixture accidentally
+            // attempted raw Commit on an unbound, correctly quarantined lease.
+            var gateway=Bind(owner);
             var state=CanonicalSingleAuthorityStoreV3R3.TryCreateNew(
                 path,Run,Slot,owner,out var store);
             if(state!=SlotStatus.Accepted||store==null){Console.WriteLine("R3 first TryCreateNew="+state);return false;}
@@ -90,8 +108,10 @@ internal static class Original787IndependentQA
             store.Dispose();
             bool afterDispose=CanonicalSingleAuthorityStoreV3R3.TryOpenExisting(
                 path,Run,Slot,owner,out duplicate)==SlotStatus.Busy&&duplicate==null;
-            if(!owner.TryCancelUnbound()){Console.WriteLine("R3 original owner cancelled=false");return false;}
+            if(!gateway.TryCloseAfterPhysicalRetirement(()=>true))
+            {Console.WriteLine("R3 original gateway verified release=false");return false;}
             if(!Open(root,out var next)||next==null)return false;
+            var coldGateway=Bind(next);
             try
             {
                 var newState=CanonicalSingleAuthorityStoreV3R3.TryOpenExisting(
@@ -107,7 +127,7 @@ internal static class Original787IndependentQA
                 return correct&&noSecond&&afterDispose&&
                     !File.Exists(Path.Combine(path,"slot.lease"));
             }
-            finally{next.TryCancelUnbound();}
+            finally{coldGateway.TryCloseAfterPhysicalRetirement(()=>true);}
         });
     }
     static bool ForeignRootNeverMutates()
