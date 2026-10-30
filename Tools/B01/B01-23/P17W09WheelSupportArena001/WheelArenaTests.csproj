@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../Assets/B0123WheelSupportArena001/WheelRigRecipe.cs" Link="OriginalProductionWheelRigRecipe.cs"/>
+    <Compile Include="Program.cs"/>
+  </ItemGroup>
+</Project>

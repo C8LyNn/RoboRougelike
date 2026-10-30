@@ -1,0 +1,56 @@
+name: B01-23 W09 Original P17 Two-Rig Wheel Physics Arena
+on:
+  push:
+    branches: ['b01-23/p17-w09-wheel-support-physics-arena-r1']
+  pull_request:
+    paths:
+      - 'Assets/B0123WheelSupportArena001/**'
+      - 'Assets/B0123WheelSupportArena001.meta'
+      - 'Tools/B01/B01-23/P17W09WheelSupportArena001/**'
+      - '.github/workflows/b01-23-p17-w09-wheel-arena.yml'
+  workflow_dispatch:
+jobs:
+  original-geometry-and-source-binary:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate exact stacked immutable source ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 783d9ddc0b0c37e284c46c2d42a57fa8f67a2021 HEAD
+          git fetch --no-tags origin refs/pull/417/head
+          test "$(git rev-parse f1c82267b1ad3d03d67ce17b478a180a69e7d7d7:Assets/PARTSIZE001/P17Balance/MassBalanceSolver.cs)" = 2b53bf0a9aa7c32aee27fb4772b65edabf7324c6
+          test "$(git rev-parse 783d9ddc0b0c37e284c46c2d42a57fa8f67a2021:Assets/B0123MeasuredSupport001/MeasuredSupportCapture.cs)" = 5d9da80f257974b0d2937cc97b7e3fa2e5171018
+      - name: Compile real original production wheel geometry and execute negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p b0123-w09-physical-artifacts
+          dotnet run -c Release --project Tools/B01/B01-23/P17W09WheelSupportArena001/WheelArenaTests.csproj | tee b0123-w09-physical-artifacts/real-recipe-tests.log
+          grep -q 'ACTUAL_ORIGINAL_RECIPE_ASSERTIONS_PASS=' b0123-w09-physical-artifacts/real-recipe-tests.log
+      - name: Package exact physical original Unity C# source and run destructive-safety negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-23/P17W09WheelSupportArena001/pack.py b0123-w09-physical-artifacts/w09-original-unity-source.zip b0123-w09-physical-artifacts/receipt.json | tee b0123-w09-physical-artifacts/build.log
+          python Tools/B01/B01-23/P17W09WheelSupportArena001/test_pack.py b0123-w09-physical-artifacts/w09-original-unity-source.zip | tee b0123-w09-physical-artifacts/physical-qa.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0123-w09-original-wheel-arena-${{ matrix.os }}
+          path: b0123-w09-physical-artifacts/
+          if-no-files-found: warn
