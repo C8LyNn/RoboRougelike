@@ -1,0 +1,55 @@
+name: B01-13 W11 frozen W10 temporal-trace behavioral replay
+on:
+  push:
+    branches:
+      - research/b01-13-pass17-wave11-motion-trace-replay
+  pull_request:
+    paths:
+      - 'Research/B01-13/P17I/**'
+      - '.github/workflows/b01-13-p17w11-motion-trace-replay.yml'
+jobs:
+  genuine-original-frozen-source:
+    name: ${{ matrix.os }} frozen W10 real C-sharp replay
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Materialize original frozen W10 Git source without mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Research/B01-13/P17I/Tests/PinnedOriginal
+          git show e32d3199fa1fe6e9120df61a61ec02031441a2d3:Research/B01-13/P17H/UnityPackage/Runtime/MotionStallLedger.cs > Research/B01-13/P17I/Tests/PinnedOriginal/MotionStallLedger.cs
+      - name: Verify original W10 SHA256 and W11 byte+SHA256 fixtures
+        shell: bash
+        run: python Research/B01-13/P17I/verify_package.py
+      - name: Build pinned production source plus actual original trace runner
+        shell: bash
+        run: dotnet build Research/B01-13/P17I/Tests/MotionTraceReplay.csproj --configuration Release --warnaserror
+      - name: Execute all six original 101-row traces
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Research/B01-13/P17I/Tests/Evidence
+          dotnet run --project Research/B01-13/P17I/Tests/MotionTraceReplay.csproj --configuration Release --no-build -- Research/B01-13/P17I/Fixtures/original_motion_trace_contract.csv | tee Research/B01-13/P17I/Tests/Evidence/replay.txt
+      - name: Execute three real fail-closed negative controls
+        shell: bash
+        run: python Research/B01-13/P17I/Tests/adversarial.py Research/B01-13/P17I/Tests/bin/Release/net8.0/MotionTraceReplay.dll Research/B01-13/P17I/Fixtures/original_motion_trace_contract.csv Research/B01-13/P17I/Tests/Evidence/negative.txt
+      - name: Upload actual run receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-13-w11-${{ matrix.os }}-frozen-motion-replay
+          path: Research/B01-13/P17I/Tests/Evidence/*.txt
+          if-no-files-found: warn
