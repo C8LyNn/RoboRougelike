@@ -44,6 +44,25 @@ def canonical_zip_members(z: zipfile.ZipFile, max_files: int, max_total: int, ma
     seen = set()
     total = 0
     for member in z.infolist():
+        # zipfile.ZipInfo normalizes Windows backslashes to forward slashes
+        # BEFORE exposing member.filename. Inspect the untouched local header,
+        # which prevents a raw malicious name from disappearing on Windows.
+        if z.fp is None:
+            raise ValueError("ZIP source closed")
+        old_position = z.fp.tell()
+        try:
+            z.fp.seek(member.header_offset)
+            header = z.fp.read(30)
+            if len(header) != 30 or header[:4] != b"PK\x03\x04":
+                raise ValueError("invalid local ZIP header")
+            name_length = int.from_bytes(header[26:28], "little")
+            if not (1 <= name_length <= 4096):
+                raise ValueError("unsafe local ZIP filename length")
+            raw_filename = z.fp.read(name_length)
+            if len(raw_filename) != name_length or b"\\" in raw_filename:
+                raise ValueError("backslash or truncated raw local ZIP filename")
+        finally:
+            z.fp.seek(old_position)
         mode = member.external_attr >> 16
         if mode and stat.S_IFMT(mode) not in (0, stat.S_IFREG, stat.S_IFDIR):
             raise ValueError(f"link or special ZIP member refused: {member.filename}")
