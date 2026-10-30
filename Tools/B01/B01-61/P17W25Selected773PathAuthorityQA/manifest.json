@@ -1,0 +1,12 @@
+{
+  "package": "B01-61-P17W25-EXACT773-CASE-SENSITIVE-PATH-P0-NEGATIVE-QA",
+  "producer_pr": 773,
+  "producer_sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "selected_predecessor_pr": 749,
+  "negative_expected_linux": "TWO_DISTINCT_DURABLE_G1_LIGHT_HEAVY_ENVELOPES",
+  "original_git_pins": 7,
+  "qa_add_only_files": 6,
+  "independent_scenarios_per_os": 3,
+  "run_native_unity": "NOT_RUN",
+  "NO_MERGE": true
+}
