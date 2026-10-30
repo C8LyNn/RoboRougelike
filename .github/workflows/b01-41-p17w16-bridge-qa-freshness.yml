@@ -1,0 +1,74 @@
+name: B01-41 P17 W16 actual bridge PR to independent QA source freshness release HOLD
+on:
+  push:
+    branches: ['ci/b01-41-p17w16-bridge-qa-freshness']
+    paths:
+      - 'Tools/B01/CI41/P17W16/**'
+      - '.github/workflows/b01-41-p17w16-bridge-qa-freshness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+jobs:
+  candidate-qa-freshness:
+    name: Exact original #585/#587 vs independent QA #572/#588 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Require version-pinned original CI41 source and QA test Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W16/bridge_qa_freshness.py)" = '23864f14e5c138b9e79588266ef4e9bb019e7607'
+          test "$(git hash-object Tools/B01/CI41/P17W16/test_bridge_qa_freshness.py)" = '2b387eea894c7f86443554a55331da35bf05e786'
+          echo 'CI41_W16_EXACT_TEST_AND_SOURCE_BLOBS_PASS'
+      - name: Read live original producer/QA PR Git SHA, source blob IDs and original Actions runs
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" 'Tools/B01/CI41/P17W16/bridge_qa_freshness.py' --mode audit --capture-out 'Tools/B01/CI41/P17W16/original-pull-qa-capture.json' --output 'Tools/B01/CI41/P17W16/original-qa-hold-${{ runner.os }}.json'
+          echo 'ACTUAL_ORIGINAL_GITHUB_PR_AND_QA_SOURCE_CAPTURE_RECORDED'
+      - name: Execute 41 adversarial mutations of ACTUAL current GitHub source/QA evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s 'Tools/B01/CI41/P17W16/' -p test_bridge_qa_freshness.py -v 2>&1 | tee 'Tools/B01/CI41/P17W16/tests-${{ runner.os }}.txt'
+          grep -q 'Ran 41 tests' 'Tools/B01/CI41/P17W16/tests-${{ runner.os }}.txt'
+          grep -q 'REAL_CURRENT_587_CORE_SHA_DIFFERS_FROM_588_QA_SOURCE_HOLD' 'Tools/B01/CI41/P17W16/tests-${{ runner.os }}.txt'
+          grep -q 'REAL_585_EXACT_QA_BUT_ACTIVATION_SECURITY_RED' 'Tools/B01/CI41/P17W16/tests-${{ runner.os }}.txt'
+      - name: Prove RELEASE ENFORCEMENT really denies currently RED/stale source, not false green
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          set +e
+          "$PY" 'Tools/B01/CI41/P17W16/bridge_qa_freshness.py' --mode enforce --from-capture 'Tools/B01/CI41/P17W16/original-pull-qa-capture.json' --output 'Tools/B01/CI41/P17W16/release-denied-${{ runner.os }}.json'
+          code=$?
+          set -e
+          test "$code" -eq 3
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); assert x["release_gate"]=="HOLD" and x["host_save_load"]=="HOLD" and x["unity_native_g1"]=="NOT_RUN" and x["candidate_selection"]=="NOT_AUTHORIZED_BY_B01_41" and not x["codex_ack"] and not x["integrated"] and x["candidates"]["585"]["source_admission"]=="HOLD" and x["candidates"]["587"]["source_admission"]=="HOLD"; print("W16_REAL_RELEASE_GATE_DENIED_BOTH_CANDIDATES_CODE_3")' 'Tools/B01/CI41/P17W16/release-denied-${{ runner.os }}.json'
+      - name: Upload real GitHub PR/QA capture, independent test logs and fail-closed decision
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W16-BRIDGE-QA-FRESHNESS-${{ runner.os }}
+          path: |
+            Tools/B01/CI41/P17W16/original-pull-qa-capture.json
+            Tools/B01/CI41/P17W16/original-qa-hold-${{ runner.os }}.json
+            Tools/B01/CI41/P17W16/release-denied-${{ runner.os }}.json
+            Tools/B01/CI41/P17W16/tests-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
