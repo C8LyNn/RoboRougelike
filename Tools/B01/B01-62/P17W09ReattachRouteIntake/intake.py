@@ -116,8 +116,8 @@ def inspect_sources(src):
     ledger,ledger_code=method(src["ledger"],"TryDetach","bool")
 
     original_ui_has_unsafe_button = find(r'GUILayout\.Button\(\s*"Reattach"\s*\)', w07_gui)
-    original_ui_calls_unchecked_reattach = find(r'\bReattach\s*\(\s*i\s*\)', w07_gui_code)
-    original_ui_bypass=original_ui_has_unsafe_button and original_ui_calls_unchecked_reattach
+    original_ui_calls_unchecked_reattach = find(r'\bReattach\s*\(', w07_gui_code)
+    original_ui_bypass=original_ui_calls_unchecked_reattach
     original_rearms_on_reattach=all(find(re.escape(x),w07_re_code) for x in (
         "rig.Body.isKinematic = true", "rig.Part.transform.SetParent(",
         "rig.Detached = false", "rig.Emitter.RearmAfterReattach("))
