@@ -1,0 +1,136 @@
+{
+  "schema_version": "b01-package-v1",
+  "package_id": "B01-00-RECEIPT-LATCH-001",
+  "revision": "1.0.0",
+  "owner": "B01-00",
+  "producer_agent": "B01-00",
+  "issue": 466,
+  "purpose": "Executable offline consistency gate for original source CI, independent QA receipts, native requirement and Codex offer/ACK/integration distinction",
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_branch": "b01-00/p17w09-receipt-latch-001",
+  "source_sha_before_manifest": "482f400550e6532b07d75556d8fdfd4213e483cd",
+  "code_scope": [
+    "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
+    ".github/workflows/b01-00-w09-receipt-latch.yml"
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex canonical gameplay",
+    "B01-40/60/61/62 independent source",
+    "CHL/PARTSIZE/MODEL_JOB",
+    "main/develop"
+  ],
+  "files": [
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/receipt_latch.py",
+      "sha256": "949f576c5bca81cb4b90f998a9c1c3901b08d5f0baafc9329e99510e86db5faa",
+      "bytes": 8997
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_receipt_latch.py",
+      "sha256": "5220038d9525cb3641a37078483c55d45ab33a1eed026569b58360aef483bd9a",
+      "bytes": 11434
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_proof_replay.py",
+      "sha256": "672996aea12f31956c8f97bc4c82a4cec5507c946e53d8521dc1838883227595",
+      "bytes": 2076
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json",
+      "sha256": "3432a0a71b4198c5bcc78dcb9882295464d6d5f578a0c914d726599afda42a1f",
+      "bytes": 1148
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
+      "sha256": "390734b36f1ce0475345d0ca89594515797277227a8171d3c755cf94617b19c1",
+      "bytes": 3465
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
+      "sha256": "2fc048f35f72b0c2d65ad54da3f53655ef6ef3d3866f2c51452168ee70ee25df",
+      "bytes": 2531
+    },
+    {
+      "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
+      "sha256": "45bb7cf37d507a701bf5f58943c5eb19fbe63aa4996bd674322f468abd6bee79",
+      "bytes": 901
+    }
+  ],
+  "producer_tests": [
+    {
+      "name": "Initial actual original 40-case URL parser RED",
+      "status": "FAIL_EXPECTED",
+      "total": 40,
+      "failed": 3,
+      "errors": 29,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "d0b48ea6f984f65e978b03af8d1d71edf0a08c71",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053421464"
+    },
+    {
+      "name": "Corrected actual original 40-case URL parser GREEN",
+      "status": "PASS",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "da955cfa0d861f143987b6a6136f57b42bafd4f6",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053561030"
+    },
+    {
+      "name": "Expanded actual original 44-case proof-replay RED",
+      "status": "FAIL_EXPECTED",
+      "total": 44,
+      "failed": 2,
+      "errors": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "e738393b892aae8feddb45ab2830ff508355190e",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053683730"
+    },
+    {
+      "name": "Corrected actual original 44-case proof-replay GREEN",
+      "status": "PASS",
+      "total": 44,
+      "passed": 44,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "d40870a4b654d6d746a5c18c5a10350f755fa62e",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053802245"
+    },
+    {
+      "name": "Exact final HEAD after manifest",
+      "status": "NOT_RUN",
+      "note": "Will verify Actions after manifest publish"
+    }
+  ],
+  "qa_b01_40": "PENDING",
+  "qa_b01_60": "PENDING",
+  "native_unity_editmode": "NOT_RUN",
+  "native_unity_playmode": "NOT_RUN",
+  "g0": "PRODUCER_SOURCE_TESTS_PASS / INDEPENDENT_PENDING",
+  "g1": "NOT_RUN_NOT_APPLICABLE",
+  "g2": "HOLD",
+  "codex_sent": false,
+  "codex_ack": false,
+  "integrated": false,
+  "limitations": [
+    "Offline input URLs and GitHub actor names are NOT authenticated; externally verify actual immutable objects before formal acceptance.",
+    "No native Unity applicability",
+    "No automatic game source modification, GitHub posts or merges"
+  ],
+  "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records"
+}
