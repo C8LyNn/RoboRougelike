@@ -1,0 +1,14 @@
+{
+  "name": "B0125.Airlock.Runtime",
+  "rootNamespace": "B0125.Airlock",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
