@@ -125,9 +125,9 @@ namespace B01.P17WheelSupportArena001
                 new[]{rigs[0].Body},rigs[0].Wheels,out tri,out failure);
             // Disabling one wheel must never create more than 3 physical contacts.
             int grounded=GroundedCount(rigs[0].Wheels);
-            if(result && grounded!=3)
+            if(!result || tri==null || grounded!=3 || tri.HullVertexCount!=3)
             {
-                status="NATIVE_PROBE_FAIL disabled wheel counted as support";
+                status="NATIVE_PROBE_FAIL one-wheel-lift does not yield 3 valid real contacts: "+failure;
                 Debug.LogError("B01-23 W09 "+status,this);
                 front.enabled=true;running=null;yield break;
             }
