@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "1.0.0-P17W06",
+  "version": "2.0.0-P17W07-UNITY_VISUAL_FASTPLAYBACK",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "ORIGINAL_SOURCE_AUTHORED / CSHARP_CI_QUEUED / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_PENDING",
+  "status": "PRODUCER_SOURCE_IMPLEMENTED / CI_CSHARP_QUEUED_NOT_RUN / G0_PENDING / INDEPENDENT_QA_PENDING / UNITY_NOT_RUN / CODEX_NOT_CLAIMED / NO_MERGE",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -22,39 +22,56 @@
   ],
   "codeFiles": {
     "GhostCore.cs": {
-      "gitBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
-      "chars": 12750
+      "gitBlob": "0eea61a784d59484f34968deeb4cd0c35bffeb4e",
+      "chars": 13923
+    },
+    "GhostVisualProxy.cs": {
+      "gitBlob": "41dd8fe2443ddc2a2ac87b922c25bd6c341d5566",
+      "chars": 5245
+    },
+    "GhostCore.cs.meta": {
+      "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
+      "chars": 240
+    },
+    "GhostVisualProxy.cs.meta": {
+      "gitBlob": "f4190a8badf10e98950cd59a140e8d6d742d72e3",
+      "chars": 240
+    },
+    "B01TrainingGhost.meta": {
+      "gitBlob": "8c40264e679ae446d67c4fb79387e3f06df7431a",
+      "chars": 169
+    },
+    "Program.cs": {
+      "gitBlob": "1c04f259b62c70cbfb9c335ad0ea3cc44197e64e",
+      "chars": 16846
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
-    "Program.cs": {
-      "gitBlob": "419616033f287fd140c385f9c289d66b969c0762",
-      "chars": 14356
-    },
     "README.md": {
-      "gitBlob": "4a6f49cc7e14ae2d60e1a3968f9bc507b2dfdf6c",
-      "chars": 7971
+      "gitBlob": "d43aa0f93f62a5ca06b8231e3ffbf5fd756690dd",
+      "chars": 12649
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "4a694e9af91def8bc77076a50dae22f5d7fe2378"
+    "gitBlob": "c294e4ec37bb0aa2774da2bb771294e2d91f0e06"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 54,
+    "namedCases": 62,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "PENDING",
-    "windows": "PENDING",
-    "ubuntu": "PENDING",
-    "actualDemoJson": "PENDING",
+    "workflowRun": "QUEUED/NOT_RUN as of W07, verify exact final SHA before claim",
+    "windows": "QUEUED/NOT_RUN",
+    "ubuntu": "QUEUED/NOT_RUN",
+    "actualDemoJson": "NOT_RUN in final SHA",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
     "actualPhysicsLightHeavy": "NOT_RUN",
-    "independentQA": "PENDING"
+    "independentQA": "PENDING",
+    "highFrequencySeeksInNamedCase61": 10000
   },
   "originalCHL": {
     "issue": 91,
@@ -73,7 +90,7 @@
     "noMerge": true
   },
   "install": "Copy GhostCore.cs to unique authorized Unity project Assets/B01TrainingGhost after B01-40/B01-60 acceptance; add new GUID/meta; opt-in adapter only in Codex/B01-20 authorized worktree; do not copy branch into game.",
-  "rollback": "Remove only new GhostCore.cs/meta, visual-only ghost adapter/UI; restore byte-for-byte any authorized CHL scene changes; no earlier authored paths changed.",
+  "rollback": "Only delete fresh Assets/B01TrainingGhost folder + adjacent folder .meta and optional new standalone visual root; if an already present destination or GUID collision reject install, no game patches by producer",
   "earlierProducerState": {
     "priorPackage": "RUNSCORE001/R2",
     "priorPR": 401,
@@ -84,8 +101,29 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "Original GhostRun.RequiredCheckpoints exact-match validation added against forged partial completion, original four extra CSharp negative+JSON tests.",
+  "qualityPatch": "W07 fixes O(N)-per-render-source frame revalidation: original GhostPlayback clones + validates once on Bind and searches frames O(log N) per Seek, while public direct GhostMath.At still validates every untrusted input. Adds authored Unity URP transparent arrow Mesh, no Collider/Rigidbody, real fixed .meta GUID for two scripts and folder; hosted native Unity not run",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
-  "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION"
+  "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
+  "importLayout": {
+    "src": "Research/B01-10/P17Ghost/",
+    "unityRoot": "Assets/B01TrainingGhost/",
+    "uniqueFolder": "Assets/B01TrainingGhost.meta",
+    "files": [
+      "GhostCore.cs",
+      "GhostCore.cs.meta",
+      "GhostVisualProxy.cs",
+      "GhostVisualProxy.cs.meta"
+    ],
+    "GUIDS": {
+      "B01TrainingGhost.meta": "8d7f2b090c0d4ef3ab2436c855d0b104",
+      "GhostCore.cs.meta": "74f1111e2e76821101d5ee4b43683a33",
+      "GhostVisualProxy.cs.meta": "8e613294fbd6ad5dff7a0b23a5aa96e0"
+    },
+    "needsLicensedUnityImport": true,
+    "nonColliderGhost": true,
+    "physicsOwner": "CHL003 B01-20"
+  },
+  "actualNativeStatus": "NATIVE_EDIT_NOT_RUN / NATIVE_PLAY_NOT_RUN / RENDER_NOT_RUN / PHYSX_ZERO_COLLIDER_NOT_VERIFIED",
+  "originalGameCodeTouched": false
 }
