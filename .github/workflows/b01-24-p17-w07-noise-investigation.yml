@@ -1,0 +1,64 @@
+name: B01-24 PASS17 W07 — real CSharp9 enemy noise investigation with ORIGINAL R3
+on:
+  push:
+    branches: [research/b01-24-p17-w07-noise-investigation]
+    paths:
+      - 'Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/**'
+      - '.github/workflows/b01-24-p17-w07-noise-investigation.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/**'
+      - '.github/workflows/b01-24-p17-w07-noise-investigation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-R3-hearing-search:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual source CSharp9 and Codex original R3, treating warnings as errors
+        shell: bash
+        run: dotnet build Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/InvestigationCI.csproj -c Release --warnaserror
+      - name: Execute original deterministic hearing LOS memory search and real scenario negative tests
+        shell: bash
+        run: |
+          dotnet run --no-build -c Release --project Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/InvestigationCI.csproj | tee b01-24-W07-noise-source-receipt.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run 16 original filesystem and deterministic source-pinned import ZIP negative tests
+        shell: bash
+        run: |
+          python -m unittest discover -s Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools -p "test_receiver.py" -v 2>&1 | tee b01-24-W07-receiver-tests.txt
+      - name: Build ACTUAL receiver Unity source import ZIP and exact SHA256 JSON receipt
+        shell: bash
+        run: |
+          python Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools/build_receiver.py --repo . --out b01-24-W07-source-zip | tee b01-24-W07-source-zip-receipt.txt
+      - name: Archive physically created Codex receiver ZIP (no native Unity execution)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-W07-unity-source-zip-${{ matrix.os }}
+          path: |
+            b01-24-W07-source-zip/*
+            b01-24-W07-receiver-tests.txt
+            b01-24-W07-source-zip-receipt.txt
+          retention-days: 21
+          if-no-files-found: warn
+      - name: Archive source execution receipts (Unity native NOT_RUN)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-w07-noise-original-${{ matrix.os }}
+          path: b01-24-W07-noise-source-receipt.txt
+          retention-days: 21
+          if-no-files-found: warn

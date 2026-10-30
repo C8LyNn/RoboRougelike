@@ -1,0 +1,83 @@
+{
+  "package_id": "B01-24-NOISE-INVESTIGATION-001",
+  "version": "1.0.0",
+  "owner": "B01-24 — ENEMY AI & COMBAT SYSTEMS",
+  "branch": "research/b01-24-p17-w07-noise-investigation",
+  "type": "Original executable role-dependent hearing/last visual position memory/4-step investigation mechanic",
+  "baseline_codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "original_codex_R3_path": "Assets/R3/R3EnemyArchetype.cs",
+  "original_codex_R3_blob": "66cd1ee734b129117b3753d1205469a0496cb673",
+  "files": [
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/EnemyInvestigation.cs",
+      "blob": "5dc799e9e04f7440fe48838e8fa440527ba72adb"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/EnemyInvestigation.cs.meta",
+      "blob": "74a9a78f4a27df5d82d71efb0735506c1a909329"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/investigation_scenarios.json",
+      "blob": "670fda1851832755ee3a93178441ac2dddf8735e"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Program.cs",
+      "blob": "5c2f4fc6174b545e768c42a7eadbce3a61f2603d"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/InvestigationCI.csproj",
+      "blob": "437878239d87fe0cf4c09667bf1a03911dd7551c"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools/build_receiver.py",
+      "blob": "1e7ff4e3026bb33cea7c51e95071b38d3d3aba5b"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools/test_receiver.py",
+      "blob": "36347f6835c5e3bf021d6ba0ad45cedb626e76f3"
+    },
+    {
+      "path": "Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/README.md",
+      "blob": "e2785d45d71e0f9a22560edcb2b09ff986077821"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-w07-noise-investigation.yml",
+      "blob": "31d451283d504b3fe074e87a4d0d7bf5d0f4bbba"
+    }
+  ],
+  "original_scenarios": 3,
+  "original_replayed_steps": 23,
+  "replay_sha256": "6ca343de07e41fedf52e1af11c252ed1024b406f88f7dd414e9adfb896644723",
+  "test_receipt": {
+    "windows": "43/43 real compiled CSharp9 tests PASS, original R3 source compiled, 0 FAIL",
+    "ubuntu": "43/43 real compiled CSharp9 tests PASS, original R3 source compiled, 0 FAIL",
+    "initial_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037912364",
+    "physical_zip": "PENDING final HEAD Windows/Ubuntu tests",
+    "zip_tests": "16 test cases by original Python unittest",
+    "unity_native_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "game_integrated": false,
+    "independent_qa": "PENDING"
+  },
+  "delivery": {
+    "output": "b01-24-W07-source-zip/B01-24-NOISE-INVESTIGATION-001-unity-source.zip",
+    "receipt": "b01-24-W07-source-zip/receiver-receipt.json",
+    "entries": [
+      "Assets/B0124EnemyInvestigation/EnemyInvestigation.cs",
+      "Assets/B0124EnemyInvestigation/EnemyInvestigation.cs.meta"
+    ],
+    "physical_zip_not_unitypackage": true,
+    "rollback": "Only remove optional new files after backing up local edits. Never modify Codex R3/P12/R1/R5 canonical runtime"
+  },
+  "ownership": {
+    "canonical_assets_changed": false,
+    "merge": false,
+    "B01_40": "PENDING",
+    "B01_60": "PENDING",
+    "CODEX_ACK": "PENDING",
+    "CODEX_SENT": "NO",
+    "G1": "NOT_RUN",
+    "G2": "HOLD"
+  }
+}
