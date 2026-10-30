@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "1.3.0",
+  "revision": "1.4.0",
   "owner": "B01-00",
   "producer_agent": "B01-00",
-  "issue": 518,
-  "purpose": "Original read-only GitHub PR, workflow, real job-step, OS-runner label and exact run-attempt provenance validation; independent approval and Codex ownership remain manual.",
+  "issue": 535,
+  "purpose": "B01-00 source-only OFFERED lifecycle validator: pinned frozen Secure V2 #510 original ZIP, independent B01-40 G0 #521 and B01-61 source QA #517, exact posted inbox #79 comment; strict SaveLoad/rollback/native/G2/ACK HOLD with original dual-OS positive and adversarial tests",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "6fe23fa75f383a636c9eac09565b52fceee20b40",
+  "source_sha_before_manifest": "83265613c8f8346ed17aa3b5490031fa79893952",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -31,6 +31,11 @@
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/github_live.py",
       "sha256": "0a9c0e4ac285774f93a824e6658683b2afad6ccdae1956e0a76cdfdb80569ddf",
       "bytes": 14524
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_protocol.py",
+      "sha256": "c5f2f5cd2b5ea4e190d138a56d8a86089d3450cfaa68ec50825a564a277456d7",
+      "bytes": 7848
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_receipt_latch.py",
@@ -58,14 +63,24 @@
       "bytes": 6020
     },
     {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_offer_protocol.py",
+      "sha256": "07956a13816f6b545a206328f4dfb8056dda6de74ddb5c30b4973904371580f8",
+      "bytes": 10427
+    },
+    {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json",
       "sha256": "15be4ad83b18e333effa12a1404aadc257cc79239f536a2c852445d4aebecde2",
       "bytes": 1738
     },
     {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_secure_v2_source_only.json",
+      "sha256": "08be89f9edecfd02abd2d39e1825bafb6f274e69694fe23470728527bd5d9085",
+      "bytes": 1706
+    },
+    {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "ed63a9b74a4f1609250ef09b1424146b08f678fd00ec1eef1ca7b2e8df0eb507",
-      "bytes": 10493
+      "sha256": "22896dbd007b9c50c86d82261fed55c6fbbee4ccf4a97d01328d537be71d8497",
+      "bytes": 13859
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -88,9 +103,14 @@
       "bytes": 3080
     },
     {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W13-SOURCE-ONLY-OFFER.md",
+      "sha256": "b11ee0e600e01555f25da64d86ea402e8c0299f3cc17749b6a1cbfd80c08a137",
+      "bytes": 4730
+    },
+    {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "b6292a4a004258b811552c84fe1498719426b697db68df2448cd49db997e26af",
-      "bytes": 1324
+      "sha256": "1c95394a0401fd4572ff99d02f65777590b9d50f30a8113c54cd4faf8cb8d4d2",
+      "bytes": 1600
     }
   ],
   "producer_tests": [
@@ -225,19 +245,56 @@
       "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41073097313"
     },
     {
-      "name": "W12 exact final HEAD after manifest publication",
+      "name": "W12 exact-final-HEAD original 123 tests + real GitHub run/runner/attempt verification both OS",
+      "status": "PASS",
+      "total": 123,
+      "passed": 123,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "15123ec53de3c629ae935000c1ef81181c8d6f20",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41073573439"
+    },
+    {
+      "name": "W13 original 49 new source-only offer state tests + previous 123",
+      "status": "PASS",
+      "total": 172,
+      "passed": 172,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "9e5aee6f2c11899263ee0187ad69043a995dcde0",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082151864"
+    },
+    {
+      "name": "W13 original offer_protocol CLI actual #510/#521/#517/#79 source-only receipt",
+      "status": "PASS",
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "9e5aee6f2c11899263ee0187ad69043a995dcde0",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082151864",
+      "note": "Source-only structure passes, G1/SaveLoad/rollback/G2/ACK/integration explicitly blocked; no GitHub role provenance authenticated"
+    },
+    {
+      "name": "W13 exact final source HEAD after manifest",
       "status": "NOT_RUN",
-      "note": "Pin post-commit exact-source GitHub Actions receipt as a separate PR comment; this is pre-run manifest."
+      "note": "Will check exact-HEAD Actions and original test logs after final commit"
     }
   ],
-  "qa_b01_40": "PENDING",
-  "qa_b01_60": "PENDING",
+  "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
+  "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "PRODUCER_W12_PRE_MANIFEST_123_PASS / INDEPENDENT_B01_40_B01_60_PENDING",
+  "g0": "SELECTED_510_G0_SOURCE_ONLY_ACCEPTED_BY_INDEPENDENT_B01_40_521; B01_00_TOOL_INDEPENDENT_REVIEW_PENDING",
   "g1": "NOT_RUN",
   "g2": "HOLD",
-  "codex_sent": false,
+  "codex_sent": true,
   "codex_ack": false,
   "integrated": false,
   "limitations": [
@@ -249,7 +306,25 @@
     "GitHub workflow ID/path/job/step success confirms metadata, not real log-content/test-count provenance; independent reviewers must verify original workflow YAML and job logs",
     "Job names indicate Windows/Ubuntu runner in declared contract; runner OS labels are not independently verified by this v1.2 gate",
     "W12 verifies GitHub-reported runner.labels, run_id and run_attempt; it cannot prove physical OS outside GitHub's trusted metadata or authenticate independent reviewer role",
-    "Source-only candidate #510 is frozen separately under B01-23; no parallel #511/#494 import and no Codex source-only OFFER until formal B01-40 acceptance"
+    "Source-only candidate #510 is frozen separately under B01-23; no parallel #511/#494 import and no Codex source-only OFFER until formal B01-40 acceptance",
+    "W13 offer_protocol.py only tests internal JSON handoff state; it cannot authenticate original comment author/QA signer/ZIP bytes online or claim Codex ACK",
+    "W13 source-only #510 offer exists, but Save/Load consumed+detached ID, foreign-empty-dir rollback, native G1 and canonical game migration explicitly block integration; never execute original #510 rollback on shared receiver"
   ],
-  "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records"
+  "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
+  "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
+  "selected_immutable_source": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "source_g0_pr": 521,
+    "source_qa_pr": 517,
+    "source_only": true,
+    "alternative_hold": [
+      511,
+      494
+    ],
+    "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
+  },
+  "save_load": "HOLD",
+  "safe_rollback_receiver": "HOLD_W13_INDEPENDENT_RETTEST",
+  "canonical_migration": "NOT_DONE"
 }
