@@ -6,4 +6,5 @@
 <Compile Include="$(OriginalRoot)/Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"/>
 <Compile Include="$(OriginalRoot)/Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs"/>
 <Compile Include="$(OriginalRoot)/Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs"/>
+<Compile Include="$(OriginalRoot)/Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs"/>
 </ItemGroup></Project>
