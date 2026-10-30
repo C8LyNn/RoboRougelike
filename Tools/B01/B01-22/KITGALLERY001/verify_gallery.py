@@ -29,13 +29,13 @@ fixture=json.loads((Path(__file__).parent/"original_source_fixture.json").read_t
 asset=ROOT/"Assets/B01KitGallery001/Data/KitGallery.json"
 if fixture!=original or json.loads(asset.read_text(encoding="utf8"))!=transform(original):
     raise SystemExit("FAIL: original source and Unity asset differ")
-items=["Assets/B01KitGallery001","Assets/B01KitGallery001/Data","Assets/B01KitGallery001/Editor","Assets/B01KitGallery001/Data/KitGallery.json","Assets/B01KitGallery001/Editor/KitGalleryWindow.cs"]
+items=["Assets/B01KitGallery001","Assets/B01KitGallery001/Data","Assets/B01KitGallery001/Editor","Assets/B01KitGallery001/Data/KitGallery.json","Assets/B01KitGallery001/Editor/KitGalleryWindow.cs","Assets/B01KitGallery001/Editor/KitComparisonRules.cs"]
 guids=[]
 for name in items:
     f=ROOT/(name+".meta")
     match=re.search(r"(?m)^guid: ([0-9a-f]{32})$",f.read_text(encoding="utf8"))
     if not match: raise SystemExit("FAIL: missing stable GUID "+name)
     guids.append(match.group(1))
-if len(set(guids))!=5:raise SystemExit("FAIL: duplicate GUID")
+if len(set(guids))!=6:raise SystemExit("FAIL: duplicate GUID")
 files_verified=verify_manifest()
-print(json.dumps(dict(result="PASS",kits=10,meta_guids=5,producer_sha=REF,unity_asset_sha256=hashlib.sha256(asset.read_bytes()).hexdigest())))
+print(json.dumps(dict(result="PASS",kits=10,meta_guids=6,git_blobs=files_verified,producer_sha=REF,unity_asset_sha256=hashlib.sha256(asset.read_bytes()).hexdigest())))
