@@ -126,7 +126,7 @@ namespace B01.CanonicalSingleAuthorityStore004
             => StoresByOwner.TryGetValue(owner.Identity,out var previous)&&
                 ReferenceEquals(previous.authority,owner);
 
-        private static SlotStatus TryCreateNewCore(string directory,long run,Guid slot,
+        public static SlotStatus TryCreateNew(string directory,long run,Guid slot,
             CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
             IAtomicEnvelopePublisher? hook=null)
         {
@@ -143,7 +143,7 @@ namespace B01.CanonicalSingleAuthorityStore004
                 return status;
             }
         }
-        private static SlotStatus TryOpenExistingCore(string directory,long run,Guid slot,
+        public static SlotStatus TryOpenExisting(string directory,long run,Guid slot,
             CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
             IAtomicEnvelopePublisher? hook=null)
         {
@@ -162,7 +162,7 @@ namespace B01.CanonicalSingleAuthorityStore004
         }
 
 
-        public static SlotStatus TryCreateNew(string directory,long run,Guid slot,
+        private static SlotStatus TryCreateNewCore(string directory,long run,Guid slot,
             CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
             IAtomicEnvelopePublisher? hook=null)
         {
@@ -189,7 +189,7 @@ namespace B01.CanonicalSingleAuthorityStore004
             catch(UnauthorizedAccessException){return SlotStatus.IOError;}
         }
 
-        public static SlotStatus TryOpenExisting(string directory,long run,Guid slot,
+        private static SlotStatus TryOpenExistingCore(string directory,long run,Guid slot,
             CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
             IAtomicEnvelopePublisher? hook=null)
         {
