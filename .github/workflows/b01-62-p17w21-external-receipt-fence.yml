@@ -1,0 +1,49 @@
+name: B01-62 W21 Trusted External Receipt Cold Rollback Original #669 QA
+on:
+  push:
+    branches: [qa/b01-62-p17w21-external-receipt-fence-r1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/**'
+      - '.github/workflows/b01-62-p17w21-external-receipt-fence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-669-cold-rollback-and-fork:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only original frozen #556/#510 and existing #669 exact source
+        run: |
+          git fetch --no-tags origin d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+      - name: Verify exact Git blobs and record source receipt
+        run: |
+          mkdir -p b0162-w21-witness-evidence
+          python Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/source_guard.py --repo . --out Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/Original --receipt b0162-w21-witness-evidence/source.json
+      - name: Execute actual original #669 with trusted separate external highwater receipt
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W21ExternalReceiptFenceR1/Original669ReceiptQA.csproj -c Release --verbosity quiet | tee b0162-w21-witness-evidence/actual-source-qa.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w21-external-receipt-${{ matrix.os }}
+          path: b0162-w21-witness-evidence/*
+          if-no-files-found: error
