@@ -24,7 +24,13 @@ def make_record(native=False):
         "producer": {
             "agent": "B01-24", "source_pr": 355, "sha": SHA, "url": REPO + "pull/355",
             "ci": {"sha": SHA, "status": "PASS", "passed": 30, "failed": 0,
-                   "url": REPO + "actions/runs/41000000001"},
+                   "url": REPO + "actions/runs/41000000001",
+                   "contract": {"workflow_id": 401553591,
+                                "workflow_path": ".github/workflows/b01-00-dispatch-w06.yml",
+                                "event": "pull_request",
+                                "required_job_names": ["dispatch (windows-2025)", "dispatch (ubuntu-24.04)"],
+                                "required_steps": ["Original source full dispatch and freeze regression suite",
+                                                   "Produce deterministic example plan"]}},
         },
         "qa": {
             "intake": {"agent": "B01-40", "status": "PASS", "sha": SHA, "url": COMMENT},
