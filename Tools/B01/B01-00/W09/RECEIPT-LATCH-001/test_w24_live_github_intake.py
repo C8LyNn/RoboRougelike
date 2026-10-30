@@ -276,6 +276,6 @@ class W24LiveCLI(unittest.TestCase):
         self.assertEqual(result["real_native_unity_g1"],"NOT_RUN")
         self.assertFalse(result["release"])
     def test_every_required_run_checked(self):
-        self.assertEqual(set(gate.ACTION_RUN_PINS.values()),{749,755,750,732,758,766,768})
+        self.assertEqual(set(gate.ACTION_RUN_PINS.values()),{749,755,750,732,758,766,768,767,773})
 if __name__=="__main__":
     unittest.main()
