@@ -1,0 +1,72 @@
+name: B01-61 W17 selected #604 REAL Unity MonoBehaviour source boundary, persistent cold restart
+on:
+  push:
+    branches: [qa/b01-61-p17w17-selected604-unityhost-boundary]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W17Selected604UnityBoundaryQA/**'
+      - '.github/workflows/b01-61-p17w17-selected604-unity-boundary.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-604-original-unity-mono-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Original #604 source exact pins, exclude #596, seven QA-only new paths
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W17Selected604UnityBoundaryQA/source_guard.py 2>&1 | tee b0161-w17-provenance.log
+      - name: Compile original SELECTED #604 Unity MonoBehaviour + core + disk fence, frozen #556 W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W17Selected604UnityBoundaryQA/Original604UnityHostQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w17-build.log
+      - name: Actual original MonoBehaviour, four Light Heavy world combinations + native authored slot bug
+        shell: bash
+        run: |
+          set -o pipefail
+          p=Tools/B01/B01-61/P17W17Selected604UnityBoundaryQA/Original604UnityHostQA.csproj
+          dotnet run --no-build -c Release --project "$p" -- physical 2>&1 | tee b0161-w17-physical.log
+          grep -q 'W17_ORIGINAL_604_ACTUAL_UNITY_HOST_MANAGED_SOURCE_QA_PASS' b0161-w17-physical.log
+          grep -q 'W17_ORIGINAL_604_NATIVE_AUTHORED_PERSISTENT_SLOT_RED=' b0161-w17-physical.log
+      - name: Six distinct processes invoke actual public Unity Save Host with real scratch persistentDataPath
+        shell: bash
+        run: |
+          set -o pipefail
+          p=Tools/B01/B01-61/P17W17Selected604UnityBoundaryQA/Original604UnityHostQA.csproj
+          root="$PWD/b0161-w17-private-scratch"
+          mkdir -p "$root"
+          for mode in seal restart fork advance stale corrupt; do
+            dotnet run --no-build -c Release --project "$p" -- "$mode" "$root" 2>&1 | tee "b0161-w17-$mode.log"
+            grep -q "W17_ORIGINAL_604_MANAGED_UNITY_HOST_PROCESS_PASS mode=$mode" "b0161-w17-$mode.log"
+          done
+      - name: Independent source original logs (NOT real Unity Editor or PhysX)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w17-exact604-unity-boundary-${{ matrix.os }}
+          path: |
+            b0161-w17-provenance.log
+            b0161-w17-build.log
+            b0161-w17-physical.log
+            b0161-w17-seal.log
+            b0161-w17-restart.log
+            b0161-w17-fork.log
+            b0161-w17-advance.log
+            b0161-w17-stale.log
+            b0161-w17-corrupt.log
+          if-no-files-found: warn
+          retention-days: 21
