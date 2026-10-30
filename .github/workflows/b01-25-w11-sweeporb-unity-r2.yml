@@ -50,7 +50,7 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project "$SRC/SweepOrb.csproj" -c Release -- "$SRC/profiles.json" "$SRC/.output/clearance.json" "$SRC/.output/slalom.json" "$SRC/.output/receipt.json" 2>&1 | tee "$OUT/gameplay-$RUNNER_OS.log"
-      - name: Execute 18 original source and physical ZIP GUID asmdef scope staging rollback tests
+      - name: Execute 19 source ZIP GUID asmdef rollback and portability regression tests
         shell: bash
         run: |
           set -euo pipefail
@@ -66,3 +66,37 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 21
+
+  cross-os-original-zip-byte-parity:
+    needs: original-unity-source-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Download two actually completed physical source artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-sweeporb-r2-source-*
+          path: receipts
+          merge-multiple: false
+      - name: Compare original byte-identical INNER ZIPs and all 20 file headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          W="$(find receipts/b01-25-sweeporb-r2-source-windows-latest -type f -name 'receipt.zip' | head -n1)"
+          L="$(find receipts/b01-25-sweeporb-r2-source-ubuntu-latest -type f -name 'receipt.zip' | head -n1)"
+          test -n "$W" && test -n "$L"
+          echo "WINDOWS_INNER_ZIP_SHA256=$(sha256sum "$W")"
+          echo "UBUNTU_INNER_ZIP_SHA256=$(sha256sum "$L")"
+          cmp "$W" "$L"
+          python - "$W" <<'PY'
+          import sys, zipfile, json
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==20 and len(set(names))==20
+              assert all(info.create_system==3 for info in z.infolist())
+              evidence=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert evidence["nativeUnity"]=="NOT_RUN"
+              assert not evidence["codexAck"]
+              assert len(evidence["files"])==19
+          print("CROSS_OS_ORIGINAL_SOURCE_ZIP_PARITY_PASS")
+          PY
