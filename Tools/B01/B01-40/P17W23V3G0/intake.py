@@ -262,9 +262,11 @@ def security_negative_and_physical(r,safe,guid,api):
         extra="Assets/FOREIGN_ONLY/v3_valid.prefab"
         (hostroot/extra).write_bytes(rightpref)
         user=safe.crawl(hostroot)
-        require(guid.validate_script_refs({**incoming,**user[0]},
-                    guid.meta_guids({**incoming,**user[0]}))=={},
-                    "LEGITIMATE_OWNER_V3_NEW_SCRIPT_GUID_REJECTED")
+        recognized=guid.validate_script_refs({**incoming,**user[0]},
+                    guid.meta_guids({**incoming,**user[0]}))
+        require(extra in recognized and len(recognized[extra])==1 and
+                recognized[extra][0]["owner"]==NEWMETA,
+                "LEGITIMATE_OWNER_V3_NEW_SCRIPT_GUID_REJECTED")
         (hostroot/extra).write_bytes(rightpref.replace(
                    b"b0123220000000000000000000000001",
                    b"c0ffee00000000000000000000000001"))
