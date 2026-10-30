@@ -1,0 +1,16 @@
+{
+  "package": "B01-23-PHYSICAL-ROLLBACK-R2-001",
+  "version": "2.0.0",
+  "parent_772": "ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1",
+  "frozen_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "selected_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "native_unity": "NOT_RUN",
+  "unity_shim": "MANAGED_FAKE_ONLY",
+  "unity_guid_count": 9,
+  "asmdef_count": 2,
+  "storage_773": "P0_RED_NONCANONICAL_PATH",
+  "source_g0": "PENDING",
+  "live_game": "HOLD",
+  "codex_ack": false
+}
