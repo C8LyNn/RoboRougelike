@@ -122,13 +122,13 @@ class W18Experiment(unittest.TestCase):
             1,copy.deepcopy(x["packages"][0])), "duplicate")
 
     def test_original_sha_forged(self):
-        self.reject(lambda x: x["packages"][0].update(sha="a"*40), "source")
+        self.reject(lambda x: x["packages"][0].update(sha="a"*40), "package ID")
 
     def test_original_pr_url_forged(self):
-        self.reject(lambda x: x["packages"][0].update(pr_url="https://evil.invalid/pull/596"), "source")
+        self.reject(lambda x: x["packages"][0].update(pr_url="https://evil.invalid/pull/596"), "package ID")
 
     def test_untrusted_package_owner(self):
-        self.reject(lambda x: x["packages"][1].update(owner="B01-00"), "source")
+        self.reject(lambda x: x["packages"][1].update(owner="B01-00"), "package ID")
 
     def test_missing_actual_purpose(self):
         self.reject(lambda x: x["packages"][0].update(purpose="bad"), "purpose")
