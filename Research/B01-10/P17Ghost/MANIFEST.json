@@ -4,7 +4,7 @@
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
-  "draftPR": "PENDING_CREATION",
+  "draftPR": "https://github.com/C8LyNn/RoboRougelike/pull/422",
   "producer": "B01-10",
   "owner": "B01-10",
   "receiver": [
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "SOURCE_PRODUCER_CI_PENDING / NATIVE_UNITY_NOT_RUN / NO_G0 / NO_CODEX_ACK / NOT_INTEGRATED",
+  "status": "ORIGINAL_SOURCE_AUTHORED / CSHARP_CI_QUEUED / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_PENDING",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -22,29 +22,29 @@
   ],
   "codeFiles": {
     "GhostCore.cs": {
-      "gitBlob": "b608b8fa2fdc12a0533cf5f90423b9c367a4d03d",
-      "chars": 12349
+      "gitBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
+      "chars": 12750
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "Program.cs": {
-      "gitBlob": "46af510e2824843b291eb4274222c005660b4206",
-      "chars": 13089
+      "gitBlob": "419616033f287fd140c385f9c289d66b969c0762",
+      "chars": 14356
     },
     "README.md": {
-      "gitBlob": "32471c89c132fff1a15548806d17e6c846e4a3f1",
-      "chars": 7776
+      "gitBlob": "4a6f49cc7e14ae2d60e1a3968f9bc507b2dfdf6c",
+      "chars": 7971
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "bb9f4c6111b3fa95ed3ad896941d73219e738a60"
+    "gitBlob": "4a694e9af91def8bc77076a50dae22f5d7fe2378"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 50,
+    "namedCases": 54,
     "syntheticRandomizedTraces": 100,
     "workflowRun": "PENDING",
     "windows": "PENDING",
@@ -83,5 +83,9 @@
     "priorPhysicalZip": "2d06e57607eb2df953084706175bf270026e1596445cc43fbf23d1f7c8a2dde5",
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
-  }
+  },
+  "qualityPatch": "Original GhostRun.RequiredCheckpoints exact-match validation added against forged partial completion, original four extra CSharp negative+JSON tests.",
+  "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
+  "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
+  "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION"
 }
