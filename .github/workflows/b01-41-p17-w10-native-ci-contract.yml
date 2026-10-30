@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/P17W10/native_ci_contract.py)" = '2e85f3f6fda714dfda17b657a9d55b3b136858f1'
-          test "$(git hash-object Tools/B01/CI41/P17W10/test_native_ci_contract.py)" = '63644424404e5505953913180cc5bbba8f8bec10'
+          test "$(git hash-object Tools/B01/CI41/P17W10/test_native_ci_contract.py)" = 'd12f76fb4ce404b2eedd54241df117a15a86856c'
           echo 'ORIGINAL_CI41_CONTRACT_SOURCE_SHA_PINS_PASS'
       - name: Execute original Git-object CI-02/03/04 native pipeline gate
         shell: bash
