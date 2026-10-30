@@ -1,8 +1,8 @@
 {
   "package_id": "B01-22-KITREADINESS-001",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "owner": "B01-22",
-  "product": "KITREADINESS R1 + exact approved-source BOM/price/part-order integrity guard",
+  "product": "Original Unity C# atomic virtual equipment-stock readiness plus real user-supplied JSON CLI",
   "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
   "source_pr": 411,
   "source_catalog_git_blob": "372b3bc74553ea459e89be38378f4429090e00a2",
@@ -29,25 +29,33 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
-    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "23d28c8b66fbb9bc85b097bc2c76482bdf539837",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "b022243ba7cfe675876099175340ae7e4badb555",
     "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "069839de7d69c2f4baaff1ad8f0db4da6c7c4cb8",
-    "Research/B01-22/P17/KITREADINESS001/README.md": "3b8720a04b8dd9075c1b0b42b804caa0505ef790",
-    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "5f12420404a954547aefd6b35a9894eed79b21a1"
+    "Research/B01-22/P17/KITREADINESS001/README.md": "ef6768b4900e35a8d9333d7035377914c06bf60e",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "c113011c0acad58d928ff1945fbd6673fe75d9b3",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "2d1a234ee74e81c0684537d528aa749721280453",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "663abf4a89892924be8b2d8142a23cdc3c7ed2bf",
+    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "2fa9917b579a21fa287ea26ead2043cc3c597316",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json": "6200854efbf3e9be1f163a3065be62fe2ac18ae9"
   },
   "test_commands": [
     "dotnet run --project Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj --configuration Release -- --out readiness-previews",
     "python -m unittest discover -s Research/B01-22/P17/KITREADINESS001/ -p test_pack_readiness.py -v",
-    "python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --stage readiness-artifact --previews readiness-previews"
+    "python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --stage readiness-artifact --previews readiness-previews",
+    "dotnet build Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj --configuration Release",
+    "python -m unittest discover -s Research/B01-22/P17/KITREADINESS001/ -p test_cli_readiness.py -v",
+    "dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-previews/user-preview.json"
   ],
   "expected": {
     "original_csharp_assertions": 53,
     "python_physical_tests": 19,
-    "scenarios": 3,
+    "scenarios": 4,
     "unity_source_members": 3,
     "unity_guid_metas": 2,
-    "git_blob_checks": 12
+    "git_blob_checks": 16,
+    "python_cli_blackbox_tests": 16
   },
-  "producer_qa": "NOT_RUN_UNTIL_EXACT_HEAD_CI",
+  "producer_qa": "PENDING_EXACT_SHA_CI",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
   "handoff": "B01-40 G0 then B01-60 independent source and Unity G1 if licensed; B01-00 only CODEX INBOX #79",
@@ -63,5 +71,25 @@
     "approved_digest": "6f121fe4207aaca2f30dfede9e79700d3af0dbec5349c87c1709c174dd4096eb",
     "fields": 154,
     "notes": "Reject coherent-forged price, count, valid kind substitution and BOM reorder; source SHA string alone insufficient."
+  },
+  "custom_user_input": {
+    "schema": "b01-kitreadiness-request-v1",
+    "max_requests": 100,
+    "max_stock_lines": 100,
+    "read_only": true,
+    "copy_ownership": "CLI and tests remain under Research, only isolated C# planner and two Unity meta files are importable",
+    "extra_user_preview": "user-preview.json",
+    "output": "new UTF-8/LF JSON only, no overwriting"
+  },
+  "physical_receipt": {
+    "source_zip": "kitreadiness-unity.zip",
+    "preview_jsons": [
+      "starter-cache-preview.json",
+      "siege-cache-preview.json",
+      "shared-gyro-preview.json",
+      "user-preview.json"
+    ],
+    "receipt": "receipt.json",
+    "rollback": "fail-closed for modified/foreign files"
   }
 }
