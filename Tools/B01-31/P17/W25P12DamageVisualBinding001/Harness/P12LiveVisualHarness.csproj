@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+  <OutputType>Exe</OutputType>
+  <TargetFramework>net8.0</TargetFramework>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>disable</Nullable>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup>
+<ItemGroup>
+  <Compile Include="../../../../../Assets/Pack/P12_PipelineSafeDamageable.cs" Link="REAL_FROZEN_P12_Damageable.cs" />
+  <Compile Include="../../../../../Assets/B01_31/W24ArmorStates/B0131W24ArmorDamageVisual.cs" Link="REAL_W24_ArmorVisual.cs" />
+  <Compile Include="../../../../../Assets/B01_31/W25P12DamageVisualBinding/B0131W25P12DamageVisualBinding.cs" Link="REAL_W25_P12_DamageBinder.cs" />
+</ItemGroup>
+</Project>

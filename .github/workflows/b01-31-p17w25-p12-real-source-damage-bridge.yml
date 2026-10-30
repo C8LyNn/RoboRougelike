@@ -1,0 +1,74 @@
+name: B01-31 P17W25 REAL P12 Damageable to W24 Armor 3-State Unity CSharp Source QA
+on:
+  push:
+    branches: [art/b01-31-p17w25-real-p12-damage-to-armor-visual]
+    paths:
+      - 'Assets/B01_31/W25P12DamageVisualBinding/**'
+      - 'Assets/B01_31/W25P12DamageVisualBinding.meta'
+      - 'Tools/B01-31/P17/W25P12DamageVisualBinding001/**'
+      - '.github/workflows/b01-31-p17w25-p12-real-source-damage-bridge.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W25P12DamageVisualBinding/**'
+      - 'Assets/B01_31/W25P12DamageVisualBinding.meta'
+      - 'Tools/B01-31/P17/W25P12DamageVisualBinding001/**'
+      - '.github/workflows/b01-31-p17w25-p12-real-source-damage-bridge.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-original-P12-plus-W24-plus-W25-managed-CSharp-and-delta:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and RUN true original P12 damage/repair/Died + W24 visual + W25 native CSharp sources (.NET8 explicit synthetic UnityEngine only)
+        run: dotnet run --configuration Release --project Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/P12LiveVisualHarness.csproj
+      - name: Write original physical incremental Unity TAR+GZIP from real W25 source and immutable Git P12/W24 API SHA
+        run: |
+          python Tools/B01-31/P17/W25P12DamageVisualBinding001/build_delta.py --repo . --output build/W25
+          python Tools/B01-31/P17/W25P12DamageVisualBinding001/verify_delta.py --repo . --output build/W25
+      - name: Double-author source-identical physical Unitypackage/receipt with full SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/original_one.sha
+          python Tools/B01-31/P17/W25P12DamageVisualBinding001/build_delta.py --repo . --output build/W25
+          python Tools/B01-31/P17/W25P12DamageVisualBinding001/verify_delta.py --repo . --output build/W25
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/original_two.sha
+          cmp /tmp/original_one.sha /tmp/original_two.sha
+          echo "B0131_W25_REAL_P12_W24_W25_SOURCE_ARTIFACT_SHA_PARITY_PASS"
+      - name: Publish TRUE three-asset W25 additive .unitypackage and original real SHA receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W25-REAL-P12-DAMAGE-ARMOR-VISUAL-3-ASSET-UNITY-DELTA
+          path: build/W25/
+          retention-days: 30
+          if-no-files-found: error
+  windows-independent-real-P12-W24-W25-source-and-physical-binary:
+    runs-on: windows-2022
+    needs: real-original-P12-plus-W24-plus-W25-managed-CSharp-and-delta
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download actual Ubuntu-author ORIGINAL W25 Unity incremental tar artifact without regenerating
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W25-REAL-P12-DAMAGE-ARMOR-VISUAL-3-ASSET-UNITY-DELTA
+          path: original-W25-Ubuntu
+      - name: Run actual original P12 ApplyDamage/Die/repair event chain with W24+W25 CSharp compiled and synthetic Engine ONLY
+        run: dotnet run --configuration Release --project Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/P12LiveVisualHarness.csproj
+      - name: Verify actual physical original Ubuntu Unitypackage (no generator; 8 rejected corrupt tar cases)
+        run: python Tools/B01-31/P17/W25P12DamageVisualBinding001/verify_delta.py --repo . --output original-W25-Ubuntu

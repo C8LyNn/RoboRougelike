@@ -1,0 +1,103 @@
+{
+  "package_id": "B01-31-P17W25-REAL-P12-ARMOR-VISUAL-BINDING-001",
+  "version": "P17-W25-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq_issue": 731,
+  "stacked_on": {
+    "pr": 770,
+    "branch": "art/b01-31-p17w24-armor-unitypackage-visual-prefab",
+    "sha": "668c7eed8f96cdb0c65062c4ec3a0d80bf26ee93",
+    "reason": "Use exact original W24 ArmorVisual source without copying/replacing it. Stacked Draft PR W25 diff contains W25 only."
+  },
+  "original_authoritative_damage_source": {
+    "path": "Assets/Pack/P12_PipelineSafeDamageable.cs",
+    "git_blob_SHA": "544bed274b616b91fd98c45d2b194b2f3a2d112a",
+    "real_existing_P12_API": [
+      "CurrentHp",
+      "MaxHp",
+      "IsDead",
+      "Died",
+      "ApplyDamage",
+      "RestoreHealthRatio"
+    ],
+    "original_immutable": true
+  },
+  "original_visual_consumer": {
+    "path": "Assets/B01_31/W24ArmorStates/B0131W24ArmorDamageVisual.cs",
+    "git_blob_SHA": "8cf3664b9b6e5b0fd6623be7c3f4e72fd9164664",
+    "original_immutable": true
+  },
+  "new_functionality": "Real Unity MonoBehaviour read-only P12 damage health-event binder automatically routes actual P12 IsDead/Died/HP threshold to W24 three geometry visuals, subscribes/unsubscribes to original source, supports repaired HP, invalid values fail closed, no runtime owner/HP mutations, no FindObjectOfType, explicit binding.",
+  "isolated_source_paths": [
+    "Assets/B01_31/W25P12DamageVisualBinding.meta",
+    "Assets/B01_31/W25P12DamageVisualBinding/B0131W25P12DamageVisualBinding.cs",
+    "Assets/B01_31/W25P12DamageVisualBinding/B0131W25P12DamageVisualBinding.cs.meta",
+    "Assets/B01_31/W25P12DamageVisualBinding/README.md",
+    "Assets/B01_31/W25P12DamageVisualBinding/README.md.meta",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/P12LiveVisualHarness.csproj",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/UnityEngineSyntheticStub.cs",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/Program.cs",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/build_delta.py",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/verify_delta.py",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/README.md",
+    "Tools/B01-31/P17/W25P12DamageVisualBinding001/manifest.json",
+    ".github/workflows/b01-31-p17w25-p12-real-source-damage-bridge.yml"
+  ],
+  "real_test_plan": [
+    "Actual .NET8 compilation includes verbatim REAL original P12PipelineSafeDamageable, verbatim original W24 ArmorDamageVisual and W25 read-only binder, synthetic ONLY UnityEngine and unrelated R6/R3 dependencies; strict source ABI pinned Git blob SHA",
+    "Run 29 source test assertions including real original P12 ApplyDamage->Die->Died event; HP crossing 50%, repair, death latch, null/NaN/max/invalid transition, unsubscribe/re-enable, source rebind/no authority mutation",
+    "Actual Unity incremental delta .unitypackage physical gzip TAR with exactly 3 newly owned Unity GUID asset paths and 8 TAR file members: new runtime .cs, README and folder; no P12/W24 assets duplicated; source GUID+contents byte-exact",
+    "Independent Python physical verifier does NOT import author, opens real original bytes, hardpins original P12/W24 Git blob identities, validates tar/receipt/all three GUIDs/source C#, and rejects 8 tampered member/foreign path cases",
+    "Ubuntu author two full physical delta exports, compare complete .unitypackage/receipt SHA exact bytes",
+    "Windows2022 independently downloads real Ubuntu generated delta and reruns independent verifier and real P12/W24/W25 C#9/.NET8 managed source test, never regenerates delta"
+  ],
+  "controls": {
+    "initial_threshold_ratio": 0.5,
+    "valid_thresholds": "[0.05,0.95]",
+    "no_implicit_source_discovery": true,
+    "source_bound_explicitly": true,
+    "death_event_notifies_before_P12_Die_detach": true,
+    "OnDisable_unsubscribes": true,
+    "OnEnable_resubscribes": true,
+    "source_rebinding_clears_death_only_when_new_P12_source": true,
+    "invalid_HP_does_not_change_visual": true,
+    "not_authoritative_over_HP": true,
+    "not_an_economy_winner_or_rebuild_logic": true,
+    "no_changes_to_ownership_LEDGER_or_Save": true,
+    "no_reliance_on_Save_variant": true,
+    "no_genuine_Unity_G1_claim": true
+  },
+  "freeze": {
+    "game_510": "UNTOUCHED",
+    "schema_556": "UNTOUCHED",
+    "host_R5_690": "UNTOUCHED",
+    "canon_api_729": "UNTOUCHED",
+    "selected_749": "REVIEWED #773 ONLY, AWAIT B01-00 EXPLICIT DECISION",
+    "R2_773": "B01-62 owner ONLY",
+    "physical_772": "B01-23 owner ONLY",
+    "ColdRestart_750": "B01-23 owner ONLY",
+    "alternative_753_741": "ALT_HOLD",
+    "W24_770": "UNCHANGED STACKED BASE"
+  },
+  "gate": {
+    "IMPLEMENTED": "SOURCE_COMMITTED",
+    "TESTED": "PENDING_REAL_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "original_B01_31_source_G0": "PENDING",
+    "formal_B01_30_40_G0": "PENDING",
+    "native_Unity_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": "NO",
+    "integrator_feedback": "NOT_MEASURED"
+  },
+  "receivers": [
+    "B01-30/40 formal original P12/W24 exact blob+W25 diff, 3 GUID Unity delta and safe scratch/foreign directories G0",
+    "B01-60 owner-authorized native Windows Unity 6000.3.14f1 import W24 prefab first, then W25 delta, bind real P12 and hit/repair/death PlayMode with actual Editor.log/NUnit XML G1",
+    "B01-10/13/22: optional damaged armor visual threshold human readability, NOT economy authority",
+    "B01-00: staged ART source-only integration intake after independent review; no Codex until available and authorized"
+  ],
+  "rollback": "W25 Git PR is stacked off exact W24, remove ONLY W25 13 ADD paths or W25-namespaced `Assets/B01_31/W25P12DamageVisualBinding` in approved isolated user opt-in scratch. Never remove original P12, W24, old Models even empty, frozen sources, foreign even-empty dirs or run CLI on user PC."
+}
