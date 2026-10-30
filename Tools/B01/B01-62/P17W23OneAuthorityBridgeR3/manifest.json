@@ -1,0 +1,66 @@
+{
+  "package": "B01-62-W23-CANONICAL-OWNER-BRIDGE-003",
+  "version": "3.0.0",
+  "owner": "B01-62",
+  "parent_pr": 712,
+  "parent_exact_sha": "bd8905ad549a7b26854b671be971f7d781308311",
+  "selected_owner_api_pr": 729,
+  "selected_owner_api_sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "original_storage_pr": 669,
+  "original_storage_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+  "original_session_pr": 712,
+  "selected_host_r5_pr": 690,
+  "selected_host_r5_sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+  "losers_ALT_HOLD": [
+    719,
+    695,
+    682,
+    693,
+    604
+  ],
+  "authority": "only original CanonicalWorldSlotLease .owner, no slot.lease",
+  "files": [
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/CanonicalSessionR3.cs",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/SingleAuthoritySaveSlotR3.cs",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/Program.cs",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/OneAuthorityOriginalV3QA.csproj",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/source_guard.py",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/README.md",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/manifest.json",
+    ".github/workflows/b01-62-p17w23-one-v3-authority.yml",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/g0_intake.py"
+  ],
+  "native": "NOT_RUN",
+  "private_510_live": "NOT_IMPLEMENTED",
+  "formal_g0": "PENDING",
+  "codex_ack": false,
+  "merged": false,
+  "lifecycle": {
+    "implemented": true,
+    "tested": "CI_PENDING",
+    "qa_accepted": false,
+    "ready_for_integrator": false,
+    "integrated": false,
+    "released": false
+  },
+  "source_g0": {
+    "selected_R5_pr": 690,
+    "selected_V3_pr": 729,
+    "expected_combined_guids": 39,
+    "original_author_packagers_both_executed": true,
+    "root_manifest_collision": "must preserve separately",
+    "formal_b01_40": "PENDING",
+    "native_unity": "NOT_RUN"
+  },
+  "legacy_669_negative": {
+    "original_blob": "db7745635164d9eb6b10f3246538700158130b7b",
+    "old_marker": "slot.owner",
+    "new_marker": "slot.canonical-v3",
+    "old_direct_open": "MUST_REJECT",
+    "old_save_migration": "MUST_HOLD_NO_AUTO_REWRITE",
+    "raw_legacy_coinstall": "REJECT",
+    "alternative_competing_r3": 749,
+    "sole_bridge_selection": "PENDING_B01-23_B01-00"
+  },
+  "tests": "CI_PENDING_CURRENT_FINAL_SHA"
+}

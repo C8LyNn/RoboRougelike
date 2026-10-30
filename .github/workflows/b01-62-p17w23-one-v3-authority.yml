@@ -1,0 +1,60 @@
+name: B01-62 W23 ONE #729 .owner with original #669 derived envelope and #712 R3
+on:
+  push:
+    branches: [qa/b01-62-p17w23-one-owner-v3-669-712-bridge-r3]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/**'
+      - '.github/workflows/b01-62-p17w23-one-v3-authority.yml'
+permissions:
+  contents: read
+jobs:
+  selected-v3-real-source-and-os-disk:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch exact selected original V3 #729 and immutable #669 #712 frozen #510 #556 dependencies
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin b8ca29c7707cd6b4338d0b9772d74dee676d49d2 bd8905ad549a7b26854b671be971f7d781308311 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431 cc7f73541517a18f4479bb155534bd4832d9985e
+      - name: Original source exact Git SHA and single .owner guard
+        run: |
+          set -euo pipefail
+          mkdir -p b0162-w23-one-owner-evidence
+          python Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/source_guard.py --repo . --out Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/.source --receipt b0162-w23-one-owner-evidence/original-pins.json
+      - name: Compile ORIGINAL #729 V3 with ONE source-derived #669 physical store and #712 fixed session R3
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/OneAuthorityOriginalV3QA.csproj -c Release --verbosity quiet | tee b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_EXACT_SELECTED_729_SINGLE_OS_OWNER_NO_LEASE' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_ORPHAN_FALSE_CLEANUP_HELD_OWNER=GREEN' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_ORPHAN_THROW_CLEANUP_HELD_OWNER=GREEN' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_ORIGINAL_669_LEGACY_DIRECT_OPEN_DENIED=TRUE' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_LEGACY_OWNER_V1_MIGRATION=HOLD_NO_DATA_CHANGE' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'FAIL 0' b0162-w23-one-owner-evidence/real-qa.txt
+      - name: Execute exact ORIGINAL author R5 and V3 physical ZIP, 39 Unity GUID cross-source G0 scratch
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/g0_intake.py --repo . --receipt b0162-w23-one-owner-evidence/combined-source-g0.json | tee b0162-w23-one-owner-evidence/original-g0.log
+          grep -q 'B0162_W23_SELECTED_R5_V3_GUIDS=39/39' b0162-w23-one-owner-evidence/original-g0.log
+          grep -q 'B0162_W23_SOURCE_G0=ACCEPTED_TEST_SCRATCH_ONLY' b0162-w23-one-owner-evidence/original-g0.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w23-one-authority-${{ matrix.os }}
+          path: b0162-w23-one-owner-evidence/*
+          if-no-files-found: error
