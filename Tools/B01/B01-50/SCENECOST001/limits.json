@@ -1,0 +1,10 @@
+{
+  "BoxCollider": 128,
+  "GameObject": 300,
+  "Light": 32,
+  "MeshCollider": 30,
+  "MeshRenderer": 150,
+  "MonoBehaviour": 256,
+  "ParticleSystem": 64,
+  "Rigidbody": 128
+}
