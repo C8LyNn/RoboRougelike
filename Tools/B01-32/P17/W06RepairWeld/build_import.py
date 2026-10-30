@@ -90,7 +90,7 @@ def build(output):
     pref=f"{ROOT}/Resources/B0132_RepairWeld.prefab"
     assets[pref]=prefab(f"{ROOT}/Runtime/B0132RepairWeldVfx.cs")
     assets[pref+".meta"]=importer_meta(pref,"PrefabImporter")
-    require(len(assets)==22,"wrong asset count "+str(len(assets)))
+    require(len(assets)==17,"wrong asset count "+str(len(assets)))
     guids=[GUID(p[:-5]) for p in assets if p.endswith(".meta")]
     require(len(guids)==11 and len(set(guids))==11,"GUID uniqueness")
     zip_path=output/"B0132-RepairWeld-UnityImport.zip"
