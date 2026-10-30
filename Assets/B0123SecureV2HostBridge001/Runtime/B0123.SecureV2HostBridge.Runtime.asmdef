@@ -1,0 +1,17 @@
+{
+  "name": "B0123.SecureV2HostBridge.Runtime",
+  "rootNamespace": "B01.SecureSaveHost001",
+  "references": [
+    "B0123.DetachedSaveContract.Runtime",
+    "B0123.DebrisRepulse.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
