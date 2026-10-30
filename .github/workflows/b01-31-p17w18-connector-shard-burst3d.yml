@@ -1,0 +1,66 @@
+name: B01-31 P17W18 original 16 independent animated 3D prism shard VFX
+on:
+  push:
+    branches: [art/b01-31-p17w18-connector-shard-burst3d]
+    paths:
+      - 'Tools/B01-31/P17/W18ConnectorShardBurst3D001/**'
+      - '.github/workflows/b01-31-p17w18-connector-shard-burst3d.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W18ConnectorShardBurst3D001/**'
+      - '.github/workflows/b01-31-p17w18-connector-shard-burst3d.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-3d-shard-physical-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original 3D projection GIF/PNG rasterizer
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile original source renderer and independent receiver
+        run: python -m compileall -q Tools/B01-31/P17/W18ConnectorShardBurst3D001/
+      - name: Physically produce 16-prism/32-track/224-key GLB and genuine 3x16frame 80ms GIF and 2 boards
+        run: |
+          python Tools/B01-31/P17/W18ConnectorShardBurst3D001/build_shards.py --output build/B0131W18
+          python Tools/B01-31/P17/W18ConnectorShardBurst3D001/verify_shards.py --source build/B0131W18
+      - name: Complete original GLB GIF PNG ZIP machine receipt 2x byte-for-byte SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/original.sha256
+          python Tools/B01-31/P17/W18ConnectorShardBurst3D001/build_shards.py --output build/B0131W18
+          python Tools/B01-31/P17/W18ConnectorShardBurst3D001/verify_shards.py --source build/B0131W18
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/rebuild.sha256
+          cmp /tmp/original.sha256 /tmp/rebuild.sha256
+          echo "B0131_W18_ORIGINAL_REAL_3D_SHARD_GLB_GIF_ZIP_RECEIPT_SHA_PARITY_PASS"
+      - name: Attach actual original physically exported 3D model 3 GIF previews 2 PNG boards and 8-member ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W18-ORIGINAL-16-3D-SHARD-BURST-GLB-3-ANIMATED-GIF
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+  independent-windows-real-art-receiver:
+    needs: original-3d-shard-physical-export
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download actual Ubuntu-produced GLB, 3 GIF, 2 boards and physical ZIP. Do not regenerate.
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W18-ORIGINAL-16-3D-SHARD-BURST-GLB-3-ANIMATED-GIF
+          path: original-output
+      - name: Install independent 3D GIF physical decoder only
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independent glTF2 16 geometric prism meshes 32 transform tracks 224 physical keys triple GIF pixel QA
+        run: python Tools/B01-31/P17/W18ConnectorShardBurst3D001/verify_shards.py --source original-output/B0131W18
