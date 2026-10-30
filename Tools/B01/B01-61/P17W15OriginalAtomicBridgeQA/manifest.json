@@ -1,0 +1,22 @@
+{
+  "id": "B01-61-P17W15-ORIGINAL-ATOMIC-BRIDGE-INDEPENDENT-QA-001",
+  "version": "1.0.0",
+  "producer": "B01-23",
+  "producer_bridge_ref": "39f03fd6a0d5fae10be5419db4beb79201147bc8",
+  "original_bridge_blob": "db69bae2bf4cf106da68f13e0b067499f0da02f3",
+  "selected_save_pr": 556,
+  "selected_save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_game_pr": 510,
+  "frozen_game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "actual_original_sources": 5,
+  "qa_owned_paths": 6,
+  "real_source_core_execution": true,
+  "world_backend": "FakeWorld implementing producer IPreparedWorld; native NOT_RUN",
+  "release_expected_red": "real source accepts different states same run generation and retires old world",
+  "native_unity": "NOT_RUN",
+  "canonical_game_bridge": "NOT_INTEGRATED",
+  "receiver_migration": "NOT_RUN",
+  "G2": "HOLD",
+  "ack": false,
+  "merge": false
+}
