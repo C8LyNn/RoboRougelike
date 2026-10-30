@@ -1,0 +1,43 @@
+name: B01-13 W10 MOTION-STALL original source and Unity prefab QA
+on:
+  push:
+    branches:
+      - research/b01-13-pass17-wave10-motion-stall
+  pull_request:
+    paths:
+      - 'Research/B01-13/P17H/**'
+      - '.github/workflows/b01-13-p17w10-motion-stall.yml'
+jobs:
+  original-source:
+    name: ${{ matrix.os }} .NET 8 original C-sharp motion observation
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify immutable SHA256/byte pins and physical Unity prefab script GUID
+        shell: bash
+        run: python Research/B01-13/P17H/verify_package.py
+      - name: Compile original two C-sharp production sources and test-only Unity mocks
+        shell: bash
+        run: dotnet build Research/B01-13/P17H/Tests/DotNetOnly/MotionStallTests.csproj --configuration Release --warnaserror
+      - name: Run original 56 real positive/negative C-sharp cases
+        shell: bash
+        run: |
+          mkdir -p Research/B01-13/P17H/Tests/Evidence
+          dotnet run --project Research/B01-13/P17H/Tests/DotNetOnly/MotionStallTests.csproj --configuration Release --no-build | tee Research/B01-13/P17H/Tests/Evidence/results.txt
+      - name: Upload original physical test stdout
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-13-w10-${{ matrix.os }}-motion-stall-qa
+          path: Research/B01-13/P17H/Tests/Evidence/results.txt
+          if-no-files-found: warn
