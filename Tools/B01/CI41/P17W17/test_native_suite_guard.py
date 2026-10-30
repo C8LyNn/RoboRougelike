@@ -12,7 +12,7 @@ import native_suite_guard as g
 REPO=Path(__file__).resolve().parents[4]
 SOURCE=(REPO/g.NATIVE).read_text(encoding="utf-8")
 ASM=json.loads((REPO/g.ASM).read_text(encoding="utf-8"))
-FAKE_METAS={p:"guid: b0141"+str(i+1).zfill(28)+"\n" for i,p in
+FAKE_METAS={p:"guid: b014"+str(i+1).zfill(28)+"\n" for i,p in
     enumerate(sorted([g.ROOT+".meta",g.ROOT+"/Tests.meta",g.ASM+".meta",g.NATIVE+".meta"]))}
 
 class NativeFailureInventory(unittest.TestCase):
