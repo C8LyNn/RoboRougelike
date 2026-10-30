@@ -99,7 +99,7 @@ def main():
  negatives=0
  for desc,old,new in mutations:
   need(old in test,"test-only source mutation marker missing: "+desc)
-  tampered=test.replace(old,new,1)
+  tampered=test.replace(old,new)
   try:contract(tampered)
   except AssertionError:negatives+=1
   else:raise AssertionError("W21 source test contract failed OPEN: "+desc)
