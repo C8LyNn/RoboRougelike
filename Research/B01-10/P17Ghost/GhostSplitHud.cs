@@ -15,8 +15,10 @@ namespace RoboRougelike.B0110.TrainingGhost
 
         private GhostRun reference;
         private GhostSplitCoach coach;
-        private GhostSplitResult last;
-        private GhostPracticeSummary summary;
+        // A verified coach result is snapshotted before it is returned to
+        // the host; host DTO edits cannot rewrite the displayed result.
+        private readonly GhostPracticePresentation presentation =
+            new GhostPracticePresentation();
 
         public bool IsBound => coach != null;
         public int AcceptedGates => coach == null ? 0 : coach.GatesReached;
@@ -32,8 +34,7 @@ namespace RoboRougelike.B0110.TrainingGhost
             var next = new GhostSplitCoach(validated);
             reference = validated;
             coach = next;
-            last = null;
-            summary = null;
+            presentation.Clear();
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace RoboRougelike.B0110.TrainingGhost
             if (coach == null)
                 throw new InvalidOperationException("Ghost coaching is not bound");
             var next = coach.AcceptValidatedGate(zeroBasedGate, authoritativeElapsed);
-            last = next;
+            presentation.CaptureGate(next);
             return next;
         }
 
@@ -56,7 +57,7 @@ namespace RoboRougelike.B0110.TrainingGhost
             if (coach == null)
                 throw new InvalidOperationException("Ghost coaching is not bound");
             var result = coach.EndTrial(actuallyCompleted, authoritativeElapsed);
-            summary = result;
+            presentation.CaptureEnd(result);
             return result;
         }
 
@@ -65,8 +66,7 @@ namespace RoboRougelike.B0110.TrainingGhost
             if (reference == null)
                 throw new InvalidOperationException("No validated practice benchmark");
             coach = new GhostSplitCoach(reference);
-            last = null;
-            summary = null;
+            presentation.Clear();
         }
 
         public void Hide() => showOverlay = false;
@@ -75,6 +75,8 @@ namespace RoboRougelike.B0110.TrainingGhost
         private void OnGUI()
         {
             if (!showOverlay || coach == null) return;
+            var last = presentation.LastGate;
+            var summary = presentation.FinalSummary;
             float width = Mathf.Min(390f, Mathf.Max(220f, Screen.width - screenAnchor.x - 14f));
             float height = summary == null ? 92f : 177f;
             var bounds = new Rect(screenAnchor.x, screenAnchor.y, width, height);
