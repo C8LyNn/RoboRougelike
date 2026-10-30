@@ -1,0 +1,11 @@
+{
+  "package": "B01-61-W21-R5-690-REAL-OS-LEASE-QA",
+  "version": "1.0.0",
+  "target_pr": 690,
+  "target_sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+  "source_core_blob": "7da9a9efe489cf8c441d7bb9a47ba3f60ba4c58c",
+  "source_lease_blob": "1ef69de9b4029ce89ba2db5bf3331708da1b91e4",
+  "native_G1": "NOT_RUN",
+  "whole_game_release": "HOLD",
+  "merged": false
+}

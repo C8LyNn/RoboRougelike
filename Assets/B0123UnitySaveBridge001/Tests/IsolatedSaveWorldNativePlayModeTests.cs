@@ -136,6 +136,43 @@ namespace B01.UnitySaveBridge001.Tests
         }
 
         [UnityTest]
+        public IEnumerator ComponentOnlyDestroy_RetainsLeaseUntilRealChildRigidbodyDestruction()
+        {
+            System.Guid slot=System.Guid.NewGuid();
+            var root=new GameObject("W21 component-only owner with real Rigidbody children");
+            var contender=new GameObject("W21 second same-slot owner");
+            try
+            {
+                var original=root.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(original.TrySelectPersistentRunSlot(81,slot));
+                Assert.IsTrue(original.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(81,10,true,false),81,10));
+                Assert.AreEqual(2,root.GetComponentsInChildren<Rigidbody>(true).Length);
+                var next=contender.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsFalse(next.TrySelectPersistentRunSlot(81,slot));
+                // THIS DESTROYS ONLY the component, NOT its GameObject or
+                // the two Rigidbody children: original R4 #647 P0 #670.
+                Object.Destroy(original);
+                Assert.IsFalse(next.TrySelectPersistentRunSlot(81,slot));
+                yield return null; // old OnDestroy and deferred physics-world retirement
+                Assert.IsFalse(root.GetComponentsInChildren<Rigidbody>(true).Length>0
+                    && root.GetComponentsInChildren<Rigidbody>(true)[0].gameObject.activeInHierarchy);
+                // If Unity has not destroyed the old world yet, the lease MUST
+                // remain held. Reconcile only after actual Unity fake-null roots.
+                yield return null;
+                Assert.AreEqual(0,root.GetComponentsInChildren<Rigidbody>(true).Length);
+                Assert.IsTrue(next.TrySelectPersistentRunSlot(81,slot));
+                Assert.IsTrue(next.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(81,11,false,true),81,10));
+                Assert.IsFalse(next.IsConsumed(0,2310001));
+                Assert.IsTrue(next.IsConsumed(1,2310002));
+                Assert.AreEqual(2,contender.GetComponentsInChildren<Rigidbody>(true).Length);
+            }
+            finally{Object.Destroy(root);Object.Destroy(contender);}
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator DisabledSameSlotHost_CannotStealOwnerUntilDestroyed()
         {
             System.Guid slot=System.Guid.NewGuid();

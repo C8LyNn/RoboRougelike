@@ -1,0 +1,39 @@
+name: B01-23 P17 W21 R5 component Destroy original source and physical ZIP
+on:
+  push:
+    branches: [b01-23/p17w21-r5-owned-physical-retirement]
+  pull_request:
+    paths:
+      - 'Assets/B0123UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W15UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W21R5OwnerRetirement/**'
+      - '.github/workflows/b01-23-p17w21-r5-owner-retirement.yml'
+jobs:
+  actual-original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Original #647 core and new real OS retirement leases C#9 tests
+        run: dotnet run --project Tools/B01/B01-23/P17W15UnitySaveBridge001/HostBridgeTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Git physical package and foreign EMPTY safe rollback tests
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W15UnitySaveBridge001 -p test_package.py -v
+      - name: Build strict original source INNER ZIP
+        run: python Tools/B01/B01-23/P17W15UnitySaveBridge001/package.py build --archive dist/B0123_Original_R5_Host_Retirement.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-p17w21-r5-owner-retirement-${{ matrix.os }}
+          path: dist/B0123_Original_R5_Host_Retirement.zip
+          if-no-files-found: error

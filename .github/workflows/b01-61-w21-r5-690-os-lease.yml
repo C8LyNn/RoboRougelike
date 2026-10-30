@@ -1,0 +1,60 @@
+name: B01-61 W21 original R5 690 external OS process owner lease and ID
+on:
+  push:
+    branches: [qa/b01-61-p17w21-r5-690-real-os-lease-and-rollback]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W21R5RealOsLeaseQA/**"
+      - ".github/workflows/b01-61-w21-r5-690-os-lease.yml"
+jobs:
+  original-r5:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [windows-2025, ubuntu-24.04]}}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Immutable R5 original producer SHA and only own QA files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W21R5RealOsLeaseQA/source_guard.py 2>&1 | tee source-pins.log
+      - name: Strict compile actual R5 original C# and frozen original 556/W06
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W21R5RealOsLeaseQA/OriginalR5LeaseQA.csproj -c Release --warnaserror 2>&1 | tee build.log
+      - name: Execute genuine external OS CLR owner contenders + original R5 rollback
+        shell: bash
+        run: |
+          set +e
+          project=Tools/B01/B01-61/P17W21R5RealOsLeaseQA/OriginalR5LeaseQA.csproj
+          dotnet run --no-build --project "$project" -c Release -- --evidence > source.log 2>&1
+          evidence=$?
+          cat source.log
+          dotnet run --no-build --project "$project" -c Release -- --release > release.log 2>&1
+          release=$?
+          cat release.log
+          printf 'SOURCE_EXIT=%s RELEASE_EXIT=%s NATIVE_UNITY_NOT_RUN\n' "$evidence" "$release" | tee gates.txt
+          test "$evidence" = 0 && test "$release" = 3 || exit 1
+          grep -q B0161_W21_R5_690_ORIGINAL_SOURCE_QA_PASS source.log || exit 1
+          grep -q W21_R5_690_CROSSPROCESS_DEFERRED_DESTROY_GREEN source.log || exit 1
+          grep -q W21_R5_690_FAILED_CLEANUP_EXTERNAL_LEASE_GREEN source.log || exit 1
+          grep -q W21_R5_690_FAILED_RETIRE_STICKY_QUARANTINE_GREEN source.log || exit 1
+          grep -q W21_R5_690_FULL_GAME_RELEASE_HOLD release.log || exit 1
+          echo "REAL_OS_LEASE_SOURCE_GREEN_FULL_UNITY_RELEASE_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w21-r5-690-${{ matrix.os }}
+          path: |
+            source-pins.log
+            build.log
+            source.log
+            release.log
+            gates.txt
+          if-no-files-found: warn

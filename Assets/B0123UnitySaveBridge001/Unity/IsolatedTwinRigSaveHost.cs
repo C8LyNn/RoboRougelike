@@ -15,7 +15,23 @@ namespace B01.UnitySaveBridge001
         [SerializeField] private bool buildInitialFixtureOnStart;
         private AtomicWorldSwap coordinator;
         private FileStream slotOwnerLease;
+        // Track ROOTS immediately as created, before Build can throw, including
+        // failures where even Prepare/Retire does not return an owner pointer.
+        private readonly System.Collections.Generic.List<GameObject> ownedWorldRoots=
+            new System.Collections.Generic.List<GameObject>();
         private string checkpointPath;
+        private bool ownerRemovalStarted;
+        private bool AllOwnedRootsDestroyed()
+        {
+            foreach(var root in ownedWorldRoots)
+                if(root!=null)return false; // Unity's destroyed-object equality
+            return true;
+        }
+        private void TrackOwnedWorldRoot(GameObject root)
+        {
+            if(root==null)throw new ArgumentNullException(nameof(root));
+            ownedWorldRoots.Add(root);
+        }
         private long runId=1;
         public WorldSwapVerdict LastRestoreVerdict {get;private set;}
         public bool HasWorld => coordinator!=null&&coordinator.HasWorld;
@@ -51,7 +67,14 @@ namespace B01.UnitySaveBridge001
         // Unity OnDisable releases ownership when its physics hierarchy goes inactive.
         private bool AcquireSlot()
         {
+            if(ownerRemovalStarted)return false;
             if(slotOwnerLease!=null)return true;
+            // A previous component-only owner may have scheduled Destroy but
+            // its Rigidbody children still exist until END OF FRAME. Do not
+            // close the old FileStream, even on other process access, until
+            // the ORIGINAL Unity GameObject refs are all genuinely destroyed.
+            if(!OwnerWorldLeaseRetirement.ReconcileBeforeNewAcquire(checkpointPath))
+                return false;
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(checkpointPath));
@@ -83,7 +106,37 @@ namespace B01.UnitySaveBridge001
                !string.IsNullOrEmpty(checkpointPath))AcquireSlot();
         }
         private void OnDisable(){/* keep slot lifetime owner while a world survives */}
-        private void OnDestroy(){ReleaseSlot();}
+        private void OnDestroy()
+        {
+            ownerRemovalStarted=true;
+            bool safe=coordinator==null;
+            try
+            {
+                if(coordinator!=null)safe=coordinator.TryRetireForOwnerRemoval();
+            }
+            catch {safe=false;}
+            if(slotOwnerLease==null)return;
+            FileStream retiringLease=slotOwnerLease;
+            slotOwnerLease=null; // transfer, never dispose while old bodies exist
+            try
+            {
+                OwnerWorldLeaseRetirement.Hold(checkpointPath,retiringLease,
+                    AllOwnedRootsDestroyed,safe);
+            }
+            catch
+            {
+                // Fatal bookkeeping failure: DO NOT close a possibly active
+                // world's OS authority lease; fail closed until process exit.
+                AbandonedOwnerLeases.Keep(retiringLease);
+            }
+        }
+        // Safety vault used ONLY when retirement bookkeeping itself fails.
+        private static class AbandonedOwnerLeases
+        {
+            private static readonly System.Collections.Generic.List<FileStream> Leases=
+                new System.Collections.Generic.List<FileStream>();
+            public static void Keep(FileStream lease){lock(Leases)Leases.Add(lease);}
+        }
 
         // Explicit isolated durable slot selection: unlike historical #596,
         // a new run NEVER silently reuses another run's global checkpoint path.
@@ -91,8 +144,9 @@ namespace B01.UnitySaveBridge001
         // Call ONLY before first physical Load; no arbitrary filesystem path input.
         public bool TrySelectPersistentRunSlot(long desiredRunId,Guid slotId)
         {
-            if(desiredRunId<=0||slotId==Guid.Empty||coordinator==null||
-               coordinator.HasWorld||coordinator.Busy||coordinator.Quarantined)
+            if(ownerRemovalStarted||desiredRunId<=0||slotId==Guid.Empty||
+               coordinator==null||coordinator.HasWorld||coordinator.Busy||
+               coordinator.Quarantined||!AllOwnedRootsDestroyed())
                 return false;
             ReleaseSlot();
             checkpointPath=CheckpointSlotPath.ForRun(
@@ -154,7 +208,7 @@ namespace B01.UnitySaveBridge001
         }
 
         IPreparedWorld IWorldFactory.Prepare(RunSnapshot snapshot)
-            => TwinWorld.Build(snapshot,transform);
+            => TwinWorld.Build(snapshot,transform,TrackOwnedWorldRoot);
 
         private sealed class TwinWorld : IPreparedWorld
         {
@@ -170,7 +224,8 @@ namespace B01.UnitySaveBridge001
                 new Vector3((float)x.X,(float)x.Y,(float)x.Z);
             private static Vector3d D(Vector3 x)=>new Vector3d(x.x,x.y,x.z);
 
-            public static TwinWorld Build(RunSnapshot snapshot,Transform ownerHost)
+            public static TwinWorld Build(RunSnapshot snapshot,Transform ownerHost,
+                Action<GameObject> trackCreatedWorldRoot)
             {
                 if(!SnapshotRules.Valid(snapshot))
                     throw new InvalidOperationException("Invalid original Save contract");
@@ -178,6 +233,10 @@ namespace B01.UnitySaveBridge001
                 try
                 {
                     world.container=new GameObject("B01-23 W15 ISOLATED COLD SAVE WORLD");
+                    // Record ownership BEFORE any Unity operation can throw.
+                    // If Build/cleanup fails, the host must not release its OS
+                    // checkpoint slot while an orphan world still exists.
+                    trackCreatedWorldRoot(world.container);
                     world.container.SetActive(false); // no physics while staging
                     world.container.transform.SetParent(ownerHost,false); // owned by host lifecycle
                     for(int i=0;i<2;i++)

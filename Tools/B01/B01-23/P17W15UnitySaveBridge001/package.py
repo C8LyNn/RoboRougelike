@@ -7,6 +7,9 @@ ROOT=Path(__file__).resolve().parents[4]
 ASSET="Assets/B0123UnitySaveBridge001"
 TOOLS="Tools/B01/B01-23/P17W15UnitySaveBridge001/"
 WORKFLOW=".github/workflows/b01-23-p17w15-unity-save-bridge.yml"
+R5_WORKFLOW=".github/workflows/b01-23-p17w21-r5-owner-retirement.yml"
+R5_RUNBOOK="Tools/B01/B01-23/P17W21R5OwnerRetirement/README.md"
+R4_FROZEN="09c1809b73324a6d31c13e5d0143de62ac1e3ca6"
 SELECTED_SAVE="33094f154c7b91119b36d58aab285e6e83c5de57"
 SELECTED_GAME="d94400d95d13db7f27e1533df05c9292d5380431"
 PINS={
@@ -23,13 +26,14 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 def scope():
     subprocess.run(["git","merge-base","--is-ancestor",SELECTED_SAVE,"HEAD"],cwd=ROOT,check=True)
     subprocess.run(["git","merge-base","--is-ancestor",SELECTED_GAME,"HEAD"],cwd=ROOT,check=True)
+    subprocess.run(["git","merge-base","--is-ancestor",R4_FROZEN,"HEAD"],cwd=ROOT,check=True)
     for p,h in PINS.items():
         if git("rev-parse","HEAD:"+p)!=h:raise ValueError("frozen SOURCE blob changed "+p)
-    files=sorted([ASSET+".meta",WORKFLOW]+
+    files=sorted([ASSET+".meta",WORKFLOW,R5_WORKFLOW,R5_RUNBOOK]+
         git("ls-tree","-r","--name-only","HEAD",ASSET+"/").splitlines()+
         git("ls-tree","-r","--name-only","HEAD",TOOLS).splitlines())
-    if len(files)!=22 or len(files)!=len(set(files)):raise ValueError("W15 exactly 22 owner Git files required")
-    if any(not (p==ASSET+".meta" or p==WORKFLOW or p.startswith(ASSET+"/") or p.startswith(TOOLS))
+    if len(files)!=26 or len(files)!=len(set(files)):raise ValueError("W21 R5 exactly 26 owner Git files required")
+    if any(not (p==ASSET+".meta" or p in (WORKFLOW,R5_WORKFLOW,R5_RUNBOOK) or p.startswith(ASSET+"/") or p.startswith(TOOLS))
            for p in files):raise ValueError("foreign file")
     metas=[];defs=[]
     for p in files:
@@ -38,11 +42,22 @@ def scope():
             if len(tags)!=1 or len(tags[0])!=32:raise ValueError("GUID bad")
             metas.extend(tags)
         if p.endswith(".asmdef"):defs.append(json.loads(source(p)))
-    if len(metas)!=10 or len(set(metas))!=10:raise ValueError("bad GUID count or duplicate")
+    if len(metas)!=11 or len(set(metas))!=11:raise ValueError("bad GUID count or duplicate")
     if sorted(x["name"] for x in defs)!=[
         "B0123.UnitySaveBridge.Core","B0123.UnitySaveBridge.PlayModeTests",
         "B0123.UnitySaveBridge.Unity"]:raise ValueError("not three new isolated asmdefs")
     core=source(ASSET+"/Core/AtomicWorldSwap.cs").decode()
+    lease=source(ASSET+"/Core/OwnerWorldLeaseRetirement.cs").decode()
+    native=source(ASSET+"/Tests/IsolatedSaveWorldNativePlayModeTests.cs").decode()
+    if ("TryRetireForOwnerRemoval" not in core or
+        "OnDestroy()" not in source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode() or
+        "OwnerWorldLeaseRetirement.Hold" not in source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode() or
+        "AllOwnedRootsDestroyed" not in source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode() or
+        "ReconcileBeforeNewAcquire(checkpointPath)" not in source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode() or
+        "FileStream" not in lease or "CleanupSucceeded" not in lease or
+        "AllWorldsActuallyDestroyed" not in lease or
+        "ComponentOnlyDestroy_RetainsLeaseUntilRealChildRigidbodyDestruction" not in native):
+        raise ValueError("missing R5 component-only Destroy and real Unity teardown guard")
     unity=source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
     if ("ColdRestore.TryStage(bytes" not in core or
         "currentCold=ready;" not in core or
@@ -66,7 +81,7 @@ def scope():
         "FileShare.None" not in unity or
         "quarantined=true;" not in core or
         "SameIdentityAndLedger" not in core or
-        "TwinWorld.Build(snapshot,transform)" not in unity or
+        "TwinWorld.Build(snapshot,transform,TrackOwnedWorldRoot)" not in unity or
         "GameObject.CreatePrimitive" not in unity or
         "new DebrisImpulseLedger()" not in unity or
         "body.linearVelocity" not in unity or
@@ -83,10 +98,11 @@ def build():
     files=scope()
     contents={p:source(p) for p in files}
     manifest={
-      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"4.0.0",
+      "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"5.0.0",
+      "selected_original_frozen_r4_sha":R4_FROZEN,
       "own_head_sha":git("rev-parse","HEAD"),
       "only_save_source_sha":SELECTED_SAVE,"gameplay_510_sha":SELECTED_GAME,
-      "frozen_blob_guards":PINS,"unity_guid_count":10,"asmdef_count":3,
+      "frozen_blob_guards":PINS,"unity_guid_count":11,"asmdef_count":3,
       "native_unity":"NOT_RUN","codex_ack":False,"canonical_510_live_import":"HOLD",
       "files":[{"path":p,"bytes":len(contents[p]),"sha256":sha(contents[p])} for p in files],
     }
@@ -106,12 +122,13 @@ def verify(raw):
         contents={p:z.read(p) for p in names}
     manifest=json.loads(contents[MANIFEST])
     if (manifest.get("package")!="B01-23-UNITY-SAVE-HOST-BRIDGE-001" or
-        manifest.get("version")!="4.0.0" or
+        manifest.get("version")!="5.0.0" or
+        manifest.get("selected_original_frozen_r4_sha")!=R4_FROZEN or
         manifest.get("own_head_sha")!=git("rev-parse","HEAD") or
         manifest.get("only_save_source_sha")!=SELECTED_SAVE or
         manifest.get("gameplay_510_sha")!=SELECTED_GAME or
         manifest.get("frozen_blob_guards")!=PINS or
-        manifest.get("unity_guid_count")!=10 or
+        manifest.get("unity_guid_count")!=11 or
         manifest.get("asmdef_count")!=3 or
         manifest.get("native_unity")!="NOT_RUN" or
         manifest.get("codex_ack") is not False or
