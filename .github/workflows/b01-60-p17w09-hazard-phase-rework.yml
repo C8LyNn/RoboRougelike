@@ -23,10 +23,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04, windows-2025]
+        source_mode: [baseline, candidate]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     env:
-      CANDIDATE_SOURCE_SHA: ${{ inputs.source_sha }}
+      CANDIDATE_SOURCE_SHA: ${{ matrix.source_mode == 'candidate' && (inputs.source_sha || 'ebc3d6162f4516147092960291e50e15fe6c4582') || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: b01-60-w09-hazard-rework-${{ matrix.os }}
+          name: b01-60-w09-hazard-rework-${{ matrix.os }}-${{ matrix.source_mode }}
           path: qa-w09-hazard-evidence/
           if-no-files-found: warn
           retention-days: 21
