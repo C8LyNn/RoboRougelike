@@ -25,3 +25,17 @@ jobs:
         run: python Research/B01-13/P17Q/verify_package.py
       - name: Execute actual original Node model, CLI and UI interaction regression
         run: node --test Research/B01-13/P17Q/test_damage_cues.mjs
+
+      - name: Produce physical self-contained playable HTML
+        shell: pwsh
+        run: |
+          $out = Join-Path (Get-Location).Path 'damage-cue-tutorial.html'
+          node Research/B01-13/P17Q/damage_cues.mjs --output $out
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path $out)) { throw 'PLAYABLE_HTML_GENERATION_FAILED' }
+      - name: Upload exact source generated playable UX demo
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W19-Playable-${{ matrix.os }}-Node${{ matrix.node }}
+          path: damage-cue-tutorial.html
+          if-no-files-found: error
+          retention-days: 14
