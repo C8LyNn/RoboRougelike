@@ -28,3 +28,14 @@ jobs:
       - run: python -m unittest discover -s Tools/B01/B01-22/KITGALLERY001 -p test_gallery.py -v
       - run: git fetch --no-tags --depth=1 origin b1d4e341d846c9397e236809a1d7e4c4fff9c935
       - run: python Tools/B01/B01-22/KITGALLERY001/verify_gallery.py
+      - name: Test deterministic nine-member physical Unity source ZIP + fail-closed rollback
+        run: python -m unittest discover -s Tools/B01/B01-22/KITGALLERY001 -p test_pack_gallery.py -v
+      - name: Build real source-verified Unity import ZIP (no live game writes)
+        run: python Tools/B01/B01-22/KITGALLERY001/pack_gallery.py --out b01-22-w06-kitcompare-output
+      - name: Upload physical Unity source and hash receipt for independent G0/G1
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w06-kitcompare-${{ matrix.os }}
+          path: b01-22-w06-kitcompare-output/
+          if-no-files-found: error
+          retention-days: 14

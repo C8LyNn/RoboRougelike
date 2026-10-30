@@ -7,7 +7,7 @@ P="Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json"
 def verify_manifest():
     manifest = json.loads((Path(__file__).parent/"manifest.json").read_text(encoding="utf8"))
     rows = manifest.get("git_blob_hashes", [])
-    if len(rows) != 17:
+    if len(rows) != 19:
         raise SystemExit("FAIL: incomplete Git blob manifest")
     names = set()
     for row in rows:
