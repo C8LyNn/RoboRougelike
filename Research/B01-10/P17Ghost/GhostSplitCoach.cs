@@ -23,6 +23,9 @@ namespace RoboRougelike.B0110.TrainingGhost
         public float TrialSeconds { get; set; }
         public float ReferenceSeconds { get; set; }
         public float TotalDeltaSeconds { get; set; }
+        // True only after every validated gate and an authoritative finish.
+        // An aborted run MUST NOT look faster than a completed benchmark.
+        public bool HasFullCourseComparison { get; set; }
         public int BiggestLossGate { get; set; }
         // A finish-segment loss is NOT a checkpoint loss: gate=0, this flag=true.
         public bool BiggestLossIsFinishSegment { get; set; }
@@ -192,7 +195,9 @@ namespace RoboRougelike.B0110.TrainingGhost
                 Completed = completed,
                 TrialSeconds = authoritativeRunSeconds,
                 ReferenceSeconds = reference.ElapsedSeconds,
-                TotalDeltaSeconds = authoritativeRunSeconds - reference.ElapsedSeconds,
+                TotalDeltaSeconds = completed
+                    ? authoritativeRunSeconds - reference.ElapsedSeconds : 0f,
+                HasFullCourseComparison = completed,
                 BiggestLossGate = worstGate,
                 BiggestLossIsFinishSegment = biggestLossIsFinish,
                 BiggestLossSeconds = maxLoss,
