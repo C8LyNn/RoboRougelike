@@ -1,0 +1,92 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXFEED-001",
+  "revision": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "wave": "PASS17 WAVE07",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/433",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_branch": "research/b01-11-p17-w07-uxfeed-001",
+  "source_commit": "dd93387baba5ff817d6dd300b335b9dc8b242330",
+  "source_type": "Original pure C# gameplay HUD tactical-event priority queue, NOT integrated Unity gameplay",
+  "file_scope": [
+    "Research/B01-11/P17/W07-UXFEED-001/**",
+    ".github/workflows/b01-11-uxfeed-w07.yml"
+  ],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/Runtime/TacticalFeed.cs",
+      "sha256": "edc8d3222b659e69fbfd301a63395c35847c350b42e376dbd3aeb13e5f8fb91b",
+      "bytes": 6904,
+      "git_blob_sha1": "ff9ab8d9de75158ad8613665747f090720c71673"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/Tests/Program.cs",
+      "sha256": "cc63800e41137c58fcf4caff8ecaf06c2123efb6b44309e92f0f70b35a017309",
+      "bytes": 12333,
+      "git_blob_sha1": "1e02a07b74cf05a29b025d42ba2a7320d55cae54"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/Tests/TacticalFeedTests.csproj",
+      "sha256": "cf67250e2b4e3ad145b555e31c910c3b05fec6e3132feb77e68796885dba5b11",
+      "bytes": 400,
+      "git_blob_sha1": "a78230a5fafd11d9056f0e96914309becaca4217"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxfeed-w07.yml",
+      "sha256": "33e0da1c96b8531cf03961862fca64f8ce39c1966fc8d5ae7616acbdbe876a17",
+      "bytes": 889,
+      "git_blob_sha1": "5096f1269a33ec0c4fe853dc82d6e354784c1746"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/README.md",
+      "sha256": "86a4f899fd4395bda6e4783cad9ee257a8545e3656d37782a4890951fb906b74",
+      "bytes": 2442,
+      "git_blob_sha1": "76c2c663761d265d73cbe3472177462c53a75954"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/INSTALL_FOR_CODEX.md",
+      "sha256": "d0e7ba00ab3a751d430166b1c6cc76e99ac76f34a32e101fb211e3bdaa47719a",
+      "bytes": 2247,
+      "git_blob_sha1": "2e033984d8fd9a77c853268ee187ed1520c64d3a"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/TEST_PLAN.md",
+      "sha256": "956dc30bb35e154ca55ad0d18beafae5c08acc8a29284db38d6ffbc77e127fd8",
+      "bytes": 1487,
+      "git_blob_sha1": "74d1fd66c357bef53622661df4e9fbc84a827ff3"
+    },
+    {
+      "path": "Research/B01-11/P17/W07-UXFEED-001/QA_RECEIVER.md",
+      "sha256": "45d44cf5d71f22eba7ebb6c40cb60bfc14ada8f906ade29c35476eaa1f179597",
+      "bytes": 1295,
+      "git_blob_sha1": "d069cc101bac54daef54b2671ba557e254cad326"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Original linked C# .NET8 on Ubuntu",
+      "status": "PASS",
+      "passed": 87,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037701035"
+    },
+    {
+      "name": "Original linked C# .NET8 on Windows",
+      "status": "PASS",
+      "passed": 87,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037701035"
+    },
+    {
+      "name": "Native Unity, Player, actual gameplay hook & human UX test",
+      "status": "NOT_RUN"
+    }
+  ],
+  "source_producer": "COMPLETE_TESTED",
+  "g0_independent": "PENDING",
+  "g1_independent": "PENDING",
+  "codex_status": "NOT_OFFERED / ACK_PENDING / NOT_INTEGRATED",
+  "rollback": "Discard only isolated W07 research folder and dedicated workflow; Codex integration can only be rolled back by Codex if ever explicitly authorized",
+  "note": "No circular self-hash: files enumerates every source/workflow/document payload, excluding manifest.json itself."
+}

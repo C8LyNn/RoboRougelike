@@ -1,0 +1,12 @@
+# B01-11 P17/W07 — UXFEED-001/R1: tactical HUD event history (original C#)
+
+**New real UX mechanism.** Pure C# standalone `Runtime/TacticalFeed.cs` builds a deterministic **bounded event history + HUD-visible priority queue** for authoritative host-supplied battle events. This is not the UXHELP-001 localized hint selector, UXFOCUS-001 keyboard menu navigation, or any existing combat VFX work. It makes actual event display arbitration testable before a Codex UI adapter exists.
+
+## Events
+`TacticalKind` = `CoreHit`, `PartDetached`, `WeaponOffline`, `EnemyDestroyed`, `SalvageRecovered`, `ObjectiveChanged`. Critical = detached part and weapon offline. All event inputs require real `RunId`, monotonic `Sequence` + `TimeMs`, validated subject token and amount. Use **authoritative game events**, not speculative polling, invented reward values, or user-supplied raw GUI text.
+
+**Core behavior**: core-hit and salvage events with consecutive same IDs aggregate within 750 ms (new immutable snapshot with real combined amount), other events remain distinct. Visible feed prioritizes critical over normal, newest first within priority, 3 slots by default; critical TTL=6500 ms, normal TTL=3000 ms. Expired messages remain in chronological 32-event capped history. New run session clears all state; late events for previous run explicitly ignored, future-run input rejected. All clock values supplied by host; no DateTime/network, no Unity API, no source-game state mutation. Determinism makes replay and independent QA possible.
+
+**Source runtime:** `Research/B01-11/P17/W07-UXFEED-001/Runtime/TacticalFeed.cs`; executable original source tests `Tests/Program.cs`, .NET8 cross-platform workflow. [Actual source CI run #41037701035 SUCCESS](https://github.com/C8LyNn/RoboRougelike/actions/runs/41037701035) **87/87 Ubuntu and 87/87 Windows, 174/174 in total, 0 FAIL**. This is compiled C# execution, **NOT Unity native**.
+
+**Provenance:** source `main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`, branch `research/b01-11-p17-w07-uxfeed-001`, isolated W07 research paths and dedicated workflow only, no changes to `Assets/**` or Codex. Legacy own Draft [UXHELP #394](https://github.com/C8LyNn/RoboRougelike/pull/394) and [UXFOCUS #424](https://github.com/C8LyNn/RoboRougelike/pull/424) frozen and untouched. B01-40 G0 and B01-60 independent QA must evaluate, then B01-00 owns any [#79](https://github.com/C8LyNn/RoboRougelike/issues/79) offer.
