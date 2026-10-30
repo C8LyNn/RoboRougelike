@@ -27,10 +27,11 @@
     "real_binary_GLBS": 3,
     "world_position_source_cells": 43,
     "required_brace_flag_and_material_count": 5,
-    "adversarial_negative_cases_per_GLb": 10,
-    "total_expected_adversarial": 30,
+    "adversarial_negative_cases_per_GLb": 11,
+    "total_expected_adversarial": 33,
     "windows_and_ubuntu": true,
-    "real_glb_geometry_triangle_count": ">0"
+    "real_glb_geometry_triangle_count": ">0",
+    "identical_report_json_sha256_cross_os": true
   },
   "changed_scope": [
     "Tools/B01/TechArt/P17W08/P17GlbBinary001/**",
