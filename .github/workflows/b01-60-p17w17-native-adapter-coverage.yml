@@ -52,7 +52,7 @@ jobs:
           with open("qa-w17-native-adapter-coverage-evidence/receipt.json",encoding="utf-8") as f: r=json.load(f)
           assert r["G1"]=="NOT_RUN" and r["physical_native_adaptor_cases_executed"]==0
           assert r["original_532_includes_556_or_604_native_adapter"] is False
-          assert r["actual_unity_6000_3_14f1"] if "actual_unity_6000_3_14f1" in r else True
+          assert r["licensed_unity_6000_3_14f1"]=="NOT_AVAILABLE"
           assert r["additional_native_playmode_cases_authored_exact_604"]==5
           assert r["adversarial_no_mix_negative_pass"]==8
           assert r["merged"] is False
