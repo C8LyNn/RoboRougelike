@@ -211,9 +211,38 @@ internal static class W24AdversarialSelected749
             finally{session.TryCloseAfterPhysicalRetirement(f.AllGone);session.Dispose();}
         });
     }
+    private static bool Frozen556RejectsNewEconomyFields()
+    {
+        return Temp(parent=>{
+            string root=Path.Combine(parent,"owned");
+            Directory.CreateDirectory(root);
+            if(CanonicalSlotSessionV3.TryOpen(root,Run,Id,true,out var s)!=
+                CanonicalSessionOpenStatus.Accepted||s==null)return false;
+            var f=new Factory();
+            if(!s.Attach(new Idle(),f))return false;
+            try
+            {
+                byte[] g1=Snapshot(1,true,false);
+                if(s.TryRestore(g1,Run,1)!=CanonicalGateResult.Accepted)return false;
+                byte[] g2=Snapshot(2,false,true);
+                byte[] economy=System.Text.Encoding.ASCII.GetBytes(
+                    "VICTORY_ID=42;SCRAP=65;FREE_REBUILD=0;LOANER_USED=1");
+                byte[] desiredComposite=g2.Concat(economy).ToArray();
+                if(ColdRestore.TryStage(desiredComposite,out var _))return false;
+                if(s.TryRestore(desiredComposite,Run,2)!=
+                    CanonicalGateResult.InvalidSnapshot)return false;
+                if(!s.Read(Run,out long observed,out string hash)||observed!=1||
+                   hash!=CanonicalSlotSessionV3.SourceHash(g1))return false;
+                Console.WriteLine("W24_APPROVED_ECONOMY_FIELDS_NOT_IN_FROZEN_556_ATOMIC_SAVE=CONFIRMED_HOLD");
+                return true;
+            }
+            finally{s.TryCloseAfterPhysicalRetirement(f.AllGone);s.Dispose();}
+        });
+    }
     public static int Main()
     {
         Check("Original #749 direct raw storage under SAME lease accepts two divergent Save files (expected SOURCE RED)",TwoDifferentSaveTruthsUnderOneOriginalOwner);
+        Check("Approved W24 economy cannot serialize into frozen #556 wire (integration HOLD)",Frozen556RejectsNewEconomyFields);
         Check("Original #749 real AFTER physical rename lost ACK fail closed",()=>DurableUncertainAckFailClosed(true));
         Check("Original #749 real BEFORE rename failure quarantines/reopens",()=>DurableUncertainAckFailClosed(false));
         Console.WriteLine("W24_SELECTED_749_REAL_SOURCE_REGRESSION_TESTS "+(pass+fail)+" PASS "+pass+" FAIL "+fail);
