@@ -1,0 +1,18 @@
+{
+  "id": "B01-62-W25-EXACT-773-CASE-ALIAS-QA-001",
+  "original_773_sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "original_773_store_blob": "3689238a16d706eda1bf4905cba8029cd2fe77aa",
+  "original_729_sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "scope": "original-source Linux case-sensitive path distinct file witness",
+  "files": [
+    "Tools/B01/B01-62/P17W25Original773CaseQA/Program.cs",
+    "Tools/B01/B01-62/P17W25Original773CaseQA/Original773CaseQA.csproj",
+    "Tools/B01/B01-62/P17W25Original773CaseQA/README.md",
+    "Tools/B01/B01-62/P17W25Original773CaseQA/manifest.json",
+    ".github/workflows/b01-62-w25-exact773-case-original.yml"
+  ],
+  "native_G1": "NOT_RUN",
+  "game_G0": "HOLD",
+  "installed": false,
+  "merged": false
+}
