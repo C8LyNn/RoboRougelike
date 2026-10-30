@@ -1,0 +1,377 @@
+{
+  "package": "B01-12-LOCALIZE-001/R1",
+  "total": 92,
+  "pass": 92,
+  "fail": [],
+  "node": "v22.16.0",
+  "checks": [
+    {
+      "label": "catalog-key-parity-30",
+      "pass": true
+    },
+    {
+      "label": "available-locales",
+      "pass": true
+    },
+    {
+      "label": "translate-nav-pl",
+      "pass": true
+    },
+    {
+      "label": "translate-nav-en",
+      "pass": true
+    },
+    {
+      "label": "translate-nav-pseudo",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-0",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-0",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-1",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-1",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-2",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-2",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-3",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-3",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-4",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-4",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-5",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-5",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-11",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-11",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-12",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-12",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-14",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-14",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-21",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-21",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-22",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-22",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-24",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-24",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-25",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-25",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-101",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-101",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-102",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-102",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-pl-112",
+      "pass": true
+    },
+    {
+      "label": "plural-parts-en-112",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-1",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-2",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-4",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-5",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-12",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-22",
+      "pass": true
+    },
+    {
+      "label": "plural-ammo-111",
+      "pass": true
+    },
+    {
+      "label": "interpolate-garage.scrap",
+      "pass": true
+    },
+    {
+      "label": "interpolate-combat.weapon",
+      "pass": true
+    },
+    {
+      "label": "interpolate-combat.reload",
+      "pass": true
+    },
+    {
+      "label": "interpolate-garage.mount",
+      "pass": true
+    },
+    {
+      "label": "interpolate-audit.format",
+      "pass": true
+    },
+    {
+      "label": "missing-argument-garage.parts",
+      "pass": true
+    },
+    {
+      "label": "missing-argument-garage.scrap",
+      "pass": true
+    },
+    {
+      "label": "missing-argument-combat.reload",
+      "pass": true
+    },
+    {
+      "label": "missing-argument-nav.current",
+      "pass": true
+    },
+    {
+      "label": "reject-count--2",
+      "pass": true
+    },
+    {
+      "label": "reject-count-1.5",
+      "pass": true
+    },
+    {
+      "label": "reject-count-NaN",
+      "pass": true
+    },
+    {
+      "label": "reject-count-Infinity",
+      "pass": true
+    },
+    {
+      "label": "reject-count-1000001",
+      "pass": true
+    },
+    {
+      "label": "reject-count-9007199254740991",
+      "pass": true
+    },
+    {
+      "label": "reject-locale-de",
+      "pass": true
+    },
+    {
+      "label": "reject-locale-PL",
+      "pass": true
+    },
+    {
+      "label": "reject-locale-",
+      "pass": true
+    },
+    {
+      "label": "reject-locale-null",
+      "pass": true
+    },
+    {
+      "label": "reject-key-__proto__",
+      "pass": true
+    },
+    {
+      "label": "reject-key-constructor",
+      "pass": true
+    },
+    {
+      "label": "reject-key-x",
+      "pass": true
+    },
+    {
+      "label": "reject-key-nav.__proto__",
+      "pass": true
+    },
+    {
+      "label": "reject-unsafe-param-\"<img src=x one",
+      "pass": true
+    },
+    {
+      "label": "reject-unsafe-param-\"<script>alert(",
+      "pass": true
+    },
+    {
+      "label": "reject-unsafe-param-\"\\u0000\"",
+      "pass": true
+    },
+    {
+      "label": "reject-unsafe-param-\"\\n\"",
+      "pass": true
+    },
+    {
+      "label": "reject-unsafe-param-\"XXXXXXXXXXXXXX",
+      "pass": true
+    },
+    {
+      "label": "pseudo-preserves-value",
+      "pass": true
+    },
+    {
+      "label": "pseudo-wraps-and-expands",
+      "pass": true
+    },
+    {
+      "label": "localized-wheel-pl",
+      "pass": true
+    },
+    {
+      "label": "localized-weapon-en",
+      "pass": true
+    },
+    {
+      "label": "source-catalog-immutable",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-missing-pl-key",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-extra-pl-key",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-invalid-version",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-unknown-root",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-unsafe-html",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-unescaped-braces",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-unknown-placeholder",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-mismatched-placeholder",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-invalid-plural-entry",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-missing-plural-count",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-oversized-label",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-bad-control-character",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-different-entry-kind",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-unexpected-plural-slot",
+      "pass": true
+    },
+    {
+      "label": "reject-catalog-empty-string",
+      "pass": true
+    }
+  ]
+}

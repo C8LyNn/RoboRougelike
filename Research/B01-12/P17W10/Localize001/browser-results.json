@@ -1,0 +1,538 @@
+{
+  "package": "B01-12-LOCALIZE-001/R1",
+  "total": 132,
+  "pass": 132,
+  "fail": [],
+  "js_errors": [],
+  "checks": [
+    {
+      "label": "320/initial-pl-title",
+      "pass_": true
+    },
+    {
+      "label": "320/initial-part-pl",
+      "pass_": true
+    },
+    {
+      "label": "320/lang-pl",
+      "pass_": true
+    },
+    {
+      "label": "320/no-overflow-initial",
+      "pass_": true
+    },
+    {
+      "label": "320/one-part-polish",
+      "pass_": true
+    },
+    {
+      "label": "320/state-qty-updated",
+      "pass_": true
+    },
+    {
+      "label": "320/en-title",
+      "pass_": true
+    },
+    {
+      "label": "320/one-part-en",
+      "pass_": true
+    },
+    {
+      "label": "320/state-qty-persists",
+      "pass_": true
+    },
+    {
+      "label": "320/language-status",
+      "pass_": true
+    },
+    {
+      "label": "320/locale-html-en",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-pressed",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-title-en",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-weapon-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-ammo-one",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-ammo-many",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-12-polish",
+      "pass_": true
+    },
+    {
+      "label": "320/combat-active-kept",
+      "pass_": true
+    },
+    {
+      "label": "320/pseudo-title",
+      "pass_": true
+    },
+    {
+      "label": "320/pseudo-count-kept",
+      "pass_": true
+    },
+    {
+      "label": "320/pseudo-status",
+      "pass_": true
+    },
+    {
+      "label": "320/pseudo-html-lang-en",
+      "pass_": true
+    },
+    {
+      "label": "320/pseudo-no-x-overflow",
+      "pass_": true
+    },
+    {
+      "label": "320/qty-99-persists",
+      "pass_": true
+    },
+    {
+      "label": "320/qty-invalid-reset",
+      "pass_": true
+    },
+    {
+      "label": "320/qty-state-not-corrupt",
+      "pass_": true
+    },
+    {
+      "label": "320/garage-pressed",
+      "pass_": true
+    },
+    {
+      "label": "320/polish-99-parts",
+      "pass_": true
+    },
+    {
+      "label": "320/event-button-real",
+      "pass_": true
+    },
+    {
+      "label": "320/scrap-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "320/localized-wheel-pl",
+      "pass_": true
+    },
+    {
+      "label": "320/screen-warning-no-loss",
+      "pass_": true
+    },
+    {
+      "label": "320/no-x-overflow-final",
+      "pass_": true
+    },
+    {
+      "label": "768/initial-pl-title",
+      "pass_": true
+    },
+    {
+      "label": "768/initial-part-pl",
+      "pass_": true
+    },
+    {
+      "label": "768/lang-pl",
+      "pass_": true
+    },
+    {
+      "label": "768/no-overflow-initial",
+      "pass_": true
+    },
+    {
+      "label": "768/one-part-polish",
+      "pass_": true
+    },
+    {
+      "label": "768/state-qty-updated",
+      "pass_": true
+    },
+    {
+      "label": "768/en-title",
+      "pass_": true
+    },
+    {
+      "label": "768/one-part-en",
+      "pass_": true
+    },
+    {
+      "label": "768/state-qty-persists",
+      "pass_": true
+    },
+    {
+      "label": "768/language-status",
+      "pass_": true
+    },
+    {
+      "label": "768/locale-html-en",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-pressed",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-title-en",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-weapon-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-ammo-one",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-ammo-many",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-12-polish",
+      "pass_": true
+    },
+    {
+      "label": "768/combat-active-kept",
+      "pass_": true
+    },
+    {
+      "label": "768/pseudo-title",
+      "pass_": true
+    },
+    {
+      "label": "768/pseudo-count-kept",
+      "pass_": true
+    },
+    {
+      "label": "768/pseudo-status",
+      "pass_": true
+    },
+    {
+      "label": "768/pseudo-html-lang-en",
+      "pass_": true
+    },
+    {
+      "label": "768/pseudo-no-x-overflow",
+      "pass_": true
+    },
+    {
+      "label": "768/qty-99-persists",
+      "pass_": true
+    },
+    {
+      "label": "768/qty-invalid-reset",
+      "pass_": true
+    },
+    {
+      "label": "768/qty-state-not-corrupt",
+      "pass_": true
+    },
+    {
+      "label": "768/garage-pressed",
+      "pass_": true
+    },
+    {
+      "label": "768/polish-99-parts",
+      "pass_": true
+    },
+    {
+      "label": "768/event-button-real",
+      "pass_": true
+    },
+    {
+      "label": "768/scrap-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "768/localized-wheel-pl",
+      "pass_": true
+    },
+    {
+      "label": "768/screen-warning-no-loss",
+      "pass_": true
+    },
+    {
+      "label": "768/no-x-overflow-final",
+      "pass_": true
+    },
+    {
+      "label": "1280/initial-pl-title",
+      "pass_": true
+    },
+    {
+      "label": "1280/initial-part-pl",
+      "pass_": true
+    },
+    {
+      "label": "1280/lang-pl",
+      "pass_": true
+    },
+    {
+      "label": "1280/no-overflow-initial",
+      "pass_": true
+    },
+    {
+      "label": "1280/one-part-polish",
+      "pass_": true
+    },
+    {
+      "label": "1280/state-qty-updated",
+      "pass_": true
+    },
+    {
+      "label": "1280/en-title",
+      "pass_": true
+    },
+    {
+      "label": "1280/one-part-en",
+      "pass_": true
+    },
+    {
+      "label": "1280/state-qty-persists",
+      "pass_": true
+    },
+    {
+      "label": "1280/language-status",
+      "pass_": true
+    },
+    {
+      "label": "1280/locale-html-en",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-pressed",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-title-en",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-weapon-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-ammo-one",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-ammo-many",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-12-polish",
+      "pass_": true
+    },
+    {
+      "label": "1280/combat-active-kept",
+      "pass_": true
+    },
+    {
+      "label": "1280/pseudo-title",
+      "pass_": true
+    },
+    {
+      "label": "1280/pseudo-count-kept",
+      "pass_": true
+    },
+    {
+      "label": "1280/pseudo-status",
+      "pass_": true
+    },
+    {
+      "label": "1280/pseudo-html-lang-en",
+      "pass_": true
+    },
+    {
+      "label": "1280/pseudo-no-x-overflow",
+      "pass_": true
+    },
+    {
+      "label": "1280/qty-99-persists",
+      "pass_": true
+    },
+    {
+      "label": "1280/qty-invalid-reset",
+      "pass_": true
+    },
+    {
+      "label": "1280/qty-state-not-corrupt",
+      "pass_": true
+    },
+    {
+      "label": "1280/garage-pressed",
+      "pass_": true
+    },
+    {
+      "label": "1280/polish-99-parts",
+      "pass_": true
+    },
+    {
+      "label": "1280/event-button-real",
+      "pass_": true
+    },
+    {
+      "label": "1280/scrap-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "1280/localized-wheel-pl",
+      "pass_": true
+    },
+    {
+      "label": "1280/screen-warning-no-loss",
+      "pass_": true
+    },
+    {
+      "label": "1280/no-x-overflow-final",
+      "pass_": true
+    },
+    {
+      "label": "1920/initial-pl-title",
+      "pass_": true
+    },
+    {
+      "label": "1920/initial-part-pl",
+      "pass_": true
+    },
+    {
+      "label": "1920/lang-pl",
+      "pass_": true
+    },
+    {
+      "label": "1920/no-overflow-initial",
+      "pass_": true
+    },
+    {
+      "label": "1920/one-part-polish",
+      "pass_": true
+    },
+    {
+      "label": "1920/state-qty-updated",
+      "pass_": true
+    },
+    {
+      "label": "1920/en-title",
+      "pass_": true
+    },
+    {
+      "label": "1920/one-part-en",
+      "pass_": true
+    },
+    {
+      "label": "1920/state-qty-persists",
+      "pass_": true
+    },
+    {
+      "label": "1920/language-status",
+      "pass_": true
+    },
+    {
+      "label": "1920/locale-html-en",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-pressed",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-title-en",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-weapon-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-ammo-one",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-ammo-many",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-12-polish",
+      "pass_": true
+    },
+    {
+      "label": "1920/combat-active-kept",
+      "pass_": true
+    },
+    {
+      "label": "1920/pseudo-title",
+      "pass_": true
+    },
+    {
+      "label": "1920/pseudo-count-kept",
+      "pass_": true
+    },
+    {
+      "label": "1920/pseudo-status",
+      "pass_": true
+    },
+    {
+      "label": "1920/pseudo-html-lang-en",
+      "pass_": true
+    },
+    {
+      "label": "1920/pseudo-no-x-overflow",
+      "pass_": true
+    },
+    {
+      "label": "1920/qty-99-persists",
+      "pass_": true
+    },
+    {
+      "label": "1920/qty-invalid-reset",
+      "pass_": true
+    },
+    {
+      "label": "1920/qty-state-not-corrupt",
+      "pass_": true
+    },
+    {
+      "label": "1920/garage-pressed",
+      "pass_": true
+    },
+    {
+      "label": "1920/polish-99-parts",
+      "pass_": true
+    },
+    {
+      "label": "1920/event-button-real",
+      "pass_": true
+    },
+    {
+      "label": "1920/scrap-unchanged",
+      "pass_": true
+    },
+    {
+      "label": "1920/localized-wheel-pl",
+      "pass_": true
+    },
+    {
+      "label": "1920/screen-warning-no-loss",
+      "pass_": true
+    },
+    {
+      "label": "1920/no-x-overflow-final",
+      "pass_": true
+    }
+  ],
+  "native_unity": "NOT_RUN"
+}

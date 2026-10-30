@@ -1,0 +1,28 @@
+{
+  "package_id": "B01-12-LOCALIZE-001",
+  "version": "R1",
+  "producer": "B01-12 Interactive UX Prototypes",
+  "scope": "Research/B01-12/P17W10/Localize001/**",
+  "files": {
+    "localize_engine.js": {
+      "sha256": "4fd8784f7be800baecf9e0402dae2964bf417aae91b4ac3f63a41d60fe2b413c",
+      "bytes": 4158,
+      "git_blob_sha1": "16d0277e21fbe3704b9fa8954827754d6dc937a7"
+    },
+    "catalog.js": {
+      "sha256": "d4767422ec3bf77694748821541babd6418ea835cc3bce9cedbcd19ff79c29b9",
+      "bytes": 3115,
+      "git_blob_sha1": "397d4cd4b7b5e8da92a83fb68e9eedef4061b282"
+    },
+    "app.js": {
+      "sha256": "8f64535e493bace66e89821d89bf283591a119bffe2cf5d2f06811a8e511396c",
+      "bytes": 3023,
+      "git_blob_sha1": "cbcf147451000d7af696d75449d92218c258eee4"
+    },
+    "demo.html": {
+      "sha256": "e63fd7b7f143bfed485e9040ac3838987f4528760fa81c757516ef57d6f5c6d9",
+      "bytes": 3631,
+      "git_blob_sha1": "a09c60f33b3f2fc5d5b45632fa98f840e429c152"
+    }
+  }
+}
