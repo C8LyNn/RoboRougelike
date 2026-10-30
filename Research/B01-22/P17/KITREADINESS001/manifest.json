@@ -1,0 +1,210 @@
+{
+  "package_id": "B01-22-KITREADINESS-001",
+  "version": "1.3.4",
+  "owner": "B01-22",
+  "product": "Unity-compatible validated kit planner plus Research-only full-stock procurement and exact bounded priority order advisor",
+  "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
+  "source_pr": 411,
+  "source_catalog_git_blob": "372b3bc74553ea459e89be38378f4429090e00a2",
+  "codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "parent_source_pr": 411,
+  "own_paths": [
+    "Assets/B01KitReadiness001.meta",
+    "Assets/B01KitReadiness001/**",
+    "Research/B01-22/P17/KITREADINESS001/**",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml"
+  ],
+  "constraints": [
+    "No mutation of author #411 or original Codex game",
+    "NO buying, wallet, garage, mounting, saving or game-run reward",
+    "All reservations are private in-memory preview only",
+    "No legacy ECON/LEGENDARY/CHL/PARTSIZE changes"
+  ],
+  "git_blobs": {
+    "Assets/B01KitReadiness001.meta": "f8a586a4a4d4d03550c8997e100e969d71f68e38",
+    "Assets/B01KitReadiness001/KitReadinessPlanner.cs": "64ef650950b29ff92bd8dfdc9e6a8a77b9300b8e",
+    "Assets/B01KitReadiness001/KitReadinessPlanner.cs.meta": "11ec4e91ce05d4c10fa250f1314f0c03a269118b",
+    "Research/B01-22/P17/KITREADINESS001/OriginalReadinessSourceTests.cs": "ffd25d500cc570b0fe7ddfab0b5fa0e921d37466",
+    "Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj": "c043601c4282f952d7c16257fcf5c06f5833f775",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "610962f06133e33b0b84296c4ece16d3ac3deccd",
+    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "0a77cd898425da9dc4a9546b9bb6918a77443b6a",
+    "Research/B01-22/P17/KITREADINESS001/README.md": "22ee264b87968e7a9e160229799f6b6a2c97307e",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "5ab87eb5e7ef003a235f3ecef2ed6695c3800212",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "c53bf577ec7ae849897027e87f2e70bde369d642",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "c5bfe35121382394824265c56986d5db66c5693b",
+    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "e12df589ba9d0a22d7e78036bcb0cca87af39f77",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json": "6200854efbf3e9be1f163a3065be62fe2ac18ae9",
+    "Research/B01-22/P17/KITREADINESS001/KitProcurementForecast.cs": "f153999a62fd4488f89b831ab2532e051ac3f01f",
+    "Research/B01-22/P17/KITREADINESS001/KitBuildOrderAdvisor.cs": "37743b1adc2afebd5b0e53b3db7cd421fbedb3b6",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/order-priority.json": "59152a2902825f7e9e1e333e3f2ffa1482137927"
+  },
+  "test_commands": [
+    "dotnet run --project Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj --configuration Release -- --out readiness-previews",
+    "python -m unittest discover -s Research/B01-22/P17/KITREADINESS001/ -p test_pack_readiness.py -v",
+    "python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --stage readiness-artifact --previews readiness-previews",
+    "dotnet build Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj --configuration Release",
+    "python -m unittest discover -s Research/B01-22/P17/KITREADINESS001/ -p test_cli_readiness.py -v",
+    "dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-previews/user-preview.json",
+    "dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/order-priority.json --out readiness-previews/priority-preview.json"
+  ],
+  "expected": {
+    "original_csharp_assertions": 53,
+    "python_physical_tests": 36,
+    "scenarios": 5,
+    "unity_source_members": 3,
+    "unity_guid_metas": 2,
+    "git_blob_checks": 19,
+    "python_cli_blackbox_tests": 31
+  },
+  "producer_qa": "PENDING_FINAL_HEAD_CI",
+  "independent_qa": "PENDING",
+  "native_unity": "NOT_RUN",
+  "handoff": "B01-40 independent exact SHA G0 check all 19 physical working tree blobs + 3 Unity source members and rollback foreign empty directory; B01-60 rerun 53/31/25 source tests; native Unity NOT_RUN unless real host. No Codex or Secure Reattach edits.",
+  "rollback": "Close Draft, discard owned branch; CLI --rollback only for unchanged isolated stage; manual Unity import into empty disposable Assets/B01KitReadiness001 folder only",
+  "test_fix": "W08: C#9 test harness disables implicit .NET global usings after actual initial C#9 RED in GitHub Actions",
+  "cross_os_preview_parity": "REQUIRES_SHA256_SAME_FOR_EACH_OF_3_JSONS",
+  "fix": "Canonical LF JSON output, genuine CRLF fail-closed test; retain 12 Git blob pins",
+  "bugfix": {
+    "wave": "PASS17 W09",
+    "id": "KITREADINESS-SOURCE-IMMUTABILITY-001",
+    "red_sha": "56ae03bd3d2aec54bcbde509793dd1ad86e4b2eb",
+    "red_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41052841055",
+    "approved_digest": "6f121fe4207aaca2f30dfede9e79700d3af0dbec5349c87c1709c174dd4096eb",
+    "fields": 154,
+    "notes": "Reject coherent-forged price, count, valid kind substitution and BOM reorder; source SHA string alone insufficient."
+  },
+  "custom_user_input": {
+    "schema": "b01-kitreadiness-request-v1",
+    "max_requests": 100,
+    "max_stock_lines": 100,
+    "read_only": true,
+    "copy_ownership": "CLI and tests remain under Research, only isolated C# planner and two Unity meta files are importable",
+    "extra_user_preview": "user-preview.json",
+    "output": "new UTF-8/LF JSON only, no overwriting"
+  },
+  "physical_receipt": {
+    "source_zip": "kitreadiness-unity.zip",
+    "preview_jsons": [
+      "starter-cache-preview.json",
+      "siege-cache-preview.json",
+      "shared-gyro-preview.json",
+      "user-preview.json",
+      "priority-preview.json"
+    ],
+    "receipt": "receipt.json",
+    "rollback": "fail-closed for modified/foreign files"
+  },
+  "final_w10_safety": "Reject symlinked output parent directory/reparse point, game-path output, same input-output, and preexisting file. No wallet/garage/Assets writes.",
+  "batch_shortfall": {
+    "scope": "ALL requested kits; aggregate each kind and weapon subtype",
+    "reference_only": true,
+    "never_purchase": true,
+    "never_mutate_stock": true,
+    "does_not_use_blocked_virtual_reservations": true,
+    "source_path": "Research/B01-22/P17/KITREADINESS001/KitProcurementForecast.cs",
+    "example": "two EK01 + one EK01 owned = 5 missing physical parts, 110 reference Scrap"
+  },
+  "test_fix_w11": "Actual original CLI RED test #23 misidentified 3-kit total deficit as a 1-part virtual reservation deficit; assertion corrected to 4 and order invariance preserved",
+  "priority_advice": {
+    "algorithm": "exhaustive enumeration of distinct kit permutations via original immutable-source C# planner",
+    "max_exact_requests": 6,
+    "over_six": "NOT_EVALUATED_REQUEST_LIMIT",
+    "actual_example": "EK08,EK01,EK02 original ready 1, suggested ready 2; same inventory",
+    "source_path": "Research/B01-22/P17/KITREADINESS001/KitBuildOrderAdvisor.cs",
+    "no_game_effect": true,
+    "no_purchases": true
+  },
+  "security_w13": {
+    "red": "worktree dirty source and catalog must fail even with unchanged HEAD Git blobs",
+    "negative_cases": [
+      "local dirty source via safe fake reads",
+      "local dirty frozen catalog via safe fake reads",
+      "foreign nested EMPTY directory protected",
+      "foreign directory symlink protected"
+    ],
+    "state": "FIX_CANDIDATE",
+    "no_game_code_mutated": true,
+    "extra_negative_cases": [
+      "source mutation between HEAD validation and ZIP source snapshot",
+      "Git SHA1 canonical blank and source vector"
+    ],
+    "approved_blob_checks": 19,
+    "actual_worktree_bytes": true,
+    "source_snapshot_second_check": true
+  },
+  "rollback_w14": {
+    "issue": "post-preflight foreign empty directory and post-verification mutated receipt cause non-atomic deletion",
+    "red_expected": false,
+    "tests": [
+      "26",
+      "27"
+    ],
+    "risk": "Own receipt/ZIP/JSON destroyed before rmdir fails, foreign directory survives",
+    "result": "FIX_CANDIDATE_PENDING_EXACT_HEAD_CI",
+    "tests_executed_original": 27,
+    "mechanism": "full direct-child seven-file byte snapshot before and after receipt/source verification, fail closed before any unlink",
+    "limits": "Not safe for hostile concurrent writers during final unlink; single exclusive receiver ownership required",
+    "scope": "B01-22 staging only; #510 unaffected"
+  },
+  "verify_w15": {
+    "intent": "read-only exact seven-file source receipt audit without invoking rollback",
+    "red_expected": false,
+    "qa_cases": "28..32",
+    "owner": "B01-22",
+    "no_game_writes": true,
+    "status": "FIX_CANDIDATE_PENDING_CI",
+    "actual_cli": "python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --verify-stage <staged-directory>",
+    "physical_source_sha_pins": 19,
+    "expected_member_count": 7,
+    "postverify_byte_recheck": true,
+    "read_only": true,
+    "tests": "28..32",
+    "source_only": true,
+    "native_unity": "NOT_RUN"
+  },
+  "w16_receipt_anchor": {
+    "state": "PENDING_RECHECK_BOTH_OS",
+    "red_cases": [
+      "33",
+      "34"
+    ],
+    "new_negative_cases": [
+      "35",
+      "36"
+    ],
+    "source_of_pins": "previous W15 #41091906172 two matching physical runner receipts",
+    "manifest_anchored_to_git_HEAD": true,
+    "frozen_source_unchanged": true,
+    "native_unity": "NOT_RUN",
+    "source_of_prior_failure": "#41096885022 Windows RED due to test-only Python newline translation; negative checks now exact UTF-8 LF and assert UNAPPROVED_PHYSICAL_PAYLOAD"
+  },
+  "approved_physical_sha256": {
+    "kitreadiness-unity.zip": {
+      "bytes": 3755,
+      "sha256": "01c1a1887a291b93a4c439dfefa04c4c3bcba4aa14f8ea4badd2f88c012ce69a"
+    },
+    "starter-cache-preview.json": {
+      "bytes": 2174,
+      "sha256": "54cb1f9d012e2bbb42753eef3a0e418f114d931346431106e646f835b526b32c"
+    },
+    "siege-cache-preview.json": {
+      "bytes": 2602,
+      "sha256": "ba09ee9688dbf61990d74ac1a38e4ffeb05199f4a96084cb8207ccb0a938c1d3"
+    },
+    "shared-gyro-preview.json": {
+      "bytes": 3569,
+      "sha256": "04a4d5759176330088b48088ff291fb746b2017a80af81836d993dfabe4636df"
+    },
+    "user-preview.json": {
+      "bytes": 3346,
+      "sha256": "9402a5d602f41be64b0edccb2e3e8e9bffdf4a9600d5142d06349b239f12023b"
+    },
+    "priority-preview.json": {
+      "bytes": 5676,
+      "sha256": "25e2426cdbcd9da4b067735ab75ab6f59756110da866d1f226fb7f3cdf933985"
+    }
+  }
+}

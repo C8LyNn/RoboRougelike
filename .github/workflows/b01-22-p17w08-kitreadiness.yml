@@ -1,0 +1,52 @@
+name: B01-22 P17 W16 KITREADINESS-001 Git-pinned source decisions
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01KitReadiness001/**'
+      - 'Assets/B01KitReadiness001.meta'
+      - 'Research/B01-22/P17/KITREADINESS001/**'
+      - '.github/workflows/b01-22-p17w08-kitreadiness.yml'
+  push:
+    branches: ['b01-22/p17w08-kitreadiness-001']
+permissions:
+  contents: read
+jobs:
+  source-and-physical-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact original #411 source (read-only)
+        run: git fetch --no-tags --depth=1 origin b1d4e341d846c9397e236809a1d7e4c4fff9c935
+      - name: Compile/run real original C# 9 and produce 3 actual stock-preview JSONs
+        run: dotnet run --project Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj --configuration Release -- --out readiness-previews
+      - name: Compile actual user-input C#9 preview CLI (no game runtime)
+        run: dotnet build Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj --configuration Release
+      - name: Execute original CLI plus consolidated procurement black-box tests
+        run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_cli_readiness.py -v
+      - name: Reproduce sample user-input CLI preview with no wallet writes
+        run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-previews/user-preview.json
+      - name: Actually execute priority conflict fixture using original C# planner
+        run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/order-priority.json --out readiness-previews/priority-preview.json
+      - name: Run physical ZIP SHA receipt forged-input and rollback negatives
+        run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_pack_readiness.py -v
+      - name: Stage verified original Unity C# and 3 C# scenario previews
+        run: python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --stage readiness-artifact --previews readiness-previews
+      - name: Receiver preflight read-only verify of stage (never deletes)
+        run: python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --verify-stage readiness-artifact
+      - name: Upload original source ZIP, receipts and actual scenario decisions
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w16-kitreadiness-${{ matrix.os }}
+          path: readiness-artifact/
+          if-no-files-found: error
+          retention-days: 14

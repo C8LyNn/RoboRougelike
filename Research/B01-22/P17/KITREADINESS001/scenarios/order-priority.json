@@ -1,0 +1,42 @@
+{
+  "schema": "b01-kitreadiness-request-v1",
+  "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
+  "reference_only": true,
+  "requests": [
+    "EK08",
+    "EK01",
+    "EK02"
+  ],
+  "owned_parts": [
+    {
+      "kind": "Wheel",
+      "count": 2
+    },
+    {
+      "kind": "Suspension",
+      "count": 2
+    },
+    {
+      "kind": "Gyroscope",
+      "count": 1
+    },
+    {
+      "kind": "CrawlerTrack",
+      "count": 2
+    },
+    {
+      "kind": "Gun",
+      "weapon": "Heavy",
+      "count": 1
+    },
+    {
+      "kind": "Gun",
+      "weapon": "RocketLauncher",
+      "count": 1
+    },
+    {
+      "kind": "DirectionalShield",
+      "count": 1
+    }
+  ]
+}

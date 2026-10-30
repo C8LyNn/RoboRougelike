@@ -1,0 +1,23 @@
+{
+  "schema": "b01-kitreadiness-request-v1",
+  "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
+  "reference_only": true,
+  "requests": [
+    "EK01",
+    "EK01"
+  ],
+  "owned_parts": [
+    {
+      "kind": "Wheel",
+      "count": 2
+    },
+    {
+      "kind": "Suspension",
+      "count": 2
+    },
+    {
+      "kind": "Gyroscope",
+      "count": 1
+    }
+  ]
+}
