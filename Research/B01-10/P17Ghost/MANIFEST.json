@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "8.0.0-P17W14-TERMINAL_OUTCOME_INTEGRITY",
+  "version": "9.0.0-P17W15-PB_LAYOUT_GUARD",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "R8_ORIGINAL_SOURCE_EXACT_SHA_CI_PENDING / SOURCE_G0_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO",
+  "status": "R9_SOURCE_CI_PENDING / PHYSICAL_ZIP_SHA_PENDING / INDEPENDENT_G0_QA_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -22,8 +22,8 @@
   ],
   "codeFiles": {
     "GhostCore.cs": {
-      "gitBlob": "a20fed2b16dfe03e782dc64702350feb37fee8aa",
-      "chars": 14536
+      "gitBlob": "d71ab96882ae323fc98995e187979ab25d4c18d2",
+      "chars": 15147
     },
     "GhostVisualProxy.cs": {
       "gitBlob": "de795c06fd0b462a0fe5f895460dfa796a664cd0",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "5bd595dcac56716c582347f5107dab92e186929c",
-      "chars": 42615
+      "gitBlob": "d698766cf5e5fdeb2c4741e0c38064efbc541881",
+      "chars": 47487
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "886af785c30f6c91614395f34a6eadac4d26915d",
-      "chars": 34487
+      "gitBlob": "511294e61a1fa3106a32ed74a303d1bd2f1b5edb",
+      "chars": 36782
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "f866804aad9cbc31f2fbfaf0cbf0388d752a6bf3"
+    "gitBlob": "4e9ee5d6aebebeaf10426258ef9ca8aabe765482"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 134,
+    "namedCases": 145,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "W14 R8 exact-head CI NOT YET VERIFIED; R7 122/122 both OS at prior SHA only",
-    "windows": "W14 R8 exact-head source C# 134 tests PENDING",
-    "ubuntu": "W14 R8 exact-head source C# 134 tests PENDING",
-    "actualDemoJson": "W14 R8 exact-head demo PENDING",
+    "workflowRun": "W15 exact-head runner NOT_VERIFIED; prior R8 134/134 per OS historical only",
+    "windows": "W15 R9 145-source C# PENDING",
+    "ubuntu": "W15 R9 145-source C# PENDING",
+    "actualDemoJson": "W15 R9 PENDING",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "W14 R8: fail-closed completed flag versus terminal EndReason; failed all-checkpoint reference cannot be promoted by toggling only Completed; 12 new real C# tests 123-134",
+  "qualityPatch": "W15 R9: GhostBestBook rejects inconsistent checkpoint count on same course+rig before comparing record; preserves old PB; 11 original tests #135-145, authentic recorder generated 3/4/8 gate reference. Same gate count physical layout still requires host CourseId versioning.",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -232,5 +232,5 @@
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
   },
-  "currentPredecessorSHA": "5ee6f3e61156baf14186f7920685e2536a44812e"
+  "currentPredecessorSHA": "0a5314f88f8f640f1f8afecb77f0327c9fa205db"
 }
