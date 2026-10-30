@@ -1,0 +1,21 @@
+# B01-25 — PASS17 / WAVE16 — MAGNETLANE001 R3 / atomic input preflight
+
+**Previous R2 frozen**: [Draft PR #579](https://github.com/C8LyNn/RoboRougelike/pull/579), exact immutable source SHA \`9e14088859aa02d5e534f03ed7c954db9598da94\`. R2 original C#9 \`Advance\` rejected nonfinite endpoint values individually, but accepted finite opposing extremes \`FromX=-1e308, X=1e308\`; subtraction overflowed to Infinity/NaN. At \`Clock=.55s\`, on a legal \`Dt=.1s\` the R2 source advances warning by .05s, then the active interpolator throws. Thus the previous game state is **PARTIALLY MUTATED on a rejected sample**. This is a deterministic original R2 source security/integrity bug, NOT actual native Unity/PhysX execution. Existing R1/R2 source is immutable.
+
+**Actual executable original R2 RED detector**: \`R2RedWitness.csproj\` compiles the unchanged \`../MAGNETLANE001R2/MagnetLaneCore.cs\` and runs a witness against its real original source. It requires the actual exception AND a mutated R2 clock to print \`R2_EXPECTED_RED_CONFIRMED\`. This is expected RED evidence, not a release PASS for the old R2. Do not conceal failure or label original R2 safe.
+
+**Full R3 replacement in NEW isolated package version**: \`MagnetLaneController.Advance\` and public \`StrengthIntegral\` validate world positions (finite, within ±1,000,000m), delta trajectory (finite and ≤1,000m **per host sample**) and bounds **BEFORE** phase clock or polarity mutation. Invalid, nonfinite, overflow, excessive teleport and invalid paused telemetry fail with \`ArgumentException\` leaving Clock, polarity, cycles and last valid state unchanged. Valid time/space-integrated moving-body force, full 60N peak/Light+Heavy mass, warning .6s/active 2.4s/safe 1s, safe Z4 bypass, phase boundary clipping and original positive/negative cases preserved. R3 Unity host catches invalid physical trajectory and fails closed (zero force, no Tick commit, refresh history) instead of applying stale forces.
+
+**Source/Unity contents**: Original pure C#9 \`Research/B01-25/P17/MAGNETLANE001R3/**\` + complete exact owned \`Assets/B0125MagnetLaneR3/**\` Unity6 importer (new 12 GUIDs, three distinct asmdefs, real Rigidbody/ForceMode.Force graybox and generated isolated safe scene). Seven authored PlayMode NUnit cases (including a new atomic input rejection test). **UNITY_NATIVE_G1_NOT_RUN**, until activated Unity 6000.3.14f1 actually executes tests and produces Test Runner XML/Editor.log/process exit.
+
+**Real source CI** from repo checkout with .NET8, Python3 and Git:
+
+    P=Research/B01-25/P17/MAGNETLANE001R3
+    dotnet build "$P/MagnetLaneRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+    dotnet run --project "$P/MagnetLaneTests.csproj" -c Release -- "$P/.output/gameplay.json"
+    dotnet run --project "$P/R2RedWitness.csproj" -c Release
+    python Tools/B01/B01-25/P17W16MagnetLaneR3/check.py --out Tools/B01/B01-25/P17W16MagnetLaneR3/.output/receipt.json
+
+Dedicated Windows+Ubuntu original source CI also checks exact SHA-pinned Git objects, 12 GUIDs/3 isolated asmdefs, Python 27 source tests, original physical 20-member source ZIP stage+rollback, third cross-OS ZIP **actual byte** parity. No SOURCE_GREEN declaration until final exact SHA CI succeeds. Tests run in .NET runner, not claimed as native Unity.
+
+**Independent receiver and rollback**: B01-40 verify exact SHA manifest, blob pins, no scope collisions, original physical ZIP, safe reversible scratch stage without deleting foreign empty dirs, and formal G0; B01-60 read-only original source and licensed real Unity6 EditMode/PlayMode physics and XML/logs (otherwise NOT_RUN); B01-00 owns any Codex offer, no ACK/integration without evidence. Entirely new owner paths \`Assets/B0125MagnetLaneR3/**\` plus root meta, \`Research/B01-25/P17/MAGNETLANE001R3/**\`, \`Tools/B01/B01-25/P17W16MagnetLaneR3/**\` and unique W16 workflow. **No old source/file mutation, no Codex changes, no merge.** #510 and #556 remain frozen; selected Unity Save bridge #585/#587 solely B01-23/62. The 1,000m position-delta cap is intentionally a conservative host contract and R3 still assumes straight path between physics samples (not native PhysX compound hull contact proof).
