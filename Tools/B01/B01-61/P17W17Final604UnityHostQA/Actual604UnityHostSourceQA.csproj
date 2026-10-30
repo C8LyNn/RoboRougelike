@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><Nullable>annotations</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup><ItemGroup>
+<Compile Include="UnityApiBoundaryStub.cs"/>
+<Compile Include="Program.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs" Link="ORIGINAL604UnityHost.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs" Link="ORIGINAL604AtomicWorldSwap.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/CheckpointFence.cs" Link="ORIGINAL604CheckpointFence.cs"/>
+<Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs" Link="ORIGINAL556SaveContract.cs"/>
+<Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="ORIGINALW06Ledger.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" Link="ORIGINAL510R2RigSpec.cs"/>
+</ItemGroup></Project>
