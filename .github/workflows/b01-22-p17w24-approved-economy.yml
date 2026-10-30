@@ -1,0 +1,57 @@
+name: B01-22 W24 Approved 65 Percent Economy and One-Shot Loaner Source
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/ECONAPPROVED006/**'
+      - 'Tools/B01/ECONAPPROVED006/**'
+      - '.github/workflows/b01-22-p17w24-approved-economy.yml'
+  workflow_dispatch:
+jobs:
+  original-logic:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile ACTUAL ORIGINAL W24 runtime C#9 with warnings fatal
+        shell: bash
+        run: dotnet build Tools/B01/ECONAPPROVED006/W24.Tests.csproj -c Release
+      - name: Run genuine runtime source tests, OS file, cold independent process
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONAPPROVED006/W24.Tests.csproj -c Release --no-build -- --scenario "$RUNNER_TEMP/w24-econ" | tee "$RUNNER_TEMP/w24-econ.log"
+          dotnet run --project Tools/B01/ECONAPPROVED006/W24.Tests.csproj -c Release --no-build -- --cold "$RUNNER_TEMP/w24-econ" | tee -a "$RUNNER_TEMP/w24-econ.log"
+          grep -q 'ECON_V6_APPROVED_SOURCE_PASS' "$RUNNER_TEMP/w24-econ.log"
+          grep -q 'human_trials=0' "$RUNNER_TEMP/w24-econ.log"
+      - name: Verify physical owner lock exclusion across SEPARATE CLR processes
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONAPPROVED006/W24.Tests.csproj -c Release --no-build -- --hold "$RUNNER_TEMP/w24-econ" > "$RUNNER_TEMP/w24-holder.log" 2>&1 &
+          holder=$!
+          ready=0
+          for i in {1..80}; do
+            if test -f "$RUNNER_TEMP/w24-econ.ready"; then ready=1; break; fi
+            sleep .15
+          done
+          if test "$ready" -ne 1; then cat "$RUNNER_TEMP/w24-holder.log"; exit 1; fi
+          dotnet run --project Tools/B01/ECONAPPROVED006/W24.Tests.csproj -c Release --no-build -- --contend "$RUNNER_TEMP/w24-econ" | tee -a "$RUNNER_TEMP/w24-econ.log"
+          wait "$holder"
+          cat "$RUNNER_TEMP/w24-holder.log" | tee -a "$RUNNER_TEMP/w24-econ.log"
+      - name: Validate original physical Git blob/manifest and Unity GUID source scope
+        shell: bash
+        run: python3 Tools/B01/ECONAPPROVED006/verify_package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w24-economy-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/w24-econ.json
+            ${{ runner.temp }}/w24-econ.log
+            ${{ runner.temp }}/w24-holder.log
+          if-no-files-found: error

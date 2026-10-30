@@ -1,0 +1,14 @@
+{
+  "name": "B01.EconApprovedV6",
+  "rootNamespace": "RoboRougelike.B01.Economy.ApprovedV6",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}
