@@ -148,10 +148,16 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         wallet += earned
         reward += earned
         critical = sum(role == "mobility" for role in destroyed.values())
+        reserved_mobility = sum(
+            role == "mobility" and pid in reserved
+            for pid, role in destroyed.items())
+        unreserved_mobility = critical - reserved_mobility
         critical_at_end += int(critical > 0)
         no_budget_critical += int(critical > 0 and wallet < quote)
         observations.append({"attempt": eid, "win": won, "wallet": wallet,
                              "wins": wins, "unavailable_mobility": critical,
+                             "reserved_mobility": reserved_mobility,
+                             "unreserved_mobility": unreserved_mobility,
                              "still_destroyed": len(destroyed),
                              "reserved_waiting": len(reserved)})
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
@@ -230,8 +236,10 @@ def main(argv: list[str] | None = None) -> int:
             if not isinstance(items, dict) or not isinstance(items.get("cases"), dict):
                 raise InvalidScenario("scenarios requires cases object")
             output = {"notice": "MODEL ONLY, not host/native/player evidence",
-                      "cases": {name: compare(plan)
-                                for name, plan in items["cases"].items()}}
+                      "cases": {name: {
+                          "bootstrap_epoch_zero": compare(plan, bootstrap=True),
+                          "no_bootstrap_epoch_zero": compare(plan, bootstrap=False)
+                      } for name, plan in items["cases"].items()}}
     except (InvalidScenario, ValueError, OSError) as exc:
         print("MODEL_INPUT_REJECTED: " + str(exc), file=sys.stderr)
         return 2
