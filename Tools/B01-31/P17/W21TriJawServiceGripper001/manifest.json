@@ -1,0 +1,108 @@
+{
+  "package_id": "B01-31-TRIJAW-SERVICE-GRIPPER-CONCEPT3D-001",
+  "version": "P17-W21-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq_issue": 687,
+  "functionality": "New physically original 3D three-jaw repair-dock service gripper concept, separate isolated glTF2 object with three independently animated clamp arms around stationary hub; not a cable coupler/material rework.",
+  "physical_geometry": {
+    "original_meshes": 4,
+    "original_pbr_materials": 6,
+    "original_3d_cuboids": 27,
+    "actual_triangles": 324,
+    "hub_faces": 144,
+    "three_jaws_faces_each": 60,
+    "independent_moving_roots": 3
+  },
+  "motion": {
+    "original_clip": "B0131_TriJaw_GraspAndSettle_1p10s",
+    "real_gltf2_anim_channels": 6,
+    "real_float32_keys": 42,
+    "keys_per_channel": 7,
+    "duration_sec": 1.1,
+    "key_times": [
+      0,
+      0.15,
+      0.32,
+      0.45,
+      0.62,
+      0.82,
+      1.1
+    ],
+    "authored_radial_center_distances_m": [
+      0.72,
+      0.66,
+      0.56,
+      0.47,
+      0.41,
+      0.42,
+      0.46
+    ],
+    "authored_roll_degrees": [
+      0,
+      1,
+      3,
+      7,
+      12,
+      9,
+      16
+    ],
+    "minimum_geometry_gap_test": "derive true hub max radial vertex extent and all jaw local min-x physically from GLB; require >0.025m gap at 241 interpolated keyframe times",
+    "not_claimed": "This is visual animation only; no Unity Rigidbody/Collider/garage attachment, no live damage/repair progress"
+  },
+  "source_paths": [
+    "Tools/B01-31/P17/W21TriJawServiceGripper001/build_gripper.py",
+    "Tools/B01-31/P17/W21TriJawServiceGripper001/verify_gripper.py",
+    "Tools/B01-31/P17/W21TriJawServiceGripper001/README.md",
+    "Tools/B01-31/P17/W21TriJawServiceGripper001/manifest.json",
+    ".github/workflows/b01-31-p17w21-trijaw-gripper3d.yml"
+  ],
+  "physical_output": {
+    "genuine_GLB2": "B0131-TriJawServiceGripper.glb",
+    "original_standalone_preview_7pose_RGB_PNG": 2,
+    "original_12frame100ms_animated_GIF": 1,
+    "timeline_json": 1,
+    "real_SHA_receipt": 1,
+    "deterministic_zip_members": 6
+  },
+  "tests": [
+    "Real standalone glTF2 4 individually addressable mesh/node roots, all 324 physical nondegenerate indexed triangles with normals and actual PBR material references",
+    "Three real 3D jaw moving nodes, 6 independent glTF2 FLOAT32 LINEAR channels x7 distinct samples=42 transform keys, quaternion normalized against authored motion",
+    "True original hub and jaw actual physical geometry clearance >0.025m for 241 intermediate keyframe interpolation positions including actual final settle phase",
+    "Two genuine original 2100x480 RGB PNG boards, 7 genuinely distinct world poses in each, actually projected from original 324 triangles",
+    "One genuine 12x100ms animated 680x450 GIF with 12 visibly distinct frames from same geometric scene",
+    "Actual physically deterministic 6-member ZIP CRC and loose binary member SHA parity",
+    "Eight intentionally corrupted GLB header/semantic jaw/normal/material/channel negative controls rejected",
+    "Two complete physical renders/export original GLB/PNG/GIF/timeline/receipt/ZIP with byte-identical SHA per file",
+    "Windows2022 independent read-only source receiver downloads actual original Ubuntu artifact and verifies glTF/PNG/GIF/binary without invoking source generator"
+  ],
+  "governance": {
+    "frozen_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "frozen_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "frozen_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "selected_R4_647": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "R4_652": "ALT_HOLD",
+    "new_R5_690": "B01-23 only",
+    "new_API_691": "B01-23/62/20 only",
+    "local_Windows_Unity": "B01-60 #667/#684 only",
+    "codex": "quota unavailable, ACK NO"
+  },
+  "gates": {
+    "IMPLEMENTED": "SOURCE_ONLY",
+    "TESTED": "PENDING_REAL_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "B01_31_art_source_G0": "PENDING",
+    "B01_30_40_formal_G0": "PENDING",
+    "B01_60_native_Unity_G1": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "recipients": [
+    "B01-30/40 independent physical original 3D meshes, PBR and animation source-format G0, safe staged import",
+    "B01-60 real opted-in licensed Unity 6000.3.14f1 model import/animation/renderer, PlayMode and PhysX (NOT_RUN until actually executed)",
+    "B01-10/22 design: optional repair dock concept readability, not physical free-rebuild reward logic",
+    "B01-00 only authorized future integrator inbox after separate actual gates"
+  ],
+  "rollback": "Remove only five brand-new W21 owned paths or W21-named originally exported model/previews in explicitly authorized disposable Blender/Unity importer. Preserve canonical Assets/**, foreign even-empty folders, all W16-W20 models, and frozen #510/#556/#596/#647 or Codex."
+}
