@@ -107,7 +107,7 @@ class PhysicalSourceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             p=pathlib.Path(t);self.data_dir(p/"in")
             target=p/"in"/PREVIEWS[0]
-            target.write_bytes(target.read_bytes().replace(b"\\n",b"\\r\\n"))
+            target.write_bytes(target.read_bytes().replace(b"\n",b"\r\n"))
             with self.assertRaises(SourceError):read_previews(p/"in")
 
     def test_15_receipt_rejects_unexpected_member_byte(self):
