@@ -259,6 +259,29 @@ internal static class Program
                 Check(run.Completed&&float.IsFinite(at.X),"seed "+i);
             }
         });
+        Test("51 forged early completion with one checkpoint is refused",()=>{
+            var t=Run();t.CheckpointSeconds=new float[]{1};
+            Check(Reject(()=>GhostMath.Validate(t)),"accepted forged partial win");
+        });
+        Test("52 invalid configured zero checkpoints is refused",()=>{
+            var t=Run();t.RequiredCheckpoints=0;
+            Check(Reject(()=>GhostMath.Validate(t)),"zero configured gates accepted");
+        });
+        Test("53 loss with a partial legitimate checkpoint path validates",()=>{
+            var r=new GhostRecorder("CHL","Light",4,P());
+            r.Tick(1,false,P(1));r.Checkpoint(0,P(1));r.Tick(1,false,P(2));
+            var t=r.Fail(P(2));
+            GhostMath.Validate(t);
+            Check(!t.Completed&&t.RequiredCheckpoints==4&&t.CheckpointSeconds.Length==1,"partial failure invalid");
+        });
+        Test("54 JSON demo roundtrip retains configured gate count and interpolation",()=>{
+            var source=Run();
+            var json=JsonSerializer.Serialize(source);
+            var copy=JsonSerializer.Deserialize<GhostRun>(json);
+            GhostMath.Validate(copy);
+            Equal(copy.RequiredCheckpoints,4);
+            Equal(GhostMath.At(copy,copy.ElapsedSeconds).X,5f);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
