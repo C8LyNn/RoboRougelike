@@ -127,22 +127,18 @@ def selected_source(n):
 def probe_bytes(product):
     need(bool(re.fullmatch(r"B0160W25Rig[0-2][0-9a-f]{12}",product)),
          "invalid distinct QA product scope")
-    return ("""using System;
-using System.IO;
-using NUnit.Framework;
-using UnityEngine;
-namespace B01.CanonicalRigPortW24.Tests {
- public sealed class B0160W25ScopeProbe {
-  [Test] public void OnlyPrivateSaveScope() {
-   string p=Application.persistentDataPath;
-   Assert.IsTrue(p.IndexOf(\""""+product+"""\",StringComparison.OrdinalIgnoreCase)>=0,
-       \"B0160_W25_PRIVATE_SCOPE_INVALID\");
-   Assert.IsTrue(Path.IsPathRooted(Application.temporaryCachePath),
-       \"B0160_W25_TEMP_PATH_INVALID\");
-  }
- }
-}
-""").encode("utf-8")
+    return (
+        "using System;\nusing System.IO;\nusing NUnit.Framework;\nusing UnityEngine;\n"
+        "namespace B01.CanonicalRigPortW24.Tests {\n"
+        " public sealed class B0160W25ScopeProbe {\n"
+        "  [Test] public void OnlyPrivateSaveScope() {\n"
+        "   string p=Application.persistentDataPath;\n"
+        f'   Assert.IsTrue(p.IndexOf("{product}",StringComparison.OrdinalIgnoreCase)>=0,\n'
+        "   \"B0160_W25_PRIVATE_SCOPE_INVALID\");\n"
+        "   Assert.IsTrue(Path.IsPathRooted(Application.temporaryCachePath),\n"
+        "   \"B0160_W25_TEMP_PATH_INVALID\");\n"
+        "  }\n }\n}\n"
+    ).encode("utf-8")
 def private_case(source,index,nonce,helper):
     need(0<=index<3 and re.fullmatch("[0-9a-f]{12}",nonce) is not None,
          "invalid per-project test identity")
