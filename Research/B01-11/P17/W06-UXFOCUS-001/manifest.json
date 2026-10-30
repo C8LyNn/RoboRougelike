@@ -71,9 +71,9 @@
     },
     {
       "name": "Original compiled C# .NET8 Windows",
-      "status": "PENDING",
-      "passed": null,
-      "failed": null,
+      "status": "PASS",
+      "passed": 60,
+      "failed": 0,
       "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41029585530"
     },
     {
@@ -85,7 +85,7 @@
   "qa_b01_60": "PENDING",
   "codex_ack": "PENDING",
   "integration": "NOT_INTEGRATED",
-  "status": "PRODUCER_CSHARP_SOURCE_TESTING / INDEPENDENT_G0_PENDING / INDEPENDENT_QA_PENDING / NOT_OFFERED",
+  "status": "PRODUCER_SOURCE_TESTED_60_60_EACH_OS / INDEPENDENT_G0_PENDING / INDEPENDENT_QA_PENDING / NOT_OFFERED / CODEX_ACK_PENDING",
   "rollback": "Discard isolated branch and dedicated workflow only; zero canonical Unity game files edited.",
   "manifest_note": "Files array covers every source/test/workflow/doc except manifest itself, avoiding a circular self hash."
 }
