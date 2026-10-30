@@ -1,0 +1,56 @@
+name: B01-50 W15 ZIPREADBENCH001 source QA
+on:
+  push:
+    branches: [perf/b01-50-p17-w15-zipreadbench001]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/ZIPREADBENCH001/**'
+      - '.github/workflows/b01-50-w15-zipreadbench.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-source-zipread-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+      - name: Pin original unchanged W13 #540 source and own originals
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d7278f224faecb2aa694bcb93139ef338171e885
+          git show d7278f224faecb2aa694bcb93139ef338171e885:Tools/B01/B01-50/PLAYERFOOTPRINT001/playerfootprint.py > Tools/B01/B01-50/ZIPREADBENCH001/original_playerfootprint.py
+          test "$(git hash-object --no-filters Tools/B01/B01-50/ZIPREADBENCH001/original_playerfootprint.py)" = f8acb5a17d1721aade5d78eb8a8ae33f7db8477d
+          echo "ORIGINAL_W13_GIT_BLOB_PASS"
+          while IFS=$'\t' read -r sha path; do
+            test -n "$sha" || continue
+            test "$(git hash-object --no-filters "$path")" = "$sha" || { echo "OWN_BLOB_MISMATCH $path"; exit 1; }
+            echo "OWN_GIT_BLOB_PASS $path"
+          done < Tools/B01/B01-50/ZIPREADBENCH001/MANIFEST-GIT-BLOBS.tsv
+      - name: Execute 11 original positive and adversarial benchmark tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python --version | tee evidence/python_version.txt
+          python -m unittest discover -s Tools/B01/B01-50/ZIPREADBENCH001/tests -v 2>&1 | tee evidence/qa_tests.log
+          git rev-parse HEAD > evidence/exact_tested_sha.txt
+          sha256sum Tools/B01/B01-50/ZIPREADBENCH001/zipreadbench.py > evidence/source_sha256.txt
+      - name: Preserve authentic synthetic-test-only logs (not native Unity or historical ZIP)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-50-ZIPREADBENCH001-${{ matrix.os }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
