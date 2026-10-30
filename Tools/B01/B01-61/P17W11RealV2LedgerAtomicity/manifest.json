@@ -1,0 +1,36 @@
+{
+  "id": "B01-61-P17W11-ORIGINAL-V2-W06-LEDGER-ATOMICITY-QA-001",
+  "version": "1.0.0",
+  "role": "B01-61",
+  "branch": "qa/b01-61-p17w11-real-v2-ledger-atomicity",
+  "producer": {
+    "pr": 488,
+    "sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3"
+  },
+  "ledger": {
+    "pr": 421,
+    "sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f"
+  },
+  "original_blobs": [
+    "491c89a18827bb027854bba5e6be6630ce4947b6",
+    "cc6611343d585fd0f16ff048f8ecdb0e7b1be30c",
+    "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  ],
+  "owned_paths_count": 7,
+  "expected": "QA_EXECUTION_PASS_WITH_SOURCE_RELEASE_GATE_RED",
+  "native_unity": "NOT_RUN",
+  "synthetic_unity_boundary": true,
+  "original_w06_ledger": true,
+  "producer_source_mutated": false,
+  "receiver": [
+    "B01-23",
+    "B01-40",
+    "B01-60",
+    "B01-62",
+    "B01-00"
+  ],
+  "merge": false,
+  "codex_ack": false,
+  "rollback": "close unmerged QA Draft/remove only QA branch, preserving frozen producer sources"
+}
