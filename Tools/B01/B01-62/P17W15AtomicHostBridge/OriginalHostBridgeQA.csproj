@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+  <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+  <Nullable>enable</Nullable><LangVersion>latest</LangVersion>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+</PropertyGroup>
+<ItemGroup>
+  <Compile Include="Input/DetachedSnapshotContract.cs"/>
+  <Compile Include="Input/DebrisImpulseCore.cs"/>
+  <Compile Include="Input/AtomicDockLedger.cs"/>
+  <Compile Include="FrozenSaveHostBridge.cs"/>
+  <Compile Include="Program.cs"/>
+</ItemGroup>
+</Project>
