@@ -36,6 +36,63 @@ namespace RoboRougelike.B0110.TrainingGhost
         public string Guidance { get; set; }
     }
 
+    // Portable presentation ownership boundary. Values returned to the host
+    // are mutable DTOs, but must never alias data retained by an opt-in HUD.
+    // This is not a CHL physical checkpoint or finish authority.
+    public sealed class GhostPracticePresentation
+    {
+        private GhostSplitResult gate;
+        private GhostPracticeSummary end;
+        public GhostSplitResult LastGate => gate == null ? null : CopyGate(gate);
+        public GhostPracticeSummary FinalSummary => end == null ? null : CopyEnd(end);
+
+        private static GhostSplitResult CopyGate(GhostSplitResult a) =>
+            new GhostSplitResult {
+                GateNumber = a.GateNumber,
+                SegmentSeconds = a.SegmentSeconds,
+                ReferenceSegmentSeconds = a.ReferenceSegmentSeconds,
+                SegmentDeltaSeconds = a.SegmentDeltaSeconds,
+                CumulativeDeltaSeconds = a.CumulativeDeltaSeconds,
+                Pace = a.Pace
+            };
+
+        private static GhostPracticeSummary CopyEnd(GhostPracticeSummary a) =>
+            new GhostPracticeSummary {
+                Completed = a.Completed,
+                TrialSeconds = a.TrialSeconds,
+                ReferenceSeconds = a.ReferenceSeconds,
+                TotalDeltaSeconds = a.TotalDeltaSeconds,
+                HasFullCourseComparison = a.HasFullCourseComparison,
+                BiggestLossGate = a.BiggestLossGate,
+                BiggestLossIsFinishSegment = a.BiggestLossIsFinishSegment,
+                BiggestLossSeconds = a.BiggestLossSeconds,
+                FinishSegmentSeconds = a.FinishSegmentSeconds,
+                ReferenceFinishSegmentSeconds = a.ReferenceFinishSegmentSeconds,
+                FinishSegmentDeltaSeconds = a.FinishSegmentDeltaSeconds,
+                Guidance = a.Guidance
+            };
+
+        public void CaptureGate(GhostSplitResult result)
+        {
+            GhostMath.Check(result != null && result.GateNumber >= 1
+                            && result.GateNumber <= 8,
+                "Cannot display absent or invalid coach gate");
+            gate = CopyGate(result);
+        }
+
+        public void CaptureEnd(GhostPracticeSummary result)
+        {
+            GhostMath.Check(result != null, "Cannot display absent coach result");
+            end = CopyEnd(result);
+        }
+
+        public void Clear()
+        {
+            gate = null;
+            end = null;
+        }
+    }
+
     // Shared UI decision contract: a measured maximum below tolerance is
     // informative data, not an actionable "focus" recommendation.
     // Compiled in both portable .NET tests and Unity; UI must call this rather
