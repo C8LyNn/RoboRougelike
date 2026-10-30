@@ -1,0 +1,16 @@
+{
+  "name": "B01.EconReadinessV4",
+  "rootNamespace": "RoboRougelike.B01.Economy.ReadinessV4",
+  "references": [
+    "B01.EconRebuildV3"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs"/>
+    <Compile Include="../../../Assets/B01Packages/ECONREADINESS004/Runtime/EconomyRunReadinessGateV4.cs" Link="ORIGINAL_W22_READINESS.cs"/>
+    <Compile Include="../../../Assets/B01Packages/ECONREBUILD003/Runtime/RebuildOwnerAuthorityV3.cs" Link="FROZEN_W21_ECON_V3.cs"/>
+  </ItemGroup>
+</Project>
