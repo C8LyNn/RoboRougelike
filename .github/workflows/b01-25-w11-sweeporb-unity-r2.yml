@@ -1,0 +1,68 @@
+name: B01-25 W11 SWEEPORB R2 Unity-source physical ZIP gate (NOT native Unity)
+on:
+  push:
+    branches: [research/b01-25-p17w11-sweeporb001-r2-unity]
+    paths:
+      - 'Assets/B0125SweepOrbR2/**'
+      - 'Assets/B0125SweepOrbR2.meta'
+      - 'Tools/B01/B01-25/P17W11SweepOrbUnityR2/**'
+      - '.github/workflows/b01-25-w11-sweeporb-unity-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-unity-source-gate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      SRC: Research/B01-25/P17/SWEEPORB001
+      OUT: Tools/B01/B01-25/P17W11SweepOrbUnityR2/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Pin immutable original R1 code and two original map blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          git fetch --no-tags origin fc09d2d36b1d26d163347c94b978ca7730cf8891 ad52a604ffa4f143d98e607049d6f79e0c7e580f f565e250659692541d672cdab108c4cfb8cfdd31
+          git show ad52a604ffa4f143d98e607049d6f79e0c7e580f:Research/B01-25/P17/CLEARANCELADDER001/arena.json > "$SRC/.output/clearance.json"
+          git show f565e250659692541d672cdab108c4cfb8cfdd31:Research/B01-25/P17/SLALOM001/arena.json > "$SRC/.output/slalom.json"
+          test "$(git hash-object "$SRC/.output/clearance.json")" = 53eb696950121465befea2855eda4d7268750016
+          test "$(git hash-object "$SRC/.output/slalom.json")" = 013f5fe2058e76233f580a439e8402c0fe09f124
+          test "$(git hash-object Assets/B0125SweepOrbR2/Runtime/SweepCore.cs)" = ca98d0aa967d9e6267a5901304155a7a684620d7
+          echo ORIGINAL_CORE_AND_MAP_GIT_BLOBS_PASS
+      - name: Compile original gameplay source CSharp9 netstandard2.1 with warnings as errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build "$SRC/SweepUnityCompat.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Run original 33 real moving-ORB gameplay and source-map checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SweepOrb.csproj" -c Release -- "$SRC/profiles.json" "$SRC/.output/clearance.json" "$SRC/.output/slalom.json" "$SRC/.output/receipt.json" 2>&1 | tee "$OUT/gameplay-$RUNNER_OS.log"
+      - name: Execute 18 original source and physical ZIP GUID asmdef scope staging rollback tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W11SweepOrbUnityR2/verify.py --output "$OUT/receipt.json" 2>&1 | tee "$OUT/verification-$RUNNER_OS.log"
+      - name: Archive actual raw logs, machine receipts and original physical Unity-source inner ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-sweeporb-r2-source-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SWEEPORB001/.output/receipt.json
+            Tools/B01/B01-25/P17W11SweepOrbUnityR2/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
