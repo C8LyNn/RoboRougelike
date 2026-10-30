@@ -264,7 +264,7 @@ def run(root:Path):
     "safe_migration":"DISPOSABLE_SCRATCH_ONLY; no project install",
    }
    data=json.dumps(summary,indent=2,sort_keys=True)+"\n"
-   yield data
+   return data
   finally:
    for w in reversed(worktrees):
     git(root,"worktree","remove","--force",str(w))
@@ -279,7 +279,7 @@ def main():
  if path.exists() or not path.parent.is_dir():
   raise ValueError("refuse existing/foreign physical receipt")
  # We only generate evidence at the VERY END of all original worktree tests.
- final=next(run(Path(v.repo).resolve()))
+ final=run(Path(v.repo).resolve())
  path.write_text(final,encoding="utf-8")
  print("B0162_W22_COMBINED_SOURCE_G0_CHECKS_PASS="+str(checks))
  print("B0162_W22_CROSS_OWNER_GUIDS_UNIQUE=38/38")
