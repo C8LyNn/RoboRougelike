@@ -1,0 +1,29 @@
+name: B01-11 P17 W14 UXCOMFORT original CSharp
+on:
+  push:
+    branches:
+      - research/b01-11-p17-w14-uxcomfort-001
+  pull_request:
+    paths:
+      - 'Research/B01-11/P17/W14-UXCOMFORT-001/**'
+      - '.github/workflows/b01-11-uxcomfort-w14.yml'
+permissions:
+  contents: read
+jobs:
+  original-csharp:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute original CSharp deterministic visual-stimulus gate
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          dotnet run --project Research/B01-11/P17/W14-UXCOMFORT-001/Tests/UXComfortTests.csproj -c Release --no-launch-profile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

@@ -1,0 +1,120 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXCOMFORT-001",
+  "version": "R2",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/571",
+  "branch": "research/b01-11-p17-w14-uxcomfort-001",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "2a2bd304454efc3cc3bb825e5617b669e29b59f5",
+  "scope": [
+    "Research/B01-11/P17/W14-UXCOMFORT-001/**",
+    ".github/workflows/b01-11-uxcomfort-w14.yml"
+  ],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/Runtime/VisualStimulusGate.cs",
+      "bytes": 7407,
+      "git_blob_sha1": "2f6451aa8813e2043b20dabcd38ba03cfc5a7fc4",
+      "sha256": "d483ad3d3d300de54af38af0777275063aa379508be72b75931534c1644451b8"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/Tests/Program.cs",
+      "bytes": 21759,
+      "git_blob_sha1": "0a557d44f7a0e753049413384343bf939c3d5d89",
+      "sha256": "ce1a108224a204dea12ff6bc12da7c61f55a0dcb2cc912bce4591732aa1ac76f"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/Tests/UXComfortTests.csproj",
+      "bytes": 411,
+      "git_blob_sha1": "fe8e0e58496dcbde4b581f37257ea63969bd44c7",
+      "sha256": "538e368d2041dab0618ad1f13815c49426de087501a8c5ee842928e1af2a83d2"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxcomfort-w14.yml",
+      "bytes": 897,
+      "git_blob_sha1": "f2f6a9ab53dea425b0a0d7f21a2e0b0eb0d6bdb1",
+      "sha256": "3c9e22c9a4f0871e704e69288c7cdf692e5a69ddce1a11691f10edea4026ea96"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/README.md",
+      "bytes": 6004,
+      "git_blob_sha1": "dd1c00d8c210a1fb51261fd8b02da16f22eaa4f7",
+      "sha256": "8f187ae7b43c1d5aa90f39925e5788fe77f5a877044013ffb943b3626f209a51"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/TEST_PLAN.md",
+      "bytes": 3564,
+      "git_blob_sha1": "ed5c7ccf1e7c55057435b662abde5aed0fe5e89c",
+      "sha256": "fb20207893f92ada8cb1a8ef59432aa2dc7b4124ec012c1b19b4cbf17e51f594"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/QA_RECEIVER.md",
+      "bytes": 3342,
+      "git_blob_sha1": "5e1d2ba9fde3996b6abb41b85f02b6ddd49e7ed4",
+      "sha256": "e088cffe33c3471a58c9d920748e0d675ebfd38d1f5e255da4dd71c720a92d3e"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2977,
+      "git_blob_sha1": "2bbdebd41e9b6ffd283b21c68834fc130df85f58",
+      "sha256": "a8a572caf95671957e13db1372736fef58aa8c6c9857de0b56a1c82353b97013"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/EVIDENCE/W15_ZERO_STIMULUS_RED_GREEN.md",
+      "bytes": 2381,
+      "git_blob_sha1": "4f79ce86093e5e476f1dcfd6659c244fe88d6544",
+      "sha256": "e1010e989dd268bf9f9f7af3db249fe016c2a8de89da36f6250ad207c67f97c3"
+    }
+  ],
+  "test_runs": [
+    {
+      "os": "Ubuntu",
+      "phase": "RED",
+      "passed": 102,
+      "failed": 14,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091279821",
+      "head": "a06d5e0b59a9fb24c38de5b54ed63bef74717fd9"
+    },
+    {
+      "os": "Windows",
+      "phase": "RED",
+      "passed": 102,
+      "failed": 14,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091279821",
+      "head": "a06d5e0b59a9fb24c38de5b54ed63bef74717fd9"
+    },
+    {
+      "os": "Ubuntu",
+      "phase": "GREEN",
+      "passed": 116,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091389393",
+      "head": "2a2bd304454efc3cc3bb825e5617b669e29b59f5"
+    },
+    {
+      "os": "Windows",
+      "phase": "GREEN",
+      "passed": 116,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091389393",
+      "head": "2a2bd304454efc3cc3bb825e5617b669e29b59f5"
+    },
+    {
+      "os": "Unity EditMode/PlayMode/real graphics",
+      "phase": "NATIVE",
+      "status": "NOT_RUN"
+    }
+  ],
+  "producer_source": "R2_SOURCE_GREEN_116_PER_OS",
+  "source_g0": "INDEPENDENT_PENDING",
+  "independent_qa": "INDEPENDENT_PENDING",
+  "unity_g1": "NOT_RUN",
+  "codex": "NOT_OFFERED_ACK_PENDING_NOT_INTEGRATED",
+  "g2": "HOLD",
+  "no_merge": true,
+  "limits": "No-op zero-strength flash and shake become static indicators without spending rolling flash count or gap; pure original C# effect plan, no real Unity emitted light or medical photosensitivity certification.",
+  "rollback": "Immutable R1 at 866ab291924be2449fe8b295a1c1291259183608. Drop producer-owned isolated R2 research/workflow or revert only original R2 changes; Codex Assets/main/develop, frozen #510/#556 untouched.",
+  "note": "9 pinned actual source/test/docs/evidence/workflow payloads, each SHA256, exact UTF-8 bytes, Git blob SHA1; manifest excludes itself by design. Exact packaged SHA separately rerun in CI.",
+  "wave": "PASS17 WAVE15",
+  "docs_commit": "c2049d1d32af1281437d36127a71bc476a8f4db1"
+}
