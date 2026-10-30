@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DEVICE-HINTS-001 — Input Prompt Stabilizer</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#07131f;color:#e3efff}*{box-sizing:border-box}body{margin:0;padding:clamp(12px,3vw,32px)}main{max-width:1060px;margin:auto}h1{font-size:clamp(1.3rem,3vw,2rem);margin:0 0 5px}.sub{color:#9bb4d0;margin:0 0 24px}.wrap{display:grid;grid-template-columns:minmax(260px,1.3fr) minmax(250px,1fr);gap:18px}@media(max-width:700px){.wrap{grid-template-columns:1fr}}.panel{min-width:0;background:#102337;border:1px solid #30506a;border-radius:14px;padding:20px}.tag{font-size:.76rem;color:#9ddfdb;text-transform:uppercase;letter-spacing:.11em;font-weight:700}h2{font-size:1.2rem;margin:8px 0 12px}button,select{background:#1c384f;color:#f2fbff;border:1px solid #567a92;padding:12px 14px;border-radius:9px;font:inherit;cursor:pointer;max-width:100%}button:hover{background:#28506b}button:focus-visible,select:focus-visible{outline:3px solid #69dbcb;outline-offset:2px}button:disabled{opacity:.45}.btns{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.badge{display:inline-flex;background:#194c50;padding:6px 12px;border-radius:20px;font-weight:700}.prompt{display:flex;align-items:center;gap:12px;border-bottom:1px solid #2a465a;padding:14px 0;min-width:0}.glyph{width:80px;min-width:80px;text-align:center;border:1px solid #4d7a85;background:#19384d;border-radius:8px;padding:8px;font-weight:800;overflow-wrap:anywhere}.action{min-width:0;overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#081b2b;border:1px solid #23445b;padding:12px;border-radius:9px;font-size:.76rem}.fine{color:#a9c3dd}.stat{font-variant-numeric:tabular-nums;font-weight:700}.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.spacer{height:14px}footer{font-size:.8rem;color:#91aec8;margin:20px 0}
+</style></head><body><main>
+<div class="tag">B01-12 · PASS17 / W15 · Standalone UX research</div><h1>Stabilne podpowiedzi sterowania</h1><p class="sub">Przełączanie klawiatura/mysz ↔ pad bez przypadkowych skoków glyphów. Symulator deterministycznego zegara; nie podłącza się do Unity.</p>
+<div class="wrap"><section class="panel" aria-label="Podgląd interfejsu"><div class="tag">Aktywny schemat</div><h2 id="device" aria-live="polite">Klawiatura i mysz</h2><span class="badge" id="mode">KM</span><div class="spacer"></div><label for="context">Ekran gry</label><div><select id="context"><option value="combat">Walka</option><option value="garage">Garaż</option></select></div><div id="prompts" aria-label="Podpowiedzi sterowania"></div></section>
+<section class="panel" aria-label="Symulator sygnałów"><div class="tag">Deterministyczne wejścia</div><h2>Symuluj aktywność</h2><p class="fine">Do zmiany urządzenia potrzeba dwóch celowych sygnałów w odstępie 50–650 ms. Sam ruch myszy i dryf gałki są ignorowane. Po zmianie 850 ms ochrony.</p><div class="btns"><button id="pad">Pad: naciśnij A</button><button id="keyboard">Klawiatura: spacja</button></div><div class="btns"><button id="mouse">Mysz: przypadkowy ruch</button><button id="drift">Pad: dryf analogowy</button></div><div class="btns"><button id="tick100">+100 ms</button><button id="tick900">+900 ms</button><button id="reset">Reset</button></div><div class="stat" id="clock">Czas: 0 ms</div><p id="status" role="status" aria-live="polite">Gotowe.</p><div class="tag">Stan silnika</div><pre id="snapshot"></pre></section></div><footer>Prototyp badawczy. Żadnych automatycznych zapisów, telemetrii, API sieciowego ani zmian w grze.</footer>
+</main>
+<script id="engine">
+/* ENGINE_START */
+'use strict';
+const DH = (() => {
+  const GROUPS = ['kbm','pad'];
+  const CONTEXTS = ['combat','garage'];
+  const KEYS = {
+    combat:[['Ruch','WASD','Lewy drążek'],['Strzał główny','LPM','RT'],['Strzał drugi','PPM','LT'],['Wzmocnienie','Shift','LB'],['Pauza','Esc','Start']],
+    garage:[['Wybierz część','LPM','A'],['Obróć','R','RB'],['Usuń','Delete','X'],['Zatwierdź','Enter','A'],['Powrót','Esc','B']]
+  };
+  const isPlain = o => { if(!o || typeof o!=='object' || Object.prototype.toString.call(o)!=='[object Object]')return false; const p=Object.getPrototypeOf(o); return p===null || p===Object.prototype || (p.constructor?.name==='Object' && Object.getPrototypeOf(p)===null); };
+  const initial = () => ({version:1,active:'kbm',context:'combat',pending:null,changedAt:-850,now:0,revision:0});
+  const fail = (state,reason) => ({state,ok:false,reason});
+  const valid = s => s && isPlain(s) && Object.keys(s).sort().join('|')==='active|changedAt|context|now|pending|revision|version' && s.version===1 && GROUPS.includes(s.active) && CONTEXTS.includes(s.context) && Number.isSafeInteger(s.now) && s.now>=0 && Number.isSafeInteger(s.changedAt) && s.changedAt<=s.now && Number.isSafeInteger(s.revision) && s.revision>=0 && (s.pending===null || (isPlain(s.pending) && Object.keys(s.pending).sort().join('|')==='count|device|lastAt' && GROUPS.includes(s.pending.device) && s.pending.device!==s.active && Number.isInteger(s.pending.count) && s.pending.count===1 && Number.isSafeInteger(s.pending.lastAt) && s.pending.lastAt<=s.now && s.pending.lastAt>=0));
+  const step=(state,event)=>{
+    if(!valid(state))return fail(state,'INVALID_STATE');
+    if(!event || !isPlain(event) || typeof event.type!=='string')return fail(state,'INVALID_EVENT');
+    if(event.type==='reset' && Object.keys(event).length===1)return {state:initial(),ok:true,reason:'RESET'};
+    if(event.type==='context'){
+      if(Object.keys(event).sort().join('|')!=='context|type' || !CONTEXTS.includes(event.context))return fail(state,'INVALID_CONTEXT');
+      if(event.context===state.context)return fail(state,'UNCHANGED');
+      return {state:{...state,context:event.context,pending:null,revision:state.revision+1},ok:true,reason:'CONTEXT_CHANGED'};
+    }
+    if(event.type==='advance'){
+      if(Object.keys(event).sort().join('|')!=='ms|type' || !Number.isSafeInteger(event.ms)||event.ms<=0||event.ms>60000||!Number.isSafeInteger(state.now+event.ms))return fail(state,'INVALID_TIME');
+      const now=state.now+event.ms;
+      return {state:{...state,now,pending:state.pending && now-state.pending.lastAt>650?null:state.pending},ok:true,reason:'TIME_ADVANCED'};
+    }
+    if(event.type!=='signal'||Object.keys(event).sort().join('|')!=='device|intent|type' || !GROUPS.includes(event.device)||!['strong','noise'].includes(event.intent))return fail(state,'INVALID_SIGNAL');
+    if(event.intent==='noise')return fail(state,'NOISE_IGNORED');
+    if(event.device===state.active){
+      if(!state.pending)return fail(state,'ALREADY_ACTIVE');
+      return {state:{...state,pending:null},ok:true,reason:'CANDIDATE_CANCELLED'};
+    }
+    if(state.now-state.changedAt<850)return fail(state,'COOLDOWN');
+    if(state.pending && state.pending.device===event.device){
+      const gap=state.now-state.pending.lastAt;
+      if(gap>=50 && gap<=650)return {state:{...state,active:event.device,pending:null,changedAt:state.now,revision:state.revision+1},ok:true,reason:'DEVICE_SWITCHED'};
+      if(gap<50)return fail(state,'BOUNCE_IGNORED');
+    }
+    return {state:{...state,pending:{device:event.device,lastAt:state.now,count:1}},ok:true,reason:'CANDIDATE_ARMED'};
+  };
+  const hints=s=>{if(!valid(s))throw new Error('INVALID_STATE');return KEYS[s.context].map(([label,kbm,pad])=>({label,glyph:s.active==='kbm'?kbm:pad}));};
+  return Object.freeze({initial,step,hints,valid});
+})();
+/* ENGINE_END */
+</script><script>
+(()=>{
+  'use strict';let state=DH.initial();
+  const $=id=>document.getElementById(id);
+  const draw=(reason='READY')=>{
+    $('device').textContent=state.active==='pad'?'Kontroler':'Klawiatura i mysz';$('mode').textContent=state.active==='pad'?'PAD':'KM';$('context').value=state.context;
+    $('prompts').replaceChildren(...DH.hints(state).map(h=>{let row=document.createElement('div');row.className='prompt';let g=document.createElement('div');g.className='glyph';g.textContent=h.glyph;let label=document.createElement('div');label.className='action';label.textContent=h.label;row.append(g,label);return row;}));
+    $('snapshot').textContent=JSON.stringify(state,null,2);$('clock').textContent='Czas: '+state.now+' ms';$('status').textContent=reason;
+  };
+  const dispatch=e=>{const result=DH.step(state,e);state=result.state;draw(result.reason);};
+  $('pad').addEventListener('click',()=>dispatch({type:'signal',device:'pad',intent:'strong'}));
+  $('keyboard').addEventListener('click',()=>dispatch({type:'signal',device:'kbm',intent:'strong'}));
+  $('mouse').addEventListener('click',()=>dispatch({type:'signal',device:'kbm',intent:'noise'}));
+  $('drift').addEventListener('click',()=>dispatch({type:'signal',device:'pad',intent:'noise'}));
+  $('tick100').addEventListener('click',()=>dispatch({type:'advance',ms:100}));
+  $('tick900').addEventListener('click',()=>dispatch({type:'advance',ms:900}));
+  $('reset').addEventListener('click',()=>dispatch({type:'reset'}));
+  $('context').addEventListener('change',e=>dispatch({type:'context',context:e.target.value}));
+  draw();
+})();
+</script></body></html>

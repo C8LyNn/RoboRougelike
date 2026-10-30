@@ -1,0 +1,343 @@
+{
+  "total": 84,
+  "pass": 84,
+  "fail": 0,
+  "cases": [
+    {
+      "name": "320 default KM",
+      "ok": true
+    },
+    {
+      "name": "320 five hints",
+      "ok": true
+    },
+    {
+      "name": "320 first glyph WASD",
+      "ok": true
+    },
+    {
+      "name": "320 default clock",
+      "ok": true
+    },
+    {
+      "name": "320 pad drift ignored",
+      "ok": true
+    },
+    {
+      "name": "320 armed after first",
+      "ok": true
+    },
+    {
+      "name": "320 bounce ignored",
+      "ok": true
+    },
+    {
+      "name": "320 switched to pad",
+      "ok": true
+    },
+    {
+      "name": "320 RT visible",
+      "ok": true
+    },
+    {
+      "name": "320 revision 1",
+      "ok": true
+    },
+    {
+      "name": "320 cooldown",
+      "ok": true
+    },
+    {
+      "name": "320 KB candidate",
+      "ok": true
+    },
+    {
+      "name": "320 switched back KM",
+      "ok": true
+    },
+    {
+      "name": "320 garage context",
+      "ok": true
+    },
+    {
+      "name": "320 garage visible",
+      "ok": true
+    },
+    {
+      "name": "320 reset active",
+      "ok": true
+    },
+    {
+      "name": "320 reset context",
+      "ok": true
+    },
+    {
+      "name": "320 no overflow",
+      "ok": true
+    },
+    {
+      "name": "320 keyboard Enter button works",
+      "ok": true
+    },
+    {
+      "name": "320 context cancels armed",
+      "ok": true
+    },
+    {
+      "name": "320 no JS errors",
+      "ok": true
+    },
+    {
+      "name": "768 default KM",
+      "ok": true
+    },
+    {
+      "name": "768 five hints",
+      "ok": true
+    },
+    {
+      "name": "768 first glyph WASD",
+      "ok": true
+    },
+    {
+      "name": "768 default clock",
+      "ok": true
+    },
+    {
+      "name": "768 pad drift ignored",
+      "ok": true
+    },
+    {
+      "name": "768 armed after first",
+      "ok": true
+    },
+    {
+      "name": "768 bounce ignored",
+      "ok": true
+    },
+    {
+      "name": "768 switched to pad",
+      "ok": true
+    },
+    {
+      "name": "768 RT visible",
+      "ok": true
+    },
+    {
+      "name": "768 revision 1",
+      "ok": true
+    },
+    {
+      "name": "768 cooldown",
+      "ok": true
+    },
+    {
+      "name": "768 KB candidate",
+      "ok": true
+    },
+    {
+      "name": "768 switched back KM",
+      "ok": true
+    },
+    {
+      "name": "768 garage context",
+      "ok": true
+    },
+    {
+      "name": "768 garage visible",
+      "ok": true
+    },
+    {
+      "name": "768 reset active",
+      "ok": true
+    },
+    {
+      "name": "768 reset context",
+      "ok": true
+    },
+    {
+      "name": "768 no overflow",
+      "ok": true
+    },
+    {
+      "name": "768 keyboard Enter button works",
+      "ok": true
+    },
+    {
+      "name": "768 context cancels armed",
+      "ok": true
+    },
+    {
+      "name": "768 no JS errors",
+      "ok": true
+    },
+    {
+      "name": "1280 default KM",
+      "ok": true
+    },
+    {
+      "name": "1280 five hints",
+      "ok": true
+    },
+    {
+      "name": "1280 first glyph WASD",
+      "ok": true
+    },
+    {
+      "name": "1280 default clock",
+      "ok": true
+    },
+    {
+      "name": "1280 pad drift ignored",
+      "ok": true
+    },
+    {
+      "name": "1280 armed after first",
+      "ok": true
+    },
+    {
+      "name": "1280 bounce ignored",
+      "ok": true
+    },
+    {
+      "name": "1280 switched to pad",
+      "ok": true
+    },
+    {
+      "name": "1280 RT visible",
+      "ok": true
+    },
+    {
+      "name": "1280 revision 1",
+      "ok": true
+    },
+    {
+      "name": "1280 cooldown",
+      "ok": true
+    },
+    {
+      "name": "1280 KB candidate",
+      "ok": true
+    },
+    {
+      "name": "1280 switched back KM",
+      "ok": true
+    },
+    {
+      "name": "1280 garage context",
+      "ok": true
+    },
+    {
+      "name": "1280 garage visible",
+      "ok": true
+    },
+    {
+      "name": "1280 reset active",
+      "ok": true
+    },
+    {
+      "name": "1280 reset context",
+      "ok": true
+    },
+    {
+      "name": "1280 no overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 keyboard Enter button works",
+      "ok": true
+    },
+    {
+      "name": "1280 context cancels armed",
+      "ok": true
+    },
+    {
+      "name": "1280 no JS errors",
+      "ok": true
+    },
+    {
+      "name": "1920 default KM",
+      "ok": true
+    },
+    {
+      "name": "1920 five hints",
+      "ok": true
+    },
+    {
+      "name": "1920 first glyph WASD",
+      "ok": true
+    },
+    {
+      "name": "1920 default clock",
+      "ok": true
+    },
+    {
+      "name": "1920 pad drift ignored",
+      "ok": true
+    },
+    {
+      "name": "1920 armed after first",
+      "ok": true
+    },
+    {
+      "name": "1920 bounce ignored",
+      "ok": true
+    },
+    {
+      "name": "1920 switched to pad",
+      "ok": true
+    },
+    {
+      "name": "1920 RT visible",
+      "ok": true
+    },
+    {
+      "name": "1920 revision 1",
+      "ok": true
+    },
+    {
+      "name": "1920 cooldown",
+      "ok": true
+    },
+    {
+      "name": "1920 KB candidate",
+      "ok": true
+    },
+    {
+      "name": "1920 switched back KM",
+      "ok": true
+    },
+    {
+      "name": "1920 garage context",
+      "ok": true
+    },
+    {
+      "name": "1920 garage visible",
+      "ok": true
+    },
+    {
+      "name": "1920 reset active",
+      "ok": true
+    },
+    {
+      "name": "1920 reset context",
+      "ok": true
+    },
+    {
+      "name": "1920 no overflow",
+      "ok": true
+    },
+    {
+      "name": "1920 keyboard Enter button works",
+      "ok": true
+    },
+    {
+      "name": "1920 context cancels armed",
+      "ok": true
+    },
+    {
+      "name": "1920 no JS errors",
+      "ok": true
+    }
+  ]
+}
