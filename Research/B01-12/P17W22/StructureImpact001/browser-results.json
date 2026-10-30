@@ -1,0 +1,361 @@
+{
+  "suite": "B01-12-STRUCTURE-IMPACT-001",
+  "runner": "chromium",
+  "passed": 88,
+  "failed": 0,
+  "js_errors": [],
+  "cases": [
+    {
+      "case": "320x720 shows all 15 modules",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 shows 17 edges",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 initial baseline 14",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 baseline zero lost",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 core protected",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 click crossbar",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 target CSS selected",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 gun is detached",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 gun marked danger",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 preview does not remove nodes",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 wheel is leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 keyboard Enter on rear L",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 worst button chooses top ranked",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 JSON schema and stable selected",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 reset restores empty state",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 export without selection status",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 export after selection valid",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 ARIA status exists",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 no document horizontal overflow",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 no unexpected JS errors",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 SVG does not capture pointer",
+      "result": "PASS"
+    },
+    {
+      "case": "320x720 scanning ranking not blank",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 shows all 15 modules",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 shows 17 edges",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 initial baseline 14",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 baseline zero lost",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 core protected",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 click crossbar",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 target CSS selected",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 gun is detached",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 gun marked danger",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 preview does not remove nodes",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 wheel is leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 keyboard Enter on rear L",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 worst button chooses top ranked",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 JSON schema and stable selected",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 reset restores empty state",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 export without selection status",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 export after selection valid",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 ARIA status exists",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 no document horizontal overflow",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 no unexpected JS errors",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 SVG does not capture pointer",
+      "result": "PASS"
+    },
+    {
+      "case": "768x1024 scanning ranking not blank",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 shows all 15 modules",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 shows 17 edges",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 initial baseline 14",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 baseline zero lost",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 core protected",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 click crossbar",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 target CSS selected",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 gun is detached",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 gun marked danger",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 preview does not remove nodes",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 wheel is leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 keyboard Enter on rear L",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 worst button chooses top ranked",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 JSON schema and stable selected",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 reset restores empty state",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 export without selection status",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 export after selection valid",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 ARIA status exists",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 no document horizontal overflow",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 no unexpected JS errors",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 SVG does not capture pointer",
+      "result": "PASS"
+    },
+    {
+      "case": "1280x720 scanning ranking not blank",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 shows all 15 modules",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 shows 17 edges",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 initial baseline 14",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 baseline zero lost",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 core protected",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 click crossbar",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 target CSS selected",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 gun is detached",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 gun marked danger",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 preview does not remove nodes",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 wheel is leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 keyboard Enter on rear L",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 worst button chooses top ranked",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 JSON schema and stable selected",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 reset restores empty state",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 export without selection status",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 export after selection valid",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 ARIA status exists",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 no document horizontal overflow",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 no unexpected JS errors",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 SVG does not capture pointer",
+      "result": "PASS"
+    },
+    {
+      "case": "1920x1080 scanning ranking not blank",
+      "result": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "package": "B01-12-STRUCTURE-IMPACT-001/R1",
+  "files": {
+    "impact_engine.js": {
+      "sha256": "0abe978774f24e0beabde4fb0f3f8f38755274f932ac3ff8ddcc07bbfd864772",
+      "bytes": 4345
+    },
+    "fixture.js": {
+      "sha256": "5672d88abec5f8c45726bbb6814345e2f907f5ab78d60319e8c42ae284b4ea72",
+      "bytes": 1631
+    },
+    "demo.html": {
+      "sha256": "7c74e9fa88fa8a31441b8cb03d4155d32b71a8cb26dced554fad9b027a72af1a",
+      "bytes": 4667
+    },
+    "ui.js": {
+      "sha256": "6c576a5fa91b4fba6c4a649a9ef550518639986ea5c08ae68a4a096651d8f906",
+      "bytes": 3730
+    },
+    "test_engine.cjs": {
+      "sha256": "c41371257d7187193cbfa7f81879ae726e4d58080b86fa946165ec81efa6a1e7",
+      "bytes": 9079
+    },
+    "test_browser.py": {
+      "sha256": "f948645eb7a0b2f95b77172acb8ad88becc1a381ec9ed0cc4d10fd84218ce450",
+      "bytes": 5931
+    }
+  }
+}
