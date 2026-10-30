@@ -36,8 +36,8 @@ def asmdefs():
         ps=list((ROOT/A/rel).glob("*.asmdef"));assert len(ps)==1
         d.append(json.loads(ps[0].read_text()))
     assert d[0]["autoReferenced"] is False
-    assert d[1]["references"]==["B0125.SinkPlate.Runtime"] and d[1]["includePlatforms"]==["Editor"]
-    assert d[2]["references"]==["B0125.SinkPlate.Runtime"]
+    assert d[1]["references"]==["B0125.SinkPlate.R2.Runtime"] and d[1]["includePlatforms"]==["Editor"]
+    assert d[2]["references"]==["B0125.SinkPlate.R2.Runtime"]
     assert "TestAssemblies" in d[2]["optionalUnityReferences"]
 def actual_demo(s):
     for k in ("AddComponent<Rigidbody>()","CreatePrimitive(PrimitiveType.Cube)",
@@ -60,7 +60,7 @@ def arena():
 def manifest():
     m=json.loads(txt(T/"manifest.json"))
     assert m["packageId"]=="B01-25-SINKPLATE001" and m["version"]=="R2"
-    assert m["baseSha"]==BASE and m["unityNative"]=="NOT_RUN"
+    assert m["baseSha"]==BASE and m["nativeUnity"]=="NOT_RUN"
     assert not m["codexAck"] and not m["integrated"]
     paths=git("diff","--name-only",BASE,"HEAD").decode().splitlines()
     def own(n):
@@ -143,7 +143,7 @@ class Checks(unittest.TestCase):
         self.assertNotIn("UnityEngine",txt(A/"Runtime/SinkPlateCore.cs"))
     def test_17_no_fake_integration(self):
         m=json.loads(txt(T/"manifest.json"))
-        self.assertEqual(m["unityNative"],"NOT_RUN");self.assertFalse(m["integrated"])
+        self.assertEqual(m["nativeUnity"],"NOT_RUN");self.assertFalse(m["integrated"])
     def test_19_swept_entry_sensor_original_api_is_wired(self):
         core=txt(A/"Runtime/PlateSweptOccupancy.cs")
         script=txt(A/"Runtime/SinkPlateUnityDemo.cs")
