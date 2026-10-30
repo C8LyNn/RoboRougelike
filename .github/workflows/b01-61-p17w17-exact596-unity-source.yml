@@ -1,0 +1,56 @@
+name: B01-61 W17 single selected 596 original Unity-facing host source QA
+on:
+  push:
+    branches: [qa/b01-61-p17w17-final596-unity-mono-host-source-gate]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W17Final596UnityHostQA/**"
+      - ".github/workflows/b01-61-p17w17-exact596-unity-source.yml"
+jobs:
+  original596-unity-mono-source:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [ubuntu-24.04, windows-2025]}}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Original selected immutable #596 Git source SHA plus QA-only paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W17Final596UnityHostQA/source_guard.py 2>&1 | tee w17-provenance.log
+      - name: Compile real exact #596 original Unity-facing MonoBehaviour C# against public API stub
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W17Final596UnityHostQA/Original596UnityHostSourceQA.csproj -c Release --warnaserror 2>&1 | tee w17-build.log
+      - name: Execute original host Light Heavy Save physical OS file cold Load and rollback regression
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W17Final596UnityHostQA/Original596UnityHostSourceQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --source > w17-source.log 2>&1
+          src=$?
+          cat w17-source.log
+          dotnet run --no-build --project "$p" -c Release -- --release > w17-release.log 2>&1
+          rel=$?
+          cat w17-release.log
+          printf 'SOURCE_EXIT=%s RELEASE_EXIT=%s NATIVE_UNITY=NOT_RUN\n' "$src" "$rel" | tee w17-gates.txt
+          test "$src" = 0 && test "$rel" = 3 || exit 1
+          grep -q B0161_W17_FINAL596_ORIGINAL_UNITY_HOST_SOURCE_QA_GREEN w17-source.log || exit 1
+          grep -q B0161_W17_GAME_RELEASE_HOLD w17-release.log || exit 1
+          echo "SELECTED_596_ORIGINAL_UNITY_MONO_SOURCE_QA_PASS_NATIVE_NOT_RUN"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w17-final596-unity-mono-source-${{ matrix.os }}
+          path: |
+            w17-provenance.log
+            w17-build.log
+            w17-source.log
+            w17-release.log
+            w17-gates.txt
+          if-no-files-found: warn
