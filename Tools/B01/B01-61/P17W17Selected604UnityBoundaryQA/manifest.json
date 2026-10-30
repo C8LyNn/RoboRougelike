@@ -1,0 +1,23 @@
+{
+  "package": "B01-61-P17W17-EXACT-604-MONOBEHAVIOUR-G0-SOURCE-QA-001",
+  "owner": "B01-61",
+  "selected_provisional_producer_pr": 604,
+  "selected_producer_sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+  "excluded_alternative_producer_pr": 596,
+  "excluded_alternative_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "original_git_blob_pins": 7,
+  "qa_only_files": 7,
+  "processes_per_os": 7,
+  "real_original_unity_csharp_source_compiled": true,
+  "unity_engine_backend": "SYNTHETIC FAKE API ONLY",
+  "native_unity_editor": "NOT_RUN",
+  "physx": "NOT_RUN",
+  "native_authored_test_slot_contract": "42 chars vs 32 API limit",
+  "canonical_game_integration": "HOLD",
+  "crash_atomic_two_file_commit": "NOT_VERIFIED",
+  "G2": "HOLD",
+  "CodexAck": false,
+  "merge": false
+}
