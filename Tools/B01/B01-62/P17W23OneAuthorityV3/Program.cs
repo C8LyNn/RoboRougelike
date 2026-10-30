@@ -223,7 +223,10 @@ internal static class IndependentOriginalGate
                 if(v!=CanonicalGateResult.HostException||s.Quarantined||
                    s.HasWorld||f.Partial==null||!f.Partial.Retired||
                    f.Partial.Active||f.CleanupCalls!=1)return false;
-                s.Dispose();
+                // V3 intentionally requires explicit gateway physical-retirement
+                // proof, even when a wholly-cleaned stage left no published world.
+                if(!TrySecondClr(dir,false))return false;
+                if(!CloseTrusted(s,f))return false;
                 return TrySecondClr(dir,true);
             }
             finally{f.RetireAll();CloseTrusted(s,f);}
