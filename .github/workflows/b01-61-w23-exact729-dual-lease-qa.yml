@@ -1,0 +1,55 @@
+name: B01-61 W23 exact selected 729 and original 669 two OS owners cross-CLR negative
+on:
+  push:
+    branches: [qa/b01-61-p17w23-729-669-one-authority-bypass]
+permissions:
+  contents: read
+jobs:
+  original-729-with-original-669-source-authority:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Bring in only original #669 frozen source and pin exact original Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          d="Tools/B01/B01-61/P17W23Canonical729AuthorityQA/.source"
+          mkdir -p "$d"
+          git fetch --no-tags origin d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$d/SingleFileSaveSlot.cs"
+          python Tools/B01/B01-61/P17W23Canonical729AuthorityQA/source_guard.py 2>&1 | tee b0161-w23-pin.log
+      - name: Strict original CSharp9 #729 V3 + original #669 #556 W06 source build
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W23Canonical729AuthorityQA/Exact729And669QA.csproj -c Release --warnaserror 2>&1 | tee b0161-w23-build.log
+      - name: Real process owner test and independent true OS storage bypass witness
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W23Canonical729AuthorityQA/Exact729And669QA.csproj 2>&1 | tee b0161-w23-run.log
+          grep -q 'B0161_W23_EXACT_SELECTED_729_669_SOURCE_TOTAL PASS=6 FAIL=0' b0161-w23-run.log
+          grep -q 'W23_729_669_TWO_DISTINCT_OS_LOCK_FILES_EXTERNAL_WRITER_RED=REPRODUCED' b0161-w23-run.log
+          grep -q 'W23_729_STALE_LIGHT_PREVIEW_AFTER_EXTERNAL_HEAVY_COMMIT_GREEN=DENIED_AND_QUARANTINED' b0161-w23-run.log
+          grep -q 'B0161_W23_RELEASE_GATE=HOLD_TWO_INDEPENDENT_OWNER_LOCK_FILES' b0161-w23-run.log
+      - name: Evidence logs original source only, NEVER native Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w23-729-669-original-${{ matrix.os }}
+          path: |
+            b0161-w23-pin.log
+            b0161-w23-build.log
+            b0161-w23-run.log
+          if-no-files-found: warn
+          retention-days: 21
