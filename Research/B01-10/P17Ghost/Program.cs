@@ -19,6 +19,19 @@ internal static class Program
         g.Tick(multiplier,false,P(5,160));
         return g.Finish(P(5,160));
     }
+    // Genuine recorder completion with configurable real gate count. This
+    // deliberately avoids forging a completed run via field edits.
+    private static GhostRun RunLayout(int gates,float step=1f,
+                                      string course="CHL003_R1",string rig="Light")
+    {
+        var r=new GhostRecorder(course,rig,gates,P());
+        for(int i=0;i<gates;i++){
+            r.Tick(step,false,P(i+1));
+            r.Checkpoint(i,P(i+1));
+        }
+        r.Tick(step,false,P(gates+1));
+        return r.Finish(P(gates+1));
+    }
     private static void Check(bool ok,string desc="check failure")
     {
         if(!ok)throw new InvalidOperationException(desc);
@@ -845,6 +858,79 @@ internal static class Program
             GhostMath.Validate(failure);
             Check(Reject(()=>new GhostSplitCoach(failure)),
                 "all-gate failed trial accepted as benchmark");
+        });
+        Test("135 faster three-gate layout cannot overwrite genuine four-gate best",()=>{
+            var book=new GhostBestBook();
+            Check(book.Submit(RunLayout(4,2f)));
+            Check(Reject(()=>book.Submit(RunLayout(3,1f))),
+                "incompatible faster three-gate time replaced four-gate record");
+            var saved=book.For("CHL003_R1","Light");
+            Equal(saved.RequiredCheckpoints,4);Equal(saved.ElapsedSeconds,10f);
+        });
+        Test("136 faster four-gate layout cannot replace saved three-gate best",()=>{
+            var book=new GhostBestBook();
+            Check(book.Submit(RunLayout(3,2f)));
+            Check(Reject(()=>book.Submit(RunLayout(4,1f))),
+                "four-gate time replaced incompatible three-gate record");
+            var saved=book.For("CHL003_R1","Light");
+            Equal(saved.RequiredCheckpoints,3);Equal(saved.ElapsedSeconds,8f);
+        });
+        Test("137 equal-duration different layouts fail closed, not treated as tie",()=>{
+            var book=new GhostBestBook();
+            Check(book.Submit(RunLayout(3,2f))); // 8 s
+            Check(Reject(()=>book.Submit(RunLayout(4,1.6f))),"mismatched tie");
+            Equal(book.For("CHL003_R1","Light").RequiredCheckpoints,3);
+        });
+        Test("138 rejected layout does not change stored best frames",()=>{
+            var book=new GhostBestBook();book.Submit(RunLayout(4,1f));
+            var before=book.For("CHL003_R1","Light");
+            Check(Reject(()=>book.Submit(RunLayout(3,.5f))));
+            var after=book.For("CHL003_R1","Light");
+            Equal(after.Frames.Length,before.Frames.Length);
+            Equal(after.Frames[after.Frames.Length-1].Pose.X,5f);
+        });
+        Test("139 distinct course versions may legitimately use different gate counts",()=>{
+            var book=new GhostBestBook();
+            Check(book.Submit(RunLayout(4,1f,"CHL_R1")));
+            Check(book.Submit(RunLayout(3,1f,"CHL_R2")));
+            Equal(book.For("CHL_R1","Light").RequiredCheckpoints,4);
+            Equal(book.For("CHL_R2","Light").RequiredCheckpoints,3);
+        });
+        Test("140 different rigs on same course label remain independent",()=>{
+            var book=new GhostBestBook();
+            Check(book.Submit(RunLayout(4,1f,"CHL","Light")));
+            Check(book.Submit(RunLayout(3,1f,"CHL","Heavy")));
+            Equal(book.For("CHL","Light").RequiredCheckpoints,4);
+            Equal(book.For("CHL","Heavy").RequiredCheckpoints,3);
+        });
+        Test("141 same gate count faster time still improves personal best",()=>{
+            var book=new GhostBestBook();book.Submit(RunLayout(3,2f));
+            Check(book.Submit(RunLayout(3,1f)),"valid improvement refused");
+            Equal(book.For("CHL003_R1","Light").ElapsedSeconds,4f);
+        });
+        Test("142 same gate count slower time still leaves best unchanged",()=>{
+            var book=new GhostBestBook();book.Submit(RunLayout(3,1f));
+            Check(!book.Submit(RunLayout(3,2f)),"slower run replaced record");
+            Equal(book.For("CHL003_R1","Light").ElapsedSeconds,4f);
+        });
+        Test("143 legitimate failed other-layout trial remains no PB update",()=>{
+            var book=new GhostBestBook();book.Submit(RunLayout(4));
+            var recorder=new GhostRecorder("CHL003_R1","Light",3,P());
+            recorder.Tick(1f,false,P(1));
+            Check(!book.Submit(recorder.Fail(P(1))),"failed layout changed PB");
+            Equal(book.For("CHL003_R1","Light").RequiredCheckpoints,4);
+        });
+        Test("144 original eight-gate limit retains separate layout protection",()=>{
+            var book=new GhostBestBook();book.Submit(RunLayout(8,1f));
+            Check(Reject(()=>book.Submit(RunLayout(4,.5f))));
+            Equal(book.For("CHL003_R1","Light").RequiredCheckpoints,8);
+        });
+        Test("145 new best book can accept new course layout after explicit reset",()=>{
+            var prior=new GhostBestBook();prior.Submit(RunLayout(4));
+            var newBook=new GhostBestBook();
+            Check(newBook.Submit(RunLayout(3)),"fresh identity book refused");
+            Equal(prior.For("CHL003_R1","Light").RequiredCheckpoints,4);
+            Equal(newBook.For("CHL003_R1","Light").RequiredCheckpoints,3);
         });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
