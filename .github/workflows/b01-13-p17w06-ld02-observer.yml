@@ -1,0 +1,40 @@
+name: B01-13 LD02-OBS001 exact-source isolated Python QA
+on:
+  push:
+    branches:
+      - research/b01-13-pass17-wave06-ld02-observer
+  pull_request:
+    paths:
+      - Research/B01-13/P17D/**
+      - .github/workflows/b01-13-p17w06-ld02-observer.yml
+jobs:
+  original-source-test:
+    name: ${{ matrix.os }} Python ${{ matrix.python }} original source
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify actual immutable file bytes and scope
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, hashlib, pathlib
+          manifest=json.loads(pathlib.Path('Research/B01-13/P17D/manifest.json').read_text(encoding='utf-8'))
+          for name, spec in manifest['files'].items():
+              raw=pathlib.Path(name).read_bytes()
+              assert len(raw)==spec['bytes'] and hashlib.sha256(raw).hexdigest()==spec['sha256'], name
+              print('SOURCE_PIN_PASS',name,len(raw),spec['sha256'])
+          PY
+      - name: Compile exact original source
+        shell: bash
+        run: python -m py_compile Research/B01-13/P17D/ld02_observer.py Research/B01-13/P17D/test_ld02_observer.py
+      - name: Execute original source tests and local filesystem side effects
+        shell: bash
+        run: python Research/B01-13/P17D/test_ld02_observer.py -v
