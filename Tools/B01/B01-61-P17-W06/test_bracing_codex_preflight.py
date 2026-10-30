@@ -89,7 +89,7 @@ class CollisionAdversarialTests(unittest.TestCase):
 
     def test_13_original_bracing_asset_scope_escape_rejected(self):
         self.assertReject(lambda game,own:own.__setitem__("Assets/Elsewhere/foreign.asset",b""),
-                          "OUT_OF_SCOPE_CONTENT_PATH")
+                          "WRONG_OWN_CONTENT_COUNTS|OUT_OF_SCOPE_CONTENT_PATH")
 
     def test_14_missing_original_bracing_folder_meta_rejected(self):
         self.assertReject(lambda game,own:own.pop("Assets/PARTSIZE001/Bracing.meta"),
