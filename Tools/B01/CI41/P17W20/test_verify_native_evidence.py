@@ -172,4 +172,27 @@ class RealEvidenceStructureNegativeControls(unittest.TestCase):
                  (self.root/"PhysX.xml").read_bytes().replace(
                     b'result="Passed"',b'result="Failed"'))
         self.fail("NUNIT_NOT_PASSED")
+    def test_31_release_enforce_always_hold_without_trusted_owner_and_attestation(self):
+        self.save()
+        saved=sys.argv
+        sys.argv=["verify_native_evidence.py","--evidence",str(self.root),
+                  "--output",str(self.root/"release.json"),"--enforce"]
+        try:
+            self.assertEqual(v.main(),3)
+        finally:
+            sys.argv=saved
+        self.assertEqual(json.loads((self.root/"release.json").read_text())["release_gate"],
+                         "HOLD_OWNER_R4_UNSELECTED_OR_NATIVE_UNATTESTED")
+    def test_32_invalid_receipt_has_nonzero_process_status_not_a_pass(self):
+        self.m["producer_pr"]="604"
+        self.save()
+        saved=sys.argv
+        sys.argv=["verify_native_evidence.py","--evidence",str(self.root),
+                  "--output",str(self.root/"rejected.json")]
+        try:
+            self.assertEqual(v.main(),2)
+        finally:
+            sys.argv=saved
+        self.assertEqual(json.loads((self.root/"rejected.json").read_text())["result"],
+                         "REJECTED_EVIDENCE")
 if __name__=="__main__":unittest.main(verbosity=2)
