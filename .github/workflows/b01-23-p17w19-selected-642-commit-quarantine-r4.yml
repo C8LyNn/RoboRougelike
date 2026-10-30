@@ -1,0 +1,39 @@
+name: B01-23 P17 W19 selected 642 R4 uncertain Commit and rollback
+on:
+  push:
+    branches: [b01-23/p17w19-selected642-uncertain-commit-r4]
+  pull_request:
+    paths:
+      - 'Assets/B0123UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W15UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W19Selected642CommitQuarantineR4/**'
+      - '.github/workflows/b01-23-p17w19-selected-642-commit-quarantine-r4.yml'
+jobs:
+  original-selected-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute original #556 and #642 source plus R4 real disk lost Commit ACK tests
+        run: dotnet run --project Tools/B01/B01-23/P17W15UnitySaveBridge001/HostBridgeTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Physical original Git ZIP and foreign EMPTY directory rollback negatives
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W15UnitySaveBridge001 -p test_package.py -v
+      - name: Build original strict SHA-pinned R4 source ZIP
+        run: python Tools/B01/B01-23/P17W15UnitySaveBridge001/package.py build --archive dist/B0123_Selected642_R4_Source.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-selected642-r4-${{ matrix.os }}
+          path: dist/B0123_Selected642_R4_Source.zip
+          if-no-files-found: error
