@@ -32,7 +32,7 @@ try:
                             "\n"+p.stdout[-3500:])
     results.append({"mutation":label,"rejected":True,"exit":p.returncode})
     print("W09_REAL_ORIGINAL_MONOBEHAVIOUR_MUTANT_REJECT_PASS",label)
- finally:
+finally:
     SRC.write_bytes(unchanged)
 assert SRC.read_bytes()==unchanged,"mutations must not alter the frozen original source"
 p=subprocess.run(["dotnet","run","-c","Release","--project",
