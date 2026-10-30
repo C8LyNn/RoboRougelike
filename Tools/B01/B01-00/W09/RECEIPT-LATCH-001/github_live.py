@@ -19,7 +19,10 @@ from urllib.request import Request, HTTPRedirectHandler, build_opener
 from receipt_latch import REPO, GateError, audit
 
 API = "https://api.github.com/repos/C8LyNn/RoboRougelike"
-VALID_PATH = re.compile(r"^/(?:pulls|actions/runs|issues/comments)/[1-9][0-9]*$")
+VALID_PATH = re.compile(
+    r"^/(?:pulls/[1-9][0-9]*|issues/comments/[1-9][0-9]*"
+    r"|actions/runs/[1-9][0-9]*(?:/jobs)?)$"
+)
 COMMENT = re.compile(
     r"^https://github\.com/C8LyNn/RoboRougelike/(?:issues|pull)/[1-9][0-9]*#issuecomment-([1-9][0-9]*)$"
 )
@@ -85,6 +88,87 @@ def sha_mentioned(body, source):
     return bool(re.search(r"(?<![0-9a-f])" + re.escape(source) + r"(?![0-9a-f])", body))
 
 
+def workflow_attestation(ci, run, getter, rid, source, blockers):
+    """Require the exact workflow and executed named test jobs on each OS.
+
+    Source-run metadata alone MUST NOT authorize the verified-source receipt.
+    This still does not replay logs or authenticate independent QA actors.
+    """
+    contract = ci.get("contract") if type(ci) is dict else None
+    if contract is None:
+        blockers.append("source_workflow_contract_missing")
+        return False
+    if type(contract) is not dict:
+        blockers.append("source_workflow_contract_invalid")
+        return False
+
+    wid = contract.get("workflow_id")
+    workflow_path = contract.get("workflow_path")
+    event = contract.get("event")
+    names = contract.get("required_job_names")
+    steps = contract.get("required_steps")
+    def valid_strings(values):
+        return (type(values) is list and 0 < len(values) <= 8
+                and all(isinstance(v, str) and 0 < len(v) < 128 and v.strip() == v
+                        for v in values)
+                and len(values) == len(set(values)))
+    if (type(wid) is not int or wid < 1
+            or not isinstance(workflow_path, str)
+            or not re.fullmatch(r"\.github/workflows/[A-Za-z0-9_-]+\.ya?ml", workflow_path)
+            or event not in ("pull_request", "push", "workflow_dispatch")
+            or not valid_strings(names) or not valid_strings(steps)):
+        blockers.append("source_workflow_contract_invalid")
+        return False
+    if (run.get("workflow_id") != wid or run.get("path") != workflow_path
+            or run.get("event") != event):
+        blockers.append("live_workflow_identity_mismatch")
+        return False
+
+    try:
+        response = getter("/actions/runs/" + str(rid) + "/jobs")
+    except (GateError, OSError, KeyError, TypeError, ValueError, AttributeError):
+        blockers.append("live_workflow_jobs_unavailable")
+        return False
+    if (type(response) is not dict or type(response.get("total_count")) is not int
+            or type(response.get("jobs")) is not list):
+        blockers.append("live_workflow_jobs_invalid")
+        return False
+    jobs = response["jobs"]
+    # GitHub returns first page (max 30): reject truncation conservatively.
+    if response["total_count"] != len(jobs) or len(jobs) > 30:
+        blockers.append("live_workflow_jobs_incomplete")
+        return False
+    job_names = [j.get("name") if type(j) is dict else None for j in jobs]
+    if len(job_names) != len(set(job_names)):
+        blockers.append("live_job_duplicate_name")
+        return False
+    by_name = dict(zip(job_names, jobs))
+    if not set(names) <= set(by_name):
+        blockers.append("live_required_job_missing")
+        return False
+    good = True
+    for name in names:
+        job = by_name[name]
+        if (job.get("status") != "completed" or job.get("conclusion") != "success"
+                or job.get("head_sha") != source
+                or type(job.get("id")) is not int):
+            blockers.append("live_job_sha_or_result_mismatch")
+            good = False
+            continue
+        traces = job.get("steps")
+        if type(traces) is not list:
+            blockers.append("live_required_step_missing_or_fail")
+            good = False
+            continue
+        for required in steps:
+            matching = [t for t in traces if type(t) is dict and t.get("name") == required]
+            if (len(matching) != 1 or matching[0].get("status") != "completed"
+                    or matching[0].get("conclusion") != "success"):
+                blockers.append("live_required_step_missing_or_fail")
+                good = False
+    return good
+
+
 def verify_live(record, getter):
     """Verify source PR + Actions run using GitHub objects; QA comments existence only.
 
@@ -95,7 +179,7 @@ def verify_live(record, getter):
     source = declared["source_sha"]
     producer = record["producer"]
     blockers = list(declared["blockers"])
-    proof = {"source_pr_head": False, "producer_ci_run": False}
+    proof = {"source_pr_head": False, "producer_ci_run": False, "source_workflow_jobs": False}
     qa = {"intake": "PENDING", "independent": "PENDING"}
     try:
         pr = getter("/pulls/" + str(producer["source_pr"]))
@@ -123,6 +207,9 @@ def verify_live(record, getter):
                     and live.get("conclusion") == "success"
                     and live.get("repository", {}).get("full_name") == "C8LyNn/RoboRougelike"):
                 proof["producer_ci_run"] = True
+                proof["source_workflow_jobs"] = workflow_attestation(
+                    ci, live, getter, rid, source, blockers
+                )
             else:
                 blockers.append("live_ci_run_sha_result_or_repo_mismatch")
         except (GateError, KeyError, TypeError, ValueError, AttributeError):
@@ -154,7 +241,7 @@ def verify_live(record, getter):
             qa[role] = "FETCH_FAILED"
             blockers.append("live_" + role + "_unavailable")
 
-    verified_source = proof["source_pr_head"] and proof["producer_ci_run"]
+    verified_source = all(proof.values())
     return {
         "schema": "b01-github-live-readonly-v1",
         "package_id": declared["package_id"],
@@ -162,6 +249,9 @@ def verify_live(record, getter):
         "source_pr_object_matches": proof["source_pr_head"],
         "producer_ci_run_object_matches": proof["producer_ci_run"],
         "source_git_objects_verified": verified_source,
+        "source_workflow_jobs_verified": proof["source_workflow_jobs"],
+        "source_gates_label": ("ORIGINAL_WORKFLOW_AND_JOBS_MATCH" if verified_source
+                               else "SOURCE_WORKFLOW_PROOF_HOLD"),
         "declared_source_gates_consistent": declared["source_gates_consistent"],
         "qa_comments": qa,
         "independent_qa_verdict": "MANUAL_REVIEW_REQUIRED",
