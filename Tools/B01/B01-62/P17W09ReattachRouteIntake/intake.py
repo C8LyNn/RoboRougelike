@@ -88,7 +88,7 @@ def mask_non_code(s):
 
 def method(source, name, ret):
     masked=mask_non_code(source)
-    pat=r"\b(?:public|private|protected|internal)\s+"+re.escape(ret)+r"\s+"+re.escape(name)+r"\s*\([^{};]*\)\s*\{"
+    pat=r"\b(?:public|private|protected|internal)\s+(?:static\s+)?"+re.escape(ret)+r"\s+"+re.escape(name)+r"\s*\([^{};]*\)\s*\{"
     matches=list(re.finditer(pat,masked))
     if len(matches)!=1:
         raise SourceDrift("AMBIGUOUS_OR_MISSING_METHOD "+name+" "+str(len(matches)))
