@@ -105,9 +105,11 @@ static class Proof
             Close(a.PeriodSeconds,b.PeriodSeconds,"different hazard clocks");
             Close(b.OffsetSeconds-a.OffsetSeconds,a.PeriodSeconds/2,
                 "not staggered");
+            var left=new PulseZoneController(a);
+            var right=new PulseZoneController(b);
             for(int tick=0;tick<6*8*4;tick++){
                 double t=tick*.25;
-                Need(a.PhaseAt(t)!=PulsePhase.Active||b.PhaseAt(t)!=PulsePhase.Active,
+                Need(left.PhaseAt(t)!=PulsePhase.Active||right.PhaseAt(t)!=PulsePhase.Active,
                     "both crossing options active simultaneously");
             }
         });
