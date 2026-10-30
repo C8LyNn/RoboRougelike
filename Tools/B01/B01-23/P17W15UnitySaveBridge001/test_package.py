@@ -14,7 +14,7 @@ class SourcePackageTests(unittest.TestCase):
     def test_frozen_selected_gameplay(self):
         self.assertEqual(p.SELECTED_GAME,"d94400d95d13db7f27e1533df05c9292d5380431")
     def test_original_critical_git_blobs(self):self.assertEqual(len(p.PINS),5)
-    def test_exact_22_own_git_paths(self):self.assertEqual(len(p.scope()),22)
+    def test_exact_24_own_git_paths(self):self.assertEqual(len(p.scope()),24)
     def test_10_unique_meta_guids_and_three_asmdefs(self):p.scope()
     def test_actual_original_unity_body_source(self):
         s=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
@@ -30,14 +30,24 @@ class SourcePackageTests(unittest.TestCase):
         self.assertIn("if(part.activeInHierarchy)",source)
         self.assertIn("container.SetActive(true);",source)
         self.assertIn("body.linearVelocity",source)
+    def test_r4_ambiguous_commit_and_postcommit_capture_quarantine_guards(self):
+        core=p.source(p.ASSET+"/Core/AtomicWorldSwap.cs").decode()
+        self.assertIn("commitMayHaveChangedAuthority=true;",core)
+        self.assertIn("if(commitMayHaveChangedAuthority)",core)
+        self.assertIn("verdict=WorldSwapVerdict.RollbackQuarantine;",core)
+        self.assertIn("commitMayHaveChangedAuthority=false;",core)
+    def test_r4_no_alternate_604_checkpoint_fence(self):
+        files=p.scope()
+        self.assertFalse(any("CheckpointFence.cs" in n for n in files))
+        self.assertEqual(p.R3_SELECTED,"22cec9888047994ae523cbe7bf1b0a483d64cec4")
     def test_real_git_deterministic_archive(self):self.assertEqual(p.build(),p.build())
-    def test_exact_23_archive_members(self):self.assertEqual(len(p.verify(p.build())),23)
+    def test_exact_25_archive_members(self):self.assertEqual(len(p.verify(p.build())),25)
     def test_manifest_source_guards(self):
         x=p.verify(p.build());m=json.loads(x[p.MANIFEST])
         self.assertEqual(m["native_unity"],"NOT_RUN")
         self.assertEqual(m["canonical_510_live_import"],"HOLD")
         self.assertFalse(m["codex_ack"])
-        self.assertEqual(m["version"],"3.0.0")
+        self.assertEqual(m["version"],"4.0.0")
     def test_reject_foreign_member(self):
         with self.assertRaises(ValueError):
             p.verify(mutated(p.build(),extra={"Assets/Canon/HACK.cs":b"abc"}))
