@@ -1,0 +1,58 @@
+name: B01-41 P17W07 Unity UPM immutable lock closure (source-only)
+on:
+  push:
+    branches: ['ci/b01-41-p17w07-upm-lock-consistency']
+    paths:
+      - 'Tools/B01/CI41/P17W07/**'
+      - '.github/workflows/b01-41-p17w07-upm-lock.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  upm-lock:
+    name: Original Git-object UPM lock verification (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Pin original CI tool and test Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W07/upm_lock_gate.py)" = '46fdb217b99e31bbfaf9bcca739ed999fd9a2dac'
+          test "$(git hash-object Tools/B01/CI41/P17W07/test_upm_lock_gate.py)" = 'f8d0373dcca0434dc458ca7937b1313b275bb637'
+          echo 'CI41_UPM_SOURCE_AND_TESTS_PINNED'
+      - name: Execute original physical Git source and fail-closed regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W07 -p test_upm_lock_gate.py -v 2>&1 | tee "Tools/B01/CI41/P17W07/source-tests-${RUNNER_OS}.txt"
+          grep -q 'PHYSICAL_GIT_OBJECTS_STANDALONE_UPM_CLI_JSON_PASS' "Tools/B01/CI41/P17W07/source-tests-${RUNNER_OS}.txt"
+          grep -q 'PHYSICAL_GIT_OBJECTS_STANDALONE_UPM_CLI_DRIFT_EXIT2' "Tools/B01/CI41/P17W07/source-tests-${RUNNER_OS}.txt"
+          echo 'REAL_GIT_OBJECTS_REGRESSIONS_EXECUTED'
+      - name: Read actual Unity game UPM manifest and lock from exact CI Git commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          SHA="$(git rev-parse HEAD)"
+          "$PY" Tools/B01/CI41/P17W07/upm_lock_gate.py --repo . --source-sha "$SHA" --expected-direct 45 --expected-resolved 57 --out "Tools/B01/CI41/P17W07/upm-original-${RUNNER_OS}.json"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); assert x["result"]=="PASS_SOURCE_UPM_LOCK" and x["manifest_count"]==45 and x["lock_count"]==57 and x["transitive_count"]==12 and len(x["errors"])==0 and x["package_resolver"]=="NOT_RUN" and x["unity_editor"]=="6000.3.14f1"; print("ORIGINAL_GAME_45_MANIFEST_57_LOCK_12_TRANSITIVE_SOURCE_PASS_NOT_UNITY_RESOLVER")' "Tools/B01/CI41/P17W07/upm-original-${RUNNER_OS}.json"
+      - name: Upload actual OS process logs and immutable original UPM findings
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-UPMLOCK-ORIGINAL-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W07/source-tests-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W07/upm-original-${{ runner.os }}.json
+          retention-days: 14
+          if-no-files-found: warn
