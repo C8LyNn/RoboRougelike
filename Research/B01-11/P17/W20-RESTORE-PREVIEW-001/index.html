@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RestorePreview — co zmieni wczytanie?</title>
+<style>
+:root{font-family:system-ui,Segoe UI,sans-serif;color-scheme:dark;background:#0e1724;color:#edf3fa}*{box-sizing:border-box}body{margin:0;padding:24px 14px}main{max-width:930px;margin:auto}h1{font-size:clamp(1.5rem,4vw,2.4rem)}p{line-height:1.6}.muted{color:#b4c6dc}.panel{padding:18px;border:1px solid #697c94;border-radius:12px;background:#18293c;margin:14px 0}.panel[data-level="danger"]{border-color:#ffb4a8}.panel[data-level="warning"]{border-color:#f1c76b}.panel[data-level="active"]{border-color:#9dc9ff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.data{background:#112132;border:1px solid #41546a;border-radius:9px;padding:12px}button{font:inherit;color:#fff;background:#275a92;border:1px solid #99c9ff;padding:12px;border-radius:8px;cursor:pointer}button:hover:enabled{background:#356da5}button:focus-visible{outline:3px solid #ffe39f;outline-offset:3px}button:disabled{opacity:.46;cursor:not-allowed}.buttons{display:flex;flex-wrap:wrap;gap:10px}.buttons button{flex:1 1 155px}#log{max-height:190px;overflow:auto;font-size:.9rem}.label{font-weight:700;letter-spacing:.04em}.warn{color:#ffdba0}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body><main>
+<h1>Czy na pewno wczytać checkpoint?</h1>
+<p class="muted">B01-11 — interaktywny prototyp edukacyjny. Wyświetla wyłącznie syntetyczne metadane i <strong>nie wykonuje rzeczywistego wczytania</strong>, odczytu dysku ani publikacji świata.</p>
+<section aria-labelledby="choose"><h2 id="choose">Przykładowe sytuacje</h2><div class="buttons">
+<button id="safe" type="button">Nowszy zapis, ten sam run</button>
+<button id="foreign" type="button">Obcy przebieg</button>
+<button id="stale" type="button">Starszy zapis</button>
+<button id="uncertain" type="button">Commit bez potwierdzenia</button>
+</div></section>
+<section class="panel" id="status" data-level="neutral" aria-live="polite" aria-atomic="true" role="status"><p class="label">DECYZJA PRZED WCZYTANIEM</p><h2 id="headline">Wybierz scenariusz</h2><p id="detail"></p><p id="reason" class="muted"></p></section>
+<div class="grid" id="comparison"><section class="data"><h2>Teraz</h2><p id="now"></p></section><section class="data"><h2>Po wczytaniu (podgląd)</h2><p id="after"></p></section></div>
+<p class="warn">Różnica liczby części/zużytych ID to wyłącznie informacja UX, nie weryfikacja integralności. Prawdziwy host musi sprawdzić pełny ledger, stan fizyczny oraz politykę odzyskiwania.</p>
+<div class="buttons"><button id="arm" type="button" disabled>1. Sprawdź i przygotuj decyzję</button><button id="confirm" type="button" disabled>2. Przekaż prośbę o wczytanie</button></div>
+<section><h2>Ślad interakcji</h2><ol id="log" aria-label="Dziennik prób"></ol></section>
+<p class="muted">Stan REQUEST_ONLY nie oznacza sukcesu wczytania. Integracja wymaga wybranego hosta R4, autorytatywnego API #666, odbioru QA/G0 i rzeczywistych testów Unity G1.</p>
+</main><script src="restore_preview.js"></script><script>
+(()=>{'use strict';
+  const original={runId:42,slotId:'demo_slot',generation:10,sha256:'a'.repeat(64),partCount:12,detachedCount:3,consumedCount:4};
+  const fresh={...original,generation:11,sha256:'b'.repeat(64),partCount:10,detachedCount:2,consumedCount:5};
+  const goodHost={epoch:7,verifiedReadback:true,quiescent:true,singleSlotOwner:true,canonicalReady:true,unresolvedCommit:false};
+  let current=original,target=fresh,host=goodHost,state=null;
+  const $=id=>document.getElementById(id);
+  function line(t){let li=document.createElement('li');li.textContent=t;$('log').prepend(li);}
+  function render(){const text=RestorePreview.display(state);$('status').dataset.level=text.level;$('headline').textContent=text.title;$('detail').textContent=text.message;$('reason').textContent=state?'Powód: '+state.verdict:'';
+    const d=RestorePreview.delta(state);
+    $('now').textContent='Run: '+current.runId+' | Slot: '+current.slotId+' | Generacja: '+current.generation+' | Części: '+current.partCount+' | Oderwane: '+current.detachedCount+' | Zużyte ID: '+current.consumedCount;
+    $('after').textContent=d?('+'+d.generationsAhead+' generacja | '+d.partChange+' części | '+d.detachedChange+' oderwanych | '+d.consumedChange+' zużytych ID'):'Podgląd zablokowany; brak uprawnionej decyzji';
+    $('arm').disabled=!state||state.phase!=='review';$('confirm').disabled=!state||state.phase!=='armed';
+  }
+  function select(which){current={...original};target={...fresh};host={...goodHost};
+    if(which==='foreign')target.runId=51;
+    if(which==='stale')target.generation=9;
+    if(which==='uncertain')host.unresolvedCommit=true;
+    state=RestorePreview.session(current,target,host);line('Scenariusz '+which+': '+state.verdict);render();
+  }
+  for(const id of ['safe','foreign','stale','uncertain'])$(id).addEventListener('click',()=>select(id));
+  $('arm').addEventListener('click',()=>{const r=RestorePreview.arm(state);state=r.state;line('Przygotowanie: '+r.reason);render();});
+  $('confirm').addEventListener('click',()=>{const r=RestorePreview.request(state,current,target,host);state=r.state;line('Prośba: '+r.reason);render();});
+  select('safe');
+})();
+</script></body></html>
