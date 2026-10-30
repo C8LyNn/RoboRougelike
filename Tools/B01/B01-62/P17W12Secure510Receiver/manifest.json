@@ -1,0 +1,52 @@
+{
+  "id": "B01-62-P17W12-SELECTED510-RECEIVER-QA-001",
+  "owner": "B01-62",
+  "version": "1.0.0",
+  "source_authority": "B01-00 dispatch issue #518",
+  "selected_only": {
+    "pr": 510,
+    "git_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "inner_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387",
+    "bytes": 99666,
+    "members": 35
+  },
+  "alternatives_hold": [
+    511,
+    494
+  ],
+  "own_files": [
+    {
+      "path": ".github/workflows/b01-62-p17w12-secure510-receiver-preflight.yml",
+      "blob": "da16b37e20bc3ae2d224188f7b692e97ef148b66"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W12Secure510Receiver/receiver_gate.py",
+      "blob": "e34b42b0bc06b350beb186e34f3573a3b465c362"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W12Secure510Receiver/test_receiver.py",
+      "blob": "ccacc7f8dfeb6b5c41ca0b99cdc95b836e7c4e53"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W12Secure510Receiver/README.md",
+      "blob": "261e69b0225da68dbc9768c157299f9077bc4b0a"
+    }
+  ],
+  "qa": {
+    "tests": 23,
+    "platforms": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "actual_execution": "PENDING",
+    "source_pkg_expected": "PINNED",
+    "actual_receiver": "NOT_PRESENT",
+    "live_save_load": "NOT_VERIFIED",
+    "native_unity": "NOT_RUN"
+  },
+  "G0": "B01-40_FORMAL_PENDING",
+  "G1": "NATIVE_UNITY_NOT_RUN",
+  "G2": "HOLD",
+  "codeX": "NOT_OFFERED_NO_ACK_NO_INTEGRATION",
+  "rollback": "Close this Draft/remove own QA files and workflow only; no producer or canonical target modifications."
+}
