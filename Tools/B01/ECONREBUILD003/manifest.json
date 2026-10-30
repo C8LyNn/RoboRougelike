@@ -14,9 +14,11 @@
     "Assets/B01Packages/ECONREBUILD003/Runtime/B01.EconRebuildV3.asmdef": "fac57affb3c53ecaad15d9562be09f87abcfc312",
     "Tools/B01/ECONREBUILD003/Program.cs": "9ae1946c3c81b8e27fd87a16fdb65daf2e32ac91",
     "Tools/B01/ECONREBUILD003/V3.Tests.csproj": "6dd422db06b92aaac214c63365ec963d063f2a42",
-    "Tools/B01/ECONREBUILD003/README.md": "341791e9a8bbbd4d7d53d86f15b828db0f3c1c0a",
-    ".github/workflows/b01-22-p17w21-econ-v3.yml": "0a608334eb6446f7e3e413b85a5d287527eb3d5f",
-    "Tools/B01/ECONREBUILD003/verify_package.py": "6a1c5ae27108ef088908a33eb7b87faa3336b85b"
+    "Tools/B01/ECONREBUILD003/README.md": "dc44bd815ded052b7efdb7eb2412d434cb7d6f36",
+    ".github/workflows/b01-22-p17w21-econ-v3.yml": "d23bd7c39d7681752cd3f87678e72f5b75fef748",
+    "Tools/B01/ECONREBUILD003/verify_package.py": "dcf52a8d15fafe4d82f1378608c818dded1f8ba8",
+    "Tools/B01/ECONREBUILD003/V2OriginalWitness.cs": "7da2cf7a9c696ad7229ea85adfccf59fc53373fb",
+    "Tools/B01/ECONREBUILD003/V2OriginalWitness.csproj": "d375594c250fe1e3557860cb6882036bb05b53f8"
   },
   "owned_paths": [
     ".github/workflows/b01-22-p17w21-econ-v3.yml",
@@ -28,6 +30,8 @@
     "Assets/B01Packages/ECONREBUILD003/Runtime/RebuildOwnerAuthorityV3.cs.meta",
     "Tools/B01/ECONREBUILD003/Program.cs",
     "Tools/B01/ECONREBUILD003/README.md",
+    "Tools/B01/ECONREBUILD003/V2OriginalWitness.cs",
+    "Tools/B01/ECONREBUILD003/V2OriginalWitness.csproj",
     "Tools/B01/ECONREBUILD003/V3.Tests.csproj",
     "Tools/B01/ECONREBUILD003/manifest.json",
     "Tools/B01/ECONREBUILD003/verify_package.py"
