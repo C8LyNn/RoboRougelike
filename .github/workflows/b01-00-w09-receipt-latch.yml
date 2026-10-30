@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Execute original Python source and 735 original cases including W22 R5 #690/#705/G0 #699, API #691/#710, session #712/#707, store #680/#709, native #711 honest G1
+      - name: Execute original Python source and 846 original cases including W23 #729 selected vs #719 ALT, dual .owner/.lease denial and R5 ColdRestart g5 vs g4 model, source HOLD
         run: python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
       - name: Run original CLI on safe HOLD example
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/receipt_latch.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json
@@ -54,3 +54,5 @@ jobs:
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w21_handoff_dag.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w21_handoff_sources.json
       - name: Execute W22 one canonical Save session/source/G0/G1 intake gate
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w22_one_save_authority.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w22_one_save_sources.json
+      - name: Execute W23 one authority model and original selected #729 receipt
+        run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w23_one_authority_model.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w23_owner_snapshot.json
