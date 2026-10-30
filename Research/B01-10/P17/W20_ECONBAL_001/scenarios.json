@@ -1,7 +1,7 @@
 {
-  "schema": "B01-10 ECONBAL-001 scenario v3: authentic next-challenge/core precondition (synthetic only)",
+  "schema": "B01-10 ECONBAL-001 scenario v4: credited reward order and terminal pending fee exposure, synthetic only",
   "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
-  "evidence": "ALL HYPOTHETICAL. A future WIN cannot be credited if actual core is lost, an eligible next challenge is absent, or 0HP essential cannot deploy. No native source asserts a game softlock.",
+  "evidence": "ALL SYNTHETIC. No actual R3 wallet/reward ordering, no proven refund policy, no gameplay terminal evidence.",
   "cases": {
     "twelve_victories_two_destroyed": {
       "initial_scrap": 4000,
@@ -1064,6 +1064,55 @@
           "won": true,
           "destroyed": [],
           "earned_scrap": 100
+        }
+      ]
+    },
+    "victory_reward_affordability_order": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "rewarded_victory",
+          "won": true,
+          "earned_scrap": 70,
+          "destroyed": [
+            {
+              "id": "new_wheel",
+              "role": "mobility",
+              "blocks_deploy": false
+            },
+            {
+              "id": "new_gun",
+              "role": "weapon",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "terminal_queued_paid_rebuild_exposure": {
+      "initial_scrap": 70,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "final_victory",
+          "won": true,
+          "earned_scrap": 0,
+          "next_challenge_available_after": false,
+          "destroyed": [
+            {
+              "id": "final_wheel",
+              "role": "mobility",
+              "blocks_deploy": false
+            },
+            {
+              "id": "final_gun",
+              "role": "weapon",
+              "blocks_deploy": false
+            }
+          ]
         }
       ]
     }
