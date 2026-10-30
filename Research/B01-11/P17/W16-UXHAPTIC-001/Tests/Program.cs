@@ -346,6 +346,114 @@ static class Program
             var g=Gate();g.Record(Event(1,0,HapticKind.CriticalDamage));
             return g.SetEnabled(false)&&g.ActiveUntilMs==0;
         });
+
+        // W18 RED: per-run pause must suppress hardware intents without muting preferences.
+        Check("W18 pause API exists and returns motor-stop bool",()=>{
+            var m=typeof(HapticGate).GetMethod("SetPaused");
+            return m!=null&&m.ReturnType==typeof(bool);
+        });
+        Check("W18 initial pause property is false",()=>{
+            var p=typeof(HapticGate).GetProperty("Paused");
+            return p!=null&&p.GetValue(Gate()) is bool x&&!x;
+        });
+        Check("W18 pause active minor requests motor stop",()=>{
+            var g=Gate();g.Record(Event(1,0));
+            var m=typeof(HapticGate).GetMethod("SetPaused");
+            return m!=null&&m.Invoke(g,new object[]{true}) is bool s&&s&&g.ActiveUntilMs==0;
+        });
+        Check("W18 pause active critical requests motor stop",()=>{
+            var g=Gate();g.Record(Event(1,0,HapticKind.CriticalDamage));
+            var m=typeof(HapticGate).GetMethod("SetPaused");
+            return m!=null&&m.Invoke(g,new object[]{true}) is bool s&&s;
+        });
+        Check("W18 pause while idle never requests physical stop",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            return m!=null&&m.Invoke(g,new object[]{true}) is bool s&&!s;
+        });
+        Check("W18 repeated pause does not request double stop",()=>{
+            var g=Gate();g.Record(Event(1,0));var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            var a=m.Invoke(g,new object[]{true});var b=m.Invoke(g,new object[]{true});
+            return a is bool s1&&s1&&b is bool s2&&!s2;
+        });
+        Check("W18 resume does not stop hardware again",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});
+            return m.Invoke(g,new object[]{false}) is bool x&&!x;
+        });
+        Check("W18 pause doesn't change selected enabled preference",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            return m!=null&&m.Invoke(g,new object[]{true}) is bool&&g.Enabled;
+        });
+        Check("W18 paused event returns typed SuppressedPaused",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});
+            var d=g.Record(Event(1,0));
+            return Enum.TryParse<HapticOutcome>("SuppressedPaused",out var v)&&
+                   d.Outcome==v&&d.LeftPercent==0&&d.RightPercent==0&&d.DurationMs==0;
+        });
+        Check("W18 paused critical still requires static visual alert",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});
+            var d=g.Record(Event(1,0,HapticKind.CriticalDamage));
+            return Enum.TryParse<HapticOutcome>("SuppressedPaused",out var v)&&
+                   d.Outcome==v&&d.RequireVisibleCriticalAlert;
+        });
+        Check("W18 paused events consume sequence and cannot replay",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});g.Record(Event(1,0));
+            return Throws<ArgumentException>(()=>g.Record(Event(1,1)));
+        });
+        Check("W18 pause retains pre-pause cooldown after resume",()=>{
+            var g=Gate();g.Record(Event(1,0));var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});
+            g.AdvanceTo(1);m.Invoke(g,new object[]{false});
+            return g.Record(Event(2,1)).Outcome==HapticOutcome.SuppressedCooldown;
+        });
+        Check("W18 paused event never starts new pulse after prior stopped",()=>{
+            var g=Gate();g.Record(Event(1,0));var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});g.Record(Event(2,10,HapticKind.CriticalDamage));
+            return g.ActiveUntilMs<=g.NowMs&&g.LastPlayedMs==0;
+        });
+        Check("W18 post pause resume allows future new haptic pulse",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});g.Record(Event(1,0));
+            m.Invoke(g,new object[]{false});
+            return g.Record(Event(2,0)).Outcome==HapticOutcome.Play;
+        });
+        Check("W18 new run clears transient pause without modifying enabled",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            var p=typeof(HapticGate).GetProperty("Paused");
+            if(m==null||p==null)return false;
+            m.Invoke(g,new object[]{true});g.StartNewRun(8);
+            return p.GetValue(g) is bool paused&&!paused&&g.Enabled&&
+                   g.Record(Event(1,0,run:8)).Outcome==HapticOutcome.Play;
+        });
+        Check("W18 disabling while paused does not request duplicate motor stop",()=>{
+            var g=Gate();g.Record(Event(1,0));var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});return !g.SetEnabled(false)&&!g.Enabled;
+        });
+        Check("W18 invalid source cue still rejected while paused",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});
+            return Throws<ArgumentException>(()=>g.Record(Event(1,-1)));
+        });
+        Check("W18 stale old-run critical ignored while paused",()=>{
+            var g=Gate();var m=typeof(HapticGate).GetMethod("SetPaused");
+            if(m==null)return false;
+            m.Invoke(g,new object[]{true});
+            var d=g.Record(Event(1,10,HapticKind.CriticalDamage,run:6));
+            return d.Outcome==HapticOutcome.IgnoredOldRun&&!d.RequireVisibleCriticalAlert;
+        });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
     }
