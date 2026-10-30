@@ -1,0 +1,129 @@
+{
+  "packageId": "B01-25-HAZARDPULSE-001",
+  "version": "R1",
+  "owner": "B01-25",
+  "role": "Level & Challenge Design",
+  "mission": "Real deterministic telegraphed terrain hazard gameplay; independent of B01-25 HOLDOUT and B01-20 CHL ordered checkpoints",
+  "sourceBaseSha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "research/b01-25-p17w06-hazardpulse001",
+  "allowedOwnedPaths": [
+    "Research/B01-25/P17/HAZARDPULSE001/**",
+    ".github/workflows/b01-25-w06-hazardpulse.yml"
+  ],
+  "gitBlobs": {
+    "PulseCore.cs": "a7a2c69c80d43bf027f2b00896df72f892fa1a17",
+    "Program.cs": "6c41dc23d66d004d2c514ef91bad7b4e55a67d9d",
+    "profiles.json": "c0b03adee398ed12fa535c85ca2506d090d40cca",
+    "HazardPulse.csproj": "e392417029ceb7a804b7cae84c66b71fb1806b9b",
+    "PulseUnityCompat.csproj": "924e9c9fb5850a32ff715f0eac8629fbb6fc177a",
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "README.md": "30a20be6a537e84def08f1cb1075a4a3fc630bd3",
+    ".github/workflows/b01-25-w06-hazardpulse.yml": "23fdaa41bc3a89ca83704d6ebaf0633b8e8fddd2"
+  },
+  "inputs": [
+    {
+      "mapPR": 359,
+      "mapCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "blob": "53eb696950121465befea2855eda4d7268750016",
+      "items": 415,
+      "hazards": [
+        {
+          "cell": [
+            7,
+            8
+          ],
+          "world": [
+            28,
+            32
+          ]
+        },
+        {
+          "cell": [
+            9,
+            8
+          ],
+          "world": [
+            36,
+            32
+          ]
+        }
+      ]
+    },
+    {
+      "mapPR": 346,
+      "mapCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "blob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "items": 360,
+      "hazards": [
+        {
+          "cell": [
+            5,
+            8
+          ],
+          "world": [
+            20,
+            32
+          ]
+        },
+        {
+          "cell": [
+            9,
+            8
+          ],
+          "world": [
+            36,
+            32
+          ]
+        }
+      ]
+    }
+  ],
+  "mechanics": {
+    "core": "B01.LevelChallenges.PulseZoneController",
+    "entry": "Advance(PulseSample(dt <= 0.25, world x, world z, alive, paused))",
+    "outputs": [
+      "Phase Warning/Active/Recovery",
+      "PhaseRemainingSeconds",
+      "Exposed",
+      "DamagePulse once per zone activation cycle"
+    ],
+    "phaseSeconds": {
+      "warning": 1,
+      "active": 2,
+      "recovery": 3,
+      "secondOffset": 3
+    },
+    "safeLaneClaim": "Source-sampled 8 cycles prove both authored lane hazards are never Active simultaneously; not a Unity physics lane guarantee",
+    "damageAuthority": "Codex-owned, not implemented",
+    "reset": "Reset() must be called on new level/run",
+    "noPermanentState": true
+  },
+  "testContract": {
+    "runtime": ".NET SDK 8 on Windows+Ubuntu running REAL original C# implementation",
+    "languageCompatibility": "C# 9.0 netstandard2.1 warning-as-error compile",
+    "expectedActualChecksPerOS": 51,
+    "expectedNegativeRejectionsPerOS": 17,
+    "ciRun": 41030053845,
+    "artifacts": {
+      "windows": 12964973542,
+      "ubuntu": 12965042464
+    },
+    "UnityEditor": "NOT_RUN",
+    "UnityPhysics": "NOT_RUN",
+    "realHealthDamage": "NOT_RUN",
+    "independentQA": "PENDING"
+  },
+  "dependencies": {
+    "artSourceBlobsFrozen": true,
+    "existingGameDamageAndEnemySystem": "OUT_OF_SCOPE",
+    "canonicalAssetsChanged": false
+  },
+  "rollback": "drop only producer-owned isolated Research directory/workflow from disposal branch; actual Codex adapter rollback must be Codex-owned",
+  "handoff": [
+    "B01-40 independent artifact/scope verification",
+    "B01-60 independent C# source and later authorized Unity QA",
+    "B01-00 determines source integration queue #79",
+    "Codex explicit ACK and exclusive game integration"
+  ],
+  "status": "PRODUCER_SOURCE_CSHARP9_PASS / QA_PENDING / CODEX_ACK_PENDING / NOT_INTEGRATED"
+}
