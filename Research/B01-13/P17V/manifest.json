@@ -1,0 +1,43 @@
+{
+  "package": "B01-13-APPROVED-GARAGE-HUMAN-STUDY-001/R1",
+  "owner": "B01-13",
+  "hq_issue": 731,
+  "policy": "OWNER_APPROVED_2026_10_30_ISSUE_731",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "integrator_dependencies": [],
+  "frozen_r5": "#690_NO_CHANGE",
+  "canonical_save_api": "#729_NO_CHANGE",
+  "selected_bridge": "#749_NO_CHANGE",
+  "competing": "#753_ALT_HOLD;#741_ALT_HOLD",
+  "actual_human_sessions": 0,
+  "unity_g1": "NOT_RUN",
+  "model_cases": 8,
+  "source_node_cases": 44,
+  "original_browser_chromium": "CI_TO_VERIFY",
+  "files": {
+    "Research/B01-13/P17V/study.mjs": {
+      "git_blob_sha1": "4523087bf52f784ff1f7445113d43075928c5e9a",
+      "bytes": 17015
+    },
+    "Research/B01-13/P17V/test_study.mjs": {
+      "git_blob_sha1": "51e1f17360289b0ec894424e065c987679b06f6a",
+      "bytes": 9474
+    },
+    "Research/B01-13/P17V/browser_test.py": {
+      "git_blob_sha1": "e08636e4aedbd4ad85a044faf4b68e0b6ef0ed99",
+      "bytes": 2875
+    },
+    "Research/B01-13/P17V/README.md": {
+      "git_blob_sha1": "eea9a3e683b0014ba4d08b57013cd0e3a1812230",
+      "bytes": 7244
+    },
+    "Research/B01-13/P17V/verify_package.py": {
+      "git_blob_sha1": "a986159fb3625fc20a7fcc69301311bfbb10df97",
+      "bytes": 1162
+    },
+    ".github/workflows/b01-13-w24-approved-garage-study.yml": {
+      "git_blob_sha1": "4ef51d3ea5bfd3fd01a3b4535ae81c8ad238935c",
+      "bytes": 2969
+    }
+  }
+}
