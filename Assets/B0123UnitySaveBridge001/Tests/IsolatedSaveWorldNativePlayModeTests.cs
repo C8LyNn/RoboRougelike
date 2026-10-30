@@ -78,6 +78,36 @@ namespace B01.UnitySaveBridge001.Tests
             finally {Object.Destroy(prior);Object.Destroy(next);}
         }
         [UnityTest]
+        public IEnumerator PersistentFence_DeniesConflictingSameGenerationAcrossHosts()
+        {
+            string slot="W16Native_"+System.Guid.NewGuid().ToString("N");
+            string fence=System.IO.Path.Combine(Application.persistentDataPath,
+                "B0123UnitySaveBridge001","W16CheckpointFences",slot+".fence");
+            var first=new GameObject("W16 durable first");
+            var second=new GameObject("W16 durable fresh host");
+            try
+            {
+                var old=first.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(old.UsePersistentCheckpointSlot(slot));
+                Assert.IsTrue(old.PersistentCheckpointEnabled);
+                byte[] original=IsolatedTwinRigSaveHost.MakeFixture(51,7,true,false);
+                Assert.IsTrue(old.TryRestoreBytes(original,51,7));
+                var fresh=second.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(fresh.UsePersistentCheckpointSlot(slot));
+                Assert.IsFalse(fresh.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(51,7,false,true),51,7));
+                Assert.IsFalse(fresh.HasWorld);
+                Assert.IsTrue(fresh.TryRestoreBytes(original,51,7));
+                Assert.IsTrue(fresh.IsConsumed(0,2310001));
+                yield return null;
+            }
+            finally
+            {
+                Object.Destroy(first);Object.Destroy(second);
+                if(System.IO.File.Exists(fence))System.IO.File.Delete(fence);
+            }
+        }
+        [UnityTest]
         public IEnumerator WrongGeneration_CannotPartiallyPublishRealPhysicalWorld()
         {
             var go=new GameObject("W15 generation native test");

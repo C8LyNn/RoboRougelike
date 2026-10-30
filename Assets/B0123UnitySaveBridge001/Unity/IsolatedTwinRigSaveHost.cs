@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using B01.DetachedSaveContract001;
 using B01.DebrisRepulse001;
@@ -41,6 +42,26 @@ namespace B01.UnitySaveBridge001
             return true;
         }
         private void Awake(){coordinator=new AtomicWorldSwap(this);}
+        // Explicit opt-in to a persistent per-save-slot W16 checkpoint fence.
+        // Volatile default remains a NON-DURABLE demo until this is called.
+        // Do not pass arbitrary user paths or use this as canonical #510 save.
+        public bool UsePersistentCheckpointSlot(string slot)
+        {
+            if(coordinator==null||coordinator.Busy||coordinator.HasWorld||
+               !isActiveAndEnabled||string.IsNullOrEmpty(slot)||slot.Length>32)
+                return false;
+            foreach(char c in slot)
+                if(!((c>='A'&&c<='Z')||(c>='a'&&c<='z')||
+                     (c>='0'&&c<='9')||c=='_'||c=='-'))
+                    return false;
+            string folder=Path.Combine(Application.persistentDataPath,
+                "B0123UnitySaveBridge001","W16CheckpointFences");
+            coordinator=new AtomicWorldSwap(this,
+                new FileCheckpointFence(Path.Combine(folder,slot+".fence")));
+            return true;
+        }
+        public bool PersistentCheckpointEnabled =>
+            coordinator!=null&&coordinator.DurableFence;
         private void Start()
         {
             if(buildInitialFixtureOnStart)

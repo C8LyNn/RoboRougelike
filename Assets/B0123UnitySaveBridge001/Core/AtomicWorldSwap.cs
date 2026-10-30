@@ -27,6 +27,7 @@ namespace B01.UnitySaveBridge001
     public sealed class AtomicWorldSwap
     {
         private readonly IWorldFactory factory;
+        private readonly ICheckpointFence checkpoint;
         private IPreparedWorld? current;
         private ColdRestore? currentCold;
         private bool busy, quarantined, cleanupPending;
@@ -38,8 +39,16 @@ namespace B01.UnitySaveBridge001
         public bool IsConsumed(int slot,long id) =>
             currentCold != null && currentCold.ContainsConsumedId(slot,id);
 
+        // Default uses an explicitly volatile fence for the isolated demo ONLY.
+        // Production must inject a durable ICheckpointFence bound to the save slot.
         public AtomicWorldSwap(IWorldFactory factory)
-        { this.factory=factory??throw new ArgumentNullException(nameof(factory)); }
+            : this(factory,new VolatileCheckpointFence()) {}
+        public AtomicWorldSwap(IWorldFactory factory,ICheckpointFence checkpoint)
+        {
+            this.factory=factory??throw new ArgumentNullException(nameof(factory));
+            this.checkpoint=checkpoint??throw new ArgumentNullException(nameof(checkpoint));
+        }
+        public bool DurableFence => checkpoint.IsDurable;
 
         private static bool Idle(Func<bool> callback)
         {
@@ -65,6 +74,12 @@ namespace B01.UnitySaveBridge001
                 // Only immutable identity, authority and detached/consumed coupling must match.
                 if(!SameIdentityAndLedger(snap,currentCold.Snapshot))return false;
                 byte[] pending=SnapshotCodec.Encode(snap);
+                // A durable fence cannot authorize a physically changed
+                // checkpoint with SAME generation. Host must version + durably
+                // write a new checkpoint via an owner-approved save transaction.
+                if(checkpoint.IsDurable&&checkpoint.Check(snap.RunId,
+                    snap.Generation,CheckpointHash.Of(pending),true)!=FenceVerdict.Allowed)
+                    return false;
                 if(!Idle(hostIdle))return false;
                 bytes=pending;
                 return true;
@@ -79,54 +94,94 @@ namespace B01.UnitySaveBridge001
             if(quarantined)return WorldSwapVerdict.RollbackQuarantine;
             if(busy)return WorldSwapVerdict.HostBusy;
             if(hostIdle==null)return WorldSwapVerdict.HostException;
-            busy=true; // includes idle callbacks, original #556 decode, staging and publication
+            busy=true;
             IPreparedWorld? candidate=null;
             IPreparedWorld? old=current;
-            bool touchedOld=false, touchedNew=false, published=false;
+            bool touchedOld=false,touchedNew=false,published=false,authoritySealAttempted=false;
+            WorldSwapVerdict verdict=WorldSwapVerdict.HostException;
             try
             {
-                if(!Idle(hostIdle))return WorldSwapVerdict.HostBusy;
-                if(!ColdRestore.TryStage(bytes,out ColdRestore? restored)||restored==null)
-                    return WorldSwapVerdict.InvalidSnapshot;
-                RunSnapshot snapshot=restored.Snapshot;
-                if(expectedRun<=0||snapshot.RunId!=expectedRun)return WorldSwapVerdict.WrongRun;
-                if(minimumGeneration<=0||snapshot.Generation<minimumGeneration||
-                   (currentCold!=null&&snapshot.Generation<currentCold.Snapshot.Generation))
-                    return WorldSwapVerdict.StaleGeneration;
-                for(int i=0;i<FrozenPartCatalog.Slots;i++)
+                // No early return: an error from Abort/Retire/old Reactivate must
+                // override the outgoing verdict to QUARANTINE.
+                if(!Idle(hostIdle))verdict=WorldSwapVerdict.HostBusy;
+                else if(!ColdRestore.TryStage(bytes,out ColdRestore? ready)||ready==null)
+                    verdict=WorldSwapVerdict.InvalidSnapshot;
+                else if(expectedRun<=0||ready.Snapshot.RunId!=expectedRun)
+                    verdict=WorldSwapVerdict.WrongRun;
+                else if(minimumGeneration<=0||ready.Snapshot.Generation<minimumGeneration||
+                    (currentCold!=null&&ready.Snapshot.Generation<=currentCold.Snapshot.Generation))
+                    // Same-run same-generation replay is not allowed on a LIVE world,
+                    // even if exact bytes are repeated: prevents divergent worlds.
+                    verdict=WorldSwapVerdict.StaleGeneration;
+                else
                 {
-                    var part=snapshot.Parts[i];
-                    if(restored.ContainsConsumedId(i,part.Id)!=part.Consumed ||
-                       restored.ConsumedCount(i)!=(part.Consumed?1:0))
-                        return WorldSwapVerdict.InvalidSnapshot;
+                    RunSnapshot snapshot=ready.Snapshot;
+                    bool valid=true;
+                    for(int i=0;i<FrozenPartCatalog.Slots;i++)
+                    {
+                        PersistedPart part=snapshot.Parts[i];
+                        if(ready.ContainsConsumedId(i,part.Id)!=part.Consumed ||
+                           ready.ConsumedCount(i)!=(part.Consumed?1:0))
+                            valid=false;
+                    }
+                    if(!valid)verdict=WorldSwapVerdict.InvalidSnapshot;
+                    else
+                    {
+                        // Source/checksum validation must precede durable fence check.
+                        FenceVerdict fenceVerdict=checkpoint.Check(snapshot.RunId,
+                            snapshot.Generation,CheckpointHash.Of(bytes),old==null);
+                        if(fenceVerdict==FenceVerdict.Stale ||
+                           fenceVerdict==FenceVerdict.Conflict)
+                            verdict=WorldSwapVerdict.StaleGeneration;
+                        else if(fenceVerdict!=FenceVerdict.Allowed)
+                        {
+                            quarantined=true;
+                            verdict=WorldSwapVerdict.RollbackQuarantine;
+                        }
+                        else
+                        {
+                            candidate=factory.Prepare(snapshot);
+                            if(candidate==null)throw new InvalidOperationException("Missing candidate");
+                            if(!Consistent(candidate.Capture(),snapshot))
+                                throw new InvalidOperationException("Inactive stage readback differs");
+                            if(!Idle(hostIdle))verdict=WorldSwapVerdict.HostBusy;
+                            else
+                            {
+                                if(old!=null){touchedOld=true;old.Deactivate();}
+                                touchedNew=true;
+                                candidate.Activate();
+                                // #572: activation itself can mutate owner/IDs/pose/velocities.
+                                // Always verify activated actual world BEFORE publishing.
+                                if(!Consistent(candidate.Capture(),snapshot))
+                                    throw new InvalidOperationException("Activated world changed snapshot");
+                                if(!Idle(hostIdle))verdict=WorldSwapVerdict.HostBusy;
+                                else
+                                {
+                                    // A partial/throwing durable seal is ambiguous. Fail
+                                    // closed with quarantine even if physical rollback works.
+                                    authoritySealAttempted=true;
+                                    checkpoint.Seal(snapshot.RunId,snapshot.Generation,
+                                        CheckpointHash.Of(bytes));
+                                    current=candidate;
+                                    currentCold=ready;
+                                    candidate=null;
+                                    published=true;
+                                    verdict=WorldSwapVerdict.Accepted;
+                                    if(old!=null)
+                                    {
+                                        try{old.Retire();}
+                                        catch{cleanupPending=true;}
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-
-                // Create candidate inactive in isolation BEFORE touching old world.
-                candidate=factory.Prepare(snapshot);
-                if(candidate==null)throw new InvalidOperationException("Empty candidate");
-                if(!Consistent(candidate.Capture(),snapshot))
-                    throw new InvalidOperationException("Staging physics/identity mismatch");
-                if(!Idle(hostIdle))return WorldSwapVerdict.HostBusy;
-                // No await/thread switch; host controls all physical writers on main thread.
-                if(old!=null){touchedOld=true;old.Deactivate();}
-                touchedNew=true;
-                candidate.Activate();
-                if(!Consistent(candidate.Capture(),snapshot))
-                    throw new InvalidOperationException("Activated world mismatch");
-                current=candidate;
-                currentCold=restored;
-                published=true;
-                candidate=null;
-                if(old!=null)
-                {
-                    try{old.Retire();}
-                    catch{cleanupPending=true;} // retired world inactive: cleanup separately
-                }
-                return WorldSwapVerdict.Accepted;
             }
             catch
             {
-                return WorldSwapVerdict.HostException;
+                verdict=WorldSwapVerdict.HostException;
+                if(authoritySealAttempted)quarantined=true;
             }
             finally
             {
@@ -135,23 +190,18 @@ namespace B01.UnitySaveBridge001
                     bool rollbackOk=true;
                     if(candidate!=null)
                     {
-                        // Deactivate even when Activate threw midway.
-                        try {if(touchedNew)candidate.Deactivate();}catch{rollbackOk=false;}
-                        try {candidate.Retire();}catch{rollbackOk=false;}
+                        try{if(touchedNew)candidate.Deactivate();}
+                        catch{rollbackOk=false;}
+                        try{candidate.Retire();}catch{rollbackOk=false;}
                     }
                     if(touchedOld&&old!=null)
-                    {
-                        try {old.Activate();}catch{rollbackOk=false;}
-                    }
-                    if(!rollbackOk)
-                    {
-                        quarantined=true;
-                        // Quarantine overrides returned result via host's persistent flag.
-                        // C# forbids return from finally; caller checks Quarantined.
-                    }
+                        try{old.Activate();}catch{rollbackOk=false;}
+                    if(!rollbackOk)quarantined=true;
                 }
                 busy=false;
             }
+            // Never return ordinary REJECT after failed Abort/Retire/rollback.
+            return quarantined?WorldSwapVerdict.RollbackQuarantine:verdict;
         }
 
         private static bool SameIdentityAndLedger(RunSnapshot a,RunSnapshot b)

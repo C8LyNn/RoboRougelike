@@ -33,7 +33,7 @@ class T
     class World : IPreparedWorld
     {
         public RunSnapshot State;
-        public bool Active,Retired,FailActivate,FailDeactivate,FailRetire,WrongCapture;
+        public bool Active,Retired,FailActivate,FailDeactivate,FailRetire,WrongCapture,CorruptOnActivate;
         public int Activations;
         public World(RunSnapshot s){State=s;}
         public RunSnapshot Capture()
@@ -42,20 +42,25 @@ class T
             var p=State.Parts;p[0]=p[1];
             return new RunSnapshot(State.RunId,State.Generation,p);
         }
-        public void Activate(){Activations++;Active=true;if(FailActivate)throw new IOException("active");}
+        public void Activate()
+        {
+            Activations++;Active=true;
+            if(CorruptOnActivate)WrongCapture=true;
+            if(FailActivate)throw new IOException("active");
+        }
         public void Deactivate(){Active=false;if(FailDeactivate)throw new IOException("deactive");}
         public void Retire(){Retired=true;Active=false;if(FailRetire)throw new IOException("retire");}
     }
     class Factory : IWorldFactory
     {
         public World? Last;
-        public bool FailFactory,FailActivate,WrongCapture;
+        public bool FailFactory,FailActivate,WrongCapture,CorruptOnActivate,FailRetire;
         public Action? OnPrepare;
         public IPreparedWorld Prepare(RunSnapshot p)
         {
             OnPrepare?.Invoke();
             if(FailFactory)throw new IOException("prepare");
-            Last=new World(p){FailActivate=FailActivate,WrongCapture=WrongCapture};
+            Last=new World(p){FailActivate=FailActivate,WrongCapture=WrongCapture,CorruptOnActivate=CorruptOnActivate,FailRetire=FailRetire};
             return Last;
         }
     }
@@ -166,7 +171,7 @@ class T
             h.TryLoad(Make(true,false),7,1,()=>true);
             f.Last!.FailActivate=true;f.FailActivate=true;
             var v=h.TryLoad(Make(false,true,2),7,1,()=>true);
-            return v==WorldSwapVerdict.HostException&&h.Quarantined&&
+            return v==WorldSwapVerdict.RollbackQuarantine&&h.Quarantined&&
                 !h.TrySave(7,()=>true,out _)&&
                 h.TryLoad(Make(true,false,3),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine;
         });
@@ -216,6 +221,109 @@ class T
                     WorldSwapVerdict.InvalidSnapshot;
             });
         }
+        Check("W16 QA #588 same generation conflicting consumed ID world DENIED",()=>{
+            var factory=new Factory();var host=new AtomicWorldSwap(factory);
+            var first=host.TryLoad(Make(true,false,5),7,1,()=>true);
+            var world=factory.Last;var second=host.TryLoad(Make(false,true,5),7,1,()=>true);
+            return first==WorldSwapVerdict.Accepted&&second==WorldSwapVerdict.StaleGeneration&&
+                ReferenceEquals(world,factory.Last)&&world!.Active&&!world.Retired&&
+                host.IsConsumed(0,2310001)&&!host.IsConsumed(1,2310002);
+        });
+        Check("W16 QA #588 same generation exact replay with current world refuses too",()=>{
+            var factory=new Factory();var host=new AtomicWorldSwap(factory);
+            host.TryLoad(Make(true,false,5),7,1,()=>true);var world=factory.Last;
+            return host.TryLoad(Make(true,false,5),7,1,()=>true)==WorldSwapVerdict.StaleGeneration&&
+                ReferenceEquals(world,factory.Last)&&!world!.Retired;
+        });
+        Check("W16 #572 postactivation changed identity refuses and old survives",()=>{
+            var factory=new Factory();var host=new AtomicWorldSwap(factory);
+            host.TryLoad(Make(true,false,3),7,1,()=>true);
+            var previous=factory.Last!;
+            factory.OnPrepare=()=>{
+                // Toggle only the NEW fake after Prepare, before real activation.
+            };
+            factory.CorruptOnActivate=true;
+            var answer=host.TryLoad(Make(false,true,4),7,1,()=>true);
+            return answer==WorldSwapVerdict.HostException&&
+                previous.Active&&!previous.Retired&&host.Generation==3&&
+                host.IsConsumed(0,2310001)&&factory.Last!.Retired;
+        });
+        Check("W16 #582 cleanup failure overrides normal HostBusy with QUARANTINE",()=>{
+            var factory=new Factory();var host=new AtomicWorldSwap(factory);
+            bool idle=true;factory.OnPrepare=()=>idle=false;
+            factory.FailRetire=true;
+            var verdict=host.TryLoad(Make(true,false,1),7,1,()=>idle);
+            return verdict==WorldSwapVerdict.RollbackQuarantine&&host.Quarantined&&
+                !host.TrySave(7,()=>true,out _);
+        });
+        Check("W16 actual durable fence same-gen cross-process fork denied",()=>{
+            string tmp=Path.Combine(Path.GetTempPath(),"b01w16-"+Guid.NewGuid().ToString("N")+".fence");
+            try
+            {
+                var first=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                if(first.TryLoad(Make(true,false,7),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                var forked=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                var denied=forked.TryLoad(Make(false,true,7),7,1,()=>true);
+                return denied==WorldSwapVerdict.StaleGeneration&&!forked.HasWorld;
+            }
+            finally{if(File.Exists(tmp))File.Delete(tmp);}
+        });
+        Check("W16 durable exact-byte cold restart permitted and stable IDs maintained",()=>{
+            string tmp=Path.Combine(Path.GetTempPath(),"b01w16-"+Guid.NewGuid().ToString("N")+".fence");
+            try
+            {
+                var bytes=Make(true,false,7);
+                var one=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                if(one.TryLoad(bytes,7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                var two=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                return two.TryLoad(bytes,7,1,()=>true)==WorldSwapVerdict.Accepted&&
+                    two.IsConsumed(0,2310001)&&!two.IsConsumed(1,2310002);
+            }
+            finally{if(File.Exists(tmp))File.Delete(tmp);}
+        });
+        Check("W16 durable old generation blocked after process restart",()=>{
+            string tmp=Path.Combine(Path.GetTempPath(),"b01w16-"+Guid.NewGuid().ToString("N")+".fence");
+            try
+            {
+                var one=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                if(one.TryLoad(Make(true,false,9),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                var two=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                return two.TryLoad(Make(true,false,8),7,1,()=>true)==WorldSwapVerdict.StaleGeneration;
+            }
+            finally{if(File.Exists(tmp))File.Delete(tmp);}
+        });
+        Check("W16 corrupt durable sidecar quarantines rather than accepting older world",()=>{
+            string tmp=Path.Combine(Path.GetTempPath(),"b01w16-"+Guid.NewGuid().ToString("N")+".fence");
+            try
+            {
+                var one=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                if(one.TryLoad(Make(true,false,9),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                File.WriteAllBytes(tmp,new byte[]{0,1,2});
+                var second=new AtomicWorldSwap(new Factory(),new FileCheckpointFence(tmp));
+                return second.TryLoad(Make(true,false,10),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine&&
+                    second.Quarantined&&!second.HasWorld;
+            }
+            finally{if(File.Exists(tmp))File.Delete(tmp);}
+        });
+        Check("W16 durable fence rejects physically altered same-generation Save",()=>{
+            string tmp=Path.Combine(Path.GetTempPath(),"b01w16-"+Guid.NewGuid().ToString("N")+".fence");
+            try
+            {
+                var f=new Factory();var host=new AtomicWorldSwap(f,new FileCheckpointFence(tmp));
+                if(host.TryLoad(Make(true,false,2),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                var original=f.Last!.State;
+                var parts=original.Parts;
+                var old=parts[0];
+                parts[0]=new PersistedPart(old.Id,old.OwnerId,old.ParentId,old.AssetGuid,
+                   old.SocketGuid,old.State,old.Consumed,old.Kinematic,
+                   new Vector3d(old.Position.X+.5,old.Position.Y,old.Position.Z),
+                   old.Qx,old.Qy,old.Qz,old.Qw,old.LinearVelocity,old.AngularVelocity,old.MassKg);
+                f.Last.State=new RunSnapshot(original.RunId,original.Generation,parts);
+                return !host.TrySave(7,()=>true,out _)&&host.IsConsumed(0,2310001);
+            }
+            finally{if(File.Exists(tmp))File.Delete(tmp);}
+        });
+
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
     public static int Main(){Tests();Console.WriteLine("TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);return fail==0?0:1;}

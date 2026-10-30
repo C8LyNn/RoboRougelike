@@ -1,0 +1,39 @@
+name: B01-23 P17 W16 chosen Save Host R2 source transaction and rollback
+on:
+  push:
+    branches: [b01-23/p17w16-one-atomic-save-host-r2]
+  pull_request:
+    paths:
+      - 'Assets/B0123UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W15UnitySaveBridge001/**'
+      - 'Tools/B01/B01-23/P17W16AtomicUnitySaveHostR2/**'
+      - '.github/workflows/b01-23-p17w16-atomic-save-host-r2.yml'
+jobs:
+  selected-original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Real #556 source, original W06, W16 physical transaction and durable file fence
+        run: dotnet run --project Tools/B01/B01-23/P17W15UnitySaveBridge001/HostBridgeTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Git source package and foreign-empty-directory rollback negative tests
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W15UnitySaveBridge001 -p test_package.py -v
+      - name: Build original W16-only overlay source ZIP with full SHA provenance
+        run: python Tools/B01/B01-23/P17W15UnitySaveBridge001/package.py build --archive dist/B0123_UnitySaveHostR2_Original.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w16-selected-atomic-save-host-${{ matrix.os }}
+          path: dist/B0123_UnitySaveHostR2_Original.zip
+          if-no-files-found: error

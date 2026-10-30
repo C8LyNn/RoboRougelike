@@ -14,8 +14,8 @@ class SourcePackageTests(unittest.TestCase):
     def test_frozen_selected_gameplay(self):
         self.assertEqual(p.SELECTED_GAME,"d94400d95d13db7f27e1533df05c9292d5380431")
     def test_original_critical_git_blobs(self):self.assertEqual(len(p.PINS),5)
-    def test_exact_22_own_git_paths(self):self.assertEqual(len(p.scope()),22)
-    def test_10_unique_meta_guids_and_three_asmdefs(self):p.scope()
+    def test_exact_26_own_git_paths(self):self.assertEqual(len(p.scope()),26)
+    def test_11_unique_meta_guids_and_three_asmdefs(self):p.scope()
     def test_actual_original_unity_body_source(self):
         s=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
         self.assertIn("Rigidbody",s);self.assertIn("DebrisImpulseLedger",s)
@@ -30,8 +30,14 @@ class SourcePackageTests(unittest.TestCase):
         self.assertIn("if(part.activeInHierarchy)",source)
         self.assertIn("container.SetActive(true);",source)
         self.assertIn("body.linearVelocity",source)
+    def test_w16_unity_real_persistent_fence_opt_in(self):
+        runtime=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
+        self.assertIn("UsePersistentCheckpointSlot(string slot)",runtime)
+        self.assertIn("Application.persistentDataPath",runtime)
+        self.assertIn("new FileCheckpointFence(",runtime)
+        self.assertIn("coordinator.HasWorld",runtime)
     def test_real_git_deterministic_archive(self):self.assertEqual(p.build(),p.build())
-    def test_exact_23_archive_members(self):self.assertEqual(len(p.verify(p.build())),23)
+    def test_exact_27_archive_members(self):self.assertEqual(len(p.verify(p.build())),27)
     def test_manifest_source_guards(self):
         x=p.verify(p.build());m=json.loads(x[p.MANIFEST])
         self.assertEqual(m["native_unity"],"NOT_RUN")
