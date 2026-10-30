@@ -39,12 +39,32 @@ namespace B01.UXViewport
         {
             if(width<320 || height<420 || width>16384 || height>16384 ||
                 left<0 || top<0 || right<0 || bottom<0 ||
-                left+right>width-280 || top+bottom>height-320 ||
+                (long)left+right>width-280 || (long)top+bottom>height-320 ||
                 userScalePercent<100 || userScalePercent>150)
                 throw new ArgumentOutOfRangeException("viewport");
             Width=width;Height=height;InsetLeft=left;InsetTop=top;
             InsetRight=right;InsetBottom=bottom;UserScalePercent=userScalePercent;
             ShowObjectives=showObjectives;ShowTips=showTips;
+        }
+    }
+
+    // The GUI host measures actual text pixel heights (after font scale and wrapping).
+    // No glyph-width guesses are made here. Zero means the R1 default line budget.
+    public sealed class HudContentMetrics
+    {
+        public readonly int CriticalHeightPx,VitalsHeightPx,ThreatsHeightPx;
+        public readonly int ObjectivesHeightPx,TipsHeightPx;
+        public HudContentMetrics(int criticalHeightPx,int vitalsHeightPx,int threatsHeightPx,
+            int objectivesHeightPx=0,int tipsHeightPx=0)
+        {
+            if(criticalHeightPx<0||vitalsHeightPx<0||threatsHeightPx<0||
+                objectivesHeightPx<0||tipsHeightPx<0||
+                criticalHeightPx>16384||vitalsHeightPx>16384||threatsHeightPx>16384||
+                objectivesHeightPx>16384||tipsHeightPx>16384)
+                throw new ArgumentOutOfRangeException("metrics");
+            CriticalHeightPx=criticalHeightPx;VitalsHeightPx=vitalsHeightPx;
+            ThreatsHeightPx=threatsHeightPx;ObjectivesHeightPx=objectivesHeightPx;
+            TipsHeightPx=tipsHeightPx;
         }
     }
 
@@ -77,6 +97,11 @@ namespace B01.UXViewport
         {return (numerator+denominator-1)/denominator;}
         public static HudLayout Build(HudViewport v)
         {
+            return Build(v,null);
+        }
+        // Optional host-measured inner-text extents; Build(v) remains R1-compatible.
+        public static HudLayout Build(HudViewport v,HudContentMetrics metrics)
+        {
             if(v==null)throw new ArgumentNullException("v");
             var safe=new HudRect(v.InsetLeft,v.InsetTop,
                 v.Width-v.InsetLeft-v.InsetRight,v.Height-v.InsetTop-v.InsetBottom);
@@ -85,11 +110,11 @@ namespace B01.UXViewport
             int line=font+6;
             int pad=Ceiling(14*scale,100);
             int gap=Ceiling(10*scale,100);
-            int criticalH=2*line+2*pad;
-            int vitalsH=4*line+2*pad;
-            int threatsH=3*line+2*pad;
-            int objectivesH=2*line+2*pad;
-            int tipsH=2*line+pad;
+            int criticalH=Math.Max(2*line,metrics==null?0:metrics.CriticalHeightPx)+2*pad;
+            int vitalsH=Math.Max(4*line,metrics==null?0:metrics.VitalsHeightPx)+2*pad;
+            int threatsH=Math.Max(3*line,metrics==null?0:metrics.ThreatsHeightPx)+2*pad;
+            int objectivesH=Math.Max(2*line,metrics==null?0:metrics.ObjectivesHeightPx)+2*pad;
+            int tipsH=Math.Max(2*line,metrics==null?0:metrics.TipsHeightPx)+pad;
             int pauseH=Math.Max(48,2*line);
             int pauseW=Math.Max(96,4*line);
             bool two=safe.Width>=980 && safe.Height>=580 &&
