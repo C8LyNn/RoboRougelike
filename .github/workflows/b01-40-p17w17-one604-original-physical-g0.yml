@@ -1,0 +1,86 @@
+name: B01-40 W17 single selected #604 source G0 original Git physical ZIP and strict disposable host rollback
+on:
+  push:
+    branches: [qa/b01-40-p17w17-single604-physical-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W17OneBridge604G0/**'
+      - '.github/workflows/b01-40-p17w17-one604-original-physical-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W17OneBridge604G0/**'
+      - '.github/workflows/b01-40-p17w17-one604-original-physical-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-G0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Own QA branch exact head
+        uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Sole selected frozen gameplay #510
+        uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - name: Sole frozen Save schema #556
+        uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - name: ONE selected provisional W17 adapter #604
+        uses: actions/checkout@v4
+        with:
+          path: chosen
+          ref: 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          fetch-depth: 0
+      - name: Losing alternate #596 provenance read-only (NEVER imported)
+        uses: actions/checkout@v4
+        with:
+          path: alternative
+          ref: efb2b06eafedab5469b57f163152d96aca3c5915
+      - name: Original B01-40 W15 safe disposable migration (no code changes)
+        uses: actions/checkout@v4
+        with:
+          path: receiver
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - name: B01-61 #603 core-and-fence exactly independently tested ancestor
+        uses: actions/checkout@v4
+        with:
+          path: qa_core
+          ref: 7d206c63e1e9ab4ee4ce52eb314507ce49721d2c
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute ORIGINAL #604 author package and original #575 safe receiver on real FS
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W17OneBridge604G0/receive.py \
+            --game game --save save --chosen chosen --alternative alternative \
+            --receiver receiver --qa_core qa_core --output evidence | tee w17-source-physical.log
+          grep -q 'B0140_W17_ORIGINAL_PHYSICAL_ZIP' w17-source-physical.log
+          grep -q 'B0140_W17_EXCLUSIVE_FINAL_CANDIDATE' w17-source-physical.log
+          grep -q 'B0140_W17_COMBINED_RECEIVER' w17-source-physical.log
+          grep -q 'B0140_W17_SOURCE_G0_CONDITIONAL_604_ACCEPTED_NATIVE_NOT_RUN_LIVE_HOLD_G2_HOLD_NO_MERGE' w17-source-physical.log
+          test -s evidence/w17-source-receipt.json
+      - name: Preserve exact original output; not native Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W17-Original604-${{ matrix.os }}
+          path: |
+            evidence/w17-source-receipt.json
+            w17-source-physical.log
+          if-no-files-found: warn
+          retention-days: 21
