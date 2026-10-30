@@ -1,0 +1,46 @@
+{
+  "package_id": "B01-60-W17-SELECTED-596-NATIVE-COVERAGE-SOURCE-AUDIT",
+  "version": "1.1.0",
+  "role": "B01-60",
+  "hq": 608,
+  "baseline_qa": 601,
+  "baseline_qa_sha": "dd088a8c4823a6d128085e5ef08aca4b7f9307ea",
+  "frozen_game": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "frozen_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "sole_adapter_producer_selection": {
+    "role": "B01-23",
+    "pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "native_cases_authored": 4
+  },
+  "conflicting_b01_62_alternative_HOLD": {
+    "pr": 604,
+    "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+    "native_cases_authored": 5
+  },
+  "arbiter": "B01-00_RESOLVE_WITH_B01-23_AND_B01-62",
+  "original532_native_cases_authored": 16,
+  "original532_contains_selected_Save_adapter": false,
+  "source_native_isolation_risk": "selected #596 native PlayMode hosts all use same persistentDataPath/b0123_one_save_host_v2.checkpoint; cases with run IDs 31/41/9 can interfere; no cleanup",
+  "G0_selected_adapter": "PENDING_SINGLE_RECEIVER_ACCEPTANCE",
+  "G1": "NOT_RUN_NO_ACTIVATED_EDITOR",
+  "NUnit_xml": "NOT_CREATED",
+  "Editor_log": "NOT_CREATED",
+  "canonical_game_saveload": "HOLD",
+  "G2": "HOLD",
+  "Codex_ACK": "NONE",
+  "merged": false,
+  "owned_files": [
+    "Tools/B01/B01-60/P17W17NativeAdapterCoverage/README.md",
+    "Tools/B01/B01-60/P17W17NativeAdapterCoverage/manifest.json",
+    "Tools/B01/B01-60/P17W17NativeAdapterCoverage/audit_native_adapter_coverage.py",
+    ".github/workflows/b01-60-p17w17-native-adapter-coverage.yml"
+  ],
+  "rollback": "four W17 B01-60 files only, no other source changed"
+}
