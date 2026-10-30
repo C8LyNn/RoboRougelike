@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s Tools/B01/B01-62/P17W07HazardTemporalQA -p test_receiver.py -v \
             2>&1 | tee "$RUNNER_TEMP/temporal-tests.log"
-          grep -q "Ran 16 tests" "$RUNNER_TEMP/temporal-tests.log"
+          grep -q "Ran 17 tests" "$RUNNER_TEMP/temporal-tests.log"
           grep -q '^OK$' "$RUNNER_TEMP/temporal-tests.log"
       - name: Execute real original map receiver and emit deterministic physical JSON
         shell: bash
