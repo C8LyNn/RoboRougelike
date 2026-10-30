@@ -1,0 +1,63 @@
+name: B01-61 W11 - original W10 + W06 ledger transactional QA
+on:
+  push:
+    branches: [qa/b01-61-p17w11-public-r2-ledger-atomicity]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/**"
+      - "Assets/B0161W11DockAtomicityQA/**"
+      - ".github/workflows/b01-61-p17w11-r2-ledger-atomicity.yml"
+  workflow_dispatch:
+jobs:
+  source-original-code-ledger-fault-injection:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Independent exact-SHA source + real CSharp9 native-excluding test
+        shell: bash
+        run: |
+          set +e
+          python Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/source_gate.py > w11-git-source.txt 2>&1
+          p=$?
+          cat w11-git-source.txt
+          dotnet build Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/LedgerAtomicityQA.csproj -c Release --warnaserror > w11-build.txt 2>&1
+          b=$?
+          cat w11-build.txt
+          e=99
+          g=99
+          if [ "$b" = 0 ]; then
+            dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/LedgerAtomicityQA.csproj -- --evidence > w11-evidence.txt 2>&1
+            e=$?
+            cat w11-evidence.txt
+            dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/LedgerAtomicityQA.csproj -- --release > w11-release.txt 2>&1
+            g=$?
+            cat w11-release.txt
+          fi
+          printf 'PINS=%s BUILD=%s EVIDENCE=%s RELEASE=%s UNITY_G1=NOT_RUN\n' "$p" "$b" "$e" "$g" | tee w11-verdict.txt
+          if [ "$p" != 0 ] || [ "$b" != 0 ] || [ "$e" != 0 ] || [ "$g" != 3 ]; then
+            echo "QA_EXECUTION_INFRA_FAIL"
+            exit 1
+          fi
+          echo "EXACT_ORIGINAL_SOURCE_QA_PASS LEDGER_ATOMICITY_RELEASE_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w11-real-ledger-source-${{ matrix.os }}
+          path: |
+            w11-git-source.txt
+            w11-build.txt
+            w11-evidence.txt
+            w11-release.txt
+            w11-verdict.txt

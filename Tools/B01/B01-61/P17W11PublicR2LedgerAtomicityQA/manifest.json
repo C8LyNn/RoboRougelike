@@ -1,0 +1,28 @@
+{
+  "package_id": "B01-61-W11-PUBLIC-R2-ORIGINAL-LEDGER-ATOMICITY-QA-001",
+  "version": "1.0.0",
+  "original_producer_pr": 494,
+  "original_w10_sha": "6efe45961ed0ffdf183e8016e350978b9f3dc51c",
+  "original_w06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "original_csharp_blobs": {
+    "DebrisRigPlayground.cs": "60fc22efec0e49d7688adde1fcb776093f2196af",
+    "RigDemoDefinition.cs": "b7d1a503c89537316fe48dbb54f5997bb21d14ce",
+    "DebrisImpulseCore.cs": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "DebrisRepulsionEmitter.cs": "2b3a8465c550bd49a5c98be5a8064a4ce0947f4b"
+  },
+  "source_scope": "Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/**; Assets/B0161W11DockAtomicityQA/**; unique CI",
+  "scope": "original W10 C# + original W06 ledger/emitter managed-boundary execution; 2 real native tests authored",
+  "native_unity": "NOT_RUN",
+  "g0": "SOURCE_LEDGER_ATOMICITY_HOLD",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "merge": false,
+  "owner": "B01-61",
+  "receiver": [
+    "B01-23",
+    "B01-40",
+    "B01-60",
+    "B01-00"
+  ],
+  "rollback": "close Draft PR and remove only new QA files, leave immutable original #494, #488, and Codex unmodified"
+}
