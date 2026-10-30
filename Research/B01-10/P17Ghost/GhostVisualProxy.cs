@@ -74,12 +74,17 @@ namespace RoboRougelike.B0110.TrainingGhost
             ApplyVisualPose(playback.Seek(elapsedSeconds));
         }
 
-        public void SeekDrill(double visualLoopElapsedSeconds)
+        public void SeekDrill(double visualLoopElapsedSeconds) =>
+            SeekDrill(visualLoopElapsedSeconds, 1f);
+
+        // The host selects the visual demonstration rate (0.25..2x).
+        // Sampling does NOT adjust Unity Time.timeScale or physical velocity.
+        public void SeekDrill(double visualLoopElapsedSeconds, float playbackSpeed)
         {
             if (drill == null)
                 throw new InvalidOperationException(
                     "Cannot replay an unbound training segment");
-            ApplyVisualPose(drill.PoseAt(visualLoopElapsedSeconds));
+            ApplyVisualPose(drill.PoseAt(visualLoopElapsedSeconds, playbackSpeed));
         }
 
         private void ApplyVisualPose(GhostPose p)
