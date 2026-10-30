@@ -1,0 +1,65 @@
+{
+  "package": "B01-60-P17W25-PHYSICAL772-UNITYG1-001/R1",
+  "role": "B01-60",
+  "hq_issue": 731,
+  "operator_authorization_issue": 667,
+  "base_prev_QA": {
+    "pr": 757,
+    "sha": "e4a1f8eeae267f26488156142158155fed1452fa"
+  },
+  "port": {
+    "pr": 772,
+    "sha": "ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1",
+    "native_cases": 3,
+    "source_GUIDs_new": 9
+  },
+  "source_api": {
+    "pr": 729,
+    "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2"
+  },
+  "save_current_selected": {
+    "pr": 749,
+    "sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+    "source_public_API_bug": 767
+  },
+  "save_candidate_fix": {
+    "pr": 773,
+    "sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+    "explicitly_selected_by_B0100": false,
+    "unity_runtime_binding": false
+  },
+  "coldrestart_seven_already_owned": {
+    "pr": 760,
+    "owner_fixture": 750,
+    "avoid_duplicate": true
+  },
+  "real_native_G1": "NOT_RUN",
+  "full_save_G1": "NOT_RUN_NOT_UNITY_BOUND",
+  "source_G0_772": "PENDING_INDEPENDENT",
+  "full_game_save_G2": "HOLD",
+  "codex_ACK": "NONE",
+  "merged": false,
+  "released": false,
+  "files": [
+    ".github/workflows/b01-60-p17w25-port772-native.yml",
+    "Tools/B01/B01-60/P17W25Physical772Native/port772_native.py",
+    "Tools/B01/B01-60/P17W25Physical772Native/test_port772_native.py",
+    "Tools/B01/B01-60/P17W25Physical772Native/Invoke-B0160W25Port772.ps1",
+    "Tools/B01/B01-60/P17W25Physical772Native/README.md",
+    "Tools/B01/B01-60/P17W25Physical772Native/manifest.json"
+  ],
+  "source_test_case_count": 16,
+  "source_ci_only": true,
+  "actual_playmode_test_count": 0,
+  "operator_typed_consent": "B0160 PORT772 THREE REAL UNITY G0 REVIEWED",
+  "receiver": [
+    "B01-00",
+    "B01-23",
+    "B01-62",
+    "B01-40",
+    "B01-41",
+    "B01-61",
+    "B01-60"
+  ],
+  "integrator_feedback": "NOT_MEASURED"
+}
