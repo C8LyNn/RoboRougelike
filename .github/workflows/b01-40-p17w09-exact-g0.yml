@@ -1,0 +1,66 @@
+name: B01-40 W09 independent immutable G0 physical receiver (NOT Unity)
+on:
+  push:
+    branches: [qa/b01-40-p17w09-exact-sha-receiver-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W09/ReceiverG0/**'
+      - '.github/workflows/b01-40-p17w09-exact-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W09/ReceiverG0/**'
+      - '.github/workflows/b01-40-p17w09-exact-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-G0-receiver:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - name: Checkout B01-40 G0 receiver code (own branch only)
+        uses: actions/checkout@v4
+        with:
+          path: gate
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Checkout immutable original SQUAD-PRESSURE #429
+        uses: actions/checkout@v4
+        with:
+          path: squad
+          ref: 4d13f76e6c0c08033e305900daf61c0a7267a725
+          fetch-depth: 0
+      - name: Checkout immutable original DEBRIS-REPULSE #421
+        uses: actions/checkout@v4
+        with:
+          path: debris
+          ref: cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          fetch-depth: 0
+      - name: Checkout canonical Codex #383 receiver source only
+        uses: actions/checkout@v4
+        with:
+          path: receiver
+          ref: 203a0805251ed28293888e43f2d49f0df63767c6
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact SHA scope, seven Git pins, GUID collisions, asmdef, physical ZIP, stage, tamper and rollback
+        shell: bash
+        run: |
+          python gate/Tools/B01/B01-40/P17W09/ReceiverG0/gate.py \
+            --squad squad --debris debris --receiver receiver --out dist | tee b01-40-g0-stdout.txt
+      - name: Publish actual source/physical G0 evidence, never Unity G1
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-40-p17w09-receiver-${{ matrix.os }}
+          path: |
+            dist/receiver-g0.json
+            dist/*.zip
+            b01-40-g0-stdout.txt
+          if-no-files-found: warn
+          retention-days: 21
