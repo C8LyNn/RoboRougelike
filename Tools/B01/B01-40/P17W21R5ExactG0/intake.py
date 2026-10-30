@@ -143,8 +143,28 @@ def original_author(roots,safe):
 def w19_guids_and_rollbacks(roots,safe,w17,w18,assets,source):
     # Original W17 executable physical clone + negative suite is reused
     # unchanged, with its sole parameter (source HEAD) bound to NEW exact R3.
-    w17.BRIDGE_SHA=R3
-    oldresult=w17.actual_tests(roots,safe,assets,
+    # W17 immutable #625 gate was specific to R2/R3/R4: hardcoded 33 GUID.
+    # R5 adds exactly ONE new original MonoScript .meta. Preserve original
+    # immutable code and generate an explicit own W21 adapted assertion only.
+    original_path=roots["oldg0"]/("Tools/B01/B01-40/"
+        "P17W17Selected596G0/intake.py")
+    original_bytes=git(roots["oldg0"],"show",
+        "HEAD:Tools/B01/B01-40/P17W17Selected596G0/intake.py")
+    require(original_bytes==original_path.read_bytes(),
+        "ORIGINAL_W17_RECEIVER_WORKTREE_DRIFT")
+    expect='require(count_guid==33,"CROSS_PACKAGE_META_GUID_COLLISION")'
+    require(original_bytes.decode().count(expect)==1,
+        "W17_SOURCE_EXPECTED_ONLY_ONE_OLD_GUID_ASSERTION")
+    updated=original_bytes.decode().replace(expect,
+        'require(count_guid==34,"CROSS_PACKAGE_META_GUID_COLLISION")')
+    # The one-line adapted old source tester is generated only in a new W21
+    # own private ephemeral namespace; the Git HEAD of #625 is never edited.
+    from types import ModuleType
+    adapted=ModuleType("b0140_w21_r5_exclusive_34_guid_physical_tests")
+    adapted.__file__=str(original_path)
+    exec(compile(updated,str(original_path),"exec"),adapted.__dict__)
+    adapted.BRIDGE_SHA=R3
+    oldresult=adapted.actual_tests(roots,safe,assets,
                               {"physical_zip_sha256":source["physical_zip_sha256"]})
     require(oldresult["negative_count"]==18 and
             len(oldresult["positive_runs"])==2 and
@@ -225,7 +245,7 @@ def w19_guids_and_rollbacks(roots,safe,w17,w18,assets,source):
         require(not temp_dest.exists(),"R3_GUID_GUARDED_ROLLBACK_NOT_COMPLETE")
     return {"unchanged_old_receipt_negative_pass":oldresult["negative_count"],
       "unchanged_old_receipt_clone_and_rollback":len(oldresult["positive_runs"]),
-      "symlink":oldresult["symlink"],"r5_combined_files":len(combined),
+      "symlink":oldresult["symlink"],"w17_physical_suite":"W21_ADAPTED_ONLY_33_TO_34_EXPECTED_META_GUID_COUNT","r5_combined_files":len(combined),
       "r5_combined_unique_guids":len(refs),
       "selected_r3_source_guid_only_positive":"PASS",
       "losing_r3_644_real_script_guid_only_negative":"PASS",
