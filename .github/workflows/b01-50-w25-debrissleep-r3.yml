@@ -1,0 +1,128 @@
+name: B01-50 W25 DEBRISSLEEP R3 static-support and hot-path R2 RED to GREEN
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/DEBRISSLEEP001R3/**'
+      - '.github/workflows/b01-50-w25-debrissleep-r3.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-r2-red-r3-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Validate 17 own exact original source blob pins, fresh six GUIDs and native test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ci-evidence
+          ROOT=Tools/B01/B01-50/DEBRISSLEEP001R3
+          pins=0
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            test "$(git hash-object --no-filters "$path")" = "$expected" || { echo "ORIGINAL_BLOB_MISMATCH $path"; exit 1; }
+            pins=$((pins+1))
+            echo "ORIGINAL_GIT_BLOB_PASS $path"
+          done < "$ROOT/MANIFEST-GIT-BLOBS.tsv"
+          test "$pins" -eq 17 || { echo "BLOB_PIN_COUNT_WRONG $pins"; exit 1; }
+          python - <<'PY' | tee ci-evidence/guid_and_native_source_gate.txt
+          from pathlib import Path
+          import json,re
+          root=Path("Tools/B01/B01-50/DEBRISSLEEP001R3")
+          metas=list(root.rglob("*.meta"))
+          assert len(metas)==6,len(metas)
+          guids=[]
+          for p in metas:
+              assert Path(str(p)[:-5]).is_file(),p
+              s=p.read_text()
+              assert "fileFormatVersion: 2" in s,p
+              m=re.search(r"^guid: ([0-9a-f]{32})$",s,re.M)
+              assert m,p
+              guids.append(m.group(1))
+          assert len(set(guids))==6
+          old=("27f31423f64c4fd68bd4b6193b1b5414","3cd3adf06d5a47dc97125b3e3e60d255",
+               "a8451a8477b14f60b4e9a02f0b5b265a","79e32d1bd17543c6a58bb2545496d367",
+               "80d41dd8095d43f2b4346a63fd6df172","7b4adad287a54cabaa333216e5a4b6d3")
+          assert not set(guids).intersection(old)
+          count=0
+          for f in Path("Assets").rglob("*.meta"):
+              count+=1
+              contents=f.read_text(errors="replace")
+              assert not any(("guid: "+g) in contents for g in guids),f
+          test_asm=json.loads((root/"NativeG1/Tests/PlayMode/B0150.DebrisSleep.R3.PlayModeTests.asmdef").read_text())
+          assert test_asm["references"]==["B0150.DebrisSleep.R3.Runtime"]
+          assert "UNITY_INCLUDE_TESTS" in test_asm["defineConstraints"]
+          assert "TestAssemblies" in test_asm["optionalUnityReferences"]
+          source=(root/"NativeG1/Tests/PlayMode/DebrisSleepR3NativePlayModeTests.cs").read_text()
+          assert source.count("[UnityTest]")==5 and "DebrisStayWitness" in source
+          assert "staticStays" in source and "dynamicStays" in source
+          print("W25_OWN_GIT_BLOB_PASS 17/17")
+          print("W25_FRESH_UNITY_GUID_PASS 6/6; canonical Assets .meta checked:",count)
+          print("W25_REAL_UNITY_PLAYMODE_TEST_SOURCE 5 PRESENT; NATIVE_UNITY_NOT_RUN")
+          PY
+      - name: Compile immutable original R2 and prove five source defects RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT=Tools/B01/B01-50/DEBRISSLEEP001R3
+          git fetch --no-tags origin 4f4c668c59fe684ea9433e26211927a52216031a
+          git show 4f4c668c59fe684ea9433e26211927a52216031a:Tools/B01/B01-50/DEBRISSLEEP001R2/Unity/B0150OptionalDebrisSleepGovernor.cs > "$ROOT/tests/original_r2_adapter.cs"
+          test "$(git hash-object --no-filters "$ROOT/tests/original_r2_adapter.cs")" = dde4989ee62a489ebd09233cc506877d85e87acd
+          echo "FROZEN_W24_R2_EXACT_ORIGINAL_BLOB_PASS" | tee ci-evidence/original_r2_sha.txt
+          dotnet --version | tee ci-evidence/dotnet_version.txt
+          set +e
+          AdapterSource=original_r2_adapter.cs dotnet run -c Release --project "$ROOT/tests/DEBRISSLEEP.Tests.csproj" -- --receipt ci-evidence/r2_original_expected_red.json 2>&1 | tee ci-evidence/r2_original_expected_red.log
+          rc=$?
+          set -e
+          test "$rc" -eq 1 || { echo "R2_EXPECTED_5_RED_NOT_REPRODUCED exit=$rc"; exit 1; }
+          python - <<'PY'
+          import json
+          r=json.load(open("ci-evidence/r2_original_expected_red.json"))
+          assert r["total"]==65 and r["passed"]==60 and r["failed"]==5,r
+          expect=("static floor Stay must preserve","recurring static floor Stay",
+                  "quiet window avoids unnecessary","fast moving body avoids repeated",
+                  "sleeping body avoids repeated")
+          assert len(r["failures"])==5
+          for fragment in expect:
+              assert any(fragment in fail for fail in r["failures"]),fragment
+          assert r["nativeUnity"]==r["nativePhysX"]=="NOT_RUN"
+          print("ORIGINAL_R2_PRODUCT_RED_PROVEN 60/65 PASS, 5 original source RED")
+          PY
+      - name: Compile ACTUAL R3 production source and require 65 GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          P=Tools/B01/B01-50/DEBRISSLEEP001R3/tests/DEBRISSLEEP.Tests.csproj
+          dotnet clean -c Release "$P" >/dev/null
+          dotnet run -c Release --project "$P" -- --receipt ci-evidence/r3_corrected_65_green.json 2>&1 | tee ci-evidence/r3_corrected_65_green.log
+          python - <<'PY'
+          import json
+          r=json.load(open("ci-evidence/r3_corrected_65_green.json"))
+          assert r["total"]==r["passed"]==65 and r["failed"]==0,r
+          assert r["genuineProductionCore"] and r["genuineProductionUnityFacingAdapter"]
+          assert r["unitySurface"]=="SURROGATE_TEST_ONLY_NOT_UNITY"
+          assert r["nativeUnity"]==r["nativePhysX"]=="NOT_RUN"
+          assert r["actualFrameTime"]==r["physicalSleepAcceptance"]=="NOT_MEASURED"
+          print("CORRECTED_R3_ORIGINAL_CSHARP_SOURCE_PASS 65/65; NO_NATIVE_UNITY")
+          PY
+          git rev-parse HEAD > ci-evidence/commit_sha.txt
+          sha256sum Tools/B01/B01-50/DEBRISSLEEP001R3/Unity/B0150OptionalDebrisSleepGovernor.cs Tools/B01/B01-50/DEBRISSLEEP001R3/Core/DebrisSleepPolicy.cs > ci-evidence/original_source_sha256.txt
+      - name: Preserve original R2 RED and R3 GREEN raw logs + JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W25-DEBRISSLEEP-R3-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn
