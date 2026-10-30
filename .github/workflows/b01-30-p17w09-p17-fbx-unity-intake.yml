@@ -44,7 +44,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y blender xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
           python3 -m py_compile Tools/B01/TechArt/P17W09/P17FbxIntake001/*.py
       - name: Convert real exact original GLBs to three genuine FBX binaries
         shell: bash
