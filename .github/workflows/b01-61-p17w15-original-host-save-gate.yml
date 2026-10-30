@@ -31,6 +31,7 @@ jobs:
           python "$p/source_guard.py" | tee w15-source-guard.log
           mkdir -p "$p/Input"
           git show 671859a15e55c32dc2cf779d519b26443e6bd3d8:Tools/B01/B01-61/P17W13OriginalReloadQA/SyntheticUnityBoundary.cs > "$p/Input/SyntheticUnityBoundary.cs"
+          git show 7f26c1852783062d05ff0cb61fe3d07b848bf998:Tools/B01/B01-62/P17W15AtomicHostBridge/FrozenSaveHostBridge.cs > "$p/Input/BridgePort.cs"
       - name: Compile actual original #510 Unity host and selected #556 original CSharp, not a ledger mock
         shell: bash
         run: |
@@ -52,6 +53,28 @@ jobs:
           grep -q W15_ACTUAL_510_PLUS_556_SOURCE_BRIDGE_GAP_WITNESSED w15-evidence.log || exit 1
           grep -q LIVE_SAVELOAD_RELEASE_HOLD w15-release.log || exit 1
           echo "B01-61 ORIGINAL_SOURCE_BARRIER_PASS REAL_BRIDGE_STILL_HOLD"
+      - name: Build independent test against ACTUAL B01-62 original #577 bridge + exact #556 + W06 + #510 R2
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=Tools/B01/B01-61/P17W15OriginalHostBridgeGate/BridgeOriginalPortQA.csproj
+          dotnet build "$p" -c Release --warnaserror 2>&1 | tee w15-newbridge-build.log
+      - name: Real #577 bridge contract regression and intentional release HOLD
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W15OriginalHostBridgeGate/BridgeOriginalPortQA.csproj
+          dotnet run -c Release --no-build --project "$p" -- --evidence > w15-newbridge-evidence.log 2>&1
+          evidence=$?
+          cat w15-newbridge-evidence.log
+          dotnet run -c Release --no-build --project "$p" -- --release > w15-newbridge-release.log 2>&1
+          release=$?
+          cat w15-newbridge-release.log
+          printf 'PORT_577_EVIDENCE_EXIT=%s PORT_577_RELEASE_EXIT=%s UNITY_NATIVE=NOT_RUN\n' "$evidence" "$release" | tee w15-newbridge-gate.txt
+          test "$evidence" = 0 && test "$release" = 3 || exit 1
+          grep -q B0161_W15_EXACT_577_ORIGINAL_BRIDGE_SECURITY_RED_PASS w15-newbridge-evidence.log || exit 1
+          grep -q W15_BRIDGE_RELEASE_HOLD w15-newbridge-release.log || exit 1
+          echo "B01-61 ORIGINAL_577_SECURITY_RED_PROVEN; GAME_LIVE_SAVELOAD_HOLD"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -62,4 +85,8 @@ jobs:
             w15-evidence.log
             w15-release.log
             w15-gate.txt
+            w15-newbridge-build.log
+            w15-newbridge-evidence.log
+            w15-newbridge-release.log
+            w15-newbridge-gate.txt
           if-no-files-found: warn
