@@ -1,0 +1,40 @@
+{
+  "schema": "b01-31-visual-fixture-1",
+  "warning": "Synthetic UI/art fixture only: NOT a Save/Load format, real snapshot, Unity round trip, or ID contract. Case-sensitive opaque strings for diagnostic visuals.",
+  "pre_save": [
+    "part-A1:02a9",
+    "part-A2:97bf",
+    "part-A3:11dc",
+    "part-A4:8f34",
+    "part-B1:2eb1",
+    "part-B2:7acc",
+    "part-B3:c104",
+    "part-B4:098e",
+    "part-C1:8a35",
+    "part-C2:64fa",
+    "part-C3:0b0f",
+    "part-C4:dd71",
+    "part-D1:148c",
+    "part-D2:b2c9",
+    "part-D3:552f",
+    "part-D4:e778"
+  ],
+  "post_load_simulated": [
+    "part-A4:8f34",
+    "part-C3:0b0f",
+    "part-A2:97bf",
+    "part-C1:8a35",
+    "part-D4:e778",
+    "part-B3:c104",
+    "part-D2:b2c9",
+    "part-B1:2eb1",
+    "part-C4:dd71",
+    "part-A3:11dc",
+    "part-C2:64fa",
+    "part-A1:02a9",
+    "part-B4:098e",
+    "part-D3:552f",
+    "part-B2:7acc",
+    "part-D1:148c"
+  ]
+}
