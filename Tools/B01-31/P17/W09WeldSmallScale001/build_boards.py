@@ -183,7 +183,7 @@ def execute(source: Path, output: Path):
     for theme, color in SCENES.items():
         board, rows = assemble(theme, color, frames)
         path = output / ("WELD_SMALLSCALE_" + theme.upper() + ".png")
-        board.save(path, "PNG", optimize=False)
+        board.save(path, "PNG", optimize=False, compress_level=0)
         with Image.open(path) as verify:
             verify.load()
             check(verify.format == "PNG" and verify.mode == "RGB"
