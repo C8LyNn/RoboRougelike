@@ -1,0 +1,45 @@
+name: B01-61 W17 exact full final 604 fence interleaving QA
+on:
+  push:
+    branches:
+      - qa/b01-61-p17w17-selected604-fence-interleaving-gate
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/**'
+      - '.github/workflows/b01-61-p17w17-final604-fence-interleaving.yml'
+jobs:
+  exact-selected-604-original-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Real original exact 604 + selected frozen 556/W06/510 CSharp tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/Selected604QA.csproj -c Release --nologo
+          dotnet Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/bin/Release/net8.0/Selected604QA.dll | tee qa_original.log
+          grep -Fx 'TOTAL 20 PASS 20 FAIL 0' qa_original.log
+      - name: Fail-closed exact SHA original sources + 5 owned files and Unity host wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/receipt.py --log qa_original.log --out dist/b01-61-p17w17-final604-qa.json
+      - name: Upload original CSharp stdout and exact SHA receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-p17w17-selected604-${{ matrix.os }}
+          path: |
+            qa_original.log
+            dist/b01-61-p17w17-final604-qa.json
+          if-no-files-found: warn
