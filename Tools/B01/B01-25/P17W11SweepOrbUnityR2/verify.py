@@ -10,7 +10,7 @@ import tempfile
 import unittest
 import zipfile
 
-ROOT=pathlib.Path(__file__).resolve().parents[5]
+ROOT=pathlib.Path(__file__).resolve().parents[4]
 A=pathlib.Path("Assets/B0125SweepOrbR2")
 T=pathlib.Path("Tools/B01/B01-25/P17W11SweepOrbUnityR2")
 R1="fc09d2d36b1d26d163347c94b978ca7730cf8891"
@@ -26,7 +26,7 @@ def source(path):
 def blob(raw):
     return hashlib.sha1(("blob %d\0"%len(raw)).encode()+raw).hexdigest()
 def asset_names():
-    return sorted(p.relative_to(ROOT).as_posix() for p in (ROOT/A).rglob("*") if p.is_file())
+    return sorted([p.relative_to(ROOT).as_posix() for p in (ROOT/A).rglob("*") if p.is_file()]+[str(A)+".meta"])
 
 def check_core(raw):
     assert raw==git("show",R1+":"+CORE),"Frozen original R1 bytes differ"
