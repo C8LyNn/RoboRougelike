@@ -167,7 +167,7 @@ def test_receiver542(roots,root):
     demand(len(expected)==len(entries),"B01-60-NATIVE_SOURCE_STAGER_INVALID")
     project=root/"B01-60-W13-safe-native-stage"
     runner.stage(package,entries,project)
-    foreign=project/"ProjectSettings"/"FOREIGN_W14_EMPTY_PARENT"/"nested_empty"
+    foreign=project/"Assets"/"B0160NativeProbe"/"FOREIGN_W14_EMPTY_PARENT"/"nested_empty"
     foreign.mkdir(parents=True)
     neg=[]
     neg.append(expected_hold(lambda:runner.rollback(package,entries,project),
