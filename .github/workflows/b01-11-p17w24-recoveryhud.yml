@@ -1,0 +1,29 @@
+name: B01-11 W24 Recovery HUD original Unity source QA
+on:
+  push:
+    branches: ['feature/b01-11-p17w24-recovery-notice-001']
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/RECOVERYHUD001/**'
+      - 'Assets/B01Packages/RECOVERYHUD001.meta'
+      - 'Tools/B01/B01-11/P17W24RecoveryHud001/**'
+      - '.github/workflows/b01-11-p17w24-recoveryhud.yml'
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Physical original source receipt and GUID collision check
+        run: python Tools/B01/B01-11/P17W24RecoveryHud001/verify_package.py
+      - name: Compile and execute actual original Unity-facing C# code
+        run: dotnet run --configuration Release --project Tools/B01/B01-11/P17W24RecoveryHud001/RecoveryHud.Tests.csproj
