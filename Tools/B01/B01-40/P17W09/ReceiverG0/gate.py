@@ -45,7 +45,10 @@ def head(root, sha, label):
 
 
 def changed(root, base):
-    return set(git(root, "diff", "--name-only", base, "HEAD").decode().splitlines())
+    # A stacked producer can diverge from the PR target; only changes after the common ancestor belong to it.
+    ancestor = git(root, "merge-base", base, "HEAD").decode().strip()
+    require(bool(ancestor), "missing common ancestor for frozen producer scope")
+    return set(git(root, "diff", "--name-only", ancestor, "HEAD").decode().splitlines())
 
 
 def bytes_at(root, path):
