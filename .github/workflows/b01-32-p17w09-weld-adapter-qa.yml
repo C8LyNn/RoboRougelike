@@ -1,0 +1,83 @@
+name: B01-32 W09 freeze-read original #432 Unity MonoBehaviour physical ZIP compile and live-mutant QA (NOT native Unity)
+on:
+  push:
+    branches: [qa/b01-32-p17w09-weld-adapter-runtime]
+    paths:
+      - Tools/B01-32/P17/W09WeldRuntimeQA/**
+      - .github/workflows/b01-32-p17w09-weld-adapter-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-bound-actual-adapter-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch pinned original #432 source (without any producer changes)
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin refs/pull/432/head:refs/remotes/origin/original-weld-frozen
+          test "$(git rev-parse refs/remotes/origin/original-weld-frozen)" = "280ed3f59020432132ea5e156c68590d445009c8"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG
+          run-id: 41030815153
+          github-token: ${{ github.token }}
+          path: build/W09WeldArtifact
+      - name: Independently authenticate actual original Git bytes against same archived Unity ZIP
+        run: python Tools/B01-32/P17/W09WeldRuntimeQA/intake.py --artifact-root build/W09WeldArtifact
+      - name: Compile and execute 3 original producer files including unchanged real Unity MonoBehaviour, 2 authored UnityTest bodies (SURROGATE, NOT Unity)
+        run: dotnet run -c Release --project Tools/B01-32/P17/W09WeldRuntimeQA/Runner/Runner.csproj
+      - name: Actually recompile original MonoBehaviour four times with malicious behavior edits, insist RED; restore exact original GREEN
+        run: python Tools/B01-32/P17/W09WeldRuntimeQA/mutate_and_rerun.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W09-ORIGINAL-WELD-RUNTIME-SURROGATE-UBUNTU
+          path: |
+            build/W09WeldReceiver/INTAKE_RECEIPT.json
+            build/W09WeldReceiver/BEHAVIOUR_MUTANT_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: error
+  source-bound-actual-adapter-windows:
+    needs: source-bound-actual-adapter-linux
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch exact original W06 #432 source head on Windows
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin refs/pull/432/head:refs/remotes/origin/original-weld-frozen
+          test "$(git rev-parse refs/remotes/origin/original-weld-frozen)" = "280ed3f59020432132ea5e156c68590d445009c8"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG
+          run-id: 41030815153
+          github-token: ${{ github.token }}
+          path: build/W09WeldArtifact
+      - name: Verify frozen Git/blob source physical archived Unity ZIP and stage only temporary original bytes
+        run: python Tools/B01-32/P17/W09WeldRuntimeQA/intake.py --artifact-root build/W09WeldArtifact
+      - name: Compile original actual W06 MonoBehaviour + two authored original UnityTest bodies with explicit fake UnityEngine
+        run: dotnet run -c Release --project Tools/B01-32/P17/W09WeldRuntimeQA/Runner/Runner.csproj
+      - name: Verify original original source behavior catches four malicious compiled mutants and is restored
+        run: python Tools/B01-32/P17/W09WeldRuntimeQA/mutate_and_rerun.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W09-ORIGINAL-WELD-RUNTIME-SURROGATE-WINDOWS
+          path: |
+            build/W09WeldReceiver/INTAKE_RECEIPT.json
+            build/W09WeldReceiver/BEHAVIOUR_MUTANT_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: error
