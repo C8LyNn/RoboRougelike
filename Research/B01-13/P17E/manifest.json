@@ -1,0 +1,52 @@
+{
+  "package_id": "LD02-COHORT-001",
+  "revision": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "upstream_pr": 426,
+  "source_base_branch": "research/b01-13-pass17-wave06-ld02-observer",
+  "source_base_sha": "5a2420b479f2e8afad3d1f6cf3fff059243ec39f",
+  "parent_original_sha256": "61f1e65deaaac3f670850a18e1a7011d7b8cb22a7640a383b5103fcfffa1a516",
+  "dependency_files": [
+    "Research/B01-13/P17D/ld02_observer.py"
+  ],
+  "owner_paths": [
+    "Research/B01-13/P17E/**",
+    ".github/workflows/b01-13-p17w07-ld02-cohort.yml"
+  ],
+  "files": {
+    "Research/B01-13/P17E/ld02_cohort.py": {
+      "sha256": "7194f6c17643161f105a6c1cd1069e08488e1051be377cce3539d1338adf86a2",
+      "bytes": 8213
+    },
+    "Research/B01-13/P17E/test_ld02_cohort.py": {
+      "sha256": "9a3f30f0ac05f8fd16b41fbf43344fde0dd90a8d818864ee26c5fab5cc05ef57",
+      "bytes": 11815
+    },
+    "Research/B01-13/P17E/README.md": {
+      "sha256": "c007149e2f658a2d233b03aaff9d581b2269ed231ef932fe2b7496992f8308ab",
+      "bytes": 5206
+    },
+    ".github/workflows/b01-13-p17w07-ld02-cohort.yml": {
+      "sha256": "cf439423d7f14ddd35a45a24da6181739c648731155a3309a11cd388a9a789ae",
+      "bytes": 1826
+    }
+  },
+  "tests": {
+    "original_test_cases": 30,
+    "author_local": "NOT_CLAIMED",
+    "github_actions": "PENDING — exact final head workflow after manifest commit",
+    "independent_B01_40": "PENDING",
+    "independent_B01_60": "PENDING",
+    "native_unity_player": "NOT_RUN",
+    "real_humans": 0
+  },
+  "data_constraints": [
+    "technical only; no human/dry-run cohorts",
+    "3-1000 completed verified chain sessions same physical EXE and operator supplied source SHA",
+    "no individual IDs/paths/raw events in group output",
+    "stage median shown only when at least 3 completions",
+    "not attested gameplay/consent",
+    "Windows ACL junction untested"
+  ],
+  "rollback": "Leave Draft unmerged; discard W07 P17E branch, maintain original W06 source frozen. Local private outputs need independent retention and deletion policy."
+}
