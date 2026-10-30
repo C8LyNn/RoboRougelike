@@ -1,0 +1,68 @@
+name: B01-31 P17W16 original two-pivot 3D GLB2 split-coupler actual art QA
+on:
+  push:
+    branches: [art/b01-31-p17w16-split-coupler-concept3d]
+    paths:
+      - 'Tools/B01-31/P17/W16SplitCoupler3D001/**'
+      - '.github/workflows/b01-31-p17w16-split-coupler3d.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W16SplitCoupler3D001/**'
+      - '.github/workflows/b01-31-p17w16-split-coupler3d.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-3d-glb2-obj-authoring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned image projection rasterizer
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Validate actual author and independent receiver syntax
+        run: python -m compileall -q Tools/B01-31/P17/W16SplitCoupler3D001
+      - name: Physically produce original binary GLB2 meshes OBJ/MTL and true geometry-projected PNG boards
+        run: |
+          python Tools/B01-31/P17/W16SplitCoupler3D001/build_model.py --output build/B0131W16
+          python Tools/B01-31/P17/W16SplitCoupler3D001/verify_model.py --source build/B0131W16
+      - name: Repeat COMPLETE physical GLB OBJ MTL boards ZIP receipt; exact byte SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W16SplitCoupler3D001/build_model.py --output build/B0131W16
+          python Tools/B01-31/P17/W16SplitCoupler3D001/verify_model.py --source build/B0131W16
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "B0131_W16_ORIGINAL_REAL_3D_GLB2_OBJ_MTL_PREVIEWS_ZIP_SHA_PARITY_PASS"
+      - name: Upload actual GLB2 OBJ MTL real PNG previews receipt and physical ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W16-ORIGINAL-3D-SPLIT-COUPLER-GLB2-OBJ-MTL-3VIEWS
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+
+  windows-independent-real-3d-geometry-receiver:
+    needs: original-3d-glb2-obj-authoring
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch ACTUAL physical Ubuntu-built binary GLB OBJ MTL PNG and receipt; no renderer
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W16-ORIGINAL-3D-SPLIT-COUPLER-GLB2-OBJ-MTL-3VIEWS
+          path: actual-art
+      - name: Install image decoder for physical model-generated preview boards only
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently parse original binary glTF2 vertices normals 0.26m separation and OBJ triangulation
+        run: python Tools/B01-31/P17/W16SplitCoupler3D001/verify_model.py --source actual-art/B0131W16
