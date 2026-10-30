@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using B01.DetachedSaveContract001;
 
 namespace B01.UnitySaveBridge001
@@ -24,9 +25,89 @@ namespace B01.UnitySaveBridge001
         // Must clean up all partial GameObjects if Prepare throws.
         IPreparedWorld Prepare(RunSnapshot snapshot);
     }
+
+    public interface ICheckpointStore
+    {
+        bool Read(long run,out long generation,out string hash);
+        bool Commit(long run,long previous,string previousHash,long next,string hash);
+    }
+    // Source-test-only authority; the Unity host MUST use FileCheckpointStore.
+    public sealed class MemoryCheckpointStore : ICheckpointStore
+    {
+        private long run,gen;
+        private string fingerprint="";
+        public bool Read(long id,out long generation,out string hash)
+        {generation=gen;hash=fingerprint;return run==0||run==id;}
+        public bool Commit(long id,long prev,string prevHash,long next,string hash)
+        {
+            if(!Read(id,out long g,out string h)||g!=prev||h!=prevHash||next<=prev)return false;
+            run=id;gen=next;fingerprint=hash;return true;
+        }
+    }
+    // Demo-only durable revision sidecar, not another #556 binary Save schema.
+    // Same-volume atomic replace with file flush; directory fsync not guaranteed.
+    public sealed class FileCheckpointStore : ICheckpointStore
+    {
+        private readonly string file;
+        public FileCheckpointStore(string path)
+        {
+            if(string.IsNullOrWhiteSpace(path))throw new ArgumentException("checkpoint path");
+            file=System.IO.Path.GetFullPath(path);
+        }
+        private bool ReadCore(long run,out long generation,out string hash)
+        {
+            generation=0;hash="";
+            if(!System.IO.File.Exists(file))return true;
+            if((System.IO.File.GetAttributes(file)&System.IO.FileAttributes.ReparsePoint)!=0)return false;
+            string data=System.IO.File.ReadAllText(file);
+            string[] values=data.Split('|');
+            if(values.Length!=4||values[0]!="B0123CHK2"||
+               !long.TryParse(values[1],out long owner)||owner!=run||
+               !long.TryParse(values[2],out long seq)||seq<=0||
+               values[3].Length!=64)return false;
+            generation=seq;hash=values[3];return true;
+        }
+        public bool Read(long run,out long generation,out string hash)
+        {
+            generation=0;hash="";
+            try
+            {
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(file)!);
+                using(var gate=new System.IO.FileStream(file+".lock",
+                    System.IO.FileMode.OpenOrCreate,System.IO.FileAccess.ReadWrite,System.IO.FileShare.None))
+                    return ReadCore(run,out generation,out hash);
+            }
+            catch{return false;}
+        }
+        public bool Commit(long run,long prev,string prevHash,long next,string hash)
+        {
+            if(run<=0||next<=prev||hash.Length!=64)return false;
+            string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
+            try
+            {
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(file)!);
+                using(var gate=new System.IO.FileStream(file+".lock",
+                    System.IO.FileMode.OpenOrCreate,System.IO.FileAccess.ReadWrite,System.IO.FileShare.None))
+                {
+                    if(!ReadCore(run,out long g,out string h)||g!=prev||h!=prevHash)return false;
+                    byte[] b=System.Text.Encoding.ASCII.GetBytes("B0123CHK2|"+run+"|"+next+"|"+hash);
+                    using(var f=new System.IO.FileStream(temp,System.IO.FileMode.CreateNew,
+                        System.IO.FileAccess.Write,System.IO.FileShare.None))
+                    {f.Write(b,0,b.Length);f.Flush(true);}
+                    if(System.IO.File.Exists(file))System.IO.File.Replace(temp,file,null);
+                    else System.IO.File.Move(temp,file);
+                    return true;
+                }
+            }
+            catch{return false;}
+            finally{try{if(System.IO.File.Exists(temp))System.IO.File.Delete(temp);}catch{}}
+        }
+    }
     public sealed class AtomicWorldSwap
     {
         private readonly IWorldFactory factory;
+        private readonly ICheckpointStore checkpoint;
+        private long saveGeneration;
         private IPreparedWorld? current;
         private ColdRestore? currentCold;
         private bool busy, quarantined, cleanupPending;
@@ -38,8 +119,17 @@ namespace B01.UnitySaveBridge001
         public bool IsConsumed(int slot,long id) =>
             currentCold != null && currentCold.ContainsConsumedId(slot,id);
 
-        public AtomicWorldSwap(IWorldFactory factory)
-        { this.factory=factory??throw new ArgumentNullException(nameof(factory)); }
+        public AtomicWorldSwap(IWorldFactory factory):this(factory,new MemoryCheckpointStore()){}
+        public AtomicWorldSwap(IWorldFactory factory,ICheckpointStore checkpoint)
+        {
+            this.factory=factory??throw new ArgumentNullException(nameof(factory));
+            this.checkpoint=checkpoint??throw new ArgumentNullException(nameof(checkpoint));
+        }
+        private static string Hash(byte[] bytes)
+        {
+            using(var sha=SHA256.Create())
+                return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-","").ToLowerInvariant();
+        }
 
         private static bool Idle(Func<bool> callback)
         {
@@ -64,8 +154,13 @@ namespace B01.UnitySaveBridge001
                 // Motion legitimately changes detached world poses/velocities after Load.
                 // Only immutable identity, authority and detached/consumed coupling must match.
                 if(!SameIdentityAndLedger(snap,currentCold.Snapshot))return false;
-                byte[] pending=SnapshotCodec.Encode(snap);
+                if(!checkpoint.Read(expectedRun,out long durable,out string _))return false;
+                long newest=Math.Max(Math.Max(currentCold.Snapshot.Generation,saveGeneration),durable);
+                if(newest==long.MaxValue)return false;
+                long next=newest+1;
+                byte[] pending=SnapshotCodec.Encode(new RunSnapshot(snap.RunId,next,snap.Parts));
                 if(!Idle(hostIdle))return false;
+                saveGeneration=next;
                 bytes=pending;
                 return true;
             }
@@ -79,79 +174,96 @@ namespace B01.UnitySaveBridge001
             if(quarantined)return WorldSwapVerdict.RollbackQuarantine;
             if(busy)return WorldSwapVerdict.HostBusy;
             if(hostIdle==null)return WorldSwapVerdict.HostException;
-            busy=true; // includes idle callbacks, original #556 decode, staging and publication
+            busy=true;
             IPreparedWorld? candidate=null;
             IPreparedWorld? old=current;
-            bool touchedOld=false, touchedNew=false, published=false;
+            bool touchedOld=false,touchedNew=false,published=false;
+            WorldSwapVerdict verdict=WorldSwapVerdict.HostException;
             try
             {
-                if(!Idle(hostIdle))return WorldSwapVerdict.HostBusy;
-                if(!ColdRestore.TryStage(bytes,out ColdRestore? restored)||restored==null)
-                    return WorldSwapVerdict.InvalidSnapshot;
-                RunSnapshot snapshot=restored.Snapshot;
-                if(expectedRun<=0||snapshot.RunId!=expectedRun)return WorldSwapVerdict.WrongRun;
-                if(minimumGeneration<=0||snapshot.Generation<minimumGeneration||
-                   (currentCold!=null&&snapshot.Generation<currentCold.Snapshot.Generation))
-                    return WorldSwapVerdict.StaleGeneration;
-                for(int i=0;i<FrozenPartCatalog.Slots;i++)
+                do
                 {
-                    var part=snapshot.Parts[i];
-                    if(restored.ContainsConsumedId(i,part.Id)!=part.Consumed ||
-                       restored.ConsumedCount(i)!=(part.Consumed?1:0))
-                        return WorldSwapVerdict.InvalidSnapshot;
-                }
-
-                // Create candidate inactive in isolation BEFORE touching old world.
-                candidate=factory.Prepare(snapshot);
-                if(candidate==null)throw new InvalidOperationException("Empty candidate");
-                if(!Consistent(candidate.Capture(),snapshot))
-                    throw new InvalidOperationException("Staging physics/identity mismatch");
-                if(!Idle(hostIdle))return WorldSwapVerdict.HostBusy;
-                // No await/thread switch; host controls all physical writers on main thread.
-                if(old!=null){touchedOld=true;old.Deactivate();}
-                touchedNew=true;
-                candidate.Activate();
-                if(!Consistent(candidate.Capture(),snapshot))
-                    throw new InvalidOperationException("Activated world mismatch");
-                current=candidate;
-                currentCold=restored;
-                published=true;
-                candidate=null;
-                if(old!=null)
-                {
-                    try{old.Retire();}
-                    catch{cleanupPending=true;} // retired world inactive: cleanup separately
-                }
-                return WorldSwapVerdict.Accepted;
+                    if(!Idle(hostIdle)){verdict=WorldSwapVerdict.HostBusy;break;}
+                    if(!ColdRestore.TryStage(bytes,out ColdRestore? ready)||ready==null)
+                    {verdict=WorldSwapVerdict.InvalidSnapshot;break;}
+                    RunSnapshot snap=ready.Snapshot;
+                    if(expectedRun<=0||snap.RunId!=expectedRun)
+                    {verdict=WorldSwapVerdict.WrongRun;break;}
+                    if(minimumGeneration<=0||snap.Generation<minimumGeneration||
+                       (currentCold!=null&&snap.Generation<=currentCold.Snapshot.Generation))
+                    {verdict=WorldSwapVerdict.StaleGeneration;break;}
+                    if(!checkpoint.Read(expectedRun,out long durable,out string digest))
+                    {quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;}
+                    string fingerprint=Hash(bytes);
+                    if(snap.Generation<durable||
+                       (snap.Generation==durable&&(digest!=fingerprint||current!=null)))
+                    {verdict=WorldSwapVerdict.StaleGeneration;break;}
+                    bool replay=snap.Generation==durable;
+                    bool invalid=false;
+                    for(int i=0;i<FrozenPartCatalog.Slots;i++)
+                    {
+                        var p=snap.Parts[i];
+                        if(ready.ContainsConsumedId(i,p.Id)!=p.Consumed||
+                           ready.ConsumedCount(i)!=(p.Consumed?1:0))invalid=true;
+                    }
+                    if(invalid){verdict=WorldSwapVerdict.InvalidSnapshot;break;}
+                    candidate=factory.Prepare(snap);
+                    if(candidate==null)throw new InvalidOperationException("empty world");
+                    if(!Consistent(candidate.Capture(),snap))
+                        throw new InvalidOperationException("pre-activation physics/ID mismatch");
+                    if(!Idle(hostIdle)){verdict=WorldSwapVerdict.HostBusy;break;}
+                    if(old!=null){touchedOld=true;old.Deactivate();}
+                    touchedNew=true;candidate.Activate();
+                    // #572: physical state can mutate as a side effect of Activate().
+                    if(!Consistent(candidate.Capture(),snap))
+                        throw new InvalidOperationException("post-activation physics/ID mismatch");
+                    if(!replay&&!checkpoint.Commit(expectedRun,durable,digest,snap.Generation,fingerprint))
+                    {
+                        quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
+                    }
+                    if(!Consistent(candidate.Capture(),snap))
+                    {
+                        quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
+                    }
+                    current=candidate;currentCold=ready;
+                    saveGeneration=Math.Max(saveGeneration,snap.Generation);
+                    candidate=null;published=true;
+                    verdict=WorldSwapVerdict.Accepted;
+                    if(old!=null)
+                    {
+                        try{old.Retire();}
+                        catch
+                        {
+                            cleanupPending=true;quarantined=true;
+                            verdict=WorldSwapVerdict.RollbackQuarantine;
+                        }
+                    }
+                }while(false);
             }
-            catch
-            {
-                return WorldSwapVerdict.HostException;
-            }
+            catch{verdict=WorldSwapVerdict.HostException;}
             finally
             {
                 if(!published)
                 {
-                    bool rollbackOk=true;
+                    bool safe=true;
                     if(candidate!=null)
                     {
-                        // Deactivate even when Activate threw midway.
-                        try {if(touchedNew)candidate.Deactivate();}catch{rollbackOk=false;}
-                        try {candidate.Retire();}catch{rollbackOk=false;}
+                        try{if(touchedNew)candidate.Deactivate();}catch{safe=false;}
+                        try{candidate.Retire();}catch{safe=false;}
                     }
                     if(touchedOld&&old!=null)
                     {
-                        try {old.Activate();}catch{rollbackOk=false;}
+                        try{old.Activate();}catch{safe=false;}
                     }
-                    if(!rollbackOk)
+                    if(!safe)
                     {
                         quarantined=true;
-                        // Quarantine overrides returned result via host's persistent flag.
-                        // C# forbids return from finally; caller checks Quarantined.
+                        verdict=WorldSwapVerdict.RollbackQuarantine; // #582 after cleanup
                     }
                 }
                 busy=false;
             }
+            return verdict;
         }
 
         private static bool SameIdentityAndLedger(RunSnapshot a,RunSnapshot b)
