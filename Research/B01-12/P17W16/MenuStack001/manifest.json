@@ -1,0 +1,31 @@
+{
+  "package": "B01-12-MENUSTACK-001/R1",
+  "owner": "B01-12",
+  "scope": "Research/B01-12/P17W16/MenuStack001/**",
+  "schema": 1,
+  "files": {
+    "route_engine.js": {
+      "sha256": "adacd284ed6ac4520cb17ec0d6442c8239d43893c1952696939f614f648836c0",
+      "bytes": 4462
+    },
+    "demo.html": {
+      "sha256": "790aea15e3108a6f24c9ea3bed6467b55d52ef1b9267c25a118f6314a950a992",
+      "bytes": 4015
+    },
+    "ui.js": {
+      "sha256": "1def8acee7debb2bb1392666e9e3a1db38f966b14d9b40c6c87539fd7ae091de",
+      "bytes": 3659
+    },
+    "test_engine.cjs": {
+      "sha256": "0c825aed2ebdafbbd7f6af5a2a63eb99e65752671371f5a93d05c7afeab839c9",
+      "bytes": 7926
+    },
+    "test_browser.py": {
+      "sha256": "22b9db7650b4ecf2d5e4da9cf49604ee718a3762f099c4ec935c0fa15129592e",
+      "bytes": 4952
+    }
+  },
+  "unity_g1": "NOT_RUN",
+  "codex_ack": "NONE",
+  "rollback": "Remove this research-only folder and own workflow; no game changes."
+}

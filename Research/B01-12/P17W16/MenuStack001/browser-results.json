@@ -1,0 +1,471 @@
+{
+  "total": 116,
+  "pass": 116,
+  "fail": 0,
+  "cases": [
+    {
+      "name": "320 initial garage",
+      "ok": true
+    },
+    {
+      "name": "320 seven routes",
+      "ok": true
+    },
+    {
+      "name": "320 no back",
+      "ok": true
+    },
+    {
+      "name": "320 no forward",
+      "ok": true
+    },
+    {
+      "name": "320 parts nav",
+      "ok": true
+    },
+    {
+      "name": "320 breadcrumb",
+      "ok": true
+    },
+    {
+      "name": "320 inspector nav",
+      "ok": true
+    },
+    {
+      "name": "320 inspector crumb",
+      "ok": true
+    },
+    {
+      "name": "320 back parts",
+      "ok": true
+    },
+    {
+      "name": "320 forward inspector",
+      "ok": true
+    },
+    {
+      "name": "320 dirty on",
+      "ok": true
+    },
+    {
+      "name": "320 guard shown",
+      "ok": true
+    },
+    {
+      "name": "320 screen not changed",
+      "ok": true
+    },
+    {
+      "name": "320 pending settings",
+      "ok": true
+    },
+    {
+      "name": "320 escape closes",
+      "ok": true
+    },
+    {
+      "name": "320 cancel preserves dirty",
+      "ok": true
+    },
+    {
+      "name": "320 accept navigates",
+      "ok": true
+    },
+    {
+      "name": "320 accept clean",
+      "ok": true
+    },
+    {
+      "name": "320 back to inspector",
+      "ok": true
+    },
+    {
+      "name": "320 fork path",
+      "ok": true
+    },
+    {
+      "name": "320 forward removed",
+      "ok": true
+    },
+    {
+      "name": "320 guarded keyboard back",
+      "ok": true
+    },
+    {
+      "name": "320 stay preserves route",
+      "ok": true
+    },
+    {
+      "name": "320 dirty off",
+      "ok": true
+    },
+    {
+      "name": "320 keyboard back",
+      "ok": true
+    },
+    {
+      "name": "320 reset garage",
+      "ok": true
+    },
+    {
+      "name": "320 ARIA status",
+      "ok": true
+    },
+    {
+      "name": "320 no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "320 no JS errors",
+      "ok": true
+    },
+    {
+      "name": "768 initial garage",
+      "ok": true
+    },
+    {
+      "name": "768 seven routes",
+      "ok": true
+    },
+    {
+      "name": "768 no back",
+      "ok": true
+    },
+    {
+      "name": "768 no forward",
+      "ok": true
+    },
+    {
+      "name": "768 parts nav",
+      "ok": true
+    },
+    {
+      "name": "768 breadcrumb",
+      "ok": true
+    },
+    {
+      "name": "768 inspector nav",
+      "ok": true
+    },
+    {
+      "name": "768 inspector crumb",
+      "ok": true
+    },
+    {
+      "name": "768 back parts",
+      "ok": true
+    },
+    {
+      "name": "768 forward inspector",
+      "ok": true
+    },
+    {
+      "name": "768 dirty on",
+      "ok": true
+    },
+    {
+      "name": "768 guard shown",
+      "ok": true
+    },
+    {
+      "name": "768 screen not changed",
+      "ok": true
+    },
+    {
+      "name": "768 pending settings",
+      "ok": true
+    },
+    {
+      "name": "768 escape closes",
+      "ok": true
+    },
+    {
+      "name": "768 cancel preserves dirty",
+      "ok": true
+    },
+    {
+      "name": "768 accept navigates",
+      "ok": true
+    },
+    {
+      "name": "768 accept clean",
+      "ok": true
+    },
+    {
+      "name": "768 back to inspector",
+      "ok": true
+    },
+    {
+      "name": "768 fork path",
+      "ok": true
+    },
+    {
+      "name": "768 forward removed",
+      "ok": true
+    },
+    {
+      "name": "768 guarded keyboard back",
+      "ok": true
+    },
+    {
+      "name": "768 stay preserves route",
+      "ok": true
+    },
+    {
+      "name": "768 dirty off",
+      "ok": true
+    },
+    {
+      "name": "768 keyboard back",
+      "ok": true
+    },
+    {
+      "name": "768 reset garage",
+      "ok": true
+    },
+    {
+      "name": "768 ARIA status",
+      "ok": true
+    },
+    {
+      "name": "768 no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "768 no JS errors",
+      "ok": true
+    },
+    {
+      "name": "1280 initial garage",
+      "ok": true
+    },
+    {
+      "name": "1280 seven routes",
+      "ok": true
+    },
+    {
+      "name": "1280 no back",
+      "ok": true
+    },
+    {
+      "name": "1280 no forward",
+      "ok": true
+    },
+    {
+      "name": "1280 parts nav",
+      "ok": true
+    },
+    {
+      "name": "1280 breadcrumb",
+      "ok": true
+    },
+    {
+      "name": "1280 inspector nav",
+      "ok": true
+    },
+    {
+      "name": "1280 inspector crumb",
+      "ok": true
+    },
+    {
+      "name": "1280 back parts",
+      "ok": true
+    },
+    {
+      "name": "1280 forward inspector",
+      "ok": true
+    },
+    {
+      "name": "1280 dirty on",
+      "ok": true
+    },
+    {
+      "name": "1280 guard shown",
+      "ok": true
+    },
+    {
+      "name": "1280 screen not changed",
+      "ok": true
+    },
+    {
+      "name": "1280 pending settings",
+      "ok": true
+    },
+    {
+      "name": "1280 escape closes",
+      "ok": true
+    },
+    {
+      "name": "1280 cancel preserves dirty",
+      "ok": true
+    },
+    {
+      "name": "1280 accept navigates",
+      "ok": true
+    },
+    {
+      "name": "1280 accept clean",
+      "ok": true
+    },
+    {
+      "name": "1280 back to inspector",
+      "ok": true
+    },
+    {
+      "name": "1280 fork path",
+      "ok": true
+    },
+    {
+      "name": "1280 forward removed",
+      "ok": true
+    },
+    {
+      "name": "1280 guarded keyboard back",
+      "ok": true
+    },
+    {
+      "name": "1280 stay preserves route",
+      "ok": true
+    },
+    {
+      "name": "1280 dirty off",
+      "ok": true
+    },
+    {
+      "name": "1280 keyboard back",
+      "ok": true
+    },
+    {
+      "name": "1280 reset garage",
+      "ok": true
+    },
+    {
+      "name": "1280 ARIA status",
+      "ok": true
+    },
+    {
+      "name": "1280 no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 no JS errors",
+      "ok": true
+    },
+    {
+      "name": "1920 initial garage",
+      "ok": true
+    },
+    {
+      "name": "1920 seven routes",
+      "ok": true
+    },
+    {
+      "name": "1920 no back",
+      "ok": true
+    },
+    {
+      "name": "1920 no forward",
+      "ok": true
+    },
+    {
+      "name": "1920 parts nav",
+      "ok": true
+    },
+    {
+      "name": "1920 breadcrumb",
+      "ok": true
+    },
+    {
+      "name": "1920 inspector nav",
+      "ok": true
+    },
+    {
+      "name": "1920 inspector crumb",
+      "ok": true
+    },
+    {
+      "name": "1920 back parts",
+      "ok": true
+    },
+    {
+      "name": "1920 forward inspector",
+      "ok": true
+    },
+    {
+      "name": "1920 dirty on",
+      "ok": true
+    },
+    {
+      "name": "1920 guard shown",
+      "ok": true
+    },
+    {
+      "name": "1920 screen not changed",
+      "ok": true
+    },
+    {
+      "name": "1920 pending settings",
+      "ok": true
+    },
+    {
+      "name": "1920 escape closes",
+      "ok": true
+    },
+    {
+      "name": "1920 cancel preserves dirty",
+      "ok": true
+    },
+    {
+      "name": "1920 accept navigates",
+      "ok": true
+    },
+    {
+      "name": "1920 accept clean",
+      "ok": true
+    },
+    {
+      "name": "1920 back to inspector",
+      "ok": true
+    },
+    {
+      "name": "1920 fork path",
+      "ok": true
+    },
+    {
+      "name": "1920 forward removed",
+      "ok": true
+    },
+    {
+      "name": "1920 guarded keyboard back",
+      "ok": true
+    },
+    {
+      "name": "1920 stay preserves route",
+      "ok": true
+    },
+    {
+      "name": "1920 dirty off",
+      "ok": true
+    },
+    {
+      "name": "1920 keyboard back",
+      "ok": true
+    },
+    {
+      "name": "1920 reset garage",
+      "ok": true
+    },
+    {
+      "name": "1920 ARIA status",
+      "ok": true
+    },
+    {
+      "name": "1920 no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1920 no JS errors",
+      "ok": true
+    }
+  ]
+}
