@@ -1,0 +1,50 @@
+name: B01-62 P17 W24 selected 749 descendant R2 canonical path repair
+on:
+  push:
+    branches: [fix/b01-62-p17w24-749-single-slot-canonical-path-r2]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W24CanonicalPathFixR2/**'
+      - '.github/workflows/b01-62-w24-749-canonical-path-r2.yml'
+permissions:
+  contents: read
+jobs:
+  fixed-original-v3-single-store:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Owner/frozen original #749/#729/#556 SHA pins and eight isolated-only paths
+        run: |
+          set -euo pipefail
+          mkdir -p b0162-w24-r2-receipts
+          python Tools/B01/B01-62/P17W24CanonicalPathFixR2/source_guard.py --receipt b0162-w24-r2-receipts/manifest-provenance.json | tee b0162-w24-r2-receipts/source-guard.log
+          grep -q 'W24_749_R2_EXACT_ORIGINAL_GIT_PINS=7/7' b0162-w24-r2-receipts/source-guard.log
+      - name: Execute original V3 lease + distinct R2 one-path canonical store, lost ACK and economy gap
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W24CanonicalPathFixR2/Selected749CanonicalPathFixR2.csproj -c Release --verbosity quiet | tee b0162-w24-r2-receipts/real-os-test.log
+          grep -q 'W24_749_DESCENDANT_R2_MULTIPATH_RED_TO_GREEN=PASS_SOURCE_ONLY' b0162-w24-r2-receipts/real-os-test.log
+          grep -q 'W24_749_R2_POST_RENAME_ACK_LOSS_STICKY_QUARANTINE_READBACK=PASS' b0162-w24-r2-receipts/real-os-test.log
+          grep -q 'W24_749_R2_PRE_RENAME_NO_COMMIT_STICKY_QUARANTINE_AND_RECOVERY=PASS' b0162-w24-r2-receipts/real-os-test.log
+          grep -q 'W24_R2_APPROVED_ECONOMY_FIELDS_NOT_IN_FROZEN_556_ATOMIC_SAVE=CONFIRMED_HOLD' b0162-w24-r2-receipts/real-os-test.log
+          grep -q 'FAIL 0' b0162-w24-r2-receipts/real-os-test.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w24-749-fixed-r2-${{ matrix.os }}
+          path: b0162-w24-r2-receipts/*
+          if-no-files-found: error

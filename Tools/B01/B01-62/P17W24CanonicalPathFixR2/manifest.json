@@ -1,0 +1,36 @@
+{
+  "package": "B01-62-W24-SELECTED749-CANONICAL-PATH-004",
+  "new_version": "4.0.0-qa-candidate",
+  "source_parent_pr": 749,
+  "source_parent_sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "selected_original_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "selected_host_R5_690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+  "original_snapshot_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "owner_selection": "749_REMAINS_SELECTED_VERSIONED_R2_NOT_SELECTED_UNTIL_OWNER_APPROVES",
+  "rejected_alt": [
+    741,
+    753,
+    747,
+    719,
+    695
+  ],
+  "source_fix": "unique_canonical_derived_owner_identity_dir_and_one_store_per_original_OS_lease_across_Dispose",
+  "same_binary_wire": "B0162S01_Original_556_FULL_BLOB_UNCHANGED",
+  "new_unity_assets": 0,
+  "native_unity": "NOT_RUN",
+  "economic_state_atomic": "HOLD_NEEDS_NEW_VERSIONED_SAVE_SCHEMA",
+  "full_g0": "HOLD_PENDING_B01_40_61_41",
+  "codex_ack": false,
+  "integrated": false,
+  "released": false,
+  "files": [
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSingleAuthorityStoreV3R2.cs",
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSlotSessionV3R2.cs",
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/Program.cs",
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/Selected749CanonicalPathFixR2.csproj",
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/source_guard.py",
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/README.md",
+    "Tools/B01/B01-62/P17W24CanonicalPathFixR2/manifest.json",
+    ".github/workflows/b01-62-w24-749-canonical-path-r2.yml"
+  ]
+}
