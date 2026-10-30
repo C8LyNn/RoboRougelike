@@ -8,7 +8,7 @@ OWN="Tools/B01/B01-61/P17W25Physical772IndependentQA/"
 FLOW=".github/workflows/b01-61-w25-772-original-rig-ledger.yml"
 ASSETS="Assets/B0123CanonicalRigPortW24/"
 OWNER={
-ASSETS+"Runtime/CanonicalPhysicalRigPortW24.cs":"2a9ac87d3028d5c5a51915a27c3029ca0a3b0d68c2f5d505e16",
+ASSETS+"Runtime/CanonicalPhysicalRigPortW24.cs":"2a9ac87d3028d5c5a51915a27c8d2f49aa363f85",
 ASSETS+"Runtime/CanonicalRigLedgerHydratorW24.cs":"eb21cb12605e94d17dc7decdf040c9009ca0aafe",
 ASSETS+"Tests/PlayMode/CanonicalPhysicalRigPortW24NativeTests.cs":"6827351e8f578030de932b2d36a5c0c55337a2f7"}
 FROZEN={
@@ -51,7 +51,7 @@ def main():
  for token in ["private sealed class Rig","private sealed class PhysicalWorld","Rigidbody",
                "AtomicDockLedger","AllOwnedPhysicalRootsDestroyed",
                "SetExternalWritersQuiesced","CanonicalRigLedgerHydratorW24.TryHydrate",
-               "linearVelocity","angularVelocity","TryCloseAfterPhysicalRetirement"]:
+               "linearVelocity","angularVelocity","CleanupUnpublishedAndVerifyDestroyed"]:
   if token not in source:raise AssertionError("772_UNITY_PHYSICS_IMPL_MISSING "+token)
  fixture=(ROOT/(ASSETS+"Tests/PlayMode/CanonicalPhysicalRigPortW24NativeTests.cs")).read_text()
  if fixture.count("[UnityTest]")!=3 or "private sealed class Disk : ICanonicalCommitPort" not in fixture:
