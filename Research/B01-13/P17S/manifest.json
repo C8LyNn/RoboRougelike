@@ -1,0 +1,39 @@
+{
+  "package": "B01-13-REBUILD-CHOICE-REHEARSAL-001/R1",
+  "producer": "B01-13",
+  "hq_issue": 687,
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "original_game": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_save": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "original_host": "efb2b06eafedab5469b57f163152d96aca3c5915",
+  "original_econ": "12572117a3dce369257feabc57021cde58023369",
+  "selected_r4": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+  "alt_hold": [
+    "#652",
+    "#644",
+    "#604",
+    "#682"
+  ],
+  "files": {
+    "Research/B01-13/P17S/rebuild_choice.mjs": {
+      "git_blob_sha1": "d5c937cf7338f01414c004952a8486d05d9e279a",
+      "bytes": 17067
+    },
+    "Research/B01-13/P17S/test_rebuild_choice.mjs": {
+      "git_blob_sha1": "5c85fe86bbe75e5b346cd7c78ea656730ff0e864",
+      "bytes": 14253
+    },
+    "Research/B01-13/P17S/README.md": {
+      "git_blob_sha1": "8a3dcdd150657c458579c6a3d5b251b8f74cbefd",
+      "bytes": 7654
+    },
+    "Research/B01-13/P17S/verify_package.py": {
+      "git_blob_sha1": "c273924ee615cab8dfbef9cb8af8b6efc4a8ada3",
+      "bytes": 1462
+    },
+    ".github/workflows/b01-13-p17w21-rebuild-choice.yml": {
+      "git_blob_sha1": "15903b80034a275d122fb639e038ab6cdc985cac",
+      "bytes": 1747
+    }
+  }
+}
