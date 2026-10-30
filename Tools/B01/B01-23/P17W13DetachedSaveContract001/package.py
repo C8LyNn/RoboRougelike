@@ -57,8 +57,6 @@ def scope():
         raise ValueError("immutable snapshot and opaque original W06 ledger required")
     if "private const int Version=2;" not in runtime or "B01SV14!" not in runtime:
         raise ValueError("version 2 schema migration required")
-    if False:
-        raise ValueError("missing save/restore safety contract")
     return paths
 
 def zinfo(name):

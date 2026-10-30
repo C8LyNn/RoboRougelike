@@ -1,0 +1,41 @@
+name: B01-23 P17 W14 chosen Save schema2 #550 RED repair original W06 source CI
+on:
+  push:
+    branches: [b01-23/p17w14-detached-save-v2-immutable]
+  pull_request:
+    paths:
+      - 'Assets/B0123DetachedSaveContract001/**'
+      - 'Tools/B01/B01-23/P17W13DetachedSaveContract001/**'
+      - 'Tools/B01/B01-23/P17W14SaveImmutability001/**'
+      - '.github/workflows/b01-23-p17w14-detached-save-v2-immutable.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Actual frozen W06 CSharp plus original selected portable schema2 including #550 negatives
+        run: dotnet run --project Tools/B01/B01-23/P17W13DetachedSaveContract001/SnapshotSourceTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Physical original full-source package and foreign empty directory rollback regression
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W13DetachedSaveContract001 -p test_package.py -v
+      - name: Verify single selected exact v2 contract and both independent original QA RED fixes
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W14SaveImmutability001 -p test_hardening.py -v
+      - name: Produce original exact Git V2 cold save package physical ZIP
+        run: python Tools/B01/B01-23/P17W13DetachedSaveContract001/package.py build --archive dist/B0123_DetachedSaveContractV2_Original.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w14-selected-save-v2-${{ matrix.os }}
+          path: dist/B0123_DetachedSaveContractV2_Original.zip
+          if-no-files-found: error
