@@ -1,0 +1,155 @@
+name: B01-30 W12 real CHL003 CHECKPOINT/FINISH mesh signs and Unity package
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w12-chl003-gate-signage.yml'
+      - 'Tools/B01/TechArt/P17W12/CHLSignage001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-chl003-two-real-signs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin actual original B01-20 CHL gate marker positions and source HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/285/head
+          test "$(git rev-parse FETCH_HEAD)" = "c7b2a234a286089383503da41883d624fe650551"
+          mkdir -p build/B01-30/W12/source
+          git show "FETCH_HEAD:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" > build/B01-30/W12/source/CHL003DemoBootstrap.cs
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          data=Path("build/B01-30/W12/source/CHL003DemoBootstrap.cs").read_bytes()
+          blob=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\x00"+data).hexdigest()
+          assert blob=="9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e",blob
+          print("B0130_W12_ORIGINAL_OWNER_CHL003_SOURCE_BLOB_AND_EXACT_HEAD_PASS")
+          PY
+      - name: Install Blender, real text to mesh export, headless raster, stdlib Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          python3 -m py_compile Tools/B01/TechArt/P17W12/CHLSignage001/*.py
+      - name: Produce two physical original 3D CHECKPOINT/FINISH mesh glyph assets and renders
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x1024x24' \
+            blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W12/CHLSignage001/produce_gate_signage.py \
+            -- --source build/B01-30/W12/source/CHL003DemoBootstrap.cs \
+               --out build/B01-30/W12/producer
+      - name: Actually reimport both exported original FBX in independent Blender process
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W12/CHLSignage001/reimport_gate_signage.py \
+            -- --source build/B01-30/W12/producer \
+               --out build/B01-30/W12/receiver
+      - name: Physically package two original FBX + receiver README as real UnityPackage with 5 adversarial mutants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/TechArt/P17W12/CHLSignage001/package_unity.py \
+            --source build/B01-30/W12/producer \
+            --receiver build/B01-30/W12/receiver/fresh-real-fbx-signage-qa.json \
+            --out build/B01-30/W12/unity
+      - name: Audit two physical real mesh signs, all PNG/FBX/Blend bytes and actual Unity TAR contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,struct,tarfile
+          from pathlib import Path
+          root=Path("build/B01-30/W12")
+          a=json.loads((root/"producer/source-locked-gate-signage-receipt.json").read_text())
+          b=json.loads((root/"receiver/fresh-real-fbx-signage-qa.json").read_text())
+          c=json.loads((root/"unity/real-source-signage-unitypackage-receipt.json").read_text())
+          assert len(a["two_real_3d_sign_variants"])==2 and a["real_mesh_nodes"]==22
+          assert b["actual_reimport_3d_meshes"]==22 and b["actual_converted_true_word_meshes"]==2
+          assert a["real_geometry_mutants_rejected"]==4 and a["source_hash_mutant_rejected"]==1
+          assert b["independent_process_negative_mutations"]==4
+          assert c["real_FBX_binary_assets"]==2 and c["real_TAR_members"]==9
+          assert len(c["real_mutated_binary_package_negative_controls"])==5
+          for row in a["two_real_3d_sign_variants"]:
+              for typ in ("fbx","blend","png"):
+                  x=row["files"][typ];file=root/"producer"/x["file"];raw=file.read_bytes()
+                  assert len(raw)==x["bytes"] and hashlib.sha256(raw).hexdigest()==x["sha256"]
+                  if typ=="fbx":assert raw.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+                  if typ=="png":
+                      assert raw[:8]==b'\x89PNG\r\n\x1a\n'
+                      assert struct.unpack(">II",raw[16:24])==(960,720)
+          asset=root/"unity"/c["unitypackage"];raw=asset.read_bytes()
+          assert len(raw)==c["unitypackage_bytes"] and hashlib.sha256(raw).hexdigest()==c["unitypackage_sha256"]
+          with tarfile.open(asset,"r:gz") as t:
+              names=[member.name for member in t.getmembers()]
+              assert len(names)==9 and len(set(names))==9
+          print("B0130_W12_2_TRUE_GLYPH_SIGNS_6_REAL_3D_FILES_22_MESH_9_TAR_9_NEGATIVES_PASS",c["unitypackage_sha256"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W12-CHL003-REAL-3D-CHECKPOINT-FINISH-UNITY
+          path: |
+            build/B01-30/W12/producer/*.fbx
+            build/B01-30/W12/producer/*.blend
+            build/B01-30/W12/producer/*.png
+            build/B01-30/W12/producer/*.json
+            build/B01-30/W12/receiver/*.json
+            build/B01-30/W12/unity/*.unitypackage
+            build/B01-30/W12/unity/*.json
+          if-no-files-found: error
+          retention-days: 30
+  windows-exact-package-replay:
+    needs: [original-chl003-two-real-signs]
+    runs-on: windows-2025
+    timeout-minutes: 7
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-30-W12-CHL003-REAL-3D-CHECKPOINT-FINISH-UNITY
+          path: build/B01-30/W12
+      - name: Real two original FBX and other binaries byte integrity, independent Windows UnityPackage byte parity and 5 source mutants
+        run: |
+          set -euo pipefail
+          python Tools/B01/TechArt/P17W12/CHLSignage001/package_unity.py \
+            --source build/B01-30/W12/producer \
+            --receiver build/B01-30/W12/receiver/fresh-real-fbx-signage-qa.json \
+            --out build/B01-30/W12/windows
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("build/B01-30/W12")
+          a=json.loads((root/"unity/real-source-signage-unitypackage-receipt.json").read_text())
+          b=json.loads((root/"windows/real-source-signage-unitypackage-receipt.json").read_text())
+          one=(root/"unity"/a["unitypackage"]).read_bytes()
+          two=(root/"windows"/b["unitypackage"]).read_bytes()
+          assert one==two and hashlib.sha256(one).hexdigest()==a["unitypackage_sha256"]==b["unitypackage_sha256"]
+          assert len(b["real_mutated_binary_package_negative_controls"])==5
+          original=json.loads((root/"producer/source-locked-gate-signage-receipt.json").read_text())
+          for entry in original["two_real_3d_sign_variants"]:
+              for typ in ("fbx","blend","png"):
+                  x=entry["files"][typ];raw=(root/"producer"/x["file"]).read_bytes()
+                  assert len(raw)==x["bytes"] and hashlib.sha256(raw).hexdigest()==x["sha256"]
+          print("B0130_W12_WINDOWS_6_PHYSICAL_ASSETS_2_FBX_UNITYPACKAGE_EXACT_BYTE_PARITY_5_NEGATIVES_PASS",
+                a["unitypackage_sha256"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W12-WINDOWS-BYTE-REPLAY-RECEIPT
+          path: build/B01-30/W12/windows/real-source-signage-unitypackage-receipt.json
+          if-no-files-found: error
