@@ -1,11 +1,11 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-11-P17-UXCOMFORT-001",
-  "version": "R1",
-  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/552",
+  "version": "R2",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/571",
   "branch": "research/b01-11-p17-w14-uxcomfort-001",
   "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "source_commit": "67e88bcf9bba1a21ab1a115aab22042757f371fe",
+  "source_commit": "2a2bd304454efc3cc3bb825e5617b669e29b59f5",
   "scope": [
     "Research/B01-11/P17/W14-UXCOMFORT-001/**",
     ".github/workflows/b01-11-uxcomfort-w14.yml"
@@ -13,15 +13,15 @@
   "files": [
     {
       "path": "Research/B01-11/P17/W14-UXCOMFORT-001/Runtime/VisualStimulusGate.cs",
-      "bytes": 6851,
-      "git_blob_sha1": "0f587d7843164e11858fd850248cef8a2f6029e3",
-      "sha256": "f73d258c27ab04ec4d43be9a0ea7e3781373fb916e2747fb5ab1a033354332c2"
+      "bytes": 7407,
+      "git_blob_sha1": "2f6451aa8813e2043b20dabcd38ba03cfc5a7fc4",
+      "sha256": "d483ad3d3d300de54af38af0777275063aa379508be72b75931534c1644451b8"
     },
     {
       "path": "Research/B01-11/P17/W14-UXCOMFORT-001/Tests/Program.cs",
-      "bytes": 18073,
-      "git_blob_sha1": "23b3d0b072897531b8b97d1dce97026cf2774f58",
-      "sha256": "b42735673c0c9b559db81c58986453450e13d949105251cc5e517b94a345cb3f"
+      "bytes": 21759,
+      "git_blob_sha1": "0a557d44f7a0e753049413384343bf939c3d5d89",
+      "sha256": "ce1a108224a204dea12ff6bc12da7c61f55a0dcb2cc912bce4591732aa1ac76f"
     },
     {
       "path": "Research/B01-11/P17/W14-UXCOMFORT-001/Tests/UXComfortTests.csproj",
@@ -37,51 +37,84 @@
     },
     {
       "path": "Research/B01-11/P17/W14-UXCOMFORT-001/README.md",
-      "bytes": 3845,
-      "git_blob_sha1": "7344c1fb75e8438d1eb34e74c79a728929849ecc",
-      "sha256": "279dc737e6e16c24be902b2770ef8d08f4ac47ec4004bcb66e57cf13731e01d1"
+      "bytes": 6004,
+      "git_blob_sha1": "dd1c00d8c210a1fb51261fd8b02da16f22eaa4f7",
+      "sha256": "8f187ae7b43c1d5aa90f39925e5788fe77f5a877044013ffb943b3626f209a51"
     },
     {
       "path": "Research/B01-11/P17/W14-UXCOMFORT-001/TEST_PLAN.md",
-      "bytes": 1844,
-      "git_blob_sha1": "ded408c63b49f7807a99f10b9e2f0998dcac66b6",
-      "sha256": "fd7bc1e7af7b287f03d1b197bcd18832900cee51f0126e5f6689420e0b65d523"
-    },
-    {
-      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/INSTALL_FOR_CODEX.md",
-      "bytes": 2024,
-      "git_blob_sha1": "93a52ec91dc23570d163b758a3fdf3fefcd555df",
-      "sha256": "e60b147ec60dd007c422626b7f0181ed7c42707ecfd2b0435dd19e3b4479cc7b"
+      "bytes": 3564,
+      "git_blob_sha1": "ed5c7ccf1e7c55057435b662abde5aed0fe5e89c",
+      "sha256": "fb20207893f92ada8cb1a8ef59432aa2dc7b4124ec012c1b19b4cbf17e51f594"
     },
     {
       "path": "Research/B01-11/P17/W14-UXCOMFORT-001/QA_RECEIVER.md",
-      "bytes": 1810,
-      "git_blob_sha1": "14c64c8a51b0d632a96ed3938743879f40213d7d",
-      "sha256": "26234a629c0779c18f3113af1c49f1cd3597b82a5d95ba82ee3db28bb0b99875"
+      "bytes": 3342,
+      "git_blob_sha1": "5e1d2ba9fde3996b6abb41b85f02b6ddd49e7ed4",
+      "sha256": "e088cffe33c3471a58c9d920748e0d675ebfd38d1f5e255da4dd71c720a92d3e"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2977,
+      "git_blob_sha1": "2bbdebd41e9b6ffd283b21c68834fc130df85f58",
+      "sha256": "a8a572caf95671957e13db1372736fef58aa8c6c9857de0b56a1c82353b97013"
+    },
+    {
+      "path": "Research/B01-11/P17/W14-UXCOMFORT-001/EVIDENCE/W15_ZERO_STIMULUS_RED_GREEN.md",
+      "bytes": 2381,
+      "git_blob_sha1": "4f79ce86093e5e476f1dcfd6659c244fe88d6544",
+      "sha256": "e1010e989dd268bf9f9f7af3db249fe016c2a8de89da36f6250ad207c67f97c3"
     }
   ],
   "test_runs": [
     {
       "os": "Ubuntu",
-      "passed": 98,
-      "failed": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41087229667"
+      "phase": "RED",
+      "passed": 102,
+      "failed": 14,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091279821",
+      "head": "a06d5e0b59a9fb24c38de5b54ed63bef74717fd9"
     },
     {
       "os": "Windows",
-      "passed": 98,
+      "phase": "RED",
+      "passed": 102,
+      "failed": 14,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091279821",
+      "head": "a06d5e0b59a9fb24c38de5b54ed63bef74717fd9"
+    },
+    {
+      "os": "Ubuntu",
+      "phase": "GREEN",
+      "passed": 116,
       "failed": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41087229667"
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091389393",
+      "head": "2a2bd304454efc3cc3bb825e5617b669e29b59f5"
+    },
+    {
+      "os": "Windows",
+      "phase": "GREEN",
+      "passed": 116,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41091389393",
+      "head": "2a2bd304454efc3cc3bb825e5617b669e29b59f5"
+    },
+    {
+      "os": "Unity EditMode/PlayMode/real graphics",
+      "phase": "NATIVE",
+      "status": "NOT_RUN"
     }
   ],
-  "producer_source": "PASS_98_PER_OS",
-  "source_g0": "PENDING",
-  "independent_qa": "PENDING",
+  "producer_source": "R2_SOURCE_GREEN_116_PER_OS",
+  "source_g0": "INDEPENDENT_PENDING",
+  "independent_qa": "INDEPENDENT_PENDING",
   "unity_g1": "NOT_RUN",
   "codex": "NOT_OFFERED_ACK_PENDING_NOT_INTEGRATED",
   "g2": "HOLD",
   "no_merge": true,
-  "limits": "Pure C# visual effect scheduling recommendations, not real Unity rendered VFX or medical photosensitivity safety claims.",
-  "rollback": "Discard own W14 isolated Research subtree/dedicated workflow or close Draft; no Codex Assets changed.",
-  "note": "Manifest excludes self-hash to avoid circular digest. All eight payloads SHA256/bytes/Git blob pinned."
+  "limits": "No-op zero-strength flash and shake become static indicators without spending rolling flash count or gap; pure original C# effect plan, no real Unity emitted light or medical photosensitivity certification.",
+  "rollback": "Immutable R1 at 866ab291924be2449fe8b295a1c1291259183608. Drop producer-owned isolated R2 research/workflow or revert only original R2 changes; Codex Assets/main/develop, frozen #510/#556 untouched.",
+  "note": "9 pinned actual source/test/docs/evidence/workflow payloads, each SHA256, exact UTF-8 bytes, Git blob SHA1; manifest excludes itself by design. Exact packaged SHA separately rerun in CI.",
+  "wave": "PASS17 WAVE15",
+  "docs_commit": "c2049d1d32af1281437d36127a71bc476a8f4db1"
 }
