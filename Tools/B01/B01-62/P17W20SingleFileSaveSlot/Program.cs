@@ -96,25 +96,25 @@ internal static class Program
             Check(created==SlotStatus.Accepted&&owner!=null,"create new owned namespace");
             using(owner!)
             {
-                Check(owner.TryRead(out long emptyGen,out _)==SlotStatus.Empty&&
+                Check(owner!.TryRead(out long emptyGen,out _)==SlotStatus.Empty&&
                     emptyGen==0,"new slot has no canonical Save");
-                Check(owner.TryCommit(0,Original556(1,true,false))==SlotStatus.Accepted,
+                Check(owner!.TryCommit(0,Original556(1,true,false))==SlotStatus.Accepted,
                     "write full original #556 Light snapshot+revision as ONE OS file");
-                Check(owner.TryRead(out long epoch,out byte[] payload)==SlotStatus.Accepted&&
+                Check(owner!.TryRead(out long epoch,out byte[] payload)==SlotStatus.Accepted&&
                     epoch==1&&CheckCold(payload,1,true,false),
                     "read original frozen #556 Light consumed ID and generation together");
                 Check(Child(dir,slot)==3,"another CLR process cannot own active checkpoint slot");
                 Check(SingleFileSaveSlot.TryOpenExisting(dir,Run,slot,out _)==SlotStatus.Busy,
                     "same process double owner denied");
-                Check(owner.TryCommit(0,Original556(1,false,true))==SlotStatus.Stale,
+                Check(owner!.TryCommit(0,Original556(1,false,true))==SlotStatus.Stale,
                     "no stale generation fork/overwrite");
-                Check(owner.TryCommit(1,Original556(2,false,true,Run+1))==SlotStatus.Invalid,
+                Check(owner!.TryCommit(1,Original556(2,false,true,Run+1))==SlotStatus.Invalid,
                     "foreign run ID rejected before writing anything");
-                Check(owner.TryCommit(1,Original556(3,false,true))==SlotStatus.Invalid,
+                Check(owner!.TryCommit(1,Original556(3,false,true))==SlotStatus.Invalid,
                     "nonconsecutive generation cannot skip epoch");
-                Check(owner.TryCommit(1,Original556(2,false,true))==SlotStatus.Accepted,
+                Check(owner!.TryCommit(1,Original556(2,false,true))==SlotStatus.Accepted,
                     "atomic replacement with authentic Heavy consumed snapshot");
-                Check(owner.TryRead(out epoch,out payload)==SlotStatus.Accepted&&
+                Check(owner!.TryRead(out epoch,out payload)==SlotStatus.Accepted&&
                     epoch==2&&CheckCold(payload,2,false,true),
                     "original W06 Heavy ID moved, Light ID not resurrected");
             }
@@ -123,12 +123,12 @@ internal static class Program
                 "cold restart binds original run+GUID persisted owner identity");
             using(cold!)
             {
-                Check(cold.TryRead(out long e,out byte[] p)==SlotStatus.Accepted&&
+                Check(cold!.TryRead(out long e,out byte[] p)==SlotStatus.Accepted&&
                     e==2&&CheckCold(p,2,false,true),
                     "cold process reads durable version2 Heavy ledger, no sidecar");
-                Check(cold.TryCommit(2,Original556(3,true,true))==SlotStatus.Accepted,
+                Check(cold!.TryCommit(2,Original556(3,true,true))==SlotStatus.Accepted,
                     "new owner accepts monotonic generation3 after restart");
-                Check(cold.TryRead(out e,out p)==SlotStatus.Accepted&&
+                Check(cold!.TryRead(out e,out p)==SlotStatus.Accepted&&
                     CheckCold(p,3,true,true),"cold #556 both IDs coherent");
             }
             // ACK after real OS rename is lost. Old same owner MUST quarantine,
@@ -142,16 +142,16 @@ internal static class Program
                     "create separate fault-injection save slot");
                 using(session!)
                 {
-                    Check(session.TryCommit(0,Original556(1,true,false))
+                    Check(session!.TryCommit(0,Original556(1,true,false))
                         ==SlotStatus.Accepted,"initial persistent g1 for lost ACK scenario");
                     hook.ThrowAfter=true;
-                    Check(session.TryCommit(1,Original556(2,false,true))
-                        ==SlotStatus.Quarantined&&session.Quarantined,
+                    Check(session!.TryCommit(1,Original556(2,false,true))
+                        ==SlotStatus!.Quarantined&&session!.Quarantined,
                         "renamed full g2 then ACK lost => sticky quarantine");
-                    Check(session.TryRead(out _,out _)==SlotStatus.Quarantined,
+                    Check(session!.TryRead(out _,out _)==SlotStatus!.Quarantined,
                         "uncertain owner cannot read+reissue stale save");
-                    Check(session.TryCommit(2,Original556(3,true,false))
-                        ==SlotStatus.Quarantined,
+                    Check(session!.TryCommit(2,Original556(3,true,false))
+                        ==SlotStatus!.Quarantined,
                         "uncertain owner cannot overwrite durable g2 with stale g3");
                 }
                 Check(SingleFileSaveSlot.TryOpenExisting(crash,Run,id,out var recovered)
@@ -159,10 +159,10 @@ internal static class Program
                     "fresh exclusive owner acquires after ambiguous commit crash");
                 using(recovered!)
                 {
-                    Check(recovered.TryRead(out long g,out byte[] p)
+                    Check(recovered!.TryRead(out long g,out byte[] p)
                         ==SlotStatus.Accepted&&g==2&&CheckCold(p,2,false,true),
                         "real atomic file g2 Heavy recovered, not stale g1 Light");
-                    Check(recovered.TryCommit(2,Original556(3,true,true))
+                    Check(recovered!.TryCommit(2,Original556(3,true,true))
                         ==SlotStatus.Accepted,
                         "new owner resolves ambiguous ACK from authoritative file only");
                 }
@@ -176,11 +176,11 @@ internal static class Program
                     ==SlotStatus.Accepted&&s!=null,"create abort-before-rename slot");
                 using(s!)
                 {
-                    Check(s.TryCommit(0,Original556(1,true,false))
+                    Check(s!.TryCommit(0,Original556(1,true,false))
                         ==SlotStatus.Accepted,"commit initial g1 before interrupted stage");
                     hook.ThrowBefore=true;
-                    Check(s.TryCommit(1,Original556(2,false,true))
-                        ==SlotStatus.Quarantined&&s.Quarantined,
+                    Check(s!.TryCommit(1,Original556(2,false,true))
+                        ==SlotStatus!.Quarantined&&s!.Quarantined,
                         "pre-rename callback error conservatively quarantines");
                 }
                 Check(Directory.EnumerateFiles(crash,"*.stage").Any(),
@@ -190,10 +190,10 @@ internal static class Program
                     "new owner ignores orphan, holds fresh exclusive lease");
                 using(recovered!)
                 {
-                    Check(recovered.TryRead(out long g,out byte[] p)
+                    Check(recovered!.TryRead(out long g,out byte[] p)
                         ==SlotStatus.Accepted&&g==1&&CheckCold(p,1,true,false),
                         "interrupted pending g2 NEVER considered committed");
-                    Check(recovered.TryCommit(1,Original556(2,false,true))
+                    Check(recovered!.TryCommit(1,Original556(2,false,true))
                         ==SlotStatus.Accepted,
                         "recover can monotonically commit correct version after orphan");
                 }
@@ -206,7 +206,7 @@ internal static class Program
                 Check(SingleFileSaveSlot.TryCreateNew(corrupt,Run,id,out var s)
                     ==SlotStatus.Accepted&&s!=null,"create corrupt-negative slot");
                 using(s!)
-                    Check(s.TryCommit(0,Original556(1,true,false))
+                    Check(s!.TryCommit(0,Original556(1,true,false))
                         ==SlotStatus.Accepted,"write original #556 for tamper negative");
                 string path=Path.Combine(corrupt,"save.envelope");
                 byte[] raw=File.ReadAllBytes(path);raw[22]^=0x30;
@@ -216,9 +216,9 @@ internal static class Program
                     "lease can be acquired after malicious checksum tamper");
                 using(reopened!)
                 {
-                    Check(reopened.TryRead(out _,out _)==SlotStatus.Corrupt,
+                    Check(reopened!.TryRead(out _,out _)==SlotStatus.Corrupt,
                         "corrupt canonical envelope fails closed without rollback");
-                    Check(reopened.TryCommit(0,Original556(1,false,true))
+                    Check(reopened!.TryCommit(0,Original556(1,false,true))
                         ==SlotStatus.Corrupt,
                         "corrupt canonical file cannot be silently overwritten");
                 }
