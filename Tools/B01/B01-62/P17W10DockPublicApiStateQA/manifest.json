@@ -1,0 +1,61 @@
+{
+  "schema": "B01_SOURCE_QA_MANIFEST_v1",
+  "package_id": "B01-62-DOCK-PUBLIC-API-STATE-QA-001",
+  "version": "1.0.0",
+  "owner": "B01-62",
+  "wave": "PASS17-W10",
+  "dispatch": "https://github.com/C8LyNn/RoboRougelike/issues/483",
+  "source_base_sha": "763748f1be0c61356fb4462144640bb359364226",
+  "base_pr": 471,
+  "proof_only": true,
+  "producer_source_unchanged": true,
+  "native_unity": "NOT_RUN",
+  "host_integration": "NOT_RUN",
+  "codex_ack": "NONE",
+  "g0": "PENDING_INDEPENDENT",
+  "release_gate": "HOLD_UNSAFE_PUBLIC_API",
+  "files": [
+    {
+      "path": ".github/workflows/b01-62-p17w10-dock-public-api-state.yml",
+      "git_blob": "56ff09220e3444b6de90f869e68f6f076af3fed4"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/README.md",
+      "git_blob": "186a46426b485d6efd5c6d74c62d81ebf02b8346"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/gate.py",
+      "git_blob": "fe55390520a038ef6a16b52b5fcdd3242e2b5754"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/test_gate.py",
+      "git_blob": "c1ee6e1c4fa49e0b03f22bc8c955a642879d55b4"
+    }
+  ],
+  "original_source": {
+    "w07": "e4e31c32cb5abda2fef987efa4b45fd61e828312",
+    "w08": "7c7e96a10d69149119309863a0c2a9bdab829072",
+    "w09": "d46c6341db199d010f48de00f98250becd2d7c87",
+    "policy": "6c7498a35ac49d9d49638b3b2550852547c67339",
+    "installer": "5a503c93c64e4e016bfd4b0e97feb6716af62ad8",
+    "ledger": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "tests": {
+    "positive_negative_cases": 26,
+    "platforms": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "expected_release_exit": 3,
+    "actual_execution": "PENDING_AT_MANIFEST_AUTHORING",
+    "ci_receipt": "SEE_GITHUB_ACTIONS"
+  },
+  "rollback": "Close Draft PR and delete only B01-62 W10 QA-only branch and files; do not touch B01-23 frozen producer.",
+  "receiver": [
+    "B01-23",
+    "B01-40",
+    "B01-60",
+    "B01-61",
+    "B01-00"
+  ]
+}
