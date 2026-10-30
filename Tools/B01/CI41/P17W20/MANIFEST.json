@@ -15,15 +15,22 @@
     "647": {
       "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
       "public_host_blob": "82147492a9205f8ef5986ceb61aeb10d6ea24ff2",
-      "lifetime_lease": "RETAIN_ON_DISABLE"
+      "lifetime_lease": "RETAIN_ON_DISABLE",
+      "status": "SOLE_OWNER_SELECTED_UNRELEASED"
     },
     "652": {
       "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
       "public_host_blob": "7b8354bc4cd846227b4bdf6d25d81bed34a325bc",
-      "lifetime_lease": "RELEASE_ON_DISABLE_SOURCE_RISK"
+      "lifetime_lease": "RELEASE_ON_DISABLE_SOURCE_RISK",
+      "status": "ALT_HOLD_NEVER_INSTALL"
     }
   },
-  "owner_selected_r4": "PENDING_OWNER_SIGNED_DECISION",
+  "owner_selected_r4": {
+    "pr": 647,
+    "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "owner_comment_id": 6531727970,
+    "status": "FROZEN_SOURCE_ONLY_SECURITY_P0_HOLD"
+  },
   "alternative604": "ALT_HOLD",
   "alternative644": "ALT_HOLD",
   "frozen_sources": {
@@ -39,16 +46,16 @@
     ".github/workflows/b01-41-p17w20-native-evidence-gate.yml"
   ],
   "tests": {
-    "synthetic_adversarial_validation_cases_per_os": 32,
+    "synthetic_adversarial_validation_cases_per_os": 33,
     "exact_original_host_git_blob_comparison": true,
     "real_unity": false,
     "real_native_g1": "NOT_RUN",
     "test_synthetic_fixtures_are_real_unity": false
   },
   "result_boundary": "STRUCTURAL_EVIDENCE_ONLY_NOT_NATIVE_EXECUTION",
-  "release_gate": "ENFORCE_EXITS_3_HOLD_UNTIL_OWNER_AND_HUMAN_ATTESTATION",
+  "release_gate": "ENFORCE_EXIT3_HOLD_HOST_ORPHAN_WORLD_P0_AND_MISSING_NATIVE_ATTESTATION",
   "gates": {
-    "G0": "NEW_R4_INDEPENDENT_B01_40_PENDING",
+    "G0": "647_SOURCE_SECURITY_P0_HOLD_NEW_VERSION_REQUIRED",
     "G1": "NOT_RUN",
     "canonical_live_save": "HOLD",
     "G2": "HOLD",
@@ -56,7 +63,7 @@
   },
   "state": {
     "IMPLEMENTED": true,
-    "TESTED": "PENDING_ACTUAL_CI",
+    "TESTED": "PENDING_NEW_EXACT_HEAD_CI_AFTER_OWNER_SELECTION",
     "QA_ACCEPTED": false,
     "READY_FOR_INTEGRATOR": false,
     "INTEGRATED": false,
