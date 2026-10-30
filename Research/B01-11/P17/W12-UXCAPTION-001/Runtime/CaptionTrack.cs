@@ -5,9 +5,9 @@ namespace B01.UXCaption
 {
     // Authoritative, host-provided sound cues. No microphone, audio capture or free-text content.
     public enum SoundCueKind { Footsteps, WeaponFire, HeavyImpact, PartDetached, CriticalWarning, Pickup, Machinery }
-    public enum CaptionPriority { Normal, Urgent }
+    public enum CaptionPriority { Normal, Urgent, Critical }
     public enum CaptionDirection { Front, FrontRight, Right, BackRight, Back, BackLeft, Left, FrontLeft }
-    public enum CaptionOutcome { Accepted, Combined, DroppedNormalForUrgent, IgnoredPreviousRun }
+    public enum CaptionOutcome { Accepted, Combined, DroppedNormalForUrgent, IgnoredPreviousRun, DroppedLowerPriorityForCritical }
 
     public sealed class SoundCueInput
     {
@@ -114,13 +114,26 @@ namespace B01.UXCaption
             var priority=PriorityOf(x.Kind);
             if(_active.Count>=_capacity)
             {
-                int oldestNormal=_active.FindIndex(c=>c.Priority==CaptionPriority.Normal);
-                if(oldestNormal<0 && priority==CaptionPriority.Normal)
+                // Evict the oldest item in the LOWEST tier at or below the incoming
+                // tier; never evict Critical for a PartDetached or Normal event.
+                int victim=-1,lowestTier=int.MaxValue;
+                for(int i=0;i<_active.Count;i++)
                 {
-                    _lastSequence=x.Sequence; // Dropped source cues cannot be replayed.
-                    return CaptionOutcome.DroppedNormalForUrgent;
+                    int tier=(int)_active[i].Priority;
+                    if(tier<=(int)priority && tier<lowestTier)
+                    {
+                        victim=i;
+                        lowestTier=tier;
+                    }
                 }
-                _active.RemoveAt(oldestNormal>=0?oldestNormal:0);
+                if(victim<0)
+                {
+                    _lastSequence=x.Sequence; // Even dropped source cues cannot replay.
+                    return priority==CaptionPriority.Normal
+                        ?CaptionOutcome.DroppedNormalForUrgent
+                        :CaptionOutcome.DroppedLowerPriorityForCritical;
+                }
+                _active.RemoveAt(victim);
             }
             _active.Add(new Caption(x));
             _lastSequence=x.Sequence;
@@ -130,7 +143,7 @@ namespace B01.UXCaption
         {
             var available=new List<Caption>();
             foreach(var c in _active)
-                if(IsLive(c) && (!urgentOnly || c.Priority==CaptionPriority.Urgent))
+                if(IsLive(c) && (!urgentOnly || c.Priority>=CaptionPriority.Urgent))
                     available.Add(c);
             available.Sort((a,b)=>
             {
@@ -145,7 +158,7 @@ namespace B01.UXCaption
         }
         bool IsLive(Caption c)
         {
-            long ttl=c.Priority==CaptionPriority.Urgent?UrgentDurationMs:NormalDurationMs;
+            long ttl=c.Priority>=CaptionPriority.Urgent?UrgentDurationMs:NormalDurationMs;
             return _clock>=c.LastTimeMs && _clock-c.LastTimeMs<ttl;
         }
         void PurgeExpired()
@@ -157,8 +170,8 @@ namespace B01.UXCaption
         {
             if(!Enum.IsDefined(typeof(SoundCueKind),kind))
                 throw new ArgumentOutOfRangeException("kind");
-            return kind==SoundCueKind.CriticalWarning || kind==SoundCueKind.PartDetached
-                ?CaptionPriority.Urgent:CaptionPriority.Normal;
+            if(kind==SoundCueKind.CriticalWarning)return CaptionPriority.Critical;
+            return kind==SoundCueKind.PartDetached?CaptionPriority.Urgent:CaptionPriority.Normal;
         }
         public static CaptionDirection DirectionOf(int bearingDegrees)
         {

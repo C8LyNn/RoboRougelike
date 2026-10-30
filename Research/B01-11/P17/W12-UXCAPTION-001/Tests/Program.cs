@@ -48,7 +48,7 @@ static class Program
         Check("weapon fire normal",()=>CaptionTrack.PriorityOf(SoundCueKind.WeaponFire)==CaptionPriority.Normal);
         Check("impact normal",()=>CaptionTrack.PriorityOf(SoundCueKind.HeavyImpact)==CaptionPriority.Normal);
         Check("part detached urgent",()=>CaptionTrack.PriorityOf(SoundCueKind.PartDetached)==CaptionPriority.Urgent);
-        Check("critical warning urgent",()=>CaptionTrack.PriorityOf(SoundCueKind.CriticalWarning)==CaptionPriority.Urgent);
+        Check("critical warning is highest critical tier",()=>CaptionTrack.PriorityOf(SoundCueKind.CriticalWarning)==CaptionPriority.Critical);
         Check("pickup normal",()=>CaptionTrack.PriorityOf(SoundCueKind.Pickup)==CaptionPriority.Normal);
         Check("machinery normal",()=>CaptionTrack.PriorityOf(SoundCueKind.Machinery)==CaptionPriority.Normal);
         Check("invalid enum priority throws",()=>Throws<ArgumentOutOfRangeException>(()=>CaptionTrack.PriorityOf((SoundCueKind)99)));
@@ -373,6 +373,40 @@ static class Program
             var f=Track(1,1);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"old"));
             f.Record(Cue(2,20,SoundCueKind.CriticalWarning,key:"cue.warning",source:"new"));
             return f.Visible()[0].SourceId=="new";
+        });
+
+        Check("W13 weaker urgent rejection returns distinct outcome",()=>{
+            var f=Track(1,1);
+            f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            return f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part"))==
+                   CaptionOutcome.DroppedLowerPriorityForCritical;
+        });
+        Check("W13 urgent only includes both critical and part detach captions",()=>{
+            var f=Track(2,2);
+            f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
+            var a=f.Visible(true);return a.Length==2&&a[0].Priority==CaptionPriority.Critical&&
+                   a[1].Priority==CaptionPriority.Urgent;
+        });
+        Check("W13 new critical replaces urgent while preserving new critical",()=>{
+            var f=Track(2,2);
+            f.Record(Cue(1,10,SoundCueKind.PartDetached,key:"cue.detached",source:"partA"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"partB"));
+            f.Record(Cue(3,30,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            return f.Visible()[0].Kind==SoundCueKind.CriticalWarning&&f.ActiveCount==2;
+        });
+        Check("W13 new detached event replaces old detached but not critical",()=>{
+            var f=Track(2,2);
+            f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"old"));
+            f.Record(Cue(3,30,SoundCueKind.PartDetached,key:"cue.detached",source:"new"));
+            var a=f.Visible();return a.Length==2&&a[0].Kind==SoundCueKind.CriticalWarning&&
+                a[1].SourceId=="new";
+        });
+        Check("W13 critical still expires at exact 6000ms TTL",()=>{
+            var f=Track(1,1);
+            f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning"));
+            f.AdvanceTo(6010);return f.Visible().Length==0&&f.ActiveCount==0;
         });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
