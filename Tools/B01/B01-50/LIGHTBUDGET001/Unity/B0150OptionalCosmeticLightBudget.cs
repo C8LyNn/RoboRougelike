@@ -33,6 +33,21 @@ namespace B01.Performance.LightBudget001.Unity
         private bool configured;
         private int frameIndex;
 
+        /// <summary>
+        /// Used by the optional standalone demo, before an inactive GameObject
+        /// is enabled and Awake initializes the selector. No reflection.
+        /// </summary>
+        public bool Configure(Camera camera, LightSlot[] lights, int limit, float hysteresis, int cadence)
+        {
+            if (configured) return false;
+            observer = camera;
+            cosmeticLights = lights;
+            maximumEnabled = limit;
+            distanceHysteresisMeters = hysteresis;
+            updateEveryNFrames = cadence;
+            return true;
+        }
+
         private void Awake()
         {
             if (cosmeticLights == null || cosmeticLights.Length == 0 ||
