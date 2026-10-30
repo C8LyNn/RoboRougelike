@@ -37,6 +37,10 @@ OWN.add(".github/workflows/b01-60-p17w13-native-rollback-audit.yml")
 OWN|={"Tools/B01/B01-60/P17W14NativeResultProof/"+n for n in
      ("test_native_result_gate.py","README.md","manifest.json")}
 OWN.add(".github/workflows/b01-60-p17w14-native-xml-case-gate.yml")
+# W15 versioned B01-60-only QA gate: both EditMode AND PlayMode verified.
+OWN|={"Tools/B01/B01-60/P17W15NativePairGate/"+n for n in
+     ("test_native_pair_gate.py","README.md","manifest.json")}
+OWN.add(".github/workflows/b01-60-p17w15-native-dual-suite-gate.yml")
 PREFIXES=("Assets/B0123DebrisRepulse001","Assets/B0123SecureReattachV2")
 NATIVE="Assets/B0160SecureV2NativeQA"
 PROJECT_EXTRA=("Packages/manifest.json","Packages/packages-lock.json",
@@ -406,9 +410,12 @@ def main():
      print("B01_60_W12_NATIVE_FAILED_OR_ACTIVATION_BLOCKED",platform,
            "returncode",started.returncode,"xml_exists",xml.exists())
      return 4
-    # Fail closed on missing/wrong Unity log or forged aggregate-only NUnit XML.
-   require_editor_version_log(log)
-   real[platform]=parse_xml(xml,min_tests)
+    # W15: BOTH native suites must have their own valid original Editor.log
+    # and all exact independent NUnit cases; never trust only the last suite.
+    require_editor_version_log(log)
+    real[platform]=parse_xml(xml,min_tests)
+   require(set(real)=={"EditMode","PlayMode"},
+           "NATIVE_NOT_VERIFIED: both original Unity EditMode/PlayMode suites required")
    (out/"native-verdict.json").write_text(json.dumps(
      {"native_unity":"EXECUTED","G1":"PASS","owner_sha":SHA,"results":real},
      sort_keys=True,indent=2)+"\n")
