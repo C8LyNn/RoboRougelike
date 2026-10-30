@@ -51,17 +51,22 @@
     }
   },
   "tests": {
-    "actual_dotnet_original": "CI_PUBLISH_PENDING",
-    "unity_editor": "NOT_RUN",
-    "unity_playmode": "NOT_RUN",
+    "actual_dotnet_original": "38/38 PASS, 0 FAIL, actual .NET 8 source compiled warnings-as-errors",
+    "unity_editor": "NOT_RUN_UNITY_ACTIVATION_PREFLIGHT",
+    "unity_playmode": "NOT_RUN_UNITY_ACTIVATION_PREFLIGHT",
     "gpu_draw_calls": "NOT_MEASURED",
     "fps": "NOT_MEASURED",
-    "independent_qa": "PENDING"
+    "independent_qa": "PENDING",
+    "dotnet_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41054135684",
+    "dotnet_artifact_id": 12975891885,
+    "unity_guid_gate": "3/3 PASS, original Assets/** checked for collisions",
+    "manifest_source_sha": "10/10 Git blob and UTF8 byte sizes independently checked"
   },
   "blockers": [
     "Independent B01-40/B01-60 source acceptance",
     "Authorized Unity 6 licensed native PlayMode proof",
     "Actual current Codex integration owner SHA and permission"
   ],
-  "rollback": "Remove only SHADOWLOD001-owned Tools subtree and own new workflow; disable the sandbox MonoBehaviour to restore original shadow casting; never modify canonical Assets."
+  "rollback": "Remove only SHADOWLOD001-owned Tools subtree and own new workflow; disable the sandbox MonoBehaviour to restore original shadow casting; never modify canonical Assets.",
+  "producer_status": "ORIGINAL_CSHARP_SOURCE_TESTED_QA_RECEIVER_PENDING_NATIVE_NOT_RUN"
 }
