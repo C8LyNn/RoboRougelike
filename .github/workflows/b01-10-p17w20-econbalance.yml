@@ -1,4 +1,4 @@
-name: B01-10 P17W22 ECONBAL Original Source Model
+name: B01-10 P17W23 ECONBAL Original Source Model
 on:
   push:
     branches: [design/b01-10-p17w20-econbal-001]
@@ -62,9 +62,9 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s Research/B01-10/P17/W20_ECONBAL_001 -p test_rebuild_balance.py -v > "$RUNNER_TEMP/econbal-tests.log" 2>&1
           cat "$RUNNER_TEMP/econbal-tests.log"
-          grep -F 'Ran 95 tests' "$RUNNER_TEMP/econbal-tests.log"
+          grep -F 'Ran 120 tests' "$RUNNER_TEMP/econbal-tests.log"
           grep -Fx 'OK' "$RUNNER_TEMP/econbal-tests.log"
-      - name: Execute ten independent and strictly-labeled hypothetical safety cases plus 200 seeded synthetic runs
+      - name: Execute twelve source-model cases with terminal-fee and reward-order safety variants
         shell: bash
         run: |
           set -euo pipefail
@@ -74,7 +74,7 @@ jobs:
           import json,sys
           report=json.load(open(sys.argv[1],encoding='utf8'))
           cases=report['cases']
-          assert len(cases)==10
+          assert len(cases)==12
           h=cases['twelve_victories_two_destroyed']['bootstrap_epoch_zero']
           assert (h['per_win']['free'],h['per_win']['paid'],
                   h['per_win']['charged_scrap'])==(12,12,840)
@@ -107,12 +107,24 @@ jobs:
           assert no_next['deploy_gate_one_hypothetical_loaner']['blocked_no_challenge_attempts']==1
           assert no_next['deploy_gate_one_hypothetical_loaner']['hypothetical_loaner_used']==0
           assert no_next['deploy_gate_one_hypothetical_loaner']['end_feasibility']=='NO_ELIGIBLE_NEXT_CHALLENGE'
+          r=cases['victory_reward_affordability_order']
+          assert r['bootstrap_epoch_zero']['per_win']['free']==1
+          assert r['bootstrap_epoch_zero']['per_win']['paid']==0
+          assert r['reward_credit_before_order']['per_win']['free']==1
+          assert r['reward_credit_before_order']['per_win']['paid']==1
+          assert r['bootstrap_epoch_zero']['per_win']['wins']==1
+          assert r['reward_credit_before_order']['per_win']['restored']==0
+          final=cases['terminal_queued_paid_rebuild_exposure']
+          assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_paid_scrap']==70
+          assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_pending_count']==2
+          assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_free_tickets']==1
+          assert final['bootstrap_epoch_zero']['per_win']['wins']==1
           stress=json.load(open(sys.argv[2],encoding='utf8'))
           assert stress['episodes']==200
           assert stress['attempts_each']==12
           assert 'SYNTHETIC_ONLY' in stress['notice']
           assert len(stress['aggregate'])==2
-          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 10/10 PASS '
+          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 12/12 PASS '
                 '| BOOTSTRAP 2/2 PASS | SYNTHETIC_FIXED_SEED_EPISODES 200 PASS '
                 '| HUMAN_PLAYTEST NOT_RUN | UNITY NOT_RUN')
           PY
