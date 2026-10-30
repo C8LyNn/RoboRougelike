@@ -1,0 +1,28 @@
+name: B01-23 W23 selected #729 + #669 ONE real owner
+on:
+  push:
+    branches: [b01-23/p17w23-v3-single669-lease-bridge-r1]
+  pull_request:
+    paths:
+      - Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs
+      - Tools/B01/B01-23/P17W23SingleAuthorityBridge001/**
+      - .github/workflows/b01-23-p17w23-single669-physical-owner.yml
+jobs:
+  ubuntu:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - run: dotnet run --project Tools/B01/B01-23/P17W23SingleAuthorityBridge001/SingleAuthoritySourceTests.csproj -c Release
+      - run: python -m unittest discover -s Tools/B01/B01-23/P17W23SingleAuthorityBridge001 -p test_provenance.py -v
+  windows:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - run: dotnet run --project Tools/B01/B01-23/P17W23SingleAuthorityBridge001/SingleAuthoritySourceTests.csproj -c Release
+      - run: python -m unittest discover -s Tools/B01/B01-23/P17W23SingleAuthorityBridge001 -p test_provenance.py -v
