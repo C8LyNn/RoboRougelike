@@ -37,7 +37,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
-          "$PY" -m unittest discover -s Tools/B01/CI41/P17W06 -p test_asmdef_graph_gate.py -v 2>&1 | tee "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W06 -p 'test_*.py' -v 2>&1 | tee "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
           grep -q 'PHYSICAL_GIT_TREE_3_ASMDEFS_2_EDGES_PASS_NOT_UNITY' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
           grep -q 'EXACT_ORIGINAL_GIT_BLOBS_NOT_WORKTREE_DIRTY_DATA' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
           grep -q 'ORIGINAL_PHYSICAL_GIT_OBJECTS_CLI_NEGATIVE_DRIFT_EXIT2' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
