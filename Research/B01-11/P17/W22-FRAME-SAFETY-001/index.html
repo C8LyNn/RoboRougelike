@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frame Safety Lab — B01-11 W22</title>
+<style>
+:root{font-family:system-ui,'Segoe UI',sans-serif;color-scheme:dark;background:#0d1723;color:#f3f7ff}
+*{box-sizing:border-box}body{margin:0;padding:20px 14px}main{max-width:960px;margin:auto}
+h1{font-size:clamp(1.6rem,4vw,2.4rem)}p{line-height:1.6;color:#bdcde1}
+.panel{padding:1rem 1.2rem;border:1px solid #526b86;background:#17283c;border-radius:11px;margin:1rem 0}
+.panel[data-level=warning]{border-color:#f0cc90}.panel[data-level=danger]{border-color:#ffaaa0}.panel[data-level=success]{border-color:#9ce5c3}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap}.controls button{flex:1 1 155px}
+button{font:inherit;background:#265b8e;border:1px solid #a1c7ef;color:#fff;border-radius:8px;min-height:44px;padding:.7rem .9rem;cursor:pointer}
+button[aria-pressed=true]{background:#476b40;border-color:#a6e8a3}button:hover{filter:brightness(1.12)}button:focus-visible{outline:3px solid #ffdf93;outline-offset:3px}
+canvas{display:block;width:min(100%,900px);height:auto;max-height:680px;background:#111f32;border:1px solid #607890;border-radius:11px;margin:0 auto}
+strong{color:#f8fcff}small{color:#bdd0e4}.metrics{font-variant-numeric:tabular-nums;font-size:1.1rem;font-weight:750}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<h1>Frame Safety Lab — modułowy robot w kadrze</h1>
+<p>W22: prototyp analizy perspektywy i stref HUD, oddzielny od W21 (przesłanianie przeszkodami). To <strong>symulacja rzutu 3D, która nie uruchamia Unity ani PhysX</strong> i nie zmienia prawdziwej kamery w grze.</p>
+<section aria-labelledby="controls-label"><h2 id="controls-label">Scenariusz i parametry</h2><div class="controls">
+<button id="wide" type="button">Ekran 16:9</button><button id="portrait" type="button">Ekran pionowy</button>
+<button id="weapon-left" type="button" aria-pressed="true">Broń LPM: zamontowana</button>
+<button id="weapon-right" type="button" aria-pressed="true">Broń PPM: zamontowana</button>
+<button id="fov" type="button">FOV: 55°</button>
+</div></section>
+<section class="panel" id="status" data-level="warning" role="status" aria-live="polite" aria-atomic="true">
+<h2 id="headline">Analiza pozycji</h2><p id="detail"></p><div class="metrics" id="metric"></div><small id="reason"></small>
+</section>
+<canvas id="frame" width="900" height="506" role="img" aria-label="Rzut perspektywiczny modułów robota oraz obramowanie strefy bezpiecznego kadru"></canvas>
+<p>Przerywana ramka oznacza obszar bezpieczny po odjęciu rezerw na HUD. <strong>Zielony</strong> obrys oznacza część mieszczącą się w ramce; <strong>pomarańczowy</strong> — wypadającą poza nią. Lista tekstowa pozwala odczytać stan bez rozpoznawania kolorów.</p>
+<div class="controls"><button id="auto" type="button">Zaproponuj oddalenie kamery</button><button id="reset" type="button">Przywróć kamerę</button></div>
+<section><h2>Rekomendacja i ograniczenia</h2><p id="recommendation" aria-live="polite"></p><ol id="issues" aria-label="Problemy kadrowania"></ol></section>
+<footer><small>Model oblicza perspektywiczne rzutowanie osiowo wyrównanych pudełek robotycznych. Nie bada przeszkód, widoczności przeciwnika, rotacji poszczególnych części, collision avoidance, rzeczywistego aspect-ratio GameView, animacji ani bezpieczeństwa rozgrywki. Nawet 4/4 w modelu nie jest odbiorem UI/UX gry.</small></footer>
+</main><script src="frame.js"></script><script>
+(function(){
+  'use strict';
+  const $=id=>document.getElementById(id), canvas=$('frame'),ctx=canvas.getContext('2d');
+  const box=(id,kind,x,y,z,dx,dy,dz)=>({id,kind,center:{x,y,z},size:{x:dx,y:dy,z:dz},active:true});
+  const fresh=()=>({camera:{x:0,y:3,z:-10},aim:{x:0,y:1,z:0},verticalFov:55,aspect:16/9,
+    safe:{left:.12,right:.82,top:.12,bottom:.84},parts:[
+      box('core','core',0,1,0,1.7,1.5,2),box('weapon-L','left-weapon',-2.4,1.4,0,.9,.7,1.3),
+      box('weapon-R','right-weapon',4.4,1.4,0,.9,.7,1.3),box('tail','module',0,1,3,1.2,1.2,1.2)]});
+  let scene=fresh();
+  function setViewport(portrait){canvas.width=portrait?450:900;canvas.height=portrait?720:506;scene.aspect=canvas.width/canvas.height;}
+  function draw(){
+    const r=FrameSafetyLab.project(scene),c=FrameSafetyLab.message(r);
+    $('status').dataset.level=c.level;$('headline').textContent=c.title;$('detail').textContent=c.detail;
+    $('metric').textContent=String(r.framed)+'/'+String(r.total)+' aktywnych modułów w ramce';
+    $('reason').textContent='Powód: '+r.reason+' • FOV '+scene.verticalFov+'° • Format '+scene.aspect.toFixed(2);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const w=canvas.width,h=canvas.height;
+    ctx.fillStyle='#111f32';ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#283a51';ctx.fillRect(0,0,w*scene.safe.left,h);
+    ctx.fillRect(w*scene.safe.right,0,w*(1-scene.safe.right),h);
+    ctx.fillStyle='#283346';ctx.fillRect(0,0,w,h*scene.safe.top);
+    ctx.fillRect(0,h*scene.safe.bottom,w,h*(1-scene.safe.bottom));
+    ctx.setLineDash([10,7]);ctx.strokeStyle='#e1cf92';ctx.lineWidth=2;
+    ctx.strokeRect(w*scene.safe.left,h*scene.safe.top,w*(scene.safe.right-scene.safe.left),h*(scene.safe.bottom-scene.safe.top));ctx.setLineDash([]);
+    const labels=[];
+    for(const part of r.pieces){
+      if(!part.rect){labels.push(part.id+': near clip');continue;}
+      const rect=part.rect,px=rect.minU*w,py=rect.minV*h,pw=(rect.maxU-rect.minU)*w,ph=(rect.maxV-rect.minV)*h;
+      ctx.strokeStyle=part.fit?'#8be8b7':'#ffc18d';ctx.lineWidth=3;
+      ctx.strokeRect(px,py,pw,ph);
+      ctx.fillStyle='#f6fbff';ctx.font='bold 14px system-ui';ctx.fillText(part.id,Math.max(4,px+5),Math.max(18,py+18));
+      labels.push(part.id+': '+(part.fit?'w kadrze':'POZA KADREM'));
+    }
+    const list=$('issues');list.replaceChildren();for(const label of labels){const item=document.createElement('li');item.textContent=label;list.appendChild(item);}
+  }
+  function toggle(idx,element){scene.parts[idx].active=!scene.parts[idx].active;
+    const active=scene.parts[idx].active;element.setAttribute('aria-pressed',String(active));
+    element.textContent=(idx===1?'Broń LPM: ':'Broń PPM: ')+(active?'zamontowana':'odłączona');
+    $('recommendation').textContent='Wyłączone moduły są pomijane w próbnym kadrze.';draw();}
+  $('wide').addEventListener('click',()=>{setViewport(false);$('recommendation').textContent='Przywrócono format poziomy.';draw();});
+  $('portrait').addEventListener('click',()=>{setViewport(true);$('recommendation').textContent='Format pionowy: sprawdź, czy broń i HUD mieszczą się jednocześnie.';draw();});
+  $('weapon-left').addEventListener('click',()=>toggle(1,$('weapon-left')));
+  $('weapon-right').addEventListener('click',()=>toggle(2,$('weapon-right')));
+  $('fov').addEventListener('click',()=>{scene.verticalFov=scene.verticalFov===55?70:scene.verticalFov===70?40:55;$('fov').textContent='FOV: '+scene.verticalFov+'°';$('recommendation').textContent='Kąt pola widzenia zmieniony wyłącznie w symulacji.';draw();});
+  $('auto').addEventListener('click',()=>{const r=FrameSafetyLab.suggest(scene);
+    if(!r.ok){$('recommendation').textContent='Brak rozwiązania przez samo oddalenie: '+r.reason+'. Wymagane przekomponowanie HUD lub kadru.';return;}
+    scene.camera={...r.candidate.camera};
+    $('recommendation').textContent='Próbne oddalenie ×'+r.candidate.scale.toFixed(1)+': '+r.candidate.result.framed+'/'+r.candidate.result.total+' modułów w ramce; kamera Unity pozostaje nietknięta.';draw();});
+  $('reset').addEventListener('click',()=>{const keepAspect=scene.aspect;const keepWidth=canvas.width,keepHeight=canvas.height;scene=fresh();scene.aspect=keepAspect;canvas.width=keepWidth;canvas.height=keepHeight;
+    for(const id of ['weapon-left','weapon-right'])$(id).setAttribute('aria-pressed','true');
+    $('weapon-left').textContent='Broń LPM: zamontowana';$('weapon-right').textContent='Broń PPM: zamontowana';$('fov').textContent='FOV: 55°';
+    $('recommendation').textContent='Zresetowano symulowaną kamerę.';draw();});
+  draw();
+})();
+</script></body></html>
