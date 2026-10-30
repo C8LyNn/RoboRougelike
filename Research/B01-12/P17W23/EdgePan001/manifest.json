@@ -1,0 +1,26 @@
+{
+  "files": {
+    "demo.html": {
+      "bytes": 4883,
+      "sha256": "bcda045509dbfdb7e264cb0749499e503f2585da0adc4f74044d68d4a9e1d41e"
+    },
+    "pan_engine.js": {
+      "bytes": 5602,
+      "sha256": "e0580a0498751a81726fa2c6d643224b994e77c9e2c0af4e8c3dac01555155e0"
+    },
+    "test_browser.py": {
+      "bytes": 3914,
+      "sha256": "f8c00496629c980d43b3491c53341f120c5001826d6951168d701e3a1ad26b2d"
+    },
+    "test_engine.cjs": {
+      "bytes": 6306,
+      "sha256": "7f5460078825f0d46e10a4b9e13a3845634d6860795942732dae45e3c90a4e50"
+    },
+    "ui.js": {
+      "bytes": 4177,
+      "sha256": "5b024f9ce0f6ee97fba8a95a762e589eddc644d8a2ffa9ffacadb8a3edf98fc4"
+    }
+  },
+  "package": "B01-12-EDGE-PAN-001/R1",
+  "schema": 1
+}
