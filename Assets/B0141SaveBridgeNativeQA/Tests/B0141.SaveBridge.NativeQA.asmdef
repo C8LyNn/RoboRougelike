@@ -1,0 +1,27 @@
+{
+  "name": "B0141.SaveBridge.NativeQA",
+  "rootNamespace": "B01.CI41.NativeSaveQA",
+  "references": [
+    "B0123.UnitySaveBridge.Core",
+    "B0123.UnitySaveBridge.Unity",
+    "B0123.DetachedSaveContract.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "noEngineReferences": false
+}
