@@ -6,6 +6,7 @@ on:
     paths:
       - 'Assets/B01Packages/RECOVERYHUD001/**'
       - 'Assets/B01Packages/RECOVERYHUD001.meta'
+      - 'Assets/B01Packages.meta'
       - 'Tools/B01/B01-11/P17W24RecoveryHud001/**'
       - '.github/workflows/b01-11-p17w24-recoveryhud.yml'
 jobs:
