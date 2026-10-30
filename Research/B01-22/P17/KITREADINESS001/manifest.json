@@ -31,11 +31,11 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
     "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "b022243ba7cfe675876099175340ae7e4badb555",
     "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "069839de7d69c2f4baaff1ad8f0db4da6c7c4cb8",
-    "Research/B01-22/P17/KITREADINESS001/README.md": "ef6768b4900e35a8d9333d7035377914c06bf60e",
+    "Research/B01-22/P17/KITREADINESS001/README.md": "b4e0a9e8040422d28e1a43cb696f91a9751e6d28",
     ".github/workflows/b01-22-p17w08-kitreadiness.yml": "c113011c0acad58d928ff1945fbd6673fe75d9b3",
-    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "2d1a234ee74e81c0684537d528aa749721280453",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "280d3c4445e1ce3630594e07932da3f6b7742c1b",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "663abf4a89892924be8b2d8142a23cdc3c7ed2bf",
-    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "2fa9917b579a21fa287ea26ead2043cc3c597316",
+    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "13eb129818bb2298a63586ba911c4a9641fd770c",
     "Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json": "6200854efbf3e9be1f163a3065be62fe2ac18ae9"
   },
   "test_commands": [
@@ -53,9 +53,9 @@
     "unity_source_members": 3,
     "unity_guid_metas": 2,
     "git_blob_checks": 16,
-    "python_cli_blackbox_tests": 16
+    "python_cli_blackbox_tests": 17
   },
-  "producer_qa": "PENDING_EXACT_SHA_CI",
+  "producer_qa": "PENDING_FINAL_HEAD_CI",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
   "handoff": "B01-40 G0 then B01-60 independent source and Unity G1 if licensed; B01-00 only CODEX INBOX #79",
@@ -91,5 +91,6 @@
     ],
     "receipt": "receipt.json",
     "rollback": "fail-closed for modified/foreign files"
-  }
+  },
+  "final_w10_safety": "Reject symlinked output parent directory/reparse point, game-path output, same input-output, and preexisting file. No wallet/garage/Assets writes."
 }
