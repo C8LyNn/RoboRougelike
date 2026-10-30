@@ -15,8 +15,8 @@ Existing #430 publisher proves C# warning/active/recovery behavior and static (n
 The tool fails closed if source Git identities, map byte hashes, item counts, map version, profile-to-map cell centers, hazard phases/offsets or unsupported multi-cell geometry drift. All map/program bytes are only read; no write occurs inside producer trees.
 
 ## Real test plan
-- 16 independently authored Python stdlib unittest cases including original two-map 0-hit route reconstruction and deterministic receipt.
-- Source SHA pin, corrupted original raw bytes, duplicate zone ID, world coordinate mismatch, zone placed on original blocker, modified active duration, nonalternating offsets, changed level, original spawn enclosed after synthetic mutation, unmodeled multiscale part, unsupported original kind, wrong meters-per-cell, and stagger safety.
+- 17 independently authored Python stdlib unittest cases including original two-map 0-hit route reconstruction and deterministic receipt.
+- Source SHA pin, corrupted original raw bytes, duplicate zone ID, world coordinate mismatch, zone placed on original blocker, modified active duration, nonalternating offsets, changed level or wrong linked original map PR, original spawn enclosed after synthetic mutation, unmodeled multiscale part, unsupported original kind, wrong meters-per-cell, and stagger safety.
 - Windows2025 and Ubuntu24.04 each execute original 16 tests and original receiver against exact Git original files; emits a physical route.json and log.
 - Third job compares Windows and Ubuntu route.json bytes with cmp and records SHA-256.
 - Expected route proof must be measured from CI and not fabricated in advance.
