@@ -1,0 +1,49 @@
+name: B01-62 W25 strict canonical path selected 773 source descendant
+on:
+  push:
+    branches: [fix/b01-62-p17w25-selected-773-strict-path-r3]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W25StrictCanonicalPathR3/**'
+      - '.github/workflows/b01-62-w25-773-strict-case-path.yml'
+permissions:
+  contents: read
+jobs:
+  real-source-os-regression:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Immutable exact original 773 source guard
+        run: |
+          set -euo pipefail
+          mkdir -p b0162-w25-strict-r3
+          python Tools/B01/B01-62/P17W25StrictCanonicalPathR3/source_guard.py b0162-w25-strict-r3/source-provenance.json
+      - name: Original #729 V3 OS canonical path, collision, ACK and cold restart
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W25StrictCanonicalPathR3/Selected773StrictCanonicalPathR3.csproj -c Release --verbosity quiet | tee b0162-w25-strict-r3/os-tests.log
+          grep -q 'W25_773_R3_CASE_ONLY_ALTERNATE_ROOT_DENIED=PASS' b0162-w25-strict-r3/os-tests.log
+          grep -q 'W25_773_DESCENDANT_R3_MULTIPATH_RED_TO_GREEN=PASS_SOURCE_ONLY' b0162-w25-strict-r3/os-tests.log
+          grep -q 'W25_773_R3_POST_RENAME_ACK_LOSS_STICKY_QUARANTINE_READBACK=PASS' b0162-w25-strict-r3/os-tests.log
+          grep -q 'W25_773_R3_PRE_RENAME_NO_COMMIT_STICKY_QUARANTINE_AND_RECOVERY=PASS' b0162-w25-strict-r3/os-tests.log
+          grep -q 'W25_773_DESCENDANT_R3_REAL_SOURCE_TESTS 5 PASS 5 FAIL 0' b0162-w25-strict-r3/os-tests.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w25-strict-r3-${{ matrix.os }}
+          path: b0162-w25-strict-r3/*
+          if-no-files-found: error
