@@ -1,0 +1,49 @@
+name: B01-23 W12 freeze exclusive selected 510 receiver preflight
+on:
+  push:
+    branches: ['b01-23/p17-w12-freeze510-receiver-preflight-r1']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W12Freeze510001/**'
+      - '.github/workflows/b01-23-p17-w12-freeze510.yml'
+jobs:
+  source-freeze:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch EXACT immutable source candidate only (no checkout of producer)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/510/head
+          test "$(git rev-parse d94400d95d13db7f27e1533df05c9292d5380431)" = d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Verify frozen candidate original 35 entry ZIP identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p w12-receipt
+          python Tools/B01/B01-23/P17W12Freeze510001/freeze_gate.py freeze | tee w12-receipt/freeze.json
+          grep -q 'PRODUCER_IDENTITY_PASS_NOT_INDEPENDENT_G0' w12-receipt/freeze.json
+      - name: Execute read only selection and legacy migration negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-23/P17W12Freeze510001 -p test_freeze_gate.py -v 2>&1 | tee w12-receipt/preflight.log
+          grep -q 'Ran 20 tests' w12-receipt/preflight.log
+          grep -q 'OK' w12-receipt/preflight.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-23-w12-freeze510-${{ matrix.os }}
+          path: w12-receipt/
+          if-no-files-found: warn
