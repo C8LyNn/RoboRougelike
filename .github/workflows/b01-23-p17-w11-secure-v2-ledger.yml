@@ -1,0 +1,83 @@
+name: B01-23 W11 V2 1.1.0 atomic consumed ID before physics mutation
+on:
+  push:
+    branches: ['b01-23/p17-w11-secure-reattach-v2-r1-1']
+  pull_request:
+    paths:
+      - 'Assets/B0123SecureReattachV2/**'
+      - 'Tools/B01/B01-23/P17W11SecureV2RearmAtomicity/**'
+      - '.github/workflows/b01-23-p17-w11-secure-v2-ledger.yml'
+  workflow_dispatch:
+jobs:
+  exact-real-source-red-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify original frozen V2 and W06 provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/488/head
+          git fetch --no-tags origin refs/pull/421/head
+          test "$(git rev-parse 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3:Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs)" = 491c89a18827bb027854bba5e6be6630ce4947b6
+          test "$(git rev-parse cb2b3a76e84266e2730fffc4ab048c1039f0652f:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs)" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git rev-parse cb2b3a76e84266e2730fffc4ab048c1039f0652f:Assets/B0123DebrisRepulse001/Runtime/DebrisRepulsionEmitter.cs)" = 2b3a8465c550bd49a5c98be5a8064a4ce0947f4b
+      - name: Extract exact original game sources with unchanged original W06 + V2 policy/spec
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Tools/B01/B01-23/P17W11SecureV2RearmAtomicity/Input w11-receipts
+          p=Tools/B01/B01-23/P17W11SecureV2RearmAtomicity/Input
+          git show cb2b3a76e84266e2730fffc4ab048c1039f0652f:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$p/DebrisImpulseCore.cs"
+          git show cb2b3a76e84266e2730fffc4ab048c1039f0652f:Assets/B0123DebrisRepulse001/Runtime/DebrisRepulsionEmitter.cs > "$p/DebrisRepulsionEmitter.cs"
+          git show 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3:Assets/B0123SecureReattachV2/Runtime/SecureDockPolicy.cs > "$p/SecureDockPolicy.cs"
+          git show 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$p/SecureRigSpec.cs"
+      - name: 'RED - execute frozen original V2 with real W06 ledger and require partial commit witness'
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=Tools/B01/B01-23/P17W11SecureV2RearmAtomicity
+          git show 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3:Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs > "$p/Input/SecureDebrisPlaygroundV2.cs"
+          if dotnet run --project "$p/RealRuntimeLedgerTests.csproj" -c Release > w11-receipts/frozen-v2-expected-red.log 2>&1; then
+            echo 'FALSE GREEN: original V2 must demonstrate missing-ID partial commit' >&2
+            exit 1
+          fi
+          grep -q 'W11_OLD_SOURCE_EXPECTED_RED_PARTIAL_COMMIT' w11-receipts/frozen-v2-expected-red.log
+          echo 'W11_EXPECTED_FROZEN_V2_PARTIAL_COMMIT_RED_CONFIRMED'
+      - name: 'GREEN - execute genuine revised V2 Unity class with real W06 ledger'
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=Tools/B01/B01-23/P17W11SecureV2RearmAtomicity
+          cp Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs "$p/Input/SecureDebrisPlaygroundV2.cs"
+          dotnet run --project "$p/RealRuntimeLedgerTests.csproj" -c Release | tee w11-receipts/revised-v2-green.log
+          grep -q 'W11_ACTUAL_UNITY_CLASS_W06_LEDGER_GUARDED_ASSERTIONS_PASS=' w11-receipts/revised-v2-green.log
+          grep -q 'NATIVE_PHYSX=NOT_RUN' w11-receipts/revised-v2-green.log
+      - name: Exact Git-original source manifest and physical ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-23/P17W10SecureReattachV2/package.py build --archive w11-receipts/v2-1-1-original-unity-package.zip | tee w11-receipts/zip-receipt.log
+          python Tools/B01/B01-23/P17W10SecureReattachV2/package.py verify --archive w11-receipts/v2-1-1-original-unity-package.zip
+          python -m unittest discover -s Tools/B01/B01-23/P17W10SecureReattachV2 -p test_package.py -v 2>&1 | tee w11-receipts/package-qa.log
+          grep -q 'OK' w11-receipts/package-qa.log
+      - name: Archive exact original source, executable source tests and negative rollback
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w11-v2-r1-1-${{ matrix.os }}
+          path: w11-receipts/
+          if-no-files-found: warn

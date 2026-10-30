@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion><Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Input/SecureDebrisPlaygroundV2.cs"/>
+    <Compile Include="Input/SecureDockPolicy.cs"/>
+    <Compile Include="Input/SecureRigSpec.cs"/>
+    <Compile Include="Input/DebrisRepulsionEmitter.cs"/>
+    <Compile Include="Input/DebrisImpulseCore.cs"/>
+    <Compile Include="UnityBoundaryStub.cs"/>
+    <Compile Include="Program.cs"/>
+  </ItemGroup>
+</Project>
