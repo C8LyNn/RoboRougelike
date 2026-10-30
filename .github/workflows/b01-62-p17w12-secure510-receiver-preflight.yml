@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -28,7 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           dir="Tools/B01/B01-62/P17W12Secure510Receiver"
-          git fetch --no-tags --depth=1 origin d94400d95d13db7f27e1533df05c9292d5380431
+          git cat-file -e d94400d95d13db7f27e1533df05c9292d5380431^{commit}\n          git merge-base --is-ancestor cb2b3a76e84266e2730fffc4ab048c1039f0652f d94400d95d13db7f27e1533df05c9292d5380431
           git worktree add --detach "$dir/.source510" d94400d95d13db7f27e1533df05c9292d5380431
           test "$(git -C "$dir/.source510" rev-parse HEAD)" = d94400d95d13db7f27e1533df05c9292d5380431
       - name: Build producer's REAL immutable 35-member source ZIP at selected exact SHA
