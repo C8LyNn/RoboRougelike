@@ -470,6 +470,12 @@ internal static class IndependentOriginalGate
             }
             finally{f.RetireAll();CloseTrusted(s,f);}
         });
+    private sealed class NoopSavePort:ICanonicalCommitPort
+    {
+        public bool Read(long run,out long gen,out string fingerprint)
+        {gen=0;fingerprint="";return false;}
+        public bool Commit(long run,long expected,string prior,long next,string hash)=>false;
+    }
     // W25 independent Linux case-sensitive path alias: owner identity and slot
     // match, but OrdinalIgnoreCase on POSIX may allow two physical envelopes
     // for two sequential same-slot owner lifetimes.
@@ -482,6 +488,8 @@ internal static class IndependentOriginalGate
             if(string.Equals(variant,canonical,StringComparison.Ordinal))return false;
             if(!CanonicalWorldSlotLease.TryAcquire(root,Run,Slot,out var owner1)||
                owner1==null)return false;
+            var bound1=new CanonicalWorldGateway(new Gate(),
+                new Factory(Failure.None),new NoopSavePort(),owner1);
             bool firstCommitted=false;
             try
             {
@@ -496,10 +504,12 @@ internal static class IndependentOriginalGate
                 }
                 finally{aliasStore.Dispose();}
             }
-            finally{owner1.TryCancelUnbound();}
+            finally{bound1.TryCloseAfterPhysicalRetirement(()=>true);}
             if(!firstCommitted)return false;
             if(!CanonicalWorldSlotLease.TryAcquire(root,Run,Slot,out var owner2)||
                owner2==null)return false;
+            var bound2=new CanonicalWorldGateway(new Gate(),
+                new Factory(Failure.None),new NoopSavePort(),owner2);
             try
             {
                 var two=CanonicalSingleAuthorityStoreV3R2.TryCreateNew(
@@ -533,7 +543,7 @@ internal static class IndependentOriginalGate
                 }
                 finally{canonicalStore.Dispose();}
             }
-            finally{owner2.TryCancelUnbound();}
+            finally{bound2.TryCloseAfterPhysicalRetirement(()=>true);}
         });
     private static bool RawSameOwnerSecondStoreDenied()
         =>Scratch(root=>{
