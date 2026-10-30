@@ -188,8 +188,10 @@ internal static class Program
             var f=new F();var h=new AtomicWorldSwap(f,new FileGenerationAuthority(dir));
             if(h.TryLoad(Wire(true,false,3),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
             var old=f.Last;
-            // An unrelated item added after initial commit causes commit authority to fail closed.
-            File.WriteAllText(Path.Combine(dir,"UNTRUSTED"),"foreign");
+            // Real fault is injected AFTER validated authority preflight but BEFORE
+            // activation/physical publication; final commit must quarantine and
+            // restore the previous active world rather than report success.
+            f.DuringPrepare=()=>File.WriteAllText(Path.Combine(dir,"UNTRUSTED"),"foreign");
             var rc=h.TryLoad(Wire(false,true,4),7,1,()=>true);
             return rc==WorldSwapVerdict.RollbackQuarantine &&h.Quarantined &&
                 old!=null&&old.Active &&h.Generation==3&&h.IsConsumed(0,2310001);
