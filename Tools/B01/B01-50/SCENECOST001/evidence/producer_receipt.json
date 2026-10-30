@@ -1,0 +1,32 @@
+{
+  "package_id": "B01-50-SCENECOST-001/R1",
+  "owner": "B01-50",
+  "classification": "PRODUCER_EXECUTED_PYTHON_STATIC_UNITY_YAML_AUDIT_NOT_RUNTIME_PERF",
+  "execution": "python -m unittest discover -s tests -v",
+  "actual_python": "3.13.5",
+  "actual_host": "Linux",
+  "tests_executed": 20,
+  "pass": 20,
+  "fail": 0,
+  "errors": 0,
+  "skip": 0,
+  "exit_code": 0,
+  "py_compile": "PASS",
+  "source_git_blob": "a83ddaa6aa94d0d9bc653b20403475e4d65d2428",
+  "source_sha256": "0f9f1004ec36dca6da33cc15bee13ff71f15588d1e902cf3eb2ca6f1df0b4b8b",
+  "test_git_blob": "c2b4c19fbf5803d382257219c4cf0c1c29050d37",
+  "test_sha256": "1544382b858fa69bf9681b17a702d5b781d09e1ef2242e05d17fd192e90ef790",
+  "real_scene_ref_main": "Assets/scene 1.unity",
+  "real_scene_git_blob": "a39a5e15482bbe1e114f1c304ceabb2227fcaa04",
+  "real_scene_expected_counts": {
+    "GameObject": 171,
+    "MeshRenderer": 155,
+    "BoxCollider": 136,
+    "MonoBehaviour": 291
+  },
+  "original_repo_scene_workflow_status": "PENDING_GITHUB_ACTIONS",
+  "independent_qa": "PENDING",
+  "unity_edit_play": "NOT_RUN",
+  "runtime_fps": "NOT_MEASURED",
+  "codex_ack": "PENDING"
+}

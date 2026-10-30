@@ -1,0 +1,55 @@
+name: B01-50 SCENECOST-001 source-scene audit
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/SCENECOST001/**'
+      - '.github/workflows/b01-50-scenecost001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-unity-yaml-inventory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run original 20 deterministic Python QA tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-50/SCENECOST001/tests -v 2>&1 | tee scenecost-test.log
+      - name: Audit original repo scenes without editing them
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python Tools/B01/B01-50/SCENECOST001/scenecost.py \
+            'Assets/scene 1.unity' 'Assets/Scenes/SampleScene.unity' \
+            --out evidence/actual-scenes.json --csv evidence/actual-scenes.csv
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('evidence/actual-scenes.json').read_text())
+          assert len(d['files']) == 2
+          one=next(x for x in d['files'] if x['source']=='scene 1.unity')
+          assert one['counts']['GameObject']==171
+          assert one['counts']['MeshRenderer']==155
+          assert one['counts']['BoxCollider']==136
+          assert one['counts']['MonoBehaviour']==291
+          assert d['native_unity']=='NOT_RUN' and d['measured_fps']=='NOT_MEASURED'
+          print('ACTUAL_MAIN_UNITY_SCENE_YAML_COUNT_PASS (NOT NATIVE FPS)')
+          PY
+          sha256sum evidence/actual-scenes.json evidence/actual-scenes.csv scenecost-test.log > evidence/SHA256SUMS.txt
+      - name: Preserve original actual-scene JSON CSV and source-tests log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-SCENECOST001-ORIGINAL-SCENE-RECEIPT
+          path: |
+            evidence/**
+            scenecost-test.log
+          if-no-files-found: error
+          retention-days: 30
