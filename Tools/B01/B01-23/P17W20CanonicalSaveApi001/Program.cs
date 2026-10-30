@@ -269,6 +269,30 @@ internal static class Tests
             return a.TryRestore(b,7,1)==CanonicalGateResult.Accepted&&
                 d.Read(7,out long gen,out _)&&gen==7&&f.Stages==1;
         }));
+        Check("physical factory fails staging before prior world mutated",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            World? old=f.Last;f.FailStage=true;
+            return a.TryRestore(Save(false,true,11),7,1)==CanonicalGateResult.HostException&&
+                !a.Quarantined&&old!=null&&old.Active&&a.Generation==10&&
+                d.Read(7,out long gen,out _)&&gen==10;
+        }));
+        Check("gate exception fails quiescence without state mutation",()=>Every((g,f,d,a)=>{
+            g.Throw=true;
+            return a.TryRestore(Save(true,false),7,1)==CanonicalGateResult.HostBusy&&
+                f.Stages==0&&!a.Quarantined;
+        }));
+        Check("durable authority Read failure quarantines without staging",()=>Every((g,f,d,a)=>{
+            d.FailRead=true;
+            return a.TryRestore(Save(true,false),7,1)==CanonicalGateResult.RollbackQuarantine&&
+                f.Stages==0&&a.Quarantined;
+        }));
+        Check("failed real prior-world rollback reactivation sticky quarantine",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            World? old=f.Last;if(old==null)return false;
+            old.FailReactivate=true;f.FailActivate=true;
+            return a.TryRestore(Save(false,true,11),7,1)==CanonicalGateResult.RollbackQuarantine&&
+                a.Quarantined&&!a.TryCapturePreview(out _);
+        }));
         for(int n=0;n<16;n++)
         {
             int j=n;
