@@ -12,6 +12,9 @@ SHA = "a" * 40
 SHA_ALT = "b" * 40
 REPO = "https://github.com/C8LyNn/RoboRougelike/"
 COMMENT = REPO + "issues/79#issuecomment-6510326196"
+QA_COMMENT = REPO + "pull/393#issuecomment-6510326197"
+OFFER_COMMENT = REPO + "issues/79#issuecomment-6510326198"
+ACK_COMMENT = REPO + "issues/79#issuecomment-6510326199"
 
 
 def make_record(native=False):
@@ -25,7 +28,7 @@ def make_record(native=False):
         },
         "qa": {
             "intake": {"agent": "B01-40", "status": "PASS", "sha": SHA, "url": COMMENT},
-            "independent": {"agent": "B01-60", "status": "PASS", "sha": SHA, "url": COMMENT},
+            "independent": {"agent": "B01-60", "status": "PASS", "sha": SHA, "url": QA_COMMENT},
         },
         "native": {
             "edit": {"sha": SHA, "status": "NOT_RUN", "passed": 0, "failed": 0, "url": None},
@@ -149,36 +152,36 @@ class SourceGates(unittest.TestCase):
 class HandoffSequence(unittest.TestCase):
     def test_offer_source_ready_and_exact_sha(self):
         x = make_record()
-        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": OFFER_COMMENT}
         d = audit(x)
         self.assertTrue(d["offer_record_consistent"])
         self.assertFalse(d["ack_record_consistent"])
 
     def test_offer_no_qa_rejected(self):
         x = make_record(); x["qa"]["independent"]["status"] = "PENDING"
-        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": OFFER_COMMENT}
         self.assertIn("offer_claim_before_gates", audit(x)["blockers"])
 
     def test_offer_wrong_sha_rejected(self):
         x = make_record()
-        x["offer"] = {"status": "OFFERED", "sha": SHA_ALT, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA_ALT, "url": OFFER_COMMENT}
         self.assertIn("offer_receipt_invalid", audit(x)["blockers"])
 
     def test_ack_without_offer_rejected(self):
         x = make_record()
-        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": COMMENT}
+        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": ACK_COMMENT}
         self.assertIn("codex_ack_unverified_or_out_of_order", audit(x)["blockers"])
 
     def test_ack_from_non_codex_rejected(self):
         x = make_record()
-        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": COMMENT}
-        x["ack"] = {"status": "YES", "actor": "B01-00", "sha": SHA, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": OFFER_COMMENT}
+        x["ack"] = {"status": "YES", "actor": "B01-00", "sha": SHA, "url": ACK_COMMENT}
         self.assertFalse(audit(x)["ack_record_consistent"])
 
     def test_codex_ack_consistent_after_offer(self):
         x = make_record()
-        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": COMMENT}
-        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": OFFER_COMMENT}
+        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": ACK_COMMENT}
         self.assertTrue(audit(x)["ack_record_consistent"])
 
     def test_integration_without_ack_rejected(self):
@@ -189,16 +192,16 @@ class HandoffSequence(unittest.TestCase):
 
     def test_integration_with_invalid_commit(self):
         x = make_record()
-        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": COMMENT}
-        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": OFFER_COMMENT}
+        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": ACK_COMMENT}
         x["integration"] = {"status": "YES", "sha": SHA, "commit_sha": "abc",
                             "url": REPO + "pull/450"}
         self.assertFalse(audit(x)["integration_record_consistent"])
 
     def test_integration_claimed_after_ordered_receipts(self):
         x = make_record()
-        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": COMMENT}
-        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": COMMENT}
+        x["offer"] = {"status": "OFFERED", "sha": SHA, "url": OFFER_COMMENT}
+        x["ack"] = {"status": "YES", "actor": "CODEX", "sha": SHA, "url": ACK_COMMENT}
         x["integration"] = {"status": "YES", "sha": SHA, "commit_sha": SHA_ALT,
                             "url": REPO + "pull/450"}
         self.assertTrue(audit(x)["integration_record_consistent"])
