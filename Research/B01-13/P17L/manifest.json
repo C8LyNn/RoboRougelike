@@ -1,0 +1,29 @@
+{
+  "package": "B01-13-SAVE-SCREENSHOT-WITNESS-001/R1",
+  "upstream_w13": "aee4315304ca3e2fe3e155242d7d181260089efc",
+  "upstream_blob": "94c621f54fffd7e1325700b88b441652755c0feb",
+  "selected_reattach": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "files": {
+    "Research/B01-13/P17L/screenshot_witness.mjs": {
+      "git_blob_sha1": "96699bd0238d7e67eaf2e2a31c03fefd2c8466b0",
+      "bytes": 6121
+    },
+    "Research/B01-13/P17L/test_screenshot_witness.mjs": {
+      "git_blob_sha1": "53f620a5e91fbf96c30122ad4310c481d050ea3d",
+      "bytes": 7034
+    },
+    "Research/B01-13/P17L/README.md": {
+      "git_blob_sha1": "c6c87136dba62ebdc49cc4257fb0c34617cec679",
+      "bytes": 5038
+    },
+    "Research/B01-13/P17L/verify_package.py": {
+      "git_blob_sha1": "36c49669dbbc788342bfc2825377ef3f200365a5",
+      "bytes": 1196
+    },
+    ".github/workflows/b01-13-w14-screenshot-witness.yml": {
+      "git_blob_sha1": "a3d5e324501af8ff1cd0b2b7510b1052ffd09c1b",
+      "bytes": 1797
+    }
+  }
+}
