@@ -8,6 +8,8 @@
 - The store must atomically publish canonical physical part IDs+HP+reservations, wallet, event IDs, free quota and generation to one authoritative durable slot. No private R3 fields/reflection. `Uncertain` or thrown Commit after durable write quarantines that service; never resumes stale old-state write. A host that cheats about `RejectedNoWrite` is invalid. `TryAuthorizeResume` only compares a candidate against authoritative current state; NEVER imports arbitrary old JSON or bypasses the host.
 - `OwnerRebuildStateV2` is an **offstage transaction projection**, not an extra live R3 inventory. To integrate, build an authorized host adapter that stages and publishes existing R3 objects with real main-thread/physics synchronization. The test store uses real disk JSON, a cross-process exclusive lease and one-file atomic rename, but is explicitly a **SURROGATE**: not Unity, not verified power-loss directory fsync, not atomic with actual #510 world/#556 schema, and not a production Save/Load receiver.
 
+Booked rebuild tickets retain their original paid quote even if an authorized subsequent owner CAS updates the module's purchase/quote price. A later market price change MUST NOT retroactively reprice or invalidate queued repairs; the test suite includes this scenario.
+
 ## Executable verification
 ```bash
 dotnet build Tools/B01/ECONREBUILD002/RebuildV2.Tests.csproj -c Release
