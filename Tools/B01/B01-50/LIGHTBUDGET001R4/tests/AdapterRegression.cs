@@ -16,7 +16,7 @@ internal static class Program
         public B0150OptionalCosmeticLightBudget.LightSlot[] Slots = null!;
         public Light First = null!, Second = null!, Foreign = null!;
     }
-    private static Fixture Setup(bool secondEnabled=true,int cadence=1)
+    private static Fixture Setup(bool secondEnabled=true,int cadence=1,bool equalImportance=false)
     {
         var a = new Light { enabled=true };
         a.transform.position=new Vector3(1f,0,0);
@@ -25,8 +25,8 @@ internal static class Program
         var foreign = new Light { enabled=false };
         foreign.transform.position=new Vector3(2f,0,0);
         var slots = new[] {
-            new B0150OptionalCosmeticLightBudget.LightSlot { Light=a, Importance=70 },
-            new B0150OptionalCosmeticLightBudget.LightSlot { Light=b, Importance=60 }
+            new B0150OptionalCosmeticLightBudget.LightSlot { Light=a, Importance=equalImportance ? 50 : 70 },
+            new B0150OptionalCosmeticLightBudget.LightSlot { Light=b, Importance=equalImportance ? 50 : 60 }
         };
         var owner=new B0150OptionalCosmeticLightBudget();
         if(!owner.Configure(new Camera(), slots, 1, 0f, cadence))
@@ -141,7 +141,7 @@ internal static class Program
             Assert(f.First.enabled&&!f.Second.enabled,"runtime maximum escalation bypassed original cap");Restore(f);
         });
         Test("mutated serialized NaN hysteresis cannot freeze future selections",()=>{
-            var f=Setup();Reapply(f);
+            var f=Setup(equalImportance:true);Reapply(f);
             f.First.transform.position=new Vector3(20,0,0);
             f.Second.transform.position=new Vector3(0,0,0);
             var p=typeof(B0150OptionalCosmeticLightBudget).GetField("distanceHysteresisMeters",BindingFlags.Instance|BindingFlags.NonPublic);
