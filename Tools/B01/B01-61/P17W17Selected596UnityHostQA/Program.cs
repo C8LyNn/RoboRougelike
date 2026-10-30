@@ -12,7 +12,7 @@ internal sealed class SecureDebrisPlaygroundV2:MonoBehaviour {}
 internal static class Program
 {
     const long RUN=51;
-    static int assertions,positives,denials,sourceRed;
+    static int assertions,positives,sourceRed;
     static void Check(bool yes,string reason)
     {
         assertions++;
