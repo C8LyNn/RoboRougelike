@@ -1,3 +1,4 @@
+#nullable enable
 // This is a CLEARLY SYNTHETIC minimal managed UnityEngine API for .NET8 QA.
 // The actual original P12, W24 and W25 C# files are linked/compiled verbatim.
 // THIS IS NOT NATIVE UNITY G1, PHYSX, IMPORTER OR PLAYER PLAYMODE.
