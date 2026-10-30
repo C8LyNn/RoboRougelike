@@ -85,7 +85,7 @@ def collisions(game_files,own_files):
     # dict[path, original raw bytes] including all actual game .meta and own
     own_metas={p:d for p,d in own_files.items() if p.endswith(".meta")}
     own_json={p:d for p,d in own_files.items() if p.endswith(".json")}
-    require(len(own_metas)==OWN_META_COUNT and len(own_json)==OWN_JSON_COUNT,"WRONG_OWN_CONTENT_COUNTS")
+    require(len(own_files)==OWN_META_COUNT+OWN_JSON_COUNT and len(own_metas)==OWN_META_COUNT and len(own_json)==OWN_JSON_COUNT,"WRONG_OWN_CONTENT_COUNTS")
     require(all(p.startswith("Assets/PARTSIZE001/Bracing") for p in own_files),"OUT_OF_SCOPE_CONTENT_PATH")
     require(all(p.startswith("Assets/") for p in game_files),"INVALID_GAME_TREE_SCOPE")
     codex_meta={p:d for p,d in game_files.items() if p.endswith(".meta")}
