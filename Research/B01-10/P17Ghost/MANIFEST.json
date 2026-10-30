@@ -1,0 +1,87 @@
+{
+  "packageId": "B01-10-GHOST-001",
+  "version": "1.0.0-P17W06",
+  "role": "B01-10 GAME DESIGN & BALANCE",
+  "scope": "OPT_IN_CHL_TRAINING_GHOST",
+  "sourceBranch": "design/b01-10-p17w06-training-ghost",
+  "draftPR": "PENDING_CREATION",
+  "producer": "B01-10",
+  "owner": "B01-10",
+  "receiver": [
+    "B01-40 SOURCE_G0",
+    "B01-60 INDEPENDENT QA",
+    "B01-20 CHL-003 INTERFACE OWNER",
+    "B01-00 HQ",
+    "Codex after ACK only"
+  ],
+  "status": "SOURCE_PRODUCER_CI_PENDING / NATIVE_UNITY_NOT_RUN / NO_G0 / NO_CODEX_ACK / NOT_INTEGRATED",
+  "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
+  "changedPaths": [
+    "Research/B01-10/P17Ghost/**",
+    ".github/workflows/b01-10-p17-ghost.yml"
+  ],
+  "codeFiles": {
+    "GhostCore.cs": {
+      "gitBlob": "b608b8fa2fdc12a0533cf5f90423b9c367a4d03d",
+      "chars": 12349
+    },
+    "Ghost.Runner.csproj": {
+      "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
+      "chars": 345
+    },
+    "Program.cs": {
+      "gitBlob": "46af510e2824843b291eb4274222c005660b4206",
+      "chars": 13089
+    },
+    "README.md": {
+      "gitBlob": "32471c89c132fff1a15548806d17e6c846e4a3f1",
+      "chars": 7776
+    }
+  },
+  "workflow": {
+    "path": ".github/workflows/b01-10-p17-ghost.yml",
+    "gitBlob": "bb9f4c6111b3fa95ed3ad896941d73219e738a60"
+  },
+  "tests": {
+    "tool": "dotnet 8.0 CSharp original source and test runner",
+    "namedCases": 50,
+    "syntheticRandomizedTraces": 100,
+    "workflowRun": "PENDING",
+    "windows": "PENDING",
+    "ubuntu": "PENDING",
+    "actualDemoJson": "PENDING",
+    "nativeUnity": "NOT_RUN",
+    "UnityEditMode": "NOT_RUN",
+    "UnityPlayMode": "NOT_RUN",
+    "actualPhysicsLightHeavy": "NOT_RUN",
+    "independentQA": "PENDING"
+  },
+  "originalCHL": {
+    "issue": 91,
+    "owner": "B01-20",
+    "referencePR": 285,
+    "contract": "four ordered physical checkpoints, two real vehicle rigs (Light/Heavy), virtual ghost has no collider/control/physics",
+    "note": "Never hook or claim host timeline verified until owner independently approves adapter and actual native tests"
+  },
+  "gates": {
+    "producerNativeUnity": false,
+    "B0140G0": "PENDING",
+    "B0160QA": "PENDING",
+    "B0120Compat": "PENDING",
+    "B0100Approval": "PENDING",
+    "CodeXACK": "PENDING",
+    "noMerge": true
+  },
+  "install": "Copy GhostCore.cs to unique authorized Unity project Assets/B01TrainingGhost after B01-40/B01-60 acceptance; add new GUID/meta; opt-in adapter only in Codex/B01-20 authorized worktree; do not copy branch into game.",
+  "rollback": "Remove only new GhostCore.cs/meta, visual-only ghost adapter/UI; restore byte-for-byte any authorized CHL scene changes; no earlier authored paths changed.",
+  "earlierProducerState": {
+    "priorPackage": "RUNSCORE001/R2",
+    "priorPR": 401,
+    "exactSHA": "7e27fb212dc6e0913b9f7e758d44072ccedbbf40",
+    "unchanged": true,
+    "priorOriginalSourceCSharp": "Windows 74/74 PASS; Ubuntu 74/74 PASS",
+    "priorPhysicalZip": "2d06e57607eb2df953084706175bf270026e1596445cc43fbf23d1f7c8a2dde5",
+    "independentAcceptance": "PENDING",
+    "CODEX_ACK": "PENDING"
+  }
+}
