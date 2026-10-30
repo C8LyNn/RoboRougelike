@@ -141,7 +141,7 @@ namespace B01.CanonicalWorldApi001
             lock(RegistryLock)
             {
                 if(bound||released||
-                   (stream==null&&(authoritative669==null||authoritative669.Closed))||
+                   (stream==null&&(authoritative669==null||!authoritative669.IsOpen))||
                    !Registry.TryGetValue(key,out CanonicalWorldSlotLease? current)||
                    !ReferenceEquals(current,this))
                     throw new InvalidOperationException("World authority already bound or lost");
@@ -154,7 +154,7 @@ namespace B01.CanonicalWorldApi001
             lock(RegistryLock)
             {
                 if(bound||released||
-                   (stream==null&&(authoritative669==null||authoritative669.Closed)))
+                   (stream==null&&(authoritative669==null||!authoritative669.IsOpen)))
                     return false;
                 try
                 {
@@ -174,7 +174,7 @@ namespace B01.CanonicalWorldApi001
             lock(RegistryLock)
             {
                 if(!bound||released||
-                   (stream==null&&(authoritative669==null||authoritative669.Closed)))
+                   (stream==null&&(authoritative669==null||!authoritative669.IsOpen)))
                     return false;
                 try
                 {
