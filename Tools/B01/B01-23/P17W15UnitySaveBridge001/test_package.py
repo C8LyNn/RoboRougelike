@@ -19,7 +19,7 @@ class SourcePackageTests(unittest.TestCase):
     def test_actual_original_unity_body_source(self):
         s=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
         self.assertIn("Rigidbody",s);self.assertIn("DebrisImpulseLedger",s)
-        self.assertIn("TwinWorld.Build(snapshot,transform)",s)
+        self.assertIn("TwinWorld.Build(snapshot,transform,TrackOwnedWorldRoot)",s)
     def test_actual_original_transaction_state(self):
         s=p.source(p.ASSET+"/Core/AtomicWorldSwap.cs").decode()
         self.assertIn("ColdRestore.TryStage",s)
