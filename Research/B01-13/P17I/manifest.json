@@ -1,0 +1,58 @@
+{
+  "package_id": "MOTION-TRACE-REPLAY-001",
+  "version": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "source_branch": "research/b01-13-pass17-wave11-motion-trace-replay",
+  "base_commit": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "upstream_exact_commit": "e32d3199fa1fe6e9120df61a61ec02031441a2d3",
+  "upstream_file": "Research/B01-13/P17H/UnityPackage/Runtime/MotionStallLedger.cs",
+  "upstream_blob_sha": "77b74de9358a77b770d5e8134de431618a853a6e",
+  "upstream_physical_sha256": "c391dfebd24621da9a2c23bbc722973b81258da2e490cc314cb4ebaccc5fce99",
+  "own_scope": [
+    "Research/B01-13/P17I/**",
+    ".github/workflows/b01-13-p17w11-motion-trace-replay.yml"
+  ],
+  "files": {
+    "Fixtures/original_motion_trace_contract.csv": {
+      "sha256": "bd93b828cfb1cea7eb781e12a8992156218ba3dac1025d70f162135912be6ece",
+      "bytes": 4221
+    },
+    "Tests/MotionTraceReplay.cs": {
+      "sha256": "9b9f3bf431769a79296de86a33fe66e74833ffb62965cc6be1e135b954d3a48a",
+      "bytes": 5745
+    },
+    "Tests/MotionTraceReplay.csproj": {
+      "sha256": "5646dcbf913476aea4f393c92106c1f2638c1759c184232458703acc45b0060f",
+      "bytes": 582
+    },
+    "Tests/adversarial.py": {
+      "sha256": "aa32634eb86ceb0a8b74cf8bc6750f047c046a51c3ac7caac674d481b4459831",
+      "bytes": 2716
+    },
+    "verify_package.py": {
+      "sha256": "6d21d4bf2cd6c5b63633f6035429e02f22fd6ca97328a23f743b70a22499fcf3",
+      "bytes": 2050
+    },
+    "README.md": {
+      "sha256": "ee85568d76c29272d0eaf4722b58724f4e4d4f49cb6e0d82e8b0a7b53fc862c3",
+      "bytes": 4295
+    },
+    "../../../.github/workflows/b01-13-p17w11-motion-trace-replay.yml": {
+      "sha256": "66a6360785fe79edb7da2ffc7de0a7edcd8a97528618688e450dc6cdd1c18b2f",
+      "bytes": 2509
+    }
+  },
+  "required_replay": {
+    "traces": 6,
+    "original_samples": 101,
+    "expected_fields_per_sample": 5,
+    "negative_mutations": 3
+  },
+  "qa": {
+    "producer_source_ci": "PENDING",
+    "independent_b01_40_b01_60": "PENDING",
+    "native_unity": "NOT_RUN",
+    "humans": 0
+  },
+  "rollback": "Leave Draft unmerged; discard isolated branch; ephemeral original extracted source and test output not committed. Original #495 immutable."
+}
