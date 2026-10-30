@@ -26,7 +26,7 @@
     "Assets/B0125SafeRoute001/Runtime/B0125.SafeRoute.Runtime.asmdef.meta": "943ce2dcbf6253c5c6b27c50a411cdcdb452af7a",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs": "943f4447987ef6172f503cab6d56f4c0bf58b4c9",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs.meta": "d4ad2af34e17f5a22d9964d514942c7d798f29dd",
-    "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs": "27e3ca8e96957e1de91c5fedb462e10cfb3580bb",
+    "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs": "6b9bfcfea677d3a642e3070c12d9359de0915f03",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs.meta": "7d613221f92233a1172f04692f005d5808ae615c",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs": "c44ed71fd2b481dfbf1700f48c69d3c2e3b57ea6",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs.meta": "1ad7f0eb4382c590fe3043bce7ef7a499a06fa7f",
@@ -39,7 +39,7 @@
     "Research/B01-25/P17/SAFEROUTE001/.gitignore": "6943b188d80a5efce450393ae612928f653e0876",
     "Research/B01-25/P17/SAFEROUTE001/Program.cs": "13cfe18b53df7c159d9a40331823c3887d864613",
     "Research/B01-25/P17/SAFEROUTE001/SafeRouteCore.cs": "943f4447987ef6172f503cab6d56f4c0bf58b4c9",
-    "Research/B01-25/P17/SAFEROUTE001/SafeRouteExample.cs": "27e3ca8e96957e1de91c5fedb462e10cfb3580bb",
+    "Research/B01-25/P17/SAFEROUTE001/SafeRouteExample.cs": "6b9bfcfea677d3a642e3070c12d9359de0915f03",
     "Research/B01-25/P17/SAFEROUTE001/SafeRouteRuntime.csproj": "ca5156550bbd90a0ec1ae5e4f536e2cc997bec4f",
     "Research/B01-25/P17/SAFEROUTE001/SafeRouteTests.csproj": "be07c16058c40ec19812dac2e1fec5a877b9b33c",
     "Tools/B01/B01-25/P17W23SafeRoute/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
@@ -55,5 +55,6 @@
   "g2": "HOLD",
   "limits": "Native PhysX collision/clearance NOT_RUN; BFS route clearance conservative but not full compound vehicle collision path; staging cannot claim canonical game integration",
   "rollback": "Only original 21 Unity source/meta files installed to disposable clean Unity checkout, refusal existing paths/symlinks; unlink ONLY newly staged own files, no directory deletions or frozen source edits.",
-  "sourceFix": "Original net8.0 test compile CS8765 under Nullable enable: corrected Equals(object?) override in exact same research+Unity core; first failing CI never claimed product PASS"
+  "sourceFix": "Original net8.0 test compile CS8765 under Nullable enable: corrected Equals(object?) override in exact same research+Unity core; first failing CI never claimed product PASS",
+  "geometryCorrection": "Independent 8-scenario Light+Heavy static footprint replay detected original Heavy+active hazard no-route; moved 2 hazard pads x10/11 to x9/10 preserving alternative Heavy passage"
 }
