@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git hash-object Tools/B01/CI41/P17W14/save_artifact_parity.py)" = '97824610932351f0c3f25188755576170a7438ba'
+          test "$(git hash-object Tools/B01/CI41/P17W14/save_artifact_parity.py)" = '4ec4803484b57cbb5342bf8255092453885f50e1'
           test "$(git hash-object Tools/B01/CI41/P17W14/test_save_artifact_parity.py)" = '11a4cda1b6ca1d8c7061630118e08a5cc3d9191a'
           echo 'CI41_W14_EXACT_SOURCE_BLOBS_PASS'
       - name: Run 30 physical original ZIP, manifest, tamper and QA RED controls
