@@ -24,6 +24,7 @@ namespace RoboRougelike.B0110.TrainingGhost
         public string CourseId { get; set; }
         public string RigId { get; set; }
         public bool Completed { get; set; }
+        public int RequiredCheckpoints { get; set; }
         public float ElapsedSeconds { get; set; }
         public GhostFrame[] Frames { get; set; }
         public float[] CheckpointSeconds { get; set; }
@@ -108,6 +109,7 @@ namespace RoboRougelike.B0110.TrainingGhost
                 CourseId = run.CourseId,
                 RigId = run.RigId,
                 Completed = run.Completed,
+                RequiredCheckpoints = run.RequiredCheckpoints,
                 ElapsedSeconds = run.ElapsedSeconds,
                 EndReason = run.EndReason,
                 CheckpointSeconds = (float[])run.CheckpointSeconds.Clone(),
@@ -131,7 +133,8 @@ namespace RoboRougelike.B0110.TrainingGhost
                 && run.ElapsedSeconds <= MaxDuration, "Invalid run duration");
             Check(run.Frames != null && run.Frames.Length >= 1 && run.Frames.Length <= 16384,
                 "Missing or overlong track");
-            Check(run.CheckpointSeconds != null && run.CheckpointSeconds.Length <= 8,
+            Check(run.RequiredCheckpoints >= 1 && run.RequiredCheckpoints <= 8
+                && run.CheckpointSeconds != null && run.CheckpointSeconds.Length <= run.RequiredCheckpoints,
                 "Invalid checkpoint count");
             Check(run.Frames[0] != null && run.Frames[0].Time == 0,
                 "First frame must start at zero");
@@ -153,7 +156,8 @@ namespace RoboRougelike.B0110.TrainingGhost
                 prev = cp;
             }
             Check(!run.Completed || (run.ElapsedSeconds > 0
-                && run.CheckpointSeconds.Length >= 1), "Completed run needs checkpoints and duration");
+                && run.CheckpointSeconds.Length == run.RequiredCheckpoints),
+                "Completed run needs EVERY configured checkpoint and duration");
         }
 
         // Never reward equal elapsed time or accept a practice failure as a personal record.
@@ -163,7 +167,8 @@ namespace RoboRougelike.B0110.TrainingGhost
             Check(reference.Completed && trial.Completed
                 && string.Equals(reference.CourseId, trial.CourseId, StringComparison.Ordinal),
                 "Only two finished attempts on the SAME course can be compared");
-            Check(reference.CheckpointSeconds.Length == trial.CheckpointSeconds.Length,
+            Check(reference.RequiredCheckpoints == trial.RequiredCheckpoints
+                && reference.CheckpointSeconds.Length == trial.CheckpointSeconds.Length,
                 "Different checkpoint layouts");
             var splits = new float[reference.CheckpointSeconds.Length];
             for (int i = 0; i < splits.Length; i++)
@@ -256,6 +261,7 @@ namespace RoboRougelike.B0110.TrainingGhost
             var run = new GhostRun
             {
                 CourseId = course, RigId = rig, Completed = completed,
+                RequiredCheckpoints = checkpoints,
                 ElapsedSeconds = elapsed, EndReason = reason,
                 CheckpointSeconds = splits.ToArray(), Frames = frames.ToArray()
             };
