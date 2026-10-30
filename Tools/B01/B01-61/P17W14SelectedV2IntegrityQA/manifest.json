@@ -1,0 +1,30 @@
+{
+  "role": "B01-61",
+  "package": "P17W14-SELECTED-554-DIRECT-SOURCE-QA-001",
+  "revision": 1,
+  "selected_save_contract_pr": 554,
+  "selected_save_producer_sha": "72b39a7bf214fc6b76e95853159950c3991ddfa3",
+  "producer_blob": "4cd6e2d7312d09fb658863a35ed4fc7fa4c88720",
+  "frozen_gameplay_pr": 510,
+  "frozen_gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_w06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "original_source_blobs": [
+    "4cd6e2d7312d09fb658863a35ed4fc7fa4c88720",
+    "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  ],
+  "qa_scope": "6 only own added files",
+  "expected_result": "ORIGINAL #550 RED→GREEN and new original hostIdle reentrant double ACCEPT RED",
+  "explicit_native_unity": "NOT_RUN",
+  "actual_canonical_save_load": "NOT_IMPLEMENTED",
+  "selected_save_contract_release": "HOLD_WHILE_REENTRANT_SWAP_UNRESOLVED",
+  "selected_alternative_544": "HOLD",
+  "old_549_v1": "SOURCE_RED",
+  "g0_frozen510": "ACCEPTED_SOURCE_ONLY",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "ack": false,
+  "integrated": false,
+  "merged": false
+}

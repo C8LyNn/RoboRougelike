@@ -1,0 +1,58 @@
+name: B01-61 P17W14 selected #554 original binary Save V2 integrity and reentrant source
+on:
+  push:
+    branches: [qa/b01-61-p17w14-selected-v2-554-integrity]
+    paths:
+      - 'Tools/B01/B01-61/P17W14SelectedV2IntegrityQA/**'
+      - '.github/workflows/b01-61-p17w14-selected-v2-554-qa.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W14SelectedV2IntegrityQA/**'
+      - '.github/workflows/b01-61-p17w14-selected-v2-554-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-selected-save-contract-and-original-ledger:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Pin exact selected Save V2 #554 and frozen #510 W06 source and only QA paths
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W14SelectedV2IntegrityQA/source_guard.py 2>&1 | tee b01-61-selected-w14-pins.log
+      - name: Direct compile original selected CSharp9 #554 and actual immutable R2 W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W14SelectedV2IntegrityQA/OriginalSelectedV2QA.csproj -c Release --warnaserror 2>&1 | tee b01-61-selected-w14-compile.log
+      - name: Execute real selected source 550 fixes, ID/consumed, rejected restores, reentrant probe
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W14SelectedV2IntegrityQA/OriginalSelectedV2QA.csproj 2>&1 | tee b01-61-selected-w14-test.log
+          grep -q 'ORIGINAL_550_RED_FIXED_V2' b01-61-selected-w14-test.log
+          grep -q 'V2_SELECTED_SAVE_SOURCE_RELEASE_HOLD' b01-61-selected-w14-test.log
+          grep -q 'ACTUAL_UNITY_PHYSX=NOT_RUN' b01-61-selected-w14-test.log
+      - name: Preserve original per-OS test stdout, no fake native Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w14-selected-v2-554-${{ matrix.os }}
+          path: |
+            b01-61-selected-w14-pins.log
+            b01-61-selected-w14-compile.log
+            b01-61-selected-w14-test.log
+          if-no-files-found: warn
+          retention-days: 21
