@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   independent-native-evidence-verification:
-    name: 32 synthetic adversarial G1 receipts + real R4 original source pin (${{ matrix.os }})
+    name: 33 synthetic adversarial G1 receipts + real R4 original source pin (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     strategy:
@@ -50,14 +50,14 @@ jobs:
           git show 09c1809b73324a6d31c13e5d0143de62ac1e3ca6:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs | grep -Fq 'OnDestroy(){ReleaseSlot();}'
           git show ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs | grep -Fq 'OnDisable(){ReleaseSlot();}'
           echo 'W20_REAL_ORIGINAL_R4_647_ONDISABLE_OWNER_LEASE_RETAINED_652_SOURCE_RELEASE_RISK'
-          echo 'W20_OWNER_R4_FINAL_SELECTION_PENDING_NO_INSTALL'
-      - name: Run 32 independently authored SYNTHETIC-ONLY malicious evidence fixtures
+          echo 'W20_OWNER_SELECTED_647_ONLY_652_ALT_HOLD_AND_HOST_P0_NO_INSTALL'
+      - name: Run 33 independently authored SYNTHETIC-ONLY malicious evidence fixtures
         shell: bash
         run: |
           set -euo pipefail
           if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
           "$PY" -m unittest discover -s Tools/B01/CI41/P17W20/ -p test_verify_native_evidence.py -v 2>&1 | tee "ci41-w20-native-evidence-${{ runner.os }}.txt"
-          grep -q 'Ran 32 tests' "ci41-w20-native-evidence-${{ runner.os }}.txt"
+          grep -q 'Ran 33 tests' "ci41-w20-native-evidence-${{ runner.os }}.txt"
           grep -q 'OK' "ci41-w20-native-evidence-${{ runner.os }}.txt"
           grep -q 'W20_SYNTHETIC_ONLY_STRUCTURAL_POSITIVE_NOT_G1_PASS' "ci41-w20-native-evidence-${{ runner.os }}.txt"
           echo 'CI41_W20_TESTS_ARE_SYNTHETIC_VERIFIER_ONLY_REAL_UNITY_G1_NOT_RUN'
