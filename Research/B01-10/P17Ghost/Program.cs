@@ -770,6 +770,82 @@ internal static class Program
             for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
             Check(c.RecommendedLoop==null);
         });
+        Test("123 failed all-gate trial cannot be upgraded by flipping Completed",()=>{
+            var r=new GhostRecorder("CHL","Light",4,P());
+            for(int i=0;i<4;i++){
+                r.Tick(1f,false,P(i+1));
+                r.Checkpoint(i,P(i+1));
+            }
+            r.Tick(1f,false,P(5));
+            var failed=r.Fail(P(5));
+            Check(!failed.Completed&&failed.EndReason=="Failed");
+            Equal(failed.CheckpointSeconds.Length,4);
+            failed.Completed=true;
+            Check(Reject(()=>GhostMath.Validate(failed)),
+                "failed completed-checkpoint trial forged into valid completion");
+        });
+        Test("124 mismatch Completed true and reason Failed rejected",()=>{
+            var g=Run();g.EndReason="Failed";
+            Check(Reject(()=>GhostMath.Validate(g)),"bad terminal state accepted");
+        });
+        Test("125 mismatch Completed false and reason Completed rejected",()=>{
+            var g=Run();g.Completed=false;
+            Check(Reject(()=>GhostMath.Validate(g)),"false failure flag accepted");
+        });
+        Test("126 blank terminal reason rejected",()=>{
+            var g=Run();g.EndReason="";
+            Check(Reject(()=>GhostMath.Validate(g)),"blank terminal reason accepted");
+        });
+        Test("127 null terminal reason rejected",()=>{
+            var g=Run();g.EndReason=null;
+            Check(Reject(()=>GhostMath.Validate(g)),"null reason accepted");
+        });
+        Test("128 case or whitespace spoofed reason rejected",()=>{
+            var g=Run();g.EndReason="completed";
+            Check(Reject(()=>GhostMath.Validate(g)),"case altered reason accepted");
+            g.EndReason="Completed ";
+            Check(Reject(()=>GhostMath.Validate(g)),"suffix altered reason accepted");
+        });
+        Test("129 genuine completed recording remains fully valid",()=>{
+            var g=Run();GhostMath.Validate(g);
+            Equal(GhostMath.Clone(g).EndReason,"Completed");
+            var pb=new GhostPlayback(g);
+            Equal(pb.Duration,g.ElapsedSeconds);
+        });
+        Test("130 genuine failed recording remains valid but is not best",()=>{
+            var r=new GhostRecorder("CHL","Light",4,P());
+            r.Tick(.5f,false,P(1));
+            var failed=r.Fail(P(1));
+            GhostMath.Validate(failed);
+            Check(!new GhostBestBook().Submit(failed),"failed run became personal best");
+        });
+        Test("131 failed terminal reason cannot replace existing personal best",()=>{
+            var book=new GhostBestBook();book.Submit(Run());
+            var spoofed=Run();spoofed.EndReason="Failed";
+            Check(Reject(()=>book.Submit(spoofed)),"mutated completion replaced PB");
+            Equal(book.For("CHL003_R1","Light").ElapsedSeconds,5f);
+        });
+        Test("132 spoofed reference blocked in visual replay and coach",()=>{
+            var bad=Run();bad.EndReason="Failed";
+            Check(Reject(()=>new GhostPlayback(bad)),"playback accepted bad end");
+            Check(Reject(()=>new GhostSplitCoach(bad)),"coach accepted bad end");
+        });
+        Test("133 inconsistent trial blocked in cross-rig comparison",()=>{
+            var trial=Run("Heavy");trial.EndReason="Failed";
+            Check(Reject(()=>GhostMath.Compare(Run(),trial)),
+                "compare accepted failed terminal reason");
+        });
+        Test("134 real ended failed all-gate run never becomes benchmark",()=>{
+            var r=new GhostRecorder("C","Heavy",4,P());
+            for(int i=0;i<4;i++){
+                r.Tick(1f,false,P(i+1));r.Checkpoint(i,P(i+1));
+            }
+            r.Tick(1,false,P(5));
+            var failure=r.Fail(P(5));
+            GhostMath.Validate(failure);
+            Check(Reject(()=>new GhostSplitCoach(failure)),
+                "all-gate failed trial accepted as benchmark");
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
