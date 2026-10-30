@@ -1,0 +1,23 @@
+{
+  "name": "B0125.SinkPlate.PlayModeTests",
+  "rootNamespace": "B0125.SinkPlate.Tests",
+  "references": [
+    "B0125.SinkPlate.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
